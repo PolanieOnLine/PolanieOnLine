@@ -27,14 +27,14 @@ class BareBonesBrowserLaunchCommandsFactory {
 
 	private static void initialize() {
 		commandsAndUrls = new HashMap<String, String>();
-		commandsAndUrls.put("beginnersguide", "https://www.polskagra.net/wiki/BeginnersGuide");
-		commandsAndUrls.put("faq", "https://www.polskagra.net/wiki/StendhalFAQ");
-		commandsAndUrls.put("manual", "https://www.polskagra.net/wiki/Stendhal_Manual/Controls_and_Game_Settings");
-		commandsAndUrls.put("rules", "https://www.polskagra.net/wiki/Stendhal_Rules");
-		commandsAndUrls.put("changepassword", "https://www.polskagra.net/account/change-password.html");
-		commandsAndUrls.put("loginhistory", "https://www.polskagra.net/account/history.html");
-		commandsAndUrls.put("merge", "https://www.polskagra.net/account/merge.html");
-		commandsAndUrls.put("halloffame", "https://www.polskagra.net/world/hall-of-fame/active_overview.html");
+		commandsAndUrls.put("beginnersguide", "https://www.polanieonline.org/wiki/BeginnersGuide");
+		commandsAndUrls.put("faq", "https://www.polanieonline.org/wiki/StendhalFAQ");
+		commandsAndUrls.put("manual", "https://www.polanieonline.org/wiki/Stendhal_Manual/Controls_and_Game_Settings");
+		commandsAndUrls.put("rules", "https://www.polanieonline.org/wiki/Stendhal_Rules");
+		commandsAndUrls.put("changepassword", "https://www.polanieonline.org/account/change-password.html");
+		commandsAndUrls.put("loginhistory", "https://www.polanieonline.org/account/history.html");
+		commandsAndUrls.put("merge", "https://www.polanieonline.org/account/merge.html");
+		commandsAndUrls.put("halloffame", "https://www.polanieonline.org/world/hall-of-fame/active_overview.html");
 	}
 
 	/**

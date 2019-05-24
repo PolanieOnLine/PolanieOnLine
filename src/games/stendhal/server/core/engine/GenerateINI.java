@@ -154,7 +154,7 @@ public class GenerateINI {
 	 * @throws FileNotFoundException in case the file cannot be written
 	 */
 	public static void main(final String[] args) throws FileNotFoundException {
-		gameName = "polskagra";
+		gameName = "polanieonline";
 
 		/** Write configuration for database */
 		databaseImplementation = getDatabaseImplementation();
@@ -260,7 +260,7 @@ public class GenerateINI {
 			out.println("jdbc_class=org.h2.Driver");
 		}
 		out.println();
-		out.println("# TCP port PolskaGRA will use. ");
+		out.println("# TCP port PolanieOnLine will use. ");
 		out.println("tcp_port=" + tcpPort);
 		out.println();
 		out.println("# World and RP configuration. Don't edit.");
@@ -272,7 +272,7 @@ public class GenerateINI {
 		out.println("server_typeGame=" + gameName);
 		out.println("server_name=" + gameName + " Marauroa server");
 		out.println("server_version=1.06");
-		out.println("server_contact=http://polskagra.net/kontakt-gmgags");
+		out.println("server_contact=http://polanieonline.org/kontakt-gmgags");
 		out.println();
 		out.println("# Extensions configured on the server. Enable at will.");
 		out.println("#server_extension=xxx");

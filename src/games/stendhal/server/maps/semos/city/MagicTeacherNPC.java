@@ -85,7 +85,7 @@ public class MagicTeacherNPC implements ZoneConfigurator {
 		};
 		npc.addGreeting("Witaj jestem nauczycielem magii! Mogę cię #nauczyć magii.");
 		npc.addJob("Moją pracą jest #uczenie ciebie o magii, którą możesz tu wypróbować.");
-		npc.addHelp("Jeżeli będziesz potrzebował pomocy to zajrzyj na help #https://polskagra.net.");
+		npc.addHelp("Jeżeli będziesz potrzebował pomocy to zajrzyj na help #https://polanieonline.org.");
 		npc.addOffer("Oferuję #naukę magii. Powiedz tylko #naucz.");
 		npc.addGoodbye("Niech magia będzie z tobą!");
 		npc.setPosition(20, 26);

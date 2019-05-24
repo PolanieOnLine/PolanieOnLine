@@ -60,7 +60,7 @@ public class Bootstrap {
 			final String propFile = jarFolder + "jar.properties";
 			final OutputStream os = new FileOutputStream(propFile);
 			try {
-				bootProp.store(os, "PolskaGRA Boot Configuration");
+				bootProp.store(os, "PolanieOnLine Boot Configuration");
 			} finally {
 				os.close();
 			}
@@ -145,8 +145,8 @@ public class Bootstrap {
 		// add the files in the download distribution at the end of the classpath
 		ClassLoader orgClassloader = Bootstrap.class.getClassLoader();
 		String[] includedJarFiles = new String[] { "lib/log4j.jar", "lib/marauroa.jar", "lib/jorbis.jar",
-				"lib/polskagra.jar", "lib/polskagra-data.jar", "lib/polskagra-sound-data.jar",
-				"lib/polskagra-music-data.jar"};
+				"lib/polanieonline.jar", "lib/polanieonline-data.jar", "lib/polanieonline-sound-data.jar",
+				"lib/polanieonline-music-data.jar"};
 		for (String includedJarFile : includedJarFiles) {
 			URL url = orgClassloader.getResource(includedJarFile);
 			if (url != null) {
@@ -420,7 +420,7 @@ public class Bootstrap {
 		} else {
 			String errorMessage = stacktraceToString(e);
 			LoneOptionDialog.showMessageDialog(message
-					+ "Wystąpił niespodziewany błąd.\r\nPrzejdź do formularza kontaktowego na http://www.polskagra.net/kontakt-gmgags i napisz wiadomość o błędzie:\r\n"
+					+ "Wystąpił niespodziewany błąd.\r\nPrzejdź do formularza kontaktowego na http://www.polanieonline.org/kontakt-gmgags i napisz wiadomość o błędzie:\r\n"
 					+ errorMessage);
 		}
 		System.exit(1);

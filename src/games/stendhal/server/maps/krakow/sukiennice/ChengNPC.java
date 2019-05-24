@@ -57,7 +57,7 @@ public class ChengNPC implements ZoneConfigurator {
 				addJob("Poszukuję rzadkich kamieni, ładnych wyrobów jubilerskich. Możesz coś #zaoferować.");
 				addHelp("Skupuję rzadkie kamienie i wyroby jubilerskie, jeżeli coś masz to #zaoferuj mi to.");
 				addOffer("Zaglądnij do księgi tam znajdziesz moją ofertę.");
-				addQuest("Hm... opowiedz mi o waszych zwyczajach (regulaminie PolskaGRA).");
+				addQuest("Hm... opowiedz mi o waszych zwyczajach (regulaminie PolanieOnLine).");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buycheng")), false);
 				addGoodbye("Dowidzenia.");
 			}

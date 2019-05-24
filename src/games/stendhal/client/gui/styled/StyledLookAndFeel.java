@@ -163,16 +163,16 @@ public class StyledLookAndFeel extends MetalLookAndFeel {
 
 	@Override
 	public String getDescription() {
-		return "PolskaGRA pixmap look and feel";
+		return "PolanieOnLine pixmap look and feel";
 	}
 
 	@Override
 	public String getID() {
-		return "PolskaGRA";
+		return "PolanieOnLine";
 	}
 
 	@Override
 	public String getName() {
-		return "PolskaGRA";
+		return "PolanieOnLine";
 	}
 }

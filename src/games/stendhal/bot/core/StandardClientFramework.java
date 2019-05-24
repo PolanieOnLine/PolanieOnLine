@@ -118,7 +118,7 @@ public abstract class StandardClientFramework extends ClientFramework {
 			e.printStackTrace(System.err);
 			Runtime.getRuntime().halt(1);
 		} catch (final TimeoutException e) {
-			System.err.println("Cannot connect to PolskaGRA server. Server is down?");
+			System.err.println("Cannot connect to PolanieOnLine server. Server is down?");
 			e.printStackTrace(System.err);
 			Runtime.getRuntime().halt(1);
 		} catch (final Exception e) {
@@ -132,7 +132,7 @@ public abstract class StandardClientFramework extends ClientFramework {
 
 	@Override
 	protected String getGameName() {
-		return "polskagra";
+		return "polanieonline";
 	}
 
 	@Override

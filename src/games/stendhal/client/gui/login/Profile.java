@@ -23,7 +23,7 @@ public class Profile {
 	private static final String[] OLD_SERVER_HOSTS = { "81.21.202.170" };
 
 	/** Default server name to replace old ones with. */
-	private static final String NEW_SERVER_HOST = "polskagra.net";
+	private static final String NEW_SERVER_HOST = "polanieonline.org";
 
 	private String host;
 

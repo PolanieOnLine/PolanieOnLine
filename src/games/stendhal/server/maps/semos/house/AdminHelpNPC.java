@@ -48,7 +48,7 @@ public class AdminHelpNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("nice", "miłe"), "Czy wiesz ilu wojowników myśli, że jesteś wspaniały w pomaganiu? Mogę Ci powiedzieć, że dużo ludzi.");
 				addReply(Arrays.asList("things", "rzeczy"), "Więc jesteś jednym z graczy, który sprawdza wszystkie #niebieskie #słowa, nieprawdaż?? Nic dziwnego masz swoje powody.");
 				addReply(Arrays.asList("blue", "niebieskie"), "Ach, nie smuć się :( Włącz może jakąś miłą muzykę ... ");
-				addReply(Arrays.asList("words", "słowa"), "Czerwone są róże, fiołki niebieskie, a PolskaGra jest super boskie!");
+				addReply(Arrays.asList("words", "słowa"), "Czerwone są róże, fiołki niebieskie, a PolanieOnLine jest super boskie!");
 				addReply(Arrays.asList("portals", "portale"), "Jeden ze Słońcem prowadzi do Semos. Pokazuję Ci, gdzie jest ten dom. Mam nadzieję, że wszystko zrozumiałeś. Są drzwi do banku, więzienia i Death Matcha w Ados. Oczywiście są portalami w jedną stronę i dzięki temu nikt nie będzie Ci przeszkadzał.");
 				addQuest("Teraz chcesz wystawić moją cierpliwość na próbę?");
 				add(ConversationStates.ATTENDING,

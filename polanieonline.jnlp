@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- set codebase to game-server to allow connection (security restriction) -->
 <!-- the .jar-files are downloaded from sf.net in order not to cause lag in game -->
-<jnlp  spec="1.0+" codebase="http://polskagra.sourceforge.net/download" href="polskagra.jnlp">
+<jnlp  spec="1.0+" codebase="http://polanieonline.sourceforge.net/download" href="polanieonline.jnlp">
   <information>
-    <title>PolskaGRA</title>
-    <vendor>PolskaGRA based on Stendhal - Miguel Angel Blanch Lardin</vendor>
-    <homepage href="http://www.polskagra.net/"/>
+    <title>PolanieOnLine</title>
+    <vendor>PolanieOnLine based on Stendhal - Miguel Angel Blanch Lardin</vendor>
+    <homepage href="http://www.polanieonline.org/"/>
     <description>
-PolskaGRA to turniej dla wszelakiej liczby dzielnych wojowników, rozgrywany bez ustanku, zaczerpnięty z oryginalnego Stendhal'a.
+PolanieOnLine to turniej dla wszelakiej liczby dzielnych wojowników, rozgrywany bez ustanku, zaczerpnięty z oryginalnego Stendhal'a.
 Zadaniem Twym jest słowo zamienić z każdym napotkanym, gdyż dać ci może niełatwą misję do wypełnienia, która rzuci blask na zawiłe intrygi rycerskiego świata.
 
 Wszędy tutaj chodzić możesz, gwarne wsie odwiedzać, z ludźmi gadać, zakupić i sprzedać swą broń, a także w pojednykach swych sił próbować!
@@ -23,7 +23,7 @@ Napotkani okazać się mogą Wybranymi, a imię ich błękitne. Oni misję ci wy
   </security>
   <resources>
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.7+" max-heap-size="200m" />
-    <jar href="http://polskagra.sourceforge.net/download/lib/polskagra-starter-1.02.jar" download="eager" main="true"/>
+    <jar href="http://polanieonline.sourceforge.net/download/lib/polanieonline-starter-1.02.jar" download="eager" main="true"/>
   </resources>
   <application-desc/>
 </jnlp>

@@ -416,11 +416,11 @@ public class User extends Player {
 	
 	private void notifyUserAboutPlayerOnlineChanges(RPObject changes) {
 		if (getGender().equals("F")) {
-			notifyUserAboutPlayerStatus(changes, "offline", " opuściła PolskaGRA.");
-		} else notifyUserAboutPlayerStatus(changes, "offline", " opuścił PolskaGRA.");
+			notifyUserAboutPlayerStatus(changes, "offline", " opuściła PolanieOnLine.");
+		} else notifyUserAboutPlayerStatus(changes, "offline", " opuścił PolanieOnLine.");
 		if (getGender().equals("F")) {
-			notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolskaGRA.");
-		} else notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolskaGRA.");
+			notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolanieOnLine.");
+		} else notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolanieOnLine.");
 	}
 	
 	private void notifyUserAboutPlayerStatus(RPObject changes, String status, String messageEnd) {

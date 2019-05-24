@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 
-<project name="polskagra" default="compile" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+<project name="polanieonline" default="compile" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
 	<!--
 		Sets a property (by name and value), or set of properties (from file or resource) in the project. Properties are case sensitive.
 		Properties are immutable: whoever sets a property first freezes it for the rest of the build; they are most definitely not variables.
@@ -23,21 +23,21 @@
 	<property name="build_server_script" value="${buildroot}/build_server_script"/>
 	<property name="build_server_xmlconf" value="${buildroot}/build_server_xmlconf"/>
 
-	<property name="build_polskagratools" value="${buildroot}/build_polskagratools"/>
-	<property name="build_polskagratextclient" value="${buildroot}/build_polskagratextclient"/>
+	<property name="build_polanieonlinetools" value="${buildroot}/build_polanieonlinetools"/>
+	<property name="build_polanieonlinetextclient" value="${buildroot}/build_polanieonlinetextclient"/>
 
 	<property name="build_client" value="${buildroot}/build_client"/>
 
-	<property name="client_data" value="polskagra-data-${version}.jar"/>
-	<property name="client_jarname" value="polskagra-${version}.jar"/>
-	<property name="client_sound_data" value="polskagra-sound-data-${version}.jar"/>
-	<property name="client_music_data" value="polskagra-music-data-${version}.jar"/>
-	<property name="client_starter_jarname" value="polskagra-starter-${version}.jar"/>
+	<property name="client_data" value="polanieonline-data-${version}.jar"/>
+	<property name="client_jarname" value="polanieonline-${version}.jar"/>
+	<property name="client_sound_data" value="polanieonline-sound-data-${version}.jar"/>
+	<property name="client_music_data" value="polanieonline-music-data-${version}.jar"/>
+	<property name="client_starter_jarname" value="polanieonline-starter-${version}.jar"/>
 
-	<property name="maps_jarname" value="polskagra-maps-${version}.jar"/>
+	<property name="maps_jarname" value="polanieonline-maps-${version}.jar"/>
 
-	<property name="server_jarname" value="polskagra-server-${version}.jar"/>
-	<property name="xmlconf_jarname" value="polskagra-xmlconf-${version}.jar"/>
+	<property name="server_jarname" value="polanieonline-server-${version}.jar"/>
+	<property name="xmlconf_jarname" value="polanieonline-xmlconf-${version}.jar"/>
 
 	<property name="config_dir" value="data/conf"/>
 
@@ -54,7 +54,7 @@
 	</condition>
 	<condition property="exclude.jardiff" value="true">
 		<not>
-			<available file="${build-archive}/polskagra-${version.old}.zip"/>
+			<available file="${build-archive}/polanieonline-${version.old}.zip"/>
 		</not>
 	</condition>
 
@@ -75,12 +75,12 @@
 			replace="out.println(&quot;server_version=${version}&quot;);"
 			byline="true"/>
 		<replaceregexp file="runserver.bat"
-			match="POLSKAGRA_VERSION=.*"
-			replace="POLSKAGRA_VERSION=${version}"
+			match="POL_VERSION=.*"
+			replace="POL_VERSION=${version}"
 			byline="true"/>
 		<replaceregexp file="runserver.sh"
-			match="POLSKAGRA_VERSION ?= ?&quot;.*&quot;"
-			replace="POLSKAGRA_VERSION=&quot;${version}&quot;"
+			match="POL_VERSION ?= ?&quot;.*&quot;"
+			replace="POL_VERSION=&quot;${version}&quot;"
 			byline="true"/>
 		<!-- Update location of resources -->
 		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
@@ -104,7 +104,7 @@
 			replace="UPDATE_VERSION_CHECK=${version_server}"
 			byline="true"/>
 
-		<replaceregexp file="polskagra.jnlp"
+		<replaceregexp file="polanieonline.jnlp"
 			match="-0\..*\.jar&quot;"
 			replace="-${version}.jar&quot;"
 			byline="true"/>
@@ -139,8 +139,8 @@
 		<delete dir="${buildroot}/build_server_quests" />
 		<delete dir="${buildroot}/build_server_xmlconf" />
 		<delete dir="${build_tests}" />
-		<delete dir="${buildroot}/build_polskagratools" />
-		<delete dir="${buildroot}/build_polskagratextclient" />
+		<delete dir="${buildroot}/build_polanieonlinetools" />
+		<delete dir="${buildroot}/build_polanieonlinetextclient" />
 		<delete dir="${buildroot}/buildbot" />
 		<delete dir="${build_tests_report}" />
 		<delete dir="${build_cobertura}"/>
@@ -191,7 +191,7 @@
 		<!-- ende build bot -->
 
 	</target>
-	<target name="server_build" depends="init, checkxml" description="Build JAR file for PolskaGRA server">
+	<target name="server_build" depends="init, checkxml" description="Build JAR file for PolanieOnLine server">
 		<mkdir dir="${build_server}"/>
 
 		<copy todir="${build_server}/data/conf" file="data/conf/stendhalcreateaccount.properties"/>
@@ -380,7 +380,7 @@
 		<delete dir="run_srvr"/>
 	</target>
 
-	<target name="client_build" depends="init" description="Build JAR file for PolskaGRA client">
+	<target name="client_build" depends="init" description="Build JAR file for PolanieOnLine client">
 		<mkdir dir="${build_client}"/>
 
 		<copy todir="${build_client}/games/stendhal/client">
@@ -446,7 +446,7 @@
 			</fileset>
 			<manifest>
 				<attribute name="Application-Name" value="Stendhal" />
-				<attribute name="Application-Library-Allowable-Codebase"  value="https://arianne-project.org http://arianne.sf.net http://arianne.sourceforge.net https://arianne.sf.net https://arianne.sourceforge.net https://stendhalgame.org https://polskagra.net *" />
+				<attribute name="Application-Library-Allowable-Codebase"  value="https://arianne-project.org http://arianne.sf.net http://arianne.sourceforge.net https://arianne.sf.net https://arianne.sourceforge.net https://stendhalgame.org https://polanieonline.org *" />
 				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
 				<attribute name="Class-path" value="."/>
 				<attribute name="Permissions" value="all-permissions"/>
@@ -539,7 +539,7 @@
 			jar="${lib}/${client_starter_jarname}" />
 	</target>
 
-	<target name="docs" description="Build javadocs for fixedPolskaGRA">
+	<target name="docs" description="Build javadocs for fixed PolanieOnLine">
 		<javadoc packagenames="games.stendhal.*"
 		   defaultexcludes="yes"
 		   destdir="${docs}"
@@ -547,7 +547,7 @@
 		   encoding="UTF-8"
 		   version="true"
 		   use="true"
-		   windowtitle="PolskaGRA API Documentation Version: ${version}"
+		   windowtitle="PolanieOnLine API Documentation Version: ${version}"
 		   sourcepath="${src}">
 			<classpath>
 				<pathelement path="${guava_jar}"/>
@@ -568,173 +568,173 @@
 
 	<target name="compile" depends="server_build, client_build, server_build" description="Generates JAR files for both client and server"/>
 
-	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a PolskaGRA release"/>
+	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a PolanieOnLine release"/>
 	<target name="dist_binary" depends="clean, dist_server_binary, dist_client_binary, dist_client_starter"/>
 
 	<target name="dist_server_binary" depends="server_build, compilejs">
-		<mkdir dir="${buildroot}/polskagra-server-${version}"/>
+		<mkdir dir="${buildroot}/polanieonline-server-${version}"/>
 
-		<copy todir="${buildroot}/polskagra-server-${version}/data/script">
+		<copy todir="${buildroot}/polanieonline-server-${version}/data/script">
 			<fileset dir="${buildroot}/build_server_script">
 				<include name="games/stendhal/server/script/**.*"/>
 			</fileset>
 		</copy>
 
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${groovy_jar}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${simple_jar}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${guava_jar}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${log4j_jar}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${h2_jar}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${lib}/${server_jarname}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${lib}/${maps_jarname}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${lib}/${xmlconf_jarname}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="${marauroa_jar}"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="runserver.sh"/>
-		<copy todir="${buildroot}/polskagra-server-${version}" file="runserver.bat"/>
-		<copy todir="${buildroot}/polskagra-server-${version}/lib">
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${groovy_jar}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${simple_jar}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${guava_jar}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${log4j_jar}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${h2_jar}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${lib}/${server_jarname}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${lib}/${maps_jarname}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${lib}/${xmlconf_jarname}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="${marauroa_jar}"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="runserver.sh"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="runserver.bat"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}/lib">
 			<fileset dir="libs">
 				<include name="*.txt"/>
 				<include name="*.html"/>
 			</fileset>
 		</copy>
-		<copy todir="${buildroot}/polskagra-server-${version}/doc">
+		<copy todir="${buildroot}/polanieonline-server-${version}/doc">
 			<fileset dir="doc"/>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 
-		<copy todir="${buildroot}/polskagra-server-${version}/data/conf" file="data/conf/admins.txt"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}/data/conf" file="data/conf/admins.txt"/>
 <!--
-		<mkdir dir="${buildroot}/polskagra-server-${version}/js" />
-		<copy todir="${buildroot}/polskagra-server-${version}/js">
+		<mkdir dir="${buildroot}/polanieonline-server-${version}/js" />
+		<copy todir="${buildroot}/polanieonline-server-${version}/js">
 			<fileset dir="srcjs" />
 		</copy>
 -->
 
-		<copy todir="${buildroot}/polskagra-server-${version}" file="README.md"/>
-		<mkdir dir="${buildroot}/polskagra-server-${version}/log" />
-		<touch file="${buildroot}/polskagra-server-${version}/log/empty" />
-		<zip destfile="${buildroot}/polskagra-server-${version}.zip">
-			<zipfileset dir="${buildroot}/polskagra-server-${version}" excludes="${server_jarname}"/>
-			<zipfileset dir="${buildroot}/polskagra-server-${version}" includes="${server_jarname}" filemode="755"/>
+		<copy todir="${buildroot}/polanieonline-server-${version}" file="README.md"/>
+		<mkdir dir="${buildroot}/polanieonline-server-${version}/log" />
+		<touch file="${buildroot}/polanieonline-server-${version}/log/empty" />
+		<zip destfile="${buildroot}/polanieonline-server-${version}.zip">
+			<zipfileset dir="${buildroot}/polanieonline-server-${version}" excludes="${server_jarname}"/>
+			<zipfileset dir="${buildroot}/polanieonline-server-${version}" includes="${server_jarname}" filemode="755"/>
 		</zip>
-		<delete dir="${buildroot}/polskagra-server-${version}"/>
+		<delete dir="${buildroot}/polanieonline-server-${version}"/>
 	</target>
 
 	<target name="dist_client_binary" depends="client_build">
-		<mkdir dir="${buildroot}/polskagra-${version}"/>
-		<mkdir dir="${buildroot}/polskagra-${version}/lib"/>
-		<mkdir dir="${buildroot}/polskagra-${version}/log"/>
+		<mkdir dir="${buildroot}/polanieonline-${version}"/>
+		<mkdir dir="${buildroot}/polanieonline-${version}/lib"/>
+		<mkdir dir="${buildroot}/polanieonline-${version}/log"/>
 
-		<copy tofile="${buildroot}/polskagra-${version}/polskagra-starter.jar" file="${lib}/${client_starter_jarname}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra.jar" file="${lib}/${client_jarname}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/log4j.jar" file="${log4j_jar}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/marauroa.jar" file="${marauroa_jar}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/jorbis.jar" file="${jorbis_jar}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra-sound-data.jar" file="${lib}/${client_sound_data}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra-music-data.jar" file="${lib}/${client_music_data}"/>
-		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra-data.jar" file="${lib}/${client_data}"/>
-		<copy todir="${buildroot}/polskagra-${version}/lib">
+		<copy tofile="${buildroot}/polanieonline-${version}/polanieonline-starter.jar" file="${lib}/${client_starter_jarname}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline.jar" file="${lib}/${client_jarname}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/log4j.jar" file="${log4j_jar}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/marauroa.jar" file="${marauroa_jar}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/jorbis.jar" file="${jorbis_jar}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline-sound-data.jar" file="${lib}/${client_sound_data}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline-music-data.jar" file="${lib}/${client_music_data}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline-data.jar" file="${lib}/${client_data}"/>
+		<copy todir="${buildroot}/polanieonline-${version}/lib">
 			<fileset dir="libs">
 				<include name="*.txt"/>
 				<include name="*.html"/>
 			</fileset>
 		</copy>
-		<copy todir="${buildroot}/polskagra-${version}/doc">
+		<copy todir="${buildroot}/polanieonline-${version}/doc">
 			<fileset dir="doc"/>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
-		<touch file="${buildroot}/polskagra-${version}/log/polskagra.txt" />
-		<copy todir="${buildroot}/polskagra-${version}" file="README.md"/>
-		<copy todir="${buildroot}/polskagra-${version}" file="icon.ico"/>
-		<zip destfile="${buildroot}/polskagra-${version}.zip">
-			<zipfileset dir="${buildroot}/polskagra-${version}" excludes="polskagra-starter.jar"/>
-			<zipfileset dir="${buildroot}/polskagra-${version}" includes="polskagra-starter.jar" filemode="755"/>
-			<zipfileset dir="buildtools/launch4j" includes="polskagra-starter.exe" filemode="755"/>
+		<touch file="${buildroot}/polanieonline-${version}/log/polanieonline.txt" />
+		<copy todir="${buildroot}/polanieonline-${version}" file="README.md"/>
+		<copy todir="${buildroot}/polanieonline-${version}" file="icon.ico"/>
+		<zip destfile="${buildroot}/polanieonline-${version}.zip">
+			<zipfileset dir="${buildroot}/polanieonline-${version}" excludes="polanieonline-starter.jar"/>
+			<zipfileset dir="${buildroot}/polanieonline-${version}" includes="polanieonline-starter.jar" filemode="755"/>
+			<zipfileset dir="buildtools/launch4j" includes="polanieonline-starter.exe" filemode="755"/>
 		</zip>
-		<delete dir="${buildroot}/polskagra-${version}"/>
+		<delete dir="${buildroot}/polanieonline-${version}"/>
 	</target>
 
 
 	<target name="dist_client_starter" depends="client_build">
-		<mkdir dir="${buildroot}/polskagra-${version}"/>
-		<copy todir="${buildroot}/polskagra-${version}" file="${lib}/${client_starter_jarname}"/>
-		<copy todir="${buildroot}/polskagra-${version}/lib">
+		<mkdir dir="${buildroot}/polanieonline-${version}"/>
+		<copy todir="${buildroot}/polanieonline-${version}" file="${lib}/${client_starter_jarname}"/>
+		<copy todir="${buildroot}/polanieonline-${version}/lib">
 			<fileset dir="libs">
 				<include name="*.txt"/>
 				<include name="*.html"/>
 			</fileset>
 		</copy>
-		<copy todir="${buildroot}/polskagra-${version}/doc">
+		<copy todir="${buildroot}/polanieonline-${version}/doc">
 			<fileset dir="doc"/>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
-		<copy todir="${buildroot}/polskagra-${version}" file="README.md"/>
-		<zip destfile="${buildroot}/polskagra-starter-${version}.zip">
-			<zipfileset dir="${buildroot}/polskagra-${version}" excludes="${client_starter_jarname}"/>
-			<zipfileset dir="${buildroot}/polskagra-${version}" includes="${client_starter_jarname}" filemode="755"/>
+		<copy todir="${buildroot}/polanieonline-${version}" file="README.md"/>
+		<zip destfile="${buildroot}/polanieonline-starter-${version}.zip">
+			<zipfileset dir="${buildroot}/polanieonline-${version}" excludes="${client_starter_jarname}"/>
+			<zipfileset dir="${buildroot}/polanieonline-${version}" includes="${client_starter_jarname}" filemode="755"/>
 		</zip>
-		<delete dir="${buildroot}/polskagra-${version}"/>
+		<delete dir="${buildroot}/polanieonline-${version}"/>
 	</target>
 
 	<target name="dist_source">
-		<mkdir dir="${buildroot}/polskagra-${version}-src"/>
+		<mkdir dir="${buildroot}/polanieonline-${version}-src"/>
 
-		<copy todir="${buildroot}/polskagra-${version}-src/src">
+		<copy todir="${buildroot}/polanieonline-${version}-src/src">
 			<fileset dir="src"/>
 		</copy>
 
-		<mkdir dir="${buildroot}/polskagra-${version}-src/libs"/>
-		<copy todir="${buildroot}/polskagra-${version}-src/libs">
+		<mkdir dir="${buildroot}/polanieonline-${version}-src/libs"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src/libs">
 			<fileset dir="libs"/>
 		</copy>
 
-		<copy todir="${buildroot}/polskagra-${version}-src/tests">
+		<copy todir="${buildroot}/polanieonline-${version}-src/tests">
 			<fileset dir="tests"/>
 		</copy>
 
-		<copy todir="${buildroot}/polskagra-${version}-src/data">
+		<copy todir="${buildroot}/polanieonline-${version}-src/data">
 			<fileset dir="data">
 			</fileset>
 		</copy>
 
-		<copy todir="${buildroot}/polskagra-${version}-src/tiled">
+		<copy todir="${buildroot}/polanieonline-${version}-src/tiled">
 			<fileset dir="${tiled}">
 				<exclude name="world/**" />
 			</fileset>
 		</copy>
 
-		<copy todir="${buildroot}/polskagra-${version}-src" file="build.xml"/>
-		<copy todir="${buildroot}/polskagra-${version}-src" file="build.ant.properties"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="build.xml"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="build.ant.properties"/>
 
-		<copy todir="${buildroot}/polskagra-${version}-src" file="README.md"/>
-		<copy todir="${buildroot}/polskagra-${version}-src" file="LICENSE.txt"/>
-		<copy todir="${buildroot}/polskagra-${version}-src" file="runserver.bat"/>
-		<copy todir="${buildroot}/polskagra-${version}-src" file="runserver.sh"/>
-		<copy todir="${buildroot}/polskagra-${version}-src" file="icon.ico"/>
-		<copy todir="${buildroot}/polskagra-${version}-src/lib">
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="README.md"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="LICENSE.txt"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="runserver.bat"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="runserver.sh"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="icon.ico"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src/lib">
 			<fileset dir="libs">
 				<include name="*.txt"/>
 				<include name="*.html"/>
 			</fileset>
 		</copy>
-		<copy todir="${buildroot}/polskagra-${version}-src/doc">
+		<copy todir="${buildroot}/polanieonline-${version}-src/doc">
 			<fileset dir="doc"/>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 
-		<tar destfile="${buildroot}/polskagra-${version}-src.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${buildroot}/polskagra-${version}-src" prefix="polskagra-${version}">
+		<tar destfile="${buildroot}/polanieonline-${version}-src.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${buildroot}/polanieonline-${version}-src" prefix="polanieonline-${version}">
 				<exclude name="**/CVS/**"/>
 			</tarfileset>
 		</tar>
 
-		<delete dir="${buildroot}/polskagra-${version}-src"/>
+		<delete dir="${buildroot}/polanieonline-${version}-src"/>
 	</target>
 
-	<target name="compile_polskagratools" description="compiles the PolskaGRA build tools">
-		<mkdir dir="${build_polskagratools}"/>
+	<target name="compile_polanieonlinetools" description="compiles the PolanieOnLine build tools">
+		<mkdir dir="${build_polanieonlinetools}"/>
 
-		<javac srcdir="${src}" destdir="${build_polskagratools}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="true">
+		<javac srcdir="${src}" destdir="${build_polanieonlinetools}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="true">
 			<include name="games/stendhal/tools/**/*.java"/>
 			<include name="games/stendhal/tools/*.java"/>
 			<compilerarg value="-encoding"/>
@@ -753,10 +753,10 @@
 		</javac>
 	</target>
 
-	<target name="compile_polskagratextclient" description="compiles the PolskaGRA text client ">
-		<mkdir dir="${build_polskagratextclient}"/>
+	<target name="compile_polanieonlinetextclient" description="compiles the PolanieOnLine text client ">
+		<mkdir dir="${build_polanieonlinetextclient}"/>
 
-		<javac srcdir="${src}" destdir="${build_polskagratextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
+		<javac srcdir="${src}" destdir="${build_polanieonlinetextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
 			<include name="games/stendhal/bot/textclient/*.java"/>
 			<compilerarg value="-encoding"/>
 			<compilerarg value="utf-8"/>
@@ -774,10 +774,10 @@
 		</javac>
 	</target>
 
-	<target name="rendermaps" description="Converts the *.tmx files to PNG images scaled 1:16" depends="compile_polskagratools">
+	<target name="rendermaps" description="Converts the *.tmx files to PNG images scaled 1:16" depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
-				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="${tiled_jar}"/>
 			</classpath>
 		</taskdef>
@@ -791,10 +791,10 @@
 			</fileset>
 		</maprenderer>
 	</target>
-	<target name="renderatlas" description="Generates the files for the Stendhal Atlas" depends="compile_polskagratools">
+	<target name="renderatlas" description="Generates the files for the Stendhal Atlas" depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
-				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="${tiled_jar}"/>
 			</classpath>
 		</taskdef>
@@ -825,10 +825,10 @@
 		</maprenderer>
 	</target>
 
-	<target name="updatemaps" description="Load and save TMX files to fix tilesets changes." depends="compile_polskagratools">
+	<target name="updatemaps" description="Load and save TMX files to fix tilesets changes." depends="compile_polanieonlinetools">
 		<taskdef name="mapupdater" classname="games.stendhal.tools.MapUpdater">
 			<classpath>
-				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="${tiled_jar}"/>
 			</classpath>
 		</taskdef>
@@ -848,47 +848,47 @@
 				<exclude name="*.zip"/>
 			</fileset>
 		</delete>
-		<unzip src="${build-archive}/polskagra-${version.old}.zip" dest="${build-archive}" />
+		<unzip src="${build-archive}/polanieonline-${version.old}.zip" dest="${build-archive}" />
 		<java jar="libs/jardiff.jar" fork="true">
 			<arg value="-nonminimal" />
 			<arg value="-creatediff" />
 			<arg value="-output" />
-			<arg value="${build}/lib/polskagra-diff-${version.old}-${version}.jar" />
-			<arg value="${build-archive}/lib/polskagra.jar" />
-			<arg value="${build}/lib/polskagra-${version}.jar" />
+			<arg value="${build}/lib/polanieonline-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polanieonline.jar" />
+			<arg value="${build}/lib/polanieonline-${version}.jar" />
 		</java>
 		<java jar="libs/jardiff.jar" fork="true">
 			<arg value="-nonminimal" />
 			<arg value="-creatediff" />
 			<arg value="-output" />
-			<arg value="${build}/lib/polskagra-data-diff-${version.old}-${version}.jar" />
-			<arg value="${build-archive}/lib/polskagra-data.jar" />
-			<arg value="${build}/lib/polskagra-data-${version}.jar" />
+			<arg value="${build}/lib/polanieonline-data-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polanieonline-data.jar" />
+			<arg value="${build}/lib/polanieonline-data-${version}.jar" />
 		</java>
 		<java jar="libs/jardiff.jar" fork="true">
 			<arg value="-nonminimal" />
 			<arg value="-creatediff" />
 			<arg value="-output" />
-			<arg value="${build}/lib/polskagra-music-data-diff-${version.old}-${version}.jar" />
-			<arg value="${build-archive}/lib/polskagra-music-data.jar" />
-			<arg value="${build}/lib/polskagra-music-data-${version}.jar" />
+			<arg value="${build}/lib/polanieonline-music-data-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polanieonline-music-data.jar" />
+			<arg value="${build}/lib/polanieonline-music-data-${version}.jar" />
 		</java>
 		<java jar="libs/jardiff.jar" fork="true">
 			<arg value="-nonminimal" />
 			<arg value="-creatediff" />
 			<arg value="-output" />
-			<arg value="${build}/lib/polskagra-sound-data-diff-${version.old}-${version}.jar" />
-			<arg value="${build-archive}/lib/polskagra-sound-data.jar" />
-			<arg value="${build}/lib/polskagra-sound-data-${version}.jar" />
+			<arg value="${build}/lib/polanieonline-sound-data-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polanieonline-sound-data.jar" />
+			<arg value="${build}/lib/polanieonline-sound-data-${version}.jar" />
 		</java>
 	<!-- TODO maraurora.jar-->
 	</target>
 
-	<target name="signupdates" description="signs updates" depends="compile_polskagratools,jardiff" unless="exclude.signing">
+	<target name="signupdates" description="signs updates" depends="compile_polanieonlinetools,jardiff" unless="exclude.signing">
 		<taskdef name="updatesigner" classname="games.stendhal.tools.updateprop.UpdateSigner">
 			<classpath>
 				<pathelement path="."/>
-				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
 			</classpath>
 		</taskdef>
 
@@ -926,7 +926,7 @@
 		<fail message="Test failure detected, check test results." if="test.failure" />
 	</target>
 
-	<target name="compile_tests" description="Compile all tests" depends="server_build, client_build, compile_polskagratools, compile_polskagratextclient, postman">
+	<target name="compile_tests" description="Compile all tests" depends="server_build, client_build, compile_polanieonlinetools, compile_polanieonlinetextclient, postman">
 		<mkdir dir="${build_tests}"/>
 
 		<copy todir="${build_tests}">
@@ -944,8 +944,8 @@
 			<compilerarg value="-Xlint:unchecked"/>
 
 			<classpath>
-				<pathelement path="${build_polskagratools}"/>
-				<pathelement path="${build_polskagratextclient}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
+				<pathelement path="${build_polanieonlinetextclient}"/>
 				<pathelement path="${build_client}"/>
 				<pathelement path="${build_server}"/>
 				<pathelement path="${build_server_maps}"/>
@@ -977,10 +977,10 @@ tcp_port=32160
 world=games.stendhal.server.core.engine.StendhalRPWorld
 ruleprocessor=games.stendhal.server.core.engine.StendhalRPRuleProcessor
 turn_length=300
-server_typeGame=polskagra
-server_name=polskagra Marauroa server
+server_typeGame=polanieonline
+server_name=PolanieOnLine Marauroa server
 server_version=1.06
-server_contact=https://polskagra.net/
+server_contact=https://polanieonline.org/
 n = 966117159215070350422008719727400433209081371975507132437556194069529307432746058120899703845731090424709994853484674454738958575201865208533043689325553646377
 e = 15
 d = 901709348600732327060541471745573737661809280510473323608385781131560686937229596225645929798090122419343070307904183075525081589946196209839163758401803422679
@@ -999,8 +999,8 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 					<pathelement path="${build_client}"/>
 					<pathelement path="${build_server}"/>
 					<pathelement path="${build_server_maps}"/>
-					<pathelement path="${build_polskagratools}"/>
-					<pathelement path="${build_polskagratextclient}"/>
+					<pathelement path="${build_polanieonlinetools}"/>
+					<pathelement path="${build_polanieonlinetextclient}"/>
 					<pathelement path="${build_server_script}"/>
 					<pathelement path="${build_postman}"/>
 					<pathelement path="${easymock_jar}"/>

@@ -45,7 +45,7 @@ class ClientInfoAction implements SlashAction {
 		}
 
 		sb.append("\n");
-		sb.append("PolskaGRA: " + Debug.VERSION);
+		sb.append("PolanieOnLine: " + Debug.VERSION);
 		if (Debug.PRE_RELEASE_VERSION != null) {
 			sb.append(" - ");
 			sb.append(Debug.PRE_RELEASE_VERSION);

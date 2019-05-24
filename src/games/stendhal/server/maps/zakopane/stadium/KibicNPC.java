@@ -59,15 +59,15 @@ public class KibicNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj na stadionie PolskaGRA!");
-				addJob("Jestem kibicem. Wspieram najlepszą drużynę PolskaGRA.");
+				addGreeting("Witaj na stadionie PolanieOnLine!");
+				addJob("Jestem kibicem. Wspieram najlepszą drużynę PolanieOnLine.");
 				addHelp("W przyszłości na stadionie będzie można kupić coś do jedzenia lub picia. Na razie trzeba przynieść własny prowiant.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("mecz")));
 				addGoodbye("Dowidzenia i wpadaj często na mecze. Nasza drużyna potrzebuje prawdziwych kibiców, a nie pseudokibiców.");
 			}
 		};
 
-		kibic.setDescription("Oto Kibic, który jest wiernym kibicem PolskaGRA.");
+		kibic.setDescription("Oto Kibic, który jest wiernym kibicem PolanieOnLine.");
 		kibic.setEntityClass("npckibic");
 		kibic.setPosition(26, 5);
 		kibic.initHP(1000);

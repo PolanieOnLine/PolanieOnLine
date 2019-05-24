@@ -45,8 +45,8 @@ public class TransitionDiagram {
 
 	private void showTransitionDiagram(final String data, final Frame parent) {
 		try {
-			final File dat = File.createTempFile("polskagra-graph-data", ".txt");
-			final File image = File.createTempFile("polskagra-graph", ".png");
+			final File dat = File.createTempFile("polanieonline-graph-data", ".txt");
+			final File image = File.createTempFile("polanieonline-graph", ".png");
 
 			// print the data
 			final PrintStream ps = new PrintStream(dat, "UTF-8");

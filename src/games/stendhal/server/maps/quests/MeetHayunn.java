@@ -198,7 +198,7 @@ public class MeetHayunn extends AbstractQuest {
 		"To proste, naprawdę. Naciskaj raz na miejsce do którego chcesz się udać. Tam jest więcej informacji, których nie mogę sobie przypomnieć. Wyleciały mi z głowy... chcesz wiedzieć gdzie można o nich poczytać?",
 			null);
 
-		final String epilog = "Na #http://www.polskagra.net możesz znaleźć wiele odpowiedzi listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Na #http://www.polskagra.net/node/722 możesz znaleźć informacje o punktach doświadczenia i zdobywaniu poziomów\nNa #http://www.polskagra.net możesz poczytać o najlepszych wojownikach\n ";
+		final String epilog = "Na #http://www.polanieonline.org możesz znaleźć wiele odpowiedzi listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Na #http://www.polanieonline.org/node/722 możesz znaleźć informacje o punktach doświadczenia i zdobywaniu poziomów\nNa #http://www.polanieonline.org możesz poczytać o najlepszych wojownikach\n ";
 		
 			//This is used if the player returns, asks for #help and then say #yes
 			npc.add(ConversationStates.ATTENDING,
@@ -234,7 +234,7 @@ public class MeetHayunn extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Spotkanie Hayunna Naratha",
-				"Hayunn Naratha może nauczyć młodych bohaterów podstaw świata PolskaGra.",
+				"Hayunn Naratha może nauczyć młodych bohaterów podstaw świata PolanieOnLine.",
 				false);
 		prepareHayunn();
 	}

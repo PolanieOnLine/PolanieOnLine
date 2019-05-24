@@ -20,7 +20,7 @@ package games.stendhal.server.core.events;
 public enum TutorialEventType {
 
 	FIRST_LOGIN(
-			"Witaj w PolskaGRA. Możesz się poruszać używając klawiszy strzałek na klawiaturze lub klikając myszką."),
+			"Witaj w PolanieOnLine. Możesz się poruszać używając klawiszy strzałek na klawiaturze lub klikając myszką."),
 	FIRST_MOVE(
 			"Możesz porozmawiać z Pietrkiem mówiąc \"cześć\"."),
 	RETURN_GUARDHOUSE(
@@ -62,7 +62,7 @@ public enum TutorialEventType {
 	TIMED_RULES(
 			"Dziękujemy zostanie z nami. Ze względu, że grasz już dość długo to ważne, abyś przeczytał regulamin. Wpisz #/rules a otworzy się przeglądarka z regulaminem."),
 	NEW_RELEASE(
-			"Witamy Cię serdecznie w nowej wersji PolskaGRA! Sporo zmieniło się od ostatniego Twojego zalogowania do gry!");
+			"Witamy Cię serdecznie w nowej wersji PolanieOnLine! Sporo zmieniło się od ostatniego Twojego zalogowania do gry!");
 	private String message;
 
 	/**

@@ -61,7 +61,7 @@ class CreditsDialog extends JDialog {
 		eventHandling();
 		LOGGER.debug("about dialog event handling ready");
 
-		this.setTitle("Wyróżnieni przez PolskaGra");
+		this.setTitle("Wyróżnieni przez PolanieOnLine");
 		// required on Compiz
 		this.pack();
 

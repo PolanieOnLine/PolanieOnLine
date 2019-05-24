@@ -51,7 +51,7 @@ public class Bileter extends ScriptImpl {
 				"Jestem bileterem. Sprzedaję #'bilety na mecz' oraz #piłki.");
 		npc.behave("bilety na mecz",
 //			"I have a #coupon for a free beer in Semos' tavern. "+
-			"Mecz odbędzie się na stadionie PolskaGra.");
+			"Mecz odbędzie się na stadionie PolanieOnLine.");
 		npc.behave("help",
 				"Mogę  zaoferować ( #offer ) bilet na mecz.");
 		npc.behave("bye",

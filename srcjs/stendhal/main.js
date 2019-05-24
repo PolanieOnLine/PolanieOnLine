@@ -43,7 +43,7 @@ stendhal.main = {
 		};
 
 		marauroa.clientFramework.onLoginFailed = function(reason, text) {
-			alert("Nieudane logowanie. Najpierw zaloguj sie na stronie PolskaGRA i upewnij sie, ze otworzysz klienta za pomocna odnosnika - https://-URL");
+			alert("Nieudane logowanie. Najpierw zaloguj sie na stronie PolanieOnLine i upewnij sie, ze otworzysz klienta za pomocna odnosnika - https://-URL");
 			marauroa.clientFramework.close();
 			document.getElementById("chatinput").disabled = true;
 			document.getElementById("chat").style.backgroundColor = "#AAA";
@@ -136,7 +136,7 @@ stendhal.main = {
 	 * starts the Stendhal web client and connects to the Stendhal server.
 	 */
 	startup: function() {
-		stendhal.ui.chatLog.addLine("error", "Jest to wczesny etap eksperymentalnego klienta internetowego. Aby moc zagrac w PolskaGRA, prosimy o zainstalowanie oficjalnego klienta z https://polskagra.net.");
+		stendhal.ui.chatLog.addLine("error", "Jest to wczesny etap eksperymentalnego klienta internetowego. Aby moc zagrac w PolanieOnLine, prosimy o zainstalowanie oficjalnego klienta z https://polanieonline.org.");
 		stendhal.ui.chatLog.addLine("client", "Klient zostal zaladowany. Laczenie sie z serwerem...");
 
 		stendhal.main.registerMarauroaEventHandlers();

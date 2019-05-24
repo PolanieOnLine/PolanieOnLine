@@ -113,7 +113,7 @@ public class textClient extends Thread {
 
 			@Override
 			protected String getGameName() {
-				return "polskagra";
+				return "polanieonline";
 			}
 
 			@Override

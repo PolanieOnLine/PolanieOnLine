@@ -51,7 +51,7 @@ public class StendhalServer {
 	public static void main(String[] args) throws FileNotFoundException {
 		parseCommandLine(args);
 		if (!new File(serverIni).exists()) {
-			System.out.println("Welcome to your own PolskaGra Server.");
+			System.out.println("Welcome to your own PolanieOnLine Server.");
 			System.out.println("");
 			System.out.println("This seems to be the very first start because we could not find a server.ini.");
 			System.out.println("So there are some simple questions for you to create it...");

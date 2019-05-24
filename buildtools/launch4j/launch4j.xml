@@ -2,8 +2,8 @@
 
 <launch4jConfig>
   <headerType>gui</headerType>
-  <jar>polskagra-starter.jar</jar>
-  <outfile>polskagra-starter.exe</outfile>
+  <jar>polanieonline-starter.jar</jar>
+  <outfile>polanieonline-starter.exe</outfile>
   <dontWrapJar>true</dontWrapJar>
   <priority>normal</priority>
   <stayAlive>false</stayAlive>

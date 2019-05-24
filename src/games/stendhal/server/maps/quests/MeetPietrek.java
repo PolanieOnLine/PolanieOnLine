@@ -200,7 +200,7 @@ public class MeetPietrek extends AbstractQuest {
 			"To naprawdę proste. Naciskaj dwukrotnie na miejsce do którego chcesz się udać. Tam jest więcej informacji, których nie mogę sobie przypomnieć. Wyleciały mi z głowy... chcesz wiedzieć gdzie można o nich poczytać? #Tak?",
 			null);
 
-		final String epilog = "Na #http://www.polskagra.net/ możesz znaleźć wiele odpowiedzi listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Teraz najważniejsze. Na http://www.polskagra.net/regulamin-gry-polskagra-mmorpg koniecznie przeczytaj regulamin PolskaGra. To ważne!\n ";
+		final String epilog = "Na #http://www.polanieonline.org/ możesz znaleźć wiele odpowiedzi listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Teraz najważniejsze. Na http://www.polanieonline.org/regulamin-gry-polskagra-mmorpg koniecznie przeczytaj regulamin PolskaGra. To ważne!\n ";
 
 			//This is used if the player returns, asks for #help and then say #yes
 			npc.add(ConversationStates.ATTENDING,
@@ -240,7 +240,7 @@ public class MeetPietrek extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Spotkanie Pietrka",
-				"Pietrek pomaga nowym bohaterom w poznaniu świata PolskaGra.",
+				"Pietrek pomaga nowym bohaterom w poznaniu świata PolanieOnLine.",
 				false);
 		preparePietrek();
 	}

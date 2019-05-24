@@ -175,7 +175,7 @@ public class j2DClient implements UserInterface {
 	private void checkAndComplainAboutJavaImplementation() {
 		final String vmName = System.getProperty("java.vm.name", "unknown").toLowerCase(Locale.ENGLISH);
 		if ((vmName.indexOf("hotspot") < 0) && (vmName.indexOf("openjdk") < 0)) {
-			final String text = "PolskaGRA jest przeznaczona i testowana dla Oracle Java i OpenJDK. Używasz "
+			final String text = "PolanieOnLine jest przeznaczona i testowana dla Oracle Java i OpenJDK. Używasz "
 				+ System.getProperty("java.vm.vendor", "unknown") + " "
 				+ System.getProperty("java.vm.name", "unknown")
 				+ ". Mogą wynikać problemy takie jak: czarny lub szary ekran.\n"

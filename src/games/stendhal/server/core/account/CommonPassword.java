@@ -39,7 +39,8 @@ public class CommonPassword implements AccountParameterValidator {
 			"pol1", "pol2", "polpol", "chój", "hój", "pussy",
 			"polskagra", "gra", "poiskagra", "poiska", "polska",
 			"cock", "kok", "coca", "koka", "koko", "coco", "suck",
-			"sack", "sak", "sakk", "dick", "dik", "dikk", "penis"
+			"sack", "sak", "sakk", "dick", "dik", "dikk", "penis",
+			"polanieonline", "polanie", "online", "pol", "poi", "poll"
 		);
 
 	private String parameterValue;

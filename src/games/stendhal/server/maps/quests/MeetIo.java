@@ -85,7 +85,7 @@ public class MeetIo extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_1,
-			"Wpisz #/who aby ustalić nazwy wojowników, którzy w danym momencie grają w PolskaGra. Czy chcesz się nauczyć drugiego elementu telepatii?",
+			"Wpisz #/who aby ustalić nazwy wojowników, którzy w danym momencie grają w PolanieOnLine. Czy chcesz się nauczyć drugiego elementu telepatii?",
 			null);
 
 		npc.add(
@@ -93,7 +93,7 @@ public class MeetIo extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_2,
-			"Wpisz #/where #nazwawojownika aby dowiedzieć się gdzie dana osoba znajduje się w PolskaGra. Możesz też użyć #/where #owca aby śledzić własną owcę. Powinieneś porozmawawiać z #Zynn aby zrozumieć system używany do sprawdzania pozycji w Polska On Line. On wie więcej o nim niż ja. Gotowy na trzecią lekcję?",
+			"Wpisz #/where #nazwawojownika aby dowiedzieć się gdzie dana osoba znajduje się w PolanieOnLine. Możesz też użyć #/where #owca aby śledzić własną owcę. Powinieneś porozmawawiać z #Zynn aby zrozumieć system używany do sprawdzania pozycji w Polska On Line. On wie więcej o nim niż ja. Gotowy na trzecią lekcję?",
 			null);
 
 		npc.add(

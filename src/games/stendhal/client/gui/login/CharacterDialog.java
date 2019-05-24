@@ -304,7 +304,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 			handleError("Upłynął limit czasu na połączenie. Zaloguj się ponownie.", "Wybierz Postać");
 		} catch (InvalidVersionException e) {
 			logger.error(e, e);
-			handleError("Twoja wersja PolskaGRA jest niekompatybilna z wersją serwera.", "Wybierz Postać");
+			handleError("Twoja wersja gry jest niekompatybilna z wersją serwera.", "Wybierz Postać");
 		} catch (BannedAddressException e) {
 			logger.error(e, e);
 			handleError("Zaloguj się ponownie.", "Wybierz Postać");
@@ -363,7 +363,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 				parent.handleError("Upłynął limit czasu na połączenie. Zaloguj się ponownie.", "Wybierz Postać");
 			} catch (InvalidVersionException e) {
 				logger.error(e, e);
-				parent.handleError("Twoja wersja PolskaGRA jest niekompatybilna z wersją serwera.", "Wybierz Postać");
+				parent.handleError("Twoja wersja gry jest niekompatybilna z wersją serwera.", "Wybierz Postać");
 			} catch (BannedAddressException e) {
 				logger.error(e, e);
 				parent.handleError("Zaloguj się ponownie.", "Wybierz Postać");

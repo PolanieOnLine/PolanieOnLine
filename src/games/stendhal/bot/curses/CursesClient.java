@@ -84,7 +84,7 @@ public class CursesClient {
                 }
             }
 
-            System.out.println("PolskaGRA CursesClient");
+            System.out.println("PolanieOnLine CursesClient");
             System.out.println();
             System.out.println("  games.stendhal.bot.curses.CursesClient -u username -p pass -h host -P port -c character");
             System.out.println();
@@ -104,7 +104,7 @@ public class CursesClient {
         Protocol.debug("startClient()");
         clientWindow = new CursesWindow(0, 0,
                Toolkit.getScreenWidth(), Toolkit.getScreenHeight(),
-               character + " - PolskaGRA");
+               character + " - PolanieOnLine");
         clientWindow.show();
     }
 
