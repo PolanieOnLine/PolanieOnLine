@@ -51,7 +51,7 @@ public class SetCombatKarmaAction implements SlashAction {
 	 */
 	public boolean sendAction(final String value) {
 		// server version compatibility
-		if (!StendhalClient.serverVersionAtLeast("1.06")) {
+		if (!StendhalClient.serverVersionAtLeast("1.00")) {
 			ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
 					"The server version does not support setting combat karma mode.", NotificationType.SERVER));
 			return false;
