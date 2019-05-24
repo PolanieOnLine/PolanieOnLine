@@ -511,7 +511,7 @@ Na południe ↓ Tatry
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">
 #'Przeczytaj REGULAMIN!'
-#'polskagra.net'
+#'polanieonline.org'
 			</attribute>
 			<attribute name="class">default</attribute>
 		</entity>
@@ -520,7 +520,7 @@ Na południe ↓ Tatry
 			<attribute name="text">
 Jeśli masz pytanie dotyczące gry,
 na które nie znalazłeś odpowiedzi
-na stronie #'polskagra.net'
+na stronie #'polanieonline.org'
 w dziale #'Dla początkujących'
 zapytaj GM pisząc #'/support PYTANIE'.
 			</attribute>
@@ -532,7 +532,7 @@ zapytaj GM pisząc #'/support PYTANIE'.
 W związku z tym, że nasza gra
 jest całkowicie darmowa proszę:
 w wolnej chwili wejdź na stronę
-#'polskagra.net' i kliknij #'reklamę'
+#'polanieonline.org' i kliknij #'reklamę'
 jeśli pojawi się w dziale reklamy na stronie!;)
 #'DZIĘKUJEMY!'
 			</attribute>
@@ -543,7 +543,7 @@ jeśli pojawi się w dziale reklamy na stronie!;)
 			<attribute name="text">
 Najświeższe informacje zawsze
 znajdziesz na naszym fanpejdżu
-#www.facebook.com/PolskaGra.org
+#www.facebook.com/PolanieOnLine
 			</attribute>
 			<attribute name="class">default</attribute>
 		</entity>
@@ -670,131 +670,9 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<portal x="103" y="42" ref="bank_entrace_2">
 			<destination zone="int_zakopane_bank_0" ref="bank_exit_2"/>
 		</portal>
-
-		<!-- Houses -->
-		<portal x="79" y="67" ref="house_216_entrance">
-			<destination zone="int_zakopane_house_216" ref="house_216_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 216</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="91" y="60" ref="house_217_entrance">
-			<destination zone="int_zakopane_house_217" ref="house_217_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 217</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="81" y="54" ref="house_218_entrance">
-			<destination zone="int_zakopane_house_218" ref="house_218_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 218</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="110" y="30" ref="house_219_entrance_1">
-			<destination zone="int_zakopane_house_219" ref="house_219_exit_1"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 219</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="113" y="30" ref="house_219_entrance_2">
-			<destination zone="int_zakopane_house_219" ref="house_219_exit_2"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 219</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="84" y="11" ref="house_220_entrance">
-			<destination zone="int_zakopane_house_220" ref="house_220_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 220</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="116" y="16" ref="house_221_entrance">
-			<destination zone="int_zakopane_house_221" ref="house_221_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 221</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="104" y="10" ref="house_222_entrance">
-			<destination zone="int_zakopane_house_222" ref="house_222_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 222</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="98" y="96" ref="house_223_entrance">
-			<destination zone="int_zakopane_house_223" ref="house_223_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 223</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="72" y="120" ref="house_224_entrance">
-			<destination zone="int_zakopane_house_224" ref="house_224_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 224</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="81" y="117" ref="house_225_entrance">
-			<destination zone="int_zakopane_house_225" ref="house_225_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 225</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="73" y="112" ref="house_226_entrance">
-			<destination zone="int_zakopane_house_226" ref="house_226_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 226</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="80" y="109" ref="house_227_entrance">
-			<destination zone="int_zakopane_house_227" ref="house_227_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 227</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="70" y="105" ref="house_228_entrance">
-			<destination zone="int_zakopane_house_228" ref="house_228_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 228</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="78" y="101" ref="house_229_entrance">
-			<destination zone="int_zakopane_house_229" ref="house_229_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 229</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="88" y="102" ref="house_230_entrance">
-			<destination zone="int_zakopane_house_230" ref="house_230_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 230</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
-		<portal x="92" y="72" ref="house_231_entrance">
-			<destination zone="int_zakopane_house_231" ref="house_231_exit"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.HousePortal">
-				<parameter name="doorId">zakopane house 231</parameter>
-				<parameter name="rejected">Drzwi do tego domu są zamknięte.</parameter>
-			</implementation>
-		</portal>
 	</zone>
 
 	<!-- zakopane_se -->
-
 	<zone name="0_zakopane_se" level="0" x="513440" y="18688" file="Level 0/zakopane/zakopane_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -975,7 +853,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 
 <!-- BANK NOWY -->
-<!-- Bank 0 -->
+	<!-- Bank 0
 	<zone name="int_zakopane_bank_0" file="interiors/zakopane/bank_0.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.shop.market.TradeCenterZoneConfigurator"/>
@@ -1174,7 +1052,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
-		<!-- Keep creatures from blocking trading area -->
+		<!- Keep creatures from blocking trading area ->
 		<entity x="11" y="19">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.CreatureProtectionArea">
 				<parameter name="width">21</parameter>
@@ -1183,7 +1061,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 				<parameter name="rules"/>
 			</implementation>
 		</entity>
-		<!-- passages next to trading table now one player areas -->
+		<!- passages next to trading table now one player areas ->
 		<entity x="26" y="23">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">3</parameter>
@@ -1271,7 +1149,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
-		<!-- Bank Chests -->
+		<!- Bank Chests ->
 		<entity x="24" y="21">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank</parameter>
@@ -1343,8 +1221,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
-		<!-- stoliki-->
-
+		<!- stoliki ->
 		<entity x="24" y="22">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
@@ -1473,6 +1350,175 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</portal>
 
 		<portal x="2" y="17" ref="skarbiec_in_2">
+			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_2"/>
+		</portal>
+	</zone> -->
+
+	<!-- Bank 0 -->
+	<zone name="int_zakopane_bank_0" file="interiors/zakopane/bank_0.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="11" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="32" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">12</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">12</parameter>
+			</implementation>
+		</entity>
+		<entity x="7" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">12</parameter>
+			</implementation>
+		</entity>
+		<entity x="7" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">12</parameter>
+			</implementation>
+		</entity>
+		<!-- Keep creatures from blocking trading area -->
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.CreatureProtectionArea">
+				<parameter name="width">29</parameter>
+				<parameter name="height">6</parameter>
+				<parameter name="default">block</parameter>
+				<parameter name="rules"/>
+			</implementation>
+		</entity>
+		<!-- passages next to trading table now one player areas -->
+		<entity x="2" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+			</implementation>
+		</entity>
+		<entity x="6" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+			</implementation>
+		</entity>
+		<entity x="8" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+			</implementation>
+		</entity>
+		<entity x="12" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+			</implementation>
+		</entity>
+		<entity x="14" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+			</implementation>
+		</entity>
+		<entity x="18" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="24" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="26" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">5</parameter>
+			</implementation>
+		</entity>
+		<!-- Bank Chests -->
+		<entity x="2" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest"/>
+		</entity>
+		<entity x="6" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest"/>
+		</entity>
+		<entity x="9" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="12" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="15" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="18" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="21" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="24" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="27" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="29" y="18" ref="bank_exit_1">
+			<destination zone="0_zakopane_s" ref="bank_entrace_1"/>
+		</portal>
+		<portal x="30" y="18" ref="bank_exit_2">
+			<destination zone="0_zakopane_s" ref="bank_entrace_2"/>
+		</portal>
+
+		<portal x="44" y="15" ref="skarbiec_in_1">
+			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_1"/>
+		</portal>
+		<portal x="44" y="16" ref="skarbiec_in_2">
 			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_2"/>
 		</portal>
 	</zone>
