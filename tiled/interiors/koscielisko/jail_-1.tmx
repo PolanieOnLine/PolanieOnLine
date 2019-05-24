@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="32" height="21" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wooden_rectangular" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/wooden_rectangular.png" trans="ff00ff"/>
+ </tileset>
+ <tileset firstgid="10" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="11" name="protection" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/protection.png"/>
+ </tileset>
+ <tileset firstgid="13" name="sciana" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/wiezienie_sciany.png"/>
+ </tileset>
+ <tileset firstgid="39" name="kafle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_kamienne_dywanik.png"/>
+ </tileset>
+ <tileset firstgid="48" name="schod" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/stairs/stairs.png"/>
+ </tileset>
+ <tileset firstgid="60" name="zydelek" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/stoly/wiezienie_stolik.png"/>
+ </tileset>
+ <tileset firstgid="66" name="latarnia_blask" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/oswietlenie/latarnia_blask.png"/>
+ </tileset>
+ <layer name="0_floor" width="32" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNnYGDQAGJNIFYfAPZA2Dlq/6j9o/YTtl8LiLUpwDoU2q8LxHoUYP0hHv6j9o/a
+P2r/qP3D2X4Apf1XFoAKAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="32" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAONlYGDgGyDMD8RSQCw9QFgGyX56g1H7h479NhSwqWG/PQVsdGBAhv20AKP2Q+wX
+AWLRAcJiQKwIxEoDhJWBWByIJQYISwKxChCrDhBWG7V/1P4Rbj8ALgCS24AKAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="32" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMVsAIxExkYGYq2c8CxKxkYDYq2T8KRsEoGAWjYHgCAOU9qxKACgAA
+  </data>
+ </layer>
+ <layer name="objects" width="32" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQsvoAAA4Gepgq9rgAoAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="32" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAONiYGDgGsV0B6P2j9pPjP20StNDxX5agcFm/0jH9Aaj9o/aP5jsH6kYAFpI9ImA
+CgAA
+  </data>
+ </layer>
+ <layer name="protection" width="32" height="21">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3DMQ0AAAwEodvfv9+66AQJq6aqqk8PXJa6PoAKAAA=
+  </data>
+ </layer>
+ <layer name="blend_ground" width="32" height="21" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3NywmAMAAE0dQWDX4wikYS7b8R55oKFmQH3nlCcO7/RQwYkQT/CTMWrIL/howd
+h+B/4kLBLfhXNDx4BX/nnHN9H3ud0HSACgAA
+  </data>
+ </layer>
+ <layer name="blend_roof" width="32" height="21" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQsvoAAA4Gepgq9rgAoAAA==
+  </data>
+ </layer>
+</map>

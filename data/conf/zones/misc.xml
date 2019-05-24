@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../zones.xsd ">
+
+	<zone name="int_afterlife" file="interiors/abstract/afterlife.tmx">
+		<attributes>
+			<parameter name="color_method">softlight</parameter>
+			<parameter name="color">#008888</parameter>
+		</attributes>
+		<portal x="31" y="1" ref="afterlife_zakopane_1_exit">
+			<destination zone="0_zakopane_s" ref="zakopane_1_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_zakopane_s</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="32" y="1" ref="afterlife_zakopane_2_exit">
+			<destination zone="0_zakopane_s" ref="zakopane_2_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_zakopane_s</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="11" y="13" ref="afterlife_ados_exit">
+			<destination zone="0_ados_city_n" ref="ados_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_ados_city_n</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="11" y="19" ref="afterlife_fado_exit">
+			<destination zone="0_fado_city" ref="fado_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_fado_city</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="21" y="13" ref="afterlife_kalavan_exit">
+			<destination zone="0_kalavan_city" ref="kalavan_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_kalavan_city</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="21" y="19" ref="afterlife_kirdneh_exit">
+			<destination zone="0_kirdneh_city" ref="kirdneh_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_kirdneh_city</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="42" y="13" ref="afterlife_krakow_exit">
+			<destination zone="0_krakow_wawel_w" ref="krakow_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_krakow_wawel_w</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="42" y="19" ref="afterlife_nalwor_exit">
+			<destination zone="0_nalwor_city" ref="nalwor_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_nalwor_city</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="52" y="13" ref="afterlife_semos_exit">
+			<destination zone="0_semos_city" ref="semos_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_semos_city</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="52" y="19" ref="afterlife_warszawa_exit">
+			<destination zone="0_warszawa_nw" ref="warszawa_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_warszawa_nw</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+		<portal x="52" y="7" ref="afterlife_wieliczka_exit">
+			<destination zone="0_wieliczka_c" ref="wieliczka_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_wieliczka_c</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+
+		<entity x="31" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Zakopane
+			</attribute>
+		</entity>
+		<entity x="32" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Zakopane
+			</attribute>
+		</entity>
+		<entity x="13" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Ados
+			</attribute>
+		</entity>
+		<entity x="13" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Fado
+			</attribute>
+		</entity>
+		<entity x="23" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Kalavan
+			</attribute>
+		</entity>
+		<entity x="23" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Kirdneh
+			</attribute>
+		</entity>
+		<entity x="40" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Kraków
+			</attribute>
+		</entity>
+		<entity x="40" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Nalwor
+			</attribute>
+		</entity>
+		<entity x="50" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Semos
+			</attribute>
+		</entity>
+		<entity x="50" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Warszawa
+			</attribute>
+		</entity>
+		<entity x="50" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Wieliczka
+			</attribute>
+		</entity>
+
+		<entity x="30" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">
+Poległeś na polu chwały.
+Straciłeś trochę swoich przedmiotów oraz 10% punktów twojego doświadczenia.
+Następnym razem bądź bardziej ostrożny!
+Idź dalej, a wrócisz do krainy, w której żyjesz...
+			</attribute>
+		</entity>
+
+		<entity x="33" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">
+Poległeś na polu chwały.
+Straciłeś trochę swoich przedmiotów oraz 10% punktów twojego doświadczenia.
+Następnym razem bądź bardziej ostrożny!
+Idź dalej, a wrócisz do krainy, w której żyjesz...
+			</attribute>
+		</entity>
+	</zone>
+
+	<zone name="int_admin_playground" file="interiors/abstract/admin_playground.tmx"
+		accessible="false">
+
+		<entity x="8" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.block.BlockTarget" />
+			<connector name="floorbutton1" />
+			<attribute name="description">
+				Oto ubite miejsce na ziemi. Coś ciężkiego musiało tu stać.
+			</attribute>
+		</entity>
+
+		<entity x="11" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.block.Block">
+				<parameter name="multiPush">true</parameter>
+				<parameter name="style">hay_cart</parameter>
+			</implementation>
+			<attribute name="description">
+				Oto ciężki wózek.
+			</attribute>
+		</entity>
+
+		<entity x="4" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="condition">new AlwaysFalseCondition()</parameter>
+				<parameter name="autoclose">0</parameter>
+				<parameter name="message">Ta brama musi być połącząna z mechanizmem otwierającym.</parameter>
+			</implementation>
+			<connector name="gate1">
+				<port name="active" expression="floorbutton1.active" />
+			</connector>
+		</entity>
+
+	</zone>
+
+	<zone name="int_abstract_server_down" file="interiors/abstract/server_down.tmx"
+		accessible="false">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport" />
+		<configurator class-name="games.stendhal.server.core.config.zone.NoItemMove">
+			<parameter name="message">Teraz powinieneś uważać na przedmioty.</parameter>
+		</configurator>
+
+		<!-- Note: This portal is defined in ServerDown, too. -->
+		<portal x="15" y="28" ref="exit">
+			<destination zone="0_semos_city" ref="townhall_entrance" />
+		</portal>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">a_weird_place</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="int_abstract_admin_investigation" file="interiors/abstract/admin_investigation.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport" />
+		<portal x="6" y="10" ref="entrance1">
+			<destination zone="0_zakopane_s" ref="zakopane_1_restart_life" />
+		</portal>
+		<portal x="19" y="10" ref="entrance2">
+			<destination zone="0_zakopane_s" ref="zakopane_2_restart_life" />
+		</portal>
+
+		<entity x="16" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_nalwor</parameter>
+			</implementation>
+		</entity>
+		<entity x="17" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank</parameter>
+			</implementation>
+		</entity>
+		<entity x="18" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_ados</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="3">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_fado</parameter>
+			</implementation>
+		</entity>
+		<entity x="18" y="3">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">zaras_chest_ados</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="20" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_nalwor</parameter>
+			</implementation>
+		</entity>
+		<entity x="21" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank</parameter>
+			</implementation>
+		</entity>
+		<entity x="22" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_ados</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="3">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_fado</parameter>
+			</implementation>
+		</entity>
+		<entity x="22" y="3">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">zaras_chest_ados</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="int_testing_grid" file="interiors/abstract/testing_grid.tmx"
+		accessible="false">
+	</zone>
+
+	<zone name="int_vault" file="interiors/abstract/vault.tmx"
+		accessible="false">
+	</zone>
+
+	<zone name="int_adventure_island" file="interiors/abstract/adventure_island.tmx"
+		accessible="false">
+	</zone>
+
+	<zone name="int_pathfinding" file="interiors/abstract/pathfinding.tmx"
+		accessible="false">
+
+		<configurator class-name="games.stendhal.server.maps.FeaturesTestArea" />
+
+		<portal x="50" y="10" ref="locked_outside">
+			<destination zone="int_pathfinding" ref="locked_inside" />
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.portal.LockedDoor">
+				<parameter name="class">skulldoor_s</parameter>
+				<parameter name="key">golden key</parameter>
+			</implementation>
+		</portal>
+
+		<portal x="50" y="12" ref="locked_inside">
+			<destination zone="int_pathfinding" ref="locked_outside" />
+		</portal>
+
+		<!-- volume -->
+		<entity x="10" y="56">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-2b</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">5</parameter>
+				<parameter name="radius">4</parameter>
+				<parameter name="volume">100</parameter>
+			</implementation>
+		</entity>
+		<entity x="24" y="56">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-2b</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">5</parameter>
+				<parameter name="radius">4</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<!-- periodic and loop -->
+		<entity x="42" y="56">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">10</parameter>
+				<parameter name="radius">4</parameter>
+			</implementation>
+		</entity>
+		<entity x="56" y="56">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+				<parameter name="radius">4</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- Raid Map
+	<zone name="raid_map" file="interiors/abstract/raid_main.tmx">
+		<entity x="8" y="23">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="22" y="23">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="35" y="23">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="48" y="34">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">v</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="52" y="42">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">v</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="43" y="52">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="57" y="52">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">fence_gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+		<portal x="58" y="44" ref="raid_map_exit">
+			<destination zone="0_zakopane_s" ref="raid_map_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_zakopane_s</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
+				<entity x="57" y="44">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Wyjście do #Zakopca!
+			</attribute>
+			<attribute name="class">default</attribute>
+		</entity>
+	</zone> -->
+</zones>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: smoki -->
+	<creature name="dwugłowy czarny smok">
+		<type class="pol/smoki" subclass="smok_dwuglowy_czarny" tileid="pol_smoki.png:0"/>
+		<description/>
+		<attributes>
+			<atk value="3817"/>
+			<def value="129"/>
+			<hp value="7593"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="499"/>
+		<experience value="486253"/>
+		<respawn value="28888"/>
+		<corpse name="dragon_3x3x2" width="3" height="3"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,15]" probability="30.0"/>
+			<item value="money" quantity="[30,3000]" probability="90.0"/>
+			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="0.1"/>
+			<item value="magia mroku" quantity="[1,33]" probability="10.0"/>
+			<item value="czarne rękawice" quantity="[1,1]" probability="0.005"/>
+			<item value="pazur czarnego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="1.5"/>
+			<item value="skóra czarnego smoka" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.8"/>
+			<susceptibility type="light" value="1.2"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="dwugłowy lodowy smok">
+		<type class="pol/smoki" subclass="smok_dwuglowy_lodowy" tileid="pol_smoki.png:10"/>
+		<description/>
+		<attributes>
+			<atk value="3052"/>
+			<def value="110"/>
+			<hp value="6873"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="399"/>
+		<experience value="312827"/>
+		<respawn value="27777"/>
+		<corpse name="dragon_3x3x2" width="3" height="3"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,12]" probability="80.0"/>
+			<item value="money" quantity="[20,2000]" probability="100.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="0.05"/>
+			<item value="lodowe rękawice" quantity="[1,1]" probability="1.0"/>
+			<item value="pazur arktycznego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="1.5"/>
+			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="dwugłowy czerwony smok">
+		<type class="pol/smoki" subclass="smok_dwuglowy_czerwony" tileid="pol_smoki.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="2033"/>
+			<def value="87"/>
+			<hp value="6153"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="299"/>
+		<experience value="158954"/>
+		<respawn value="26666"/>
+		<corpse name="dragon_3x3x2" width="3" height="3"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,9]" probability="80.0"/>
+			<item value="money" quantity="[30,777]" probability="100.0"/>
+			<item value="płaszcz karmazynowy" quantity="[1,1]" probability="1.5"/>
+			<item value="spodnie karmazynowe" quantity="[1,1]" probability="0.5"/>
+			<item value="ogniste rękawice" quantity="[1,1]" probability="1.5"/>
+			<item value="pazur czerwonego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="1.5"/>
+			<item value="skóra czerwonego smoka" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="fire" value="0.8"/>
+			<susceptibility type="water" value="1.2"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="dwugłowy zielony smok">
+		<type class="pol/smoki" subclass="smok_dwuglowy_zielony" tileid="pol_smoki.png:2"/>
+		<description/>
+		<attributes>
+			<atk value="1353"/>
+			<def value="68"/>
+			<hp value="5433"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="199"/>
+		<experience value="44069"/>
+		<respawn value="25555"/>
+		<corpse name="dragon_3x3x2" width="3" height="3"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,7]" probability="60.0"/>
+			<item value="money" quantity="[30,555]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="12.5"/>
+			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="10.0"/>
+			<item value="złote rękawice" quantity="[1,1]" probability="0.05"/>
+			<item value="pazur zielonego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="1.5"/>
+			<item value="skóra zielonego smoka" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="nature"/>
+			<susceptibility type="nature" value="0.8"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="lodowy smok">
+		<type class="pol/smoki" subclass="smok_lodowy" tileid="pol_smoki.png:11"/>
+		<description/>
+		<attributes>
+			<atk value="1118"/>
+			<def value="61"/>
+			<hp value="1772"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="135"/>
+		<experience value="23746"/>
+		<respawn value="17300"/>
+		<corpse name="huge_animal"/>
+		<drops>
+			<item value="duży eliksir" quantity="[2,6]" probability="80.0"/>
+			<item value="money" quantity="[60,333]" probability="100.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="1.5"/>
+			<item value="spodnie nabijane klejnotami" quantity="[1,1]" probability="1.0"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="0.1"/>
+			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,30"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="pustynny smok">
+		<type class="pol/smoki" subclass="smok_pustynny" tileid="pol_smoki.png:3"/>
+		<description/>
+		<attributes>
+			<atk value="1118"/>
+			<def value="61"/>
+			<hp value="1772"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="135"/>
+		<experience value="23746"/>
+		<respawn value="17300"/>
+		<corpse name="huge_animal"/>
+		<drops>
+			<item value="bukłak z wodą" quantity="[2,4]" probability="80.0"/>
+			<item value="money" quantity="[60,160]" probability="100.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="1.5"/>
+			<item value="spodnie pustynne" quantity="[1,1]" probability="15.0"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="0.1"/>
+			<item value="skóra złotego smoka" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,30"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zgniły szkielet smoka">
+		<type class="pol/smoki" subclass="smok_zgnily_szkielet" tileid="pol_smoki.png:4"/>
+		<description/>
+		<attributes>
+			<atk value="524"/>
+			<def value="40"/>
+			<hp value="554"/>
+			<speed value="0.9"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="77"/>
+		<experience value="5923"/>
+		<respawn value="12810"/>
+		<corpse name="dragon_3x3" width="3" height="3"/>
+		<drops>
+			<item value="money" quantity="[10,60]" probability="100.0"/>
+			<item value="bukłak z wodą" quantity="[1,4]" probability="60.0"/>
+			<item value="kościany płaszcz smoczy" quantity="[1,1]" probability="2.0"/>
+			<item value="kość dla psa" quantity="[1,5]" probability="60.0"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="lifesteal" params="0.5"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="smok arktyczny">
+		<type class="pol/smoki" subclass="smok_arktyczny" tileid="pol_smoki.png:5"/>
+		<description/>
+		<attributes>
+			<atk value="1910"/>
+			<def value="81"/>
+			<hp value="4798"/>
+			<speed value="1.0"/>
+			<size value="6,5"/>
+		</attributes>
+		<level value="222"/>
+		<experience value="110083"/>
+		<respawn value="23456"/>
+		<corpse name="huger_animal"/>
+		<drops>
+			<item value="duży eliksir" quantity="[1,5]" probability="70.0"/>
+			<item value="money" quantity="[300,10000]" probability="100.0"/>
+			<item value="obsydian" quantity="[1,1]" probability="0.0001"/>
+			<item value="biały balonik" quantity="[1,1]" probability="11.1"/>
+			<item value="miecz lodowy" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="0.005"/>
+			<item value="sztabka mithrilu" quantity="[1,1]" probability="0.001"/>
+			<item value="pazur arktycznego smoka" quantity="[1,1]" probability="0.5"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="10.5"/>
+			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="35,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarne smoczysko">
+		<type class="pol/smoki" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
+		<description>Oto czarny smok. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
+		<attributes>
+			<atk value="2440"/>
+			<def value="94"/>
+			<hp value="5360"/>
+			<speed value="1.0"/>
+			<size value="5,4"/>
+		</attributes>
+		<level value="300"/>
+		<experience value="188447"/>
+		<respawn value="24000"/>
+		<corpse name="dragon_6x6" width="6" height="6"/>
+		<drops>
+			<item value="gigantyczny eliksir" quantity="[1,1]" probability="50.0"/>
+			<item value="money" quantity="[300,1000]" probability="100.0"/>
+			<item value="obsydian" quantity="[1,4]" probability="0.001"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.005"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.5"/>
+			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="1.5"/>
+			<item value="pazur czarnego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="10.5"/>
+			<item value="skóra czarnego smoka" quantity="[1,1]" probability="25.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="złoty buzdygan"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="35,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="latający czarny smok">
+		<type class="pol/smoki" subclass="latajacy_czarny_smok" tileid="pol_smoki.png:7"/>
+		<description/>
+		<attributes>
+			<atk value="6885"/>
+			<def value="292"/>
+			<hp value="6480"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="900"/>
+		<experience value="1578221"/>
+		<respawn value="100000"/>
+		<corpse name="dragon_6x6" width="6" height="6"/>
+		<drops>
+			<item value="pazur czarnego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="10.5"/>
+			<item value="skóra czarnego smoka" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="100,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="latający złoty smok">
+		<type class="pol/smoki" subclass="latajacy_zloty_smok" tileid="pol_smoki.png:8"/>
+		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
+		<attributes>
+			<atk value="7650"/>
+			<def value="310"/>
+			<hp value="7200"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="1943875"/>
+		<respawn value="100000"/>
+		<corpse name="dragon_6x6" width="6" height="6"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,1]" probability="50.0"/>
+			<item value="money" quantity="[30,100]" probability="100.0"/>
+			<item value="bryłka złota" quantity="[2,5]" probability="1.0"/>
+			<item value="diament" quantity="[1,1]" probability="1.0"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="0.5"/>
+			<item value="bełt złoty" quantity="[1,11]" probability="100.0"/>
+			<item value="pazur złotego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="5.5"/>
+			<item value="skóra złotego smoka" quantity="[1,1]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="Smok Wawelski">
+		<type class="pol/smoki" subclass="smok_wawelski" tileid="pol_smoki.png:9"/>
+		<description/>
+		<attributes>
+			<atk value="12074"/>
+			<def value="242"/>
+			<hp value="15128"/>
+			<speed value="0.7"/>
+			<size value="8,6"/>
+		</attributes>
+		<level value="990"/>
+		<experience value="2971283"/>
+		<respawn value="8280000"/>
+		<corpse name="dragon_6x6" width="6" height="6"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,29]" probability="40.0"/>
+			<item value="gigantyczny eliksir" quantity="[1,29]" probability="40.0"/>
+			<item value="szczerbiec" quantity="[1,1]" probability="0.01"/>
+			<item value="money" quantity="[11,49999]" probability="100.0"/>
+			<item value="pazur zielonego smoka" quantity="[1,1]" probability="10.0"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="15.5"/>
+			<item value="skóra zielonego smoka" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="ognisty miecz demonów" quantity="1"/>
+		</equips>
+		<ai>
+			<says>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="30,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: smoki -->
+</creatures>

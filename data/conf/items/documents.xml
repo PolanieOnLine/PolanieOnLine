@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="karteczka">
+		<type class="documents" subclass="paper" tileid="-1"/>
+		<description>Widzisz karteczkę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kupon">
+		<type class="documents" subclass="coupon" tileid="-1"/>
+		<description>Widzisz kupon.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="koperta zaklejona">
+		<type class="documents" subclass="closed_envelope" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="koperta otwarta">
+		<type class="documents" subclass="opened_envelope" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="koperta zalakowana">
+		<type class="documents" subclass="sealed_envelope" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="koperta ze złamaną pieczęcią">
+		<type class="documents" subclass="unsealed_envelope" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="licencja na zabijanie">
+		<type class="documents" subclass="license" tileid="-1"/>
+		<description>Oto licencja na zabijanie. Odpowiednio użyta otworzy wiele drzwi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="mapa">
+		<type class="documents" subclass="mapwithgrid" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="zwój papieru">
+		<type class="documents" subclass="scroll" tileid="-1"/>
+		<description>Oto zwój papieru.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="lodowy zwój">
+		<type class="documents" subclass="ice_scroll" tileid="-1"/>
+		<description>Oto lodowy zwój pokryty płatkami śniegu. Możesz poczuć bijącą z niego zimną aurę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<!--<item name="receptura">
+		<type class="documents" subclass="recipe" tileid="-1"/>
+		<description>Oto receptura gotowa do dostarczenia dla Imorgena. Znajdują się na niej nazwy składników do potężnej mikstury przeciwko wilkołakom. </description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>-->
+
+	<!--<item name="liścik do aptekarza">
+    <type class="documents" subclass="paper" tileid="-1"/>
+		<description>Oto liścik do aptekarza. To jest rekomendacja od Klaasa.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="lhand" />
+			<slot name="rhand" />
+		</equipable>
+	</item>-->
+	
+	<item name="wyniki badań">
+    <type class="documents" subclass="paper" tileid="-1"/>
+		<description>Oto wyniki badań od Dr. Wojciecha. Trzeba je zanieść do drugiego weterynarza jakim jest Dr. Feelgood!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="lhand" />
+			<slot name="rhand" />
+		</equipable>
+	</item>
+</items>

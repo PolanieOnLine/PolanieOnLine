@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: cyclops -->
+
+	<creature name="cyklop">
+		<type class="stendhal/giant" subclass="cyclops" tileid="giant.png:0"/>
+		<description>Widzisz cyklopa. On widzi cię nieco gorzej, bo ma jedno oko.</description>
+		<attributes>
+			<atk value="125"/>
+			<def value="26"/>
+			<hp value="60"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="9"/>
+		<experience value="90"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,13]" probability="100.0"/>
+			<item value="kolczuga" quantity="[1,1]" probability="1.0"/>
+			<item value="skórzany kirys" quantity="[1,1]" probability="10.0"/>
+			<item value="buty nabijane ćwiekami" quantity="[1,1]" probability="0.5"/>
+			<item value="piernacz" quantity="[1,1]" probability="1.0"/>
+			<item value="tarcza ćwiekowa" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="laugh-33"/>
+				<sound value="laugh-evil-4"/>
+				<sound value="evillaugh-4"/>
+				<sound value="grunt-1"/>
+				<sound value="grunt-2"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: cyclops -->
+
+	<!-- START: ogre -->
+
+	<creature name="ogr">
+		<type class="stendhal/giant" subclass="ogre" tileid="giant.png:2"/>
+		<description>To jest ogr. Jest goły i ordynarny.</description>
+		<attributes>
+			<atk value="151"/>
+			<def value="20"/>
+			<hp value="140"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="12"/>
+		<experience value="231"/>
+		<respawn value="1210"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,19]" probability="100.0"/>
+			<item value="pyrlik" quantity="[1,1]" probability="7.0"/>
+			<item value="złoty pyrlik" quantity="[1,1]" probability="0.7"/>
+			<item value="kolczuga" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="0.9"/>
+			<item value="piernacz" quantity="[1,1]" probability="0.9"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="ogr starszy">
+		<type class="stendhal/giant" subclass="elder_ogre" tileid="giant.png:1"/>
+		<description>Oto ogr starszy. Zostały mu ostatnie minuty zycia. Zmiłuj się nad nim.</description>
+		<attributes>
+			<atk value="195"/>
+			<def value="13"/>
+			<hp value="350"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="17"/>
+		<experience value="376"/>
+		<respawn value="1240"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,27]" probability="100.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="4.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="1.0"/>
+			<item value="kij z czaszką" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="ogr żołnierz">
+		<type class="stendhal/giant" subclass="ogre_soldier" tileid="giant.png:3"/>
+		<description>Oto ogr żołnierz. Śmierdzi jakby nie brał kąpieli od roku. Łeee.</description>
+		<attributes>
+			<atk value="222"/>
+			<def value="40"/>
+			<hp value="132"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="22"/>
+		<experience value="677"/>
+		<respawn value="1270"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,31]" probability="100.0"/>
+			<item value="topór bojowy" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="superogr">
+		<type class="stendhal/giant" subclass="superogre" tileid="giant.png:4"/>
+		<description>Oto superogr, który jest członkiem przyziemnej rodziny Ogrów. Nim to się stało ten szczególny hełm był wśród nich czczony. Uważaj potrafi uderzyć!</description>
+		<attributes>
+			<atk value="296"/>
+			<def value="52"/>
+			<hp value="195"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="33"/>
+		<experience value="1345"/>
+		<respawn value="1380"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,31]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+  <!-- END: ogre -->
+  
+  <!-- START: troll -->
+
+	<creature name="trol">
+		<type class="stendhal/troll" subclass="troll" tileid="troll.png:0"/>
+		<description>To jest trol. Uważaj, bo jesteś na jego ziemi.</description>
+		<attributes>
+			<atk value="135"/>
+			<def value="34"/>
+			<hp value="60"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="10"/>
+		<experience value="100"/>
+		<respawn value="1210"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,7]" probability="90.0"/>
+			<item value="kolczuga" quantity="[1,1]" probability="3.0"/>
+			<item value="spodnie kolcze" quantity="[1,1]" probability="2.0"/>
+			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="0.05"/>
+			<item value="kiścień" quantity="[1,1]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="gorilla-1"/>
+				<sound value="gorilla-2"/>
+				<sound value="gorilla-3"/>
+				<sound value="gorilla-4"/>
+				<sound value="gorilla-5"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czerwony trol">
+		<type class="stendhal/troll" subclass="red_troll" tileid="troll.png:2"/>
+		<description>Oto czerwony trol. Bucha wściekłością.</description>
+		<attributes>
+			<atk value="190"/>
+			<def value="34"/>
+			<hp value="110"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="16"/>
+		<experience value="420"/>
+		<respawn value="1230"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,17]" probability="90.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="3.0"/>
+			<item value="spodnie kolcze" quantity="[1,1]" probability="4.0"/>
+			<item value="kiścień" quantity="[1,1]" probability="30.0"/>
+			<item value="kropacz" quantity="[1,1]" probability="0.0001"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="gorilla-1"/>
+				<sound value="gorilla-2"/>
+				<sound value="gorilla-3"/>
+				<sound value="gorilla-4"/>
+				<sound value="gorilla-5"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="trol jaskiniowy">
+		<type class="stendhal/troll" subclass="cave_troll" tileid="troll.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="474"/>
+			<def value="45"/>
+			<hp value="1000"/>
+			<speed value="0.7"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="63"/>
+		<experience value="3623"/>
+		<respawn value="1870"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[1,30]" probability="100.0"/>
+			<item value="mięso" quantity="[1,5]" probability="10.5"/>
+			<item value="kropacz" quantity="[1,1]" probability="0.0001"/>
+			<item value="zbroja barbarzyńcy" quantity="[1,1]" probability="5.5"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Uggga yggga arghhhhh"/>
+				<noise state="idle follow fight" value="Ooggga UGGga arhhh"/>
+				<sound value="growl-large-3" />
+				<sound value="grunt-large-1" />
+				<sound value="grunt-large-2" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: troll -->
+
+</creatures>

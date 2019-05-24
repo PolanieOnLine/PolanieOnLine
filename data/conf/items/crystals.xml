@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="czerwony kryształ emocji">
+		<type class="crystal" subclass="crystal_red" tileid="-1" />
+		<description>Oto czerwony kryształ emocji. Czuje się gorąc, gdy się go dotknie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item" />
+		<attributes>
+			<quantity value="1" />
+			<max_quantity value="2147483647" />
+		</attributes>
+		<weight value="0.1" />
+		<value value="100" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="head" />
+			<slot name="bag" />
+			</equipable>
+	</item>
+
+	<item name="purpurowy kryształ emocji">
+		<type class="crystal" subclass="crystal_purple" tileid="-1" />
+		<description>Oto purpurowy kryształ emocji. Czuje się zimno, gdy się go dotknie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item" />
+		<attributes>
+			<quantity value="1" />
+			<max_quantity value="2147483647" />
+		</attributes>
+		<weight value="0.1" />
+		<value value="100" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="head" />
+			<slot name="bag" />
+		</equipable>
+	</item>
+
+	<item name="żółty kryształ emocji">
+		<type class="crystal" subclass="crystal_yellow" tileid="-1" />
+		<description>Oto żółty kryształ emocji. Działa pobudzająco.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item" />
+		<attributes>
+			<quantity value="1" />
+			<max_quantity value="2147483647" />
+		</attributes>
+		<weight value="0.1" />
+		<value value="100" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="head" />
+			<slot name="bag" />
+		</equipable>
+	</item>
+
+	<item name="różowy kryształ emocji">
+		<type class="crystal" subclass="crystal_pink" tileid="-1" />
+		<description>Oto różowy kryształ emocji. Prawie czuć delikatność.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item" />
+		<attributes>
+			<quantity value="1" />
+			<max_quantity value="2147483647" />
+		</attributes>
+		<weight value="0.1" />
+		<value value="100" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="head" />
+			<slot name="bag" />
+		</equipable>
+	</item>
+
+	<item name="niebieski kryształ emocji">
+		<type class="crystal" subclass="crystal_blue" tileid="-1" />
+		<description>Oto niebieski kryształ emocji. Gdy się zamartwiasz to wygląda jakby znikał.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item" />
+		<attributes>
+			<quantity value="1" />
+			<max_quantity value="2147483647" />
+		</attributes>
+		<weight value="0.1" />
+		<value value="100" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="head" />
+			<slot name="bag" />
+		</equipable>
+	</item>
+</items>

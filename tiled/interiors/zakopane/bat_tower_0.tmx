@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="2" name="kafelki_kamienne_zwykle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_kamienne_zwykle.png"/>
+ </tileset>
+ <tileset firstgid="8" name="sciany_kamienne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/sciany_kamienne.png"/>
+ </tileset>
+ <tileset firstgid="38" name="green_stairs" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/stairs/green_stairs.png"/>
+ </tileset>
+ <tileset firstgid="42" name="animal" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/animal.png"/>
+ </tileset>
+ <layer name="0_floor" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAKWTUQrAMAhDS7fZK/Sr9z/m/JgwHrEDV8iHwYSodLbW5g+sAkLbHYdjPGCtuNCe
+juvFs1ZcaJW3gWNNLb37JtPXvCp7ZV76MrMl/SZ8qc3us7uR8uXOgzdoeYeBXpUl21U2o9JWXvUf
+BG4wNxONhAMAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGDpAbaAdMAqGBNAcaAeQCADa4cv5hAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAVDHSgPtAMGARjKYQAAiqdrDIQDAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBTAgAQZmFIAAOVV9OKEAwAA
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGH5Ai8rqyAW0Mp/W7qYHGA5+oBYAAAIJom2EAwAA
+  </data>
+ </layer>
+ <layer name="collision" width="15" height="15" opacity="0.47">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNkYGBgHCBMDhjVi13NQNg7mPQOhnRFLgYA+r8YHIQDAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="15" height="15" opacity="0.43">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>

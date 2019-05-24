@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="kolizja" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="2" name="kolce" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/kolce.png"/>
+ </tileset>
+ <tileset firstgid="6" name="ground_magma011" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/ground_magma011.png"/>
+ </tileset>
+ <layer name="0_floor" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAM3PuRGAMBTE0B8ZX+Ab+u/UqsCbErwZpXJmdsHDHTogIonOuPGILqhoojsGpuiF
+F5/o0+MffjfV2nzmkAEAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNiYGBgGsWDBgMASwo5tJABAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWDCQAADA0iRpABAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWDCQAADA0iRpABAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNkYGBgJBITAqPq8KsjBgMAISw5G5ABAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWDCQAADA0iRpABAAA=
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="młynek">
+		<type class="tool" subclass="foodmill" tileid="-1"/>
+		<description>Oto młynek. Tradycyjne narzędzie do mielenia jedzenia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.FoodMill"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="młynek do cukru">
+		<type class="tool" subclass="sugarmill" tileid="-1"/>
+		<description>Oto młynek do cukru. Możesz nim zemleć trzcinę cukrową.</description>
+		<implementation class-name="games.stendhal.server.entity.item.FoodMill"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zwój czyszczący">
+		<type class="tool" subclass="scrolleraser" tileid="-1"/>
+		<description>Oto zwój czyszczący. Weź zwój zapisany do drugiej dłoni, aby wyczyścić go.</description>
+		<implementation class-name="games.stendhal.server.entity.item.FoodMill"/>
+		<attributes>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="moździerz z tłuczkiem">
+		<type class="tool" subclass="pestleandmortar" tileid="-1"/>
+		<description>Oto moździerz z tłuczkiem. Możesz w nim skruszyć zioła i inne substancje.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="misa do płukania złota">
+		<type class="tool" subclass="gold_pan" tileid="-1"/>
+		<description>Oto misa do płukania złota. Znajdź tylko miejsce w wodzie, gdzie coś błyszczy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="wędka">
+		<type class="tool" subclass="fishing_rod" tileid="-1"/>
+		<description>Oto wędka. Znajdź miejsce, gdzie woda pluszcze, a być może złowisz tam rybę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zaczarowane nożyczki">
+		<type class="tool" subclass="magical_scissors" tileid="-1"/>
+		<description>Oto zaczarowane nożyczki. Tylko pomyśl co nimi możesz uciąć!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zaczarowana igła">
+		<type class="tool" subclass="magical_needle" tileid="-1"/>
+		<description>Oto zaczarowana igła z ostrym końcem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="kilof">
+		<type class="tool" subclass="pick" tileid="-1"/>
+		<description>Oto kilof. Dzięki niemu wykopiesz drogocenne kamienie i surowce.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="łopata">
+		<type class="tool" subclass="shovel" tileid="-1"/>
+		<description>Oto łopata. Być może dzięki niej wykopiesz kiedyś skarb.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes/>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="lina">
+		<type class="tool" subclass="rope" tileid="-1"/>
+		<description>Oto lina. Służy do asekuracji. W niektóre miejsca lepiej się bez niej nie zapuszczać.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes/>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="siekiera">
+		<type class="tool" subclass="siekiera" tileid="-1"/>
+		<description>Oto siekiera. Jeśli masz siłę w rękach zetniesz wiele drzew.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes/>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="złoty róg">
+		<type class="tool" subclass="zloty_rog" tileid="-1"/>
+		<description>Oto złoty róg. Jest ze szczerego złota, zadmij w niego a pomoc przybędzie natychmiast.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes/>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+</items>
+ 

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="śnieżka">
+		<type class="missile" subclass="snowballs" tileid="-1"/>
+		<description>Oto śnieżka. Raczej lepsza do zabawy niż do walki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<attributes>
+			<ratk value="-1"/>
+			<range value="8"/>
+			<quantity value="1"/>
+			<max_quantity value="99"/>
+			<min_level value="20"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="80"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="wymioty">
+		<type class="missile" subclass="vomit" tileid="-1"/>
+		<description>Oto wymioty. Fuj!</description>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<attributes>
+			<ratk value="-1"/>
+			<range value="5"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="strzałka">
+		<type class="missile" subclass="dart" tileid="-1"/>
+		<description>To jest strzałka. Musisz być blisko, żeby użyc jej jako broń.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<ratk value="2"/>
+			<range value="2"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level value="20"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="80"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="płonąca strzałka">
+		<type class="missile" subclass="dart" tileid="-1"/>
+		<description>Oto płonąca strzałka. Musisz być blisko kogoś aby w niego trafić. </description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<ratk value="4"/>
+			<range value="2"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="640"/>
+		<damage type="fire"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="shuriken">
+		<type class="missile" subclass="shuriken" tileid="-1"/>
+		<description>Oto shuriken z dalekiego wschodu. Musisz być blisko kogoś aby w niego trafić.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<ratk value="6"/>
+			<range value="3"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="2160"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="płonący shuriken">
+		<type class="missile" subclass="fire_shuriken" tileid="-1"/>
+		<description>Oto płonący shuriken. Rzucając nim uwalniasz diabelską moc.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<ratk value="12"/>
+			<range value="3"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="2160"/>
+		<damage type="fire"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="włócznia">
+		<type class="missile" subclass="wooden_spear" tileid="-1"/>
+		<description>Widzisz włócznię. Tą prymitywną, drewnianą bronią możesz atakować z dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<ratk value="10"/>
+			<range value="4"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level value="10"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kamienie">
+		<type class="missile" subclass="stones" tileid="-1"/>
+		<description>Oto kamienie. Jeśli tylko nauczysz się nimi miotać, będziesz mógł atakować z daleka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<ratk value="11"/>
+			<range value="6"/>
+			<quantity value="1"/>
+			<max_quantity value="99"/>
+			<min_level value="10"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="2160"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>

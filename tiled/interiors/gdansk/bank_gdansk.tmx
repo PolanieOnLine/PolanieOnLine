@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="38" height="16" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="kafle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <tileset firstgid="81" name="sciany" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/waly/int_plazy.png"/>
+ </tileset>
+ <tileset firstgid="108" name="krzesla" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/lawki_krzesla/krzesla.png"/>
+ </tileset>
+ <tileset firstgid="128" name="drzwi" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/drzwi/door_drewno_int.png"/>
+ </tileset>
+ <tileset firstgid="143" name="green" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/green.png"/>
+ </tileset>
+ <tileset firstgid="152" name="wooden_clock" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/clock/wooden_clock.png"/>
+ </tileset>
+ <tileset firstgid="158" name="oil_paintings" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/picture/oil_paintings.png"/>
+ </tileset>
+ <tileset firstgid="174" name="dark_bookshelf_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/shelve/dark_bookshelf_2.png"/>
+ </tileset>
+ <tileset firstgid="180" name="wooden_pale" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/wooden_pale.png"/>
+ </tileset>
+ <tileset firstgid="184" name="square_pale" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/square_pale.png"/>
+ </tileset>
+ <tileset firstgid="185" name="chest_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chest/chest_2.png"/>
+ </tileset>
+ <tileset firstgid="191" name="small_oil_lamp" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/small_oil_lamp.png"/>
+ </tileset>
+ <tileset firstgid="199" name="flames" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/flames.png"/>
+ </tileset>
+ <tileset firstgid="205" name="iron_lamp" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/iron_lamp.png"/>
+ </tileset>
+ <tileset firstgid="208" name="clothes_rack" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/clothes_rack.png"/>
+ </tileset>
+ <tileset firstgid="210" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="211" name="protection" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/protection.png"/>
+ </tileset>
+ <tileset firstgid="213" name="banner-gdansk" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/banner-gdansk.png"/>
+ </tileset>
+ <layer name="0_floor" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNiYGAQGsUkYyMyMbXNHnXXwLiLkPsoNWfUXYPDXaSaPRTcxYKknxw+IYxsLwsR
+fGz6KeHTMh7J5Y80d41i4jAA3AhhH4AJAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2UWw7CIBBF2aJvrS9kQ751HdqvJtUtGHfkJRmSCdJAp4364SQn7XTKcEKAjlKq
++2P0QB9kYCpkFhkfq4f+H5LXHFzAlZGr97iBu/e+pPFVEasrNndO/3MvafB512BDbGt4+f3a8NLA
+gAfYgT1xoG+u/mkvHr6XJP5e3/Gyd4A921X7y9UlXpqNdXdNas7PW2i9eD2lt2FeAxqvhE87b5Hg
+Zd8XCbnzcp6uVje3fUtwBCfiHPDStDaxPLS//Huwbu6HpF+bXmXA6dnQS4MVYRrk/NxlDfpZrxEY
+t4TfX9pnAl7DcfZfgAkAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoC5YAcQrqWjeOiBej4Q3kGnOGiBei0NuHgG7ybWTErANiHcA8XYc/KEICPlp
+OPiRmmA0vEbBKBgcIAeICyjgEwL5UD3E8pFBKYV8fKCERD4MXKOQDwINQNwIxU1APJ8KZg42AABi
++vz4gAkAAA==
+  </data>
+ </layer>
+ <layer name="3_roof" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoA6YQSVzyAG7gHg3FjYIzKS/c4gCZ4kUozc4R6TYKBjcYDR9jYJRMHjATixi
+F+juilEw2AAA8RUtFoAJAAA=
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUDAY5jETuDxj9AgD8KRgEucAKL2Em6u2IUjILhAQ5QyKeFHaNg6AMABZp6
+KYAJAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQsvoAAAeBoUK4qJgAkAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="38" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2TUQoAIAhDvf/xPFG/IaauFhEo7MOs1xqkIqItimzN69ne1Rk781gVblaIL4Rn
+z63eFPVZvgxfr4uVF7t+y+uEE813fXl/Fumze1A2y1clr/Z135fHQXrP1wmfrdv81xp3glu4gAkA
+AA==
+  </data>
+ </layer>
+ <layer name="protection" width="38" height="16" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3DQQ0AAAwDofNvr4bmYi9IWDVVVd8eWLhip4AJAAA=
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="proca">
+		<type class="wand" subclass="slingshot" tileid="-1"/>
+		<description>Oto proca. Podnieś kamień i atakuj z daleka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="5"/>
+			<range value="4"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="różdżka">
+		<type class="wand" subclass="elvish_wand" tileid="-1"/>
+		<description>Oto różdżka z gałęzi urwanej ze Świętego Drzewa. Gdy nią machasz liście drzew milkną.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="15"/>
+			<def value="5"/>
+			<range value="4"/>
+			<min_level value="100"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="trójząb Trzygłowa">
+		<type class="wand" subclass="magic_trident" tileid="-1"/>
+		<description>Oto trójząb Trzygłowa. Starcy mówią, iż posiada magiczną moc i potrafi nieźle ugodzić wroga.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="24"/>
+			<def value="6"/>
+			<range value="5"/>
+			<min_level value="150"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="różdżka Strzyboga">
+		<type class="wand" subclass="magic_wand_white" tileid="-1"/>
+		<description>Oto różdżka Strzyboga! Podobno ma moc sprowadzania deszczu i odganiania chmur.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="35"/>
+			<def value="7"/>
+			<range value="6"/>
+			<min_level value="175"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="różdżka Wołosa">
+		<type class="wand" subclass="magic_wand_blue" tileid="-1"/>
+		<description>Oto różdżka Wołosa co spadła z Nieba! Wielką moc ma, gdy magią władasz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="56"/>
+			<def value="8"/>
+			<range value="7"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="4.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="różdżka Swaroga">
+		<type class="wand" subclass="magic_wand_red" tileid="-1"/>
+		<description>Oto różdżka Swaroga co upadła ze Słońca! Wielką moc ma, gdy magią władasz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="63"/>
+			<def value="9"/>
+			<range value="8"/>
+			<min_level value="300"/>
+		</attributes>
+		<weight value="5.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="różdżka Peruna">
+		<type class="wand" subclass="magic_wand_of_gods" tileid="-1"/>
+		<description>Oto różdżka Peruna. Lepiej nie przyznawaj się, że ją znalazłeś, bo jego gniew cię porazi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="99"/>
+			<def value="10"/>
+			<range value="9"/>
+			<min_level value="400"/>
+		</attributes>
+		<weight value="5.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>

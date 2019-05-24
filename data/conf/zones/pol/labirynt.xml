@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom.
+		** Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<zone name="7_labirynt" level="7" x="499744" y="499872" file="interiors/abstract/labirynt.tmx">
+		<!--
+			Don't allow teleporting in as we don't want marked scrolls made or ring
+			abused
+		-->
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<entity x="4" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">Użyj portalu za ścianą</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+
+		<portal x="11" y="84" ref="klatka1_entrance">
+			<destination zone="7_labirynt" ref="klatka1_exit"/>
+		</portal>
+		<portal x="9" y="86" ref="klatka1_exit">
+			<destination zone="7_labirynt" ref="klatka1_entrance"/>
+		</portal>
+		<portal x="121" y="120" ref="klatka2_entrance">
+			<destination zone="7_labirynt" ref="klatka2_exit"/>
+		</portal>
+		<portal x="121" y="122" ref="klatka2_exit">
+			<destination zone="7_labirynt" ref="klatka2_entrance"/>
+		</portal>
+		<portal x="126" y="71"	ref="lab1_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="103" y="125" ref="lab1">
+			<destination zone="7_labirynt" ref="lab1_destination"/>
+		</portal>
+		<portal x="100" y="62" ref="klatka3_entrance">
+			<destination zone="7_labirynt" ref="klatka3_exit"/>
+		</portal>
+		<portal x="100" y="60" ref="klatka3_exit">
+			<destination zone="7_labirynt" ref="klatka3_entrance"/>
+		</portal>
+		<portal x="35" y="27" ref="klatka4_entrance">
+			<destination zone="7_labirynt" ref="klatka4_exit"/>
+		</portal>
+		<portal x="35" y="29" ref="klatka4_exit">
+			<destination zone="7_labirynt" ref="klatka4_entrance"/>
+		</portal>
+		<portal x="11" y="12" ref="klatka5_entrance">
+			<destination zone="7_labirynt" ref="klatka5_exit"/>
+		</portal>
+		<portal x="10" y="14" ref="klatka5_exit">
+			<destination zone="7_labirynt" ref="klatka5_entrance"/>
+		</portal>
+		<portal x="123" y="8" ref="klatka6_etrance">
+			<destination zone="7_labirynt" ref="klatka6_exit"/>
+		</portal>
+		<portal x="125" y="6" ref="klatka6_exit">
+			<destination zone="7_labirynt" ref="klatka6_etrance"/>
+		</portal>
+		<portal x="100" y="92" ref="klatka7_etrance">
+			<destination zone="7_labirynt" ref="klatka7_exit"/>
+		</portal>
+		<portal x="100" y="90" ref="klatka7_exit">
+			<destination zone="7_labirynt" ref="klatka7_etrance"/>
+		</portal>
+		<portal x="47" y="83" ref="klatka8_etrance">
+			<destination zone="7_labirynt" ref="klatka8_exit"/>
+		</portal>
+		<portal x="47" y="81" ref="klatka8_exit">
+			<destination zone="7_labirynt" ref="klatka8_etrance"/>
+		</portal>
+		<portal x="56" y="80" ref="lab2_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="20" y="5" ref="lab2">
+			<destination zone="7_labirynt" ref="lab2_destination"/>
+		</portal>
+		<portal x="1" y="125" ref="lab3_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="63" y="11" ref="lab3">
+			<destination zone="7_labirynt" ref="lab3_destination"/>
+		</portal>
+		<portal x="29" y="40" ref="lab4_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="94" y="77" ref="lab4">
+			<destination zone="0_semos_city" ref="lab4_destination"/>
+		</portal>
+		<portal x="0" y="125" ref="lab5_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="4" y="11" ref="lab5">
+			<destination zone="7_labirynt" ref="lab5_destination"/>
+		</portal>
+		<portal x="1" y="126" ref="lab6_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="32" y="103" ref="lab6">
+			<destination zone="7_labirynt" ref="lab6_destination"/>
+		</portal>
+		<portal x="0" y="126" ref="lab7_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="1" y="73" ref="lab7">
+			<destination zone="7_labirynt" ref="lab7_destination"/>
+		</portal>
+		<portal x="2" y="125" ref="lab8_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="23" y="28" ref="lab8">
+			<destination zone="7_labirynt" ref="lab8_destination"/>
+		</portal>
+		<portal x="2" y="126" ref="lab9_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="3" y="25" ref="lab9">
+			<destination zone="7_labirynt" ref="lab9_destination"/>
+		</portal>
+		<portal x="3" y="125" ref="lab10_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="3" y="22" ref="lab10">
+			<destination zone="7_labirynt" ref="lab10_destination"/>
+		</portal>
+	</zone>
+</zones>

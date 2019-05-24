@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: gnome -->
+
+	<creature name="gnom">
+		<type class="stendhal/gnome" subclass="gnome" tileid="gnome.png:0"/>
+		<description>Oto gnom. Żyje w górach.</description>
+		<attributes>
+			<atk value="51"/>
+			<def value="7"/>
+			<hp value="50"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="tiny_humanoid" harmless="gnome" />
+		<drops>
+			<item value="money" quantity="[2,5]" probability="70.0"/>
+			<item value="mały eliksir" quantity="[1,1]" probability="5.0"/>
+			<item value="pieczarka" quantity="[3,6]" probability="10.0"/>
+			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
+			<item value="puklerz" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Gigaaaanty! Uciekaaaaj!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="panna gnom">
+		<type class="stendhal/gnome" subclass="woman_gnome" tileid="gnome.png:1"/>
+		<description>Oto panna gnom. Wciąż poleruje skały w górach.</description>
+		<attributes>
+			<atk value="52"/>
+			<def value="7"/>
+			<hp value="50"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="tiny_humanoid" harmless="gnome" />
+		<drops>
+			<item value="money" quantity="[2,5]" probability="70.0"/>
+			<item value="mały eliksir" quantity="[1,1]" probability="2.5"/>
+			<item value="antidotum" quantity="[1,1]" probability="10.0"/>
+			<item value="borowik" quantity="[1,10]" probability="10.0"/>
+			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Gigaaaanty! Uciekaaaajmy!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: gnome -->
+
+	<!-- START: militant -->
+
+	<creature name="gnom zwiadowca">
+		<type class="stendhal/gnome" subclass="infantryman" tileid="gnome_patrol.png:0"/>
+		<description>Oto gnom zwiadowca. Będzie bronił wioski póki... nie ucieknie.</description>
+		<attributes>
+			<atk value="58"/>
+			<def value="15"/>
+			<hp value="60"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="tiny_humanoid" harmless="gnome_military" />
+		<drops>
+			<item value="money" quantity="[4,10]" probability="70.0"/>
+			<item value="marchew" quantity="[2,10]" probability="20.0"/>
+			<item value="borowik" quantity="[1,10]" probability="10.0"/>
+			<item value="buteleczka wody" quantity="[1,1]" probability="20.0"/>
+			<item value="proca" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+					<slot name="rhand" item="sztylecik"/>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Gotowy, aby uciekać?"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="gnom kawalerzysta">
+		<type class="stendhal/gnome" subclass="cavalryman" tileid="gnome_patrol.png:1"/>
+		<description>Oto gnom kawalerzysta. Zapuszcza się daleko szukając złota.</description>
+		<attributes>
+			<atk value="90"/>
+			<def value="14"/>
+			<hp value="65"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="tiny_humanoid" harmless="gnome_military" />
+		<drops>
+			<item value="money" quantity="[6,14]" probability="70.0"/>
+			<item value="buty kolcze" quantity="[1,1]" probability="15.0"/>
+			<item value="kapelusz leśniczego" quantity="[1,1]" probability="20.0"/>
+			<item value="buteleczka wody" quantity="[1,1]" probability="20.0"/>
+			<item value="skóra zwierzęca" quantity="[1,1]" probability="6.0"/>
+			<item value="proca" quantity="[1,1]" probability="40.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Przygotowany do ucieczki?"/>
+				<sound value="pig-3" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: militant -->
+
+</creatures>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/brown_2.png"/>
+ </tileset>
+ <tileset firstgid="3" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_fancy_purple.png"/>
+ </tileset>
+ <tileset firstgid="15" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_purple.png"/>
+ </tileset>
+ <tileset firstgid="35" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_pale.png"/>
+ </tileset>
+ <tileset firstgid="51" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/pale_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="87" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/wooden_pale.png"/>
+ </tileset>
+ <tileset firstgid="88" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/stool.png"/>
+ </tileset>
+ <tileset firstgid="89" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/picture/small.png"/>
+ </tileset>
+ <tileset firstgid="92" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/table_with_hob_pale.png"/>
+ </tileset>
+ <tileset firstgid="95" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/food/meals_1.png"/>
+ </tileset>
+ <tileset firstgid="97" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/rock/green_crystal.png"/>
+ </tileset>
+ <tileset firstgid="106" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/portal.png"/>
+ </tileset>
+ <tileset firstgid="122" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="123" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/bed/side_on.png"/>
+ </tileset>
+ <tileset firstgid="125" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/kobold.png"/>
+ </tileset>
+ <layer name="0_floor" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNkYGBgHMWjeBQPGAYAv/M/3IQDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAANNjYGBQIQPrArEaEEsBsRgJWBKIVaF6RRjwgxggjoXiOCAWJkEvOhjVO6qXGL0S
+QCyKho2B2ASITbHIiQMxDxDrALEyFmwPxA5A7IhDXhuIAbumXneEAwAA
+  </data>
+ </layer>
+ <layer name="2_object" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNggIBoBuJAJJHqqAHigTgWiuPoaC8hkDnQDkAC4UAcQYS6aiCuQRMjRt9QAIMp
+PsgBAACYiNiEAwAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGLogmQK9aVRzxSiAgdH4IA8AAMA5QDKEAwAA
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUjCdQOtAOGKMijodkAWah0cIQDAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="15" height="15" opacity="0.44">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAKtiYGCoGkCMD1Cil5BZlOglRT+t3YxPnFx3D5ZwJlcfNeIXm3m0ygMAbyznAYQD
+AAA=
+  </data>
+ </layer>
+ <layer name="protection" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="figurka aniołka">
+		<type class="relic" subclass="angel_figurine" tileid="-1"/>
+		<description>Oto świecąca figurka aniołka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień z czaszką">
+		<type class="relic" subclass="skull_ring" tileid="-1"/>
+		<description>Oto pierścień z czaszką.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="amulet">
+		<type class="relic" subclass="amulet" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="ankh">
+		<type class="relic" subclass="ankh" tileid="-1"/>
+		<description>Oto tajemniczy symbol, który widziałeś w kraju piramid. Nie wiesz do czego służy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+</items>

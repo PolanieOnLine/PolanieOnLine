@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="40" height="19" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grey_fancy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/grey_fancy.png"/>
+ </tileset>
+ <tileset firstgid="10" name="grey_plain" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/grey_plain.png"/>
+ </tileset>
+ <tileset firstgid="19" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="20" name="protection" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/protection.png"/>
+ </tileset>
+ <tileset firstgid="22" name="chair_colorful" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/colorful.png"/>
+ </tileset>
+ <tileset firstgid="38" name="kafelki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <tileset firstgid="118" name="filiz" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/bibeloty_na_stol.png"/>
+ </tileset>
+ <tileset firstgid="132" name="stolik" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/stoly/wiezienie_stolik.png"/>
+ </tileset>
+ <tileset firstgid="138" name="okno" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/window/lighted_window.png"/>
+ </tileset>
+ <tileset firstgid="139" name="butle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/drink/bottles_and_cups.png"/>
+ </tileset>
+ <tileset firstgid="155" name="parawan" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/oriental_screen.png"/>
+ </tileset>
+ <tileset firstgid="159" name="loze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/bed/single_white2.png"/>
+ </tileset>
+ <tileset firstgid="162" name="kordelka" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/bed/single_white2_top_sheet.png"/>
+ </tileset>
+ <tileset firstgid="163" name="sciany_kamienne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/sciany_kamienne.png"/>
+ </tileset>
+ <layer name="0_floor" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAEthYGBIGcWjmAicDMXUEB9136j7Rt1HW/cl0xBTO8wGwn2hgzh+Q5HwYHTfYA8/
+StLiqPvI88dgdx89sSkSHkh3AACncDFW4AsAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFvFwMCwFog3kIDXAPEqKCZVLzl2rAbibSTglRToJdcOJhIwut49NMDodggAsSAR
+WAiL3hYGTNBCoTi6HaQAdL3tWNS0UyiObocZCZgSvxEL0O1QhmIVIFZC4mMTW8+AyGcb6eQ+UsBW
+BkQ+2w7Ec4F4HpI8jE+JOCXu282AyGd7SdRLLKBHGqIEDGf3DUT+pZdeetiBrnew5d/R+m1opT9y
+ACV6SbUDHaOHyUo8ammNAdPc3f7gCwAA
+  </data>
+ </layer>
+ <layer name="2_object" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGDmgC4opFR9poBaI5yPxQex6IO7GIg5S24xFfBpUD7I4NcECGrCRQQ0QN0DZ
+lTjUNAFxNQ65hTRgj4JRMApGwSigDJQzYNZXPUBcgUUcVL+h12Mg9hQGzHqSmmABDdjUBKP12+AE
+ALoBWj3gCwAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGFqgiwj2QIB+KJ4AxBOheBIQTwPiPiCeAcTTgbh3oBw4zMEiCti4zBkpYDYQ
+z8HCp1R8FIwCbGAxEC+B4qUD7JbhAEbz7/AHlNRvxNR7gxksZ0CUF9jKjMVo8svw6KUWRrZjMAMA
+uQ+7XuALAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQ0AAADCoPdPbQ8HFAAA8GLq+e194AsAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNmYGAQHsXDHpMCCJlBDXFquo8WgNphjx4elLKHWvhRonc0/Q0+MJzdN9jjd6i5
+b7Dn38HuPloAaruPGnUaMnuohR8+OwmppSUGAIhZSRDgCwAA
+  </data>
+ </layer>
+ <layer name="protection" width="40" height="19">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3DAQkAAAwEoQvx/bOux1Bw1VRV1RcPTO7fDOALAAA=
+  </data>
+ </layer>
+</map>

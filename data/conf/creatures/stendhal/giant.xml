@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: amazon -->
+	<creature name="amazonka olbrzymia">
+		<type class="stendhal/giant_human" subclass="amazoness_giant" tileid="giant_human.png:10"/>
+		<description>Oto amazonka olbrzymia. Wygląda pięknie lecz niech cię to nie zwiedzie!</description>
+		<attributes>
+			<atk value="974"/>
+			<def value="124"/>
+			<hp value="2218"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="175"/>
+		<experience value="24217"/>
+		<respawn value="17300"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[80,100]" probability="100.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="wielki eliksir" quantity="[2,5]" probability="80.0"/>
+			<item value="zbroja karmazynowa" quantity="[1,1]" probability="20.0"/>
+			<item value="karmazynowa tarcza" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="20,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: amazon -->
+
+	<!-- START: human -->
+	<creature name="olbrzym">
+		<type class="stendhal/giant_human" subclass="giant" tileid="giant_human.png:1"/>
+		<description>Oto olbrzym. Jego fizyczne proporcje i jego nadludzka siła przyprawiają cię o gęsią skórkę.</description>
+		<attributes>
+			<atk value="703"/>
+			<def value="93"/>
+			<hp value="1200"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="110"/>
+		<experience value="10973"/>
+		<respawn value="5400"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="80.0"/>
+			<item value="pas olbrzymi" quantity="[1,1]" probability="1.0"/>
+			<item value="money" quantity="[30,150]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ence pence, miecz mam w której rece?!"/>
+				<noise state="idle follow fight" value="Miecz mam ostry i wbije Ci go w serce!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="olbrzym starszy">
+		<type class="stendhal/giant_human" subclass="giant_elder" tileid="giant_human.png:0"/>
+		<description>Oto olbrzym starszy. Od wielu lat żyje samotnie i ukrywa się przed ludźmi! Teraz jest starszy i postanowił zerwać z ukrywaniem, aby zobaczyć w życiu coś więcej.</description>
+		<attributes>
+			<atk value="826"/>
+			<def value="96"/>
+			<hp value="1800"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="135"/>
+		<experience value="15511"/>
+		<respawn value="8800"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,4]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="money" quantity="[30,200]" probability="100.0"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
+			<item value="pas olbrzymi" quantity="[1,1]" probability="1.7"/>
+			<item value="miecz orków" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Gnomy! Precz stąd!"/>
+				<noise state="idle follow fight" value="Możesz wydrzeć mi sakwę, lecz mego serca nie oddam!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="olbrzym mistrz">
+		<type class="stendhal/giant_human" subclass="master_giant" tileid="giant_human.png:9"/>
+		<description>Oto olbrzym mistrz. Jego krew jest głośno pompowana do jego serca.</description>
+		<attributes>
+			<atk value="850"/>
+			<def value="98"/>
+			<hp value="2000"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="144"/>
+		<experience value="17050"/>
+		<respawn value="12800"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="money" quantity="[50,200]" probability="100.0"/>
+			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.6"/>
+			<item value="pałasz" quantity="[1,1]" probability="1.0"/>
+			<item value="pas olbrzymi" quantity="[1,1]" probability="2.0"/>
+			<item value="złota klinga orków" quantity="[1,1]" probability="0.01"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Gińże wreszcie!"/>
+				<noise state="idle follow fight" value="Robaki niech toczą twe ścierwo!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="czarny olbrzym">
+		<type class="stendhal/giant_human" subclass="black_giant" tileid="giant_human.png:3"/>
+		<description>Oto czarny olbrzym. Jego zbroja i miecz zadają mocne ciosy. Bądź gotowy!</description>
+		<attributes>
+			<atk value="1154"/>
+			<def value="119"/>
+			<hp value="4300"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="220"/>
+		<experience value="55848"/>
+		<respawn value="32000"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="money" quantity="[200,2000]" probability="100.0"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.05"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.25"/>
+			<item value="czarny płaszcz" quantity="[1,1]" probability="1.0"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="0.5"/>
+			<item value="czarny miecz" quantity="[1,1]" probability="0.5"/>
+			<item value="czarny pas" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.6"/>
+			<susceptibility type="light" value="1.33"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Któż śmiał mnie wyzwać?"/>
+				<noise state="idle follow fight" value="Odejdź póki nie jest za późno!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+			<profile name="strategy" params="archer,attack weakest,dual attack"/>
+		</ai>
+	</creature>
+	<!-- END: human -->
+
+	<!-- START: imperial -->
+	<creature name="imperialny generał gigant">
+		<type class="stendhal/giant_human" subclass="imperial_general_giant" tileid="giant_human.png:8"/>
+		<description></description>
+		<attributes>
+			<atk value="738"/>
+			<def value="100"/>
+			<hp value="1100"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="116"/>
+		<experience value="12170"/>
+		<respawn value="6400"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="60.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="80.0"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.01"/>
+			<item value="czarny płaszcz" quantity="[1,1]" probability="0.005"/>
+			<item value="pas olbrzymi" quantity="[1,1]" probability="0.05"/>
+			<item value="półtorak" quantity="[1,1]" probability="1.5"/>
+			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
+			<item value="gigantyczny eliksir" quantity="[1,1]" probability="0.50"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,40"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+	<!-- END: imperial -->
+
+	<!-- START: kobold -->
+	<creature name="kobold olbrzymi">
+		<type class="stendhal/huge_animal" subclass="giant_kobold" tileid="huge_animal.png:4"/>
+		<description>Oto kobold olbrzymi. Choć jest zabawny to nie jest świadomy swej siły. Kiedy zaproponuje przytulenie to najjlepiej jest odrzucić jego szczodrą ofertę.</description>
+		<attributes>
+			<atk value="440"/>
+			<def value="57"/>
+			<hp value="400"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="55"/>
+		<experience value="3071"/>
+		<respawn value="1650"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[10,60]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[1,4]" probability="50.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="1.0"/>
+			<item value="kropacz" quantity="[1,1]" probability="0.0005"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Huu?"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="lifesteal" params="0.3"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: kobold -->
+
+	<!-- START: madaram -->
+	<creature name="kasarkutominubat">
+		<type class="stendhal/madaram" subclass="kasarkutominubat" tileid="madaram.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="606"/>
+			<def value="86"/>
+			<hp value="850"/>
+			<speed value="0.6"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="87"/>
+		<experience value="6916"/>
+		<respawn value="3350"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[5,95]" probability="100.0"/>
+			<item value="płaszcz mainiocyjski" quantity="[1,1]" probability="1.6"/>
+			<item value="buty cieni" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+  <!-- END: madaram -->
+</creatures>

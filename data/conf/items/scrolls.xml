@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="zwój przywołania">
+		<type class="scroll" subclass="summon" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.SummonScroll"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="zwój nalwor">
+		<type class="scroll" subclass="nalwor" tileid="-1"/>
+		<description>Oto zwój nalwor, który przeniesie cię do miasta elfów Nalwor.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_nalwor_city 40 60"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój ados">
+		<type class="scroll" subclass="ados" tileid="-1"/>
+		<description>Oto zwój ados, który przeniesie cię do miasta Ados.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_ados_city_n 50 50"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój fado">
+		<type class="scroll" subclass="fado" tileid="-1"/>
+		<description>Oto zwój fado, który przeniesie cię do miasta Fado.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_fado_city 40 30"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój kirdneh">
+		<type class="scroll" subclass="kirdneh" tileid="-1"/>
+		<description>Oto zwój kirdneh, który przeniesie cię do miasta Kirdneh.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_kirdneh_city 63 85"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój kalavan">
+		<type class="scroll" subclass="kalavan" tileid="-1"/>
+		<description>Oto zwój kalavan, który przeniesie cię do miasta Kalavan.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_kalavan_city 64 17"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój zapisany">
+		<type class="scroll" subclass="marked" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój weselny">
+		<type class="scroll" subclass="invitation" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.InvitationScroll"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój semos">
+		<type class="scroll" subclass="semos" tileid="-1"/>
+		<description>Oto zwój semos, który przeniesie cię do miasta Semos.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_semos_city 30 40"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="niezapisany zwój">
+		<type class="scroll" subclass="empty" tileid="-1"/>
+		<description>Oto niezapisany zwój, który magicznie zapisze się w miejscu gdzie użyjesz go pierwszy raz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.EmptyScroll"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="4000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="magiczne fasolki">
+		<type class="scroll" subclass="rainbow_beans" tileid="-1"/>
+		<description>Oto magiczne fasolki. Po ich użyciu możesz czuć się nieco oszołomiony.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.RainbowBeansScroll"/>
+		<attributes>
+			<infostring value="1_dreamscape 77 35 10000 0_zakopane_c 60 32"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="balonik">
+		<type class="scroll" subclass="balloon" tileid="-1"/>
+		<description>Oto czerwony balonik. Jeśli nie ważysz zbyt dużo może unieść cię prosto do chmur.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.BalloonScroll"/>
+		<attributes>
+			<infostring value="7_kikareukin_clouds 31 12 20000 6_kikareukin_islands -1 -1"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="mroczny mech">
+		<type class="scroll" subclass="twilightmoss" tileid="-1"/>
+		<description>Oto mroczny mech. Jego użycie może wpędzić cię w halucynacje.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.TwilightMossScroll"/>
+		<attributes>
+			<infostring value="int_ados_twilight_zone 12 20 20000 int_ados_sewing_room -1 -1"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój tatrzański">
+		<type class="scroll" subclass="zakopane" tileid="-1"/>
+		<description>Oto zwój tatrzański, który przeniesie cię niedaleko Tatr.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_zakopane_s 30 40"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój krakowski">
+		<type class="scroll" subclass="grod_kraka" tileid="-1"/>
+		<description>Oto zwój krakowski, który przeniesie cię do grodu, pełnego smoków i dzielnych rycerzy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_krakow_wawel_w 96 80"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zwój wieliczka">
+		<type class="scroll" subclass="wieliczka" tileid="-1"/>
+		<description>Oto zwój wieliczka, który przeniesie cię do miejsca, gdzie znajdziesz niezliczone pokłady soli.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+		<attributes>
+			<infostring value="0_wieliczka_c 69 57"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="bilet na mecz">
+		<type class="scroll" subclass="bilet_na_mecz" tileid="-1"/>
+		<description>Oto bilet na mecz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.FreeScroll"/>
+		<attributes>
+			<infostring value="1_football_playground 31 45"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="bilet turystyczny">
+		<type class="scroll" subclass="last_minute" tileid="-1"/>
+		<description>Oto bilet turystyczny. Przeniesie cię na chwilę do dziwnej krainy, gdzie możesz zwiedzać dziwne, szpiczaste budowle.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.LastMinuteScroll"/>
+		<attributes>
+			<infostring value="0_desert_pyramid_nw 120 6 32400 0_semos_city 30 40"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="magiczny bilet">
+		<type class="scroll" subclass="black" tileid="-1"/>
+		<description>Oto magiczny bilet. Przeniesie cię w miejsce, gdzie czeka cię chwała lub śmierć.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.MagicznyScroll"/>
+		<attributes>
+			<infostring value="7_labirynt 1 125 40000 0_zakopane_c 60 32"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="biały balonik">
+		<type class="scroll" subclass="balonik" tileid="-1"/>
+		<description>Oto biały balonik. Jeśli nie ważysz zbyt dużo może unieść cię wysoko ponad góry.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.BalloonScroll"/>
+		<attributes>
+			<infostring value="6_zakopane_clouds 8 6 10000 0_tatry_dolina_koscieliska_n 70 5"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+</items>

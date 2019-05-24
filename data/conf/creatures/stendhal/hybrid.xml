@@ -1,0 +1,982 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: arachnid -->
+
+	<creature name="arachne">
+		<type class="stendhal/hybrid" subclass="arachne" tileid="hybrid.png:13"/>
+		<description>Oto Arachne, w połowie kobieta - w połowie pająk. Każdą z kończyn może zadawać głębokie rany, które natychmiast toczyć zacznie zaraza.</description>
+		<attributes>
+			<atk value="666"/>
+			<def value="171"/>
+			<hp value="8000"/>
+			<speed value="0.9"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="350"/>
+		<experience value="64896"/>
+		<respawn value="70000"/>
+		<corpse name="huge_animal" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[2000,10000]" probability="80.0"/>
+			<item value="gruczoł przędzy" quantity="[1,3]" probability="20.0"/>
+			<item value="bardzo mocna trucizna" quantity="[1,2]" probability="10.0"/>
+			<item value="pierścień leczniczy" quantity="[1,1]" probability="1.0" />
+		</drops>
+		<equips>
+			<slot name="rhand" item="sztylet mroku"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="animal"/>
+			<profile name="poisonous" params="4,bardzo mocna trucizna"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: arachnid -->
+
+	<!-- START: feline -->
+
+	<creature name="kobieta kot">
+		<type class="stendhal/mutant" subclass="cat_woman" tileid="mutant.png:5"/>
+		<description>Oto kobieta kot. Jest zwinna, cicha, szybka i ostra więc skoncentruj się i nie daj się pociąć!</description>
+		<attributes>
+			<atk value="329"/>
+			<def value="84"/>
+			<hp value="160"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="39"/>
+		<experience value="2014"/>
+		<respawn value="1500"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="butelka wody" quantity="[1,3]" probability="10.0"/>
+			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.5"/>
+			<item value="okoń" quantity="[1,1]" probability="1.0"/>
+			<item value="czarny sztylet" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,30"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: feline -->
+
+	<!-- START: frogman -->
+
+	<creature name="żabiczłek">
+		<type class="stendhal/frogman" subclass="frogman" tileid="frogman.png:1"/>
+		<description>Oto żabiczłek, mieszkaniec jeziora.</description>
+		<attributes>
+			<atk value="171"/>
+			<def value="33"/>
+			<hp value="98"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="364"/>
+		<respawn value="1230"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,19]" probability="100.0"/>
+			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="6.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="1.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.5"/>
+			<item value="tarcza płytowa" quantity="[1,1]" probability="1.0"/>
+			<item value="buty lazurowe" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="mutant-frog-1" />
+				<sound value="mutant-frog-2" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="żabiczłek elitarny">
+		<type class="stendhal/frogman" subclass="caped_frogman" tileid="frogman.png:0"/>
+		<description>Oto żabiczłek elitarny. Jego wielkie oczy przyprawiają ciebie o dreszcze!</description>
+		<attributes>
+			<atk value="257"/>
+			<def value="50"/>
+			<hp value="156"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="26"/>
+		<experience value="950"/>
+		<respawn value="1310"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,30]" probability="100.0"/>
+			<item value="pstrąg" quantity="[1,1]" probability="10.0"/>
+			<item value="lazurowa tarcza" quantity="[1,1]" probability="2.0"/>
+			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="2.0"/>
+			<item value="spodnie lazurowe" quantity="[1,1]" probability="1.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="mutant-frog-1" />
+				<sound value="mutant-frog-2" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="żabiczłek czarodziej">
+		<type class="stendhal/frogman" subclass="wizard_frogman" tileid="frogman.png:2"/>
+    <description>Oto żabiczłek czarodziej. Jego różdżka i magiczny płaszcz świadczą o jego mądrości i mocy.</description>
+		<attributes>
+			<atk value="305"/>
+			<def value="57"/>
+			<hp value="210"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="34"/>
+		<experience value="1457"/>
+		<respawn value="1410"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="dorsz" quantity="[1,4]" probability="20.0"/>
+			<item value="magia ziemi" quantity="[1,3]" probability="10.0"/>
+			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="1.0"/>
+			<item value="buty lazurowe" quantity="[1,1]" probability="1.5"/>
+			<item value="lazurowy hełm" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="mutant-frog-1" />
+				<sound value="mutant-frog-2" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<!-- END: frogman -->
+
+	<!-- START: kobold -->
+
+	<creature name="kobold">
+		<type class="stendhal/kobold" subclass="kobold" tileid="kobold.png:1"/>
+		<description>Oto kobold. We wsi gadają, że to mityczny duch.</description>
+		<attributes>
+			<atk value="88"/>
+			<def value="16"/>
+			<hp value="50"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[2,6]" probability="90.0"/>
+			<item value="skórzane spodnie" quantity="[1,1]" probability="10.0"/>
+			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
+			<item value="skórzany kirys" quantity="[1,1]" probability="2.0"/>
+			<item value="skórzany pas" quantity="[1,1]" probability="4.5"/>
+			<item value="toporek" quantity="[1,1]" probability="1.3"/>
+			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
+			<item value="puklerz" quantity="[1,1]" probability="0.5"/>
+			<item value="mieczyk" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Wrrrr! Hau!"/>
+				<sound value="panda-1"/>
+				<sound value="panda-2"/>
+				<sound value="racoon-1"/>
+				<sound value="lama-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kobold żołnierz">
+		<type class="stendhal/kobold" subclass="soldier_kobold" tileid="kobold.png:3"/>
+		<description>Oto kobold żołnierz. Broni zaciekle swego króla.</description>
+		<attributes>
+			<atk value="105"/>
+			<def value="20"/>
+			<hp value="65"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="7"/>
+		<experience value="70"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,11]" probability="90.0"/>
+			<item value="skórzana zbroja łuskowa" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja ćwiekowa" quantity="[1,1]" probability="6.0"/>
+			<item value="spodnie nabijane ćwiekami" quantity="[1,1]" probability="8.0"/>
+			<item value="topór jednoręczny" quantity="[1,1]" probability="1.4"/>
+			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
+			<item value="skórzany hełm" quantity="[1,1]" probability="1.0"/>
+			<item value="drewniana tarcza" quantity="[1,1]" probability="1.3"/>
+			<item value="kolczany pas" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Hau! Hauu!"/>
+				<sound value="panda-1"/>
+				<sound value="panda-2"/>
+				<sound value="raccoon-1"/>
+				<sound value="lama-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kobold łucznik">
+		<type class="stendhal/kobold" subclass="archer_kobold" tileid="kobold.png:0"/>
+		<description>Oto kobold łucznik, który trzyma się z daleka od napastnika.</description>
+		<attributes>
+			<atk value="115"/>
+			<def value="28"/>
+			<hp value="40"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="8"/>
+		<experience value="80"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,10]" probability="90.0"/>
+			<item value="skórzana zbroja łuskowa" quantity="[1,1]" probability="10.0"/>
+			<item value="strzała" quantity="[3,12]" probability="6.0"/>
+			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
+			<item value="drewniany łuk" quantity="[1,1]" probability="0.5"/>
+			<item value="złoty kolczany pas" quantity="[1,1]" probability="1.25"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała" quantity="10000" />
+			<slot name="rhand" item="drewniany łuk" quantity="1" />
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Hssss! Hau sss!"/>
+				<sound value="panda-1"/>
+				<sound value="panda-2"/>
+				<sound value="raccoon-1"/>
+				<sound value="lama-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kobold weteran">
+		<type class="stendhal/kobold" subclass="veteran_kobold" tileid="kobold.png:4"/>
+		<description>Oto kobold weteran. Nieźle włada bronią.</description>
+		<attributes>
+			<atk value="125"/>
+			<def value="31"/>
+			<hp value="50"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="9"/>
+		<experience value="90"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,13]" probability="90.0"/>
+			<item value="drewniana tarcza" quantity="[1,1]" probability="10.0"/>
+			<item value="tarcza płytowa" quantity="[1,1]" probability="50.0"/>
+			<item value="kiścień" quantity="[1,1]" probability="10.0"/>
+			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
+			<item value="topór" quantity="[1,1]" probability="2.0"/>
+			<item value="buty nabijane ćwiekami" quantity="[1,1]" probability="0.5"/>
+			<item value="skórzany hełm" quantity="[1,1]" probability="1.5"/>
+			<item value="krótki miecz" quantity="[1,1]" probability="1.0"/>
+			<item value="złoty kolczany pas" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="panda-1"/>
+				<sound value="panda-2"/>
+				<sound value="raccoon-1"/>
+				<sound value="lama-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kobold lider">
+		<type class="stendhal/kobold" subclass="leader_kobold" tileid="kobold.png:2"/>
+		<description>Oto kobold lider. Jeden z wielkich wojowników.</description>
+		<attributes>
+			<atk value="155"/>
+			<def value="39"/>
+			<hp value="65"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="13"/>
+		<experience value="314"/>
+		<respawn value="1220"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,20]" probability="90.0"/>
+			<item value="kolczuga" quantity="[1,1]" probability="8.0"/>
+			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="1.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="0.05"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.0050"/>
+			<item value="topór bojowy" quantity="[1,1]" probability="1.5"/>
+			<item value="buty kolcze" quantity="[1,1]" probability="1.5"/>
+			<item value="buteleczka wody" quantity="[1,2]" probability="1.5"/>
+			<item value="hełm kolczy" quantity="[1,1]" probability="3.0"/>
+			<item value="tarcza płytowa" quantity="[1,1]" probability="0.5"/>
+			<item value="kolczany pas" quantity="[1,1]" probability="3.25"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="panda-1"/>
+				<sound value="panda-2"/>
+				<sound value="raccoon-1"/>
+				<sound value="lama-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<!-- END: kobold -->
+	
+	<!-- START mermaid -->
+    	<creature name="mermaid">
+	    <type class="stendhal/hybrid" subclass="mermaid" tileid="hybrid.png:15"/>
+	    <description>Oto mermaid. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
+	    <attributes>
+	      <atk value="547"/>
+	      <def value="76"/>
+	      <hp value="680"/>
+	      <speed value="1.0"/>
+	      <size value="1,1"/>
+	    </attributes>
+	    <level value="76"/>
+	    <experience value="5406"/>
+	    <respawn value="2570"/>
+	    <corpse name="humanoid"/>
+	    <drops>
+	      <item value="money" quantity="[10,50]" probability="100.0"/>
+	      <item value="mocne antidotum" quantity="[1,3]" probability="70.0"/>
+	      <item value="duży eliksir" quantity="[1,2]" probability="35.0"/>
+	       <item value="czarna perła" quantity="[1,1]" probability="30.0"/>
+	    </drops>
+	    <equips>
+	    </equips>
+	    <ai>
+	      <profile name="offensive"/>
+	      <profile name="human"/>
+	      <profile name="heal" params="5,30"/>
+	      <profile name="patrolling"/>
+	    </ai>
+	</creature>
+	  
+	<!-- END mermaid -->
+
+	<!-- START: minotaur -->
+
+	<creature name="minotaur">
+		<type class="stendhal/minotaur" subclass="minotaur" tileid="minotaur.png:1"/>
+		<description>Oto minotaur. Wydostał się jakoś ze swojej samotni i biega wściekły!</description>
+		<attributes>
+			<atk value="373"/>
+			<def value="122"/>
+			<hp value="125"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="45"/>
+		<experience value="2925"/>
+		<respawn value="1620"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,46]" probability="100.0"/>
+			<item value="niezapisany zwój" quantity="[1,1]" probability="1.0"/>
+			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="7.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="0.3"/>
+			<item value="młot bojowy" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nigdy się stąd nie wydostaniesz!"/>
+				<sound value="monster-11" />
+				<sound value="monster-12" />
+				<sound value="monster-14" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="król minotaur">
+		<type class="stendhal/minotaur" subclass="mino_king" tileid="minotaur.png:0"/>
+		<description>Oto król minotaur. Jest wściekły z tego powodu, że nie może uciec ze swojego labiryntu...</description>
+		<attributes>
+			<atk value="481"/>
+			<def value="57"/>
+			<hp value="675"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="62"/>
+		<experience value="3739"/>
+		<respawn value="1870"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[15,89]" probability="100.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="1.5"/>
+			<item value="zbroja cieni" quantity="[1,1]" probability="0.5"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="0.5"/>
+			<item value="młot chaosu" quantity="[1,1]" probability="0.25"/>
+			<item value="młot wulkanów" quantity="[1,1]" probability="0.0050"/>
+			<item value="bukłak z wodą" quantity="[1,2]" probability="1.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Jam jest królem tych włości!"/>
+				<sound value="monster-1" />
+				<sound value="monster-2" />
+				<sound value="monster-16" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: minotaur -->
+
+	<!-- START: naga -->
+
+	<creature name="syrena">
+		<type class="stendhal/mutant" subclass="naga" tileid="naga.png:2"/>
+		<description>Oto syrena. Czeka na nieostrożne ofiary, aby obdarować je zabójczym pocałunkiem.</description>
+		<attributes>
+			<atk value="536"/>
+			<def value="81"/>
+			<hp value="622"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="73"/>
+		<experience value="5198"/>
+		<respawn value="2400"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="pierścień leczniczy" quantity="[1,1]" probability="0.5" />
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="scream-fem-2" />
+				<sound value="rattlesnake-1" />
+				<sound value="snake-2" />
+			</says>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wysoka syrena">
+		<type class="stendhal/mutant" subclass="high_naga" tileid="naga.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="587"/>
+			<def value="79"/>
+			<hp value="782"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="84"/>
+		<experience value="6370"/>
+		<respawn value="3080"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,60]" probability="100.0"/>
+			<item value="butelka wody" quantity="[1,2]" probability="30.0"/>
+			<item value="pierścień leczniczy" quantity="[1,1]" probability="0.75" />
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="scream-fem-2" />
+				<sound value="rattlesnake-1" />
+			</says>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="uzbrojona syrena">
+		<type class="stendhal/mutant" subclass="armed_naga" tileid="naga.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="617"/>
+			<def value="86"/>
+			<hp value="944"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="94"/>
+		<experience value="7590"/>
+		<respawn value="3850"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,60]" probability="100.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="0.4"/>
+			<item value="płaszcz cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz lodowy" quantity="[1,1]" probability="0.4"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="scream-fem-2" />
+				<sound value="rattlesnake-1" />
+			</says>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="lamia">
+		<type class="stendhal/mutant" subclass="lamia" tileid="naga.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="719"/>
+			<def value="91"/>
+			<hp value="1300"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="112"/>
+		<experience value="11333"/>
+		<respawn value="3400"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,60]" probability="100.0" />
+			<item value="pierścień leczniczy" quantity="[1,1]" probability="2.0" />
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="scream-fem-2" />
+				<sound value="rattlesnake-1" />
+			</says>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: naga -->
+
+	<!-- START: ratfolk -->
+
+	<creature name="człekoszczur">
+		<type class="stendhal/ratfolk" subclass="ratman" tileid="ratfolk.png:1"/>
+		<description>Oto człekoszczur. Wygląda jak mutant z zamierzchłych czasów.</description>
+		<attributes>
+			<atk value="171"/>
+			<def value="19"/>
+			<hp value="225"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="316"/>
+		<respawn value="1230"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,22]" probability="100.0"/>
+			<item value="ser" quantity="[4,8]" probability="85.0"/>
+			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.5"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="0.4"/>
+			<item value="kij z czaszką" quantity="[1,1]" probability="0.5"/>
+			<item value="lwia tarcza" quantity="[1,1]" probability="0.4"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Wy, ludzie, nie wiecie kiedy nam dać spokój!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,150"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="człekoszczurzyca">
+		<type class="stendhal/ratfolk" subclass="ratwoman" tileid="ratfolk.png:2"/>
+		<description>Oto człekoszczurzyca. Wygląda jak mutant z zamierzchłych czasów.</description>
+		<attributes>
+			<atk value="170"/>
+			<def value="18"/>
+			<hp value="225"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="311"/>
+		<respawn value="1230"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,22]" probability="100.0"/>
+			<item value="ser" quantity="[4,8]" probability="85.0"/>
+			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.5"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="0.4"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ludzie, zostawcie nas w spokoju!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,150"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="archiszczur">
+		<type class="stendhal/ratfolk" subclass="archrat" tileid="ratfolk.png:0"/>
+		<description>Oto archiszczur. Będziesz rozproszony przez jego aurę. Uważaj...</description>
+		<attributes>
+			<atk value="229"/>
+			<def value="77"/>
+			<hp value="60"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="25"/>
+		<experience value="1010"/>
+		<respawn value="1300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,35]" probability="100.0"/>
+			<item value="złota kolczuga" quantity="[1,1]" probability="10.0"/>
+			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="2.5"/>
+			<item value="mocna trucizna" quantity="[1,1]" probability="7.0"/>
+			<item value="miecz zaczepny" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Zadzierasz z plemieniem Szczurów?!"/>
+				<noise state="idle follow fight" value="Szykuj się na śmierć!"/>
+				<noise state="idle follow fight" value="Poczuj mój gniew!"/>
+			</says>
+			<profile name="poisonous" params="40,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: ratfolk -->
+
+	<!-- START: sheepman -->
+
+	<creature name="turoń">
+		<type class="stendhal/sheepman" subclass="sheepman" tileid="sheepman.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="245"/>
+			<def value="47"/>
+			<hp value="150"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="25"/>
+		<experience value="867"/>
+		<respawn value="1300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,35]" probability="100.0"/>
+			<item value="mięso" quantity="[1,5]" probability="10.0"/>
+			<item value="skórzany kirys z naramiennikami" quantity="[1,1]" probability="2.5"/>
+			<item value="mocna trucizna" quantity="[1,1]" probability="7.0"/>
+			<item value="spodnie nabijane ćwiekami" quantity="[1,1]" probability="10.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie jestem miękki jak owieczka!"/>
+			</says>
+			<profile name="poisonous" params="30,trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="turoń uzbrojony">
+		<type class="stendhal/sheepman" subclass="armored_sheepman" tileid="sheepman.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="287"/>
+			<def value="51"/>
+			<hp value="188"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="31"/>
+		<experience value="1229"/>
+		<respawn value="1370"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,35]" probability="100.0"/>
+			<item value="złota kolczuga" quantity="[1,1]" probability="12.0"/>
+			<item value="mocna trucizna" quantity="[1,1]" probability="7.0"/>
+			<item value="topór obosieczny" quantity="[1,1]" probability="10.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Jak śmieeesz mnieee wyzywać!"/>
+			</says>
+			<profile name="poisonous" params="35,trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="starszy turoń">
+		<type class="stendhal/sheepman" subclass="elder_sheepman" tileid="sheepman.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="326"/>
+			<def value="58"/>
+			<hp value="241"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="38"/>
+		<experience value="1715"/>
+		<respawn value="1480"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,35]" probability="100.0"/>
+			<item value="złoty kiścień" quantity="[1,1]" probability="2.0"/>
+			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="10.5"/>
+			<item value="mocna trucizna" quantity="[1,2]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="A kysz! Preeecz!"/>
+			</says>
+			<profile name="poisonous" params="40,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="turoń elitarny">
+		<type class="stendhal/sheepman" subclass="elite_sheepman" tileid="sheepman.png:2"/>
+		<description></description>
+		<attributes>
+			<atk value="373"/>
+			<def value="70"/>
+			<hp value="241"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="43"/>
+		<experience value="2255"/>
+		<respawn value="1680"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,45]" probability="100.0"/>
+			<item value="mięso" quantity="[2,6]" probability="22.5"/>
+			<item value="mocna trucizna" quantity="[1,1]" probability="7.0"/>
+			<item value="miecz zaczepny" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Preeecz stąd!"/>
+			</says>
+			<profile name="poisonous" params="40,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: sheepman -->
+
+	<!-- START: werewolf -->
+
+	<creature name="wilkołak">
+		<type class="stendhal/mutant" subclass="werewolf" tileid="mutant.png:2"/>
+		<description>Oto wilkołak. Zazwyczaj jest człowiekiem, ale dziś przy pełni księżyca zamienił się w niebezpieczną bestię!</description>
+		<attributes>
+			<atk value="584"/>
+			<def value="79"/>
+			<hp value="722"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="80"/>
+		<experience value="6033"/>
+		<respawn value="2820"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[30,50]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="poisonous" params="5,zabójcza trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: werewolf -->
+
+	<!-- START: xeno -->
+
+	<creature name="xenocium">
+		<type class="stendhal/hybrid" subclass="xenocium" tileid="hybrid.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="953"/>
+			<def value="114"/>
+			<hp value="2350"/>
+			<speed value="0.7"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="170"/>
+		<experience value="22786"/>
+		<respawn value="3000"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[30,100]" probability="100.0"/>
+			<item value="tarcza xenocyjska" quantity="[1,1]" probability="1.0"/>
+			<item value="płaszcz xenocyjski" quantity="[1,1]" probability="1.5"/>
+			<item value="buty xenocyjskie" quantity="[1,1]" probability="2.5"/>
+			<item value="miecz xenocyjski" quantity="[1,1]" probability="0.5"/>
+			<item value="zbroja xenocyjska" quantity="[1,1]" probability="1.5"/>
+			<item value="spodnie xenocyjskie" quantity="[1,1]" probability="1.5"/>
+			<item value="skóra xenocium" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="15,50"/>
+		</ai>
+	</creature>
+
+	<!-- END: xeno -->
+
+</creatures>  

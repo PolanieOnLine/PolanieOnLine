@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="kolizja" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="2" name="podloga" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/deski_kafle.png"/>
+ </tileset>
+ <tileset firstgid="12" name="sciany" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="28" name="sciany2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="44" name="drzwi" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ </tileset>
+ <tileset firstgid="56" name="drzwi1" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="68" name="ubrania" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/mannequins.png"/>
+ </tileset>
+ <tileset firstgid="96" name="szafa " tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/drawer_without_runner.png"/>
+ </tileset>
+ <tileset firstgid="102" name="smok1" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_smoki.png"/>
+ </tileset>
+ <layer name="0_floor" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNlYGBgHcWjeBQPGAYA884e+oQDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJNhYGCQIwPLA7ECECsCsRAJWAmI1aF6BRlIA2Kjekf10livKhCLkoDVoHo1gFiT
+DKwNxACpkcrPhAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQAA7ILYHYgcG0oEjEDsBsTMQJwFxMlQcmU0MSAHiVCzsoQbQ3a4HxPpkmmUE
+xMZk6jUDYnMy9Q4G4EtA3oeAfDSUjofSgVDan2wXUR8AACiOjVOEAwAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoB5woqJZgwEkAXHyQDsCCowH2gEUADcC8q4E5EOgdASU9oLSHmS7aHABAGzr
+NouEAwAA
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAVDGaQNtANGAcUAADcrgTWEAwAA
+  </data>
+ </layer>
+ <layer name="collision" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNkYGBgpBJmIFMPMsBmFrocLr34AL31EutfYs0gFQylsMKnl5AZuNIdNnlsNDa9
+9MYA9MhmIIQDAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>

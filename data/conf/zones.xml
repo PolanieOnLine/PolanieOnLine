@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal groups.xsd ">
+	<!-- Mapa Faiumonia -->
+	<group uri="zones/stendhal/ados.xml"/>
+	<group uri="zones/stendhal/amazon.xml"/>
+	<group uri="zones/stendhal/athor.xml"/>
+	<group uri="zones/stendhal/fado.xml"/>
+	<group uri="zones/stendhal/kalavan.xml"/>
+	<group uri="zones/stendhal/kikareukin.xml"/>
+	<group uri="zones/stendhal/kirdneh.xml"/>
+	<group uri="zones/stendhal/nalwor.xml"/>
+	<group uri="zones/stendhal/orril.xml"/>
+	<group uri="zones/stendhal/semos.xml"/>
+
+	<!-- Mapa prasłowiańska -->
+	<group uri="zones/pol/desert.xml"/>
+	<group uri="zones/pol/dragon.xml"/>
+	<group uri="zones/pol/dragon_knights.xml"/>
+	<!-- DISABLED
+	<group uri="zones/pol/gdansk.xml"/>
+	DISABLED -->
+	<group uri="zones/pol/koscielisko.xml"/>
+	<group uri="zones/pol/krakow.xml"/>
+	<group uri="zones/pol/labirynt.xml"/>
+	<group uri="zones/pol/tatry.xml"/>
+	<group uri="zones/pol/warszawa.xml"/>
+	<group uri="zones/pol/wieliczka.xml"/>
+	<group uri="zones/pol/zakopane.xml"/>
+
+	<group uri="zones/misc.xml"/>
+</groups>

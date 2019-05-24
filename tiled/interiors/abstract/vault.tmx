@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="9" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="brick wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_bricks.png"/>
+ </tileset>
+ <tileset firstgid="13" name="doorway" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/bricks_ns.png"/>
+ </tileset>
+ <tileset firstgid="25" name="brick wall, lower part" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_thin_bricks.png"/>
+ </tileset>
+ <tileset firstgid="37" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="38" name="tiles" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/indoor/floor_tan.png"/>
+ </tileset>
+ <tileset firstgid="42" name="wastebin" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/wastebin.png"/>
+ </tileset>
+ <tileset firstgid="45" name="stool" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/stool.png"/>
+ </tileset>
+ <tileset firstgid="46" name="big table" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/wooden_rectangular.png"/>
+ </tileset>
+ <tileset firstgid="55" name="lamps" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/lights_candle.png"/>
+ </tileset>
+ <layer name="0_floor" width="9" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNnYGBQH8U0xwCRCMpvaAEAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="9" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAONkYGBgw4O5gJgDiCWBWAULlgJidqgaJSDWA2IDBgiAsRXR1BgCsTFUDYyNrgYb
+QFejTSU1hOySBmJlNHkQXwaqhhuIWaEYGcDEeIAYAKr7J75oAQAA
+  </data>
+ </layer>
+ <layer name="2_object" width="9" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgIA+4A7EHATW+QOxHpvnEAC0i1OhS0T5eIOYDYn48agSAWBCIhdDEAXCMGPRo
+AQAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="9" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGLpAZ6AdQAIAAIJYHphoAQAA
+  </data>
+ </layer>
+ <layer name="objects" width="9" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAX0AADGRzsXaAEAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="9" height="10" opacity="0.37">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNlYGBQpQFmoFANNkCOGmzqyDWHWH9hwwArDQyTaAEAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="9" height="10" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAX0AADGRzsXaAEAAA==
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<!-- <item name="pas zbójecki">
+		<type class="necklace" subclass="pas_zbojecki" tileid="-1"/>
+		<description>Oto pas zbójecki. Idealny dla górala.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="3"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item> -->
+
+	<item name="korale">
+		<type class="necklace" subclass="korale" tileid="-1"/>
+		<description>Oto korale. Idealne dla góralek.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="2"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
+
+	<item name="amulecik">
+		<type class="necklace" subclass="amulet" tileid="-1"/>
+		<description>Oto amulecik, który być może ochroni cię przed złem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="5"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="dark" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
+
+	<item name="elficki naszyjnik">
+		<type class="necklace" subclass="elf_necklace" tileid="-1"/>
+		<description>Oto elficki naszyjnik. Czy to czasem nie kłuje w szyje?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="6"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="nature" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
+
+	<item name="srebrny sztylecik">
+		<type class="necklace" subclass="amulet_silver" tileid="-1"/>
+		<description>Oto srebrny sztylecik, który być może ochroni cię przed złem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="8"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="dark" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
+
+	<item name="spinka">
+		<type class="necklace" subclass="spinka" tileid="-1"/>
+		<description>Oto spinka, która być może ochroni cię przed złem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="10"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="dark" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
+</items>

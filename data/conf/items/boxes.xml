@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="prezent">
+		<type class="box" subclass="present" tileid="-1"/>
+		<description>Widzisz prezent. Otwórz go.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Present"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="koszyk">
+		<type class="box" subclass="basket" tileid="-1"/>
+		<description>Widzisz koszyk. Spójrz do niego.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Basket"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="skarpeta">
+		<type class="box" subclass="stocking" tileid="-1"/>
+		<description>To skarpeta. Spójrz do środka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Stocking"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="skrzynka">
+		<type class="box" subclass="skrzynka" tileid="-1"/>
+		<description>Widzisz skrzynkę. Otwórz ją.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Present"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+	
+	<item name="brązowa skrzynia">
+		<type class="box" subclass="brazowa_skrzynia" tileid="-1"/>
+		<description>Widzisz brązową skrzynie. Otwórz ją.</description>
+		<implementation class-name="games.stendhal.server.entity.item.BrazowaSkrzynia"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+	
+	<item name="srebrna skrzynia">
+		<type class="box" subclass="srebrna_skrzynia" tileid="-1"/>
+		<description>Widzisz srebrną skrzynkę. Otwórz ją.</description>
+		<implementation class-name="games.stendhal.server.entity.item.SrebrnaSkrzynia"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+	
+	<item name="złota skrzynia">
+		<type class="box" subclass="zlota_skrzynia" tileid="-1"/>
+		<description>Widzisz złotą skrzynkę. Otwórz ją.</description>
+		<implementation class-name="games.stendhal.server.entity.item.ZlotaSkrzynia"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+</items>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="17" height="17" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="34" name="kafelki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace3smok.png"/>
+ </tileset>
+ <tileset firstgid="125" name="drzwi" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="137" name="dark_red_ew" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ </tileset>
+ <tileset firstgid="149" name="pol_rycerze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ </tileset>
+ <tileset firstgid="157" name="rug" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/orange.png"/>
+ </tileset>
+ <tileset firstgid="166" name="barrel" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/barrel.png"/>
+ </tileset>
+ <tileset firstgid="168" name="weapons rack" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_rack.png"/>
+ </tileset>
+ <tileset firstgid="186" name="ropes" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/ropes.png"/>
+ </tileset>
+ <tileset firstgid="190" name="weapons" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/weapon/box_of_weapons.png"/>
+ </tileset>
+ <tileset firstgid="192" name="stick" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/stick.png"/>
+ </tileset>
+ <tileset firstgid="194" name="copper table" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/table_copper.png"/>
+ </tileset>
+ <tileset firstgid="209" name="weapons" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_for_walls.png"/>
+ </tileset>
+ <tileset firstgid="225" name="tools" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/tools.png"/>
+ </tileset>
+ <tileset firstgid="234" name="grey_plain" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/grey_plain.png"/>
+ </tileset>
+ <tileset firstgid="243" name="grey_fancy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/grey_fancy.png"/>
+ </tileset>
+ <tileset firstgid="252" name="book" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/documents/book.png"/>
+ </tileset>
+ <tileset firstgid="256" name="light" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/dark_torch.png"/>
+ </tileset>
+ <tileset firstgid="264" name="books2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/documents/books2.png"/>
+ </tileset>
+ <tileset firstgid="268" name="kafelki_rozne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <layer name="0_floor" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJNjZGCQowPWYKCPPaN4aOGFDJh4qJqxhAETD3T4DgUMAFFLle2EBAAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAL3MtwoCURBG4VspaCUmMOC+uFlRC0EthC2MKL6OOTaeYgS5iO7OBX/4imHgJIwx
+SQcppJFBVCGLgjQiWGJlwi1uNdbYODa66KGPgbIxxAhj+MqGZv9olFH5oBqiUUMdBxxxkruhaJxx
+wdWhccMdj4CN+du/iRa22GEvd/tLY4qF1fk1uzFDRzqvTUSQRg4xhbw0iig58PAE9IpQTIQEAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAL3OvQ5AMBSG4TZGl+1fQsJFcFFitiIiWHgHo0o49EuetEP7naOUOR58BDdvrtKi
+Oe8hIsToHvbYTIJU2JEhF3YUKIUd0tSW57laqYnT0e87ZuxYBHus2KAFe/QYMAr2MKX64L+0448c
+++TA+4QEAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWkglkD7QAKwfQBtHsakerm0NQVgxPMwCI2m+6uoD8AAKMoU1iEBAAA
+  </data>
+ </layer>
+ <layer name="collision" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNkYGBQpDFmIFMPsYCWZpBqFqVmUOIHaplBaViS6g58aoaaGfgALdOWIhZ1pOof
+KAwA7PZwaYQEAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMgoEDAJPZHwSEBAAA
+  </data>
+ </layer>
+</map>

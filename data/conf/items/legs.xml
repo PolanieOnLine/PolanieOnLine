@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="czarne spodnie">
+		<type class="legs" subclass="black_legs" tileid="-1"/>
+		<description>Oto para czarnych spodni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="19"/>
+			<min_level value="190"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="23625"/>
+		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="dark" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie wampirze">
+		<type class="legs" subclass="vampire_legs" tileid="-1"/>
+		<description>Oto para spodni wampirzych.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="17"/>
+			<min_level value="170"/>
+		</attributes>
+		<weight value="21.0"/>
+		<value value="23625"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie lazurowe">
+		<type class="legs" subclass="blue_legs" tileid="-1"/>
+		<description>Oto nowe, lśniące spodnie lazurowe.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="7"/>
+			<min_level value="10"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="1512"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie kolcze">
+		<type class="legs" subclass="chain_legs" tileid="-1"/>
+		<description>Oto dobre spodnie kolcze. Powinny chronić cię przed lekkimi atakami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="4"/>
+		</attributes>
+		<weight value="15.0"/>
+		<value value="448"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie chaosu">
+		<type class="legs" subclass="chaos_legs" tileid="-1"/>
+		<description>Widzisz spodnie chaosu. Dziwny kolor dezorientuje cię.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="11"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="9317"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie krasnoludzkie">
+		<type class="legs" subclass="dwarvish_legs" tileid="-1"/>
+		<description>Oto spodnie krasnoludzkie. Zaprojektowane przez najlepszego projektanta.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="9"/>
+			<min_level value="63"/>
+		</attributes>
+		<weight value="32.0"/>
+		<value value="1512"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie elfickie">
+		<type class="legs" subclass="elvish_legs" tileid="-1"/>
+		<description>Oto spodnie elfickie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="6"/>
+			<min_level value="5"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="1512"/>
+		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="nature" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złote spodnie">
+		<type class="legs" subclass="golden_legs" tileid="-1"/>
+		<description>Oto lśniące, mocne złote spodnie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="8"/>
+			<min_level value="15"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="3584"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie nabijane klejnotami">
+		<type class="legs" subclass="jewelled_legs" tileid="-1"/>
+		<description>Widzisz piękne spodnie nabijane klejnotami. Wielki rubin jako zapinka dodaje im szyku.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="13"/>
+			<min_level value="50"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="15017"/>
+		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="skórzane spodnie">
+		<type class="legs" subclass="leather_legs" tileid="-1"/>
+		<description>Oto skórzane spodnie. Nie dają zbytniej ochrony, ale przynajmniej nie będziesz biegał z gołym tyłkiem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="1"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="7"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie mainiocyjskie">
+		<type class="legs" subclass="mainio_legs" tileid="-1"/>
+		<description>Oto spodnie mainiocyjskie. Może i są śmieszne ale dają dużo obrony.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="10"/>
+			<min_level value="30"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="7317"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie z mithrilu">
+		<type class="legs" subclass="mithril_legs" tileid="-1"/>
+		<description>Oto para spodni z mithrilu. Na pewno dobrze będą ci służyć.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="20"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="22.0"/>
+		<value value="53625"/>
+		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="dark" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie karmazynowe">
+		<type class="legs" subclass="red_legs" tileid="-1"/>
+		<description>Oto spodnie karmazynowe.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="5"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="1512"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie cieni">
+		<type class="legs" subclass="shadow_legs" tileid="-1"/>
+		<description>Oto spodnie cieni. Ich waga jest niesamowita.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="9"/>
+			<min_level value="20"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="5103"/>
+		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="dark" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie kamienne">
+		<type class="legs" subclass="stone_legs" tileid="-1"/>
+		<description>Oto spodnie kamienne. Są wytrzymałe, ale krępują ruchy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="15"/>
+			<min_level value="120"/>
+		</attributes>
+		<weight value="28.0"/>
+		<value value="1512"/>
+		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="light" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie nabijane ćwiekami">
+		<type class="legs" subclass="studded_legs" tileid="-1"/>
+		<description>Oto spodnie nabijane ćwiekami. Nie jesteś pewnien czy są splamione krwią ostatniego właściciela lub jego przeciwników.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="4"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="56"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie xenocyjskie">
+		<type class="legs" subclass="xeno_legs" tileid="-1"/>
+		<description>Oto spodnie xenocyjskie. Silne i nowe spodnie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="11"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="10017"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie barbarzyńcy">
+		<type class="legs" subclass="barbarian_legs" tileid="-1"/>
+		<description>Oto spodnie barbarzyńcy. Co on w nie wycierał?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="6"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="1512"/>
+		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="ice" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie zabójcy">
+		<type class="legs" subclass="killer_legs" tileid="-1"/>
+		<description>Oto spodnie zabójcy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="14"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="25.0"/>
+		<value value="23625"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="legs"/>
+		</equipable>
+	</item>
+
+	<item name="góralska biała spódnica">
+		<type class="legs" subclass="goralska_spodnica_biala" tileid="-1"/>
+		<description>Oto góralska biała spódnica. W sam raz na jakąś uroczystość.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="2"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="56"/>
+		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="ice" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="góralska spódnica">
+		<type class="legs" subclass="goralska_spodnica" tileid="-1"/>
+		<description>Oto góralska spódnica. Unosi się jak kręcisz się w kółko.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="2"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="56"/>
+		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="ice" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="portki bukowe">
+		<type class="legs" subclass="goralskie_portki" tileid="-1"/>
+		<description>Oto portki bukowe. Ciepłe i trochę się wrzynają.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="3"/>
+		</attributes>
+		<weight value="12.0"/>
+		<value value="56"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="spodnie pustynne">
+		<type class="legs" subclass="desert_legs" tileid="-1"/>
+		<description>Oto przewiewne i wygodne spodnie pustynne.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="4"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="7"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>

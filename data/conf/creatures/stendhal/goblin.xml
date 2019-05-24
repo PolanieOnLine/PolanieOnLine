@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: goblin -->
+
+	<creature name="goblin">
+		<type class="stendhal/goblin" subclass="goblin" tileid="goblin.png:0"/>
+		<description>Oto goblin. Jest naprawdę złym i psotliwym stworzeniem.</description>
+		<attributes>
+			<atk value="88"/>
+			<def value="11"/>
+			<hp value="85"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[2,6]" probability="90.0"/>
+			<item value="tarta" quantity="[1,1]" probability="1.0"/>
+			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
+			<item value="skórzany kirys" quantity="[1,1]" probability="2.5"/>
+			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
+			<item value="kij" quantity="[1,1]" probability="1.0"/>
+			<item value="puklerz" quantity="[1,1]" probability="0.5"/>
+			<item value="mieczyk" quantity="[1,1]" probability="0.5"/>
+			<item value="koszula" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Mmmm! Idzie mięsko!" />
+				<sound value="saur-3" />
+				<sound value="saur-4" />
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="goblin weteran">
+		<type class="stendhal/goblin" subclass="veteran_goblin" tileid="goblin.png:2"/>
+		<description>Oto goblin weteran. Podstarzały wojownik...</description>
+		<attributes>
+			<atk value="106"/>
+			<def value="14"/>
+			<hp value="120"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="7"/>
+		<experience value="70"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[4,11]" probability="90.0"/>
+			<item value="skórzany kirys z naramiennikami" quantity="[1,1]" probability="10.0"/>
+			<item value="spodnie nabijane ćwiekami" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja ćwiekowa" quantity="[1,1]" probability="4.0"/>
+			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
+			<item value="peleryna" quantity="[1,1]" probability="0.5"/>
+			<item value="buzdygan" quantity="[1,1]" probability="2.0"/>
+			<item value="drewniana tarcza" quantity="[1,1]" probability="1.0"/>
+			<item value="koszula" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Czas na śniadanko!" />
+				<sound value="saur-3" />
+				<sound value="saur-4" />
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="goblin żołnierz">
+		<type class="stendhal/goblin" subclass="soldier_goblin" tileid="goblin.png:1"/>
+		<description>Oto goblin żołnierz. Jest młody ale doświadczony w boju.</description>
+		<attributes>
+			<atk value="127"/>
+			<def value="39"/>
+			<hp value="40"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="9"/>
+		<experience value="90"/>
+		<respawn value="1200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[4,13]" probability="90.0"/>
+			<item value="tarcza płytowa" quantity="[1,1]" probability="5.0"/>
+			<item value="miecz" quantity="[1,1]" probability="5.0"/>
+			<item value="zbroja ćwiekowa" quantity="[1,1]" probability="10.0"/>
+			<item value="kolczuga" quantity="[1,1]" probability="0.4"/>
+			<item value="spodnie kolcze" quantity="[1,1]" probability="0.8"/>
+			<item value="buty nabijane ćwiekami" quantity="[1,1]" probability="0.4"/>
+			<item value="peleryna" quantity="[1,1]" probability="0.4"/>
+			<item value="kiścień" quantity="[1,1]" probability="1.0"/>
+			<item value="krótki miecz" quantity="[1,1]" probability="1.0"/>
+			<item value="koszula" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="saur-3" />
+				<sound value="saur-4" />
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: goblin -->
+
+</creatures>

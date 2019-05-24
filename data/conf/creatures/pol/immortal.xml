@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: niesmiertelne -->
+
+	<creature name="mgła">
+		<type class="pol/niesmiertelne" subclass="mgla" tileid="pol_niesmiertelne.png:0"/>
+		<attributes>
+			<atk value="99"/>
+			<def value="22000"/>
+			<hp value="22000"/>
+			<speed value="0.1"/>
+			<size value="1,1"/>
+			<resistance value="25"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="1"/>
+		<respawn value="999"/>
+		<corpse name="fly"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="trujące opary">
+		<type class="pol/niesmiertelne" subclass="trujace_opary" tileid="pol_niesmiertelne.png:1"/>
+		<attributes>
+			<atk value="199"/>
+			<def value="22000"/>
+			<hp value="22000"/>
+			<speed value="0.1"/>
+			<size value="1,1"/>
+			<resistance value="25"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="1"/>
+		<respawn value="999"/>
+		<corpse name="fly"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="poisonous" params="40,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="trąba powietrzna">
+		<type class="pol/niesmiertelne" subclass="tornado" tileid="pol_niesmiertelne.png:2"/>
+		<attributes>
+			<atk value="20000"/>
+			<def value="22000"/>
+			<hp value="22000"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+			<resistance value="50"/>
+			<visibility value="75"/>
+		</attributes>
+		<level value="800"/>
+		<experience value="1"/>
+		<respawn value="999"/>
+		<corpse name="fly"/>
+		<drops>
+		</drops>
+		<equips>
+			<slot name="lhand" item="tarcza z mithrilu" quantity="1"/>
+			<slot name="rhand" item="szczerbiec" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="lifesteal" params="0.1"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="trąba wodna">
+		<type class="pol/niesmiertelne" subclass="tornado_wodne" tileid="pol_niesmiertelne.png:3"/>
+		<attributes>
+			<atk value="20000"/>
+			<def value="22000"/>
+			<hp value="22000"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+			<resistance value="50"/>
+			<visibility value="75"/>
+		</attributes>
+		<level value="800"/>
+		<experience value="1"/>
+		<respawn value="999"/>
+		<corpse name="fly"/>
+		<drops>
+		</drops>
+		<equips>
+			<slot name="lhand" item="tarcza z mithrilu" quantity="1"/>
+			<slot name="rhand" item="szczerbiec" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="lifesteal" params="0.1"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<!-- END: niesmiertelne -->
+
+</creatures>

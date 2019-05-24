@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom. **
+		Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<!-- Pyramid NW -->
+	<zone name="0_desert_pyramid_nw" level="0" x="513184" y="0" file="Level 0/desert/pyramid_nw.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+
+		<!-- Music -->
+		<entity x="0" y="0">
+		  <implementation
+			class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+			<parameter name="sound">caravan</parameter>
+		  </implementation>
+		</entity>
+
+		<entity x="127" y="127">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="radius">128</parameter>
+				<parameter name="volume">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Zauważyłeś, że jesteś gdzieś na nowym, nieznanym oraz gorącym lądzie. Jak okiem sięgnąć otacza Ciebie piasek, a w oddali widać dziwne spiczaste budowle. Kto je zbudował, kiedy i w jakim celu?</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="125" y="2" ref="desert_exit_zakopane">
+			<destination zone="int_zakopane_home" ref="zakopane_entrance_desert"/>
+		</portal>
+		<portal x="22" y="19" ref="corridor_entrance">
+			<destination zone="-1_desert_corridor" ref="corridor_exit"/>
+		</portal>
+	</zone>
+
+	<!-- Pyramid NE -->
+	<zone name="0_desert_pyramid_ne" level="0" x="513312" y="0" file="Level 0/desert/pyramid_ne.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+
+		<!-- Music -->
+		<entity x="0" y="0">
+		  <implementation
+			class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+			<parameter name="sound">caravan</parameter>
+		  </implementation>
+		</entity>
+
+		<entity x="127" y="127">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="radius">128</parameter>
+				<parameter name="volume">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="66" y="62">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">18</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- Pyramid SW -->
+	<zone name="0_desert_pyramid_sw" level="0" x="513184" y="128" file="Level 0/desert/pyramid_sw.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+
+		<!-- Music -->
+		<entity x="0" y="0">
+		  <implementation
+			class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+			<parameter name="sound">caravan</parameter>
+		  </implementation>
+		</entity>
+
+		<entity x="127" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="radius">128</parameter>
+				<parameter name="volume">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="66" y="61" ref="fire_pyramid_entrance_1">
+			<destination zone="-1_desert_fire_pyramid" ref="fire_pyramid_exit_1"/>
+		</portal>
+		<portal x="67" y="61" ref="fire_pyramid_entrance_2">
+			<destination zone="-1_desert_fire_pyramid" ref="fire_pyramid_exit_2"/>
+		</portal>
+		<portal x="66" y="62" ref="fire_pyramid_entrance_3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="43" y="73" ref="desert_exit_1">
+			<destination zone="-1_desert_pyramid" ref="pyramid_entrance_1"/>
+		</portal>
+		<portal x="44" y="73" ref="desert_exit_2">
+			<destination zone="-1_desert_pyramid" ref="pyramid_entrance_2"/>
+		</portal>
+		<portal x="43" y="74" ref="desert_entrance_1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="44" y="74" ref="desert_entrance_2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="45" y="74" ref="desert_entrance_3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
+		<portal x="34" y="90" ref="ice_pyramid_entrance_1">
+			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_exit_1"/>
+		</portal>
+		<portal x="35" y="90" ref="ice_pyramid_entrance_2">
+			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_exit_2"/>
+		</portal>
+		<portal x="34" y="91" ref="ice_pyramid_entrance_3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="35" y="91" ref="ice_pyramid_entrance_4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<!-- Pyramid SE -->
+	<zone name="0_desert_pyramid_se" level="0" x="513312" y="128" file="Level 0/desert/pyramid_se.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+
+		<!-- Music -->
+		<entity x="0" y="0">
+		  <implementation
+			class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+			<parameter name="sound">caravan</parameter>
+		  </implementation>
+		</entity>
+
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="radius">128</parameter>
+				<parameter name="volume">5</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- interiors -->
+
+	<!-- Blacksmith -->
+	<zone name="int_desert_blacksmith" file="interiors/desert/blacksmith.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.desert.blackriver.JozekNPC"/>
+		<entity x="3" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="11" y="16" ref="exit_blacksmith_1">
+			<destination zone="-2_desert_black_river_s" ref="blacksmith_entrance_1"/>
+		</portal>
+	</zone>
+
+	<!-- Level -1 -->
+	<zone name="-1_desert_fire_pyramid" level="-1" x="513312" y="128" file="Level -1/desert/fire_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">fire-8</parameter>
+				<parameter name="radius">128</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="65" y="65">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="63" y="62" ref="fire_pyramid_exit_1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="64" y="62" ref="fire_pyramid_exit_2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="64" y="123" ref="fire_pyramid_exit_3">
+			<destination zone="0_desert_pyramid_sw" ref="fire_pyramid_entrance_3"/>
+		</portal>
+	</zone>
+
+	<zone name="-1_desert_pyramid" level="-1" x="513312" y="384" file="Level -1/desert/pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="63" y="59">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">saur-4</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="70" y="13" ref="pyramid_entrance_1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="72" y="13" ref="pyramid_entrance_2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="63" y="56" ref="pyramid_entrance">
+			<destination zone="-2_desert_black_river_n" ref="black_river_exit"/>
+		</portal>
+		<portal x="57" y="112" ref="pyramid_exit_desert_1">
+			<destination zone="0_desert_pyramid_sw" ref="desert_entrance_1"/>
+		</portal>
+		<portal x="58" y="112" ref="pyramid_exit_desert_2">
+			<destination zone="0_desert_pyramid_sw" ref="desert_entrance_2"/>
+		</portal>
+		<portal x="59" y="112" ref="pyramid_exit_desert_3">
+			<destination zone="0_desert_pyramid_sw" ref="desert_entrance_3"/>
+		</portal>
+		<portal x="69" y="12" ref="pyramid_exit_1">
+			<destination zone="-2_desert_black_river_s" ref="black_river_entrance_1"/>
+		</portal>
+		<portal x="69" y="13" ref="pyramid_exit_2">
+			<destination zone="-2_desert_black_river_s" ref="black_river_entrance_2"/>
+		</portal>
+		<portal x="73" y="12" ref="pyramid_exit_3">
+			<destination zone="-2_desert_black_river_s" ref="black_river_entrance_3"/>
+		</portal>
+		<portal x="73" y="13" ref="pyramid_exit_4">
+			<destination zone="-2_desert_black_river_s" ref="black_river_entrance_4"/>
+		</portal>
+	</zone>
+
+	<zone name="-1_desert_corridor" level="-1" x="513312" y="512" file="Level -1/desert/corridor.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<portal x="59" y="60" ref="corridor_exit">
+			<destination zone="0_desert_pyramid_nw" ref="corridor_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="-1_desert_ice_pyramid" level="-1" x="513312" y="128" file="Level -1/desert/ice_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Zeskoczyłeś w głęboką przepaść i znalazłeś się w ogromnej podziemnej lodowej kryptcie piramidy pełnej strasznych potworów...</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="11" y="116" ref="jump">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+		</portal>
+
+		<portal x="62" y="61" ref="ice_pyramid_exit_3">
+			<destination zone="0_desert_pyramid_sw" ref="ice_pyramid_entrance_3"/>
+		</portal>
+	</zone>
+
+	<!-- Level -2 -->
+	<zone name="-2_desert_black_river_n" level="-2" x="513184" y="0" file="Level -2/desert/black_river_n.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="29" y="29" ref="black_river_exit">
+			<destination zone="-1_desert_pyramid" ref="pyramid_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="-2_desert_black_river_s" level="-2" x="513184" y="80" file="Level -2/desert/black_river_s.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="66" y="63" ref="blacksmith_entrance_1">
+			<destination zone="int_desert_blacksmith" ref="exit_blacksmith_1"/>
+		</portal>
+		<portal x="5" y="4" ref="black_river_entrance_1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="6" y="4" ref="black_river_entrance_2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="7" y="4" ref="black_river_entrance_3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="8" y="4" ref="black_river_entrance_4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<!-- Level -3 -->
+
+	<!-- Level -4 -->
+
+	<!-- Level -5 -->
+
+	<!-- Level -6 -->
+
+	<!-- Level -7 -->
+
+	<!-- Level 1 -->
+	<zone name="1_desert_ice_pyramid" level="1" x="513312" y="128" file="Level 1/desert/ice_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="59" y="109" ref="2_ice_pyramid_exit_1">
+			<destination zone="2_desert_ice_pyramid" ref="2_ice_pyramid_entrance_1"/>
+		</portal>
+		<portal x="60" y="109" ref="2_ice_pyramid_exit_2">
+			<destination zone="2_desert_ice_pyramid" ref="2_ice_pyramid_entrance_2"/>
+		</portal>
+		<portal x="61" y="109" ref="2_ice_pyramid_exit_3">
+			<destination zone="2_desert_ice_pyramid" ref="2_ice_pyramid_entrance_3"/>
+		</portal>
+		<portal x="62" y="109" ref="2_ice_pyramid_exit_4">
+			<destination zone="2_desert_ice_pyramid" ref="2_ice_pyramid_entrance_4"/>
+		</portal>
+
+		<portal x="60" y="120" ref="ice_pyramid_exit_3">
+			<destination zone="0_desert_pyramid_sw" ref="ice_pyramid_entrance_3"/>
+		</portal>
+		<portal x="61" y="120" ref="ice_pyramid_exit_4">
+			<destination zone="0_desert_pyramid_sw" ref="ice_pyramid_entrance_4"/>
+		</portal>
+
+		<portal x="1" y="115" ref="ice_pyramid1">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="2" y="116" ref="ice_pyramid2">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="2" y="117" ref="ice_pyramid3">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="3" y="118" ref="ice_pyramid4">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="4" y="119" ref="ice_pyramid5">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="5" y="119" ref="ice_pyramid6">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="6" y="120" ref="ice_pyramid7">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="7" y="120" ref="ice_pyramid8">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="8" y="120" ref="ice_pyramid9">
+			<destination zone="-1_desert_ice_pyramid" ref="jump" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Słyszysz jakieś ryki, śmiechy oraz inne groźne głosy, a dodatkowo jest tam strasznie ciemno, że nic nie widzisz co tam się znajduje. Boisz się zejść. Dla bezpieczeństwa wolisz pozostać na tym poziomie.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+	</zone>
+
+	<!-- Level 2 -->
+	<zone name="2_desert_ice_pyramid" level="2" x="513312" y="128" file="Level 2/desert/ice_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="47" y="85" ref="3_ice_pyramid_exit_1">
+			<destination zone="3_desert_ice_pyramid" ref="3_ice_pyramid_entrance_1"/>
+		</portal>
+		<portal x="48" y="85" ref="3_ice_pyramid_exit_2">
+			<destination zone="3_desert_ice_pyramid" ref="3_ice_pyramid_entrance_2"/>
+		</portal>
+		<portal x="49" y="85" ref="3_ice_pyramid_exit_3">
+			<destination zone="3_desert_ice_pyramid" ref="3_ice_pyramid_entrance_3"/>
+		</portal>
+		<portal x="50" y="85" ref="3_ice_pyramid_exit_4">
+			<destination zone="3_desert_ice_pyramid" ref="3_ice_pyramid_entrance_4"/>
+		</portal>
+
+		<portal x="47" y="97" ref="2_ice_pyramid_entrance_1">
+			<destination zone="1_desert_ice_pyramid" ref="2_ice_pyramid_exit_1"/>
+		</portal>
+		<portal x="48" y="97" ref="2_ice_pyramid_entrance_2">
+			<destination zone="1_desert_ice_pyramid" ref="2_ice_pyramid_exit_2"/>
+		</portal>
+		<portal x="49" y="97" ref="2_ice_pyramid_entrance_3">
+			<destination zone="1_desert_ice_pyramid" ref="2_ice_pyramid_exit_3"/>
+		</portal>
+		<portal x="50" y="97" ref="2_ice_pyramid_entrance_4">
+			<destination zone="1_desert_ice_pyramid" ref="2_ice_pyramid_exit_4"/>
+		</portal>
+	</zone>
+
+	<!-- Level 3 -->
+	<zone name="3_desert_ice_pyramid" level="3" x="513312" y="128" file="Level 3/desert/ice_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="35" y="61" ref="4_ice_pyramid_exit_1">
+			<destination zone="4_desert_ice_pyramid" ref="4_ice_pyramid_entrance_1"/>
+		</portal>
+		<portal x="36" y="61" ref="4_ice_pyramid_exit_2">
+			<destination zone="4_desert_ice_pyramid" ref="4_ice_pyramid_entrance_2"/>
+		</portal>
+		<portal x="37" y="61" ref="4_ice_pyramid_exit_3">
+			<destination zone="4_desert_ice_pyramid" ref="4_ice_pyramid_entrance_3"/>
+		</portal>
+		<portal x="38" y="61" ref="4_ice_pyramid_exit_4">
+			<destination zone="4_desert_ice_pyramid" ref="4_ice_pyramid_entrance_4"/>
+		</portal>
+
+		<portal x="35" y="73" ref="3_ice_pyramid_entrance_1">
+			<destination zone="2_desert_ice_pyramid" ref="3_ice_pyramid_exit_1"/>
+		</portal>
+		<portal x="36" y="73" ref="3_ice_pyramid_entrance_2">
+			<destination zone="2_desert_ice_pyramid" ref="3_ice_pyramid_exit_2"/>
+		</portal>
+		<portal x="37" y="73" ref="3_ice_pyramid_entrance_3">
+			<destination zone="2_desert_ice_pyramid" ref="3_ice_pyramid_exit_3"/>
+		</portal>
+		<portal x="38" y="73" ref="3_ice_pyramid_entrance_4">
+			<destination zone="2_desert_ice_pyramid" ref="3_ice_pyramid_exit_4"/>
+		</portal>
+	</zone>
+
+	<!-- Level 4 -->
+	<zone name="4_desert_ice_pyramid" level="4" x="513312" y="128" file="Level 4/desert/ice_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="23" y="37" ref="ice_pyramid_exit_3">
+			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_entrance_3"/>
+		</portal>
+		<portal x="24" y="37" ref="ice_pyramid_exit_4">
+			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_entrance_4"/>
+		</portal>
+		<portal x="25" y="37" ref="ice_pyramid_exit_5">
+			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_entrance_5"/>
+		</portal>
+		<portal x="26" y="37" ref="ice_pyramid_exit_6">
+			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_entrance_6"/>
+		</portal>
+
+		<portal x="23" y="49" ref="4_ice_pyramid_entrance_1">
+			<destination zone="3_desert_ice_pyramid" ref="4_ice_pyramid_exit_1"/>
+		</portal>
+		<portal x="24" y="49" ref="4_ice_pyramid_entrance_2">
+			<destination zone="3_desert_ice_pyramid" ref="4_ice_pyramid_exit_2"/>
+		</portal>
+		<portal x="25" y="49" ref="4_ice_pyramid_entrance_3">
+			<destination zone="3_desert_ice_pyramid" ref="4_ice_pyramid_exit_3"/>
+		</portal>
+		<portal x="26" y="49" ref="4_ice_pyramid_entrance_4">
+			<destination zone="3_desert_ice_pyramid" ref="4_ice_pyramid_exit_4"/>
+		</portal>
+	</zone>
+
+	<!-- Level 5 -->
+	<zone name="5_desert_ice_pyramid" level="5" x="513312" y="128" file="Level 5/desert/ice_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="0" y="0">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Znalazłeś się w lodowej piramidzie. Nie możesz wytrzymać z tego mrozu jaki tutaj występuje, wszystko Ci marznie, nawet powstał mały sopelek na twoim czupku nosa, który się zaczerwienił, tak samo jak twoje policzki.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="12" y="11" ref="ice_pyramid_exit_1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="13" y="11" ref="ice_pyramid_exit_2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
+		<portal x="11" y="25" ref="ice_pyramid_entrance_3">
+			<destination zone="4_desert_ice_pyramid" ref="ice_pyramid_exit_3"/>
+		</portal>
+		<portal x="12" y="25" ref="ice_pyramid_entrance_4">
+			<destination zone="4_desert_ice_pyramid" ref="ice_pyramid_exit_4"/>
+		</portal>
+		<portal x="13" y="25" ref="ice_pyramid_entrance_5">
+			<destination zone="4_desert_ice_pyramid" ref="ice_pyramid_exit_5"/>
+		</portal>
+		<portal x="14" y="25" ref="ice_pyramid_entrance_6">
+			<destination zone="4_desert_ice_pyramid" ref="ice_pyramid_exit_6"/>
+		</portal>
+	</zone>
+
+	<!-- Level 6 -->
+</zones>

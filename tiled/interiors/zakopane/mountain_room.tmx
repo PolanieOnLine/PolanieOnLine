@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="9" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="dark red ns" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="45" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="46" name="kula_rozowa2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/kula_rozowa2.png"/>
+ </tileset>
+ <tileset firstgid="48" name="earth_snow_dark" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/waly/earth_snow_dark.png"/>
+ </tileset>
+ <tileset firstgid="144" name="ground_snow" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/ground_snow.png"/>
+ </tileset>
+ <tileset firstgid="148" name="green_paving" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/green_paving.png"/>
+ </tileset>
+ <tileset firstgid="166" name="buddha" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/buddha.png"/>
+ </tileset>
+ <tileset firstgid="172" name="snow_tracks" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/snow_tracks.png"/>
+ </tileset>
+ <tileset firstgid="186" name="latarnia_blaszczysko" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png"/>
+ </tileset>
+ <layer name="0_floor" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJvMwMAweRRTDc9AwrjEhwoGAOG9sGYcAgAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAIXPvQrCMBRA4dtBBxXpIviPCL6Cg6ODo+5uijgUdHFRdBScBePqou/pCd5CuEQN
+fNyUHtJ0LiIzLLCUz/LzghPOOo/YYKuNnyscsMdafq8MCXYYmncjTFFBAUWMTTNBGSlq2uTrGux9
+U480EmkapnkE5/mmHTQv3OBwxzPSOPMdFzTJn/uE//6tSSN3tk1+nyZKqh/sW9p00EVV58A89/AG
+oQGuERwCAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQIBoII4B4lgGTKAPpdOBOAOIM5HE47Con4RFrBCNPxmNnwLETkjqJqKZA5Kv
+A2IzAnZVQs3BB6yAuABNbBsa3w2II6Hs7UC8AapmOxSjA3QxbGpIAdugdmIDq4B4NVQNjI0NKEJp
+ZTRxIyA2hrJVoLQalDaEygMAxsjKTBwCAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgYGDQA+IeLBgkTk1gRmXzhiJYBsTLsbCRwQogXomFTWtggcYHABzoYOscAgAA
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAOthYGDoYcAOevDIjYLhDwBXLv8JHAIAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjADsAAObstcocAgAA
+  </data>
+ </layer>
+ <layer name="collision" width="9" height="15" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAANNlYGDQJREz4BHHBQipI8asUTXExwWparBhAF8jg/8cAgAA
+  </data>
+ </layer>
+ <layer name="protection" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjADsAAObstcocAgAA
+  </data>
+ </layer>
+ <layer name="blend_ground" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3KsRGAIBBE0eu/JEFBQAWEnvghwRVAwM68aL/I3mo7YGBx4lIaB48bAVFpEh68
++JCVpqDiR0OfvgHy2pemHAIAAA==
+  </data>
+ </layer>
+ <layer name="blend_roof" width="9" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3KsRGAIBBE0eu/JEFBQAWEnvghwRVAwM68aL/I3mo7YGBx4lIaB48bAVFpEh68
++JCVpqDiR0OfvgHy2pemHAIAAA==
+  </data>
+ </layer>
+</map>

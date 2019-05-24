@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="kolizja" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="2" name="podloga" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/deski_kafle.png"/>
+ </tileset>
+ <tileset firstgid="12" name="sciany" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="28" name="sciany2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="44" name="drzwi" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ </tileset>
+ <tileset firstgid="56" name="drzwi1" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="68" name="toaleta " tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/lazienka_toaleta.png"/>
+ </tileset>
+ <tileset firstgid="108" name="kuchnia" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/kitchen/cabinets.png"/>
+ </tileset>
+ <tileset firstgid="152" name="stol szamowy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/rectangular_with_meals.png"/>
+ </tileset>
+ <tileset firstgid="161" name="pudla" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/food/fish_crates.png"/>
+ </tileset>
+ <tileset firstgid="169" name="szama" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/wooden_crates.png"/>
+ </tileset>
+ <tileset firstgid="175" name="smok" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/huger_animal.png"/>
+ </tileset>
+ <layer name="0_floor" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNlYGBgHcWjeBQPGAYA884e+oQDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAJNhYGCQIwPLA7ECECsCsRAJWAmI1aF6BRlIA2Kjekf10livKhCLkoDVoHo1gFiT
+DKwNxACpkcrPhAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQAA7ILYHYgcG0oEjEDsBsTOSWAkQlwJxGR59K3GIVwBxJRBXkeEWdJBPgd5i
+LGLriNRbjsTWA2J9Btz+xQeMgNiYDH0gYAbE5iSoX4VFbDWRetdgEcMWVjOAeCYQzyLWUUhgNhDP
+AeK5SGJLcKhdBMTLgHg5HvNWkOEGagMAgtYzJIQDAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjgL5gHhAvBuIFUL7nwDllUAAAtgfERYQDAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUDDdYPtANGwYACAPqy5RCEAwAA
+  </data>
+ </layer>
+ <layer name="collision" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNkYGBgpBJmoEAfMYBa+ijVS6x+avqXVDCY/YtLjhg7sckTkxZJdTM9MQBpjaER
+hAMAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>

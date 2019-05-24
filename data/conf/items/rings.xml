@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<!-- START: Status Protection -->
+
+	<item name="pierścień leczniczy">
+		<type class="ring" subclass="medicinal_ring" tileid="-1"/>
+		<description>Oto pierścień leczniczy. Może cię ochronić przed zatruciem gdy nosisz go na palcu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<attributes>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<resistance type="poisoned" value="0.25" slots="finger;fingerb;" />
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<!-- DISABLED
+	<item name="pierścień antyjadowy">
+		<type class="ring" subclass="antivenom_ring" tileid="-1"/>
+		<description>Oto pierścień antyjadowy. Posiada dobre właściwości chroniące przed zatruciem gdy nosisz go na palcu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<attributes>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<resistance type="poisoned" value="0.5" slots="finger;fingerb;" />
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień antytoksynowy gm">
+		<type class="ring" subclass="antitoxin_ring" tileid="-1"/>
+		<description>Oto pierścień antytoksynowy gm. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<attributes>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<resistance type="poisoned" value="0.75" slots="finger;fingerb;" />
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+	DISABLED -->
+
+	<item name="zaizolowany pierścień">
+    <type class="ring" subclass="insulated_ring" tileid="-1"/>
+    <description>Oto zaizolowany pierścień, który ochroni ciebie przed zaszokowaniem - wstrząsami. Musi być założony na palcu.</description>
+    <implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+    <attributes>
+    </attributes>
+    <weight value="0.1"/>
+    <value value="1"/>
+    <resistance type="shocked" value="0.66" slots="finger;fingerb;"/>
+    <equipable>
+      <slot name="ground"/>
+      <slot name="content"/>
+      <slot name="bag"/>
+      <slot name="trade"/>
+      <slot name="finger"/>
+			<slot name="fingerb"/>
+      <slot name="keyring"/>
+    </equipable>
+  </item>
+
+	<!-- END: Status Protection -->
+
+	<item name="obrączka ślubna">
+		<type class="ring" subclass="wedding" tileid="-1"/>
+		<description>Oto obrączka ślubna symbol miłości.</description>
+		<implementation class-name="games.stendhal.server.entity.item.WeddingRing"/>
+		<attributes>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień zaręczynowy">
+		<type class="ring" subclass="engagement_ring" tileid="-1"/>
+		<description>Oto pierścień zaręczynowy, symbol miłości.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień szmaragdowy">
+		<type class="ring" subclass="emerald-ring" tileid="-1"/>
+		<description>Oto pierścień szmaragdowy. Załóż go, a być może śmierć ominie cię z daleka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.RingOfLife"/>
+		<attributes>
+			<amount value="1"/>
+			<persistent value="1"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="100000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień magnata">
+		<type class="ring" subclass="tsoh_ring" tileid="-1"/>
+		<description>Oto pierścień magnata.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="4"/>
+			<def value="4"/>
+			<min_level value="500"/>
+			<undroppableondeath value="1"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień barona">
+		<type class="ring" subclass="edragons_clan_ring" tileid="-1"/>
+		<description>Oto pierścień barona.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="3"/>
+			<def value="3"/>
+			<min_level value="350"/>
+			<undroppableondeath value="1"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień rycerza">
+		<type class="ring" subclass="zrc_ring" tileid="-1"/>
+		<description>Oto pierścień rycerza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="2"/>
+			<def value="2"/>
+			<min_level value="250"/>
+			<undroppableondeath value="1"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="pierścień mieszczanina">
+		<type class="ring" subclass="zion_ring" tileid="-1"/>
+		<description>Oto pierścień mieszczanina.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="1"/>
+			<min_level value="150"/>
+			<undroppableondeath value="1"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+</items>

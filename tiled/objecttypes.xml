@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+<zone>       defines zone properties
+
+<objecttype> defines object properties
+     name:    name of the object type
+     tileset,
+     tileid:  name of tileset/tileid for tile based objects
+     color:   for shape based objects
+
+Note: an objecttype may support both shape based and tile based objects.
+
+
+<property>   defines a property of an object or zone
+     name:    name of property
+     type:    type of property (string, int, double, boolean, enum, color)
+     default: default value; if this attribute is missing, the property is a mandatory field
+     values:  comma-separated list of allowed values for type=enum
+
+
+Note: In the <zone>.xml, there are conditional entities (e.g. for christmas, easter, minetown). 
+      We can use distinct object layers for them, so there is no condition-property defined here.
+-->
+
+
+
+<objecttypes>
+
+	<zone>
+		<property name="color_method" type="enum"  default="" values="softlight, time, multiply" />
+		<property name="color"        type="color" default="" />
+		<property name="blend_method" type="enum"  default="" values=", bleach" />
+	</zone>
+
+
+	<!-- Portals -->
+
+	<objecttype name="Portal" color="#777777" tileset="logic/portal" tileid="1">
+		<property name="name"                  type="string" default="" />
+		<property name="destination-zone"      type="string" />
+		<property name="destination-reference" type="string" />
+	</objecttype>
+
+	<objecttype name="OneWayPortalDestination" tileset="logic/portal" tileid="2">
+		<property name="name"      type="string" />
+	</objecttype>
+
+	<objecttype name="PlayerHousePortal" tileset="logic/portal" tileid="3">
+		<property name="doorId" type="string" />
+	</objecttype>
+
+
+	<!-- Signs and other descriptions -->
+
+	<objecttype name="Description" color="#AAAAAA">
+		<property name="text"    type="string" default="You see something." />
+	</objecttype>
+
+	<objecttype name="ShopSign" color="#AAAAAA">
+		<property name="shop"    type="string" />
+		<property name="title"   type="string" default="Shop view" />
+		<property name="seller"  type="string" />
+		<property name="caption" type="string" />
+	</objecttype>
+
+	<objecttype name="PopupImageSign" color="#AAAAAA">
+		<property name="image"  type="string" />
+		<property name="title"  type="string" default="Details view" />
+	</objecttype>
+
+
+	<!-- Resources -->
+
+	<objecttype name="CoalSource"        tileset="logic/resource" tileid="1" />
+	<!-- TODO: Use a logic/fish tileset instead of a species-property -->
+	<objecttype name="FishSource"        tileset="logic/resource" tileid="2">
+		<property name="species"  type="enum" values="char, cod, mackerel, perch, roach, clown fish, red lionfish, surgeonfish, trout"/>
+	</objecttype>
+	<objecttype name="GoldSource"        tileset="logic/resource" tileid="3" />
+	<objecttype name="WaterSpringSource" tileset="logic/resource" tileid="4" />
+	<objecttype name="WellSource"        tileset="logic/resource" tileid="5" />
+
+
+	<!-- Music and Sound -->
+
+	<objecttype name="BackgroundMusicSource" tileset="logic/sound" tileid="1">
+		<property name="sound"  type="string" />
+		<property name="volume" type="int"    default="100" />
+		<property name="radius" type="int"    default="10000" />
+	</objecttype>
+
+	<objecttype name="LoopedAmbientSoundSource" tileset="logic/sound" tileid="2">
+		<property name="sound"  type="string" />
+		<property name="volume" type="int"    default="100" />
+		<property name="radius" type="int"    default="10000" />
+	</objecttype>
+
+	<objecttype name="PeriodicAmbientSoundSource" tileset="logic/sound" tileid="3">
+		<property name="sound"  type="string" />
+		<property name="min"    type="int"    default="60" />
+		<property name="max"    type="int"    default="300" />
+		<property name="volume" type="int"    default="100" />
+		<property name="radius" type="int"    default="10000" />
+	</objecttype>
+
+	<objecttype name="PlaySoundEntity" tileset="logic/sound" tileid="4">
+		<property name="sound"       type="string" />
+		<property name="volume"      type="int"    default="100" />
+		<property name="radius"      type="int"    default="10000" />
+		<property name="description" type="string" default="You see something." />
+	</objecttype>
+
+
+	<!-- Chests -->
+
+	<objecttype name="PersonalChest" tileset="logic/chest" tileid="1">
+		<property name="slot"   type="string" />
+	</objecttype>
+
+	<objecttype name="NPCOwnedChest" tileset="logic/chest" tileid="2">
+		<property name="npc"    type="string" />
+	</objecttype>
+
+	<objecttype name="StoredChest"   tileset="logic/chest" tileid="3" />
+
+
+	<!-- Other -->
+	<objecttype name="Clock"           tileset="logic/clock" tileid="1" />
+
+	<objecttype name="PointOfInterest" tileset="logic/poi" tileid="1">
+		<property name="name"        type="string" />
+		<property name="title"       type="string"/>
+		<property name="type"        type="enum"  values="bank, dungeon" />
+		<property name="description" type="string" />
+		<property name="url"         type="string" />
+	</objecttype>
+
+	<objecttype name="Gate"            tileset="logic/gate" tileid="1">
+		<property name="image"       type="string" default="fence_gate" />
+		<property name="orientation" type="string" default="v" />
+		<property name="condition"   type="string" default="" />
+		<property name="message"     type="string" default="The gate is locked."/>
+		<property name="autoclose"   type="int"    default="300" />
+	</objecttype>
+
+	<objecttype name="Block"           tileset="logic/block" tileid="1">
+		<property name="multi"       type="boolean" default="false" />
+		<property name="class"       type="string" />
+		<property name="shape"       type="string" default="" />
+	</objecttype>
+	<objecttype name="BlockTarget"     tileset="logic/block" tileid="2">
+		<property name="action"      type="string" default="" />
+		<property name="shape"       type="string" default="" />
+	</objecttype>
+	<objecttype name="ViewChangeOrb"   tileset="logic/orb"   tileid="1">
+		<property name="x"           type="int"/>
+		<property name="y"           type="int"/>
+	</objecttype>
+
+
+	<!--  Areas -->
+	<objecttype name="Area"  color="#FFFF00">
+		<property name="TeleportIn"    type="boolean" default="true" />
+		<property name="TeleportOut"   type="boolean" default="true" />
+		<property name="MoveTo"        type="boolean" default="true" />
+		<property name="ItemMove"      type="boolean" default="true" />
+		<property name="Login"         type="boolean" default="true" />
+		<property name="MultiPlayer"   type="boolean" default="true" />
+		<property name="FertileGround" type="boolean" default="false" />
+		<property name="message"       type="string"  default="" />
+		<property name="new-x"         type="int"     default="" />
+		<property name="new-y"         type="int"     default="" />
+	</objecttype>
+
+	<objecttype name="MessagingArea"   color="#FFFFAA">
+		<property name="message"   type="string"  default="Welcome" />
+		<property name="warning"   type="boolean" default="false" />
+	</objecttype>
+
+
+	<objecttype name="WalkBlockerArea" color="#AAAAFF">
+		<property name="description"    type="string"  default="You see a nice clean table." />
+	</objecttype>
+
+	<objecttype name="DamagingArea"    color="#AA0000">
+		<property name="name"           type="string" />
+		<property name="interval"       type="int"     default="2" />
+		<property name="damage"         type="int"     default="50" />
+		<property name="probability"    type="int"     default="30" />
+		<property name="players-only"   type="boolean" default="true" />
+	</objecttype>
+
+	<objecttype name="LifeDrainArea"   color="#CC0000">
+		<property name="name"           type="string" />
+		<property name="interval"       type="int"     default="2" />
+		<property name="maximum-damage" type="int"     default="50" />
+		<property name="probability"    type="int"     default="100" />
+		<property name="players-only"   type="boolean" default="true" />
+	</objecttype>
+
+</objecttypes>

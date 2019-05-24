@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: duergar -->
+
+	<creature name="duergar">
+		<type class="stendhal/dwarf" subclass="duergar" tileid="dwarf_duergar.png:6"/>
+		<description>Oto duergar. Jest bliskim krewnym krasneli, ale jego krew jest skażona złem.</description>
+		<attributes>
+			<atk value="278"/>
+			<def value="49"/>
+			<hp value="175"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="29"/>
+		<experience value="1111"/>
+		<respawn value="1340"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,33]" probability="90.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.025"/>
+			<item value="topór obosieczny" quantity="[1,1]" probability="3.0"/>
+			<item value="złoty pyrlik" quantity="[1,1]" probability="1.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="duergar z toporem">
+		<type class="stendhal/dwarf" subclass="duergar_axe" tileid="dwarf_duergar.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="298"/>
+			<def value="52"/>
+			<hp value="195"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="32"/>
+		<experience value="1310"/>
+		<respawn value="1380"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,27]" probability="90.0"/>
+			<item value="zbroja płytowa" quantity="[1,1]" probability="7.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="0.25"/>
+			<item value="topór bojowy" quantity="[1,1]" probability="4.5"/>
+			<item value="butelka wody" quantity="[1,2]" probability="1.5"/>
+			<item value="tarcza królewska" quantity="[1,1]" probability="4.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="duergar starszy">
+		<type class="stendhal/dwarf" subclass="duergar_elder" tileid="dwarf_duergar.png:2"/>
+		<description></description>
+		<attributes>
+			<atk value="325"/>
+			<def value="60"/>
+			<hp value="195"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="36"/>
+		<experience value="1635"/>
+		<respawn value="1380"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,50]" probability="90.0"/>
+			<item value="misiurka" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="duergar elitarny">
+		<type class="stendhal/dwarf" subclass="duergar_elite" tileid="dwarf_duergar.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="354"/>
+			<def value="58"/>
+			<hp value="266"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="41"/>
+		<experience value="1959"/>
+		<respawn value="1640"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,27]" probability="90.0"/>
+			<item value="piernacz" quantity="[1,1]" probability="15.5"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="1.5"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="duergar bohater">
+		<type class="stendhal/dwarf" subclass="duergar_hero" tileid="dwarf_duergar.png:4"/>
+		<description></description>
+		<attributes>
+			<atk value="378"/>
+			<def value="63"/>
+			<hp value="311"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="46"/>
+		<experience value="2362"/>
+		<respawn value="1650"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,27]" probability="90.0"/>
+			<item value="złote buty" quantity="[1,1]" probability="0.9"/>
+			<item value="topór obosieczny" quantity="[1,1]" probability="3.0"/>
+			<item value="topór Durina" quantity="[1,1]" probability="0.0010"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="We mighty duergars will crush the dwarves!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="duergar czarownik">
+		<type class="stendhal/dwarf" subclass="duergar_wizard" tileid="dwarf_duergar.png:7"/>
+		<description></description>
+		<attributes>
+			<atk value="413"/>
+			<def value="67"/>
+			<hp value="360"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="51"/>
+		<experience value="2841"/>
+		<respawn value="1690"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,27]" probability="90.0"/>
+			<item value="miecz krasnoludów" quantity="[1,1]" probability="90.0"/>
+			<item value="niezapisany zwój" quantity="[1,1]" probability="3.5"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="10.5"/>
+			<item value="magia mroku" quantity="[1,11]" probability="10.0"/>
+			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarny duergar">
+		<type class="stendhal/dwarf" subclass="duergar_black" tileid="dwarf_duergar.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="473"/>
+			<def value="69"/>
+			<hp value="458"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="60"/>
+		<experience value="3720"/>
+		<respawn value="1800"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,27]" probability="90.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.5"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.0010"/>
+			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
+			<item value="złoty topór obosieczny" quantity="[1,1]" probability="0.01"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.0010"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Wrogiem naszym Krasnoludy, ale zginie każdy, kto stanie nam na drodze!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="duergar król">
+		<type class="stendhal/dwarf" subclass="duergar_king" tileid="dwarf_duergar.png:5"/>
+		<description></description>
+		<attributes>
+			<atk value="593"/>
+			<def value="82"/>
+			<hp value="736"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="81"/>
+		<experience value="6238"/>
+		<respawn value="2880"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[30,97]" probability="90.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.1"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.0001"/>
+			<item value="złoty hełm wikingów" quantity="[1,1]" probability="0.5"/>
+			<item value="spodnie krasnoludzkie" quantity="[1,1]" probability="1.0" />
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<!-- END: duergar -->
+
+	<!-- START: dwarf -->
+
+	<creature name="krasnal">
+		<type class="stendhal/dwarf" subclass="dwarf" tileid="dwarf.png:1"/>
+		<description>Widzisz krasnala. Ten zamiast siedzieć w altance idzie szukać w kopalni złota.</description>
+		<attributes>
+			<atk value="168"/>
+			<def value="26"/>
+			<hp value="140"/>
+			<speed value="0.3"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="335"/>
+		<respawn value="1230"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[9,22]" probability="100.0"/>
+			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.5"/>
+			<item value="topór" quantity="[1,1]" probability="3.0"/>
+			<item value="piernacz" quantity="[1,1]" probability="0.5"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="0.5"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krasnal strażnik">
+		<type class="stendhal/dwarf" subclass="dwarf_guardian" tileid="dwarf.png:0"/>
+		<description>Oto krasnal strażnik. Oni szykują obronę przed ludźmi.</description>
+		<attributes>
+			<atk value="200"/>
+			<def value="31"/>
+			<hp value="150"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="18"/>
+		<experience value="478"/>
+		<respawn value="1240"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[9,25]" probability="100.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="7.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="2.5"/>
+			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="0.35"/>
+			<item value="topór bojowy" quantity="[1,1]" probability="3.0"/>
+			<item value="złoty buzdygan" quantity="[1,1]" probability="0.5"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="1.0"/>
+			<item value="hełm wikingów" quantity="[1,1]" probability="3.0"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.25"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krasnal starszy">
+		<type class="stendhal/dwarf" subclass="elder_dwarf" tileid="dwarf.png:2"/>
+		<description>Oto krasnal starszy. Silny wojownik zmęczony walką.</description>
+		<attributes>
+			<atk value="214"/>
+			<def value="33"/>
+			<hp value="180"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="20"/>
+		<experience value="568"/>
+		<respawn value="1260"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[9,30]" probability="100.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="5.0"/>
+			<item value="złota kolczuga" quantity="[1,1]" probability="1.0"/>
+			<item value="topór obosieczny" quantity="[1,1]" probability="2.5"/>
+			<item value="pyrlik" quantity="[1,1]" probability="0.5"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="1.0"/>
+			<item value="płaszcz krasnoludzki" quantity="[1,1]" probability="0.5"/>
+			<item value="lwia tarcza" quantity="[1,1]" probability="3.5"/>
+			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.2"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krasnal bohater">
+		<type class="stendhal/dwarf" subclass="hero_dwarf" tileid="dwarf.png:3"/>
+		<description>Oto bohaterski krasnal. Jest starym wojownikiem, który swą sławę zdobył w licznych potyczkach a znany jest z siły i brutalności.</description>
+		<attributes>
+			<atk value="244"/>
+			<def value="43"/>
+			<hp value="160"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="25"/>
+		<experience value="841"/>
+		<respawn value="1300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="4.5"/>
+			<item value="zbroja płytowa" quantity="[1,1]" probability="0.05"/>
+			<item value="topór obosieczny" quantity="[1,1]" probability="3.0"/>
+			<item value="berdysz" quantity="[1,1]" probability="0.05"/>
+			<item value="złote buty" quantity="[1,1]" probability="0.1"/>
+			<item value="złoty pyrlik" quantity="[1,1]" probability="3.0"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krasnal lider">
+		<type class="stendhal/dwarf" subclass="leader_dwarf" tileid="dwarf.png:4"/>
+		<description>Oto lider krasnali. Oto najpotężniejszy krasnal z plemienia i cieszy się sławą wśród swych ziomków.</description>
+		<attributes>
+			<atk value="311"/>
+			<def value="111"/>
+			<hp value="80"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="35"/>
+		<experience value="1975"/>
+		<respawn value="1420"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="zbroja płytowa" quantity="[1,1]" probability="8.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="0.25"/>
+			<item value="berdysz" quantity="[1,1]" probability="0.45"/>
+			<item value="młot bojowy" quantity="[1,1]" probability="5.25"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="0.0050"/>
+			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.5"/>
+			<item value="butelka wody" quantity="[1,2]" probability="1.5"/>
+			<item value="tarcza królewska" quantity="[1,1]" probability="4.5"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="1.2"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<!-- END: dwarf -->
+
+	<!-- START: giant dwarf -->
+
+	<creature name="gigantyczny krasnal">
+		<type class="stendhal/dwarf" subclass="giant_dwarf" tileid="dwarf.png:5"/>
+		<description>Oto gigantyczny krasnolud. Cieżko mu żyć pomiędzy innymi krasnalami, gdyż z powodu jego wzrostu nie uważają go za jednego ze swoich. Mimo tego w głębi swojego wielkiego serca wciąż jest krasnoludem, który będzie do ostatniego tchu walczył z wrogiem!</description>
+		<attributes>
+			<atk value="616"/>
+			<def value="99"/>
+			<hp value="700"/>
+			<speed value="0.4"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="90"/>
+		<experience value="7493"/>
+		<respawn value="3530"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[50,200]" probability="100.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.0010"/>
+			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="0.2"/>
+			<item value="topór Durina" quantity="[1,1]" probability="0.01"/>
+			<item value="złoty buzdygan" quantity="[1,1]" probability="15.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="Dhohr Nuggetcutter">
+		<type class="stendhal/dwarf" subclass="giant_dwarf" tileid="dwarf.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="619"/>
+			<def value="101"/>
+			<hp value="700"/>
+			<speed value="0.4"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="90"/>
+		<experience value="7563"/>
+		<respawn value="3530"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[50,200]" probability="100.0"/>
+			<item value="sztabka mithrilu" quantity="[1,1]" probability="0.0010"/>
+			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.0010"/>
+			<item value="bryłka mithrilu" quantity="[1,1]" probability="0.2"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="zima zaklęta w kuli" quantity="[1,1]" probability="15.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="Lord Durin">
+		<type class="stendhal/dwarf" subclass="lord_durin" tileid="dwarf.png:7"/>
+		<description>Oto potężny Lord Durin, starożytny krasnolud, który prowadził niezliczoną ilość bitew.</description>
+		<attributes>
+			<atk value="2855"/>
+			<def value="180"/>
+			<hp value="6500"/>
+			<speed value="0.5"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="325"/>
+		<experience value="191602"/>
+		<respawn value="75000"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,4]" probability="20.0"/>
+			<item value="czarna halabarda" quantity="[1,1]" probability="0.25"/>
+			<item value="topór Durina" quantity="[1,1]" probability="1.0"/>
+			<item value="tarta" quantity="[2,4]" probability="10.0"/>
+			<item value="money" quantity="[3000,8000]" probability="100.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="topór Durina" quantity="1"/>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie nazywaj mnie przyjacielem."/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: giant dwarf -->
+
+	<!-- START: mountain dwarf -->
+
+	<creature name="górski krasnal">
+		<type class="stendhal/dwarf" subclass="dwarf" tileid="mountain_dwarf.png:1"/>
+		<description>Oto górski krasnal miłujący się w ziemi, kamieniach i skałach. Głęboko w czeluściach górskich jaskiń słychać tępy odgłos kilofa, którym wydobywa rudę złota i żelaza.</description>
+		<attributes>
+			<atk value="437"/>
+			<def value="72"/>
+			<hp value="390"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="54"/>
+		<experience value="3199"/>
+		<respawn value="1680"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[20,52]" probability="100.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="1.5"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.25"/>
+			<item value="topór obosieczny" quantity="[1,1]" probability="5.0"/>
+			<item value="złoty pyrlik" quantity="[1,1]" probability="5.5"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="górski krasnal strażnik">
+		<type class="stendhal/dwarf" subclass="dwarf_guardian" tileid="mountain_dwarf.png:0"/>
+		<description>Oto górski krasnal strażnik. Wypatruje wrogów i strzeże gór w czasie gdy inne krasnale pracują.</description>
+		<attributes>
+			<atk value="461"/>
+			<def value="70"/>
+			<hp value="440"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="59"/>
+		<experience value="3604"/>
+		<respawn value="1760"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[9,31]" probability="100.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.5"/>
+			<item value="berdysz" quantity="[1,1]" probability="1.0"/>
+			<item value="halabarda" quantity="[1,1]" probability="0.05"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="2.5"/>
+			<item value="złoty hełm" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="górski starszy krasnal">
+		<type class="stendhal/dwarf" subclass="elder_dwarf" tileid="mountain_dwarf.png:2"/>
+		<description>Oto górski starszy krasnal. Przez wiele lat pracował w najgłębszej kopalni i znalazł wiele złota i rud. Niedługo nie będzie miał siły by pracować, ale póki co wciąż jest silnym krasnoludem.</description>
+		<attributes>
+			<atk value="484"/>
+			<def value="75"/>
+			<hp value="480"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="62"/>
+		<experience value="4003"/>
+		<respawn value="1870"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[9,55]" probability="100.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="1.0"/>
+			<item value="tarcza jednorożca" quantity="[1,1]" probability="3.5"/>
+			<item value="berdysz" quantity="[1,1]" probability="2.0"/>
+			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="1.5"/>
+			<item value="płaszcz cieni" quantity="[1,1]" probability="0.5"/>
+			<item value="złota tarcza" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="górski krasnal bohater">
+		<type class="stendhal/dwarf" subclass="hero_dwarf" tileid="mountain_dwarf.png:3"/>
+		<description>Oto górski krasnal bohater. Wielu z krasnoludów sławi jego imię! Był członkiem grupy, która odkryła wielką żyłę złota!</description>
+		<attributes>
+			<atk value="503"/>
+			<def value="72"/>
+			<hp value="540"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="67"/>
+		<experience value="4403"/>
+		<respawn value="2090"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,43]" probability="100.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="1.2"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.05"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.0050"/>
+			<item value="halabarda" quantity="[1,1]" probability="1.5"/>
+			<item value="złoty topór obosieczny" quantity="[1,1]" probability="0.05"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.0050"/>
+			<item value="spodnie krasnoludzkie" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="górski krasnal lider">
+		<type class="stendhal/dwarf" subclass="leader_dwarf" tileid="mountain_dwarf.png:4"/>
+		<description>Oto górski krasnal lider. Nadzoruje górskie krasnale przy pracy, ale także gdy stają do walki. Sam również podejmuje walkę, gdy wymagają tego okoliczności!</description>
+		<attributes>
+			<atk value="560"/>
+			<def value="83"/>
+			<hp value="690"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="78"/>
+		<experience value="5779"/>
+		<respawn value="2690"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,45]" probability="100.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="2.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.25"/>
+			<item value="złoty topór obosieczny" quantity="[1,1]" probability="0.5"/>
+			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="0.0050"/>
+			<item value="młot wulkanów" quantity="[1,1]" probability="0.0050"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.035"/>
+			<item value="bukłak z wodą" quantity="[2,4]" probability="3.0"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.5"/>
+			<item value="spodnie krasnoludzkie" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<!-- END: mountain dwarf -->
+
+</creatures>

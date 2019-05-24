@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="64" height="64" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="castle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/castle.png"/>
+ </tileset>
+ <tileset firstgid="321" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="322" name="torch iron lamp" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/iron_lamp.png"/>
+ </tileset>
+ <tileset firstgid="325" name="flames" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/flames.png"/>
+ </tileset>
+ <tileset firstgid="331" name="stairs" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/stairs/stairs.png"/>
+ </tileset>
+ <tileset firstgid="343" name="throne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/throne.png"/>
+ </tileset>
+ <tileset firstgid="349" name="weapons" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_rack.png"/>
+ </tileset>
+ <tileset firstgid="367" name="swords" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/sword_rack.png"/>
+ </tileset>
+ <tileset firstgid="371" name="armor" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/armor.png"/>
+ </tileset>
+ <tileset firstgid="375" name="stick" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/stick.png"/>
+ </tileset>
+ <tileset firstgid="377" name="chest" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chest/large.png"/>
+ </tileset>
+ <tileset firstgid="385" name="chest2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chest/small_2.png"/>
+ </tileset>
+ <tileset firstgid="386" name="chest" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chest/wooden_dark.png"/>
+ </tileset>
+ <tileset firstgid="387" name="imperial" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/human_imperial.png"/>
+ </tileset>
+ <layer name="0_floor" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3WMQ6DMAxA0VQ9DkNPVe5/BCakSoBaYVsh5Q1vyBLpJ4M9t9ZmAAAAADjhnaR3
+h/7z/a8g/f079OvXv237RUb/FWeE/nhbFv369evXr7+is2q2Z/ZX7QX6r93+7Q3069evP3sm9u7d
+669o1Z/fX7FTjNT/D/8fMT22oneO1v9533oepT/qqP8unjfrBQAAgN4WAqSabABAAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2ZTU4CQRCFpy9ghCMocARQ1hgXxj0R12ogkuDKjb9nMPEKRg+hXAGjR2DhEVgY
+u0J3KMaeYXq65wfyvuRlIDPU9GOaquomCAAAAAAAAAAAAAAAsOdd6sOTxpmONBtm6rgt3ET8FuYi
+Pdr/t1RNpNNExVhn/z9SeyKdpirGOvunsT9LvVrqKRRj3eBjH6nXj2IuoisWIh7E8uevgs3yfyP9
+3SqPJ/LYYzpl3u/k63tRbv9JatunupY///AzDsO/I+7/K8H98qyRNrWN+7dB+y9jjbSpbQ2R3v9O
+SWukTW1rK/+dFXOf01G//2ZJa6RtbXtLcY+XBHGLqpGm2lYERdWIsP8zOQ8vpc6lBlIX6n1famgx
+7zk8Zp/FHKjjsMAaiee/uGdZ/FdTzrM4ovocU28zovmoxnAtFvKBjs3vQSTpkVz6olnMOZfexhe8
+R4rC5XexFROXep+0vY3mWH7+yGGO6B5pEnNNVv6p92k7+ndF90jTmGuy8q97nzS9jS+oR+I9kAmX
+vLjKf5HPXsNzoAlX/1HrrWrBc1/D/YfHWRFu/vn6q67E11tl8085eVcsq+Hgn3JLS2lfia+3bP13
+gnlPcBCYRecOLWNy/5ST98Wy2p77Ip0TuP+4tS0/R2ON2zsaB8vfaVTccMwse8Aw3H8viH6WJnXV
+WE37JhPHmESe/pPsyZlEvbNp32TqGJPIy7/L/1kVYe5JfMTNw3+SPbk41SNysmvcWkRc3zTF/xxr
+K1NO1nt9SWO0DPKd6wEAAAAAAAAAgE3hD6IrnroAQAAA
+  </data>
+ </layer>
+ <layer name="2_object" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3VwQkAIAwEQa1NsCLt3xYCGogw884ncLCtAQAAAADcm/3Nza9G4LfIDQD1ZPbr
+hzZm9ksbqWonbHPZOwAAAAAAAAAQcADqdKqoAEAAAA==
+  </data>
+ </layer>
+ <layer name="3_roof" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3X2wqCQBAAUP21LvQJ0UOFUs/1Fl0+voWENiFtpdDqHBjcZWREdx6cLAMAAAAA
+ALo65ll2ym/ref6YW0T7c1hfavl/EX8jfsso4VxT7v0W44R3SrkX+rYM/boJsQpRhlhX+yLEtmMv
+xzWLqGZZXbvWhU/YhX7cVz15yO/xztrxMwCAfjXNq/Vc0z9BPfes7tDm46Z5Nc5NQkxbYvZCXfPx
+cLSdZxx91gQAAACAf3QFA9hKbABAAAA=
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3VQQoAEBQEUC7nQuT8NtYURfHe9tc0i6kfAgAAAAAAAACcVePtBjBX+k6zvQLA
+s9Lgz49uq7k7mQAAAAAA/KEB1zQ39QBAAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3VOw6AMAgA0Pbu/k08sxdgMa0m1PcW0gUYgJYCAAAAAAAAbc4aRxjZVZ+9Iauj
+0ywvQZ7VngDwA1ui/y5Tr0CbPdj3+YUbMH1UBwAAAABGcgOoMUifAEAAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="64" height="64" opacity="0.33">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3SQQqAMAwEQH1a//8p8eBFVNpiWaUTGPCgIZtY1mUpAAAAAABAl71q3jkqPe/o
+PZyzzpj7XC3/yt+0Vnpe+XM7SM/p/mOzvVXp3CP3k57Z/eVvyX/1/NZu7vadzu3+8ss/d/50yS//
+n/I/fdPbL52/NlPrTu/69vT8wv2TPQEAAABgRhsI7ANHAEAAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAIC3AYbSVKsAQAAA
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="skórzany pas">
+		<type class="pas" subclass="zwykly_skorzany_pas" tileid="-1"/>
+		<description>Oto zwykły skórzany pas. Skąd pochodzi ta skóra?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="1"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="wzmocniony skórzany pas">
+		<type class="pas" subclass="wzmocniony_skorzany_pas" tileid="-1"/>
+		<description>Oto wzmocniony skórzany pas. Co za wytrzymały materiał!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="3"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="3"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="kolczany pas">
+		<type class="pas" subclass="kolczany_pas" tileid="-1"/>
+		<description>Oto kolczany pas.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="4"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="4"/>
+		<susceptibility type="ice" value="1.11"/>
+		<susceptibility type="fire" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="karmazynowy pas">
+		<type class="pas" subclass="karmazynowy_pas" tileid="-1"/>
+		<description>Oto karmazynowy pas. Jego klejnot daje ci większą ochornę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="5"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="5"/>
+		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="złoty kolczany pas">
+		<type class="pas" subclass="zloty_kolczany_pas" tileid="-1"/>
+		<description>Oto złoty kolczany pas.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="6"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="6"/>
+		<susceptibility type="light" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas elficki">
+		<type class="pas" subclass="elficki_pas_z_rubinem" tileid="-1"/>
+		<description>Oto pas elficki z rubinem. Od tego rubinu czuć jakąś pradawną magie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="7"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="7"/>
+		<susceptibility type="nature" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas zbójecki">
+		<type class="pas" subclass="pas_zbojecki" tileid="-1"/>
+		<description>Oto pas zbójecki. Idealny dla górala.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="8"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas krasnoludzki">
+		<type class="pas" subclass="krasnoludzki_pas" tileid="-1"/>
+		<description>Oto pas krasnoludzki. Został wykonany z porządnego materiału.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="9"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="9"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas wampirzy">
+		<type class="pas" subclass="wampirzy_pas" tileid="-1"/>
+		<description>Oto pas wampirzy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="10"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10"/>
+		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas olbrzymi">
+		<type class="pas" subclass="olbrzymi_pas" tileid="-1"/>
+		<description>Oto pas olbrzymi. Znane jest jedynie pochodzenie tego pasa - pochodzi ono od gigantów i same rozmiary tego pasa są ogromne.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="11"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="złoty pas">
+		<type class="pas" subclass="zloty_pas" tileid="-1"/>
+		<description>Oto złoty pas.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="12"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="12"/>
+		<susceptibility type="dark" value="1.11"/>
+		<susceptibility type="light" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="czarny pas">
+		<type class="pas" subclass="czarny_pas" tileid="-1"/>
+		<description>Oto czarny pas.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="13"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="13"/>
+		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="light" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas z mithrilu">
+		<type class="pas" subclass="pas_z_mithrilu" tileid="-1"/>
+		<description>Oto pas z mithrilu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="14"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="14"/>
+		<susceptibility type="dark" value="1.11"/>
+		<susceptibility type="light" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+</items>

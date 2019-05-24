@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="ekstrakt litworowy">
+		<type class="drink" subclass="fierywater" tileid="-1"/>
+		<description>Oto butelka ekstraktu litworowego. Nie pij tego w takiej postaci! Trzeba to wpierw rozcieńczyć!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-1000"/>
+			<frequency value="90"/>
+			<quantity value="1"/>
+			<regen value="-1"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="nalewka litworowa">
+		<type class="drink" subclass="koboldish_torcibud_mild" tileid="-1"/>
+		<description>Oto butelka delikatnej nalewki litworowej. Pomoże ci wrócić do sił, kiedy będziesz cały posiniaczony i poobijany.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="12"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mocna nalewka litworowa">
+		<type class="drink" subclass="koboldish_torcibud_strong" tileid="-1"/>
+		<description>Oto butelka mocnej nalewki litworowej. Pomoże ci wrócić do sił, kiedy będziesz cały posiniaczony i poobijany.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="180"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="6"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="leżakowana nalewka litworowa">
+		<type class="drink" subclass="koboldish_torcibud_vsop" tileid="-1"/>
+		<description>Oto leżakowana nalewka litworowa, długo nabierała smaku w dębowych beczkach w mrocznych piwnicach.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="270"/>
+			<frequency value="8"/>
+			<quantity value="1"/>
+			<regen value="9"/>
+			<persistent value="1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sok jabłkowy">
+		<type class="drink" subclass="red_juice" tileid="-1"/>
+		<description>Oto sok jabłkowy. Świetnie smakuje w gorący letni dzień.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="12"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sok z chmielu">
+		<type class="drink" subclass="beer" tileid="-1"/>
+		<description>Oto sok z chmielu. Najlepszy na upalne dni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="6"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="napój z winogron">
+		<type class="drink" subclass="wine" tileid="-1"/>
+		<description>Widzisz napój z winogron. Zaspokoi twoje pragnienie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="10"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="woda">
+		<type class="drink" subclass="waterbottle" tileid="-1"/>
+		<description>Oto woda. Jest świeża i smaczna.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="6"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="napój z oliwką">
+		<type class="drink" subclass="pina_colada" tileid="-1"/>
+		<description>Oto napój z oliwką. Wygląda smacznie, ale jest bardzo silny!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="28"/>
+			<frequency value="3"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="filiżanka herbaty">
+		<type class="drink" subclass="tea" tileid="-1"/>
+		<description>Oto filiżanka herbaty.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mleko">
+		<type class="drink" subclass="milk" tileid="-1"/>
+		<description>Oto butelka świeżego mleka. Pij mleko - będziesz wielki!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="10"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="antidotum">
+		<type class="drink" subclass="antidote" tileid="-1"/>
+		<description>To jest antidotum, aby odkazić cię i obronić od jadu przez chwilkę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusHealer"/>
+		<attributes>
+			<immunization value="poisoned"/>
+			<amount value="400"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="0"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mocne antidotum">
+		<type class="drink" subclass="greater_antidote" tileid="-1"/>
+		<description>To jest mocne antidotum, aby odkazić cię i obronić od jadu przez dłuższą chwilkę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusHealer"/>
+		<attributes>
+			<immunization value="poisoned"/>
+			<amount value="800"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="0"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mana">
+		<type class="drink" subclass="mana" tileid="-1"/>
+		<description>Oto mana do stopniowego zwiększania twojej many.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="20"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="0"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="trucizna">
+		<type class="drink" subclass="poison" tileid="-1"/>
+		<description>Widzisz truciznę. Nie pij tego!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-40"/>
+			<frequency value="30"/>
+			<quantity value="1"/>
+			<regen value="-2"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="mocna trucizna">
+		<type class="drink" subclass="greater_poison" tileid="-1"/>
+		<description>Oto mocna trucizna. Nie pij tego!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-60"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="-3"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="śmiertelna trucizna">
+		<type class="drink" subclass="deadly_poison" tileid="-1"/>
+		<description>Oto śmiertelna trucizna.	Nie pij tego!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-100"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="-5"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="6"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zabójcza trucizna">
+		<type class="drink" subclass="disease_poison" tileid="-1"/>
+		<description>To zabójcza trucizna.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-2000"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="-3"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="60"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="bardzo mocna trucizna">
+		<type class="drink" subclass="mega_poison" tileid="-1"/>
+		<description>To bardzo mocna trucizna. Nie pij tego!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-500"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="-30"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="300"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="eliksir mroku">
+		<type class="drink" subclass="twilight_elixir" tileid="-1"/>
+		<description>Oto butelka z jakimś dziwnym eliksirem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.TwilightElixir"/>
+		<attributes>
+			<amount value="-1000"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="-50"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="300"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="mały eliksir">
+		<type class="drink" subclass="minor_potion" tileid="-1"/>
+		<description>Widzisz mały eliksir. Nie jest to za wiele ale zawsze coś.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="50"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="50"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="500"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zupa">
+		<type class="drink" subclass="soup" tileid="-1"/>
+		<description>Widzisz zupę. Pyszna grochóweczka, przywróci sporą ilośc życia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="2500"/>
+			<frequency value="8"/>
+			<quantity value="1"/>
+			<regen value="25"/>
+			<persistent value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1250"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zupa rybna">
+		<type class="drink" subclass="fish_soup" tileid="-1"/>
+		<description>Oto miseczka zupy rybnej. Zaspokoi twój głód.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="3500"/>
+			<frequency value="8"/>
+			<quantity value="1"/>
+			<regen value="25"/>
+			<persistent value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1250"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="eliksir">
+		<type class="drink" subclass="potion" tileid="-1"/>
+		<description>Widzisz eliksir. Wypij go w trakcie walki a pożyjesz dłużej.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="100"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="100"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="duży eliksir">
+		<type class="drink" subclass="greater_potion" tileid="-1"/>
+		<description>Widzisz duży eliksir, przydatny w walce.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="300"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="300"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="4000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="wielki eliksir">
+		<type class="drink" subclass="mega_potion" tileid="-1"/>
+		<description>Widzisz wielki eliksir. Silnie ulecza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="800"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="800"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="12000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="eliksir miłości">
+		<type class="drink" subclass="love_potion" tileid="-1"/>
+		<description>Oto eliksir miłości. Wygląda na silny więc bądź ostrożny!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="400"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="400"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="12000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+	
+	<item name="środek uspokajający">
+	    <type class="drink" subclass="sedative" tileid="-1" />
+	    <description>Oto środek uspokajający. Jego działanie może ochronić cię przed wstrząsem.</description>
+	    <implementation class-name="games.stendhal.server.entity.item.StatusHealer" />
+	    <attributes>
+	      <immunization value="shocked" />
+	      <amount value="400" />
+	      <frequency value="1"/>
+	      <quantity value="1"/>
+	      <regen value="1"/>
+	      <menu value="Wypij|Użyj" />
+	    </attributes>
+	    <weight value="1.0" />
+	    <value value="1" />
+	    <equipable>
+	      <slot name="ground" />
+	      <slot name="content" />
+	      <slot name="lhand" />
+	      <slot name="rhand" />
+	      <slot name="bag" />
+	      <slot name="trade" />
+	    </equipable>
+	  </item>
+
+	<!--<item name="święta woda">
+		<type class="drink" subclass="holy_water" tileid="-1"/>
+		<description>Oto święta woda. Pobłogosław nią zombi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="400"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="0"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>-->
+
+	<item name="gigantyczny eliksir">
+		<type class="drink" subclass="giant_potion" tileid="-1"/>
+		<description>Widzisz gigantyczny eliksir. Chyba postawi na nogi nawet umarłego!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="1600"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="1600"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="48000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="buteleczka wody">
+		<type class="drink" subclass="woda_buteleczka" tileid="-1"/>
+		<description>Oto buteleczka wody. Prosto ze źródła. Pyszna.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="20"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="butelka wody">
+		<type class="drink" subclass="woda_butelka" tileid="-1"/>
+		<description>Oto butelka wody. Pyszna. Prosto ze źródła.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="80"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="40"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="bukłak z wodą">
+		<type class="drink" subclass="woda_buklak" tileid="-1"/>
+		<description>Oto bukłak z wodą. Przyda się na dalszą drogę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="160"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="55"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="żyntyca">
+		<type class="drink" subclass="zyntyca" tileid="-1"/>
+		<description>Oto żyntyca. Lekko kwaśna, pożywna, zdrowa i orzeźwiająca! To prawdziwa żyntyca!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="60"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="15"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="miód pitny">
+		<type class="drink" subclass="honey" tileid="-1"/>
+		<description>Oto miód pitny. Staropolska receptura daje radość i zabawę, lecz następny dzień niech lepiej nie nadchodzi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="eliksir magiczny">
+		<type class="drink" subclass="magic_potion" tileid="-1"/>
+		<description>Widzisz eliksir magiczny. Jeszcze nie wprowadzony do gry.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="1"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="48000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="mocny eliksir magiczny">
+		<type class="drink" subclass="magic_greater_potion" tileid="-1"/>
+		<description>Widzisz mocny eliksir magiczny. Jeszcze nie wprowadzony do gry.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="1"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="48000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+</items>

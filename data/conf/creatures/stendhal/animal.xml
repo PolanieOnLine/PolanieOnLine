@@ -1,0 +1,1710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: Aquatic -->
+
+	<creature name="kraken">
+		<type class="stendhal/huge_animal" subclass="kraken" tileid="huge_animal.png:13"/>
+		<description>Oto Kraken z głębi morza!</description>
+		<attributes>
+			<atk value="887"/>
+			<def value="114"/>
+			<hp value="1935"/>
+			<speed value="1"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="155"/>
+		<experience value="19542"/>
+		<respawn value="5400"/>
+		<corpse name="animal_2x2" width="2" height="2"/>
+		<drops>
+			<item value="duży eliksir" quantity="[2,6]" probability="75.0"/>
+			<item value="mocna trucizna" quantity="[1,2]" probability="90.0"/>
+			<item value="miecz orków" quantity="[1,1]" probability="0.3"/>
+			<item value="money" quantity="[30,150]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<susceptibility type="fire" value="0.2"/>
+			<susceptibility type="ice" value="1.5"/>
+		</abilities>
+		<ai>
+			<profile name="poisonous" params="15,śmiertelna trucizna"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rekin">
+		<type class="stendhal/giant_animal" subclass="shark" tileid="giant_animal.png:2"/>
+		<description>Rekin! Najlepiej poruszać się ostrożnie.</description>
+		<attributes>
+			<atk value="340"/>
+			<def value="50"/>
+			<hp value="180"/>
+			<speed value="0.5"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="39"/>
+		<experience value="1728" />
+		<respawn value="1230"/>
+		<corpse name="shark_2x2" harmless="shark_2x2" width="2" height="2" />
+		<drops>
+			<item value="money" quantity="[7,40]" probability="30.0"/>
+			<item value="palia alpejska" quantity="[2,6]" probability="15.0"/>
+			<item value="dorsz" quantity="[1,5]" probability="70.0"/>
+			<item value="błazenek" quantity="[1,3]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<susceptibility type="fire" value="0.2"/>
+			<susceptibility type="ice" value="2.0"/>
+		</abilities>
+		<ai>
+			<says>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,150"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: Aquatic -->
+
+	<!-- START: arachnid -->
+
+	<creature name="pająk">
+		<type class="stendhal/animal" subclass="spider" tileid="animal.png:18"/>
+		<description>Oto pająk, który wytwarza ogromną pajęczynę, aby złapać cię w pułapkę!</description>
+		<attributes>
+			<atk value="213"/>
+			<def value="56"/>
+			<hp value="80"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="20"/>
+		<experience value="675"/>
+		<respawn value="1260"/>
+		<corpse name="small_boneless" harmless="spiderweb"/>
+		<drops>
+			<item value="money" quantity="[10,20]" probability="75.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="pająk ptasznik">
+		<type class="stendhal/animal" subclass="poisonous_spider" tileid="animal.png:17"/>
+		<description>To pająk ptasznik! Powiadają, że jego trucizna wpierw cię osłabi, a potem może uśmiercić!</description>
+		<attributes>
+			<atk value="244"/>
+			<def value="61"/>
+			<hp value="100"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="25"/>
+		<experience value="948"/>
+		<respawn value="1300"/>
+		<corpse name="small_boneless" harmless="spiderweb"/>
+		<drops>
+			<item value="money" quantity="[10,35]" probability="100.0"/>
+			<item value="mocna trucizna" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="poisonous" params="40,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="królowa pająków">
+		<type class="stendhal/huge_animal" subclass="giant_spider" tileid="huge_animal.png:5"/>
+		<description>Oto królowa pająków. Jej kończyny są długie i bardzo niebezpieczne.</description>
+		<attributes>
+			<atk value="709"/>
+			<def value="94"/>
+			<hp value="1200"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="110"/>
+		<experience value="11070"/>
+		<respawn value="5400"/>
+		<corpse name="huge_animal" harmless="spiderweb_2x2" width="2" height="2"/>
+		<drops>
+			<item value="duży eliksir" quantity="[1,4]" probability="70.0"/>
+			<item value="mocna trucizna" quantity="[1,2]" probability="80.0"/>
+			<item value="money" quantity="[30,150]" probability="100.0"/>
+			<item value="gruczoł przędzy" quantity="[1,1]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: arachnid -->
+
+	<!-- START: crustacean -->
+
+	<creature name="krab">
+		<type class="stendhal/animal" subclass="crab" tileid="animal.png:8"/>
+		<description>Oto krab co wydostał się z piasku. Uważaj na jego szczypce.</description>
+		<attributes>
+			<atk value="8"/>
+			<def value="4"/>
+			<hp value="10"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="5"/>
+		<respawn value="900"/>
+		<corpse name="small_animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,1]" probability="60.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="klik-klak-klik"/>
+				<sound value="click-clack-1" />
+				<sound value="click-1" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: crustacean -->
+
+	<!-- START: fowl -->
+
+	<creature name="pisklak">
+		<type class="stendhal/farm_animal" subclass="chick" tileid="farm_animal.png:2"/>
+		<description>Oto pisklę. Woli nie oddalać się od kokoszki.</description>
+		<attributes>
+			<atk value="32"/>
+			<def value="7"/>
+			<hp value="25"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="udko" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="pii piii"/>
+				<noise state="idle follow fight" value="pii piii pii"/>
+				<sound value="chicken-chick-1" />
+				<sound value="chicken-chick-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="non offensive"/>
+			<profile name="coward"/>
+		</ai>
+	</creature>
+
+	<creature name="kogucik">
+		<type class="stendhal/animal" subclass="chicken" tileid="animal.png:25"/>
+		<description>Oto dorodny kogucik. W sam raz na rosół.</description>
+		<attributes>
+			<atk value="32"/>
+			<def value="7"/>
+			<hp value="25"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />    
+		<drops>
+			<item value="udko" quantity="[1,2]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="kooo kooooo koo"/>
+				<noise state="idle follow fight" value="koo koo koo"/>
+				<sound value="chicken-2"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+			<profile name="coward"/>
+		</ai>
+	</creature>
+
+	<creature name="dodo">
+		<type class="stendhal/animal" subclass="dodo_bird" tileid="animal.png:29"/>
+		<description>Oto ptak dodo. Nie są czasem gatunkiem wymarłym?</description>
+		<attributes>
+			<atk value="57"/>
+			<def value="14"/>
+			<hp value="45"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="3"/>
+		<experience value="30"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="szynka" quantity="[1,3]" probability="60.0"/>
+			<item value="szpinak" quantity="[1,1]" probability="20.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Bałk Bałk"/>
+				<noise state="idle follow fight" value="Bałłłk"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="non offensive"/>
+		</ai>
+	</creature>
+
+	<creature name="kokoszka">
+		<type class="stendhal/farm_animal" subclass="hen" tileid="farm_animal.png:6"/>
+		<description>Oto kokoszka. Zrani cię jeśli zbliżysz się do jej piskląt.</description>
+		<attributes>
+			<atk value="29"/>
+			<def value="6"/>
+			<hp value="25"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="udko" quantity="[1,2]" probability="70.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="piii piiii"/>
+				<noise state="idle follow fight" value="pii piiii piii"/>
+				<sound value="chicken-1"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="non offensive"/>
+		</ai>
+	</creature>
+
+	<creature name="pingwin">
+		<type class="stendhal/animal" subclass="penguin" tileid="animal.png:16"/>
+		<description>Oto mały i głupiutki pingwin.</description>
+		<attributes>
+			<atk value="36"/>
+			<def value="7"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_animal" harmless="feathered"/>
+		<drops>
+			<item value="mięso" quantity="[2,4]" probability="60.0"/>
+			<item value="dorsz" quantity="[2,3]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Oou! Oou!"/>
+				<noise state="idle follow fight" value="*człap* *człap*"/>
+				<sound value="penguin-1" />
+				<sound value="penguin-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="gołąb">
+		<type class="stendhal/animal" subclass="pigeon" tileid="animal.png:23"/>
+		<description>Oto gołąb. Uwielbia jeść nasionka.</description>
+		<attributes>
+			<atk value="36"/>
+			<def value="7"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="udko" quantity="[1,2]" probability="40.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bird-pigeon-1" />
+				<sound value="bird-pigeon-flap-1" />
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+			<profile name="coward"/>
+		</ai>
+	</creature>
+
+	<!-- END: fowl -->
+
+	<!-- START: insect -->
+
+	<creature name="zabójcza pszczoła">
+		<type class="stendhal/animal" subclass="killer_bee" tileid="animal.png:27"/>
+		<description>Oto zabójcza pszczoła, która po urządleniu zabije cię na śmierć!</description>
+		<attributes>
+			<atk value="170"/>
+			<def value="25"/>
+			<hp value="100"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="333"/>
+		<respawn value="1000"/>
+		<corpse name="small_boneless"/>
+		<drops>
+			<item value="miód pitny" quantity="[1,2]" probability="15.0"/>
+			<item value="trucizna" quantity="[1,1]" probability="15.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
+			<slot name="rhand" item="dummy_ranged" quantity="1"/>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="BbzzZZzzz!"/>
+				<sound value="bee-1"/>
+			</says>
+			<profile name="poisonous" params="10,trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: insect -->
+
+	<!-- START: mammal -->
+
+	<creature name="jeleń" condition="!stendhal.christmas">
+		<type class="stendhal/animal" subclass="deer" tileid="animal.png:9"/>
+		<description>Oto jeleń. Nie musisz się go bać.</description>
+		<attributes>
+			<atk value="8"/>
+			<def value="3"/>
+			<hp value="20"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="0"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,3]" probability="60.0"/>
+			<item value="szynka" quantity="[1,2]" probability="30.0"/>
+			<item value="antidotum" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="animal"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="renifer" condition="stendhal.christmas">
+		<type class="stendhal/animal" subclass="reindeer" tileid="animal.png:9"/>
+		<description>Z gęstwiny lasu wybiegł renifer. Ciekaw jestem czy jest specjalnym pomocnikiem św. Mikołaja.</description>
+		<attributes>
+			<atk value="8"/>
+			<def value="3"/>
+			<hp value="20"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="0"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,3]" probability="60.0"/>
+			<item value="szynka" quantity="[1,2]" probability="30.0"/>
+			<item value="antidotum" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="animal"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="mysz domowa">
+		<type class="stendhal/small_animal" subclass="mouse" tileid="farm_animal.png:8"/>
+		<description>Oto mysz domowa i wygląda na bardzo wygłodzoną.</description>
+		<attributes>
+			<atk value="8"/>
+			<def value="3"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="5"/>
+		<respawn value="900"/>
+		<corpse name="small_animal" harmless="tail_rodent" />
+		<drops>
+			<item value="ser" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="pisk ... piisk!"/>
+				<sound value="mouse-2"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szczur">
+		<type class="stendhal/small_animal" subclass="rat" tileid="small_animal.png:1"/>
+		<description>Oto szczur. Wygląda na wyjątkowo wygłodzonego.</description>
+		<attributes>
+			<atk value="8"/>
+			<def value="3"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="5"/>
+		<respawn value="900"/>
+		<corpse name="small_animal" harmless="tail_rodent"/>
+		<drops>
+			<item value="ser" quantity="[1,1]" probability="50.0"/>
+			<item value="money" quantity="[1,3]" probability="70.0"/>
+			<item value="maczuga" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Pisk! Piiiisk!"/>
+				<sound value="rats-2"/>
+				<sound value="rats-41"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="stupid coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="nietoperz">
+		<type class="stendhal/animal" subclass="bat" tileid="animal.png:0"/>
+		<description>Oto nietoperz. W myślach powtarzasz: Ja sem netoperek.</description>
+		<attributes>
+			<atk value="36"/>
+			<def value="7"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="winged_bat" />
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bat-1" />
+				<sound value="bat-2" />
+				<sound value="bat-3" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szczur jaskiniowy">
+		<type class="stendhal/small_animal" subclass="caverat" tileid="small_animal.png:0"/>
+		<description>Oto szczur jaskiniowy. Jest brudny i chowa się w podziemiach.</description>
+		<attributes>
+			<atk value="34"/>
+			<def value="6"/>
+			<hp value="30"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_animal" harmless="tail_rodent" />
+		<drops>
+			<item value="money" quantity="[1,6]" probability="90.0"/>
+			<item value="ser" quantity="[1,2]" probability="60.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="rats-2"/>
+				<sound value="rats-41"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="prosiak">
+		<type class="stendhal/farm_animal" subclass="piglet" tileid="farm_animal.png:9"/>
+		<description>Oto prosię umorusane w błocie.</description>
+		<attributes>
+			<atk value="31"/>
+			<def value="7"/>
+			<hp value="25"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="szynka" quantity="[1,1]" probability="70.0"/>
+			<item value="kiełbasa wiejska" quantity="[1,9]" probability="60.0"/>
+			<item value="skóra zwierzęca" quantity="[1,1]" probability="16.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="kwik"/>
+				<noise state="idle follow fight" value="kwik kwik"/>
+				<noise state="idle follow fight" value="chrum chrum"/>
+				<sound value="pig-3" />
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="miś">
+		<type class="stendhal/animal" subclass="babybear" tileid="animal.png:21"/>
+		<description>Oto miś, mały miś, gryzie dzieci nie od dziś.</description>
+		<attributes>
+			<atk value="48"/>
+			<def value="7"/>
+			<hp value="54"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="50.0"/>
+			<item value="szynka" quantity="[1,1]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Raarrr!"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="bóbr">
+		<type class="stendhal/farm_animal" subclass="beaver" tileid="farm_animal.png:0"/>
+		<description>Oto bóbr. Najlepszy budowniczy wśród zwierząt.</description>
+		<attributes>
+			<atk value="53"/>
+			<def value="8"/>
+			<hp value="35"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+			<item value="polano" quantity="[1,2]" probability="20.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wielki zły wilk">
+		<type class="stendhal/animal" subclass="wolf" tileid="animal.png:26"/>
+		<description>Oto wielki zły wilk, który jest dziki i bardzo głodny!</description>
+		<attributes>
+			<atk value="46"/>
+			<def value="9"/>
+			<hp value="35"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<!-- once in a month -->
+		<respawn value="8640000"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[2,5]" probability="70.0"/>
+			<item value="mięso" quantity="[1,4]" probability="60.0"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="100.0"/>
+			<item value="pazury wilcze" quantity="[1,5]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Aooooooouuhhh!!"/>
+				<sound value="bark-1"/>
+				<sound value="howl-5"/>
+				<sound value="howl-2"/>
+				<sound value="howl-11"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+			<profile name="rare"/>
+		</ai>
+	</creature>
+
+	<creature name="dzik">
+		<type class="stendhal/animal" subclass="boar" tileid="animal.png:4"/>
+		<description>Dzik jest dziki, dzik jest zły, dzik ma bardzo ostre kły...</description>
+		<attributes>
+			<atk value="53"/>
+			<def value="7"/>
+			<hp value="50"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="szynka" quantity="[1,1]" probability="40.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Kwiik!"/>
+				<sound value="pig-1"/>
+				<sound value="pig-2"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="byk">
+		<type class="stendhal/farm_animal" subclass="bull" tileid="farm_animal.png:1"/>
+		<description>Oto byk! Lepiej zmykaj!</description>
+		<attributes>
+			<atk value="47"/>
+			<def value="9"/>
+			<hp value="35"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,3]" probability="80.0"/>
+			<item value="skóra zwierzęca" quantity="[1,1]" probability="26.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="MUUUUUU!!!"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krowa">
+		<type class="stendhal/farm_animal" subclass="cow" tileid="farm_animal.png:3"/>
+		<description>Oto krowa. Daje pyszne mleko.</description>
+		<attributes>
+			<atk value="51"/>
+			<def value="9"/>
+			<hp value="30"/>
+			<speed value="0.3"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+			<item value="mleko" quantity="[1,1]" probability="70.0"/>
+			<item value="skóra zwierzęca" quantity="[1,1]" probability="16.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Muuuu	muuuuuuu"/>
+				<noise state="idle follow fight" value="muuuuu"/>
+				<sound value="cow-1"/>
+				<sound value="cowbell-1" />
+			</says>
+			<profile name="animal"/>
+		</ai>
+	</creature>
+
+	<creature name="lisica">
+		<type class="stendhal/animal" subclass="fox" tileid="animal.png:24"/>
+		<description>Oto lisica. Coraz mniej ich w lasach.</description>
+		<attributes>
+			<atk value="55"/>
+			<def value="8"/>
+			<hp value="35"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,4]" probability="60.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="koza">
+		<type class="stendhal/farm_animal" subclass="goat" tileid="farm_animal.png:4"/>
+		<description>Oto koza. Jest zdziczała bo zamieszkuje góry.</description>
+		<attributes>
+			<atk value="52"/>
+			<def value="9"/>
+			<hp value="30"/>
+			<speed value="0.3"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="goat-1" />
+				<sound value="goat-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="gniady koń">
+		<type class="stendhal/farm_animal" subclass="horse" tileid="farm_animal.png:7"/>
+		<description>Oto koń. Nie ujeździsz go z pewnością.</description>
+		<attributes>
+			<atk value="48"/>
+			<def value="10"/>
+			<hp value="30"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="ihaaaaaahaa"/>
+				<noise state="idle follow fight" value="*patataj, patataj*"/>
+				<sound value="horse-1" />
+				<sound value="horse-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="małpa">
+		<type class="stendhal/animal" subclass="monkey" tileid="animal.png:15"/>
+		<description>Oto małpa. Masz dla niej banana?</description>
+		<attributes>
+			<atk value="55"/>
+			<def value="9"/>
+			<hp value="35"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="tiny_humanoid"/>
+		<drops>
+			<item value="money" quantity="[2,5]" probability="70.0"/>
+			<item value="mięso" quantity="[1,4]" probability="60.0"/>
+			<item value="szynka" quantity="[1,2]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Uuuu Uuuu Aaa Aaaa!"/>
+				<sound value="monkey-1" />
+				<sound value="monkey-2" />
+				<sound value="monkey-3" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="panda">
+		<type class="stendhal/animal" subclass="pandabear" tileid="animal.png:22"/>
+		<description>Oto panda. W tych czasach to najliczniejsze zwierzę z odległego wschodniego kraju.</description>
+		<attributes>
+			<atk value="48"/>
+			<def value="7"/>
+			<hp value="54"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,3]" probability="50.0"/>
+			<item value="szynka" quantity="[1,2]" probability="30.0"/>
+			<item value="kieł niedźwiedzi" quantity="[1,1]" probability="5.0"/>
+			<item value="niedźwiedzie pazury" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Raarrr!"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="baran">
+		<type class="stendhal/farm_animal" subclass="ram" tileid="farm_animal.png:10"/>
+		<description>Oto baran. Oby nie wziął cię na rogi.</description>
+		<attributes>
+			<atk value="52"/>
+			<def value="7"/>
+			<hp value="50"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,1]" probability="40.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Beeeeee"/>
+				<sound value="sheep-4" />
+				<sound value="sheep-5" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+		</ai>
+	</creature>
+
+	<creature name="siwy koń">
+		<type class="stendhal/farm_animal" subclass="white_horse" tileid="farm_animal.png:11"/>
+		<description>Oto biały koń. Lubią paść się z innymi na łące.</description>
+		<attributes>
+			<atk value="50"/>
+			<def value="9"/>
+			<hp value="30"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="niiihhaaa"/>
+				<noise state="idle follow fight" value="*patataj, patataj*"/>
+				<sound value="horse-1" />
+				<sound value="horse-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wilk">
+		<type class="stendhal/animal" subclass="wolf" tileid="animal.png:20"/>
+		<description>Oto wilk. Jest dziki i wygłodniały.</description>
+		<attributes>
+			<atk value="46"/>
+			<def value="9"/>
+			<hp value="35"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[2,5]" probability="70.0"/>
+			<item value="mięso" quantity="[1,4]" probability="60.0"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="1.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="AUUUuuuuu!!"/>
+				<sound value="bark-1"/>
+				<sound value="howl-5"/>
+				<sound value="howl-2"/>
+				<sound value="howl-11"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="niedźwiedź">
+		<type class="stendhal/animal" subclass="bear" tileid="animal.png:1"/>
+		<description>Oto niedźwiedź. Pewnie zbudziłeś go z zimowego snu.</description>
+		<attributes>
+			<atk value="80"/>
+			<def value="14"/>
+			<hp value="50"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="4"/>
+		<experience value="40"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[3,7]" probability="50.0"/>
+			<item value="szynka" quantity="[1,3]" probability="30.0"/>
+			<item value="kieł niedźwiedzi" quantity="[1,1]" probability="1.0"/>
+			<item value="niedźwiedzie pazury" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Rrraar!"/>
+				<sound value="bear-1"/>
+				<sound value="bear-2"/>
+				<sound value="bear-3"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="lew">
+		<type class="stendhal/animal" subclass="lion" tileid="animal.png:14"/>
+		<description>Oto lew. Jest naprawdę groźny kiedy jest głodny.</description>
+		<attributes>
+			<atk value="80"/>
+			<def value="15"/>
+			<hp value="45"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="4"/>
+		<experience value="40"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[2,6]" probability="60.0"/>
+			<item value="szynka" quantity="[1,2]" probability="30.0"/>
+			<item value="stek" quantity="[1,1]" probability="30.0"/>
+			<item value="skóra lwa" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Raaaarrrr!"/>
+				<sound value="lion-1"/>
+				<sound value="lion-2"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="słoń">
+		<type class="stendhal/animal" subclass="elephant" tileid="animal.png:11"/>
+		<description>Oto słoń. Wielkie zwierzę i niebezpieczne.</description>
+		<attributes>
+			<atk value="73"/>
+			<def value="6"/>
+			<hp value="165"/>
+			<speed value="0.3"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="animal_2x2"/>
+		<drops>
+			<item value="mięso" quantity="[1,10]" probability="100.0"/>
+			<item value="szynka" quantity="[2,8]" probability="70.0"/>
+			<item value="stek" quantity="[1,11]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="UUUUUUFFFZZZZ!!!"/>
+				<sound value="elephant-1" />
+				<sound value="elephant-2" />
+				<sound value="elephant-3" />
+				<sound value="elephant-rumble-1" />
+			</says>
+			<profile name="non offensive"/>
+			<profile name="animal"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="tygrys">
+		<type class="stendhal/animal" subclass="tiger" tileid="animal.png:19"/>
+		<description>Oto tygrys co ludzkim mięsem nie pogardzi.</description>
+		<attributes>
+			<atk value="88"/>
+			<def value="15"/>
+			<hp value="60"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[1,6]" probability="60.0"/>
+			<item value="szynka" quantity="[1,2]" probability="30.0"/>
+			<item value="stek" quantity="[1,1]" probability="90.0"/>
+			<item value="skóra tygrysa" quantity="[1,1]" probability="1.0"/>
+			<item value="kieł tygrysi" quantity="[1,1]" probability="1.0"/>
+			<item value="pazury tygrysie" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Mraaaauu!"/>
+				<sound value="tiger-1" />
+				<sound value="tiger-2" />
+				<sound value="pol-tiger"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wściekły szczur">
+		<type class="stendhal/small_animal" subclass="venomrat" tileid="small_animal.png:3"/>
+		<description>Oto szczur. Wygląda na chorego.</description>
+		<attributes>
+			<atk value="89"/>
+			<def value="14"/>
+			<hp value="70"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="1200"/>
+		<corpse name="small_animal" harmless="tail_rodent" />
+		<drops>
+			<item value="money" quantity="[3,7]" probability="100.0"/>
+			<item value="ser" quantity="[1,3]" probability="50.0"/>
+			<item value="mocna trucizna" quantity="[1,1]" probability="15.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="rats-2"/>
+				<sound value="rats-41"/>
+			</says>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="nietoperz wampir">
+		<type class="stendhal/animal" subclass="killer_bat" tileid="animal.png:13"/>
+		<description>Oto nietoperz wampir, który wyssa z ciebie krew!</description>
+		<attributes>
+			<atk value="104"/>
+			<def value="19"/>
+			<hp value="80"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="7"/>
+		<experience value="70"/>
+		<respawn value="1200"/>
+		<corpse name="small_winged" harmless="winged_bat" />
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+			<item value="truchło nietoperza" quantity="[1,1]" probability="60.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bat-1" />
+				<sound value="bat-2" />
+				<sound value="bat-3" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="niedźwiedź grizli">
+		<type class="stendhal/animal" subclass="black_bear" tileid="animal.png:2"/>
+		<description>Oto potężny niedźwiedź grizli. Tylko niektóre udają się na zimowy sen.</description>
+		<attributes>
+			<atk value="119"/>
+			<def value="16"/>
+			<hp value="95"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="8"/>
+		<experience value="80"/>
+		<respawn value="1200"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[3,12]" probability="60.0"/>
+			<item value="szynka" quantity="[2,4]" probability="40.0"/>
+			<item value="kieł niedźwiedzi" quantity="[1,1]" probability="3.0"/>
+			<item value="niedźwiedzie pazury" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="RRRRRAAAARR!"/>
+				<sound value="bear-1"/>
+				<sound value="bear-2"/>
+				<sound value="bear-3"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krwiożerczy szczur">
+		<type class="stendhal/small_animal" subclass="razorrat" tileid="small_animal.png:2"/>
+		<description>Oto krwiożerczy szczur. Wydaje okropne dźwięki.</description>
+		<attributes>
+			<atk value="119"/>
+			<def value="28"/>
+			<hp value="45"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="8"/>
+		<experience value="80"/>
+		<respawn value="1200"/>
+		<corpse name="small_animal" harmless="tail_rodent" />
+		<drops>
+			<item value="money" quantity="[5,10]" probability="100.0"/>
+			<item value="ser" quantity="[1,3]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="rats-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szczur olbrzymi">
+		<type class="stendhal/giant_animal" subclass="giantrat" tileid="giant_animal.png:1"/>
+		<description>Oto szczur olbrzymi. Chyba komuś nie udał się eksperyment.</description>
+		<attributes>
+			<atk value="173"/>
+			<def value="30"/>
+			<hp value="110"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="356"/>
+		<respawn value="1230"/>
+		<corpse name="huge_animal" harmless="tail_rodent_large" width="2" height="2" />
+		<drops>
+			<item value="money" quantity="[7,20]" probability="100.0"/>
+			<item value="ser" quantity="[3,7]" probability="80.0"/>
+			<item value="pułapka na gryzonie" quantity="[1,1]" probability="15.0" />
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bobcat-1"/>
+				<sound value="leopard-11"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,150"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: mammal -->
+
+	<!-- START: mythical -->
+
+	<creature name="jednorożec">
+		<type class="stendhal/mythical_being" subclass="unicorn" tileid="mythical_being.png:1"/>
+		<description>Oto jednorożec. Powszechnie uznawany za mit.</description>
+		<attributes>
+			<atk value="308"/>
+			<def value="108"/>
+			<hp value="200"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="48"/>
+		<experience value="2674"/>
+		<!-- once in 2 months -->
+		<respawn value="17280000"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="krew cudowna" quantity="[1,1]" probability="100.0"/>
+			<item value="tarcza jednorożca" quantity="[1,1]" probability="80.0"/>
+			<item value="czterolistna koniczyna" quantity="[1,1]" probability="80.0"/>
+			<item value="diament" quantity="[1,1]" probability="20.0"/>
+			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="non offensive"/>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="rare"/>
+		</ai>
+	</creature>
+
+	<creature name="centaur">
+		<type class="stendhal/mythical_being" subclass="centaur" tileid="mythical_being.png:0"/>
+		<description>Oto nobliwy cenatur. Jest w połowie człowiekiem, a w połowie koniem. Wygląda groźnie lecz zapewne mu podołasz.</description>
+		<attributes>
+			<atk value="849"/>
+			<def value="76"/>
+			<hp value="350"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="56"/>
+		<experience value="3429"/>
+		<!-- once in 2 weeks -->
+		<respawn value="4032000"/>
+		<!-- uh, should this one be an animal or humanoid? -->
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,100]" probability="70.0"/>
+			<item value="duży eliksir" quantity="[1,4]" probability="30.0"/>
+			<item value="włócznia" quantity="[20,40]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+			<profile name="rare"/>
+		</ai>
+	</creature>
+
+	<creature name="pegaz">
+		<type class="stendhal/mythical_being" subclass="pegasus" tileid="mythical_being.png:2"/>
+		<description>Oto Pegaz - uskrzydlony koń. Imię jego - Błyskawica i miota strzałami Peruna.</description>
+		<attributes>
+			<atk value="1590"/>
+			<def value="214"/>
+			<hp value="5000"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="340"/>
+		<experience value="122346"/>
+		<!-- once in 6 weeks -->
+		<respawn value="12096000"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="miecz lodowy" quantity="[1,1]" probability="20.0"/>
+			<item value="jabłko" quantity="[10,30]" probability="80.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="heal" params="10,50"/>
+			<profile name="rare"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: mythical -->
+
+	<!-- START: reptile -->
+
+	<creature name="kaiman">
+		<type class="stendhal/animal" subclass="caiman" tileid="animal.png:6"/>
+		<description>Oto kaiman. Kryją się nad wodą.</description>
+		<attributes>
+			<atk value="49"/>
+			<def value="9"/>
+			<hp value="35"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="20"/>
+		<respawn value="900"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[2,8]" probability="70.0"/>
+			<item value="bursztyn" quantity="[1,1]" probability="10.0"/>
+			<item value="szynka" quantity="[1,3]" probability="45.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Grrr Grrr!"/>
+				<sound value="baby_croc-1" />
+        		<sound value="baby_croc-2" />
+        		<sound value="baby_croc-3" />
+        		<sound value="baby_croc-4" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="żmija">
+		<type class="stendhal/farm_animal" subclass="grass_snake" tileid="farm_animal.png:5"/>
+		<description>Oto żmija. Może cię boleśnie ukąsić.</description>
+		<attributes>
+			<atk value="68"/>
+			<def value="15"/>
+			<hp value="35"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="3"/>
+		<experience value="30"/>
+		<respawn value="900"/>
+		<corpse name="small_boneless"/>
+		<drops>
+			<item value="money" quantity="[2,6]" probability="60.0"/>
+			<item value="trucizna" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="sssSSSsssss..."/>
+				<sound value="snake-1"/>
+			</says>
+			<profile name="poisonous" params="5,trucizna"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wąż">
+		<type class="stendhal/animal" subclass="snake" tileid="animal.png:7"/>
+		<description>Oto wąż. Wychodzi z kniei by boleśnie ukąsić.</description>
+		<attributes>
+			<atk value="67"/>
+			<def value="13"/>
+			<hp value="40"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="3"/>
+		<experience value="30"/>
+		<respawn value="900"/>
+		<corpse name="small_boneless"/>
+		<drops>
+			<item value="money" quantity="[2,6]" probability="60.0"/>
+			<item value="trucizna" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="SsSssSsssssss!"/>
+				<sound value="snake-1"/>
+			</says>
+			<profile name="poisonous" params="5,trucizna"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="krokodyl">
+		<type class="stendhal/giant_animal" subclass="crocodile" tileid="giant_animal.png:0"/>
+		<description>Oto krokodyl. Nagle wyskakuje na brzeg z rzek i jezior.</description>
+		<attributes>
+			<atk value="172"/>
+			<def value="30"/>
+			<hp value="110"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="354"/>
+		<respawn value="1230"/>
+		<corpse name="huge_animal" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[3,12]" probability="100.0"/>
+			<item value="mięso" quantity="[3,7]" probability="80.0"/>
+			<item value="szynka" quantity="[2,5]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Rrrrrrrrr"/>
+				<sound value="alligator-1" />
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,150"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kobra">
+		<type class="stendhal/animal" subclass="cobra" tileid="animal.png:28"/>
+		<description></description>
+		<attributes>
+			<atk value="631"/>
+			<def value="83"/>
+			<hp value="1000"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="96"/>
+		<experience value="7818"/>
+		<respawn value="3900"/>
+		<corpse name="small_boneless"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="snake-cobra-1"/>
+				<sound value="snake-cobra-2"/>
+			</says>
+			<profile name="poisonous" params="5,mocna trucizna"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kobra królewska">
+		<type class="stendhal/huge_animal" subclass="king_cobra" tileid="huge_animal.png:9"/>
+		<description>Oto kobra królewska, która jest niezwykle jadowita.</description>
+		<attributes>
+			<atk value="750"/>
+			<def value="102"/>
+			<hp value="1499"/>
+			<speed value="0.8"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="120"/>
+		<experience value="12918"/>
+		<respawn value="5400"/>
+		<corpse name="huge_animal" width="2" height="2"/>
+		<drops>
+			<item value="zabójcza trucizna" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="snake-cobra-1" />
+				<sound value="snake-cobra-2" />
+			</says>
+			<profile name="poisonous" params="5,zabójcza trucizna"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: reptile -->
+
+</creatures>

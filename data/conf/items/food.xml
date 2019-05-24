@@ -1,0 +1,2176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+    <!-- try to sort by affinity first, alphabetical order next -->
+
+	<item name="jabłko">
+		<type class="food" subclass="apple" tileid="-1"/>
+		<description>Oto smaczne jabłko z górskich sadów.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="20" />
+			<frequency value="12" />
+			<quantity value="1" />
+			<regen value="3" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="jabłko niezgody">
+		<type class="food" subclass="blackapple" tileid="-1"/>
+		<description>Oto jabłko niezgody. Jest zapewne podarkiem od Johnnnny'ego. To człowiek co ma czarne przedmioty.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="4" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="1" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="banan">
+		<type class="food" subclass="banana" tileid="-1"/>
+		<description>Oto banan. Uważaj na małpy, gdy trzymasz go w plecaku!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="10" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="2" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="wisienka">
+		<type class="food" subclass="cherry" tileid="-1"/>
+		<description>Oto wisienka. Jej intensywny smak wiele ci przypomina.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="10" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="2" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="kokos">
+		<type class="food" subclass="coconut" tileid="-1"/>
+		<description>Oto kokos. Jest pęknięty, więc możesz się z niego napić.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="50" />
+			<frequency value="5" />
+			<quantity value="1" />
+			<regen value="2" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<!-- Removing crab meat
+	<item name="krabie mięso">
+		<type class="food" subclass="crab_meat" tileid="-1" />
+		<description>Oto krabie mięso. Jest go kawałek, ale jest przepyszne.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="30" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="5" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1" />
+		<value value="2" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+	Removing crab meat -->
+
+	<item name="winogrona">
+		<type class="food" subclass="grapes" tileid="-1"/>
+		<description>Oto winogrona. Wyglądają na soczyste i pyszne.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="oliwka">
+		<type class="food" subclass="olive" tileid="-1" />
+		<description>Oto oliwka.  Można ją zjeść lub wykorzystać do zrobienia oliwy z oliwek.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="5" />
+			<frequency value="1" />
+			<quantity value="1" />
+			<regen value="3" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value=".01" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="gruszka">
+		<type class="food" subclass="pear" tileid="-1"/>
+		<description>Oto gruszka. Jej piękny zapach przekonuje do wzięcia jej.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="10"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="ananas">
+		<type class="food" subclass="pineapple" tileid="-1"/>
+		<description>Oto tropikalny ananas.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="7"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="granat">
+		<type class="food" subclass="pomegranate" tileid="-1"/>
+		<description>Oto granat. Jeżeli zjesz go to szybko będziesz w świetnej formie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="arbuz">
+		<type class="food" subclass="watermelon" tileid="-1"/>
+		<description>Oto arbuz. Odświeża gradło podczas letnich gorących dni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="karczoch">
+		<type class="food" subclass="artichoke" tileid="-1"/>
+		<description>Widzisz karczocha. Może być składnikiem potrawy, ale nadaje się też do jedzenia osobno.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="brokuł">
+		<type class="food" subclass="broccoli" tileid="-1"/>
+		<description>Oto brokuł.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="marchew">
+		<type class="food" subclass="carrot" tileid="-1"/>
+		<description>Oto marchew. Możesz ją zjeść, ale może nadać się do zrobienia jakiejś potrawy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kalafior">
+		<type class="food" subclass="cauliflower" tileid="-1"/>
+		<description>Oto świeży kalafior.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="cukinia">
+		<type class="food" subclass="courgette" tileid="-1"/>
+		<description>Oto cukinia. Możesz ją zjeść, ale może nadać się do zrobienia jakiejś potrawy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kapusta">
+		<type class="food" subclass="collard" tileid="-1"/>
+		<description>Oto kapusta. Nie łatwo ją znaleźć.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="czosnek">
+		<type class="food" subclass="garlic" tileid="-1"/>
+		<description>Oto świeży czosnek. Znajdziesz na niego kupca, ale podobno wampiry odstrasza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="por">
+		<type class="food" subclass="leek" tileid="-1"/>
+		<description>Oto dorodny por.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="cebula">
+		<type class="food" subclass="onion" tileid="-1"/>
+		<description>Oto cebula.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sałata">
+		<type class="food" subclass="salad" tileid="-1"/>
+		<description>Oto sałata.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="szpinak">
+		<type class="food" subclass="spinach" tileid="-1"/>
+		<description>Oto szpinak. Jest bogaty w witaminy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pomidor">
+		<type class="food" subclass="tomato" tileid="-1"/>
+		<description>Oto pomidor. Pokrój go do sałatki albo od razu zjedz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="jajo">
+		<type class="food" subclass="egg" tileid="-1"/>
+		<description>Oto jajo.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pieczarka">
+		<type class="food" subclass="button_mushroom" tileid="-1"/>
+		<description>Oto pieczarka. Możesz ją zjeść, ale może nadać się do zrobienia jakiejś potrawy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="20"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="borowik">
+		<type class="food" subclass="porcini" tileid="-1"/>
+		<description>Oto borowik. Możesz go zjeść, ale może nadać się do zrobienia jakiejś potrawy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="muchomor">
+		<type class="food" subclass="toadstool" tileid="-1"/>
+		<description>Oto muchomor. Strzeż się!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="-60"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="-5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="3"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<!-- fish -->
+	<item name="palia alpejska">
+		<type class="food" subclass="arctic_char" tileid="-1"/>
+		<description>Oto palia alpejska, która żyje w chłodnych wodach północy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="dorsz">
+		<type class="food" subclass="cod" tileid="-1"/>
+		<description>Oto dorsz. Jego połowy są ograniczone.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="makrela">
+		<type class="food" subclass="mackerel" tileid="-1"/>
+		<description>To makrela.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="okoń">
+		<type class="food" subclass="perch" tileid="-1"/>
+		<description>To okoń.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="35"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="płotka">
+		<type class="food" subclass="roach" tileid="-1"/>
+		<description>Oto płotka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="25"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="błazenek">
+		<type class="food" subclass="clown-fish" tileid="-1"/>
+		<description>To egzotyczna ryba błazenek.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="10"/>
+			<frequency value="30"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="skrzydlica">
+		<type class="food" subclass="red-lionfish" tileid="-1"/>
+		<description>Oto trująca skrzydlica, czyli ryba motyl.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="-80"/>
+			<frequency value="25"/>
+			<quantity value="1"/>
+			<regen value="-5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pokolec">
+		<type class="food" subclass="surgeonfish" tileid="-1"/>
+		<description>Oto pokolec z głębokiego oceanu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="25"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pstrąg">
+		<type class="food" subclass="trout" tileid="-1"/>
+		<description>Oto pstrąg, który wyrósł w czystym górskim potoku.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="45"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="tuńczyk">
+		<type class="food" subclass="tuna" tileid="-1"/>
+		<description>Oto tuńczyk, który został wyłowiony z głębokiego morza Pacyfiku.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="25"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<!-- product -->
+	<item name="chleb">
+		<type class="food" subclass="baguette" tileid="-1"/>
+		<description>Oto bochenek chleba. Świeżo wypieczony chleb, gotowy do jedzenia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="30"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="naleśniki z polewą czekoladową">
+		<type class="food" subclass="crepesuzette" tileid="-1"/>
+		<description>To pyszne naleśniki z polewą czekoladową.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="100"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="5"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="jabłecznik">
+		<type class="food" subclass="applepie" tileid="-1"/>
+		<description>Oto przepyszny jabłecznik zrobiony z najlepszych składników.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="230"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="15"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="20"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="ciasto z wiśniami">
+		<type class="food" subclass="cherrypie" tileid="-1"/>
+		<description>Oto przepyszne ciasto z wiśniami zrobione z najlepszych składników.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="230"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="15"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="20"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="tarta">
+		<type class="food" subclass="piesmall" tileid="-1"/>
+		<description>Oto tarta z mięsem i warzywami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="150"/>
+			<frequency value="25"/>
+			<quantity value="1"/>
+			<regen value="12"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="12"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="tarta z rybnym nadzieniem">
+		<type class="food" subclass="fishpie" tileid="-1"/>
+		<description>Oto tarta z rybnym nadzieniem. Jest lekkostrawna, więc szybciej dodaje sił.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="160"/>
+			<frequency value="18"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="13"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kanapka">
+		<type class="food" subclass="sandwich" tileid="-1"/>
+		<description>Oto kanapka z szynką i serem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="120"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="szynka wędzona">
+		<type class="food" subclass="ham_smoked" tileid="-1" />
+		<description>Oto szynka wędzona.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="160" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="12" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="3" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="mięso wędzone">
+		<type class="food" subclass="meat_smoked" tileid="-1" />
+		<description>Oto mięso wędzone.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="120" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="10" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="2" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="wędzony dorsz">
+		<type class="food" subclass="cod_smoked" tileid="-1" />
+		<description>Oto wędzony dorsz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="80" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="8" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="2" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="wędzony pstrąg">
+		<type class="food" subclass="trout_smoked" tileid="-1" />
+		<description>Oto wędzony pstrąg.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="90" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="8" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="2" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+
+	<item name="cukier">
+		<type class="food" subclass="sugar" tileid="-1"/>
+		<description>Oto torebka czystego cukru.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="40"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="6"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<!-- sold -->
+	<item name="osełka masła">
+		<type class="food" subclass="butter" tileid="-1"/>
+		<description>To jest osełka masła. Możesz ją dodać do czegoś lub zjeść jeśli masz taką ochotę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="25"/>
+			<frequency value="12"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="miód">
+		<type class="food" subclass="honey" tileid="-1"/>
+		<description>Widzisz dzbanek słodkiego miodu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="20"/>
+			<frequency value="40"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="6"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lody">
+		<type class="food" subclass="icecream" tileid="-1"/>
+		<description>Oto lody w wafelku z kremem waniliowym i czekoladową polewą.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lukrecja">
+		<type class="food" subclass="licorice" tileid="-1"/>
+		<description>Oto delikatna lukrecja.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1500"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="hotdog">
+		<type class="food" subclass="sausage_on_bun" tileid="-1"/>
+		<description>Oto gorący hotdog w chrupiącej bułeczce.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="160"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="16"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="hotdog z serem">
+		<type class="food" subclass="cheese_sausage_on_bun" tileid="-1"/>
+		<description>Oto gorący hotdog z serem w chrupiącej bułeczce..</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="180"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="18"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kiełbasa serowa">
+		<type class="food" subclass="cheesesausage" tileid="-1"/>
+		<description>Oto kiełbasa serowa.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="paróweczka">
+		<type class="food" subclass="sausage" tileid="-1"/>
+		<description>Oto ostatnia paróweczka hrabiego Bary Canta...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="80"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kanapka z tuńczykiem">
+		<type class="food" subclass="tuna_sandwich" tileid="-1"/>
+		<description>Oto kanapka z tuńczykiem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="130"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="13"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+ 
+	<item name="shake czekoladowy">
+		<type class="food" subclass="chocolateshake" tileid="-1"/>
+		<description>Oto przepyszny shake czekoladowy. Absolutnie zero kalorii.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="100"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="20"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="shake waniliowy">
+		<type class="food" subclass="vanillashake" tileid="-1"/>
+		<description>Oto przepyszny shake waniliowy. Absolutnie zero kalorii.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="100"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="20"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="8"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<!-- dropped -->
+	<item name="ser">
+		<type class="food" subclass="cheese" tileid="-1"/>
+		<description>Widzisz kawałek sera. Zjedz go a zobaczysz co się stanie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="20"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="udko">
+		<type class="food" subclass="chicken" tileid="-1"/>
+		<description>Oto smakowity kawałek drobiu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="50"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="tabliczka czekolady">
+		<type class="food" subclass="chocolatebar" tileid="-1"/>
+		<description>Oto tabliczka czekolady.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1500"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mufinka">
+		<type class="food" subclass="fairy_cake" tileid="-1"/>
+		<description>Oto przepyszna mufinka z lukrem i posypką.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="50"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="5"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="szynka">
+		<type class="food" subclass="ham" tileid="-1"/>
+		<description>Oto soczysta szynka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="80"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="6"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="3"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mięso">
+		<type class="food" subclass="meat" tileid="-1"/>
+		<description>Oto kawał pożywnego mięsiwa.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="60"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<!-- quest -->
+	<item name="jajo wielkanocne">
+		<type class="food" subclass="easter_egg" tileid="-1"/>
+		<description>Oto jajo wielkanocne. Jest ogromne!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="1980"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="30"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1500"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="małe jajo wielkanocne">
+		<type class="food" subclass="small_easter_egg" tileid="-1"/>
+		<description>Oto małe jajo wielkanocne. Pychota!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="100"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="20"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="200"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="grillowany stek">
+		<type class="food" subclass="grilled_steak" tileid="-1"/>
+		<description>Oto świeży grillowany stek. Pachnie wspaniale i jest naprawdę soczysty.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="200"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="20"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pizza">
+		<type class="food" subclass="pizza" tileid="-1"/>
+		<description>Oto smaczna pizza. Mam nadzieję, że dodali do niej dodatkowy ser.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="250"/>
+			<frequency value="12"/>
+			<quantity value="1"/>
+			<regen value="50"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="25"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<!-- Other -->
+	<item name="oscypek">
+		<type class="food" subclass="oscypek" tileid="-1"/>
+		<description>Oto oscypek. Oscypka smak sławny jest na cały świat.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="18"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kiełbasa wiejska">
+		<type class="food" subclass="sausage" tileid="-1"/>
+		<description>Oto kiełbasa wiejska.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="80"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="borówki">
+		<type class="food" subclass="berries" tileid="-1"/>
+		<description>Oto borówki. Patrz dookoła zbierając je, bo lubią je także niedźwiedzie!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="28"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="7"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kiść winogron">
+		<type class="food" subclass="grapevine" tileid="-1"/>
+		<description>Oto dorodna kiść winogron. Można zrobić z nich pyszny napój.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="25"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rzodkiewka">
+		<type class="food" subclass="rzodkiewka" tileid="-1"/>
+		<description>Oto rzodkiewka. Bardzo lubisz jej ostry smak.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="5"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rzepa">
+		<type class="food" subclass="rzepa" tileid="-1"/>
+		<description>Oto dorodna rzepa. Kobiety robią z niej napar do włosów, ale jest też całkiem smaczna.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="6"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="ziemniaki">
+		<type class="food" subclass="potato" tileid="-1"/>
+		<description>Oto ziemniaki. Nie jedz na surowo! Mogą ci zaszkodzić.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="-30"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="-2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="dwojaki">
+		<type class="food" subclass="dwojaki" tileid="-1"/>
+		<description>Oto dwojaki pełne gorących ukucianych gruli omaszczonych skwarkami i masłem. Jedz póki ciepłe!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="333"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="33"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="dynia">
+		<type class="food" subclass="pumpkin" tileid="-1"/>
+		<description>Oto dynia. Nadaje się na zupę lub do ciast. Dzieci uwielbiają jej suszone pestki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="50"/>
+			<frequency value="18"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="straszna dynia">
+		<type class="food" subclass="pumpkin_halloween" tileid="-1"/>
+		<description>Oto dynia. Dzieci wydłubały jej środek, więc niewiele zostało do zjedzenia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="5"/>
+			<frequency value="18"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="truskawka">
+		<type class="food" subclass="truskawka" tileid="-1"/>
+		<description>Oto truskawka i najłatwiejszy przepis dzieciństwa. Duuużo truskawek, łyżka śmietanki, łyżka cukru. Mniam...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="50"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="9"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="zielone jabłuszko">
+		<type class="food" subclass="apple" tileid="-1"/>
+		<description>Oto kwaśne zielone jabłuszko. Ależ ono pachnie...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="18"/>
+			<frequency value="14"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="gruszeńka">
+		<type class="food" subclass="gruszka" tileid="-1"/>
+		<description>Oto słodka gruszeńka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="7"/>
+			<quantity value="1"/>
+			<regen value="6"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="orzech włoski">
+		<type class="food" subclass="walnut" tileid="-1"/>
+		<description>Oto orzech włoski.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="20"/>
+			<frequency value="4"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pomarańcza">
+		<type class="food" subclass="orange" tileid="-1"/>
+		<description>Oto pomarańcza. Można ją zjeść lub wycisnąć z niej pyszny sok.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="60"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="12"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="opieńka miodowa">
+		<type class="food" subclass="fungus_honey" tileid="-1"/>
+		<description>Oto opieńka miodowa. Trochę nimi podjesz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kapusta pekińska">
+		<type class="food" subclass="chinese-cabbage" tileid="-1"/>
+		<description>Oto kapusta pekińska. Trudno ją znaleść.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="szczupak">
+		<type class="food" subclass="szczupak" tileid="-1"/>
+		<description>To szczupak. Pochwal się wszystkim, że złowiłeś tak wielkiego.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="45"/>
+			<frequency value="20"/>
+			<quantity value="1"/>
+			<regen value="5"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="leszcz">
+		<type class="food" subclass="leszcz" tileid="-1"/>
+		<description>To leszcz. Pospolita rybka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="karp">
+		<type class="food" subclass="karp" tileid="-1"/>
+		<description>To karp. Na co ci on, skoro je się go tylko raz na rok?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="35"/>
+			<frequency value="17"/>
+			<quantity value="1"/>
+			<regen value="6"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="karp lustrzeń">
+		<type class="food" subclass="karp_lustrzen" tileid="-1"/>
+		<description>To błyszczy karp lustrzeń. Zaskakująco wielka ryba!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="45"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="8"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pączek">
+		<type class="food" subclass="paczek" tileid="-1"/>
+		<description>Oto przepyszny pączek z lukrem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="70"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="7"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="5"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="stek">
+		<type class="food" subclass="steak" tileid="-1"/>
+		<description>Oto pyszny suszony stek, który doda ci sporo sił w chłodne dni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="80"/>
+			<frequency value="15"/>
+			<quantity value="1"/>
+			<regen value="8"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>

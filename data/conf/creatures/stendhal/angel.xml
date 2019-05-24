@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: dark -->
+	<creature name="anioł ciemności">
+		<type class="stendhal/giant_human" subclass="dark_angel" tileid="giant_human.png:6"/>
+		<description>Oto anioł ciemności. Jest silnym złym aniołem, który teraz ukrywa się w mroku.</description>
+		<attributes>
+			<atk value="4755"/>
+			<def value="142"/>
+			<hp value="12000"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="400"/>
+		<experience value="378321"/>
+		<respawn value="160000"/>
+		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="money" quantity="[3000,30000]" probability="100.0"/>
+			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="2.0"/>
+			<item value="spodnie nabijane klejnotami" quantity="[1,1]" probability="2.5"/>
+			<item value="czarny płaszcz" quantity="[1,1]" probability="2.5"/>
+			<item value="hełm libertyński" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="2.0"/>
+			<item value="pióro mrocznego anioła" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.8"/>
+			<susceptibility type="light" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Moja wola niech będzie, na ziemi i w niebiosach!"/>
+				<noise state="idle follow fight" value="Mnie należy się chwała!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="lifesteal" params="0.1"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="archanioł ciemności">
+		<type class="stendhal/giant_human" subclass="dark_archangel" tileid="giant_human.png:12"/>
+		<description>Oto archanioł ciemności. Po upadku z nieba jej dusza stała się ciemna jak ona sama.</description>
+		<attributes>
+			<atk value="4700"/>
+			<def value="171"/>
+			<hp value="18000"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="500"/>
+		<experience value="478800"/>
+		<respawn value="100000"/>
+		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[2,5]" probability="50.0"/>
+			<item value="pióro archanioła ciemności" quantity="[1,1]" probability="80.0"/>
+			<item value="zupa" quantity="[2,4]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="czarny pas" quantity="[1,1]" probability="5.0"/>
+			<item value="buty z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="strzała płonąca" quantity="[10,30]" probability="5.0"/>
+			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="money" quantity="[5000,25000]" probability="100.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="kusza łowcy" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.8"/>
+			<susceptibility type="light" value="1.1"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Zmiażdżę cię z niewyobrażalną siłą!!"/>
+				<noise state="idle follow fight" value="Moja wola niech się stanie!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="lifesteal" params="0.05"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: dark -->
+
+	<!-- START: fallen -->
+	<creature name="upadły anioł">
+		<type class="stendhal/giant_human" subclass="fallen_angel" tileid="giant_human.png:7"/>
+		<description>Oto upadły anioł. Gdy odwrócił się od bogów, spadł z niebios.</description>
+		<attributes>
+			<atk value="2120"/>
+			<def value="105"/>
+			<hp value="4333"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="210"/>
+		<experience value="90189"/>
+		<respawn value="28000"/>
+		<corpse name="giant_humanoid" harmless="halo_large_red" width="2" height="2"/>
+		<drops>
+			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="money" quantity="[200,1000]" probability="100.0"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.02"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.75"/>
+			<item value="młot wulkanów" quantity="[1,1]" probability="0.01"/>
+			<item value="pióro upadłego anioła" quantity="[1,1]" probability="100.0"/>
+			<item value="czarny płaszcz" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Już po tobie!"/>
+				<noise state="idle follow fight" value="Przybyłem by zniszczyć ludzkość!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: fallen -->
+
+	<!-- START: light -->
+	<creature name="aniołek">
+		<type class="stendhal/fairy" subclass="baby_angel" tileid="fairy.png:0"/>
+		<description>Oto aniołek. Dostanie kiedyś szanse na dorośnięcie?</description>
+		<attributes>
+			<atk value="628"/>
+			<def value="100"/>
+			<hp value="700"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="90"/>
+		<experience value="7616"/>
+		<respawn value="3530"/>
+		<corpse name="humanoid" harmless="halo" />
+		<drops>
+			<item value="money" quantity="[30,60]" probability="100.0"/>
+			<item value="mufinka" quantity="[1,5]" probability="10.0"/>
+			<item value="niezapisany zwój" quantity="[1,2]" probability="5.0"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
+			<item value="hełm libertyński" quantity="[1,1]" probability="0.1"/>
+			<item value="balonik" quantity="[1,1]" probability="5.0"/>
+			<item value="bełt złoty" quantity="[1,30]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.3"/>
+			<susceptibility type="light" value="0.7"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Będę wszechmocny!"/>
+				<sound value="sneeze-baby-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="anioł">
+		<type class="stendhal/giant_human" subclass="angel" tileid="giant_human.png:4"/>
+		<description>Oto anioł. Swym płomiennym mieczem broni wstępu do niebios.</description>
+		<attributes>
+			<atk value="3187"/>
+			<def value="128"/>
+			<hp value="4000"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="230"/>
+		<experience value="145369"/>
+		<respawn value="36000"/>
+		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,4]" probability="50.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="money" quantity="[300,3000]" probability="100.0"/>
+			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.1"/>
+			<item value="magiczny hełm kolczy" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="1.0"/>
+			<item value="pióro anioła" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="light" value="0.7"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Idź na spotkanie swego Stwórcy!"/>
+				<noise state="idle follow fight" value="Podli śmiertelnicy, wyzwaliście mnie na swoją zgubę!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="10,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="archanioł">
+		<type class="stendhal/giant_human" subclass="archangel" tileid="giant_human.png:11"/>
+		<description>Oto archanioł. Zabije cię jeśli natychmiast nie odejdziesz z nieba.</description>
+		<attributes>
+			<atk value="3455"/>
+			<def value="162"/>
+			<hp value="7000"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="330"/>
+		<experience value="230178"/>
+		<respawn value="40000"/>
+		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[1,4]" probability="40.0"/>
+			<item value="pióro archanioła" quantity="[1,1]" probability="100.0"/>
+			<item value="zupa" quantity="[1,3]" probability="30.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.45"/>
+			<item value="spodnie z mithrilu" quantity="[1,1]" probability="0.3"/>
+			<item value="strzała płonąca" quantity="[10,30]" probability="7.0"/>
+			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.2"/>
+			<item value="money" quantity="[4000,9000]" probability="100.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="kusza łowcy" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="light" value="0.7"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Odejdź, zanim będzie za późno."/>
+				<noise state="idle follow fight" value="Twego przeznaczenia nie znajdziesz tutaj."/>
+				<noise state="idle follow fight" value="Ni na ziemi, ni w niebie miejsca nie znajdziesz dla siebie..."/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="10,50"/>
+			<profile name="lifesteal" params="0.01"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: light -->
+</creatures>

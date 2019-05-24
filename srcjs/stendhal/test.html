@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<!-- 
+/***************************************************************************
+ *                   (C) Copyright 2017-2017 - Stendhal                    *
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation; either version 3 of the    * 
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
+-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<pre id="result">
+</pre>
+
+<script>
+window.failedtests = [];
+</script>
+<script src="ui/html.js"></script>
+<script src="ui/chatlog.js"></script>
+<script src="ui/chatlog.test.js"></script>
+<script>
+var pre = document.getElementById("result");
+if (window.failedtests.length == 0) {
+	pre.textContent = "OK";
+} else {
+	pre.textContent = window.failedtests.join("\r\n");
+}
+</script>
+</body>
+</html>

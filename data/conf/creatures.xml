@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal groups.xsd ">
+	<!-- Potworki z Stendhal -->
+	<group uri="creatures/stendhal/angel.xml" />
+	<group uri="creatures/stendhal/animal.xml" />
+	<group uri="creatures/stendhal/beast.xml" />
+    <group uri="creatures/stendhal/demon.xml" />
+    <group uri="creatures/stendhal/dragon.xml" />
+	<group uri="creatures/stendhal/dwarf.xml" />
+	<group uri="creatures/stendhal/elemental.xml" />
+	<group uri="creatures/stendhal/elf.xml" />
+	<group uri="creatures/stendhal/giant.xml" />
+    <group uri="creatures/stendhal/gnome.xml" />
+	<group uri="creatures/stendhal/goblin.xml" />
+	<group uri="creatures/stendhal/human.xml" />
+	<group uri="creatures/stendhal/humanoid.xml" />
+	<group uri="creatures/stendhal/hybrid.xml" />
+    <group uri="creatures/stendhal/oni.xml" />
+    <group uri="creatures/stendhal/orc.xml" />
+	<group uri="creatures/stendhal/troll.xml" />
+	<group uri="creatures/stendhal/undead.xml" />
+
+	<!-- Potworki z POL -->
+	<group uri="creatures/pol/angel.xml" />
+	<group uri="creatures/pol/animal.xml" />
+	<group uri="creatures/pol/beast.xml" />
+	<group uri="creatures/pol/dragon.xml"/>
+	<group uri="creatures/pol/elemental.xml" />
+	<group uri="creatures/pol/elf.xml" />
+	<group uri="creatures/pol/giant.xml" />
+	<group uri="creatures/pol/human.xml" />
+	<group uri="creatures/pol/humanoid.xml" />
+	<group uri="creatures/pol/immortal.xml" />
+	<group uri="creatures/pol/shrub.xml" />
+</groups>

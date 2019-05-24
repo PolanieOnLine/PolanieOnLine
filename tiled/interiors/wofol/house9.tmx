@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_fancy_purple.png"/>
+ </tileset>
+ <tileset firstgid="13" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_purple.png"/>
+ </tileset>
+ <tileset firstgid="33" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_pale.png"/>
+ </tileset>
+ <tileset firstgid="49" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/pale_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="85" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/stool.png"/>
+ </tileset>
+ <tileset firstgid="86" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/food/meals_1.png"/>
+ </tileset>
+ <tileset firstgid="88" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/rock/green_crystal.png"/>
+ </tileset>
+ <tileset firstgid="97" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/portal.png"/>
+ </tileset>
+ <tileset firstgid="113" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="114" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/barrel.png"/>
+ </tileset>
+ <tileset firstgid="116" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/kobold.png"/>
+ </tileset>
+ <tileset firstgid="121" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/brown.png"/>
+ </tileset>
+ <tileset firstgid="126" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/long_side_on_pale.png"/>
+ </tileset>
+ <tileset firstgid="129" name="Unbenannt" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/bed/single_blue.png"/>
+ </tileset>
+ <layer name="0_floor" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAKtlYGCoHcWjeBQPGAYAeXMgy4QDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAL3SuQqAMBRE0Vfbudu427hvtfpn6qc7QiRNFCOYwKmGSyCkIqLkgxIy8MCS4ELK
+WoPkjv5j64PJBJLtudfQCPY3bQvdhzYk/q6RZPt0VLUrbMyu8N6n1iH+Dy49DDAKNhs0KCAWmGCG
+5WbP4QBAnioNhAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoA5ohGJCarCBJijGBwjJjwLagmggjsEhF4pGo4M4II5HEysG4jogDgPieiAO
+J8NNoXjsJBYUUaifGgAAKpaNyIQDAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUjBUQAceRAO2IUYAAAb1t6RIQDAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUjHVTQWR8lYCDsBIFUGpoNANbaJoiEAwAA
+  </data>
+ </layer>
+ <layer name="collision" width="15" height="15" opacity="0.44">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAACtkYGAoHEDMgMbGBXDpJRYQ0otPfjjqxQfIjSNS9BKbNihxMzn6iEmn1MYAboS8
+74QDAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="20" height="12" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="bushes" tilewidth="32" tileheight="32">
+  <image source="../../tileset/plant/bush/bushes.png" trans="ffffff"/>
+ </tileset>
+ <tileset firstgid="11" name="postbox_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/postbox_2.png" trans="ff00ff"/>
+ </tileset>
+ <tileset firstgid="13" name="fence_wooden" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/fence/fence_wooden.png"/>
+ </tileset>
+ <tileset firstgid="22" name="flower_vase" tilewidth="32" tileheight="32">
+  <image source="../../tileset/plant/indoor/flower_vase.png"/>
+ </tileset>
+ <tileset firstgid="25" name="table/long_front_on" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/long_front_on.png"/>
+ </tileset>
+ <tileset firstgid="28" name="picture/small" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/picture/small.png"/>
+ </tileset>
+ <tileset firstgid="31" name="flowering_plant" tilewidth="32" tileheight="32">
+  <image source="../../tileset/plant/indoor/flowering_plant.png"/>
+ </tileset>
+ <tileset firstgid="33" name="weapons_rack" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_rack.png"/>
+ </tileset>
+ <tileset firstgid="51" name="chair/wooden_pale" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/wooden_pale.png"/>
+ </tileset>
+ <tileset firstgid="55" name="barrel" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/barrel.png"/>
+ </tileset>
+ <tileset firstgid="57" name="pot_plant" tilewidth="32" tileheight="32">
+  <image source="../../tileset/plant/indoor/pot_plant.png"/>
+ </tileset>
+ <tileset firstgid="60" name="table/long_side_on_pale" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/long_side_on_pale.png"/>
+ </tileset>
+ <tileset firstgid="63" name="bright_bookshelf_and_cupboard" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/shelve/bright_bookshelf_and_cupboard.png"/>
+ </tileset>
+ <tileset firstgid="69" name="book" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/documents/book.png"/>
+ </tileset>
+ <tileset firstgid="73" name="rocks" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/rock/rocks.png"/>
+ </tileset>
+ <tileset firstgid="77" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="78" name="protection" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/protection.png"/>
+ </tileset>
+ <tileset firstgid="80" name="dechy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/deski_kaflee.png"/>
+ </tileset>
+ <tileset firstgid="96" name="plazy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/waly/int_plazy.png"/>
+ </tileset>
+ <tileset firstgid="123" name="okna" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/okna/window_drewno.png"/>
+ </tileset>
+ <tileset firstgid="139" name="drz" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/drzwi/door_drewno_int.png"/>
+ </tileset>
+ <tileset firstgid="154" name="skrzynia" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/crate_small.png"/>
+ </tileset>
+ <tileset firstgid="155" name="skrzynki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/crates.png"/>
+ </tileset>
+ <layer name="0_floor" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAItkYGCIBOJwJBxJBUxt86KRzIugkpnxNDBzFA8tjJwGYqlkJjXTPSHzAEWVto3A
+AwAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAEtgYGBIpBJOAuJkIM4E4iwKcTYQp0LNy2EgDLQIyOfhMI+PCLNJMY9cQA/z5lDZ
+vHlUNo8SQEvz8oG4gEJcCDUvDYjTqYQzgBgAIvYCs8ADAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQIBqKEYGMgzkg2YoxgYUgVgDiDWhfHsodsChnhmPPZJALA/EhkBsBMTWQOwE
+xc5APAeLHkEg5gPi2VCaH0lOCojN8Ng3D4sYDxDPAuK5QCwGxKJIctJY3IuNxgWk0cxDBiA7paBs
+dBrdfTCA7j5kYE6kebDwg2EhJDl0/0jjoIkFhOKDFYsYvvSCbD8ordgAsS0StsOipxuIe6C4F59j
+gaAOiqkF2qAYGwAAZY943sADAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgIB1YkqEHH7CisnnEAO4BsBMGPNBobIAU96Gbg89cUszzpNAcEBgOaWUwAwCB
+o4DRwAMAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMVQAAewDiOMADAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAPNlYGDwHSIYFyCkllTz8dlFDfN8sdD4zMDnf3R15LiP2uaR4198gNz4IMY8ctLf
+QOcDZAwAeRkAxcADAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="20" height="12">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAPNjYGDwG8WjeBQPSQwAnU2hpsADAAA=
+  </data>
+ </layer>
+</map>

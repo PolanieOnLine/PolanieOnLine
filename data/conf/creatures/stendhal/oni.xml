@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: oni -->
+	<creature name="oni wojownik">
+		<type class="stendhal/oni" subclass="oni_warrior" tileid="oni.png:0"/>
+		<description>Oto oni wojownik. Jego fioletowy kolor skóry nie powinien uśpić twojej czujności!</description>
+		<attributes>
+			<atk value="499"/>
+			<def value="77"/>
+			<hp value="500"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="67"/>
+		<experience value="4455"/>
+		<respawn value="2000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="90.0"/>
+			<item value="spodnie cieni" quantity="[1,1]" probability="0.8"/>
+			<item value="buty cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="tarta" quantity="[1,2]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="oni łucznik">
+		<type class="stendhal/oni" subclass="oni_archer" tileid="oni.png:1"/>
+		<description>Oto oni łucznik. Jego strzały będą wszędzie cię ścigać, aby chronić jego królową!</description>
+		<attributes>
+			<atk value="511"/>
+			<def value="77"/>
+			<hp value="600"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="72"/>
+		<experience value="4885"/>
+		<respawn value="2300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,70]" probability="100.0"/>
+			<item value="złote spodnie" quantity="[1,1]" probability="2.0"/>
+			<item value="strzała złota" quantity="[8,15]" probability="5.0"/>
+			<item value="złote buty" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="oni kapłan">
+		<type class="stendhal/oni" subclass="oni_priest" tileid="oni.png:2"/>
+		<description>Oto oni kapłan mówiący dziwne zaklęcia.</description>
+		<attributes>
+			<atk value="547"/>
+			<def value="76"/>
+			<hp value="680"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="77"/>
+		<experience value="5477"/>
+		<respawn value="2590"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="bukłak z wodą" quantity="[1,2]" probability="50.0"/>
+			<item value="money" quantity="[10,40]" probability="100.0"/>
+			<item value="buty cieni" quantity="[1,1]" probability="0.5"/>
+			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.050"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,40"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="oni król">
+		<type class="stendhal/oni" subclass="oni_king" tileid="oni.png:3"/>
+		<description>Oto oni król. Jego władza w królestwie pozwala na dowodzenie odważnymi oddziałami oni.</description>
+		<attributes>
+			<atk value="714"/>
+			<def value="93"/>
+			<hp value="1200"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="109"/>
+		<experience value="10999"/>
+		<respawn value="5300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,70]" probability="100.0"/>
+			<item value="bukłak z wodą" quantity="[1,1]" probability="30.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="3.0"/>
+			<item value="złoty hełm wikingów" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Stań przede mną, Królem Oni!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="oni królowa">
+		<type class="stendhal/oni" subclass="oni_queen" tileid="oni.png:4"/>
+		<description>Oto oni królowa. Wspiera swojego męża i trzyma  pieczę nad królestwem, gdy on zajmuje się podbojem nowych ziem i walką na polach bitewnych.</description>
+		<attributes>
+			<atk value="737"/>
+			<def value="98"/>
+			<hp value="1200"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="118"/>
+		<experience value="12338"/>
+		<respawn value="6200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="sztabka złota" quantity="[1,2]" probability="5.0"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="1.0"/>
+			<item value="hełm libertyński" quantity="[1,1]" probability="0.1"/>
+			<item value="misiurka" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ugnij kolana przed Królową Oni."/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+	<!-- END: oni -->
+</creatures>

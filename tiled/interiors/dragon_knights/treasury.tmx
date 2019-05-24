@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="24" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="34" name="kafelki_rozne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <tileset firstgid="114" name="chest_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chest/chest_2.png"/>
+ </tileset>
+ <tileset firstgid="120" name="pol_rycerze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ </tileset>
+ <tileset firstgid="128" name="dark_red_ew" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ </tileset>
+ <tileset firstgid="140" name="int_wall_dark_red_corners_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners_2.png"/>
+ </tileset>
+ <tileset firstgid="148" name="sztabki_zlota" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/sztabki_zlota.png"/>
+ </tileset>
+ <tileset firstgid="154" name="barierki_zlote" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/ogrodzenie/barierki_zlote.png"/>
+ </tileset>
+ <layer name="0_floor" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAItlYGCIHcWjeBQPSQwAQFlVW8ADAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNkYGAQohEWAWJRIBYDYnYqY3EglgBiSSBmY6A+4B5g83uAuJcCPrr5S4B4FhDP
+RpJnQ1NPKh/Z/JlQ8QU0NH8GFvNLKeDDzJcCYi40LI0mTg4fZL4sEMvRCCsAMQDfEy8nwAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGNqgCYibaWh+GxC309D8LiDupqH5ww0sH2gHDDIAAIT3SwzAAwAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjgHagiEL+KMAPAJM/jJ7AAwAA
+  </data>
+ </layer>
+ <layer name="objects" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGD6gfqAdMMhB7UA7YBRQHQAAKoMnHcADAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNkYGBQHAaY2oCWZqObj80OdHFy+bjsobb5DESqp7b5ilTgD2UMAGn5qSHAAwAA
+  </data>
+ </layer>
+ <layer name="protection" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMVQAAewDiOMADAAA=
+  </data>
+ </layer>
+</map>

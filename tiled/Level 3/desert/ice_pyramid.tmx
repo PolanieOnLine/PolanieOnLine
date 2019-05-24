@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="74" height="74" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="icewall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/waly/icewall.png"/>
+ </tileset>
+ <tileset firstgid="9" name="rope_ladder" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/ladder/rope_ladder.png"/>
+ </tileset>
+ <tileset firstgid="29" name="rock_snow" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/natura/rock_snow.png"/>
+ </tileset>
+ <tileset firstgid="30" name="brown" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/brown.png"/>
+ </tileset>
+ <tileset firstgid="35" name="ground_snow05" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/ground_snow05.png"/>
+ </tileset>
+ <tileset firstgid="53" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="54" name="pol_smoki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_smoki.png"/>
+ </tileset>
+ <tileset firstgid="66" name="pol_olbrzymy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_olbrzymy.png"/>
+ </tileset>
+ <layer name="0_floor" width="74" height="74">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3QMREAIAwAsTphx79AFLA/XIYYyJ6ZDQAAAFytx3ny5MlTlSdPnjxVefLkyVOV
+J0+ePFV58uTJU5UnT548VXny5MlTlSdPnjxVefLkyVOVJ0+ePFV58uTJU5UnT57+fQIAAIBXHRJN
+RnWQVQAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="74" height="74">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3csY7CMBQFUQMJIGoaivz/b0JtKWYcEvuFzJXcTLOrI0veLWBMKZ08xXP9nEty
+3zak5U7Tmr9I8P3idKTpxBbN6ZGdKCs5jan9u/LMTo93rdapxz17Zaf1hkKP5NR7R3aq+fvlyE41
+04ltTace72DLd22u1zr9wz0recx1nVjXiXWdWNeJdZ1Y14l1nVjXiXWdWNeJdZ1Y14l1nVjXiXWd
+WNeJdZ1Y14l1nVjXiXWdWNeJdZ1Y14l1nVjXiXWdWNeJdZ1Y14l1nVjXiXWdWNeJdeIxzfS9zvvE
+phObTmw6senEphObTmw6senEphObTmw6sbVwun3OeaOTfy5/q59zL3jM9Uj3xs/l72M6senEphPb
+Eqct37Wop/QOHvHe1K63016+u623016mE1s0p8jfuxbpXWv1/92Sd/AN/5dq/JBVAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="74" height="74">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAfBgYqDYJkFUAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="74" height="74">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3csQ0AIRADQaoCQgjov6Uv4gMfaKaCzS25NYCckQ4AoJyTDvhppgMAAAAAAAAA
+AAAK2emAYno6AAAAAAAAeMYtO8xKBwBAkC8aqO0DR4N04pBVAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="74" height="74">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3XW2oCARAFUTfl/reWT4Mf2p48xnK6oUACBVM3wuD1crlclxF7j+8nO51p3/0+
+zW53mt3uNLtHO73D++QdnmGy09lud5rdmXd6pePMO71yu9PsfnOno39j/fV77VGzOHWkWZw60ixO
+HWkWp440i1NHmsWpI83i1JFmcepIszh1pFmcOtIsTh1pFqeONItTR5rFqSPN4tSRZnHqSLM4daRZ
+nDrSLE4daRanjjSLU0eaxakjzeLUkWZx6kizOHWkWZw60ixOHWkWp440i1NHmsWpI83i1JFmcepI
+szh1pFmcOtIsTh1pfubcf/4EnjXf/32/T/NmcepIszh1pFmcOtIsTh1pFqeONItTR5rFqSPN4tSR
+ZnHqSLM4daRZnDrSLM5/PHt5p0++3Wl2u9PsdqfZ7U6z053OyKs77d3u6J0q/6Ojd6rc7jS73Wl2
+R79bnr1rjn6e73wBYsarXJBVAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="74" height="74">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAfBgYqDYJkFUAAA==
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,1189 @@
+<?xml version='1.0'?>
+
+<project name="polskagra" default="compile" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+	<!--
+		Sets a property (by name and value), or set of properties (from file or resource) in the project. Properties are case sensitive.
+		Properties are immutable: whoever sets a property first freezes it for the rest of the build; they are most definitely not variables.
+	-->
+	<property file="build.ant-private.properties"/>
+	<property file="build.ant.properties"/>
+
+	<property name="build_tests" value="${buildroot}/build_tests"/>
+	<property name="build_tests_report" value="${buildroot}/build_test_report"/>
+
+	<property name="build_client" value="${buildroot}/build_client"/>
+	<property name="build_client_data" value="${buildroot}/build_client_data"/>
+	<property name="build_client_sound_data" value="${buildroot}/build_client_sound_data"/>
+	<property name="build_client_music_data" value="${buildroot}/build_client_music_data"/>
+
+	<property name="build_postman" value="${buildroot}/buildbot/"/>
+
+	<property name="build_server" value="${buildroot}/build_server"/>
+	<property name="build_server_maps" value="${buildroot}/build_server_maps"/>
+	<property name="build_server_script" value="${buildroot}/build_server_script"/>
+	<property name="build_server_xmlconf" value="${buildroot}/build_server_xmlconf"/>
+
+	<property name="build_polskagratools" value="${buildroot}/build_polskagratools"/>
+	<property name="build_polskagratextclient" value="${buildroot}/build_polskagratextclient"/>
+
+	<property name="build_client" value="${buildroot}/build_client"/>
+
+	<property name="client_data" value="polskagra-data-${version}.jar"/>
+	<property name="client_jarname" value="polskagra-${version}.jar"/>
+	<property name="client_sound_data" value="polskagra-sound-data-${version}.jar"/>
+	<property name="client_music_data" value="polskagra-music-data-${version}.jar"/>
+	<property name="client_starter_jarname" value="polskagra-starter-${version}.jar"/>
+
+	<property name="maps_jarname" value="polskagra-maps-${version}.jar"/>
+
+	<property name="server_jarname" value="polskagra-server-${version}.jar"/>
+	<property name="xmlconf_jarname" value="polskagra-xmlconf-${version}.jar"/>
+
+	<property name="config_dir" value="data/conf"/>
+
+	<property name="schema_location" value="${config_dir}"/>
+
+	<property name="cobertura.dir" value="${libdir}/cobertura" />
+
+	<import file="build-private.xml" optional="true" />
+
+	<condition property="exclude.signing" value="true">
+		<not>
+			<available file="keystore.ks"/>
+		</not>
+	</condition>
+	<condition property="exclude.jardiff" value="true">
+		<not>
+			<available file="${build-archive}/polskagra-${version.old}.zip"/>
+		</not>
+	</condition>
+
+	<tstamp>
+		<format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss" />
+	</tstamp>
+
+	<target name="init">
+		<mkdir dir="${lib}"/>
+
+		<!-- We update the version number -->
+		<replaceregexp file="${src}/games/stendhal/common/Debug.java"
+			match="String VERSION ?= ?&quot;.*&quot;;"
+			replace="String VERSION = &quot;${version}&quot;;"
+			byline="true"/>
+		<replaceregexp file="${src}/games/stendhal/server/core/engine/GenerateINI.java"
+			match="out.println\(&quot;server_version=.*&quot;\);"
+			replace="out.println(&quot;server_version=${version}&quot;);"
+			byline="true"/>
+		<replaceregexp file="runserver.bat"
+			match="POLSKAGRA_VERSION=.*"
+			replace="POLSKAGRA_VERSION=${version}"
+			byline="true"/>
+		<replaceregexp file="runserver.sh"
+			match="POLSKAGRA_VERSION ?= ?&quot;.*&quot;"
+			replace="POLSKAGRA_VERSION=&quot;${version}&quot;"
+			byline="true"/>
+		<!-- Update location of resources -->
+		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
+			match="GAME_NAME=.*"
+			replace="GAME_NAME=${game_name}"
+			byline="true"/>
+		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
+			match="DEFAULT_SERVER=.*"
+			replace="DEFAULT_SERVER=${default_server}"
+			byline="true"/>
+		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
+			match="UPDATE_SERVER_FOLDER=.*"
+			replace="UPDATE_SERVER_FOLDER=${updates_server}"
+			byline="true"/>
+		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
+			match="UPDATE_SERVER_FOLDER_FALLBACK=.*"
+			replace="UPDATE_SERVER_FOLDER_FALLBACK=${updates_server_fallback}"
+			byline="true"/>
+		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
+			match="UPDATE_VERSION_CHECK=.*"
+			replace="UPDATE_VERSION_CHECK=${version_server}"
+			byline="true"/>
+
+		<replaceregexp file="polskagra.jnlp"
+			match="-0\..*\.jar&quot;"
+			replace="-${version}.jar&quot;"
+			byline="true"/>
+
+		<!-- pre release version -->
+		<replaceregexp file="${src}/games/stendhal/common/Debug.java"
+			match="String PRE_RELEASE_VERSION ?= .*;"
+			replace="String PRE_RELEASE_VERSION = null;"
+			byline="true"/>
+		<antcall target="internalUpdatePrereleaseVersion" />
+	</target>
+
+	<target name="internalUpdatePrereleaseVersion" if="PRE_RELEASE">
+		<tstamp prefix="date">
+			<format property="iso" pattern="yyyy-MM-dd" />
+		</tstamp>
+		<replaceregexp file="${src}/games/stendhal/common/Debug.java"
+			match="String PRE_RELEASE_VERSION ?= .*;"
+			replace="String PRE_RELEASE_VERSION = &quot;PRE_RELEASE ${date.iso}&quot;;"
+			byline="true"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${lib}" />
+		<delete dir="${build_client}" />
+		<delete dir="${buildroot}/build_client_data" />
+		<delete dir="${build}/build_client_music_data"/>
+		<delete dir="${build}/build_client_sound_data"/>
+		<delete dir="${build_server}" />
+		<delete dir="${build_server_maps}" />
+		<delete dir="${build_server_script}" />
+		<delete dir="${buildroot}/build_server_quests" />
+		<delete dir="${buildroot}/build_server_xmlconf" />
+		<delete dir="${build_tests}" />
+		<delete dir="${buildroot}/build_polskagratools" />
+		<delete dir="${buildroot}/build_polskagratextclient" />
+		<delete dir="${buildroot}/buildbot" />
+		<delete dir="${build_tests_report}" />
+		<delete dir="${build_cobertura}"/>
+		<delete dir="${build_cobertura_report}"/>
+		<delete file="cobertura.ser" />
+		<delete>
+					<fileset dir=".">
+						<include name="TEST-*.xml"/>
+					</fileset>
+		</delete>
+	</target>
+
+
+
+	<target name = "postman">
+		<mkdir dir="${buildroot}/buildbot"/>
+		<javac srcdir="${src}" destdir="${buildroot}/buildbot" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/bot/postman/*.java"/>
+			<include name="games/stendhal/bot/package-info.java"/>
+			<include name="games/stendhal/bot/shouter/*.java"/>
+			<include name="games/stendhal/bot/core/*.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${build_server}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="libs/pircbot.jar"/>
+			</classpath>
+
+		</javac>
+		<jar jarfile="${buildroot}/buildbot/postman.jar">
+			<fileset dir="${buildroot}/buildbot">
+				<include name="games/stendhal/bot/postman/*"/>
+
+				<include name="games/stendhal/bot/core/*"/>
+
+				<include name="games/stendhal/bot/shouter/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="games.stendhal.bot.postman.PostmanMain"/>
+			</manifest>
+		</jar>
+		<!-- ende build bot -->
+
+	</target>
+	<target name="server_build" depends="init, checkxml" description="Build JAR file for PolskaGRA server">
+		<mkdir dir="${build_server}"/>
+
+		<copy todir="${build_server}/data/conf" file="data/conf/stendhalcreateaccount.properties"/>
+		<copy todir="${build_server}/games/stendhal/server" file="${src}/games/stendhal/server/stendhal_init.sql"/>
+		<copy todir="${build_server}/games/stendhal/common">
+			<fileset dir="${src}/games/stendhal/common">
+				<include name="**/*.txt"/>
+			</fileset>
+		</copy>
+
+		<javac srcdir="${src}" destdir="${build_server}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/common/*.java"/>
+			<include name="games/stendhal/common/**/*.java"/>
+
+			<include name="games/stendhal/server/*.java"/>
+			<include name="games/stendhal/server/**/*.java"/>
+			<exclude name="games/stendhal/server/maps/**"/>
+			<exclude name="games/stendhal/server/script/**"/>
+
+			<include name="games/stendhal/tools/tiled/LayerDefinition.java"/>
+			<include name="games/stendhal/tools/tiled/ServerTMXLoader.java"/>
+			<include name="games/stendhal/tools/tiled/StendhalMapStructure.java"/>
+			<include name="games/stendhal/tools/tiled/TileSetDefinition.java"/>
+			<include name="games/stendhal/tools/test/LineAnalyser.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+			<classpath>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${simple_jar}"/>
+				<pathelement path="${guava_jar}"/>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${lib}/${server_jarname}" basedir="${build_server}">
+			<manifest>
+				<attribute name="Main-Class" value="games.stendhal.server.StendhalServer"/>
+				<attribute name="Class-path" value=". marauroa.jar ${maps_jarname} ${xmlconf_jarname} ${maps_jarname} guava.jar log4j.jar groovy.jar ${mysqldriver_jarname} mysql.jar h2.jar"/>
+			</manifest>
+		</jar>
+		<chmod file="${lib}/${server_jarname}" perm="+x"/>
+
+		<mkdir dir="${build_server_maps}"/>
+
+		<javac srcdir="${src}" destdir="${build_server_maps}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/server/maps/*.java"/>
+			<exclude name="games/stendhal/server/maps/ZoneConfigurator.java"/>
+			<include name="games/stendhal/server/maps/**/*.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${build_server}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${guava_jar}"/>
+			</classpath>
+		</javac>
+
+		<copy todir="${build_server_maps}/data/maps">
+			<fileset dir="${tiled}">
+				<include name="**/*.tmx"/>
+			</fileset>
+		</copy>
+
+		<jar jarfile="${lib}/${maps_jarname}" basedir="${build_server_maps}"/>
+
+		<mkdir dir="${build_server_xmlconf}"/>
+
+		<copy todir="${build_server_xmlconf}/data/conf">
+			<fileset dir="data/conf">
+				<include name="creatures.xml"/>
+				<include name="creatures/pol/*.xml"/>
+				<include name="creatures/stendhal/*.xml"/>
+				<include name="items.xml"/>
+				<include name="items/*.xml"/>
+				<include name="zones.xml"/>
+				<include name="zones/*.xml"/>
+				<include name="zones/pol/*.xml"/>
+				<include name="zones/stendhal/*.xml"/>
+				<include name="riddles-example.xml"/>
+				<include name="spells.xml" />
+				<include name="spells/*.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${build_server_xmlconf}/data/languages">
+			<fileset dir="data/languages" />
+		</copy>
+
+		<jar jarfile="${lib}/${xmlconf_jarname}" basedir="${build_server_xmlconf}"/>
+
+		<mkdir dir="${build_server_script}"/>
+
+		<javac srcdir="${src}" destdir="${build_server_script}" debug="${javac.debug}" debuglevel="${javac.debuglevel}"  source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/server/script/*.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${simple_jar}"/>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${lib}/${server_jarname}"/>
+				<pathelement path="${lib}/${maps_jarname}"/>
+			</classpath>
+		</javac>
+
+	</target>
+
+	<target name="jar" depends="client_build, server_build" description="Builds Client and Server">
+		<echo>Built client and server for NetBeans.</echo>
+	</target>
+
+	<!-- Runs the client -->
+	<target name="client_run" depends="client_build" description="Runs the client">
+		<mkdir dir="run_clnt"/>
+		<mkdir dir="run_clnt/lib"/>
+
+		<copy todir="run_clnt">
+			<fileset file="build/lib/${client_jarname}"/>
+		</copy>
+
+		<copy todir="run_clnt/lib">
+			<fileset file="build/lib/${client_data}"/>
+			<fileset file="build/lib/${client_sound_data}"/>
+			<fileset file="build/lib/${client_music_data}"/>
+			<fileset file="build/lib/${client_starter_jarname}"/>
+			<fileset file="${marauroa_jar}"/>
+			<fileset file="${log4j_jar}"/>
+			<fileset file="${jorbis_jar}"/>
+		</copy>
+
+		<chmod file="run_clnt/lib/${client_jarname}" perm="+x"/>
+
+		<java classname="games.stendhal.client.stendhal"
+			fork="true"
+			failonerror="true"
+			maxmemory="128m">
+			<classpath>
+				<pathelement location="run_clnt/*"/>
+				<pathelement location="run_clnt/lib/*"/>
+			</classpath>
+		</java>
+
+		<!-- we've run the program, so delete the jars -->
+		<delete dir="run_clnt"/>
+	</target>
+
+	<!-- Netbeans won't let you choose ant options, so this does it for us-->
+	<target name="run" depends="client_run"  description="Runs client for netbeans trick"/>
+
+	<!-- Runs the server -->
+	<target name="server_run" depends="server_build, compilejs" description="Runs the server">
+		<mkdir dir="run_srvr"/>
+
+		<copy todir="run_srvr">
+			<fileset file="build/lib/${server_jarname}"/>
+			<fileset file="build/lib/${xmlconf_jarname}"/>
+			<fileset file="build/lib/${maps_jarname}"/>
+			<fileset file="libs/marauroa.jar"/>
+			<fileset file="libs/groovy.jar"/>
+			<fileset file="libs/guava.jar"/>
+			<fileset file="libs/log4j.jar"/>
+			<fileset file="libs/${mysqldriver_jarname}"/>
+		</copy>
+
+		<chmod file="run_srvr/${server_jarname}" perm="+x"/>
+
+		<exec dir="." executable="java">
+			<arg line="-Xmx256m -cp run_srvr -jar run_srvr/${server_jarname} -c server.ini -l"/>
+		</exec>
+
+		<!-- we've run the program, so delete the jars -->
+		<delete dir="run_srvr"/>
+	</target>
+
+	<target name="client_build" depends="init" description="Build JAR file for PolskaGRA client">
+		<mkdir dir="${build_client}"/>
+
+		<copy todir="${build_client}/games/stendhal/client">
+			<fileset dir="${src}/games/stendhal/client">
+				<include name="**/*.txt"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${build_client}/games/stendhal/common">
+			<fileset dir="${src}/games/stendhal/common">
+				<include name="**/*.txt"/>
+			</fileset>
+		</copy>
+
+		<echo file="${src}/games/stendhal/client/StendhalBuild.java">
+			package games.stendhal.client;
+			public class StendhalBuild {
+			private static final String BUILD_NUMBER = "${timestamp}";
+			public static String getBuildNumber() {return BUILD_NUMBER;}
+			}
+		</echo>
+		<javac srcdir="${src}" destdir="${build_client}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/client/*.java"/>
+			<include name="games/stendhal/client/**/*.java"/>
+			<exclude name="games/stendhal/client/update/Starter.java"/>
+
+			<include name="games/stendhal/common/*.java"/>
+			<include name="games/stendhal/common/**/*.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<!-- Only include the libraries which are distributed to detect
+				 unwanted dependencies (i. e. .jar which are not part of the
+				client-distribution) during compile time -->
+			<classpath>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+			</classpath>
+		</javac>
+		<delete file="${src}/games/stendhal/client/StendhalBuild.java" quiet="true" failonerror="false" />
+
+		<!-- compile Starter.java for Java 1.4. So we will be able to
+		 display a dialogbox if running on an old Java Version -->
+		<javac srcdir="${src}" destdir="${build_client}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.4" target="1.4" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/client/update/Starter.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+		</javac>
+
+		<copy todir="${build_client}/games/stendhal/client/update">
+			<fileset file="${src}/games/stendhal/client/update/**">
+				<exclude name="*.java" />
+			</fileset>
+		</copy>
+
+		<jar jarfile="${lib}/${client_starter_jarname}">
+			<fileset dir="${build_client}">
+				<include name="games/stendhal/client/update/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Application-Name" value="Stendhal" />
+				<attribute name="Application-Library-Allowable-Codebase"  value="https://arianne-project.org http://arianne.sf.net http://arianne.sourceforge.net https://arianne.sf.net https://arianne.sourceforge.net https://stendhalgame.org https://polskagra.net *" />
+				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
+				<attribute name="Class-path" value="."/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Codebase" value="*"/>
+				<attribute name="Trusted-Library" value="true" />
+			</manifest>
+		</jar>
+		<antcall target="signjar" />
+		<chmod file="${lib}/${client_starter_jarname}" perm="+x"/>
+
+		<jar jarfile="${lib}/${client_jarname}">
+			<fileset dir="${build_client}">
+				<exclude name="games/stendhal/client/update/**"/>
+			</fileset>
+		</jar>
+
+		<mkdir dir="${build_client_data}"/>
+
+		<copy todir="${build_client_data}/data/sprites">
+			<fileset dir="${sprites}">
+				<exclude name="**/*.bz2" />
+				<exclude name="**/*.gz" />
+				<exclude name="**/*.psd" />
+				<exclude name="**/*.xcf" />
+				<exclude name="**/*.xcf.*" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build_client_data}/data/tileset">
+			<fileset dir="${tiled}/tileset">
+				<exclude name="**/*.bz2" />
+				<exclude name="**/*.gz" />
+				<exclude name="**/*.psd" />
+				<exclude name="**/*.xcf" />
+				<exclude name="**/*.xcf.*" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build_client_data}/data/gui">
+			<fileset dir="${data}">
+				<exclude name="paneldrock009.jpg"/>
+				<exclude name="panelmetal003.gif"/>
+				<exclude name="panelrock016.jpg"/>
+				<exclude name="panelwood006.jpg"/>
+				<exclude name="panelwood032.gif"/>
+				<exclude name="panelwood003.jpg"/>
+				<exclude name="**/*.bz2" />
+				<exclude name="**/*.gz" />
+				<exclude name="**/*.psd" />
+				<exclude name="**/*.xcf" />
+				<exclude name="**/*.xcf.*" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build_client_data}/data/conf" file="data/conf/log4j.properties"/>
+		<jar jarfile="${lib}/${client_data}" basedir="${build_client_data}"/>
+
+		<mkdir dir="${build_client_sound_data}"/>
+
+		<copy todir="${build_client_sound_data}/data/sounds">
+			<fileset dir="data/sounds">
+				<exclude name="**/*.xz" />
+                <exclude name="**/*.gz" />
+                <exclude name="**/*.bz2" />
+				<!-- <include name="**.*"/> -->
+			</fileset>
+		</copy>
+
+		<jar jarfile="${lib}/${client_sound_data}" basedir="${build_client_sound_data}"/>
+
+		<mkdir dir="${build_client_music_data}"/>
+
+		<copy todir="${build_client_music_data}/data/music">
+			<fileset dir="data/music">
+				<include name="**.ogg"/>
+			</fileset>
+		</copy>
+
+		<jar jarfile="${lib}/${client_music_data}" basedir="${build_client_music_data}"/>
+
+	</target>
+
+
+	<target name="signjar" unless="exclude.signing">
+		<signjar
+			alias="${keystore.alias}"
+			keystore="keystore.ks"
+			storepass="${keystore.password}"
+			tsaurl="http://tsa.starfieldtech.com"
+			jar="${lib}/${client_starter_jarname}" />
+	</target>
+
+	<target name="docs" description="Build javadocs for fixedPolskaGRA">
+		<javadoc packagenames="games.stendhal.*"
+		   defaultexcludes="yes"
+		   destdir="${docs}"
+		   author="true"
+		   encoding="UTF-8"
+		   version="true"
+		   use="true"
+		   windowtitle="PolskaGRA API Documentation Version: ${version}"
+		   sourcepath="${src}">
+			<classpath>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${simple_jar}"/>
+				<pathelement path="${swinglayout_jar}"/>
+				<pathelement path="${tiled_jar}"/>
+				<pathelement path="libs/ant.jar"/>
+				<pathelement path="libs/jcurses.jar"/>
+				<pathelement path="libs/pircbot.jar"/>
+			</classpath>
+		</javadoc>
+	</target>
+
+	<target name="compile" depends="server_build, client_build, server_build" description="Generates JAR files for both client and server"/>
+
+	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a PolskaGRA release"/>
+	<target name="dist_binary" depends="clean, dist_server_binary, dist_client_binary, dist_client_starter"/>
+
+	<target name="dist_server_binary" depends="server_build, compilejs">
+		<mkdir dir="${buildroot}/polskagra-server-${version}"/>
+
+		<copy todir="${buildroot}/polskagra-server-${version}/data/script">
+			<fileset dir="${buildroot}/build_server_script">
+				<include name="games/stendhal/server/script/**.*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${groovy_jar}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${simple_jar}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${guava_jar}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${log4j_jar}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${h2_jar}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${lib}/${server_jarname}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${lib}/${maps_jarname}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${lib}/${xmlconf_jarname}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="${marauroa_jar}"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="runserver.sh"/>
+		<copy todir="${buildroot}/polskagra-server-${version}" file="runserver.bat"/>
+		<copy todir="${buildroot}/polskagra-server-${version}/lib">
+			<fileset dir="libs">
+				<include name="*.txt"/>
+				<include name="*.html"/>
+			</fileset>
+		</copy>
+		<copy todir="${buildroot}/polskagra-server-${version}/doc">
+			<fileset dir="doc"/>
+			<fileset dir="." includes="LICENSE.txt"/>
+		</copy>
+
+		<copy todir="${buildroot}/polskagra-server-${version}/data/conf" file="data/conf/admins.txt"/>
+<!--
+		<mkdir dir="${buildroot}/polskagra-server-${version}/js" />
+		<copy todir="${buildroot}/polskagra-server-${version}/js">
+			<fileset dir="srcjs" />
+		</copy>
+-->
+
+		<copy todir="${buildroot}/polskagra-server-${version}" file="README.md"/>
+		<mkdir dir="${buildroot}/polskagra-server-${version}/log" />
+		<touch file="${buildroot}/polskagra-server-${version}/log/empty" />
+		<zip destfile="${buildroot}/polskagra-server-${version}.zip">
+			<zipfileset dir="${buildroot}/polskagra-server-${version}" excludes="${server_jarname}"/>
+			<zipfileset dir="${buildroot}/polskagra-server-${version}" includes="${server_jarname}" filemode="755"/>
+		</zip>
+		<delete dir="${buildroot}/polskagra-server-${version}"/>
+	</target>
+
+	<target name="dist_client_binary" depends="client_build">
+		<mkdir dir="${buildroot}/polskagra-${version}"/>
+		<mkdir dir="${buildroot}/polskagra-${version}/lib"/>
+		<mkdir dir="${buildroot}/polskagra-${version}/log"/>
+
+		<copy tofile="${buildroot}/polskagra-${version}/polskagra-starter.jar" file="${lib}/${client_starter_jarname}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra.jar" file="${lib}/${client_jarname}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/log4j.jar" file="${log4j_jar}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/marauroa.jar" file="${marauroa_jar}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/jorbis.jar" file="${jorbis_jar}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra-sound-data.jar" file="${lib}/${client_sound_data}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra-music-data.jar" file="${lib}/${client_music_data}"/>
+		<copy tofile="${buildroot}/polskagra-${version}/lib/polskagra-data.jar" file="${lib}/${client_data}"/>
+		<copy todir="${buildroot}/polskagra-${version}/lib">
+			<fileset dir="libs">
+				<include name="*.txt"/>
+				<include name="*.html"/>
+			</fileset>
+		</copy>
+		<copy todir="${buildroot}/polskagra-${version}/doc">
+			<fileset dir="doc"/>
+			<fileset dir="." includes="LICENSE.txt"/>
+		</copy>
+		<touch file="${buildroot}/polskagra-${version}/log/polskagra.txt" />
+		<copy todir="${buildroot}/polskagra-${version}" file="README.md"/>
+		<copy todir="${buildroot}/polskagra-${version}" file="icon.ico"/>
+		<zip destfile="${buildroot}/polskagra-${version}.zip">
+			<zipfileset dir="${buildroot}/polskagra-${version}" excludes="polskagra-starter.jar"/>
+			<zipfileset dir="${buildroot}/polskagra-${version}" includes="polskagra-starter.jar" filemode="755"/>
+			<zipfileset dir="buildtools/launch4j" includes="polskagra-starter.exe" filemode="755"/>
+		</zip>
+		<delete dir="${buildroot}/polskagra-${version}"/>
+	</target>
+
+
+	<target name="dist_client_starter" depends="client_build">
+		<mkdir dir="${buildroot}/polskagra-${version}"/>
+		<copy todir="${buildroot}/polskagra-${version}" file="${lib}/${client_starter_jarname}"/>
+		<copy todir="${buildroot}/polskagra-${version}/lib">
+			<fileset dir="libs">
+				<include name="*.txt"/>
+				<include name="*.html"/>
+			</fileset>
+		</copy>
+		<copy todir="${buildroot}/polskagra-${version}/doc">
+			<fileset dir="doc"/>
+			<fileset dir="." includes="LICENSE.txt"/>
+		</copy>
+		<copy todir="${buildroot}/polskagra-${version}" file="README.md"/>
+		<zip destfile="${buildroot}/polskagra-starter-${version}.zip">
+			<zipfileset dir="${buildroot}/polskagra-${version}" excludes="${client_starter_jarname}"/>
+			<zipfileset dir="${buildroot}/polskagra-${version}" includes="${client_starter_jarname}" filemode="755"/>
+		</zip>
+		<delete dir="${buildroot}/polskagra-${version}"/>
+	</target>
+
+	<target name="dist_source">
+		<mkdir dir="${buildroot}/polskagra-${version}-src"/>
+
+		<copy todir="${buildroot}/polskagra-${version}-src/src">
+			<fileset dir="src"/>
+		</copy>
+
+		<mkdir dir="${buildroot}/polskagra-${version}-src/libs"/>
+		<copy todir="${buildroot}/polskagra-${version}-src/libs">
+			<fileset dir="libs"/>
+		</copy>
+
+		<copy todir="${buildroot}/polskagra-${version}-src/tests">
+			<fileset dir="tests"/>
+		</copy>
+
+		<copy todir="${buildroot}/polskagra-${version}-src/data">
+			<fileset dir="data">
+			</fileset>
+		</copy>
+
+		<copy todir="${buildroot}/polskagra-${version}-src/tiled">
+			<fileset dir="${tiled}">
+				<exclude name="world/**" />
+			</fileset>
+		</copy>
+
+		<copy todir="${buildroot}/polskagra-${version}-src" file="build.xml"/>
+		<copy todir="${buildroot}/polskagra-${version}-src" file="build.ant.properties"/>
+
+		<copy todir="${buildroot}/polskagra-${version}-src" file="README.md"/>
+		<copy todir="${buildroot}/polskagra-${version}-src" file="LICENSE.txt"/>
+		<copy todir="${buildroot}/polskagra-${version}-src" file="runserver.bat"/>
+		<copy todir="${buildroot}/polskagra-${version}-src" file="runserver.sh"/>
+		<copy todir="${buildroot}/polskagra-${version}-src" file="icon.ico"/>
+		<copy todir="${buildroot}/polskagra-${version}-src/lib">
+			<fileset dir="libs">
+				<include name="*.txt"/>
+				<include name="*.html"/>
+			</fileset>
+		</copy>
+		<copy todir="${buildroot}/polskagra-${version}-src/doc">
+			<fileset dir="doc"/>
+			<fileset dir="." includes="LICENSE.txt"/>
+		</copy>
+
+		<tar destfile="${buildroot}/polskagra-${version}-src.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${buildroot}/polskagra-${version}-src" prefix="polskagra-${version}">
+				<exclude name="**/CVS/**"/>
+			</tarfileset>
+		</tar>
+
+		<delete dir="${buildroot}/polskagra-${version}-src"/>
+	</target>
+
+	<target name="compile_polskagratools" description="compiles the PolskaGRA build tools">
+		<mkdir dir="${build_polskagratools}"/>
+
+		<javac srcdir="${src}" destdir="${build_polskagratools}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="true">
+			<include name="games/stendhal/tools/**/*.java"/>
+			<include name="games/stendhal/tools/*.java"/>
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${tiled_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${swinglayout_jar}"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="compile_polskagratextclient" description="compiles the PolskaGRA text client ">
+		<mkdir dir="${build_polskagratextclient}"/>
+
+		<javac srcdir="${src}" destdir="${build_polskagratextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/bot/textclient/*.java"/>
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${tiled_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${swinglayout_jar}"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="rendermaps" description="Converts the *.tmx files to PNG images scaled 1:16" depends="compile_polskagratools">
+		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
+			<classpath>
+				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${tiled_jar}"/>
+			</classpath>
+		</taskdef>
+
+		<mkdir dir="tiled/world"/>
+		<maprenderer imagePath="${tiled}/world/">
+			<fileset dir="tiled">
+				<include name="Level */**/*.tmx"/>
+				<include name="interiors/**/*.tmx"/>
+				<exclude name="**/memory/**" />
+			</fileset>
+		</maprenderer>
+	</target>
+	<target name="renderatlas" description="Generates the files for the Stendhal Atlas" depends="compile_polskagratools">
+		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
+			<classpath>
+				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${tiled_jar}"/>
+			</classpath>
+		</taskdef>
+<!--
+7   1  1
+6   2  0.5
+5   4  0.25
+4   8  0.125
+3  16  0.0625
+2  32  0.03125
+1  64  0.015625
+0 128  0.0078125
+-->
+
+		<mkdir dir="tiled/world" />
+		<maprenderer imagePath="${tiled}/world/" zoom="0.0625">
+			<fileset dir="tiled">
+				<include name="Level 0/**/*.tmx"/>
+				<exclude name="**/memory/**" />
+			</fileset>
+		</maprenderer>
+		<mkdir dir="tiled/world/large" />
+		<maprenderer imagePath="${tiled}/world/large" zoom="0.25">
+			<fileset dir="tiled">
+				<include name="Level 0/**/*.tmx"/>
+				<exclude name="**/memory/**" />
+			</fileset>
+		</maprenderer>
+	</target>
+
+	<target name="updatemaps" description="Load and save TMX files to fix tilesets changes." depends="compile_polskagratools">
+		<taskdef name="mapupdater" classname="games.stendhal.tools.MapUpdater">
+			<classpath>
+				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${tiled_jar}"/>
+			</classpath>
+		</taskdef>
+
+		<mapupdater>
+			<fileset dir="tiled">
+				<include name="Level */**/*.tmx"/>
+				<include name="interiors/**/*.tmx"/>
+			</fileset>
+		</mapupdater>
+	</target>
+
+	<target name="jardiff" depends="client_build" unless="exclude.jardiff">
+		<echo>Creating update from ${version.old} to ${version}</echo>
+		<delete>
+			<fileset dir="${build-archive}">
+				<exclude name="*.zip"/>
+			</fileset>
+		</delete>
+		<unzip src="${build-archive}/polskagra-${version.old}.zip" dest="${build-archive}" />
+		<java jar="libs/jardiff.jar" fork="true">
+			<arg value="-nonminimal" />
+			<arg value="-creatediff" />
+			<arg value="-output" />
+			<arg value="${build}/lib/polskagra-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polskagra.jar" />
+			<arg value="${build}/lib/polskagra-${version}.jar" />
+		</java>
+		<java jar="libs/jardiff.jar" fork="true">
+			<arg value="-nonminimal" />
+			<arg value="-creatediff" />
+			<arg value="-output" />
+			<arg value="${build}/lib/polskagra-data-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polskagra-data.jar" />
+			<arg value="${build}/lib/polskagra-data-${version}.jar" />
+		</java>
+		<java jar="libs/jardiff.jar" fork="true">
+			<arg value="-nonminimal" />
+			<arg value="-creatediff" />
+			<arg value="-output" />
+			<arg value="${build}/lib/polskagra-music-data-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polskagra-music-data.jar" />
+			<arg value="${build}/lib/polskagra-music-data-${version}.jar" />
+		</java>
+		<java jar="libs/jardiff.jar" fork="true">
+			<arg value="-nonminimal" />
+			<arg value="-creatediff" />
+			<arg value="-output" />
+			<arg value="${build}/lib/polskagra-sound-data-diff-${version.old}-${version}.jar" />
+			<arg value="${build-archive}/lib/polskagra-sound-data.jar" />
+			<arg value="${build}/lib/polskagra-sound-data-${version}.jar" />
+		</java>
+	<!-- TODO maraurora.jar-->
+	</target>
+
+	<target name="signupdates" description="signs updates" depends="compile_polskagratools,jardiff" unless="exclude.signing">
+		<taskdef name="updatesigner" classname="games.stendhal.tools.updateprop.UpdateSigner">
+			<classpath>
+				<pathelement path="."/>
+				<pathelement path="${build_polskagratools}"/>
+			</classpath>
+		</taskdef>
+
+		<updatesigner>
+			<fileset dir="${lib}">
+				<include name="*.jar"/>
+			</fileset>
+		</updatesigner>
+	</target>
+
+
+
+
+
+<!--************************************************************************-->
+<!--************************************************************************-->
+<!--****                                                                ****-->
+<!--****                     T  E  S  T  I  N  G                        ****-->
+<!--****                                                                ****-->
+<!--************************************************************************-->
+<!--************************************************************************-->
+
+
+	<target name="test" description="Compile and run tests" depends="compile_tests,prepare_serverini_for_tests,run_tests,report_test">
+		<property environment="env"/>
+		<exec executable="curl">
+		    <arg value="-q" />
+			<arg value="-F" />
+			<arg value="filename=testresults.xml" />
+			<arg value="-F" />
+			<arg value="file=@build/build_test_report/testresults-short.xml" />
+			<arg value="https://stendhalgame.org?id=content/scripts/cireport&amp;cikey=${env.cikey}&amp;buildnumber=${env.TRAVIS_BUILD_NUMBER}&amp;buildid=${env.TRAVIS_BUILD_ID}&amp;commit=${env.TRAVIS_COMMIT}&amp;commits=${env.TRAVIS_COMMIT_RANGE}&amp;slug=${env.TRAVIS_REPO_SLUG}&amp;pullrequest=${env.TRAVIS_PULL_REQUEST}&amp;branch=${env.TRAVIS_BRANCH}"/>
+		</exec>
+		<fail message="Test errors detected, check test results." if="test.error" />
+		<fail message="Test failure detected, check test results." if="test.failure" />
+	</target>
+
+	<target name="compile_tests" description="Compile all tests" depends="server_build, client_build, compile_polskagratools, compile_polskagratextclient, postman">
+		<mkdir dir="${build_tests}"/>
+
+		<copy todir="${build_tests}">
+			<fileset dir="tests">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+
+		<javac srcdir="tests" destdir="${build_tests}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="**/*.java"/>
+
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${build_polskagratools}"/>
+				<pathelement path="${build_polskagratextclient}"/>
+				<pathelement path="${build_client}"/>
+				<pathelement path="${build_server}"/>
+				<pathelement path="${build_server_maps}"/>
+				<pathelement path="${build_server_script}"/>
+				<pathelement path="${build_postman}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${hamcrest_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${simple_jar}"/>
+				<pathelement path="${easymock_jar}"/>
+				<pathelement path="${easymockclassextension_jar}"/>
+				<pathelement path="${build_server_script}"/>
+				<pathelement path="${tiled_jar}"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<available property="server.ini" file="server.ini"/>
+	<target name="prepare_serverini_for_tests" unless="server.ini">
+		<echo file="server.ini">
+database_implementation=games.stendhal.server.core.engine.StendhalPlayerDatabase
+factory_implementation=games.stendhal.server.core.engine.StendhalRPObjectFactory
+database_adapter=marauroa.server.db.adapter.H2DatabaseAdapter
+jdbc_url=jdbc:h2:~/stendhal/database/h2db;AUTO_RECONNECT=TRUE;DB_CLOSE_ON_EXIT=FALSE
+jdbc_class=org.h2.Driver
+tcp_port=32160
+world=games.stendhal.server.core.engine.StendhalRPWorld
+ruleprocessor=games.stendhal.server.core.engine.StendhalRPRuleProcessor
+turn_length=300
+server_typeGame=polskagra
+server_name=polskagra Marauroa server
+server_version=1.06
+server_contact=https://polskagra.net/
+n = 966117159215070350422008719727400433209081371975507132437556194069529307432746058120899703845731090424709994853484674454738958575201865208533043689325553646377
+e = 15
+d = 901709348600732327060541471745573737661809280510473323608385781131560686937229596225645929798090122419343070307904183075525081589946196209839163758401803422679
+		</echo>
+	</target>
+
+	<target name="run_tests" description="Run tests">
+		<mkdir dir="${build_tests_report}"/>
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+			<classpath path="libs/jacoco/jacocoant.jar"/>
+		</taskdef>
+		<jacoco:coverage destfile="${build_tests_report}/jacoco.exec" append="false" includes="games.stendhal.*">
+			<junit fork="yes" forkmode="once" errorproperty="test.error" failureproperty="test.failure">
+				<classpath>
+					<pathelement path="${build_tests}"/>
+					<pathelement path="${build_client}"/>
+					<pathelement path="${build_server}"/>
+					<pathelement path="${build_server_maps}"/>
+					<pathelement path="${build_polskagratools}"/>
+					<pathelement path="${build_polskagratextclient}"/>
+					<pathelement path="${build_server_script}"/>
+					<pathelement path="${build_postman}"/>
+					<pathelement path="${easymock_jar}"/>
+					<pathelement path="${easymockclassextension_jar}"/>
+					<pathelement path="${cglib_jar}"/>
+					<pathelement path="${marauroa_jar}"/>
+					<pathelement path="${hamcrest_jar}"/>
+					<pathelement path="${log4j_jar}"/>
+					<pathelement path="${junit_jar}"/>
+					<pathelement path="${groovy_jar}"/>
+					<pathelement path="${simple_jar}"/>
+					<pathelement path="${guava_jar}"/>
+					<pathelement path="${mysqldriver_jar}"/>
+					<pathelement path="${h2_jar}"/>
+					<pathelement path="${jorbis_jar}"/>
+					<pathelement path="."/>
+					<pathelement path="data/conf"/>
+					<pathelement path="data/script"/>
+				</classpath>
+				<formatter type="xml"/>
+				<batchtest  todir="${build_tests_report}">
+					<fileset dir="tests">
+						<include name="**/*Test.java"/>
+						<include name="**/Test*.java"/>
+					</fileset>
+				</batchtest>
+			</junit>
+		</jacoco:coverage>
+	    <jacoco:report>
+	        <executiondata>
+	            <file file="${build_tests_report}/jacoco.exec" />
+	        </executiondata>
+	        <structure name="stendhal">
+	            <classfiles>
+	            	<fileset dir="${build_client}"/>
+					<fileset dir="${build_server}"/>
+	            </classfiles>
+	            <sourcefiles encoding="UTF-8">
+	                <fileset dir="${src}" />
+	            </sourcefiles>
+	        </structure>
+	    	<xml destfile="${build_tests_report}/jacoco.xml" />
+	    </jacoco:report>
+
+	</target>
+
+	<target name="report_test" description="Aggregate Testresults">
+		<mkdir dir="${build_tests_report}" />
+		<junitreport todir="${build_tests_report}" tofile="testresults.xml">
+			<fileset dir="${build_tests_report}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${build_tests_report}"/>
+		</junitreport>
+		<copy file="${build_tests_report}/testresults.xml" tofile="${build_tests_report}/testresults-short.xml"/>
+		<replaceregexp file="${build_tests_report}/testresults-short.xml"
+		               match="&lt;properties&gt;.*?&lt;/properties&gt;|&lt;system-out /&gt;|&lt;system-err /&gt;|^ *"
+		               replace=""
+			           flags="gsm"
+		               byline="false"
+		/>
+		<delete>
+			<fileset dir="${build_tests_report}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="checkxml" description="Verify XML files are well-formed">
+		<schemavalidate failonerror="yes" lenient="yes" warn="yes">
+			<schema namespace="stendhal" file="${config_dir}/zones.xsd"/>
+			<fileset dir="${config_dir}/zones">
+					<include name="*.xml"/>
+			</fileset>
+		</schemavalidate>
+		<schemavalidate>
+		<schema namespace="stendhal" file="${config_dir}/creatures.xsd" />
+			<fileset dir="${config_dir}/creatures">
+				<include name="*.xml" />
+			</fileset>
+		</schemavalidate>
+		<schemavalidate>
+			<schema namespace="stendhal" file="${config_dir}/items.xsd" />
+			<fileset dir="data/conf/items">
+				<include name="*.xml"/>
+			</fileset>
+		</schemavalidate>
+		<schemavalidate>
+			<schema namespace="stendhal" file="${config_dir}/groups.xsd"/>
+			<fileset dir="${config_dir}">
+				<filename name="zones.xml"/>
+				<filename name="items.xml"/>
+				<filename name="creatures.xml"/>
+			</fileset>
+		</schemavalidate>
+	</target>
+
+	<target name="compilejs" depends="js-prepare, js-invoke-compiler" />
+
+	<target name="js-prepare-marauroa">
+		<mkdir dir="build/js" />
+		<unzip dest="build" src="libs/marauroa.jar">
+			<patternset>
+				<include name="js/**"/>
+			</patternset>
+		</unzip>
+	</target>
+
+	<target name="js-prepare-build">
+
+		<echo file="build/js/build.js">
+			var stendhal = window.stendhal = window.stendhal || {};
+			stendhal.data = stendhal.data || {};
+
+			stendhal.data.build = {
+				version: "${version}",
+				build: "${timestamp}",
+				dist: "webclient"
+			}
+		</echo>
+	</target>
+
+	<extension-point name="js-prepare" depends="js-prepare-marauroa, js-prepare-build" />
+
+	<target name="js-invoke-compiler">
+		<property name="js-debug"          value="--debug --formatting=PRETTY_PRINT --create_source_map srcjs/stendhal-compiled.js.map --source_map_include_content" />
+
+		<property name="js-files-license"  value="srcjs/stendhal/license.js" />
+		<property name="js-files-marauroa" value="build/js/marauroa.js build/js/client-framework.js build/js/message-factory.js build/js/perception.js build/js/rpfactory.js build/js/deserializer.js" />
+		<property name="js-files-config"   value="srcjs/stendhal/config.js build/js/build.js" />
+		<property name="js-files-lib"      value="srcjs/jsxgraph-util.js" />
+		<property name="js-files-data1"    value="srcjs/stendhal/data/cache.js srcjs/stendhal/data/cstatus.js srcjs/stendhal/data/map.js srcjs/stendhal/data/sha3.js srcjs/stendhal/data/sprites.js" />
+		<property name="js-files-data2"    value="" />
+		<property name="js-files-entity1"  value="srcjs/stendhal/entity/entity.js srcjs/stendhal/entity/unknown.js srcjs/stendhal/entity/blood.js srcjs/stendhal/entity/corpse.js" />
+		<property name="js-files-entity2"  value="srcjs/stendhal/entity/chest.js srcjs/stendhal/entity/food.js srcjs/stendhal/entity/gate.js srcjs/stendhal/entity/invisibleentity.js srcjs/stendhal/entity/item.js srcjs/stendhal/entity/portal.js" />
+		<property name="js-files-entity3"  value="srcjs/stendhal/entity/activeentity.js srcjs/stendhal/entity/gameboard.js srcjs/stendhal/entity/rpentity.js srcjs/stendhal/entity/player.js srcjs/stendhal/entity/creature.js" />
+		<property name="js-files-entity4"  value="srcjs/stendhal/entity/domesticanimal.js srcjs/stendhal/entity/npc.js srcjs/stendhal/entity/sign.js srcjs/stendhal/entity/growingspawner.js" />
+		<property name="js-files-entity5"  value="srcjs/stendhal/entity/useableentity.js srcjs/stendhal/entity/walkblocker.js srcjs/stendhal/entity/zone.js srcjs/stendhal/entity/ground.js" />
+		<property name="js-files-entity6"  value="" />
+		<property name="js-files-ui1"      value="srcjs/stendhal/ui/setdragimage-ie.js srcjs/stendhal/ui/buddylist.js srcjs/stendhal/ui/chatlog.js srcjs/stendhal/ui/gamewindow.js" />
+		<property name="js-files-ui2"      value="srcjs/stendhal/ui/html.js srcjs/stendhal/ui/minimap.js srcjs/stendhal/ui/sound.js srcjs/stendhal/ui/stats.js srcjs/stendhal/ui/chatinput.js" />
+		<property name="js-files-ui3"      value="" />
+		<property name="js-files-main1"    value="srcjs/stendhal/actions.js srcjs/stendhal/events.js" />
+		<property name="js-files-ui4"      value="srcjs/stendhal/ui/popup.js srcjs/stendhal/ui/itemcontainer.js srcjs/stendhal/ui/menu.js srcjs/stendhal/ui/outfitdialog.js" />
+		<property name="js-files-main2"    value="srcjs/stendhal/main.js" />
+		<property name="js-files-main3"    value="" />
+
+		<java jar="buildtools/closure-compiler/compiler.jar"
+				fork="true"
+				failonerror="true"
+				maxmemory="128m">
+			<arg value="--language_in=ECMASCRIPT_2015"/>
+			<arg value="--compilation_level" />
+			<arg value="ADVANCED" />
+			<arg line="${js-debug}" />
+			<arg value="--jscomp_off=checkVars" />
+
+			<arg value="--js_output_file=srcjs/stendhal-compiled.js"/>
+
+			<arg line="${js-files-license}" />
+			<arg line="${js-files-marauroa}" />
+			<arg line="${js-files-config}" />
+			<arg line="${js-files-lib}" />
+			<arg line="${js-files-data1}" />
+			<arg line="${js-files-data2}" />
+			<arg line="${js-files-entity1}" />
+			<arg line="${js-files-entity2}" />
+			<arg line="${js-files-entity3}" />
+			<arg line="${js-files-entity4}" />
+			<arg line="${js-files-entity5}" />
+			<arg line="${js-files-entity6}" />
+			<arg line="${js-files-ui1}" />
+			<arg line="${js-files-ui2}" />
+			<arg line="${js-files-ui3}" />
+			<arg line="${js-files-main1}" />
+			<arg line="${js-files-ui4}" />
+			<arg line="${js-files-main2}" />
+			<arg line="${js-files-main3}" />
+		</java>
+
+		<echo file="srcjs/stendhal-compiled.js" append="true">
+//# sourceMappingURL=stendhal-compiled.js.map
+		</echo>
+	</target>
+
+</project>

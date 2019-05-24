@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="32" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="logic/collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="2" name="ground/indoor/raised_platform_purple" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/indoor/raised_platform_purple.png"/>
+ </tileset>
+ <tileset firstgid="14" name="ground/indoor/floors_3" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/indoor/floors_3.png"/>
+ </tileset>
+ <tileset firstgid="26" name="furniture/chair/throne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/throne.png"/>
+ </tileset>
+ <tileset firstgid="32" name="furniture/light/dark_torch" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/dark_torch.png"/>
+ </tileset>
+ <tileset firstgid="40" name="item/pot/pot_green" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/pot_green.png"/>
+ </tileset>
+ <tileset firstgid="41" name="furniture/table/orb_table" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/orb_table.png"/>
+ </tileset>
+ <tileset firstgid="43" name="furniture/picture/oil_paintings" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/picture/oil_paintings.png"/>
+ </tileset>
+ <tileset firstgid="59" name="furniture/chair/bench_wooden" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/bench_wooden.png"/>
+ </tileset>
+ <tileset firstgid="67" name="furniture/table/fancy_blue_red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/fancy_blue_red.png"/>
+ </tileset>
+ <tileset firstgid="79" name="furniture/chair/throne_small" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/throne_small.png"/>
+ </tileset>
+ <tileset firstgid="81" name="furniture/curtain/blue_green" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/curtain/blue_green.png"/>
+ </tileset>
+ <tileset firstgid="85" name="logic/portal" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/portal.png"/>
+ </tileset>
+ <tileset firstgid="101" name="building/stairs/grey_stone_stairs" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/stairs/grey_stone_stairs.png"/>
+ </tileset>
+ <tileset firstgid="107" name="item/armor/weapons_rack" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_rack.png"/>
+ </tileset>
+ <tileset firstgid="125" name="item/armor/sword_rack" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/sword_rack.png"/>
+ </tileset>
+ <tileset firstgid="129" name="item/armor/suit_of_armor2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/suit_of_armor2.png"/>
+ </tileset>
+ <tileset firstgid="133" name="logic/creature/mountain_dwarf" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/mountain_dwarf.png"/>
+ </tileset>
+ <tileset firstgid="138" name="logic/creature/human_soldier" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/human_soldier.png"/>
+ </tileset>
+ <tileset firstgid="147" name="building/wall/int_grey" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_grey.png"/>
+ </tileset>
+ <tileset firstgid="268" name="logic/creature/hybrid" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/hybrid.png" trans="ff00ff"/>
+ </tileset>
+ <tileset firstgid="284" name="building/stairs/stairs" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/stairs/stairs.png"/>
+ </tileset>
+ <layer name="0_floor" width="32" height="32">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3VvQ6CMBSG4SK/osa758fNkA7cinNvxoHEb2Bomh5KCbVGzvAs5BzeMLSMQogx
+sgZa6Bx6eDh29Jm1nnC3GCzPpGVnMGalZ/81750gJWTzjDJ2bNTGfg4FoeT+3/crOBPqL/QvcCXc
+tPd3C219Zs094vqWUGTkvuI+97nP/YP2p8D9IqGVUCXh+lv/v9znfoz+e+f+5NnPcBbzhfPqwzzb
+v+4DgGhuZwAQAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="32" height="32">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2WO27CQBRFvZFAaSLRIdIlDf9UgT0kAWr+IIHETmLWkIqGioIydfqsASi4I42l
+kfXm5zHfcKUjPH5v5gjbY/A8t7yDD86n41osefAE6nzcALkT+L9AoGEhmRP6qR7TbIAvjB9ACqT5
+mNV+iDlN0OK0iR4bvy6UX9fj4n88s1+39q35fUVd9vwl6ddlDZb8+BusND1hsgn5w/UD7s4Q9YzQ
+Y/oesfHb5hm8RM5R9+hYfioyP3U9dXmTHMfxnyLUPnLxF0ARlEDZcE6S/gqoghp4PYPfNqrrH+f5
+i5NL3X+X6J9bnmf38BfsFOw1/imYSdaPJtrL3H+Gc2V+lxzz9/c/+DtgAMagD7r8eCLU2XjIP0eg
+J9Sv+fur/v95hvW4/q2n3rOmUHv7HnkOXRQ3ngAQAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="32" height="32">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAXIwBKIrYA4GIilgTgEiM2hckuwqE9FYqfT1mlYgToO9igYBaNg4IE1ENsM
+tCNGwSiAAmXGkW3/KBgFo2AUjIJRMAoYGAApjfqGABAAAA==
+  </data>
+ </layer>
+ <layer name="3_roof" width="32" height="32">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUwoIjEloLSMljkcOnBpWYUjAJiAL70M5q2RsFgBP442IMVjOajgQWj4T+0
+QCOJ4tQAtUBcRwO1o2Dwg2wgzgfiIiDOA+IcKLsYSR7EL4DShUCciyQ/lIEqAXlCZedo2ToKSAUA
+68t6TwAQAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="32" height="32">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoBzEQ/EooC7oHGgHjAKiQMcQNXs4gdFwwg+kGAfaBfQF/RTqb6eKKxBgIpXN
+IxekDAP7qR031AaUpr3BCEbbIqNgFIyCUTC8AADQmPKHABAAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="32" height="32" visible="0" opacity="0.34">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2UUQoAIQhE9f6X3q/9KNjNHKsxHJDCyKdoqYgoaK/QOMVvY/Xrav5IljuR/N63
+m2+JfRP/L4eZnmWt36LT/Aix8j056Mfew9+h6P5HzHBm/qwY3iDr+2Pke/zo/+uZ5Ug+ouJj/JXn
+7PWPcrCcl+WyB5LWZdIAEAAA
+  </data>
+ </layer>
+ <layer name="protection" width="32" height="32" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQ0AAADCoPdPbQ8HFAAAAPBuEQAcxwAQAAA=
+  </data>
+ </layer>
+</map>

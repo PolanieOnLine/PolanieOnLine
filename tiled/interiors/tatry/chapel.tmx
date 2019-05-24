@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="../../tileset/building/castle.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/castle.png"/>
+ </tileset>
+ <tileset firstgid="321" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="322" name="../../tileset/logic/protection.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/protection.png"/>
+ </tileset>
+ <tileset firstgid="324" name="kafelki_kamienne_zwykle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_kamienne_zwykle.png"/>
+ </tileset>
+ <tileset firstgid="330" name="kamienny_podest" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kamienny_podest.png"/>
+ </tileset>
+ <tileset firstgid="348" name="coffin" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/gothic/coffin.png"/>
+ </tileset>
+ <tileset firstgid="352" name="grave_statue_girl" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/gothic/grave_statue_girl.png"/>
+ </tileset>
+ <tileset firstgid="358" name="headstone_7" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/gothic/headstone_7.png"/>
+ </tileset>
+ <tileset firstgid="359" name="banners" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/banners/banners.png"/>
+ </tileset>
+ <tileset firstgid="365" name="urn_with_flowers" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/urn_with_flowers.png"/>
+ </tileset>
+ <tileset firstgid="367" name="plants_potted_stone" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/plants_potted_stone.png"/>
+ </tileset>
+ <tileset firstgid="373" name="floating_candle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/floating_candle.png"/>
+ </tileset>
+ <layer name="0_floor" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAK2TTQ5CIQyE4QIuPIOH0L3QvOU7hfd14RFceAgjiSGZjO1YfxaTQoGPMsCllLKr
+/9F5sG5D+/qqg5N7p+tg3YfaaB9rHA36RrFBf1OfPGY0wZ6xO8zJm2M4ZyUZtJllwNuKGlYnrsQx
+h4e19aC+TrVybXhe5ZO6I6xR+ZeJfLcZ/1RkltXYv0yMeN/6573pX/3Du8Dzqn/F+Yx/LZijcup/
+8B+P/I5y3nuxYE22Zu+83r6f7OP5p9Yr7uSditYCeyyJ+Q9OFzw6QAYAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUg4MXIwOCNA/swkm5eAFSPL5D2g2J/qFgQBeYFA+kQKA6lgnmRQDoKiqMp
+MC8MqCccB44gwbwUoNpUItQTq24UjIJRgABXgfgKHnwQSe1+AmovAzEALgVGOkAGAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGLkghxFTrIgROxufHhgoRpKLAbJjgbgZSQzEholj04MPxAHVxUPVpjFCMLr4
+KKAvyMMS7tjEBgoMFveV4LCTFPfhMoOWYLCHH73NwAYArbDnF0AGAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoB3IYKSuniwscvmM2Nn49MBAARa5OiSxeizy2PQMJZAAdH8iEX4gVl0SUE0y
+FdXREuRisR+b2ECBweK+Qhx2kuI+XGbQEgz28KO3GfQAANQF4ENABgAA
+  </data>
+ </layer>
+ <layer name="objects" width="20" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkgHADV9EcVABgAA
+  </data>
+ </layer>
+ <layer name="collision" width="20" height="20" opacity="0.47">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAHNkZGBwHOSYWgDdPGxmkyqPSz029+MSw2UeLrfjYuPTQw1AD/OItYMSvZS4D12e
+GDFizSMVDBX34UufxIgRYxYl7sMnT4wYseaRCqjpZ3LKW2LUAgBE8gGrQAYAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="20" height="20" visible="0" opacity="0.43">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAHNiZGBwGsWjeBSP4lE8iknEANTmWcBABgAA
+  </data>
+ </layer>
+</map>

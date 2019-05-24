@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="17" height="13" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="int_wall_dark_red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int_wall_dark_red_corners" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="dark_red_ns" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="45" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="46" name="fotele_czerwone_zaslona" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/fotele_czerwone_zaslona.png"/>
+ </tileset>
+ <tileset firstgid="76" name="kula_czarna" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/kula_czarna.png"/>
+ </tileset>
+ <tileset firstgid="80" name="roslinki_drzewka" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/natura/kwiaty/roslinki_drzewka.png"/>
+ </tileset>
+ <tileset firstgid="112" name="kafelki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace.png"/>
+ </tileset>
+ <tileset firstgid="148" name="miecze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/miecze.png"/>
+ </tileset>
+ <tileset firstgid="180" name="biorko" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/stoly/drewniana_lawa.png"/>
+ </tileset>
+ <layer name="0_floor" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAOtjYGDoIxGjA1L1U8sMdLMoMaOPSmZQww2DITyGoxmDBQAAINuFrXQDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNkYGAQIgMLQ7EIEIsCsRgQs5OAjaC0OBDLQM1gYyANmENpbjQzMoA4k0Sz0M0g
+Bww2MyTRzHCg0IztQLwDDe8E4mQS3UEKoNQMPzQzpICYCwdWwiMnDTVDFojl8GBVPHLyQKwAxADC
+2o7cdAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQAVLGfADQvIgsBZKTwXiKVD2NCCejiY/nMF6EtSuIVPfQIEZQDxzoB1BZaAI
+pZUpMEMFSqsRUAcA/xu7GHQDAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGFwgAogjB9oRJIAldLLHmkL9W4B4KxreBsTBFJpLS+Az0A6gEQAAxY9itHQD
+AAA=
+  </data>
+ </layer>
+ <layer name="objects" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBTQEwAAX9FJ7XQDAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAANNlYGDQHUSYHEANs2jhDlL00cMdpLoJ3QxS420gwxSXfkJ+oEcaBwA4CVPedAMA
+AA==
+  </data>
+ </layer>
+ <layer name="protection" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBTQEwAAX9FJ7XQDAAA=
+  </data>
+ </layer>
+</map>

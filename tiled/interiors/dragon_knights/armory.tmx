@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="17" height="13" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="int_wall_dark_red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int_wall_dark_red_corners" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="kafelki_rozne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <tileset firstgid="113" name="miecze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/miecze.png"/>
+ </tileset>
+ <tileset firstgid="145" name="kuk?y" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/mannequins.png"/>
+ </tileset>
+ <tileset firstgid="173" name="trzepak" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/trzepak.png"/>
+ </tileset>
+ <tileset firstgid="179" name="tarcze itp" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_for_walls.png"/>
+ </tileset>
+ <tileset firstgid="195" name="armor" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/armor.png"/>
+ </tileset>
+ <tileset firstgid="199" name="strzaly" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/weapon/box_of_weapons.png"/>
+ </tileset>
+ <tileset firstgid="201" name="kolizja" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="202" name="dark_red_ew" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ </tileset>
+ <tileset firstgid="214" name="pol_rycerze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ </tileset>
+ <layer name="0_floor" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAADNmYGAwHsWjeBTTDQMAGs8mbnQDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNkYGAQogCLALEkEIsBMTsZWByIJaBmsDGQB7ipaIboIDBDZhCZMVjihVpmSAEx
+FxlYGmqGLBDLUYAVgBgASfDwN3QDAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoC6oBuIaNLEiNH4xEJdQ0c5TQHyaQjPOAfF5NLF5ROpdA6UvAfFlCt2BD2wA
+4o1Y8CYa2gkDJ2isnhzQSaL4YAEAMPDhxHQDAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGJ5gOpHqltLUFQiwFojXYcHr6WD3cRqrJwc0kig+nAAAeRrNV3QDAAA=
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAX0ApuBeCsQbwPiLUC8kwwzDgPxESDeDcRHgfgY1Vw3CugFAPBdiLl0AwAA
+  </data>
+ </layer>
+ <layer name="objects" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGN7gLoni9AC3B9BuaoDBGKZDCQAA4pavC3QDAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAADvJwMBwchBhcgA1zEA3h4GBeLOQ1dPSL8SGGy3cQao59IhbXGaSEm4DgQHLul28
+dAMAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="17" height="13">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBTQEwAAX9FJ7XQDAAA=
+  </data>
+ </layer>
+</map>

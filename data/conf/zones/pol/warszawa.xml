@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom.
+		** Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<!-- warszawa_nw -->
+	<zone name="0_warszawa_nw" level="0" x="613312" y="17408" file="Level 0/warszawa/warszawa_nw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="125" y="30">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="30" y="35">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">chicken-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">45</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="40" y="40" ref="warszawa_restart_life">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<!-- warszawa_ne -->
+	<zone name="0_warszawa_ne" level="0" x="613440" y="17408" file="Level 0/warszawa/warszawa_ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerNPC"/>
+		<!-- <configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerGdanskNPC"/> -->
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="10" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="40" y="80">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="65" y="127">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- warszawa_sw -->
+	<zone name="0_warszawa_sw" level="0" x="613312" y="17536" file="Level 0/warszawa/warszawa_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="31" y="103">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">treecreak-1, creak-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">75</parameter>
+				<parameter name="radius">20</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- warszawa_se -->
+	<zone name="0_warszawa_se" level="0" x="613440" y="17536" file="Level 0/warszawa/warszawa_se.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="80" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="100" y="65">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- interiors -->
+
+	<!-- Level -1 -->
+
+	<!-- Level -2 -->
+
+	<!-- Level -3 -->
+
+	<!-- Level -4 -->
+
+	<!-- Level -5 -->
+
+	<!-- Level -6 -->
+
+	<!-- Level -7 -->
+
+	<!-- Level 1 -->
+
+	<!-- Level 2 -->
+
+	<!-- Level 3 -->
+
+	<!-- Level 4 -->
+
+	<!-- Level 5 -->
+
+	<!-- Level 6 -->
+
+</zones>

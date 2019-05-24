@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: demon -->
+
+	<creature name="mściciel">
+		<type class="stendhal/hybrid" subclass="violet_avenger" tileid="hybrid.png:8"/>
+		<description></description>
+		<attributes>
+			<atk value="368"/>
+			<def value="71"/>
+			<hp value="250"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="44"/>
+		<experience value="2299"/>
+		<respawn value="1600"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,30]" probability="100.0"/>
+			<item value="antidotum" quantity="[1,2]" probability="30.0"/>
+			<item value="płaszcz mainiocyjski" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="diabelska królowa">
+		<type class="stendhal/undead" subclass="devil_queen" tileid="undead.png:4"/>
+		<description></description>
+		<attributes>
+			<atk value="423"/>
+			<def value="61"/>
+			<hp value="400"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="52"/>
+		<experience value="2873"/>
+		<respawn value="1620"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="2.0"/>
+			<item value="czarny sztylet" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Któż przerwał mą medytację?"/>
+				<noise state="idle follow fight" value="Pożałujesz tego!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="demon">
+		<type class="stendhal/demon" subclass="demon" tileid="demon.png:4"/>
+		<description>Oto demon. Jest uosobieniem zła</description>
+		<attributes>
+			<atk value="591"/>
+			<def value="80"/>
+			<hp value="800"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="85"/>
+		<experience value="6502"/>
+		<respawn value="3050"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="ognisty miecz demonów" quantity="[1,1]" probability="0.005"/>
+			<item value="miecz ognisty" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="ice" value="1.6"/>
+			<susceptibility type="fire" value="0.5"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="imperialny sługa demonów">
+		<type class="stendhal/demon" subclass="imperial_demon_servant" tileid="demon.png:3"/>
+		<description>Oto imperialny sługa demonów, który wypełnia rozkazy swoich demonicznych lordów.</description>
+		<attributes>
+			<atk value="587"/>
+			<def value="74"/>
+			<hp value="830"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="86"/>
+		<experience value="6426"/>
+		<respawn value="3350"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,95]" probability="100.0"/>
+			<item value="zbroja cieni" quantity="[1,1]" probability="0.6"/>
+			<item value="buty cieni" quantity="[1,1]" probability="0.7"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="imperialny lord demonów">
+		<type class="stendhal/demon" subclass="imperial_demon_lord" tileid="demon.png:2"/>
+		<description>Oto imperialny lord demonów. Posiada rangę generała. W piekle jest niewielu z taką rangą</description>
+		<attributes>
+			<atk value="676"/>
+			<def value="89"/>
+			<hp value="1100"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="101"/>
+		<experience value="9664"/>
+		<respawn value="5350"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[20,110]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="80.0"/>
+			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.002"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna halabarda" quantity="[1,1]" probability="0.001"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="balrog">
+		<type class="stendhal/mythical_animal" subclass="balrog" tileid="enormous_creature.png:0"/>
+		<description>Oto ogromny balrog. Ciosy wymierza wolno, ale straszliwie bolesne.</description>
+		<attributes>
+			<atk value="7557"/>
+			<def value="554"/>
+			<hp value="10000"/>
+			<speed value="1.0"/>
+			<size value="6,6"/>
+		</attributes>
+		<level value="350"/>
+		<experience value="187793"/>
+		<respawn value="120000"/>
+		<corpse name="enormous_humanoid" width="6" height="6"/>
+		<drops>
+			<item value="money" quantity="[2000,20000]" probability="100.0"/>
+			<item value="gigantyczny eliksir" quantity="[2,4]" probability="60.0"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="2.5"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="2.5"/>
+			<item value="bryłka mithrilu" quantity="[2,5]" probability="1.0"/>
+			<item value="ognisty miecz demonów" quantity="[1,1]" probability="0.1"/>
+			<item value="róg demona" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="ognisty miecz demonów"/>
+		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="ice" value="1.2"/>
+			<susceptibility type="fire" value="0.7"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Growwwwwwwrrrrrrr!"/>
+				<noise state="idle follow fight" value="Arrrrllllggggghhhh"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<!-- END: demon -->
+
+	<!-- START: imp -->
+
+	<creature name="czart">
+		<type class="stendhal/demon" subclass="imp" tileid="demon.png:0"/>
+		<description>Oto czart. Może i wygląda na milutkiego, ale nie zapominaj, że to jeden ze sługusów diabła!</description>
+		<attributes>
+			<atk value="495"/>
+			<def value="73"/>
+			<hp value="530"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="66"/>
+		<experience value="4304"/>
+		<respawn value="2050"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="eliksir" quantity="[1,2]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="ice" value="1.2"/>
+			<susceptibility type="fire" value="0.75"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="uskrzydlony błękitny czart">
+		<type class="stendhal/demon" subclass="winged_blue_imp" tileid="demon.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="515"/>
+			<def value="86"/>
+			<hp value="500"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="70"/>
+		<experience value="4914"/>
+		<respawn value="2250"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="trucizna" quantity="[1,2]" probability="40.0"/>
+			<item value="buty lazurowe" quantity="[1,1]" probability="5.0"/>
+			<item value="spodnie lazurowe" quantity="[1,1]" probability="1.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="poisonous" params="15,trucizna"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- END: imp -->
+
+</creatures>

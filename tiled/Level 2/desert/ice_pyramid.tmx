@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="98" height="98" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="icewall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/waly/icewall.png"/>
+ </tileset>
+ <tileset firstgid="9" name="rock_snow" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/natura/rock_snow.png"/>
+ </tileset>
+ <tileset firstgid="10" name="rope_ladder" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/ladder/rope_ladder.png"/>
+ </tileset>
+ <tileset firstgid="30" name="brown" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/brown.png"/>
+ </tileset>
+ <tileset firstgid="35" name="ground_snow05" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/ground_snow05.png"/>
+ </tileset>
+ <tileset firstgid="53" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="54" name="pol_olbrzymy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_olbrzymy.png"/>
+ </tileset>
+ <tileset firstgid="58" name="pol_smoki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_smoki.png"/>
+ </tileset>
+ <tileset firstgid="70" name="huge_animal" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/huge_animal.png"/>
+ </tileset>
+ <layer name="0_floor" width="98" height="98">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3RMQ0AIBAAsXfCjn+BOGAkl9ChCrpnZgMAAAAA31lceWjw0OChwUODhwYPDR4a
+PDR4aPDQ4KHBQ4OHBg8NHho8NHho8NDgocFDg4cGDw0eGjw0eGjw0OChwUODhwYPDR4aPDR4aPDQ
+4KHBQ4OHBg8NHho8NHho8NDgocFDg4cGDw0eGjw0eGjw0OChwUODhwYPDR4aPDR4aPDQ4KHBQ4OH
+Bg8NHho8NHho8NDgocFDg4cGDw0eGl49AAAAAAAtB/kSdDwQlgAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="98" height="98">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3dy07CUBRA0argI46d+P8fqg5MSCNFKnJ3ydrJmXRCw+KSEwZ0P03TnRk6j5/z
+MI3tZfDrF9pN4x3EoRKHcR1+H2/d4XU2W23JYT+N3yNOzdtsRt/Pb/aicx22cE7eZ1Nvt3B9yw7n
+VNiPTzn8dI+35lDoGueh8Hmr53up0SUdtrBHjZ6lvejY9XMdnJPTLb3fx65zuHwcGnFoxKERh0Yc
+GnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFo
+xKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGnFoxKER
+h0YcGv3V4fA/6zmsz3loxKERh0YcGnFoxKERh0YcGnFoxKERh0YcGl3D4elz7iMzf+7x6Pv5nufp
+5+d8XtKhlOcea00FB8/jbTiIQ6U1DqW96FbmeYWDrheHRhwacfhd/71zb93hdTZb7cthy3tR9fel
+NXvUB0XqeKoQlgAA
+  </data>
+ </layer>
+ <layer name="2_object" width="98" height="98">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAHwYe7MRWxCWAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="98" height="98">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3cMQqAMBBFQY9lEKyCtXj/w1jbBUL4wczUC3nFtpttA2BlT+NcHVoBAIxypQMm
+V9IBAAAAAAAAAAAAAAAAADChMx0Aneww9DnSAQu50wEAAAAAAAAAAAAAAAAAwLLcOX7VdAAAELUH
+3/7rfzklHQDQ6AV93Dd9EJYAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="98" height="98">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3WYWoqQQAEYS/l/a+W/+EZfRXNTsPXUCAsjWMXLnO/3W53HMGVufr7T8gJHoSH
+U8LDdbl/+8zD9fnJw9V3h3K/uPo89U707Jm8Nzyc8Xteefe82pGev/g/8PY83ktn5J0err5vrFA2
+LR3wsEDZtHTAwwJl09IBDwuUTUsHPCxQNi0d8LBA2bR0wMMCZdPSAQ8LlE1LBzwsUDYtHfCwQNm0
+dMDDAmXT0gEPC5RNSwc8LFA2LR3wsEDZtHTAwwJl09IBDwuUTUsHPCxQNi0d8LBA2bR0wMMCZdPS
+AQ8LlE1LBzwsUDYtHfCwQNm0dMDDAmXT0gEPC5RNSwc8LFA2LR3wsEDZtHTAwwJl09IBDwuUTUsH
+PCxQNi0d8LBA2bR08DkPjz7/q4PPefifDnhYoGxaOuBhgbJp6YCHBcqmpQMeFiiblg54WKBsWjrg
+YYGyaemcwMlne3S+nzZ99EzeGx7OyAkeeD3Dg/BwSqoHfP4O9cyD/F14OCM8nBEeXsunN+LhjFx9
+d3j33ePq8/yGL/Gxm6gQlgAA
+  </data>
+ </layer>
+ <layer name="protection" width="98" height="98">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAHwYe7MRWxCWAAA=
+  </data>
+ </layer>
+</map>

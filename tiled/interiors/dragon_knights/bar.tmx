@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="29" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="kafelki_rozne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <tileset firstgid="113" name="bottles_and_cups" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/drink/bottles_and_cups.png"/>
+ </tileset>
+ <tileset firstgid="129" name="bar" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/table_with_beer_dark.png"/>
+ </tileset>
+ <tileset firstgid="139" name="stolek" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/wooden.png"/>
+ </tileset>
+ <tileset firstgid="140" name="stolik i krzesla " tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/table_round_white.png"/>
+ </tileset>
+ <tileset firstgid="146" name="polka" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/shelve/dark_bottle_shelf.png"/>
+ </tileset>
+ <tileset firstgid="152" name="beczka" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/drink/casks.png"/>
+ </tileset>
+ <tileset firstgid="156" name="drzwi" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns_fancy.png"/>
+ </tileset>
+ <tileset firstgid="168" name="barek" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/regaly/barek.png"/>
+ </tileset>
+ <tileset firstgid="177" name="fotele wiklinowe" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/lawki_krzesla/fotele_wiklina.png"/>
+ </tileset>
+ <tileset firstgid="181" name="kolizja" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <layer name="0_floor" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNkYGBQHMWjeBSP4lE8ikfxKB7BGAAEmoD+EAkAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNkYGAQpiMWAWJJIBYDYnY6YHEgloHaycZAH8A9auegsrObAE0LOykFo3aO2jlq
+56idg8lOKSDmogOWhtopC8RydMQKQAwAh4MKuxAJAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGJxgNpSeBMSTgXgKVAyZj6xuKIB1QLweiDcMEnNoATYC8SY88m1A3I4Fd1Fg
+5igYXqAHB5vWZk0A4okU2keKWQPlz8EAiHEvLfxETLxQMx3042CTqmYogjlAPBeI59HRzvlQeiGZ
++gGtYOyhEAkAAA==
+  </data>
+ </layer>
+ <layer name="3_roof" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGHiwAohXAvEqOpqzGojXAPFaCu2kljkDARqBuAkLbh1IR40CnGAzEG8ZAmZS
+A/QCcd8gNGsUUA8QEy+jcTcKSAULKNALADtoWiYQCQAA
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAUjGZRC6TogrgDiGUBcTmc3zKKzfaNg8IPCQW7eKKAcFBOproqmrhgFowAB
+ANkDkFMQCQAA
+  </data>
+ </layer>
+ <layer name="objects" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACCIP+vbkhAAQB8G7W3k6sQCQAA
+  </data>
+ </layer>
+ <layer name="collision" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAANvKwMCwdQRhegBcdlLLHYTMHkh/ErKfnLjBZv5A+3Mg7KSF/aNhiylOTTsI2UlL
+MGonbrXUUjNY/UkrO8mpb2lZn1MbAwDDQgukEAkAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="29" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACCIP+vbkhAAQB8G7W3k6sQCQAA
+  </data>
+ </layer>
+</map>

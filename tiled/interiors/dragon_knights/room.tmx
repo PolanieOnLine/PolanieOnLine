@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="17" height="17" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="34" name="miecze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/miecze.png"/>
+ </tileset>
+ <tileset firstgid="66" name="kafelki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace3smok.png"/>
+ </tileset>
+ <tileset firstgid="157" name="dark_red_ew" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ </tileset>
+ <tileset firstgid="169" name="pol_rycerze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ </tileset>
+ <tileset firstgid="177" name="parawan" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/oriental_screen.png"/>
+ </tileset>
+ <tileset firstgid="181" name="stolik" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/stoly/wiezienie_stolik.png"/>
+ </tileset>
+ <tileset firstgid="187" name="filiz" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/bibeloty_na_stol.png"/>
+ </tileset>
+ <tileset firstgid="201" name="butle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/drink/bottles_and_cups.png"/>
+ </tileset>
+ <tileset firstgid="217" name="prycze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/lozka/wiezienie_prycze.png"/>
+ </tileset>
+ <tileset firstgid="229" name="kamienne_schody" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/schody/kamienne_schody.png"/>
+ </tileset>
+ <layer name="0_floor" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAHNiYGBwogP2oJM9o3gUj+KhhQEgO7nKhAQAAA==
+  </data>
+ </layer>
+ <layer name="1_terrain" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAMWQvQqDQBCEt1KIVYhGiAn6/q3mYh4nEBP1KZyQLba45f4KBz5uuOKDnSMRnRIo
+QQXOII+gBld2ZPTPBD7gS34pLI4ZLGBNcNjSg8Hyhjh+MeDF/SF6iGMEb+5P0UMcWlwObYeQPeTd
+d6W7HHKDPfZw7eDaQ7vbKP82h7xVdp89LuAQQcOOG2gT6MAGKpE+6IQEAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoC4wQqPJAVZoNLFgPhAvoMBeEFgMxEuIUHcPBxsElgPxCgrdMRQArjBADw9i
+wGUk9iHynDMggJgwwBcex5DYJ3Go2U+qo4YYAADFPk1AhAQAAA==
+  </data>
+ </layer>
+ <layer name="3_roof" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGDlgIxBvwkIPFLiNg01rgCscBiI8cIUBPcKDUDjQKzyICQN6pg96AwBgvxyH
+hAQAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGP5g3UA7AAdYh4NNir6hBtDdjisMhrIfSQXE+HU4hwcADPCCnoQEAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNkYGBQHESYAQtNCGAzg1RArH5C7ibFHFxsUvyCzRxqhwc2M4iNR0JmEMMm5BdC
+5tAyPEhN17jSOilsXO4glj3QeRwdAwDg5CgNhAQAAA==
+  </data>
+ </layer>
+ <layer name="protection" width="17" height="17">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMgoEDAJPZHwSEBAAA
+  </data>
+ </layer>
+</map>

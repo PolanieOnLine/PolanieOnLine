@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="24" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ </tileset>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="34" name="drewniany_stol2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/stoly/drewniany_stol2.png"/>
+ </tileset>
+ <tileset firstgid="43" name="dzbanek_filizanka" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/dzbanek_filizanka.png"/>
+ </tileset>
+ <tileset firstgid="45" name="fotele_czerwone_zaslona" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/fotele_czerwone_zaslona.png"/>
+ </tileset>
+ <tileset firstgid="75" name="kafelki_rozne" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ </tileset>
+ <tileset firstgid="155" name="miecze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/wyposazenie/miecze.png"/>
+ </tileset>
+ <tileset firstgid="187" name="roslinki_doniczki" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/natura/kwiaty/roslinki_doniczki.png"/>
+ </tileset>
+ <tileset firstgid="219" name="swiecznik" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/oswietlenie/swiecznik.png"/>
+ </tileset>
+ <tileset firstgid="220" name="drzwi" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/dark_red_ns_fancy.png"/>
+ </tileset>
+ <tileset firstgid="232" name="pol_rycerze" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ </tileset>
+ <layer name="0_floor" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAMtgYGDIGMVE4QAq4VHzyTN/FGNiADPdJPHAAwAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAABNkYGAQohEWAWJRIBYDYnYqY3EglgBiSSBmA+KDDNQF3GjmUxsMlPmqQKxGJlYn
+wnwNINYkE2vhMf80ecGAFZxBM18KiLmojKWh5ssCsRyNsAIQAwCpTSKGwAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgwA4eAfFjIH4CxLexyN9GU0MqeArEz4D4OYlqZgPxHDLsG0jgAsW0Ap5QTCy4
+iEVsPx712kCsQ5KLhj64A8R3gfgehWpwgftA/ACIH1KoBgBnOsL/wAMAAA==
+  </data>
+ </layer>
+ <layer name="3_roof" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWDCSgBsTKZWGUA3AsDu6lo1h4qmjXcAQCWAZUVwAMAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWUgvdYxN7S3RWjYCQCAMYlkEnAAwAA
+  </data>
+ </layer>
+ <layer name="collision" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAFNkYGBQHCDMQCU1yGqpBWhp9kCaT404GwjzqRlGA5U+aYEBlw349MADAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="24" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMVQAAewDiOMADAAA=
+  </data>
+ </layer>
+</map>

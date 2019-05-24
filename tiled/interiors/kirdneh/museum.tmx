@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="30" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="../../tileset/furniture/carpet/lilac.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/lilac.png" trans="ff00ff"/>
+ </tileset>
+ <tileset firstgid="4" name="../../tileset/furniture/carpet/black_grey.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/black_grey.png" trans="ff00ff"/>
+ </tileset>
+ <tileset firstgid="6" name="../../tileset/building/wall/int_green_purple.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_green_purple.png"/>
+ </tileset>
+ <tileset firstgid="34" name="../../tileset/building/entrance/green_purple_ns_ew.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/green_purple_ns_ew.png"/>
+ </tileset>
+ <tileset firstgid="62" name="../../tileset/furniture/table/long_front_on.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/long_front_on.png"/>
+ </tileset>
+ <tileset firstgid="65" name="../../tileset/furniture/chair/wooden_pale.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/wooden_pale.png"/>
+ </tileset>
+ <tileset firstgid="69" name="../../tileset/furniture/table/grey_fancy.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/grey_fancy.png"/>
+ </tileset>
+ <tileset firstgid="78" name="../../tileset/furniture/table/grey_plain.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/grey_plain.png"/>
+ </tileset>
+ <tileset firstgid="87" name="../../tileset/building/decoration/fireplace_2.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/decoration/fireplace_2.png"/>
+ </tileset>
+ <tileset firstgid="96" name="../../tileset/item/documents/book.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/documents/book.png"/>
+ </tileset>
+ <tileset firstgid="100" name="../../tileset/logic/portal.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/portal.png"/>
+ </tileset>
+ <tileset firstgid="116" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="117" name="statue" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/metal_and_stone.png"/>
+ </tileset>
+ <tileset firstgid="123" name="jar" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/oriental_jar.png"/>
+ </tileset>
+ <tileset firstgid="124" name="pot green" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/pot_green.png"/>
+ </tileset>
+ <tileset firstgid="125" name="pot purple" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/pot_purple.png"/>
+ </tileset>
+ <tileset firstgid="126" name="clock" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/clock/grandfather_clock.png"/>
+ </tileset>
+ <tileset firstgid="128" name="nain rug" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/nain_rug.png"/>
+ </tileset>
+ <tileset firstgid="144" name="tiles" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/indoor/floor_tiles2.png"/>
+ </tileset>
+ <tileset firstgid="150" name="plants statues" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/plants_potted_stone.png"/>
+ </tileset>
+ <tileset firstgid="156" name="crystal" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/crystal_statues.png"/>
+ </tileset>
+ <tileset firstgid="168" name="urn" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/gothic/urn_house.png"/>
+ </tileset>
+ <tileset firstgid="170" name="sarcothingy" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/gothic/sarcophagus.png"/>
+ </tileset>
+ <tileset firstgid="182" name="mannequins" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/other/mannequins.png"/>
+ </tileset>
+ <tileset firstgid="210" name="hanging" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/banners/wall_hanging_dkgreen.png"/>
+ </tileset>
+ <tileset firstgid="214" name="hanging2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/banners/wall_hanging_brown.png"/>
+ </tileset>
+ <tileset firstgid="220" name="masks" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/native_masks.png"/>
+ </tileset>
+ <tileset firstgid="222" name="rug" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/red_purple.png"/>
+ </tileset>
+ <tileset firstgid="231" name="lions" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/lion_statues.png"/>
+ </tileset>
+ <tileset firstgid="239" name="weapons for walls" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/armor/weapons_for_walls.png"/>
+ </tileset>
+ <tileset firstgid="255" name="books" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/documents/books2.png"/>
+ </tileset>
+ <layer name="0_floor" width="30" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3XMQrAIAyF4VQpFHqIXtl64jp0yqTlFWPyhn/+EBKIVUSOziq4s3V1hHZH21rp
+LdM14RaVN3enS9exi8yi+2d06c52b5UFd3TXke9NH1vVjTRXHl1kdOe70e6r6G60/4J3V0fXt4ss
+mrtyDy/GnF5wFwAA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="30" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2YyUrDQBjH51KpWrAqXm19DC9acV9x33B5DvFS910fwJsogoKCnhXBqx58AXcF
+BX0G/0MnMIwzmclkEi/+4UenSciPlPT78qWIEJIkhSQF+Ij7wlAMSkApyBD/ZByRAuXMW6NxNmj2
+Bzk2K3gbA5w7TEQvTR37bAYtoDUmbz23vx90OPCMgFHGmMbbBtotvN79meK2jYMbtp4w8Npcr3ee
+rOCluTL0zjr03rK1ypvjvK6v987H66UTdIFuR95rttZ5B8EQGHbkpblUeF3UDZl3EkwxpiVePvfg
+QeDR0ivGz/sEngVeDLxloBqkA3iPwHFIr0lE7wk4jdjbJPGegfOIvUTi5WPrzYM5MA8WJPtl18vn
+FbwJvBt4F8ESWAYrimP8vLZZBWtgHWwYel3UjU2wBbbBDttm0n9pdg3WQULr5Axb83UyAWotz2nq
+9SJ6EzF4D/7Ie0j0fTAKL9F4w9xXefK7bqjuK5f/I1ndiKP/2tQNPrb1WVY3+Mjq83//De6VzSli
+RC8fW2/Y5zrb/uvn3VN4o3p+ptnn1qKXhs7bslm7B/Raek36L53HZLNYHxiw9Hr1mb5LUNXnqLwX
+pDDjqrx0DpTNgC6u189L50DZDKjaLkY2p+i8Ub1HMvmd88T/udvWS5Pz8cr65wf4DOD5At/cd5P+
+a9I/baKrG7r+GSaqOhlXeK93/8dBmnkrQGXMVIEf9nR5RXAXAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="30" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgQIC7QHwHyr4ExJeR5NgZUME1IL6OJoasBlk/srnYwB2oGhC4AsRX0eTrkNg3
+gPgmDjl0/cjmkgPqyZQbKDALiGeiifENgDt4cYh7AHECECdS0a6DRKgB2esJxF5UtBcEzhNh70AA
+Wvn3HAF5RkYGhiAa2IsMsKVnbyD+D8S+VLZrP5TGlZ5DgDgUiMOobO8ooB74gkVsFt1dgQDo5fMo
+GAW0AIOp3qcHMAFi0wGw1wKILUeQvTZAbDsA9g4EAKXngchHo2AUjALqgMFSDzIxYoqtpLVDsNgJ
+AzW0thsLqKaDHck4xGvpYDcl4CeR6gZLeh4Fo2C4ABEy1RCjD10dAIP22AZwFwAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="30" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGFrgBhDfHAB7bwHxbSLVTgfiaTR0y2AEuwbAzqNQ+sQA2L2TSHU1VLTzGJQ+
+TkUziQWnBsDOPVB6xwDYvX0A7BxpYPoA2j3SyudRMLLBDCLYpIIyCvQOVTB/gOxdOED2EgKj6WoU
+jIJRgA7mDICd88jUt4Kqrhj+YNtAO2CEgKEUzs+B+AUJ6l8D8RsauYVUQG65QQ0wEOXkKBg4AACh
+eIzacBcAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="30" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3NMQEAAAgDoMW1fwIrzFsoQAIAAFzMsxcAAOgsnxTbEHAXAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="30" height="50" visible="0" opacity="0.37">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2WSw7AIAhEPbT3T7cu5O+ALZ3EpEnRN2gLzjHGbDg04uIsa1i5Xq2MHXf3DuUB
+zdWcb5S7m8ftMZpLrd01X25+hCvlG5WUbzY3Wic9XC4GzdXkj1LGOUv8G7hZ+rk5HIqrefZwKR8o
+neo5Xm60x57kVu3zV78rdP/1+KjiduuDJ7i33a8quch6Ra0n1Q3Oq8YbVf+kuoHiUjFduVFVcSkv
+b+JafXn+I5SkupHBzuau/I7jAccWq7BwFwAA
+  </data>
+ </layer>
+ <layer name="protection" width="30" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQhfoAAAAAAAgNcAxA3c/HAXAAA=
+  </data>
+ </layer>
+</map>

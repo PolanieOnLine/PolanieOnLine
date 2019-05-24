@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="26" height="26" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="icewall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/waly/icewall.png"/>
+ </tileset>
+ <tileset firstgid="9" name="rope_ladder" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/ladder/rope_ladder.png"/>
+ </tileset>
+ <tileset firstgid="29" name="ground_snow05" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/podloze/ground_snow05.png"/>
+ </tileset>
+ <tileset firstgid="47" name="rock_snow" tilewidth="32" tileheight="32">
+  <image source="../../tileset/pol/natura/rock_snow.png"/>
+ </tileset>
+ <tileset firstgid="48" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="49" name="huge_animal" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/huge_animal.png"/>
+ </tileset>
+ <layer name="0_floor" width="26" height="26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3DQQ0AAAwDoRNT/xonYx9IWDVVVX16k39vsJAKAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="26" height="26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNlYGBgpDFmA2JmBtoDllF76GIPFxqmhj2sDJjpRgQNY0tXpNqDTVwSDWMzjxr2
+EAKD3R59OtlDKqCmPaB0iC9dUcsediDmoIM9+MCoPcPPHlC6YiIR40uHg7H+GbWHPHsoqbdJSVfo
+9TYp6RAAWheqlpAKAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="26" height="26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQwfoAAA4GcZ1LptkAoAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="26" height="26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMglEwCmgPrAfaAaNgFIyCQQsAggH1MZAKAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="26" height="26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAADNgYGAwoBOmNRi1Z+jaQ0x6ITZNEZIjFYzaQ14aGez+GQl68IFRe4anPdSqmwdD
+vTBqz+Cxh9y0RIpeANBztkGQCgAA
+  </data>
+ </layer>
+ <layer name="protection" width="26" height="26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQwfoAAA4GcZ1LptkAoAAA==
+  </data>
+ </layer>
+</map>

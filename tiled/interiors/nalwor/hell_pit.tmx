@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="16" height="16" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="rock_red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/rock/rock_red.png"/>
+ </tileset>
+ <tileset firstgid="11" name="sand_red" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/sand_red.png"/>
+ </tileset>
+ <tileset firstgid="17" name="earth_dark" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/ridge/earth_dark.png"/>
+ </tileset>
+ <tileset firstgid="113" name="ground_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/ground_2.png"/>
+ </tileset>
+ <tileset firstgid="117" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="118" name="protection" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/protection.png"/>
+ </tileset>
+ <tileset firstgid="120" name="grass_2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/grass_2.png"/>
+ </tileset>
+ <layer name="0_floor" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAACthYGAooQGuR8Lk6kPHlOglZAYxenGZQYpebGYMRf31o/opCkNK0iA18ykAygr7
+ngAEAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAKWSuQrCQBRFx6XKR4itoo3gAhZiFCwkLhgVxRQW0TT+f+sdfIOX8aGjXjjMJOTc
+WYgxr0lAn1gr32hx3gBMQEfGXkBPQl4BrjK3Y049WodzC/luCpZELO8vSodzh+StvP4F9Ry8jhbY
+iO97nEh6YjlPk/wMzEAJlN902HRlD+zbtdugAqoBfk5n4PVDMpb13R6+9W0a5nkHv/jzP32+wxA/
+8ka7/kj8I6ibxz+Qgu0HdmAPauAkfa7jLGQ0157Z5dwC4dwBYm15WgAEAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="16" height="16" opacity="0.72">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMVAAALq+17wAEAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWDBTACMdNAO2IUjCgAAOl/l5oABAAA
+  </data>
+ </layer>
+ <layer name="blend_ground" width="16" height="16" opacity="0.06">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAONmYGDgHsWjeBSPSAwAPz+0rAAEAAA=
+  </data>
+ </layer>
+ <layer name="blend_roof" width="16" height="16" opacity="0.06">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAONmYGDgHsWjeBSPSAwAPz+0rAAEAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBSMVAAALq+17wAEAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="16" height="16" visible="0" opacity="0.54">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAACtlYGAoHcUYGBmQq49UM4gBlJpDS/uJBUNNfykWerhgABtyKu4ABAAA
+  </data>
+ </layer>
+ <layer name="protection" width="16" height="16" visible="0" opacity="0.1">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAACtjYGAoG8WjeBSPSAwApUuorwAEAAA=
+  </data>
+ </layer>
+</map>

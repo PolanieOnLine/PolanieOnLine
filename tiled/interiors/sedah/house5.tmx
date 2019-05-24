@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="wall" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_pale.png"/>
+ </tileset>
+ <tileset firstgid="17" name="wall2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/wall/int_wall_purple.png"/>
+ </tileset>
+ <tileset firstgid="37" name="entrance" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/pale_red_ns.png"/>
+ </tileset>
+ <tileset firstgid="73" name="entrance details" tilewidth="32" tileheight="32">
+  <image source="../../tileset/building/entrance/detail_ns.png"/>
+ </tileset>
+ <tileset firstgid="79" name="ground_4" tilewidth="32" tileheight="32">
+  <image source="../../tileset/ground/ground_4.png"/>
+ </tileset>
+ <tileset firstgid="119" name="barrell" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/barrel_tall.png"/>
+ </tileset>
+ <tileset firstgid="121" name="stool" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/stool.png"/>
+ </tileset>
+ <tileset firstgid="122" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="123" name="portal" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/portal.png"/>
+ </tileset>
+ <tileset firstgid="139" name="table2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/long_front_on_pale.png"/>
+ </tileset>
+ <tileset firstgid="142" name="bookshelf" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/shelve/dark_bookshelf_2.png"/>
+ </tileset>
+ <tileset firstgid="148" name="chem1" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chemistry/bottle.png"/>
+ </tileset>
+ <tileset firstgid="153" name="chem2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/chemistry/empty_bottles.png"/>
+ </tileset>
+ <tileset firstgid="165" name="steel lamp" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/iron_lamp.png"/>
+ </tileset>
+ <tileset firstgid="168" name="flames" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/flames.png"/>
+ </tileset>
+ <tileset firstgid="174" name="imperial" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/creature/human_imperial.png"/>
+ </tileset>
+ <layer name="0_floor" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAPNnYGDwH8WjeBQPGAYAzvTMqoQDAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAONhYGBgIgNzAzELEMsAsQQJWBqImaF6xYB4OQNuMBGIJwHxZChfFE0vKQBdbzcF
+enso1Fs5APb2UqCXWFAxiPTiS1cwPTCMrFcKiMWRsCoQqwGxOpo4DEtC9XIBMSMa1gNifSA2wCIH
+w5xADAAh3GmchAMAAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgoBwswyPXB8T9QDyBCvYMFjBtgOydOUD2EgvKh6DewQAAlcAPLoQDAAA=
+  </data>
+ </layer>
+ <layer name="3_roof" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNggICVDKNgFDAwlFPZPErS1TIC8uUM1HcvNYEnEHsBsTcBdQCVBIWthAMAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAVDGeweaAeMAFBPY/MBSDw+t4QDAAA=
+  </data>
+ </layer>
+ <layer name="collision" width="15" height="15" opacity="0.44">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAKtiYGCoGmCMC6CrIVYfIbNI1T/S9Q6EnZTqJaSf1PRJy/QPAFhr4raEAwAA
+  </data>
+ </layer>
+ <layer name="protection" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>

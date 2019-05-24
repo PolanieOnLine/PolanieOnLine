@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom.
+		** Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<zone name="0_dragon_land_n" level="0" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="31" y="27" ref="dragons_castle_entrance">
+			<destination zone="int_dragon_castle" ref="dragons_castle_exit"/>
+		</portal>
+		<portal x="59" y="102" ref="dragon_house_1_entrance">
+			<destination zone="int_dragon_house_1" ref="dragon_house_1_exit"/>
+		</portal>
+		<portal x="35" y="81" ref="dragon_house_2_entrance">
+			<destination zone="int_dragon_house_2" ref="dragon_house_2_exit"/>
+		</portal>
+		<portal x="39" y="80" ref="dragon_house_3_entrance">
+			<destination zone="int_dragon_house_3" ref="dragon_house_3_exit"/>
+		</portal>
+		<portal x="87" y="79" ref="dragon_house_4_entrance">
+			<destination zone="int_dragon_house_4" ref="dragon_house_4_exit"/>
+		</portal>
+		<portal x="91" y="78" ref="dragon_house_6_entrance">
+			<destination zone="int_dragon_house_6" ref="dragon_house_6_exit"/>
+		</portal>
+		<portal x="63" y="62" ref="dragon_house_5_entrance">
+			<destination zone="int_dragon_house_5" ref="dragon_house_5_exit"/>
+		</portal>
+		<portal x="96" y="54" ref="dragon_workshop_entrance">
+			<destination zone="int_dragon_workshop" ref="dragon_workshop_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="0_dragon_land_s" level="0" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="107" y="35" ref="dragon_tunnel_1_entrance">
+			<destination zone="-1_dragon_cave" ref="tunnel_dragon_1_exit"/>
+		</portal>
+	</zone>
+
+	<!-- interiors -->
+
+	<zone name="int_dragon_house_1" file="interiors/dragon/dragon_house_1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_house_1_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_house_1_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_house_2" file="interiors/dragon/dragon_house_2.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_house_2_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_house_2_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_house_3" file="interiors/dragon/dragon_house_3.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_house_3_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_house_3_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_house_4" file="interiors/dragon/dragon_house_4.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_house_4_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_house_4_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_house_5" file="interiors/dragon/dragon_house_5.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_house_5_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_house_5_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_house_6" file="interiors/dragon/dragon_house_6.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_house_6_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_house_6_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_workshop" file="interiors/dragon/dragon_workshop.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="dragon_workshop_exit">
+			<destination zone="0_dragon_land_n" ref="dragon_workshop_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle" file="interiors/dragon/castle_hallway.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="7" y="38" ref="dragons_castle_exit">
+			<destination zone="0_dragon_land_n" ref="dragons_castle_entrance"/>
+		</portal>
+		<portal x="1" y="28" ref="castle_room_11_entrance">
+			<destination zone="int_dragon_castle_room_1" ref="castle_room_11_exit"/>
+		</portal>
+		<portal x="1" y="17" ref="castle_room_21_entrance">
+			<destination zone="int_dragon_castle_room_2" ref="castle_room_21_exit"/>
+		</portal>
+		<portal x="1" y="6" ref="castle_room_31_entrance">
+			<destination zone="int_dragon_castle_room_3" ref="castle_room_31_exit"/>
+		</portal>
+		<portal x="13" y="28" ref="castle_room_41_entrance">
+			<destination zone="int_dragon_castle_room_4" ref="castle_room_41_exit"/>
+		</portal>
+		<portal x="13" y="17" ref="castle_room_51_entrance">
+			<destination zone="int_dragon_castle_room_5" ref="castle_room_51_exit"/>
+		</portal>
+		<portal x="13" y="6" ref="castle_room_61_entrance">
+			<destination zone="int_dragon_castle_room_6" ref="castle_room_61_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_room_1" file="interiors/dragon/castle_room1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="13" y="7" ref="castle_room_11_exit">
+			<destination zone="int_dragon_castle" ref="castle_room_11_entrance"/>
+		</portal>
+		<portal x="4" y="1" ref="castle_room_52_entrance">
+			<destination zone="int_dragon_castle_room_5" ref="castle_room_52_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_room_2" file="interiors/dragon/castle_room2.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="13" y="7" ref="castle_room_21_exit">
+			<destination zone="int_dragon_castle" ref="castle_room_21_entrance"/>
+		</portal>
+		<portal x="4" y="1" ref="castle_room_42_entrance">
+			<destination zone="int_dragon_castle_room_4" ref="castle_room_42_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_room_3" file="interiors/dragon/castle_room3.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="13" y="7" ref="castle_room_31_exit">
+			<destination zone="int_dragon_castle" ref="castle_room_31_entrance"/>
+		</portal>
+		<portal x="4" y="1" ref="castle_dragon_npc_exit">
+			<destination zone="int_dragon_castle_dragon_npc" ref="castle_dragon_npc_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_room_4" file="interiors/dragon/castle_room4.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="1" y="7" ref="castle_room_41_exit">
+			<destination zone="int_dragon_castle" ref="castle_room_41_entrance"/>
+		</portal>
+		<portal x="4" y="1" ref="castle_room_42_exit">
+			<destination zone="int_dragon_castle_room_2" ref="castle_room_42_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_room_5" file="interiors/dragon/castle_room5.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="1" y="7" ref="castle_room_51_exit">
+			<destination zone="int_dragon_castle" ref="castle_room_51_entrance"/>
+		</portal>
+		<portal x="4" y="1" ref="castle_room_52_exit">
+			<destination zone="int_dragon_castle_room_1" ref="castle_room_52_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_room_6" file="interiors/dragon/castle_room6.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="1" y="7" ref="castle_room_61_exit">
+			<destination zone="int_dragon_castle" ref="castle_room_61_entrance"/>
+		</portal>
+		<portal x="4" y="1" ref="castle_room_62_entrance">
+			<destination zone="int_dragon_castle_room_6" ref="castle_room_62_exit"/>
+		</portal>
+		<portal x="4" y="2" ref="castle_room_62_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_dragon_npc" file="interiors/dragon/castle_dragon_npc.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="8" y="11" ref="castle_dragon_npc_entrance">
+			<destination zone="int_dragon_castle_room_3" ref="castle_dragon_npc_exit"/>
+		</portal>
+		<portal x="5" y="1" ref="castles_dragon_1_entrance">
+			<destination zone="int_dragon_castle_dragon" ref="castles_dragon_1_exit"/>
+		</portal>
+		<portal x="11" y="1" ref="castles_dragon_2_entrance">
+			<destination zone="int_dragon_castle_dragon" ref="castles_dragon_2_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_castle_dragon" file="interiors/dragon/castle_dragon.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<portal x="3" y="18" ref="castles_dragon_1_exit">
+			<destination zone="int_dragon_castle_dragon_npc" ref="castles_dragon_1_entrance"/>
+		</portal>
+		<!--<portal x="10" y="9" ref="dragon_land_s_entrance">
+			<destination zone="0_dragon_land_s" ref="dragon_land_s_exit"/>
+		</portal>-->
+		<portal x="8" y="1" ref="castles_dragon_2_exit">
+			<destination zone="int_dragon_castle_dragon_npc" ref="castles_dragon_2_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Level -1 -->
+
+	<zone name="-1_dragon_cave" level="-1" x="513824" y="18176" file="Level -1/dragon/cave.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.maps.dragon.cave.eFuRNPC"/>
+		<configurator class-name="games.stendhal.server.maps.dragon.cave.JolandaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.dragon.cave.Dragon"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="65" y="139">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">Wojowniku wszedłeś do niebezpiecznej krainy! Śmierć czycha na każdym kroku czekając na Twój błąd.
+Wielu śmiałków zignorowało to ostrzeżenie i spotkała ich kara.
+Uciekaj!</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<!--<portal x="66" y="136" ref="tunnel_krakow_1_exit">
+			<destination zone="0_krakow_wisla_se" ref="krakow_tunnel_1_entrance"/>
+		</portal>-->
+		<portal x="131" y="14" ref="tunnel_dragon_1_exit">
+			<destination zone="0_dragon_land_s" ref="dragon_tunnel_1_entrance"/>
+		</portal>
+		<!-- Pulapki -->
+		<portal x="18" y="7" ref="poison_pit_1_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="19" y="7" ref="poison_pit_2_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="20" y="7" ref="poison_pit_3_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="21" y="7" ref="poison_pit_4_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="18" y="8" ref="poison_pit_5_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="21" y="8" ref="poison_pit_6_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="18" y="9" ref="poison_pit_7_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="19" y="9" ref="poison_pit_8_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="20" y="9" ref="poison_pit_9_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="21" y="9" ref="poison_pit_10_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="25" y="9" ref="poison_pit_11_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="26" y="9" ref="poison_pit_12_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="27" y="9" ref="poison_pit_13_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="25" y="10" ref="poison_pit_14_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="27" y="10" ref="poison_pit_15_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="39" y="10" ref="poison_pit_16_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="57" y="10" ref="poison_pit_17_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="14" ref="poison_pit_18_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="104" y="14" ref="poison_pit_19_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="105" y="14" ref="poison_pit_20_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="14" ref="poison_pit_21_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="15" ref="poison_pit_22_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="15" ref="poison_pit_23_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="16" ref="poison_pit_24_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="16" ref="poison_pit_25_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="17" ref="poison_pit_26_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="17" ref="poison_pit_27_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="18" ref="poison_pit_28_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="18" ref="poison_pit_29_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="19" ref="poison_pit_30_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="19" ref="poison_pit_31_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="20" ref="poison_pit_32_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="21" ref="poison_pit_33_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="104" y="21" ref="poison_pit_34_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="105" y="21" ref="poison_pit_35_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="109" y="12" ref="poison_pit_36_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="110" y="12" ref="poison_pit_37_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="111" y="12" ref="poison_pit_38_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="5" ref="poison_pit_39_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="5" ref="poison_pit_40_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="6" ref="poison_pit_41_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="6" ref="poison_pit_42_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="7" ref="poison_pit_43_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="7" ref="poison_pit_44_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="8" ref="poison_pit_45_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="8" ref="poison_pit_46_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="9" ref="poison_pit_47_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="9" ref="poison_pit_48_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="10" ref="poison_pit_49_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="10" ref="poison_pit_50_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="11" ref="poison_pit_51_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="11" ref="poison_pit_52_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="12" ref="poison_pit_53_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="12" ref="poison_pit_54_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="15" ref="poison_pit_55_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="15" ref="poison_pit_56_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="16" ref="poison_pit_57_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="16" ref="poison_pit_58_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="17" ref="poison_pit_59_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="17" ref="poison_pit_60_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="18" ref="poison_pit_61_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="125" y="13" ref="poison_pit_62_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="126" y="13" ref="poison_pit_63_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="127" y="13" ref="poison_pit_64_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="91" y="58" ref="poison_pit_65_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="92" y="58" ref="poison_pit_66_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="93" y="58" ref="poison_pit_67_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="110" y="57" ref="poison_pit_68_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="111" y="57" ref="poison_pit_69_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="112" y="57" ref="poison_pit_70_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="113" y="57" ref="poison_pit_71_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="117" y="83" ref="poison_pit_72_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="118" y="83" ref="poison_pit_73_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="119" y="83" ref="poison_pit_74_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="83" ref="poison_pit_75_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="83" ref="poison_pit_76_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="100" y="96" ref="poison_pit_77_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="101" y="96" ref="poison_pit_78_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="102" y="96" ref="poison_pit_79_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="103" y="96" ref="poison_pit_80_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="104" y="96" ref="poison_pit_81_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="79" y="107" ref="poison_pit_82_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="83" y="104" ref="poison_pit_83_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="86" y="101" ref="poison_pit_84_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="63" y="100" ref="poison_pit_85_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="72" y="83" ref="poison_pit_86_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="119" y="126" ref="poison_pit_87_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="120" y="126" ref="poison_pit_88_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="121" y="126" ref="poison_pit_89_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="122" y="126" ref="poison_pit_90_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="123" y="126" ref="poison_pit_91_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="124" y="126" ref="poison_pit_92_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="125" y="126" ref="poison_pit_93_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="126" y="126" ref="poison_pit_94_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="127" y="126" ref="poison_pit_95_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="128" y="126" ref="poison_pit_96_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="128" y="127" ref="poison_pit_97_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="140" y="132" ref="poison_pit_98_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="141" y="132" ref="poison_pit_99_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="142" y="132" ref="poison_pit_100_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="105" y="142" ref="poison_pit_101_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="107" y="142" ref="poison_pit_102_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="105" y="143" ref="poison_pit_103_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="106" y="143" ref="poison_pit_104_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="107" y="143" ref="poison_pit_105_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="93" y="142" ref="poison_pit_106_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="94" y="142" ref="poison_pit_107_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="95" y="142" ref="poison_pit_108_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="93" y="143" ref="poison_pit_109_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="95" y="143" ref="poison_pit_110_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="82" y="138" ref="poison_pit_111_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="84" y="138" ref="poison_pit_112_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="82" y="139" ref="poison_pit_113_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="83" y="139" ref="poison_pit_113_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="84" y="139" ref="poison_pit_114_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="54" y="138" ref="poison_pit_115_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="54" y="139" ref="poison_pit_116_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="54" y="140" ref="poison_pit_117_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="54" y="141" ref="poison_pit_118_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="54" y="142" ref="poison_pit_119_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="133" ref="poison_pit_120_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="134" ref="poison_pit_121_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="135" ref="poison_pit_122_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="136" ref="poison_pit_123_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="137" ref="poison_pit_124_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="138" ref="poison_pit_125_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="139" ref="poison_pit_126_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="94" ref="poison_pit_127_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="95" ref="poison_pit_128_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="96" ref="poison_pit_129_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="97" ref="poison_pit_130_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="98" ref="poison_pit_131_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="99" ref="poison_pit_132_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="63" ref="poison_pit_133_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="64" ref="poison_pit_134_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="65" ref="poison_pit_135_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="66" ref="poison_pit_136_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="67" ref="poison_pit_137_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="68" ref="poison_pit_138_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="69" ref="poison_pit_139_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="45" y="70" ref="poison_pit_140_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="48" ref="poison_pit_141_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="49" ref="poison_pit_142_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="50" ref="poison_pit_143_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="51" ref="poison_pit_144_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="52" ref="poison_pit_145_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="53" ref="poison_pit_146_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="33" y="54" ref="poison_pit_147_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="9" y="46" ref="poison_pit_148_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="9" y="47" ref="poison_pit_149_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="9" y="48" ref="poison_pit_150_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="9" y="49" ref="poison_pit_151_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="9" y="50" ref="poison_pit_152_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="9" y="51" ref="poison_pit_153_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="21" y="41" ref="poison_pit_154_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="25" y="40" ref="poison_pit_155_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="32" y="31" ref="poison_pit_154_entrance">
+			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+	</zone>
+
+	<!-- Level -2 -->
+
+	<zone name="-2_water_trap" level="-2" x="513824" y="18176" file="interiors/abstract/trap_water.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
+				<parameter name="width">10</parameter>
+				<parameter name="height">10</parameter>
+				<parameter name="interval">2</parameter>
+				<parameter name="damage">100</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Głęboka woda</attribute>
+		</entity>
+	</zone>
+
+	<zone name="-2_poison_pit" level="-2" x="513835" y="18176" file="interiors/abstract/trap_poison.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
+				<parameter name="width">10</parameter>
+				<parameter name="height">10</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">100</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Trucizna</attribute>
+		</entity>
+
+		<portal x="4" y="4" ref="poison_pit_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+		</portal>
+	</zone>
+
+	<zone name="-2_spikes_pit" level="-2" x="513846" y="18176" file="interiors/abstract/trap_spikes.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
+				<parameter name="width">10</parameter>
+				<parameter name="height">10</parameter>
+				<parameter name="interval">2</parameter>
+				<parameter name="damage">100</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Kolce</attribute>
+		</entity>
+	</zone>
+
+	<!-- Level -3 -->
+
+	<!-- Level -4 -->
+
+	<!-- Level -5 -->
+
+	<!-- Level -6 -->
+
+	<!-- Level -7 -->
+
+	<!-- Level 1 -->
+
+	<!-- Level 2 -->
+
+	<!-- Level 3 -->
+
+	<!-- Level 4 -->
+
+	<!-- Level 5 -->
+
+	<!-- Level 6 -->
+
+</zones>

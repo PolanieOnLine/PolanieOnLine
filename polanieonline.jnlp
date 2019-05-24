@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- set codebase to game-server to allow connection (security restriction) -->
+<!-- the .jar-files are downloaded from sf.net in order not to cause lag in game -->
+<jnlp  spec="1.0+" codebase="http://polskagra.sourceforge.net/download" href="polskagra.jnlp">
+  <information>
+    <title>PolskaGRA</title>
+    <vendor>PolskaGRA based on Stendhal - Miguel Angel Blanch Lardin</vendor>
+    <homepage href="http://www.polskagra.net/"/>
+    <description>
+PolskaGRA to turniej dla wszelakiej liczby dzielnych wojowników, rozgrywany bez ustanku, zaczerpnięty z oryginalnego Stendhal'a.
+Zadaniem Twym jest słowo zamienić z każdym napotkanym, gdyż dać ci może niełatwą misję do wypełnienia, która rzuci blask na zawiłe intrygi rycerskiego świata.
+
+Wszędy tutaj chodzić możesz, gwarne wsie odwiedzać, z ludźmi gadać, zakupić i sprzedać swą broń, a także w pojednykach swych sił próbować!
+Napotkani okazać się mogą Wybranymi, a imię ich błękitne. Oni misję ci wyznaczą niełatwą i morderczą, a w nagrodę doświadczenie zdobędziesz i uznanie.
+    </description>
+    <description kind="short">Pełen przygód niekończący się turniej dla wszelakiej liczby dzielnych wojowników</description>
+    <icon href="/data/gui/POLicon.png"/>
+    <icon kind="splash" href="/data/gui/PolSplash.jpg"/>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.7+" max-heap-size="200m" />
+    <jar href="http://polskagra.sourceforge.net/download/lib/polskagra-starter-1.02.jar" download="eager" main="true"/>
+  </resources>
+  <application-desc/>
+</jnlp>

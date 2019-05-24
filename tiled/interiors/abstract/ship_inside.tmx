@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="orthogonal" width="128" height="128" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="ship" tilewidth="32" tileheight="32">
+  <image source="../../tileset/object/ship.png"/>
+ </tileset>
+ <tileset firstgid="369" name="table wooden brown" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/table_wooden_brown.png"/>
+ </tileset>
+ <tileset firstgid="378" name="lights candle" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/light/lights_candle.png"/>
+ </tileset>
+ <tileset firstgid="414" name="wooden rustic" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/chair/wooden_rustic.png"/>
+ </tileset>
+ <tileset firstgid="422" name="wooden with candles" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/table/wooden_with_candles.png"/>
+ </tileset>
+ <tileset firstgid="434" name="box" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/box.png"/>
+ </tileset>
+ <tileset firstgid="435" name="kitchen cabnets" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/kitchen/cabinets.png"/>
+ </tileset>
+ <tileset firstgid="479" name="barrels 1" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/pot/barrels_1.png"/>
+ </tileset>
+ <tileset firstgid="487" name="collision" tilewidth="32" tileheight="32">
+  <image source="../../tileset/logic/collision.png"/>
+ </tileset>
+ <tileset firstgid="488" name="black grey " tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/carpet/black_grey.png"/>
+ </tileset>
+ <tileset firstgid="490" name="notes" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/documents/notes.png"/>
+ </tileset>
+ <tileset firstgid="494" name="single_grey" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/bed/single_grey.png"/>
+ </tileset>
+ <tileset firstgid="503" name="single_dingy_white" tilewidth="32" tileheight="32">
+  <image source="../../tileset/furniture/bed/single_dingy_white.png"/>
+ </tileset>
+ <layer name="0_floor" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3RIQ4CMQAAwfJ/h8GTEDyGL90zOENCMPQUTXbE6BW7ncbYAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADCzmOM6+6xu/3w3N13l7F+izmzP76/rN5izpEfn19W
+bzHn6I+31Vus98T/9fjf5n+b/23+t/nf5n+b/23+t/nf5n+b/23+t/nf5n+b/23+t/nf5n+b/23+
+t/nf5n+b/23+t/kPAAAAAAAAAAAAAP/zAhZ3sO4AAAEA
+  </data>
+ </layer>
+ <layer name="1_terrain" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3bzY4MURgG4O6VBTfBVuIGiDvAxTB+tjbWbFgbM0T8hAR7JPYW7FiyYUQiIX5P
+RXWcVM7pfFOqKiWeJ3lTPTVn5kvqTU9Xn0kvFgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAdL1dlnMyfe9VyuuU02vWzXUWMaXrfD6df5fyPmUn5UPKhcrauc4iptTHpZTvKT9SfjaL
+0vnLi3Ivc51FTKmPqymbKVtttlOuL8q9zHUWMaU+7i/+9LG5/H18tCj3MtdZxKzro5tSL3OdRczF
+yvlT6XpvtDldufZXZjyLmHuV82dSD2fbnKt0cmPGs4ipdRIxVP9jzCJmXSf7Uw5kX28vf9+j3Wif
+o0P2P/QsYnbznNxKXdxMuTpC/0PPImY3ndxKXdxOuTNB/387i5jddHI3dXEt5d4E/f/tLGJqnTzI
+Hj+srBmq/zFmEdN08riQJ9mapynPCunT/1SziGk6eV7Iwex9+IuUl4X06X+qWcQ0nbwp5HDWyZFl
+eU2f/nfa35Ufu7NKa/Q/jtpr8tfs8bfKmj79f2y7zo/dWaU1+h9H08mX9jrnx73Zc3LfsrymT/+f
+2p/Pj91ZpTX6H4f93/+b/v9vTSdbPf+33qf/qWYRM/Xzf6ftv3ssydfofxxT91+6t69x/z++2v1/
+Lt+fHeP+vzbL/f/4mk5K+615avuzffqfahYxTSel/dY8tf3ZPv1PNYuY2v5vZC+4T/9TzSImcv9X
+2wse4/3/ULOIiXTS3Z9dGaP/oWYRs+pkc/knUX37n2IWMatOVp+/2Oh0cmhNR337n2IWMU0n+ecv
+up/BODpw/1PNImbda/Kx1MfxlBMjf/5njFnERPZkahlj/2eoWcRE9mRqGWP/Z6hZxOxJf28/L/rl
+7YxnAQAAAAAAAAAAAPxLfgEHq9PlAAABAA==
+  </data>
+ </layer>
+ <layer name="2_object" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3bXSsFURQG4DM/2UcuXXGF/yAp4Y4kIUTxL5CPCx8pJdxZMiLmZA9ztnE8T612
+TVNvrdXM7JmaTgcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqDJQdDqDZQ0V
+/ZNFmsmYw1TUZdR1j2eSMwv47D7jdXfjGm+dh8SZzDUwu9uMWaR5TOj1fJyzELX4w7ncZcwCALq7
+KJ+zo7FOVDxzux1vexZprsp+j8U6XtH7bsfbnsXXXt/9P651z+Fven33/7jWPYe/aamoXuue07Ys
+AJo3k/GenDPrP6qzt7f/7z919vb2//2nzn47x/6/qSx6I+f3Wd+Ce289+rsRtRm1G7VXrstRKw1/
+n82ZRZqt6O921E7UftRBua5GrVX0/rB4qbZn0RsnMY+zTDPJmUWa53mcZ5pJzqz/6v3/Fyn/YDzf
+j0++OZOcWaQZjv5Ov6uRhH5/dyY5s0g3W7xViuMfzCRnFs04jRkcldVPWQAAAAAAAAAAAAAA8Fue
+AOeJA8QAAAEA
+  </data>
+ </layer>
+ <layer name="3_roof" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3aQQ7BQBQGYNyAe+AEuB23QC/hYjaWRuhCVTItXpPxfclLN5P8SV9eM9N2NAIA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByHMZlZgHvbdMs7lJNCssi3zTVrMAs
+8uj/f2vrya/2aJFZvLpk3OvqsWb/YV/OgVnA9xwD5zEyCwAA/kV99m9eu67JUZ/9m9euawD4XNXj
++dr3vWxkFtDfbeyi/smIzOLZu7192zfZX+3/27Ls/4fV1pNTAVkAANz/tayrpCygn3maz0WqZcCc
+RmaRZ5V6sU61CehJZBYAAAAAAAAAAAAAAMDQrh/B3REAAAEA
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3NAQ0AAAgDoNu/tAVuAQcFSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAACAyzy9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKBZwVvMGAAAAQA=
+  </data>
+ </layer>
+ <layer name="objects" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+  </data>
+ </layer>
+ <layer name="collision" width="128" height="128" visible="0" opacity="0.56">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3UW6rCQBBFUZ3/QJ2GX0IInVj9SFmR1bCIeIUD2Td5PR+PFwAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8NX+/MsW/T2u7JK5xXiPK7pkbjHWo/X93bbo79H796pb
+9PeINBntkrnFeJPIqb5FvMlIm+pbxJuc3fP9d7P9s7aINzlr02ow0z9ri3iT6Nn+vvoW9ZroX8/o
+qb5FvSb630fmvdf5962311aT1m+qbxHr0Xrftj7PvpMzt+jrsr+2Gm2vd9gi1mPkVN+iXhP9a8rs
+oX09n/u8vR61WNE/a4tYj5FTfYu+LvvrUYfZHplbxHqcPXMrn8nMLdb/j/zbFrHnbFWTzC36mxy9
+e6/of/UWa5q0Gt1hi2s63XmL+Saru3gH/L51T4+ZJplbxJv0NJjpkrnFuibfOlXcAgAAAAAAAAAA
+AACo7g1I1HPWAAABAA==
+  </data>
+ </layer>
+ <layer name="protection" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+  </data>
+ </layer>
+</map>

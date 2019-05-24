@@ -1,0 +1,103 @@
+<!--
+/***************************************************************************
+ *                   (C) Copyright 2014-2017 - Stendhal                    *
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation; either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PolskaGRA Alpha Client</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="polskagra.css">
+	</head>
+	<body id="body">
+		<div id="leftColumn" class="unselectable">
+			<canvas id="minimap" width="128" height="128"></canvas>
+			<div id="zoneinfo"></div>
+			<div id="stats"></div>
+			<div id="buddyList">
+				<ul id="buddyListUL"></ul>
+			</div>
+		</div>
+		<canvas id="gamewindow" width="1027" height="512">Przepraszamy, ale te strony działają tylko na nowszych wersjach przeglądarek.</canvas>
+		<!-- EQ -->
+		<div id="rightColumn">
+			<button id="menubutton">▼&nbsp;&nbsp;Menu</button>
+
+			<div id="equipmentborder">
+				<div id="equipment" class="equipment">
+					<div id="neck0" class="itemSlot"></div>
+					<div id="head0" class="itemSlot"></div>
+					<div id="cloak0" class="itemSlot"></div>
+					<div id="lhand0" class="itemSlot"></div>
+					<div id="armor0" class="itemSlot"></div>
+					<div id="rhand0" class="itemSlot"></div>
+					<div id="finger0" class="itemSlot"></div>
+					<div id="pas0" class="itemSlot"></div>
+					<div id="legs0" class="itemSlot"></div>
+					<div id="glove0" class="itemSlot"></div>
+					<div id="fingerb0" class="itemSlot"></div>
+					<div id="feet0" class="itemSlot"></div>
+					<div id="money0" class="itemSlot"></div>
+				</div>
+			</div>
+			<!-- PLECAK -->
+			<div id="bag">
+				<div id="bag0" class="itemSlot"></div>
+				<div id="bag1" class="itemSlot"></div>
+				<div id="bag2" class="itemSlot"></div>
+				<div id="bag3" class="itemSlot"></div>
+				<div id="bag4" class="itemSlot"></div>
+				<div id="bag5" class="itemSlot"></div>
+				<div id="bag6" class="itemSlot"></div>
+				<div id="bag7" class="itemSlot"></div>
+				<div id="bag8" class="itemSlot"></div>
+				<div id="bag9" class="itemSlot"></div>
+				<div id="bag10" class="itemSlot"></div>
+				<div id="bag11" class="itemSlot"></div>
+				<div id="bag12" class="itemSlot"></div>
+				<div id="bag13" class="itemSlot"></div>
+				<div id="bag14" class="itemSlot"></div>
+				<div id="bag15" class="itemSlot"></div>
+				<div id="bag16" class="itemSlot"></div>
+				<div id="bag17" class="itemSlot"></div>
+				<div id="bag18" class="itemSlot"></div>
+				<div id="bag19" class="itemSlot"></div>
+				<div id="bag20" class="itemSlot"></div>
+				<div id="bag21" class="itemSlot"></div>
+				<div id="bag22" class="itemSlot"></div>
+				<div id="bag23" class="itemSlot"></div>
+				<div id="bag24" class="itemSlot"></div>
+				<div id="bag25" class="itemSlot"></div>
+				<div id="bag26" class="itemSlot"></div>
+				<div id="bag27" class="itemSlot"></div>
+				<div id="bag28" class="itemSlot"></div>
+				<div id="bag29" class="itemSlot"></div>
+			</div>
+			<!-- RZEMYK -->
+			<div id="keyring">
+				<div id="keyring0" class="itemSlot"></div>
+				<div id="keyring1" class="itemSlot"></div>
+				<div id="keyring2" class="itemSlot"></div>
+				<div id="keyring3" class="itemSlot"></div>
+				<div id="keyring4" class="itemSlot"></div>
+				<div id="keyring5" class="itemSlot"></div>
+				<div id="keyring6" class="itemSlot"></div>
+				<div id="keyring7" class="itemSlot"></div>
+			</div>
+		</div>
+
+		<input id="chatinput" type="text" name="chatinput" autocomplete="off" autofocus>
+		<div id="chat"></div>
+
+		<div id="popupcontainer"></div>
+		<script type="text/javascript" src="stendhal-compiled.js"></script>
+	</body>
+</html>

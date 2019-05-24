@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="młot chaosu">
+		<type class="club" subclass="chaos_hammer" tileid="-1"/>
+		<description>Widzisz młot chaosu. Straszliwa broń.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="42"/>
+			<rate value="8"/>
+			<lifesteal value="0.3"/>
+			<min_level value="80"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="463050"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="maczuga">
+		<type class="club" subclass="club" tileid="-1"/>
+		<description>Widzisz maczugę. Pomachaj nią, może coś przypadkiem zatłuczesz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="6"/>
+			<rate value="4"/>
+			<undroppableondeath value="1" />
+		</attributes>
+		<weight value="2.0"/>
+		<value value="2700"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="maczuga cierniowa">
+		<type class="club" subclass="club_of_thorns" tileid="-1"/>
+		<description>Widzisz maczuge cierniową. Kolce jej są pełne krwi. Jest bardzo potężna, ale jeśli chcesz jej używac to musisz tchnąć w nią trochę życia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="48"/>
+			<rate value="7"/>
+			<lifesteal value="-0.1"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="691200"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="piernacz">
+		<type class="club" subclass="enhanced_mace" tileid="-1"/>
+		<description>Widzisz piernacz. Ciężki koniec sprawia że broń jest trudna do opanowania. To twój "list żelazny" na niegościnnych terenach.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="22"/>
+			<rate value="4"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="48992"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kiścień">
+		<type class="club" subclass="flail" tileid="-1"/>
+		<description>Widzisz kiścień. Jest to efektywna broń.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="10"/>
+			<rate value="3"/>
+			<min_level value="48"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="48992"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złoty pyrlik">
+		<type class="club" subclass="golden_hammer" tileid="-1"/>
+		<description>Widzisz wartościowy złoty pyrlik. Ta złota broń może dla kogoś dużo znaczyć.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="36"/>
+			<rate value="9"/>
+			<min_level value="15"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="259200"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złoty buzdygan">
+		<type class="club" subclass="golden_mace" tileid="-1"/>
+		<description>Widzisz błyszczący złoty buzdygan. Jest wystarczająco ostry, aby zadać obrażenia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="22"/>
+			<rate value="8"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="66550"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pyrlik">
+		<type class="club" subclass="hammer" tileid="-1"/>
+		<description>Widzisz górniczy pyrlik. Jest wystaczający, aby zadać dobre obrażenia, ale jest powolny.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="31"/>
+			<rate value="9"/>
+			<min_level value="10"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="165505"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lodowy młot bojowy">
+		<type class="club" subclass="ice_grand_warhammer" tileid="-1"/>
+		<description>Widzisz lodowy młot bojowy. Ostatni właściciel musiał być ogromny żeby go unieść. Bez obaw, nie skruszy się.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="45"/>
+			<rate value="10"/>
+			<min_level value="60"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="455625"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="buzdygan">
+		<type class="club" subclass="mace" tileid="-1"/>
+		<description>Widzisz buzdygan. Jest trochę stary, bo używany od lat.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="16"/>
+			<rate value="6"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="34133"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złoty kiścień">
+		<type class="club" subclass="golden_flail" tileid="-1"/>
+		<description>Widzisz złoty kiścień zwany Gwiazdą Zaranną. Jest to bardzo rzadka broń ale z racji użytych kolców niezwykle zajadła.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="15"/>
+			<rate value="3"/>
+			<min_level value="13"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="111607"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kij przywoływania nieumarłych">
+		<type class="club" subclass="wizard_staff" tileid="-1"/>
+		<description>Oto niewymownie zmyślny kij przywoływania nieumarłych. Jeśli się wsłuchasz być może usłyszysz krzyk duszy poprzedniego właściciela.</description>
+		<implementation class-name="games.stendhal.server.entity.item.NecroStaff"/>
+		<attributes>
+			<atk value="8"/>
+			<rate value="5"/>
+		</attributes>
+		<weight value="0.2"/>
+		<value value="8533"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="rod of the gm">
+		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>
+		<description>Widzisz rod of the GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="100"/>
+			<def value="100"/>
+			<rate value="2"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="10000000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kij z czaszką">
+		<type class="club" subclass="skull_staff" tileid="-1"/>
+		<description>Widzisz rzadko spotykany kij z czaszką. Jest mistyczny, ale włada się nim jak każdym innym kijem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="7"/>
+			<def value="2"/>
+			<rate value="7"/>
+			<lifesteal value="0.05"/>
+			<min_level value="8"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="76057"/>
+		<damage type="dark"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kij">
+		<type class="club" subclass="staff" tileid="-1"/>
+		<description>Widzisz kij. Jest to rzadko używana broń.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="2"/>
+			<def value="1"/>
+			<rate value="2"/>
+		</attributes>
+		<weight value="4.0"/>
+		<value value="7290"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kropacz">
+		<type class="club" subclass="ugmash" tileid="-1"/>
+		<description>Widzisz kropacz. Może atakować szybciej niż inne maczugi, a kolce jakimi jest nabity zadają okropne rany.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="40"/>
+			<rate value="6"/>
+			<min_level value="120"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="533333"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="młot wulkanów">
+		<type class="club" subclass="vulcano_hammer" tileid="-1"/>
+		<description>Widzisz młot wulkanów. Ludzie mówią, że to broń bogów, ale jest wolna jak ślimak.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="48"/>
+			<rate value="9"/>
+			<min_level value="90"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="614400"/>
+		<damage type="fire"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="młot bojowy">
+		<type class="club" subclass="grand_warhammer" tileid="-1"/>
+		<description>Widzisz ogromny młot bojowy. Wygląda na to że jest mocny, ale ciężki i dla tego powolny.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="38"/>
+			<rate value="9"/>
+			<min_level value="35"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="304844"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>

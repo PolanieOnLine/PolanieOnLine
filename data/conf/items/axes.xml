@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="topór">
+		<type class="axe" subclass="axe" tileid="-1"/>
+		<description>Oto pordzewiały topór. Swoje tępe ostrze rekompensuje lekkością.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="12"/>
+			<rate value="5"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="17280"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="berdysz">
+		<type class="axe" subclass="bardiche" tileid="-1"/>
+		<description>Oto rzadki lecz potężnej mocy berdysz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="33"/>
+			<def value="3"/>
+			<rate value="9"/>
+			<min_level value="10"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="199650"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="topór bojowy">
+		<type class="axe" subclass="battle_axe" tileid="-1"/>
+		<description>Oto topór bojowy. Świetnie wykonany i mimo swoich lat wciąż ostry.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="15"/>
+			<def value="2"/>
+			<rate value="6"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="28125"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="czarna halabarda">
+		<type class="axe" subclass="black_halberd" tileid="-1"/>
+		<description>Widzisz czarną halabardę. Jest ogromnie ciężka, ale mimo powolnych ruchów potrafisz zadawać nią mocne ciosy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="57"/>
+			<def value="5"/>
+			<rate value="9"/>
+			<min_level value="150"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1028850"/>
+		<damage type="dark"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="czarna kosa">
+		<type class="axe" subclass="black_scythe" tileid="-1"/>
+		<description>Oto czarna kosa. Jej atak jest niesamowity, ale nada się jako narzędzie rolnicze.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="36"/>
+			<rate value="4"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="617400"/>
+		<damage type="dark"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="topór chaosu">
+		<type class="axe" subclass="chaos_axe" tileid="-1"/>
+		<description>Widzisz topór chaosu. Jego rękojeść wydaje się zlepiona z wielu metali. Dzierżąc go czujesz się nieswojo.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="52"/>
+			<def value="3"/>
+			<rate value="8"/>
+			<lifesteal value="0.2"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="878800"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="topór Durina">
+		<type class="axe" subclass="durin_axe" tileid="-1"/>
+		<description>Widzisz topór Durina, jest to wielka nagroda od krasnali.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="47"/>
+			<def value="3"/>
+			<rate value="9"/>
+			<min_level value="60"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="576794"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złoty topór obosieczny">
+		<type class="axe" subclass="golden_twosided_poleaxe" tileid="-1"/>
+		<description>Oto złoty topór obosieczny. Trudno na niego trafić.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="35"/>
+			<def value="3"/>
+			<rate value="7"/>
+			<min_level value="50"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="306250"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="halabarda">
+		<type class="axe" subclass="halberd" tileid="-1"/>
+		<description>Oto halabarda. Ma ostrze zatknięte na końcu dzidy. Krawędzie ma ostre, a rany zadaje ciężkie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="40"/>
+			<def value="4"/>
+			<rate value="10"/>
+			<min_level value="25"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="320000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="topór jednoręczny">
+		<type class="axe" subclass="hand_axe" tileid="-1"/>
+		<description>Oto topór jednoręczny. Był często w użyciu, lecz wciąż może być przydatny.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="9"/>
+			<rate value="4"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="9112"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="magiczny topór obosieczny">
+		<type class="axe" subclass="magic_twosided_poleaxe" tileid="-1"/>
+		<description>Widzisz magiczny topór obosieczny. Natura magii nie jest Ci do końca jasna.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="59"/>
+			<def value="4"/>
+			<rate value="6"/>
+			<min_level value="244"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="457142"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pordzewiała kosa">
+		<type class="axe" subclass="oldscythe" tileid="-1"/>
+		<description>Oto pordzewiała kosa. Porzuciła ją Kostucha, a tobie przydać się może przy sianokosach.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="13"/>
+			<rate value="4"/>
+			<min_level value="20"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kosa">
+		<type class="axe" subclass="scythe" tileid="-1"/>
+		<description>Oto kosa. Wygląda na niebezpieczną broń, ale może przydać się przy sianokosach.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="18"/>
+			<rate value="5"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="68590"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sierp">
+		<type class="axe" subclass="sickle" tileid="-1"/>
+		<description>Oto sierp, użyteczne narzędzie dla każdego farmera.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="2"/>
+			<rate value="2"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="toporek">
+		<type class="axe" subclass="small_axe" tileid="-1"/>
+		<description>Oto toporek. Wygląda na solidny, ale jest zbyt lekki by zadawać poważne rany.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="7"/>
+			<rate value="3"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="5716"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="topór obosieczny">
+		<type class="axe" subclass="twosided_poleaxe" tileid="-1"/>
+		<description>Oto świetnie wykuty topór obosieczny.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="29"/>
+			<def value="3"/>
+			<rate value="7"/>
+			<min_level value="30"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="174207"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="siekierka">
+		<type class="axe" subclass="siekierka" tileid="-1"/>
+		<description>Oto siekierka. Zagubiona w lesie przez drwala stała się dla ciebie orężem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="5"/>
+			<rate value="3"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="1716"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="ciupaga">
+		<type class="axe" subclass="ciupaga" tileid="-1"/>
+		<description>Oto prawdziwa góralska ciupaga!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="14"/>
+			<def value="2"/>
+			<rate value="4"/>
+			<min_level value="30"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="5716"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złota ciupaga">
+		<type class="axe" subclass="zlota_ciupaga" tileid="-1"/>
+		<description>Oto prawdziwa złota góralska ciupaga!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="19"/>
+			<def value="2"/>
+			<rate value="4"/>
+			<min_level value="150"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="5716"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złota ciupaga z wąsem">
+		<type class="axe" subclass="zlota_ciupaga1" tileid="-1"/>
+		<description>Oto prawdziwa złota góralska ciupaga z wąsem!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="21"/>
+			<def value="3"/>
+			<rate value="3"/>
+			<lifesteal value="0.01"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="5716"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złota ciupaga z dwoma wąsami">
+		<type class="axe" subclass="zlota_ciupaga2" tileid="-1"/>
+		<description>Oto prawdziwa złota góralska ciupaga z dwoma wąsami! Wąsy posiadają jakieś magiczne właściwości, im więcej wąsów na ciupadze tym szybsza ona jest!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="23"/>
+			<def value="3"/>
+			<rate value="3"/>
+			<lifesteal value="0.02"/>
+			<min_level value="250"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="5716"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="złota ciupaga z trzema wąsami">
+		<type class="axe" subclass="zlota_ciupaga3" tileid="-1"/>
+		<description>Oto prawdziwa złota góralska ciupaga z trzema wąsami! Trzy wąsy na jednej złotej ciupadze to rzadkość! Tą broń otacza jakaś magiczna aura.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="23"/>
+			<def value="4"/>
+			<rate value="2"/>
+			<lifesteal value="0.03"/>
+			<min_level value="350"/>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="5716"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>

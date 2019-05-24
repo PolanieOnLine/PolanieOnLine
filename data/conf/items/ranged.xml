@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="drewniany łuk">
+		<type class="ranged" subclass="wooden_bow" tileid="-1"/>
+		<description>Oto drewniany łuk. Z tą bronią w jednej ręce i strzałami w drugiej, bedziesz mógł atakować z dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="12"/>
+			<range value="3"/>
+			<min_level value="20"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="17280"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="długi łuk">
+		<type class="ranged" subclass="longbow" tileid="-1"/>
+		<description>Widzisz długi łuk. Z tą bronią w jednej ręce i strzałami w drugiej, będziesz mógł atakować z dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="14"/>
+			<range value="4"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="27440"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="klejony łuk">
+		<type class="ranged" subclass="composite_bow" tileid="-1"/>
+		<description>Oto klejony łuk. Lepiej naciągnięty, dlatego możesz strzelać z większego dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="15"/>
+			<range value="5"/>
+			<min_level value="60"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="33750"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kusza">
+		<type class="ranged" subclass="crossbow" tileid="-1"/>
+		<description>Oto kusza. Atak jest duży, ale słabsza celność. Co wolisz?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="17"/>
+			<range value="3"/>
+			<min_level value="80"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="49130"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kusza łowcy">
+		<type class="ranged" subclass="hunter_crossbow" tileid="-1"/>
+		<description>Oto kusza łowcy. Musisz zdecydować się czy duży atak jest warty krótszego zasięgu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="21"/>
+			<range value="4"/>
+			<min_level value="150"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="92610"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="łuk z mithrilu">
+		<type class="ranged" subclass="mithril_bow" tileid="-1"/>
+		<description>Oto lekki lecz wytrzymały łuk z mithrilu. Kunszt z jakim go wykonano pozwala strzelać celnie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="28"/>
+			<range value="4"/>
+			<min_level value="300"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="142610"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lodowa kusza">
+		<type class="ranged" subclass="ice_crossbow" tileid="-1"/>
+		<description>Oto lodowa kusza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="23"/>
+			<range value="5"/>
+			<min_level value="150"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="17280"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lekka kusza">
+		<type class="ranged" subclass="light_crossbow" tileid="-1"/>
+		<description>Oto lekka kusza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="30"/>
+			<range value="5"/>
+			<min_level value="175"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="17280"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+	
+	<item name="łuk treningowy">
+	    <type class="ranged" subclass="training_bow" tileid="-1" />
+	    <description>Oto ten łuk treningowy jest lekki i łatwy w użyciu, lecz jego bardzo słabe wykonanie sprawia, że czujesz jak się łamie w twych rękach.</description>
+	    <implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
+	    <attributes>
+	      <ratk value="1"/>
+	      <range value="3"/>
+	      <rate value="1"/>
+	      <uses value="15000"/>
+	    </attributes>
+	    <weight value="0.5"/>
+	    <value value="17280"/>
+	    <equipable>
+	      <slot name="ground"/>
+	      <slot name="content"/>
+	      <slot name="lhand"/>
+	      <slot name="rhand"/>
+	      <slot name="bag"/>
+	      <slot name="trade"/>
+	    </equipable>
+  	</item>
+</items>

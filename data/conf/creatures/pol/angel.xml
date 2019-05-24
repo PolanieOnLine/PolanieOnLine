@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: serafiny -->
+	<creature name="serafin">
+		<type class="pol/serafiny" subclass="serafin" tileid="pol_serafiny.png:0"/>
+		<description/>
+		<attributes>
+			<atk value="6336"/>
+			<def value="198"/>
+			<hp value="6336"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="880"/>
+		<experience value="1484499"/>
+		<respawn value="190000"/>
+		<corpse name="giant_humanoid"/>
+		<drops>
+			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="0.0001"/>
+			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="3.0"/>
+			<item value="pióro serafina" quantity="[1,1]" probability="100.0"/>
+			<item value="magia światła" quantity="[11,99]" probability="100.0"/>
+			<item value="różdżka Wołosa" quantity="[1,1]" probability="20.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia światła" quantity="10000"/>
+			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="light" value="0.7"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Niech twa dusza powróci na ziemię!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="10,50"/>
+			<profile name="lifesteal" params="0.1"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="azazel">
+		<type class="pol/serafiny" subclass="azazel" tileid="pol_serafiny.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="7574"/>
+			<def value="218"/>
+			<hp value="7128"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="990"/>
+		<experience value="1877295"/>
+		<respawn value="190000"/>
+		<corpse name="giant_humanoid"/>
+		<drops>
+			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="czarny miecz" quantity="[1,1]" probability="10.0"/>
+			<item value="czarne rękawice" quantity="[1,1]" probability="5.0"/>
+			<item value="czarny pas" quantity="[1,1]" probability="4.5"/>
+			<item value="pióro azazela" quantity="[1,1]" probability="90.0"/>
+			<item value="magia mroku" quantity="[11,99]" probability="100.0"/>
+			<item value="różdżka Peruna" quantity="[1,1]" probability="7.5"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia mroku" quantity="10000"/>
+			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.7"/>
+			<susceptibility type="light" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Syn ognia nie będzie się kłaniał synowi ziemi!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="lifesteal" params="0.2"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+	<!-- END: serafiny -->
+</creatures>

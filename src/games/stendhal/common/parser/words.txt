@@ -1,0 +1,1846 @@
+#
+# Word list for the Stendhal conversation parser
+#
+# @author Martin Fuchs
+#
+# The list entries are in the following format:
+#  WORD	 TYPE	[=NORMALIZED]	[PLURAL|VALUE]
+#
+# WORD is the word in lower case.
+# NORMALIZED is used to specify the the base form.
+# PLURAL is the pluralised form of the word for nouns and verbs.
+# VALUE is used to specify the numeric equivalent of numeric expressions.
+#
+# TYPE is one of the following constants:
+#
+#  VER			verb
+#  VER-GER		verb in gerund form
+#  VER-CON		verb in conditional form
+#  VER-NEG		verb in negated form
+#  VER-PAS		verb in past form
+#
+#  OBJ			object
+#  OBJ-FLU		fluid
+#  OBJ-FOO		food
+#  OBJ-OBS		obsessional word
+#  OBJ-PRO		pronoun
+#  OBJ-NAM		object name, for example a city name
+#  OBJ-ANI		animal used as item object
+#  OBJ-NAM-PLA	place name TODO
+#
+#  SUB			subject
+#  SUB-ANI		animal
+#  SUB-NAM		person name
+#  SUB-PRO		personal pronoun
+#
+#  ADJ			adjective/adverb
+#  ADJ-COL		color expressions
+#
+#  NUM			numeral
+#  PRE			preposition
+#  QUE			question word
+#  IGN			word to ignore
+#
+
+:)	VER	=smile
+:*	VER	=kiss
+:-)	VER	=smile
+abort	VER
+accept	VER
+adios	VER
+admit	VER
+advertise	VER
+annoy	VER
+answer	VER
+appear	VER
+ask	VER	=say
+aye	VER
+bail	VER
+bake	VER
+be	VER
+believe	VER
+bet	VER
+blow	VER
+boo	VER
+borrow	VER
+brew	VER
+bribe	VER
+buy	VER
+bye	VER
+call	VER
+can	VER
+care	VER
+cast	VER
+catch	VER
+change	VER
+cheers	VER
+clean	VER
+cleanme	VER
+clear	VER
+close	VER
+come	VER
+complain	VER
+concoct	VER
+confuse	VER
+consider	VER
+convert	VER
+could	VER-CON	=can
+create	VER
+cya	VER
+delete	VER
+did	VER-PAS	=do
+disembark	VER
+display	VER
+do	VER
+does	VER	=do
+doesn't	VER-NEG	=do
+don't	VER-NEG	=do
+done	VER-PAS	=do
+dressed	VER
+drive	VER
+drop	VER
+eat	VER
+elddir	VER
+embark	VER
+engage	VER
+enter	VER
+escape	VER
+evael	VER
+examine	VER
+exchange	VER
+exhibit	VER
+exit	VER
+expire	VER
+expired	VER	=expire
+explain	VER
+explore	VER
+extend	VER =prolong
+farewell	VER
+feed	VER
+fetch	VER
+fight	VER
+fill	VER
+find	VER
+finish	VER
+fit	VER
+fix	VER
+flee	VER
+fly	VER
+follow	VER
+gamble	VER
+get	VER
+getting	VER-GER
+give	VER
+go	VER
+gone	VER	=go
+goodbye	VER
+graj	VER
+greetings	VER
+grow	VER
+had	VER	=have
+hallo	VER	=hello
+has	VER	=have
+have	VER
+heal	VER
+hear	VER
+hello	VER
+hi	VER	=hello
+hide	VER
+hire	VER
+hola	VER	=hello
+hold	VER
+hurry	VER
+ignore	VER
+imagine	VER
+include	VER
+is	VER	are
+jump	VER
+keep	VER
+kidding	VER-GER
+kill	VER
+kiss	VER
+know	VER
+ko	VER
+kupię	VER
+laugh	VER
+learn	VER
+leave	VER
+let	VER
+like	VER
+listen	VER
+load	VER
+lol	VER
+look	VER
+love	VER
+łapówka	VER
+made	VER	=make
+make	VER
+married	VER	=marry
+marry	VER
+may	VER-CON
+mean	VER
+mill	VER
+mix	VER
+move	VER
+nalej	VER
+napełnij	VER
+naucz	VER
+need	VER
+not	VER-NEG
+odlej	VER
+odsprzedać	VER
+odsprzedaż	VER
+ok	VER
+open	VER
+overcook	VER
+own	VER
+pay	VER
+play	VER
+postaw	VER
+postawić	VER
+poślub	VER
+prefer	VER
+prolong	VER
+protect	VER
+przedłuż	VER
+przedmioty	VER
+przypomnij	VER
+purchase	VER
+put	VER
+rain	VER
+recognize	VER
+release	VER
+remember	VER
+remind	VER
+remove	VER
+rent	VER
+report	VER
+resell	VER
+reserve	VER
+reset	VER
+return	VER
+revive	VER
+rofl	VER
+run	VER
+rzeczy	VER
+saw	VER	=see
+say	VER
+see	VER
+seem	VER
+seen	VER	=see
+sell	VER
+send	VER
+sew	VER
+sey	VER
+shall	VER
+shoot	VER
+should	VER-CON	=shall
+shout	VER
+show	VER
+sit	VER
+sleep	VER
+smell	VER
+smile	VER
+sorry	VER
+sound	VER
+speak	VER	=say
+spread	VER
+sprzedam	VER
+stake	VER
+stand	VER
+start	VER
+stay	VER
+steal	VER
+summon	VER
+summonat	VER
+swap	VER
+take	VER
+talk	VER
+tease	VER
+teleport	VER
+teleportuj	VER
+teleportuję	VER
+tell	VER
+thank	VER
+there's	VER
+think	VER
+told	VER	=tell
+transfer	VER
+travel	VER
+try	VER
+ulecz	VER
+understand	VER
+upiecz	VER
+use	VER
+usuń	VER
+uwędź	VER
+want	VER
+was	VER
+wear	VER
+welcome	VER
+went	VER	=go
+will	VER
+won't	VER-NEG
+work	VER
+worry	VER
+would	VER-CON	=will
+wouldn't	VER-CON-NEG	=won't
+wrap	VER
+write	VER
+wylecz	VER
+wymień	VER
+wynajmij	VER
+wyślę	VER
+wyślij	VER
+yay	VER	=done
+yep	VER
+yes	VER
+yup	VER	=yep
+zagraj	VER
+zagram	VER
+załatwione	VER
+zaręcz	VER
+zmień	VER
+zrobione	VER-PAS	=zrób
+zrób	VER
+zwrot	VER
+zwróć	VER
+
+ados	OBJ	ados
+air	OBJ	airs
+alga	OBJ	algae
+ammunition	OBJ	ammunitions
+amulet	OBJ	amulets
+analysis	OBJ	analyses
+angle	OBJ	angles
+ankh	OBJ	ankhs
+antidote	OBJ-FOO-FLU	antidotes
+apartment	OBJ	apartments
+apology	OBJ	apologies
+apothecary OBJ apothecaries
+apple	OBJ-FOO	apples
+arandula	OBJ
+armor	OBJ	armors
+armour  OBJ =armor armours
+arrow	OBJ	arrows
+artichoke	OBJ-FOO	artichokes
+arum OBJ =zantedeschia arums
+arundula	OBJ	arundulas
+athor	OBJ-NAM	athors
+atmosphere	OBJ	atmospheres
+aventail	OBJ	aventails
+axe	OBJ	axes
+ayuda	OBJ	ayudas
+bag	OBJ	bags
+bakery	OBJ	bakeries
+ball	OBJ	balls
+balloon	OBJ	balloons
+banana	OBJ-FOO	bananas
+bank	OBJ	banks
+bar	OBJ	bars
+bardiche	OBJ	bardiches
+basement	OBJ	basements
+basket	OBJ	baskets
+battle	OBJ	battles
+bean	OBJ-FOO	beans
+beaver	OBJ-ANI	beavers
+beer	OBJ-FOO-FLU
+beeswax	OBJ	beeswaxes
+bicycle	OBJ	bicycles
+bike	OBJ	bikes
+blackjack	OBJ	blackjacks
+black pearl OBJ
+blade	OBJ	blades
+blood	OBJ	bloods
+board	OBJ	boards
+bobbin	OBJ	bobbins
+body	OBJ	bodies
+bone	OBJ	bones
+book	OBJ	books
+boot	OBJ	boots
+bottle	OBJ	bottles
+bow	OBJ	bows
+box	OBJ	boxes
+brain	OBJ	brains
+branch	OBJ	branches
+brandy	OBJ-FOO-FLU	brandies
+bread	OBJ-FOO
+broadsword	OBJ	broadswords
+broccoli	OBJ-FOO	broccolis
+bronze	OBJ	bronzes
+buckler	OBJ	bucklers
+bug	OBJ	bugs
+building	OBJ	buildings
+bulb	OBJ	bulbs
+bull	OBJ-ANI	bulls
+bunch	OBJ	bunches
+bunny	OBJ-ANI	bunnies
+bureau	OBJ	bureaux
+bus	OBJ	bus
+bush	OBJ	bushes
+buster	OBJ	busters
+butter	OBJ-FOO
+button	OBJ	buttons
+caboose	OBJ	cabooses
+cake	OBJ-FOO	cakes
+calla OBJ =zantedeschia callas
+candle	OBJ	candles
+cane	OBJ	canes
+car	OBJ	cars
+carbuncle	OBJ	carbuncles
+cards	OBJ	cards
+carrot	OBJ-FOO	carrots
+castle	OBJ	castles
+catacomb	OBJ	catacombs
+catering	OBJ	caterings
+cauliflower	OBJ-FOO	cauliflowers
+cavalry	OBJ	cavalries
+cave	OBJ	caves
+cell	OBJ	cells
+chain	OBJ	chains
+chainmail	OBJ	chainmails
+challenge	OBJ	challenges
+channel	OBJ	channels
+chaos	OBJ	chaos
+char	OBJ-FOO	chars
+character	OBJ	characters
+charm	OBJ	charms
+cheese	OBJ-FOO	cheeses
+cheeseydog	OBJ-FOO	cheeseydogs
+cherry	OBJ-FOO	cherries
+chest	OBJ	chests
+chicken	OBJ-FOO-ANI	chickens
+chips	OBJ-FOO	chips
+chocolate	OBJ-FOO	chocolates
+chunk	OBJ	chunks
+citizenship	OBJ	citizenships
+city	OBJ	cities
+clasp	OBJ	clasps
+claymore	OBJ	claymores
+client	OBJ	clients
+cloak	OBJ	cloaks
+clock	OBJ	clocks
+cloth	OBJ	cloths
+cloudburst	OBJ	cloudbursts
+clownfish	OBJ-FOO-ANI	clownfishes
+club	OBJ	clubs
+coal	OBJ coals
+cocktail	OBJ-FOO-FLU	cocktails
+coconut	OBJ-FOO	coconuts
+cod	OBJ-FOO	cods
+code	OBJ	codes
+coffee	OBJ-FOO-FLU	coffees
+coffin	OBJ	coffins
+coin	OBJ	=money	coins
+colada	OBJ-FOO-FLU	coladas
+collard	OBJ-FOO	collards
+collection	OBJ	collections
+collision	OBJ	collisions
+color	OBJ	colors
+colour  OBJ =color colours
+command	OBJ	commands
+comment	OBJ	comments
+company	OBJ	companies
+computer	OBJ	computers
+converter	OBJ	converters
+cookie	OBJ-FOO	cookies
+cost	OBJ	costs
+costume	OBJ	costumes
+coupon	OBJ	coupons
+courgette	OBJ-FOO	courgettes
+zucchini OBJ-FOO =courgette zucchinis
+cow	OBJ-ANI	cows
+cream	OBJ	creams
+creature	OBJ	creatures
+crepe	OBJ-FOO	crepes
+crepes suzette OBJ-FOO
+crossbow	OBJ	crossbows
+crown	OBJ	crowns
+crustaceans	OBJ	crustaceans
+ctf	OBJ
+cuirass	OBJ	cuirasses
+czerwony	OBJ czerwone
+dagger	OBJ	daggers
+daisy	OBJ =daisies	daisies
+dart	OBJ	darts
+data	OBJ	datas
+database	OBJ	databases
+day	OBJ	days
+deal	OBJ	deals
+deathmatch	OBJ	deathmatches
+department	OBJ	departments
+description	OBJ	descriptions
+detail	OBJ	details
+diamond	OBJ	diamonds
+dice	OBJ	dice
+difference	OBJ	differences
+direction	OBJ	directions
+disease	OBJ	diseases
+dish	OBJ	dishes
+divorce	OBJ	divorces
+doll	OBJ	dolls
+donkey	OBJ-ANI	donkeys
+dress	OBJ	dresses
+drink	OBJ-FOO-FLU	drinks
+dungarees	OBJ	dungarees
+dungeon	OBJ	dungeons
+durin	OBJ	durins
+earth	OBJ	earths
+easter	OBJ	easters
+eater	OBJ	eaters
+egg	OBJ-FOO	eggs
+eggshell	OBJ	eggshells
+elite	OBJ	elites
+elixir	OBJ-FOO-FLU	elixirs
+emerald	OBJ	emeralds
+engagement	OBJ	engagements
+england	OBJ	englands
+entrail	OBJ	entrails
+envelope	OBJ	envelopes
+environment	OBJ	environments
+equipment	OBJ	equipments
+eraser	OBJ	erasers
+erinys	OBJ	erinyes
+error	OBJ	errors
+eupepsia	OBJ	eupepsias
+everything	OBJ	everythings
+exam	OBJ	exams
+experiment	OBJ	experiments
+eye	OBJ	eyes
+fabric	OBJ	fabrics
+face	OBJ	faces
+fado	OBJ-NAM	fados
+faiumoni	OBJ	faiumonis
+fault	OBJ	faults
+favor	OBJ	favors
+favour	OBJ	favours
+feature	OBJ	features
+fee	OBJ	fees
+ferry	OBJ	ferries
+field	OBJ	fields
+fierywater	OBJ-FOO-FLU	fierywaters
+figure	OBJ	figures
+figurine	OBJ	figurines
+finger	OBJ	fingers
+fire	OBJ	fires
+fish	OBJ-FOO	fishes
+flag	OBJ
+flail	OBJ	flails
+flask	OBJ	flasks
+flour	OBJ	flours
+flower	OBJ	flowers
+food	OBJ-FOO	foods
+foot	OBJ	feet
+forge	OBJ	forges
+frostshade	OBJ-NAM	frostshades
+fumble	OBJ
+fun	OBJ	funs
+fuse	OBJ	fuses
+future	OBJ	futures
+gambling	OBJ	gamblings
+game	OBJ	games
+garlic	OBJ-FOO
+garnet OBJ
+gate	OBJ	gates
+gem	OBJ	gems
+gemstone OBJ gemstones
+geography	OBJ	geographies
+germany	OBJ	germanies
+gingerbread	OBJ-FOO	gingerbreads
+gland	OBJ	glands
+glas	OBJ	glas
+glass	OBJ	glasses
+glow	OBJ	glows
+glück	OBJ	glücke
+gnu	OBJ	gnus
+goat	OBJ-ANI	goats
+goblet	OBJ	goblets
+gold	OBJ	golds
+gown	OBJ	gowns
+gpl	OBJ	gpls
+grain	OBJ-FOO	grains
+grape	OBJ-FOO	grapes
+grass	OBJ-ANI	grasses
+grobble	OBJ	grobbles
+group	OBJ	groups
+hair	OBJ	hairs
+halberd	OBJ	halberds
+ham	OBJ-FOO	hams
+hammer	OBJ	hammers
+hand	OBJ	hands
+hat	OBJ	hats
+hatch	OBJ	hatches
+head	OBJ	heads
+heart	OBJ	hearts
+heat	OBJ	heats
+helium	OBJ	helia
+hell	OBJ	hells
+helm	OBJ	helms
+helmet	OBJ	helmets
+help	OBJ	helps
+hen	OBJ-ANI	hens
+herb	OBJ	herbs
+hint	OBJ	hints
+history	OBJ	histories
+hoe	OBJ	hoes
+home	OBJ	homes
+honey	OBJ-FOO	honeys
+honeymoon	OBJ	honeymoons
+hospital	OBJ	hospitals
+hotdog	OBJ-FOO	hotdogs
+hotel	OBJ	hotels
+hour	OBJ	hours
+house	OBJ	houses
+hypha	OBJ	hyphae
+ice	OBJ	ices
+icecream	OBJ-FOO	icecreams
+id	OBJ	ids
+image	OBJ	images
+index	OBJ	indices
+infantry	OBJ	infantries
+ingredients	OBJ	ingredients
+invitation	OBJ	invitations
+irc	OBJ	ircs
+iron	OBJ	irons
+island	OBJ	islands
+it	OBJ-PRO	they
+item	OBJ	items
+jail	OBJ	jails
+jar	OBJ	jars
+job	OBJ	jobs
+joke	OBJ	jokes
+juice	OBJ-FOO-FLU	juices
+jumpsuit	OBJ	jumpsuits
+kalavan	OBJ-NAM	kalavans
+kanmararn	OBJ	kanmararns
+karma	OBJ	karmas
+katana	OBJ	katanas
+kekik	OBJ	kekiks
+key	OBJ	keys
+keyring	OBJ keyrings
+kingdom	OBJ	kingdoms
+kirdneh	OBJ-NAM	kirdnehs
+kitchen	OBJ	kitchens
+knife	OBJ	knives
+kokuda	OBJ	kokudas
+kotoch	OBJ-NAM	kotoches
+książka	OBJ	książki
+lag	OBJ	lags
+lamb	OBJ-ANI	lambs
+language	OBJ	languages
+larva	OBJ	larvae
+lavitae	OBJ-NAM	lavitaes
+leek	OBJ-FOO	leeks
+leg	OBJ	legs
+letter	OBJ	letters
+lettuce OBJ =salad lettuces
+level	OBJ	levels
+liberty	OBJ	liberties
+library	OBJ	libraries
+licorice	OBJ-FOO	licorices
+life	OBJ	lives
+lilia	OBJ	lilias
+lilium OBJ =lilia liliums
+lily OBJ =lilia lilies
+limit	OBJ	limits
+lionfish	OBJ-FOO-ANI	lionfishes
+list	OBJ	lists
+loaf	OBJ	loaves
+log	OBJ	logs
+longbow	OBJ	longbows
+lotus	OBJ	lotuses
+luck	OBJ	lucks
+lunch	OBJ	lunches
+lyreade	OBJ-NAM	lyreades
+mace	OBJ	maces
+machine	OBJ	machines
+mackerel	OBJ-FOO	mackerels
+madaram	OBJ	madarams
+magic	OBJ	magic
+mainio	OBJ	mainios
+mana	OBJ-FOO-FLU
+mandragora	OBJ
+manner	OBJ	manners
+map	OBJ	maps
+marble	OBJ	marbles
+mask	OBJ	masks
+match	OBJ	matches
+matrix	OBJ	matrices
+maze	OBJ	mazes
+meat	OBJ-FOO	meats
+medicine	OBJ	medicines
+militia	OBJ	militias
+milk	OBJ-FOO-FLU	milks
+mine	OBJ-PRO	mines
+minute	OBJ	minutes
+mirror	OBJ	mirrors
+mistake	OBJ	mistakes
+mithril	OBJ	mithrils
+mithrilbourgh	OBJ-NAM	mithrilbourghs
+moment	OBJ	moments
+money	OBJ	money
+moose	OBJ	moose
+morning	OBJ	mornings
+mortar	OBJ	mortars
+moss	OBJ	mosses
+mountain	OBJ	mountains
+mouse	OBJ	mice
+mouth	OBJ	mouths
+mumak	OBJ	mumakil
+mushroom	OBJ-FOO	mushrooms
+my	OBJ-OBS	my
+nalwor	OBJ-NAM	nalwors
+name	OBJ	names
+naming	OBJ	namings
+narwol	OBJ	narwols
+needle	OBJ	needles
+neighborhood	OBJ	neighborhoods
+news	OBJ	news
+niebieski	OBJ niebieskie
+night	OBJ	nights
+nihonto	OBJ	nihontos
+none	OBJ-PRO	nones
+noose	OBJ	nooses
+nose	OBJ	noses
+note	OBJ	notes
+nothing	OBJ	nothings
+npc	OBJ	npcs
+nugget	OBJ	nuggets
+number	OBJ	numbers
+o	OBJ	os
+obsidian	OBJ	obsidians
+offer	OBJ	offers
+oil	OBJ
+onion	OBJ-FOO	onions
+opposite	OBJ	opposites
+or'ril	OBJ	or'rils
+orange	OBJ-FOO	oranges
+ore	OBJ	ores
+other	OBJ-PRO	others
+pair	OBJ	pairs
+pan	OBJ	pans
+pansy	OBJ	pansies
+paper	OBJ	papers
+park	OBJ	parks
+patch	OBJ	patches
+path	OBJ	paths
+payment	OBJ	payments
+pear	OBJ-FOO
+pearl	OBJ	pearls
+perch	OBJ-FOO-ANI	perches
+pestle	OBJ	pestles
+pet	OBJ-ANI	pets
+pick	OBJ	picks
+pie	OBJ-FOO	pies
+piece	OBJ	pieces
+pig	OBJ-ANI	pigs
+piglet	OBJ-ANI	piglets
+pina	OBJ	pinas
+pinacolad	OBJ-FOO-FLU	=pinacolada	pinacoladas
+pinacolada	OBJ-FOO-FLU	pinacoladas
+pineapple	OBJ-FOO	pineapples
+pizza	OBJ-FOO	pizzas
+place	OBJ	places
+plan	OBJ	plans
+plant	OBJ	plants
+plate	OBJ	plates
+playground	OBJ	playgrounds
+plural	OBJ	plurals
+point	OBJ	points
+poison	OBJ-FOO-FLU	poisons
+pomegranate	OBJ-FOO
+porcino	OBJ-FOO	porcini
+portal	OBJ	portals
+position	OBJ	positions
+pot	OBJ	pots
+potion	OBJ-FOO-FLU	potions
+power	OBJ	powers
+present	OBJ	presents
+presentation	OBJ	presentations
+price	OBJ	prices
+princess	OBJ	princesses
+prison	OBJ	prisons
+problem	OBJ	problems
+product	OBJ	products
+quest	OBJ	quests
+question	OBJ	questions
+rainbow	OBJ	rainbows
+ram	OBJ-ANI	rams
+ranch	OBJ	ranches
+rate	OBJ	rates
+regard	OBJ	regards
+reputation	OBJ	reputations
+request	OBJ	requests
+restaurant	OBJ	restaurants
+revival	OBJ	revivals
+reward	OBJ	rewards
+rhosyd	OBJ	rhosyds
+riddle	OBJ	riddles
+rift	OBJ	rifts
+ring	OBJ	rings
+risecia	OBJ	risecias
+roach	OBJ-FOO-ANI	roaches
+robin	OBJ	robins
+rod	OBJ	rods
+rodent  OBJ rodents
+room	OBJ	rooms
+rose	OBJ	roses
+rug	OBJ	rugs
+sack	OBJ	sacks
+safety	OBJ	safeties
+salad	OBJ-FOO	salads
+sanctuary	OBJ	sanctuaries
+sandwich	OBJ-FOO	sandwiches
+sapphire	OBJ	sapphires
+sausage	OBJ-FOO	sausages
+scale	OBJ	scales
+scarlet	OBJ	scarlets
+scimitar	OBJ	scimitars
+scissors	OBJ	scissors
+sclaria	OBJ	sclarias
+screen	OBJ	screens
+script	OBJ	scripts
+scroll	OBJ	scrolls
+scythe	OBJ	scythes
+secret	OBJ	secrets
+security	OBJ	securities
+sedah	OBJ	sedahs
+seed	OBJ	seeds
+semos	OBJ	semos
+sense	OBJ	senses
+server	OBJ	servers
+service	OBJ	services
+shadow	OBJ	shadows
+shake	OBJ-FOO	shakes
+sheaf	OBJ	sheaves
+sheep	OBJ-ANI	sheep
+sheet	OBJ	sheets
+shield	OBJ	shields
+shop	OBJ	shops
+shuriken	OBJ	shurikens
+sickle	OBJ	sickles
+sign	OBJ	signs
+silk	OBJ	silks
+silver	OBJ	silvers
+skull	OBJ	skulls
+slowdown	OBJ
+snow	OBJ	snows
+snowball	OBJ	snowballs
+snowglobe	OBJ	snowglobes
+sodium	OBJ	sodia
+something	OBJ	somethings
+soul	OBJ	souls
+soup	OBJ-FOO-FLU	soups
+space	OBJ	spaces
+spade	OBJ	spades
+spear	OBJ	spears
+species	OBJ	species
+speed	OBJ	speeds
+speedup	OBJ
+spinach	OBJ-FOO	spinaches
+sprig	OBJ	sprigs
+sps	OBJ	sps
+sql	OBJ	sqls
+staff	OBJ	staffs
+star	OBJ	stars
+status	OBJ	stati
+steak	OBJ-FOO	steaks
+steel	OBJ	steels
+stendhal	OBJ-NAM	stendhals
+stick	OBJ	sticks
+stocking	OBJ	stockings
+stone	OBJ	stones
+storage	OBJ	storages
+store	OBJ	stores
+storm	OBJ	storms
+story	OBJ	stories
+stuff	OBJ	stuffs
+style	OBJ	styles
+sugar	OBJ-FOO	sugar
+suit	OBJ	suits
+sun	OBJ	suns
+suntan	OBJ	suntans
+supply	OBJ	supplies
+surgeonfish	OBJ-FOO-ANI	surgeonfishes
+suzette	OBJ-FOO	
+swamp	OBJ	swamps
+sweatshirt	OBJ	sweatshirts
+swimsuit	OBJ	swimsuits
+sword	OBJ	swords
+symbol	OBJ	symbols
+świeca	OBJ	świece
+table	OBJ	tables
+task	OBJ	tasks
+taste	OBJ	tastes
+tavern	OBJ	taverns
+tax	OBJ	taxes
+tea	OBJ-FOO-FLU	teas
+teddy	OBJ	teddies
+temple	OBJ	temples
+test	OBJ	tests
+text	OBJ	texts
+that	OBJ-PRO	=this	those
+this	OBJ-PRO	these
+thorn	OBJ	thorns
+thread	OBJ	threads
+time	OBJ	times
+toadstool	OBJ-FOO	toadstools
+token	OBJ	tokens
+tomato	OBJ-FOO	tomatoes
+tool	OBJ	tools
+tooth	OBJ	teeth
+torcibud	OBJ-FOO-FLU	torcibuds
+torture	OBJ	tortures
+tour	OBJ	tours
+tower	OBJ	towers
+town	OBJ	towns
+toy	OBJ	toys
+trade	OBJ	trades
+trading	OBJ	tradings
+trap OBJ traps
+treasure	OBJ	treasures
+trigger	OBJ	triggers
+trophy	OBJ	trophies
+trouser	OBJ	trousers
+trout	OBJ-FOO-ANI	trouts
+trunk	OBJ	trunks
+trust	OBJ	trusts
+tuna	OBJ-FOO	tunas
+tunnel	OBJ	tunnels
+twilight	OBJ	twilights
+ugmash	OBJ	ugmashes
+url	OBJ	urls
+vault	OBJ	vaults
+venom	OBJ	venoms
+vertex	OBJ	vertices
+victory	OBJ	victories
+vigilance	OBJ	vigilances
+village	OBJ	villages
+vodka	OBJ-FOO-FLU	vodkas
+vomit	OBJ-FLU	vomits
+vortex	OBJ	vortices
+vulcano	OBJ	vulcanos
+war	OBJ	wars
+wardrobe	OBJ	wardrobes
+water	OBJ-FOO-FLU	waters
+watermelon	OBJ-FOO watermelons
+way	OBJ	ways
+weapon	OBJ	weapons
+weave	OBJ	weaves
+wedding	OBJ	weddings
+week	OBJ	weeks
+whiskey	OBJ-FOO-FLU	whiskeys
+wikipedia	OBJ	wikipedias
+wind	OBJ	winds
+window	OBJ	windows
+wine	OBJ-FOO-FLU
+wish	OBJ	wishes
+wodka	OBJ-FOO-FLU	wodkas
+wood	OBJ	woods
+wool	OBJ	wools
+word	OBJ	words
+world	OBJ	worlds
+wraithforge	OBJ-NAM	wraithforges
+x	OBJ	xs
+xeno	OBJ	xenos
+xenocium	OBJ	xenocia
+xkcd	OBJ-NAM	xkcds
+xp	OBJ	xps
+yarn	OBJ	yarns
+yclept	OBJ	yclepts
+youngster	OBJ	youngsters
+your	OBJ-OBS	your
+yrafear	OBJ-NAM	yrafears
+zant OBJ =zantedeschia zants
+zantedeschia	OBJ	zantedeschias
+zioło	OBJ	zioła
+zone	OBJ	zones
+żółty	OBJ żółte
+
+abe	SUB-NAM
+adena SUB-NAM
+admin	SUB
+admiral	SUB
+aenihata	SUB-NAM
+agnus	SUB-NAM
+ahba	SUB-NAM
+ahouga	SUB
+albino	SUB
+aldrin	SUB-NAM
+alexander	SUB-NAM
+alice	SUB-NAM
+alien	SUB
+alrak	SUB-NAM
+amazoness	SUB
+amber	SUB-NAM
+anastasia	SUB-NAM
+andy	SUB-NAM
+angel	SUB
+anna	SUB-NAM
+annie	SUB-NAM
+apprentice	SUB
+arachne	SUB-ANI
+archangel	SUB
+archer	SUB	archers
+archlich	SUB-NAM
+archmage	SUB	archmages
+archrat	SUB-ANI	archrats
+arlindo	SUB-NAM
+aruthon	SUB
+assassin	SUB	assassins
+avalon	SUB-NAM
+avenger	SUB
+axeman	SUB
+azazel	SUB-NAM
+azira	SUB-NAM
+baby	SUB	babies
+babybear	SUB-ANI
+baldemar	SUB-NAM
+balduin	SUB-NAM
+balrog	SUB
+bandit	SUB
+baos	SUB-NAM
+barbarian	SUB
+barbarus	SUB-NAM
+bario	SUB-NAM
+barrett	SUB-NAM
+bat	SUB-ANI	bats
+bear	SUB-ANI	bears
+beholder	SUB	beholders
+ben	SUB-NAM
+benedicta	SUB-NAM
+beth	SUB-NAM
+bill	SUB-NAM
+bishop	SUB
+blacksheep	SUB-NAM
+blacksmith	SUB
+blader	SUB
+blanca	SUB-NAM
+blordrough	SUB
+blurble	SUB
+bmud	SUB-NAM
+boar	SUB-ANI	boars
+bob	SUB-NAM
+bobby	SUB-NAM
+bodyguard	SUB
+borak	SUB-NAM
+boris	SUB-NAM
+boss	SUB	bosses
+boullabaisse	SUB-NAM
+boy	SUB	boys
+bride	SUB
+brother	SUB
+brui	SUB-NAM
+caiman	SUB-ANI
+calla SUB-NAM
+cannibal	SUB
+captain	SUB
+captain Brownbeard SUB-NAM
+carena	SUB-NAM
+carey	SUB-NAM
+carmen	SUB-NAM
+caroline	SUB-NAM
+cassandra	SUB-NAM
+cat	SUB-ANI	cats
+cavalryman	SUB
+caverat	SUB-ANI	caverats
+centaur	SUB-ANI
+ceryl	SUB-NAM
+chalmers	SUB-NAM
+chaman	SUB
+charles	SUB-NAM
+cherubiel	SUB-NAM
+chick	SUB
+chief	SUB	chiefs
+child	SUB	children
+citizen	SUB
+cloudwalker	SUB-NAM
+clurichaun	SUB
+coastguard	SUB
+cobra	SUB-ANI	cobras
+cody	SUB-NAM
+colonel	SUB
+commander	SUB	commanders
+conual	SUB-NAM
+cook	SUB
+coralia	SUB-NAM
+corporal	SUB
+covester	SUB-NAM
+cowboy	SUB
+cozart	SUB-NAM
+crab	SUB-ANI	crabs
+crearid	SUB-NAM
+crocodile	SUB-ANI
+cyclops	SUB	cyclopses
+cyk	SUB-NAM
+dag	SUB-NAM
+dagobert	SUB-NAM
+dale	SUB-NAM
+dalmung	SUB
+damon	SUB-NAM
+darkmonk	SUB
+daughter	SUB
+daugther	SUB
+david	SUB-NAM
+death	SUB	deaths
+deer	SUB-ANI
+defender	SUB
+demon	SUB	demons
+deniran	SUB-NAM
+denson	SUB-NAM
+despot	SUB
+deus	SUB	dei
+devil	SUB
+dhohr	SUB-NAM
+diehelm	SUB-NAM
+diogenes	SUB-NAM
+disciple	SUB
+dishwasher	SUB
+djinni	SUB	djinn
+dog	SUB-ANI	dogs
+dorinel	SUB-NAM
+dr	SUB
+dragon	SUB-ANI	dragons
+dragonrider	SUB
+dragontracker	SUB-NAM
+drilenun	SUB-NAM
+duergar	SUB
+dwarf	SUB	dwarves
+easso	SUB-NAM
+efreeti	SUB	efreet
+eheneumniranin	SUB-NAM
+elana	SUB-NAM
+elemental	SUB	elementals
+elephant	SUB-ANI	elephants
+elf	SUB	elves
+elisabeth	SUB-NAM
+eliza	SUB-NAM
+elodrin	SUB-NAM
+elos	SUB-NAM
+emperor	SUB
+enemy	SUB
+enrique	SUB-NAM
+ent	SUB
+entwife	SUB
+eonna	SUB-NAM
+equal	SUB	equals
+erastus	SUB-NAM
+erna	SUB-NAM
+erodel	SUB-NAM
+errvl	SUB-NAM
+esclara	SUB-NAM
+esolte	SUB-NAM
+everyone	SUB-PRO
+exhibits	SUB
+falatheen	SUB
+farmer	SUB
+fatale	SUB-NAM
+feelgood	SUB-NAM
+felina	SUB-NAM
+femme	SUB-NAM
+fidorea	SUB-NAM
+finn	SUB-NAM
+fisherman	SUB
+fishmonger	SUB
+fleur	SUB-NAM
+florence	SUB-NAM
+flotto	SUB-NAM
+fox	SUB-ANI	foxes
+frampton	SUB-NAM
+friend	SUB
+fritz	SUB-NAM
+frogman	SUB
+gabriel	SUB-NAM
+gamblos	SUB-NAM
+garbiddle	SUB-NAM
+gargoyle	SUB	gargoyles
+gashadokuro	SUB
+gaston	SUB-NAM
+general	SUB
+george	SUB-NAM
+gertha	SUB-NAM
+ghost	SUB	ghosts
+giant	SUB
+giantrat	SUB-ANI	giantrats
+girl	SUB
+gm	SUB
+gnome	SUB	gnomes
+goblin	SUB	goblins
+god	SUB
+golem	SUB	golems
+googon	SUB
+goose	SUB-ANI	geese
+goran	SUB-NAM
+gordon	SUB-NAM
+grafindle	SUB-NAM
+graham	SUB-NAM
+granny	SUB-NAM
+grim	SUB-NAM
+guard	SUB
+guardian	SUB	guardians
+guest	SUB	guests
+gulimo	SUB-NAM
+guy	SUB
+haastaja	SUB-NAM
+hackim	SUB-NAM
+hagnurk	SUB-NAM
+haizen	SUB-NAM
+halb	SUB-NAM
+harold	SUB-NAM
+harry	SUB-NAM
+haunchy	SUB-NAM
+hayunn	SUB-NAM
+hazel	SUB-NAM
+he	SUB-PRO	they
+healer	SUB
+helena	SUB-NAM
+henry	SUB-NAM
+hero	SUB	heros
+hogart	SUB-NAM
+holmes	SUB-NAM
+horse	SUB-ANI
+hound	SUB-ANI
+housewife	SUB
+huckle	SUB-NAM
+hughie	SUB-NAM
+hugo	SUB-NAM
+human	SUB	humans
+hunel	SUB-NAM
+hunter	SUB	hunters
+i	SUB-PRO	we
+ida	SUB-NAM
+idea	SUB
+ilisa	SUB-NAM
+imorgen	SUB-NAM
+imp	SUB
+imperator	SUB
+io	SUB-NAM
+iou	SUB-NAM
+ivan	SUB-NAM
+iwuhos	SUB-NAM
+jackie	SUB-NAM
+jaer	SUB-NAM
+james	SUB-NAM
+jane	SUB-NAM
+javier	SUB-NAM
+jef	SUB-NAM
+jenny	SUB-NAM
+jens	SUB-NAM
+jessica	SUB-NAM
+jingo	SUB-NAM
+joe	SUB-NAM
+john	SUB-NAM
+johnnnny	SUB-NAM
+jones	SUB-NAM
+josephine	SUB-NAM
+joshua	SUB-NAM
+julius	SUB-NAM
+jynath	SUB-NAM
+kampusch	SUB-NAM
+karl	SUB-NAM
+karlova	SUB-NAM
+kasarkutominubat	SUB
+katerina	SUB-NAM
+katinka	SUB-NAM
+kelicia	SUB-NAM
+kendra	SUB-NAM
+ketteh	SUB-NAM
+killer	SUB
+king	SUB
+klaas	SUB-NAM
+knight	SUB	knights
+kobold	SUB	kobolds
+kormic	SUB-NAM
+kroip	SUB-NAM
+lady	SUB
+laura	SUB-NAM
+lawrence	SUB-NAM
+lda	SUB-NAM
+leader	SUB	leaders
+leander	SUB-NAM
+leigh	SUB-NAM
+leprechaun	SUB
+lich	SUB	liches
+lieutenant	SUB
+lifeguard	SUB
+lil	SUB-NAM
+liliana	SUB-NAM
+linda	SUB-NAM
+linzo	SUB-NAM
+lion	SUB-ANI	lions
+littlefairy	SUB
+littlewitch	SUB
+littlewizard	SUB
+lobelia SUB-NAM
+lord	SUB
+lorenz	SUB-NAM
+loretta	SUB-NAM
+lorithien	SUB-NAM
+lukas	SUB-NAM
+lupos	SUB-NAM
+maerion	SUB-NAM
+mage	SUB	mages
+magician	SUB
+malleus	SUB-NAM
+man	SUB	men
+marcus	SUB-NAM
+margaret	SUB-NAM
+mariel	SUB-NAM
+mark	SUB-NAM
+markovich	SUB-NAM
+marla	SUB-NAM
+martha	SUB-NAM
+martin	SUB-NAM
+mary	SUB-NAM
+master	SUB
+matronmother	SUB
+mattori	SUB-NAM
+mayor	SUB-NAM
+mcpegleg	SUB-NAM
+me	SUB-PRO	=i	us
+meatoch	SUB-NAM
+merenwen	SUB-NAM
+mia SUB-NAM
+mick	SUB-NAM
+milquetoast	SUB-NAM
+minotaur	SUB
+mircea	SUB-NAM
+mirg	SUB-NAM
+miss	SUB
+mistress	SUB
+mohiko	SUB
+mommy	SUB
+monk	SUB
+monkey	SUB	monkeys
+monogenes	SUB-NAM
+monster	SUB
+morgrin	SUB-NAM
+mother	SUB
+mr	SUB
+mrotho	SUB-NAM
+mrs	SUB
+mummy	SUB	mummies
+mutant	SUB
+naga	SUB
+naratha	SUB-NAM
+necromancer	SUB	necromancers
+necrosophia	SUB
+nicklesworth	SUB-NAM
+ninja	SUB
+nishiya	SUB-NAM
+nnyddion	SUB-NAM
+no-one	SUB
+nomad	SUB
+nomyr	SUB-NAM
+noone	SUB
+nuggetcutter	SUB-NAM
+nymph	SUB
+obywatelstwo	SUB
+ognir	SUB-NAM
+ogre	SUB	ogres
+oni	SUB
+opal	SUB-NAM
+ophaniel	SUB-NAM
+orc	SUB	orcs
+orchiwald	SUB-NAM
+ortiv	SUB-NAM
+ouchit	SUB-NAM
+overlord	SUB
+pam	SUB-NAM
+panda	SUB-ANI
+parillaud	SUB-NAM
+parrot	SUB-ANI
+pawn	SUB
+pdiddi	SUB-NAM
+peasant	SUB
+pedinghaus	SUB-NAM
+pedro	SUB-NAM
+pegasus	SUB-ANI
+penguin	SUB-ANI	penguins
+people	SUB
+pequod	SUB-NAM
+peter	SUB-NAM
+phalk	SUB-NAM
+phantom	SUB
+philomena	SUB-NAM
+pigeon	SUB-ANI
+piper	SUB
+pirate	SUB
+pjotr	SUB-NAM
+player	SUB	players
+plink	SUB-NAM
+postman	SUB
+priest	SUB
+purist	SUB
+quartermaster	SUB
+queen	SUB
+rachel	SUB-NAM
+radish	SUB-NAM
+rallman	SUB-NAM
+ramon	SUB-NAM
+ranger	SUB
+raphael	SUB-NAM
+rat	SUB-ANI	rats
+ratman	SUB	ratmen
+ratwoman	SUB	ratwomen
+ravashack	SUB-NAM
+razorrat	SUB-ANI	razorrats
+reaper	SUB-NAM
+reg	SUB-NAM
+repaer	SUB-NAM
+reptile	SUB-ANI
+revi	SUB-NAM
+ricardo	SUB-NAM
+richard	SUB-NAM
+ritati	SUB-NAM
+robot	SUB
+roger	SUB-NAM
+rohn	SUB-NAM
+roohako	SUB
+rook	SUB
+ross	SUB-NAM
+ruarhi	SUB-NAM
+sacerdotist	SUB	sacerdotists
+sakhs	SUB-NAM
+sally	SUB-NAME
+salva	SUB-NAM
+sam	SUB-NAM
+saman	SUB-NAM
+samurai	SUB
+santiago	SUB-NAM
+sara	SUB-NAM
+sarzina	SUB-NAM
+saskia	SUB-NAM
+sato	SUB-NAM
+savanka	SUB-NAM
+scientist	SUB
+seremela SUB-NAM
+sergeant	SUB
+sergej	SUB-NAM
+servant	SUB
+shadows SUB-NAM
+she	SUB-PRO	they
+sheepman	SUB
+siandra	SUB-NAM
+silvanus	SUB-NAM
+simon	SUB-NAM
+sister	SUB
+skeleton	SUB	skeletons
+skelly	SUB
+skye	SUB-NAM
+slime	SUB	slimes
+snake	SUB-ANI
+snarfkin	SUB
+soldier	SUB	soldiers
+someone	SUB-PRO
+son	SUB
+sorcerer	SUB
+spearman	SUB
+spider	SUB-ANI
+spirit	SUB	spirits
+stalker	SUB
+starkad	SUB-NAM
+stefan	SUB-NAM
+sten	SUB-NAM
+stichard	SUB-NAM
+storekeeper	SUB
+student	SUB
+sue	SUB-NAM
+superogre	SUB
+susi	SUB-NAM
+swordsman	SUB
+tad	SUB-NAM
+tamara	SUB-NAM
+tanquilos	SUB-NAM
+taxman	SUB
+taylor	SUB-NAM
+tendertwig	SUB-NAM
+terry	SUB-NAM
+thanatos	SUB-NAM
+them	SUB
+thing	SUB
+thonatus	SUB-NAM
+thug	SUB
+tiger	SUB-ANI	tigers
+timothy	SUB-NAM
+tom	SUB-NAM
+tomi	SUB-NAM
+tor'koom	SUB-NAM
+trainer	SUB
+trillium	SUB-NAM
+troll	SUB	trolls
+trooper	SUB
+twin	SUB
+tywysoga	SUB-NAM
+uncle	SUB
+unicorn	SUB-ANI	unicorns
+uriel	SUB-NAM
+valo	SUB-NAM
+vampire	SUB
+vampirette	SUB
+vasi	SUB-NAM
+vegetarian	SUB	vegetarians
+venomrat	SUB-ANI	venomrats
+vera	SUB-NAM
+veteran	SUB	veterans
+viceroy	SUB
+vietta	SUB-NAM
+viking	SUB	vikings
+vincento	SUB-NAM
+vonda	SUB-NAM
+vulcanus	SUB-NAM
+waerryna	SUB-NAM
+warrior	SUB	warriors
+wehoh	SUB-NAM
+werewolf	SUB-ANI
+whiggins	SUB-NAM
+wikipedian	SUB-NAM
+wilfred	SUB-NAM
+windmaster	SUB-NAM
+windwalker	SUB
+wisewoman	SUB
+wishman	SUB-NAM
+witch	SUB
+wizard	SUB
+wolf	SUB-ANI	wolves
+woman	SUB	women
+woody	SUB-NAM
+wrvil	SUB-NAM
+wrviliza	SUB-NAM
+wumpus	SUB	wumpuses
+xaruhwaiyz	SUB-NAM
+xeoilia	SUB-NAM
+xhiphin	SUB-NAM
+xin	SUB-NAM
+xoderos	SUB-NAM
+yan	SUB-NAM
+yance	SUB-NAM
+yearl	SUB-NAM
+yeti	SUB-ANI
+ylflia	SUB-NAM
+yorphin	SUB-NAM
+you	SUB-PRO	you
+yourself	SUB-PRO
+zak	SUB-NAM
+zara	SUB-NAM
+zinnia SUB-NAM
+zekiel	SUB-NAM
+zogfang	SUB-NAM
+zohos	SUB-NAM
+zombie	SUB	zombies
+zophiel	SUB-NAM
+zynn	SUB-NAM
+
+another	ADJ
+armed	ADJ
+armored ADJ
+available	ADJ
+awesome	ADJ
+bad	ADJ
+before	ADJ
+below	ADJ
+best	ADJ
+better	ADJ
+big	ADJ
+biggest	ADJ
+biting	ADJ
+black	ADJ-COL
+blank	ADJ =empty
+bloody	ADJ
+blue	ADJ-COL
+broken	ADJ
+brown	ADJ-COL
+canned	ADJ
+central	ADJ
+closed	ADJ
+complete	ADJ
+composite	ADJ
+confused	ADJ
+cool	ADJ
+dangerous	ADJ
+dark	ADJ
+dayly	ADJ
+dead	ADJ
+deadly	ADJ
+delicious	ADJ
+devout	ADJ
+different	ADJ
+dostępny	ADJ
+drow	ADJ
+dwarven	ADJ
+dwarvish	ADJ
+eared	ADJ
+eastern	ADJ
+elder	ADJ
+elvish	ADJ
+empty	ADJ
+enhanced	ADJ
+enough	ADJ
+european	ADJ
+every	ADJ
+everywhere	ADJ
+exact	ADJ
+exactly	ADJ
+exotic	ADJ
+expensive	ADJ
+extremely	ADJ
+fairy	ADJ
+fallen	ADJ
+fast	ADJ
+fat	ADJ
+few	ADJ
+fine	ADJ
+fiscal	ADJ
+fishy	ADJ
+flying	ADJ
+forgiven	ADJ
+forward	ADJ
+free	ADJ
+fresh	ADJ
+friendly	ADJ
+full	ADJ
+genius	ADJ
+global	ADJ
+golden	ADJ-COL
+good	ADJ
+grand	ADJ
+great	ADJ
+greater	ADJ
+greaterthan	ADJ
+green	ADJ-COL
+grilled	ADJ
+headed	ADJ
+headless	ADJ
+hidden	ADJ
+high	ADJ
+holy	ADJ
+horned	ADJ
+humble	ADJ
+immortal	ADJ
+imperial	ADJ
+incorporeal	ADJ
+invisible	ADJ
+jailed	ADJ
+jewelled	ADJ
+koboldish	ADJ
+l	ADJ
+lazy	ADJ
+leather	ADJ
+lessthan	ADJ
+little	ADJ
+local	ADJ
+low	ADJ
+lower	ADJ
+lucky	ADJ
+magical	ADJ
+main	ADJ
+many	ADJ
+markable	ADJ
+marked	ADJ
+mega	ADJ
+mild	ADJ
+minor	ADJ
+missing	ADJ
+mythical	ADJ
+naked	ADJ
+nasty	ADJ
+naturally	ADJ
+nearly	ADJ
+next	ADJ
+nice	ADJ
+nomadic	ADJ
+old	ADJ
+orcish	ADJ
+patient	ADJ
+pauldroned	ADJ
+pied	ADJ
+pink	ADJ-COL
+plenty	ADJ
+poisonous	ADJ
+pretty	ADJ
+private	ADJ
+properly	ADJ
+purple	ADJ-COL
+purpurowy	ADJ-COL
+quick	ADJ
+r	ADJ
+random	ADJ
+rare	ADJ
+readable	ADJ
+recently	ADJ
+red	ADJ-COL
+right	ADJ
+rotten	ADJ
+round	ADJ
+royal	ADJ
+różowy	ADJ-COL
+same	ADJ
+sealed	ADJ
+short	ADJ
+silly	ADJ
+silvery	ADJ-COL
+similar	ADJ
+simple	ADJ
+slim	ADJ
+small	ADJ
+snug	ADJ
+solid	ADJ
+spare	ADJ
+special	ADJ
+spooky	ADJ
+spotted	ADJ
+niesprzedany	ADJ
+niesprzedanych	ADJ
+niekupiony	ADJ
+squared	ADJ
+stressed	ADJ
+striped	ADJ
+strong	ADJ
+studded	ADJ
+stupid	ADJ
+super	ADJ
+sure	ADJ
+sweet	ADJ
+tall	ADJ
+tasty	ADJ
+tiny	ADJ
+transparent	ADJ
+triangular	ADJ
+true	ADJ
+twoside	ADJ
+ugly	ADJ
+unbought	ADJ
+unfair	ADJ
+unsealed	ADJ
+unsold	ADJ
+unused	ADJ
+vanilla	ADJ
+violet	ADJ-COL
+vsop	ADJ
+weekly	ADJ
+weird	ADJ
+well	ADJ	=good
+white	ADJ-COL
+whole	ADJ
+winged	ADJ
+wooden	ADJ
+worth	ADJ
+wrong	ADJ
+young	ADJ
+
+a	NUM	1
+an	NUM	1
+czterdzieści	NUM	40
+cztery	NUM	4
+czternaście	NUM	14
+dwa	NUM	2
+dwadzieścia	NUM	20
+dwanaście	NUM	12
+dziesięć	NUM	10
+dziewięć	NUM	9
+dziewiśćdziesiąt	NUM	90
+dziewiętnaście	NUM	19
+eight	NUM	8
+eighteen	NUM	18
+eighty	NUM	80
+eleven	NUM	11
+fifteen	NUM	15
+fifty	NUM	50
+first	NUM	1
+five	NUM	5
+forty	NUM	40
+four	NUM	4
+fourteen	NUM	14
+hundred	NUM	100
+jeden	NUM	1
+jedenaście	NUM	11
+milion	NUM	1000000
+million	NUM	1000000
+nine	NUM	9
+nineteen	NUM	19
+ninety	NUM	90
+no	NUM	0
+one	NUM	1
+osiem	NUM	8
+osiemdzisiąt	NUM	80
+osiemnaście	NUM	18
+pięć	NUM	5
+pięćdzisiąt	NUM	50
+piętnaście	NUM	15
+second	NUM	2
+seven	NUM	7
+seventeen	NUM	17
+seventy	NUM	70
+siedem	NUM	7
+siedemdzisiąt	NUM	70
+siedemnaście	NUM	17
+six	NUM	6
+sixteen	NUM	16
+sixty	NUM	60
+sto	NUM	100
+szesnaście	NUM	16
+sześć	NUM	6
+sześćdziesiąt	NUM	60
+ten	NUM	10
+third	NUM	3
+thirteen	NUM	13
+thirty	NUM	30
+thousand	NUM	1000
+three	NUM	3
+trzy	NUM	3
+trzydzieści	NUM	30
+trzynaście	NUM	13
+tysiąc	NUM	1000
+twelve	NUM	12
+twenty	NUM	20
+two	NUM	2
+zero	NUM	0
+
+about	PRE
+auf	PRE
+by	PRE
+down	PRE
+for	PRE
+from	PRE
+in	PRE
+inside	PRE
+into	PRE
+of	PRE
+off	PRE
+on	PRE
+over	PRE
+somewhere	PRE
+there	PRE
+under	PRE
+up	PRE
+with	PRE
+
+how	QUE
+if	QUE
+what	QUE
+where	QUE
+who	QUE
+why	QUE
+
+again	IGN
+already	IGN
+always	IGN
+any	IGN
+but	IGN
+even	IGN
+let's	IGN
+only	IGN
+please	IGN
+probably	IGN
+really	IGN
+so	IGN
+some	IGN
+soon	IGN
+the	IGN
+though	IGN
+to	IGN
+very	IGN
+whatever	IGN
+while	IGN
+yeah	IGN
+yet	IGN

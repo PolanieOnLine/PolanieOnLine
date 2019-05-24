@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom.
+		** Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<!-- koscielisko_ne -->
+	<zone name="0_koscielisko_ne" level="0" x="513056" y="18432" file="Level 0/koscielisko/koscielisko_ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying(temperature=+2)</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.plains.WielkoludNPC"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="45" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">40</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="102" y="52" ref="enterance_koscielisko_jail">
+			<destination zone="int_koscielisko_jail" ref="exit_koscielisko_jail"/>
+		</portal>
+		<portal x="69" y="116" ref="enter_tunel_zrc">
+			<destination zone="int_koscielisko_tunel_zrc" ref="exit_koscielisko"/>
+			<attribute name="hidden"/>
+		</portal>
+	</zone>
+	
+	<!--koscielisko_nw -->
+	<zone name="0_koscielisko_nw" level="0" x="512928" y="18432" file="Level 0/koscielisko/koscielisko_nw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying(temperature=+2)</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="45" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">40</parameter>
+			</implementation>
+		</entity>
+		
+		<portal x="111" y="11" ref="cave-1_entrance">
+			<destination zone="-1_koscielisko_cave" ref="entrance_cave-1_exit"/>
+		</portal>
+	</zone>
+
+	<!-- koscielisko_e -->
+	<zone name="0_koscielisko_e" level="0" x="513056" y="18560" file="Level 0/koscielisko/koscielisko_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying(temperature=-1)</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.plains.DogSellerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.plains.BrzezdomNPC"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">65</parameter>
+			</implementation>
+		</entity>
+		<entity x="60" y="65">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-bird_kukulka</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">180</parameter>
+				<parameter name="radius">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="105" y="110">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">chicken-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">45</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="110" y="117" ref="enterance_koscielisko_house">
+			<destination zone="int_koscielisko_house" ref="exit_koscielisko_house"/>
+		</portal>
+	</zone>
+	
+	<!-- koscielisko_w -->
+	<zone name="0_koscielisko_w" level="0" x="512928" y="18560" file="Level 0/koscielisko/koscielisko_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying(temperature=+2)</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">65</parameter>
+			</implementation>
+		</entity>
+		<entity x="60" y="65">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-bird_kukulka</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">180</parameter>
+				<parameter name="radius">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="105" y="110">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">chicken-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">45</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+		
+		<portal x="91" y="57" ref="minehouse_entrance">
+			<destination zone="int_koscielisko_minehouse" ref="entrance_minehouse_exit"/>
+		</portal>
+		<entity x="90" y="58">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Oto opuszczona kopalnia węgla!
+			</attribute>
+			<attribute name="class">default</attribute>
+		</entity>
+	</zone>
+
+	<!-- koscielisko_se -->
+	<zone name="0_koscielisko_se" level="0" x="513056" y="18688" file="Level 0/koscielisko/koscielisko_se.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying(temperature=-2)</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="30" y="50">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-hawk1, pol-hawk2</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="42" y="118" ref="enterance_stones_room">
+			<destination zone="int_koscielisko_stones_room" ref="exit_stones_room"/>
+		</portal>
+	</zone>
+	
+	<!-- koscielisko_sw -->
+	<zone name="0_koscielisko_sw" level="0" x="512928" y="18688" file="Level 0/koscielisko/koscielisko_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying(temperature=+1)</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="30" y="50">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-hawk1, pol-hawk2</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- interiors -->
+	
+	<!-- Minehouse -->
+	<zone name="int_koscielisko_minehouse" file="interiors/koscielisko/minehouse.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="5" y="10">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Uwaga!
+W dół jest #niebezpieczna
+kopalnia węgla!
+			</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+		<entity x="22" y="11">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-bell</parameter>
+				<parameter name="min">900</parameter>
+				<parameter name="max">900</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<portal x="17" y="14" ref="entrance_minehouse_exit">
+			<destination zone="0_koscielisko_w" ref="minehouse_entrance"/>
+		</portal>
+		<portal x="18" y="14" ref="entrance_minehouse_exit">
+			<destination zone="0_koscielisko_w" ref="minehouse_entrance"/>
+		</portal>
+		<portal x="5" y="12" ref="coalmine_-1_entrance">
+			<destination zone="-1_koscielisko_coalmine" ref="coalmine_-1_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="int_koscielisko_stones_room" file="interiors/koscielisko/stones_room.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.stones.KowalJacekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.stones.MinerNPC"/>
+		<!-- table -->
+		<entity x="17" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">6</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+		<entity x="18" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">3</attribute>
+		</entity>
+
+		<portal x="11" y="13" ref="exit_stones_room">
+			<destination zone="0_koscielisko_se" ref="enterance_stones_room"/>
+		</portal>
+	</zone>
+
+	<zone name="int_koscielisko_jail" file="interiors/koscielisko/jail.tmx">
+		<configurator class-name="games.stendhal.server.entity.player.Jail"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoItemMove">
+			<parameter name="message">Ze względu bezpieczeństwa nie można przesuwać przedmiotów na terenie więzienia.</parameter>
+		</configurator>
+		<portal x="3" y="2" ref="exit_koscielisko_jail">
+			<destination zone="0_koscielisko_ne" ref="enterance_koscielisko_jail"/>
+		</portal>
+	</zone>
+
+	<zone name="int_koscielisko_tunel_zrc" file="interiors/koscielisko/tunel_zrc.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<portal x="7" y="62" ref="exit_koscielisko">
+			<destination zone="0_koscielisko_ne" ref="enter_tunel_zrc"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="12" y="1" ref="enter_wawoz">
+			<destination zone="int_koscielisko_wawoz_zrc" ref="exit_tunel_d"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="23" y="43" ref="do_kopalni">
+			<destination zone="-1_koscielisko_kopalnia" ref="do_tunelu"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
+				<parameter name="key">lina</parameter>
+				<parameter name="rejected">Potrzebujesz line żeby zejść.</parameter>
+			</implementation>
+		</portal>
+	</zone>
+
+	<zone name="int_koscielisko_wawoz_zrc" file="interiors/koscielisko/wawoz_zrc.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<portal x="11" y="62" ref="exit_tunel_d">
+			<destination zone="int_koscielisko_tunel_zrc" ref="enter_wawoz"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="13" y="0" ref="enter_p1">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="exit_w1"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="14" y="0" ref="enter_p2">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="exit_w2"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="15" y="0" ref="enter_p3">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="exit_w3"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="16" y="0" ref="enter_p4">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="exit_w4"/>
+			<attribute name="hidden"/>
+		</portal>
+	</zone>
+
+	<zone name="int_koscielisko_goldsmith" file="interiors/koscielisko/goldsmith.tmx">
+		<configurator class-name="games.stendhal.server.maps.koscielisko.jeweller.SilverNPC" />
+		<configurator class-name="games.stendhal.server.maps.koscielisko.jeweller.ObsidianNPC" />
+		<configurator class-name="games.stendhal.server.maps.koscielisko.jeweller.CarbuncleNPC" />
+		<configurator class-name="games.stendhal.server.maps.koscielisko.jeweller.EmeraldNPC" />
+		<configurator class-name="games.stendhal.server.maps.koscielisko.jeweller.SapphireNPC" />
+		<portal x="15" y="46" ref="zlotnik_1_enterance">
+			<destination zone="1_koscielisko_zamek" ref="zlotnik_1_exit"/>
+		</portal>
+		<portal x="16" y="46" ref="zlotnik_2_enterance">
+			<destination zone="1_koscielisko_zamek" ref="zlotnik_2_exit"/>
+		</portal>
+	</zone>
+
+	<!-- house_baca -->
+	<zone name="int_koscielisko_house" file="interiors/koscielisko/baca_house.tmx">
+		<configurator class-name="games.stendhal.server.maps.koscielisko.house.GazdzinaMaryskaNPC"/>
+		<portal x="25" y="33" ref="exit_koscielisko_house">
+			<destination zone="0_koscielisko_e" ref="enterance_koscielisko_house"/>
+		</portal>
+	</zone>
+
+	<!-- Level -1 -->
+
+	<zone name="-1_koscielisko_kopalnia" level="-1" x="513440" y="18048" file="Level -1/koscielisko/kopalnia.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="20" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+		</entity>
+		<entity x="34" y="40">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+		</entity>
+		<entity x="61" y="17">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+		</entity>
+		<entity x="40" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+		</entity>
+		<entity x="56" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+		</entity>
+		<entity x="4" y="49">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceAmetyst"/>
+		</entity>
+		<entity x="25" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCarbuncle"/>
+		</entity>
+		<entity x="54" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceEmerald"/>
+		</entity>
+		<entity x="60" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceEmerald"/>
+		</entity>
+		<entity x="42" y="24">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceGold"/>
+		</entity>
+		<entity x="47" y="59">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceIron"/>
+		</entity>
+		<entity x="39" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceIron"/>
+		</entity>
+		<entity x="54" y="58">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceMithril"/>
+		</entity>
+		<entity x="61" y="37">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceObsidian"/>
+		</entity>
+		<entity x="6" y="60">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSapphire"/>
+		</entity>
+		<entity x="60" y="58">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSilver"/>
+		</entity>
+		<entity x="14" y="53">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="28" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+
+		<portal x="0" y="25" ref="do_tunelu">
+			<destination zone="int_koscielisko_tunel_zrc" ref="do_kopalni"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
+				<parameter name="key">lina</parameter>
+				<parameter name="rejected">Potrzebujesz line żeby wejść.</parameter>
+			</implementation>
+		</portal>
+	</zone>
+	
+	<!-- koscielisko_coalmine -->
+	<zone name="-1_koscielisko_coalmine" level="-1" x="513696" y="18048" file="Level -1/koscielisko/coalmine.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark2</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="61" y="22">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="63" y="22">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="50" y="106">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="34" y="118">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="14" y="106">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="25" y="91">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="9" y="78">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="36" y="46">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="17" y="6">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="56" y="7">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="79" y="13">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="99" y="68">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="124" y="53">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="114" y="42">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="116" y="108">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="112" y="126">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		<entity x="92" y="102">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.useable.CoalSource" />
+		</entity>
+		
+
+		<portal x="65" y="85" ref="coalmine_-1_exit">
+			<destination zone="int_koscielisko_minehouse" ref="coalmine_-1_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- -1_koscielisko_cave -->
+	<zone name="-1_koscielisko_cave" level="-1" x="513696" y="18048" file="Level -1/koscielisko/-1_cave.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">main-theme</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="57" y="19" ref="entrance_cave-1_exit">
+			<destination zone="0_koscielisko_nw" ref="cave-1_entrance"/>
+		</portal>
+		<portal x="42" y="3" ref="cave-2_entrance">
+			<destination zone="-2_koscielisko_cave" ref="entrance_cave-2_exit"/>
+		</portal>
+	</zone>
+
+	<!-- Level -2 -->
+	
+	<!-- -2_koscielisko_cave -->
+	<zone name="-2_koscielisko_cave" level="-1" x="513696" y="18048" file="Level -2/koscielisko/-2_cave.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">main-theme</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="29" y="56" ref="entrance_cave-2_exit">
+			<destination zone="-1_koscielisko_cave" ref="cave-2_entrance"/>
+		</portal>
+		<portal x="26" y="8" ref="cave-3_entrance">
+			<destination zone="-3_koscielisko_cave" ref="entrance_cave-3_exit"/>
+		</portal>
+	</zone>
+
+	<!-- Level -3 -->
+	
+	<zone name="-3_koscielisko_cave" level="-1" x="513696" y="18048" file="Level -3/koscielisko/-3_cave.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.cave.Skille50NPC"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">main-theme</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="53" y="56" ref="entrance_cave-3_exit">
+			<destination zone="-2_koscielisko_cave" ref="cave-3_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Level -4 -->
+
+	<!-- Level -5 -->
+
+	<!-- Level -6 -->
+
+	<!-- Level -7 -->
+
+	<!-- Level 1 -->
+
+	<!-- koscielisko_zamek -->
+	<zone name="1_koscielisko_zamek" level="1" x="513440" y="18048" file="Level 1/koscielisko/zamek_zrc.tmx">
+		<configurator class-name="games.stendhal.server.maps.koscielisko.zrc.EdgardNPC"/>
+		<configurator class-name="games.stendhal.server.maps.koscielisko.zrc.ZakonnikNPC"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="41" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="40" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">1</parameter>
+				<parameter name="height">2</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="44" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">4</parameter>
+				<parameter name="height">2</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="44" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">2</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="39" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">8</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="33" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">8</parameter>
+				<parameter name="height">8</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="36" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="42" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">3</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="30" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">5</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="29" y="20">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">7</parameter>
+				<parameter name="height">5</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="36" y="20">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">4</parameter>
+				<parameter name="height">2</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+		<entity x="28" y="23">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">1</parameter>
+				<parameter name="height">2</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Woda zródlana</attribute>
+		</entity>
+
+		<portal x="43" y="71" ref="zlotnik_1_exit">
+			<destination zone="int_koscielisko_goldsmith" ref="zlotnik_1_enterance"/>
+		</portal>
+		<portal x="42" y="72" ref="zlotnik_2_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="36" y="41" ref="wejscie_lewo">
+			<destination zone="1_koscielisko_zamek" ref="wyjscie_lewo"/>
+		</portal>
+		<portal x="124" y="84" ref="most_an">
+			<destination zone="1_koscielisko_zamek" ref="most_aus"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="124" y="83" ref="most_aus">
+			<destination zone="1_koscielisko_zamek" ref="most_an"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="86" y="41" ref="wejscie_prawo">
+			<destination zone="1_koscielisko_zamek" ref="wyjscie_prawo"/>
+		</portal>
+		<portal x="35" y="35" ref="lewa_wieza_an">
+			<destination zone="1_koscielisko_zamek" ref="lewa_wieza_aus"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="85" y="35" ref="wieza_prawa_an">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_aus"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="87" y="35" ref="wieza_prawa_rein">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_raus"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="36" y="39" ref="wyjscie_lewo">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_lewo"/>
+		</portal>
+		<portal x="33" y="35" ref="lewa_wieza_aus">
+			<destination zone="1_koscielisko_zamek" ref="lewa_wieza_an"/>
+		</portal>
+		<portal x="83" y="35" ref="wieza_prawa_aus">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_an"/>
+		</portal>
+		<portal x="89" y="35" ref="wieza_prawa_raus">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_rein"/>
+		</portal>
+		<portal x="86" y="39" ref="wyjscie_prawo">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_prawo"/>
+		</portal>
+	</zone>
+
+	<!-- koscielisko_podzamcze_zrc -->
+	<zone name="1_koscielisko_podzamcze_zrc" level="1" x="513440" y="18176" file="Level 1/koscielisko/podzamcze_zrc.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="127">
+			<implementation class-name="games.stendhal.server.maps.koscielisko.zrc.CienNPC">
+				<parameter name="name">Cień</parameter>
+			</implementation>
+			<attribute name="class">transparentnpc</attribute>
+		</entity>
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Znalazłeś się na ziemiach #'Zakonu Rycerzy Cienia'.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="61" y="44" ref="2most">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="brama_2exit"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
+				<parameter name="key">klucz do bram Zakonu</parameter>
+				<parameter name="rejected">Nie wejdziesz na teren #'Zakonu Rycerzy Cienia' dopóki nie porozmawiasz z Cieniem i nie spełnisz jego proźby.</parameter>
+			</implementation>
+		</portal>
+		<portal x="61" y="38" ref="brama_2exit">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="2most"/>
+		</portal>
+		<portal x="57" y="38" ref="mur_etrance">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="mur_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="55" y="36" ref="mur_exit">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="mur_etrance"/>
+		</portal>
+		<portal x="60" y="38" ref="brama_1exit">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="1most"/>
+		</portal>
+		<portal x="60" y="46" ref="1most">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="43" y="116" ref="wejscie_las">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="wyjscie_las"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="34" y="110" ref="wyjscie_las">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="obok_lasu"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="48" y="125" ref="obok_lasu">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="92" y="127" ref="exit_w1">
+			<destination zone="int_koscielisko_wawoz_zrc" ref="enter_p1"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="93" y="127" ref="exit_w2">
+			<destination zone="int_koscielisko_wawoz_zrc" ref="enter_p2"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="94" y="127" ref="exit_w3">
+			<destination zone="int_koscielisko_wawoz_zrc" ref="enter_p3"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="95" y="127" ref="exit_w4">
+			<destination zone="int_koscielisko_wawoz_zrc" ref="enter_p4"/>
+			<attribute name="hidden"/>
+		</portal>
+	</zone>
+
+	<!-- Level 2 -->
+
+	<!-- Level 3 -->
+
+	<!-- Level 4 -->
+
+	<!-- Level 5 -->
+
+	<!-- Level 6 -->
+
+</zones>

@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: skrzaty -->
+	<creature name="skrzat leśny">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny" tileid="pol_skrzaty_lesne.png:0"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="34"/>
+			<def value="6"/>
+			<hp value="36"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="50"/>
+		<respawn value="901"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="sok z chmielu" quantity="[1,1]" probability="60.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny wojownik">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_wojownik" tileid="pol_skrzaty_lesne.png:1"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="48"/>
+			<def value="8"/>
+			<hp value="50"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="7"/>
+		<experience value="70"/>
+		<respawn value="905"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="miód pitny" quantity="[1,1]" probability="50.0"/>
+			<item value="opieńka miodowa" quantity="[1,5]" probability="50.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny bohater">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_bohater" tileid="pol_skrzaty_lesne.png:2"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="61"/>
+			<def value="10"/>
+			<hp value="65"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="9"/>
+		<experience value="90"/>
+		<respawn value="910"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="miód pitny" quantity="[1,1]" probability="75.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny komandor">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_komandor" tileid="pol_skrzaty_lesne.png:3"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="75"/>
+			<def value="12"/>
+			<hp value="79"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="11"/>
+		<experience value="110"/>
+		<respawn value="915"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="miód pitny" quantity="[1,1]" probability="90.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny lider">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_lider" tileid="pol_skrzaty_lesne.png:4"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="88"/>
+			<def value="13"/>
+			<hp value="94"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="13"/>
+		<experience value="196"/>
+		<respawn value="922"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="miód pitny" quantity="[1,1]" probability="99.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny starszy">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy" tileid="pol_skrzaty_lesne.png:5"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="102"/>
+			<def value="15"/>
+			<hp value="108"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="259"/>
+		<respawn value="931"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="żyntyca" quantity="[1,1]" probability="50.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny starszy komandor">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_komandor" tileid="pol_skrzaty_lesne.png:6"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="116"/>
+			<def value="16"/>
+			<hp value="122"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="17"/>
+		<experience value="329"/>
+		<respawn value="941"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="żyntyca" quantity="[1,1]" probability="75.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny starszy wojownik">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_wojownik" tileid="pol_skrzaty_lesne.png:7"/>
+		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="129"/>
+			<def value="18"/>
+			<hp value="137"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="19"/>
+		<experience value="407"/>
+		<respawn value="953"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="żyntyca" quantity="[1,1]" probability="99.0"/>
+			<item value="miód pitny" quantity="[1,1]" probability="99.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: skrzaty -->
+	
+	<!-- START: wilkolaki -->
+	<creature name="wilkołak żołdak">
+		<type class="pol/wilkolaki" subclass="wilkolak_zoldak" tileid="pol_wilkolaki.png:0"/>
+		<description>Oto wilkołak żołdak. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1081"/>
+			<def value="60"/>
+			<hp value="1145"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="159"/>
+		<experience value="26792"/>
+		<respawn value="5110"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="1.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak wojak">
+		<type class="pol/wilkolaki" subclass="wilkolak_wojak" tileid="pol_wilkolaki.png:1"/>
+		<description>Oto wilkołak wojak. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1095"/>
+			<def value="60"/>
+			<hp value="1159"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="161"/>
+		<experience value="27453"/>
+		<respawn value="7510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="20.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="10.0"/>
+			<item value="miecz cieni" quantity="[1,1]" probability="7.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak łucznik">
+		<type class="pol/wilkolaki" subclass="wilkolak_lucznik" tileid="pol_wilkolaki.png:2"/>
+		<description>Oto wilkołak łucznik. Strzeż się go w księżycową noc, gdy chowa się pośród drzew.</description>
+		<attributes>
+			<atk value="1027"/>
+			<def value="58"/>
+			<hp value="1087"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="151"/>
+		<experience value="24226"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[129,329]" probability="90.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="25.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="15.0"/>
+			<item value="klejony łuk" quantity="[1,1]" probability="7.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak obrońca">
+		<type class="pol/wilkolaki" subclass="wilkolak_lider" tileid="pol_wilkolaki.png:3"/>
+		<description>Oto wilkołak obrońca. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="959"/>
+			<def value="56"/>
+			<hp value="1015"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="141"/>
+		<experience value="21198"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="2.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak zwiadowca">
+		<type class="pol/wilkolaki" subclass="wilkolak_zwiadowca" tileid="pol_wilkolaki.png:4"/>
+		<description>Oto wilkołak zwiadowca. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1163"/>
+			<def value="62"/>
+			<hp value="1231"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="171"/>
+		<experience value="30881"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="maczeta" quantity="[1,1]" probability="22.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak szaman">
+		<type class="pol/wilkolaki" subclass="wilkolak_szaman" tileid="pol_wilkolaki.png:5"/>
+		<description>Oto wilkołak szaman. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1163"/>
+			<def value="62"/>
+			<hp value="1231"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="171"/>
+		<experience value="30881"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[9,29]" probability="100.0"/>
+			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="5.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
+			<item value="magia mroku" quantity="[1,45]" probability="47.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
+			<item value="zwój czyszczący" quantity="[1,2]" probability="1.25"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="10,60"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="księżniczka wilkołaków">
+		<type class="pol/wilkolaki" subclass="wilkolak_ksiezniczka" tileid="pol_wilkolaki.png:6"/>
+		<description>Oto księżniczka wilkołaków. Strzeż się jej w księżycową noc.</description>
+		<attributes>
+			<atk value="1299"/>
+			<def value="66"/>
+			<hp value="1375"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="191"/>
+		<experience value="38335"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[9,329]" probability="100.0"/>
+			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="15.0"/>
+			<item value="kryształ szafiru" quantity="[1,1]" probability="31.0"/>
+			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
+			<item value="magia mroku" quantity="[1,15]" probability="33.33"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
+			<item value="zwój czyszczący" quantity="[1,1]" probability="1.25"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="10,60"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="książę wilkołaków">
+		<type class="pol/wilkolaki" subclass="wilkolak_ksiaze" tileid="pol_wilkolaki.png:7"/>
+		<description>Oto książę wilkołaków. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1353"/>
+			<def value="68"/>
+			<hp value="1433"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="199"/>
+		<experience value="69341"/>
+		<respawn value="9510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[9,329]" probability="100.0"/>
+			<item value="kryształ szafiru" quantity="[1,1]" probability="11.0"/>
+			<item value="złota klinga" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,7]" probability="17.0"/>
+			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.25"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="10,60"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: wilkolaki -->
+
+	<!-- START: zjawy -->
+	<creature name="szkielet uzbrojony">
+		<type class="pol/zjawy" subclass="szkielet_waleczny" tileid="pol_zjawy.png:0"/>
+		<description/>
+		<attributes>
+			<atk value="156"/>
+			<def value="20"/>
+			<hp value="166"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="23"/>
+		<experience value="587"/>
+		<respawn value="980"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,29]" probability="100.0"/>
+			<item value="złota kolczuga" quantity="[1,1]" probability="1.0"/>
+			<item value="zardzewiała zbroja płytowa" quantity="[1,1]" probability="15.5"/>
+			<item value="kość dla psa" quantity="[1,1]" probability="20.0"/>
+			<item value="tarcza z czaszką" quantity="[1,1]" probability="0.12"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Powiadam ci, nie zabijesz w nas ducha!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="boginka">
+		<type class="pol/zjawy" subclass="boginka" tileid="pol_zjawy.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="891"/>
+			<def value="53"/>
+			<hp value="943"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="131"/>
+		<experience value="18371"/>
+		<respawn value="1999"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="rękawice cieni" quantity="[1,1]" probability="0.00025"/>
+			<item value="pluszowy miś" quantity="[1,1]" probability="25.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="strzyga polna">
+		<type class="pol/zjawy" subclass="strzyga_polna" tileid="pol_zjawy.png:2"/>
+		<description/>
+		<attributes>
+			<atk value="156"/>
+			<def value="20"/>
+			<hp value="166"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="23"/>
+		<experience value="587"/>
+		<respawn value="1410"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,20]" probability="100.0"/>
+			<item value="zbroja światła" quantity="[1,1]" probability="0.005"/>
+			<item value="lazurowe rękawice" quantity="[1,1]" probability="0.0025"/>
+			<item value="płaszcz elficki" quantity="[1,1]" probability="0.5"/>
+			<item value="półtorak" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<sound value="evillaugh-5"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="strzyga leśna">
+		<type class="pol/zjawy" subclass="strzyga_lesna" tileid="pol_zjawy.png:3"/>
+		<description/>
+		<attributes>
+			<atk value="224"/>
+			<def value="25"/>
+			<hp value="238"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="33"/>
+		<experience value="1171"/>
+		<respawn value="1141"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,50]" probability="100.0"/>
+			<item value="polska tarcza kolcza" quantity="[1,1]" probability="1.5"/>
+			<item value="polska tarcza ciężka" quantity="[1,1]" probability="0.01"/>
+			<item value="polska tarcza lekka" quantity="[1,1]" probability="0.05"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="1.0"/>
+			<item value="polska tarcza drewniana" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<sound value="evillaugh-5"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="leśna zjawa">
+		<type class="pol/zjawy" subclass="lesna_zjawa" tileid="pol_zjawy.png:4"/>
+		<description/>
+		<attributes>
+			<atk value="755"/>
+			<def value="49"/>
+			<hp value="799"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+			<resistance value="50"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="111"/>
+		<experience value="13316"/>
+		<respawn value="666"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,1]" probability="100.0"/>
+			<item value="żelazo" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Zbłądziłeś rycerzu? Wyprowadzę cię stąd..."/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zjawa">
+		<type class="pol/zjawy" subclass="zjawa_czarna" tileid="pol_zjawy.png:5"/>
+		<description/>
+		<attributes>
+			<atk value="422"/>
+			<def value="36"/>
+			<hp value="446"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="50"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="62"/>
+		<experience value="3909"/>
+		<respawn value="2520"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="czarny sztylet" quantity="[1,1]" probability="0.0025"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Przebacz Brunhildo!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="zjawa Brunhildy">
+		<type class="pol/zjawy" subclass="zjawa_brunhilda" tileid="pol_zjawy.png:6"/>
+		<description/>
+		<attributes>
+			<atk value="687"/>
+			<def value="46"/>
+			<hp value="1367"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="50"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="101"/>
+		<experience value="11295"/>
+		<respawn value="2686"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,80]" probability="100.0"/>
+			<item value="korale" quantity="[1,1]" probability="12.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie przebaczę!"/>
+				<noise state="idle follow fight" value="Nigdy nie przebaczę!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="kostucha">
+		<type class="pol/zjawy" subclass="zai_kostucha" tileid="pol_zjawy.png:7"/>
+		<description/>
+		<attributes>
+			<atk value="2601"/>
+			<def value="99"/>
+			<hp value="2448"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="340"/>
+		<experience value="224034"/>
+		<respawn value="18600"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,999]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,5]" probability="30.0"/>
+			<item value="czarne rękawice" quantity="[1,1]" probability="0.0005"/>
+			<item value="płaszcz z otchłani" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kostucha różowa">
+		<type class="pol/zjawy" subclass="zai_kostucha_rozowa" tileid="pol_zjawy.png:8"/>
+		<description/>
+		<attributes>
+			<atk value="2907"/>
+			<def value="107"/>
+			<hp value="2736"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="380"/>
+		<experience value="279349"/>
+		<respawn value="19600"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,666]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="płaszcz licha" quantity="[1,1]" probability="0.5"/>
+			<item value="tarcza licha" quantity="[1,1]" probability="2.5"/>
+			<item value="pordzewiała kosa" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Always look for the bright side of... death!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="żywioł nicości">
+		<type class="pol/zjawy" subclass="shadow_elemental" tileid="pol_zjawy.png:9"/>
+		<description/>
+		<attributes>
+			<atk value="374"/>
+			<def value="34"/>
+			<hp value="396"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="75"/>
+		</attributes>
+		<level value="55"/>
+		<experience value="3107"/>
+		<respawn value="1960"/>
+		<corpse name="other"/>
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,9]" probability="20.0"/>
+			<item value="miecz cieni" quantity="[1,1]" probability="1.1"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: zjawy -->
+
+	<!-- START: czart -->
+	<creature name="belzebub">
+		<type class="pol/czarty" subclass="czart_belzebub" tileid="pol_czarty.png:0"/>
+		<description/>
+		<attributes>
+			<atk value="1020"/>
+			<def value="58"/>
+			<hp value="1080"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="150"/>
+		<experience value="23914"/>
+		<respawn value="4321"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[99,599]" probability="100.0"/>
+			<item value="magia płomieni" quantity="[22,88]" probability="55.0"/>
+			<item value="bełt płonący" quantity="[1,19]" probability="100.0"/>
+			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.1"/>
+			<item value="czarne rękawice" quantity="[1,1]" probability="0.001"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Przekroczyłeś wrota piekieł!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zapomniany diabeł">
+		<type class="pol/czarty" subclass="czart_bezimienny" tileid="pol_czarty.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="816"/>
+			<def value="51"/>
+			<hp value="864"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="120"/>
+		<experience value="15492"/>
+		<respawn value="3456"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1410,1410]" probability="1.0"/>
+			<item value="ognista tarcza" quantity="[1,1]" probability="5.0"/>
+			<item value="magia deszczu" quantity="[22,88]" probability="20.0"/>
+			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.05"/>
+			<item value="lazurowe rękawice" quantity="[1,1]" probability="0.01"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie wrócę do piekła! Nie!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="lucyfer">
+		<type class="pol/czarty" subclass="czart_lucyfer" tileid="pol_czarty.png:2"/>
+		<description/>
+		<attributes>
+			<atk value="1288"/>
+			<def value="65"/>
+			<hp value="1152"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="160"/>
+		<experience value="31730"/>
+		<respawn value="4321"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[99,299]" probability="100.0"/>
+			<item value="magia płomieni" quantity="[44,222]" probability="30.0"/>
+			<item value="bełt płonący" quantity="[1,14]" probability="70.0"/>
+			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.1"/>
+			<item value="karmazynowe rękawice" quantity="[1,1]" probability="0.01"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Krwią podpisałeś cyrograf! Pożegnaj się z bliskimi!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="mefisto">
+		<type class="pol/czarty" subclass="czart_mefisto" tileid="pol_czarty.png:3"/>
+		<description/>
+		<attributes>
+			<atk value="1152"/>
+			<def value="62"/>
+			<hp value="1008"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="140"/>
+		<experience value="24969"/>
+		<respawn value="4321"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[11,111]" probability="100.0"/>
+			<item value="ognista tarcza" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz ognisty" quantity="[1,1]" probability="2.0"/>
+			<item value="magia płomieni" quantity="[22,44]" probability="15.0"/>
+			<item value="bełt płonący" quantity="[1,10]" probability="10.0"/>
+			<item value="złote rękawice" quantity="[1,1]" probability="0.001"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Za twe grzechy za twe zbytki, chodź do piekła boś ty brzydki!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czart starszy">
+		<type class="pol/czarty" subclass="czart_starszy" tileid="pol_czarty.png:4"/>
+		<description/>
+		<attributes>
+			<atk value="755"/>
+			<def value="49"/>
+			<hp value="799"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="111"/>
+		<experience value="13316"/>
+		<respawn value="1987"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[7,53]" probability="100.0"/>
+			<item value="magia płomieni" quantity="[44,99]" probability="20.0"/>
+			<item value="karmazynowa tarcza" quantity="[1,1]" probability="0.5"/>
+			<item value="karmazynowy hełm" quantity="[1,1]" probability="0.005"/>
+			<item value="piekielny sztylet" quantity="[1,1]" probability="0.0001"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: czart -->
+</creatures>

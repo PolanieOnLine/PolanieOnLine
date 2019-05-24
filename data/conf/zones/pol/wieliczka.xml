@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom.
+		** Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<!-- wieliczka_nw -->
+	<zone name="0_wieliczka_nw" level="0" x="513952" y="18560" file="Level 0/wieliczka/wieliczka_nw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_n -->
+	<zone name="0_wieliczka_n" level="0" x="514080" y="18560" file="Level 0/wieliczka/wieliczka_n.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_ne -->
+	<zone name="0_wieliczka_ne" level="0" x="514208" y="18560" file="Level 0/wieliczka/wieliczka_ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_ne2 -->
+	<zone name="0_wieliczka_ne2" level="0" x="514336" y="18560" file="Level 0/wieliczka/wieliczka_ne2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_w -->
+	<zone name="0_wieliczka_w" level="0" x="513952" y="18688" file="Level 0/wieliczka/wieliczka_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_c -->
+	<zone name="0_wieliczka_c" level="0" x="514080" y="18688" file="Level 0/wieliczka/wieliczka_c.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="31" y="77" ref="mines_1_entrance">
+			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_1_exit"/>
+		</portal>
+		<portal x="32" y="77" ref="mines_2_entrance">
+			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_2_exit"/>
+		</portal>
+
+		<portal x="65" y="85" ref="wieliczka_restart_life">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<!-- wieliczka_e -->
+	<zone name="0_wieliczka_e" level="0" x="514208" y="18688" file="Level 0/wieliczka/wieliczka_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_e2 -->
+	<zone name="0_wieliczka_e2" level="0" x="514336" y="18688" file="Level 0/wieliczka/wieliczka_e2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_sw -->
+	<zone name="0_wieliczka_sw" level="0" x="513952" y="18816" file="Level 0/wieliczka/wieliczka_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_s -->
+	<zone name="0_wieliczka_s" level="0" x="514080" y="18816" file="Level 0/wieliczka/wieliczka_s.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_se -->
+	<zone name="0_wieliczka_se" level="0" x="514208" y="18816" file="Level 0/wieliczka/wieliczka_se.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- wieliczka_se2 -->
+	<zone name="0_wieliczka_se2" level="0" x="514336" y="18816" file="Level 0/wieliczka/wieliczka_se2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- interiors -->
+
+	<!-- Level -1 -->
+
+	<!-- wieliczka_c -->
+	<zone name="-1_wieliczka_salt_mines_w" level="-1" x="513952" y="18688" file="Level -1/wieliczka/salt_mines_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="29" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="12" y="122">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="35" y="124">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="96" y="123">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="76" y="58">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+		<entity x="87" y="58">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+		<entity x="96" y="58">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+		<entity x="63" y="123">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+		<entity x="49" y="121">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+		<entity x="88" y="119">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+
+		<portal x="100" y="43" ref="secret_1_entrance">
+			<destination zone="-1_wieliczka_salt_mines_w" ref="secret_1_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="100" y="39" ref="secret_1_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="100" y="40" ref="secret_2_entrance">
+			<destination zone="-1_wieliczka_salt_mines_w" ref="secret_2_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="80" y="56" ref="secret_2_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_c" level="-1" x="514080" y="18688" file="Level -1/wieliczka/salt_mines_c.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="31" y="79" ref="mines_1_exit">
+			<destination zone="0_wieliczka_c" ref="mines_1_entrance"/>
+		</portal>
+		<portal x="31" y="80" ref="mines_2_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_e" level="-1" x="514208" y="18688" file="Level -1/wieliczka/salt_mines_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_e2" level="-1" x="514336" y="18688" file="Level -1/wieliczka/salt_mines_e2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.mines.Skille550NPC"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_e3" level="-1" x="514464" y="18688" file="Level -1/wieliczka/salt_mines_e3.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_sw" level="-1" x="513952" y="18816" file="Level -1/wieliczka/salt_mines_sw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_s" level="-1" x="514080" y="18816" file="Level -1/wieliczka/salt_mines_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">sewers</parameter>
+				<parameter name="volume">70</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="50" y="47">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wave-11, water-2</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="60" y="42">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wave-11, water-2</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<!-- 1st healing spring -->
+		<entity x="59" y="40">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">1</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<entity x="58" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">4</parameter>
+				<parameter name="height">4</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<!-- 2nd healing spring -->
+		<entity x="48" y="42">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">4</parameter>
+				<parameter name="height">1</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<entity x="46" y="44">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">1</parameter>
+				<parameter name="height">6</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<entity x="53" y="44">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">1</parameter>
+				<parameter name="height">7</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<entity x="47" y="51">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">6</parameter>
+				<parameter name="height">1</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<entity x="47" y="43">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.LifeHealArea">
+				<parameter name="width">6</parameter>
+				<parameter name="height">9</parameter>
+				<parameter name="interval">20</parameter>
+				<parameter name="damage">1</parameter>
+				<parameter name="probability">100</parameter>
+				<parameter name="players-only">true</parameter>
+			</implementation>
+			<attribute name="name">Lecznicza solanka</attribute>
+		</entity>
+		<entity x="11" y="35">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="20" y="43">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+		</entity>
+		<entity x="9" y="44">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+		<entity x="21" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_se" level="-1" x="514208" y="18816" file="Level -1/wieliczka/salt_mines_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_se2" level="-1" x="514336" y="18816" file="Level -1/wieliczka/salt_mines_se2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_salt_mines_se3" level="-1" x="514464" y="18816" file="Level -1/wieliczka/salt_mines_se3.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">80</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- Level -2 -->
+
+	<!-- Level -3 -->
+
+	<!-- Level -4 -->
+
+	<!-- Level -5 -->
+
+	<!-- Level -6 -->
+
+	<!-- Level -7 -->
+
+	<!-- Level 1 -->
+
+	<!-- Level 2 -->
+
+	<!-- Level 3 -->
+
+	<!-- Level 4 -->
+
+	<!-- Level 5 -->
+
+	<!-- Level 6 -->
+</zones>

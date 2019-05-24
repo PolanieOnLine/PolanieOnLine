@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<!-- capture-the-flag stuff -->
+
+	<!-- Remove lines with "*****************" to re-enable -->
+	<!-- *************************
+	<item name="flaga">
+		<type class="token" subclass="flag" tileid="-1"/>
+		<description>Oto flaga.</description>
+
+		<implementation class-name="games.stendhal.server.entity.item.CaptureTheFlagFlag"/>
+
+		<attributes>
+		</attributes>
+
+		<weight value="1.0"/>
+		<value	value="1"/>
+
+		<equipable>
+			<slot name="rhand"/>
+			<slot name="lhand"/>
+			<slot name="ground"/>
+			*************** -->
+			<!-- i think that hand-only is a good policy -->
+			<!-- <slot name="content"/> -->
+			<!-- <slot name="bag"/> -->
+<!-- **************************************
+		</equipable>
+	</item>
+
+****************** -->
+	<!-- weapons experiments -->
+
+	<!-- TODO: maybe have a pretty small max quanity - 50?	100?	 to force players to go back, or somehow recharge --> 
+	<!-- ****************************
+	<item name="łuk zf">
+		<type class="ranged" subclass="wooden_bow" tileid="-1"/>
+		<description>Oto łuk zf stworzony specjalnie do użytku w grze Capture the Flag. Z tym w dłoni i CTF arrow w drugiej będziesz mógł pogrzebać lub spowolnić wojownika.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<range value="3"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="17280"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+
+	<item name="strzała pogrzebania">
+		<type class="ammunition" subclass="fumble_arrow" tileid="-1"/>
+		<description>Oto strzała pogrzebania. Zaopatrzony w strzały w jednej dłoni i łuk w drugiej możesz atakować z dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk value="-1"/>
+			<range value="2"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="10"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="strzała spowolnienia">
+		<type class="ammunition" subclass="slowdown_arrow" tileid="-1"/>
+		<description>Oto strzała spowolnienia. Zaopatrzony w strzały w jednej dłoni i łuk w drugiej możesz atakować z dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk value="-1"/>
+			<range value="2"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="10"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="strzała przyspieszenia">
+		<type class="ammunition" subclass="speedup_arrow" tileid="-1"/>
+		<description>Oto strzała przyspieszenia. Zaopatrzony w strzały w jednej dłoni i łuk w drugiej możesz atakować z dystansu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk value="-1"/>
+			<range value="2"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="10"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="śnieżka pogrzebania">
+		<type class="missile" subclass="snowballs" tileid="-1"/>
+		<description>Oto śnieżka pogrzebania. Zaopatrzony w to możesz wytrącić flagę innej osobie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<attributes>
+			<atk value="-1"/>
+			<range value="3"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="80"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="śnieżka spowolnienia">
+		<type class="missile" subclass="snowballs" tileid="-1"/>
+		<description>Oto śnieżka spowolnienia. Zaopatrzony w to możesz spróbować spowolnić wojownika ZF.</description>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<attributes>
+			<atk value="-1"/>
+			<range value="3"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="80"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+************************* -->
+</items>

@@ -1,0 +1,1688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom.
+		** Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<!-- krakow_nw -->
+	<zone name="0_krakow_nw" level="0" x="513312" y="17664" file="Level 0/krakow/krakow_nw.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.EdragonNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.KajetanNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_n -->
+	<zone name="0_krakow_n" level="0" x="513440" y="17664" file="Level 0/krakow/krakow_n.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.barbakan.BarbakanGuardianNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="72" y="31">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">straznicy</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="condition">new QuestCompletedCondition("krolewski_plaszcz")</parameter>
+				<parameter name="autoclose">1</parameter>
+				<parameter name="message">Strażnicy Cię odepchneli od bramy.</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_ne -->
+	<zone name="0_krakow_ne" level="0" x="513568" y="17664" file="Level 0/krakow/krakow_ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_w -->
+	<zone name="0_krakow_w" level="0" x="513312" y="17792" file="Level 0/krakow/krakow_w.tmx">
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.KidsNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.AmandaNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_rynek -->
+	<zone name="0_krakow_rynek" level="0" x="513440" y="17792" file="Level 0/krakow/krakow_rynek.tmx">
+		<!-- PET -->
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.PuppyNPC"/>
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.krakow.marketplace.LajkonikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.blacksmith.BlacksmithNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.vineyard.WinicjuszNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="52" y="62">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BellSoundSource">
+			</implementation>
+		</entity>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="17" y="87">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="104" y="30">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">churchbell</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">90</parameter>
+				<parameter name="radius">90</parameter>
+				<parameter name="volume">120</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="21" y="87">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">8</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="78" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-klawesyn</parameter>
+				<parameter name="volume">25</parameter>
+				<parameter name="radius">8</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="64" y="63" ref="sukiennice_1_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_1_exit"/>
+		</portal>
+		<portal x="64" y="64" ref="sukiennice_2_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_2_exit"/>
+		</portal>
+		<portal x="64" y="65" ref="sukiennice_3_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_3_exit"/>
+		</portal>
+		<portal x="64" y="66" ref="sukiennice_4_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_4_exit"/>
+		</portal>
+		<portal x="76" y="63" ref="sukiennice_5_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_5_exit"/>
+		</portal>
+		<portal x="76" y="64" ref="sukiennice_6_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_6_exit"/>
+		</portal>
+		<portal x="76" y="65" ref="sukiennice_7_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_7_exit"/>
+		</portal>
+		<portal x="76" y="66" ref="sukiennice_8_entrance">
+			<destination zone="int_krakow_sukiennice" ref="sukiennice_8_exit"/>
+		</portal>
+
+		<!-- Church -->
+		<portal x="104" y="47" ref="church_entrance">
+			<destination zone="int_krakow_church" ref="church_exit"/>
+		</portal>
+		<!-- Bank -->
+		<portal x="33" y="46" ref="bank1_entrance">
+			<destination zone="int_krakow_bank_0" ref="bank1_exit"/>
+		</portal>
+		<portal x="33" y="47" ref="bank2_entrance">
+			<destination zone="int_krakow_bank_0" ref="bank2_exit"/>
+		</portal>
+		<!-- Bakery -->
+		<portal x="112" y="63" ref="bakery_entrance">
+			<destination zone="int_krakow_bakery" ref="bakery_exit"/>
+		</portal>
+		<!-- Blacksmith -->
+		<portal x="27" y="93" ref="bs1_entrance">
+			<destination zone="int_krakow_blacksmith" ref="bs1_exit"/>
+		</portal>
+		<portal x="28" y="93" ref="bs2_entrance">
+			<destination zone="int_krakow_blacksmith" ref="bs2_exit"/>
+		</portal>
+		<!-- Tavern -->
+		<portal x="80" y="28" ref="tavern1_entrance">
+			<destination zone="int_krakow_tavern" ref="tavern1_exit"/>
+		</portal>
+		<portal x="75" y="28" ref="tavern2_entrance">
+			<destination zone="int_krakow_tavern" ref="tavern2_exit"/>
+		</portal>
+		<!-- Vineyard house -->
+		<portal x="21" y="121" ref="vyh_entrance">
+			<destination zone="int_krakow_vineyard_house_0" ref="vyh_exit"/>
+		</portal>
+
+		<!-- Poziom -1 - canals -->
+		<portal x="90" y="87" ref="canals_entrance">
+			<destination zone="-1_krakow_canals" ref="canals_exit"/>
+			<attribute name="face">up</attribute>
+		</portal>
+		<portal x="91" y="87" ref="canals_entrance">
+			<destination zone="-1_krakow_canals" ref="canals_exit"/>
+			<attribute name="face">up</attribute>
+		</portal>
+	</zone>
+
+	<!-- krakow_e -->
+	<zone name="0_krakow_e" level="0" x="513568" y="17792" file="Level 0/krakow/krakow_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+
+		<!-- Archeologist house -->
+		<portal x="18" y="42" ref="ah_entrance">
+			<destination zone="int_krakow_archeologist_house" ref="ah_exit"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_sw -->
+	<zone name="0_krakow_sw" level="0" x="513312" y="17920" file="Level 0/krakow/krakow_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_s -->
+	<zone name="0_krakow_s" level="0" x="513440" y="17920" file="Level 0/krakow/krakow_s.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_se -->
+	<zone name="0_krakow_se" level="0" x="513568" y="17920" file="Level 0/krakow/krakow_se.tmx">
+		<!-- PET -->
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.RabbitNPC"/>
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.FarmerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.AishaNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_wisla_nw -->
+	<zone name="0_krakow_wisla_nw" level="0" x="513312" y="18048" file="Level 0/krakow/krakow_wisla_nw.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.MysliwyNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="100" y="100" ref="krakow_wisla_nw_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_wawel_w -->
+	<zone name="0_krakow_wawel_w" level="0" x="513440" y="18048" file="Level 0/krakow/krakow_wawel_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="102" y="82">
+			<implementation class-name="games.stendhal.server.maps.krakow.wawel.StraznikNPC">
+				<parameter name="name">Strażnik</parameter>
+			</implementation>
+			<attribute name="class">transparentnpc</attribute>
+		</entity>
+
+		<portal x="96" y="80" ref="krakow_restart_life">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="102" y="81" ref="brama">
+			<destination zone="0_krakow_wawel_w" ref="brama_destination"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">brama_wawel</parameter>
+				<parameter name="rejected">Jeżeli strażnik zapyta cię czy chcesz wejść to powiedz #'tak'.</parameter>
+			</implementation>
+		</portal>
+
+		<entity x="35" y="33">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">gate</parameter>
+				<parameter name="orientation">v</parameter>
+				<parameter name="condition">new LevelGreaterThanCondition(99)</parameter>
+				<parameter name="autoclose">2</parameter>
+				<parameter name="message">Jesteś jeszcze zbyt słaby, aby móc przejść.</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="36" y="33">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="image">gate</parameter>
+				<parameter name="orientation">h</parameter>
+				<parameter name="condition">new LevelGreaterThanCondition(99)</parameter>
+				<parameter name="autoclose">2</parameter>
+				<parameter name="message">Jesteś jeszcze zbyt słaby, aby móc przejść.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="120" y="77" ref="hof_entrance">
+			<destination zone="int_krakow_halloffame" ref="hof_exit"/>
+		</portal>
+
+		<portal x="102" y="79" ref="brama_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="102" y="80" ref="brama_exit">
+			<destination zone="0_krakow_wawel_w" ref="brama_entrance"/>
+		</portal>
+		<portal x="103" y="81" ref="brama_entrance">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="89" y="70" ref="wawelski_entrance">
+			<destination zone="-1_krakow_cave" ref="wawelski_exit"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_wawel_e -->
+	<zone name="0_krakow_wawel_e" level="0" x="513568" y="18048" file="Level 0/krakow/krakow_wawel_e.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.wawel.KingKrakNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.TargonNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_wisla_w -->
+	<zone name="0_krakow_wisla_w" level="0" x="513312" y="18176" file="Level 0/krakow/krakow_wisla_w.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.ThomasNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="74" y="52" ref="fisher_hut_entrance">
+			<destination zone="int_krakow_fisher_hut" ref="fisher_hut_exit"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_wisla -->
+	<zone name="0_krakow_wisla" level="0" x="513440" y="18176" file="Level 0/krakow/krakow_wisla.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="60" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creak-1, treecreak-1, woodpecker-1</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="58" y="46">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="61" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="63" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="65" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="55" y="57">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="53" y="55">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="56" y="52">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+		<entity x="48" y="54">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
+				<parameter name="species">polano</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="63" y="51" ref="woodcutter_entrance">
+			<destination zone="int_krakow_woodcutter_hut" ref="woodcutter_exit"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_wisla_e -->
+	<zone name="0_krakow_wisla_e" level="0" x="513568" y="18176" file="Level 0/krakow/krakow_wisla_e.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.KacperNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.RybakNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.ship.FerryConveyerNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b, lark-1, lark-2, pol-seagull</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="40" y="80">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">40</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="105" y="9" ref="saddler_entrance">
+			<destination zone="int_krakow_saddler_house" ref="saddler_exit"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_wisla_sw -->
+	<zone name="0_krakow_wisla_sw" level="0" x="513312" y="18304" file="Level 0/krakow/krakow_wisla_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="min">15</parameter>
+				<parameter name="max">45</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+		<entity x="106" y="123">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Północ: Miasto Kraków
+Południe: Zakopane
+			</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+	</zone>
+
+	<!-- krakow_wisla_s -->
+	<zone name="0_krakow_wisla_s" level="0" x="513440" y="18304" file="Level 0/krakow/krakow_wisla_s.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.forest.WagabundusNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="min">15</parameter>
+				<parameter name="max">45</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_wisla_se -->
+	<zone name="0_krakow_wisla_se" level="0" x="513568" y="18304" file="Level 0/krakow/krakow_wisla_se.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+		<entity x="57" y="13">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">saur-4, saur-3</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="min">15</parameter>
+				<parameter name="max">45</parameter>
+				<parameter name="radius">64</parameter>
+			</implementation>
+		</entity>
+
+		<!--<portal x="57" y="13" ref="krakow_tunnel_1_entrance">
+			<destination zone="-2_dragon_cave" ref="tunnel_krakow_1_exit"/>
+		</portal>-->
+	</zone>
+
+	<!-- interiors -->
+	<!-- Bank 0 -->
+	<zone name="int_krakow_bank_0" file="interiors/krakow/bank_0.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="20" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+		<entity x="8" y="32">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+		<entity x="6" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+		<entity x="23" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="24" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="18" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="15" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="5" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="14" y="8" ref="bank_up_entrance">
+			<destination zone="int_krakow_bank_1" ref="bank_down_exit"/>
+		</portal>
+
+		<portal x="21" y="9" ref="upper_bank_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
+		<portal x="25" y="14" ref="bank1_exit">
+			<destination zone="0_krakow_rynek" ref="bank1_entrance"/>
+		</portal>
+		<portal x="25" y="15" ref="bank2_exit">
+			<destination zone="0_krakow_rynek" ref="bank2_entrance"/>
+		</portal>
+
+		<!-- Keep creatures from blocking trading area -->
+		<entity x="12" y="21">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.CreatureProtectionArea">
+				<parameter name="width">12</parameter>
+				<parameter name="height">22</parameter>
+				<parameter name="default">block</parameter>
+				<parameter name="rules"/>
+			</implementation>
+		</entity>
+
+		<!-- passages next to trading table now one player areas -->
+		<!-- LEFT -->
+		<entity x="13" y="24">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="32">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="40">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<!-- RIGHT -->
+		<entity x="20" y="24">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="32">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="40">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+
+		<!-- stoliki -->
+		<entity x="16" y="24">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="29">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="32">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="37">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="40">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="19" y="24">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="19" y="29">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="19" y="32">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="19" y="37">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="19" y="40">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+
+		<!-- stoły -->
+		<entity x="4" y="37">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół nakryty białym obrusem.</attribute>
+			<attribute name="width">7</attribute>
+			<attribute name="height">2</attribute>
+		</entity>
+		<entity x="3" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+		<entity x="3" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<!-- skrzynki -->
+		<entity x="16" y="25">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="33">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="25">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="33">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+	</zone>
+	<!-- Bank 1 -->
+	<zone name="int_krakow_bank_1" file="interiors/krakow/bank_1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="6" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />
+		</entity>
+		<!-- ticking clock sound effect -->
+		<entity x="6" y="7">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">clock-1</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">100</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="12" y="10">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+		<entity x="9" y="34">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="15" y="6" ref="bank_down_exit">
+			<destination zone="int_krakow_bank_0" ref="bank_up_entrance"/>
+		</portal>
+
+		<portal x="5" y="5" ref="upper_bank1_exit">
+			<destination zone="int_krakow_bank_0" ref="upper_bank_exit"/>
+		</portal>
+		<portal x="6" y="5" ref="upper_bank1_exit">
+			<destination zone="int_krakow_bank_0" ref="upper_bank_exit"/>
+		</portal>
+
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.NoLoginArea">
+				<parameter name="width">19</parameter>
+				<parameter name="height">44</parameter>
+				<parameter name="new-x">5</parameter>
+				<parameter name="new-y">3</parameter>
+			</implementation>
+		</entity>
+
+		<!-- Keep creatures from blocking trading area -->
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.CreatureProtectionArea">
+				<parameter name="width">19</parameter>
+				<parameter name="height">44</parameter>
+				<parameter name="default">block</parameter>
+				<parameter name="rules"/>
+			</implementation>
+		</entity>
+
+		<!-- passages next to trading table now one player areas -->
+		<!-- RIGHT -->
+		<entity x="13" y="16">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="34">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="40">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<!-- LEFT -->
+		<entity x="3" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="34">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="40">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">3</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+
+		<!-- stoliki -->
+		<entity x="2" y="22">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="2" y="28">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="2" y="34">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="2" y="40">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="16">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="22">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="28">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="34">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+		<entity x="16" y="40">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
+		</entity>
+
+		<!-- stoły -->
+		<entity x="4" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół nakryty białym obrusem.</attribute>
+			<attribute name="width">4</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+		<entity x="4" y="16">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół nakryty białym obrusem.</attribute>
+			<attribute name="width">4</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<!-- skrzynki -->
+		<entity x="2" y="23">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="2" y="35">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank</parameter>
+			</implementation>
+		</entity>
+		<entity x="2" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_nalwor</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="17">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<!-- <entity x="16" y="23">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_gdansk</parameter>
+			</implementation>
+		</entity> -->
+		<entity x="16" y="29">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">zaras_chest_ados</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="35">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_ados</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_fado</parameter>
+			</implementation>
+		</entity>
+	</zone>
+	<!-- Bakery -->
+	<zone name="int_krakow_bakery" file="interiors/krakow/bakery.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.bakery.EdnaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.bakery.LanoszNPC"/>
+
+		<entity x="16" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="26" y="14" ref="bakery_exit">
+			<destination zone="0_krakow_rynek" ref="bakery_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Blacksmith -->
+	<zone name="int_krakow_blacksmith" file="interiors/krakow/blacksmith.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.blacksmith.BlacksmithAssistNPC"/>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="11" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="11" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="15" y="14" ref="bs1_exit">
+			<destination zone="0_krakow_rynek" ref="bs1_entrance"/>
+		</portal>
+		<portal x="16" y="14" ref="bs2_exit">
+			<destination zone="0_krakow_rynek" ref="bs2_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Church -->
+	<zone name="int_krakow_church" file="interiors/krakow/church.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.church.HonoratNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.church.StJacekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.church.StKingaNPC"/>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">church</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="4" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="4" y="8">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="19" y="8">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="12" y="23" ref="church_exit">
+			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+		</portal>
+		<portal x="10" y="23" ref="church_exit">
+			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+		</portal>
+		<portal x="11" y="23" ref="church_exit">
+			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+		</portal>
+		<portal x="13" y="23" ref="church_exit">
+			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Tavern -->
+	<zone name="int_krakow_tavern" file="interiors/krakow/tavern.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.BarmankaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.KarczmarkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.MrManasNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.MerchandNPC"/>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-klawesyn</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="4" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buymerchand</parameter>
+				<parameter name="title">Sklep Merchanda (sprzedaż)</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Możesz kupić te rzeczy od Merchanda.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+		<entity x="5" y="22">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">sellmerchand</parameter>
+				<parameter name="title">Sklep Merchanda (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Merchandowi.</parameter>
+			</implementation>
+			<attribute name="class">book_red</attribute>
+		</entity>
+
+		<portal x="23" y="23" ref="tavern1_exit">
+			<destination zone="0_krakow_rynek" ref="tavern1_entrance"/>
+		</portal>
+		<portal x="13" y="23" ref="tavern2_exit">
+			<destination zone="0_krakow_rynek" ref="tavern2_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Vineyard house 0 -->
+	<zone name="int_krakow_vineyard_house_0" file="interiors/krakow/vineyard_house_0.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.vineyard.ZbyszkoNPC"/>
+
+		<portal x="22" y="2" ref="vyh_-1_entrance">
+			<destination zone="int_krakow_vineyard_house_-1" ref="vyh_-1_exit"/>
+			<attribute name="face">right</attribute>
+		</portal>
+		<portal x="15" y="30" ref="vyh_exit">
+			<destination zone="0_krakow_rynek" ref="vyh_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Vineyard house -1 -->
+	<zone name="int_krakow_vineyard_house_-1" file="interiors/krakow/vineyard_house_-1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<portal x="11" y="7" ref="vyh_-1_exit">
+			<destination zone="int_krakow_vineyard_house_0" ref="vyh_-1_entrance"/>
+			<attribute name="face">right</attribute>
+		</portal>
+	</zone>
+
+	<!-- Archeologist house -->
+	<zone name="int_krakow_archeologist_house" file="interiors/krakow/archeologist_house.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.archeologist.ArcheologistNPC"/>
+
+		<entity x="14" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />
+		</entity>
+		<!-- ticking clock sound effect -->
+		<entity x="14" y="9">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">clock-1</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">100</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="11" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="4" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">8</parameter>
+				<parameter name="volume">60</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="18" y="16" ref="ah_exit">
+			<destination zone="0_krakow_e" ref="ah_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Saddler house -->
+	<zone name="int_krakow_saddler_house" file="interiors/krakow/saddler_house.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.saddler.KrawiecNPC"/>
+		<entity x="7" y="7">
+			<implementation class-name="games.stendhal.server.maps.krakow.saddler.SaddlerNPC">
+				<parameter name="name">Rymarz</parameter>
+			</implementation>
+			<attribute name="class">man_002_npc</attribute>
+		</entity>
+
+		<portal x="7" y="14" ref="saddler_exit">
+			<destination zone="0_krakow_wisla_e" ref="saddler_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Ship -->
+	<zone name="int_polish_ship" file="interiors/krakow/ferry.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.maps.krakow.ship.CaptainNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.ship.CoastConveyerNPC"/>
+		<entity x="23" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">40</parameter>
+				<parameter name="volume">100</parameter>
+			</implementation>
+		</entity>
+		<entity x="30" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-3</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">8</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wave-11</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">8</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- Sukiennice -->
+	<zone name="int_krakow_sukiennice" file="interiors/krakow/sukiennice.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.PrzekupkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.ChengNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.IrekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.WaldekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.RybakMiloradNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.RzeznikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.ZielarkaNPC"/>
+		<!-- tables -->
+		<entity x="6" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="6" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+		<entity x="6" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="6" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="6" y="35">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+		<entity x="6" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="24" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="24" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+		<entity x="24" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="24" y="28">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="24" y="35">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+		<entity x="24" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">5</attribute>
+		</entity>
+		<entity x="14" y="42">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto stół.</attribute>
+			<attribute name="width">4</attribute>
+			<attribute name="height">2</attribute>
+		</entity>
+
+		<portal x="0" y="22" ref="sukiennice_1_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_1_entrance"/>
+		</portal>
+		<portal x="0" y="23" ref="sukiennice_2_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_2_entrance"/>
+		</portal>
+		<portal x="0" y="24" ref="sukiennice_3_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_3_entrance"/>
+		</portal>
+		<portal x="0" y="25" ref="sukiennice_4_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_4_entrance"/>
+		</portal>
+		<portal x="31" y="22" ref="sukiennice_5_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_5_entrance"/>
+		</portal>
+		<portal x="31" y="23" ref="sukiennice_6_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_6_entrance"/>
+		</portal>
+		<portal x="31" y="24" ref="sukiennice_7_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_7_entrance"/>
+		</portal>
+		<portal x="31" y="25" ref="sukiennice_8_exit">
+			<destination zone="0_krakow_rynek" ref="sukiennice_8_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Woodcutter hut -->
+	<zone name="int_krakow_woodcutter_hut" file="interiors/krakow/woodcutter_hut.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.woodcutter.WoodcutterNPC"/>
+		<portal x="7" y="14" ref="woodcutter_exit">
+			<destination zone="0_krakow_wisla" ref="woodcutter_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Fisher hut -->
+	<zone name="int_krakow_fisher_hut" file="interiors/krakow/fisher_hut.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<portal x="7" y="14" ref="fisher_hut_exit">
+			<destination zone="0_krakow_wisla_w" ref="fisher_hut_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Hall of Fame house -->
+	<zone name="int_krakow_halloffame" file="interiors/krakow/hof_house.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="2" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="8">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="22" y="8">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="23" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="7" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="18" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="4" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="13" y="18" ref="hof_exit">
+			<destination zone="0_krakow_wawel_w" ref="hof_entrance"/>
+		</portal>
+		<portal x="12" y="18" ref="hof_exit">
+			<destination zone="0_krakow_wawel_w" ref="hof_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Level -1 -->
+	<!-- krakow rynek -->
+	<zone name="-1_krakow_canals" level="-1" x="513312" y="17792" file="Level -1/krakow/canals.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">sewers</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="62" y="67" ref="canals_exit">
+			<destination zone="0_krakow_rynek" ref="canals_entrance"/>
+			<attribute name="face">left</attribute>
+		</portal>
+	</zone>
+
+	<!-- Wawels cave -->
+	<zone name="-1_krakow_cave" level="-1" x="513568" y="18048" file="Level -1/krakow/smok_wawelski_cave.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="98" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">ghost-1, ghost-2, saur-4</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="89" y="70" ref="wawelski_exit">
+			<destination zone="0_krakow_wawel_w" ref="wawelski_entrance"/>
+		</portal>
+		<portal x="17" y="92" ref="smokwawelski_entrance">
+			<destination zone="-1_krakow_cave" ref="smokwawelski_exit"/>
+		</portal>
+		<portal x="17" y="93" ref="smokwawelski_exit">
+			<destination zone="-1_krakow_cave" ref="smokwawelski_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Level -2 -->
+
+	<!-- Level -3 -->
+
+	<!-- Level -4 -->
+
+	<!-- Level -5 -->
+
+	<!-- Level -6 -->
+
+	<!-- Level -7 -->
+
+	<!-- Level 1 -->
+
+	<!-- Level 2 -->
+
+	<!-- Level 3 -->
+
+	<!-- Level 4 -->
+
+	<!-- Level 5 -->
+
+	<!-- Level 6 -->
+
+</zones>

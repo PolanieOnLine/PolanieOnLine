@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../items.xsd ">
+
+    <item name="plecak">
+		<type class="container" subclass="backpack" tileid="-1"/>
+		<description>Oto plecak.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Container"/>
+		<attributes>
+			<slot_name value="bag"/>
+			<undroppableondeath value="1" />
+			<autobind value="1" />
+			<slot_size value="15"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+<!--		<slot name="content"/>  -->
+			<slot name="back"/>
+<!--		<slot name="bag"/>
+			<slot name="trade"/>
+-->      
+		</equipable>
+	</item>
+
+	<item name="pusty worek">
+		<type class="container" subclass="empty_sack" tileid="-1"/>
+		<description>Oto pusty worek. Napełnij go, a będziesz mógł ustawić go pod ścianą.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="flasza">
+		<type class="container" subclass="flask" tileid="-1"/>
+		<description>Oto pusta flasza. Jest dobra aby trzymać w niej lekarstwo.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="buteleczka">
+		<type class="container" subclass="bottle" tileid="-1"/>
+		<description>To buteleczka. Jest pusta, ale możesz nalać do niej wodę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="butelka">
+		<type class="container" subclass="bottle_large" tileid="-1"/>
+		<description>Oto butelka. Jest pusta, ale możesz nalać do niej wodę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="średnia butelka">
+		<type class="container" subclass="bottle_medium" tileid="-1"/>
+		<description>Oto średnia butelka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="butla czwórniaczka">
+		<type class="container" subclass="bottle_eared" tileid="-1"/>
+		<description>To butla czwórniaczka. Jest pusta. Ktoś wypił z niej wszystko do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="butla">
+		<type class="container" subclass="bottle_fat" tileid="-1"/>
+		<description>Oto butla. Jest pusta. Ktoś wypił z niej wszystko do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mała okrągła butelka">
+		<type class="container" subclass="bottle_short_rounded" tileid="-1"/>
+		<description>To mała okrągła butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="mała trójkątna butelka">
+		<type class="container" subclass="bottle_short_triangular" tileid="-1"/>
+		<description>To mała trójkątna butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="wąska butelka">
+		<type class="container" subclass="bottle_slim" tileid="-1"/>
+		<description>Oto wąska butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kwadratowa butelka">
+		<type class="container" subclass="bottle_squared" tileid="-1"/>
+		<description>Oto kwadratowa butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="wysoka butelka">
+		<type class="container" subclass="bottle_tall" tileid="-1"/>
+		<description>Oto wysoka butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="trójkątna butelka">
+		<type class="container" subclass="bottle_triangular" tileid="-1"/>
+		<description>Oto trójkątna butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pusta czara">
+		<type class="container" subclass="empty_goblet" tileid="-1"/>
+		<description>Oto pusta czara. Zastanawiasz się co można w niej trzymać.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="czara">
+		<type class="container" subclass="full_goblet" tileid="-1"/>
+		<description>Oto czara. W środku jest trochę krwi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rzemyk">
+		<type class="container" subclass="keyring" tileid="-1"/>
+		<description>Oto rzemyk.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Container"/>
+		<attributes>
+			<slot_name value="keyring"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+<!--		<slot name="content"/>  -->
+			<slot name="belt"/>
+<!--		<slot name="bag"/>
+			<slot name="trade"/>
+-->      
+		</equipable>
+	</item>
+
+	<item name="fiolka">
+		<type class="container" subclass="vial" tileid="-1"/>
+		<description>Oto fiolka używana w chemii.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pusty bukłak">
+		<type class="container" subclass="pusty_buklak" tileid="-1"/>
+		<description>Widzisz pusty bukłak. Jest pusty, ale możesz nalać do niego wodę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+</items>
