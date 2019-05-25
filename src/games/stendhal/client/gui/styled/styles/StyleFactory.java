@@ -57,19 +57,19 @@ public class StyleFactory {
 	 * Available style definitions.
 	 */
 	private static enum StyleDefinition {
-		WOOD("Ciemne drewno (domyślnie)") {
+		WOOD("Jasne drewno (domyślnie)") {
 			@Override
 			Style create() {
-				return new PixmapStyle("data/gui/panelwood119.jpg", true,
+				return new PixmapStyle("data/gui/panelwood120.jpg", true,
 						new Color(163, 120, 97), new Color(50, 25, 12),
 						new Color(107, 72, 50), Color.white);
 			}
 		},
-		
-		LWOOD("Jasne drewno") {
+
+		LWOOD("Ciemne drewno") {
 			@Override
 			Style create() {
-				return new PixmapStyle("data/gui/panelwood120.jpg", true,
+				return new PixmapStyle("data/gui/panelwood119.jpg", true,
 						new Color(163, 120, 97), new Color(50, 25, 12),
 						new Color(107, 72, 50), Color.white);
 			}
@@ -254,7 +254,7 @@ public class StyleFactory {
 				}
 			}
 
-			logger.warn("Style '" + name + "'not found. Using the default.");
+			logger.warn("Style '" + name + "' not found. Using the default.");
 
 			return WOOD;
 		}
