@@ -124,7 +124,7 @@ public class StendhalFirstScreen extends JFrame {
 			}
 		};
 		loginAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_L);
-		loginAction.putValue(Action.SHORT_DESCRIPTION, "Naciśnij ten przycisk, aby zalogować sie do serwera "
+		loginAction.putValue(Action.SHORT_DESCRIPTION, "Naciśnij ten przycisk, aby zalogować sie na serwer "
 				+ gameName + ".");
 
 		loginButton = new JButton();
@@ -166,7 +166,7 @@ public class StendhalFirstScreen extends JFrame {
 		//
 		// Credits
 		//
-		Action showCreditsAction = new AbstractAction("Wyróznieni") {
+		Action showCreditsAction = new AbstractAction("Wyróżnieni") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new CreditsDialog(StendhalFirstScreen.this);
