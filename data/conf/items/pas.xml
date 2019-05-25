@@ -105,7 +105,7 @@
 		</attributes>
 		<weight value="1.0"/>
 		<value value="7"/>
-		<susceptibility type="nature" value="0.91"/>
+		<susceptibility type="earth" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

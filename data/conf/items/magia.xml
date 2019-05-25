@@ -60,7 +60,7 @@
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="nature"/>
+		<damage type="earth"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

@@ -30,8 +30,8 @@ public enum Nature {
 	ICE,
 	/** water magic */
 	WATER,
-	/** nature magic */
-	NATURE,
+	/** earth magic */
+	EARTH,
 	/** light magic */
 	LIGHT,
 	/** dark magic */

@@ -295,7 +295,7 @@
 		</attributes>
 		<weight value="4.0"/>
 		<value value="219700"/>
-		<damage type="nature"/>
+		<damage type="earth"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

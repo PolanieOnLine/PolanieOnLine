@@ -165,7 +165,7 @@
 		<weight value="15.0"/>
 		<value value="19208"/>
 		<susceptibility type="fire" value="1.11"/>
-		<susceptibility type="nature" value="0.91"/>
+		<susceptibility type="earth" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

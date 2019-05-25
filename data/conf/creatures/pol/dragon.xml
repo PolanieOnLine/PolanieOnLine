@@ -145,8 +145,8 @@
 		</drops>
 		<equips/>
 		<abilities>
-			<damage type="nature"/>
-			<susceptibility type="nature" value="0.8"/>
+			<damage type="earth"/>
+			<susceptibility type="earth" value="0.8"/>
 			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>

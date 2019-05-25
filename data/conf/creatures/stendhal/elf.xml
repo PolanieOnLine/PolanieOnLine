@@ -712,7 +712,7 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -750,7 +750,7 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -788,7 +788,7 @@
 			<slot name="rhand" item="drewniany łuk" quantity="1"/>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -827,7 +827,7 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -864,7 +864,7 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -904,7 +904,7 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -942,7 +942,7 @@
 			<slot name="rhand" item="miecz elficki"/>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -975,8 +975,8 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
-			<susceptibility type="nature" value="1.25"/>
+			<damage type="earth"/>
+			<susceptibility type="earth" value="1.25"/>
 			<susceptibility type="dark" value="1.25"/>
 			<susceptibility type="light" value="0.75"/>
 		</abilities>
@@ -1015,8 +1015,8 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
-			<susceptibility type="nature" value="1.2"/>
+			<damage type="earth"/>
+			<susceptibility type="earth" value="1.2"/>
 			<susceptibility type="dark" value="1.2"/>
 			<susceptibility type="light" value="0.8"/>
 		</abilities>
@@ -1054,7 +1054,7 @@
 		<equips>
 		</equips>
 		<abilities>
-			<damage type="nature"/>
+			<damage type="earth"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
