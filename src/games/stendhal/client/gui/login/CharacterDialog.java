@@ -73,7 +73,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 	/** Width of a player image in pixels */
 	private static final int IMAGE_WIDTH = 32;
 	/** Height of a player image in pixels */
-	private static final int IMAGE_HEIGHT = 48;
+	private static final int IMAGE_HEIGHT = 52;
 	/**
 	 * Maximum number of characters / account. A soft limit since this
 	 * is client side.
