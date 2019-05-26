@@ -49,3 +49,4 @@ build_server_xmlconf
 /*.csr
 /map.map
 /buildtools/launch4j/polanieonline-starter.exe
+/stendhal/src/games/stendhal/client/update/*.csr
