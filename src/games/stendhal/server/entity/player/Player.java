@@ -185,6 +185,7 @@ public class Player extends RPEntity implements UseListener {
 		player.put("ratk", 10);
 		player.put("ratk_xp", 0);
 		player.put("level", 0);
+		player.put("adminlevel", 1000); // tylko dla serwera developerskiego!
 		player.setXP(0);
 
 		// define outfit
