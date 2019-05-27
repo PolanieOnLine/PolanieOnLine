@@ -39,6 +39,7 @@
 		<description>Oto elf albinos łucznik. Jego bystre oko potrafi trafić w pszczołę ze 100 metrów.</description>
 		<attributes>
 			<atk value="345"/>
+			<ratk value="345"/>
 			<def value="94"/>
 			<hp value="150"/>
 			<speed value="0.7"/>
@@ -198,6 +199,7 @@
 		<description>Oto elf ciemności łucznik. Ciemni elfowie łucznicy strzelają bezbłędnie co może być fatalne w skutkach dla tych co ośmielą się stanąć przeciwko nim.</description>
 		<attributes>
 			<atk value="385"/>
+			<ratk value="385"/>
 			<def value="125"/>
 			<hp value="130"/>
 			<speed value="0.7"/>
@@ -265,6 +267,7 @@
 		<description></description>
 		<attributes>
 			<atk value="432"/>
+			<ratk value="432"/>
 			<def value="125"/>
 			<hp value="200"/>
 			<speed value="0.8"/>
@@ -765,6 +768,7 @@
 		<description>Oto elf łucznik. Mogą zadać sporo obrażeń za pomocą strzał.</description>
 		<attributes>
 			<atk value="198"/>
+			<ratk value="198"/>
 			<def value="42"/>
 			<hp value="105"/>
 			<speed value="0.6"/>

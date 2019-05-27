@@ -407,6 +407,7 @@
 		<description>Oto zabójcza pszczoła, która po urządleniu zabije cię na śmierć!</description>
 		<attributes>
 			<atk value="170"/>
+			<ratk value="170"/>
 			<def value="25"/>
 			<hp value="100"/>
 			<speed value="0.6"/>

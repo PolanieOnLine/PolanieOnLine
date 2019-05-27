@@ -214,6 +214,7 @@ public class Creature extends NPC {
 
 		setDescription(copy.getDescription());
 		setAtk(copy.getAtk());
+		setRatk(copy.getRatk());
 		setDef(copy.getDef());
 		setXP(copy.getXP());
 		initHP(copy.getBaseHP());
@@ -304,7 +305,7 @@ public class Creature extends NPC {
 	 * @param description
 	 */
 	public Creature(final String clazz, final String subclass, final String name, final int hp,
-			final int attack, final int defense, final int level, final int xp, final int width, final int height,
+			final int atk, final int ratk, final int def, final int level, final int xp, final int width, final int height,
 			final double baseSpeed, final int resistance, final int visibility, final List<DropItem> dropItems,
 			final Map<String, String> aiProfiles, final LinkedHashMap<String, LinkedList<String>> noises,
 			final int respawnTime, final String description) {
@@ -331,8 +332,9 @@ public class Creature extends NPC {
 		put("x", 0);
 		put("y", 0);
 		setDescription(description);
-		setAtk(attack);
-		setDef(defense);
+		setAtk(atk);
+		setRatk(ratk);
+		setDef(def);
 		setXP(xp);
 		setBaseHP(hp);
 		setHP(hp);
@@ -1032,6 +1034,12 @@ public class Creature extends NPC {
 		// Give creatures a bit weapon atk to prevent having too high
 		// personal atk values
 		return 5f;
+	}
+
+	@Override
+	public float getItemRatk() {
+		// Just doing the same as getItemAtk().
+		return getItemAtk();
 	}
 
 	// *** Damage type code ***

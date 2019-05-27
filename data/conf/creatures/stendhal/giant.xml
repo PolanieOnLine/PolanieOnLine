@@ -152,6 +152,7 @@
 		<description>Oto czarny olbrzym. Jego zbroja i miecz zadają mocne ciosy. Bądź gotowy!</description>
 		<attributes>
 			<atk value="1154"/>
+			<ratk value="1154"/>
 			<def value="119"/>
 			<hp value="4300"/>
 			<speed value="0.8"/>

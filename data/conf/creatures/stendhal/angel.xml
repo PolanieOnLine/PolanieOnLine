@@ -55,6 +55,7 @@
 		<description>Oto archanioł ciemności. Po upadku z nieba jej dusza stała się ciemna jak ona sama.</description>
 		<attributes>
 			<atk value="4700"/>
+			<ratk value="4700"/>
 			<def value="171"/>
 			<hp value="18000"/>
 			<speed value="1.0"/>
@@ -232,6 +233,7 @@
 		<description>Oto archanioł. Zabije cię jeśli natychmiast nie odejdziesz z nieba.</description>
 		<attributes>
 			<atk value="3455"/>
+			<ratk value="3455"/>
 			<def value="162"/>
 			<hp value="7000"/>
 			<speed value="1.0"/>

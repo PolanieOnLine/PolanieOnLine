@@ -8,6 +8,7 @@
 		<description>Oto jeździec chaosu na zielonym smoku. Nie myl go z normalnym zielonym smokiem, który jest kontrolowany przez tajmeniczego maga siedzącego na jego grzbiecie.</description>
 		<attributes>
 			<atk value="1867"/>
+			<ratk value="1867"/>
 			<def value="98"/>
 			<hp value="2022"/>
 			<speed value="1.0"/>
@@ -52,6 +53,7 @@
 		<description>Oto jeździec chaosu na czerwonym smoku. Może wygląda na czerwonego smoka, ale mag siedzący na jego grzbiecie daje mu dużo więcej siły.</description>
 		<attributes>
 			<atk value="2044"/>
+			<ratk value="2044"/>
 			<def value="107"/>
 			<hp value="3618"/>
 			<speed value="1.0"/>
@@ -137,6 +139,7 @@
 		<description>Oto szkielet smoka. Zostało kiedyś powiedziane, że są potwory z wystarczającą siłą woli życia. Ich duszę nadal trzymają się życia nawet, gdy ich ciała i krew zawiodły je. Oto dowód życia.</description>
 		<attributes>
 			<atk value="1435"/>
+			<ratk value="1435"/>
 			<def value="48"/>
 			<hp value="400"/>
 			<speed value="1.0"/>
@@ -175,6 +178,7 @@
 		<description>Oto błękitny smok. Ma śliczną niebieskawą skórę pięknie połyskującą w słońcu. Nie zapomniej jednak, że ma też szczęki, a w nich ostre zęby!</description>
 		<attributes>
 			<atk value="1511"/>
+			<ratk value="1511"/>
 			<def value="57"/>
 			<hp value="900"/>
 			<speed value="1.0"/>
@@ -219,6 +223,7 @@
 		<description>Oto czerwony smok. Ze zmaragdowymi ślepiami może widzieć w ciemnościach. Czerwone łuski służa mu do odbijania światła w celu oślepienia przeciwnika. Łuski dodają mu urody i są cieżkie do zdobycia z tak dzikiej bestii.</description>
 		<attributes>
 			<atk value="1777"/>
+			<ratk value="1777"/>
 			<def value="115"/>
 			<hp value="1200"/>
 			<speed value="1.0"/>
@@ -260,6 +265,7 @@
 		<description>Oto czarny smok. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
 			<atk value="3227"/>
+			<ratk value="3227"/>
 			<def value="127"/>
 			<hp value="3300"/>
 			<speed value="1.0"/>
@@ -306,6 +312,7 @@
 		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
 		<attributes>
 			<atk value="837"/>
+			<ratk value="837"/>
 			<def value="138"/>
 			<hp value="1100"/>
 			<speed value="1.0"/>

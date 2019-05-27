@@ -314,6 +314,7 @@
 		<description>Widzisz pustelnika. Nie zakłócaj jego medytacji.</description>
 		<attributes>
 			<atk value="306"/>
+			<ratk value="306"/>
 			<def value="30"/>
 			<hp value="804"/>
 			<speed value="0.7"/>
@@ -355,6 +356,7 @@
 		<description>Oto uczeń czarnoksiężnika. Swemu mistrzowi podkrada magię ciemności.</description>
 		<attributes>
 			<atk value="602"/>
+			<ratk value="602"/>
 			<def value="46"/>
 			<hp value="468"/>
 			<speed value="0.9"/>
@@ -396,6 +398,7 @@
 		<description>Oto czarnoksiężnik. Niech nie zwiedzie cię jego wiek, bo jest potężny.</description>
 		<attributes>
 			<atk value="602"/>
+			<ratk value="602"/>
 			<def value="46"/>
 			<hp value="468"/>
 			<speed value="0.7"/>
@@ -437,6 +440,7 @@
 		<description>Oto uczeń czarnoksiężnika mroku. Wiele już posiadł wiedzy i umie ją wykorzystać.</description>
 		<attributes>
 			<atk value="602"/>
+			<ratk value="602"/>
 			<def value="46"/>
 			<hp value="468"/>
 			<speed value="0.7"/>
@@ -478,6 +482,7 @@
 		<description>Oto czarnoksiężnik mroku. Wielu już wrogów powalił, nawet nie ruszając się z miejsca.</description>
 		<attributes>
 			<atk value="1250"/>
+			<ratk value="1250"/>
 			<def value="66"/>
 			<hp value="900"/>
 			<speed value="0.2"/>
@@ -519,6 +524,7 @@
 		<description>Oto czarownica z Aenye - zabójcza ślicznotka.</description>
 		<attributes>
 			<atk value="2526"/>
+			<ratk value="2526"/>
 			<def value="96"/>
 			<hp value="1404"/>
 			<speed value="0.7"/>

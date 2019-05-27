@@ -284,6 +284,7 @@
 		<description>Oto wilkołak łucznik. Strzeż się go w księżycową noc, gdy chowa się pośród drzew.</description>
 		<attributes>
 			<atk value="1027"/>
+			<ratk value="1027"/>
 			<def value="58"/>
 			<hp value="1087"/>
 			<speed value="1.0"/>

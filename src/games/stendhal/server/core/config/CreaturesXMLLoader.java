@@ -55,6 +55,8 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 
 	private int atk;
 
+	private Integer ratk = 0;
+
 	private int def;
 
 	private int hp;
@@ -281,6 +283,8 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			attributes = true;
 		} else if (attributes && qName.equals("atk")) {
 			atk = Integer.parseInt(attrs.getValue("value"));
+		} else if (attributes && qName.equals("ratk")) {
+			ratk = Integer.parseInt(attrs.getValue("value"));
 		} else if (attributes && qName.equals("def")) {
 			def = Integer.parseInt(attrs.getValue("value"));
 		} else if (attributes && qName.equals("hp")) {
@@ -366,7 +370,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			}
 
 			final DefaultCreature creature = new DefaultCreature(clazz, subclass, name, tileid);
-			creature.setRPStats(hp, atk, def, speed);
+			creature.setRPStats(hp, atk, ratk, def, speed);
 			creature.setLevel(level, xp);
 			creature.setSize(sizeWidth, sizeHeight);
 			creature.setResistance(resistance);
