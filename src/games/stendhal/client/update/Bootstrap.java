@@ -420,7 +420,7 @@ public class Bootstrap {
 		} else {
 			String errorMessage = stacktraceToString(e);
 			LoneOptionDialog.showMessageDialog(message
-					+ "Wystąpił niespodziewany błąd.\r\nPrzejdź do formularza kontaktowego na http://www.polanieonline.org/kontakt-gmgags i napisz wiadomość o błędzie:\r\n"
+					+ "Wystąpił niespodziewany błąd.\r\nPrzejdź do formularza kontaktowego na http://www.polanieonline.eu/kontakt-gmgags i napisz wiadomość o błędzie:\r\n"
 					+ errorMessage);
 		}
 		System.exit(1);

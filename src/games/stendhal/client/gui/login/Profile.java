@@ -20,10 +20,10 @@ public class Profile {
 	static final int DEFAULT_SERVER_PORT = 32160;
 
 	/** Old server names to remap. */
-	private static final String[] OLD_SERVER_HOSTS = { "81.21.202.170" };
+	private static final String[] OLD_SERVER_HOSTS = { "145.239.87.198" };
 
 	/** Default server name to replace old ones with. */
-	private static final String NEW_SERVER_HOST = "polanieonline.org";
+	private static final String NEW_SERVER_HOST = "polanieonline.eu";
 
 	private String host;
 

@@ -446,7 +446,7 @@
 			</fileset>
 			<manifest>
 				<attribute name="Application-Name" value="Stendhal" />
-				<attribute name="Application-Library-Allowable-Codebase"  value="https://arianne-project.org http://arianne.sf.net http://arianne.sourceforge.net https://arianne.sf.net https://arianne.sourceforge.net https://stendhalgame.org https://polanieonline.org *" />
+				<attribute name="Application-Library-Allowable-Codebase"  value="https://arianne-project.org http://arianne.sf.net http://arianne.sourceforge.net https://arianne.sf.net https://arianne.sourceforge.net https://stendhalgame.org https://polanieonline.eu *" />
 				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
 				<attribute name="Class-path" value="."/>
 				<attribute name="Permissions" value="all-permissions"/>
@@ -980,7 +980,7 @@ turn_length=300
 server_typeGame=polanieonline
 server_name=PolanieOnLine Marauroa server
 server_version=1.00
-server_contact=https://polanieonline.org/
+server_contact=https://polanieonline.eu/
 n = 966117159215070350422008719727400433209081371975507132437556194069529307432746058120899703845731090424709994853484674454738958575201865208533043689325553646377
 e = 15
 d = 901709348600732327060541471745573737661809280510473323608385781131560686937229596225645929798090122419343070307904183075525081589946196209839163758401803422679

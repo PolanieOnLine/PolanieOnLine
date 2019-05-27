@@ -511,7 +511,7 @@ Na południe ↓ Tatry
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">
 #'Przeczytaj REGULAMIN!'
-#'polanieonline.org'
+#'polanieonline.eu'
 			</attribute>
 			<attribute name="class">default</attribute>
 		</entity>
@@ -520,7 +520,7 @@ Na południe ↓ Tatry
 			<attribute name="text">
 Jeśli masz pytanie dotyczące gry,
 na które nie znalazłeś odpowiedzi
-na stronie #'polanieonline.org'
+na stronie #'polanieonline.eu'
 w dziale #'Dla początkujących'
 zapytaj GM pisząc #'/support PYTANIE'.
 			</attribute>
@@ -532,7 +532,7 @@ zapytaj GM pisząc #'/support PYTANIE'.
 W związku z tym, że nasza gra
 jest całkowicie darmowa proszę:
 w wolnej chwili wejdź na stronę
-#'polanieonline.org' i kliknij #'reklamę'
+#'polanieonline.eu' i kliknij #'reklamę'
 jeśli pojawi się w dziale reklamy na stronie!;)
 #'DZIĘKUJEMY!'
 			</attribute>

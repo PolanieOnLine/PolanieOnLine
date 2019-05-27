@@ -91,7 +91,7 @@ addMatching(ConversationStates.QUEST_OFFERED,
 		null,
 		new BuyHouseChatAction(getCost(), QUEST_SLOT));
 
-addJob("Jestem agentem nieruchomości z prostymi zasadami. Sprzedaję domy tym, którzy otrzymali #obywatelstwo. Domy sporo kosztują. Tymczasowo nasza broszura jest na #http://www.polanieonline.org/");
+addJob("Jestem agentem nieruchomości z prostymi zasadami. Sprzedaję domy tym, którzy otrzymali #obywatelstwo. Domy sporo kosztują. Tymczasowo nasza broszura jest na #http://www.polanieonline.eu/");
 addReply(Arrays.asList("citizenship", "obywatelstwo"),
 			 "O tym decyduje rodzina królewska w zamku Kalavan.");
 

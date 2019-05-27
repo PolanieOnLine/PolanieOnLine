@@ -34,7 +34,7 @@ class HelpAction implements SlashAction {
 	@Override
 	public boolean execute(final String[] params, final String remainder) {
 		final String[] lines = {
-				"Aby dowiedzieć się więcej odwiedź #http://www.polanieonline.org",
+				"Aby dowiedzieć się więcej odwiedź #http://www.polanieonline.eu",
 				"Oto najczęściej używane komendy:",
 				"* ROZMOWA: ",
 				"- /me <akcja> \t\tPokazuje wiadomość o tym co teraz robisz",

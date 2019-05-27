@@ -56,7 +56,7 @@ final class MainFrame {
 		}
 		frame.setTitle(ClientGameConfiguration.get("GAME_NAME") + " "
 				+ stendhal.VERSION + preRelease
-				+ " - darmowa gra MMORPG - www.polanieonline.org");
+				+ " - darmowa gra MMORPG - www.polanieonline.eu");
 	}
 
 	/**

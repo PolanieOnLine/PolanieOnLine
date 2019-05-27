@@ -360,7 +360,7 @@ stendhal.slashActionRepository = {
 
 	"beginnersguide": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/guide";
+			window.location = "https://polanieonline.eu/guide";
 		},
 		getMinParams: 0,
 		getMaxParams: 0
@@ -376,7 +376,7 @@ stendhal.slashActionRepository = {
 
 	"faq": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/wiki/Stendhal_FAQ";
+			window.location = "https://polanieonline.eu/wiki/Stendhal_FAQ";
 		},
 		getMinParams: 0,
 		getMaxParams: 0
@@ -384,7 +384,7 @@ stendhal.slashActionRepository = {
 
 	"manual": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/wiki/Stendhal_Manual/Controls_and_Game_Settings";
+			window.location = "https://polanieonline.eu/wiki/Stendhal_Manual/Controls_and_Game_Settings";
 		},
 		getMinParams: 0,
 		getMaxParams: 0
@@ -392,7 +392,7 @@ stendhal.slashActionRepository = {
 
 	"rules": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/wiki/Stendhal_Rules";
+			window.location = "https://polanieonline.eu/wiki/Stendhal_Rules";
 		},
 		getMinParams: 0,
 		getMaxParams: 0
@@ -400,7 +400,7 @@ stendhal.slashActionRepository = {
 
 	"changepassword": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/account/change-password.html";
+			window.location = "https://polanieonline.eu/account/change-password.html";
 		},
 		getMinParams: 0,
 		getMaxParams: 0
@@ -409,7 +409,7 @@ stendhal.slashActionRepository = {
 
 	"loginhistory": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/account/history.html";
+			window.location = "https://polanieonline.eu/account/history.html";
 		},
 		getMinParams: 0,
 		getMaxParams: 0
@@ -417,7 +417,7 @@ stendhal.slashActionRepository = {
 
 	"halloffame": {
 		execute: function(type, params, remainder) {
-			window.location = "https://polanieonline.org/world/hall-of-fame/active_overview.html";
+			window.location = "https://polanieonline.eu/world/hall-of-fame/active_overview.html";
 		},
 		getMinParams: 0,
 		getMaxParams: 0

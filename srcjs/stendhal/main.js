@@ -136,7 +136,7 @@ stendhal.main = {
 	 * starts the Stendhal web client and connects to the Stendhal server.
 	 */
 	startup: function() {
-		stendhal.ui.chatLog.addLine("error", "Jest to wczesny etap eksperymentalnego klienta internetowego. Aby moc zagrac w PolanieOnLine, prosimy o zainstalowanie oficjalnego klienta z https://polanieonline.org.");
+		stendhal.ui.chatLog.addLine("error", "Jest to wczesny etap eksperymentalnego klienta internetowego. Aby moc zagrac w PolanieOnLine, prosimy o zainstalowanie oficjalnego klienta z https://polanieonline.eu.");
 		stendhal.ui.chatLog.addLine("client", "Klient zostal zaladowany. Laczenie sie z serwerem...");
 
 		stendhal.main.registerMarauroaEventHandlers();
