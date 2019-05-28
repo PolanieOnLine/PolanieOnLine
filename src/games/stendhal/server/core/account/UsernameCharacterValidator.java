@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -21,6 +20,8 @@ import marauroa.common.game.Result;
  */
 public class UsernameCharacterValidator implements AccountParameterValidator {
 	private final String parameterValue;
+	private char[] badCharacters = new char[]{'\"', '\'', '\\', ' ', ';', '<', '>'};
+
 	/**
 	 * creates a UsernameCharacterValidator.
 	 * 
@@ -33,13 +34,18 @@ public class UsernameCharacterValidator implements AccountParameterValidator {
 
 	@Override
 	public Result validate() {
-		if (parameterValue.length() <= 3) {
+		if (!parameterValue.contains("@") || !parameterValue.contains(".") || (parameterValue.length() <= 5)) {
 			return Result.FAILED_INVALID_CHARACTER_USED;
 		}
 
 		// letters , numbers and few signs are allowed
 		for (int i = parameterValue.length() - 1; i >= 0; i--) {
 			final char chr = parameterValue.charAt(i);
+			for (char bad : badCharacters) {
+				if (chr == bad) {
+					return Result.FAILED_INVALID_CHARACTER_USED;
+				}
+			}
 			if (((chr < 'a') || (chr > 'z')) && ((chr < 'A') || (chr > 'Z'))
 					&& ((chr < '0') || (chr > '9')) && (chr != 'ą') && (chr != 'ć')
 					&& (chr != 'ę') && (chr != 'ł') && (chr != 'ń') && (chr != 'ó')
