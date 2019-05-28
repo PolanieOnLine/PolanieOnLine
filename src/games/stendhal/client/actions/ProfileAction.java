@@ -33,7 +33,7 @@ class ProfileAction implements SlashAction{
 	 */
 	@Override
 	public boolean execute(final String[] params, final String remainder) {
-		String url = "https://www.polanieonline.eu/character/";
+		String url = "http://www.polanieonline.eu/character/";
 		String name = null;
 		if ((params.length > 0) && (params[0] != null)) {
 			name = params[0];
