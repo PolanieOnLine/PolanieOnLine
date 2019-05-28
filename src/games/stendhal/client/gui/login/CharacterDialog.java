@@ -240,6 +240,12 @@ public final class CharacterDialog extends JDialog implements Runnable {
 				def = character.get("def");
 			}
 			label.append(def);
+			label.append("/");
+			String ratk = "0";
+			if (character.has("ratk")) {
+				ratk = character.get("ratk");
+			}
+			label.append(ratk);
 		}
 		label.append("</html>");
 
@@ -352,7 +358,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 
 			try {
 				// TODO: error handling, exceptions and return of false
-				CharacterResult result = StendhalClient.get().createCharacter(name.toLowerCase(Locale.ENGLISH), new RPObject());
+				CharacterResult result = StendhalClient.get().createCharacter(name, new RPObject());
 				if (result.getResult().failed()) {
 					JOptionPane.showMessageDialog(parent, result.getResult().getText());
 				} else {
