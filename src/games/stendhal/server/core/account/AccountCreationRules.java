@@ -42,7 +42,7 @@ class AccountCreationRules {
 
 	private void setupValidatorsForUsername() {
 		validators.add(new NotEmptyValidator(username));
-		validators.add(new MinLengthValidator(username, 4));
+		validators.add(new MinLengthValidator(username, 2));
 		validators.add(new MaxLengthValidator(username, 20));
 
 		validators.add(new NameCharacterValidator(username));

@@ -53,7 +53,7 @@ public class CharacterCreator {
 
 	private void setupValidatorsForCharacter() {
 		validators.add(new NotEmptyValidator(character));
-		validators.add(new MinLengthValidator(character, 4));
+		validators.add(new MinLengthValidator(character, 2));
 		validators.add(new MaxLengthValidator(character, 20));
 
 		validators.add(new NPCNameValidator(character));
