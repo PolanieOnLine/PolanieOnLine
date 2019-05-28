@@ -93,7 +93,7 @@ public final class stendhal {
 
 	public static final boolean FILTER_ATTACK_MESSAGES = true;
 
-	static final int FPS_LIMIT = 25;
+	static final int FPS_LIMIT = 60;
 	/** For keeping the login status. Blocks until logged in. */
 	private static final CountDownLatch latch = new CountDownLatch(1);
 

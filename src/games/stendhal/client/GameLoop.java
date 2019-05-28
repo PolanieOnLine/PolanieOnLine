@@ -126,7 +126,7 @@ public class GameLoop {
 	 * The actual game loop.
 	 */
 	private void loop() {
-		final int frameLength = (int) (1000.0 / stendhal.FPS_LIMIT);
+		final int frameLength = (int) (500.0 / stendhal.FPS_LIMIT);
 		int fps = 0;
 
 		// keep looping until the game ends
