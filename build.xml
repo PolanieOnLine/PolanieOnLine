@@ -610,7 +610,7 @@
 		</copy>
 -->
 
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="README.md"/>
+		<!-- <copy todir="${buildroot}/polanieonline-server-${version}" file="README.md"/> -->
 		<mkdir dir="${buildroot}/polanieonline-server-${version}/log" />
 		<touch file="${buildroot}/polanieonline-server-${version}/log/empty" />
 		<zip destfile="${buildroot}/polanieonline-server-${version}.zip">
@@ -644,7 +644,7 @@
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 		<touch file="${buildroot}/polanieonline-${version}/log/polanieonline.txt" />
-		<copy todir="${buildroot}/polanieonline-${version}" file="README.md"/>
+		<!-- <copy todir="${buildroot}/polanieonline-${version}" file="README.md"/> -->
 		<copy todir="${buildroot}/polanieonline-${version}" file="icon.ico"/>
 		<zip destfile="${buildroot}/polanieonline-${version}.zip">
 			<zipfileset dir="${buildroot}/polanieonline-${version}" excludes="polanieonline-starter.jar"/>
@@ -668,7 +668,7 @@
 			<fileset dir="doc"/>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
-		<copy todir="${buildroot}/polanieonline-${version}" file="README.md"/>
+		<!-- <copy todir="${buildroot}/polanieonline-${version}" file="README.md"/> -->
 		<zip destfile="${buildroot}/polanieonline-starter-${version}.zip">
 			<zipfileset dir="${buildroot}/polanieonline-${version}" excludes="${client_starter_jarname}"/>
 			<zipfileset dir="${buildroot}/polanieonline-${version}" includes="${client_starter_jarname}" filemode="755"/>
@@ -706,7 +706,7 @@
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="build.xml"/>
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="build.ant.properties"/>
 
-		<copy todir="${buildroot}/polanieonline-${version}-src" file="README.md"/>
+		<!-- <copy todir="${buildroot}/polanieonline-${version}-src" file="README.md"/> -->
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="LICENSE.txt"/>
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="runserver.bat"/>
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="runserver.sh"/>
