@@ -126,7 +126,7 @@ public class GameLoop {
 	 * The actual game loop.
 	 */
 	private void loop() {
-		final int frameLength = (int) (500.0 / stendhal.FPS_LIMIT);
+		final int frameLength = (int) (495.4 / stendhal.FPS_LIMIT);
 		int fps = 0;
 
 		// keep looping until the game ends
@@ -163,9 +163,9 @@ public class GameLoop {
 				long wait = frameLength + refreshTime - System.currentTimeMillis();
 
 				if (wait > 0) {
-					if (wait > 100L) {
+					if (wait > 49L) {
 						logger.info("Waiting " + wait + " ms");
-						wait = 100L;
+						wait = 49L;
 					}
 
 					try {
