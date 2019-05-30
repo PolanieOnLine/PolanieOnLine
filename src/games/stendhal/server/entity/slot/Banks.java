@@ -22,6 +22,8 @@ public enum Banks {
 	SEMOS("bank"),
 	/** bank in Ados. */
 	ADOS("bank_ados"),
+	/** bank in Deniran */
+	DENIRAN("bank_deniran"),
 	/** bank in Fado. */
 	FADO("bank_fado"),
 	/** bank in Nalwor. */

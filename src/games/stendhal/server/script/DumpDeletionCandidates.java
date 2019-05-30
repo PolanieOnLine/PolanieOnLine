@@ -43,9 +43,9 @@ public class DumpDeletionCandidates extends ScriptImpl {
 	private void dumpObject(RPObject object) {
 		StringBuilder items = new StringBuilder();
 			final String[] slotsItems = { "bag", "rhand", "lhand", "head", "neck", "armor",
-				"pas", "legs", "glove", "feet", "finger", "cloak", "fingerb", "bank", "bank_ados",
-				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_tsoh",
-				"bank_gdansk", "spells", "keyring", "money", "trade"};
+				"pas", "legs", "glove", "feet", "finger", "cloak", "fingerb", "bank", "bank_ados", "bank_deniran",
+				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", /*"bank_tsoh",
+				"bank_gdansk",*/ "spells", "keyring", "money", "trade"};
 
 			for (final String slotName : slotsItems) {
 				final RPSlot slot = object.getSlot(slotName);
