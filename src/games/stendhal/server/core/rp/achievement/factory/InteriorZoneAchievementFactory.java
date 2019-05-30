@@ -39,16 +39,16 @@ public class InteriorZoneAchievementFactory extends AbstractAchievementFactory {
 									new PlayerVisitedZonesInRegionCondition("magic city", Boolean.FALSE, Boolean.FALSE)));
 		list.add(createAchievement("zone.interior.krakowcity", "Miasto Kraków", "Odwiedził wszystkie pomieszczenia w regionie Krakowa",
 									Achievement.MEDIUM_BASE_SCORE, true,
-									new PlayerVisitedZonesInRegionCondition("krakow city", Boolean.FALSE, Boolean.FALSE)));
+									new PlayerVisitedZonesInRegionCondition("krakow", Boolean.FALSE, Boolean.FALSE)));
 		//list.add(createAchievement("zone.interior.wieliczkacity", "Miasto Wieliczka", "Odwiedził wszystkie pomieszczenia w regionie Wieliczki",
 		//							Achievement.MEDIUM_BASE_SCORE, true,
-		//							new PlayerVisitedZonesInRegionCondition("wieliczka city", Boolean.FALSE, Boolean.FALSE)));
+		//							new PlayerVisitedZonesInRegionCondition("wieliczka", Boolean.FALSE, Boolean.FALSE)));
 		list.add(createAchievement("zone.interior.zakopanecity", "Miasto Zakopane", "Odwiedził wszystkie pomieszczenia w regionie Zakopanego",
 									Achievement.MEDIUM_BASE_SCORE, true,
-									new PlayerVisitedZonesInRegionCondition("zakopane city", Boolean.FALSE, Boolean.FALSE)));
+									new PlayerVisitedZonesInRegionCondition("zakopane", Boolean.FALSE, Boolean.FALSE)));
 		//list.add(createAchievement("zone.interior.gdanskcity", "Miasto Gdańsk", "Odwiedził wszystkie pomieszczenia w regionie Gdańska",
 		//							Achievement.MEDIUM_BASE_SCORE, true,
-		//							new PlayerVisitedZonesInRegionCondition("gdansk city", Boolean.FALSE, Boolean.FALSE)));
+		//							new PlayerVisitedZonesInRegionCondition("gdansk", Boolean.FALSE, Boolean.FALSE)));
 		return list;
 	}
 
