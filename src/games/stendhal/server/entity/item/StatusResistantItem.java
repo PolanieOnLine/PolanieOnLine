@@ -25,9 +25,6 @@ public class StatusResistantItem extends SlotActivatedItem {
 	/** List of status types that this item is resistant to. */
 	private StatusResistancesList resistances;
 
-
-/* XXX --- CONSTRUCTORS --- XXX */
-
 	/**
 	 * Default constructor.
 	 *
@@ -65,9 +62,6 @@ public class StatusResistantItem extends SlotActivatedItem {
 		super(item);
 		initializeStatusResistancesList(item.resistances.getMap());
 	}
-
-
-/* XXX --- ITEM INITIALIZATION --- XXX */
 
 	/**
 	 * Create or reset resistances to status types for this item.
@@ -122,9 +116,6 @@ public class StatusResistantItem extends SlotActivatedItem {
 			}
 		}
 	}
-
-
-/* XXX --- ITEM MANIPULATION --- XXX */
 
 	/**
 	 * Applies or removes a status resistance value for the owning entity.
@@ -219,9 +210,6 @@ public class StatusResistantItem extends SlotActivatedItem {
 		return false;
 	}
 
-
-/* XXX --- ITEM ACTIVATION --- XXX */
-
 	/**
 	 * Actions to take when activated. Super class sets activationState by
 	 * calling this method via onEquipped().
@@ -312,8 +300,6 @@ public class StatusResistantItem extends SlotActivatedItem {
 		return active;
 	}
 
-/* XXX --- ITEM INFORMATION --- XXX */
-
 	/**
 	 * Add resistance values to description.
 	 */
@@ -378,5 +364,16 @@ public class StatusResistantItem extends SlotActivatedItem {
 	 */
 	public StatusResistancesList getStatusResistancesList() {
 		return this.resistances;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder st = new StringBuilder();
+		st.append(super.toString() + "\n");
+		if (!resistances.isEmpty()) {
+			st.append("Status resistances:\n\t" + resistances.toString().toLowerCase());
+		}
+
+		return st.toString();
 	}
 }
