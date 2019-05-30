@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../zones.xsd ">
+
+	<!-- ** Load zones. Written from left to right and from top to bottom. **
+		Please respect it! -->
+
+	<!-- Ground level -->
+	<zone name="0_deniran_n_w2" level="0" x="499104" y="499744" file="Level 0/deniran/deniran_n_w2.tmx">
+	  <attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_nw" level="0" x="499104" y="499872" file="Level 0/deniran/deniran_nw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_w" level="0" x="499104" y="500000" file="Level 0/deniran/deniran_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<portal x="47" y="33" ref="deniran_tiny_house_entrance">
+			<destination zone="int_deniran_tiny_house" ref="entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="0_deniran_sw" level="0" x="499104" y="500128" file="Level 0/deniran/deniran_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_river_w" level="0" x="499104" y="500256" file="Level 0/deniran/deniran_river_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_n2" level="0" x="499232" y="499744" file="Level 0/deniran/deniran_n2.tmx">
+	  <attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_n" level="0" x="499232" y="499872" file="Level 0/deniran/deniran_n.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran" level="0" x="499232" y="500000" file="Level 0/deniran/deniran.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="54" y="68">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">Witamy w Deniran Bank!</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">1</attribute>
+			<attribute name="class">transparent</attribute>
+		</entity>
+
+		<portal x="54" y="69" ref="deniran_bank_blue_roof_entrance">
+			<destination zone="int_deniran_bank_blue_roof" ref="entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+
+		<portal x="95" y="115" ref="deniran_castle_entrance_left">
+			<destination zone="int_deniran_castle" ref="entrance_left" />
+			<attribute name="move.continuous" />
+		</portal>
+
+		<portal x="96" y="115" ref="deniran_castle_entrance_right">
+			<destination zone="int_deniran_castle" ref="entrance_right" />
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="0_deniran_s" level="0" x="499232" y="500128" file="Level 0/deniran/deniran_s.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_river_s" level="0" x="499232" y="500256" file="Level 0/deniran/deniran_river_s.tmx">
+		<configurator class-name="games.stendhal.server.maps.deniran.AdosArmy" />
+		<configurator class-name="games.stendhal.server.maps.deniran.DeniranArmy" />
+
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_n_e2" level="0" x="499360" y="499744" file="Level 0/deniran/deniran_n_e2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_ne" level="0" x="499360" y="499872" file="Level 0/deniran/deniran_ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_e" level="0" x="499360" y="500000" file="Level 0/deniran/deniran_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_se" level="0" x="499360" y="500128" file="Level 0/deniran/deniran_se.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_river_e" level="0" x="499360" y="500256" file="Level 0/deniran/deniran_river_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_wall_n2" level="0" x="499488" y="499744" file="Level 0/deniran/deniran_wall_n2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_wall_n" level="0" x="499488" y="499872" file="Level 0/deniran/deniran_wall_n.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_wall" level="0" x="499488" y="500000" file="Level 0/deniran/deniran_wall.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_wall_s" level="0" x="499488" y="500128" file="Level 0/deniran/deniran_wall_s.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_deniran_river_e2" level="0" x="499488" y="500256" file="Level 0/deniran/deniran_river_e2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+
+	<!--  Level -1 -->
+	<zone name="-1_deniran_lost_caves_nw2" level="-1" x="499104" y="499744" file="Level -1/deniran/lost_caves_nw2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_lost_caves_nw" level="-1" x="499104" y="499872" file="Level -1/deniran/lost_caves_nw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_lost_caves_n2" level="-1" x="499232" y="499744" file="Level -1/deniran/lost_caves_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_lost_caves_n" level="-1" x="499232" y="499872" file="Level -1/deniran/lost_caves_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_lost_caves_ne2" level="-1" x="499360" y="499744" file="Level -1/deniran/lost_caves_ne2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_lost_caves_ne" level="-1" x="499360" y="499872" file="Level -1/deniran/lost_caves_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_lost_caves_wall_n2" level="-1" x="499488" y="499744" file="Level -1/deniran/lost_caves_wall_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_lost_caves_wall_n" level="-1" x="499488" y="499872" file="Level -1/deniran/lost_caves_wall_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_w" level="-1" x="499104" y="500000" file="Level -1/deniran/deniran_caves_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_sw" level="-1" x="499104" y="500128" file="Level -1/deniran/deniran_caves_sw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_deniran" level="-1" x="499232" y="500000" file="Level -1/deniran/deniran_caves_deniran.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_s" level="-1" x="499232" y="500128" file="Level -1/deniran/deniran_caves_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_e" level="-1" x="499360" y="500000" file="Level -1/deniran/deniran_caves_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_se" level="-1" x="499360" y="500128" file="Level -1/deniran/deniran_caves_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_wall" level="-1" x="499488" y="500000" file="Level -1/deniran/deniran_caves_wall.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-1_deniran_caves_wall_s" level="-1" x="499488" y="500128" file="Level -1/deniran/deniran_caves_wall_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+
+	<!-- interiors -->
+	<zone name="int_deniran_tiny_house" file="interiors/deniran/tiny_house.tmx">
+		<portal x="3" y="6" ref="entrance">
+			<destination zone="0_deniran_w" ref="deniran_tiny_house_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="int_deniran_bank_blue_roof" file="interiors/deniran/bank_blue_roof.tmx">
+		<portal x="15" y="14" ref="entrance">
+			<destination zone="0_deniran" ref="deniran_bank_blue_roof_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+
+		<entity x="14" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_deniran</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="15" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Widzisz wygodnie umieszczony stół.</attribute>
+		</entity>
+
+		<entity x="14" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">3</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="17" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Widzisz wygodnie umieszczony stół.</attribute>
+		</entity>
+
+		<entity x="18" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest" />
+		</entity>
+
+		<entity x="17" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">3</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="25" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_deniran</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="26" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Widzisz wygodnie umieszczony stół.</attribute>
+		</entity>
+
+		<entity x="25" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">3</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="28" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Widzisz wygodnie umieszczony stół.</attribute>
+		</entity>
+
+		<entity x="29" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest" />
+		</entity>
+
+		<entity x="28" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">3</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="int_deniran_castle" file="interiors/deniran/castle.tmx">
+		<portal x="15" y="22" ref="entrance_left">
+			<destination zone="0_deniran" ref="deniran_castle_entrance_left" />
+			<attribute name="move.continuous" />
+		</portal>
+
+		<portal x="16" y="22" ref="entrance_right">
+			<destination zone="0_deniran" ref="deniran_castle_entrance_right" />
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+</zones>

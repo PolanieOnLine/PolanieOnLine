@@ -5,6 +5,7 @@
 	<group uri="zones/stendhal/ados.xml"/>
 	<group uri="zones/stendhal/amazon.xml"/>
 	<group uri="zones/stendhal/athor.xml"/>
+	<group uri="zones/stendhal/deniran.xml"/>
 	<group uri="zones/stendhal/fado.xml"/>
 	<group uri="zones/stendhal/kalavan.xml"/>
 	<group uri="zones/stendhal/kikareukin.xml"/>
