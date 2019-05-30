@@ -365,6 +365,7 @@
 			<hp value="7"/>
 			<speed value="0.4"/>
 			<size value="1,1"/>
+			<resistance value="5"/>
 		</attributes>
 		<level value="1"/>
 		<experience value="5"/>
