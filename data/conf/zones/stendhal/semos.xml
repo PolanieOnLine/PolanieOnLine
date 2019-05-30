@@ -1470,6 +1470,8 @@ Oszuści wśród prostaków wolą nacisnąć na potworze. To też działa!
 			class-name="games.stendhal.server.maps.semos.village.RatsCreatures" />
 		<configurator
 			class-name="games.stendhal.server.maps.semos.village.SheepSellerNPC" />
+		<configurator
+      		class-name="games.stendhal.server.maps.semos.village.FightTrainingNPC" />
 
 		<portal x="16" y="34" ref="guard_house_entrance">
 			<destination zone="int_semos_guard_house" ref="entrance" />
