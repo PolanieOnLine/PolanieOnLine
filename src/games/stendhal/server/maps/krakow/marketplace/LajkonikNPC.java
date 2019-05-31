@@ -67,6 +67,8 @@ public class LajkonikNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Jeżeli chcesz mogę ci opowiedzieć #'historię' z roku #'1287'.");
 				addOffer("Mam do zaoferowania #'długi łuk' oraz #'wzmocnione drewniane strzały'.");
+				addReply("wzmocnione drewniane strzały", "Te strzały są ulepszoną wersją zwykłych drewnianych strzał. Są zrobione z bardzo mocnego dębu wzmonionego odrobiną żeliwa. Powiedz mi tylko #buy <liczba> #'wzmocniona drewniana strzała'.");
+				addReply("długi łuk", "Powiedz mi tylko #buy #'długi łuk'.");
 				// ceny: długi łuk - 1200; wzmocniona drewniana strzała - 4/5/6
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("selllajkonik")), false);
 				addGoodbye();
