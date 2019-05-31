@@ -88,7 +88,25 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 								return left < 0;
 							}
 						})));
-		
+
+		// quests about finding dragons
+		achievements.add(createAchievement("friend.quests.dragons", "Przyjaciel smoków", "Znalazł wszystkie ukrywające się smoki",
+				Achievement.HARD_BASE_SCORE, true,
+				new AndCondition(
+						// Meet Dragons
+						new ChatCondition() {
+							@Override
+							public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+								if (!player.hasQuest("where_dragon")) {
+									return false;
+								}
+								final String npcDoneText = player.getQuest("where_dragon");
+								final String[] done = npcDoneText.split(";");
+								final int left = 13 - done.length;
+								return left < 0;
+							}
+						})));
+
 		// earn over 250 karma
 		achievements.add(createAchievement("friend.karma.250", "Dobry samarytanin", "Zdobył 250 karmy",
 				Achievement.MEDIUM_BASE_SCORE, true,

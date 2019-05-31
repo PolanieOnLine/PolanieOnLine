@@ -51,13 +51,18 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 															new PlayerHasKilledNumberOfCreaturesCondition("lew", 30),
 															new PlayerHasKilledNumberOfCreaturesCondition("słoń", 50)
 															)));
-		fightingAchievements.add(createAchievement("fight.general.ents", "Drwal", "Zabij 10 drzewców, 10 drzewcowych and 10 uschłych drzewców", Achievement.MEDIUM_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.ents", "Drwal", "Zabij 10 drzewców, 10 drzewcowych i 10 uschłych drzewców", Achievement.MEDIUM_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition(10, "drzewiec", "drzewcowa", "uschły drzewiec")));
 		fightingAchievements.add(createAchievement("fight.special.rare", "Kłusownik", "Zabił każdego rzadkiego potwora", Achievement.HARD_BASE_SCORE, true,
 				new KilledRareCreatureCondition()));
 		fightingAchievements.add(createAchievement("fight.general.dragonsslayer", "Pogroma smoków", "Zabił conajmniej 1 smoka każdego rodzaju", Achievement.HARD_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition(1, "szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok", "czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny", "dwugłowy zielony smok", "dwugłowy czerwony smok", "niebieski dwugłowy smok", "dwugłowy czarny smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski")));
-		
+		fightingAchievements.add(createAchievement("fight.general.angels", "Diabeł wcielony", "Zabił conajmniej 1 aniołka, anioła, archanioła i serafina", Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(1, "aniołek", "anioł", "archanioł", "serafin")));
+		fightingAchievements.add(createAchievement("fight.general.darkangels", "Łowca mrocznych aniołów", "Zabił conajmniej 1 upadłego anioła, szkieleta anioła, anioła ciemność, archanioła ciemności i azazela", Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(1, "upadły anioł", "szkielet anioł", "anioł ciemności", "archanioł ciemności", "azazel")));
+		fightingAchievements.add(createAchievement("fight.general.deaths", "Władca śmierci", "Zabił conajmniej 1 śmierć, czarną śmierć, złotą śmierć, kostuchę, kostuchę różową, kostuchę wielką, kostuchę różową wielką i kostuchę złotą wielką", Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(1, "śmierć", "czarna śmierć", "złota śmierć", "kostucha", "kostucha różowa", "kostucha wielka", "kostucha różowa wielka", "kostucha złota wielka")));
 		fightingAchievements.add(createAchievement("fight.special.all", "Legenda", "Zabił sam wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSoloAllCreaturesCondition()));
 		fightingAchievements.add(createAchievement("fight.special.allshared", "Wojownik drużyny", "Zabił z drużyną wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
