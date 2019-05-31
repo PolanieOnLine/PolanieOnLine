@@ -69,9 +69,14 @@ import games.stendhal.server.util.TimeUtil;
 	private static Logger logger = Logger.getLogger(KillBlordroughs.class);
 
 	protected static List<String> BLORDROUGHS = Arrays.asList(
-			"blordrough kwatermistrz",
-			"uzbrojony lider",
-			"superczłowiek");
+           "blordrough kwatermistrz",
+           "uzbrojony lider",
+           "superczłowiek",
+           "żołnierz blordrough",
+           "elitarny żołnierz",
+           "piechota blordrough",
+           "kapitan blordrough",
+           "generał blordrough");
 
 	/**
 	 * function returns list of blordrough creatures.
@@ -295,25 +300,25 @@ import games.stendhal.server.util.TimeUtil;
 	private void step_1() {
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
-				new GreetingMatchesNameCondition(npc.getName()), 
+				new GreetingMatchesNameCondition(npc.getName()),
 				false,
 				ConversationStates.ATTENDING,
 				"Pozdrawiam. Przyszedłeś zaciągnąć się do wojska?",
 				null);
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.YES_MESSAGES,
-				new GreetingMatchesNameCondition(npc.getName()), 
+				new GreetingMatchesNameCondition(npc.getName()),
 				false,
 				ConversationStates.ATTENDING,
 				"Ha! Dobrze, dałbym Ci wtedy #'zadanie'...",
 				null);
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.NO_MESSAGES,
-				new GreetingMatchesNameCondition(npc.getName()), 
+				new GreetingMatchesNameCondition(npc.getName()),
 				false,
 				ConversationStates.ATTENDING,
 				"Ha! Cóż nie pozwolę Ci zapisać się do wojska, ale możesz nam #zaoferować jakąś zbroję...",
-				null);	
+				null);
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("Blordrough","blordrough","blordroughs"),
 				null,
