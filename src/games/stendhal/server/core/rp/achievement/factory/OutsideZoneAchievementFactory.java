@@ -69,7 +69,7 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 		list.add(createAchievement("zone.special.bank", "Depozyt", "Odwiedził wszystkie banki", 
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesCondition("int_semos_bank", "int_nalwor_bank", "int_kirdneh_bank"/**, "int_gdansk_bank"*/, 
-												"int_fado_bank", "int_magic_bank", "int_ados_bank", "int_zakopane_bank_0")));
+												"int_fado_bank", "int_magic_bank", "int_ados_bank", "int_zakopane_bank_0", "int_krakow_bank_0")));
 		return list;
 	}
 
