@@ -56,9 +56,9 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 		list.add(createAchievement("zone.outside.wieliczka", "Kraina soli", "Odwiedził wszystkie obszary w regionie Wieliczka", 
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("wieliczka", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.tatry", "Góral", "Odwiedził wszystkie obszary w regionie Tatry", 
+		/**list.add(createAchievement("zone.outside.tatry", "Góral", "Odwiedził wszystkie obszary w regionie Tatry", 
 									Achievement.HARD_BASE_SCORE, true,
-									new PlayerVisitedZonesInRegionCondition("tatry", Boolean.TRUE, Boolean.TRUE)));
+									new PlayerVisitedZonesInRegionCondition("tatry", Boolean.TRUE, Boolean.TRUE)));*/
 		list.add(createAchievement("zone.outside.desert", "Wszędzie piasek?!", "Odwiedził wszystkie obszary w regionie pustynnym", 
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("desert", Boolean.TRUE, Boolean.TRUE)));
