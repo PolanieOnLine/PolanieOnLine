@@ -102,20 +102,4 @@ public class StatusResistancesList {
 		this.resistances = resistanceList;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder st = new StringBuilder();
-		int idx = 0;
-		for (Map.Entry<StatusType, Double> stype : resistances.entrySet()) {
-			if (idx > 0) {
-				st.append(", " + stype.getKey().toString() + "=" + stype.getValue().toString());
-			} else {
-				st.append(stype.getKey().toString() + "=" + stype.getValue().toString());
-			}
-
-			idx++;
-		}
-
-		return st.toString();
-	}
 }
