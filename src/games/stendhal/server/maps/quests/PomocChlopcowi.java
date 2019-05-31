@@ -52,7 +52,7 @@ import marauroa.common.Pair;
  * <li> Eonna checks your kills and then thanks you.
  * <p>
  * REWARD:
- * <li> 500 XP, karma
+ * <li> 550 XP, karma
  * <p>
  * REPETITIONS:
  * <li> None.
@@ -147,7 +147,7 @@ public class PomocChlopcowi extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Adaś");
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new IncreaseKarmaAction(5.0));
-		reward.add(new IncreaseXPAction(500));
+		reward.add(new IncreaseXPAction(550));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		// the player returns to Eonna after having started the quest.
