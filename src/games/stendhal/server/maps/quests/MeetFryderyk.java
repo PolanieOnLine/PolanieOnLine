@@ -12,10 +12,13 @@
 // Based on MeetMonogomes
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.ExamineChatAction;
+import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -27,6 +30,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +61,10 @@ public class MeetFryderyk extends AbstractQuest {
 
 		npc.addGreeting(null, new SayTextAction("Witaj ponownie [name]. W czym mogę #pomóc tym razem?"));
 
+		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new IncreaseXPAction(100));
+		reward.add(new SetQuestAction("Fryderyk", "done"));
+
 		// A little trick to make NPC remember if it has met
 		// player before and react accordingly
 		// NPC_name quest doesn't exist anywhere else neither is
@@ -70,7 +78,7 @@ public class MeetFryderyk extends AbstractQuest {
 				"Witaj nieznajomy! Nie bądź zbyt onieśmielony, gdy ludzie siedzą cicho lub są zajęci... " +
 				"strach przed zbójami i ich hersztem padł na całe Zakopane. Jesteśmy " +
 				"trochę zaniepokojeni. Mogę dać Tobie trochę rad odnośnie zawierania przyjaźni. Chciałbyś je usłyszeć?",
-				new SetQuestAction("Fryderyk", "done"));
+				new MultipleActions(reward));
 
 		npc.add(
 			ConversationStates.ATTENDING,
