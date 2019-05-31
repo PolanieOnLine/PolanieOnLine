@@ -107,7 +107,7 @@ public class MeetPietrek extends AbstractQuest {
 
 		//player returns to Hayunn having killed a rat
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
-		actions.add(new IncreaseXPAction(50));
+		actions.add(new IncreaseXPAction(150));
 		actions.add(new SetQuestAction(QUEST_SLOT, "killed"));
 
 		npc.add(
@@ -155,7 +155,7 @@ public class MeetPietrek extends AbstractQuest {
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new EquipItemAction("money", 25));
-		reward.add(new IncreaseXPAction(50));
+		reward.add(new IncreaseXPAction(150));
 		reward.add(new SetQuestAction(QUEST_SLOT, "taught"));
 		reward.add(new ExamineChatAction("npcgenowefa.png", "Gaździna Jadźka", "Centrum Zakopanego."));
 
@@ -211,7 +211,7 @@ public class MeetPietrek extends AbstractQuest {
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
 		reward2.add(new EquipItemAction("puklerz"));
-		reward2.add(new IncreaseXPAction(50));
+		reward2.add(new IncreaseXPAction(250));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.INFORMATION_8,
