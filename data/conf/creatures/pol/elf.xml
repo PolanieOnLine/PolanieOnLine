@@ -7,8 +7,8 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_maskotka" tileid="pol_elfy_gorskie.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="238"/>
-			<def value="26"/>
+			<atk value="200"/>
+			<def value="19"/>
 			<hp value="252"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -36,14 +36,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_sluzka" tileid="pol_elfy_gorskie.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="252"/>
+			<atk value="211"/>
 			<def value="27"/>
 			<hp value="266"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="37"/>
-		<experience value="1457"/>
+		<experience value="1470"/>
 		<respawn value="1310"/>
 		<corpse name="human"/>
 		<drops>
@@ -67,14 +67,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_dama" tileid="pol_elfy_gorskie.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="258"/>
+			<atk value="220"/>
 			<def value="27"/>
 			<hp value="274"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="38"/>
-		<experience value="1533"/>
+		<experience value="1640"/>
 		<respawn value="1510"/>
 		<corpse name="human"/>
 		<drops>
@@ -97,14 +97,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_strazniczka" tileid="pol_elfy_gorskie.png:9"/>
 		<description/>
 		<attributes>
-			<atk value="272"/>
+			<atk value="231"/>
 			<def value="28"/>
 			<hp value="288"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="40"/>
-		<experience value="1691"/>
+		<experience value="1760"/>
 		<respawn value="1610"/>
 		<corpse name="human"/>
 		<drops>
@@ -128,14 +128,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_lider" tileid="pol_elfy_gorskie.png:6"/>
 		<description/>
 		<attributes>
-			<atk value="299"/>
+			<atk value="234"/>
 			<def value="30"/>
 			<hp value="317"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="44"/>
-		<experience value="2028"/>
+		<experience value="1820"/>
 		<respawn value="1910"/>
 		<corpse name="human"/>
 		<drops>
@@ -159,14 +159,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_wojownik" tileid="pol_elfy_gorskie.png:5"/>
 		<description/>
 		<attributes>
-			<atk value="299"/>
+			<atk value="240"/>
 			<def value="30"/>
 			<hp value="317"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="44"/>
-		<experience value="2028"/>
+		<experience value="1940"/>
 		<respawn value="1810"/>
 		<corpse name="human"/>
 		<drops>
@@ -190,14 +190,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_czarwonica" tileid="pol_elfy_gorskie.png:11"/>
 		<description/>
 		<attributes>
-			<atk value="306"/>
+			<atk value="246"/>
 			<def value="30"/>
 			<hp value="324"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="2117"/>
+		<experience value="2110"/>
 		<respawn value="2110"/>
 		<corpse name="human"/>
 		<drops>
@@ -222,14 +222,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_kaplan" tileid="pol_elfy_gorskie.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="306"/>
-			<def value="30"/>
+			<atk value="220"/>
+			<def value="41"/>
 			<hp value="324"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="2117"/>
+		<experience value="1710"/>
 		<respawn value="2010"/>
 		<corpse name="human"/>
 		<drops>
@@ -254,14 +254,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_czarnoksieznik" tileid="pol_elfy_gorskie.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="313"/>
-			<def value="31"/>
+			<atk value="231"/>
+			<def value="41"/>
 			<hp value="331"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="46"/>
-		<experience value="2208"/>
+		<experience value="2110"/>
 		<respawn value="2010"/>
 		<corpse name="human"/>
 		<drops>
@@ -286,14 +286,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_krolowa" tileid="pol_elfy_gorskie.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="347"/>
+			<atk value="270"/>
 			<def value="32"/>
 			<hp value="367"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="51"/>
-		<experience value="2690"/>
+		<experience value="2810"/>
 		<respawn value="3010"/>
 		<corpse name="human"/>
 		<drops>
@@ -317,18 +317,18 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_krol" tileid="pol_elfy_gorskie.png:8"/>
 		<description/>
 		<attributes>
-			<atk value="354"/>
+			<atk value="270"/>
 			<def value="33"/>
 			<hp value="374"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="52"/>
-		<experience value="2791"/>
+		<experience value="2910"/>
 		<respawn value="3010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[99,199]" probability="10.0"/>
+			<item value="money" quantity="[99,299]" probability="10.0"/>
 			<item value="magia ziemi" quantity="[1,15]" probability="100.0"/>
 		</drops>
 		<equips/>
@@ -347,14 +347,14 @@
 		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_lord" tileid="pol_elfy_gorskie.png:10"/>
 		<description/>
 		<attributes>
-			<atk value="401"/>
-			<def value="35"/>
+			<atk value="300"/>
+			<def value="39"/>
 			<hp value="425"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="59"/>
-		<experience value="3554"/>
+		<experience value="3110"/>
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>

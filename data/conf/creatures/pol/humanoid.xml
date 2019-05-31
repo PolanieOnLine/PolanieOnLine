@@ -7,7 +7,7 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny" tileid="pol_skrzaty_lesne.png:0"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="34"/>
+			<atk value="27"/>
 			<def value="6"/>
 			<hp value="36"/>
 			<speed value="1.0"/>
@@ -33,7 +33,7 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_wojownik" tileid="pol_skrzaty_lesne.png:1"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="48"/>
+			<atk value="41"/>
 			<def value="8"/>
 			<hp value="50"/>
 			<speed value="1.0"/>
@@ -60,7 +60,7 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_bohater" tileid="pol_skrzaty_lesne.png:2"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="61"/>
+			<atk value="52"/>
 			<def value="10"/>
 			<hp value="65"/>
 			<speed value="1.0"/>
@@ -86,7 +86,7 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_komandor" tileid="pol_skrzaty_lesne.png:3"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="75"/>
+			<atk value="60"/>
 			<def value="12"/>
 			<hp value="79"/>
 			<speed value="1.0"/>
@@ -112,14 +112,14 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_lider" tileid="pol_skrzaty_lesne.png:4"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="88"/>
+			<atk value="71"/>
 			<def value="13"/>
 			<hp value="94"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="13"/>
-		<experience value="196"/>
+		<experience value="200"/>
 		<respawn value="922"/>
 		<corpse name="gnome"/>
 		<drops>
@@ -138,14 +138,14 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy" tileid="pol_skrzaty_lesne.png:5"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="102"/>
+			<atk value="88"/>
 			<def value="15"/>
 			<hp value="108"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="15"/>
-		<experience value="259"/>
+		<experience value="260"/>
 		<respawn value="931"/>
 		<corpse name="gnome"/>
 		<drops>
@@ -164,14 +164,14 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_komandor" tileid="pol_skrzaty_lesne.png:6"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="116"/>
+			<atk value="91"/>
 			<def value="16"/>
 			<hp value="122"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="17"/>
-		<experience value="329"/>
+		<experience value="320"/>
 		<respawn value="941"/>
 		<corpse name="gnome"/>
 		<drops>
@@ -190,14 +190,14 @@
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_wojownik" tileid="pol_skrzaty_lesne.png:7"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
-			<atk value="129"/>
+			<atk value="97"/>
 			<def value="18"/>
 			<hp value="137"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="19"/>
-		<experience value="407"/>
+		<experience value="390"/>
 		<respawn value="953"/>
 		<corpse name="gnome"/>
 		<drops>
@@ -527,8 +527,8 @@
 		<type class="pol/zjawy" subclass="boginka" tileid="pol_zjawy.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="891"/>
-			<def value="53"/>
+			<atk value="450"/>
+			<def value="70"/>
 			<hp value="943"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -536,7 +536,7 @@
 			<visibility value="100"/>
 		</attributes>
 		<level value="131"/>
-		<experience value="18371"/>
+		<experience value="5999"/>
 		<respawn value="1999"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -557,7 +557,7 @@
 		<type class="pol/zjawy" subclass="strzyga_polna" tileid="pol_zjawy.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="156"/>
+			<atk value="204"/>
 			<def value="20"/>
 			<hp value="166"/>
 			<speed value="1.0"/>
@@ -566,7 +566,7 @@
 			<visibility value="100"/>
 		</attributes>
 		<level value="23"/>
-		<experience value="587"/>
+		<experience value="2340"/>
 		<respawn value="1410"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -601,7 +601,7 @@
 			<visibility value="100"/>
 		</attributes>
 		<level value="33"/>
-		<experience value="1171"/>
+		<experience value="2580"/>
 		<respawn value="1141"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -628,16 +628,16 @@
 		<type class="pol/zjawy" subclass="lesna_zjawa" tileid="pol_zjawy.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="755"/>
-			<def value="49"/>
-			<hp value="799"/>
+			<atk value="166"/>
+			<def value="55"/>
+			<hp value="666"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 			<resistance value="50"/>
 			<visibility value="50"/>
 		</attributes>
 		<level value="111"/>
-		<experience value="13316"/>
+		<experience value="1100"/>
 		<respawn value="666"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -722,16 +722,16 @@
 		<type class="pol/zjawy" subclass="zai_kostucha" tileid="pol_zjawy.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="2601"/>
-			<def value="99"/>
-			<hp value="2448"/>
+			<atk value="870"/>
+			<def value="70"/>
+			<hp value="3418"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 			<resistance value="100"/>
 			<visibility value="100"/>
 		</attributes>
 		<level value="340"/>
-		<experience value="224034"/>
+		<experience value="65430"/>
 		<respawn value="18600"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -756,8 +756,8 @@
 		<type class="pol/zjawy" subclass="zai_kostucha_rozowa" tileid="pol_zjawy.png:8"/>
 		<description/>
 		<attributes>
-			<atk value="2907"/>
-			<def value="107"/>
+			<atk value="910"/>
+			<def value="70"/>
 			<hp value="2736"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -765,7 +765,7 @@
 			<visibility value="100"/>
 		</attributes>
 		<level value="380"/>
-		<experience value="279349"/>
+		<experience value="71320"/>
 		<respawn value="19600"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -823,14 +823,14 @@
 		<type class="pol/czarty" subclass="czart_belzebub" tileid="pol_czarty.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="1020"/>
-			<def value="58"/>
+			<atk value="542"/>
+			<def value="34"/>
 			<hp value="1080"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="150"/>
-		<experience value="23914"/>
+		<experience value="7210"/>
 		<respawn value="4321"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -856,14 +856,14 @@
 		<type class="pol/czarty" subclass="czart_bezimienny" tileid="pol_czarty.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="816"/>
-			<def value="51"/>
+			<atk value="561"/>
+			<def value="41"/>
 			<hp value="864"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="120"/>
-		<experience value="15492"/>
+		<experience value="9476"/>
 		<respawn value="3456"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -889,14 +889,14 @@
 		<type class="pol/czarty" subclass="czart_lucyfer" tileid="pol_czarty.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="1288"/>
-			<def value="65"/>
+			<atk value="607"/>
+			<def value="57"/>
 			<hp value="1152"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="160"/>
-		<experience value="31730"/>
+		<experience value="12560"/>
 		<respawn value="4321"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -922,14 +922,14 @@
 		<type class="pol/czarty" subclass="czart_mefisto" tileid="pol_czarty.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="1152"/>
-			<def value="62"/>
+			<atk value="521"/>
+			<def value="32"/>
 			<hp value="1008"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="140"/>
-		<experience value="24969"/>
+		<experience value="5112"/>
 		<respawn value="4321"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -956,14 +956,14 @@
 		<type class="pol/czarty" subclass="czart_starszy" tileid="pol_czarty.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="755"/>
+			<atk value="410"/>
 			<def value="49"/>
 			<hp value="799"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="111"/>
-		<experience value="13316"/>
+		<experience value="4141"/>
 		<respawn value="1987"/>
 		<corpse name="humanoid"/>
 		<drops>

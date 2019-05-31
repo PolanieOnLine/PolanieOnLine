@@ -106,14 +106,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_bronz" tileid="pol_pokutniki.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="816"/>
-			<def value="51"/>
+			<atk value="600"/>
+			<def value="33"/>
 			<hp value="864"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="120"/>
-		<experience value="15492"/>
+		<experience value="21320"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -137,14 +137,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_fiolet" tileid="pol_pokutniki.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="850"/>
-			<def value="52"/>
+			<atk value="620"/>
+			<def value="35"/>
 			<hp value="900"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="125"/>
-		<experience value="16770"/>
+		<experience value="22320"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -168,14 +168,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_granat" tileid="pol_pokutniki.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="884"/>
-			<def value="53"/>
+			<atk value="640"/>
+			<def value="37"/>
 			<hp value="936"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="130"/>
-		<experience value="18099"/>
+		<experience value="23320"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -199,14 +199,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_szary" tileid="pol_pokutniki.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="918"/>
-			<def value="54"/>
+			<atk value="660"/>
+			<def value="39"/>
 			<hp value="972"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="135"/>
-		<experience value="19478"/>
+		<experience value="24320"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -230,14 +230,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_zielen" tileid="pol_pokutniki.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="1020"/>
-			<def value="58"/>
+			<atk value="700"/>
+			<def value="44"/>
 			<hp value="1080"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="150"/>
-		<experience value="23914"/>
+		<experience value="26320"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>

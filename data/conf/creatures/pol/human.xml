@@ -575,7 +575,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="27"/>
-		<experience value="798"/>
+		<experience value="870"/>
 		<respawn value="1160"/>
 		<corpse name="human"/>
 		<drops>
@@ -603,14 +603,14 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_oszust" tileid="pol_zbojnicy_lesni.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="245"/>
+			<atk value="255"/>
 			<def value="27"/>
 			<hp value="259"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="36"/>
-		<experience value="1383"/>
+		<experience value="1470"/>
 		<respawn value="1160"/>
 		<corpse name="human"/>
 		<drops>
@@ -636,7 +636,7 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_starszy" tileid="pol_zbojnicy_lesni.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="238"/>
+			<atk value="228"/>
 			<def value="26"/>
 			<hp value="252"/>
 			<speed value="0.4"/>
@@ -673,14 +673,14 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_zwiadowca" tileid="pol_zbojnicy_lesni.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="252"/>
+			<atk value="242"/>
 			<def value="27"/>
 			<hp value="266"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="37"/>
-		<experience value="1457"/>
+		<experience value="1520"/>
 		<respawn value="1460"/>
 		<corpse name="human"/>
 		<drops>
@@ -713,13 +713,13 @@
 		<description/>
 		<attributes>
 			<atk value="177"/>
-			<def value="22"/>
+			<def value="55"/>
 			<hp value="187"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="26"/>
-		<experience value="742"/>
+		<experience value="970"/>
 		<respawn value="1060"/>
 		<corpse name="human"/>
 		<drops>
@@ -747,14 +747,14 @@
 		<type class="pol/zbojnicy_lesni" subclass="banita" tileid="pol_zbojnicy_lesni.png:5"/>
 		<description/>
 		<attributes>
-			<atk value="265"/>
+			<atk value="165"/>
 			<def value="28"/>
 			<hp value="281"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="39"/>
-		<experience value="1611"/>
+		<experience value="870"/>
 		<respawn value="1520"/>
 		<corpse name="human"/>
 		<drops>
@@ -786,14 +786,14 @@
 		<type class="pol/zbojnicy_lesni" subclass="banita_gajowy" tileid="pol_zbojnicy_lesni.png:6"/>
 		<description/>
 		<attributes>
-			<atk value="197"/>
+			<atk value="141"/>
 			<def value="23"/>
 			<hp value="209"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="29"/>
-		<experience value="915"/>
+		<experience value="770"/>
 		<respawn value="1520"/>
 		<corpse name="human"/>
 		<drops>
@@ -821,14 +821,14 @@
 		<type class="pol/zbojnicy_lesni" subclass="banitka" tileid="pol_zbojnicy_lesni.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="204"/>
+			<atk value="130"/>
 			<def value="24"/>
 			<hp value="216"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="30"/>
-		<experience value="976"/>
+		<experience value="670"/>
 		<respawn value="1220"/>
 		<corpse name="human"/>
 		<drops>
@@ -863,7 +863,7 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski" tileid="pol_zbojnicy_gorscy.png:0"/>
 		<description>Oto zbójnik górski, który kryje się w jaskiniach.</description>
 		<attributes>
-			<atk value="401"/>
+			<atk value="301"/>
 			<def value="35"/>
 			<hp value="425"/>
 			<speed value="0.8"/>
@@ -890,7 +890,7 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_goniec" tileid="pol_zbojnicy_gorscy.png:1"/>
 		<description>Oto zbójnik górski goniec, który donosi o wszystkim hersztowi.</description>
 		<attributes>
-			<atk value="408"/>
+			<atk value="290"/>
 			<def value="35"/>
 			<hp value="432"/>
 			<speed value="1.0"/>
@@ -917,7 +917,7 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zlosliwy" tileid="pol_zbojnicy_gorscy.png:2"/>
 		<description>Oto zbójnik górski złośliwy, który chociaż gruby atakuje zwinnie.</description>
 		<attributes>
-			<atk value="422"/>
+			<atk value="342"/>
 			<def value="36"/>
 			<hp value="446"/>
 			<speed value="0.7"/>
@@ -944,7 +944,7 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zwiadowca" tileid="pol_zbojnicy_gorscy.png:3"/>
 		<description>Oto zbójnik górski zwiadowca, który atakuje cicho i nagle.</description>
 		<attributes>
-			<atk value="428"/>
+			<atk value="316"/>
 			<def value="36"/>
 			<hp value="454"/>
 			<speed value="0.9"/>
@@ -971,7 +971,7 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_starszy" tileid="pol_zbojnicy_gorscy.png:4"/>
 		<description>Oto zbójnik górski starszy, który chociaż brodę ma siwą zręcznie włada maczugą.</description>
 		<attributes>
-			<atk value="435"/>
+			<atk value="415"/>
 			<def value="37"/>
 			<hp value="461"/>
 			<speed value="0.5"/>
@@ -1029,15 +1029,15 @@
 		<type class="pol/wiesniacy" subclass="wiesniak" tileid="pol_wiesniacy.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="129"/>
+			<atk value="97"/>
 			<def value="18"/>
 			<hp value="137"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="19"/>
-		<experience value="407"/>
-		<respawn value="333"/>
+		<experience value="555"/>
+		<respawn value="555"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[1,3]" probability="100.0"/>
@@ -1066,14 +1066,14 @@
 		<type class="pol/wiesniacy" subclass="starzec" tileid="pol_wiesniacy.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="135"/>
+			<atk value="77"/>
 			<def value="18"/>
 			<hp value="133"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="24"/>
-		<experience value="533"/>
+		<experience value="444"/>
 		<respawn value="444"/>
 		<corpse name="human"/>
 		<drops>
@@ -1100,14 +1100,14 @@
 		<type class="pol/wiesniacy" subclass="gajowy" tileid="pol_wiesniacy.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="197"/>
+			<atk value="111"/>
 			<def value="23"/>
 			<hp value="209"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="29"/>
-		<experience value="915"/>
+		<experience value="777"/>
 		<respawn value="1120"/>
 		<corpse name="human"/>
 		<drops>
