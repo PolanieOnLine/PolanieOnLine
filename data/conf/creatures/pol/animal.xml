@@ -292,7 +292,7 @@
 		</ai>
 	</creature>
 	<!-- END: zwierzeta -->
-	
+
 	<!-- START: zwierzeta male -->
 	<creature name="szara mysz">
 		<type class="pol/zwierzeta_male" subclass="mysz_szara" tileid="pol_zwierzeta_male.png:0"/>
@@ -354,7 +354,182 @@
 		</ai>
 	</creature>
 	<!-- END: zwierzeta male -->
-	
+
+	<!-- START: malze -->
+	<creature name="małża">
+		<type class="pol/malze" subclass="malza" tileid="pol_malze.png:0"/>
+		<description>Widzisz małżę. Być może ma w środku coś cennego, ale muszla wydaje się być okropnie twarda!</description>
+		<attributes>
+			<atk value="20"/>
+			<def value="274"/>
+			<hp value="22"/>
+			<speed value="0.2"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="3"/>
+		<experience value="55"/>
+		<respawn value="1900"/>
+		<corpse name="shell"/>
+		<drops>
+			<item value="muszelka" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="małża z perłą">
+		<type class="pol/malze" subclass="malza_z_perla" tileid="pol_malze.png:1"/>
+		<description>Widzisz małżę z perłą. Ta błyskotka to na pewno coś cennego, ale muszla wydaje się być okropnie twarda!</description>
+		<attributes>
+			<atk value="34"/>
+			<def value="276"/>
+			<hp value="36"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="5"/>
+		<experience value="65"/>
+		<respawn value="90000"/>
+		<corpse name="shell"/>
+		<drops>
+			<item value="muszelka" quantity="[1,1]" probability="100.0"/>
+			<item value="wielka perła" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: malze -->
+
+	<!-- START: owady -->
+	<creature name="chmara much">
+		<type class="pol/owady" subclass="chmara_much" tileid="pol_owady.png:0"/>
+		<description>Oto muchy plujki. Przyciąga je smród padliny.</description>
+		<attributes>
+			<atk value="1"/>
+			<def value="1"/>
+			<hp value="5"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+			<resistance value="25"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="1"/>
+		<respawn value="159"/>
+		<corpse name="fly"/>
+		<drops/>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Bzzzyy!"/>
+				<sound value="pol-buzz"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rój os">
+		<type class="pol/owady" subclass="roj_os" tileid="pol_owady.png:1"/>
+		<description>Osy żądlą boleśnie. Jeśli masz przy sobie odtrutkę to przeżyjesz.</description>
+		<attributes>
+			<atk value="15"/>
+			<def value="30"/>
+			<hp value="30"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+			<resistance value="50"/>
+		</attributes>
+		<level value="0"/>
+		<experience value="5"/>
+		<respawn value="283"/>
+		<corpse name="fly"/>
+		<drops/>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Bzzzzzzzzzzzz!"/>
+				<sound value="pol-buzz"/>
+			</says>
+			<profile name="poisonous" params="3,trucizna"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="brave"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rój szerszeni">
+		<type class="pol/owady" subclass="roj_szerszeni" tileid="pol_owady.png:2"/>
+		<description>Jad szerszeni jest zabójczy. Mało kto przeżył ich atak.</description>
+		<attributes>
+			<atk value="41"/>
+			<def value="7"/>
+			<hp value="43"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="6"/>
+		<experience value="45"/>
+		<respawn value="904"/>
+		<corpse name="fly"/>
+		<drops/>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Bżżżżżżżżż!"/>
+				<sound value="pol-buzz"/>
+			</says>
+			<profile name="heal" params="1,50"/>
+			<profile name="poisonous" params="9,mocna trucizna"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="brave"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="motylek">
+		<type class="pol/owady" subclass="motylek" tileid="pol_owady.png:3"/>
+		<description>O! Popatrz! Leci motylek! Nie dosięgniesz go...</description>
+		<attributes>
+			<atk value="7"/>
+			<def value="2"/>
+			<hp value="7"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="1"/>
+		<respawn value="3000"/>
+		<corpse name="fly"/>
+		<drops/>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: owady -->
+
 	<!-- START: ptaki -->
 	<creature name="gołąbek">
 		<type class="pol/ptaki" subclass="golabek" tileid="pol_ptaki.png:0"/>
@@ -473,7 +648,7 @@
 		</ai>
 	</creature>
 	<!-- END: ptaki -->
-	
+
 	<!-- START: ptaki wielkie -->
 	<creature name="orzeł gigant">
 		<type class="pol/ptaki_wielkie" subclass="orzel_gigant" tileid="pol_ptaki_wielkie.png:0"/>
@@ -507,179 +682,4 @@
 		</ai>
 	</creature>
 	<!-- END: ptaki wielkie -->
-	
-	<!-- START: malze -->
-	<creature name="małża">
-		<type class="pol/malze" subclass="malza" tileid="pol_malze.png:0"/>
-		<description>Widzisz małżę. Być może ma w środku coś cennego, ale muszla wydaje się być okropnie twarda!</description>
-		<attributes>
-			<atk value="20"/>
-			<def value="274"/>
-			<hp value="22"/>
-			<speed value="0.2"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="3"/>
-		<experience value="55"/>
-		<respawn value="1900"/>
-		<corpse name="shell"/>
-		<drops>
-			<item value="muszelka" quantity="[1,1]" probability="100.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<says>
-			</says>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="coward"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="małża z perłą">
-		<type class="pol/malze" subclass="malza_z_perla" tileid="pol_malze.png:1"/>
-		<description>Widzisz małżę z perłą. Ta błyskotka to na pewno coś cennego, ale muszla wydaje się być okropnie twarda!</description>
-		<attributes>
-			<atk value="34"/>
-			<def value="276"/>
-			<hp value="36"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="5"/>
-		<experience value="65"/>
-		<respawn value="90000"/>
-		<corpse name="shell"/>
-		<drops>
-			<item value="muszelka" quantity="[1,1]" probability="100.0"/>
-			<item value="wielka perła" quantity="[1,1]" probability="0.005"/>
-		</drops>
-		<equips/>
-		<ai>
-			<says>
-			</says>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="coward"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-	<!-- END: malze -->
-	
-	<!-- START: owady -->
-	<creature name="chmara much">
-		<type class="pol/owady" subclass="chmara_much" tileid="pol_owady.png:0"/>
-		<description>Oto muchy plujki. Przyciąga je smród padliny.</description>
-		<attributes>
-			<atk value="1"/>
-			<def value="1"/>
-			<hp value="5"/>
-			<speed value="0.7"/>
-			<size value="1,1"/>
-			<resistance value="25"/>
-		</attributes>
-		<level value="0"/>
-		<experience value="1"/>
-		<respawn value="159"/>
-		<corpse name="fly"/>
-		<drops/>
-		<equips/>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Bzzzyy!"/>
-				<sound value="pol-buzz"/>
-			</says>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="coward"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="rój os">
-		<type class="pol/owady" subclass="roj_os" tileid="pol_owady.png:1"/>
-		<description>Osy żądlą boleśnie. Jeśli masz przy sobie odtrutkę to przeżyjesz.</description>
-		<attributes>
-			<atk value="15"/>
-			<def value="30"/>
-			<hp value="30"/>
-			<speed value="0.8"/>
-			<size value="1,1"/>
-			<resistance value="50"/>
-		</attributes>
-		<level value="0"/>
-		<experience value="5"/>
-		<respawn value="283"/>
-		<corpse name="fly"/>
-		<drops/>
-		<equips/>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Bzzzzzzzzzzzz!"/>
-				<sound value="pol-buzz"/>
-			</says>
-			<profile name="poisonous" params="3,trucizna"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="brave"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="rój szerszeni">
-		<type class="pol/owady" subclass="roj_szerszeni" tileid="pol_owady.png:2"/>
-		<description>Jad szerszeni jest zabójczy. Mało kto przeżył ich atak.</description>
-		<attributes>
-			<atk value="41"/>
-			<def value="7"/>
-			<hp value="43"/>
-			<speed value="0.9"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="6"/>
-		<experience value="45"/>
-		<respawn value="904"/>
-		<corpse name="fly"/>
-		<drops/>
-		<equips/>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Bżżżżżżżżż!"/>
-				<sound value="pol-buzz"/>
-			</says>
-			<profile name="heal" params="1,50"/>
-			<profile name="poisonous" params="9,mocna trucizna"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="brave"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="motylek">
-		<type class="pol/owady" subclass="motylek" tileid="pol_owady.png:3"/>
-		<description>O! Popatrz! Leci motylek! Nie dosięgniesz go...</description>
-		<attributes>
-			<atk value="7"/>
-			<def value="2"/>
-			<hp value="7"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
-			<resistance value="1"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="1"/>
-		<respawn value="3000"/>
-		<corpse name="fly"/>
-		<drops/>
-		<equips/>
-		<ai>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="coward"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-	<!-- END: owady -->
 </creatures>

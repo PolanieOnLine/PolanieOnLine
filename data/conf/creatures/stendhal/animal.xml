@@ -205,202 +205,6 @@
 
 	<!-- END: crustacean -->
 
-	<!-- START: fowl -->
-
-	<creature name="pisklak">
-		<type class="stendhal/farm_animal" subclass="chick" tileid="farm_animal.png:2"/>
-		<description>Oto pisklę. Woli nie oddalać się od kokoszki.</description>
-		<attributes>
-			<atk value="32"/>
-			<def value="7"/>
-			<hp value="25"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="10"/>
-		<respawn value="900"/>
-		<corpse name="small_winged" harmless="feathered" />
-		<drops>
-			<item value="udko" quantity="[1,1]" probability="70.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="pii piii"/>
-				<noise state="idle follow fight" value="pii piii pii"/>
-				<sound value="chicken-chick-1" />
-				<sound value="chicken-chick-2" />
-			</says>
-			<profile name="animal"/>
-			<profile name="patrolling"/>
-			<profile name="non offensive"/>
-			<profile name="coward"/>
-		</ai>
-	</creature>
-
-	<creature name="kogucik">
-		<type class="stendhal/animal" subclass="chicken" tileid="animal.png:25"/>
-		<description>Oto dorodny kogucik. W sam raz na rosół.</description>
-		<attributes>
-			<atk value="32"/>
-			<def value="7"/>
-			<hp value="25"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="10"/>
-		<respawn value="900"/>
-		<corpse name="small_winged" harmless="feathered" />    
-		<drops>
-			<item value="udko" quantity="[1,2]" probability="50.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="kooo kooooo koo"/>
-				<noise state="idle follow fight" value="koo koo koo"/>
-				<sound value="chicken-2"/>
-			</says>
-			<profile name="animal"/>
-			<profile name="non offensive"/>
-			<profile name="patrolling"/>
-			<profile name="coward"/>
-		</ai>
-	</creature>
-
-	<creature name="dodo">
-		<type class="stendhal/animal" subclass="dodo_bird" tileid="animal.png:29"/>
-		<description>Oto ptak dodo. Nie są czasem gatunkiem wymarłym?</description>
-		<attributes>
-			<atk value="57"/>
-			<def value="14"/>
-			<hp value="45"/>
-			<speed value="0.7"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="3"/>
-		<experience value="30"/>
-		<respawn value="900"/>
-		<corpse name="small_winged" harmless="feathered" />
-		<drops>
-			<item value="szynka" quantity="[1,3]" probability="60.0"/>
-			<item value="szpinak" quantity="[1,1]" probability="20.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Bałk Bałk"/>
-				<noise state="idle follow fight" value="Bałłłk"/>
-			</says>
-			<profile name="animal"/>
-			<profile name="patrolling"/>
-			<profile name="non offensive"/>
-		</ai>
-	</creature>
-
-	<creature name="kokoszka">
-		<type class="stendhal/farm_animal" subclass="hen" tileid="farm_animal.png:6"/>
-		<description>Oto kokoszka. Zrani cię jeśli zbliżysz się do jej piskląt.</description>
-		<attributes>
-			<atk value="29"/>
-			<def value="6"/>
-			<hp value="25"/>
-			<speed value="0.7"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="10"/>
-		<respawn value="900"/>
-		<corpse name="small_winged" harmless="feathered" />
-		<drops>
-			<item value="udko" quantity="[1,2]" probability="70.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="piii piiii"/>
-				<noise state="idle follow fight" value="pii piiii piii"/>
-				<sound value="chicken-1"/>
-			</says>
-			<profile name="animal"/>
-			<profile name="patrolling"/>
-			<profile name="non offensive"/>
-		</ai>
-	</creature>
-
-	<creature name="pingwin">
-		<type class="stendhal/animal" subclass="penguin" tileid="animal.png:16"/>
-		<description>Oto mały i głupiutki pingwin.</description>
-		<attributes>
-			<atk value="36"/>
-			<def value="7"/>
-			<hp value="20"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="10"/>
-		<respawn value="900"/>
-		<corpse name="small_animal" harmless="feathered"/>
-		<drops>
-			<item value="mięso" quantity="[2,4]" probability="60.0"/>
-			<item value="dorsz" quantity="[2,3]" probability="30.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Oou! Oou!"/>
-				<noise state="idle follow fight" value="*człap* *człap*"/>
-				<sound value="penguin-1" />
-				<sound value="penguin-2" />
-			</says>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="gołąb">
-		<type class="stendhal/animal" subclass="pigeon" tileid="animal.png:23"/>
-		<description>Oto gołąb. Uwielbia jeść nasionka.</description>
-		<attributes>
-			<atk value="36"/>
-			<def value="7"/>
-			<hp value="20"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-			<resistance value="5"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="10"/>
-		<respawn value="900"/>
-		<corpse name="small_winged" harmless="feathered" />
-		<drops>
-			<item value="udko" quantity="[1,2]" probability="40.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<sound value="bird-pigeon-1" />
-				<sound value="bird-pigeon-flap-1" />
-			</says>
-			<profile name="animal"/>
-			<profile name="non offensive"/>
-			<profile name="patrolling"/>
-			<profile name="coward"/>
-		</ai>
-	</creature>
-
-	<!-- END: fowl -->
-
 	<!-- START: insect -->
 
 	<creature name="zabójcza pszczoła">
@@ -1708,5 +1512,200 @@
 	</creature>
 
 	<!-- END: reptile -->
+	
+	<!-- START: fowl -->
 
+	<creature name="pisklak">
+		<type class="stendhal/farm_animal" subclass="chick" tileid="farm_animal.png:2"/>
+		<description>Oto pisklę. Woli nie oddalać się od kokoszki.</description>
+		<attributes>
+			<atk value="32"/>
+			<def value="7"/>
+			<hp value="25"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="udko" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="pii piii"/>
+				<noise state="idle follow fight" value="pii piii pii"/>
+				<sound value="chicken-chick-1" />
+				<sound value="chicken-chick-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="non offensive"/>
+			<profile name="coward"/>
+		</ai>
+	</creature>
+
+	<creature name="kogucik">
+		<type class="stendhal/animal" subclass="chicken" tileid="animal.png:25"/>
+		<description>Oto dorodny kogucik. W sam raz na rosół.</description>
+		<attributes>
+			<atk value="32"/>
+			<def value="7"/>
+			<hp value="25"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />    
+		<drops>
+			<item value="udko" quantity="[1,2]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="kooo kooooo koo"/>
+				<noise state="idle follow fight" value="koo koo koo"/>
+				<sound value="chicken-2"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+			<profile name="coward"/>
+		</ai>
+	</creature>
+
+	<creature name="dodo">
+		<type class="stendhal/animal" subclass="dodo_bird" tileid="animal.png:29"/>
+		<description>Oto ptak dodo. Nie są czasem gatunkiem wymarłym?</description>
+		<attributes>
+			<atk value="57"/>
+			<def value="14"/>
+			<hp value="45"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="3"/>
+		<experience value="30"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="szynka" quantity="[1,3]" probability="60.0"/>
+			<item value="szpinak" quantity="[1,1]" probability="20.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Bałk Bałk"/>
+				<noise state="idle follow fight" value="Bałłłk"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="non offensive"/>
+		</ai>
+	</creature>
+
+	<creature name="kokoszka">
+		<type class="stendhal/farm_animal" subclass="hen" tileid="farm_animal.png:6"/>
+		<description>Oto kokoszka. Zrani cię jeśli zbliżysz się do jej piskląt.</description>
+		<attributes>
+			<atk value="29"/>
+			<def value="6"/>
+			<hp value="25"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="udko" quantity="[1,2]" probability="70.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="piii piiii"/>
+				<noise state="idle follow fight" value="pii piiii piii"/>
+				<sound value="chicken-1"/>
+			</says>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+			<profile name="non offensive"/>
+		</ai>
+	</creature>
+
+	<creature name="pingwin">
+		<type class="stendhal/animal" subclass="penguin" tileid="animal.png:16"/>
+		<description>Oto mały i głupiutki pingwin.</description>
+		<attributes>
+			<atk value="36"/>
+			<def value="7"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_animal" harmless="feathered"/>
+		<drops>
+			<item value="mięso" quantity="[2,4]" probability="60.0"/>
+			<item value="dorsz" quantity="[2,3]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Oou! Oou!"/>
+				<noise state="idle follow fight" value="*człap* *człap*"/>
+				<sound value="penguin-1" />
+				<sound value="penguin-2" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="gołąb">
+		<type class="stendhal/animal" subclass="pigeon" tileid="animal.png:23"/>
+		<description>Oto gołąb. Uwielbia jeść nasionka.</description>
+		<attributes>
+			<atk value="36"/>
+			<def value="7"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="feathered" />
+		<drops>
+			<item value="udko" quantity="[1,2]" probability="40.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bird-pigeon-1" />
+				<sound value="bird-pigeon-flap-1" />
+			</says>
+			<profile name="animal"/>
+			<profile name="non offensive"/>
+			<profile name="patrolling"/>
+			<profile name="coward"/>
+		</ai>
+	</creature>
+
+	<!-- END: fowl -->
 </creatures>
