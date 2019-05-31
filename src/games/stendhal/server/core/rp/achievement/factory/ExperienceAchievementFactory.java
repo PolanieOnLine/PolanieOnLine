@@ -34,8 +34,8 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> xpAchievements = new LinkedList<Achievement>();
-		xpAchievements.add(createAchievement("xp.level.000", "Parobek", "Osiągnął poziom 0", Achievement.EASY_BASE_SCORE, true,
-												new LevelGreaterThanCondition(-1)));
+		xpAchievements.add(createAchievement("xp.level.010", "Parobek", "Osiągnął poziom 10", Achievement.EASY_BASE_SCORE, true,
+												new LevelGreaterThanCondition(9)));
 		xpAchievements.add(createAchievement("xp.level.050", "Chłop", "Osiągnął poziom 50", Achievement.EASY_BASE_SCORE, true,
 												new LevelGreaterThanCondition(49)));
 		xpAchievements.add(createAchievement("xp.level.100", "Kmieć", "Osiągnął poziom 100", Achievement.EASY_BASE_SCORE, true,
@@ -58,6 +58,8 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 												new LevelGreaterThanCondition(499)));
 		xpAchievements.add(createAchievement("xp.level.550", "Książe", "Osiągnął poziom 550", Achievement.HARD_BASE_SCORE, true,
 												new LevelGreaterThanCondition(549)));
+		xpAchievements.add(createAchievement("xp.level.597", "Król", "Osiągnął poziom 597", Achievement.LEGENDARY_BASE_SCORE, true,
+				new LevelGreaterThanCondition(597)));
 		return xpAchievements;
 	}
 
