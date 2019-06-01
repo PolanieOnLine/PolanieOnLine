@@ -34,9 +34,9 @@ public class AgeAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> ageAchievements = new LinkedList<Achievement>();
-		ageAchievements.add(createAchievement("age.less.050", "Pierwsze godziny na świecie!", "Spędziłeś 50 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.010", "Pierwsze godziny na świecie!", "Spędziłeś 10 godzin w grze",
 				Achievement.EASY_BASE_SCORE, true,
-												new AgeGreaterThanCondition(2999)));
+												new AgeGreaterThanCondition(599)));
 		ageAchievements.add(createAchievement("age.less.100", "Coraz starszy...", "Spędziłeś 100 godzin w grze",
 				Achievement.EASY_BASE_SCORE, true,
 												new AgeGreaterThanCondition(5999)));
