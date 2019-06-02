@@ -4,7 +4,7 @@
 
 	<!-- START: piraci -->
 	<creature name="pirat">
-		<type class="pol/pol_piraci" subclass="pirat" tileid="pol_piraci.png:0"/>
+		<type class="pol/piraci" subclass="pirat" tileid="pol_piraci.png:0"/>
 		<description>Oto pirat. Jest już doświadczonym piratem.</description>
 		<attributes>
 			<atk value="340"/>
@@ -33,7 +33,7 @@
 	</creature>
 
 	<creature name="kamrat">
-		<type class="pol/pol_piraci" subclass="pirat_kamrat" tileid="pol_piraci.png:1"/>
+		<type class="pol/piraci" subclass="pirat_kamrat" tileid="pol_piraci.png:1"/>
 		<description>Oto kamrat. Brał udział w wielu wydarzeniach.</description>
 		<attributes>
 			<atk value="360"/>
@@ -62,7 +62,7 @@
 	</creature>
 
 	<creature name="marynarz">
-		<type class="pol/pol_piraci" subclass="pirat_marynarz" tileid="pol_piraci.png:2"/>
+		<type class="pol/piraci" subclass="pirat_marynarz" tileid="pol_piraci.png:2"/>
 		<description>Oto marynarz. Brał udział w wielu abordażach.</description>
 		<attributes>
 			<atk value="367"/>
@@ -89,7 +89,7 @@
 	</creature>
 
 	<creature name="krwawy pirat">
-		<type class="pol/pol_piraci" subclass="pirat_krwawy" tileid="pol_piraci.png:3"/>
+		<type class="pol/piraci" subclass="pirat_krwawy" tileid="pol_piraci.png:3"/>
 		<description>Oto krwawy pirat. Jest osobą bardzo znaną oraz poważaną przez resztę załogantów.</description>
 		<attributes>
 			<atk value="388"/>
@@ -118,7 +118,7 @@
 	</creature>
 
 	<creature name="wilk morski">
-		<type class="pol/pol_piraci" subclass="pirat_wilk_morski" tileid="pol_piraci.png:4"/>
+		<type class="pol/piraci" subclass="pirat_wilk_morski" tileid="pol_piraci.png:4"/>
 		<description>Oto wilk morski. Jego sława wykracza poza organizację.</description>
 		<attributes>
 			<atk value="401"/>
@@ -147,7 +147,7 @@
 	</creature>
 
 	<creature name="kapitan piratów">
-		<type class="pol/pol_piraci" subclass="pirat_kapitan" tileid="pol_piraci.png:5"/>
+		<type class="pol/piraci" subclass="pirat_kapitan" tileid="pol_piraci.png:5"/>
 		<description>Oto  kapitan piratów. Posiada własną łajbę. Podlegają mu wszyscy oficerowie, podoficerowie oraz załoga jego statku.</description>
 		<attributes>
 			<atk value="415"/>
@@ -177,7 +177,7 @@
 	</creature>
 
 	<creature name="kwatermistrz">
-		<type class="pol/pol_piraci" subclass="pirat_kwatermistrz" tileid="pol_piraci.png:6"/>
+		<type class="pol/piraci" subclass="pirat_kwatermistrz" tileid="pol_piraci.png:6"/>
 		<description>Oto kwatermistrz. Dba o zaopatrzenie, prowadzi również spis ładunku i zajmuje się podziałem łupu.</description>
 		<attributes>
 			<atk value="435"/>
