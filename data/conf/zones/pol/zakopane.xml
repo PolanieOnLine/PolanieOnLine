@@ -4,9 +4,38 @@
 		** Load zones. Written from left to right and from top to bottom.
 		** Please respect it!
 	-->
+	
+	<!-- START MAP -->
+	<zone name="mapa_startowa" level="0" x="0" y="0" file="Level 0/zakopane/start_map.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<!-- <entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="85" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, pol-bird_kukulka</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="40" y="75">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, pol-bird_kukulka</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">20</parameter>
+			</implementation>
+		</entity> -->
+	</zone>
 
 	<!-- Ground level -->
-
 	<!-- zakopane_nw -->
 	<zone name="0_zakopane_nw" level="0" x="513184" y="18432" file="Level 0/zakopane/zakopane_nw.tmx">
 		<attributes>
