@@ -16,6 +16,7 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -143,9 +144,10 @@ public class PomocChlopcowi extends AbstractQuest {
 	}
 
 	private void step_3() {
-
 		final SpeakerNPC npc = npcs.get("Adaś");
+
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new EquipItemAction("buty skórzane"));
 		reward.add(new IncreaseKarmaAction(5.0));
 		reward.add(new IncreaseXPAction(550));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
