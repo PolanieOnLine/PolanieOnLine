@@ -254,7 +254,7 @@ public class ZamowienieStrazy extends AbstractQuest {
     public void addToWorld() {
     	fillQuestInfo(
 			"Zamówienie Straży",
-			"Gwardzista złożył zamówienie u asystenta kowala na kilkadziesiąt zbrój wykonanych z dobrego materiału dla straży królewskiej.",
+			"Gwardzista złożył zamówienie u asystenta kowala na kilkadziesiąt zbroi wykonanych z dobrego materiału dla straży królewskiej.",
 			false);
         step_1();
         step_2();
