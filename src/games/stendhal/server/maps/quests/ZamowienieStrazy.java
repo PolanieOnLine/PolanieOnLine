@@ -70,7 +70,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Super. Najpierw przekaż tę karteczkę do kowala #'Samsona'. On ci dokładnie określi ile będziemy potrzebować zapasów.",
+			"Super. Najpierw przekaż tę karteczkę z zamówieniem do kowala #'Samsona'. On ci dokładnie określi ile będziemy potrzebować zapasów.",
 			action);
 
 		npc.add(
