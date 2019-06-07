@@ -692,7 +692,7 @@
 		<type class="stendhal/elf" subclass="elf" tileid="elf.png:3"/>
 		<description>Oto elf. Kocha las i życie w pokoju.</description>
 		<attributes>
-			<atk value="177"/>
+			<atk value="159"/>
 			<def value="30"/>
 			<hp value="115"/>
 			<speed value="0.5"/>
@@ -711,6 +711,7 @@
 			<item value="tarcza płytowa" quantity="[1,1]" probability="1.0"/>
 			<item value="spodnie elfickie" quantity="[1,1]" probability="0.05"/>
 			<item value="hełm elficki" quantity="[1,1]" probability="1.0" />
+			<item value="mały eliksir" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -729,7 +730,7 @@
 		<type class="stendhal/elf" subclass="militia_elf" tileid="elf.png:6"/>
 		<description>Oto elf milicjant. Oni ciężko trenują, aby ciebie pokonać!</description>
 		<attributes>
-			<atk value="200"/>
+			<atk value="170"/>
 			<def value="44"/>
 			<hp value="100"/>
 			<speed value="1.0"/>
@@ -749,6 +750,7 @@
 			<item value="lwia tarcza" quantity="[1,1]" probability="0.5"/>
 			<item value="bułat" quantity="[1,1]" probability="1.0"/>
 			<item value="pas elficki" quantity="[1,1]" probability="0.2"/>
+			<item value="mały eliksir" quantity="[1,1]" probability="17.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -767,8 +769,8 @@
 		<type class="stendhal/elf" subclass="archer_elf" tileid="elf.png:0"/>
 		<description>Oto elf łucznik. Mogą zadać sporo obrażeń za pomocą strzał.</description>
 		<attributes>
-			<atk value="198"/>
-			<ratk value="198"/>
+			<atk value="178"/>
+			<ratk value="178"/>
 			<def value="42"/>
 			<hp value="105"/>
 			<speed value="0.6"/>
@@ -807,7 +809,7 @@
 		<type class="stendhal/elf" subclass="soldier_elf" tileid="elf.png:7"/>
 		<description>Oto elf żołnierz. Dobry znajomy elfa milicjanta.</description>
 		<attributes>
-			<atk value="216"/>
+			<atk value="184"/>
 			<def value="40"/>
 			<hp value="140"/>
 			<speed value="1.0"/>
@@ -827,6 +829,7 @@
 			<item value="katana" quantity="[1,1]" probability="1.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.1"/>
 			<item value="pas elficki" quantity="[1,1]" probability="0.25"/>
+			<item value="mały eliksir" quantity="[1,1]" probability="26.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -845,7 +848,7 @@
 		<type class="stendhal/elf" subclass="mage_elf" tileid="elf.png:5"/>
 		<description>Oto panna elf. Kiedy w ciszy stoi nieopodal lasu przepełnia ją magia.</description>
 		<attributes>
-			<atk value="242"/>
+			<atk value="218"/>
 			<def value="63"/>
 			<hp value="100"/>
 			<speed value="1.0"/>
@@ -860,10 +863,10 @@
 			<item value="miecz elficki" quantity="[1,1]" probability="1.0"/>
 			<item value="katana" quantity="[1,1]" probability="5.0"/>
 			<item value="pałasz" quantity="[1,1]" probability="2.0"/>
-			<item value="butelka wody" quantity="[2,4]" probability="20.0"/>
 			<item value="hełm elficki" quantity="[1,1]" probability="2.0" />
 			<item value="różdżka" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,5]" probability="10.0"/>
+			<item value="mały eliksir" quantity="[1,2]" probability="30.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -882,7 +885,7 @@
 		<type class="stendhal/elf" subclass="commander_elf" tileid="elf.png:2"/>
 		<description>Oto elf komandor. Ma kontrole nad armią elfów.</description>
 		<attributes>
-			<atk value="285"/>
+			<atk value="271"/>
 			<def value="102"/>
 			<hp value="70"/>
 			<speed value="1.0"/>
@@ -904,6 +907,7 @@
 			<item value="wzmocniona lwia tarcza" quantity="[1,1]" probability="2.0"/>
 			<item value="miecz dwuręczny" quantity="[1,1]" probability="1.0"/>
 			<item value="pas elficki" quantity="[1,1]" probability="1.25"/>
+			<item value="mały eliksir" quantity="[1,2]" probability="35.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -939,6 +943,7 @@
 			<item value="bułat" quantity="[1,1]" probability="6.0"/>
 			<item value="miecz elficki" quantity="[1,1]" probability="1.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="1.0"/>
+			<item value="butelka wody" quantity="[2,4]" probability="20.0"/>
 			<item value="magia ziemi" quantity="[1,9]" probability="11.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="0.1"/>
 		</drops>

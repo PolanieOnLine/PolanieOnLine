@@ -8,7 +8,7 @@
 		<type class="stendhal/gnome" subclass="gnome" tileid="gnome.png:0"/>
 		<description>Oto gnom. Żyje w górach.</description>
 		<attributes>
-			<atk value="51"/>
+			<atk value="46"/>
 			<def value="7"/>
 			<hp value="50"/>
 			<speed value="0.5"/>
@@ -42,7 +42,7 @@
 		<type class="stendhal/gnome" subclass="woman_gnome" tileid="gnome.png:1"/>
 		<description>Oto panna gnom. Wciąż poleruje skały w górach.</description>
 		<attributes>
-			<atk value="52"/>
+			<atk value="47"/>
 			<def value="7"/>
 			<hp value="50"/>
 			<speed value="0.5"/>
@@ -54,7 +54,7 @@
 		<corpse name="tiny_humanoid" harmless="gnome" />
 		<drops>
 			<item value="money" quantity="[2,5]" probability="70.0"/>
-			<item value="mały eliksir" quantity="[1,1]" probability="2.5"/>
+			<item value="buteleczka wody" quantity="[1,3]" probability="30.0"/>
 			<item value="antidotum" quantity="[1,1]" probability="10.0"/>
 			<item value="borowik" quantity="[1,10]" probability="10.0"/>
 			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
@@ -94,7 +94,8 @@
 			<item value="money" quantity="[4,10]" probability="70.0"/>
 			<item value="marchew" quantity="[2,10]" probability="20.0"/>
 			<item value="borowik" quantity="[1,10]" probability="10.0"/>
-			<item value="buteleczka wody" quantity="[1,1]" probability="20.0"/>
+			<item value="buteleczka wody" quantity="[1,4]" probability="25.0"/>
+			<item value="butelka wody" quantity="[1,2]" probability="15.0"/>
 			<item value="proca" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips>
@@ -129,7 +130,8 @@
 			<item value="money" quantity="[6,14]" probability="70.0"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="15.0"/>
 			<item value="kapelusz leśniczego" quantity="[1,1]" probability="20.0"/>
-			<item value="buteleczka wody" quantity="[1,1]" probability="20.0"/>
+			<item value="buteleczka wody" quantity="[1,3]" probability="25.0"/>
+			<item value="butelka wody" quantity="[1,2]" probability="15.0"/>
 			<item value="skóra zwierzęca" quantity="[1,1]" probability="6.0"/>
 			<item value="proca" quantity="[1,1]" probability="40.0"/>
 		</drops>
