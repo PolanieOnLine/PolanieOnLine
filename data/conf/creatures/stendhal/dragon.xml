@@ -15,7 +15,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="145"/>
-		<experience value="17435"/>
+		<experience value="31900"/>
 		<respawn value="10600"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
@@ -60,7 +60,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="195"/>
-		<experience value="28274"/>
+		<experience value="75300"/>
 		<respawn value="22600"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
@@ -105,7 +105,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="50"/>
-		<experience value="2830"/>
+		<experience value="1750"/>
 		<respawn value="1660"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
@@ -146,7 +146,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="55"/>
-		<experience value="2923"/>
+		<experience value="2210"/>
 		<respawn value="1650"/>
 		<corpse name="dragon_3x2" harmless="dragon_3x2" width="3" height="2"/>
 		<drops>
@@ -185,7 +185,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="70"/>
-		<experience value="4455"/>
+		<experience value="4130"/>
 		<respawn value="2240"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
@@ -230,7 +230,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="125"/>
-		<experience value="14120"/>
+		<experience value="20700"/>
 		<respawn value="7300"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
@@ -272,7 +272,7 @@
 			<size value="6,5"/>
 		</attributes>
 		<level value="200"/>
-		<experience value="53377"/>
+		<experience value="82000"/>
 		<respawn value="24000"/>
 		<corpse name="dragon_6x6" width="6" height="6"/>
 		<drops>
@@ -319,7 +319,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="137"/>
-		<experience value="17083"/>
+		<experience value="25980"/>
 		<respawn value="10000"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
@@ -361,7 +361,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="139"/>
-		<experience value="16151"/>
+		<experience value="26100"/>
 		<respawn value="11000"/>
 		<corpse name="dragon_3x3" width="3" height="3"/>
 		<drops>
