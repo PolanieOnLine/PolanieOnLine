@@ -213,7 +213,7 @@
 		</ai>
 	</creature>
 	<!-- END: skrzaty -->
-	
+
 	<!-- START: wilkolaki -->
 	<creature name="wilkołak żołdak">
 		<type class="pol/wilkolaki" subclass="wilkolak_zoldak" tileid="pol_wilkolaki.png:0"/>
@@ -730,7 +730,7 @@
 			<resistance value="100"/>
 			<visibility value="100"/>
 		</attributes>
-		<level value="340"/>
+		<level value="210"/>
 		<experience value="65430"/>
 		<respawn value="18600"/>
 		<corpse name="humanoid"/>
@@ -764,7 +764,7 @@
 			<resistance value="100"/>
 			<visibility value="100"/>
 		</attributes>
-		<level value="380"/>
+		<level value="230"/>
 		<experience value="71320"/>
 		<respawn value="19600"/>
 		<corpse name="humanoid"/>
