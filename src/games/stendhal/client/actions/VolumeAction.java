@@ -41,9 +41,9 @@ class VolumeAction implements SlashAction {
 		if (params[0] == null) {
 			float volume = ClientSingletonRepository.getSound().getVolume();
 			UserInterface ui = ClientSingletonRepository.getUserInterface();
-			ui.addEventLine(new StandardEventLine("Please use /volume <name> <value> to adjust the volume."));
-			ui.addEventLine(new HeaderLessEventLine("<name> is an item from the following list. \"master\" refers to the global volume setting.", NotificationType.CLIENT));
-			ui.addEventLine(new HeaderLessEventLine("<value> is in the range from 0 to 100 but may be set higher.", NotificationType.CLIENT));
+			ui.addEventLine(new StandardEventLine("Użyj /volume <nazwa> <wartość>, aby regulować poziom głośności."));
+			ui.addEventLine(new HeaderLessEventLine("<nazwa> jest to pozycja z poniższej listy. \"master\" przedstawia głobalne ustawienia głośności.", NotificationType.CLIENT));
+			ui.addEventLine(new HeaderLessEventLine("<wartość> jest z zakresu od 0 do 100, ale może być ustawiona wyższa.", NotificationType.CLIENT));
 			ui.addEventLine(new HeaderLessEventLine("master -> " + Numeric.floatToInt(volume, 100.0f), NotificationType.CLIENT));
 
 			for (String name : ClientSingletonRepository.getSound().getGroupNames()) {
@@ -54,7 +54,7 @@ class VolumeAction implements SlashAction {
 			changeVolume(params[0], params[1]);
 		} else {
 			ClientSingletonRepository.getUserInterface().addEventLine(
-					new HeaderLessEventLine("Please use /volume for help.",
+					new HeaderLessEventLine("Użyj /volume dla pomocy.",
 					NotificationType.ERROR));
 		}
 		return true;
@@ -88,12 +88,12 @@ class VolumeAction implements SlashAction {
 					ClientSingletonRepository.getSound().changeVolume(Numeric.intToFloat(volume, 100.0f));
 					WtWindowManager.getInstance().setProperty("sound.volume." + groupName, Integer.toString(volume));
 				} else {
-					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("No sound group \"" + groupName + "\" does exist"));
-					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Please type \"/volume show\" for a valid list of groups"));
+					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Nie istnieje żadna grupa dźwięku \"" + groupName + "\""));
+					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Wpisz \"/volume show\", aby zobaczyć listę grup"));
 				}
 			}
 		} catch (NumberFormatException exception) {
-			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(volumeString + " is not a valid number", NotificationType.ERROR));
+			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(volumeString + " nie jest prawidłowym numerem", NotificationType.ERROR));
 		}
 	}
 
