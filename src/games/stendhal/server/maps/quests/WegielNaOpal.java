@@ -73,7 +73,7 @@ public class WegielNaOpal extends AbstractQuest {
 		}
 		res.add("Przyjąłem jego zadanie i przyniose mu węgiel.");
 		if (!isCompleted(player)) {
-			res.add("Stasek poprosił mnie, aby mu przyniósł " + Grammar.a_noun(player.getRequiredItemName(QUEST_SLOT,0)) + ".");
+			res.add("Stasek poprosił mnie, abym mu przyniósł " + Grammar.a_noun(player.getRequiredItemName(QUEST_SLOT,0)) + ".");
 		}
 		if (isCompleted(player)) {
 			res.add("Super! Teraz mogę kupować uzbrojenie w sklepie u Staska.");
