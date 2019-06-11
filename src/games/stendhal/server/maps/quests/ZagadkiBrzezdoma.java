@@ -242,7 +242,7 @@ import games.stendhal.server.entity.player.Player;
 					npc.say("Ha ha ha ☺ Dałeś nabrać się Marynie. Toż to stary kawał jej o kapuście i gąsienicach."
 					+ " Ale dość żartów. Jak już tu jesteś zrobisz coś dla mnie. Udaj się do Edgarda. Znajdziesz go na ziemiach Zakonu Rycerzy Cienia."
 					+ " Spaceruje koło zamku, przekaż mu moje #pozdrowienia i powiedz mu kto był odpowiednikiem Zeusa w wierzeniach słowiańskich."
-					+ " Odpowiedź znajdziesz na #'http://www.polanieonline.eu/'" );
+					+ " Odpowiedź znajdziesz na #'http://polanieonline.eu/'" );
 					player.setQuest(QUEST_SLOT, "bogowie");
 				};
 		});

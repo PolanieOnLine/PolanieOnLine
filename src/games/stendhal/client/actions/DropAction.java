@@ -45,7 +45,7 @@ class DropAction implements SlashAction {
 			try {
 				quantity = Integer.parseInt(params[0]);
 			} catch (final NumberFormatException ex) {
-				ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Invalid quantity: " + params[0]));
+				ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Nieprawidłowa ilość: " + params[0]));
 				return true;
 			}
 
@@ -80,7 +80,7 @@ class DropAction implements SlashAction {
 				return true;
 			}
 		}
-		ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("You don't have any " + singularItemName));
+		ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Nie posiadasz " + singularItemName));
 		return true;
 	}
 

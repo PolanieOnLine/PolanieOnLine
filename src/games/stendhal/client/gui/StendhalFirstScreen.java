@@ -154,7 +154,7 @@ public class StendhalFirstScreen extends JFrame {
 		Action helpAction = new AbstractAction("Pomoc") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BareBonesBrowserLaunch.openURL("http://www.polanieonline.eu/wprowadzenie");
+				BareBonesBrowserLaunch.openURL("http://polanieonline.eu/wprowadzenie");
 			}
 		};
 		helpAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
@@ -215,7 +215,7 @@ public class StendhalFirstScreen extends JFrame {
 		// LoginGUI
 		//
 		setTitle(gameName + " " + stendhal.VERSION
-				+ " - darmowa gra MMORPG - www.polanieonline.eu");
+				+ " - darmowa gra MMORPG - polanieonline.eu");
 
 		url = DataLoader.getResource(ClientGameConfiguration.get("GAME_ICON"));
 		this.setIconImage(new ImageIcon(url).getImage());

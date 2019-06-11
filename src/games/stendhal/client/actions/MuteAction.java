@@ -40,9 +40,9 @@ class MuteAction implements SlashAction {
 		WtWindowManager.getInstance().setProperty("sound.play", Boolean.toString(play));
 		ClientSingletonRepository.getSound().mute(!play, true, new Time(2, Time.Unit.SEC));
 		if (play) {
-			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Sounds are now on."));
+			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Dźwięki są teraz włączone."));
 		} else {
-			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Sounds are now off."));
+			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Dźwięki są teraz wyłączone."));
 		}
 		return true;
 	}

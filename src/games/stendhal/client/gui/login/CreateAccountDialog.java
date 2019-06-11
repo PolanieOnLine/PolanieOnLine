@@ -375,7 +375,7 @@ public class CreateAccountDialog extends JDialog {
 					setEnabled(true);
 					JOptionPane.showMessageDialog(
 							owner,
-							"Twoje IP zostało zablokowane. Jeżeli nie zgadzasz się z decyzją to skontaktuj się z nami na http://www.polanieonline.eu/kontakt-gmgags",
+							"Twoje IP zostało zablokowane. Jeżeli nie zgadzasz się z decyzją to skontaktuj się z nami na http://polanieonline.eu/kontakt-gmgags.html",
 							"Zablokowane IP", JOptionPane.ERROR_MESSAGE);
 				} catch (final LoginFailedException e) {
 					progressBar.cancel();

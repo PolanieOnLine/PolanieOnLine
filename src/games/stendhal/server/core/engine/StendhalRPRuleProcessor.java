@@ -80,7 +80,7 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 	/** list of super admins read from admins.list. */
 	private static Map<String, String> adminNames;
 	/** welcome message unless overwritten by an URL */
-	private static String welcomeMessage = "Witaj w #'PolanieOnLine'! Odwiedź stronę - #'www.polanieonline.eu'! \nPamiętaj, aby nikomu &'nie udostępniać' hasła do swojego konta! Jeżeli znalazłeś jakieś błędy w grze to zgłoś to nam do &'supportu'.";
+	private static String welcomeMessage = "Witaj w #'PolanieOnLine'! Odwiedź stronę - #'polanieonline.eu'! \nPamiętaj, aby nikomu &'nie udostępniać' hasła do swojego konta! Jeżeli znalazłeś jakieś błędy w grze to zgłoś to nam do &'supportu'.";
 
 	/** The Singleton instance. */
 	protected static StendhalRPRuleProcessor instance;

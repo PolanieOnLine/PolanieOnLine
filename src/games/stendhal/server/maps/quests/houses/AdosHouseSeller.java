@@ -99,7 +99,7 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 				null,
 				new BuyHouseChatAction(getCost(), QUEST_SLOT));
 		
-		addJob("Jestem agentem nieruchomości, po prostu sprzedaje domy w Ados. Zapytaj o #cenę jeżeli jesteś zainteresowany. Nasz katalog domów znajduje się na  #http://www.polanieonline.eu/");
+		addJob("Jestem agentem nieruchomości, po prostu sprzedaje domy w Ados. Zapytaj o #cenę jeżeli jesteś zainteresowany. Nasz katalog domów znajduje się na  #http://polanieonline.eu/");
 		addReply(Arrays.asList("citizen", "obywatelstwo"), "Przeprowadzam nieformalną ankietę wśród mieszkańców. A mówię o moim przyjacielu Joshua, burmistrzu Ados, małej dziewczynce Anna, rybaku Pequod, pięknej Zara, a nawet o duchu Carena. Wspólnie wydadzą wiarygodną opinie.");
 
 		setDescription("Wygląda na inteligentnego.");

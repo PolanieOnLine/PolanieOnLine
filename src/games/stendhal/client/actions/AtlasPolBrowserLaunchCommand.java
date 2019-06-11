@@ -13,59 +13,65 @@
 package games.stendhal.client.actions;
 
 import games.stendhal.client.ClientSingletonRepository;
-import games.stendhal.client.gui.chatlog.StandardEventLine;
-import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.client.entity.User;
+import games.stendhal.client.gui.BareBonesBrowserLaunch;
+import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
+import games.stendhal.common.NotificationType;
 
 /**
- * sets a client configuration parameter
+ * opens the atlas at the current position in the browser.
  *
  * @author hendrik
  */
-class ConfigAction implements SlashAction {
+class AtlasPolBrowserLaunchCommand implements SlashAction{
 
 	/**
-	 * Execute a chat command.
-	 *
-	 * @param params
-	 *            The formal parameters.
-	 * @param remainder
-	 *            Line content after parameters.
-	 *
-	 * @return <code>true</code> if was handled.
+	 * Opens the atlas URL at the current position
+	 * 
+	 * @param params ignored
+	 * @param remainder ignored
+	 * @return <code>true</code>
 	 */
 	@Override
-	public boolean execute(String[] params, String remainder) {
-		String oldValue = WtWindowManager.getInstance().getProperty(params[0], "{undefined}");
-		if ((remainder == null) || remainder.equals("")) {
-			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(
-					params[0] + "=" + oldValue));
-			return true;
+	public boolean execute(final String[] params, final String remainder) {
+		StringBuilder url = new StringBuilder();
+		User user = User.get();
+		url.append("http://polanieonline.eu/world/kraina-pras%C5%82owia%C5%84ska");
+		if (user != null) {
+			url.append("?me=");
+			url.append(user.getZoneName());
+			url.append(".");
+			url.append(Math.round(user.getX()));
+			url.append(".");
+			url.append(Math.round(user.getY()));
 		}
-
-		WtWindowManager.getInstance().setProperty(params[0], remainder);
-		ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(
-				"Zostały zmienione właściwości konfiguracji " + params[0] + " z \"" + oldValue + "\" na \"" + remainder + "\"."));
+		
+		String urlString = url.toString();
+		ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+				"Próbuję otworzyć adres #" + urlString + " w twojej przeglądarce internetowej.",
+		NotificationType.CLIENT));
+		BareBonesBrowserLaunch.openURL(urlString);
 		return true;
 	}
 
 	/**
 	 * Get the maximum number of formal parameters.
-	 *
+	 * 
 	 * @return The parameter count.
 	 */
 	@Override
 	public int getMaximumParameters() {
-		return 1;
+		return 0;
 	}
 
 	/**
 	 * Get the minimum number of formal parameters.
-	 *
+	 * 
 	 * @return The parameter count.
 	 */
 	@Override
 	public int getMinimumParameters() {
-		return 1;
+		return 0;
 	}
 
 }

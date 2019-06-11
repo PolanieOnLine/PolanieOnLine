@@ -32,7 +32,7 @@ class SoundAction implements SlashAction {
 	 */
 	@Override
 	public boolean execute(final String[] params, final String remainder) {
-		j2DClient.get().addEventLine(new StandardEventLine("This command is outdated. Please use \"/volume\" for changing the volume and \"/mute\" for muting all audio"));
+		j2DClient.get().addEventLine(new StandardEventLine("Ta komenda jest już nieużywana. Użyj \"/volume\", aby zmieniać poziom głośności i \"/mute\", aby wyciszyć wszystkie odgłosy"));
 		return true;
 	}
 

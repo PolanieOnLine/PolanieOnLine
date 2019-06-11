@@ -72,7 +72,7 @@ class GMHelpAction implements SlashAction {
 				lines = Arrays.asList(
 					"/alter <wojownik> <atrybut> <tryb> <wartość> \tStatystyki altera <atrybut> <wojownik> przez podaną ilość; <tryb> może być ADD, SUB, SET lub UNSET",
 					"Przykłady <atrybut>: atk, def, base_hp, hp, atk_xp, def_xp, xp, outfit",
-					"Gdy zmieniamy 'outfit' to powinieneś użyć trybu SET i wprowadzić 10-cyfrowy numer; pierwsze 3 miejsca to ustawienia 'włosów' pożniej 2 kolejne miejsca to 'głowa', następne 3 miejsca to 'wygląd', a ostatnie 2 miejsca to 'ciało'",
+					"Gdy zmieniamy 'outfit' to powinieneś użyć trybu SET i wprowadzić 9-cyfrowy numer; pierwsze 2 miejsca to ustawienia 'włosów' pożniej 2 kolejne miejsca to 'głowa', następne 3 miejsca to 'ubranie', a ostatnie 2 miejsca to 'ciało'",
 					"Na przykład: #'/alter testplayer outfit set 151010301'",
 					"<testplayer> będzie wyglądał jak danter" );
 			} else if ("script".equals(params[0])) {
