@@ -43,7 +43,7 @@ class GMHelpAction implements SlashAction {
 	    List<String> lines;
 		if (params[0] == null) {
 			lines = Arrays.asList(
-				"Aby dowiedzieć się więcej odwiedź #http://www.polanieonline.eu",
+				"Aby dowiedzieć się więcej odwiedź #http://polanieonline.eu",
 				"Oto najczęściej używane komendy przez GA-ów i GM-ów:",
 				"- /gmhelp [alter|script|support]  \t więcej informacji o alter, script lub skrótach supportanswer", 
 				"- /supportanswer <wojownik> <wiadomość> \t Wysyła odpowiedź na pytanie. Zastąp <wiadomość> skrótami $faq, $faqpvp, $knownbug, $bugstracker, $rules i $abuse jeżeli utworzone.",
