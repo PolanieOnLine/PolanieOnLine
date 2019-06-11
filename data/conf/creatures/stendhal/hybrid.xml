@@ -15,7 +15,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="350"/>
-		<experience value="64896"/>
+		<experience value="430000"/>
 		<respawn value="70000"/>
 		<corpse name="huge_animal" width="2" height="2"/>
 		<drops>
@@ -51,7 +51,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="39"/>
-		<experience value="2014"/>
+		<experience value="990"/>
 		<respawn value="1500"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -86,7 +86,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="15"/>
-		<experience value="364"/>
+		<experience value="180"/>
 		<respawn value="1230"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -122,7 +122,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="26"/>
-		<experience value="950"/>
+		<experience value="430"/>
 		<respawn value="1310"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -157,7 +157,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="34"/>
-		<experience value="1457"/>
+		<experience value="730"/>
 		<respawn value="1410"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -959,7 +959,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="170"/>
-		<experience value="22786"/>
+		<experience value="50800"/>
 		<respawn value="3000"/>
 		<corpse name="giant_humanoid" width="2" height="2"/>
 		<drops>
