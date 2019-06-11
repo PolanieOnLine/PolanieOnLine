@@ -269,7 +269,7 @@ public final class stendhal {
 
 			try {
 				WtWindowManager wm = WtWindowManager.getInstance();
-				String style = wm.getProperty("ui.style", "Wood (default)");
+				String style = wm.getProperty("ui.style", "Wood (domyślny)");
 				StyledLookAndFeel look = new StyledLookAndFeel(StyleFactory.createStyle(style));
 				UIManager.setLookAndFeel(look);
 				/*
