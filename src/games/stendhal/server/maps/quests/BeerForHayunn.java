@@ -40,26 +40,26 @@ import java.util.List;
 
 /**
  * QUEST: Beer For Hayunn
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li>Hayunn Naratha (the veteran warrior in Semos)</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li>Hayunn asks you to buy a beer from Margaret.</li>
  * <li>Margaret sells you a beer.</li>
  * <li>Hayunn sees your beer, asks for it and then thanks you.</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>50 XP</li>
  * <li>20 gold coins</li>
  * <li>Karma: 10</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li>None</li>
@@ -69,7 +69,7 @@ public class BeerForHayunn extends AbstractQuest {
 	public static final String QUEST_SLOT = "beer_hayunn";
 	private static final String OTHER_QUEST_SLOT = "meet_hayunn";
 
-	
+
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -90,7 +90,7 @@ public class BeerForHayunn extends AbstractQuest {
 			res.add("Mam sok z chmielu.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Dałem sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 50 pd.");
+			res.add("Dałem sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 500 pd.");
 		}
 		return res;
 	}
@@ -99,19 +99,19 @@ public class BeerForHayunn extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Hayunn Naratha");
 
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			// Don't give the task until the previous is completed to avoid
 			// confusing Hayunn in a lot of places later.
 			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT),
 					new QuestCompletedCondition(OTHER_QUEST_SLOT)),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Zaschło mi w gardle, ale nie mogę opuścić mojego posterunku! Czy mógłbyś mi przynieść #sok z chmielu z #oberży?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Dziękuję zawsze to samo, ale nie chcę mi się pić. Wciąż jestem na służbie! Będę potrzebował trzeźwego umysłu, gdy pokażą się potwory...",
 			null);
 
@@ -163,14 +163,14 @@ public class BeerForHayunn extends AbstractQuest {
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestActiveCondition(QUEST_SLOT),
 					new PlayerHasItemWithHimCondition("sok z chmielu")),
-			ConversationStates.QUEST_ITEM_BROUGHT, 
+			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Hej! Czy ten sok z chmielu jest dla mnie?", null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestActiveCondition(QUEST_SLOT),
 					new NotCondition(new PlayerHasItemWithHimCondition("sok z chmielu"))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Hej, wciąż czekam na sok z chmielu, pamiętasz? Poza tym co mogę zrobić dla Ciebie?",
 			null);
 
@@ -218,10 +218,10 @@ public class BeerForHayunn extends AbstractQuest {
 	}
 
 	public String getTitle() {
-		
+
 		return "Piwo dla Hayunn";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 0;
@@ -231,7 +231,7 @@ public class BeerForHayunn extends AbstractQuest {
 	public String getRegion() {
 		return Region.SEMOS_CITY;
 	}
-	
+
 	@Override
 	public String getNPCName() {
 		return "Hayunn Naratha";
