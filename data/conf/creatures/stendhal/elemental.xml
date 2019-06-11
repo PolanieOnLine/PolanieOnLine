@@ -15,7 +15,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="50"/>
-		<experience value="2778"/>
+		<experience value="1750"/>
 		<respawn value="1660"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -44,7 +44,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="60"/>
-		<experience value="3713"/>
+		<experience value="2760"/>
 		<respawn value="1800"/>
 		<corpse name="small_boneless"/>
 		<drops>
@@ -63,7 +63,7 @@
 			<profile name="human"/>
 			<profile name="patrolling"/>
 		</ai>
-	</creature> 
+	</creature>
 
 	<!-- END: air -->
 
@@ -80,7 +80,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="44"/>
-		<experience value="2196"/>
+		<experience value="1290"/>
 		<respawn value="1660"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -112,7 +112,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="50"/>
-		<experience value="2744"/>
+		<experience value="1750"/>
 		<respawn value="1660"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -145,7 +145,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="50"/>
-		<experience value="2775"/>
+		<experience value="1750"/>
 		<respawn value="1660"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -183,7 +183,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="50"/>
-		<experience value="2650"/>
+		<experience value="1750"/>
 		<respawn value="1660"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -218,7 +218,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="1387"/>
+		<experience value="1360"/>
 		<respawn value="1620"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -255,7 +255,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="160"/>
-		<experience value="20679"/>
+		<experience value="42500"/>
 		<respawn value="13700"/>
 		<corpse name="giant_humanoid" width="2" height="2"/>
 		<drops>
@@ -298,7 +298,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="32"/>
-		<experience value="1560"/>
+		<experience value="640"/>
 		<respawn value="1380"/>
 		<corpse name="rock" harmless="rock" />
 		<drops>
@@ -337,7 +337,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="170"/>
-		<experience value="22053"/>
+		<experience value="50800"/>
 		<respawn value="16000"/>
 		<corpse name="giant_humanoid" width="2" height="2"/>
 		<drops>
@@ -373,7 +373,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="50"/>
-		<experience value="2701"/>
+		<experience value="1750"/>
 		<respawn value="1660"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -413,7 +413,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="24"/>
-		<experience value="773"/>
+		<experience value="370"/>
 		<respawn value="1290"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -445,7 +445,7 @@
 			<size value="5,3"/>
 		</attributes>
 		<level value="80"/>
-		<experience value="5485"/>
+		<experience value="5920"/>
 		<respawn value="2820"/>
 		<blood name="green" />
 		<corpse name="leafy_5x3" harmless="leafy_5x3" width="5" height="3" />
@@ -484,7 +484,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="83"/>
-		<experience value="7113"/>
+		<experience value="6540"/>
 		<respawn value="3010"/>
 		<blood name="green" />
 		<corpse name="flora_ent" harmless="flora_ent" width="2" height="1"/>
@@ -523,7 +523,7 @@
 			<size value="5,3"/>
 		</attributes>
 		<level value="113"/>
-		<experience value="11476"/>
+		<experience value="15000"/>
 		<respawn value="3200"/>
 		<blood name="green" />
 		<corpse name="leafy_5x3" harmless="leafy_5x3" width="5" height="3"/>
