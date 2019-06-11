@@ -45,7 +45,7 @@ class ScreenshotAction implements SlashAction {
 	 */
 	@Override
 	public boolean execute(String[] params, String remainder) {
-		ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", "Taking a screenshot...", NotificationType.CLIENT));
+		ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", "Tworzenie zrzutu ekranu...", NotificationType.CLIENT));
 		// Drawing the image needs to be done in EDT.
 		GameScreen screen = GameScreen.get();
 		int width = screen.getWidth();
@@ -61,7 +61,7 @@ class ScreenshotAction implements SlashAction {
 			protected String doInBackground() throws Exception {
 				File file = new File(fileName);
 				ImageIO.write(img, "png", file);
-				return "Screenshot was saved to " + fileName;
+				return "Zrzut ekranu został zapisany w " + fileName;
 			}
 
 			@Override
@@ -72,7 +72,7 @@ class ScreenshotAction implements SlashAction {
 				} catch (InterruptedException e) {
 					Logger.getLogger(ScreenshotAction.class).error(e);
 				} catch (ExecutionException e) {
-					msg = "Failed to save screenshot to " + fileName + " : ";
+					msg = "Nie powiodło się zapisywanie zrzutu ekranu do " + fileName + " : ";
 		            Throwable cause = e.getCause();
 		            Logger.getLogger(ScreenshotAction.class).error(e);
 		            if (cause != null) {
@@ -95,7 +95,7 @@ class ScreenshotAction implements SlashAction {
 	 */
 	private String getFileName() {
 		String time = new SimpleDateFormat("-yyyy.MM.dd-HH.mm.ss").format(new Date());
-		return stendhal.getGameFolder() + stendhal.GAME_NAME.toLowerCase() + time + ".png";
+		return stendhal.getGameFolder() + "/" + stendhal.GAME_NAME.toLowerCase() + time + ".png";
 	}
 
 	/**
