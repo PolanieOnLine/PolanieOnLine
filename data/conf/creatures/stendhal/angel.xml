@@ -14,7 +14,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="400"/>
-		<experience value="378321"/>
+		<experience value="623000"/>
 		<respawn value="160000"/>
 		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
 		<drops>
@@ -62,7 +62,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="500"/>
-		<experience value="478800"/>
+		<experience value="750000"/>
 		<respawn value="100000"/>
 		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
 		<drops>
@@ -112,7 +112,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="210"/>
-		<experience value="90189"/>
+		<experience value="90000"/>
 		<respawn value="28000"/>
 		<corpse name="giant_humanoid" harmless="halo_large_red" width="2" height="2"/>
 		<drops>
@@ -153,7 +153,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="90"/>
-		<experience value="7616"/>
+		<experience value="8190"/>
 		<respawn value="3530"/>
 		<corpse name="humanoid" harmless="halo" />
 		<drops>
@@ -196,7 +196,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="230"/>
-		<experience value="145369"/>
+		<experience value="123000"/>
 		<respawn value="36000"/>
 		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
 		<drops>
@@ -240,7 +240,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="330"/>
-		<experience value="230178"/>
+		<experience value="363000"/>
 		<respawn value="40000"/>
 		<corpse name="giant_humanoid" harmless="halo_large" width="2" height="2"/>
 		<drops>
