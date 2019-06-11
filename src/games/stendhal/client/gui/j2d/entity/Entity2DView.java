@@ -905,8 +905,10 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		case ADMIN_ALTER:
 			if (type.equals("player")) {
 				j2DClient.get().setChatLine("/alter " + entity.getTitle() + " ");
-			} else {
+			} else if (type.equals("creature")){
 				j2DClient.get().setChatLine("/altercreature #" + id + " '" + entity.getTitle() + "';atk;def;hp;xp");
+			} else {
+				j2DClient.get().setChatLine("/alter #" + id + " ");
 			}
 			break;
 
