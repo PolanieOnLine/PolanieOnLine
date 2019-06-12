@@ -183,7 +183,7 @@ public class MakaFarmera extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Zabierz mąkę do Edny",
+			"Zapasy mąki",
 			"Krakowska piekarnia potrzebuje zapasów mąki do pieczenia chleba.",
 			false);
 		step_1();
