@@ -625,9 +625,9 @@
 		</equipable>
 	</item>
 
-	<item name="krew smoka">
+	<item name="smocza krew">
 		<type class="resource" subclass="fiolka_czerwona" tileid="-1"/>
-		<description>Oto krew smoka. W rękach czarownika ma niezwykłe właściwości.</description>
+		<description>Oto smocza krew. W rękach czarownika ma niezwykłe właściwości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -645,9 +645,9 @@
 		</equipable>
 	</item>
 
-	<item name="krew zatruta">
+	<item name="zatruta krew">
 		<type class="resource" subclass="fiolka_trucizna" tileid="-1"/>
-		<description>Oto krew zatruta. W rękach czarownika ma niezwykłe właściwości.</description>
+		<description>Oto zatruta krew. W rękach czarownika ma niezwykłe właściwości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -665,9 +665,9 @@
 		</equipable>
 	</item>
 
-	<item name="krew magiczna">
+	<item name="magiczna krew">
 		<type class="resource" subclass="fiolka_twilight" tileid="-1"/>
-		<description>Oto krew magiczna. W rękach czarownika ma niezwykłe właściwości.</description>
+		<description>Oto magiczna krew. W rękach czarownika ma niezwykłe właściwości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -685,9 +685,9 @@
 		</equipable>
 	</item>
 
-	<item name="krew cudowna">
+	<item name="cudowna krew">
 		<type class="resource" subclass="fiolka_zielona" tileid="-1"/>
-		<description>Oto krew cudowna. W rękach czarownika ma niezwykłe właściwości.</description>
+		<description>Oto cudowna krew. W rękach czarownika ma niezwykłe właściwości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

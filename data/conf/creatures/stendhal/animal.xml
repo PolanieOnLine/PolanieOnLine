@@ -1234,7 +1234,7 @@
 		<respawn value="17280000"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="krew cudowna" quantity="[1,1]" probability="100.0"/>
+			<item value="cudowna krew" quantity="[1,1]" probability="100.0"/>
 			<item value="tarcza jednorożca" quantity="[1,1]" probability="80.0"/>
 			<item value="czterolistna koniczyna" quantity="[1,1]" probability="80.0"/>
 			<item value="diament" quantity="[1,1]" probability="20.0"/>
