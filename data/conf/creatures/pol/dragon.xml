@@ -352,6 +352,12 @@
 		<respawn value="100000"/>
 		<corpse name="dragon_6x6" width="6" height="6"/>
 		<drops>
+			<item value="smocza krew" quantity="[1,1]" probability="100.0"/>
+			<item value="money" quantity="[800,8000]" probability="80.0"/>
+			<item value="czarny sztylet" quantity="[1,1]" probability="2.75"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="5.0"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="4.5"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="7.5"/>
 			<item value="pazur czarnego smoka" quantity="[1,1]" probability="5.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="10.5"/>
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="10.0"/>
@@ -382,12 +388,13 @@
 		<respawn value="100000"/>
 		<corpse name="dragon_6x6" width="6" height="6"/>
 		<drops>
+			<item value="smocza krew" quantity="[1,1]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,1]" probability="50.0"/>
-			<item value="money" quantity="[30,100]" probability="100.0"/>
+			<item value="money" quantity="[2000,10000]" probability="100.0"/>
 			<item value="bryłka złota" quantity="[2,5]" probability="1.0"/>
 			<item value="diament" quantity="[1,1]" probability="1.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="0.5"/>
-			<item value="bełt złoty" quantity="[1,11]" probability="100.0"/>
+			<item value="bełt złoty" quantity="[1,11]" probability="75.0"/>
 			<item value="pazur złotego smoka" quantity="[1,1]" probability="5.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="5.5"/>
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="50.0"/>
