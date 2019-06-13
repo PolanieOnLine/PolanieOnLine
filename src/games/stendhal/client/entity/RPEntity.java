@@ -53,7 +53,7 @@ public abstract class RPEntity extends AudibleEntity {
 	/** Turn length in milliseconds. */
 	private static final int TURN_LENGTH = 300;
 	/** Maximum length of text in entity speech bubbles. */
-	private static final int BUBBLE_TEXT_LENGTH = 84;
+	private static final int BUBBLE_TEXT_LENGTH = 124;
 	/**
 	 * Admin Level property.
 	 */
