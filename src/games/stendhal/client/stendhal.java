@@ -85,7 +85,7 @@ public final class stendhal {
 	public static final Integer SIZE_INDEX = 0;
 	public static final Integer SIZE_INDEX_LARGE = 1;
 	public static final Integer SIZE_INDEX_WIDE = 2;
-	public static final Integer DISPLAY_SIZE_INDEX = SIZE_INDEX;
+	public static final Integer DISPLAY_SIZE_INDEX = SIZE_INDEX_LARGE;
 
 	public static final boolean SHOW_COLLISION_DETECTION = false;
 
