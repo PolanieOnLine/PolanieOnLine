@@ -28,7 +28,7 @@ import games.stendhal.common.NotificationType;
  */
 class ScreenController implements PositionChangeListener {
 	/** The maximum width of text in text boxes, speech bubbles and similar. */
-	private static final int BUBBLE_TEXT_WIDTH = 240;
+	private static final int BUBBLE_TEXT_WIDTH = 340;
 
 	/** Image used for drawing tutorial box backgrounds. */
 	private static final String TUTORIAL_BACKGROUND = "data/gui/tutorial_background.png";
