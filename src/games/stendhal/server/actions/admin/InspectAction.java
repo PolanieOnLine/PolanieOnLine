@@ -81,18 +81,18 @@ public class InspectAction extends AdministrationAction {
 					+ inspected.getAtkXP() + ")");
 			st.append("\nDEF:	" + inspected.getDef() + "("
 					+ inspected.getDefXP() + ")");
-			st.append("\nRATK:  " + inspected.getRatk() + "("
+			st.append("\nRATK:	" + inspected.getRatk() + "("
 					+ inspected.getRatkXP() + ")");
 			st.append("\nPŻ:	" + inspected.getHP() + " / "
 					+ inspected.getBaseHP());
 			st.append("\nXP:	" + inspected.getXP());
-			st.append("\nPoziom: " + inspected.getLevel());
-			st.append("\nKarma:	 " + inspected.getKarma());
+			st.append("\nPoziom:	" + inspected.getLevel());
+			st.append("\nKarma:	" + inspected.getKarma());
 			st.append("\nMana:	" + inspected.getMana() + " / " + inspected.getBaseMana());
 			if (inspected.has("outfit")) {
-				st.append("\nOutfit: " + inspected.get("outfit"));
+				st.append("\nOutfit:	" + inspected.get("outfit"));
 			} else if (inspected.has("class")) {
-				st.append("\nOutfit: " + inspected.get("class"));
+				st.append("\nOutfit:	" + inspected.get("class"));
 			}
 			st.append("\nequips");
 
