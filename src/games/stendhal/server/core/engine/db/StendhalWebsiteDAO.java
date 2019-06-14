@@ -137,7 +137,7 @@ public class StendhalWebsiteDAO {
 		final String query = "UPDATE character_stats SET "
 			+ " admin=[admin], sentence='[sentence]', age=[age], gender='[gender]', level=[level],"
 			+ " outfit=[outfit], outfit_colors='[outfit_colors]', xp=[xp], money='[money]',"
-			+ " married='[married]', atk='[atk]', def='[def]', hp='[hp]', karma='[karma]',"
+			+ " married='[married]', atk='[atk]', ratk='[ratk]', def='[def]', hp='[hp]', karma='[karma]',"
 			+ " neck='[neck]', head='[head]', cloak='[cloak]',"
 			+ " lhand='[lhand]', armor='[armor]', rhand='[rhand]', pas='[pas]',"
 			+ " legs='[legs]', glove='[glove]', finger='[finger]', fingerb='[fingerb]', feet='[feet]',"
@@ -207,12 +207,12 @@ public class StendhalWebsiteDAO {
 	protected void insertIntoCharStats(final DBTransaction transaction, final Player player) throws SQLException {
 		final String query = "INSERT INTO character_stats"
 			+ " (name, admin, sentence, age, gender, level,"
-			+ " outfit, outfit_colors, xp, money, married, atk, def, hp,"
+			+ " outfit, outfit_colors, xp, money, married, atk, ratk, def, hp,"
 			+ " karma, neck, head, cloak, lhand, armor, rhand, pas,"
 			+ " legs, glove, finger, fingerb, feet, zone, lastseen)"
 			+ " VALUES ('[name]', '[admin]', '[sentence]', '[age]', '[gender]', '[level]',"
 			+ " '[outfit]', '[outfit_colors]', '[xp]', '[money]', '[married]',"
-			+ " '[atk]', '[def]', '[hp]', '[karma]', '[neck]', '[head]', '[cloak]',"
+			+ " '[atk]', '[ratk]', '[def]', '[hp]', '[karma]', '[neck]', '[head]', '[cloak]',"
 			+ " '[lhand]', '[armor]', '[rhand]', '[pas]', '[legs]', '[glove]', '[finger]',"
 			+ " '[fingerb]', '[feet]', '[zone]','[lastseen]')";
 		Map<String, Object> params = getParamsFromPlayer(player);
