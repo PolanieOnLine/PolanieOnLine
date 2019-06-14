@@ -169,6 +169,7 @@ public class StendhalWebsiteDAO {
 		params.put("money", player.getTotalNumberOf("money"));
 		params.put("married", extractSpouseOrNull(player));
 		params.put("atk", player.getAtk());
+		params.put("ratk", player.getRatk());
 		params.put("def", player.getDef());
 		params.put("hp", player.getHP());
 		params.put("karma", (int) player.getKarma());
