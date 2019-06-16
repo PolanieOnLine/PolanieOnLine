@@ -212,7 +212,7 @@ public class UltimateCollector extends AbstractQuest {
 		// the numbers are based on depo's metric for rarity (bigger number = more rare) which may be out of date https://sourceforge.net/tracker/?func=detail&aid=2066597&group_id=1111&atid=973767
 		// nothing rarer than a demon fire sword, and not included items which are quest rewards elsewhere
 		items.put("nihonto",1); // 5169
-		items.put("topór oburęczny magiczny",1); // 1010
+		items.put("magiczny topór obosieczny",1); // 1010
 		items.put("miecz cesarski",1); // 2393
 		items.put("topór Durina",1); // 4331
 		items.put("młot wulkanów",1); // 4474
