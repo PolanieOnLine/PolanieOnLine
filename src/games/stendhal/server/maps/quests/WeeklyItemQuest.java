@@ -64,9 +64,9 @@ import games.stendhal.server.maps.Region;
  * <li> talk to Museum Curator to get a quest to fetch a rare item
  * <li> bring the item to the Museum Curator
  * <li> if you cannot bring it in 6 weeks she offers you the chance to fetch
- * 
+ *
  * another instead </ul>
- * 
+ *
  * REWARD:
  * <ul><li> xp
  * <li> between 100 and 600 money
@@ -79,13 +79,13 @@ import games.stendhal.server.maps.Region;
 public class WeeklyItemQuest extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "weekly_item";
-	
+
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK * 6;
-	
+
 	/** How often the quest may be repeated */
-	private static final int delay = MathHelper.MINUTES_IN_ONE_WEEK; 
-	
+	private static final int delay = MathHelper.MINUTES_IN_ONE_WEEK;
+
 	/**
 	 * All items which are hard enough to find but not tooo hard and not in Daily quest. If you want to do
 	 * it better, go ahead. *
@@ -94,7 +94,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 
 	private static void buildItemsMap() {
 		items = new HashMap<String, Integer>();
-		
+
 		// armor
 		items.put("zbroja barbarzyńcy",1);
 		items.put("zbroja chaosu",1);
@@ -195,69 +195,69 @@ public class WeeklyItemQuest extends AbstractQuest {
 		items.put("miecz xenocyjski",1);
 
 	}
-	
+
 	private ChatAction startQuestAction() {
 		// common place to get the start quest actions as we can both starts it and abort and start again
-		
+
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT,0,items,"Chcę, aby muzeum w Kirdneh było największe w krainie! Dostarcz mi [item]"
-				+ " i powiedz #'załatwione', gdy przyniesiesz."));	
+				+ " i powiedz #'załatwione', gdy przyniesiesz."));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		
+
 		return new MultipleActions(actions);
 	}
-	
+
 	private void getQuest() {
 		final SpeakerNPC npc = npcs.get("Hazel");
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
+								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))),
 				ConversationStates.ATTENDING,
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie przyniesienia do muzeum [item]"
 						+ ". Powiedz #zakończone jeżeli będziesz miał  ze sobą."));
-		
+
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-								 new TimePassedCondition(QUEST_SLOT,1,expireDelay)), 
+								 new TimePassedCondition(QUEST_SLOT,1,expireDelay)),
 				ConversationStates.ATTENDING,
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie przyniesienia do muzeum [item]"
 						+ ". Powiedz #zakończone jeżeli będziesz miał  ze sobą. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej."));
-	
+
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,delay))), 
+								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,delay))),
 				ConversationStates.ATTENDING,
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT,1, delay, "Muzeum może Cię prosić o przyniesienie przedmiotu tylko raz w tygodniu. Wróć za "));
-		
+
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new OrCondition(new QuestNotStartedCondition(QUEST_SLOT),
 								new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-												 new TimePassedCondition(QUEST_SLOT,1,delay))), 
+												 new TimePassedCondition(QUEST_SLOT,1,delay))),
 				ConversationStates.ATTENDING,
 				null,
 				startQuestAction());
 	}
-	
+
 	private void completeQuest() {
 		final SpeakerNPC npc = npcs.get("Hazel");
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Nie pamiętam, abym dawał Tobie #zadanie.",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Już ukończyłeś ostatnie zadanie, które Ci dałem.",
 				null);
-		
+
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new DropRecordedItemAction(QUEST_SLOT,0));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
@@ -279,59 +279,59 @@ public class WeeklyItemQuest extends AbstractQuest {
 				raiser.say("Wspaniale! Oto " + Integer.toString(goldamount) + " money na pokrycie wydatków.");
 			}
 		});
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.FINISH_MESSAGES, 
+				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0)),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(actions));
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new NotCondition(new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0))),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Nie masz ze sobą [item]"
 						+ " Zdobądź i powiedz wtedy #zakończone."));
-		
+
 	}
-	
+
 	private void abortQuest() {
 		final SpeakerNPC npc = npcs.get("Hazel");
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						 		 new TimePassedCondition(QUEST_SLOT,1,expireDelay)), 
-				ConversationStates.ATTENDING, 
-				null, 
+						 		 new TimePassedCondition(QUEST_SLOT,1,expireDelay)),
+				ConversationStates.ATTENDING,
+				null,
 				startQuestAction());
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						 		 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
-				ConversationStates.ATTENDING, 
-				"Nie minęło tak dużo czasu od rozpoczęcia zadania. Nie powinieneś się tak szybko poddawać.", 
+						 		 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))),
+				ConversationStates.ATTENDING,
+				"Nie minęło tak dużo czasu od rozpoczęcia zadania. Nie powinieneś się tak szybko poddawać.",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new QuestNotActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
-				"Obawiam się, że jeszcze nie dałem Tobie #zadania.", 
+				ConversationStates.ATTENDING,
+				"Obawiam się, że jeszcze nie dałem Tobie #zadania.",
 				null);
-		
+
 	}
 
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -368,15 +368,15 @@ public class WeeklyItemQuest extends AbstractQuest {
 
 		return res;
 	}
-	
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
 				"Muzeum Kirdneh potrzebuje pomocy!",
-				"Hazel, kurator Muzeum Kirdneh, chce aby było one największym w kraju i potrzebuje mojej pomocy raz na tydzień.",
+				"Hazel, kuratorka Muzeum Kirdneh, chce aby było one największym w kraju i potrzebuje mojej pomocy raz na tydzień.",
 				true);
 		buildItemsMap();
-		
+
 		getQuest();
 		completeQuest();
 		abortQuest();
@@ -386,19 +386,19 @@ public class WeeklyItemQuest extends AbstractQuest {
 	public String getName() {
 		return "WeeklyItemQuest";
 	}
-	
+
 	// the items requested are pretty hard to get, so it's not worth prompting player to go till they are higher level.
 	@Override
 	public int getMinLevel() {
 		return 60;
 	}
-	
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.KIRDNEH;
