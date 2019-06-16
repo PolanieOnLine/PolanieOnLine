@@ -38,11 +38,11 @@ import java.util.List;
  * STEPS:
  * <ul>
  * <li> Josephine asks you to bring her a cloak in every colour available on
- * the mainland 
- * <li> You bring cloaks to Josephine 
+ * the mainland
+ * <li> You bring cloaks to Josephine
  * <li> Repeat until Josephine
  * received all cloaks. (Of course you can bring several cloaks at the same
- * time.) 
+ * time.)
  * <li> Josephine gives you a reward
  * </ul>
  * <p>
@@ -63,9 +63,9 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 			"płaszcz wampirzy", "lazurowy płaszcz smoczy");
 
 	private static final String QUEST_SLOT = "cloaks_collector";
-	
+
 	private BringListOfItemsQuestLogic bringItems;
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		return bringItems.getHistory(player);
@@ -104,13 +104,13 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
 							stringBuilder.append("Nie widziałeś jeszcze żadnego? Cóż to jest ");
-						
+
 							if (item == null) {
 								stringBuilder.append(itemName);
 							} else {
 								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getItemSubclass()));
 							}
-						
+
 							stringBuilder.append(". znajdziesz to?");
 							raiser.say(stringBuilder.toString());
 						}
@@ -168,7 +168,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 	public String welcomeDuringActiveQuest() {
 		return "Cześć! Przyniosłeś ze sobą jakieś #płaszcze )?";
 	}
-	
+
 	@Override
 	public String welcomeAfterQuestIsCompleted() {
 		return "Witaj znowu, kochany. Płaszcze wciąż wygladają wspaniale. Dziękuję!";
@@ -250,15 +250,15 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 		final Item blackcloak = SingletonRepository.getEntityManager().getItem("czarny płaszcz");
 		blackcloak.setBoundTo(player.getName());
 		player.equipOrPutOnGround(blackcloak);
-		player.addKarma(50.0);
-		player.addXP(250000);
+		player.addKarma(25.0);
+		player.addXP(50000);
 	}
 
 	@Override
 	public String getName() {
 		return "CloakCollector";
 	}
-	
+
 	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.
 	@Override
 	public int getMinLevel() {
