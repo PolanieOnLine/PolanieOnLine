@@ -209,8 +209,8 @@ public class GoralskiCollector2 extends AbstractQuest {
 											"pas zbójecki");
 									pas.setBoundTo(player.getName());
 									player.equipOrPutOnGround(pas);
-									player.addXP(65000);
-									player.addKarma(20);
+									player.addXP(75000);
+									player.addKarma(30);
 									raiser.say("W końcu moja kolekcja jest kompletna! Dziękuję bardzo. Spójrz tylko na ten #'pas zbójecki', czyż nie jest on piękny? Proszę weź go... przyda Ci się pewnie.");
 									player.setQuest(QUEST_SLOT, "done");
 									player.notifyWorldAboutChanges();
