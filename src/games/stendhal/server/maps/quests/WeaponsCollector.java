@@ -204,7 +204,7 @@ public class WeaponsCollector extends AbstractQuest implements
 		iceSword.setBoundTo(player.getName());
 		player.equipOrPutOnGround(iceSword);
 		player.addXP(50000);
-		player.addKarma(30);
+		player.addKarma(15);
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class WeaponsCollector2 extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "weapons_collector2";
 
-	
+
 	private static final List<String> neededWeapons = Arrays.asList(
 			// fairly rare from glow_monster in haunted house
 			"złoty kiścień",
@@ -248,7 +248,7 @@ public class WeaponsCollector2 extends AbstractQuest {
 									rhandsword.setBoundTo(player.getName());
 									player.equipOrPutOnGround(rhandsword);
 									player.addXP(50000);
-									player.addKarma(60);
+									player.addKarma(30);
 									raiser.say("W końcu moja kolekcja jest kompletna! Dziękuję bardzo. Weź w zamian te 2 miecze!");
 									player.setQuest(QUEST_SLOT, "done");
 									player.notifyWorldAboutChanges();

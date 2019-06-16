@@ -272,7 +272,7 @@ public class UltimateCollector extends AbstractQuest {
 				new MultipleActions(new DropRecordedItemAction(QUEST_SLOT),
 									new SetQuestAction(QUEST_SLOT, "done"),
 									new IncreaseXPAction(100000),
-									new IncreaseKarmaAction(90)));
+									new IncreaseKarmaAction(75)));
 
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
 				ConversationPhrases.NO_MESSAGES,
