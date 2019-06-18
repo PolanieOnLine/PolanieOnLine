@@ -127,7 +127,7 @@ public class ProducerRegister {
 		if (!"".equals(sb.toString())) {
 			sb.insert(0,"\r\nZlecenia: ");
 		} else {
-			sb.append("Nie masz trwających lub niepobranych zleceń.");
+			sb.append("Nie masz trwających lub nieodebranych zleceń.");
 		}
 		return sb.toString();
 	}
