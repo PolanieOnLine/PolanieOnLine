@@ -405,7 +405,7 @@ public class User extends Player {
 			String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
 			notifyUser(getTitle() + " odzyskała " + pointDesc + ".", NotificationType.HEAL);
 		} else {
-			String pointDesc = Grammar.quantityplnoun(amount, "punkt" + " życia");
+			String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
 			notifyUser(getTitle() + " odzyskał " + pointDesc + ".", NotificationType.HEAL);
 		}
 	}
@@ -419,7 +419,7 @@ public class User extends Player {
 			notifyUserAboutPlayerStatus(changes, "offline", " opuściła PolanieOnLine.");
 		} else notifyUserAboutPlayerStatus(changes, "offline", " opuścił PolanieOnLine.");
 		if (getGender().equals("F")) {
-			notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolanieOnLine.");
+			notifyUserAboutPlayerStatus(changes, "online", " zawitała do PolanieOnLine.");
 		} else notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolanieOnLine.");
 	}
 	
