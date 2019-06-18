@@ -29,7 +29,7 @@ class BareBonesBrowserLaunchCommandsFactory {
 		commandsAndUrls = new HashMap<String, String>();
 		commandsAndUrls.put("beginnersguide", "http://polanieonline.eu/player-guide/dla-poczatkujacych.html");
 		commandsAndUrls.put("faq", "http://polanieonline.eu/player-guide/faq.html");
-		commandsAndUrls.put("manual", "http://polanieonline.eu/player-guide/przewodnik.html");
+		commandsAndUrls.put("manual", "http://polanieonline.eu/player-guide/wprowadzenie.html");
 		commandsAndUrls.put("rules", "http://polanieonline.eu/rules/regulamin-gry-polanieonline-mmorpg.html");
 		commandsAndUrls.put("changepassword", "http://polanieonline.eu/account/change-password.html");
 		commandsAndUrls.put("loginhistory", "http://polanieonline.eu/account/history.html");
