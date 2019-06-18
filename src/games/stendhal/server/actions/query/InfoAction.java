@@ -30,7 +30,7 @@ public class InfoAction implements ActionListener {
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-		player.sendPrivateText("Czas na serwerze " + getGametime());
+		player.sendPrivateText("Czas na serwerze: " + getGametime() + ".");
 		if (Debug.PRE_RELEASE_VERSION != null) {
 			player.sendPrivateText("Wersja serwera testowego " + Debug.VERSION + " - " + Debug.PRE_RELEASE_VERSION);
 		}
