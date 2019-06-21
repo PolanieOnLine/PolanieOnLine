@@ -31,7 +31,7 @@ public class JailAction extends AdministrationAction {
 	private static final String USAGE_JAIL_NAME_MINUTES_REASON = "Użyj: /jail <wojownik> <minuty> <powód>";
 
 	public static void register() {
-		CommandCenter.register(JAIL, new JailAction(), 10);
+		CommandCenter.register(JAIL, new JailAction(), 7);
 
 	}
 
