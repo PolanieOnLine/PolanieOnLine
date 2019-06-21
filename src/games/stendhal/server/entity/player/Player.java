@@ -206,7 +206,7 @@ public class Player extends RPEntity implements UseListener {
 			player.put("gender", "M");
 		}
 
-		for (final String slot : Arrays.asList("armor", "rhand")) {
+		for (final String slot : Arrays.asList("armor", "rhand", "bag")) {
 			player.addSlot(slot);
 		}
 
@@ -218,6 +218,11 @@ public class Player extends RPEntity implements UseListener {
 
 		entity = SingletonRepository.getEntityManager().getItem("maczuga");
 		slot = player.getSlot("rhand");
+		slot.add(entity);
+
+		entity = SingletonRepository.getEntityManager().getItem("ciupaga startowa");
+		((Item) entity).setBoundTo(player.getName());
+		slot = player.getSlot("bag");
 		slot.add(entity);
 
 		return player;
