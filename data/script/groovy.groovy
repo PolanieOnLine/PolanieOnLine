@@ -15,7 +15,7 @@ import games.stendhal.server.pathfinder.Path
 //  game.add(RPObject object)
 //  game.getItem(String name)
 // logger is a predefined variable of the current ScriptInGroovy
-logger.debug("Starting PolskaGRA Groovy Script")
+logger.debug("Starting PolanieOnLine Groovy Script")
 
 // Adding a sign to the game world that shows Groovy is active
 myZone = "0_semos_city"
@@ -34,4 +34,4 @@ else
  logger.error("Cannot set Zone " + myZone)
   }
 
-logger.debug("Finished PolskaGRA Groovy Script")
+logger.debug("Finished PolanieOnLine Groovy Script")
