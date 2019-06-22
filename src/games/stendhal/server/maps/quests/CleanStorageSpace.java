@@ -16,6 +16,7 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -147,6 +148,7 @@ public class CleanStorageSpace extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Eonna");
 		
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new EquipItemAction("buteleczka wody", 10, true));
 		reward.add(new IncreaseKarmaAction(10.0));
 		reward.add(new IncreaseXPAction(500));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
