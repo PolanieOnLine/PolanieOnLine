@@ -118,10 +118,10 @@ public class KillHerszt extends AbstractQuest {
 
 		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
 		toKill.put("zbójnik górski herszt", new Pair<Integer, Integer>(0,1));
-		toKill.put("zbójnik górski", new Pair<Integer, Integer>(0,4));
-		toKill.put("zbójnik górski goniec", new Pair<Integer, Integer>(0,4));
+		toKill.put("zbójnik górski", new Pair<Integer, Integer>(0,2));
+		toKill.put("zbójnik górski goniec", new Pair<Integer, Integer>(0,2));
 		toKill.put("zbójnik górski złośliwy", new Pair<Integer, Integer>(0,3));
-		toKill.put("zbójnik górski zwiadowca", new Pair<Integer, Integer>(0,3));
+		toKill.put("zbójnik górski zwiadowca", new Pair<Integer, Integer>(0,2));
 		toKill.put("zbójnik górski starszy", new Pair<Integer, Integer>(0,1));
 
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
