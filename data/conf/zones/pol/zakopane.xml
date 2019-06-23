@@ -1841,7 +1841,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_201" file="interiors/zakopane/house_201.tmx" accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-
+		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
+			<parameter name="x">8</parameter>
+			<parameter name="y">21</parameter>
+		</configurator>
 		<portal x="5" y="24" ref="house_201_exit">
 			<destination zone="0_zakopane_se" ref="house_201_entrance"/>
 		</portal>
@@ -1852,10 +1855,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_201_1" file="interiors/zakopane/house_201_1.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
-			<parameter name="x">10</parameter>
-			<parameter name="y">2</parameter>
-		</configurator>
+
 		<portal x="2" y="17" ref="house_201_dol">
 			<destination zone="int_zakopane_house_201" ref="house_201_gora"/>
 		</portal>
@@ -1885,7 +1885,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_204" file="interiors/zakopane/house_204.tmx" accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-
+		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
+			<parameter name="x">15</parameter>
+			<parameter name="y">2</parameter>
+		</configurator>
 		<portal x="2" y="22" ref="house_204_gora">
 			<destination zone="int_zakopane_house_204_1" ref="house_204_dol"/>
 		</portal>
@@ -1900,10 +1903,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_204_1" file="interiors/zakopane/house_204_1.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
-			<parameter name="x">22</parameter>
-			<parameter name="y">3</parameter>
-		</configurator>
+
 		<portal x="9" y="22" ref="house_204_dol">
 			<destination zone="int_zakopane_house_204" ref="house_204_gora"/>
 		</portal>
@@ -1933,6 +1933,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_207" file="interiors/zakopane/house_207.tmx" accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
+			<parameter name="x">6</parameter>
+			<parameter name="y">2</parameter>
+		</configurator>
 		<portal x="7" y="13" ref="house_207_exit">
 			<destination zone="0_zakopane_se" ref="house_207_entrance"/>
 		</portal>
@@ -1943,10 +1947,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_207_-1" file="interiors/zakopane/house_207_-1.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
-			<parameter name="x">2</parameter>
-			<parameter name="y">12</parameter>
-		</configurator>
 		<portal x="2" y="2" ref="house_207_gora">
 			<destination zone="int_zakopane_house_207" ref="house_207_dol"/>
 		</portal>
@@ -1954,6 +1954,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_208" file="interiors/zakopane/house_208.tmx" accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
+			<parameter name="x">2</parameter>
+			<parameter name="y">6</parameter>
+		</configurator>
 		<portal x="9" y="18" ref="house_208_exit">
 			<destination zone="0_zakopane_se" ref="house_208_entrance"/>
 		</portal>
@@ -1964,10 +1968,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<zone name="int_zakopane_house_208_1" file="interiors/zakopane/house_208_1.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
-			<parameter name="x">16</parameter>
-			<parameter name="y">17</parameter>
-		</configurator>
+
 		<portal x="2" y="2" ref="house_208_dol">
 			<destination zone="int_zakopane_house_208" ref="house_208_gora"/>
 		</portal>
