@@ -101,7 +101,7 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 				+ "1. Jeżeli nie zapłacisz podatku za dom to wszystkie przedmioty znajdujące się w skrzyni będą skonfiskowane.\n"
 				+ "2. Wszystkie osoby, które dostaną się do domu mogą korzystać ze skrzyni.\n"
 				+ "3. Pamiętaj, aby zmienić zamki jako zabezpieczenie twojego domu.\n"
-				+ "4. Możesz odsprzedać dom o ile chcesz (nie zostawiaj mnie)\n");
+				+ "4. Możesz odsprzedać dom o ile chcesz (nie zostawiaj mnie)");
 		try {
 			chest.add(item);
 
