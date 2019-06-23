@@ -43,12 +43,12 @@ import games.stendhal.server.util.TimeUtil;
 
 /**
  * QUEST: The złota ciupaga upgrading.
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li> Józek will upgrade for you the złota ciupaga.
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Józek tells you about the złota ciupaga z wąsem.
@@ -58,15 +58,15 @@ import games.stendhal.server.util.TimeUtil;
  * <li> He tells you you must have killed a złota śmierć
  * <li> Józek upgrade the złota ciupaga to złota ciupaga z wąsem for you
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>złota ciupaga z wąsem
  * <li>20000 XP
  * <li>100 Karma
  * </ul>
- * 
- * 
+ *
+ *
  * REPETITIONS:
  * <ul>
  * <li> None.
@@ -99,7 +99,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isQuestCompleted(NAGRODA_WIELKOLUDA_QUEST_SLOT)) {
 						if(player.getLevel() >= 220) {
-							if(player.getKarma()>=150) {
+							if(player.getKarma()>=200) {
 								if(player.hasKilledSolo("złota śmierć")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
 										raiser.say("Jesteś zainteresowany ulepszeniem złotej ciupagi? Mogę ją dla ciebie ulepszyć. Jesteś zainteresowany?");
@@ -167,7 +167,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Józek");
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("ulepszyć", "ulepszyc", "ulepszenia"), 
+			Arrays.asList("ulepszyć", "ulepszyc", "ulepszenia"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 				new QuestCompletedCondition(NAGRODA_WIELKOLUDA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, "Do jej ulepszenia są potrzebne przeróżne #przedmioty.",
@@ -200,7 +200,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("polano",4),
 												  new PlayerHasItemWithHimCondition("money",120000)))),
 				ConversationStates.ATTENDING, "Potrzebuję:\n"
-									+"#'1 złotą ciupagę'\n" 
+									+"#'1 złotą ciupagę'\n"
 									+"#'70 sztabek złota'\n"
 									+"#'1 złoty róg'\n"
 									+"#'4 polana'\n"
@@ -209,7 +209,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 
 	}
 
-	private void step_4() { 
+	private void step_4() {
 		final SpeakerNPC npc = npcs.get("Józek");
 
 		npc.add(ConversationStates.ATTENDING,
@@ -222,7 +222,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE; 
+					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
 					final long timeRemaining = (Long.parseLong(tokens[1]) + delay)
 							- System.currentTimeMillis();
 
@@ -249,8 +249,8 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Złota Ciupaga z jednym Wąsem",
-				"Józek wzmocni Twoją Złotą Ciupagę.",
+				"Złota ciupaga z jednym wąsem",
+				"Józek wzmocni Twoją złotą ciupagę.",
 				true);
 		step_1();
 		step_2();
@@ -286,11 +286,11 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 				res.add("Po ciupagę mam zgłosić się za 8 godzin. Hasło: ciupaga.");
 			}
 			return res;
-		} 
+		}
 		res.add("Warto było czekać na ciupagę z jednym wąsem. Ta piękna broń należy teraz do mnie.");
 		if (isCompleted(player)) {
 			return res;
-		} 
+		}
 		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
 		final List<String> debug = new ArrayList<String>();
 		debug.add("Stan zadania to: " + questState);
