@@ -342,7 +342,7 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 						action.put(EquipActionConsts.TYPE, "reorder");
 						action.put(EquipActionConsts.SOURCE_PATH, entity.getPath());
 						action.put("new_position", itemNumber);
- 						
+
 						StendhalClient.get().send(action);
 						return;
 					}
