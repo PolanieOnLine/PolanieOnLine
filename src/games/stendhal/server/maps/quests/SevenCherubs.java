@@ -47,7 +47,7 @@ import java.util.List;
  * <li> Uriel </li>
  * <li> Zophiel </li>
  * <li> Azazel </li>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Find them and they will reward you. </li>
@@ -66,7 +66,7 @@ public class SevenCherubs extends AbstractQuest {
 	private static final String QUEST_SLOT = "seven_cherubs";
 
 	private final HashMap<String, String> cherubsHistory = new HashMap<String,String>();
-	
+
 	private void fillHistoryMap() {
 		cherubsHistory.put("Cherubiel", "Spotkałem Cherubiel w wiosce Semos.");
 		cherubsHistory.put("Ophaniel",  "Spotkałem Ophaniel nad rzeką Orril.");
@@ -74,14 +74,14 @@ public class SevenCherubs extends AbstractQuest {
 		cherubsHistory.put("Raphael",   "Spotkałem Raphael pomiędzy rzeką Orril, a mostem do Fado.");
 		cherubsHistory.put("Zophiel",   "Spotkałem Zophiel na górze Semos.");
 		cherubsHistory.put("Azazel",    "Spotkałem Azazel na Ados Rock.");
-		cherubsHistory.put("Uriel",     "Spotkałem Uriel na górze Orril.");		
+		cherubsHistory.put("Uriel",     "Spotkałem Uriel na górze Orril.");
 	}
 
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public boolean isCompleted(final Player player) {
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -208,7 +208,7 @@ public class SevenCherubs extends AbstractQuest {
 								 * it).
 								 *
 								 */
-								final String[] items = { "złote buty", "złota zbroja", "złoty hełm" };
+								final String[] items = { "złote buty", "złota zbroja", "złoty hełm", "miecz ognisty" };
 								final Item item = SingletonRepository.getEntityManager()
 									.getItem(items[Rand.rand(items.length)]);
 								item.setBoundTo(player.getName());
