@@ -124,7 +124,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Nie jesteś godny, aby dzierżyć tak wspaniałą broń. Popracuj nad dobrymi uczynkami. Twoja karma musi być minimum 150.");
+								npc.say("Nie jesteś godny, aby dzierżyć tak wspaniałą broń. Popracuj nad dobrymi uczynkami. Twoja karma musi być minimum 200.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
