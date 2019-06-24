@@ -50,7 +50,7 @@ public class SetCombatKarmaAction implements ActionListener {
 						"Karma zostanie użyta w każdej możliwej walce.");
 
 				player.put(COMBAT_KARMA, combatKarmaMode);
-				player.sendPrivateText(NotificationType.CLIENT, descriptions.get(KARMA_SETTINGS.indexOf(combatKarmaMode)), true);
+				player.sendPrivateText(NotificationType.CLIENT, descriptions.get(KARMA_SETTINGS.indexOf(combatKarmaMode)));
 				return;
 			}
 

@@ -20,12 +20,12 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.creature.PurpleDragon;
 import games.stendhal.server.entity.creature.Sheep;
-import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemInformation;
@@ -48,15 +48,12 @@ import games.stendhal.server.entity.mapstuff.portal.HousePortal;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.mapstuff.sound.LoopedSoundSource;
+import games.stendhal.server.entity.mapstuff.spawner.GoatFood;
 import games.stendhal.server.entity.mapstuff.spawner.GrowingPassiveEntityRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.SheepFood;
-import games.stendhal.server.entity.mapstuff.spawner.GoatFood;
 import games.stendhal.server.entity.mapstuff.useable.FishSource;
 import games.stendhal.server.entity.mapstuff.useable.GoldSource;
-import games.stendhal.server.entity.mapstuff.useable.UseableEntity;
-import games.stendhal.server.entity.mapstuff.useable.WaterSpringSource;
-import games.stendhal.server.entity.mapstuff.useable.WellSource;
 import games.stendhal.server.entity.mapstuff.useable.SourceAmetyst;
 import games.stendhal.server.entity.mapstuff.useable.SourceCarbuncle;
 import games.stendhal.server.entity.mapstuff.useable.SourceCopper;
@@ -69,6 +66,9 @@ import games.stendhal.server.entity.mapstuff.useable.SourceSalt;
 import games.stendhal.server.entity.mapstuff.useable.SourceSapphire;
 import games.stendhal.server.entity.mapstuff.useable.SourceSilver;
 import games.stendhal.server.entity.mapstuff.useable.SourceSulfur;
+import games.stendhal.server.entity.mapstuff.useable.UseableEntity;
+import games.stendhal.server.entity.mapstuff.useable.WaterSpringSource;
+import games.stendhal.server.entity.mapstuff.useable.WellSource;
 import games.stendhal.server.entity.mapstuff.useable.WoodSource;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
@@ -83,7 +83,6 @@ import games.stendhal.server.events.ExamineEvent;
 import games.stendhal.server.events.GlobalVisualEffectEvent;
 import games.stendhal.server.events.GroupChangeEvent;
 import games.stendhal.server.events.GroupInviteEvent;
-import games.stendhal.server.events.HeadlessPrivateTextEvent;
 import games.stendhal.server.events.HealedEvent;
 import games.stendhal.server.events.ImageEffectEvent;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
@@ -341,9 +340,6 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass(Events.PRIVATE_TEXT)) {
 			PrivateTextEvent.generateRPClass();
-		}
-		if (!RPClass.hasRPClass(Events.HEADLESS_PRIVATE_TEXT)) {
-			HeadlessPrivateTextEvent.generateRPClass();
 		}
 		if (!RPClass.hasRPClass(Events.PROGRESS_STATUS_CHANGE)) {
 			ProgressStatusEvent.generateRPClass();
