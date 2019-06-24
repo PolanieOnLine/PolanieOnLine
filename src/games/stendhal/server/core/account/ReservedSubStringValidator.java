@@ -125,6 +125,14 @@ public class ReservedSubStringValidator implements AccountParameterValidator {
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("szmat"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("pierda"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("pizd"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("peni"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("vagi"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("wagi"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("gej"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("gey"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("japier"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("lesb"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("lezb"))
 		) {
 			return Result.FAILED_RESERVED_NAME;
 		}
