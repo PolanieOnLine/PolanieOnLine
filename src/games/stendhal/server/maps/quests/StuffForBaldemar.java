@@ -282,8 +282,8 @@ public class StuffForBaldemar extends AbstractQuest {
 		} else if (broughtAllItems(questState) || !questState.startsWith("start")) {
 			res.add("Zaniosłem wszystkie specjalne przedmioty do Baldemara.");
 		}
-		if (broughtAllItems(questState) && !player.hasKilledSolo("black giant")) {
-			res.add("I will need to bravely face a black giant alone, before I am worthy of this shield.");
+		if (broughtAllItems(questState) && !player.hasKilledSolo("czarny olbrzym")) {
+			res.add("Muszę odważnie stawić czoła samemu czarnemu olbrzymowi, zanim będę wart tej tarczy.");
 		}
 		if (questState.startsWith("forging")) {
 			res.add("Baldemar wykuwa dla mnie tarczę z mithrilu!");
