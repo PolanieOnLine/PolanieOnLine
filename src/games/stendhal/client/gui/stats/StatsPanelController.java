@@ -198,7 +198,7 @@ public final class StatsPanelController {
 		if (maxhpModified != 0) {
 			maxhpvalue = maxhpModified;
 		}
-		final String text = "PŻ:" + SPC + hp + "/" + maxhpvalue;
+		final String text = "PZ:" + SPC + hp + "/" + maxhpvalue;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -228,7 +228,7 @@ public final class StatsPanelController {
 	private void updateDef() {
 		// def uses 10 levels shifted starting point
 		final int next = Level.getXP(def - 9) - defxp;
-		final String text = "DEF:" + SPC + def + "×" + (1 + itemDef) + SPC + "(" + next + ")";
+		final String text = "OBR:" + SPC + def + "×" + (1 + itemDef) + SPC + "(" + next + ")";
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -243,7 +243,7 @@ public final class StatsPanelController {
 	private void updateRatk() {
 		// ratk uses 10 levels shifted starting point
 		final int next = Level.getXP(ratk - 9) - ratkxp;
-		final String text = "RATK:" + SPC + ratk + "×" + (1 + weaponRatk) + SPC + "(" + next + ")";
+		final String text = "STR:" + SPC + ratk + "×" + (1 + weaponRatk) + SPC + "(" + next + ")";
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
