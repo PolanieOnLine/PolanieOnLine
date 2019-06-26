@@ -419,7 +419,7 @@ public final class StatsPanelController {
 			}
 			xp = Integer.parseInt((String) event.getNewValue());
 			updateLevel();
-			final String text = "XP:" + SPC + xp;
+			final String text = "PD:" + SPC + xp;
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
