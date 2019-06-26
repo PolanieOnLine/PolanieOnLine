@@ -76,15 +76,14 @@ public class InspectAction extends AdministrationAction {
 			// st.append("\n===========================\n");
 			st.append("\nID: " + action.get("target") + " w &" + inspected.getZone().getName() + " (" + inspected.getX() + ", " + inspected.getY() + ")");
 			st.append("\nPłeć:  " + inspected.getGender());
+			st.append("\nPZ:     " + inspected.getHP() + " / " + inspected.getBaseHP());
 			st.append("\nATK:    " + inspected.getAtk() + "("
 					+ inspected.getAtkXP() + ")");
 			st.append("\nOBR:    " + inspected.getDef() + "("
 					+ inspected.getDefXP() + ")");
 			st.append("\nSTR:    " + inspected.getRatk() + "("
 					+ inspected.getRatkXP() + ")");
-			st.append("\nPZ:     " + inspected.getHP() + " / "
-					+ inspected.getBaseHP());
-			st.append("\nXP:     " + inspected.getXP());
+			st.append("\nPD:     " + inspected.getXP());
 			st.append("\nPoziom:  " + inspected.getLevel());
 			st.append("\nKarma:  " + inspected.getKarma());
 			//st.append("\nMana:  " + inspected.getMana() + " / " + inspected.getBaseMana());
