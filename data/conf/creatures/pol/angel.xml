@@ -23,7 +23,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="0.0001"/>
 			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
-			<item value="pas z mithrilu" quantity="[1,1]" probability="3.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="2.0"/>
 			<item value="pióro serafina" quantity="[1,1]" probability="100.0"/>
 			<item value="magia światła" quantity="[11,99]" probability="100.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="20.0"/>
@@ -70,7 +70,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="czarny miecz" quantity="[1,1]" probability="10.0"/>
 			<item value="czarne rękawice" quantity="[1,1]" probability="5.0"/>
-			<item value="czarny pas" quantity="[1,1]" probability="4.5"/>
+			<item value="czarny pas" quantity="[1,1]" probability="2.0"/>
 			<item value="pióro azazela" quantity="[1,1]" probability="90.0"/>
 			<item value="magia mroku" quantity="[11,99]" probability="100.0"/>
 			<item value="różdżka Peruna" quantity="[1,1]" probability="7.5"/>

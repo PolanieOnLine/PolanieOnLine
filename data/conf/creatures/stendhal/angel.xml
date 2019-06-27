@@ -70,7 +70,7 @@
 			<item value="pióro archanioła ciemności" quantity="[1,1]" probability="80.0"/>
 			<item value="zupa" quantity="[2,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
-			<item value="czarny pas" quantity="[1,1]" probability="5.0"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.55"/>
 			<item value="buty z mithrilu" quantity="[1,1]" probability="1.0"/>
 			<item value="strzała płonąca" quantity="[10,30]" probability="5.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.5"/>
@@ -120,7 +120,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
 			<item value="money" quantity="[200,1000]" probability="100.0"/>
 			<item value="czarna zbroja" quantity="[1,1]" probability="0.02"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.75"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.35"/>
 			<item value="młot wulkanów" quantity="[1,1]" probability="0.01"/>
 			<item value="pióro upadłego anioła" quantity="[1,1]" probability="100.0"/>
 			<item value="czarny płaszcz" quantity="[1,1]" probability="1.0"/>

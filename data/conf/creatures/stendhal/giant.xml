@@ -172,7 +172,7 @@
 			<item value="czarny płaszcz" quantity="[1,1]" probability="1.0"/>
 			<item value="czarna tarcza" quantity="[1,1]" probability="0.5"/>
 			<item value="czarny miecz" quantity="[1,1]" probability="0.5"/>
-			<item value="czarny pas" quantity="[1,1]" probability="1.0"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.65"/>
 		</drops>
 		<equips>
 		</equips>
