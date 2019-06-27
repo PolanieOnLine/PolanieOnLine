@@ -325,7 +325,7 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	private void reorder(final IEntity entity) {
 		// Don't needlessly send reordering commands to servers that do not
 		// understand them
-		if (!StendhalClient.serverVersionAtLeast("1.00.5")) {
+		if (!StendhalClient.serverVersionAtLeast("0.01")) {
 			return;
 		}
 		// GameLoop may modify slot contents, so we need to scan the contents in
