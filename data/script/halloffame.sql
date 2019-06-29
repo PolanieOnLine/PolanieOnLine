@@ -95,7 +95,46 @@ ORDER BY points DESC, nmb DESC, xp DESC) As scoretable,
 (SELECT @rownum:=0) r WHERE points > 500;
 
 
+INSERT INTO halloffame_archive_recent (charname, fametype, rank, points, day)
+SELECT scoretable.name, 'R', @rownum:=@rownum+1 as rank, scoretable.points, CURRENT_DATE()
+FROM (
+SELECT c.name, round(xp*(ifnull(score,0)+0.0001)/(age+1)) As points, score FROM character_stats c
+JOIN (
+SELECT name, sum(1/cnt) As score 
+FROM reached_achievement ra
+JOIN
+    (SELECT achievement_id, count(*) as cnt FROM reached_achievement
+     JOIN achievement on achievement.id = achievement_id
+     JOIN character_stats on name = charname
+     WHERE admin<=6 and category != 'SPECIAL' AND active=1
+     GROUP BY achievement_id) t ON ra.achievement_id = t.achievement_id
+RIGHT JOIN character_stats ON name = charname
+WHERE admin<=6 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
+GROUP BY name
+) temp on temp.name = c.name
+order by xp*(ifnull(score,0)+0.0001)/(age+1) desc) As scoretable,
+(SELECT @rownum:=0) r WHERE points > 0;
 
+
+INSERT INTO halloffame_archive_alltimes (charname, fametype, rank, points, day)
+SELECT scoretable.name, 'R', @rownum:=@rownum+1 as rank, scoretable.points, CURRENT_DATE()
+FROM (
+SELECT c.name, round(xp*(ifnull(score,0)+0.0001)/(age+1)) As points, score FROM character_stats c
+JOIN (
+SELECT name, sum(1/cnt) As score
+FROM reached_achievement ra
+JOIN
+    (SELECT achievement_id, count(*) as cnt FROM reached_achievement
+     JOIN achievement on achievement.id = achievement_id
+     JOIN character_stats on name = charname
+     WHERE admin<=6 and category != 'SPECIAL' AND active=1
+     GROUP BY achievement_id) t ON ra.achievement_id = t.achievement_id
+RIGHT JOIN character_stats ON name = charname
+WHERE admin<=6
+GROUP BY name
+) temp on temp.name = c.name
+order by xp*(ifnull(score,0)+0.0001)/(age+1) desc) As scoretable,
+(SELECT @rownum:=0) r WHERE points > 0;
 
 
 
