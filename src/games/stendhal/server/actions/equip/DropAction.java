@@ -88,6 +88,7 @@ public class DropAction extends EquipmentAction {
 
 			return isTargetOccupiable(player, zone, x, y) && pathToDest(player, zone, x, y, entity);
 		}
+
 		return false;
 	}
 
@@ -126,12 +127,7 @@ public class DropAction extends EquipmentAction {
 		}
 
 		final boolean res = !path.isEmpty() && !blockerInPath;
-		if (("kości do gry").equals(entity.getTitle())) {
-			if (!res) {
-				player.sendPrivateText("Nie ma łatwiejszej drogi do tego miejsca.");
-			} else return res;
-			return "int_semos_tavern_0".equals(zone.getName()) && ("kości do gry").equals(entity.getTitle());
-		} else if (!res) {
+		if (!res) {
 			player.sendPrivateText("Nie ma łatwiejszej drogi do tego miejsca.");
 		}
 
