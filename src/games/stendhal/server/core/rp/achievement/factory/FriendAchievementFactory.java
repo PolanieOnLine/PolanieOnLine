@@ -68,7 +68,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						new QuestCompletedCondition("coded_message")))));
 
 		// quests about finding people
-		achievements.add(createAchievement("friend.quests.find", "Prywatny detektyw", "Znalazł wszystkie zagubione i ukrywające się aniołki",
+		achievements.add(createAchievement("friend.quests.find", "Prywatny detektyw", "Znalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Rat Children (Agnus)
