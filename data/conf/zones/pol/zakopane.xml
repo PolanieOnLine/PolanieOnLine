@@ -567,7 +567,7 @@ mile widziany!
 			<attribute name="text">
 #'LOTERIA REKLAMOWA'
 Jak to wygląda?
-Wystarczy kliknąć w reklamy na naszej stronie #polanieonline.eu/reklamy
+Wystarczy kliknąć w reklamy na naszej stronie #www.polskagra.net/reklamy
 oraz zalogować się chociaż raz w ciągu dnia do gry:)
 Kolejnego dnia odbywa się losowanie skrzynek zależnie od ilości kliknięć w reklamy
 25 klików = Złota Skrzynia
@@ -604,7 +604,7 @@ Co można wygrać?
 			<attribute name="text">
 #LOTERIA #REKLAMOWA
 Jak to wygląda?
-Wystarczy kliknąć w reklamy na naszej stronie #polanieonline.eu/reklamy
+Wystarczy kliknąć w reklamy na naszej stronie #www.polskagra.net/reklamy
 oraz zalogować się chociaż raz w ciągu dnia do gry:)
 Kolejnego dnia odbywa się losowanie skrzynek zależnie od ilości kliknięć w reklamy
 25 klików = Złota Skrzynia
@@ -2104,7 +2104,7 @@ Szukaj podobnych do tego liścików, tabliczek lub znaków. Każdy może zawiera
 		<entity x="23" y="7">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 				<attribute name="text">
-Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z podstawami gry na #'polanieonline.eu' w dziale #'Dla początkujących'.
+Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z podstawami gry na #'www.polskagra.net' w dziale #'Dla początkujących'.
 				</attribute>
 			<attribute name="class">notes3</attribute>
 		</entity>

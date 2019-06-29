@@ -315,7 +315,7 @@
 			<name>Bank Kirdneh</name>
 			<type>bank</type>
 			<description>Miejsce do przechowywania dobytku. Jest on filią banku Fado.</description>
-			<url>http://polanieonline.eu/faq</url>
+			<url>http://polskagra.net/faq</url>
 		</point-of-interest>
 
 	</zone>
@@ -1791,7 +1791,7 @@
 			<title>Małe Podziemia Kirdneh</title>
 			<type>dungeon</type>
 			<description>Jesteś na tyle odważny, aby wejść do podziemi pełnych bandytów, morderców i łowców mieszkających głęboko pod  wielkimi jaskiniami fado?</description>
-			<url>http://polanieonline.eu/kirdneh</url>
+			<url>http://polskagra.net/kirdneh</url>
 		</point-of-interest>
 
 		<entity x="52" y="114">
@@ -1826,7 +1826,7 @@
 			<title>Małe Podziemia Kirdneh</title>
 			<type>dungeon</type>
 			<description>Jesteś na tyle odważny, aby wejść do podziemi pełnych bandytów, morderców i łowców mieszkających głęboko pod  wielkimi jaskiniami fado?</description>
-			<url>http://polanieonline.eu/kirdneh</url>
+			<url>http://polskagra.net/kirdneh</url>
 		</point-of-interest>
 
 		<portal x="15" y="30" ref="entrance">
