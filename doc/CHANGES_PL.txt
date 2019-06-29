@@ -1,16 +1,417 @@
 ﻿Changelog
 ---------
-1.01
+1.06
+*świat gry*
+- Dodano nowy przedmiot: zaizolowany pierścień (ochrona przed wstrząsem) - drop z gashadokuro - 5%
+- Dodano nową statystykę: range attack (ratk) oraz łuki, strzały, różdżki i magia zostały przekonwertowane z ATK na RATK
+- Dodano manekina treningowego do trenowania ATK lub RATK oraz dodano tarczę strzelecką do trenowania RATK
+- Dodano nowe outfity NPC
+- Dodano strzelnicę do trenowania RATK
+- Administrator używający komendy /teleclickmode będzie się od razu zatrzymywał
+- Mizuno potrafi wytworzyć więcej niżeli 1 strzałę lodową, strzałę ognia, strzałę światła
+
 *klient*
-- Zmniejszono drgania kamery
+- Dodano nowe outfity NPC
+
+*webclient*
+- Dodano wsparcie dla większej ilości entities (łowienie ryb, wydobywanie węgla, studnia życzeń, mini-gierki)
+- Dodano wsparcie dla eventowych map typu: halloween/easter/xmas
+- Dodano nową warstwę szczegółów (np. balon)
+- Dodano kilka nowych komend (/help, /atlas, /characterselector)
+- Dodano wsparcie umożliwiające zmiany koloru własnego wyglądu
+- Naprawiono uszkodzone menu na pustej liście znajomych
+- Zaimplementowano możliwość zmiany outfitu gracza
+
+*code*
+- Dodano nową warstwę nazwaną flyoverarea, tzn. że przez tą warstwę można strzelać strzałami/magią itp.., lecz nie można przez nią przejść oraz jest ona oznaczona kolorem pomarańczowym na minimapie
+- Dodano nową funkcję oraz komendę dla administratora (ListZones)
+- Skrócono większość kodów JAVA + zwiększono kompatybilność serwera
+- Zaimplementowano do gry nową funkcję niszczenia się przedmiotów
+
+*serwer*
+- Zaktualizowano zabezpieczenia marauroa
+- Dodano auto-ban, który blokuje postacie wykorzystujące błąd z kopiowaniem przedmiotów
+- Zaktualizowano plik mysql-connector-java
+
+*naprawa błędów*
+- Naprawiono skalowanie ekranu gry
+- Naprawiono pasek życia podczas skalowania ekranu gry
+- Naprawiono kozę
+- Naprawiono błędy w logach serwera po wylogowaniu się postaci
+- Naprawiono plik AreaIsFull
+- Naprawiono strzelnicę
+- Naprawiono funkcję niszczących się broni
+
+
+
+1.05 - KRÓLESTWO POLAN
+*świat gry*
+- Ogromna ilość zmian na mapach
+- Dodano nowe przedmioty:
+	* 'środek uspokajający', który leczy/zapobiega stanom szokującym,
+	* 'orzech włoski',
+	* 'tuńczyk',
+	* 'ruda miedzi',
+	* 'sztabka miedzi'
+- Dodano opisy dla potworów: 'elf ciemności matrona' & 'samurai'
+- Dodano nowy Krakowski bank + dodano stare zadanie na piętro w banku (w krakowskim banku)
+- Dodano kilka nowych zadań w Krakowie
+- Dodano nowych NPC w Krakowie
+- Dodano wiele nowych pomieszczeń jak i sklepów w Krakowie
+- Dodano nową skrzynię w Krakowskim banku
+- Dodano nowy dungeon w Krakowie
+- Dodano nowe osiągnięcia za wykonywanie zadań w Kuźnicy
+- Dodano możliwość wydobycia rudy miedzi w podziemiach zakopane & w kopalni na kościelisku
+- Dokonano licznych zmian na terenach Krakowia
+- Nowy kowal w Krakowie potrafi wytopić sztabkę miedzi (potrzeba: 2 drewna & 1 rudę miedzi)
+- Na zrobienie sztabki złota potrzeba 3 polan zamiast 2
+- Minimalne zwiększenie rozmiarów smoków (chodzi o okrąg pod potworkiem) z 3,2 na 3,3
+- Zegary ma mapach pokazują nam godzinę, jeżeli klikniemy na niego PPM i wybierzemy opcję 'zobacz'
+- Zmieniono nazwę przedmiotu z: 'pióro mrocznego archanioła' na 'pióro archanioła ciemności'
+- Zmniejszono ilość dostawanych punktów umiejętności za zdobytego EXP'a z wykonanego zadania u burmistrzów z 10% na 5%
+- Przetłumaczono wiadomości + zagadki w Piekle [hell]
+- Gracz może posiadać kozę jako zwierzątko
+- Za wykonanie zadania u samego Króla Kraka będzie można przejść przez północną bramę od strony krakowskiego rynku
+- Zasięg strzelających potworów powiększył się o 2 kratki (gdzie zwykłym łukiem, kuszą i różdżką nie będzie można mieć większego zasięgu od potwora strzelającego, lecz jedna, jedyna różdżka, która zwie się na 'P' będzie miała nadal większy zasięg od potwora strzelającego, co będzie sprawiało, że stanie się unikatową bronią dla magów :) )
+
+*klient*
+- Rozmiary klienta zostały odrobinę powiększone z 640x480 (pikseli) na 800x600 (pikseli)
+- "Dymki" z wiadomościami zostały poszerzone o 100px (pikseli) [z 240px na 340px]
+- Zwiększono maksymalną ilość liter w tekstach (rozmowy z NPC/graczami tzw. 'chmurki') z 84 na 124
+- Więcej grafik natury broni służącej do ustawienia ikonki walki, jeśli jest dostępna
+- Zmieniono kolorystyke potwora 'dwugłowego lodowego smoka'
+- Zmieniono wygląd potwora 'coś' na bardziej abstrakcyjny
+- Wiele nowych outfitów dla NPC
+- Dodano muzykę na pustynnych mapach (desert) oraz na mapie 1_dreamscape
+- Dodano kilka dźwięków oraz dwie specjalne piosenki dla Krakowskich map
+- Dodano efekt otwierania bramy obok królewskiego grodu
+- Dodano grafikę kozy & rosnących winogron & rudy miedzi & sztabki miedzi & czarnego pierścienia
+- Nazwy map pod minimapą w lewym panelu zostaną podmieniane (np: nazwa mapy: 0_zakopane_s; efekt końcowy w kliencie: Zakopane S)
+
+*webclient*
+- Dodano wsparcie dla map ze świata POL & różnych eventowych map
+- Dodano wsparcie dla 'nowych' slotów ze standardowego klienta typu: naszyjnik/pas/rękawice/drugi pierścień/money
+- Dodano wsparcie dla zwięrzątek typu: owczarek/owczarek podhalanski/koza
+- Przybliżono szatę graficzną do standardowego klienta
+
+*code*
+- Nowa implementacja sprawdzania statusu 'uzdrowienia' dla przedmiotów typu: antidotum & mocne antidotum & środek uspokajający
+- Dodano nowy skrypt dla administratorów ułatwiający wyszukanie nieużywanych grafik przedmiotów bądź potworów
+- Paski statusu (m.in. status zdrowia) przesuwa się w dół w momencie kiedy postać gracza / potwora etc. "wychodzi" poza nasze pole widzenia na ekranie
+- Przerobiono częściowo kod gry / skryptów
+- Potrzeba od teraz 20 poziom administratora, aby móc korzystać ze skryptów
+- Wiadomości o śmierci nie będą generowane przez serwer tylko przez klienta (przykład: kiedy 'my' jako gracz zginiemy to otrzymamy wiadomość na chat'cie od kogo/czego zostaliśmy zabici)
+
+*naprawa błędów*
+- Wyciszono pomniejsze błędy kompilatora
+- Poprawiono opis 'pasa z mithrilu'
+- Poprawiono naliczanie 13-nastego smoka
+- Poprawiono ostatnie zadanie u "Czarnoksiężnika"
+- Naprawiono naliczanie czasu podczas wykonywania / ulepszania złotych ciupag (tak samo z jednym wąsem i z dwoma wąsami)
+- Naprawiono wyświetlanie powtarzalności misji: 'odnowienie zapasów kwiaciarni' w dzienniku zdarzeń
+- Efektu stanu porażenia nie można ominąć poprzez użycie komendy /autowalk (automatycznego chodzenia)
+- Można przejść przez swoje zwierzątko, aby uniknąć zablokowania przez pet'a
+
+
+
+1.04 - PRASŁOWIAŃSTWO
+*klient*
+- Natura broni służy do ustawienia ikonki walki, jeśli jest dostępna
+- Dodano nowe dźwieki kajmana
+- Dodano 4 nowe fryzury do wyboru dla postaci gracza
+- Dodano kilka nowych outfitów dla NPC
+- Dodano 12 nowych grafik pasów
+- Dodano nowy slot: pas
+- Poprawiono graficznie ubrania dress_62-68.png
+- Poprawiono graficznie elficki naszyjnik
+
+*serwer*
+- Przetłumaczono wszystkie skrypty oraz dodano kilka nowych dla administratorów
 
 *świat gry*
-- Usunięto niebezpieczny respawn złotego rycerza w skarbcu zakopiańskiego banku
+- Aktywowano mapy takie jak: Kraków, Wieliczka, Warszawa, Dragon_land, Dragon_knights, labirynt (od Ozo)
+- W int_afterlife dodano teleporty do: Krakowia, Wieliczki i Warszawy
+- Juhas sprzedaje: zwój krakowski, zwój wieliczka
+- Dodano na wszystkich powyższych mapach pogodę (oprócz labiryntu)
+- Wszystkie zadania w krainie prasłowiańskim zostały aktywowane
+- Dodano 13-nastego smoka o imieniu "Hikari"
+- Dodano kilka nowych osiągnięć
+- Dodano nowe rękawice wampirze (ATK: 2; DEF: 5; LIFESTEAL: 0.05), które można dropnąć z lorda wampirów (0.04%)
+- Dodano nowe expowiska na desert'cie (6 pięter nowej piramidy)
+- Miecz ognisty stał się lżejszy dla rycerzy, ale niestety jego siła się zmniejszyła, a lodowy miecz stał się lustrzanym odbiciem miecza ognistego (atk; waga;)
+	- miecz ognisty - 29 / 5 + FIRE
+	- lodowy miecz  - 29 / 5 + ICE
+- Zebranie magów przedyskutowało temat magii ognia i magii ziemi. Doszli do wniosku, że to magia ognia jest bardziej niebezpieczna (atk; obr;)
+	- magia ziemi - 9 / 9 + NATURE (wcześniej - 11 / 11 + NATURE)
+	- magia ognia - 11 / 11 + FIRE (wcześniej - 9 / 9 + FIRE)
+- Dodano nowego dwugłowego lodowego smoka, który posiada stare statystyki dwugłowego czarnego smoka, a aktualne statystyki dwugłowego czarnego wyglądają następująco (w nawiasie są jego stare statystyki):
+	- ATK: 3817 (3052)
+	- DEF: 129 (110)
+	- HP: 7593 (6873)
+	- LEVEL: 499 (399)
+	- XP: 486253 (312827)
+- Poszerzono przejścia w ognistej piramidzie
+- U Juhasa można zakupić bilet turystyczny raz na dzień oraz gracz musi posiadać conajmniej 100 poziom. Juhas reaguje na słowo "bilet" lub "bilet turystyczny", gdzie potem będą toczone kolejne dialogi z graczem. UWAGA!!! Juhas nie będzie reagował na "buy bilet turystyczny"!!
+- Dodano typ natury ataku dla smoków, np: dwugłowy czerwony smok posiada typ ataku ognistego, czyli fire, a dwugłowy czarny - dark, itd...
+- Zwiększono drop magii płomieni z odpowiednich potworów
+- Kajmany wydają dźwieki
+- Dodany został dźwięk wiedźmy NPC Esolte Vietta
+- Tekstury na większości map zostały poprawione (np: Tatry, pustynia, dreamscape)
+- Na niektórych mapach Tatr rosną grzyby
+- Zmieniono system otrzymywania skilli za osiągnięty poziom z 50/100/150/200/250/300 na 50/100/150/350/550 (zmieniliśmy NPC, którzy nagradzali nas 'skillami' za osiągnięty poziom, lecz kiedy osiągniecie dany poziom i przejdziecie się do danego NPC to nie pożałujecie :) )
+- Zmieniono nazwę potwora z "smok dwugłowy niebieski" na "dwugłowy niebieski smok"
+- Zmieniono parametry przedmiotu
+	- "magiczny hełm kolczy" z 25 DEF na 21 DEF oraz dodano odporność na NATURE + WATER 110%
+	- "hełm z mithrilu" z 19 DEF na 24 DEF
+- Dodano nowego NPC o nazwie "Czarnoksiężnik", który znajduje się w wieży na mapie 0_zakopane_c
+- Dodano 5 nowych zadań w świecie prasłowiańskim (4 nowe zadania w Zakopane; 1 zaś w Kuźnicy)
+- Dodano nowy przedmiot o nazwie "wyniki badań" (przedmiot zadaniowy)
+- Gargulce znajdujące się na 3 piętrze wieży w zakopane_c zostały przeniesione piętro niżej ze względu na "Czarnoksiężnika"
+- Dodano 13 (12 + 1 stary) nowych przedmiotów - pasów [skórzany pas; wzmocniony skórzany pas; kolczany pas; karmazynowy pas; złoty kolczany pas; pas elficki; pas zbójecki (stary przedmiot); pas krasnoludzki; pas wampirzy; pas olbrzymi; złoty pas; czarny pas; pas z mithrilu]
+- W jaskini kikareukin znajduje się NPC, który nagradza nas za zdobyty 350 poziom
+- Dodano 4 semońskie skrzynie w górnej części zakopiańskiego banku oraz dodano tabliczki z jakiej krainy te skrzynie pochodzą
+- Zadanie na złotą ciupagę z jednym wąsem nie jest wymagany przedmiot: 'krew smoka', a na złotą ciupagę z dwoma wąsami nie są wymagane następujące przedmioty: 'pazur niebieskiego smoka' (podmieniono na 'pazur zielonego smoka') & 'pazur czarnego smoka'. Dodatkowo zwiększono nagrodę w postaci punktów doświadczenia w pierwszym zadaniu z 20'000 na 250'000 oraz drugiego zadania z 20'000 na 500'000
 
-*naprawiono błędy*
-- Naprawiono kości do gry
-- Poprawiono linki
+*code*
+- Lifesteal z rękawic wampirzych sumuje się wraz z lifesteal'em w broni lub bez niej (lifesteal'a)
+
+*naprawa błędów*
+- Naprawiono zadanie na tarcze z mithrilu
+- Naprawiono błąd, który powodował, że miejsca gracza się niezapisywały
+- Naprawiono błąd z nowymi domkami, które znajdują się na mapie 0_zakopane_s
+- Poprawiono zadania na złotą ciupagę z jednym wąsem & z dwoma wąsami
 
 
-1.00
-OFICJALNY START SERWERA POLANIEONLINE
+
+1.03.5
+*klient*
+- Przetłumaczono handel
+
+*świat gry*
+- Radomil zyskał nową moc usuwania czaszek z zabójców posiadających dobrą karmę
+- Przywrócono desert
+- Przywrócono pierścienie mieszczanina, rycerza, barona, magnata
+- Elficki naszyjnik można dropnąć z elfów górskich (około 0.025 do 1%)
+- Elfy & elfy górskie atakują siłą natury
+- Elficki set posiada teraz odporność na siłę natury
+- Elficki miecz atakuje siłą natury
+- Poprawiono kafelki na niektórych mapach Faiumoni
+- Poprawiono osiągnięcie 'Heretyk'- od teraz potrzeba wykonać 25 zadań zamiast 50
+- Aenihata przywrócila swoje dawne siły
+
+*code*
+- Usunieto pliki takie jak: GuildRing.java & Ring.java (nie korzystane)
+- Pierścienie mieszczanina, rycerza, barona i magnata są teraz opisywane jako Item zamiast GuildRing
+
+*naprawa błędów*
+- Naprawiono listę oferty u Wielkoluda
+- Naprawiono wejście do domku na górze w Tatrach
+- Naprawiono ścieżki graficzne potwora mermaid
+
+
+
+1.03 - MOUNTAINS
+*klient*
+- Przetłumaczono część tekstów
+- Dodano trzy nowe grafiki: złoty amulet, elficki naszyjnik, pióro mrocznego archanioła
+
+*świat gry*
+- Aktywowano mapy Tatr
+- Dodano 11 nowych map Tatr
+- Dodano pogodę na mapach Tatr
+- Pióro azazela można dropnąć z azazela
+- Pazur arktycznego smoka oraz skóra akrtycznego smoka można dropnąć ze smoka arktycznego
+- Dostosowano punkty doświadczenia zdobywane z potworków stendhala do potworów PolskaGRA
+- Dodano nowego NPC ze sklepem w zakopane
+- Dodano nowe zadanie związane z NPC ze sklepem w zakopane
+- Poprawiono nagrody jakie można dostać otwierająć brązową, srebrną i złotą skrzynie:
+	-Brązowa skrzynia: money, duży eliksir, wielki eliksir, gigantyczny eliksir, maczuga, skóra zielonego smoka, skóra niebieskiego smoka, futro, korale, ciupaga, spodnie kamienne, kamienna zbroja, buty kamienne, sztylet mroku, kosa, pyrlik, skórzane rękawice, złota kolczuga
+	-Srebrna skrzynia: wielki eliksir, money, gigantyczny eliksir, skóra zielonego smoka, skóra niebieskiego smoka, skóra czerwonego smoka, skóra czarnego smoka korale, lodowy miecz, zbroja cieni, rękawice cieni, spodnie cieni, buty cieni, złote spodnie, sztylet mroku, ciupaga, kamienne spodnie, skórzane wzmocnione rękawice, kamienna tarcza
+	-Złota skrzynia: gigantyczny eliksir, wielki eliksir, money, ciupaga, złote spodnie, złota zbroja zbroja cieni, tarcza płytowa, sztylet mroku, skórzane wzmocnione rękawice, skóra złotego smoka, skóra zielonego smoka, skóra niebieskiego smoka, skóra czerwonego smoka, skóra czarnego smoka, skóra arktycznego smoka, rękawice cieni pas zbójecki miecz lodowy, korale, czarny sztyle, tczarny płaszcz, czarne spodnie, czarne buty, czarna zbroja
+- Dodano nowych NPC w Tatrach
+- Dodano nowe pomieszczenia takie jak: tawerna/hostel/ratusz
+- Dodano nowe zadania w Tatrach (jedno z nich znajduje się w nowym ratuszu :))
+- W dzielnicy Zakopanego, w Kuźnicy można sprawdzić kto potrzebuje pomocy w rejonach pasma górskiego jak i w samym Zakopane
+- Kilka nowych outfitów dla NPC
+- Dodano trzy nowe przedmioty: złoty amulet (przedmiot potrzebny do zadania) oraz elficki naszyjnik (6 DEF), pióro mrocznego archanioła (rzecz kolekcjonerska; można dropnąć z archanioła ciemności)
+- NPC na skille (na 100 poziom) został przeniesiony z Gdańska do jaskini na wyspie Athor
+- Wynagrodzenie w niektórych zadaniach w krainie faiumoni oraz krainie prasłowiańskiej zostało zmienione (na lepsze)
+
+*code*
+- Klient teraz będzie wymagał od nas Jave w wersji 1.8 zamiast 1.7
+- Zmieniono nieco mnożnik DEF'a (na plus oczywiście)
+- Poprawiono 'jakość' chodzenia gracza oraz kodu gry
+- Dodano nowy skrypt dla GM - /alterkills
+
+*naprawa błędów*
+- Naprawiono błąd licznika, który nie pokazywał ile posiadamy w ekwipunku/skrzynce surowców typu 'kryształ ametystu' oraz magii
+- Naprawiono błąd, że nie można było atakować z magii i różdżki
+- Naprawiono błąd przez który Wielkolud nie kupował polskiej płytowej tarczy
+- Naprawiono naliczanie ataku do statystyk gracza z rękawic lub pierścieni
+- Poprawiono działanie komendy /away
+
+
+
+1.02.2
+*świat gry*
+- balans potworów został poprawiony ręcznie, zamiast wykorzystywać skrypt BalanceRPGame.java (Potwory zostały osłabione o -20-25% ATK oraz -10-15% OBR + ilość zdobywanego EXP'a został zwiększony o +20-25%,
+np: wcześniejszy starzec: ATK: 169; OBR: 24; HP: 166; XP: 313;
+nowy starzec: ATK: 135; OBR: 18; HP: 133; XP: 533;
+UWAGA! Nowe statystyki potworów były sprawdzane, jeżeli chodzi o 'wieśniaka' to sprawdzaliśmy na 17 poziomie gracza oraz skillami 22x22!
+Gracz spokojnie go może zabić nie tracąc większej połowy HP!)
+
+*naprawa błędów*
+- Poprawiono grafiki drzewców
+
+
+
+1.02.1
+- Naprawa czasu spędzonego w grze
+
+
+
+0.02 - REBIRTH MONSTERS
+*klient*
+- Dodano z powrotem dzień-noc
+- Dodano nowy obrazek strzały z mithrilu oraz wzmocnionej drewnianej strzały
+- Dodano brakujący dźwięk słonia
+- Dodano stary dźwięk ze świata POL podczas logowania się do gry
+- Dodano nowe outfity NPC:
+	- npckibic.png (Kibic)
+	- npcfryderyk.png (Fryderyk)
+	- npcgenowefa.png (Gaździna Jadźka)
+	- npcjagienka.png (-)
+	- npcwikary.png	(Wikary)
+	- npcjuhas.png (Juhas)
+	- npcjuhasboguslaw.png (Boguś)
+	- npcbronek.png (Bronek)
+- Dodano nowe stroje dla postaci gracza:
+	- dress_062/_068.png
+- Dodano kapelusz góralski możliwy do wyboru dla postaci gracza
+- Dodano do ustawień możliwość wyboru między ciemnym a jasnym drewnem jako wygląd klienta
+- Przetłumaczono prawie cały klient
+
+*świat gry*
+- Nowe NPC:
+	- Yerena
+	- Stajenny Marcel
+	- Dr. Wojciech
+- Aktywowano mapy takie jak: kościelisko & pustynia
+- Mapa zakopane została zmieniona wizualnie
+- Mapa kościelisko została zmieniona wizualnie
+- Nowe pomieszczenie na górze w zakopane_s + jaskinia
+- Nowe zadanie na reset poziomu gracza (gracz musi osiągnąć poziom maksymalny, aby móc go zresetować. Zadania / skille /
+bazowe zdrowie nie zostaną naruszone przy resetowaniu poziomu)
+- Katinka nagradza pozytywną karmą za przyjęcie zadania Zoo Food
+- Nowy "nieszkodliwy" corpse sprite dla pająków
+- Niektóre NPC nie zawrócą po zderzeniu się z kolizją
+- Dodano przedmiot "gruczoł jadowy" do cotygodniowego poszukiwania przedmiotów
+- Dodano pogodę na mapach kościeliska
+- Dodano dwa nowe żywioły do świata gry: natura & woda
+- Dodano nową strzałę z mithrilu (Typ ataku: light; Atk: 9; Range: 6;) / będzie można je jedynie wytworzyć! / oraz wzmocnioną drewnianą strzałę (Atk: 4; Range: 3;)
+- Obrazek słonia został powiększony z 144x256 na 288x512
+- Nagroda za wykonanie zlecenia u burmistrzów jest teraz bardziej wyjątkowa
+- Znerfiono ciupagi o -2 atk oraz zwykłą ciupagę z 19 do 14 atk; aktualne statystyki [atk / obr / waga / lifesteal]:
+	- ciupaga 				- 14 / 2 / 4 / 0
+	- złota ciupaga 			- 19 / 2 / 4 / 0
+	- złota ciupaga z wąsem 		- 21 / 3 / 3 / 0.01
+	- złota ciupaga z dwoma wąsami 		- 23 / 3 / 3 / 0.02
+	- złota ciupaga z trzema wąsami 	- 23 / 4 / 2 / 0.03 + LIGHT
+- Zbuffowano strzały oraz bełty [atk / range]:
+	- strzała				- 3 / 2
+	- strzała żelazna			- 5 / 3
+	- strzała złota				- 6 / 4
+	- strzała ognia/lodowa/światła/mroku	- 7 / 5 + odpowiednia siła natury
+	- strzała płonąca			- 8 / 5 + FIRE
+	- bełt				- 4 / 3
+	- bełt stalowy			- 5 / 4
+	- bełt złoty			- 6 / 5
+	- bełt płonący			- 8 / 6 + FIRE
+- Został wykorzystany program BalanceRPGame.java (od twórców Stendhala) do zbalansowania potworów ze świata POL
+- Juhas sprzedaje bilet turystyczny
+
+*code*
+- Nowy atrybut dla map - "dark" - dzięki, któremu mamy efekt nocy
+- Dodano nową funckję, która sprawdza jaką mamy ustawioną szerokość okna gry i dostosowuje okienka wewnątrz gry [Dla wersji rozszerzonego klienta]
+- Za wykonane zadanie można nagrodzić gracza punktami umiejętności ataku oraz obrony niezależnie jak i zależnie od poziomu gracza
+- Reorganizacja plików XML z potworkami ze świata POL (33 do 11 plików)
+
+*naprawa błędów*
+- Naprawiono błąd, który powodował, że serwer przydzielał nam zupełnie inną płeć
+- Naprawiono błąd, który powodował, że tablica sklepu Elodrina (nalwor) nie otwierała się
+- Naprawiono błędy z serwerem testowym
+- Naprawiono błąd, który powodował, że informacja o zabitym potworze pojawiała się dwukrotnie
+- Naprawiono błąd z nieśmiertelnymi potworkami
+- Naprawiono błąd, który powodował, że kiedy gracz kliknie myszką (LPM/PPM) na cokolwiek to postać się zatrzymyława
+- Naprawiono błąd, że nagroda w postaci punktów umiejętności ataku jak i obrony dawało nam ujemne statystyki
+
+
+
+0.01.1
+*klient*
+- przetłumaczono część interfejsu (grupy/listę znajomych oraz wiadomości kiedy jesteśmy zatruci)
+
+*świat gry*
+- przywrócono Juhasa w int_semos_tavern_0 oraz dodano u niego możliwość kupna zwoju semos za 300 money
+
+*naprawa błędów*
+- naprawiono plecak
+- naprawiono tablicę u Xin Blanca w int_semos_tavern_0
+
+
+
+0.01
+*klient*
+- gracze mogą zmienić kolor ciała
+- od teraz po włączeniu lub wyłączeniu jakieś funkcji w ustawieniach zostaniemy o tym poinformowani na chat'cie
+- podwójne kliknięcie klawisza kierunkowego włącza funkcję auto-walk (automatyczne chodzenie) zamiast przytrzymywania ALT (buggy yet)
+- gracz może włączyć lub wyłączyć funkcję ciągłego ruchu w ustawieniach (po zmianie mapy postać nie będzie się zatrzymywała)
+- twarz postaci po przejściu przez jakiś portal zostanie od teraz poprawnie zwrócona
+- przetłumaczono część zadań i npc
+- sprites & tiles zostaną podmienione obrazkami z prefixem "-safe" kiedy w ustawieniach krew jest wyłączona
+- zwiększono ilość slotów w plecaku (patrząc na plecak ze Stendhal'a)
+- zmieniono pozycję rzemyku (od teraz jest poziomo 4x2)
+- nowy wygląd slotów
+- przywrócono 36 slotów w skrzyni zamiast 30
+
+*eksperymetalne zmiany*
+- nowe sloty w ekwipunku gracza (plecak, pas, rzemyk) [Eksperyment chwilowo nie wyszedł tak jak powinien]
+
+*serwer*
+- baza marauroa została zaktualizowana do najnowszej wersji
+- silnik gry został zaktualizowany do najnowszej wersji Stendhal'a
+
+*świat gry*
+- wiele nowych outfit'ów NPC jak i graczy
+- nowy wygląd trawy
+- nowy wygląd kotów
+- przeniesiono animacje vulcanus, tomi & zekiel do /tileset/character
+- przeniesiono mapy fauimoni z /zones/.. do /zones/stendhal/..
+- przeniesiono mapy prasłowiańskiej z /zones/.. do /zones/pol/..
+- przeniesiono potwory ze świata Stendhal z /sprites/monsters/.. do /sprites/monsters/stendhal/..
+- przeniesiono potwory ze świata PolskaOnLine z /sprites/monsters/.. do /sprites/monsters/pol/..
+- od teraz NPC mogą zmienić własną ścieżkę kiedy się zderzą z jakąś kolizją
+- koty teraz mogą pić mleko
+- dodano nowych żołnierzy chroniących mur miasta Ados
+- dodano południową bramę w mieście Ados
+- dodano chatkę rybacką od południowej części miasta Ados
+- rozszerzono ścieżki w hell'u
+- przywrócono stare obrazki zwłok powtorów
+- dodano pogodę w zakopane
+- dodano teleport w zakopane_c prowadzący do semos
+- przywrócono stare statystyki potworów jak i przedmiotów
+- już więcej nie będzie potrzebne 1 money do użycia zwoju czyszczącego
+- przetłumaczono wszystkie zadania / regiony / potwory / przedmioty / npc oraz cały klient
+
+*code*
+- został dodany nowy atrybut dla portali - "face" - służący do ustawiania kierunku skierowania gracza
+- został dodany nowy atrybut dla portali - "offset" - przesuwający pozycję gracza względem miejsca docelowego
+- dodano resistance do creatures.xsd
+
+*naprawa błędów*
+- naprawiono błąd, który powodował duplikowanie przedmiotów poprzez podwójne logowanie
+- naprawiono odmierzany czas w hell'u
+- naprawiono błędy kompilowania plików
+- naprawiono błąd z wyświetlaniem potworów, gdzie gra w ogóle nie wczytywała sprites z potworami
+- naprawiono błąd z zadaniem na płaszcz z mithrilu, który uniemożliwiał wykonanie tegoż zadania
+- naprawiono atrybuty resistance i visibility dla potworów
