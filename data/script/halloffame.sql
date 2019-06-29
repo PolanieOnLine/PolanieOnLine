@@ -43,14 +43,14 @@ ORDER BY age DESC;
 
 
 INSERT INTO halloffame_archive_recent (charname, fametype, rank, points, day)
-SELECT name, 'T', @rownum:=@rownum+1 as rank, atk*(1+0.03*level) As points, CURRENT_DATE()
+SELECT name, 'T', @rownum:=@rownum+1 as rank, atk As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND level >= 2 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
 ORDER BY points DESC;
 
 
 INSERT INTO halloffame_archive_recent (charname, fametype, rank, points, day)
-SELECT name, 'F', @rownum:=@rownum+1 as rank, def*(1+0.03*level) As points, CURRENT_DATE()
+SELECT name, 'F', @rownum:=@rownum+1 as rank, def As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND level >= 2 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
 ORDER BY points DESC;
@@ -100,7 +100,7 @@ SELECT scoretable.name, 'R', @rownum:=@rownum+1 as rank, scoretable.points, CURR
 FROM (
 SELECT c.name, round(xp*(ifnull(score,0)+0.0001)/(age+1)) As points, score FROM character_stats c
 JOIN (
-SELECT name, sum(1/cnt) As score 
+SELECT name, sum(1/cnt) As score
 FROM reached_achievement ra
 JOIN
     (SELECT achievement_id, count(*) as cnt FROM reached_achievement
