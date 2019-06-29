@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.IncreaseAtkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseDefXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
+import games.stendhal.server.entity.npc.action.IncreaseRatkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -428,6 +429,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 						new IncreaseXPDependentOnLevelAction(4, 110.0),
 						new IncreaseAtkXPDependentOnLevelAction(4, 110.0),
 						new IncreaseDefXPDependentOnLevelAction(4, 110.0),
+						new IncreaseRatkXPDependentOnLevelAction(5, 100.0),
 						new IncreaseKarmaAction(5.0),
 						new IncrementQuestAction(QUEST_SLOT, 2, 1),
 						new SetQuestToTimeStampAction(QUEST_SLOT,1),

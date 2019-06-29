@@ -88,6 +88,7 @@ public class Skille350NPC implements ZoneConfigurator {
 
 					player.setAtkXP(750000 + player.getAtkXP());
 					player.setDefXP(1750000 + player.getDefXP());
+					player.setRatkXP(750000 + player.getRatkXP());
 					player.addXP(350000);
 
 					player.incAtkXP();

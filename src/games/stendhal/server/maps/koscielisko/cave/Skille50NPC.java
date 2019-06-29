@@ -71,9 +71,9 @@ public class Skille50NPC implements ZoneConfigurator {
 		npc.addInitChatMessage(null, new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				if (!player.hasQuest("50LVLReward")
+				if (!player.hasQuest("ChorosReward")
 						&& (player.getLevel() >= 50)) {
-					player.setQuest("50LVLReward", "done");
+					player.setQuest("ChorosReward", "done");
 
 					player.setAtkXP(45000 + player.getAtkXP());
 					player.setDefXP(90000 + player.getDefXP());
@@ -83,8 +83,8 @@ public class Skille50NPC implements ZoneConfigurator {
 					player.incDefXP();
 				}
 
-				if (!player.hasQuest("50LVLFirstChat")) {
-					player.setQuest("50LVLFirstChat", "done");
+				if (!player.hasQuest("ChorosFirstChat")) {
+					player.setQuest("ChorosFirstChat", "done");
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");
 				}
 				

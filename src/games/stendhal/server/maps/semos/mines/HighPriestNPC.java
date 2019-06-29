@@ -84,6 +84,7 @@ public class HighPriestNPC implements ZoneConfigurator {
 
 					player.setAtkXP(1000000 + player.getAtkXP());
 					player.setDefXP(10000000 + player.getDefXP());
+					player.setRatkXP(500000 + player.getRatkXP());
 					player.addXP(100000);
 
 					player.incAtkXP();

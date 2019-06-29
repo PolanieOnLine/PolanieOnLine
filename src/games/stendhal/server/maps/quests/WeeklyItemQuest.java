@@ -33,6 +33,7 @@ import games.stendhal.server.entity.npc.action.DropRecordedItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseAtkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseDefXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
+import games.stendhal.server.entity.npc.action.IncreaseRatkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -266,6 +267,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		actions.add(new IncreaseXPDependentOnLevelAction(5.0/3.0, 290.0));
 		actions.add(new IncreaseAtkXPDependentOnLevelAction(5.0/3.0, 290.0));
 		actions.add(new IncreaseDefXPDependentOnLevelAction(5.0/3.0, 290.0));
+		actions.add(new IncreaseRatkXPDependentOnLevelAction(5, 100.0));
 		actions.add(new IncreaseKarmaAction(40.0));
 		actions.add(new ChatAction() {
 			@Override
