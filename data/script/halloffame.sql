@@ -170,14 +170,14 @@ ORDER BY age DESC;
 
 
 INSERT INTO halloffame_archive_alltimes (charname, fametype, rank, points, day)
-SELECT name, 'T', @rownum:=@rownum+1 as rank, atk*(1+0.03*level) As points, CURRENT_DATE()
+SELECT name, 'T', @rownum:=@rownum+1 as rank, atk As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND level >= 2
 ORDER BY points DESC;
 
 
 INSERT INTO halloffame_archive_alltimes (charname, fametype, rank, points, day)
-SELECT name, 'F', @rownum:=@rownum+1 as rank, def*(1+0.03*level) As points, CURRENT_DATE()
+SELECT name, 'F', @rownum:=@rownum+1 as rank, def As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND level >= 2
 ORDER BY points DESC;
