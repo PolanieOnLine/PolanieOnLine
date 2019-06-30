@@ -264,12 +264,12 @@ public final class ShopList {
 
 		// buy axes (woodcutter)
 		shops.add("buyaxe", "halabarda", 2000);
-		shops.add("buyaxe", "topór oburęczny złoty", 4000);
-		shops.add("buyaxe", "topór oburęczny magiczny", 6000);
+		shops.add("buyaxe", "złoty topór obosieczny", 4000);
+		shops.add("buyaxe", "magiczny topór obosieczny", 6000);
 		shops.add("buyaxe", "topór Durina", 8000);
-		shops.add("buyaxe", "kosa czarna", 9000);
+		shops.add("buyaxe", "czarna kosa", 9000);
 		shops.add("buyaxe", "topór chaosu", 10000);
-		shops.add("buyaxe", "halabarda czarna", 12000);
+		shops.add("buyaxe", "czarna halabarda", 12000);
 
 		// buy chaos items (scared dwarf, after quest)
 		shops.add("buychaos", "spodnie chaosu", 8000);
