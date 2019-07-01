@@ -96,7 +96,7 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 				reply = messageTemplates.get(reply);
 				reply = String.format(reply, action.get(TARGET));
 			} else {
-				player.sendPrivateText(reply + " jest nieznanym skrótem. Sprawdź #/gmhelp #'support', aby uzskać listę.");
+				player.sendPrivateText(reply + " jest nieznanym skrótem. Sprawdź #/gmhelp #'support', aby uzyskać listę.");
 				// send no support answer message if the shortcut wasn't understood
 				return;
 			}				
