@@ -4,6 +4,7 @@
 -- A  online age
 -- T  ATK
 -- F  DEF
+-- C  RATK
 -- W  wealth (money)
 -- X  XP
 -- B  Best (xp and online age)
@@ -51,6 +52,13 @@ ORDER BY points DESC;
 
 INSERT INTO halloffame_archive_recent (charname, fametype, rank, points, day)
 SELECT name, 'F', @rownum:=@rownum+1 as rank, def As points, CURRENT_DATE()
+FROM character_stats, (SELECT @rownum:=0) r
+WHERE admin<=6 AND level >= 2 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
+ORDER BY points DESC;
+
+
+INSERT INTO halloffame_archive_recent (charname, fametype, rank, points, day)
+SELECT name, 'C', @rownum:=@rownum+1 as rank, ratk As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND level >= 2 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
 ORDER BY points DESC;
@@ -182,6 +190,11 @@ FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND level >= 2
 ORDER BY points DESC;
 
+INSERT INTO halloffame_archive_alltimes (charname, fametype, rank, points, day)
+SELECT name, 'C', @rownum:=@rownum+1 as rank, ratk As points, CURRENT_DATE()
+FROM character_stats, (SELECT @rownum:=0) r
+WHERE admin<=6 AND level >= 2
+ORDER BY points DESC;
 
 INSERT INTO halloffame_archive_alltimes (charname, fametype, rank, points, day)
 SELECT name, 'W', @rownum:=@rownum+1 as rank, money, CURRENT_DATE()
