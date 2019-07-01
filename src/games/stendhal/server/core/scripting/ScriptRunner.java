@@ -39,7 +39,7 @@ import marauroa.common.game.RPAction;
 public class ScriptRunner extends StendhalServerExtension implements
 		ActionListener {
 
-	private static final int REQUIRED_ADMINLEVEL = 20;
+	private static final int REQUIRED_ADMINLEVEL = 1000;
 
 	private final Map<String, ScriptingSandbox> scripts;
 
