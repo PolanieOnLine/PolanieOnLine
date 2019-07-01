@@ -64,12 +64,12 @@ public class SickleingHalfelfNPC implements ZoneConfigurator {
 
 			@Override
 			public void createDialog() {
-				addGreeting("Salve straniero...");
+				addGreeting("Witaj nieznajomy...");
 				addJob("Aby zebrać snop zboża moim #sierpem przed zabraniem go do młyna muszę... Jak się tutaj dostałem?... Gdybym mógł sobie przypomnieć...");
 				addHelp("Ha! Jakie nie warte i nie zasługujące jest pytanie o ujawnienie... Kim jestem?... Mgła przyćmiła moje myśli...");
 				addOffer("Oh?! Ponieważ miałem coś cennego chciałbym zaproponować spojrzenie prawdzie...");
 				addReply(Arrays.asList("sickle", "sierp", "sierpem"),"Użyteczne narzedzie rolnika tak jak kosa. Powinieneś zapytać jakiegoś kowala czy nie oferuje ostrych sierpów.");
-				addGoodbye("In bocca al lupo...");
+				addGoodbye("Powodzenia...");
 			}
 	
 		};
