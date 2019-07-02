@@ -526,6 +526,7 @@
 
 	<!-- krakow_wisla_sw -->
 	<zone name="0_krakow_wisla_sw" level="0" x="513312" y="18304" file="Level 0/krakow/krakow_wisla_sw.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.forest.TolimirNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -545,6 +546,40 @@
 				<parameter name="radius">64</parameter>
 			</implementation>
 		</entity>
+
+		<entity x="74" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="76" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="78" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="80" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="82" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="84" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="86" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+	    <entity x="88" y="84">
+	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />
+	    </entity>
+
+	    <entity x="84" y="89">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Oto publiczna strzelnica. Jest utrzymywana przez samego króla Polan. Przychodzą w to miejsce dzielni rycerze, aby trenować strzelanie z łuku.
+			</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+
 		<entity x="106" y="123">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">
