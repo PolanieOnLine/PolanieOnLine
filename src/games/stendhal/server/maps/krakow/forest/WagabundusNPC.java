@@ -87,7 +87,6 @@ public class WagabundusNPC implements ZoneConfigurator {
 				nodes.add(new Node(53, 67));
 				nodes.add(new Node(56, 67));
 				nodes.add(new Node(56, 66));
-				nodes.add(new Node(124, 30));
 				setPath(new FixedPath(nodes, true));
 			}
 

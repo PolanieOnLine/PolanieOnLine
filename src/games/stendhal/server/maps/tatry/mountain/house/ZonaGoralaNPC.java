@@ -51,12 +51,6 @@ public class ZonaGoralaNPC implements ZoneConfigurator {
 				nodes.add(new Node(8, 5));
 				nodes.add(new Node(8, 3));
 				nodes.add(new Node(3, 3));
-				nodes.add(new Node(8, 3));
-				nodes.add(new Node(8, 5));
-				nodes.add(new Node(11, 5));
-				nodes.add(new Node(11, 6));
-				nodes.add(new Node(13, 6));
-				nodes.add(new Node(16, 13));
 				setPath(new FixedPath(nodes, true));
 			}
 
