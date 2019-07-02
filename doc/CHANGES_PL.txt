@@ -5,10 +5,17 @@
 - Zmniejszono drgania kamery
 
 *świat gry*
+- Dodano nową strzelnice w Krakowie oraz nowego NPC, który strzeże ją
+- Dodano możliwość zdobycia punktów STR (strzelania) w muzeum w Kirdneh (20% aktualnego xp w atk) i w Kuźnicach u Sołtysa (20% aktualnego xp w atk) oraz za osiągnięcie 150 poziomu i 350 poziomu (zadania na umiejętności)
 - Usunięto niebezpieczny respawn złotego rycerza w skarbcu zakopiańskiego banku
+- Poprawiono ceny w sklepach u Gulimo oraz Hagnurk (są bardziej przyjazne)
 
 *naprawiono błędy*
+- Naprawiono jeden z wózków na farmie w zadaniu 'Pomoc w żniwach', blisko Karla
+- Naprawiono tablice przy NPC o nazwie Woody
 - Naprawiono kości do gry
+- Poprawiono opis osiągnięcia 'Prywatny detektyw'
+- Poprawiono ścieżki (chodzenia) niektórych NPC (Wagabundus oraz Gaździna Bożena)
 - Poprawiono linki
 
 
