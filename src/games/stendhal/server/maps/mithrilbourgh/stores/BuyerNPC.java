@@ -90,7 +90,7 @@ public class BuyerNPC implements ZoneConfigurator {
 		// Add a book with the shop offers
 		final Sign book = new Sign();
 		book.setPosition(12, 3);
-		book.setText(" -- Skupuję -- \n buty żelazne\t 1000\n złote buty\t 1500\n buty cieni\t 2000\n buty kamienne\t 2500\n buty chaosu\t 4000\n buty z zielonego potwora\t 6000\n buty xenocyjskie\t 8000");
+		book.setText(" -- Skupuję -- \n buty żelazne\t 90\n złote buty\t 1500\n buty cieni\t 2000\n buty kamienne\t 2500\n buty chaosu\t 4000\n buty z zielonego potwora\t 6000\n buty xenocyjskie\t 8000");
 		book.setEntityClass("book_blue");
 		book.setResistance(10);
 		zone.add(book);

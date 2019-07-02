@@ -110,21 +110,20 @@ public final class ShopList {
 
 		//HagnurkNPC sprzedaje:
 		shops.add("sellbetterstuff1", "zbroja lazurowa", 16000);
-		shops.add("sellbetterstuff1", "buty lazurowe", 7200);
-		shops.add("sellbetterstuff1", "prążkowany płaszcz lazurowy", 13500);
-		shops.add("sellbetterstuff1", "lazurowy hełm", 67000);
-		shops.add("sellbetterstuff1", "spodnie lazurowe", 6000);
-		shops.add("sellbetterstuff1", "lazurowa tarcza", 50000);
-		shops.add("sellbetterstuff1", "sztylet mordercy", 80000);
+		shops.add("sellbetterstuff1", "buty lazurowe", 5000);
+		shops.add("sellbetterstuff1", "prążkowany płaszcz lazurowy", 7000);
+		shops.add("sellbetterstuff1", "lazurowy hełm", 8000);
+		shops.add("sellbetterstuff1", "spodnie lazurowe", 8000);
+		shops.add("sellbetterstuff1", "lazurowa tarcza", 22000);
+		shops.add("sellbetterstuff1", "sztylet mordercy", 14000);
 
 		//GulimoNPC sprzedaje:
-		shops.add("sellbetterstuff2", "zbroja cieni", 50000);
-		shops.add("sellbetterstuff2", "buty cieni", 26000);
-		shops.add("sellbetterstuff2", "płaszcz cieni", 33000);
-		shops.add("sellbetterstuff2", "hełm cieni", 12100);
-		shops.add("sellbetterstuff2", "spodnie cieni", 22500);
-		shops.add("sellbetterstuff2", "tarcza cieni", 60000);
-		shops.add("sellbetterstuff2", "piekielny sztylet", 20000);
+		shops.add("sellbetterstuff2", "zbroja cieni", 20000);
+		shops.add("sellbetterstuff2", "buty cieni", 6000);
+		shops.add("sellbetterstuff2", "hełm cieni", 10000);
+		shops.add("sellbetterstuff2", "spodnie cieni", 12000);
+		shops.add("sellbetterstuff2", "tarcza cieni", 32000);
+		shops.add("sellbetterstuff2", "piekielny sztylet", 22000);
 
 		//OuchitNPC sprzedaje:
 		shops.add("sellrangedstuff", "drewniany łuk", 300);
@@ -242,14 +241,14 @@ public final class ShopList {
 		// games.stendhal.server.maps.mithrilbourgh.stores
 		// Because I wanted to split boots and helmets
 		// Please if you change anything, change also the sign (by hand)
-		shops.add("boots&helm", "buty żelazne", 1000);
+		shops.add("boots&helm", "buty żelazne", 90);
 		shops.add("boots&helm", "złote buty", 1500);
 		shops.add("boots&helm", "buty cieni", 2000);
 		shops.add("boots&helm", "buty kamienne", 2500);
 		shops.add("boots&helm", "buty chaosu", 1250);
 		shops.add("boots&helm", "buty z zielonego potwora", 6000);
 		shops.add("boots&helm", "buty xenocyjskie", 6250);
-    shops.add("boots&helm", "hełm xenocyjski", 8000);
+		shops.add("boots&helm", "hełm xenocyjski", 8000);
 		shops.add("boots&helm", "czarne buty", 9000);
 
 		// helmet shop (mithrilbourgh)
