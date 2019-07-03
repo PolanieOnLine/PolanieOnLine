@@ -28,7 +28,7 @@ class KeyRing extends SlotWindow implements FeatureChangeListener {
 	public KeyRing() {
 		// Remember if you change these numbers change also a number in
 		// src/games/stendhal/server/entity/RPEntity.java
-		super("keyring", 4, 2);
+		super("keyring", 3, 4);
 		// A panel window; forbid closing
 		setCloseable(false);
 	}

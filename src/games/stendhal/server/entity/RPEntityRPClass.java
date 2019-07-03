@@ -111,7 +111,7 @@ public class RPEntityRPClass {
 		entity.addRPSlot("money", 1, Definition.PRIVATE);
 
 		entity.addRPSlot("bag", 30, Definition.PRIVATE);
-		entity.addRPSlot("keyring", 8, Definition.PRIVATE);
+		entity.addRPSlot("keyring", 12, Definition.PRIVATE);
 
 		entity.addRPEvent("attack", Definition.VOLATILE);
     }
