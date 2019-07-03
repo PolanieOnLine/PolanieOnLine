@@ -81,10 +81,10 @@ public class StuffForVulcanus extends AbstractQuest {
 	private final BringOrderedListOfItemsQuestLogic questLogic = new BringOrderedListOfItemsQuestLogic();
 
 	public StuffForVulcanus() {
-		itemCollector.require().item("żelazo").pieces(50).bySaying("Nie mogę #wykuć bez %s.");
-		itemCollector.require().item("polano").pieces(100).bySaying("Jak możesz wymagać #wykucia skoro nie masz %s do ognia?");
-		itemCollector.require().item("sztabka złota").pieces(15).bySaying("Muszę zapłacić rachunek duchom za włożenie uczuć w ten miecz. Potrzebuję %s.");
-		itemCollector.require().item("serce olbrzyma").pieces(10).bySaying("To główny składnik uczuć. Potrzebuję %s.");
+		itemCollector.require().item("żelazo").pieces(15).bySaying("Nie mogę #wykuć bez %s.");
+		itemCollector.require().item("polano").pieces(26).bySaying("Jak możesz wymagać #wykucia skoro nie masz %s do ognia?");
+		itemCollector.require().item("sztabka złota").pieces(12).bySaying("Muszę zapłacić rachunek duchom za włożenie uczuć w ten miecz. Potrzebuję %s.");
+		itemCollector.require().item("serce olbrzyma").pieces(6).bySaying("To główny składnik uczuć. Potrzebuję %s.");
 
 		questLogic.setItemCollector(itemCollector);
 		questLogic.setQuest(this);
