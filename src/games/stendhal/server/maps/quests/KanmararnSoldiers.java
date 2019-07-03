@@ -482,7 +482,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 			if ("map".equals(questState)) {
 				return res;
 			}
-			res.add("Poznałem sierżanta Jamesa  i dałem mu mapę. On dał mi w zamian solidne buty mainiocyjskie.");
+			res.add("Poznałem sierżanta Jamesa i dałem mu mapę. On dał mi w zamian solidne buty mainiocyjskie.");
 			if (isCompleted(player)) {
 				return res;
 			}
