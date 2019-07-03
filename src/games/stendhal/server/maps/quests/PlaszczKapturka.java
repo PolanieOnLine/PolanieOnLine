@@ -200,7 +200,7 @@ public class PlaszczKapturka extends AbstractQuest {
 	}
 
 	private void step_5() {
-		final SpeakerNPC npc = npcs.get("krawiec");
+		final SpeakerNPC npc = npcs.get("Krawiec");
 
 		npc.add(ConversationStates.IDLE, 
 			ConversationPhrases.GREETING_MESSAGES,
