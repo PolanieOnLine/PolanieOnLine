@@ -73,14 +73,6 @@ public class WikaryNPC implements ZoneConfigurator {
 				nodes.add(new Node(15, 11));
 				nodes.add(new Node(15, 12));
 				nodes.add(new Node(20, 12));
-				nodes.add(new Node(15, 12));
-				nodes.add(new Node(15, 11));
-				nodes.add(new Node(13, 11));
-				nodes.add(new Node(13, 10));
-				nodes.add(new Node(10, 10));
-				nodes.add(new Node(10, 11));
-				nodes.add(new Node(8, 11));
-				nodes.add(new Node(8, 12));
 				setPath(new FixedPath(nodes, true));
 			}
 
