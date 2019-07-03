@@ -351,8 +351,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 	}
 
 	private static void rewardPlayer(final Player player) {
-		player.setBaseHP(30 + player.getBaseHP());
-		player.heal(30, true);
 		player.addKarma(65.0);
 		player.addXP(150000);
   }
