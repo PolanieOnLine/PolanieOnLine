@@ -417,7 +417,7 @@
 		<description>Oto prawdziwa złota góralska ciupaga!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="19"/>
+			<atk value="21"/>
 			<def value="2"/>
 			<rate value="4"/>
 			<min_level value="150"/>
@@ -439,7 +439,7 @@
 		<description>Oto prawdziwa złota góralska ciupaga z wąsem!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="21"/>
+			<atk value="23"/>
 			<def value="3"/>
 			<rate value="3"/>
 			<lifesteal value="0.025"/>
@@ -462,7 +462,7 @@
 		<description>Oto prawdziwa złota góralska ciupaga z dwoma wąsami! Wąsy posiadają jakieś magiczne właściwości, im więcej wąsów na ciupadze tym szybsza ona jest!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="23"/>
+			<atk value="25"/>
 			<def value="3"/>
 			<rate value="3"/>
 			<lifesteal value="0.05"/>
@@ -485,7 +485,7 @@
 		<description>Oto prawdziwa złota góralska ciupaga z trzema wąsami! Trzy wąsy na jednej złotej ciupadze to rzadkość! Tą broń otacza jakaś magiczna aura.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="23"/>
+			<atk value="25"/>
 			<def value="4"/>
 			<rate value="2"/>
 			<lifesteal value="0.1"/>
