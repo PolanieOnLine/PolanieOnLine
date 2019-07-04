@@ -442,7 +442,7 @@
 			<atk value="21"/>
 			<def value="3"/>
 			<rate value="3"/>
-			<lifesteal value="0.01"/>
+			<lifesteal value="0.025"/>
 			<min_level value="200"/>
 		</attributes>
 		<weight value="0.5"/>
@@ -465,7 +465,7 @@
 			<atk value="23"/>
 			<def value="3"/>
 			<rate value="3"/>
-			<lifesteal value="0.02"/>
+			<lifesteal value="0.05"/>
 			<min_level value="250"/>
 		</attributes>
 		<weight value="0.5"/>
@@ -488,7 +488,7 @@
 			<atk value="23"/>
 			<def value="4"/>
 			<rate value="2"/>
-			<lifesteal value="0.03"/>
+			<lifesteal value="0.1"/>
 			<min_level value="350"/>
 		</attributes>
 		<weight value="0.5"/>
