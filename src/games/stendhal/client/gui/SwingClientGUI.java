@@ -231,7 +231,7 @@ class SwingClientGUI implements J2DClientGUI {
 		containerPanel.addRepaintable(character);
 
 		// Create the bag window
-		inventory = new SlotWindow("bag", 5, 6);
+		inventory = new SlotWindow("bag", 6, 6);
 		inventory.setAcceptedTypes(EntityMap.getClass("item", null, null));
 		inventory.setCloseable(false);
 		containerPanel.addRepaintable(inventory);
