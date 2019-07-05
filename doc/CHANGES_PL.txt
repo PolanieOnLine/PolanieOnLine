@@ -18,6 +18,7 @@
 - Naprawiono jeden z wózków na farmie w zadaniu 'Pomoc w żniwach', blisko Karla
 - Naprawiono tablice przy NPC o nazwie Woody
 - Naprawiono kości do gry
+- Naprawiono test u Drwala
 - Poprawiono opis osiągnięcia 'Prywatny detektyw'
 - Poprawiono ścieżki (chodzenia) niektórych NPC
 - Poprawiono linki
