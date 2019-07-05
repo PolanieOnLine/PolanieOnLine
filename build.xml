@@ -282,6 +282,7 @@
 				<include name="riddles-example.xml"/>
 				<include name="spells.xml" />
 				<include name="spells/*.xml" />
+				<include name="woodcutter_test.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build_server_xmlconf}/data/languages">
