@@ -71,8 +71,9 @@
 		<description>Widzisz piernacz. Ciężki koniec sprawia że broń jest trudna do opanowania. To twój "list żelazny" na niegościnnych terenach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="19"/>
+			<atk value="21"/>
 			<rate value="5"/>
+			<min_level value="25"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="48992"/>
