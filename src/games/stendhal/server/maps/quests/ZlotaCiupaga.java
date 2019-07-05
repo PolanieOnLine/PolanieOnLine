@@ -99,7 +99,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isQuestCompleted(GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT)) {
-						if(player.getLevel() >= 120) {
+						if(player.getLevel() >= 100) {
 							if(player.getKarma() >=100) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
 									raiser.say("Jakiś czas temu zrobiłem złotą ciupagę. Mogę zrobić ją dla Ciebie. Jesteś zainteresowany?");
@@ -122,7 +122,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 120 lvl.");
+							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 100 poziom.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {

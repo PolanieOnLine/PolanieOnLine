@@ -420,7 +420,7 @@
 			<atk value="20"/>
 			<def value="2"/>
 			<rate value="4"/>
-			<min_level value="150"/>
+			<min_level value="100"/>
 		</attributes>
 		<weight value="0.5"/>
 		<value value="5716"/>
