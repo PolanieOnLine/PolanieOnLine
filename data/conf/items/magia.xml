@@ -7,6 +7,7 @@
 		<description>Oto kamyk. Weź procę i zobacz z jak daleka można nim ugodzić przeciwnika.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="2"/>
 			<ratk value="3"/>
 			<range value="1"/>
 			<quantity value="1"/>
@@ -29,6 +30,7 @@
 		<description>Oto zaklęcie pustelnika. Prawidłowo użyte być może zrani wroga.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="2"/>
 			<ratk value="3"/>
 			<def value="1"/>
 			<range value="0"/>
@@ -52,6 +54,7 @@
 		<description>Oto magia ziemi. Czar rzucony za jej pomocą ma moc odebierania życia!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="5"/>
 			<ratk value="9"/>
 			<def value="9"/>
 			<range value="0"/>
@@ -76,6 +79,7 @@
 		<description>Oto magia płomieni. Czar rzucony za jej pomocą spali twoich wrogów na proch!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="6"/>
 			<ratk value="11"/>
 			<def value="11"/>
 			<range value="0"/>
@@ -100,6 +104,7 @@
 		<description>Oto magia deszczu. Czar rzucony za jej pomocą sprowadza z niebios zagładę!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="8"/>
 			<ratk value="15"/>
 			<def value="15"/>
 			<range value="0"/>
@@ -124,6 +129,7 @@
 		<description>Oto magia mroku. Czar rzucony za jej pomocą zabija!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="9"/>
 			<ratk value="18"/>
 			<def value="18"/>
 			<range value="0"/>
@@ -148,6 +154,7 @@
 		<description>Oto magia światła. Czar rzucony za jej pomocą jest niezwyciężony!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="10"/>
 			<ratk value="20"/>
 			<def value="20"/>
 			<range value="0"/>
