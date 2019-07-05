@@ -12,13 +12,14 @@
 - Poprawiono ceny w sklepach u Gulimo oraz Hagnurk (są bardziej przyjazne)
 - Nerf dla broni: piernacz
 - Buff dla broni: złota ciupaga, złota ciupaga z wąsem, złota ciupaga z dwoma wąsami, złota ciupaga z trzema wąsami, miecz elficki
+- Łuki, różdżki, strzały, bełty, magia itd... otrzymały buffa w postaci w ATK w statystykach (połowa wartości STR)
 
 *naprawiono błędy*
 - Naprawiono jeden z wózków na farmie w zadaniu 'Pomoc w żniwach', blisko Karla
 - Naprawiono tablice przy NPC o nazwie Woody
 - Naprawiono kości do gry
 - Poprawiono opis osiągnięcia 'Prywatny detektyw'
-- Poprawiono ścieżki (chodzenia) niektórych NPC (Wagabundus oraz Gaździna Bożena)
+- Poprawiono ścieżki (chodzenia) niektórych NPC
 - Poprawiono linki
 
 
