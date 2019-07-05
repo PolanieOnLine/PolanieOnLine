@@ -373,7 +373,7 @@
 		<description>Oto prawdziwa góralska ciupaga!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="14"/>
+			<atk value="16"/>
 			<def value="2"/>
 			<rate value="4"/>
 			<min_level value="30"/>
@@ -395,7 +395,7 @@
 		<description>Oto prawdziwa góralska ciupaga!</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem"/>
 		<attributes>
-			<atk value="14"/>
+			<atk value="16"/>
 			<def value="2"/>
 			<rate value="4"/>
 			<uses value="1000"/>
