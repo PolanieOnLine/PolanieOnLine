@@ -169,6 +169,7 @@
 		<description>Oto kamienie. Jeśli tylko nauczysz się nimi miotać, będziesz mógł atakować z daleka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="5"/>
 			<ratk value="11"/>
 			<range value="6"/>
 			<quantity value="1"/>

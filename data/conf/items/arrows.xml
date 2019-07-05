@@ -7,6 +7,7 @@
 		<description>Oto strzała. Z zapasem strzał w jednej ręce i łukiem w drugiej, możesz atakować z dystansu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="3"/>
 			<ratk value="3"/>
 			<range value="2"/>
 			<quantity value="1"/>
@@ -28,6 +29,7 @@
 		<description>Oto wzmocniona drewniana strzała. Z zapasem strzał w jednej ręce i łukiem w drugiej, możesz atakować z dystansu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="4"/>
 			<ratk value="4"/>
 			<range value="3"/>
 			<quantity value="1"/>
@@ -49,6 +51,7 @@
 		<description>Oto strzała żelazna. Z mnóstwem ich i dobrym łukiem, będziesz onieśmielającym łucznikiem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="5"/>
 			<ratk value="5"/>
 			<range value="3"/>
 			<quantity value="1"/>
@@ -70,6 +73,7 @@
 		<description>Oto strzała złota. Z pełną garścią strzał i dobrym łukiem, na pewno będziesz szybciej gromił przeciwników.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="6"/>
 			<ratk value="6"/>
 			<range value="4"/>
 			<quantity value="1"/>
@@ -91,6 +95,7 @@
 		<description>Oto strzała ognia. Grot jasno świeci.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="7"/>
 			<ratk value="7"/>
 			<range value="5"/>
 			<quantity value="1"/>
@@ -113,6 +118,7 @@
 		<description>Oto strzała lodowa. Może gorzko urządlić.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="7"/>
 			<ratk value="7"/>
 			<range value="5"/>
 			<quantity value="1"/>
@@ -135,6 +141,7 @@
 		<description>Oto strzała światła. Świeci świętą poświatą.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="7"/>
 			<ratk value="7"/>
 			<range value="5"/>
 			<quantity value="1"/>
@@ -157,6 +164,7 @@
 		<description>Oto strzała mroku. Trudno opisać.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="7"/>
 			<ratk value="7"/>
 			<range value="5"/>
 			<quantity value="1"/>
@@ -179,6 +187,7 @@
 		<description>Oto strzała płonąca. Grot tej strzały na pewno pokona twoich przeciwników, kiedy masz ją z łukiem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="8"/>
 			<ratk value="8"/>
 			<range value="5"/>
 			<quantity value="1"/>
@@ -201,6 +210,7 @@
 		<description>Oto strzała z mithrilu. Grot tej strzały na pewno pokona twoich przeciwników, kiedy masz ją z łukiem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="9"/>
 			<ratk value="9"/>
 			<range value="6"/>
 			<quantity value="1"/>
@@ -223,6 +233,7 @@
 		<description>Oto bełt. Unieś kuszę i załaduj. Trafiaj celnie, a zranisz wroga.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="4"/>
 			<ratk value="4"/>
 			<range value="3"/>
 			<quantity value="1"/>
@@ -244,6 +255,7 @@
 		<description>Oto bełt stalowy. Może przebić łuskową zbroję o ile trafisz z odległości w jej słaby punkt.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="5"/>
 			<ratk value="5"/>
 			<range value="4"/>
 			<quantity value="1"/>
@@ -265,6 +277,7 @@
 		<description>Oto bełt złoty. Zbierz ich więcej, a wielu wrogów zginie nawet cię nie dostrzegając.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="6"/>
 			<ratk value="6"/>
 			<range value="5"/>
 			<quantity value="1"/>
@@ -286,6 +299,7 @@
 		<description>Oto bełt płonący. Użyty z kuszą bywa zabójczy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
+			<atk value="8"/>
 			<ratk value="8"/>
 			<range value="6"/>
 			<quantity value="1"/>
