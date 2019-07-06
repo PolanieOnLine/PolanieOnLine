@@ -33,7 +33,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				new PlayerGotNumberOfItemsFromWellCondition(0)));
 
 		// Vegetable harvest achievement
-		achievements.add(createAchievement("obtain.harvest.vegetable", "Farmer", "Zebrał 8 z pośród wszystkich warzyw rosnących w Faiumoni",
+		achievements.add(createAchievement("obtain.harvest.vegetable", "Farmer", "Zebrał po 8 sztuk z pośród wszystkich warzyw rosnących w Faiumoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(8, "marchew", "sałata", "brokuł", "kalafior", "por",
 						"cebula", "cukinia", "szpinak", "kapusta", "czosnek", "karczoch")));
@@ -43,22 +43,22 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(15, "palia alpejska", "błazenek", "dorsz", "makrela", "okoń",
 						"skrzydlica", "płotka", "pokolec", "pstrąg")));
-						
+
 		achievements.add(createAchievement("obtain.prawdziwydrwal", "Prawdziwy Drwal", "Wyciął 100 polan",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(100, "polano")));
-				
+
 		achievements.add(createAchievement("obtain.gornik", "Górnik z krwi i kości", "Wydobył 50 każdego rodzaju kamienia szlachetnego",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerMinedNumberOfItemsCondition(50, "bryłka złota", "bryłka mithrilu", "kryształ ametystu", "kryształ rubinu", "kryształ szafiru", "kryształ szmaragdu", "kryształ obsydianu")));
 
 		//ultimate collector quest achievement
-		achievements.add(createAchievement("quest.special.collector", "Największy kolekcjoner", "Ukończył zadanie największego kolekcjonera", 
+		achievements.add(createAchievement("quest.special.collector", "Największy kolekcjoner", "Ukończył zadanie największego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("ultimate_collector")));
-				
+
 		//goralski kolekcjoner quest achievement
-		achievements.add(createAchievement("quest.special.goralcollector", "Góralski kolekcjoner", "Ukończył ostatnie zadanie u góralskiego kolekcjonera", 
+		achievements.add(createAchievement("quest.special.goralcollector", "Góralski kolekcjoner", "Ukończył ostatnie zadanie u góralskiego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
 
