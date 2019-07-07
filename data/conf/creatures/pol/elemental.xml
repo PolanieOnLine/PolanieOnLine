@@ -316,7 +316,7 @@
 			<item value="miecz ognisty" quantity="[1,1]" probability="0.8"/>
 			<item value="ognista tarcza" quantity="[1,1]" probability="0.9"/>
 			<item value="ogniste rękawice" quantity="[1,1]" probability="0.0025"/>
-			<item value="magia płomieni" quantity="[30,200]" probability="70.0"/>
+			<item value="magia płomieni" quantity="[30,200]" probability="40.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -354,7 +354,7 @@
 			<item value="miecz lodowy" quantity="[1,1]" probability="5.0"/>
 			<item value="lodowa tarcza" quantity="[1,1]" probability="1.0"/>
 			<item value="lodowe rękawice" quantity="[1,1]" probability="0.025"/>
-			<item value="magia deszczu" quantity="[30,200]" probability="70.0"/>
+			<item value="magia deszczu" quantity="[30,200]" probability="40.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -387,7 +387,7 @@
 		<respawn value="1999"/>
 		<corpse name="other"/>
 		<drops>
-			<item value="magia płomieni" quantity="[1,99]" probability="90.0"/>
+			<item value="magia płomieni" quantity="[1,77]" probability="90.0"/>
 			<item value="ogniste rękawice" quantity="[1,1]" probability="0.0005"/>
 			<item value="ognista tarcza" quantity="[1,1]" probability="1.0"/>
 			<item value="miecz ognisty" quantity="[1,1]" probability="10.0"/>
