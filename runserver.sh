@@ -1,5 +1,5 @@
 #!/bin/sh
-POL_VERSION="1.01"
+POL_VERSION="1.01.1"
 
 LOCALCLASSPATH=.:data/script/:data/conf/:polanieonline-server-$POL_VERSION.jar:marauroa.jar:mysql-connector.jar:log4j.jar:commons-lang.jar:h2.jar
 
