@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -32,34 +37,29 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * QUEST: Look for a book for Ceryl
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li> Ceryl </li>
  * <li> Jynath </li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Talk with Ceryl to activate the quest. </li>
  * <li> Talk with Jynath for the book. </li>
  * <li> Return the book to Ceryl. </li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li> 500 XP </li>
  * <li> some karma (10 + (5 | -5) </li>
  * <li> 150 gold coins </li>
  * </ul>
- * 
+ *
  * REPETITIONS: None
  */
 public class LookBookforCeryl extends AbstractQuest {
