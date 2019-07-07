@@ -64,20 +64,20 @@ public class LookUpQuote extends AbstractQuest {
 
 	private static Map<String, String> quotes = new HashMap<String, String>();
 	static {
-		quotes.put("fisherman Bully", "Clownfish are always good for a laugh.");
-		quotes.put("fisherman Jacky",
+		quotes.put("Rybak Bully", "Clownfish are always good for a laugh.");
+		quotes.put("Rybak Jacky",
 						"Don't mistake your trout for your old trout, she wouldn't taste so good.");
-		quotes.put("fisherman Tommy",
+		quotes.put("Rybak Tommy",
 						"I wouldn't trust a surgeonfish in a hospital, there's something fishy about them.");
-		quotes.put("fisherman Sody",
+		quotes.put("Rybak Sody",
 				"Devout Crustaceans believe in the One True Cod.");
-		quotes.put("fisherman Humphrey",
+		quotes.put("Rybak Humphrey",
 						"I don't understand why no-one buys my fish. The sign says 'Biggest Roaches in town'.");
-		quotes.put("fisherman Monty",
+		quotes.put("Rybak Monty",
 						"My parrot doesn't like to sit on a perch. He says it smells fishy.");
-		quotes.put("fisherman Charby",
+		quotes.put("Rybak Charby",
 						"That fish restaurant really overcooks everything. It even advertises char fish.");
-		quotes.put("fisherman Ally", "Holy mackerel! These chips are tasty.");
+		quotes.put("Rybak Ally", "Holy mackerel! These chips are tasty.");
 	}
 
 
