@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2011 - Stendhal                    *
  ***************************************************************************
@@ -95,7 +94,8 @@ public class LookBookforCeryl extends AbstractQuest {
 		/** If quest is not started yet, start it. */
 		npc.add(
 			ConversationStates.ATTENDING,
-			"book", new QuestNotStartedCondition(QUEST_SLOT),
+			Arrays.asList("book", "książki", "książka"),
+			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
 			"Czy możesz poprosić #Jynath, aby zwróciła książkę? Przetrzymuje ją od miesiąca, a ludzie szukają jej.",
 			null);
