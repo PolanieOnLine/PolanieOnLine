@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -29,10 +29,10 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 	private final double ratk_xpDiff;
 	private final double karmabonus;
 	/**
-	 * Creates a new IncreaseAtkXPDependentOnLevelAction.
+	 * Creates a new IncreaseRatkXPDependentOnLevelAction.
 	 *
 	 * @param atk_xpDiff - player will get 1/xpDiff of difference between his and next levels xp amount.
-	 * @param karmabonus - amount of karma to add instead atk_xp if player have max level
+	 * @param karmabonus - amount of karma to add instead ratk_xp if player have max level
 	 */
 	public IncreaseRatkXPDependentOnLevelAction(final double ratk_xpDiff, final double karmabonus) {
 		this.ratk_xpDiff = ratk_xpDiff;
@@ -41,7 +41,7 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		int reward = (int) ((player.getAtkXP()/(ratk_xpDiff))/2);
+		int reward = (int) (player.getRatkXP()/(ratk_xpDiff));
 		player.setRatkXP(reward + player.getRatkXP());
 		player.notifyWorldAboutChanges();
 	}
