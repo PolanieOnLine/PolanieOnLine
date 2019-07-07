@@ -66,8 +66,8 @@ public class BramaZrc extends AbstractQuest {
 						raiser.say("Z twej ręki zginął rycerz! Nie masz tu czego szukać, pozbądź się piętna czaszki. A teraz precz mi z oczu!");
 					} else {
 						if (player.isQuestCompleted(ARMOR_DAGOBERT_QUEST_SLOT)) {
-							if (player.getLevel() >= 150) {
-								if (player.hasKilledSolo("czerwony smok")) {
+							if (player.getLevel() >= 50) {
+								if (player.hasKilledSolo("czarne smoczysko")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
 										raiser.say("Czyżbyś chciał przekroczyć bramy Zakonu Rycerzy Cienia poznać to co nie poznane? Jesteś zainteresowany?");
 									} else if (player.isQuestCompleted(QUEST_SLOT)) {
@@ -75,7 +75,7 @@ public class BramaZrc extends AbstractQuest {
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
-									npc.say("Rozmawiam tylko z osobami, które wykazały się w walce zabijając samodzielnie czerwonego smoka.");
+									npc.say("Rozmawiam tylko z osobami, które wykazały się w walce zabijając samodzielnie czarne smoczysko.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
@@ -128,54 +128,54 @@ public class BramaZrc extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("lista", "listę", "artykuły"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"dostawca"),
 								 new NotCondition(
-								 new AndCondition(new PlayerHasItemWithHimCondition("stek",100),
-												  new PlayerHasItemWithHimCondition("ser",100),
-												  new PlayerHasItemWithHimCondition("szynka",100),
-												  new PlayerHasItemWithHimCondition("mięso",100),
-												  new PlayerHasItemWithHimCondition("chleb",50),
-												  new PlayerHasItemWithHimCondition("kanapka",25),
+								 new AndCondition(new PlayerHasItemWithHimCondition("stek",20),
+												  new PlayerHasItemWithHimCondition("ser",30),
+												  new PlayerHasItemWithHimCondition("szynka",20),
+												  new PlayerHasItemWithHimCondition("mięso",30),
+												  new PlayerHasItemWithHimCondition("chleb",10),
+												  new PlayerHasItemWithHimCondition("kanapka",7),
 												  new PlayerHasItemWithHimCondition("jabłko",25),
 												  new PlayerHasItemWithHimCondition("lody",5),
-												  new PlayerHasItemWithHimCondition("butelka wody",25)))),
+												  new PlayerHasItemWithHimCondition("butelka wody",10)))),
 				ConversationStates.ATTENDING, "Potrzebuję:\n" 
-									+ "#'100 steków'\n" 
-									+ "#'100 sera'\n" 
-									+ "#'100 szynki'\n" 
-									+ "#'100 mięsa'\n"
-									+ "#'50 chlebów'\n" 
-									+ "#'25 kanapek'\n" 
+									+ "#'20 steków'\n" 
+									+ "#'30 sera'\n" 
+									+ "#'20 szynki'\n" 
+									+ "#'30 mięsa'\n"
+									+ "#'10 chlebów'\n" 
+									+ "#'7 kanapek'\n" 
 									+ "#'25 jabłek'\n" 
 									+ "#'5 lodów'\n" 
-									+ "#'25 butek wody'\n" 
+									+ "#'10 butek wody'\n" 
 									+ "Proszę przynieś mi wszystko naraz. Słowo klucz to #'/artykuły/'. Dziękuję!", null);
 
 		final List<ChatAction> cienactions = new LinkedList<ChatAction>();
-		cienactions.add(new DropItemAction("stek",100));
-		cienactions.add(new DropItemAction("ser",100));
-		cienactions.add(new DropItemAction("szynka",100));
-		cienactions.add(new DropItemAction("mięso",100));
-		cienactions.add(new DropItemAction("chleb",50));
-		cienactions.add(new DropItemAction("kanapka",25));
+		cienactions.add(new DropItemAction("stek",20));
+		cienactions.add(new DropItemAction("ser",30));
+		cienactions.add(new DropItemAction("szynka",20));
+		cienactions.add(new DropItemAction("mięso",30));
+		cienactions.add(new DropItemAction("chleb",10));
+		cienactions.add(new DropItemAction("kanapka",7));
 		cienactions.add(new DropItemAction("jabłko",25));
 		cienactions.add(new DropItemAction("lody",5));
-		cienactions.add(new DropItemAction("butelka wody",25));
+		cienactions.add(new DropItemAction("butelka wody",10));
 		cienactions.add(new EquipItemAction("klucz do bram Zakonu", 1, true));
-		cienactions.add(new IncreaseXPAction(100000));
-		cienactions.add(new IncreaseKarmaAction(140));
+		cienactions.add(new IncreaseXPAction(8000));
+		cienactions.add(new IncreaseKarmaAction(100));
 		cienactions.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("lista", "listę", "artykuły"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT,"dostawca"),
-							 new PlayerHasItemWithHimCondition("stek",100),
-							 new PlayerHasItemWithHimCondition("ser",100),
-							 new PlayerHasItemWithHimCondition("szynka",100),
-							 new PlayerHasItemWithHimCondition("mięso",100),
-							 new PlayerHasItemWithHimCondition("chleb",50),
-							 new PlayerHasItemWithHimCondition("kanapka",25),
+							 new PlayerHasItemWithHimCondition("stek",20),
+							 new PlayerHasItemWithHimCondition("ser",30),
+							 new PlayerHasItemWithHimCondition("szynka",20),
+							 new PlayerHasItemWithHimCondition("mięso",30),
+							 new PlayerHasItemWithHimCondition("chleb",10),
+							 new PlayerHasItemWithHimCondition("kanapka",7),
 							 new PlayerHasItemWithHimCondition("jabłko",25),
 							 new PlayerHasItemWithHimCondition("lody",5),
-							 new PlayerHasItemWithHimCondition("butelka wody",25)),
+							 new PlayerHasItemWithHimCondition("butelka wody",10)),
 			ConversationStates.ATTENDING, "Wspaniale! Nasza spiżarnia jest teraz pełna. W nagrodę weź ten klucz." +
 										  " Nikt ci nie powiedział, że my musimy jeść aby żyć. Widzę, że nie znasz się jeszcze na duchach i zjawach." +
 										  " Idź do zamku, aby posiąść wiedzę i mądrość Pradawnych o tym co widzialne i niewidzialne." +
@@ -211,7 +211,7 @@ public class BramaZrc extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add("Cień poprosił abym mu dostarczył: 100 steków, 100 sera, 100 szynki, 100 mięsa, 50 chlebów, 25 kanapek, 25 jabłek, 5 lodów i 25 butelek wody.");
+		res.add("Cień poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
 		if ("dostawca".equals(questState)) {
 			return res;
 		} 
