@@ -1,5 +1,13 @@
 ﻿Changelog
 ---------
+1.01.1
+*naprawiono błędy*
+- Naprawiono zadanie u Ceryla
+- Naprawiono zadanie u Cienia
+- Naprawiono NPC Wikariego, Wagabundus, Gaździne Bożene
+- Poprawiono opis osiągnięcia 'Harcerz' oraz 'Farmer'
+
+
 1.01
 *klient*
 - Zmniejszono drgania kamery
