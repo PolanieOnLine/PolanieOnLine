@@ -10,7 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 // Based on UltimateCollector and HelpMrsYeti.
- 
+
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class BramaZrc extends AbstractQuest {
 						raiser.say("Z twej ręki zginął rycerz! Nie masz tu czego szukać, pozbądź się piętna czaszki. A teraz precz mi z oczu!");
 					} else {
 						if (player.isQuestCompleted(ARMOR_DAGOBERT_QUEST_SLOT)) {
-							if (player.getLevel() >= 50) {
+							if (player.getLevel() >= 150) {
 								if (player.hasKilledSolo("czarne smoczysko")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
 										raiser.say("Czyżbyś chciał przekroczyć bramy Zakonu Rycerzy Cienia poznać to co nie poznane? Jesteś zainteresowany?");
@@ -79,7 +79,7 @@ public class BramaZrc extends AbstractQuest {
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Nie jesteś godny aby poznać wiedzę i mądrość Pradawnych. Wróć wtedy gdy twój stan społeczny się zmieni na lepsze. Musisz mieć minimum 50 lvl.");
+								npc.say("Nie jesteś godny aby poznać wiedzę i mądrość Pradawnych. Wróć wtedy gdy twój stan społeczny się zmieni na lepsze. Musisz mieć minimum 150 lvl.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
@@ -137,16 +137,16 @@ public class BramaZrc extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("jabłko",25),
 												  new PlayerHasItemWithHimCondition("lody",5),
 												  new PlayerHasItemWithHimCondition("butelka wody",10)))),
-				ConversationStates.ATTENDING, "Potrzebuję:\n" 
-									+ "#'20 steków'\n" 
-									+ "#'30 sera'\n" 
-									+ "#'20 szynki'\n" 
+				ConversationStates.ATTENDING, "Potrzebuję:\n"
+									+ "#'20 steków'\n"
+									+ "#'30 sera'\n"
+									+ "#'20 szynki'\n"
 									+ "#'30 mięsa'\n"
-									+ "#'10 chlebów'\n" 
-									+ "#'7 kanapek'\n" 
-									+ "#'25 jabłek'\n" 
-									+ "#'5 lodów'\n" 
-									+ "#'10 butek wody'\n" 
+									+ "#'10 chlebów'\n"
+									+ "#'7 kanapek'\n"
+									+ "#'25 jabłek'\n"
+									+ "#'5 lodów'\n"
+									+ "#'10 butek wody'\n"
 									+ "Proszę przynieś mi wszystko naraz. Słowo klucz to #'/artykuły/'. Dziękuję!", null);
 
 		final List<ChatAction> cienactions = new LinkedList<ChatAction>();
@@ -160,7 +160,7 @@ public class BramaZrc extends AbstractQuest {
 		cienactions.add(new DropItemAction("lody",5));
 		cienactions.add(new DropItemAction("butelka wody",10));
 		cienactions.add(new EquipItemAction("klucz do bram Zakonu", 1, true));
-		cienactions.add(new IncreaseXPAction(8000));
+		cienactions.add(new IncreaseXPAction(80000));
 		cienactions.add(new IncreaseKarmaAction(100));
 		cienactions.add(new SetQuestAction(QUEST_SLOT, "done"));
 
@@ -207,18 +207,18 @@ public class BramaZrc extends AbstractQuest {
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty pomagać Cieniowi...");
 			return res;
-		} 
+		}
 		if ("start".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Cień poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
 		if ("dostawca".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Cień jest szczęśliwy z mojej pomocy. W zamian dostałem klucz do bram zakonu.");
 		if (isCompleted(player)) {
 			return res;
-		} 
+		}
 
 		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
 		final List<String> debug = new ArrayList<String>();
