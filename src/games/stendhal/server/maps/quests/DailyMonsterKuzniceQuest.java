@@ -429,7 +429,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 						new IncreaseXPDependentOnLevelAction(4, 110.0),
 						new IncreaseAtkXPDependentOnLevelAction(4, 110.0),
 						new IncreaseDefXPDependentOnLevelAction(4, 110.0),
-						new IncreaseRatkXPDependentOnLevelAction(5, 50.0),
+						new IncreaseRatkXPDependentOnLevelAction(5, 100.0),
 						new IncreaseKarmaAction(5.0),
 						new IncrementQuestAction(QUEST_SLOT, 2, 1),
 						new SetQuestToTimeStampAction(QUEST_SLOT,1),
