@@ -4,6 +4,7 @@
 *naprawiono błędy*
 - Naprawiono zadanie u Ceryla
 - Naprawiono zadanie u Cienia
+- Naprawiono przypadkowy błąd we wzorze liczący ilość punktów str
 - Naprawiono NPC Wikariego, Wagabundus, Gaździne Bożene
 - Poprawiono opis osiągnięcia 'Harcerz' oraz 'Farmer'
 
