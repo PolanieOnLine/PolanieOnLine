@@ -47,10 +47,10 @@ public class Portal extends Entity implements UseListener {
 	 */
 	protected static final String ATTR_HIDDEN = "hidden";
 	protected static final String ATTR_USE = "use";
-	
+
 	/** Attribute for player face direction. */
 	protected static final String ATTR_FACE = "face";
-	
+
 	/** Attribute for player positioning. */
 	protected static final String ATTR_OFFSET = "offset";
 
@@ -64,7 +64,7 @@ public class Portal extends Entity implements UseListener {
 	private String destinationZone;
 
 	private Object destinationReference;
-	
+
 	/** Direction player should face after teleport when portal is used as destination. */
 	private Direction face;
 
@@ -305,6 +305,7 @@ public class Portal extends Entity implements UseListener {
 		if (player.teleport(destZone, destX, destY, null, null)) {
 			dest.onUsedBackwards(player, hadPath);
 		}
+
 		return true;
 	}
 
@@ -345,6 +346,7 @@ public class Portal extends Entity implements UseListener {
 	/**
 	 * Sub-classes can override for actions to be taken if entity was pushed onto portal.
 	 */
+	@SuppressWarnings("unused")
 	public void onPushedOntoFrom(final RPEntity pushed, final RPEntity pusher, final Point prevPos) {
 		// implementing classes can override
 	}
@@ -352,71 +354,71 @@ public class Portal extends Entity implements UseListener {
 	/**
 	 * Sets the direction attribute for the portal which determines the direction the
 	 * player should face when this portal is used as a destination.
-	 * 
+	 *
 	 * @param dir
-	 * 						<code>Direction</code> player should face.
+	 * 			<code>Direction</code> player should face.
 	 */
 	public final void setFaceDirection(final Direction dir) {
 		logger.debug("Setting portal direction: " + dir.toString());
 		face = dir;
 	}
-	
+
 	/**
 	 * Setup direction player should face after using portal as a
 	 * destination. <code>dir</code> can be one of "north", "east",
-	 * "south", "west", "up", "right", "down" or "left".
-	 * 
+	 * "south", "west", "up", "right", "down", or "left".
+	 *
 	 * @param dir
-	 * 						<code>String</code> representation of direction to face.
+	 * 			<code>String</code> representation of direction to face.
 	 */
-	public void setFaceDirection(String dir) {
+	public final void setFaceDirection(String dir) {
 		// Convert to lowercase.
 		dir = dir.toLowerCase();
-		
+
 		logger.debug("Portal face attribute: " + dir);
-		switch(dir) {
+		switch (dir) {
 			case "north":
 			case "up":
-				face = Direction.UP;
+				setFaceDirection(Direction.UP);
 				break;
 			case "south":
 			case "down":
-				face = Direction.DOWN;
+				setFaceDirection(Direction.DOWN);
 				break;
 			case "east":
 			case "right":
-				face = Direction.RIGHT;
+				setFaceDirection(Direction.RIGHT);
 				break;
 			case "west":
 			case "left":
-				face = Direction.LEFT;
+				setFaceDirection(Direction.LEFT);
 				break;
 			default:
-					logger.warn("Not a valid direction: " + dir);
+				logger.warn("Not a valid direction: " + dir);
 		}
 	}
-	
+
 	/**
 	 * Get the direction player should face when portal is used as a destination.
-	 * 
+	 *
 	 * @return
-	 * 						<code>Direction</code> player should face.
+	 * 			<code>Direction</code> player should face.
 	 */
 	public final Direction getFaceDirection() {
 		return face;
 	}
-	
+
 	/**
 	 * Check if the portal has defined a direction for player to face when
 	 * portal is used as a destination.
-	 * 
+	 *
 	 * @return
-	 * 						<code>true</code> if portal's direction attribute is set.
+	 * 			<code>true</code> if portal's direction attribute is set.
 	 */
 	public final boolean hasFaceDirection() {
 		return (face != null);
 	}
-	
+
 	/**
 	 * Gets offset positioning value when used as a destination. Valid values
 	 * are 0-7.
