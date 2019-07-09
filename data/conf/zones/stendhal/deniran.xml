@@ -276,6 +276,201 @@
 		</attributes>
 	</zone>
 
+	<!--  Level -2 -->
+	<zone name="-2_deniran_lost_caves_nw2" level="-2" x="499104" y="499744" file="Level -2/deniran/lost_caves_nw2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_lost_caves_nw" level="-2" x="499104" y="499872" file="Level -2/deniran/lost_caves_nw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_lost_caves_n2" level="-2" x="499232" y="499744" file="Level -2/deniran/lost_caves_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_lost_caves_n" level="-2" x="499232" y="499872" file="Level -2/deniran/lost_caves_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_lost_caves_ne2" level="-2" x="499360" y="499744" file="Level -2/deniran/lost_caves_ne2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_lost_caves_ne" level="-2" x="499360" y="499872" file="Level -2/deniran/lost_caves_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_lost_caves_wall_n2" level="-2" x="499488" y="499744" file="Level -2/deniran/lost_caves_wall_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_lost_caves_wall_n" level="-2" x="499488" y="499872" file="Level -2/deniran/lost_caves_wall_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_w" level="-2" x="499104" y="500000" file="Level -2/deniran/deniran_caves_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_sw" level="-2" x="499104" y="500128" file="Level -2/deniran/deniran_caves_sw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_deniran" level="-2" x="499232" y="500000" file="Level -2/deniran/deniran_caves_deniran.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_s" level="-2" x="499232" y="500128" file="Level -2/deniran/deniran_caves_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_e" level="-2" x="499360" y="500000" file="Level -2/deniran/deniran_caves_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_se" level="-2" x="499360" y="500128" file="Level -2/deniran/deniran_caves_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_wall" level="-2" x="499488" y="500000" file="Level -2/deniran/deniran_caves_wall.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_caves_wall_s" level="-2" x="499488" y="500128" file="Level -2/deniran/deniran_caves_wall_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+
+	<!--  Level -3 -->
+  <zone name="-2_deniran_lost_caves_nw2" level="-2" x="499104" y="499744" file="Level -2/deniran/lost_caves_nw2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-2_deniran_lost_caves_nw" level="-2" x="499104" y="499872" file="Level -2/deniran/lost_caves_nw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_lost_caves_n2" level="-3" x="499232" y="499744" file="Level -3/deniran/lost_caves_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_lost_caves_n" level="-3" x="499232" y="499872" file="Level -3/deniran/lost_caves_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_lost_caves_ne2" level="-3" x="499360" y="499744" file="Level -3/deniran/lost_caves_ne2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_lost_caves_ne" level="-3" x="499360" y="499872" file="Level -3/deniran/lost_caves_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_lost_caves_wall_n2" level="-3" x="499488" y="499744" file="Level -3/deniran/lost_caves_wall_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_lost_caves_wall_n" level="-3" x="499488" y="499872" file="Level -3/deniran/lost_caves_wall_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_w" level="-3" x="499104" y="500000" file="Level -3/deniran/deniran_caves_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_sw" level="-3" x="499104" y="500128" file="Level -3/deniran/deniran_caves_sw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_deniran" level="-3" x="499232" y="500000" file="Level -3/deniran/deniran_caves_deniran.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_s" level="-3" x="499232" y="500128" file="Level -3/deniran/deniran_caves_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_e" level="-3" x="499360" y="500000" file="Level -3/deniran/deniran_caves_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_se" level="-3" x="499360" y="500128" file="Level -3/deniran/deniran_caves_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_wall" level="-3" x="499488" y="500000" file="Level -3/deniran/deniran_caves_wall.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-3_deniran_caves_wall_s" level="-3" x="499488" y="500128" file="Level -3/deniran/deniran_caves_wall_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
 
 	<!-- interiors -->
 	<zone name="int_deniran_tiny_house" file="interiors/deniran/tiny_house.tmx">
