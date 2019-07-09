@@ -66,13 +66,13 @@ public class JuhasNPC implements ZoneConfigurator {
 				add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 						null,
 						ConversationStates.ATTENDING,
-						"Nie mam dla Ciebie zadania. Jedynie mam do zaoferowania #'magiczne zwoje' takie jak #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'.", null);
+						"Nie mam dla Ciebie zadania. Jedynie mam do zaoferowania #'magiczne zwoje' takie jak #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój deniran', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'.", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("magiczne zwoje", "zwoje"),
 						null,
 						ConversationStates.ATTENDING,
-						"#Oferuję zwoje i bilety, które pomagają w szybszym podróżowaniu: #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'! Powiedz: kupię <ilość> <nazwa zwoju>.", null);
+						"#Oferuję zwoje i bilety, które pomagają w szybszym podróżowaniu: #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój deniran', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'! Powiedz: kupię <ilość> <nazwa zwoju>.", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("tatrzański", "zwój tatrzański"),
@@ -87,10 +87,16 @@ public class JuhasNPC implements ZoneConfigurator {
 						"Zwój zabiera do królewskiego miasta Krakowa. Jest to bardzo piękne miasto, które posiada nie jedną tajemnicę.", null);
 
 				add(ConversationStates.ATTENDING,
+						Arrays.asList("deniran", "zwój deniran"),
+						null,
+						ConversationStates.ATTENDING,
+						"Zwój deniran zabiera natychmiast do miasta Deniran znajdującego się na zachód stąd!", null);
+
+				add(ConversationStates.ATTENDING,
 						Arrays.asList("ados", "zwój ados"),
 						null,
 						ConversationStates.ATTENDING,
-						"ados city scroll zabiera natychmiast do miasta Ados znajdującego się na wschód stąd!", null);
+						"Zwój ados zabiera natychmiast do miasta Ados znajdującego się na wschód stąd!", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("semos", "zwój semos"),
