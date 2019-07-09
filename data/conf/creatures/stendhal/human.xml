@@ -930,6 +930,7 @@
 			<item value="czarne buty" quantity="[1,1]" probability="0.25"/>
 			<item value="czarna halabarda" quantity="[1,1]" probability="0.01"/>
 			<item value="diament" quantity="[1,1]" probability="1.0"/>
+			<item value="zwój deniran" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips>
 		</equips>
