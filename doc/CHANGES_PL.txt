@@ -1,5 +1,14 @@
 ﻿Changelog
 ---------
+1.02
+Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
+
+*świat gry*
+- Można kupić nowy zwój przenoszący do miasta Deniran u Juhasa za 700 money
+- Można na pieszo przyjść do Warszawy przez Kraków
+- Zmieniono wizualnie górne mapy Krakowa
+
+
 1.01.1
 *naprawiono błędy*
 - Naprawiono zadanie u Ceryla
