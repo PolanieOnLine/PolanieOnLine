@@ -8,7 +8,7 @@
 	<!-- Ground level -->
 
 	<!-- warszawa_nw -->
-	<zone name="0_warszawa_nw" level="0" x="613312" y="17408" file="Level 0/warszawa/warszawa_nw.tmx">
+	<zone name="0_warszawa_nw" level="0" x="513312" y="17408" file="Level 0/warszawa/warszawa_nw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -49,7 +49,7 @@
 	</zone>
 
 	<!-- warszawa_ne -->
-	<zone name="0_warszawa_ne" level="0" x="613440" y="17408" file="Level 0/warszawa/warszawa_ne.tmx">
+	<zone name="0_warszawa_ne" level="0" x="513440" y="17408" file="Level 0/warszawa/warszawa_ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -94,7 +94,7 @@
 	</zone>
 
 	<!-- warszawa_sw -->
-	<zone name="0_warszawa_sw" level="0" x="613312" y="17536" file="Level 0/warszawa/warszawa_sw.tmx">
+	<zone name="0_warszawa_sw" level="0" x="513312" y="17536" file="Level 0/warszawa/warszawa_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -125,7 +125,7 @@
 	</zone>
 
 	<!-- warszawa_se -->
-	<zone name="0_warszawa_se" level="0" x="613440" y="17536" file="Level 0/warszawa/warszawa_se.tmx">
+	<zone name="0_warszawa_se" level="0" x="513440" y="17536" file="Level 0/warszawa/warszawa_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
