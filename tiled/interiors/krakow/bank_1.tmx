@@ -52,16 +52,16 @@
  <tileset firstgid="260" name="banerki" tilewidth="32" tileheight="32">
   <image source="../../tileset/building/decoration/chests_banner.png"/>
  </tileset>
- <tileset firstgid="266" name="banner-gdansk" tilewidth="32" tileheight="32">
+ <tileset firstgid="267" name="banner-gdansk" tilewidth="32" tileheight="32">
   <image source="../../tileset/pol/wyposazenie/banner-gdansk.png"/>
  </tileset>
- <tileset firstgid="268" name="collision" tilewidth="32" tileheight="32">
+ <tileset firstgid="269" name="collision" tilewidth="32" tileheight="32">
   <image source="../../tileset/logic/collision.png"/>
  </tileset>
- <tileset firstgid="269" name="protection" tilewidth="32" tileheight="32">
+ <tileset firstgid="270" name="protection" tilewidth="32" tileheight="32">
   <image source="../../tileset/logic/protection.png"/>
  </tileset>
- <tileset firstgid="271" name="okna" tilewidth="32" tileheight="32">
+ <tileset firstgid="272" name="okna" tilewidth="32" tileheight="32">
   <image source="../../tileset/pol/domki/okna/window_drewno.png"/>
  </tileset>
  <layer name="0_floor" width="19" height="44">
@@ -81,10 +81,10 @@ aN3t0vDycrSy0bxicgx5cGmZNc2xjVKOKceUY8qxUspR/5dtKu5l5RiLl2NTQo5fHqj2+xANAAA=
  </layer>
  <layer name="2_object" width="19" height="44">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgQAB+RgYMgE0MBgTwyIkD5Q4j8a9BxXABCRxyS3FrYViCRw4ZCAPNFsFj92AB
-m4F4CxRvxaPOBIhNgdiMCnY6ALEjEDtRwSxC4BkS+xsOcXyAGvEoCtQvNgTSAjp4RSVznkDxcAYv
-SVR/DUpLA9OFDJa0QUp4DdX0NRjAVQr1c0HDfSSXE4MBXKFQPyc03HHlR1KALFC/3Gg8kgVYKAw3
-dirmx9F4JB+wURhuHFTMj9jKVSEcZgriEMelHgSkcMhJ4hBHVw8Ap0GtqBANAAA=
+   H4sIAAAAAAAAAGNgQAABRgYMgE0MBgTxyEkA5Q4j8a9BxXABSRxyS3FrYViCRw4ZiADNFsVj92AB
+m4F4CxRvxaPOBIhNgdiMCnY6ALEjEDtRwSxC4BkS+xsOcXyAGvEoBtQvPgTSAjp4RSVznkDxcAYv
+SVR/DUrLANOFLJa0QUp4DdX0NRjAVQr1c0PDfSSXE4MBXKFQPyc03HHlR1KAHFC//Gg8kgVYKAw3
+dirmx9F4JB+wURhuHFTMj9jKVWEcZgrhEMelHgSkcchJ4RBHVw8AWjMdvBANAAA=
   </data>
  </layer>
  <layer name="3_roof" width="19" height="44">
@@ -100,14 +100,14 @@ CkbBKBgFAwkAOquHBBANAAA=
  </layer>
  <layer name="collision" width="19" height="44" opacity="0.2">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANWTwQ7AIAxC3d3//96ddllgJKNbKYkXYh6KdR9r7fDFVMV5w6tkIe7f/aaxnrq8
-vPse5Kt3cdTN6pjXynN1sVSGo4r5rvwr01isT+WhDEdT+kplsT6VhzIcTekrlcX6VB7KcDSlr1QW
-61N5KMORe/ev1wm9tuFDEA0AAA==
+   H4sIAAAAAAAAANWTQQ7AIBAC7QP8/3d76qWBkpRtlyXxQsyguO5jrR2+mKo4b3iVLMT9u9801lOX
+l3ffg3z1Lo66WR3zWnmuLpbKcFQx35V/ZRqL9ak8lOFoSl+pLNan8lCGoyl9pbJYn8pDGY6m9JXK
+Yn0qD2U4cu/+9ToBtb9h0BANAAA=
   </data>
  </layer>
  <layer name="protection" width="19" height="44" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO3DAQ0AAAwCIB/A/nUNctjoJVVVVX142XKkmhANAAA=
+   H4sIAAAAAAAAAO3DAQ0AAAwCIF/A/nENctjoJVVVVX14MZbH+hANAAA=
   </data>
  </layer>
 </map>
