@@ -8,7 +8,7 @@
 	<!-- Ground level -->
 
 	<!-- wieliczka_nw -->
-	<zone name="0_wieliczka_nw" level="0" x="513952" y="18560" file="Level 0/wieliczka/nw.tmx">
+	<zone name="0_wieliczka_nw" level="0" x="513952" y="18432" file="Level 0/wieliczka/nw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -23,7 +23,7 @@
 	</zone>
 
 	<!-- wieliczka_n -->
-	<zone name="0_wieliczka_n" level="0" x="514080" y="18560" file="Level 0/wieliczka/n.tmx">
+	<zone name="0_wieliczka_n" level="0" x="514080" y="18432" file="Level 0/wieliczka/n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -38,7 +38,7 @@
 	</zone>
 
 	<!-- wieliczka_ne -->
-	<zone name="0_wieliczka_ne" level="0" x="514208" y="18560" file="Level 0/wieliczka/ne.tmx">
+	<zone name="0_wieliczka_ne" level="0" x="514208" y="18432" file="Level 0/wieliczka/ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -53,7 +53,7 @@
 	</zone>
 
 	<!-- wieliczka_ne2 -->
-	<zone name="0_wieliczka_ne2" level="0" x="514336" y="18560" file="Level 0/wieliczka/ne2.tmx">
+	<zone name="0_wieliczka_ne2" level="0" x="514336" y="18432" file="Level 0/wieliczka/ne2.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -68,7 +68,7 @@
 	</zone>
 
 	<!-- wieliczka_w -->
-	<zone name="0_wieliczka_w" level="0" x="513952" y="18688" file="Level 0/wieliczka/w.tmx">
+	<zone name="0_wieliczka_w" level="0" x="513952" y="18560" file="Level 0/wieliczka/w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -83,7 +83,7 @@
 	</zone>
 
 	<!-- wieliczka_c -->
-	<zone name="0_wieliczka_c" level="0" x="514080" y="18688" file="Level 0/wieliczka/c.tmx">
+	<zone name="0_wieliczka_c" level="0" x="514080" y="18560" file="Level 0/wieliczka/c.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -109,7 +109,7 @@
 	</zone>
 
 	<!-- wieliczka_e -->
-	<zone name="0_wieliczka_e" level="0" x="514208" y="18688" file="Level 0/wieliczka/e.tmx">
+	<zone name="0_wieliczka_e" level="0" x="514208" y="18560" file="Level 0/wieliczka/e.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -124,7 +124,7 @@
 	</zone>
 
 	<!-- wieliczka_e2 -->
-	<zone name="0_wieliczka_e2" level="0" x="514336" y="18688" file="Level 0/wieliczka/e2.tmx">
+	<zone name="0_wieliczka_e2" level="0" x="514336" y="18560" file="Level 0/wieliczka/e2.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -139,7 +139,7 @@
 	</zone>
 
 	<!-- wieliczka_sw -->
-	<zone name="0_wieliczka_sw" level="0" x="513952" y="18816" file="Level 0/wieliczka/sw.tmx">
+	<zone name="0_wieliczka_sw" level="0" x="513952" y="18688" file="Level 0/wieliczka/sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -154,7 +154,7 @@
 	</zone>
 
 	<!-- wieliczka_s -->
-	<zone name="0_wieliczka_s" level="0" x="514080" y="18816" file="Level 0/wieliczka/s.tmx">
+	<zone name="0_wieliczka_s" level="0" x="514080" y="18688" file="Level 0/wieliczka/s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -169,7 +169,7 @@
 	</zone>
 
 	<!-- wieliczka_se -->
-	<zone name="0_wieliczka_se" level="0" x="514208" y="18816" file="Level 0/wieliczka/se.tmx">
+	<zone name="0_wieliczka_se" level="0" x="514208" y="18688" file="Level 0/wieliczka/se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -184,7 +184,7 @@
 	</zone>
 
 	<!-- wieliczka_se2 -->
-	<zone name="0_wieliczka_se2" level="0" x="514336" y="18816" file="Level 0/wieliczka/se2.tmx">
+	<zone name="0_wieliczka_se2" level="0" x="514336" y="18688" file="Level 0/wieliczka/se2.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -201,9 +201,7 @@
 	<!-- interiors -->
 
 	<!-- Level -1 -->
-
-	<!-- wieliczka_c -->
-	<zone name="-1_wieliczka_salt_mines_w" level="-1" x="513952" y="18688" file="Level -1/wieliczka/salt_mines_w.tmx">
+	<zone name="-1_wieliczka_salt_mines_w" level="-1" x="513952" y="18560" file="Level -1/wieliczka/salt_mines_w.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -273,7 +271,7 @@
 		</portal>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_c" level="-1" x="514080" y="18688" file="Level -1/wieliczka/salt_mines_c.tmx">
+	<zone name="-1_wieliczka_salt_mines_c" level="-1" x="514080" y="18560" file="Level -1/wieliczka/salt_mines_c.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -301,7 +299,7 @@
 		</portal>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_e" level="-1" x="514208" y="18688" file="Level -1/wieliczka/salt_mines_e.tmx">
+	<zone name="-1_wieliczka_salt_mines_e" level="-1" x="514208" y="18560" file="Level -1/wieliczka/salt_mines_e.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -323,7 +321,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_e2" level="-1" x="514336" y="18688" file="Level -1/wieliczka/salt_mines_e2.tmx">
+	<zone name="-1_wieliczka_salt_mines_e2" level="-1" x="514336" y="18560" file="Level -1/wieliczka/salt_mines_e2.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -346,7 +344,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_e3" level="-1" x="514464" y="18688" file="Level -1/wieliczka/salt_mines_e3.tmx">
+	<zone name="-1_wieliczka_salt_mines_e3" level="-1" x="514464" y="18560" file="Level -1/wieliczka/salt_mines_e3.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -368,7 +366,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_sw" level="-1" x="513952" y="18816" file="Level -1/wieliczka/salt_mines_sw.tmx">
+	<zone name="-1_wieliczka_salt_mines_sw" level="-1" x="513952" y="18688" file="Level -1/wieliczka/salt_mines_sw.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -390,7 +388,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_s" level="-1" x="514080" y="18816" file="Level -1/wieliczka/salt_mines_s.tmx">
+	<zone name="-1_wieliczka_salt_mines_s" level="-1" x="514080" y="18688" file="Level -1/wieliczka/salt_mines_s.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -521,7 +519,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_se" level="-1" x="514208" y="18816" file="Level -1/wieliczka/salt_mines_se.tmx">
+	<zone name="-1_wieliczka_salt_mines_se" level="-1" x="514208" y="18688" file="Level -1/wieliczka/salt_mines_se.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -543,7 +541,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_se2" level="-1" x="514336" y="18816" file="Level -1/wieliczka/salt_mines_se2.tmx">
+	<zone name="-1_wieliczka_salt_mines_se2" level="-1" x="514336" y="18688" file="Level -1/wieliczka/salt_mines_se2.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -565,7 +563,7 @@
 		</entity>
 	</zone>
 
-	<zone name="-1_wieliczka_salt_mines_se3" level="-1" x="514464" y="18816" file="Level -1/wieliczka/salt_mines_se3.tmx">
+	<zone name="-1_wieliczka_salt_mines_se3" level="-1" x="514464" y="18688" file="Level -1/wieliczka/salt_mines_se3.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
