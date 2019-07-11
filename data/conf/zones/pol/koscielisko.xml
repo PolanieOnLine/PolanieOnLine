@@ -8,7 +8,7 @@
 	<!-- Ground level -->
 
 	<!-- koscielisko_ne -->
-	<zone name="0_koscielisko_ne" level="0" x="513056" y="18432" file="Level 0/koscielisko/koscielisko_ne.tmx">
+	<zone name="0_koscielisko_ne" level="0" x="513056" y="18432" file="Level 0/koscielisko/ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=+2)</parameter>
@@ -39,7 +39,7 @@
 	</zone>
 	
 	<!--koscielisko_nw -->
-	<zone name="0_koscielisko_nw" level="0" x="512928" y="18432" file="Level 0/koscielisko/koscielisko_nw.tmx">
+	<zone name="0_koscielisko_nw" level="0" x="512928" y="18432" file="Level 0/koscielisko/nw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=+2)</parameter>
@@ -65,7 +65,7 @@
 	</zone>
 
 	<!-- koscielisko_e -->
-	<zone name="0_koscielisko_e" level="0" x="513056" y="18560" file="Level 0/koscielisko/koscielisko_e.tmx">
+	<zone name="0_koscielisko_e" level="0" x="513056" y="18560" file="Level 0/koscielisko/e.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
@@ -109,7 +109,7 @@
 	</zone>
 	
 	<!-- koscielisko_w -->
-	<zone name="0_koscielisko_w" level="0" x="512928" y="18560" file="Level 0/koscielisko/koscielisko_w.tmx">
+	<zone name="0_koscielisko_w" level="0" x="512928" y="18560" file="Level 0/koscielisko/w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=+2)</parameter>
@@ -158,7 +158,7 @@ Oto opuszczona kopalnia węgla!
 	</zone>
 
 	<!-- koscielisko_se -->
-	<zone name="0_koscielisko_se" level="0" x="513056" y="18688" file="Level 0/koscielisko/koscielisko_se.tmx">
+	<zone name="0_koscielisko_se" level="0" x="513056" y="18688" file="Level 0/koscielisko/se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
@@ -184,7 +184,7 @@ Oto opuszczona kopalnia węgla!
 	</zone>
 	
 	<!-- koscielisko_sw -->
-	<zone name="0_koscielisko_sw" level="0" x="512928" y="18688" file="Level 0/koscielisko/koscielisko_sw.tmx">
+	<zone name="0_koscielisko_sw" level="0" x="512928" y="18688" file="Level 0/koscielisko/sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=+1)</parameter>
