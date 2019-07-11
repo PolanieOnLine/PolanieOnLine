@@ -50,9 +50,8 @@ public class Jail implements ZoneConfigurator, LoginListener {
 
 	private static final Logger LOGGER = Logger.getLogger(Jail.class);
 	private static final List<Point> cellEntryPoints = Arrays.asList(
-			//new Point(3, 3),
 			new Point(8, 3),
-			// elf cell(13, 3),
+			new Point(13, 3),
 			new Point(18, 3),
 			new Point(23, 3),
 			new Point(28, 3),
