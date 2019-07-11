@@ -338,7 +338,7 @@ public class Jail implements ZoneConfigurator, LoginListener {
 					player.sendPrivateText(NotificationType.SUPPORT,
 							"Bez względu na to ile czasu "
 							+ "już spędziłeś w więzieniu to twoja kara "
-							+ "odbywa się od nowa, poniważ próbowałeś uciec.");
+							+ "odbywa się od nowa, ponieważ próbowałeś uciec.");
 				} else {
 					// Jail player who was offline at the time /jail was issued.
 					arrestWarrant.setStarted();
