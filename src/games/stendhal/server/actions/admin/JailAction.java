@@ -53,7 +53,7 @@ public class JailAction extends AdministrationAction {
 		}
 
 		// extract and validate player
-			final String target = action.get(TARGET);
+		final String target = action.get(TARGET);
 		if (StendhalRPRuleProcessor.get().getPlayer(target) == null) {
 			try {
 				if (!DAORegister.get().get(CharacterDAO.class).hasCharacter(target)) {
