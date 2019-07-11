@@ -8,7 +8,7 @@
 	<!-- Ground level -->
 
 	<!-- krakow_nw -->
-	<zone name="0_krakow_nw" level="0" x="513312" y="17664" file="Level 0/krakow/krakow_nw.tmx">
+	<zone name="0_krakow_nw" level="0" x="513312" y="17664" file="Level 0/krakow/nw.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.EdragonNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.KajetanNPC"/>
 		<attributes>
@@ -25,7 +25,7 @@
 	</zone>
 
 	<!-- krakow_n -->
-	<zone name="0_krakow_n" level="0" x="513440" y="17664" file="Level 0/krakow/krakow_n.tmx">
+	<zone name="0_krakow_n" level="0" x="513440" y="17664" file="Level 0/krakow/n.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.barbakan.BarbakanGuardianNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -51,7 +51,7 @@
 	</zone>
 
 	<!-- krakow_ne -->
-	<zone name="0_krakow_ne" level="0" x="513568" y="17664" file="Level 0/krakow/krakow_ne.tmx">
+	<zone name="0_krakow_ne" level="0" x="513568" y="17664" file="Level 0/krakow/ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -66,7 +66,7 @@
 	</zone>
 
 	<!-- krakow_w -->
-	<zone name="0_krakow_w" level="0" x="513312" y="17792" file="Level 0/krakow/krakow_w.tmx">
+	<zone name="0_krakow_w" level="0" x="513312" y="17792" file="Level 0/krakow/w.tmx">
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.KidsNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.AmandaNPC"/>
@@ -84,7 +84,7 @@
 	</zone>
 
 	<!-- krakow_rynek -->
-	<zone name="0_krakow_rynek" level="0" x="513440" y="17792" file="Level 0/krakow/krakow_rynek.tmx">
+	<zone name="0_krakow_rynek" level="0" x="513440" y="17792" file="Level 0/krakow/rynek.tmx">
 		<!-- PET -->
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.PuppyNPC"/>
 		<!-- NPCs -->
@@ -214,7 +214,7 @@
 	</zone>
 
 	<!-- krakow_e -->
-	<zone name="0_krakow_e" level="0" x="513568" y="17792" file="Level 0/krakow/krakow_e.tmx">
+	<zone name="0_krakow_e" level="0" x="513568" y="17792" file="Level 0/krakow/e.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -234,7 +234,7 @@
 	</zone>
 
 	<!-- krakow_sw -->
-	<zone name="0_krakow_sw" level="0" x="513312" y="17920" file="Level 0/krakow/krakow_sw.tmx">
+	<zone name="0_krakow_sw" level="0" x="513312" y="17920" file="Level 0/krakow/sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -249,7 +249,7 @@
 	</zone>
 
 	<!-- krakow_s -->
-	<zone name="0_krakow_s" level="0" x="513440" y="17920" file="Level 0/krakow/krakow_s.tmx">
+	<zone name="0_krakow_s" level="0" x="513440" y="17920" file="Level 0/krakow/s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -264,7 +264,7 @@
 	</zone>
 
 	<!-- krakow_se -->
-	<zone name="0_krakow_se" level="0" x="513568" y="17920" file="Level 0/krakow/krakow_se.tmx">
+	<zone name="0_krakow_se" level="0" x="513568" y="17920" file="Level 0/krakow/se.tmx">
 		<!-- PET -->
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.RabbitNPC"/>
 		<!-- NPCs -->
@@ -284,7 +284,7 @@
 	</zone>
 
 	<!-- krakow_wisla_nw -->
-	<zone name="0_krakow_wisla_nw" level="0" x="513312" y="18048" file="Level 0/krakow/krakow_wisla_nw.tmx">
+	<zone name="0_krakow_wisla_nw" level="0" x="513312" y="18048" file="Level 0/krakow/wisla_nw.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.MysliwyNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -303,7 +303,7 @@
 	</zone>
 
 	<!-- krakow_wawel_w -->
-	<zone name="0_krakow_wawel_w" level="0" x="513440" y="18048" file="Level 0/krakow/krakow_wawel_w.tmx">
+	<zone name="0_krakow_wawel_w" level="0" x="513440" y="18048" file="Level 0/krakow/wawel_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -379,7 +379,7 @@
 	</zone>
 
 	<!-- krakow_wawel_e -->
-	<zone name="0_krakow_wawel_e" level="0" x="513568" y="18048" file="Level 0/krakow/krakow_wawel_e.tmx">
+	<zone name="0_krakow_wawel_e" level="0" x="513568" y="18048" file="Level 0/krakow/wawel_e.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.wawel.KingKrakNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.TargonNPC"/>
 		<attributes>
@@ -396,7 +396,7 @@
 	</zone>
 
 	<!-- krakow_wisla_w -->
-	<zone name="0_krakow_wisla_w" level="0" x="513312" y="18176" file="Level 0/krakow/krakow_wisla_w.tmx">
+	<zone name="0_krakow_wisla_w" level="0" x="513312" y="18176" file="Level 0/krakow/wisla_w.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.ThomasNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -415,7 +415,7 @@
 	</zone>
 
 	<!-- krakow_wisla -->
-	<zone name="0_krakow_wisla" level="0" x="513440" y="18176" file="Level 0/krakow/krakow_wisla.tmx">
+	<zone name="0_krakow_wisla" level="0" x="513440" y="18176" file="Level 0/krakow/wisla.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -489,7 +489,7 @@
 	</zone>
 
 	<!-- krakow_wisla_e -->
-	<zone name="0_krakow_wisla_e" level="0" x="513568" y="18176" file="Level 0/krakow/krakow_wisla_e.tmx">
+	<zone name="0_krakow_wisla_e" level="0" x="513568" y="18176" file="Level 0/krakow/wisla_e.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.KacperNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.RybakNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.ship.FerryConveyerNPC"/>
@@ -525,7 +525,7 @@
 	</zone>
 
 	<!-- krakow_wisla_sw -->
-	<zone name="0_krakow_wisla_sw" level="0" x="513312" y="18304" file="Level 0/krakow/krakow_wisla_sw.tmx">
+	<zone name="0_krakow_wisla_sw" level="0" x="513312" y="18304" file="Level 0/krakow/wisla_sw.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.forest.TolimirNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -591,7 +591,7 @@ Południe: Zakopane
 	</zone>
 
 	<!-- krakow_wisla_s -->
-	<zone name="0_krakow_wisla_s" level="0" x="513440" y="18304" file="Level 0/krakow/krakow_wisla_s.tmx">
+	<zone name="0_krakow_wisla_s" level="0" x="513440" y="18304" file="Level 0/krakow/wisla_s.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.forest.WagabundusNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -615,7 +615,7 @@ Południe: Zakopane
 	</zone>
 
 	<!-- krakow_wisla_se -->
-	<zone name="0_krakow_wisla_se" level="0" x="513568" y="18304" file="Level 0/krakow/krakow_wisla_se.tmx">
+	<zone name="0_krakow_wisla_se" level="0" x="513568" y="18304" file="Level 0/krakow/wisla_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
