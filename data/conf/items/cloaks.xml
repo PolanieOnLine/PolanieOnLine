@@ -4,7 +4,7 @@
 
 	<item name="czarny płaszcz">
 		<type class="cloak" subclass="black_cloak" tileid="-1"/>
-		<description>Widzisz czarny płaszcz. Ostatni właściciel miał złe myśli. A jakie masz ty?</description>
+		<description>Oto czarny płaszcz. Ostatni właściciel miał złe myśli. A jakie masz ty?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>
@@ -25,7 +25,7 @@
 
 	<item name="czarny płaszcz smoczy">
 		<type class="cloak" subclass="black_dragon_cloak" tileid="-1"/>
-		<description>Widzisz czarny płaszcz smoczy. Jest niezwykły.</description>
+		<description>Oto czarny płaszcz smoczy. Jest niezwykły.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="18"/>
@@ -46,7 +46,7 @@
 
 	<item name="lazurowy płaszcz smoczy">
 		<type class="cloak" subclass="blue_dragon_cloak" tileid="-1"/>
-		<description>Widzisz lazurowy płaszcz smoczy. Wiele byś dał, żeby jego kolor nie rzucał się tak w oczy.</description>
+		<description>Oto lazurowy płaszcz smoczy. Wiele byś dał, żeby jego kolor nie rzucał się tak w oczy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>
@@ -66,7 +66,7 @@
 
 	<item name="lazurowy płaszcz elficki">
 		<type class="cloak" subclass="blue_elf_cloak" tileid="-1"/>
-		<description>Widzisz lazurowy płaszcz elficki. Materiał jest gruby i ciepły.</description>
+		<description>Oto lazurowy płaszcz elficki. Materiał jest gruby i ciepły.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
@@ -87,7 +87,7 @@
 
 	<item name="prążkowany płaszcz lazurowy">
 		<type class="cloak" subclass="blue_striped_cloak" tileid="-1"/>
-		<description>Widzisz modny prążkowany płaszcz lazurowy.</description>
+		<description>Oto modny prążkowany płaszcz lazurowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
@@ -106,7 +106,7 @@
 
 	<item name="kościany płaszcz smoczy">
 		<type class="cloak" subclass="bone_dragon_cloak" tileid="-1"/>
-		<description>Widzisz kościany płaszcz smoczy. Jest stasznie stary, jak jego poprzedni właściciel.</description>
+		<description>Oto kościany płaszcz smoczy. Jest stasznie stary, jak jego poprzedni właściciel.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -125,7 +125,7 @@
 
 	<item name="płaszcz chaosu">
 		<type class="cloak" subclass="chaos_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz chaosu. Jest bardzo silny i dobrze cię obroni.</description>
+		<description>Oto płaszcz chaosu. Jest bardzo silny i dobrze cię obroni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="20"/>
@@ -164,7 +164,7 @@
 
 	<item name="płaszcz krasnoludzki">
 		<type class="cloak" subclass="dwarf_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz krasnoludzki. Najwyraźniej jest modny, ale przyda ci się bardziej w celach wojskowych.</description>
+		<description>Oto płaszcz krasnoludzki. Najwyraźniej jest modny, ale przyda ci się bardziej w celach wojskowych.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -200,7 +200,7 @@
 
 	<item name="peleryna elficka">
 		<type class="cloak" subclass="elf_cloak" tileid="-1"/>
-		<description>To peleryna elficka. Jest przewiewna i nie daje ochrony przez chłodem.</description>
+		<description>Oto peleryna elficka. Jest przewiewna i nie daje ochrony przez chłodem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="2"/>
@@ -221,7 +221,7 @@
 
 	<item name="płaszcz elficki">
 		<type class="cloak" subclass="elvish_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz elficki. Materiał utkany z leśnych pnączy jest cieńki lecz ciepły.</description>
+		<description>Oto płaszcz elficki. Materiał utkany z leśnych pnączy jest cieńki lecz ciepły.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
@@ -242,7 +242,7 @@
 
 	<item name="złoty płaszcz">
 		<type class="cloak" subclass="golden_cloak" tileid="-1"/>
-		<description>Widzisz złoty płaszcz. Jest utkany ze szczerozłotych nici.</description>
+		<description>Oto złoty płaszcz. Jest utkany ze szczerozłotych nici.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="19"/>
@@ -262,7 +262,7 @@
 
 	<item name="szmaragdowy płaszcz smoczy">
 		<type class="cloak" subclass="green_dragon_cloak" tileid="-1"/>
-		<description>Widzisz wielki szmaragdowy płaszcz smoczy. Jest chyba za duży na ciebie, ale za to ma potężną obronę.</description>
+		<description>Oto wielki szmaragdowy płaszcz smoczy. Jest chyba za duży na ciebie, ale za to ma potężną obronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>
@@ -281,7 +281,7 @@
 
 	<item name="płaszcz licha">
 		<type class="cloak" subclass="lich_cloak" tileid="-1"/>
-		<description>Widzisz purpurowy płaszcz licha. Cały oblepiony krwią: twoją, Licha lub jakiegos innego potwora.</description>
+		<description>Oto purpurowy płaszcz licha. Cały oblepiony krwią: twoją, Licha lub jakiegos innego potwora.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -298,9 +298,32 @@
 		</equipable>
 	</item>
 
+	<item name="magiczny płaszcz">
+    <type class="cloak" subclass="magic_cloak" tileid="-1"/>
+    <description>Oto magiczny płaszcz. Został wykonany przez mnichów Sikhwów, zanim zostali zniszczeni.</description>
+    <implementation class-name="games.stendhal.server.entity.item.Item"/>
+    <attributes>
+      <def value="23"/>
+      <min_level value="170"/>
+    </attributes>
+    <weight value="8.0"/>
+    <value value="109375"/>
+    <susceptibility type="light" value="0.95"/>
+    <susceptibility type="dark" value="0.95"/>
+    <susceptibility type="fire" value="0.95"/>
+    <susceptibility type="ice" value="0.95"/>
+    <equipable>
+      <slot name="ground"/>
+      <slot name="content"/>
+      <slot name="bag"/>
+      <slot name="trade"/>
+      <slot name="cloak"/>
+    </equipable>
+  </item>
+
 	<item name="płaszcz mainiocyjski">
 		<type class="cloak" subclass="mainio_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz mainiocyjski. Jest uszyty z bardzo dobrego materiału.</description>
+		<description>Oto płaszcz mainiocyjski. Jest uszyty z bardzo dobrego materiału.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="21"/>
@@ -319,7 +342,7 @@
 
 	<item name="płaszcz z mithrilu">
 		<type class="cloak" subclass="mithril_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz z mithrilu. Jego splot jest bardzo delikatny. Płaszcz wygląda oszałamiająco.</description>
+		<description>Oto płaszcz z mithrilu. Jego splot jest bardzo delikatny. Płaszcz wygląda oszałamiająco.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="28"/>
@@ -339,7 +362,7 @@
 
 	<item name="płaszcz karmazynowy">
 		<type class="cloak" subclass="red_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz karmazynowy w kropki. Jest odlotowy.</description>
+		<description>Oto płaszcz karmazynowy w kropki. Jest odlotowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="5"/>
@@ -395,7 +418,7 @@
 
 	<item name="płaszcz cieni">
 		<type class="cloak" subclass="shadow_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz cieni, który w mroku jakieś złowrogie cienie przebiegają.</description>
+		<description>Oto płaszcz cieni, który w mroku jakieś złowrogie cienie przebiegają.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>
@@ -416,7 +439,7 @@
 
 	<item name="płaszcz kamienny">
 		<type class="cloak" subclass="stone_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz kamienny. Ciężko powiedzieć z czego był zrobiony, chyba z jakichś odpadów, w dodatku jest straszne ciasny.</description>
+		<description>Oto płaszcz kamienny. Ciężko powiedzieć z czego był zrobiony, chyba z jakichś odpadów, w dodatku jest straszne ciasny.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="9"/>
@@ -437,7 +460,7 @@
 
 	<item name="płaszcz wampirzy">
 		<type class="cloak" subclass="vampire_cloak" tileid="-1"/>
-		<description>Widzisz osławiony płaszcz wampirzy. Noszenie go nie jest zbyt przyjemne.</description>
+		<description>Oto osławiony płaszcz wampirzy. Noszenie go nie jest zbyt przyjemne.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="12"/>
@@ -456,7 +479,7 @@
 
 	<item name="płaszcz xenocyjski">
 		<type class="cloak" subclass="xeno_cloak" tileid="-1"/>
-		<description>Widzisz płaszcz xenocyjski. Jest gruby i ciepły oraz dobrze broni.</description>
+		<description>Oto płaszcz xenocyjski. Jest gruby i ciepły oraz dobrze broni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="22"/>
