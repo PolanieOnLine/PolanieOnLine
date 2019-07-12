@@ -307,6 +307,7 @@
 			<item value="buty kamienne" quantity="[1,1]" probability="0.5"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="0.15"/>
 			<item value="hełm kamienny" quantity="[1,1]" probability="0.05"/>
+			<item value="kamienne rękawice" quantity="[1,1]" probability="0.075"/>
 		</drops>
 		<equips>
 		</equips>
