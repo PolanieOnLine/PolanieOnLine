@@ -484,7 +484,7 @@
 	</item>
 
 	<item name="hełm zabójcy">
-		<type class="helmet" subclass="liberty_helmet" tileid="-1"/>
+		<type class="helmet" subclass="killer_helmet" tileid="-1"/>
 		<description>Widzisz hełm zabójcy. Dodaje furii w walce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
