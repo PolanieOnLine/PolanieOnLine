@@ -236,7 +236,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-	
+
 	<item name="rękawice wampirze">
 		<type class="glove" subclass="vampire_gloves" tileid="-1"/>
 		<description>Oto wampirze rękawice. Co to?! Krew o właściwościach metalu?</description>
@@ -249,6 +249,30 @@
 		</attributes>
 		<weight value="33.0"/>
 		<value value="1111"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kamienne rękawice">
+		<type class="glove" subclass="stone_gloves" tileid="-1"/>
+		<description>Oto kamienne rękawice. Wykonane ze solidnych kamieni co powoduje, że są bardzo ciężkie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="4"/>
+			<min_level value="75"/>
+		</attributes>
+		<weight value="40.0"/>
+		<value value="515"/>
+		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="ice" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
