@@ -175,11 +175,15 @@ import games.stendhal.server.util.TimeUtil;
 			temp = player.getQuest(QUEST_SLOT, 1+i*2);
 			if (temp == null) {
 				recsolo = 0;
+			} else if (temp.equals("")) {
+				recsolo = 0;
 			} else {
 				recsolo = Integer.parseInt(temp);
 			}
 			temp = player.getQuest(QUEST_SLOT, 2+i*2);
 			if (temp == null) {
+				recshared = 0;
+			} else if (temp.equals("")) {
 				recshared = 0;
 			} else {
 				recshared = Integer.parseInt(temp);
