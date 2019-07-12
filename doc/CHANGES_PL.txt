@@ -3,12 +3,20 @@
 1.02
 Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
 
+*klient*
+- Dodano kilka nowych grafik
+
 *świat gry*
 - Dodano nowe przejście prowadzące do Wieliczki
+- Dodano nowy przedmiot: "kamienne rękawice" [1 atak + 4 obrony oraz odporności na 4 żywioły: ogień, lód, światło i mrok]
 - Można kupić nowy zwój przenoszący do miasta Deniran u Juhasa za 700 money
 - Można na pieszo przyjść do Warszawy przez Kraków
 - Zmieniono wizualnie górne mapy Krakowa
 - Zmieniono wizualnie niektóre mapy Wieliczki oraz mapy dragon_knights
+
+*naprawiono błędy*
+- Poprawiono ścieżkę grafiki dla hełmu zabójcy
+- Poprawiono grafiki kanibali
 
 
 1.01.1
