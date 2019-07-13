@@ -22,7 +22,7 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
 /**
- * Factory for required weight achievements
+ * Factory for required weight achievements of pets, or sheep, or goat
  *  
  * @author zekkeq
  */
