@@ -176,7 +176,7 @@ public class Goat extends DomesticAnimal {
 		setDef(DEF);
 		setXP(XP);
 		incHP = 5;
-		baseSpeed = 0.25;
+		baseSpeed = 0.5;
 	}
 
 	/**
