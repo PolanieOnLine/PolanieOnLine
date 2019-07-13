@@ -68,6 +68,7 @@ public abstract class AbstractAchievementFactory {
 		list.add(new ItemAchievementFactory());
 		list.add(new ObtainAchievementsFactory());
 		list.add(new OutsideZoneAchievementFactory());
+		list.add(new PetsWeightAchievementFactory());
 		list.add(new ProductionAchievementFactory());
 		list.add(new QuestAchievementFactory());
 		list.add(new SemosMonsterQuestAchievementFactory());

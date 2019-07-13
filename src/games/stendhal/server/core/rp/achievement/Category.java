@@ -53,6 +53,8 @@ public enum Category {
 	/** mithrilbourgh kill enemy army quest */
 	QUEST_MITHRILBOURGH_ENEMY_ARMY,
 	/** kuznice monster quest */
-	QUEST_KUZNICE_MONSTER;
+	QUEST_KUZNICE_MONSTER,
+	/** pets weight **/
+	WEIGHT;
 
 }
