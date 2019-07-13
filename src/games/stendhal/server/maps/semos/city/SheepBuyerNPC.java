@@ -233,7 +233,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 					return true;
 				}
 			} else {
-				seller.say("" + player.getTitle() + " nie posiadasz owcy! W co próbujesz pogrywać?");
+				seller.say(player.getTitle() + " nie posiadasz owcy! W co próbujesz pogrywać?");
 			}
 
 			return false;
