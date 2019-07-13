@@ -17,8 +17,8 @@ import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
-import games.stendhal.server.entity.npc.condition.PlayerHasGoatWithWeight;
-import games.stendhal.server.entity.npc.condition.PlayerHasSheepWithWeight;
+import games.stendhal.server.entity.npc.condition.PetsWithWeight;
+import games.stendhal.server.entity.npc.condition.PlayerHasPetOrSheepCondition;
 /**
  * Factory for required weight achievements
  *  
@@ -34,10 +34,12 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> weightAchievements = new LinkedList<Achievement>();
+		weightAchievements.add(createAchievement("pet.condition", "Mój przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
+				Achievement.EASY_BASE_SCORE, true, new PlayerHasPetOrSheepCondition()));
 		weightAchievements.add(createAchievement("weight.less.099", "Wypasiona owca", "Wypasił owcę do 100kg",
-				Achievement.MEDIUM_BASE_SCORE, true, new PlayerHasSheepWithWeight(99)));
+				Achievement.MEDIUM_BASE_SCORE, true, new PetsWithWeight(99, "sheep")));
 		weightAchievements.add(createAchievement("weight.less.099", "Wypasiona koza", "Wypasił kozę do 100kg",
-				Achievement.MEDIUM_BASE_SCORE, true, new PlayerHasGoatWithWeight(99)));
+				Achievement.MEDIUM_BASE_SCORE, true, new PetsWithWeight(99, "goat")));
 		return weightAchievements;
 	}
 
