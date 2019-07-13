@@ -15,10 +15,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
-import games.stendhal.server.entity.npc.condition.PetsWithWeight;
-import games.stendhal.server.entity.npc.condition.PlayerHasPetOrSheepCondition;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.player.Player;
 /**
  * Factory for required weight achievements
  *  
@@ -34,12 +36,27 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> weightAchievements = new LinkedList<Achievement>();
-		weightAchievements.add(createAchievement("pet.condition", "Mój przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
-				Achievement.EASY_BASE_SCORE, true, new PlayerHasPetOrSheepCondition()));
 		weightAchievements.add(createAchievement("weight.less.099", "Wypasiona owca", "Wypasił owcę do 100kg",
-				Achievement.MEDIUM_BASE_SCORE, true, new PetsWithWeight(99, "sheep")));
-		weightAchievements.add(createAchievement("weight.less.099", "Wypasiona koza", "Wypasił kozę do 100kg",
-				Achievement.MEDIUM_BASE_SCORE, true, new PetsWithWeight(99, "goat")));
+				Achievement.MEDIUM_BASE_SCORE, true, 
+					new ChatCondition() {
+						@Override
+						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+							if(!player.hasSheep()) {
+								return false;
+							}
+							final int weight = 99 - player.getSheep().getWeight();
+							return weight <= 0;
+						}
+					}));
+		/**weightAchievements.add(createAchievement("weight.less.099", "Wypasiona koza", "Wypasił kozę do 100kg",
+				Achievement.MEDIUM_BASE_SCORE, true,
+					new ChatCondition() {
+						@Override
+						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+							final int weight = 100 - player.getGoat().getWeight();
+							return weight <= 0;
+						}
+					}));*/
 		return weightAchievements;
 	}
 

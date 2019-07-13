@@ -22,6 +22,7 @@ import games.stendhal.server.core.rp.achievement.condition.QuestWithPrefixComple
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasPetOrSheepCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
@@ -120,6 +121,9 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 		// meet Santa Claus, Easter Bunny and Guslarz
 		achievements.add(createAchievement("friend.meet.seasonal", "Wciąż wierzy", "Spotkał Świętego Mikołaja, zajączka Wielkanocnego i Guślarza",
 												Achievement.EASY_BASE_SCORE, true, new AndCondition(new QuestWithPrefixCompletedCondition("meet_santa_"), new QuestWithPrefixCompletedCondition("meet_bunny_"), new QuestWithPrefixCompletedCondition("meet_guslarz_"))));
+
+		achievements.add(createAchievement("friend.pet.condition", "Mój domowy przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
+				Achievement.EASY_BASE_SCORE, true, new PlayerHasPetOrSheepCondition()));
 
 		return achievements;
 	}
