@@ -157,7 +157,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 			public void createDialog() {
 				addGreeting();
 				addJob("Skupuję owce w Semos, a później wysyłam je do Ados, gdzie są eksportowane.");
-				addHelp("Skupuję owce i sądzę, że to uczciwa cena. Jeżeli się zdecydujesz na sprzedaż to powiedz #sprzedam #sheep, a zrobimy interes!");
+				addHelp("Skupuję owce i sądzę, że to uczciwa cena. Jeżeli się zdecydujesz na sprzedaż to powiedz #'sprzedam sheep', a zrobimy interes!");
 				addGoodbye();
 				addQuest("Hmm Potrzebuję prezentu dla mojego przyjaciela. Może zapytasz Nishiyę o jakiś pomysł...");
 			}
@@ -216,7 +216,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 					seller.say("Nie widzę stąd tej owcy! Przyprowadź ją bliżej, abym mógł sprawdzić.");
 				} else if (getValue(res, sheep) < SheepSellerNPC.BUYING_PRICE) {
 					// prevent newbies from selling their sheep too early
-					seller.say("Ta owca wygląda na zbyt chudą. Nakarm ją trawą i wróć, gdy będzie grubsza.");
+					seller.say("Ta owca wygląda na zbyt chudą. Nakarm ją jagodami i wróć, gdy będzie grubsza.");
 				} else {
 					seller.say("Dziękuję! Oto twoje pieniądze.");
 					payPlayer(res, player);
