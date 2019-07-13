@@ -84,7 +84,7 @@ public class SheepSellerNPC implements ZoneConfigurator {
 
 							return true;
 						} else {
-							say("Dlaczego się nie upewnisz się i nie poszukasz owcy, którą już masz?");
+							say("Dlaczego się nie upewnisz i nie poszukasz owcy, którą już masz?");
 							return false;
 						}
 					}
@@ -95,7 +95,7 @@ public class SheepSellerNPC implements ZoneConfigurator {
 
 				addGreeting();
 				addJob("Pracuję jako sprzedawca owiec.");
-				addHelp("Sprzedaję owce. Aby kupić jedną wystarczy powiedzieć mi #buy #sheep. Jeżeli jesteś nowym w tym interesie to mogę Ci powiedzieć jak #podróżować z owcą, jak się nią #opiekować i powiem Ci, gdzie możesz ją #sprzedać. Jeżeli znajdziesz dziką owcę to możesz ją #przygarnąć.");
+				addHelp("Sprzedaję owce. Aby kupić jedną wystarczy powiedzieć mi #'buy sheep'. Jeżeli jesteś nowym w tym interesie to mogę Ci powiedzieć jak #podróżować z owcą, jak się nią #opiekować i powiem Ci, gdzie możesz ją #sprzedać. Jeżeli znajdziesz dziką owcę to możesz ją #przygarnąć.");
 				addGoodbye();
 				new SellerAdder().addSeller(this, new SheepSellerBehaviour(items));
 				addReply(Arrays.asList("care", "opiekować"),
