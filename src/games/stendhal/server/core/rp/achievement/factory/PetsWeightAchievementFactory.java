@@ -44,19 +44,22 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 							if(!player.hasSheep()) {
 								return false;
 							}
-							final int weight = 99 - player.getSheep().getWeight();
+							final int weight = 100 - player.getSheep().getWeight();
 							return weight <= 0;
 						}
 					}));
-		/**weightAchievements.add(createAchievement("weight.less.099", "Wypasiona koza", "Wypasił kozę do 100kg",
+		weightAchievements.add(createAchievement("weight.less.099", "Wypasiona koza", "Wypasił kozę do 100kg",
 				Achievement.MEDIUM_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+							if(!player.hasGoat()) {
+								return false;
+							}
 							final int weight = 100 - player.getGoat().getWeight();
 							return weight <= 0;
 						}
-					}));*/
+					}));
 		return weightAchievements;
 	}
 
