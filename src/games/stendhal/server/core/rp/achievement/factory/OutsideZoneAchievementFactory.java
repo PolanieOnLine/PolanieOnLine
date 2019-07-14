@@ -7,6 +7,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.PlayerVisitedZonesCondition;
 import games.stendhal.server.entity.npc.condition.PlayerVisitedZonesInRegionCondition;
+import games.stendhal.client.entity.User;
 /**
  * Factory for zone achievements
  *
@@ -87,6 +88,19 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 									new PlayerVisitedZonesCondition("int_semos_bank", "int_nalwor_bank", "int_kirdneh_bank"/**, "int_gdansk_bank"*/,
 												"int_fado_bank", "int_magic_bank", "int_ados_bank", "int_deniran_bank_blue_roof", "int_zakopane_bank_0",
 												"int_krakow_bank_0")));
+
+		list.add(createAchievement("zone.special.afterlife", "Widziałem światło", "Poznał życie pozagrobowe",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerVisitedZonesCondition("int_afterlife")));
+
+		list.add(createAchievement("zone.special.bankersecret", "Sekret bankiera", "Odwiedził prywatny skarbiec",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerVisitedZonesCondition(User.getCharacterName()+"_vault")));
+
+		list.add(createAchievement("zone.special.allvisited", "Widziałem już wszystko", "Odwiedził niebo, piekło, chmury oraz więzienie",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerVisitedZonesCondition("int_afterlife", "hell", "int_koscielisko_jail", "7_kikareukin_clouds")));
+
 		return list;
 	}
 
