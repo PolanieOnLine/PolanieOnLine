@@ -19,6 +19,8 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.creature.Goat;
+import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
 /**
@@ -37,31 +39,33 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> weightAchievements = new LinkedList<Achievement>();
 		weightAchievements.add(createAchievement("weight.sheep.less.099", "Wypasiona owca", "Wypasił owcę do 100 wagi",
-				Achievement.MEDIUM_BASE_SCORE, true, 
+				Achievement.EASY_BASE_SCORE, true, 
 					new ChatCondition() {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+							final Sheep sheep = player.getSheep();
 							if(!player.hasSheep()) {
 								return false;
 							}
-							final int weight = 100 - player.getSheep().getWeight();
+							final int weight = 100 - sheep.getWeight();
 							return weight <= 0;
 						}
 					}));
 		weightAchievements.add(createAchievement("weight.goat.less.099", "Wypasiona koza", "Wypasił kozę do 100 wagi",
-				Achievement.MEDIUM_BASE_SCORE, true,
+				Achievement.EASY_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+							final Goat goat = player.getGoat();
 							if(!player.hasGoat()) {
 								return false;
 							}
-							final int weight = 100 - player.getGoat().getWeight();
+							final int weight = 100 - goat.getWeight();
 							return weight <= 0;
 						}
 					}));
 		weightAchievements.add(createAchievement("weight.pet.less.099", "Duże zwierzątko", "Zwierzątko urosło do 100 wagi",
-				Achievement.MEDIUM_BASE_SCORE, true,
+				Achievement.EASY_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
