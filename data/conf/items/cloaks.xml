@@ -300,7 +300,7 @@
 
 	<item name="magiczny płaszcz">
     <type class="cloak" subclass="magic_cloak" tileid="-1"/>
-    <description>Oto magiczny płaszcz. Został wykonany przez mnichów Sikhwów, zanim zostali zniszczeni.</description>
+    <description>Oto magiczny płaszcz. Został wykonany przez druidów Sikhw, zanim zostali zniszczeni.</description>
     <implementation class-name="games.stendhal.server.entity.item.Item"/>
     <attributes>
       <def value="23"/>
