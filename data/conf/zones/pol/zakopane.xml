@@ -372,6 +372,13 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=+1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow2</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- zakopane_sw -->
@@ -862,6 +869,13 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-goralskie</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- interiors -->
