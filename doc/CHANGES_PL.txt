@@ -1,5 +1,9 @@
 ﻿Changelog
 ---------
+1.01.2
+Po wykonaniu zadania, srebrny pierścień zostanie od razu przypisany do postaci
+
+
 1.01.1
 *naprawiono błędy*
 - Naprawiono zadanie u Ceryla
