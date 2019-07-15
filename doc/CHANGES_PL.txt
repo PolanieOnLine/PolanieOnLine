@@ -14,11 +14,14 @@ Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Denir
 - Można na pieszo przyjść do Warszawy przez Kraków
 - Zmieniono wizualnie górne mapy Krakowa
 - Zmieniono wizualnie niektóre mapy Wieliczki oraz mapy dragon_knights
-- Za wykonanie zadania na srebrny pierścień zostanie ono od razu przypisane do postaci
 
 *naprawiono błędy*
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
+
+
+1.01.2
+Po wykonaniu zadania, srebrny pierścień zostanie od razu przypisany do postaci
 
 
 1.01.1
