@@ -14,8 +14,6 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
 import games.stendhal.server.entity.npc.action.DropItemAction;
-import games.stendhal.server.entity.npc.action.EquipItemAction;
-import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
@@ -59,7 +57,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 		};
 
 	    npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
 			"Dobrze, że pytasz... Ostatnio otrzymaliśmy spore zamówienie na wyposażenie straży królewskiej. Chciałbyś nam pomóc?",
@@ -81,7 +79,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			"Hej! Zanieś tą karteczke do kowala!",
 			null);
 
-		npc.add(ConversationStates.QUEST_OFFERED, 
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
@@ -108,7 +106,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			new DropInfostringItemAction("karteczka", QUEST_SLOT));
 
 	    npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 				new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", QUEST_SLOT))),
 			ConversationStates.ATTENDING,
@@ -123,7 +121,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			"Wspaniale. Jakbyś mógł to przynieś mi 150 żelaza, 40 rud miedzi i 20 sztabek złota. Będę tutaj na Ciebie czekał. Jak wrócisz to przypomnij mi mówiąc #'zamówienie', ok? Powodzenia!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "zapasy", 5.0));
 
-		npc.add(ConversationStates.QUEST_OFFERED, 
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
@@ -235,19 +233,23 @@ public class ZamowienieStrazy extends AbstractQuest {
 
 	public void step_7() {
 	    final SpeakerNPC npc = npcs.get("Gwardzista");
-	    final ChatAction action = new MultipleActions(
-	    	new EquipItemAction("srebrny pierścień"),
-			new IncreaseXPAction(10000),
-			new IncreaseKarmaAction(25),
-			new SetQuestAction(QUEST_SLOT, "done")
-		);
 
 	    npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("miesiąc", "miesiąca", "month"),
 			new QuestStateStartsWithCondition(QUEST_SLOT, "gwardzista"),
-			ConversationStates.ATTENDING,
-			"Cooo?! Miesiąc?! Moja armia potrzebuje na teraz! No cóż... Proszę, w nagrodę przyjmij to, magiczny srebrny pierścień. Uchroni Cię przed mrokiem. Słyszałem również, że gdzieś w rejonach wieliczki można go ulepszyć, lecz to są jedynie plotki.",
-			action);
+			ConversationStates.ATTENDING, null,
+			new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+					raiser.say("Cooo?! Miesiąc?! Moja armia potrzebuje na teraz! No cóż... Proszę, w nagrodę przyjmij to, magiczny srebrny pierścień. Uchroni Cię przed mrokiem. Słyszałem również, że gdzieś w rejonach wieliczki można go ulepszyć, lecz to są jedynie plotki.");
+					final Item item = SingletonRepository.getEntityManager().getItem("srebrny pierścień");
+					item.setBoundTo(player.getName());
+					player.equipOrPutOnGround(item);
+					player.addXP(10000);
+					player.addKarma(25);
+					player.setQuest(QUEST_SLOT, "done");
+				}
+			});
 	}
 
     @Override
