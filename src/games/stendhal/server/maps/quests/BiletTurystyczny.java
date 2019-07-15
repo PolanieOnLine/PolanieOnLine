@@ -81,7 +81,7 @@ public class BiletTurystyczny extends AbstractQuest {
 
 	private static final int REQUIRED_MONEY = 5000;
 
-	private static final int REQUIRED_MINUTES = 60 * 24;
+	private static final int REQUIRED_MINUTES = 60 * 12;
 
 	private static final String QUEST_SLOT = "bilet_turystyczny";
 
@@ -100,7 +100,7 @@ public class BiletTurystyczny extends AbstractQuest {
 						new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
 			ConversationStates.INFORMATION_1,
 			"CIII! *SZEPT* Nikt nie może wiedzieć jakimi towarami #handluję.", null);
-		
+
 		// player says hi before starting the quest
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("bilet", "bilet turystyczny", "bilety"),
@@ -118,7 +118,7 @@ public class BiletTurystyczny extends AbstractQuest {
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStartedCondition(QUEST_SLOT),
 					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES),
-					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),  
+					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
 			ConversationStates.QUEST_OFFERED,
 			"Wróciłeś po kolejny bilet turystyczny?", null);
 
@@ -130,37 +130,37 @@ public class BiletTurystyczny extends AbstractQuest {
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStartedCondition(QUEST_SLOT),
 					new LevelGreaterThanCondition(REQUIRED_LEVEL-1),
-					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),  
-			ConversationStates.ATTENDING, 
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),
+			ConversationStates.ATTENDING,
 			null,
 			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Niestety kolejny bilet dostanę za co najmniej"));
 
 		// player responds to word 'deal' - enough level
-		npc.add(ConversationStates.INFORMATION_1, 
+		npc.add(ConversationStates.INFORMATION_1,
 			Arrays.asList("deal", "handluję", "umowa", "biletem", "bilety"),
 			new AndCondition(
-					new QuestNotStartedCondition(QUEST_SLOT), 
+					new QuestNotStartedCondition(QUEST_SLOT),
 					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Sprzedaję #'bilety turystyczne' na pustynię. Możesz kupić, ale będzie Cię kosztować "
 								+ REQUIRED_MONEY
 								+ " money. Chcesz kupić?",
 			null);
-		
-		npc.add(ConversationStates.QUEST_OFFERED, 
+
+		npc.add(ConversationStates.QUEST_OFFERED,
 				Arrays.asList("bilety turystyczne"),
 				null,
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"To są pewnego rodzaju zwoje, które wysyłają na wycieczkę do obcej krainy pokrytej piaskiem.",
 				null);
-		
+
 		// player responds to word 'deal' - low level
-		npc.add(ConversationStates.INFORMATION_1, 
+		npc.add(ConversationStates.INFORMATION_1,
 			Arrays.asList("deal", "handluję", "umowa", "biletem", "bilety"),
 			new AndCondition(
-					new QuestNotStartedCondition(QUEST_SLOT), 
+					new QuestNotStartedCondition(QUEST_SLOT),
 					new LevelLessThanCondition(REQUIRED_LEVEL)),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Nie jesteś gotowy na taką podróż. Wróć, gdy podrośniesz!",
 			null);
 
@@ -168,15 +168,15 @@ public class BiletTurystyczny extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("money", REQUIRED_MONEY)),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Nie masz wystarczająco dużo pieniędzy. Wróć, gdy będziesz miał.",
 			null);
 
 		// player wants to take the beans
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES, 
+				ConversationPhrases.YES_MESSAGES,
 				new PlayerHasItemWithHimCondition("money", REQUIRED_MONEY),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"W porządku oto twój bilet turystyczny. Gdy użyjesz to wrócisz za około 3 godziny. Jeśli będziesz chciał wcześniej wrócić to skorzystaj tam stan na herbie Zakopanego, który zabierze Ciebie z powrotem.",
 				new MultipleActions(
 						new DropItemAction("money", REQUIRED_MONEY),
@@ -192,17 +192,17 @@ public class BiletTurystyczny extends AbstractQuest {
 										player.setQuest(QUEST_SLOT, "bought;"
 												+ System.currentTimeMillis() + ";taken;" + tokens[3]);
 									} else {
-										// it must have started with "done" (old quest slot status was done;timestamp), but now we store when the beans were taken. 
+										// it must have started with "done" (old quest slot status was done;timestamp), but now we store when the beans were taken.
 										// And they haven't taken beans since
 										player.setQuest(QUEST_SLOT, "bought;"
 												+ System.currentTimeMillis() + ";taken;-1");
-								
+
 									}
 								} else {
 									// first time they bought beans here
 									player.setQuest(QUEST_SLOT, "bought;"
 											+ System.currentTimeMillis() + ";taken;-1");
-								
+
 								}
 							}
 						}));
@@ -241,12 +241,12 @@ public class BiletTurystyczny extends AbstractQuest {
 	public String getName() {
 		return "BiletTurystyczny";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return REQUIRED_LEVEL;
 	}
-	
+
 	@Override
 	public boolean isCompleted(final Player player) {
 		if(!player.hasQuest(QUEST_SLOT)) {
@@ -258,21 +258,21 @@ public class BiletTurystyczny extends AbstractQuest {
 		}
 		return MathHelper.parseLongDefault(tokens[3],-1)>0;
 	}
-	
+
 	@Override
 	public boolean isVisibleOnQuestStatus() {
 		return false;
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
-		return new ArrayList<String>();	
+		return new ArrayList<String>();
 	}
 	@Override
 	public String getNPCName() {
 		return "Juhas";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
