@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+ <tileset firstgid="1" name="collision.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="trawa" tilewidth="32" tileheight="32" tilecount="33" columns="3">
+  <image source="../../tileset/ground/ground.png" width="96" height="352"/>
+ </tileset>
+ <tileset firstgid="35" name="buklas" tilewidth="32" tileheight="32" tilecount="42" columns="7">
+  <image source="../../tileset/pol/natura/drzewa/tree_buk_las.png" width="224" height="192"/>
+ </tileset>
+ <tileset firstgid="77" name="tree_swierk_las" tilewidth="32" tileheight="32" tilecount="49" columns="7">
+  <image source="../../tileset/pol/natura/drzewa/tree_swierk_las.png" width="224" height="224"/>
+ </tileset>
+ <tileset firstgid="126" name="tree_swierk_big" tilewidth="32" tileheight="32" tilecount="54" columns="6">
+  <image source="../../tileset/pol/natura/drzewa/tree_swierk_big.png" width="192" height="288"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3DAQkAAAwEoYPv33lBpuCqqaqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq+v4BdHjU2QAAAQA=
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3UQY6CUBREURaF63Hm/pegJo6MUUyAKj5n0LlT2lfnz9M0XR5/s56yDd+guTZ8g/Kv/Cv/yr/yr/wr/8q/8q/8K//Kv/Kv/Cv/yr/yr/wr/8q/8q/8K//Kv/Kv/Cv/yr/yr/xrxzco/8q/8q/8K//Kv/Kv/Cv/yr/yr/wr/8q/8q/8K//Kv/Kv/Cv/yr/yr/wr/8q/8q/8K//Kv3Z8g/Kv/Cv/yr/yr/wr/8q/8q/8K//Kv/Kv/Cv/yr/yr+v4vxZ8k+7X2+vm7718afqbdb1+uv2v2sQ4/ff2SzaR/p90W/+2ME7Xvr0tHKtb3t4W+rvX7W2hs4nb20JP07e3Bf5tgf8lW0j/ViO24bbeA/69B/x7D/j3HvDvPeDfe8C/94B/7wH/3gP+vQf82wD/NsC/DfC/xQbOuIWG376t6Zvwn2/Dbfi3Af5tgP/8BkbdQvq3PVobbsa/DfBvA/zbAP/5DRx5Cw2/4ShN35L/fBtuyr8N8G8D/Oc30L6F9G90ljbcmn8b4N8G+LcB/m3g2TtX6DdfAAABAA==
+  </data>
+ </layer>
+ <layer id="10" name="4_roof_add" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3cyY7UMBCA4XpD4MJyAb8JAYlFYpFYHhjnYGHcdrnKcZok/X+SNVLiSXo6lXLZnR4RAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADO70lsT2N7lv3E43ge24vYXmY/X8ltTBAb1/QmttfFzyC3MaHFBq6lFhNabOQxgXN5G9sS27vY3mfb07ZSLyaIhXP5ENvH2D7F9jnbnrZZEAvn9SW2r7F9i+17sa+VG0qpz4pYOJcfsf2M7Vdsv4t9tdxQi4lWriAWzq2WG1rjRQ+xcA2t8cJTRxILx7VIve5PWuOFp44sY4VYOA5P3Z/T6shSK1a0vIDrsMRKGQvkg/1o87y0vUbbZ507Wo8ZhHywF62m18YDbd/oPME6lyQfzGMduz33tKceGBGEfDCLtgaUa93Ti9zmbOsxc574Ih/cX+ue9s4ZWtdZGzN6sRGEfDDLaO1m1brO2pjRqyfIB/OM1m5WreusjRneeiII+cBqkX/Hb+8ar2bvXNI6B/nAzjp+j+SFvXOJ9RxByAdb9XJw7T4sf2ckH6T+o69rVcsH+MtyXXpzOst92Ovjeb7A8rrSsUpBiIHcjDxtuQ97fWaPF1rsBCEGkhnrdZY1n16fvdcNS0GoDVet6zKjfp81B+gdJ+3zCkJt2DIjH3uOoV3j3nEsz5rUUBu2zcjHM54NGX0tI/EbhBjYajTnb4238rwjc9ZVEGJA07u+o+NGqw5J5+rxnlfrH4TacFW71r33ecb3SnLWNUpv/uj1D/JYteEit/dZ7Vr33jfv90qserFjmYOm3+/1T/0eqTas3Wez5+RbjjdjPmLNJbV+Qa4fA6WRZ3lyi+hjd21/6z4fiZ3W+ctzWMelII8XA1v07rfa/tZ9PhKLrfOX57B+33EV5Hq14dZ1upmf9W8ZI6yvozyH9/uOQa5VG3rG1kVsdeL/YH0dllyixeHV1g1bf+sit9faWyfWjrGXmfWqZ7wJcu4YaP2to98JzPOwZ20+bTuyRR7ruQJtTB15nlvbb4m3ezxXqLE8V3Cl2lC7liPPc1v2r7yxlfpajlHr2+KNtyDXqg21azXyPLdl/8obW565pGdcs9SU2v81OHsMbF0DGnXvz59XludYa/0snyUd1d7j6ejxZ8Sd9zMB6/yx7Gf5LOmoMeAZT2t6/SzvqfVcLVtiOB8LrPliJDcFOWZtuPW7nb1+lvdqdJ6ZzFp/suYcrZ8Wi0GOVxv+r/F9pns/O6zRYvFI64Z/ABxZEt8AAAEA
+  </data>
+ </layer>
+ <layer id="5" name="objects" width="128" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+  </data>
+ </layer>
+ <layer id="6" name="collision" width="128" height="128" opacity="0.2">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3DAQ0AAAzDoM6/6Qs5JKyaqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq7x+e3FbSAAABAA==
+  </data>
+ </layer>
+ <layer id="7" name="protection" width="128" height="128" opacity="0.2">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+  </data>
+ </layer>
+</map>
