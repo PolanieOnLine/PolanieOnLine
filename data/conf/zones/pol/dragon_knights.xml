@@ -82,6 +82,27 @@
 		</attributes>
 	</zone>
 
+  <zone name="0_dragon_knights_forest_w" level="0" x="513696" y="18560" file="Level 0/dragon_knights/knights_forest_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+  <zone name="0_dragon_knights_forest_sw" level="0" x="513696" y="18688" file="Level 0/dragon_knights/knights_forest_sw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+  <zone name="0_dragon_knights_forest_s" level="0" x="513824" y="18688" file="Level 0/dragon_knights/knights_forest_s.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
 	<!-- interiors -->
 
 	<!-- Dragon Knights chappel -->
