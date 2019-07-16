@@ -80,6 +80,10 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("koscielisko", Boolean.TRUE, Boolean.TRUE)));
 
+		list.add(createAchievement("zone.outside.dragon_land", "Smocza kraina", "Odwiedził wszystkie obszary smoczej krainy",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerVisitedZonesCondition("0_dragon_land_s", "0_dragon_land_n")));
+
 		//All interior zone achievements
 
 		//Special zone achievements
