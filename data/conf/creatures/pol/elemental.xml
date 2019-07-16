@@ -188,6 +188,7 @@
 			<item value="hełm lodowy" quantity="[1,1]" probability="0.05"/>
 			<item value="lodowa tarcza" quantity="[1,1]" probability="10.0"/>
 			<item value="miecz lodowy" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="0.45"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -252,6 +253,8 @@
 			<item value="hełm lodowy" quantity="[1,1]" probability="0.25"/>
 			<item value="lodowe rękawice" quantity="[1,1]" probability="0.075"/>
 			<item value="lodowa kusza" quantity="[1,1]" probability="0.85"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="1.15"/>
+			<item value="lodowy płaszcz" quantity="[1,1]" probability="1.5"/>
 		</drops>
 		<equips>
 		</equips>
