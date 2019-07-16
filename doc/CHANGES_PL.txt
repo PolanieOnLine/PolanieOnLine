@@ -40,7 +40,7 @@ Po wykonaniu zadania, srebrny pierścień zostanie od razu przypisany do postaci
 
 *świat gry*
 - Dodano nową strzelnice w Krakowie oraz nowego NPC, który strzeże ją
-- Dodano możliwość zdobycia punktów STR (strzelania) w muzeum w Kirdneh (20% aktualnego xp w atk) i w Kuźnicach u Sołtysa (20% aktualnego xp w atk) oraz za osiągnięcie 150 poziomu i 350 poziomu (zadania na umiejętności)
+- Dodano możliwość zdobycia punktów STR (strzelania) w muzeum w Kirdneh (20% aktualnego xp w ratk) i w Kuźnicach u Sołtysa (20% aktualnego xp w ratk) oraz za osiągnięcie 150 poziomu i 350 poziomu (zadania na umiejętności)
 - Usunięto niebezpieczny respawn złotego rycerza w skarbcu zakopiańskiego banku
 - Poprawiono ceny w sklepach u Gulimo oraz Hagnurk (są bardziej przyjazne)
 - Nerf dla broni: piernacz
