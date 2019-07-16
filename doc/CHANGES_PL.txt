@@ -8,12 +8,13 @@ Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Denir
 
 *świat gry*
 - Dodano nowe przejście prowadzące do Wieliczki
-- Dodano nowe przedmioty: "kamienne rękawice" [1/4 oraz odporności na: ogień, lód, światło i mrok], "magiczny płaszcz" [23 def oraz odporności na: ogień, lód, światło i mrok]
-- Dodano drop nowych przedmiotów oraz dla zbójników górskich dodano możliwość zdobycia góralskich przedmiotów
+- Dodano nowe przedmioty: "kamienne rękawice", "magiczny płaszcz", "lodowy płaszcz", "lodowe spodnie"
+- Dodano drop nowych przedmiotów jak i dla zbójników górskich dodano możliwość zdobycia góralskich przedmiotów
 - Można kupić nowy zwój przenoszący do miasta Deniran u Juhasa za 700 money
 - Można na pieszo przyjść do Warszawy przez Kraków
 - Zmieniono wizualnie górne mapy Krakowa
 - Zmieniono wizualnie niektóre mapy Wieliczki oraz mapy dragon_knights
+- Usunięto jeden bezsensowny respawn złotej śmierci
 
 *naprawiono błędy*
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
