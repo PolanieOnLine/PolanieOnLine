@@ -16,7 +16,7 @@
 		</attributes>
 	</zone>
 
-	<zone name="0_dragon_knights" level="0" x="513824" y="18304" file="Level 0/dragon_knights/c.tmx">
+	<zone name="0_dragon_knights_c" level="0" x="513824" y="18304" file="Level 0/dragon_knights/c.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
