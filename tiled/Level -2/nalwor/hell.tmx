@@ -94,8 +94,8 @@
  <tileset firstgid="415" name="terrain/stairs/stone" tilewidth="32" tileheight="32">
   <image source="../../tileset/terrain/stairs/stone.png"/>
  </tileset>
- <tileset firstgid="433" name="item/statue/swordsman" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/statue/swordsman.png"/>
+ <tileset firstgid="433" name="item/statue/swordsman2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/swordsman2.png"/>
  </tileset>
  <tileset firstgid="445" name="terrain/wall/stone_red" tilewidth="32" tileheight="32">
   <image source="../../tileset/terrain/wall/stone_red.png"/>

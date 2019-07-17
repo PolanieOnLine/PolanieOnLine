@@ -82,8 +82,8 @@
  <tileset firstgid="624" name="portal" tilewidth="32" tileheight="32">
   <image source="../../tileset/logic/portal.png"/>
  </tileset>
- <tileset firstgid="640" name="item/statue/swordsman" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/statue/swordsman.png"/>
+ <tileset firstgid="640" name="item/statue/swordsman2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/swordsman2.png"/>
  </tileset>
  <tileset firstgid="652" name="wall/int_rock" tilewidth="32" tileheight="32">
   <image source="../../tileset/building/wall/int_rock.png"/>

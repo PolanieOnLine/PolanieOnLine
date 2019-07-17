@@ -10,8 +10,8 @@
  <tileset firstgid="9" name="Sin nombre" tilewidth="32" tileheight="32">
   <image source="../../tileset/logic/creature/giant_human.png"/>
  </tileset>
- <tileset firstgid="22" name="item/statue/swordsman" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/statue/swordsman.png"/>
+ <tileset firstgid="22" name="item/statue/swordsman2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/swordsman2.png"/>
  </tileset>
  <tileset firstgid="34" name="tiles" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/indoor/floor_tiles.png"/>

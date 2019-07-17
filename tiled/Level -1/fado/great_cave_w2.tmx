@@ -100,8 +100,8 @@
  <tileset firstgid="901" name="fancy gate" tilewidth="32" tileheight="32">
   <image source="../../tileset/building/decoration/fancy_gate.png"/>
  </tileset>
- <tileset firstgid="907" name="item/statue/swordsman" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/statue/swordsman.png"/>
+ <tileset firstgid="907" name="item/statue/swordsman2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/swordsman2.png"/>
  </tileset>
  <tileset firstgid="919" name="waterfall" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/water/waterfall.png"/>
