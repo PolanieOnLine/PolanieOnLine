@@ -9,14 +9,14 @@
 
 	<!-- dragon_knights -->
 
-	<zone name="0_dragon_knights_w" level="0" x="513696" y="18304" file="Level 0/dragon_knights/knights_w.tmx">
+	<zone name="0_dragon_knights_w" level="0" x="513696" y="18304" file="Level 0/dragon_knights/w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-	<zone name="0_dragon_knights" level="0" x="513824" y="18304" file="Level 0/dragon_knights/knights.tmx">
+	<zone name="0_dragon_knights" level="0" x="513824" y="18304" file="Level 0/dragon_knights/c.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -61,42 +61,42 @@
 		</portal>
 	</zone>
 
-	<zone name="0_dragon_knights_sw" level="0" x="513696" y="18432" file="Level 0/dragon_knights/knights_sw.tmx">
+	<zone name="0_dragon_knights_sw" level="0" x="513696" y="18432" file="Level 0/dragon_knights/sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-	<zone name="0_dragon_knights_s" level="0" x="513824" y="18432" file="Level 0/dragon_knights/knights_s.tmx">
+	<zone name="0_dragon_knights_s" level="0" x="513824" y="18432" file="Level 0/dragon_knights/s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-	<zone name="0_dragon_knights_wieliczka" level="0" x="513824" y="18560" file="Level 0/dragon_knights/knights_wieliczka.tmx">
+	<zone name="0_dragon_knights_wieliczka" level="0" x="513824" y="18560" file="Level 0/dragon_knights/wieliczka.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-  <zone name="0_dragon_knights_forest_w" level="0" x="513696" y="18560" file="Level 0/dragon_knights/knights_forest_w.tmx">
+  <zone name="0_dragon_knights_forest_w" level="0" x="513696" y="18560" file="Level 0/dragon_knights/forest_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-  <zone name="0_dragon_knights_forest_sw" level="0" x="513696" y="18688" file="Level 0/dragon_knights/knights_forest_sw.tmx">
+  <zone name="0_dragon_knights_forest_sw" level="0" x="513696" y="18688" file="Level 0/dragon_knights/forest_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-  <zone name="0_dragon_knights_forest_s" level="0" x="513824" y="18688" file="Level 0/dragon_knights/knights_forest_s.tmx">
+  <zone name="0_dragon_knights_forest_s" level="0" x="513824" y="18688" file="Level 0/dragon_knights/forest_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
