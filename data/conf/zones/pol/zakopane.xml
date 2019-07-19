@@ -876,9 +876,51 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+
+		<portal x="39" y="101" ref="maisonette_entrance">
+			<destination zone="int_zakopane_maisonette_0" ref="entrance_maisonette"/>
+			<attribute name="face">left</attribute>
+		</portal>
 	</zone>
 
 	<!-- interiors -->
+	<!-- Maisonette 0 -->
+	<zone name="int_zakopane_maisonette_0" file="interiors/zakopane/maisonette_0.tmx">
+		<entity x="7" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="2" y="3" ref="up">
+			<destination zone="int_zakopane_maisonette_1" ref="down"/>
+			<attribute name="face">right</attribute>
+		</portal>
+		<portal x="15" y="11" ref="entrance_maisonette">
+			<destination zone="0_zakopane_s_e2" ref="maisonette_entrance"/>
+			<attribute name="face">up</attribute>
+		</portal>
+	</zone>
+
+	<!-- Maisonette 1 -->
+	<zone name="int_zakopane_maisonette_1" file="interiors/zakopane/maisonette_1.tmx">
+		<entity x="3" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">6</parameter>
+				<parameter name="volume">60</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="2" y="3" ref="down">
+			<destination zone="int_zakopane_maisonette_0" ref="up"/>
+			<attribute name="face">right</attribute>
+		</portal>
+	</zone>
 
 	<!-- Bakery -->
 	<zone name="int_zakopane_bakery" file="interiors/zakopane/bakery.tmx">
