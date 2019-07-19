@@ -6,7 +6,7 @@
 	-->
 
 	<!-- Ground level -->
-	
+
 	<!-- START: Lasy -->
 	<!-- dolina_koscieliska_las_nw -->
 	<zone name="0_dolina_koscieliska_las_nw" level="0" x="512928" y="18816" file="Level 0/tatry/dolina_koscieliska_las_nw.tmx"></zone>
@@ -24,26 +24,26 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="89" y="31" ref="entrance">
 			<destination zone="int_tatry_dolina_koscieliska_house" ref="exit"/>
 		</portal>
 	</zone>
-	
+
 	<!-- dolina_rybiego_potoku_n -->
 	<zone name="0_tatry_dolina_rybiego_potoku_n" level="0" x="513184" y="18816" file="Level 0/tatry/dolina_rybiego_potoku_n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
@@ -58,7 +58,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
@@ -73,7 +73,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
@@ -90,7 +90,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
@@ -98,21 +98,21 @@
 			</implementation>
 		</entity>
 	</zone>
-	
+
 	<!-- dolina_rybiego_potoku_s -->
 	<zone name="0_tatry_dolina_rybiego_potoku_s" level="0" x="513184" y="18944" file="Level 0/tatry/dolina_rybiego_potoku_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="45" y="59">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.GoldSource" />
 		</entity>
@@ -151,7 +151,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
@@ -159,49 +159,49 @@
 			</implementation>
 		</entity>
 	</zone>
-	
+
 	<!-- kuznice -->
 	<zone name="0_tatry_kuznice" level="0" x="513440" y="18944" file="Level 0/tatry/kuznice.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="72" y="66" ref="townhall_entrance">
 			<destination zone="int_tatry_kuznice_townhall" ref="townhall_exit"/>
 		</portal>
-		
+
 		<portal x="54" y="90" ref="tavern_1_entrance">
 			<destination zone="int_tatry_kuznice_tavern" ref="tavern_1_exit"/>
 		</portal>
 		<portal x="54" y="91" ref="tavern_2_entrance">
 			<destination zone="int_tatry_kuznice_tavern" ref="tavern_2_exit"/>
 		</portal>
-		
+
 		<portal x="82" y="91" ref="hostel_entrance">
 			<destination zone="int_tatry_kuznice_hostel" ref="hostel_exit"/>
 		</portal>
-		
+
 		<portal x="89" y="49" ref="train_entrance">
 			<destination zone="int_tatry_kuznice_trainstation" ref="train_exit"/>
 			<attribute name="face">left</attribute>
 		</portal>
-		
+
 		<!-- <portal x="96" y="74" ref="soltys_house_entrance">
 			<destination zone="int_tatry_kuznice_soltys_house_0" ref="entrance_soltys_house" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
-				<parameter name="key">klucz tajemniczej osoby</parameter>
+				<parameter name="key">klucz sołtysa</parameter>
 				<parameter name="rejected">Drzwi są zamknięte.</parameter>
 			</implementation>
 		</portal> -->
-		
+
 		<portal x="79" y="102" ref="chapel_1_entrance">
 			<destination zone="int_tatry_kuznice_chapel" ref="chapel_1_exit"/>
 		</portal>
@@ -218,7 +218,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
@@ -233,7 +233,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
@@ -248,7 +248,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
@@ -256,14 +256,14 @@
 			</implementation>
 		</entity>
 	</zone>
-	
+
 	<!-- giewont_se -->
 	<zone name="0_tatry_giewont_se" level="0" x="513440" y="19072" file="Level 0/tatry/giewont_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
 		</attributes>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
@@ -274,7 +274,7 @@
 	<!-- KONIEC Y: 19072 -->
 
 	<!-- interiors -->
-	
+
 	<!-- dolina_koscieliska_n - house -->
 	<zone name="int_tatry_dolina_koscieliska_house" file="interiors/tatry/house.tmx">
 		<configurator class-name="games.stendhal.server.maps.tatry.mountain.house.ZonaGoralaNPC"/>
@@ -409,7 +409,7 @@
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="11" y="32">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />
 		</entity>
@@ -432,10 +432,10 @@
 			<attribute name="face">right</attribute>
 		</portal>
 	</zone>
-	
+
 	<!-- hostel  -->
 	<zone name="int_tatry_kuznice_hostel" file="interiors/tatry/hostel.tmx">
-		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.hostel.DzieciakiNPCs" />		
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.hostel.DzieciakiNPCs" />
 		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.hostel.PiorkaNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -453,7 +453,7 @@
 			</implementation>
 			<attribute name="class">blackboard</attribute>
 		</entity>
-		
+
 		<entity x="9" y="3">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -485,7 +485,7 @@
 			<destination zone="0_tatry_kuznice" ref="hostel_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- trainstation  -->
 	<zone name="int_tatry_kuznice_trainstation" file="interiors/tatry/trainstation.tmx">
 		<entity x="1" y="1">
@@ -510,7 +510,7 @@
 			<attribute name="face">up</attribute>
 		</portal>
 	</zone>
-	
+
 	<!-- chapel  -->
 	<zone name="int_tatry_kuznice_chapel" file="interiors/tatry/chapel.tmx">
 	<configurator class-name="games.stendhal.server.maps.tatry.kuznice.chapel.RadomilNPC"/>
