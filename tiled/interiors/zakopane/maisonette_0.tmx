@@ -91,7 +91,7 @@
  </layer>
  <layer id="18" name="1_terrain" width="26" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACrXTWQrCMBAG4InggwvuUq3vgstFCr7oCTyEhxEEr6CiHkU8h7u++ZemMIaJrWAGPihJpj8p0xwR5S1mmm0/rQIUoQZ1QU8R9ZW81xD6VrDRz2t2rqRzmjDC+8waYG2o17sqElYWPN23YOe3sIcM7PSaZ+SE1WFZJzgLLqzfzJFKyuF1hZvgnjLnAEchZ4y7TNh90uYsYf5F0n0e8BS8IFBRf4s+5yIuPh9+Qk5ShRltxrfsmfPmouK5dJ1DQk4g/D+/1NTSz3PMb/1P8RyUoeJYFd7WH6UQSAUAAA==
+   H4sIAAAAAAAACrXTWQrCMBAG4ETwwQV3qdZ3weUiBV/0BB7CwwiCV1BRjyKew13f/EtTGIeJrWAGPihJpj8p05xSKm8xM2z7aRWgCDWoC3paqb6W9xpC3wo25nlNzpVMThNGeB+vAdaGZr2rI2FlwTN9C3J+C3vIwM6seSynw3JOcBZcSD/PkYrn8LrCTXBPmXOAo5Azxn0m5E5pc5Yw/yLpPg94Cl4Q6Ki/pT7nIi46H35CTlKFGW3Ct+zxeXNR8Vy6zlFCTiD8P7/U1NJPc/i3/qd4DspQcawKb4OoOr1IBQAA
   </data>
  </layer>
  <layer id="19" name="2_object" width="26" height="13">
