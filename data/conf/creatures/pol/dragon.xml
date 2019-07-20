@@ -340,9 +340,9 @@
 		<type class="pol/smoki" subclass="latajacy_czarny_smok" tileid="pol_smoki.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="4885"/>
-			<def value="292"/>
-			<hp value="2220"/>
+			<atk value="2999"/>
+			<def value="999"/>
+			<hp value="2222"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
 			<resistance value="1"/>
@@ -376,9 +376,9 @@
 		<type class="pol/smoki" subclass="latajacy_zloty_smok" tileid="pol_smoki.png:8"/>
 		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
 		<attributes>
-			<atk value="5650"/>
-			<def value="310"/>
-			<hp value="3330"/>
+			<atk value="3999"/>
+			<def value="1111"/>
+			<hp value="3333"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 			<resistance value="1"/>
@@ -414,9 +414,9 @@
 		<type class="pol/smoki" subclass="smok_wawelski" tileid="pol_smoki.png:9"/>
 		<description/>
 		<attributes>
-			<atk value="12074"/>
-			<def value="242"/>
-			<hp value="15128"/>
+			<atk value="14444"/>
+			<def value="600"/>
+			<hp value="15500"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>
 			<resistance value="1"/>
