@@ -1320,16 +1320,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<destination zone="int_zakopane_bank_-1" ref="kara"/>
 		</portal>
 
-		<portal x="10" y="46" ref="7c1">
-			<destination zone="int_zakopane_bank_-1" ref="kara"/>
-		</portal>
-		<portal x="11" y="46" ref="7c2">
-			<destination zone="int_zakopane_bank_-1" ref="kara"/>
-		</portal>
-		<portal x="12" y="46" ref="7c3">
-			<destination zone="int_zakopane_bank_-1" ref="kara"/>
-		</portal>
-
 		<portal x="30" y="28" ref="8c1">
 			<destination zone="int_zakopane_bank_-1" ref="kara"/>
 		</portal>
