@@ -388,7 +388,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	public void onLoggedIn(final Player player) {
 		// don't allow players to login within archery range area boundaries
 		if (isPlayerInArea(player, archeryZoneID, archeryArea) || (player.getX() == PORTAL_POS.x && player.getY() == PORTAL_POS.y)) {
-			player.teleport(archeryZoneID, 118, 104, null, null);
+			player.teleport(archeryZoneID, 81, 90, null, null);
 		}
 
 		final String sessionState = player.getQuest(QUEST_SLOT, 0);
