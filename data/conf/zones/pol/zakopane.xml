@@ -1093,11 +1093,151 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<destination zone="0_zakopane_s" ref="bank_entrace_2"/>
 		</portal>
 
-		<portal x="44" y="15" ref="skarbiec_in_1">
+		<portal x="45" y="14" ref="upstairs_in_2">
+			<destination zone="int_zakopane_bank_1" ref="downstairs"/>
+		</portal>
+		<portal x="45" y="15" ref="upstairs_in_1">
+			<destination zone="int_zakopane_bank_1" ref="downstairs"/>
+		</portal>
+
+		<portal x="45" y="16" ref="skarbiec_in_1">
 			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_1"/>
 		</portal>
-		<portal x="44" y="16" ref="skarbiec_in_2">
+		<portal x="45" y="17" ref="skarbiec_in_2">
 			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_2"/>
+		</portal>
+	</zone>
+
+	<!-- Bank 1 -->
+	<zone name="int_zakopane_bank_1" file="interiors/zakopane/bank_1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<!-- Bank 1 Chests -->
+		<entity x="2" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_nalwor</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="2" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="8" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank</parameter>
+			</implementation>
+		</entity>
+		<entity x="9" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="8" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="14" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_deniran</parameter>
+			</implementation>
+		</entity>
+		<entity x="15" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="14" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_zakopane</parameter>
+			</implementation>
+		</entity>
+		<entity x="21" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="20" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="2" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_ados</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="2" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="8" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_fado</parameter>
+			</implementation>
+		</entity>
+		<entity x="9" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="8" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="14" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_krakow</parameter>
+			</implementation>
+		</entity>
+		<entity x="15" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="14" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+		<entity x="20" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">zaras_chest_ados</parameter>
+			</implementation>
+		</entity>
+		<entity x="21" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="20" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">6</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="44" y="14" ref="downstairs">
+			<destination zone="int_zakopane_bank_0" ref="upstairs_in_1"/>
+		</portal>
+		<portal x="28" y="1" ref="bank0_exit">
+			<destination zone="int_zakopane_bank_0" ref="enterbank1"/>
 		</portal>
 	</zone>
 

@@ -199,6 +199,7 @@ public class StendhalQuestSystem {
 		loadQuest(new ResetLVL());
 		loadQuest(new ScytheForFryderyk());
 		loadQuest(new WegielNaOpal());
+		loadQuest(new ZakopaneBank());
 		loadQuest(new ZakopaneClouds());
 		loadQuest(new ZlotaCiupaga());
 		loadQuest(new ZlotaCiupagaDwaWasy());
