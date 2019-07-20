@@ -345,6 +345,13 @@ kopalnia węgla!
 			<destination zone="0_koscielisko_e" ref="enterance_koscielisko_house"/>
 		</portal>
 	</zone>
+	
+	<!-- zamek zrc -->
+	<zone name="int_koscielisko_zamek_zrc" file="interiors/koscielisko/zrc.tmx">
+		<portal x="9" y="18" ref="wyjscie_zamek_zrc">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek_zrc"/>
+		</portal>
+	</zone>
 
 	<!-- Level -1 -->
 
@@ -775,6 +782,17 @@ kopalnia węgla!
 		</portal>
 		<portal x="86" y="39" ref="wyjscie_prawo">
 			<destination zone="1_koscielisko_zamek" ref="wejscie_prawo"/>
+		</portal>
+
+		<portal x="89" y="21" ref="wejscie_zamek">
+			<destination zone="1_koscielisko_zamek" ref="wyjscie_zamek"/>
+		</portal>
+		<portal x="89" y="19" ref="wyjscie_zamek">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek"/>
+		</portal>
+		
+		<portal x="87" y="14" ref="wejscie_zamek_zrc">
+			<destination zone="int_koscielisko_zamek_zrc" ref="wyjscie_zamek_zrc"/>
 		</portal>
 	</zone>
 
