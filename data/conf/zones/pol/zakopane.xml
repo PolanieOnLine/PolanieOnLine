@@ -1086,6 +1086,16 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
+		<portal x="34" y="15" ref="enterbank1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="39" y="15" ref="room_exit">
+			<destination zone="int_zakopane_bank_0" ref="room_entrance"/>
+		</portal>
+		<portal x="36" y="15" ref="room_entrance">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
 		<portal x="29" y="18" ref="bank_exit_1">
 			<destination zone="0_zakopane_s" ref="bank_entrace_1"/>
 		</portal>
@@ -1095,9 +1105,11 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="45" y="14" ref="upstairs_in_2">
 			<destination zone="int_zakopane_bank_1" ref="downstairs"/>
+			<attribute name="face">left</attribute>
 		</portal>
 		<portal x="45" y="15" ref="upstairs_in_1">
 			<destination zone="int_zakopane_bank_1" ref="downstairs"/>
+			<attribute name="face">left</attribute>
 		</portal>
 
 		<portal x="45" y="16" ref="skarbiec_in_1">
@@ -1235,6 +1247,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="44" y="14" ref="downstairs">
 			<destination zone="int_zakopane_bank_0" ref="upstairs_in_1"/>
+			<attribute name="face">left</attribute>
 		</portal>
 		<portal x="28" y="1" ref="bank0_exit">
 			<destination zone="int_zakopane_bank_0" ref="enterbank1"/>
