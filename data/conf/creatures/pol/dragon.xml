@@ -419,6 +419,7 @@
 			<hp value="15128"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>
+			<resistance value="1"/>
 		</attributes>
 		<level value="990"/>
 		<experience value="1271283"/>

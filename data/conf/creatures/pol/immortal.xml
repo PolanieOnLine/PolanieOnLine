@@ -3,7 +3,6 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<!-- START: niesmiertelne -->
-
 	<creature name="mgła">
 		<type class="pol/niesmiertelne" subclass="mgla" tileid="pol_niesmiertelne.png:0"/>
 		<attributes>
@@ -120,7 +119,5 @@
 			<profile name="attack weakest"/>
 		</ai>
 	</creature>
-
 	<!-- END: niesmiertelne -->
-
 </creatures>

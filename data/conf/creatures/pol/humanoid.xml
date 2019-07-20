@@ -828,6 +828,8 @@
 			<hp value="1080"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="150"/>
 		<experience value="7210"/>
@@ -861,6 +863,8 @@
 			<hp value="864"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="120"/>
 		<experience value="9476"/>
@@ -894,6 +898,8 @@
 			<hp value="1152"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="160"/>
 		<experience value="12560"/>
@@ -927,6 +933,8 @@
 			<hp value="1008"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="140"/>
 		<experience value="5112"/>
@@ -961,6 +969,8 @@
 			<hp value="799"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="111"/>
 		<experience value="4141"/>

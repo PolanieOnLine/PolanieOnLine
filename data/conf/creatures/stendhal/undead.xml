@@ -3,7 +3,6 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<!-- START: animal -->
-
 	<creature name="szczur zombie">
 		<type class="stendhal/small_animal" subclass="zombierat" tileid="small_animal.png:4"/>
 		<description>Oto nienasycony szczur zombie. Raczej cię nie lubi.</description>
@@ -76,11 +75,9 @@
 			<profile name="rare"/>
 		</ai>
 	</creature>
-
 	<!-- END: animal -->
 
 	<!-- START: fallen -->
-
 	<creature name="upadły wojownik">
 		<type class="stendhal/undead" subclass="fallen_warrior" tileid="undead_fallen.png:3"/>
 		<description></description>
@@ -179,11 +176,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
 	<!-- END: fallen -->
 
 	<!-- START: lich -->
-
 	<creature name="licho">
 		<type class="stendhal/undead" subclass="lich" tileid="undead_fallen.png:7"/>
 		<description>Oto licho obleczone w karmazyn. Twór zesłany na wieczną tułaczkę.</description>
@@ -286,11 +281,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
 	<!-- END: lich -->
 
 	<!-- START: misc -->
-
 	<creature name="rycerz śmierci">
 		<type class="stendhal/undead" subclass="death_knight" tileid="undead.png:1"/>
 		<description>Oto rycerz śmierci. Niegdyś walczył w wielu turniejach, w których jedynym zadaniem było zabić każdego przeciwnika.</description>
@@ -363,11 +356,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
 	<!-- END: misc -->
 
 	<!-- START: mummy -->
-
 	<creature name="mumia">
 		<type class="stendhal/mummy" subclass="mummy" tileid="mummy.png:0"/>
 		<description>Widzisz mumię egipską. Chyba uciekła z sarkofagu.</description>
@@ -434,11 +425,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
 	<!-- END: mummy -->
 
 	<!-- START: skeleton -->
-
 	<creature name="szkielet">
 		<type class="stendhal/undead" subclass="skeleton" tileid="undead.png:9"/>
 		<description>Oto szkielet co wyszedł z grobu szukać zemsty.</description>
@@ -661,11 +650,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
 	<!-- END: skeleton -->
 
 	<!-- START: specter -->
-
 	<creature name="duch">
 		<type class="stendhal/undead" subclass="ghost" tileid="undead.png:5"/>
 		<description>Widzisz ducha! Bój się.</description>
@@ -840,6 +827,7 @@
 			<hp value="5900"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
+			<visibility value="75"/>
 		</attributes>
 		<level value="300"/>
 		<experience value="270000"/>
@@ -886,6 +874,7 @@
 			<hp value="14000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
+			<visibility value="75"/>
 		</attributes>
 		<level value="450"/>
 		<experience value="700000"/>
@@ -920,11 +909,9 @@
 			<profile name="attack weakest"/>
 		</ai>
 	</creature>
-
 	<!-- END: specter -->
 
 	<!-- START: vampire -->
-
 	<creature name="panna wampir">
 		<type class="stendhal/vampire" subclass="vampire_lord_bride" tileid="vampire.png:0"/>
 		<description>Oto panna wampir. Została wskrzeszona z zmarłych przez nikczemnego lorda wampira.</description>
@@ -934,6 +921,8 @@
 			<hp value="800"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="20"/>
 		<experience value="280"/>
@@ -1024,11 +1013,9 @@
 			<profile name="strategy" params=",outfit_changer(attack_weakest;vampire_lord;vampire_lord_evil),"/>
 		</ai>
 	</creature>
-
 	<!-- END: vampire -->
 
 	<!-- START: zombie -->
-
 	<creature name="krwawy zombi">
 		<type class="stendhal/undead" subclass="bloody_zombie" tileid="undead.png:0"/>
 		<description>Oto krwawy zombi. Czy zauważyłeś, że z jego ciała leje się krew?</description>
@@ -1208,7 +1195,5 @@
 		</ai>
 	</creature>
 	-->
-
 	<!-- END: zombie -->
-
 </creatures>

@@ -140,6 +140,7 @@
 			<hp value="10160"/>
 			<speed value="0.1"/>
 			<size value="4,3"/>
+			<resistance value="50"/>
 		</attributes>
 		<level value="300"/>
 		<experience value="185250"/>
@@ -168,110 +169,6 @@
 	</creature>
 	<!-- END: kamienne wielkie -->
 
-	<!-- START: sniegowe -->
-	<creature name="kula śnieżna">
-		<type class="pol/sniegowe" subclass="kula_sniezna" tileid="pol_sniegowe.png:0"/>
-		<attributes>
-			<atk value="544"/>
-			<def value="86"/>
-			<hp value="576"/>
-			<speed value="0.7"/>
-			<size value="4,4"/>
-		</attributes>
-		<level value="80"/>
-		<experience value="7518"/>
-		<respawn value="28200"/>
-		<corpse name="snowball"/>
-		<drops>
-			<item value="śnieżka" quantity="[9,33]" probability="100.0"/>
-			<item value="lodowe rękawice" quantity="[1,1]" probability="0.01"/>
-			<item value="hełm lodowy" quantity="[1,1]" probability="0.05"/>
-			<item value="lodowa tarcza" quantity="[1,1]" probability="10.0"/>
-			<item value="miecz lodowy" quantity="[1,1]" probability="1.0"/>
-			<item value="lodowe spodnie" quantity="[1,1]" probability="0.45"/>
-		</drops>
-		<equips/>
-		<ai>
-			<says>
-				<sound value="pol-snow"/>
-			</says>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-		</ai>
-	</creature>
-
-	<creature name="lawina">
-		<type class="pol/sniegowe" subclass="lawina" tileid="pol_sniegowe.png:1"/>
-		<attributes>
-			<atk value="3060"/>
-			<def value="425"/>
-			<hp value="2880"/>
-			<speed value="0.8"/>
-			<size value="2,2"/>
-			<resistance value="50"/>
-		</attributes>
-		<level value="400"/>
-		<experience value="349314"/>
-		<respawn value="128200"/>
-		<corpse name="snowball"/>
-		<drops>
-			<item value="bryła lodu" quantity="[10,20]" probability="100.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<says>
-				<sound value="pol-snow"/>
-			</says>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="rare"/>
-		</ai>
-	</creature>
-
-	<creature name="lodowy starszy olbrzym">
-		<type class="pol/olbrzymy" subclass="lodowy_starszy_olbrzym" tileid="pol_olbrzymy.png:3"/>
-		<description>Oto lodowy starszy olbrzym. Jego skóra pokryta jest szadzią, a jego oddech jest niczym mroźny powiew północnego wiatru.</description>
-		<attributes>
-			<atk value="1836"/>
-			<def value="80"/>
-			<hp value="1728"/>
-			<speed value="1.0"/>
-			<size value="2,2"/>
-		</attributes>
-		<level value="240"/>
-		<experience value="112386"/>
-		<respawn value="15700"/>
-		<corpse name="giant_humanoid" width="2" height="2"/>
-		<drops>
-			<item value="wielki eliksir" quantity="[2,6]" probability="40.0"/>
-			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
-			<item value="money" quantity="[100,3050]" probability="100.0"/>
-			<item value="lodowa zbroja" quantity="[1,1]" probability="2.0"/>
-			<item value="lodowy młot bojowy" quantity="[1,1]" probability="1.0"/>
-			<item value="hełm lodowy" quantity="[1,1]" probability="0.25"/>
-			<item value="lodowe rękawice" quantity="[1,1]" probability="0.075"/>
-			<item value="lodowa kusza" quantity="[1,1]" probability="0.85"/>
-			<item value="lodowe spodnie" quantity="[1,1]" probability="1.15"/>
-			<item value="lodowy płaszcz" quantity="[1,1]" probability="1.5"/>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<damage type="ice"/>
-			<susceptibility type="ice" value="0.4"/>
-			<susceptibility type="fire" value="1.7"/>
-		</abilities>
-		<ai>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="heal" params="10,75"/>
-		</ai>
-	</creature>
-	<!-- END: sniegowe -->
-
 	<!-- START: pasterze -->
 	<creature name="pasterz drzew">
 		<type class="pol/pasterze_drzew" subclass="pasterz_drzew" tileid="pol_pasterze_drzew.png:0"/>
@@ -282,6 +179,7 @@
 			<hp value="1534"/>
 			<speed value="0.1"/>
 			<size value="2,2"/>
+			<resistance value="100"/>
 		</attributes>
 		<level value="213"/>
 		<experience value="100206"/>
@@ -312,6 +210,7 @@
 			<hp value="554"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
 			<visibility value="75"/>
 		</attributes>
 		<level value="77"/>
@@ -350,6 +249,7 @@
 			<hp value="820"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
 			<visibility value="75"/>
 		</attributes>
 		<level value="111"/>
@@ -387,6 +287,8 @@
 			<hp value="281"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
 		</attributes>
 		<level value="39"/>
 		<experience value="1611"/>
@@ -417,4 +319,113 @@
 		</ai>
 	</creature>
 	<!-- END: ogniki -->
+
+	<!-- START: sniegowe -->
+	<creature name="lodowy starszy olbrzym">
+		<type class="pol/olbrzymy" subclass="lodowy_starszy_olbrzym" tileid="pol_olbrzymy.png:3"/>
+		<description>Oto lodowy starszy olbrzym. Jego skóra pokryta jest szadzią, a jego oddech jest niczym mroźny powiew północnego wiatru.</description>
+		<attributes>
+			<atk value="1836"/>
+			<def value="80"/>
+			<hp value="1728"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="240"/>
+		<experience value="112386"/>
+		<respawn value="15700"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[2,6]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
+			<item value="money" quantity="[100,3050]" probability="100.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="2.0"/>
+			<item value="lodowy młot bojowy" quantity="[1,1]" probability="1.0"/>
+			<item value="hełm lodowy" quantity="[1,1]" probability="0.25"/>
+			<item value="lodowe rękawice" quantity="[1,1]" probability="0.075"/>
+			<item value="lodowa kusza" quantity="[1,1]" probability="0.85"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="1.15"/>
+			<item value="lodowy płaszcz" quantity="[1,1]" probability="1.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.4"/>
+			<susceptibility type="fire" value="1.7"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="10,75"/>
+		</ai>
+	</creature>
+
+	<creature name="kula śnieżna">
+		<type class="pol/sniegowe" subclass="kula_sniezna" tileid="pol_sniegowe.png:0"/>
+		<attributes>
+			<atk value="544"/>
+			<def value="86"/>
+			<hp value="576"/>
+			<speed value="0.7"/>
+			<size value="4,4"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="80"/>
+		<experience value="7518"/>
+		<respawn value="28200"/>
+		<corpse name="snowball"/>
+		<drops>
+			<item value="śnieżka" quantity="[9,33]" probability="100.0"/>
+			<item value="lodowe rękawice" quantity="[1,1]" probability="0.01"/>
+			<item value="hełm lodowy" quantity="[1,1]" probability="0.05"/>
+			<item value="lodowa tarcza" quantity="[1,1]" probability="10.0"/>
+			<item value="miecz lodowy" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="0.45"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<sound value="pol-snow"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+		</ai>
+	</creature>
+
+	<creature name="lawina">
+		<type class="pol/sniegowe" subclass="lawina" tileid="pol_sniegowe.png:1"/>
+		<attributes>
+			<atk value="3060"/>
+			<def value="425"/>
+			<hp value="2880"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
+			<resistance value="50"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="400"/>
+		<experience value="349314"/>
+		<respawn value="128200"/>
+		<corpse name="snowball"/>
+		<drops>
+			<item value="bryła lodu" quantity="[10,20]" probability="100.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<sound value="pol-snow"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="rare"/>
+		</ai>
+	</creature>
+	<!-- END: sniegowe -->
 </creatures>
