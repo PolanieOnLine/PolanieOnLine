@@ -1103,20 +1103,13 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<destination zone="0_zakopane_s" ref="bank_entrace_2"/>
 		</portal>
 
-		<portal x="45" y="14" ref="upstairs_in_2">
-			<destination zone="int_zakopane_bank_1" ref="downstairs"/>
-			<attribute name="face">left</attribute>
-		</portal>
-		<portal x="45" y="15" ref="upstairs_in_1">
+		<portal x="45" y="15" ref="upstairs">
 			<destination zone="int_zakopane_bank_1" ref="downstairs"/>
 			<attribute name="face">left</attribute>
 		</portal>
 
-		<portal x="45" y="16" ref="skarbiec_in_1">
-			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_1"/>
-		</portal>
-		<portal x="45" y="17" ref="skarbiec_in_2">
-			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out_2"/>
+		<portal x="45" y="16" ref="skarbiec_in">
+			<destination zone="int_zakopane_bank_-1" ref="skarbiec_out"/>
 		</portal>
 	</zone>
 
@@ -1246,7 +1239,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</entity>
 
 		<portal x="44" y="14" ref="downstairs">
-			<destination zone="int_zakopane_bank_0" ref="upstairs_in_1"/>
+			<destination zone="int_zakopane_bank_0" ref="upstairs"/>
 			<attribute name="face">left</attribute>
 		</portal>
 		<portal x="28" y="1" ref="bank0_exit">
@@ -1262,12 +1255,11 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="color_method">dark</parameter>
 		</attributes>
 
-		<portal x="2" y="16" ref="skarbiec_out_1">
-			<destination zone="int_zakopane_bank_0" ref="skarbiec_in_1"/>
+		<portal x="2" y="16" ref="skarbiec_out">
+			<destination zone="int_zakopane_bank_0" ref="skarbiec_in"/>
 		</portal>
-
-		<portal x="2" y="17" ref="skarbiec_out_2">
-			<destination zone="int_zakopane_bank_0" ref="skarbiec_in_2"/>
+		<portal x="2" y="17" ref="skarbiec_out">
+			<destination zone="int_zakopane_bank_0" ref="skarbiec_in"/>
 		</portal>
 
 		<portal x="46" y="6" ref="kara">

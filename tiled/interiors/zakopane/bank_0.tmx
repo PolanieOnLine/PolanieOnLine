@@ -81,7 +81,7 @@
  </layer>
  <layer id="3" name="2_object" width="48" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGDzAj0RxZBCHha/FyMCgA8TiSOLiVBKHgb1AvA/KDsPhNlziyECSEZOvC8T6QCzFSH1xXGAnEO8iQRwG5Bgx+QZAbATE8ozUFx8FQxe8AeIQIA4daIeMAoYoII4eaEeQAUZa+lHCUfbhEqcXIJR+lKHu+w3lqzCiiv9BE6cEvKHcCAygAXUXN5TWZEQV50ETH6wgH4f7cIkPNqCGw524xMkFTkhsZxxqJKhrJVWBOxLbA4cakPsHa/npg8T2xaFGih4OoSEYKPcHArE9EDtAsSNUjBT9AwkiiRQjRT8AtqpBtgAPAAA=
+   H4sIAAAAAAAACmNgGDzAj0RxZBCHha/FyMCgA8TiSOLiVBKHgb1AvA/KDsPhNlziyECSEZOvC8T6QCzFSH1xXGAnEO8iQRwG5Bgx+QZAbATE8ozUFx8FQxe8AeIQIA4daIeMAoYoII4eaEeQAUZa+lHCUfbhEqcXIJR+lKHu+w3lqzCiiv9BE6cEvKHcCAygAXUXN5TWZEQV50ETH6wgH4f7cIkPNqCGw524xMkFTkhsZ+oaTRfgjsT2wKFGgmHwlp8+SGxfHGqk6OGQYQgCgdgeiB2g2BEqRor+gQSRRIqRoh8Aptp/7QAPAAA=
   </data>
  </layer>
  <layer id="4" name="3_roof" width="48" height="20">
