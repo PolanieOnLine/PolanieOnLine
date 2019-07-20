@@ -877,6 +877,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
+		<portal x="30" y="94" ref="entrance">
+			<destination zone="int_zakopane_dobromir_house" ref="exit"/>
+		</portal>
+
 		<portal x="39" y="101" ref="maisonette_entrance">
 			<destination zone="int_zakopane_maisonette_0" ref="entrance_maisonette"/>
 			<attribute name="face">left</attribute>
@@ -884,6 +888,13 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<!-- interiors -->
+	<!-- Dobromir House -->
+	<zone name="int_zakopane_dobromir_house" file="interiors/zakopane/house_dobromir.tmx">
+		<portal x="13" y="19" ref="exit">
+			<destination zone="0_zakopane_s_e2" ref="entrance"/>
+		</portal>
+	</zone>
+
 	<!-- Maisonette 0 -->
 	<zone name="int_zakopane_maisonette_0" file="interiors/zakopane/maisonette_0.tmx">
 		<entity x="7" y="1">
