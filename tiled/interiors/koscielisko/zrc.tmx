@@ -1,92 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+ <tileset firstgid="1" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="2" name="protection" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/protection.png"/>
+ <tileset firstgid="2" name="protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/protection.png" width="64" height="32"/>
  </tileset>
- <tileset firstgid="4" name="sciany" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/kosciol_sciany.png"/>
+ <tileset firstgid="4" name="sciany" tilewidth="32" tileheight="32" tilecount="30" columns="5">
+  <image source="../../tileset/pol/domki/kosciol_sciany.png" width="160" height="192"/>
  </tileset>
- <tileset firstgid="34" name="posadzka" tilewidth="32" tileheight="32">
-  <image source="../../tileset/ground/slate_tiles.png"/>
+ <tileset firstgid="34" name="posadzka" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/ground/slate_tiles.png" width="160" height="96"/>
  </tileset>
- <tileset firstgid="49" name="ogien" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/oswietlenie/plomien_big.png"/>
+ <tileset firstgid="49" name="ogien" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/pol/oswietlenie/plomien_big.png" width="128" height="64"/>
  </tileset>
- <tileset firstgid="57" name="podstawa" tilewidth="32" tileheight="32">
-  <image source="../../tileset/furniture/light/iron_lamp.png"/>
+ <tileset firstgid="57" name="podstawa" tilewidth="32" tileheight="32" tilecount="3" columns="1">
+  <image source="../../tileset/furniture/light/iron_lamp.png" width="32" height="96"/>
  </tileset>
- <tileset firstgid="60" name="statula" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/posagi/statua_z_mieczem.png"/>
+ <tileset firstgid="60" name="statula" tilewidth="32" tileheight="32" tilecount="54" columns="6">
+  <image source="../../tileset/pol/posagi/statua_z_mieczem.png" width="192" height="288"/>
  </tileset>
- <tileset firstgid="114" name="brama" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/drzwi/warownia_wejscie_big.png"/>
+ <tileset firstgid="114" name="brama" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/pol/domki/drzwi/warownia_wejscie_big.png" width="96" height="64"/>
  </tileset>
- <tileset firstgid="120" name="latarnia_blask" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/oswietlenie/latarnia_blask.png"/>
+ <tileset firstgid="120" name="latarnia_blask" tilewidth="32" tileheight="32" tilecount="25" columns="5">
+  <image source="../../tileset/pol/oswietlenie/latarnia_blask.png" width="160" height="160"/>
  </tileset>
- <layer name="0_floor" width="20" height="20">
+ <layer id="1" name="0_floor" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAONiYGDgQsMaRGJ0fbjwYDIPXY5Ys4YbVscjp0mGeap45NQGgX9H8fDAuPI0vvRM
-ilmDrbwix0xSzKEUAwDxVhFgQAYAAA==
+   H4sIAAAAAAAACuNiYGDgQsMaRGJ0fbjwYDIPXY5Ys4YbVscjp0mGeap45NTo7Dd8biEWI7tZiwrmaQ+COB8OGFeexpeeSTFrsJVX5JhJijmUYgB7NpmsQAYAAA==
   </data>
  </layer>
- <layer name="1_terrain" width="20" height="20">
+ <layer id="2" name="1_terrain" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAK2RSwvCMBCEc5XWx8mLF1FBC2r7q3w////FEQyEdWc31Q580ENmkpmG8K0+GDqU
-io+pAGOHXsu8iQPL07qNwNRhoPhKo9sMzAkLYwPWbQlWhMrYoCB9dmAPDp+MBhzBCZyJJ+Zp3S7g
-Cm7Ju+7gAZ5kg5jHutVGZ20DmdeIM0y5eZJUdfIt783NSzN+eZ/cK6dv9PzTt4v9cvu+tQYbwdLx
-yvNb4/4Q9E3jf60cr5XH3tdW2ga53brUC+hxCdVABgAA
+   H4sIAAAAAAAACq2TSwvCQAyEcxChDx8nL15EhVpQ66/y/fz/F6e0C0vNbLpg4IMektnMhIr81ghMDHJljlUGZgZJpN7cgOlp3qZgYTBW5vKAtyVYEdaBDJi3AmwIZSCDjPg5ghM4txoHcAFXcCMzTk/zdgcP8PT2eoE3+JAMkjZ75q0KeNYyqG+USlPOk9/DStOTVis1elxV3nf3XV9vaPjtu1/tdyDNPQpvPtavm6n13H3Zfswv2y9Gr49f909vwa5DYcx2+/eB90X0TN1dS2M2pMf2iy0tg77e/llfPYuHpEAGAAA=
   </data>
  </layer>
- <layer name="2_object" width="20" height="20">
+ <layer id="3" name="2_object" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGNrAiMrmmQFxKRCXAXE5FcyzpoIZgxFQ4q/hGiajYBSMNAAAU5ceAEAGAAA=
+   H4sIAAAAAAAACmNgGNrAiMrmmQFxKRCXAXE5FcyzpoIZgxFQ4q/hGiajYBSMNAAAU5ceAEAGAAA=
   </data>
  </layer>
- <layer name="3_roof" width="20" height="20">
+ <layer id="4" name="3_roof" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgwA5CcIiDQCQeuYEARUBcDMQlFJgB8m8oEIchiYUDcQQDef6NAuJoII5BEosF
-4jggjidCvyEaPwGIE4E4CUksGYhTgDgVTa0xFvNMibATFzCnQO8oGFqAm4pmcQIxBxCzomE2IvSy
-YNHHDpXjQsPEuJkTiz5cgFjziAXYwgCX34gF6H4h1m/UBgDeOC7iQAYAAA==
+   H4sIAAAAAAAACmNgwA5CcIiDQCQeuYEARUBcDMQlFJgB8m8oEIchiYUDcQQDef6NAuJoII5BEosF4jggjidCvyEaPwGIE4E4CUksGYhTgDgVTa0xFvNMibATFzCnQO8oGFqAm4pmcQIxBxCzomE2IvSyYNHHDpXjQsPEuJkTiz5cgFjziAXYwgCX34gF6H4h1m/UBgDeOC7iQAYAAA==
   </data>
  </layer>
- <layer name="4_roof_add" width="20" height="20">
+ <layer id="5" name="4_roof_add" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBQMF2BConpDAvIWJJpnSqL6UTC0AQBHQtL9QAYAAA==
+   H4sIAAAAAAAACmNgGAWjYBQMF2BConpDAvIWJJpnSqL6UTC0AQBHQtL9QAYAAA==
   </data>
  </layer>
- <layer name="objects" width="20" height="20">
+ <layer id="6" name="objects" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCkgHADV9EcVABgAA
+   H4sIAAAAAAAACmNgGAWjYBSMglEwCkgHADV9EcVABgAA
   </data>
  </layer>
- <layer name="collision" width="20" height="20">
+ <layer id="7" name="collision" width="20" height="20" opacity="0.5">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNkYGBgHAaYYZCZx4BkBjZArnm4ALXcSkrY4LIfnxiyXmL9RiwYNW9wmkeP9DzY
-zRuuGAAXZQvpQAYAAA==
+   H4sIAAAAAAAACmNkYGBgHMUYmIEK+hnQ2Axo4uSYhwuQ6z9s5hAyj5BeYsWI9RuxgJpm0QpQ279DzTxSzUfPS/TMH4PZPGqWVZRgAJDLEa9ABgAA
   </data>
  </layer>
- <layer name="protection" width="20" height="20">
+ <layer id="8" name="protection" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNiYGBgGsWjeBSP4lE8iknEAC9MrVpABgAA
+   H4sIAAAAAAAACmNgGAWjYBSMglEwCkgHADV9EcVABgAA
   </data>
  </layer>
- <layer name="blend_ground" width="20" height="20" opacity="0.4">
+ <layer id="9" name="blend_ground" width="20" height="20" visible="0" opacity="0.4">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAO2TyQrDMAwF/dlp06zdkmb95M5FF6HgqC6FQAfmJgvewwrhN2R4wjPmeEncV2CJ
-FdbYJO5r8Yo3vOPD8dbK9cQOe3zhYLzTnQhWrhEnnHHB1dinOxE+zaU7EWK5ttCdCLFcW+hOjoT3
-HmLz3nuIzXvvwTvv+Td78PybP9/jDUUSAaxABgAA
+   H4sIAAAAAAAACuWTOQrAMAwE8+zc930/OdO4ETaOkipkYDpbsIsUBN8kxAhjTDB9OS/DHAsssXo5r8YGW+ywV/y15RpwxAlnXCz/ZCcGW64VN9zxwNMyT3ZieJpLdmLw5XIhOzH4crmQnXwJ7T343mvvQfteszd30OzNHTR782cun9pMlkAGAAA=
   </data>
  </layer>
- <layer name="blend_roof" width="20" height="20" opacity="0.4">
+ <layer id="10" name="blend_roof" width="20" height="20" visible="0" opacity="0.4">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAOWSSQqAUAxDe2znWXHA4chm80EKUgJFFB+8XRsojcjzpDBzzKtg7ZjHEsNE+Lsi
-tRsoYCn8XbnaDbSwgz0ciLxG7QZGOMEZLkTeHSvc4A4Ph7wvoH9v9caa17+3emPN699bvWHnPXpz
-5S+9eRsnaC0h60AGAAA=
+   H4sIAAAAAAAACu2TyQrDMAwF/dlp06zdkmb95M5FF6HgqC6FQAfmJgvewwrhN2R4wjPmeEncV2CJFdbYJO5r8Yo3vOPD8dbK9cQOe3zhYLzTnQhWrhEnnHHB1dinOxE+zaU7EWK5ttCdCLFcW+hOjoT3HmLz3nuIzXvvwTvv+Td78PybP9/jDUUSAaxABgAA
   </data>
  </layer>
 </map>
