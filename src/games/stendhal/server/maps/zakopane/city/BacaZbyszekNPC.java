@@ -97,17 +97,19 @@ public class BacaZbyszekNPC implements ZoneConfigurator {
 
 				addGreeting();
 				addJob("Pracuję jako sprzedawca owiec.");
-				addHelp("Sprzedaję owce. Aby kupić jedną wystarczy powiedzieć mi #buy #sheep. Jeżeli jesteś nowym w tym interesie to mogę Ci powiedzieć jak #podróżować z owcą, jak się nią #opiekować i powiem Ci, gdzie możesz ją #sprzedać. Jeżeli znajdziesz dziką owcę to możesz ją #przygarnąć.");
+				addHelp("Sprzedaję owce. Aby kupić jedną wystarczy powiedzieć mi #'buy sheep'. Jeżeli jesteś nowym w tym interesie to mogę Ci powiedzieć jak #podróżować z owcą, jak się nią #opiekować i powiem Ci, gdzie możesz ją #sprzedać. Jeżeli znajdziesz dziką owcę to możesz ją #przygarnąć.");
 				addGoodbye();
 				new SellerAdder().addSeller(this, new SheepSellerBehaviour(items));
 				addReply(Arrays.asList("care", "opieka", "opiekować"),
-						"Moja owca kocha jeść trawe.");
+						"Moja owca kocha jeść jagody.");
 				addReply(Arrays.asList("travel", "podróż", "podróżować"),
 						"Gdy zmieniasz miejsce pobytu twoja owca powinna być blisko Ciebie, aby nie zginęła. Jeżeli nie zwraca na Ciebie uwagi wystarczy powiedzieć #sheep aby wezwać ją. Jeżeli zdecydujesz się ją porzucić to kliknij na siebie prawym przyciskiem i wybierz 'Porzuć owcę', ale szczerze sądzę, że takie zachowanie jest odrażające.");
 				addReply(Arrays.asList("sell", "sprzedać"),
-						"Kiedy twoja owca osiągnie wagę 100 to możesz ja zabrać do Sato w Semos, a on kupi ją od Ciebie.");
+						"Kiedy twoja owca osiągnie wagę 100 to możesz ja zabrać do #Dobromira w Zakopane, a on kupi ją od Ciebie.");
 				addReply(Arrays.asList("own", "przygarnąć"),
 						"Jeżeli znajdziesz dziką lub porzuconą owcę to aby ją przygarnąć możesz kliknąć na nią prawym przyciskiem i wybrać 'Przygarnij'. Później musisz zobaczyć na owcę!");
+				addReply(Arrays.asList("Dobromir", "Dobromira", "dobromir", "dobromira"),
+						"Dobromir znajduje się na zachód stąd.");
 			}
 		};
 
