@@ -7,9 +7,9 @@
 		<type class="pol/serafiny" subclass="serafin" tileid="pol_serafiny.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="8000"/>
-			<ratk value="8000"/>
-			<def value="368"/>
+			<atk value="10000"/>
+			<ratk value="10000"/>
+			<def value="400"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -54,8 +54,8 @@
 		<type class="pol/serafiny" subclass="azazel" tileid="pol_serafiny.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="10000"/>
-			<ratk value="10000"/>
+			<atk value="18000"/>
+			<ratk value="18000"/>
 			<def value="666"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
