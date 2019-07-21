@@ -206,7 +206,7 @@ public class ProzbaWielkoluda extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Proźba Wielkoluda",
+			"Prośba Wielkoluda",
 			"Wielkolud chcę abyś zabił: lawina kamienna, pokutnik z bagien, pokutnik z wrzosowisk, pokutnik nocny, pokutnik wieczorny, pokutnik z łąk. Własnoręcznie bez niczyjej pomocy.",
 			false);
 		step_1();
@@ -221,7 +221,7 @@ public class ProzbaWielkoluda extends AbstractQuest {
 			return res;
 		}
 		if (!isCompleted(player)) {
-			res.add("Muszę zabić lawine kamienną  i wszystkich pokutników na proźbę Wielkoluda.");
+			res.add("Muszę zabić lawine kamienną  i wszystkich pokutników na prośbę Wielkoluda.");
 		} else if(isRepeatable(player)){
 			res.add("Wielkolud potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
 		} else {
