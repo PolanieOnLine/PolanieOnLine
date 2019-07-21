@@ -9,7 +9,7 @@
 		<attributes>
 			<atk value="10000"/>
 			<ratk value="10000"/>
-			<def value="400"/>
+			<def value="368"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
