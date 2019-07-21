@@ -4,22 +4,27 @@
 Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
 
 *klient*
-- Dodano kilka nowych grafik
+- Dodano dużo nowych grafik
 
 *świat gry*
+- Dodano kilka nowych NPC
 - Dodano kilka nowych osiągnięć
+- Dodano kilka nowych pomieszczeń
 - Dodano kilka nowych map w Zakopane (_ne2, _e2, _se2)
 - Dodano nowe przejście prowadzące do Wieliczki
 - Dodano nowe przedmioty: "kamienne rękawice", "magiczny płaszcz", "lodowy płaszcz", "lodowe spodnie"
 - Dodano drop nowych przedmiotów jak i dla zbójników górskich dodano możliwość zdobycia góralskich przedmiotów
 - Można kupić nowy zwój przenoszący do miasta Deniran u Juhasa za 700 money
 - Można na pieszo przyjść do Warszawy przez Kraków
+- Można sprzedawać owieczki w Zakopane
 - Zmieniono wizualnie górne mapy Krakowa
 - Zmieniono wizualnie niektóre mapy Wieliczki oraz mapy dragon_knights
 - Zmniejszono czas oczekiwania na kolejny bilet turystyczny do 12 godzin u Juhasa
-- Usunięto jeden bezsensowny respawn złotej śmierci
+- Usunięto jeden respawn złotej śmierci w lochach dragon_knights
+- Przywrócono stare piętro w banku w Zakopane
 
 *naprawiono błędy*
+- Dodano brakujący dźwięk
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
 
