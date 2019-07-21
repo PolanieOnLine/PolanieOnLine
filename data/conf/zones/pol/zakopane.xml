@@ -864,6 +864,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- zakopane_s_e2 -->
 	<zone name="0_zakopane_s_e2" level="0" x="513568" y="18688" file="Level 0/zakopane/s_e2.tmx">
+		<configurator class-name="games.stendhal.server.maps.zakopane.plains.DobromirNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
