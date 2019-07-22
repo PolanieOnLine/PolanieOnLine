@@ -31,7 +31,7 @@
 		<attributes>
 			<atk value="6"/>
 			<rate value="4"/>
-			<undroppableondeath value="1" />
+			<undroppableondeath value="1"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="2700"/>
@@ -71,9 +71,8 @@
 		<description>Widzisz piernacz. Ciężki koniec sprawia że broń jest trudna do opanowania. To twój "list żelazny" na niegościnnych terenach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="21"/>
-			<rate value="5"/>
-			<min_level value="25"/>
+			<atk value="19"/>
+			<rate value="7"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="48992"/>
@@ -92,9 +91,8 @@
 		<description>Widzisz kiścień. Jest to efektywna broń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="10"/>
-			<rate value="3"/>
-			<min_level value="48"/>
+			<atk value="19"/>
+			<rate value="7"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="48992"/>
@@ -218,8 +216,8 @@
 		<description>Widzisz złoty kiścień zwany Gwiazdą Zaranną. Jest to bardzo rzadka broń ale z racji użytych kolców niezwykle zajadła.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="15"/>
-			<rate value="3"/>
+			<atk value="25"/>
+			<rate value="7"/>
 			<min_level value="13"/>
 		</attributes>
 		<weight value="8.0"/>
@@ -281,7 +279,7 @@
 		<description>Widzisz rzadko spotykany kij z czaszką. Jest mistyczny, ale włada się nim jak każdym innym kijem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="7"/>
+			<atk value="22"/>
 			<def value="2"/>
 			<rate value="7"/>
 			<lifesteal value="0.05"/>
