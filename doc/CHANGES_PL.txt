@@ -3,7 +3,7 @@
 1.02
 Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
 Wykonano masową zmianę parametrów przedmiotów oraz potworów (wykorzystano do tego stare pliki z wersji 0.30 POL'a),
-tzn. zostaną wgrane stare statystyki
+tzn. zostaną wgrane starsze statystyki
 
 *klient*
 - Dodano dużo nowych grafik
@@ -13,7 +13,7 @@ tzn. zostaną wgrane stare statystyki
 - Dodano kilka nowych NPC
 - Dodano kilka nowych osiągnięć
 - Dodano kilka nowych pomieszczeń
-- Dodano kilka nowych map w Zakopane (_ne2, _e2, _se2)
+- Dodano kilka nowych map (3 nowe mapy w Zakopane, 3 nowe mapy w Krakowie [rozbudowano krakow_cave])
 - Dodano nowe przejście prowadzące do Wieliczki
 - Dodano nowe przedmioty: "kamienne rękawice", "magiczny płaszcz", "lodowy płaszcz", "lodowe spodnie"
 - Dodano drop nowych przedmiotów jak i dla zbójników górskich dodano możliwość zdobycia góralskich przedmiotów
