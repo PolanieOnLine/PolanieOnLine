@@ -1706,13 +1706,47 @@ Południe: Zakopane
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
-		<entity x="98" y="36">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">ghost-1, ghost-2, saur-4</parameter>
-				<parameter name="min">30</parameter>
-				<parameter name="max">60</parameter>
+
+		<entity x="111" y="83">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-5</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
 				<parameter name="radius">25</parameter>
-				<parameter name="volume">50</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="63" y="106">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-3</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">14</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="92" y="94">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-3</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+	<!-- cave ne -->
+	<zone name="-1_krakow_cave_ne" level="-1" x="513696" y="17920" file="Level -1/krakow/cave_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
 	</zone>
