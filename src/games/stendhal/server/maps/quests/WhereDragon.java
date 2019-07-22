@@ -230,7 +230,7 @@ public class WhereDragon extends AbstractQuest {
 		npc = new DragonNPC("Vircassis", 15, 8);
 		zone.add(npc);
 
-		zone = world.getZone("-1_krakow_cave");
+		zone = world.getZone("-1_krakow_cave_sw");
 		npc = new DragonNPC("Decida", 86, 44);
 		zone.add(npc);
 
