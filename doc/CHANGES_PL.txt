@@ -9,6 +9,7 @@ tzn. zostaną wgrane stare statystyki
 - Dodano dużo nowych grafik
 
 *świat gry*
+- Dodano nowe zadanie
 - Dodano kilka nowych NPC
 - Dodano kilka nowych osiągnięć
 - Dodano kilka nowych pomieszczeń
@@ -26,7 +27,7 @@ tzn. zostaną wgrane stare statystyki
 - Przywrócono stare piętro w banku w Zakopane
 
 *naprawiono błędy*
-- Dodano brakujący dźwięk
+- Dodano brakujący dźwięk węża
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
 
