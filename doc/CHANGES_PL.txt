@@ -3,7 +3,7 @@
 1.02
 Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
 Wykonano masową zmianę parametrów przedmiotów oraz potworów (wykorzystano do tego stare pliki z wersji 0.30 POL'a),
-tzn. zostaną wgrane starsze statystyki
+tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 
 *klient*
 - Dodano dużo nowych grafik
@@ -25,6 +25,7 @@ tzn. zostaną wgrane starsze statystyki
 - Zmniejszono czas oczekiwania na kolejny bilet turystyczny do 12 godzin u Juhasa
 - Usunięto jeden respawn złotej śmierci w lochach dragon_knights
 - Przywrócono stare piętro w banku w Zakopane
+- Wszystkie ciupagi otrzymały wzmocnienie
 
 *naprawiono błędy*
 - Dodano brakujący dźwięk węża
