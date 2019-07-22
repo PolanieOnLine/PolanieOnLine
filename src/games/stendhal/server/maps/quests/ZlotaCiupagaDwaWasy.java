@@ -42,7 +42,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
 public class ZlotaCiupagaDwaWasy extends AbstractQuest {
-
 	private static final int REQUIRED_MINUTES = 30;
 
 	private static final String QUEST_SLOT = "ciupaga_dwa_wasy";
@@ -66,7 +65,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isQuestCompleted(KRASNOLUD_QUEST_SLOT)) {
-						if(player.getLevel() >= 350) {
+						if(player.getLevel() >= 250) {
 							if(player.getKarma() >= 1000) {
 								if(player.hasKilled("serafin")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
@@ -92,7 +91,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 350 lvl.");
+							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 250 lvl.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
