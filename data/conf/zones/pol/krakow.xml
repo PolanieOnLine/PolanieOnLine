@@ -1231,6 +1231,41 @@ Południe: Zakopane
 		</portal>
 	</zone>
 
+	<!-- Dwarf blacksmith -->
+	<zone name="int_krakow_dwarf_blacksmith" file="interiors/krakow/dwarf_blacksmith.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="5" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="5" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="14" y="1" ref="dwarfsmith_exit">
+			<destination zone="-1_krakow_cave_nw" ref="dwarfsmith_entrance"/>
+		</portal>
+		<portal x="15" y="1" ref="dwarfsmith_exit">
+			<destination zone="-1_krakow_cave_nw" ref="dwarfsmith_entrance"/>
+		</portal>
+	</zone>
+
 	<!-- Church -->
 	<zone name="int_krakow_church" file="interiors/krakow/church.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -1761,6 +1796,10 @@ Południe: Zakopane
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
+
+		<portal x="28" y="75" ref="dwarfsmith_entrance">
+			<destination zone="int_krakow_dwarf_blacksmith" ref="dwarfsmith_exit"/>
+		</portal>
 	</zone>
 
 	<!-- Level -2 -->
