@@ -1094,12 +1094,12 @@
 			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
 			<item value="mięta" quantity="[1,1]" probability="10.0"/>
 			<item value="buteleczka wody" quantity="[1,3]" probability="15.0"/>
-			<sound value="pol-starzec"/>
 		</drops>
 		<equips/>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Dejcies spokój! Za stary jestem do bitki!"/>
+				<sound value="pol-starzec"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -1155,7 +1155,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="74"/>
-		<experience value="5200"/>
+		<experience value="5500"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1183,7 +1183,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="77"/>
-		<experience value="5400"/>
+		<experience value="6000"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1211,7 +1211,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="72"/>
-		<experience value="5000"/>
+		<experience value="5100"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1239,7 +1239,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="81"/>
-		<experience value="5800"/>
+		<experience value="6600"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1267,7 +1267,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="102"/>
-		<experience value="6020"/>
+		<experience value="6420"/>
 		<respawn value="3020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1299,7 +1299,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="92"/>
-		<experience value="4820"/>
+		<experience value="6820"/>
 		<respawn value="3020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1330,7 +1330,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="102"/>
-		<experience value="5320"/>
+		<experience value="9320"/>
 		<respawn value="4020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1361,7 +1361,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="122"/>
-		<experience value="6420"/>
+		<experience value="11420"/>
 		<respawn value="3020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1387,14 +1387,14 @@
 		<type class="pol/rycerze_jazda" subclass="rycerz_na_bialym_koniu" tileid="pol_rycerze_jazda.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="690"/>
+			<atk value="1374"/>
 			<def value="90"/>
 			<hp value="2800"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="202"/>
-		<experience value="25050"/>
+		<experience value="71420"/>
 		<respawn value="3020"/>
 		<corpse name="huge_animalhuman" width="2" height="2"/>
 		<drops>
