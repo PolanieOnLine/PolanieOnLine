@@ -2,6 +2,8 @@
 ---------
 1.02
 Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
+Wykonano masową zmianę parametrów przedmiotów oraz potworów (wykorzystano do tego stare pliki z wersji 0.30 POL'a),
+tzn. zostaną wgrane stare statystyki
 
 *klient*
 - Dodano dużo nowych grafik
