@@ -7,8 +7,8 @@
 		<type class="pol/serafiny" subclass="serafin" tileid="pol_serafiny.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="10000"/>
-			<ratk value="10000"/>
+			<atk value="8000"/>
+			<ratk value="8000"/>
 			<def value="362"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
@@ -54,8 +54,8 @@
 		<type class="pol/serafiny" subclass="azazel" tileid="pol_serafiny.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="18000"/>
-			<ratk value="18000"/>
+			<atk value="12000"/>
+			<ratk value="12000"/>
 			<def value="666"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
@@ -71,8 +71,8 @@
 			<item value="czarny miecz" quantity="[1,1]" probability="10.0"/>
 			<item value="czarne rękawice" quantity="[1,1]" probability="5.0"/>
 			<item value="czarny pas" quantity="[1,1]" probability="2.0"/>
-			<item value="pióro azazela" quantity="[1,1]" probability="90.0"/>
-			<item value="magia mroku" quantity="[11,99]" probability="100.0"/>
+			<item value="pióro azazela" quantity="[1,1]" probability="100.0"/>
+			<item value="magia mroku" quantity="[11,99]" probability="90.0"/>
 			<item value="różdżka Peruna" quantity="[1,1]" probability="7.5"/>
 		</drops>
 		<equips>
