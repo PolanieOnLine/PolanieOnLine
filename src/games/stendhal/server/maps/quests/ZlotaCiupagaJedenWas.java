@@ -98,7 +98,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isQuestCompleted(NAGRODA_WIELKOLUDA_QUEST_SLOT)) {
-						if(player.getLevel() >= 220) {
+						if(player.getLevel() >= 200) {
 							if(player.getKarma()>=200) {
 								if(player.hasKilledSolo("złota śmierć")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
@@ -128,7 +128,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 220 poziom.");
+							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 200 poziom.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
