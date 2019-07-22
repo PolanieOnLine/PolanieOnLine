@@ -7,14 +7,14 @@
 		<type class="pol/mutanty" subclass="dziub_dziub" tileid="pol_mutanty.png:0"/>
 		<description>Oto Dziub-Dziub. Właśnie do zobaczyłeś, więc nie zadawaj głupich pytań.</description>
 		<attributes>
-			<atk value="20"/>
-			<def value="4"/>
-			<hp value="22"/>
+			<atk value="44"/>
+			<def value="9"/>
+			<hp value="250"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="3"/>
-		<experience value="30"/>
+		<experience value="15"/>
 		<respawn value="222"/>
 		<corpse name="small_animal"/>
 		<drops>
@@ -37,14 +37,14 @@
 		<type class="pol/mutanty" subclass="wilczykruk" tileid="pol_mutanty.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="673"/>
-			<def value="46"/>
-			<hp value="713"/>
+			<atk value="166"/>
+			<def value="66"/>
+			<hp value="999"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="99"/>
-		<experience value="9610"/>
+		<experience value="666"/>
 		<respawn value="666"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -72,14 +72,14 @@
 		<type class="pol/mutanty" subclass="cerber" tileid="pol_mutanty.png:2"/>
 		<description>Oto cerber - strażnik ogni piekielnych. Jego wzrok wypala piętno na twej duszy.</description>
 		<attributes>
-			<atk value="476"/>
-			<def value="38"/>
-			<hp value="504"/>
+			<atk value="186"/>
+			<def value="30"/>
+			<hp value="582"/>
 			<speed value="0.9"/>
 			<size value="2,1"/>
 		</attributes>
 		<level value="70"/>
-		<experience value="4933"/>
+		<experience value="4130"/>
 		<respawn value="99999"/>
 		<corpse name="animal"/>
 		<drops>
@@ -103,14 +103,14 @@
 		<type class="pol/mutanty" subclass="yellow_slime" tileid="pol_mutanty.png:3"/>
 		<description>Oto żółty glut. Za nim kleisty ślad.</description>
 		<attributes>
-			<atk value="966"/>
-			<def value="56"/>
-			<hp value="1022"/>
+			<atk value="350"/>
+			<def value="46"/>
+			<hp value="390"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="142"/>
-		<experience value="21492"/>
+		<experience value="1441"/>
 		<respawn value="42187"/>
 		<corpse name="other"/>
 		<drops>
@@ -129,14 +129,14 @@
 		<type class="pol/mutanty" subclass="red_slime" tileid="pol_mutanty.png:4"/>
 		<description>Oto czerwony glut. Za nim kleisty ślad.</description>
 		<attributes>
-			<atk value="1340"/>
-			<def value="67"/>
-			<hp value="1418"/>
+			<atk value="390"/>
+			<def value="49"/>
+			<hp value="7700"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="197"/>
-		<experience value="40727"/>
+		<experience value="2649"/>
 		<respawn value="75216"/>
 		<corpse name="other"/>
 		<drops>
@@ -151,20 +151,20 @@
 		</ai>
 	</creature>
 	<!-- END: mutanty -->
-	
+
 	<!-- START: mutanty wielkie -->
 	<creature name="Jožin z lesa">
 		<type class="pol/mutanty_wielkie" subclass="jozin_z_lesa" tileid="pol_mutanty_wielkie.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="605"/>
-			<def value="43"/>
-			<hp value="641"/>
+			<atk value="415"/>
+			<def value="34"/>
+			<hp value="1000"/>
 			<speed value="0.9"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="89"/>
-		<experience value="7826"/>
+		<experience value="5454"/>
 		<respawn value="1818"/>
 		<corpse name="giant"/>
 		<drops>
@@ -191,14 +191,14 @@
 		<type class="pol/mutanty_wielkie" subclass="jozin_z_bazin" tileid="pol_mutanty_wielkie.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="666"/>
-			<def value="46"/>
-			<hp value="706"/>
+			<atk value="415"/>
+			<def value="34"/>
+			<hp value="10000"/>
 			<speed value="0.9"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="98"/>
-		<experience value="9423"/>
+		<experience value="5454"/>
 		<respawn value="1818"/>
 		<corpse name="giant"/>
 		<drops>
@@ -224,14 +224,14 @@
 		<type class="pol/mutanty_wielkie" subclass="easer_thing" tileid="pol_mutanty_wielkie.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="1870"/>
-			<def value="83"/>
-			<hp value="3180"/>
+			<atk value="804"/>
+			<def value="51"/>
+			<hp value="3350"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="275"/>
-		<experience value="132506"/>
+		<experience value="36300"/>
 		<respawn value="19300"/>
 		<corpse name="giant"/>
 		<drops>
@@ -256,14 +256,14 @@
 		<type class="pol/mutanty_wielkie" subclass="ae_monstrum_gigant" tileid="pol_mutanty_wielkie.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="1353"/>
-			<def value="68"/>
-			<hp value="2633"/>
+			<atk value="1632"/>
+			<def value="49"/>
+			<hp value="4444"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="199"/>
-		<experience value="42299"/>
+		<experience value="65432"/>
 		<respawn value="12345"/>
 		<corpse name="giant_humanoid"/>
 		<drops>

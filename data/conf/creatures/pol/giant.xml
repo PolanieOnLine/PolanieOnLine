@@ -7,14 +7,14 @@
 		<type class="pol/olbrzymy" subclass="superczlowiek_gigant" tileid="pol_olbrzymy.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="1802"/>
-			<def value="81"/>
-			<hp value="3268"/>
+			<atk value="1884"/>
+			<def value="67"/>
+			<hp value="4618"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="265"/>
-		<experience value="123307"/>
+		<experience value="37800"/>
 		<respawn value="30000"/>
 		<corpse name="giant_human"/>
 		<drops>
@@ -40,14 +40,14 @@
 		<type class="pol/olbrzymy" subclass="mega_mag" tileid="pol_olbrzymy.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="1190"/>
-			<def value="63"/>
-			<hp value="2460"/>
+			<atk value="1483"/>
+			<def value="43"/>
+			<hp value="2218"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="175"/>
-		<experience value="32975"/>
+		<experience value="40300"/>
 		<respawn value="17300"/>
 		<corpse name="giant_human"/>
 		<drops>
@@ -70,14 +70,14 @@
 		<type class="pol/olbrzymy" subclass="gigantyczna_lili" tileid="pol_olbrzymy.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="2264"/>
-			<def value="94"/>
-			<hp value="4398"/>
+			<atk value="1750"/>
+			<def value="120"/>
+			<hp value="8000"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="333"/>
-		<experience value="194195"/>
+		<experience value="280000"/>
 		<respawn value="186400"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -106,14 +106,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_bronz" tileid="pol_pokutniki.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="600"/>
+			<atk value="400"/>
 			<def value="33"/>
-			<hp value="864"/>
+			<hp value="2900"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="120"/>
-		<experience value="21320"/>
+		<experience value="21321"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -137,14 +137,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_fiolet" tileid="pol_pokutniki.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="620"/>
-			<def value="35"/>
-			<hp value="900"/>
+			<atk value="410"/>
+			<def value="34"/>
+			<hp value="3000"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="125"/>
-		<experience value="22320"/>
+		<experience value="22321"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -168,14 +168,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_granat" tileid="pol_pokutniki.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="640"/>
-			<def value="37"/>
-			<hp value="936"/>
+			<atk value="420"/>
+			<def value="35"/>
+			<hp value="3100"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="130"/>
-		<experience value="23320"/>
+		<experience value="23321"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -200,14 +200,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_szary" tileid="pol_pokutniki.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="660"/>
-			<def value="39"/>
-			<hp value="972"/>
+			<atk value="430"/>
+			<def value="36"/>
+			<hp value="3200"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="135"/>
-		<experience value="24320"/>
+		<experience value="24321"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -232,14 +232,14 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_zielen" tileid="pol_pokutniki.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="700"/>
-			<def value="44"/>
-			<hp value="1080"/>
+			<atk value="450"/>
+			<def value="37"/>
+			<hp value="3300"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="150"/>
-		<experience value="26320"/>
+		<experience value="25321"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
@@ -265,14 +265,14 @@
 		<type class="pol/zjawy_wielkie" subclass="ae_szkielet_czarny_gigant" tileid="pol_zjawy_wielkie.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="1753"/>
-			<def value="77"/>
-			<hp value="4033"/>
+			<atk value="1832"/>
+			<def value="39"/>
+			<hp value="5555"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="199"/>
-		<experience value="54526"/>
+		<experience value="56543"/>
 		<respawn value="13579"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -303,14 +303,14 @@
 		<type class="pol/zjawy_wielkie" subclass="ae_ksiaze_szkieletow" tileid="pol_zjawy_wielkie.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="4928"/>
-			<def value="145"/>
-			<hp value="7560"/>
+			<atk value="2844"/>
+			<def value="74"/>
+			<hp value="19000"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="550"/>
-		<experience value="684166"/>
+		<experience value="190345"/>
 		<respawn value="185432"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -337,14 +337,14 @@
 		<type class="pol/zjawy_wielkie" subclass="szkielet_aniola" tileid="pol_zjawy_wielkie.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="3780"/>
-			<def value="119"/>
-			<hp value="5280"/>
+			<atk value="1844"/>
+			<def value="64"/>
+			<hp value="14000"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="400"/>
-		<experience value="382100"/>
+		<experience value="612345"/>
 		<respawn value="165432"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -372,14 +372,14 @@
 		<type class="pol/zjawy_wielkie" subclass="zai_kostucha_rozowa_gigant" tileid="pol_zjawy_wielkie.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="2664"/>
-			<def value="100"/>
-			<hp value="6398"/>
+			<atk value="1699"/>
+			<def value="49"/>
+			<hp value="6900"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="333"/>
-		<experience value="228673"/>
+		<experience value="280000"/>
 		<respawn value="77000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -406,14 +406,14 @@
 		<type class="pol/zjawy_wielkie" subclass="zai_kostucha_gigant" tileid="pol_zjawy_wielkie.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="3762"/>
-			<def value="122"/>
-			<hp value="7118"/>
+			<atk value="5699"/>
+			<def value="49"/>
+			<hp value="6900"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="433"/>
-		<experience value="414664"/>
+		<experience value="280000"/>
 		<respawn value="77000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -440,14 +440,14 @@
 		<type class="pol/zjawy_wielkie" subclass="zai_kostucha_zlota_gigant" tileid="pol_zjawy_wielkie.png:5"/>
 		<description/>
 		<attributes>
-			<atk value="5146"/>
-			<def value="147"/>
-			<hp value="8000"/>
+			<atk value="2099"/>
+			<def value="59"/>
+			<hp value="18000"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="555"/>
-		<experience value="720463"/>
+		<experience value="666666"/>
 		<respawn value="111111"/>
 		<corpse name="giant_humanoid"/>
 		<drops>

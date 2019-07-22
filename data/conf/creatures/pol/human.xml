@@ -214,14 +214,14 @@
 		<type class="pol/magowie" subclass="baba_jaga1" tileid="pol_magowie.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="306"/>
-			<def value="30"/>
-			<hp value="804"/>
+			<atk value="307"/>
+			<def value="35"/>
+			<hp value="132"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="2186"/>
+		<experience value="2010"/>
 		<respawn value="5110"/>
 		<corpse name="human"/>
 		<drops>
@@ -247,14 +247,14 @@
 		<type class="pol/magowie" subclass="baba_jaga2" tileid="pol_magowie.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="306"/>
-			<def value="30"/>
-			<hp value="804"/>
+			<atk value="307"/>
+			<def value="35"/>
+			<hp value="132"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="2186"/>
+		<experience value="2010"/>
 		<respawn value="5110"/>
 		<corpse name="human"/>
 		<drops>
@@ -280,14 +280,14 @@
 		<type class="pol/magowie" subclass="baba_jaga3" tileid="pol_magowie.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="306"/>
-			<def value="30"/>
-			<hp value="804"/>
+			<atk value="307"/>
+			<def value="35"/>
+			<hp value="132"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="2186"/>
+		<experience value="2010"/>
 		<respawn value="5110"/>
 		<corpse name="human"/>
 		<drops>
@@ -313,15 +313,15 @@
 		<type class="pol/magowie" subclass="mag_pustelnik" tileid="pol_magowie.png:3"/>
 		<description>Widzisz pustelnika. Nie zakłócaj jego medytacji.</description>
 		<attributes>
-			<atk value="306"/>
-			<ratk value="306"/>
-			<def value="30"/>
-			<hp value="804"/>
+			<atk value="221"/>
+			<ratk value="221"/>
+			<def value="25"/>
+			<hp value="155"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="45"/>
-		<experience value="2186"/>
+		<experience value="1360"/>
 		<respawn value="1320"/>
 		<corpse name="human"/>
 		<drops>
@@ -355,15 +355,15 @@
 		<type class="pol/magowie" subclass="mag_uczen" tileid="pol_magowie.png:4"/>
 		<description>Oto uczeń czarnoksiężnika. Swemu mistrzowi podkrada magię ciemności.</description>
 		<attributes>
-			<atk value="602"/>
-			<ratk value="602"/>
-			<def value="46"/>
-			<hp value="468"/>
+			<atk value="157"/>
+			<ratk value="157"/>
+			<def value="50"/>
+			<hp value="555"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="65"/>
-		<experience value="5706"/>
+		<experience value="2360"/>
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
@@ -397,21 +397,21 @@
 		<type class="pol/magowie" subclass="mag_mistrz" tileid="pol_magowie.png:5"/>
 		<description>Oto czarnoksiężnik. Niech nie zwiedzie cię jego wiek, bo jest potężny.</description>
 		<attributes>
-			<atk value="602"/>
-			<ratk value="602"/>
-			<def value="46"/>
-			<hp value="468"/>
+			<atk value="211"/>
+			<ratk value="211"/>
+			<def value="80"/>
+			<hp value="555"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="65"/>
-		<experience value="5706"/>
+		<experience value="2360"/>
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="lazurowy płaszcz elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.5"/>
-			<item value="magia ziemi" quantity="[11,66]" probability="100.0"/>
+			<item value="magia ziemi" quantity="[1,9]" probability="100.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia ziemi" quantity="10000"/>
@@ -439,21 +439,21 @@
 		<type class="pol/magowie" subclass="mag_czarny_uczen" tileid="pol_magowie.png:6"/>
 		<description>Oto uczeń czarnoksiężnika mroku. Wiele już posiadł wiedzy i umie ją wykorzystać.</description>
 		<attributes>
-			<atk value="602"/>
-			<ratk value="602"/>
-			<def value="46"/>
-			<hp value="468"/>
+			<atk value="211"/>
+			<ratk value="211"/>
+			<def value="66"/>
+			<hp value="555"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="65"/>
-		<experience value="5706"/>
+		<experience value="2360"/>
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="czarny płaszcz" quantity="[1,1]" probability="0.05"/>
 			<item value="różdżka Strzyboga" quantity="[1,1]" probability="0.5"/>
-			<item value="magia płomieni" quantity="[11,88]" probability="100.0"/>
+			<item value="magia płomieni" quantity="[1,9]" probability="100.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała" quantity="10000"/>
@@ -481,21 +481,21 @@
 		<type class="pol/magowie" subclass="mag_czarny_mistrz" tileid="pol_magowie.png:7"/>
 		<description>Oto czarnoksiężnik mroku. Wielu już wrogów powalił, nawet nie ruszając się z miejsca.</description>
 		<attributes>
-			<atk value="1250"/>
-			<ratk value="1250"/>
-			<def value="66"/>
-			<hp value="900"/>
+			<atk value="422"/>
+			<ratk value="422"/>
+			<def value="99"/>
+			<hp value="777"/>
 			<speed value="0.2"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="125"/>
-		<experience value="24074"/>
+		<experience value="9360"/>
 		<respawn value="8320"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="0.5"/>
 			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
-			<item value="magia mroku" quantity="[11,55]" probability="75.0"/>
+			<item value="magia mroku" quantity="[1,19]" probability="75.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia mroku" quantity="10000"/>
@@ -523,10 +523,10 @@
 		<type class="pol/magowie" subclass="mag_czarownica_aenye" tileid="pol_magowie.png:8"/>
 		<description>Oto czarownica z Aenye - zabójcza ślicznotka.</description>
 		<attributes>
-			<atk value="2526"/>
-			<ratk value="2526"/>
-			<def value="96"/>
-			<hp value="1404"/>
+			<atk value="3700"/>
+			<ratk value="3700"/>
+			<def value="150"/>
+			<hp value="999"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
@@ -537,8 +537,8 @@
 		<drops>
 			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="0.5"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="1.5"/>
-			<item value="magia mroku" quantity="[11,88]" probability="75.0"/>
-			<item value="magia światła" quantity="[11,111]" probability="25.0"/>
+			<item value="magia mroku" quantity="[1,99]" probability="75.0"/>
+			<item value="magia światła" quantity="[1,99]" probability="25.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia światła" quantity="10000"/>
@@ -568,9 +568,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_mlodszy" tileid="pol_zbojnicy_lesni.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="184"/>
-			<def value="22"/>
-			<hp value="194"/>
+			<atk value="185"/>
+			<def value="20"/>
+			<hp value="233"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
@@ -603,9 +603,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_oszust" tileid="pol_zbojnicy_lesni.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="255"/>
-			<def value="27"/>
-			<hp value="259"/>
+			<atk value="299"/>
+			<def value="19"/>
+			<hp value="233"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -636,9 +636,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_starszy" tileid="pol_zbojnicy_lesni.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="228"/>
-			<def value="26"/>
-			<hp value="252"/>
+			<atk value="205"/>
+			<def value="20"/>
+			<hp value="233"/>
 			<speed value="0.4"/>
 			<size value="1,1"/>
 		</attributes>
@@ -673,9 +673,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_zwiadowca" tileid="pol_zbojnicy_lesni.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="242"/>
-			<def value="27"/>
-			<hp value="266"/>
+			<atk value="225"/>
+			<def value="29"/>
+			<hp value="233"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -712,9 +712,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_tchorzliwy" tileid="pol_zbojnicy_lesni.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="177"/>
-			<def value="55"/>
-			<hp value="187"/>
+			<atk value="185"/>
+			<def value="60"/>
+			<hp value="233"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
@@ -747,9 +747,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="banita" tileid="pol_zbojnicy_lesni.png:5"/>
 		<description/>
 		<attributes>
-			<atk value="165"/>
-			<def value="28"/>
-			<hp value="281"/>
+			<atk value="161"/>
+			<def value="34"/>
+			<hp value="83"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -786,9 +786,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="banita_gajowy" tileid="pol_zbojnicy_lesni.png:6"/>
 		<description/>
 		<attributes>
-			<atk value="141"/>
-			<def value="23"/>
-			<hp value="209"/>
+			<atk value="131"/>
+			<def value="30"/>
+			<hp value="83"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -821,9 +821,9 @@
 		<type class="pol/zbojnicy_lesni" subclass="banitka" tileid="pol_zbojnicy_lesni.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="130"/>
-			<def value="24"/>
-			<hp value="216"/>
+			<atk value="121"/>
+			<def value="25"/>
+			<hp value="89"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -863,14 +863,14 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski" tileid="pol_zbojnicy_gorscy.png:0"/>
 		<description>Oto zbójnik górski, który kryje się w jaskiniach.</description>
 		<attributes>
-			<atk value="301"/>
-			<def value="35"/>
-			<hp value="425"/>
+			<atk value="250"/>
+			<def value="49"/>
+			<hp value="290"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="59"/>
-		<experience value="3554"/>
+		<experience value="3110"/>
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
@@ -892,18 +892,18 @@
 		<description>Oto zbójnik górski goniec, który donosi o wszystkim hersztowi.</description>
 		<attributes>
 			<atk value="290"/>
-			<def value="35"/>
-			<hp value="432"/>
+			<def value="52"/>
+			<hp value="333"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="60"/>
-		<experience value="3671"/>
+		<experience value="3330"/>
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[9,10]" probability="100.0"/>
-			<item value="ciupaga" quantity="[1,1]" probability="1.005"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.05"/>
 			<item value="polska tarcza kolcza" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips/>
@@ -919,14 +919,14 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zlosliwy" tileid="pol_zbojnicy_gorscy.png:2"/>
 		<description>Oto zbójnik górski złośliwy, który chociaż gruby atakuje zwinnie.</description>
 		<attributes>
-			<atk value="342"/>
-			<def value="36"/>
-			<hp value="446"/>
+			<atk value="390"/>
+			<def value="53"/>
+			<hp value="309"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="62"/>
-		<experience value="3909"/>
+		<experience value="3630"/>
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
@@ -947,21 +947,21 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zwiadowca" tileid="pol_zbojnicy_gorscy.png:3"/>
 		<description>Oto zbójnik górski zwiadowca, który atakuje cicho i nagle.</description>
 		<attributes>
-			<atk value="316"/>
-			<def value="36"/>
-			<hp value="454"/>
+			<atk value="330"/>
+			<def value="54"/>
+			<hp value="345"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="63"/>
-		<experience value="4030"/>
+		<experience value="3530"/>
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[9,99]" probability="100.0"/>
-			<item value="ciupaga" quantity="[1,1]" probability="1.005"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.5"/>
 			<item value="pas zbójecki" quantity="[1,1]" probability="1.0"/>
-			<item value="polska płytowa tarcza" quantity="[1,1]" probability="4.55"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="4.5"/>
 			<item value="polska tarcza ciężka" quantity="[1,1]" probability="4.0"/>
 		</drops>
 		<equips/>
@@ -977,14 +977,14 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_starszy" tileid="pol_zbojnicy_gorscy.png:4"/>
 		<description>Oto zbójnik górski starszy, który chociaż brodę ma siwą zręcznie włada maczugą.</description>
 		<attributes>
-			<atk value="415"/>
-			<def value="37"/>
-			<hp value="461"/>
+			<atk value="410"/>
+			<def value="51"/>
+			<hp value="290"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="64"/>
-		<experience value="4154"/>
+		<experience value="3830"/>
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
@@ -1007,14 +1007,14 @@
 		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_herszt" tileid="pol_zbojnicy_gorscy.png:5"/>
 		<description>Oto herszt zbójników górskich, którego zła sława dotarła daleko poza granice tej krainy.</description>
 		<attributes>
-			<atk value="449"/>
-			<def value="37"/>
-			<hp value="475"/>
+			<atk value="440"/>
+			<def value="58"/>
+			<hp value="490"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="66"/>
-		<experience value="4406"/>
+		<experience value="4400"/>
 		<respawn value="6110"/>
 		<corpse name="human"/>
 		<drops>
@@ -1040,15 +1040,15 @@
 		<type class="pol/wiesniacy" subclass="wiesniak" tileid="pol_wiesniacy.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="97"/>
-			<def value="18"/>
-			<hp value="137"/>
+			<atk value="66"/>
+			<def value="22"/>
+			<hp value="133"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="19"/>
-		<experience value="555"/>
-		<respawn value="555"/>
+		<experience value="333"/>
+		<respawn value="333"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[1,3]" probability="100.0"/>
@@ -1077,9 +1077,9 @@
 		<type class="pol/wiesniacy" subclass="starzec" tileid="pol_wiesniacy.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="77"/>
-			<def value="18"/>
-			<hp value="133"/>
+			<atk value="33"/>
+			<def value="33"/>
+			<hp value="44"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
 		</attributes>
@@ -1094,12 +1094,12 @@
 			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
 			<item value="mięta" quantity="[1,1]" probability="10.0"/>
 			<item value="buteleczka wody" quantity="[1,3]" probability="15.0"/>
+			<sound value="pol-starzec"/>
 		</drops>
 		<equips/>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Dejcies spokój! Za stary jestem do bitki!"/>
-				<sound value="pol-starzec"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -1113,13 +1113,13 @@
 		<description/>
 		<attributes>
 			<atk value="111"/>
-			<def value="23"/>
-			<hp value="209"/>
+			<def value="22"/>
+			<hp value="83"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="29"/>
-		<experience value="777"/>
+		<experience value="570"/>
 		<respawn value="1120"/>
 		<corpse name="human"/>
 		<drops>
@@ -1148,20 +1148,20 @@
 		<type class="pol/rycerze" subclass="rycerz_blekitny" tileid="pol_rycerze.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="503"/>
-			<def value="39"/>
-			<hp value="533"/>
+			<atk value="556"/>
+			<def value="88"/>
+			<hp value="500"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="74"/>
-		<experience value="5488"/>
+		<experience value="5200"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[30,80]" probability="100.0"/>
 			<item value="szafir" quantity="[1,1]" probability="0.008"/>
-			<item value="lazurowy płaszcz smoczy" quantity="[1,1]" probability="5.0"/>
+			<item value="lazurowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -1176,14 +1176,14 @@
 		<type class="pol/rycerze" subclass="rycerz_karmazynowy" tileid="pol_rycerze.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="524"/>
-			<def value="40"/>
-			<hp value="554"/>
+			<atk value="576"/>
+			<def value="88"/>
+			<hp value="500"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="77"/>
-		<experience value="5923"/>
+		<experience value="5400"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1204,14 +1204,14 @@
 		<type class="pol/rycerze" subclass="rycerz_szmaragdowy" tileid="pol_rycerze.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="490"/>
-			<def value="39"/>
-			<hp value="518"/>
+			<atk value="536"/>
+			<def value="88"/>
+			<hp value="500"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="72"/>
-		<experience value="5207"/>
+		<experience value="5000"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1232,14 +1232,14 @@
 		<type class="pol/rycerze" subclass="rycerz_zloty" tileid="pol_rycerze.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="551"/>
-			<def value="41"/>
-			<hp value="583"/>
+			<atk value="616"/>
+			<def value="88"/>
+			<hp value="500"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="81"/>
-		<experience value="6529"/>
+		<experience value="5800"/>
 		<respawn value="3000"/>
 		<corpse name="human"/>
 		<drops>
@@ -1260,14 +1260,14 @@
 		<type class="pol/rycerze" subclass="czarny_rycerz" tileid="pol_rycerze.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="694"/>
-			<def value="47"/>
-			<hp value="734"/>
+			<atk value="600"/>
+			<def value="40"/>
+			<hp value="800"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="102"/>
-		<experience value="11303"/>
+		<experience value="6020"/>
 		<respawn value="3020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1292,14 +1292,14 @@
 		<type class="pol/rycerze" subclass="straznik" tileid="pol_rycerze.png:5"/>
 		<description/>
 		<attributes>
-			<atk value="626"/>
-			<def value="44"/>
-			<hp value="662"/>
+			<atk value="400"/>
+			<def value="35"/>
+			<hp value="800"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="92"/>
-		<experience value="8343"/>
+		<experience value="4820"/>
 		<respawn value="3020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1323,14 +1323,14 @@
 		<type class="pol/rycerze" subclass="straznik_grobli" tileid="pol_rycerze.png:6"/>
 		<description/>
 		<attributes>
-			<atk value="694"/>
-			<def value="47"/>
-			<hp value="734"/>
+			<atk value="475"/>
+			<def value="40"/>
+			<hp value="800"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="102"/>
-		<experience value="11303"/>
+		<experience value="5320"/>
 		<respawn value="4020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1354,14 +1354,14 @@
 		<type class="pol/rycerze" subclass="straznik_bramy" tileid="pol_rycerze.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="830"/>
-			<def value="51"/>
-			<hp value="878"/>
+			<atk value="550"/>
+			<def value="55"/>
+			<hp value="1100"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="122"/>
-		<experience value="15997"/>
+		<experience value="6420"/>
 		<respawn value="3020"/>
 		<corpse name="human"/>
 		<drops>
@@ -1387,14 +1387,14 @@
 		<type class="pol/rycerze_jazda" subclass="rycerz_na_bialym_koniu" tileid="pol_rycerze_jazda.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="1374"/>
-			<def value="68"/>
-			<hp value="1454"/>
+			<atk value="690"/>
+			<def value="90"/>
+			<hp value="2800"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="202"/>
-		<experience value="71420"/>
+		<experience value="25050"/>
 		<respawn value="3020"/>
 		<corpse name="huge_animalhuman" width="2" height="2"/>
 		<drops>

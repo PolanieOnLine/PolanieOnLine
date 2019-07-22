@@ -9,13 +9,13 @@
 		<attributes>
 			<atk value="10000"/>
 			<ratk value="10000"/>
-			<def value="368"/>
+			<def value="362"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
 		</attributes>
 		<level value="880"/>
-		<experience value="1484499"/>
+		<experience value="763000"/>
 		<respawn value="190000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
@@ -62,7 +62,7 @@
 			<size value="3,3"/>
 		</attributes>
 		<level value="990"/>
-		<experience value="1877295"/>
+		<experience value="963000"/>
 		<respawn value="190000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>

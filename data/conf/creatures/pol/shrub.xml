@@ -7,15 +7,15 @@
 		<type class="pol/krzewy" subclass="pokrzywy" tileid="pol_krzewy.png:0"/>
 		<description>Lepiej omijaj parzące pokrzywy!</description>
 		<attributes>
-			<atk value="48"/>
-			<def value="8"/>
-			<hp value="50"/>
+			<atk value="50"/>
+			<def value="30"/>
+			<hp value="54"/>
 			<speed value="0.0"/>
 			<size value="2,2"/>
 			<resistance value="50"/>
 		</attributes>
 		<level value="7"/>
-		<experience value="70"/>
+		<experience value="61"/>
 		<respawn value="904"/>
 		<corpse name="flora_big"/>
 		<drops>
@@ -38,15 +38,15 @@
 		<type class="pol/krzewy" subclass="ostrokrzew" tileid="pol_krzewy.png:1"/>
 		<description>Lepiej omijaj kłujący ostrokrzew!</description>
 		<attributes>
-			<atk value="75"/>
-			<def value="12"/>
-			<hp value="79"/>
+			<atk value="90"/>
+			<def value="40"/>
+			<hp value="74"/>
 			<speed value="0.0"/>
 			<size value="2,2"/>
 			<resistance value="50"/>
 		</attributes>
 		<level value="11"/>
-		<experience value="110"/>
+		<experience value="81"/>
 		<respawn value="904"/>
 		<corpse name="flora_big"/>
 		<drops/>
@@ -67,15 +67,15 @@
 		<type class="pol/krzewy" subclass="krzew_wedrujacy" tileid="pol_krzewy.png:2"/>
 		<description>Uciekaj! Ten krzak cię goni!</description>
 		<attributes>
-			<atk value="61"/>
-			<def value="10"/>
-			<hp value="65"/>
+			<atk value="80"/>
+			<def value="50"/>
+			<hp value="84"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
 			<resistance value="75"/>
 		</attributes>
 		<level value="9"/>
-		<experience value="90"/>
+		<experience value="92"/>
 		<respawn value="904"/>
 		<corpse name="flora_big"/>
 		<drops/>
@@ -92,21 +92,21 @@
 		</ai>
 	</creature>
 	<!-- END: krzewy -->
-	
+
 	<!-- START: chochol -->
 	<creature name="chochoł">
 		<type class="pol/chocholy" subclass="chochol" tileid="pol_chocholy.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="68"/>
-			<def value="11"/>
-			<hp value="72"/>
+			<atk value="66"/>
+			<def value="10"/>
+			<hp value="50"/>
 			<speed value="0.1"/>
 			<size value="1,1"/>
 			<resistance value="75"/>
 		</attributes>
 		<level value="10"/>
-		<experience value="100"/>
+		<experience value="22"/>
 		<respawn value="987"/>
 		<corpse name="flora"/>
 		<drops>
@@ -128,15 +128,15 @@
 		<type class="pol/chocholy" subclass="chochol_suchy" tileid="pol_chocholy.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="102"/>
-			<def value="15"/>
-			<hp value="135"/>
+			<atk value="77"/>
+			<def value="11"/>
+			<hp value="100"/>
 			<speed value="0.2"/>
 			<size value="1,1"/>
 			<resistance value="75"/>
 		</attributes>
 		<level value="15"/>
-		<experience value="259"/>
+		<experience value="33"/>
 		<respawn value="999"/>
 		<corpse name="flora"/>
 		<drops>
@@ -159,15 +159,15 @@
 		<type class="pol/chocholy" subclass="chochol_wielki" tileid="pol_chocholy.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="136"/>
-			<def value="18"/>
-			<hp value="144"/>
+			<atk value="99"/>
+			<def value="12"/>
+			<hp value="250"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
 			<resistance value="75"/>
 		</attributes>
 		<level value="20"/>
-		<experience value="449"/>
+		<experience value="44"/>
 		<respawn value="1111"/>
 		<corpse name="flora_big"/>
 		<drops>
