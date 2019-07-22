@@ -1234,6 +1234,7 @@ Południe: Zakopane
 	<!-- Dwarf blacksmith -->
 	<zone name="int_krakow_dwarf_blacksmith" file="interiors/krakow/dwarf_blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.blacksmith.HadrinNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">hammer-1, smith-1</parameter>
