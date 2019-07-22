@@ -146,7 +146,7 @@
 			<atk value="50"/>
 			<ratk value="99"/>
 			<def value="10"/>
-			<range value="9"/>
+			<range value="10"/>
 			<min_level value="400"/>
 		</attributes>
 		<weight value="5.0"/>
