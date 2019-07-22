@@ -194,7 +194,7 @@
 			<destination zone="int_dragon_knights_main_hall" ref="main_hall_2_exit"/>
 		</portal>
 		<portal x="7" y="8" ref="guard_room_1_exit">
-			<destination zone="int_dragon_knights_courtyard" ref="guard_room_2_entrance"/>
+			<destination zone="int_dragon_knights_courtyard" ref="guard_room_1_entrance"/>
 		</portal>
 		<portal x="16" y="8" ref="guard_room_2_exit">
 			<destination zone="int_dragon_knights_courtyard" ref="guard_room_2_entrance"/>
