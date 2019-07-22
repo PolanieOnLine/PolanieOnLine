@@ -355,7 +355,7 @@ kopalnia węgla!
 
 	<!-- Level -1 -->
 
-	<zone name="-1_koscielisko_kopalnia" level="-1" x="513440" y="18048" file="Level -1/koscielisko/kopalnia.tmx">
+	<zone name="-1_koscielisko_kopalnia" level="-1" x="513056" y="18432" file="Level -1/koscielisko/kopalnia.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
@@ -441,7 +441,7 @@ kopalnia węgla!
 	</zone>
 	
 	<!-- koscielisko_coalmine -->
-	<zone name="-1_koscielisko_coalmine" level="-1" x="513696" y="18048" file="Level -1/koscielisko/coalmine.tmx">
+	<zone name="-1_koscielisko_coalmine" level="-1" x="512928" y="18560" file="Level -1/koscielisko/coalmine.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -528,7 +528,7 @@ kopalnia węgla!
 	</zone>
 	
 	<!-- -1_koscielisko_cave -->
-	<zone name="-1_koscielisko_cave" level="-1" x="513696" y="18048" file="Level -1/koscielisko/-1_cave.tmx">
+	<zone name="-1_koscielisko_cave" level="-1" x="512928" y="18432" file="Level -1/koscielisko/-1_cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -550,7 +550,7 @@ kopalnia węgla!
 	<!-- Level -2 -->
 	
 	<!-- -2_koscielisko_cave -->
-	<zone name="-2_koscielisko_cave" level="-1" x="513696" y="18048" file="Level -2/koscielisko/-2_cave.tmx">
+	<zone name="-2_koscielisko_cave" level="-2" x="512928" y="18432" file="Level -2/koscielisko/-2_cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -571,7 +571,7 @@ kopalnia węgla!
 
 	<!-- Level -3 -->
 	
-	<zone name="-3_koscielisko_cave" level="-1" x="513696" y="18048" file="Level -3/koscielisko/-3_cave.tmx">
+	<zone name="-3_koscielisko_cave" level="-3" x="512928" y="18432" file="Level -3/koscielisko/-3_cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
