@@ -374,7 +374,7 @@
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 		<portal x="89" y="70" ref="wawelski_entrance">
-			<destination zone="-1_krakow_cave" ref="wawelski_exit"/>
+			<destination zone="-1_krakow_cave_sw" ref="wawelski_exit"/>
 		</portal>
 	</zone>
 
@@ -1647,7 +1647,7 @@ Południe: Zakopane
 
 	<!-- Level -1 -->
 	<!-- krakow rynek -->
-	<zone name="-1_krakow_canals" level="-1" x="513312" y="17792" file="Level -1/krakow/canals.tmx">
+	<zone name="-1_krakow_canals" level="-1" x="513440" y="17792" file="Level -1/krakow/canals.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -1664,8 +1664,8 @@ Południe: Zakopane
 		</portal>
 	</zone>
 
-	<!-- Wawels cave -->
-	<zone name="-1_krakow_cave" level="-1" x="513568" y="18048" file="Level -1/krakow/smok_wawelski_cave.tmx">
+	<!-- Wawels cave sw -->
+	<zone name="-1_krakow_cave_sw" level="-1" x="513568" y="18048" file="Level -1/krakow/smok_wawelski_cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -1689,11 +1689,32 @@ Południe: Zakopane
 			<destination zone="0_krakow_wawel_w" ref="wawelski_entrance"/>
 		</portal>
 		<portal x="17" y="92" ref="smokwawelski_entrance">
-			<destination zone="-1_krakow_cave" ref="smokwawelski_exit"/>
+			<destination zone="-1_krakow_cave_sw" ref="smokwawelski_exit"/>
 		</portal>
 		<portal x="17" y="93" ref="smokwawelski_exit">
-			<destination zone="-1_krakow_cave" ref="smokwawelski_entrance"/>
+			<destination zone="-1_krakow_cave_sw" ref="smokwawelski_entrance"/>
 		</portal>
+	</zone>
+	<!-- cave se -->
+	<zone name="-1_krakow_cave_se" level="-1" x="513696" y="18048" file="Level -1/krakow/cave_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="98" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">ghost-1, ghost-2, saur-4</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- Level -2 -->
