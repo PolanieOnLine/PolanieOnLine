@@ -24,13 +24,13 @@ public class KuzniceMonsterQuestAchievementFactory extends AbstractAchievementFa
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> questAchievements = new LinkedList<Achievement>();
-		questAchievements.add(createAchievement("quest.special.daily_kuznice.0010", "Pomocna dłoń", "Ukończył codzienne zadanie na potwory 10 razy",
+		questAchievements.add(createAchievement("quest.special.daily_kuznice.0010", "Pomocna dłoń", "Ukończył co dwudniowe zadanie na potwory 10 razy",
 												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 9)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice.0025", "Ochroniaż dzielnicy", "Ukończył codzienne zadanie na potwory 25 razy",
+		questAchievements.add(createAchievement("quest.special.daily_kuznice.0025", "Ochroniaż dzielnicy", "Ukończył co dwudniowe zadanie na potwory 25 razy",
 												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 24)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice.0050", "Strażnik Kuźnic", "Ukończył codzienne zadanie na potwory 50 razy",
+		questAchievements.add(createAchievement("quest.special.daily_kuznice.0050", "Strażnik Kuźnic", "Ukończył co dwudniowe zadanie na potwory 50 razy",
 												Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 49)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice.0100", "Bohater Kuźnic", "Ukończył codzienne zadanie na potwory 100 razy",
+		questAchievements.add(createAchievement("quest.special.daily_kuznice.0100", "Bohater Kuźnic", "Ukończył co dwudniowe zadanie na potwory 100 razy",
 												Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 99)));
 		//questAchievements.add(createAchievement("quest.special.daily_kuznice.0250", "Prawa ręka Sołtysa", "Ukończył codzienne zadanie na potwory 250 razy",
 		//										Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 249)));
