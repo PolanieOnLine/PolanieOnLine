@@ -35,7 +35,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
 - Poprawiono niektórym potworowom przenikanie oraz przezroczystość
-- Poprawiono osiągniecie 'Wszędzie piasek?!'
+- Poprawiono osiągniecia: 'Wszędzie piasek?!', za wykonanie zadania w kuźnicach, 'Łowca mrocznych aniołów'
 
 
 1.01.2
