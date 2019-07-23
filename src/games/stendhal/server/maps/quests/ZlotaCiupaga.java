@@ -205,7 +205,8 @@ public class ZlotaCiupaga extends AbstractQuest {
 				final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
 				final long timeRemaining = Long.parseLong(tokens[1]) + delay
 						- System.currentTimeMillis();
-					if (timeRemaining > 0L) {
+					
+				if (timeRemaining > 0L) {
 					raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
 						+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
 						+ ", aby odebrać nagrodę. No chyba że chcesz abym odlał dla ciebie #żelazo.");
