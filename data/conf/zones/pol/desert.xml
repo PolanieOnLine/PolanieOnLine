@@ -375,7 +375,7 @@
 	<!-- Level -7 -->
 
 	<!-- Level 1 -->
-	<zone name="1_desert_ice_pyramid" level="1" x="513312" y="128" file="Level 1/desert/ice_pyramid.tmx">
+	<zone name="1_desert_ice_pyramid" file="Level 1/desert/ice_pyramid.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -479,7 +479,7 @@
 	</zone>
 
 	<!-- Level 2 -->
-	<zone name="2_desert_ice_pyramid" level="2" x="513312" y="128" file="Level 2/desert/ice_pyramid.tmx">
+	<zone name="2_desert_ice_pyramid" file="Level 2/desert/ice_pyramid.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -516,7 +516,7 @@
 	</zone>
 
 	<!-- Level 3 -->
-	<zone name="3_desert_ice_pyramid" level="3" x="513312" y="128" file="Level 3/desert/ice_pyramid.tmx">
+	<zone name="3_desert_ice_pyramid" file="Level 3/desert/ice_pyramid.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -553,7 +553,7 @@
 	</zone>
 
 	<!-- Level 4 -->
-	<zone name="4_desert_ice_pyramid" level="4" x="513312" y="128" file="Level 4/desert/ice_pyramid.tmx">
+	<zone name="4_desert_ice_pyramid" file="Level 4/desert/ice_pyramid.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -590,7 +590,7 @@
 	</zone>
 
 	<!-- Level 5 -->
-	<zone name="5_desert_ice_pyramid" level="5" x="513312" y="128" file="Level 5/desert/ice_pyramid.tmx">
+	<zone name="5_desert_ice_pyramid" file="Level 5/desert/ice_pyramid.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
