@@ -348,8 +348,52 @@ kopalnia węgla!
 	
 	<!-- zamek zrc -->
 	<zone name="int_koscielisko_zamek_zrc" file="interiors/koscielisko/zrc.tmx">
+		<!-- left -->
+		<portal x="0" y="9" ref="left1">
+			<destination zone="int_koscielisko_zamek_zrc_left" ref="exit_left1"/>
+		</portal>
+		<portal x="0" y="10" ref="left2">
+			<destination zone="int_koscielisko_zamek_zrc_left" ref="exit_left2"/>
+		</portal>
+		
+		<!-- right -->
+		<portal x="19" y="9" ref="right1">
+			<destination zone="int_koscielisko_zamek_zrc_right" ref="exit_right1"/>
+		</portal>
+		<portal x="19" y="10" ref="right2">
+			<destination zone="int_koscielisko_zamek_zrc_right" ref="exit_right2"/>
+		</portal>
+
 		<portal x="9" y="18" ref="wyjscie_zamek_zrc">
 			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek_zrc"/>
+		</portal>
+	</zone>
+	
+	<!-- zamek zrc left -->
+	<zone name="int_koscielisko_zamek_zrc_left" file="interiors/koscielisko/zrc_left.tmx">
+		<portal x="19" y="9" ref="exit_left1">
+			<destination zone="int_koscielisko_zamek_zrc" ref="left1"/>
+		</portal>
+		<portal x="19" y="10" ref="exit_left2">
+			<destination zone="int_koscielisko_zamek_zrc" ref="left2"/>
+		</portal>
+		
+		<portal x="6" y="18" ref="wyjscie_zamek_zrc_left">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek_zrc_left"/>
+		</portal>
+	</zone>
+	
+	<!-- zamek zrc right -->
+	<zone name="int_koscielisko_zamek_zrc_right" file="interiors/koscielisko/zrc_right.tmx">
+		<portal x="0" y="9" ref="exit_right1">
+			<destination zone="int_koscielisko_zamek_zrc" ref="right1"/>
+		</portal>
+		<portal x="0" y="10" ref="exit_right2">
+			<destination zone="int_koscielisko_zamek_zrc" ref="right2"/>
+		</portal>
+		
+		<portal x="13" y="18" ref="wyjscie_zamek_zrc_right">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek_zrc_right"/>
 		</portal>
 	</zone>
 
@@ -793,6 +837,20 @@ kopalnia węgla!
 		
 		<portal x="87" y="14" ref="wejscie_zamek_zrc">
 			<destination zone="int_koscielisko_zamek_zrc" ref="wyjscie_zamek_zrc"/>
+		</portal>
+		
+		<portal x="83" y="12" ref="wejscie_zamek_zrc_left">
+			<destination zone="int_koscielisko_zamek_zrc_left" ref="wyjscie_zamek_zrc_left"/>
+		</portal>
+		<portal x="84" y="12" ref="wejscie_zamek_zrc_left">
+			<destination zone="int_koscielisko_zamek_zrc_left" ref="wyjscie_zamek_zrc_left"/>
+		</portal>
+		
+		<portal x="95" y="12" ref="wejscie_zamek_zrc_right">
+			<destination zone="int_koscielisko_zamek_zrc_right" ref="wyjscie_zamek_zrc_right"/>
+		</portal>
+		<portal x="96" y="12" ref="wejscie_zamek_zrc_right">
+			<destination zone="int_koscielisko_zamek_zrc_right" ref="wyjscie_zamek_zrc_right"/>
 		</portal>
 	</zone>
 
