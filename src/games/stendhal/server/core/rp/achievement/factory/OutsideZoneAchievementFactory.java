@@ -7,7 +7,6 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.PlayerVisitedZonesCondition;
 import games.stendhal.server.entity.npc.condition.PlayerVisitedZonesInRegionCondition;
-import games.stendhal.client.entity.User;
 /**
  * Factory for zone achievements
  *
@@ -80,9 +79,9 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("koscielisko", Boolean.TRUE, Boolean.TRUE)));
 
-		list.add(createAchievement("zone.outside.dragon_land", "Smocza kraina", "Odwiedził wszystkie obszary smoczej krainy",
-				Achievement.MEDIUM_BASE_SCORE, true,
-				new PlayerVisitedZonesCondition("0_dragon_land_s", "0_dragon_land_n")));
+		list.add(createAchievement("zone.outside.dragonland", "Smocza kraina", "Odwiedził wszystkie obszary smoczej krainy",
+									Achievement.MEDIUM_BASE_SCORE, true,
+									new PlayerVisitedZonesCondition("0_dragon_land_s", "0_dragon_land_n")));
 
 		//All interior zone achievements
 
@@ -94,16 +93,16 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 												"int_krakow_bank_0")));
 
 		list.add(createAchievement("zone.special.afterlife", "Widziałem światło", "Poznał życie pozagrobowe",
-				Achievement.EASY_BASE_SCORE, true,
-				new PlayerVisitedZonesCondition("int_afterlife")));
+									Achievement.EASY_BASE_SCORE, true,
+									new PlayerVisitedZonesCondition("int_afterlife")));
 
 		list.add(createAchievement("zone.special.bankersecret", "Sekret bankiera", "Odwiedził prywatny skarbiec",
-				Achievement.EASY_BASE_SCORE, true,
-				new PlayerVisitedZonesCondition(User.getCharacterName()+"_vault")));
+									Achievement.EASY_BASE_SCORE, true,
+									new PlayerVisitedZonesCondition("int_vault")));
 
 		list.add(createAchievement("zone.special.allvisited", "Widziałem już wszystko", "Odwiedził niebo, piekło, chmury oraz więzienie",
-				Achievement.MEDIUM_BASE_SCORE, true,
-				new PlayerVisitedZonesCondition("int_afterlife", "hell", "int_koscielisko_jail", "7_kikareukin_clouds")));
+									Achievement.MEDIUM_BASE_SCORE, true,
+									new PlayerVisitedZonesCondition("int_afterlife", "hell", "int_koscielisko_jail", "7_kikareukin_clouds")));
 
 		return list;
 	}
