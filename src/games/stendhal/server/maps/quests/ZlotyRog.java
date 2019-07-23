@@ -139,6 +139,7 @@ public class ZlotyRog extends AbstractQuest {
 		ciupagaactions.add(new DropItemAction("pióro archanioła",10));
 		ciupagaactions.add(new DropItemAction("pióro mrocznego anioła",8));
 		ciupagaactions.add(new DropItemAction("pióro upadłego anioła",20));
+		ciupagaactions.add(new DropItemAction("pióro archanioła ciemności",7));
 		ciupagaactions.add(new DropItemAction("pióro serafina",2));
 		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "make;" + System.currentTimeMillis()));
 
@@ -149,6 +150,7 @@ public class ZlotyRog extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("pióro archanioła",10),
 								 new PlayerHasItemWithHimCondition("pióro mrocznego anioła",8),
 								 new PlayerHasItemWithHimCondition("pióro upadłego anioła",20),
+								 new PlayerHasItemWithHimCondition("pióro archanioła ciemności",7),
 								 new PlayerHasItemWithHimCondition("pióro serafina",2)),
 				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za godzinę a złoty róg będzie gotowy. Przypomnij mi mówiąc: #/nagroda/.",
 				new MultipleActions(ciupagaactions));
@@ -161,6 +163,7 @@ public class ZlotyRog extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("pióro archanioła",10),
 												  new PlayerHasItemWithHimCondition("pióro mrocznego anioła",8),
 												  new PlayerHasItemWithHimCondition("pióro upadłego anioła",20),
+												  new PlayerHasItemWithHimCondition("pióro archanioła ciemności",7),
 												  new PlayerHasItemWithHimCondition("pióro serafina",2)))),
 				ConversationStates.ATTENDING, "Potrzebuję:\n"
 									+"#'100 piórek gołębich'\n"
@@ -168,6 +171,7 @@ public class ZlotyRog extends AbstractQuest {
 									+"#'10 piór archanioła'\n"
 									+"#'8 piór mrocznego anioła'\n"
 									+"#'20 piór upadłego anioła'\n"
+									+"#'7 piór archanioła ciemności'\n"
 									+"#'2 pióra serafina'\n"
 									+"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #przypomnij. Dziękuję!", null);
 
@@ -197,7 +201,7 @@ public class ZlotyRog extends AbstractQuest {
 						return;
 					}
 
-					raiser.say("Warto było czekać. A oto i złoty róg. Dowidzenia!");
+					raiser.say("A oto i złoty róg. Dowidzenia!");
 					player.addXP(20000);
 					player.addKarma(100);
 					final Item zlotyRog = SingletonRepository.getEntityManager().getItem("złoty róg");
@@ -246,6 +250,14 @@ public class ZlotyRog extends AbstractQuest {
 			null,
 			ConversationStates.ATTENDING,
 			"Błąka się gdzieś po kikareukin.",
+			null);
+
+		npc.add(
+			ConversationStates.ANY,
+			"pióro archanioła ciemności",
+			null,
+			ConversationStates.ATTENDING,
+			"Lepiej mieć ostrożność jak go spotkasz.",
 			null);
 
 		npc.add(
