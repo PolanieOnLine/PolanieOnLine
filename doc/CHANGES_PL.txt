@@ -36,6 +36,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Poprawiono grafiki kanibali
 - Poprawiono niektórym potworowom przenikanie oraz przezroczystość
 - Poprawiono osiągniecia: 'Wszędzie piasek?!', za wykonanie zadania w kuźnicach, 'Łowca mrocznych aniołów'
+- Potencjalnie poprawiono możliwość wypożyczenia specjalnych ubrań u Liliany oraz Saskia
 
 
 1.01.2
