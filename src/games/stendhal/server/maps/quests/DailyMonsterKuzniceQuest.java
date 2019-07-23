@@ -60,7 +60,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 	private final SpeakerNPC npc = npcs.get("Sołtys");
 	private static Logger logger = Logger.getLogger("DailyMonsterKuzniceQuest");
 
-	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
+	private final static int delay = 2 * MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
 
 
@@ -429,7 +429,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 						new IncreaseXPDependentOnLevelAction(4, 110.0),
 						new IncreaseAtkXPDependentOnLevelAction(4, 110.0),
 						new IncreaseDefXPDependentOnLevelAction(4, 110.0),
-						new IncreaseRatkXPDependentOnLevelAction(5, 100.0),
+						new IncreaseRatkXPDependentOnLevelAction(10, 100.0),
 						new IncreaseKarmaAction(5.0),
 						new IncrementQuestAction(QUEST_SLOT, 2, 1),
 						new SetQuestToTimeStampAction(QUEST_SLOT,1),
