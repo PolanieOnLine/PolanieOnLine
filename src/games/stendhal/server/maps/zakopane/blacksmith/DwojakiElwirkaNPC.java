@@ -51,10 +51,7 @@ public class DwojakiElwirkaNPC implements ZoneConfigurator  {
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(2,13));
-				nodes.add(new Node(3,13));
-				nodes.add(new Node(2,13));
 				nodes.add(new Node(4,13));
-				nodes.add(new Node(2,13));
 				setPath(new FixedPath(nodes, true));
 			}
 
