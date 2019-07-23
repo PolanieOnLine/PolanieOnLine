@@ -27,6 +27,9 @@
  <tileset firstgid="120" name="latarnia_blask" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blask.png" width="160" height="160"/>
  </tileset>
+ <tileset firstgid="145" name="pol_rycerze" tilewidth="32" tileheight="32" tilecount="8" columns="8">
+  <image source="../../tileset/logic/creature/pol_rycerze.png" width="256" height="32"/>
+ </tileset>
  <layer id="1" name="0_floor" width="20" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACuNiYGDgQsMaRGJ0fbjwYDIPXY5Ys4YbVscjp0mGeap45NTo7Dd8biEWI7tZiwrmaQ+COB8OGFeexpeeSTFrsJVX5JhJijmUYgB7NpmsQAYAAA==
@@ -54,7 +57,7 @@
  </layer>
  <layer id="6" name="objects" width="20" height="20">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGAWjYBSMglEwCkgHADV9EcVABgAA
+   H4sIAAAAAAAACmNgGAVDCUwfaAfQGAy0/2ZQqH8aHe0aCECK/4aCPaOAMgAAYVXWL0AGAAA=
   </data>
  </layer>
  <layer id="7" name="collision" width="20" height="20" opacity="0.5">
