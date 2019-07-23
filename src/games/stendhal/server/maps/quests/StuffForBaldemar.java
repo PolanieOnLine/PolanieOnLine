@@ -181,7 +181,7 @@ public class StuffForBaldemar extends AbstractQuest {
 					if (player.hasKilledSolo("czarny olbrzym") && !missingSomething) {
 						raiser.say("Przyniosłeś wszystko. Teraz wykuję tarczę. Wróć za "
 							+ REQUIRED_MINUTES
-							+ " minutę" + ", a będzie gotowa.");
+							+ " minut" + ", a będzie gotowa.");
 						player.setQuest(QUEST_SLOT, "forging;" + System.currentTimeMillis());
 					} else {
 						if (!player.hasKilledSolo("czarny olbrzym") && !missingSomething) {
