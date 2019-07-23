@@ -45,7 +45,7 @@ import games.stendhal.server.util.TimeUtil;
  */
 
 public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
-	private static final int REQUIRED_MINUTES = 2880;
+	private static final int REQUIRED_MINUTES = 1440;
 
 	private static final String QUEST_SLOT = "ciupaga_trzy_wasy";
 
@@ -149,7 +149,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("money",2000000),
 								 new PlayerHasItemWithHimCondition("polano",50),
 								 new PlayerHasItemWithHimCondition("pióro azazela",1)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 48 godzin a złota ciupaga z trzema wąsami będzie gotowa. Przypomnij mi mówiąc #/nagroda/.",
+				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 24 godzin a złota ciupaga z trzema wąsami będzie gotowa. Przypomnij mi mówiąc #/nagroda/.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
