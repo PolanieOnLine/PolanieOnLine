@@ -341,7 +341,7 @@
 		<description/>
 		<attributes>
 			<atk value="2999"/>
-			<def value="999"/>
+			<def value="777"/>
 			<hp value="1100"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
@@ -377,7 +377,7 @@
 		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
 		<attributes>
 			<atk value="3837"/>
-			<def value="1111"/>
+			<def value="999"/>
 			<hp value="1100"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -415,7 +415,7 @@
 		<description/>
 		<attributes>
 			<atk value="22222"/>
-			<def value="999"/>
+			<def value="666"/>
 			<hp value="19000"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>
