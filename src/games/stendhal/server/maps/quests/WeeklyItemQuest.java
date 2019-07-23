@@ -275,7 +275,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 				int goldamount;
 				final StackableItem money = (StackableItem) SingletonRepository.getEntityManager()
 								.getItem("money");
-				goldamount = 100 * Rand.roll1D6();
+				goldamount = 100 * Rand.roll1D20();
 				money.setQuantity(goldamount);
 				player.equipOrPutOnGround(money);
 				raiser.say("Wspaniale! Oto " + Integer.toString(goldamount) + " money na pokrycie wydatków.");
