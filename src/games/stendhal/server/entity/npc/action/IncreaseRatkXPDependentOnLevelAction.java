@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.action;
 
+import games.stendhal.common.Level;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
@@ -41,7 +42,9 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		int reward = (int) ((player.getRatkXP()/(ratk_xpDiff))/5);
+		final int start = Level.getXP(player.getLevel());
+		final int next = Level.getXP(player.getLevel() + 1);
+		int reward = (int) (((next - start) / (ratk_xpDiff) / 10) / 2);
 		player.setRatkXP(reward + player.getRatkXP());
 		player.notifyWorldAboutChanges();
 	}
