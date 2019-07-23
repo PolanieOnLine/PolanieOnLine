@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="23" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="1">
+ <tileset firstgid="1" name="book" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/documents/book.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="5" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="6" name="dzbanek_filizanka" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/pol/wyposazenie/dzbanek_filizanka.png" width="64" height="32"/>
+ </tileset>
+ <tileset firstgid="8" name="miecze" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/pol/wyposazenie/miecze.png" width="256" height="128"/>
+ </tileset>
+ <tileset firstgid="40" name="roslinki_doniczki" tilewidth="32" tileheight="32" tilecount="32" columns="16">
+  <image source="../../tileset/pol/natura/kwiaty/roslinki_doniczki.png" width="512" height="64"/>
+ </tileset>
+ <tileset firstgid="72" name="swiecznik" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/pol/oswietlenie/swiecznik.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="73" name="chest_2" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/item/chest/chest_2.png" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="79" name="bottles_and_cups" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/item/drink/bottles_and_cups.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="95" name="brown" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/ground/brown.png" width="160" height="32"/>
+ </tileset>
+ <tileset firstgid="100" name="pol_rycerze" tilewidth="32" tileheight="32" tilecount="8" columns="8">
+  <image source="../../tileset/logic/creature/pol_rycerze.png" width="256" height="32"/>
+ </tileset>
+ <tileset firstgid="108" name="sciany" tilewidth="32" tileheight="32" tilecount="30" columns="5">
+  <image source="../../tileset/pol/domki/kosciol_sciany.png" width="160" height="192"/>
+ </tileset>
+ <tileset firstgid="138" name="posadzka" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/ground/slate_tiles.png" width="160" height="96"/>
+ </tileset>
+ <tileset firstgid="153" name="grey_plain" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/furniture/table/grey_plain.png" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="162" name="greenish_grey" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/furniture/chair/greenish_grey.png" width="64" height="64"/>
+ </tileset>
+ <layer id="9" name="0_floor" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACpvAwMAwYRSP4lE8ikfxKKYTLoJiWphJSwwAcXyH7jAHAAA=
+  </data>
+ </layer>
+ <layer id="10" name="1_terrain" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACtXQOwqAMBBF0VmqWxAVOxsbUUEs49/oQn2FAasQJxnQBwdSXYZkRJQLSCGBQkB8t0sBpl0JMO0amoDaR7ujsOs/0D4c3m/bGhQMFiOczLsnmC0W5t2Sbe3Y5v7JCpvFzrzbZ39vk1DbTLLtuijwDT67AO3b/v4wBwAA
+  </data>
+ </layer>
+ <layer id="11" name="2_object" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgoB+QxCLmQYCPSx86UITSPEDMS0AtFxBzo+kbBYSBz0A7gMqAHUprY5FTQZInF0ggsZWhtA0J+vGFtwKUZkESY6PAPBhgZ0D1NzOSOCcD5WGylAj2QAFqp2965ReLQW7ecAIATdzuZDAHAAA=
+  </data>
+ </layer>
+ <layer id="12" name="3_roof" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAXDCXgOtANGGKB2eI/GH34wVMNbg0bmFVPZXBgoBOICIM6lAc5HsqeIipgeAAByomm7MAcAAA==
+  </data>
+ </layer>
+ <layer id="13" name="4_roof_add" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBSAADsaPQpGwSgYBcgAABF3+RcwBwAA
+  </data>
+ </layer>
+ <layer id="14" name="objects" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAXDEWTTWX8WDvF0Ct1BC5BCgtpUmrlicIE0EtRm0MwVlIFMHOK40uZAAHrny1FAXQAANDso6zAHAAA=
+  </data>
+ </layer>
+ <layer id="15" name="collision" width="23" height="20" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNlYGBgHcV0xbQAtDSfHmbTAhAym5K4IqSGXLPJUUOO2bgANcKEFoBWaZCWeXOo5nl6upvY9DbQZTYMAwBQ/HPVMAcAAA==
+  </data>
+ </layer>
+ <layer id="16" name="protection" width="23" height="20">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBSMglEwCkYBIQAA+nCmBTAHAAA=
+  </data>
+ </layer>
+</map>

@@ -364,13 +364,39 @@ kopalnia węgla!
 			<destination zone="int_koscielisko_zamek_zrc_right" ref="exit_right2"/>
 		</portal>
 
+		<portal x="10" y="3" ref="meeting">
+			<destination zone="int_koscielisko_zamek_zrc_meeting_room" ref="exit_meeting"/>
+		</portal>
+
 		<portal x="9" y="18" ref="wyjscie_zamek_zrc">
 			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek_zrc"/>
 		</portal>
 	</zone>
 	
+	<!-- zamek zrc - meeting room -->
+	<zone name="int_koscielisko_zamek_zrc_meeting_room" file="interiors/koscielisko/zrc_meeting_room.tmx">
+		<portal x="11" y="18" ref="exit_meeting">
+			<destination zone="int_koscielisko_zamek_zrc" ref="meeting"/>
+		</portal>
+	</zone>
+	
+	<!-- zamek zrc tower left -->
+	<zone name="int_koscielisko_zamek_zrc_tower_left" file="interiors/koscielisko/zrc_tower_left.tmx">
+		<portal x="20" y="18" ref="exit_l_up">
+			<destination zone="int_koscielisko_zamek_zrc_left" ref="l_up"/>
+		</portal>
+		
+		<portal x="4" y="18" ref="wyjscie_zamek_zrc_tower_left">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek_zrc_tower_left"/>
+		</portal>
+	</zone>
+	
 	<!-- zamek zrc left -->
 	<zone name="int_koscielisko_zamek_zrc_left" file="interiors/koscielisko/zrc_left.tmx">
+		<portal x="3" y="6" ref="l_up">
+			<destination zone="int_koscielisko_zamek_zrc_tower_left" ref="exit_l_up"/>
+		</portal>
+
 		<portal x="19" y="9" ref="exit_left1">
 			<destination zone="int_koscielisko_zamek_zrc" ref="left1"/>
 		</portal>
@@ -383,8 +409,19 @@ kopalnia węgla!
 		</portal>
 	</zone>
 	
+	<!-- zamek zrc barrack -->
+	<zone name="int_koscielisko_zamek_zrc_barrack" file="interiors/koscielisko/zrc_right_barrack.tmx">
+		<portal x="4" y="18" ref="exit_b_up">
+			<destination zone="int_koscielisko_zamek_zrc_right" ref="b_up"/>
+		</portal>
+	</zone>
+	
 	<!-- zamek zrc right -->
 	<zone name="int_koscielisko_zamek_zrc_right" file="interiors/koscielisko/zrc_right.tmx">
+		<portal x="16" y="6" ref="b_up">
+			<destination zone="int_koscielisko_zamek_zrc_barrack" ref="exit_b_up"/>
+		</portal>
+
 		<portal x="0" y="9" ref="exit_right1">
 			<destination zone="int_koscielisko_zamek_zrc" ref="right1"/>
 		</portal>
@@ -851,6 +888,10 @@ kopalnia węgla!
 		</portal>
 		<portal x="96" y="12" ref="wejscie_zamek_zrc_right">
 			<destination zone="int_koscielisko_zamek_zrc_right" ref="wyjscie_zamek_zrc_right"/>
+		</portal>
+
+		<portal x="80" y="9" ref="wejscie_zamek_zrc_tower_left">
+			<destination zone="int_koscielisko_zamek_zrc_tower_left" ref="wyjscie_zamek_zrc_tower_left"/>
 		</portal>
 	</zone>
 
