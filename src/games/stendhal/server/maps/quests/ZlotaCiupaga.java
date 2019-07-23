@@ -220,7 +220,6 @@ public class ZlotaCiupaga extends AbstractQuest {
 				zlotaCiupaga.setBoundTo(player.getName());
 				player.equipOrPutOnGround(zlotaCiupaga);
 				player.notifyWorldAboutChanges();
-				player.setQuest(GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT, "rejected");
 				player.setQuest(QUEST_SLOT, "done" + ";" + System.currentTimeMillis());
 			}
 		});
