@@ -42,7 +42,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
 public class ZlotaCiupagaDwaWasy extends AbstractQuest {
-	private static final int REQUIRED_MINUTES = 30;
+	private static final int REQUIRED_MINUTES = 720;
 
 	private static final String QUEST_SLOT = "ciupaga_dwa_wasy";
 
@@ -146,7 +146,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("money",1200000),
 								 new PlayerHasItemWithHimCondition("polano",10),
 								 new PlayerHasItemWithHimCondition("pióro serafina",2)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 30 godzin a złota ciupaga z dwoma wąsami będzie gotowa. Przypomnij mi mówiąc #/nagroda/.",
+				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 12 godzin, a złota ciupaga z dwoma wąsami będzie gotowa. Przypomnij mi mówiąc #/nagroda/.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przypomnij", "Władca Smoków", "władca", "smok"),
@@ -182,10 +182,8 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-
-					final long delay = REQUIRED_MINUTES * MathHelper.SECONDS_IN_ONE_MINUTE; 
+					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
 					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 
