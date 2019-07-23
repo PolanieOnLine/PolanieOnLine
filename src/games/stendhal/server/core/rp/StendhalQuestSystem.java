@@ -236,6 +236,7 @@ public class StendhalQuestSystem {
 		loadQuest(new WawelBrama());
 		loadQuest(new ZabawkaLeo());
 		loadQuest(new ZamowienieStrazy());
+		loadQuest(new ZlotaCiupagaTrzyWasy());
 		/** 					**\
 		 *     DRAGON_KNIGHTS	 *
 		\**	                    **/
