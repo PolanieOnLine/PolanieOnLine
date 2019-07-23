@@ -96,10 +96,6 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesCondition("int_afterlife")));
 
-		list.add(createAchievement("zone.special.bankersecret", "Sekret bankiera", "Odwiedził prywatny skarbiec",
-									Achievement.EASY_BASE_SCORE, true,
-									new PlayerVisitedZonesCondition("int_vault")));
-
 		list.add(createAchievement("zone.special.allvisited", "Widziałem już wszystko", "Odwiedził niebo, piekło, chmury oraz więzienie",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesCondition("int_afterlife", "hell", "int_koscielisko_jail", "7_kikareukin_clouds")));
