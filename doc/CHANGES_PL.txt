@@ -9,7 +9,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Dodano dużo nowych grafik
 
 *świat gry*
-- Dodano dwa nowe zadania
+- Dodano dwa nowe zadania [zadanie dla początkujących graczy w Zakopane oraz zadanie na złotą ciupagę z trzema wąsami]
 - Dodano kilka nowych NPC
 - Dodano kilka nowych osiągnięć
 - Dodano kilka nowych pomieszczeń
@@ -26,6 +26,8 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Usunięto jeden respawn złotej śmierci w lochach dragon_knights
 - Przywrócono stare piętro w banku w Zakopane
 - Wszystkie ciupagi otrzymały wzmocnienie
+- Ponownie zmieniono wzór STR (wzór jest taki sam jak w przypadku ATK oraz DEF - tzn. im większy posiadamy poziom postaci tym więcej dostaniemy punktów doświadczenia do umiejętności)
+- Zadanie w Kuźnicach można robić co 2 dni (tak jak w założeniach miało być)
 
 *naprawiono błędy*
 - Dodano brakujący dźwięk węża
@@ -33,6 +35,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
 - Poprawiono niektórym potworowom przenikanie oraz przezroczystość
+- Poprawiono osiągniecie 'Wszędzie piasek?!'
 
 
 1.01.2
