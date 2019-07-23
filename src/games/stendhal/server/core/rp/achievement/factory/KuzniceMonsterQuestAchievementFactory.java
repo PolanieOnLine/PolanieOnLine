@@ -32,10 +32,10 @@ public class KuzniceMonsterQuestAchievementFactory extends AbstractAchievementFa
 												Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 49)));
 		questAchievements.add(createAchievement("quest.special.daily_kuznice.0100", "Bohater Kuźnic", "Ukończył codzienne zadanie na potwory 100 razy",
 												Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 99)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice.0250", "Prawa ręka Sołtysa", "Ukończył codzienne zadanie na potwory 250 razy",
-												Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 249)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice.0500", "Bohater Kuźnic", "Ukończył codzienne zadanie na potwory 500 razy",
-												Achievement.LEGENDARY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 499)));
+		//questAchievements.add(createAchievement("quest.special.daily_kuznice.0250", "Prawa ręka Sołtysa", "Ukończył codzienne zadanie na potwory 250 razy",
+		//										Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 249)));
+		//questAchievements.add(createAchievement("quest.special.daily_kuznice.0500", "Bohater Kuźnic", "Ukończył codzienne zadanie na potwory 500 razy",
+		//										Achievement.LEGENDARY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 499)));
 
 		return questAchievements;
 	}
