@@ -223,7 +223,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
 			ConversationStates.IDLE, 
 			null, 
-			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad twoim zleceniem. Wróć za "));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszaniem Twojej złotej ciupagi. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("nagroda"),
