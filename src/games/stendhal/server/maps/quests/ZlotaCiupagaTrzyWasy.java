@@ -29,9 +29,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -40,6 +38,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * @author zekkeq
@@ -140,8 +139,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 		ciupagaactions.add(new DropItemAction("money",2000000));
 		ciupagaactions.add(new DropItemAction("polano",50));
 		ciupagaactions.add(new DropItemAction("pióro azazela",1));
-		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;"));
-		ciupagaactions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
+		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;" + System.currentTimeMillis()));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -175,25 +173,27 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 
 	private void step_3() { 
 		final SpeakerNPC npc = npcs.get("Hadrin");
-		final int delay = REQUIRED_HOURS * MathHelper.MINUTES_IN_ONE_HOUR;
-
-		npc.add(ConversationStates.IDLE, 
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
-					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
-			ConversationStates.IDLE, 
-			null, 
-			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad twoim zleceniem. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
-					new TimePassedCondition(QUEST_SLOT, 1, delay)),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;")),
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
+
+					final long delay = REQUIRED_HOURS * MathHelper.MINUTES_IN_ONE_HOUR; 
+					final long timeRemaining = Long.parseLong(tokens[1]) + delay
+							- System.currentTimeMillis();
+
+					if (timeRemaining > 0L) {
+						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
+							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
+							+ ", aby odebrać ciupagę.");
+						return;
+					}
+
 					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała?");
 					player.addXP(1000000);
 					player.addKarma(200);
