@@ -29,7 +29,9 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
+import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -179,7 +181,8 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 		ciupagaactions.add(new DropItemAction("złoty róg",1));
 		ciupagaactions.add(new DropItemAction("polano",4));
 		ciupagaactions.add(new DropItemAction("money",120000));
-		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;" + System.currentTimeMillis()));
+		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;"));
+		ciupagaactions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("done", "przedmioty"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "przedmioty"),
@@ -211,36 +214,32 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 
 	private void step_4() {
 		final SpeakerNPC npc = npcs.get("Józek");
+		final int delay = REQUIRED_MINUTES * MathHelper.SECONDS_IN_ONE_MINUTE;
+
+		npc.add(ConversationStates.IDLE, 
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
+			ConversationStates.IDLE, 
+			null, 
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad twoim zleceniem. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("nagroda"),
+			Arrays.asList("nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-			new QuestStateStartsWithCondition(QUEST_SLOT, "forging;")),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new TimePassedCondition(QUEST_SLOT, 1, delay)),
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
-					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-					final long timeRemaining = (Long.parseLong(tokens[1]) + delay)
-							- System.currentTimeMillis();
-
-					if (timeRemaining > 0L) {
-						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
-							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-							+ ", aby odebrać ciupagę.");
-						return;
-					}
-
 					raiser.say("Warto było czekać. A oto złota ciupaga z wąsem. Dowidzenia!");
 					player.addXP(250000);
 					player.addKarma(100);
-					final Item zlotyRog = SingletonRepository.getEntityManager().getItem("złota ciupaga z wąsem");
-					zlotyRog.setBoundTo(player.getName());
-					player.equipOrPutOnGround(zlotyRog);
+					final Item zlotaCiupagaZWasem = SingletonRepository.getEntityManager().getItem("złota ciupaga z wąsem");
+					zlotaCiupagaZWasem.setBoundTo(player.getName());
+					player.equipOrPutOnGround(zlotaCiupagaZWasem);
 					player.notifyWorldAboutChanges();
-					player.setQuest(NAGRODA_WIELKOLUDA_QUEST_SLOT, "rejected");
 					player.setQuest(QUEST_SLOT, "done" + ";" + System.currentTimeMillis());
 				}
 			});
