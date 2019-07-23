@@ -7,7 +7,7 @@
 		<description>Oto proca. Podnieś kamień i atakuj z daleka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="3"/>
+			<atk value="2"/>
 			<ratk value="5"/>
 			<range value="4"/>
 		</attributes>
@@ -28,7 +28,7 @@
 		<description>Oto różdżka z gałęzi urwanej ze Świętego Drzewa. Gdy nią machasz liście drzew milkną.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="8"/>
+			<atk value="7"/>
 			<ratk value="15"/>
 			<def value="5"/>
 			<range value="4"/>
@@ -74,7 +74,7 @@
 		<description>Oto różdżka Strzyboga! Podobno ma moc sprowadzania deszczu i odganiania chmur.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="18"/>
+			<atk value="17"/>
 			<ratk value="35"/>
 			<def value="7"/>
 			<range value="6"/>
@@ -120,7 +120,7 @@
 		<description>Oto różdżka Swaroga co upadła ze Słońca! Wielką moc ma, gdy magią władasz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="32"/>
+			<atk value="31"/>
 			<ratk value="63"/>
 			<def value="9"/>
 			<range value="8"/>
@@ -143,7 +143,7 @@
 		<description>Oto różdżka Peruna. Lepiej nie przyznawaj się, że ją znalazłeś, bo jego gniew cię porazi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="50"/>
+			<atk value="49"/>
 			<ratk value="99"/>
 			<def value="10"/>
 			<range value="10"/>

@@ -70,7 +70,7 @@
 		<description>Oto kusza. Atak jest duży, ale słabsza celność. Co wolisz?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="9"/>
+			<atk value="8"/>
 			<ratk value="17"/>
 			<range value="3"/>
 			<min_level value="80"/>
@@ -91,7 +91,7 @@
 		<description>Oto kusza łowcy. Musisz zdecydować się czy duży atak jest warty krótszego zasięgu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="11"/>
+			<atk value="10"/>
 			<ratk value="21"/>
 			<range value="4"/>
 			<min_level value="150"/>
@@ -134,7 +134,7 @@
 		<description>Oto lodowa kusza.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="12"/>
+			<atk value="11"/>
 			<ratk value="23"/>
 			<range value="5"/>
 			<min_level value="150"/>
