@@ -9,7 +9,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Dodano dużo nowych grafik
 
 *świat gry*
-- Dodano nowe zadanie
+- Dodano dwa nowe zadania
 - Dodano kilka nowych NPC
 - Dodano kilka nowych osiągnięć
 - Dodano kilka nowych pomieszczeń
@@ -29,6 +29,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 
 *naprawiono błędy*
 - Dodano brakujący dźwięk węża
+- Naprawiono czas oczekiwania w zadaniach na różne przedmioty
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
 
