@@ -63,19 +63,17 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		// (what's null doesn't change that part of the outfit)
 		// so true means we put on over
 		// FIXME: Use new outfit system
-		final Pair<Outfit, Boolean> GLASSES = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(86), null, null), true);
-		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(88), null, null), true);
-		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(87), null, null), true);
+		final Pair<Outfit, Boolean> GLASSES = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(33), null, null), true);
+		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(35), null, null), true);
+		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(34), null, null), true);
 		final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(Integer.valueOf(07), null, null, null, null), true);
 
 		// these outfits must replace the current outfit (what's null simply isn't there)
-		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(93)), false);
-		final Pair<Outfit, Boolean> GREEN_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(89)), false);
-		final Pair<Outfit, Boolean> RED_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(88)), false);
-		final Pair<Outfit, Boolean> BLUE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(91)), false);
-		final Pair<Outfit, Boolean> GINGERBREAD_MAN = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(92)), false);
-		final Pair<Outfit, Boolean> WHITE_CAT = new Pair<Outfit, Boolean>(new Outfit(null, 0, 98, 0, 78), false);
-		final Pair<Outfit, Boolean> BLACK_CAT = new Pair<Outfit, Boolean>(new Outfit(null, 0, 98, 0, 79), false);
+		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(23)), false);
+		final Pair<Outfit, Boolean> GREEN_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(19)), false);
+		final Pair<Outfit, Boolean> RED_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(18)), false);
+		final Pair<Outfit, Boolean> BLUE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(21)), false);
+		final Pair<Outfit, Boolean> GINGERBREAD_MAN = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(22)), false);
 
 		outfitTypes.put("glasses", GLASSES);
 		outfitTypes.put("goblin face", GOBLIN_FACE);
@@ -86,8 +84,6 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		outfitTypes.put("red slime", RED_SLIME);
 		outfitTypes.put("blue slime", BLUE_SLIME);
 		outfitTypes.put("gingerbread man", GINGERBREAD_MAN);
-		outfitTypes.put("white cat", WHITE_CAT);
-		outfitTypes.put("black cat", BLACK_CAT);
 	}
 
 	private void buildBoutiqueArea(final StendhalRPZone zone) {
@@ -130,8 +126,10 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 						final boolean type = outfitPair.second();
 
 						if (type) {
-							if (player.getOutfit().getBody() > 77
-									&& player.getOutfit().getBody() < 99) {
+							if ((player.getOutfit().getBody() > 17
+									&& player.getOutfit().getBody() < 20)
+									|| (player.getOutfit().getBody() > 20
+									&& player.getOutfit().getBody() < 24)) {
 								seller.say("Już masz magiczne ubranie, które gryzie się z resztą - mógłbyś założyć coś bardziej konwencjonalnego i zapytać ponownie? Dziękuję!");
 								return false;
 							}
@@ -173,8 +171,6 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 				priceList.put("green slime", (int) (N * 3000));
 				priceList.put("gingerbread man", (int) (N * 1200));
 				priceList.put("umbrella", (int) (N * 300));
-				priceList.put("black cat", (int) (N * 4500));
-				priceList.put("white cat", (int) (N * 4500));
 			    addGreeting("Witaj. Mam nadzieję, że podziwiasz ten wspaniały sklep.");
 				addQuest("Wygląda wspaniale!");
 				add(
