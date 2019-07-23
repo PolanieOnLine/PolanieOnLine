@@ -59,8 +59,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 													new PlayerHasKilledNumberOfCreaturesCondition(1, "szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok", "czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny", "dwugłowy zielony smok", "dwugłowy czerwony smok", "niebieski dwugłowy smok", "dwugłowy czarny smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski")));
 		fightingAchievements.add(createAchievement("fight.general.angels", "Diabeł wcielony", "Zabił conajmniej 1 aniołka, anioła, archanioła i serafina", Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(1, "aniołek", "anioł", "archanioł", "serafin")));
-		fightingAchievements.add(createAchievement("fight.general.darkangels", "Łowca mrocznych aniołów", "Zabił conajmniej 1 upadłego anioła, szkieleta anioła, anioła ciemność, archanioła ciemności i azazela", Achievement.HARD_BASE_SCORE, true,
-				new PlayerHasKilledNumberOfCreaturesCondition(1, "upadły anioł", "szkielet anioł", "anioł ciemności", "archanioł ciemności", "azazel")));
+		fightingAchievements.add(createAchievement("fight.general.darkangels", "Łowca mrocznych aniołów", "Zabił conajmniej 1 upadłego anioła, szkielet anioła, anioła ciemność, archanioła ciemności i azazela", Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(1, "upadły anioł", "szkielet anioła", "anioł ciemności", "archanioł ciemności", "azazel")));
 		fightingAchievements.add(createAchievement("fight.general.deaths", "Władca śmierci", "Zabił conajmniej 1 śmierć, czarną śmierć, złotą śmierć, kostuchę, kostuchę różową, kostuchę wielką, kostuchę różową wielką i kostuchę złotą wielką", Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(1, "śmierć", "czarna śmierć", "złota śmierć", "kostucha", "kostucha różowa", "kostucha wielka", "kostucha różowa wielka", "kostucha złota wielka")));
 		fightingAchievements.add(createAchievement("fight.special.all", "Legenda", "Zabił sam wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
