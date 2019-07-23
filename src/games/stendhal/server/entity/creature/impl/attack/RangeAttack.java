@@ -21,7 +21,7 @@ class RangeAttack implements AttackStrategy {
 	/** Maximum range at which the archer will consider a target valid, squared. */
 	private static final int MAX_RANGE_SQUARED = 144;
 	/** Archer range, if not specified otherwise. */
-	private static final int DEFAULT_RANGE = 7;
+	private static final int DEFAULT_RANGE = 9;
 	private final int range;
 
 	RangeAttack(String range) {
@@ -143,7 +143,7 @@ class RangeAttack implements AttackStrategy {
 	 * @return longest optimal range
 	 */
 	private int longRangeSquared() {
-		int tmp = range / 2 + (range % 2) + 1;
+		int tmp = range / 2 + (range % 2) + 2;
 
 		return tmp * tmp;
 	}
