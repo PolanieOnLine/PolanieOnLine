@@ -43,12 +43,12 @@ import games.stendhal.server.util.TimeUtil;
 
 /**
  * QUEST: The złota ciupaga upgrading.
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li> Józek will upgrade for you the złota ciupaga.
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Józek tells you about the złota ciupaga z wąsem.
@@ -58,15 +58,15 @@ import games.stendhal.server.util.TimeUtil;
  * <li> He tells you you must have killed a złota śmierć
  * <li> Józek upgrade the złota ciupaga to złota ciupaga z wąsem for you
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>złota ciupaga
  * <li>20000 XP
  * <li>100 Karma
  * </ul>
- * 
- * 
+ *
+ *
  * REPETITIONS:
  * <ul>
  * <li> None.
@@ -191,42 +191,39 @@ public class ZlotaCiupaga extends AbstractQuest {
 
 	}
 
-	private void step_3() { 
+	private void step_3() {
 		final SpeakerNPC npc = npcs.get("Kowal Andrzej");
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("ciupaga", "złota", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-			new QuestStateStartsWithCondition(QUEST_SLOT, "make;")),
+				new QuestStateStartsWithCondition(QUEST_SLOT, "make;")),
 			ConversationStates.IDLE, null, new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE; 
-					final long timeRemaining = (Long.parseLong(tokens[1]) + delay)
-							- System.currentTimeMillis();
-
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+				final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
+				final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
+				final long timeRemaining = Long.parseLong(tokens[1]) + delay
+						- System.currentTimeMillis();
 					if (timeRemaining > 0L) {
-						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
-							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-							+ ", aby odebrać nagrodę. No chyba że chcesz abym odlał dla ciebie #żelazo.");
-						return;
-					}
-
-					raiser.say("Warto było czekać. A oto złota ciupaga. Dowidzenia!");
-					player.addXP(15000);
-					player.addKarma(25);
-					final Item zlotaCiupaga = SingletonRepository.getEntityManager().getItem("złota ciupaga");
-					zlotaCiupaga.setBoundTo(player.getName());
-					player.equipOrPutOnGround(zlotaCiupaga);
-					player.notifyWorldAboutChanges();
-					player.setQuest(GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT, "rejected");
-					player.setQuest(QUEST_SLOT, "done" + ";" + System.currentTimeMillis());
-
+					raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
+						+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
+						+ ", aby odebrać nagrodę. No chyba że chcesz abym odlał dla ciebie #żelazo.");
+					return;
 				}
-			});
-	}
 
+				raiser.say("Warto było czekać. A oto złota ciupaga. Dowidzenia!");
+				player.addXP(15000);
+				player.addKarma(25);
+				final Item zlotaCiupaga = SingletonRepository.getEntityManager().getItem("złota ciupaga");
+				zlotaCiupaga.setBoundTo(player.getName());
+				player.equipOrPutOnGround(zlotaCiupaga);
+				player.notifyWorldAboutChanges();
+				player.setQuest(GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT, "rejected");
+				player.setQuest(QUEST_SLOT, "done" + ";" + System.currentTimeMillis());
+			}
+		});
+	}
 
 	@Override
 	public void addToWorld() {
@@ -254,7 +251,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 		if ("rejected".equals(questState)) {
 			res.add("Po co mi ciupaga.");
 			return res;
-		} 
+		}
 		if ("start".equals(questState)) {
 			return res;
 		}
