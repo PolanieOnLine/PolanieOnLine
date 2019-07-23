@@ -117,7 +117,7 @@ class MakingClasp {
 							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
 						return;
 					}
-					npc.say("Oto Twója brosza!");
+					npc.say("Oto Twoja brosza!");
 					player.addXP(100);
 					player.addKarma(15);
 					final Item clasp = SingletonRepository.getEntityManager().getItem(
