@@ -3,17 +3,10 @@ package games.stendhal.server.core.rp.achievement.factory;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
-import games.stendhal.server.entity.Entity;
-import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.PlayerVisitedZonesCondition;
 import games.stendhal.server.entity.npc.condition.PlayerVisitedZonesInRegionCondition;
-import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.semos.bank.Vault;
 /**
  * Factory for zone achievements
  *
