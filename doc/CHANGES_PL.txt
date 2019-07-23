@@ -10,9 +10,10 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 
 *świat gry*
 - Dodano dwa nowe zadania [zadanie dla początkujących graczy w Zakopane oraz zadanie na złotą ciupagę z trzema wąsami]
+- Dodano rycerze w zamku ZRC
 - Dodano kilka nowych NPC
 - Dodano kilka nowych osiągnięć
-- Dodano kilka nowych pomieszczeń
+- Dodano wiele nowych pomieszczeń
 - Dodano kilka nowych map (3 nowe mapy w Zakopane, 3 nowe mapy w Krakowie [rozbudowano krakow_cave])
 - Dodano nowe przejście prowadzące do Wieliczki
 - Dodano nowe przedmioty: "kamienne rękawice", "magiczny płaszcz", "lodowy płaszcz", "lodowe spodnie"
