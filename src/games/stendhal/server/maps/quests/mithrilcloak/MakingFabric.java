@@ -516,7 +516,7 @@ class MakingFabric {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final String[] tokens = player.getQuest(mithrilcloak.getQuestSlot()).split(";");
 					final long delay = REQUIRED_HOURS_FABRIC * MathHelper.MILLISECONDS_IN_ONE_HOUR;
-					final long timeRemaining = (Long.parseLong(tokens[1]) + delay)
+					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 					if (timeRemaining > 0L) {
 						npc.say("Przepraszam, ale jesteś zbyt wcześnie. Wróć za "

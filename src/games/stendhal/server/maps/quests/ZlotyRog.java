@@ -187,7 +187,7 @@ public class ZlotyRog extends AbstractQuest {
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 
 					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-					final long timeRemaining = (Long.parseLong(tokens[1]) + delay)
+					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 
 					if (timeRemaining > 0L) {

@@ -101,7 +101,7 @@ public class ProzbaWielkoluda extends AbstractQuest {
 						}  else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 							final long delay = 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
-							final long timeRemaining = (Long.parseLong(tokens[1]) + delay) - System.currentTimeMillis();
+							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
 								raiser.say("Bardzo dziękuję za pomoc. Może przyjdziesz innym razem. Na razie schodzą mi z drogi. Ale to może zmienić się, wróć za  " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
 								raiser.setCurrentState(ConversationStates.ATTENDING);

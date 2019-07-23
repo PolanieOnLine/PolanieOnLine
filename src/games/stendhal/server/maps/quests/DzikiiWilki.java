@@ -123,7 +123,7 @@ public class DzikiiWilki extends AbstractQuest {
 						if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 							final long delay = WEEK_IN_MINUTES * MathHelper.SECONDS_IN_ONE_DAY;
-							final long timeRemaining = (Long.parseLong(tokens[1]) + delay) - System.currentTimeMillis();
+							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
 								raiser.say("Boję się, że ponownie zwierzęta te wrócą na moją farmę, proszę.. wróć za #'" + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + "'.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);

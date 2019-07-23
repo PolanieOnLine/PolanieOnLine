@@ -110,7 +110,7 @@ class MakingClasp {
 					final String[] tokens = player.getQuest(mithrilcloak.getQuestSlot()).split(";");
 					// minutes -> milliseconds
 					final long delay = REQUIRED_MINUTES_CLASP * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-					final long timeRemaining = (Long.parseLong(tokens[1]) + delay)
+					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 					if (timeRemaining > 0L) {
 						npc.say("Nie skończyłem jeszcze. Wróć za "
