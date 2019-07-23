@@ -191,7 +191,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("złoty róg",1),
 								 new PlayerHasItemWithHimCondition("polano",4),
 								 new PlayerHasItemWithHimCondition("money",120000)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 8 godzin a ciupaga będzie gotowa. Przypomnij mi mówiąc #/nagroda/",
+				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 8 godzin, a ciupaga będzie gotowa. Przypomnij mi mówiąc #/nagroda/",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij"),
