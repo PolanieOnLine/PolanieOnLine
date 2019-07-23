@@ -32,6 +32,7 @@ tzn. zostaną wgrane starsze statystyki [oprócz ciupag]
 - Naprawiono czas oczekiwania w zadaniach na różne przedmioty
 - Poprawiono ścieżkę grafiki dla hełmu zabójcy
 - Poprawiono grafiki kanibali
+- Poprawiono niektórym potworowom przenikanie oraz przezroczystość
 
 
 1.01.2
