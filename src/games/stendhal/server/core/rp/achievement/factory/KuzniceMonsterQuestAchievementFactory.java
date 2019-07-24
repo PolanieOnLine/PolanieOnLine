@@ -25,17 +25,17 @@ public class KuzniceMonsterQuestAchievementFactory extends AbstractAchievementFa
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> questAchievements = new LinkedList<Achievement>();
 		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0010", "Pomocna dłoń", "Ukończył co dwudniowe zadanie na potwory 10 razy",
-												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 9)));
+												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 9)));
 		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0025", "Ochroniaż dzielnicy", "Ukończył co dwudniowe zadanie na potwory 25 razy",
-												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 24)));
+												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 24)));
 		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0050", "Strażnik Kuźnic", "Ukończył co dwudniowe zadanie na potwory 50 razy",
-												Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 49)));
+												Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 49)));
 		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0100", "Bohater Kuźnic", "Ukończył co dwudniowe zadanie na potwory 100 razy",
-												Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 99)));
+												Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 99)));
 		//questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0250", "Prawa ręka Sołtysa", "Ukończył codzienne zadanie na potwory 250 razy",
-		//										Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 249)));
+		//										Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 249)));
 		//questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0500", "Bohater Kuźnic", "Ukończył codzienne zadanie na potwory 500 razy",
-		//										Achievement.LEGENDARY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice", 2, 499)));
+		//										Achievement.LEGENDARY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 499)));
 
 		return questAchievements;
 	}
