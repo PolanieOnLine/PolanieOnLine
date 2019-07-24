@@ -110,7 +110,7 @@ public class MeetKetteh extends AbstractQuest {
 				new MultipleActions(
 						new SetQuestAction(QUEST_SLOT,0, "seen_naked"), 
 						new SetQuestToTimeStampAction(QUEST_SLOT,1), 
-						new JailAction(JAIL_TIME,"Ketteh Wehoh jailed you for being naked in the town hall after warning")));
+						new JailAction(JAIL_TIME,"Ketteh Wehoh aresztowała Ciebie za chodzenie nago w ratuszu pomimo ostrzeżeń")));
 		
 		// player was previously seen naked but is now clothed
 		// continue the quest to learn manners
