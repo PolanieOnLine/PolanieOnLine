@@ -133,6 +133,7 @@ public class ReservedSubStringValidator implements AccountParameterValidator {
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("japier"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("lesb"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("lezb"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("cwe"))
 		) {
 			return Result.FAILED_RESERVED_NAME;
 		}
