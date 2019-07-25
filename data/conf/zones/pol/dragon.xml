@@ -263,7 +263,7 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
-		<entity x="65" y="139">
+		<entity x="143" y="20">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Wojowniku wszedłeś do niebezpiecznej krainy! Śmierć czycha na każdym kroku czekając na Twój błąd.
 Wielu śmiałków zignorowało to ostrzeżenie i spotkała ich kara.
@@ -280,6 +280,9 @@ Uciekaj!</attribute>
 		<!--<portal x="66" y="136" ref="tunnel_krakow_1_exit">
 			<destination zone="0_krakow_wisla_se" ref="krakow_tunnel_1_entrance"/>
 		</portal>-->
+		<portal x="66" y="136" ref="tunnel_dragon_-2_exit">
+			<destination zone="-2_dragon_cave" ref="dragon_tunnel_-2_entrance"/>
+		</portal>
 		<portal x="141" y="23" ref="tunnel_dragon_1_exit">
 			<destination zone="0_dragon_land_s" ref="dragon_tunnel_1_entrance"/>
 		</portal>
@@ -921,7 +924,7 @@ Uciekaj!</attribute>
 
 	<!-- Level -2 -->
 
-	<zone name="-2_water_trap" level="-2" x="513824" y="18176" file="interiors/abstract/trap_water.tmx">
+	<zone name="-2_water_trap" level="-2" x="513696" y="18176" file="interiors/abstract/trap_water.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
@@ -936,7 +939,7 @@ Uciekaj!</attribute>
 		</entity>
 	</zone>
 
-	<zone name="-2_poison_pit" level="-2" x="513835" y="18176" file="interiors/abstract/trap_poison.tmx">
+	<zone name="-2_poison_pit" level="-2" x="513707" y="18176" file="interiors/abstract/trap_poison.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
@@ -955,7 +958,7 @@ Uciekaj!</attribute>
 		</portal>
 	</zone>
 
-	<zone name="-2_spikes_pit" level="-2" x="513846" y="18176" file="interiors/abstract/trap_spikes.tmx">
+	<zone name="-2_spikes_pit" level="-2" x="513718" y="18176" file="interiors/abstract/trap_spikes.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
@@ -968,6 +971,34 @@ Uciekaj!</attribute>
 			</implementation>
 			<attribute name="name">Kolce</attribute>
 		</entity>
+	</zone>
+	
+	<zone name="-2_dragon_cave" level="-2" x="513824" y="18176" file="Level -2/dragon/cave.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+		<entity x="53" y="74">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">Wojowniku wszedłeś do niebezpiecznej krainy! Śmierć czycha na każdym kroku czekając na Twój błąd.
+Wielu śmiałków zignorowało to ostrzeżenie i spotkała ich kara.
+Uciekaj!</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="55" y="76" ref="dragon_tunnel_-2_entrance">
+			<destination zone="-1_dragon_cave" ref="tunnel_dragon_-2_exit"/>
+		</portal>
+		<!--<portal x="13" y="126" ref="dragon_tunnel_-3_entrance">
+			<destination zone="-3_dragon_cave" ref="tunnel_dragon_-3_exit"/>
+		</portal>-->
 	</zone>
 
 	<!-- Level -3 -->
