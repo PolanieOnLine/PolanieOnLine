@@ -3,6 +3,7 @@
 1.02.1
 *świat gry*
 - Dodano nowy teleport na mapie dragon_land_s (teleportujący do dragon_cave)
+- Dodano nową mapę: -2_dragon_cave
 
 *naprawiono błędy*
 - Poprawiono niektóre tekstury na mapie dragon_land_n
