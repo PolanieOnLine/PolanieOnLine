@@ -118,6 +118,7 @@ public class ReservedSubStringValidator implements AccountParameterValidator {
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("kurew"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("skurw"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("suka"))
+				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("suke"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("suce"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("suki"))
 				|| (parameterValue.toLowerCase(Locale.ENGLISH).contains("suczk"))
