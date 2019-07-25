@@ -114,7 +114,7 @@ expire	VER
 expired	VER	=expire
 explain	VER
 explore	VER
-extend	VER =prolong
+extend	VER	=prolong
 farewell	VER
 feed	VER
 fetch	VER
@@ -172,7 +172,6 @@ load	VER
 lol	VER
 look	VER
 love	VER
-łapówka	VER
 made	VER	=make
 make	VER
 married	VER	=marry
@@ -202,8 +201,8 @@ poślub	VER
 prefer	VER
 prolong	VER
 protect	VER
-przedłuż	VER
 przedmioty	VER
+przedłuż	VER
 przypomnij	VER
 purchase	VER
 put	VER
@@ -290,21 +289,22 @@ write	VER
 wylecz	VER
 wymień	VER
 wynajmij	VER
-wyślę	VER
 wyślij	VER
+wyślę	VER
 yay	VER	=done
 yep	VER
 yes	VER
 yup	VER	=yep
 zagraj	VER
 zagram	VER
-załatwione	VER
 zaręcz	VER
+załatwione	VER
 zmień	VER
 zrobione	VER-PAS	=zrób
 zrób	VER
 zwrot	VER
 zwróć	VER
+łapówka	VER
 
 ados	OBJ	ados
 air	OBJ	airs
@@ -317,14 +317,14 @@ ankh	OBJ	ankhs
 antidote	OBJ-FOO-FLU	antidotes
 apartment	OBJ	apartments
 apology	OBJ	apologies
-apothecary OBJ apothecaries
+apothecary	OBJ	apothecaries
 apple	OBJ-FOO	apples
 arandula	OBJ
 armor	OBJ	armors
-armour  OBJ =armor armours
+armour	OBJ	=armor	armours
 arrow	OBJ	arrows
 artichoke	OBJ-FOO	artichokes
-arum OBJ =zantedeschia arums
+arum	OBJ	=zantedeschia	arums
 arundula	OBJ	arundulas
 athor	OBJ-NAM	athors
 atmosphere	OBJ	atmospheres
@@ -349,7 +349,6 @@ beeswax	OBJ	beeswaxes
 bicycle	OBJ	bicycles
 bike	OBJ	bikes
 blackjack	OBJ	blackjacks
-black pearl OBJ
 blade	OBJ	blades
 blood	OBJ	bloods
 board	OBJ	boards
@@ -383,7 +382,6 @@ butter	OBJ-FOO
 button	OBJ	buttons
 caboose	OBJ	cabooses
 cake	OBJ-FOO	cakes
-calla OBJ =zantedeschia callas
 candle	OBJ	candles
 cane	OBJ	canes
 car	OBJ	cars
@@ -424,7 +422,7 @@ cloth	OBJ	cloths
 cloudburst	OBJ	cloudbursts
 clownfish	OBJ-FOO-ANI	clownfishes
 club	OBJ	clubs
-coal	OBJ coals
+coal	OBJ	coals
 cocktail	OBJ-FOO-FLU	cocktails
 coconut	OBJ-FOO	coconuts
 cod	OBJ-FOO	cods
@@ -437,7 +435,7 @@ collard	OBJ-FOO	collards
 collection	OBJ	collections
 collision	OBJ	collisions
 color	OBJ	colors
-colour  OBJ =color colours
+colour	OBJ	=color	colours
 command	OBJ	commands
 comment	OBJ	comments
 company	OBJ	companies
@@ -448,20 +446,19 @@ cost	OBJ	costs
 costume	OBJ	costumes
 coupon	OBJ	coupons
 courgette	OBJ-FOO	courgettes
-zucchini OBJ-FOO =courgette zucchinis
 cow	OBJ-ANI	cows
 cream	OBJ	creams
 creature	OBJ	creatures
 crepe	OBJ-FOO	crepes
-crepes suzette OBJ-FOO
+crepes	OBJ	obj
 crossbow	OBJ	crossbows
 crown	OBJ	crowns
 crustaceans	OBJ	crustaceans
-ctf	OBJ
+ctf	OBJ	ctf
 cuirass	OBJ	cuirasses
-czerwony	OBJ czerwone
+czerwony	OBJ	czerwone
 dagger	OBJ	daggers
-daisy	OBJ =daisies	daisies
+daisy	OBJ	=daisies	daisies
 dart	OBJ	darts
 data	OBJ	datas
 database	OBJ	databases
@@ -524,7 +521,7 @@ figurine	OBJ	figurines
 finger	OBJ	fingers
 fire	OBJ	fires
 fish	OBJ-FOO	fishes
-flag	OBJ
+flag	OBJ	flag
 flail	OBJ	flails
 flask	OBJ	flasks
 flour	OBJ	flours
@@ -533,17 +530,17 @@ food	OBJ-FOO	foods
 foot	OBJ	feet
 forge	OBJ	forges
 frostshade	OBJ-NAM	frostshades
-fumble	OBJ
+fumble	OBJ	fumble
 fun	OBJ	funs
 fuse	OBJ	fuses
 future	OBJ	futures
 gambling	OBJ	gamblings
 game	OBJ	games
 garlic	OBJ-FOO
-garnet OBJ
+garnet	OBJ	garnet
 gate	OBJ	gates
 gem	OBJ	gems
-gemstone OBJ gemstones
+gemstone	OBJ	gemstones
 geography	OBJ	geographies
 germany	OBJ	germanies
 gingerbread	OBJ-FOO	gingerbreads
@@ -617,7 +614,7 @@ karma	OBJ	karmas
 katana	OBJ	katanas
 kekik	OBJ	kekiks
 key	OBJ	keys
-keyring	OBJ keyrings
+keyring	OBJ	keyrings
 kingdom	OBJ	kingdoms
 kirdneh	OBJ-NAM	kirdnehs
 kitchen	OBJ	kitchens
@@ -633,15 +630,15 @@ lavitae	OBJ-NAM	lavitaes
 leek	OBJ-FOO	leeks
 leg	OBJ	legs
 letter	OBJ	letters
-lettuce OBJ =salad lettuces
+lettuce	OBJ	=salad	lettuces
 level	OBJ	levels
 liberty	OBJ	liberties
 library	OBJ	libraries
 licorice	OBJ-FOO	licorices
 life	OBJ	lives
 lilia	OBJ	lilias
-lilium OBJ =lilia liliums
-lily OBJ =lilia lilies
+lilium	OBJ	=lilia	liliums
+lily	OBJ	=lilia	lilies
 limit	OBJ	limits
 lionfish	OBJ-FOO-ANI	lionfishes
 list	OBJ	lists
@@ -658,7 +655,7 @@ mackerel	OBJ-FOO	mackerels
 madaram	OBJ	madarams
 magic	OBJ	magic
 mainio	OBJ	mainios
-mana	OBJ-FOO-FLU
+mana	OBJ-FOO-FLU	mana
 mandragora	OBJ
 manner	OBJ	manners
 map	OBJ	maps
@@ -696,7 +693,7 @@ narwol	OBJ	narwols
 needle	OBJ	needles
 neighborhood	OBJ	neighborhoods
 news	OBJ	news
-niebieski	OBJ niebieskie
+niebieski	OBJ	niebieskie
 night	OBJ	nights
 nihonto	OBJ	nihontos
 none	OBJ-PRO	nones
@@ -725,7 +722,7 @@ park	OBJ	parks
 patch	OBJ	patches
 path	OBJ	paths
 payment	OBJ	payments
-pear	OBJ-FOO
+pear	OBJ-FOO	pear
 pearl	OBJ	pearls
 perch	OBJ-FOO-ANI	perches
 pestle	OBJ	pestles
@@ -748,7 +745,7 @@ playground	OBJ	playgrounds
 plural	OBJ	plurals
 point	OBJ	points
 poison	OBJ-FOO-FLU	poisons
-pomegranate	OBJ-FOO
+pomegranate	OBJ-FOO	pomegranate
 porcino	OBJ-FOO	porcini
 portal	OBJ	portals
 position	OBJ	positions
@@ -782,7 +779,7 @@ risecia	OBJ	risecias
 roach	OBJ-FOO-ANI	roaches
 robin	OBJ	robins
 rod	OBJ	rods
-rodent  OBJ rodents
+rodent	OBJ	rodents
 room	OBJ	rooms
 rose	OBJ	roses
 rug	OBJ	rugs
@@ -823,7 +820,7 @@ sign	OBJ	signs
 silk	OBJ	silks
 silver	OBJ	silvers
 skull	OBJ	skulls
-slowdown	OBJ
+slowdown	OBJ	slowdown
 snow	OBJ	snows
 snowball	OBJ	snowballs
 snowglobe	OBJ	snowglobes
@@ -836,7 +833,7 @@ spade	OBJ	spades
 spear	OBJ	spears
 species	OBJ	species
 speed	OBJ	speeds
-speedup	OBJ
+speedup	OBJ	speedup
 spinach	OBJ-FOO	spinaches
 sprig	OBJ	sprigs
 sps	OBJ	sps
@@ -862,13 +859,12 @@ sun	OBJ	suns
 suntan	OBJ	suntans
 supply	OBJ	supplies
 surgeonfish	OBJ-FOO-ANI	surgeonfishes
-suzette	OBJ-FOO	
+suzette	OBJ-FOO	suzette
 swamp	OBJ	swamps
 sweatshirt	OBJ	sweatshirts
 swimsuit	OBJ	swimsuits
 sword	OBJ	swords
 symbol	OBJ	symbols
-świeca	OBJ	świece
 table	OBJ	tables
 task	OBJ	tasks
 taste	OBJ	tastes
@@ -897,7 +893,7 @@ town	OBJ	towns
 toy	OBJ	toys
 trade	OBJ	trades
 trading	OBJ	tradings
-trap OBJ traps
+trap	OBJ	traps
 treasure	OBJ	treasures
 trigger	OBJ	triggers
 trophy	OBJ	trophies
@@ -923,7 +919,7 @@ vulcano	OBJ	vulcanos
 war	OBJ	wars
 wardrobe	OBJ	wardrobes
 water	OBJ-FOO-FLU	waters
-watermelon	OBJ-FOO watermelons
+watermelon	OBJ-FOO	watermelons
 way	OBJ	ways
 weapon	OBJ	weapons
 weave	OBJ	weaves
@@ -951,14 +947,16 @@ yclept	OBJ	yclepts
 youngster	OBJ	youngsters
 your	OBJ-OBS	your
 yrafear	OBJ-NAM	yrafears
-zant OBJ =zantedeschia zants
+zant	OBJ	=zantedeschia	zants
 zantedeschia	OBJ	zantedeschias
 zioło	OBJ	zioła
 zone	OBJ	zones
-żółty	OBJ żółte
+zucchini	OBJ-FOO	=courgette	zucchinis
+świeca	OBJ	świece
+żółty	OBJ	żółte
 
 abe	SUB-NAM
-adena SUB-NAM
+adena	SUB-NAM
 admin	SUB
 admiral	SUB
 aenihata	SUB-NAM
@@ -1032,10 +1030,8 @@ bride	SUB
 brother	SUB
 brui	SUB-NAM
 caiman	SUB-ANI
-calla SUB-NAM
+calla	SUB-NAM
 cannibal	SUB
-captain	SUB
-captain Brownbeard SUB-NAM
 carena	SUB-NAM
 carey	SUB-NAM
 carmen	SUB-NAM
@@ -1271,7 +1267,7 @@ lion	SUB-ANI	lions
 littlefairy	SUB
 littlewitch	SUB
 littlewizard	SUB
-lobelia SUB-NAM
+lobelia	SUB-NAM
 lord	SUB
 lorenz	SUB-NAM
 loretta	SUB-NAM
@@ -1300,7 +1296,7 @@ mcpegleg	SUB-NAM
 me	SUB-PRO	=i	us
 meatoch	SUB-NAM
 merenwen	SUB-NAM
-mia SUB-NAM
+mia	SUB-NAM
 mick	SUB-NAM
 milquetoast	SUB-NAM
 minotaur	SUB
@@ -1414,11 +1410,11 @@ saskia	SUB-NAM
 sato	SUB-NAM
 savanka	SUB-NAM
 scientist	SUB
-seremela SUB-NAM
+seremela	SUB-NAM
 sergeant	SUB
 sergej	SUB-NAM
 servant	SUB
-shadows SUB-NAM
+shadows	SUB-NAM
 she	SUB-PRO	they
 sheepman	SUB
 siandra	SUB-NAM
@@ -1523,8 +1519,8 @@ you	SUB-PRO	you
 yourself	SUB-PRO
 zak	SUB-NAM
 zara	SUB-NAM
-zinnia SUB-NAM
 zekiel	SUB-NAM
+zinnia	SUB-NAM
 zogfang	SUB-NAM
 zohos	SUB-NAM
 zombie	SUB	zombies
@@ -1533,7 +1529,7 @@ zynn	SUB-NAM
 
 another	ADJ
 armed	ADJ
-armored ADJ
+armored	ADJ
 available	ADJ
 awesome	ADJ
 bad	ADJ
@@ -1545,7 +1541,7 @@ big	ADJ
 biggest	ADJ
 biting	ADJ
 black	ADJ-COL
-blank	ADJ =empty
+blank	ADJ	=empty
 bloody	ADJ
 blue	ADJ-COL
 broken	ADJ
@@ -1648,6 +1644,9 @@ naturally	ADJ
 nearly	ADJ
 next	ADJ
 nice	ADJ
+niekupiony	ADJ
+niesprzedany	ADJ
+niesprzedanych	ADJ
 nomadic	ADJ
 old	ADJ
 orcish	ADJ
@@ -1689,9 +1688,6 @@ spare	ADJ
 special	ADJ
 spooky	ADJ
 spotted	ADJ
-niesprzedany	ADJ
-niesprzedanych	ADJ
-niekupiony	ADJ
 squared	ADJ
 stressed	ADJ
 striped	ADJ
@@ -1731,15 +1727,15 @@ young	ADJ
 a	NUM	1
 an	NUM	1
 czterdzieści	NUM	40
-cztery	NUM	4
 czternaście	NUM	14
+cztery	NUM	4
 dwa	NUM	2
 dwadzieścia	NUM	20
 dwanaście	NUM	12
 dziesięć	NUM	10
+dziewiętnaście	NUM	19
 dziewięć	NUM	9
 dziewiśćdziesiąt	NUM	90
-dziewiętnaście	NUM	19
 eight	NUM	8
 eighteen	NUM	18
 eighty	NUM	80
@@ -1764,9 +1760,9 @@ one	NUM	1
 osiem	NUM	8
 osiemdzisiąt	NUM	80
 osiemnaście	NUM	18
+piętnaście	NUM	15
 pięć	NUM	5
 pięćdzisiąt	NUM	50
-piętnaście	NUM	15
 second	NUM	2
 seven	NUM	7
 seventeen	NUM	17
@@ -1790,10 +1786,10 @@ three	NUM	3
 trzy	NUM	3
 trzydzieści	NUM	30
 trzynaście	NUM	13
-tysiąc	NUM	1000
 twelve	NUM	12
 twenty	NUM	20
 two	NUM	2
+tysiąc	NUM	1000
 zero	NUM	0
 
 about	PRE
@@ -1844,3 +1840,4 @@ whatever	IGN
 while	IGN
 yeah	IGN
 yet	IGN
+
