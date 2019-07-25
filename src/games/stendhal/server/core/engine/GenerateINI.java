@@ -275,8 +275,14 @@ public class GenerateINI {
 		out.println("server_contact=http://polanieonline.eu/kontakt-gmgags.html");
 		out.println();
 		out.println("# Extensions configured on the server. Enable at will.");
-		out.println("#server_extension=xxx");
-		out.println("#xxx=some.package.Classname");
+		out.println("#server_extension=groovy");
+		out.println("#server_extension=http");
+		out.println("server_extension=teleportsend");
+		out.println("#groovy=games.stendhal.server.scripting.StendhalGroovyRunner");
+		out.println("#http=games.stendhal.server.extension.StendhalHttpServer");
+		out.println("#stendhal.scripts.namechange.enabled");
+		out.println("teleportsend=games.stendhal.server.extension.TeleportSendExtension");
+		out.println("#http_port=8080");
 		out.println();
 		out.println("statistics_filename=" + statisticsFilename);
 		out.println();
