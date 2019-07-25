@@ -50,8 +50,10 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 							if (player.isQuestCompleted(LUD2)) {
 								if (player.isQuestCompleted(LUD3)) {
 									if (player.isQuestCompleted(LUD4)) {
-										raiser.say("Potrzebuję nowego płaszcza królewskiego. Aktualny mój płaszcz się powoli niszczy. Potrzebuję od Ciebie #'czarnego płaszcza smoczego' i to 10 sztuk! Przyniósłbyś byś mi to?");
-										raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
+										if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
+											raiser.say("Potrzebuję nowego płaszcza królewskiego. Aktualny mój płaszcz się powoli niszczy. Potrzebuję od Ciebie #'czarnego płaszcza smoczego' i to 10 sztuk! Przyniósłbyś byś mi to?");
+											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
+										}
 									} else {
 										npc.say(text + " Poszukaj małego chłopca o imieniu Leo, ponieważ zgubił swoją zabawkę i nie może jej odzyskać!");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
@@ -78,7 +80,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
+			ConversationStates.IDLE,
 			"Jako król państwa Polan, dziękuję Ci za pomoc!",
 			null);
 
@@ -86,7 +88,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
-			ConversationStates.ATTENDING,
+			ConversationStates.IDLE,
 			"Świetnie... Będę za tobą czekał mieszczaninie.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
@@ -94,8 +96,8 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
-			ConversationStates.ATTENDING,
-			"Może nie zasługujesz na miano rycerza... Jeszcze...",
+			ConversationStates.IDLE,
+			"Może nie zasługujesz na miano rycerza... Jeszcze... Precz!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -15.0));
 	}
 
@@ -113,7 +115,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("czarny płaszcz smoczy",10))),
-			ConversationStates.ATTENDING,
+			ConversationStates.IDLE,
 			"Nie będę się powtarzał...",
 			null);
 
@@ -126,7 +128,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.YES_MESSAGES,
-			null,
+			new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
 			"Dziękuję Ci za pomoc! Teraz mój królewski krawiec uszyje dla mnie nowy królewski płaszcz.",
 			new MultipleActions(reward));
@@ -134,7 +136,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.NO_MESSAGES,
-			null,
+			new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
 			"Chyba o coś Ciebie prosiłem, prawda?",
 			null);
