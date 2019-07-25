@@ -66,6 +66,9 @@
 		<portal x="107" y="35" ref="dragon_tunnel_1_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_1_exit"/>
 		</portal>
+		<portal x="67" y="60" ref="dragon_tunnel_2_entrance">
+			<destination zone="-1_dragon_cave" ref="tunnel_dragon_2_exit"/>
+		</portal>
 	</zone>
 
 	<!-- interiors -->
@@ -277,8 +280,12 @@ Uciekaj!</attribute>
 		<!--<portal x="66" y="136" ref="tunnel_krakow_1_exit">
 			<destination zone="0_krakow_wisla_se" ref="krakow_tunnel_1_entrance"/>
 		</portal>-->
-		<portal x="131" y="14" ref="tunnel_dragon_1_exit">
+		<portal x="141" y="23" ref="tunnel_dragon_1_exit">
 			<destination zone="0_dragon_land_s" ref="dragon_tunnel_1_entrance"/>
+		</portal>
+		<portal x="72" y="92" ref="tunnel_dragon_2_exit">
+			<destination zone="0_dragon_land_s" ref="dragon_tunnel_2_entrance"/>
+			<attribute name="face">down</attribute>
 		</portal>
 		<!-- Pulapki -->
 		<portal x="18" y="7" ref="poison_pit_1_entrance">
