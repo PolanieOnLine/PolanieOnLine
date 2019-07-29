@@ -7,7 +7,7 @@
     <description>Oto srebrny pierścień.</description>
     <implementation class-name="games.stendhal.server.entity.item.Item"/>
     <attributes>
-      <atk value="2"/>
+      <atk value="1"/>
       <def value="2"/>
     </attributes>
     <weight value="0.1"/>
@@ -30,8 +30,8 @@
     <description>Oto złoty pierścień.</description>
     <implementation class-name="games.stendhal.server.entity.item.Item"/>
     <attributes>
-      <atk value="3"/>
-      <def value="3"/>
+      <atk value="2"/>
+      <def value="1"/>
     </attributes>
     <weight value="0.1"/>
     <value value="323032"/>
@@ -53,8 +53,8 @@
     <description>Oto pierścień z mithrilu. Został wykonany z bardzo wysoko-jakościowego materiału.</description>
     <implementation class-name="games.stendhal.server.entity.item.Item"/>
     <attributes>
-      <atk value="4"/>
-      <def value="5"/>
+      <atk value="3"/>
+      <def value="2"/>
     </attributes>
     <weight value="0.1"/>
     <value value="323032"/>
@@ -76,8 +76,8 @@
     <description>Oto czarny pierścień. Czujesz wielką siłę kiedy go nosisz.</description>
     <implementation class-name="games.stendhal.server.entity.item.Item"/>
     <attributes>
-      <atk value="5"/>
-      <def value="4"/>
+      <atk value="2"/>
+      <def value="3"/>
     </attributes>
     <weight value="0.1"/>
     <value value="123032"/>
