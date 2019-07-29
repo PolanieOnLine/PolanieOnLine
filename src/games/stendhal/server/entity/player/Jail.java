@@ -277,6 +277,7 @@ public class Jail implements ZoneConfigurator, LoginListener {
 			inmate.teleport(exitZone, 8, 7, Direction.LEFT, null);
 			inmate.sendPrivateText(NotificationType.SUPPORT,
 					"Skończyła się twoja kara. Możesz teraz odejść.");
+			putOffUniform(inmate);
 			LOGGER.info("Player " + inmate.getName() + " released from jail.");
 		} else {
 			LOGGER.info("Tried to release player " + inmate.getName() + ", but " + inmate.getName() + " is not in jail.");
@@ -285,6 +286,14 @@ public class Jail implements ZoneConfigurator, LoginListener {
 		// The player completed his sentence and did not logout
 		// so destroy the ArrestWarrant
 		arrestWarrants.removeByName(inmate.getName());
+	}
+
+	private void putOffUniform(final Player player) {
+		if (UNIFORM2.isPartOf(player.getOutfit())
+			|| UNIFORM1.isPartOf(player.getOutfit())
+			|| UNIFORM.isPartOf(player.getOutfit())) {
+				player.returnToOriginalOutfit();
+		}
 	}
 
 	/**
