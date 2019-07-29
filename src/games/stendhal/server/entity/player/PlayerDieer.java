@@ -129,6 +129,7 @@ public class PlayerDieer {
 			player.subXP((int) Math.round(player.getXP() * (1 - penaltyFactor)));
 			player.setAtkXP((int) Math.round(player.getAtkXP() * penaltyFactor));
 			player.setDefXP((int) Math.round(player.getDefXP() * penaltyFactor));
+			player.setRatkXP((int) Math.round(player.getRatkXP() * penaltyFactor));
 			if (killer instanceof Player) {
 								Player playerKiller = (Player) killer;
 								handlePlayerKiller(playerKiller);
