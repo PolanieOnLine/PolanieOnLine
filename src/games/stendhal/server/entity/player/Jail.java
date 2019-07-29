@@ -32,6 +32,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.ZoneEnterExitListener;
+import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.mapstuff.office.ArrestWarrant;
 import games.stendhal.server.entity.mapstuff.office.ArrestWarrantList;
@@ -45,7 +46,22 @@ import marauroa.common.game.RPObject;
  * @author daniel
  */
 public class Jail implements ZoneConfigurator, LoginListener {
-
+	private static final Outfit UNIFORM = new Outfit(null, null, null, Integer.valueOf(99), null);
+	private static final Outfit UNIFORM1 = new Outfit(null, null, Integer.valueOf(21), Integer.valueOf(99), Integer.valueOf(8));
+	private static final Outfit UNIFORM2 = new Outfit(null, null, Integer.valueOf(21), Integer.valueOf(99), Integer.valueOf(2));
+	private static final Outfit MANHORSE1 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(27));
+	private static final Outfit MANHORSE2 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(33));
+	private static final Outfit MANHORSE3 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(34));
+	private static final Outfit MANHORSE4 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(35));
+	private static final Outfit MANHORSE5 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(38));
+	private static final Outfit WOMANHORSE1 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(26));
+	private static final Outfit WOMANHORSE2 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(28));
+	private static final Outfit WOMANHORSE3 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(29));
+	private static final Outfit WOMANHORSE4 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(30));
+	private static final Outfit WOMANHORSE5 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(31));
+	private static final Outfit WOMANHORSE6 = new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(32));
+	private static final Outfit WOMANHORSE7= new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(36));
+	private static final Outfit WOMANHORSE8= new Outfit(null, null, Integer.valueOf(36), null, Integer.valueOf(37));
 	static StendhalRPZone jailzone;
 
 	private static final Logger LOGGER = Logger.getLogger(Jail.class);
