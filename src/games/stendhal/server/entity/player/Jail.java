@@ -202,7 +202,27 @@ public class Jail implements ZoneConfigurator, LoginListener {
 			// players, so we handle that normally.
 			LOGGER.info("Setting turn notifier for " + (minutes * 60) + " " + jailer);
 			if (minutes >= 0) {
-				SingletonRepository.getTurnNotifier().notifyInSeconds(minutes * 60, jailer);
+				if (MANHORSE1.isPartOf(criminal.getOutfit())
+					|| MANHORSE2.isPartOf(criminal.getOutfit())
+					|| MANHORSE3.isPartOf(criminal.getOutfit())
+					|| MANHORSE4.isPartOf(criminal.getOutfit())
+					|| MANHORSE5.isPartOf(criminal.getOutfit())) {
+					SingletonRepository.getTurnNotifier().notifyInSeconds(minutes * 60, jailer);
+					criminal.setOutfit(UNIFORM2, true);
+				} else if (WOMANHORSE1.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE2.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE3.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE4.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE5.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE6.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE7.isPartOf(criminal.getOutfit())
+					|| WOMANHORSE8.isPartOf(criminal.getOutfit())) {
+					SingletonRepository.getTurnNotifier().notifyInSeconds(minutes * 60, jailer);
+					criminal.setOutfit(UNIFORM1, true);
+				} else {
+					SingletonRepository.getTurnNotifier().notifyInSeconds(minutes * 60, jailer);
+					criminal.setOutfit(UNIFORM, true);
+				}
 			}
 		} else {
 			policeman.sendPrivateText("Nie można znaleźć celi dla "	+ criminal.getName());
