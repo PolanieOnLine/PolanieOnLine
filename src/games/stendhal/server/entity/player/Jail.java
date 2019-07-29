@@ -205,7 +205,7 @@ public class Jail implements ZoneConfigurator, LoginListener {
 				SingletonRepository.getTurnNotifier().notifyInSeconds(minutes * 60, jailer);
 			}
 		} else {
-			policeman.sendPrivateText("Nie można znaleść celi dla "	+ criminal.getName());
+			policeman.sendPrivateText("Nie można znaleźć celi dla "	+ criminal.getName());
 			LOGGER.error("Could not find a cell for " + criminal.getName());
 		}
 	}
