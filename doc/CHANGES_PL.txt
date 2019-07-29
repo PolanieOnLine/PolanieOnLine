@@ -6,6 +6,7 @@ Przetestowałem tę zmianę na około 30 próbach, można mieć pierścionek sch
 
 *klient*
 - Zmieniono pozycję paska zdrowia u wszystkich pokutników
+- Poprawiono link dla przycisku 'Pomoc'
 
 *świat gry*
 - Aresztowanie gracza zmienia tymczasowo jego strój, aż do zakończenia jego kary
@@ -14,6 +15,7 @@ Przetestowałem tę zmianę na około 30 próbach, można mieć pierścionek sch
 
 *naprawiono błędy*
 - Naprawiono umieranie postaci (każda śmierć nie niosła jakichkolwiek konsekwencji)
+- Przetłumaczono komunikat kiedy nasze zwierzątko głoduje
 
 1.02.1
 *świat gry*
