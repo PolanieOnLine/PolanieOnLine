@@ -346,7 +346,7 @@ public abstract class Pet extends DomesticAnimal {
 
 			hunger /= 2;
 			 if (owner != null) {
-				 owner.sendPrivateText("Your pet is starving!");
+				 owner.sendPrivateText("Twoje zwierzątko głoduje!");
 			 }
 			LOGGER.debug("Pet starves");
 			if (weight > 0) {
