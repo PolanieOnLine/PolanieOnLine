@@ -1,5 +1,20 @@
 ﻿Changelog
 ---------
+1.02.2
+Główna zmiana: nie trzeba mieć założonego pierścienia szmaragdowego na palcu!
+Przetestowałem tę zmianę na około 30 próbach, można mieć pierścionek schowany w rzemyku jak i w plecaku! :D
+
+*klient*
+- Zmieniono pozycję paska zdrowia u wszystkich pokutników
+
+*świat gry*
+- Aresztowanie gracza zmienia tymczasowo jego strój, aż do zakończenia jego kary
+- Szasna na drop ciupagi jest mniejsza
+- Zbalansowano nowe pierścionki (srebrny pierścień, złoty pierścień, pierścień z mithrilu oraz czarny pierścień)
+
+*naprawiono błędy*
+- Naprawiono umieranie postaci (każda śmierć nie niosła jakichkolwiek konsekwencji)
+
 1.02.1
 *świat gry*
 - Dodano nowy teleport na mapie dragon_land_s (teleportujący do dragon_cave)
