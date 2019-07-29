@@ -28,10 +28,9 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.PassiveEntity;
-import games.stendhal.server.entity.creature.Pet;
-import games.stendhal.server.entity.creature.RaidCreature;
-import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.creature.Goat;
+import games.stendhal.server.entity.creature.Pet;
+import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.RingOfLife;
@@ -64,7 +63,6 @@ public class PlayerDieer {
 		this.player = player;
 	}
 
-
 	public void onDead(final Killer killer) {
 		player.put("dead", "");
 		logger.debug("ondeadstart");
@@ -75,67 +73,66 @@ public class PlayerDieer {
 		double penaltyFactor = 1.0;
 
 		// only lose skills if creature is a spawned creature and not one from /summon or Plague
-		if (!(killer instanceof RaidCreature)) {
-			logger.debug("noraidcreature");
-			logger.debug("player karma is " + player.getKarma());
-   			double karma;
-			if (player.isBadBoy()) {
-			    // don't allow PKers to use good karma to help against death penalty
-			    // if they had positive karma, this will return 0 (i.e. no change to the normal death penalty)
-				karma = player.useKarma(-100.0, 0.0);
-			} else {
-				karma = player.useKarma(-100.0, 100.0);
-			}
-			logger.debug("karma selected: " + karma);
-			// scale down to between -1 and 1, as the penalty factor is scaled to 1 (we will also need to scale again before adding to penaltyFactor)
-			karma = karma / 100.0;
+		logger.debug("noraidcreature");
+		logger.debug("player karma is " + player.getKarma());
+		double karma;
+		if (player.isBadBoy()) {
+		    // don't allow PKers to use good karma to help against death penalty
+		    // if they had positive karma, this will return 0 (i.e. no change to the normal death penalty)
+			karma = player.useKarma(-100.0, 0.0);
+		} else {
+			karma = player.useKarma(-100.0, 100.0);
+		}
+		logger.debug("karma selected: " + karma);
+		// scale down to between -1 and 1, as the penalty factor is scaled to 1 (we will also need to scale again before adding to penaltyFactor)
+		karma = karma / 100.0;
 
-			final List<RingOfLife> ringList = player.getAllEquippedWorkingRingOfLife();
-			// A very unlucky player might drop the ring too
-			for (Item item : drops) {
-				if (item instanceof RingOfLife) {
-					RingOfLife ring = (RingOfLife) item;
-					if (!ring.isBroken()) {
-						ringList.add((RingOfLife) item);
-					}
+		final List<RingOfLife> ringList = player.getAllEquippedWorkingRingOfLife();
+		// A very unlucky player might drop the ring too
+		for (Item item : drops) {
+			if (item instanceof RingOfLife) {
+				RingOfLife ring = (RingOfLife) item;
+				if (!ring.isBroken()) {
+					ringList.add((RingOfLife) item);
 				}
 			}
-
-			logger.debug("ringlist " + ringList);
-
-			if (ringList.isEmpty()) {
-			    // if player has positive karma, then they will lose between 0% and 10% skills - less than if karma was ignored
-			    // if player has negative karma, they lose between 10% and 20% skills - more than if karma was ignored
-			    penaltyFactor = 0.9 + (karma / 10.0);
-			    logger.debug("penaltyFactor: " + penaltyFactor);
-			} else {
-			    // if player has positive karma, then they will lose between 0% and 1% skills - less than if karma ignored
-			    // if player has negative karma, they lose between 1% and 2% skills - more than if karma was ignored
-				// Use up a random ring
-				Rand.rand(ringList).damage();
-				penaltyFactor = 0.99 + (karma / 100.0);
-			}
-
-			// round to 3 decimal places (i.e as a percentage it will be one decimal place)
-			penaltyFactor = (double) Math.round(penaltyFactor * 1000) / 1000;
-
-			// note on karma: players can only hit the maximums of these ranges if they themselves had over 100 Karma, less than -100 karma, respectively.
-			// and even then, some chance will mean they are not guaranteed to hit the maximum
-			// (just because we call useKarma(-100.0,100.0) doesn't mean that a player with over 100.0 karma will get 100.0 used. He is just more likely to get 100.0 used.)
-
-			// Using subXP() instead of using setXP() directly to get the level
-			// checks correctly done. setXP() can not do the magic unlike setAtkXP()
-			// & setDEFXP() because it's used by creatures as well
-			player.subXP((int) Math.round(player.getXP() * (1 - penaltyFactor)));
-			player.setAtkXP((int) Math.round(player.getAtkXP() * penaltyFactor));
-			player.setDefXP((int) Math.round(player.getDefXP() * penaltyFactor));
-			player.setRatkXP((int) Math.round(player.getRatkXP() * penaltyFactor));
-			if (killer instanceof Player) {
-								Player playerKiller = (Player) killer;
-								handlePlayerKiller(playerKiller);
-			}
-			player.update();
 		}
+
+		logger.debug("ringlist " + ringList);
+
+		if (ringList.isEmpty()) {
+		    // if player has positive karma, then they will lose between 0% and 10% skills - less than if karma was ignored
+		    // if player has negative karma, they lose between 10% and 20% skills - more than if karma was ignored
+		    penaltyFactor = 0.9 + (karma / 10.0);
+		    logger.debug("penaltyFactor: " + penaltyFactor);
+		    player.setAtkXP((int) Math.round(player.getAtkXP() * penaltyFactor));
+		    player.setDefXP((int) Math.round(player.getDefXP() * penaltyFactor));
+		    player.setRatkXP((int) Math.round(player.getRatkXP() * penaltyFactor));
+		} else {
+		    // if player has positive karma, then they will lose between 0% and 1% skills - less than if karma ignored                             
+		    // if player has negative karma, they lose between 1% and 2% skills - more than if karma was ignored  
+			// Use up a random ring
+			Rand.rand(ringList).damage();
+		    penaltyFactor = 0.99 + (karma / 100.0);
+		}
+
+		// round to 3 decimal places (i.e as a percentage it will be one decimal place)
+		penaltyFactor = (double) Math.round(penaltyFactor * 1000) / 1000;
+
+		// note on karma: players can only hit the maximums of these ranges if they themselves had over 100 Karma, less than -100 karma, respectively.
+		// and even then, some chance will mean they are not guaranteed to hit the maximum 
+		// (just because we call useKarma(-100.0,100.0) doesn't mean that a player with over 100.0 karma will get 100.0 used. He is just more likely to get 100.0 used.)
+
+		// Using subXP() instead of using setXP() directly to get the level
+		// checks correctly done. setXP() can not do the magic unlike setAtkXP()
+		// & setDEFXP() because it's used by creatures as well
+		player.subXP((int) Math.round(player.getXP() * (1 - penaltyFactor)));
+		player.setHP((int) Math.round(player.getHP() * 0.1));
+		if (killer instanceof Player) {
+			Player playerKiller = (Player) killer;
+			handlePlayerKiller(playerKiller);
+		}
+		player.update();
 
 		// this is for telling the player what % of their old value, the skills are now. so, some loss of precision is ok
 		// but we don't want to say it is 100% when it is not.
@@ -193,10 +190,13 @@ public class PlayerDieer {
 					strings.add(Grammar.a_noun(item.getName()));
 				}
 			}
-			final int hpLeft = Math.round(player.getBaseHP() - player.getHP());
-			player.sendPrivateText(NotificationType.NEGATIVE, "Twoje zwłoki zawierają " + Grammar.enumerateCollection(strings) + ", ale możesz odzyskać " + Grammar.itthem(numberOfDrops) + ". Ocaliłeś aż " + skillPercentage + "% swoich dotychczasowych umiejętności oraz straciłeś " + hpLeft + " punkt" + " życia!");
+			if (ringList.isEmpty()) {
+				player.sendPrivateText(NotificationType.NEGATIVE, "Twoje zwłoki zawierają " + Grammar.enumerateCollection(strings) + ", ale możesz odzyskać. Ocaliłeś aż " + skillPercentage + "% swoich dotychczasowych umiejętności!");
+			} else {
+				player.sendPrivateText(NotificationType.NEGATIVE, "Twoje zwłoki zawierają " + Grammar.enumerateCollection(strings) + ", ale możesz odzyskać. Ocaliłeś aż " + skillPercentage + "% swoich dotychczasowych umiejętności!");
+			}
 		} else {
-			player.sendPrivateText(NotificationType.POSITIVE, "Miałeś szczęście ponieważ nie zgubiłeś żadnych przedmiotów, gdy poległeś na polu chwały. Ocaliłeś aż " + skillPercentage + "% swoich dotychczasowych umiejętności.");
+			player.sendPrivateText(NotificationType.POSITIVE, "Miałeś szczęście ponieważ nie zgubiłeś żadnych przedmiotów, gdy poległeś na polu chwały.");
 		}
 	}
 
