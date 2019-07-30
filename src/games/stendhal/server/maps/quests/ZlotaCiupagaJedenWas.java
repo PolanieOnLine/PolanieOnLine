@@ -77,7 +77,7 @@ import games.stendhal.server.util.TimeUtil;
 public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	private static final int REQUIRED_WAIT_DAYS = 5;
 
-	private static final int REQUIRED_MINUTES = 480;
+	private static final int REQUIRED_HOURS = 8;
 
 	private static final String QUEST_SLOT = "zlota_ciupaga_was";
 
@@ -214,7 +214,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 
 	private void step_4() {
 		final SpeakerNPC npc = npcs.get("Józek");
-		final int delay = REQUIRED_MINUTES * MathHelper.SECONDS_IN_ONE_MINUTE;
+		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
 
 		npc.add(ConversationStates.IDLE, 
 			ConversationPhrases.GREETING_MESSAGES,
@@ -279,7 +279,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 		}
 		res.add("Dostarczyłem potrzebne przedmioty! Józek zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Mogę iść do Józka i sprawdzić czy już ulepszył moją ciupagę. Hasło: ciupaga.");
 			} else {
 				res.add("Po ciupagę mam zgłosić się za 8 godzin. Hasło: ciupaga.");
