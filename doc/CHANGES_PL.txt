@@ -1,5 +1,11 @@
 ﻿Changelog
 ---------
+1.03
+*naprawiono błędy*
+- Dodano brakującą możliwość zdobycia elfickiego kapelusza
+- Poprawiono jednoskę czasu dla zadania na złotą ciupagę z dwoma wąsami
+
+
 1.02.2
 Główna zmiana: nie trzeba mieć założonego pierścienia szmaragdowego na palcu!
 Przetestowałem tę zmianę na około 30 próbach, można mieć pierścionek schowany w rzemyku jak i w plecaku! :D
@@ -17,6 +23,7 @@ Przetestowałem tę zmianę na około 30 próbach, można mieć pierścionek sch
 - Naprawiono umieranie postaci (każda śmierć nie niosła jakichkolwiek konsekwencji)
 - Przetłumaczono komunikat kiedy nasze zwierzątko głoduje
 
+
 1.02.1
 *świat gry*
 - Dodano nowy teleport na mapie dragon_land_s (teleportujący do dragon_cave)
@@ -27,6 +34,7 @@ Przetestowałem tę zmianę na około 30 próbach, można mieć pierścionek sch
 - Naprawiono zadanie u Króla Kraka
 - Naprawiono osiągniecia za ilość wykonanych zadań w kuźnicach
 - Przetłumaczono teksty u Kettah oraz u potwora 'kostucha różowa'
+
 
 1.02
 Zaktualizowano do najnowszej wersji Stendhala (nowe 3 poziomowe jaskinie w Deniran, drop zwoju Deniran, etc..)
