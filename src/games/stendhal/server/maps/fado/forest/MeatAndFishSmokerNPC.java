@@ -71,20 +71,20 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
 
             @Override
             protected void createDialog() {
-                addJob("Mogę #uwędzić Tobie #mięso #wędzone, #szynka #wędzona, #wędzony #pstrąg lub #wędzony #dorsz. Zapytaj mnie tylko!");
-                addOffer("#Uwędze dla Ciebie #mięso #wędzone, #szynka #wędzona, #wędzony #pstrąg lub #wędzony #dorsz, ale musisz mi przynieść to co potrzebuję.");
-                addHelp("Zapytaj mnie o #uwędzenie dla Ciebie #mięso #wędzone, #szynka #wędzona, #wędzony #pstrąg lub #wędzony #dorsz. To jest to w czym jestem dobry i jeśli gdy przyniesiesz mi to co potrzebuję.");
+                addJob("Mogę #uwędzić Tobie #'mięso wędzone', #'szynka wędzona', #'wędzony pstrąg' lub #'wędzony dorsz'. Zapytaj mnie tylko!");
+                addOffer("#Uwędze dla Ciebie #'mięso wędzone', #'szynka wędzona', #'wędzony pstrąg' lub #'wędzony dorsz', ale musisz mi przynieść to co potrzebuję.");
+                addHelp("Zapytaj mnie o #uwędzenie dla Ciebie #'mięso wędzone', #'szynka wędzona', #'wędzony pstrąg' lub #'wędzony dorsz'. To jest to w czym jestem dobry i jeśli gdy przyniesiesz mi to co potrzebuję.");
 
                 addReply(Arrays.asList("smoked", "smoked meat", "smoked ham", "smoked trout", "smoked cod", "uwędzić", "uwędze", "uwędzenie", "wędzenia", "uwędzonych", "mięso wędzone", "szynka wędzona", "wędzony pstrąg", "wędzony dorsz"),
-                    "Sekret tkwi w tym jakie zioła i polano mi przyniesiesz do #wędzenia.");
+                    "Sekret tkwi w tym jakie zioła dla aromatu wraz z wystarczającą ilością drewna mi przyniesiesz dla idealnego #'wędzenia'.");
                 addReply(Arrays.asList("sclaria", "kekik"),
                     "Rośnie w wielu miejscach na krawędziach lub na skrajach lasu.");
                 addReply(Arrays.asList("trout", "cod", "pstrąg", "dorsz"),
-                    "Nie chciałbym ujawniać tobie moich miejsc łowienia ryb, ale poleciłbym ci poszukanie książek na ten temat.");
+                    "Nie chciałbym ujawniać Tobie moich ulubioncyh miejsc do łowienia ryb, ale poleciłbym ci poszukanie książek na ten temat, w jednym z tych miejsc naukowych gdzie niewielu jest już zaznajomionych...");
                 addReply(Arrays.asList("meat","ham", "mięso", "szynka"),
-                    "Nie interesuje mnie skąd pochodzi ze słonia czy lwa... Mogę to #uwędzić dla Ciebie!"); 
+                    "Nie interesuje mnie skąd to pochodzi, ze słonia, z niedźwiedzia czy z lwa... Mogę to #uwędzić dla Ciebie!"); 
                     
-                addGoodbye("S' veg!");
+                addGoodbye("S' vegum...");
 
                 final HashSet<String> productsNames = new HashSet<String>();
                 productsNames.add("mięso wędzone");
@@ -140,7 +140,7 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                     productsBound);
 
                 new MultiProducerAdder().addMultiProducer(this, behaviour,
-                        "Witaj! Jestem pewien, że poczułeś aromat pochodzący z moich #uwędzonych produktów!");
+                        "Witaj! Jestem pewien, że przyciąga Cię aromat pochodzący z moich smacznych #uwędzonych produktów!");
             }
         };
 
