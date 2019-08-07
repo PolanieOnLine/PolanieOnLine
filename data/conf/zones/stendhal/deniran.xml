@@ -92,6 +92,8 @@
 	</zone>
 
 	<zone name="0_deniran_s" level="0" x="499232" y="500128" file="Level 0/deniran/deniran_s.tmx">
+		<configurator class-name="games.stendhal.server.maps.deniran.LittleGirlNPC" />
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
