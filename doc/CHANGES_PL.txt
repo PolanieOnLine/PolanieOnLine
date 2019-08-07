@@ -14,7 +14,7 @@
 
 *naprawiono błędy*
 - Poprawiono niektóre dialogi u Sally oraz Olmo
-- Poprawiono na niektórych mapach kolizje oraz podmieniono grafiki kraczków itp...
+- Poprawiono na niektórych mapach kolizje oraz podmieniono grafiki krzaczków itp...
 - Poprawiono jednoskę czasu dla zadania na złotą ciupagę z dwoma wąsami
 
 
