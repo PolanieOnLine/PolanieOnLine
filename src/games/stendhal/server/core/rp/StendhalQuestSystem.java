@@ -91,6 +91,7 @@ public class StendhalQuestSystem {
 		loadQuest(new DailyMonsterQuest());
 		loadQuest(new DiceGambling());
 		loadQuest(new DragonLair());
+		loadQuest(new EggsForMarianne());
 		loadQuest(new ElfPrincess());
 		loadQuest(new ElvishArmor());
 		loadQuest(new EmotionCrystals());
