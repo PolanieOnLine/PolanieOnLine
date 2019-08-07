@@ -15,7 +15,7 @@
 *naprawiono błędy*
 - Poprawiono niektóre dialogi u Sally oraz Olmo
 - Poprawiono na niektórych mapach kolizje oraz podmieniono grafiki krzaczków itp...
-- Poprawiono jednoskę czasu dla zadania na złotą ciupagę z dwoma wąsami
+- Poprawiono jednoskę czasu dla zadania na złotą ciupagę z wąsem
 
 
 1.02.2
