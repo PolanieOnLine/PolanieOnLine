@@ -21,6 +21,7 @@ public final class Region {
 	public static final String ADOS_SURROUNDS = "Okolice Ados";
 	public static final String AMAZON_ISLAND = "Wyspa Amazon";
 	public static final String ATHOR_ISLAND = "Wyspa Athor";
+	public static final String DENIRAN = "Deniran";
 	public static final String SEMOS_CITY = "Miasto Semos";
 	public static final String SEMOS_SURROUNDS = "Okolice Semos";
 	public static final String SEMOS_MINES = "Kopalnie Semos";
@@ -41,6 +42,7 @@ public final class Region {
 	public static final String ZAKOPANE_CITY = "Miasto Zakopane";
 	public static final String GDANSK_CITY = "Miasto Gdańsk";
 	public static final String TATRY_MOUNTAIN = "Pasmo górskie Tatry";
+
 	private Region() {
 		// hide constructor
 	}
