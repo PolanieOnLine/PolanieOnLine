@@ -1,8 +1,20 @@
 ﻿Changelog
 ---------
 1.03
+*klient*
+- Dodano kilka nowych grafik NPC
+- Poprawiono 'Wyróżnionych' oraz przycisk 'Pomoc'
+
+*świat gry*
+- Dodano kilka nowych NPC
+- Dodano nowe zadanie w mieście Deniran
+- Dodano piekarnie w Deniran
+- Dodano możliwość zdobycia elfickiego kapelusza
+- Pierścień szmaragdowy już więcej nie wypadnie po śmierci
+
 *naprawiono błędy*
-- Dodano brakującą możliwość zdobycia elfickiego kapelusza
+- Poprawiono niektóre dialogi u Sally oraz Olmo
+- Poprawiono na niektórych mapach kolizje oraz podmieniono grafiki kraczków itp...
 - Poprawiono jednoskę czasu dla zadania na złotą ciupagę z dwoma wąsami
 
 
