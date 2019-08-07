@@ -48,7 +48,7 @@ import games.stendhal.server.maps.Region;
  * 
  * PARTICIPANTS:
  * <ul>
- * <li> Sally, a scout sitting next to a campfire near Or'ril</li>
+ * <li> Sally, a young scout girl sitting next to a campfire near Or'ril River</li>
  * </ul>
  * 
  * STEPS:
@@ -119,8 +119,6 @@ public class Campfire extends AbstractQuest {
 		return res;
 	}
 
-
-
 	private void prepareRequestingStep() {
 		final SpeakerNPC npc = npcs.get("Sally");
 
@@ -128,7 +126,8 @@ public class Campfire extends AbstractQuest {
 		npc.add(ConversationStates.IDLE, 
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"), new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD)),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD)),
 			ConversationStates.QUEST_ITEM_BROUGHT, 
 			"Witaj znowu! Masz te 10 polan, o które wcześniej Cię pytałam?",
 			null);
@@ -137,7 +136,8 @@ public class Campfire extends AbstractQuest {
 		npc.add(ConversationStates.IDLE, 
 			ConversationPhrases.GREETING_MESSAGES,
 		    new	AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"), new NotCondition(new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD))),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new NotCondition(new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD))),
 			ConversationStates.ATTENDING, 
 			"Już wróciłeś? Nie zapomnij, że obiecałeś mi zebrać dziesięć polan dla mnie!",
 			null);
@@ -179,7 +179,9 @@ public class Campfire extends AbstractQuest {
 		// player returns - enough time has passed
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)),
+				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"),
+						new QuestStartedCondition(QUEST_SLOT),
+						new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)),
 				ConversationStates.QUEST_OFFERED, 
 				"Moje ognisko znowu potrzebuje drewna! Czy mógłbyś pójść do lasu i zdobyć trochę dla mnie? Potrzebuję dziesięciu kawałków.",
 				null);
@@ -187,7 +189,9 @@ public class Campfire extends AbstractQuest {
 		// player returns - enough time has passed
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new NotCondition(new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES))),
+				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"),
+						new QuestStartedCondition(QUEST_SLOT),
+						new NotCondition(new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING, 
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT,REQUIRED_MINUTES,"Dziękuję, ale drewno, które mi ostatnio przyniosłeś wystarczy na"));
@@ -197,7 +201,10 @@ public class Campfire extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dobrze. Drewno możesz znaleźć w lesie na północ stąd. Wróć, gdy będziesz mieć dziesięć polan!",
+			"Dobrze." +
+			"Drewno możesz znaleźć w lesie na północ stąd." +
+			"Możesz również zaryzykować z bobrami w pobliżu rzeki na południe stąd." +
+			"Wróć, gdy będziesz mieć dziesięć polan!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		// player is not willing to help
