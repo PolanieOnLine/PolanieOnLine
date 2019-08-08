@@ -4,6 +4,7 @@
 *klient*
 - Dodano kilka nowych grafik NPC
 - Poprawiono 'Wyróżnionych' oraz przycisk 'Pomoc'
+- Poprawiono linki w kliencie (przystosowane do nowej witryny)
 
 *świat gry*
 - Dodano kilka nowych NPC
@@ -11,11 +12,18 @@
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
 - Pierścień szmaragdowy już więcej nie wypadnie po śmierci
+- Zwiększono ilość możliwego zdobycia PD u potworów takich jak:
+	superczłowiek olbrzym,
+	mega mag,
+	czarny szkielet gigant,
+	książę szkieletów i wszystkie kostuchy wielkie
+	oraz wszystkie dwugłowe smoki
 
 *naprawiono błędy*
 - Poprawiono niektóre dialogi u Sally oraz Olmo
 - Poprawiono na niektórych mapach kolizje oraz podmieniono grafiki krzaczków itp...
 - Poprawiono jednoskę czasu dla zadania na złotą ciupagę z wąsem
+- Poprawiono ochronę (zielone pole na minimapie) na mapach Wieliczki
 
 
 1.02.2
