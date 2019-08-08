@@ -7,14 +7,14 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_czarny" tileid="pol_smoki.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="2420"/>
+			<atk value="2820"/>
 			<def value="85"/>
 			<hp value="5500"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
 		<level value="499"/>
-		<experience value="316161"/>
+		<experience value="417171"/>
 		<respawn value="28888"/>
 		<corpse name="dragon_3x3x2" width="3" height="3"/>
 		<drops>
@@ -46,14 +46,14 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_lodowy" tileid="pol_smoki.png:10"/>
 		<description/>
 		<attributes>
-			<atk value="2070"/>
+			<atk value="2470"/>
 			<def value="65"/>
 			<hp value="5000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
 		<level value="399"/>
-		<experience value="216161"/>
+		<experience value="316161"/>
 		<respawn value="27777"/>
 		<corpse name="dragon_3x3x2" width="3" height="3"/>
 		<drops>
@@ -84,14 +84,14 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_czerwony" tileid="pol_smoki.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="1870"/>
+			<atk value="2270"/>
 			<def value="55"/>
 			<hp value="4500"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
 		<level value="299"/>
-		<experience value="165151"/>
+		<experience value="215151"/>
 		<respawn value="26666"/>
 		<corpse name="dragon_3x3x2" width="3" height="3"/>
 		<drops>
@@ -130,7 +130,7 @@
 			<size value="3,2"/>
 		</attributes>
 		<level value="199"/>
-		<experience value="84141"/>
+		<experience value="114141"/>
 		<respawn value="25555"/>
 		<corpse name="dragon_3x3x2" width="3" height="3"/>
 		<drops>
@@ -310,7 +310,7 @@
 			<size value="5,4"/>
 		</attributes>
 		<level value="300"/>
-		<experience value="133333"/>
+		<experience value="333333"/>
 		<respawn value="24000"/>
 		<corpse name="dragon_6x6" width="6" height="6"/>
 		<drops>
