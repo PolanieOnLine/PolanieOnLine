@@ -24,6 +24,7 @@
 - Poprawiono na niektórych mapach kolizje oraz podmieniono grafiki krzaczków itp...
 - Poprawiono jednoskę czasu dla zadania na złotą ciupagę z wąsem
 - Poprawiono ochronę (zielone pole na minimapie) na mapach Wieliczki
+- Nie można już zapisać zwoju w momencie znajdowania się w pułapce
 
 
 1.02.2
