@@ -925,6 +925,7 @@ Uciekaj!</attribute>
 	<!-- Level -2 -->
 
 	<zone name="-2_water_trap" level="-2" x="513696" y="18176" file="interiors/abstract/trap_water.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
@@ -940,6 +941,7 @@ Uciekaj!</attribute>
 	</zone>
 
 	<zone name="-2_poison_pit" level="-2" x="513707" y="18176" file="interiors/abstract/trap_poison.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
@@ -959,6 +961,7 @@ Uciekaj!</attribute>
 	</zone>
 
 	<zone name="-2_spikes_pit" level="-2" x="513718" y="18176" file="interiors/abstract/trap_spikes.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
