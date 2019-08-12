@@ -26,6 +26,7 @@
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="volume">50</parameter>
+				<parameter name="radius">14</parameter>
 			</implementation>
 		</entity>
 
