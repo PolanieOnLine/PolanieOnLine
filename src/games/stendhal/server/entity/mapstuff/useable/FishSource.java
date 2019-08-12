@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -51,8 +51,8 @@ public class FishSource extends PlayerActivityEntity {
 	 * Sound effects
 	 */
 	private final String startSound = "fishing-1";
-	private String successSound;
-	private String failSound;
+	//private String successSound;
+	//private String failSound;
 	private final int SOUND_RADIUS = 20;
 
 	/**
@@ -76,10 +76,6 @@ public class FishSource extends PlayerActivityEntity {
 	public String getName() {
 		return("ryb");
 	}
-
-	//
-	// FishSource
-	//
 
 	public static void generateRPClass() {
 		final RPClass rpclass = new RPClass("fish_source");
@@ -107,10 +103,6 @@ public class FishSource extends PlayerActivityEntity {
 
 		return probability + player.useKarma(0.05);
 	}
-
-	//
-	// PlayerActivityEntity
-	//
 
 	/**
 	 * Get the time it takes to perform this activity.
