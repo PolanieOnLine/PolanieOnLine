@@ -14,6 +14,7 @@
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
 - Pierścień szmaragdowy już więcej nie wypadnie po śmierci
+- Zróżnicowano ceny niezapisanych zwoi (gdzieś jest taniej, a gdzie indziej drożej ;))
 - Zwiększono ilość możliwego zdobycia PD u potworów takich jak:
 	superczłowiek olbrzym,
 	mega mag,
