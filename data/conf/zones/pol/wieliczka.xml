@@ -84,6 +84,8 @@
 
 	<!-- wieliczka_c -->
 	<zone name="0_wieliczka_c" level="0" x="514080" y="18560" file="Level 0/wieliczka/c.tmx">
+		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArthurNPC"/>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.city.HerbertNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
