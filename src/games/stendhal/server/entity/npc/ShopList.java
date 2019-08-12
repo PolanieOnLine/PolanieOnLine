@@ -67,7 +67,7 @@ public final class ShopList {
 		shops.add("scrolls", "zwój semos", 250);
 		shops.add("scrolls", "zwój tatrzański", 800);
 		shops.add("scrolls", "zwój przywołania", 200);
-		shops.add("scrolls", "niezapisany zwój", 2000);
+		shops.add("scrolls", "niezapisany zwój", 1900);
 
 		//Xhiphin ZohosNPC i OrchiwaldNPC sprzedaje:
 		shops.add("fadoscrolls", "zwój fado", 600);
@@ -79,17 +79,17 @@ public final class ShopList {
 
 		//Mayor ChalmersNPC sprzedaje
 		shops.add("adosscrolls", "zwój ados", 400);
-		shops.add("adosscrolls", "niezapisany zwój", 2000);
+		shops.add("adosscrolls", "niezapisany zwój", 2100);
 
 		//HazelNPC sprzedaje:
 		shops.add("kirdnehscrolls", "zwój kirdneh", 400);
 		shops.add("kirdnehscrolls", "zwój semos", 400);
-		shops.add("kirdnehscrolls", "niezapisany zwój", 2000);
+		shops.add("kirdnehscrolls", "niezapisany zwój", 2100);
 
 		//Erodel BmudNPC w magic city sprzedaje:
 		shops.add("allscrolls", "zwój semos", 250);
 		shops.add("allscrolls", "zwój przywołania", 200);
-		shops.add("allscrolls", "niezapisany zwój", 2000);
+		shops.add("allscrolls", "niezapisany zwój", 1900);
 		shops.add("allscrolls", "zwój tatrzański", 1000);
 		shops.add("allscrolls", "zwój ados", 400);
 		shops.add("allscrolls", "zwój nalwor", 400);
@@ -603,6 +603,10 @@ public final class ShopList {
 		shops.add("juhas", "zwój fado", 900);
 		shops.add("juhas", "zwój kalavan", 1000);
 		shops.add("juhas", "zwój kirdneh", 1000);
+		
+		//Arthur sprzedaje
+		shops.add("arthur", "zwój wieliczka", 300);
+		shops.add("arthur", "niezapisany zwój", 1800);
 
 		//Stasek sprzedaje
 		shops.add("stasek", "wzmocniona drewniana strzała", 4);
