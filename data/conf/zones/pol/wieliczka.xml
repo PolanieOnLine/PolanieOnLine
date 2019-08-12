@@ -20,6 +20,19 @@
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+		<entity x="100" y="83">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="100" y="83" ref="kowal_entrance">
+			<destination zone="int_wieliczka_blacksmith" ref="kowal_exit"/>
+			<attribute name="hidden"/>
+		</portal>
 	</zone>
 
 	<!-- wieliczka_n -->
@@ -201,6 +214,46 @@
 	</zone>
 
 	<!-- interiors -->
+	<zone name="int_wieliczka_blacksmith" file="interiors/wieliczka/blacksmith.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="6" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="6" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="1" y="9" ref="kowal_exit">
+			<destination zone="0_wieliczka_nw" ref="kowal_entrance"/>
+		</portal>
+	</zone>
 
 	<!-- Level -1 -->
 	<zone name="-1_wieliczka_salt_mines_w" level="-1" x="513952" y="18560" file="Level -1/wieliczka/salt_mines_w.tmx">
