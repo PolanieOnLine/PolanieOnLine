@@ -8,6 +8,8 @@
 
 *świat gry*
 - Dodano kilka nowych NPC
+- Dodano nowy sklep ze zwojami w Wieliczce
+- Dodano kuźnię w Wieliczce
 - Dodano nowe zadanie w mieście Deniran
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
