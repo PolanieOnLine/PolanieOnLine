@@ -44,13 +44,8 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				nodes.add(new Node(23, 12));
-				nodes.add(new Node(29,12));
-				nodes.add(new Node(29,5));
-				nodes.add(new Node(17,5));
-				nodes.add(new Node(17,9));
-				nodes.add(new Node(28,9));
-				nodes.add(new Node(28,12));
+				nodes.add(new Node(9, 5));
+				nodes.add(new Node(5, 5));
 				setPath(new FixedPath(nodes, true));
 			}
 
@@ -60,7 +55,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 				addJob("Jestem tutejszym kowalem.");
 				addHelp("Produkuję bełty do kuszy, a mój znajomy zajmuje się produkcją strzał z mithrilu");
 				addOffer("Mogę wyprodukować Tobie bełty do kuszy, powiedz tylko #'zrób bełt'. Będę potrzebował 2 #polano oraz #żelazo.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 				addReply(Arrays.asList("polano", "drewno"),"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści");
 				addReply(Arrays.asList("kowalem Andrzejem", "kowalem", "kowal", "andrzejem", "andrzej"),"Zajmuje się odlewaniem żelaza, znajduje się w swojej kuźni w Zakopcu.");
 
@@ -83,7 +78,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 		kuznia.setDescription("Oto kowal Wincenty. Jest strasznie zapracowany!");
 		kuznia.setEntityClass("goldsmithnpc");
 		kuznia.setDirection(Direction.DOWN);
-		kuznia.setPosition(23, 12);
+		kuznia.setPosition(5, 5);
 		kuznia.initHP(100);
 		zone.add(kuznia);
 	}
