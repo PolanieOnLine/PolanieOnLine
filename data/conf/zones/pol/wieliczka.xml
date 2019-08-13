@@ -98,6 +98,9 @@
 
 	<!-- wieliczka_c -->
 	<zone name="0_wieliczka_c" level="0" x="514080" y="18560" file="Level 0/wieliczka/c.tmx">
+		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArmoryMarket"/>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.city.FishMarket"/>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.city.FlowerMarket"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArthurNPC"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.HerbertNPC"/>
 		<attributes>
@@ -110,6 +113,23 @@
 				<parameter name="sound">pol-littlemeadow1</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
+		</entity>
+		
+		<entity x="106" y="46">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyarmorywieliczka</parameter>
+				<parameter name="title">Skupuje różne uzbrojenie:</parameter>
+				<parameter name="seller">false</parameter>
+			</implementation>
+			<attribute name="class">blackboard</attribute>
+		</entity>
+		<entity x="110" y="41">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyfishes</parameter>
+				<parameter name="title">Co skupuję:</parameter>
+				<parameter name="seller">false</parameter>
+			</implementation>
+			<attribute name="class">blackboard</attribute>
 		</entity>
 
 		<portal x="31" y="77" ref="mines_1_entrance">

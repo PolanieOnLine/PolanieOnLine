@@ -782,6 +782,17 @@ public final class ShopList {
 
 		//Thomas sprzedaje:
 		shops.add("sellthomas", "tuńczyk", 5);
+		
+		// Wieliczka //
+		// Kilian skupuje:
+		shops.add("buyarmorywieliczka", "kolczany pas", 400);
+		shops.add("buyarmorywieliczka", "złoty kolczany pas", 600);
+		shops.add("buyarmorywieliczka", "lazurowa tarcza", 3200);
+		shops.add("buyarmorywieliczka", "lazurowy hełm", 4000);
+		shops.add("buyarmorywieliczka", "lodowe spodnie", 21000);
+		shops.add("buyarmorywieliczka", "lodowy płaszcz", 25000);
+		shops.add("buyarmorywieliczka", "tarcza cieni", 16500);
+		shops.add("buyarmorywieliczka", "rękawice cieni", 11000);
 	}
 
 	private static ShopList instance;
