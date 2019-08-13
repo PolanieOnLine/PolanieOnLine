@@ -237,6 +237,7 @@
 	<!-- interiors -->
 	<zone name="int_wieliczka_blacksmith" file="interiors/wieliczka/blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.maps.wieliczka.blacksmith.KowalWincentyNPC"/>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.blacksmith.MithrilNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
