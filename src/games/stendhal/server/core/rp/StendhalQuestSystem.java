@@ -239,6 +239,10 @@ public class StendhalQuestSystem {
 		loadQuest(new ZamowienieStrazy());
 		loadQuest(new ZlotaCiupagaTrzyWasy());
 		/** 					**\
+		 *        WIELICZKA		 *
+		\**	                    **/
+		loadQuest(new SaltForHerbert());
+		/** 					**\
 		 *     DRAGON_KNIGHTS	 *
 		\**	                    **/
 		loadQuest(new ClearQuestPierscien());
