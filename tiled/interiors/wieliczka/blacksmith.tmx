@@ -57,6 +57,9 @@
  <tileset firstgid="211" name="toolset" tilewidth="32" tileheight="32" tilecount="18" columns="9">
   <image source="../../tileset/building/decoration/toolset.png" width="288" height="64"/>
  </tileset>
+ <tileset firstgid="229" name="krzesla" tilewidth="32" tileheight="32" tilecount="20" columns="5">
+  <image source="../../tileset/pol/wyposazenie/lawki_krzesla/krzesla.png" width="160" height="128"/>
+ </tileset>
  <layer id="43" name="0_floor" width="25" height="19">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACr2VSQ7DQAgEefGY/5+Sg5FQudq5xRLyLJilG3DVf57rK+d+j/R9dnDXaz93vfa9dGZdYsfWLfuDPf2PjVrfX+KPZy3vpD9346PrGSPPeE4MDWti1cEe8+x6xkU58JFsv/GRhHWy83jD2HDc8pbr5tz8N3Stbpljy30FLFJtklvW6hGdqmesv3rwjX/rrYIObTGuhKX13uY8ccw4mRuxJ5a7BxkDsTOxfFJ/FmIxPq2+2E/J5/iw/DcXnD9p7li9DB+p/wxf8su5YPOlymNLs8Vq0Opx10OJDv81qR+sZ4zzD48yBMhsBwAA
@@ -64,12 +67,12 @@
  </layer>
  <layer id="44" name="1_terrain" width="25" height="19">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu2RzQpAQBSFZ40FHkNZiEjyvv7/vZ8zoWZlZtRlwamvu7rn63YZ+0Zq0CjMu70tmMAsmSWojj2ViL0LWBV2BjAKPllUe698Mo8PDGAKWMDT8BQSD3fYwBFwNR092+95K/zfHbHj/HcAQmJXBGJiRwJSYkdG3M+TP+D48142+3RA3WwHAAA=
+   H4sIAAAAAAAACmNgGBlgNRCvIYIm19y1QLwJiDcToFcC8SqoPmIAsrlbgHgrEXo2APFGJPsIAWLNxWcfIXt0gZgLiLmRMA8Qa+HR8xSNv4KAPSA7BIBYEAkLEbADHaxngPhnoAAovtfR2A5YfBsCsTGN7TIBYjMa22EOxJY0tsOaxuaDgC0d7BgFAwcApYx5DWwHAAA=
   </data>
  </layer>
  <layer id="45" name="2_object" width="25" height="19">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3OQQqCQBiGYc2FdZI06BxZKoLWJkq8s6SQYYEexHfh4kdsMTCgUi88DAMD3xjG75SjQIlH74lK48YLb3xQ9xq0GjeW2B4mVoKFneYNG2thM7JxxlW4KGw42I5wB+9uuAupwsYcOuAIDyf4CBAimvBfqsVIxD37ci6tbHD+m38dnlNVkmwHAAA=
+   H4sIAAAAAAAACu3OQQqCUBSFYa2BtZJUcB2lJYLpRCrcc1hgUUHSpE30DxxcRAcPHqXYgY/Lg8c91zDGkyNOOKOolbho2v/CFXc8cKs9UWnqeGva8+14MDERpnA1d1iYCfOWjgSZkCp02Fi0cBr/dtgLB4WOPmQJHysEWGODENEP71JNjK145x1zaMkb85/+5wPmGKxxbAcAAA==
   </data>
  </layer>
  <layer id="46" name="3_roof" width="25" height="19">
