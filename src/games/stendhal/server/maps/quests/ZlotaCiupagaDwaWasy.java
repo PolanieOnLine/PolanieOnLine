@@ -239,7 +239,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
 				res.add("Podobno Krasnalud skończył moją ciupagę. Hasło: nagroda.");
 			} else {
-				res.add("Po ciupagę mam zgłosić się za 30 godzin. Hasło: ciupaga.");
+				res.add("Po ciupagę mam zgłosić się za 12 godzin. Hasło: nagroda.");
 			}
 			return res;
 		} 

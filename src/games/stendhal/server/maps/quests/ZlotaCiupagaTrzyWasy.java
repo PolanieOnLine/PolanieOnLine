@@ -238,7 +238,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
 				res.add("Podobno Hadrin skończył moją ciupagę. Hasło: nagroda.");
 			} else {
-				res.add("Po ciupagę mam zgłosić się za 48 godzin. Hasło: ciupaga.");
+				res.add("Po ciupagę mam zgłosić się za 24 godzin. Hasło: nagroda.");
 			}
 			return res;
 		} 

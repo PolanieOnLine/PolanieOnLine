@@ -280,9 +280,9 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 		res.add("Dostarczyłem potrzebne przedmioty! Józek zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
-				res.add("Mogę iść do Józka i sprawdzić czy już ulepszył moją ciupagę. Hasło: ciupaga.");
+				res.add("Mogę iść do Józka i sprawdzić czy już ulepszył moją ciupagę. Hasło: nagroda.");
 			} else {
-				res.add("Po ciupagę mam zgłosić się za 8 godzin. Hasło: ciupaga.");
+				res.add("Po ciupagę mam zgłosić się za 8 godzin. Hasło: nagroda.");
 			}
 			return res;
 		}
