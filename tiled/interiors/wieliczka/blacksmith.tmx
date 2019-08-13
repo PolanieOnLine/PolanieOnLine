@@ -51,6 +51,12 @@
  <tileset firstgid="182" name="red_light_5x5" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/light/red_light_5x5.png" width="160" height="160"/>
  </tileset>
+ <tileset firstgid="207" name="grey_pale_base" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/furniture/table/grey_pale_base.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="211" name="toolset" tilewidth="32" tileheight="32" tilecount="18" columns="9">
+  <image source="../../tileset/building/decoration/toolset.png" width="288" height="64"/>
+ </tileset>
  <layer id="43" name="0_floor" width="25" height="19">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACr2VSQ7DQAgEefGY/5+Sg5FQudq5xRLyLJilG3DVf57rK+d+j/R9dnDXaz93vfa9dGZdYsfWLfuDPf2PjVrfX+KPZy3vpD9346PrGSPPeE4MDWti1cEe8+x6xkU58JFsv/GRhHWy83jD2HDc8pbr5tz8N3Stbpljy30FLFJtklvW6hGdqmesv3rwjX/rrYIObTGuhKX13uY8ccw4mRuxJ5a7BxkDsTOxfFJ/FmIxPq2+2E/J5/iw/DcXnD9p7li9DB+p/wxf8su5YPOlymNLs8Vq0Opx10OJDv81qR+sZ4zzD48yBMhsBwAA
@@ -63,7 +69,7 @@
  </layer>
  <layer id="45" name="2_object" width="25" height="19">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGAWjgPZAF4gZgZgJCTMDsRaV7WAHYg4kzInFjhAgjkLCoSTYoQHE6liwJpq6GCCORcJxJNgxGIA7EHsCsQcQewGxNxD7ALEvEPsPoLtIBUFAHIzET8BBDzWQgEaPgsEPAFB3XrxsBwAA
+   H4sIAAAAAAAACu3OQQqCQBiGYc2FdZI06BxZKoLWJkq8s6SQYYEexHfh4kdsMTCgUi88DAMD3xjG75SjQIlH74lK48YLb3xQ9xq0GjeW2B4mVoKFneYNG2thM7JxxlW4KGw42I5wB+9uuAupwsYcOuAIDyf4CBAimvBfqsVIxD37ci6tbHD+m38dnlNVkmwHAAA=
   </data>
  </layer>
  <layer id="46" name="3_roof" width="25" height="19">
@@ -81,7 +87,7 @@
    H4sIAAAAAAAACmNgGAWjYBSMglEwCkYBLQEAOYVIIGwHAAA=
   </data>
  </layer>
- <layer id="49" name="collision" width="25" height="19" opacity="0.37">
+ <layer id="49" name="collision" width="25" height="19" visible="0" opacity="0.37">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACstgYGDIGMVDApMCaGUuufbhUkNNe4i1g1w11AqrgbQDmxwpbsNnDjZ5avmJmDjHpw+Zj40mxg5qAGrZgU/PQOd1epRZQxEDAM8m1FNsBwAA
   </data>
