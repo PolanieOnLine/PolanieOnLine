@@ -115,7 +115,7 @@ public class EggsForMarianne extends AbstractQuest {
 		}
 		if (isCompleted(player)) {
 			res.add("Zaniosłem Mariannie jajka." +
-		             "W zamian dała mi nasiona." +
+		             "W zamian otrzymałem kwiatka." +
 					 "Zdobyłem także trochę PD.");
 		}
 		if(isRepeatable(player)){
@@ -135,7 +135,7 @@ public class EggsForMarianne extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("jajo", REQUIRED_EGGS)),
 			ConversationStates.QUEST_ITEM_BROUGHT,
-			"Witaj ponownie! Widzę, że masz kilka jajek." +
+			"Witaj ponownie! Widzę, że masz kilka jajek. " +
 			"Czy masz tyle jaj, o ile wcześniej prosiłam?",
 			null);
 
@@ -157,8 +157,7 @@ public class EggsForMarianne extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotStartedCondition(QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Cześć... " +
-					                      "Potrzebuję małej przysługi, jeśli już tak uprzejmie wyglądasz...",
+			ConversationStates.ATTENDING, "Cześć... Potrzebuję małej przysługi, jeśli już tak uprzejmie wyglądasz...",
 			null);
 
 		// player who is rejected or 'done' but waiting to start again, returns
@@ -221,8 +220,8 @@ public class EggsForMarianne extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"W porządku. Możesz znaleźć jaja polując na kurczaki!" +
-			"Możesz je znaleźć w całym mieście."+
+			"W porządku. Możesz znaleźć jaja polując na kurczaki! " +
+			"Możesz je znaleźć w całym mieście. "+
 			"Wróć, kiedy zbierzesz dwanaście jajek!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 2));
 
@@ -231,7 +230,7 @@ public class EggsForMarianne extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Och, co mam zrobić z tymi wszystkimi nasionami kwiatów?" +
+			"Och, co mam zrobić z tymi wszystkimi kwiatkami? " +
 			"Może po prostu posadzę je wokół niektórych grobów...",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 	}
@@ -282,7 +281,7 @@ public class EggsForMarianne extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Och ... cóż, mam nadzieję, że znajdziesz szybko." +
+			"Och ... cóż, mam nadzieję, że znajdziesz szybko. " +
 			"Robię się głodna!",
 			null);
 	}
