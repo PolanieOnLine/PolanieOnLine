@@ -7,8 +7,8 @@
 - Poprawiono linki w kliencie (przystosowane do nowej witryny)
 
 *świat gry*
-- Dodano kilka nowych NPC
-- Dodano nowy sklep ze zwojami w Wieliczce
+- Dodano wiele nowych NPC
+- Dodano kilka nowych sklepów w Wieliczce
 - Dodano kuźnię w Wieliczce
 - Dodano nowe zadanie w mieście Deniran oraz w Wieliczce
 - Dodano piekarnie w Deniran
