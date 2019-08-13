@@ -10,7 +10,7 @@
 - Dodano kilka nowych NPC
 - Dodano nowy sklep ze zwojami w Wieliczce
 - Dodano kuźnię w Wieliczce
-- Dodano nowe zadanie w mieście Deniran
+- Dodano nowe zadanie w mieście Deniran oraz w Wieliczce
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
 - Pierścień szmaragdowy już więcej nie wypadnie po śmierci
