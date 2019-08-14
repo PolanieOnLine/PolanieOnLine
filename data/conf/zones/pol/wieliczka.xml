@@ -139,6 +139,10 @@
 			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_2_exit"/>
 		</portal>
 
+		<portal x="87" y="96" ref="townhall_entrance">
+			<destination zone="int_wieliczka_townhall" ref="townhall_exit"/>
+		</portal>
+
 		<portal x="65" y="85" ref="wieliczka_restart_life">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
@@ -269,6 +273,37 @@
 
 		<portal x="2" y="10" ref="kowal_exit">
 			<destination zone="0_wieliczka_nw" ref="kowal_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_wieliczka_townhall" file="interiors/wieliczka/townhall.tmx">
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="7" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />
+		</entity>
+		<!-- ticking clock sound effect -->
+		<entity x="7" y="2">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">clock-1</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">100</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="15" y="46" ref="townhall_exit">
+			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
+		</portal>
+		<portal x="14" y="46" ref="townhall_exit">
+			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
+		</portal>
+		<portal x="16" y="46" ref="townhall_exit">
+			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
 		</portal>
 	</zone>
 
