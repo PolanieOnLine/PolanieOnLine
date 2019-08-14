@@ -61,14 +61,14 @@ public class HadrinNPC implements ZoneConfigurator {
 			new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("sellkopalnia")));
 
 			// Xoderos casts iron if you bring him wood and iron ore.
-			final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+			final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 			requiredResources.put("polano", 2);
 			requiredResources.put("bryłka złota", 1);
 			requiredResources.put("piórko", 1);
 			requiredResources.put("money", 2);
 
 			final ProducerBehaviour behaviour = new ProducerBehaviour("krasnolud_cast_arrow",
-				Arrays.asList("make", "zrób"), "strzała złota", requiredResources, 1 * 60);
+				Arrays.asList("make", "zrób"), "strzała złota", requiredResources, 2 * 60);
 
 			new ProducerAdder().addProducer(this, behaviour,
 				"Witaj! Mogę zrobić dla ciebie złote strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #'zrób'.");
