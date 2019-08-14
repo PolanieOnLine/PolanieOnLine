@@ -132,11 +132,13 @@
 			<attribute name="class">blackboard</attribute>
 		</entity>
 
-		<portal x="31" y="77" ref="mines_1_entrance">
-			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_1_exit"/>
+		<portal x="31" y="77" ref="mines_entrance">
+			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_exit"/>
+			<attribute name="face">down</attribute>
 		</portal>
-		<portal x="32" y="77" ref="mines_2_entrance">
-			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_2_exit"/>
+		<portal x="32" y="77" ref="mines_entrance">
+			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_exit"/>
+			<attribute name="face">down</attribute>
 		</portal>
 
 		<portal x="87" y="96" ref="townhall_entrance">
@@ -398,11 +400,9 @@
 			</implementation>
 		</entity>
 
-		<portal x="31" y="79" ref="mines_1_exit">
-			<destination zone="0_wieliczka_c" ref="mines_1_entrance"/>
-		</portal>
-		<portal x="31" y="80" ref="mines_2_exit">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		<portal x="31" y="79" ref="mines_exit">
+			<destination zone="0_wieliczka_c" ref="mines_entrance"/>
+			<attribute name="face">down</attribute>
 		</portal>
 	</zone>
 
