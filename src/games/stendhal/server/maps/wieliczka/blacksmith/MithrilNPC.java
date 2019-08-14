@@ -59,7 +59,7 @@ public class MithrilNPC implements ZoneConfigurator {
 				requiredResources.put("money", 8);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour("larrangin_make_mithril_arrow",
-						Arrays.asList("make", "zrób"), "strzała z mithrilu", requiredResources, 8 * 60);
+						Arrays.asList("make", "zrób"), "strzała z mithrilu", requiredResources, 4 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
 				        "Pozdrawiam. Sądzę, że jesteś zainteresowany strzałami z mithrilu. Jeżeli chcesz, abym wytworzył #'strzałę z mithrilu' to daj znać. Powiedz tylko #'zrób'.");
