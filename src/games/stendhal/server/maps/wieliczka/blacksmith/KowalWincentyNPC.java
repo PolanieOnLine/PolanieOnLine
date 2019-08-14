@@ -59,12 +59,12 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("polano", "drewno"),"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści");
 				addReply(Arrays.asList("kowalem Andrzejem", "kowalem", "kowal", "andrzejem", "andrzej"),"Zajmuje się odlewaniem żelaza, znajduje się w swojej kuźni w Zakopcu.");
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("polano", 2);
-				requiredResources.put("żelaza", 1);
+				requiredResources.put("żelazo", 1);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour("wincenty_make_belt",
-						Arrays.asList("make", "zrób"), "bełt", requiredResources, 3 * 60);
+						Arrays.asList("make", "zrób"), "bełt", requiredResources, 1 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
 				        "Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym zrobił dla Ciebie #bełt to daj znać!");
