@@ -279,6 +279,8 @@
 	</zone>
 
 	<zone name="int_wieliczka_townhall" file="interiors/wieliczka/townhall.tmx">
+		<configurator class-name="games.stendhal.server.maps.wieliczka.townhall.ZbigniewNPC"/>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
@@ -296,6 +298,19 @@
 				<parameter name="radius">15</parameter>
 				<parameter name="volume">100</parameter>
 			</implementation>
+		</entity>
+
+		<entity x="16" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+				<attribute name="text">
+Aktualne ceny u Zbigniewa:
+
+#'zwój wieliczka'      250
+#'zwój krakowski'     550
+#'zwój tatrzański'     650
+#'niezapisany zwój'   2100
+				</attribute>
+			<attribute name="class">notes4</attribute>
 		</entity>
 
 		<portal x="15" y="46" ref="townhall_exit">

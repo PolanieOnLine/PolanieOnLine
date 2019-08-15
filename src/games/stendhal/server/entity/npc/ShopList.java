@@ -603,10 +603,6 @@ public final class ShopList {
 		shops.add("juhas", "zwój fado", 900);
 		shops.add("juhas", "zwój kalavan", 1000);
 		shops.add("juhas", "zwój kirdneh", 1000);
-		
-		//Arthur sprzedaje
-		shops.add("arthur", "zwój wieliczka", 300);
-		shops.add("arthur", "niezapisany zwój", 1800);
 
 		//Stasek sprzedaje
 		shops.add("stasek", "wzmocniona drewniana strzała", 4);
@@ -784,6 +780,10 @@ public final class ShopList {
 		shops.add("sellthomas", "tuńczyk", 5);
 		
 		// Wieliczka //
+		//Arthur sprzedaje
+		shops.add("arthur", "zwój wieliczka", 300);
+		shops.add("arthur", "niezapisany zwój", 1800);
+
 		// Kilian skupuje:
 		shops.add("buyarmorywieliczka", "kolczany pas", 400);
 		shops.add("buyarmorywieliczka", "złoty kolczany pas", 600);
@@ -793,6 +793,12 @@ public final class ShopList {
 		shops.add("buyarmorywieliczka", "lodowy płaszcz", 25000);
 		shops.add("buyarmorywieliczka", "tarcza cieni", 16500);
 		shops.add("buyarmorywieliczka", "rękawice cieni", 11000);
+		
+		// Zbigniew sprzedaje:
+		shops.add("zwojewieliczka", "zwój wieliczka", 250);
+		shops.add("zwojewieliczka", "zwój krakowski", 550);
+		shops.add("zwojewieliczka", "zwój tatrzański", 650);
+		shops.add("zwojewieliczka", "niezapisany zwój", 2100);
 	}
 
 	private static ShopList instance;

@@ -242,6 +242,7 @@ public class StendhalQuestSystem {
 		 *        WIELICZKA		 *
 		\**	                    **/
 		loadQuest(new SaltForHerbert());
+		loadQuest(new WeeklyItemWieliczkaQuest());
 		/** 					**\
 		 *     DRAGON_KNIGHTS	 *
 		\**	                    **/
