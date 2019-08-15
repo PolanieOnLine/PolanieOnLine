@@ -243,7 +243,7 @@ public class SaltForHerbert extends AbstractQuest {
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				int goldamount;
 				goldamount = 20 * Rand.roll1D6();
-				npc.say("Dziękuję Ci za pomoc! Proszę, weź " + goldamount + " dutków w nagrodę!");
+				npc.say("Dziękuję Ci za pomoc! Proszę, weź " + goldamount + " dudków w nagrodę!");
 				final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
 				money.setQuantity(goldamount);
 				player.equipOrPutOnGround(money);
