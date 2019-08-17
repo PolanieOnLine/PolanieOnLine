@@ -9,8 +9,8 @@
 *świat gry*
 - Dodano wiele nowych NPC
 - Dodano kilka nowych sklepów w Wieliczce
-- Dodano kuźnię w Wieliczce
-- Dodano nowe zadanie w mieście Deniran oraz w Wieliczce
+- Dodano kuźnię oraz ratusz w Wieliczce
+- Dodano nowe zadanie w mieście Deniran oraz dwa w Wieliczce (powtarzalne)
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
 - Pierścień szmaragdowy już więcej nie wypadnie po śmierci
