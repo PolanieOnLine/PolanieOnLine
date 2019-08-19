@@ -3129,6 +3129,7 @@
 		</abilities>
 		<ai>
 			<says>
+				<noise state="idle follow fight" value="FINIS... OMNIUM... NUNC... EST..."/>
 				<noise state="idle follow fight" value="Bliski sądny dzień..."/>
 				<noise state="idle follow fight" value="Pokłoń się Mocy!"/>
 				<noise state="death" value="Spotkamy się, gdy czas przeminie!"/>
