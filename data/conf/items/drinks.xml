@@ -2,6 +2,52 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<item name="oliwa z oliwek">
+    <type class="drink" subclass="olive_oil" tileid="-1"/>
+    <description>Oto butelka oliwy z oliwek. Wypicie go w czystej postaci sprawi, że poczujesz się niedobrze!</description>
+    <implementation class-name="games.stendhal.server.entity.item.Drink"/>
+    <attributes>
+      <amount value="-1"/>
+      <frequency value="90"/>
+      <quantity value="1"/>
+      <regen value="-1"/>
+      <menu value="Wypij|Użyj"/>
+    </attributes>
+    <weight value="1.0"/>
+    <value value="1"/>
+    <equipable>
+      <slot name="ground"/>
+      <slot name="content"/>
+      <slot name="lhand"/>
+      <slot name="rhand"/>
+      <slot name="bag"/>
+      <slot name="trade"/>
+    </equipable>
+  </item>
+
+  <item name="ocet">
+    <type class="drink" subclass="vinegar" tileid="-1"/>
+    <description>Oto butelka octu. Wypicie go w czystej postaci sprawi, że poczujesz się niedobrze!</description>
+    <implementation class-name="games.stendhal.server.entity.item.Drink"/>
+    <attributes>
+      <amount value="-1"/>
+      <frequency value="90"/>
+      <quantity value="1"/>
+      <regen value="-1"/>
+      <menu value="Wypij|Użyj"/>
+    </attributes>
+    <weight value="1.0"/>
+    <value value="1"/>
+    <equipable>
+      <slot name="ground"/>
+      <slot name="content"/>
+      <slot name="lhand"/>
+      <slot name="rhand"/>
+      <slot name="bag"/>
+      <slot name="trade"/>
+    </equipable>
+  </item>
+
 	<item name="ekstrakt litworowy">
 		<type class="drink" subclass="fierywater" tileid="-1"/>
 		<description>Oto butelka ekstraktu litworowego. Nie pij tego w takiej postaci! Trzeba to wpierw rozcieńczyć!</description>
@@ -11,6 +57,7 @@
 			<frequency value="90"/>
 			<quantity value="1"/>
 			<regen value="-1"/>
+			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>
@@ -626,7 +673,7 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
-	
+
 	<item name="środek uspokajający">
 	    <type class="drink" subclass="sedative" tileid="-1" />
 	    <description>Oto środek uspokajający. Jego działanie może ochronić cię przed wstrząsem.</description>

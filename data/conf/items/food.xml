@@ -2,7 +2,29 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
-    <!-- try to sort by affinity first, alphabetical order next -->
+  <!-- try to sort by affinity first, alphabetical order next -->
+	<item name="cytryna">
+		<type class="food" subclass="lemon" tileid="-1" />
+		<description>Oto ładna błyszcząca się cytryna.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food" />
+		<attributes>
+			<amount value="20" />
+			<frequency value="12" />
+			<quantity value="1" />
+			<regen value="3" />
+			<menu value="Eat|Use"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
 
 	<item name="jabłko">
 		<type class="food" subclass="apple" tileid="-1"/>
@@ -1365,7 +1387,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
- 
+
 	<item name="shake czekoladowy">
 		<type class="food" subclass="chocolateshake" tileid="-1"/>
 		<description>Oto przepyszny shake czekoladowy. Absolutnie zero kalorii.</description>

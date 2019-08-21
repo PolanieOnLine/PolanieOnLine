@@ -2,12 +2,33 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<item name="porządny posiłek">
+    <type class="misc" subclass="decent_meal" tileid="-1" />
+    <description>Widzisz porządny posiłek dla Groongo Rahnnt.</description>
+    <implementation class-name="games.stendhal.server.entity.item.Item" />
+    <attributes>
+      <quantity value="1" />
+      <menu value="Użyj|Użyj"/>
+    </attributes>
+    <weight value="1.0" />
+    <value value="1" />
+    <equipable>
+	  <slot name="ground" />
+	  <slot name="content" />
+	  <slot name="lhand" />
+	  <slot name="rhand" />
+	  <slot name="bag" />
+	  <slot name="trade" />
+    </equipable>
+  </item>
+
 	<item name="bulwa">
 		<type class="misc" subclass="bulb" tileid="-1"/>
 		<description>To jest bulwa. Można ją zasadzić wszędzie, ale rozwinie się tylko na urodzajnej glebie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Seed"/>
 		<attributes>
 			<quantity value="1"/>
+			<menu value="Użyj|Użyj"/>
 		</attributes>
 		<weight value="0.01"/>
 		<value value="1"/>
@@ -27,6 +48,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Seed"/>
 		<attributes>
 			<quantity value="1"/>
+			<menu value="Użyj|Użyj"/>
 		</attributes>
 		<weight value="0.01"/>
 		<value value="1"/>
@@ -104,7 +126,7 @@
 			<parameter name="private" value="Pluszowy miś jest miękki i kojący."/>
 		</behavior>
 		<attributes>
-			<menu value="Hug|Use"/>
+			<menu value="Przytul|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>
@@ -118,7 +140,7 @@
 
 	<item name="pułapka na gryzonie">
 		<type class="misc" subclass="rodent_trap" tileid="-1"/>
-		<description>Oto pułapka na gryzonie.</description> 
+		<description>Oto pułapka na gryzonie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -215,7 +237,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
- 
+
 	<item name="prasowany tuńczyk">
 		<type class="misc" subclass="canotuna" tileid="-1"/>
 		<description>To prasowany tuńczyk. Och jaka szkoda, że nie wiesz jak się do niego dostać.</description>
@@ -247,6 +269,7 @@
 		<attributes>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<menu value="Potrząśnij|Użyj"/>
 		</attributes>
 		<weight value="0.01"/>
 		<value value="1"/>
