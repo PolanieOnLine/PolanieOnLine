@@ -1600,7 +1600,6 @@ Uciekaj!</attribute>
 	
 	<zone name="-2_dragon_cave" level="-2" x="513824" y="18176" file="Level -2/dragon/cave.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -1621,12 +1620,30 @@ Uciekaj!</attribute>
 		<portal x="55" y="76" ref="dragon_tunnel_-2_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_-2_exit"/>
 		</portal>
-		<!--<portal x="13" y="126" ref="dragon_tunnel_-3_entrance">
+		<portal x="13" y="126" ref="dragon_tunnel_-3_entrance">
 			<destination zone="-3_dragon_cave" ref="tunnel_dragon_-3_exit"/>
-		</portal>-->
+		</portal>
 	</zone>
 
 	<!-- Level -3 -->
+
+	<zone name="-3_dragon_cave" level="-3" x="513824" y="18176" file="Level -3/dragon/cave.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="18" y="57" ref="tunnel_dragon_-3_exit">
+			<destination zone="-2_dragon_cave" ref="dragon_tunnel_-3_entrance"/>
+		</portal>
+	</zone>
 
 	<!-- Level -4 -->
 
