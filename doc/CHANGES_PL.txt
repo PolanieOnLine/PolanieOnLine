@@ -10,7 +10,7 @@
 - Dodano wiele nowych NPC
 - Dodano kilka nowych sklepów oraz pomieszczeń w Wieliczce
 - Dodano nowe jaskinie w Wieliczce oraz -1_dragon_cave_s i -3_dragon_cave
-- Dodano nowe zadanie w mieście Deniran oraz dwa w Wieliczce (powtarzalne (w tym nowy burmistrz)) i jedno w hotelu Fado
+- Dodano nowe zadanie w mieście Deniran oraz dwa w Wieliczce (powtarzalne (w tym nowy burmistrz))
 - Dodano nowego potwora: kostucha złota (mała) [można ją znaleźć na mapach: 1_koscielisko_zamek, -1_koscielisko_coalmine, -1_wieliczka_salt_mines_se3, -3_zakopane_mines oraz int_dragon_knights_dungeons]
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
