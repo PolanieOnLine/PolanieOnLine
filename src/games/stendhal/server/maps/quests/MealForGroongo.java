@@ -68,9 +68,9 @@ import marauroa.common.Pair;
  * NOTE: quest slot templates for testing
  * ---------------------------
  * fetch_dessert;inprogress;paella;udko=2,pomidor=3,czosnek=3,pstrąg=1,okoń=1,cebula=2,;gulab;mąka=2,ekstrakt litworowy=2,miód pitny=2,cukier=4,;1337207220454
- * deliver_decentmeal;inprogress;paella;udko=2,pomidor=3,czosnek=3,pstrąg=1,okoń=1,cebula=2,;gulab;mąka=2,ekstrakt litworowy=2,miód pitny=2,cukier=4,;1337207289602
- * done;incomplete;paella;udko=2,pomidor=3,czosnek=3,pstrąg=1,okoń=1,cebula=2,;gulab;mąka=2,ekstrakt litworowy=2,miód pitny=2,cukier=4,;1337207484330;1
- * done;complete;paella;udko=2,pomidor=3,czosnek=3,pstrąg=1,okoń=1,cebula=2,;gulab;mąka=2,ekstrakt litworowy=2,miód pitny=2,cukier=4,;1337207484330;1
+ * deliver_decentmeal;inprogress;paella;czosnek=2,udko=3,okoń=1,osełka masła=2,cebula=1,pomidor=4,pstrąg=1;macedonia;jabłko=3,gruszka=4,arbuz=2,banan=6;1566438628928
+ * done;incomplete;paella;czosnek=2,udko=3,okoń=1,osełka masła=2,cebula=1,pomidor=4,pstrąg=1;macedonia;jabłko=3,gruszka=4,arbuz=2,banan=6;1566439102692;1
+ * done;complete;paella;czosnek=2,udko=3,okoń=1,osełka masła=2,cebula=1,pomidor=4,pstrąg=1;macedonia;jabłko=3,gruszka=4,arbuz=2,banan=6;1566439102692;1
  * ---------------------------
  */
 
@@ -109,13 +109,12 @@ import marauroa.common.Pair;
   * REPETITIONS:
   * <ul>
   *  <li>unlimited
-  *  <li>once or twice a day?
   * </ul>
   *
   * @author omero
   */
 
-//TODO: it requires food items that have been reverted from miscs.xml because food needs to be eatable.
+//TODO: requires ALL food items to be edible
 public class MealForGroongo extends AbstractQuest {
     private static Logger logger = Logger.getLogger(MealForGroongo.class);
     /**
@@ -258,9 +257,9 @@ public class MealForGroongo extends AbstractQuest {
         } else if ("done".equals(questState)) {
             res.add(
                 "Przyniosłem mu " +
-                Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                 " jako danie główne i " +
-                Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                 " na deser."
             );
             if (isRepeatable(player)) {
@@ -289,14 +288,14 @@ public class MealForGroongo extends AbstractQuest {
                 ingredients = ingredients.replaceAll(",", ";");
                 missingIngredients.addFromQuestStateString(ingredients);
                 res.add("Groongo zjadłby " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jako danie główne. Pomagam Chef Stefan znaleść składniki do przygotowania tego." +
                     " Wciąż muszę przynieść " +
                     Grammar.enumerateCollection(missingIngredients.toStringList()) + "."
                 );
             } else if ("check_dessert".equals(questState)) {
                 res.add("Groongo zjadłby " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jakod danie główne, a Chef Stefan już je przygotowuje."
                 );
                 res.add("Muszęteraz zapytać Groongo" +
@@ -304,11 +303,11 @@ public class MealForGroongo extends AbstractQuest {
                 );
             } else if ("tell_dessert".equals(questState)) {
                 res.add("Groongo zjadłby " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jako danie główne."
                 );
                 res.add("Nie powiem Chef Stefan, że ma jeszcze przygotować " +
-                    Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                    getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                     " na deser."
                 );
             } else if ("fetch_dessert".equals(questState)) {
@@ -316,9 +315,9 @@ public class MealForGroongo extends AbstractQuest {
                 ingredients = ingredients.replaceAll(",", ";");
                 missingIngredients.addFromQuestStateString(ingredients);
                 res.add("Groongo zjadłby " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jako danie główne i " +
-                    Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                    getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                     " na deser."
                 );
                 res.add("Pomagam Chef Stefan w znalezieniu składników do deseru" +
@@ -327,16 +326,16 @@ public class MealForGroongo extends AbstractQuest {
                 );
             } else if ("prepare_decentmeal".equals(questState)) {
                 res.add("Groongo zjadłby " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jako danie główne i " +
-                    Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                    getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                     " na deser. Czekam aż Chef Stefan skończy przygotowania."
                 );
             } else if ("deliver_decentmeal".equals(questState)) {
                 res.add("Groongo zjadłby " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jako danie główne i " +
-                    Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                    getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                     " na deser. Zamierzam przynieść mu jego skromne jedzenie."
                 );
             }
@@ -583,7 +582,7 @@ public class MealForGroongo extends AbstractQuest {
         final HashMap<String, Pair<Integer, Integer>> requiredIngredients_tarte = new HashMap<String, Pair<Integer, Integer>>();
         requiredIngredients_tarte.put("mąka", new Pair<Integer, Integer>(1,2));
         requiredIngredients_tarte.put("cukier", new Pair<Integer, Integer>(1,4));
-        requiredIngredients_tarte.put("chocolate", new Pair<Integer, Integer>(1,6));
+        requiredIngredients_tarte.put("shake czekoladowy", new Pair<Integer, Integer>(1,6));
         requiredIngredients_tarte.put("mleko", new Pair<Integer, Integer>(2,4));
 
         final HashMap<String, Pair<Integer, Integer>> requiredIngredients_kirschtorte = new HashMap<String, Pair<Integer, Integer>>();
@@ -652,15 +651,11 @@ public class MealForGroongo extends AbstractQuest {
                     "Doskonale! Przyzwoity posiłek dla naszego kłopotliwego klienta będzie gotowy za " +
                     TimeUtil.approxTimeUntil((int) (timeToWaitForMealReady / 1000L)) + ".");
             } else if ("prepare_decentmeal".equals(player.getQuest(QUEST_SLOT, 0))) {
-                final Item decentMeal = SingletonRepository.getEntityManager().getItem("decent meal");
+                final Item decentMeal = SingletonRepository.getEntityManager().getItem("skromny posiłek");
                 final String decentMealDescription =
-                        Grammar.a_noun(
-                            getRequiredMainDishFancyName(
-                                player.getQuest(QUEST_SLOT, 2))) +
+                        	getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                         " jako danie główne i " +
-                        Grammar.a_noun(
-                            getRequiredDessertFancyName(
-                                player.getQuest(QUEST_SLOT, 4))) +
+                        	getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                         " na deser.";
                 decentMeal.setInfoString("Skromny posiłek dla Groongo");
                 decentMeal.setBoundTo("Groongo Rahnnt");
@@ -714,7 +709,7 @@ public class MealForGroongo extends AbstractQuest {
 
             SpeakerNPC.say(
                     "Dzisiaj naprawdę mam ochotę spróbować " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(requiredMainDish)) +
+                    getRequiredMainDishFancyName(requiredMainDish) +
                     ". Teraz idź i poproś szefa kuchni Stefana o przygotowanie dla mnie #" + requiredMainDish + ", od razu!"
             );
             logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
@@ -752,7 +747,7 @@ public class MealForGroongo extends AbstractQuest {
                     "Rzeczywiście, nie powinienem o tym zapomnieć! Z " +
                     Grammar.article_noun(getRequiredMainDishFancyName(requiredMainDish), true) +
                     " spróbuję " +
-                    Grammar.a_noun(getRequiredDessertFancyName(requiredDessert)) +
+                    getRequiredDessertFancyName(requiredDessert) +
                     ". Teraz idź i poproś szefa kuchni Stefana o przygotowanie dla mnie #deser #" + requiredDessert +
                     ", natychmiast!"
             );
@@ -770,11 +765,11 @@ public class MealForGroongo extends AbstractQuest {
             String question = "";
             if  (
                     "fetch_maindish".equals(questState)) {
-                meal = Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)));
+                meal = getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2));
                 question = "Przyniosłeś mi to?";
             } else if (
                     "check_dessert".equals(questState)) {
-                meal = Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)));
+                meal = getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2));
                 //question = " Should I also choose some #dessert to go with that?";
                 // not a question but a way to give the player a hint about how to 'ask' for which dessert
                 question = " Może powinienem również wybrać #deser, aby pójść z tym...";
@@ -784,9 +779,9 @@ public class MealForGroongo extends AbstractQuest {
                     "prepare_decentmeal".equals(questState) ||
                     "deliver_decentmeal".equals(questState)) {
                 meal =
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " jako danie główne i " +
-                    Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                    getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                     " na deser";
                 question = "Przyniosłeś mi je?";
             }
@@ -808,7 +803,7 @@ public class MealForGroongo extends AbstractQuest {
 
             SpeakerNPC.say(
                     "Ach! Prosi o to nasz kłopotliwy klient " +
-                    Grammar.a_noun(getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2))) +
+                    getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
                     " tym razem. Do tego potrzebuję składników, których w tej chwili brakuje: " +
                     Grammar.enumerateCollection(missingIngredients.toStringListWithHash()) +
                     ". Czy przyniesiesz je wszystkie razem?"
@@ -827,7 +822,7 @@ public class MealForGroongo extends AbstractQuest {
 
             SpeakerNPC.say(
                     "Więc! Nasz kłopotliwy klient zdecydował się na to " +
-                    Grammar.a_noun(getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4))) +
+                    getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                     " na deser. Do tego potrzebuję kilku innych składników, których mi brakuje: " +
                     Grammar.enumerateCollection(missingIngredients.toStringListWithHash()) +
                     ". Czy przyniesiesz je wszystkie razem?"
@@ -1076,7 +1071,7 @@ public class MealForGroongo extends AbstractQuest {
         // Player says 'meal'
         // Ask if he has the required ingredients
         npc.add(ConversationStates.ATTENDING,
-            "meal",
+            Arrays.asList("meal", "posiłek"),
             new AndCondition(
                 new GreetingMatchesNameCondition(npc.getName()),
                 new QuestInStateCondition(QUEST_SLOT, 0, "fetch_maindish")),
@@ -1264,7 +1259,7 @@ public class MealForGroongo extends AbstractQuest {
                 new GreetingMatchesNameCondition(npc.getName()),
                 new QuestInStateCondition(QUEST_SLOT, 0, "fetch_dessert")),
             ConversationStates.ATTENDING,
-            "Ach, wróciłeś! Obawiam się, że wciąż brakuje mi składników do przygotowania dobrego #deseru...",
+            "Ach, wróciłeś! Obawiam się, że wciąż brakuje mi składników do przygotowania dobrego #'deseru'...",
             null
         );
 
@@ -1498,7 +1493,7 @@ public class MealForGroongo extends AbstractQuest {
 
                     npc.say("Bardzo dobrze! Twoja pomoc była dla mnie cenna." +
                         " Proszę przyjąć " +
-                        Grammar.thisthese(amountOfSandwiches) + " eksperymentalnych kanapek oraz trochę " +
+                        Grammar.thisthese(amountOfSandwiches) + " eksperymentalne kanapki oraz " +
                         Grammar.thisthese(amountOfMoneys) + " " +
                         Grammar.quantityNumberStrNoun(amountOfMoneys, "money") +
                         " w nagrodę!"
@@ -1603,7 +1598,7 @@ public class MealForGroongo extends AbstractQuest {
                     pie.setQuantity(amountOfPies);
 
                     npc.say("Proszę, weź " +
-                        Grammar.thisthese(amountOfPies) + " tart oraz " +
+                        Grammar.thisthese(amountOfPies) + " tarte oraz " +
                         Grammar.thisthese(amountOfMoneys) + " " +
                         Grammar.quantityNumberStrNoun(amountOfMoneys, "money") +
                         " w nagrodę! Proszę powiedzieć moje zasłużone #podziękowania dla" +
@@ -1614,7 +1609,6 @@ public class MealForGroongo extends AbstractQuest {
                     player.equipOrPutOnGround(pie);
 
                     logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
-
                 }
             }
         );
