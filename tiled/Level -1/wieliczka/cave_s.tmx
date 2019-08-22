@@ -18,6 +18,9 @@
  <tileset firstgid="165" name="chaos" tilewidth="32" tileheight="32" tilecount="7" columns="7">
   <image source="../../tileset/logic/creature/chaos.png" width="224" height="32"/>
  </tileset>
+ <tileset firstgid="172" name="portal" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/portal.png" width="256" height="64"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="zlib">
    eJztwwENAAAMw6D6FzC9F3JIWDVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXfP1Trgiw=
@@ -40,7 +43,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eJzt2MEJwCAABEH778ACDBibtIM8RDgxMxXse0sBALjfmw4AAAC40JMOAACADz0dAAAAcJCaDgCADUY6AAAAANiipQNY5s8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAv0xRGwSO
+   eJzt2MEJgDAUBcH030EKMKDerc8OAobAg+9MBXve1gAA6rvSAQAAAAWNdAAAAEyc6QAAKOxJBwDwWU8HAMAGdzoAAAAA2OJIB7DMnwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIB/eQGUwgVE
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.4">
