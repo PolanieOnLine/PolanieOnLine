@@ -214,279 +214,6 @@
 	</creature>
 	<!-- END: skrzaty -->
 
-	<!-- START: wilkolaki -->
-	<creature name="wilkołak żołdak">
-		<type class="pol/wilkolaki" subclass="wilkolak_zoldak" tileid="pol_wilkolaki.png:0"/>
-		<description>Oto wilkołak żołdak. Strzeż się go w księżycową noc.</description>
-		<attributes>
-			<atk value="1250"/>
-			<def value="60"/>
-			<hp value="1290"/>
-			<speed value="0.8"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="159"/>
-		<experience value="26792"/>
-		<respawn value="5110"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[29,129]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
-			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
-			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="1.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="1.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="patrolling"/>
-			<profile name="heal" params="5,50"/>
-		</ai>
-	</creature>
-
-	<creature name="wilkołak wojak">
-		<type class="pol/wilkolaki" subclass="wilkolak_wojak" tileid="pol_wilkolaki.png:1"/>
-		<description>Oto wilkołak wojak. Strzeż się go w księżycową noc.</description>
-		<attributes>
-			<atk value="1450"/>
-			<def value="60"/>
-			<hp value="1590"/>
-			<speed value="0.9"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="161"/>
-		<experience value="27453"/>
-		<respawn value="7510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[29,129]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="20.0"/>
-			<item value="kryształ szmaragdu" quantity="[1,1]" probability="10.0"/>
-			<item value="miecz cieni" quantity="[1,1]" probability="7.5"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="patrolling"/>
-			<profile name="heal" params="5,50"/>
-		</ai>
-	</creature>
-
-	<creature name="wilkołak łucznik">
-		<type class="pol/wilkolaki" subclass="wilkolak_lucznik" tileid="pol_wilkolaki.png:2"/>
-		<description>Oto wilkołak łucznik. Strzeż się go w księżycową noc, gdy chowa się pośród drzew.</description>
-		<attributes>
-			<atk value="1950"/>
-			<ratk value="1950"/>
-			<def value="58"/>
-			<hp value="790"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="151"/>
-		<experience value="24226"/>
-		<respawn value="3510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[129,329]" probability="90.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="25.0"/>
-			<item value="kryształ szmaragdu" quantity="[1,1]" probability="15.0"/>
-			<item value="klejony łuk" quantity="[1,1]" probability="7.5"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
-		</drops>
-		<equips>
-			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
-			<slot name="rhand" item="klejony łuk" quantity="1"/>
-		</equips>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="archer"/>
-			<profile name="patrolling"/>
-			<profile name="heal" params="5,50"/>
-		</ai>
-	</creature>
-
-	<creature name="wilkołak obrońca">
-		<type class="pol/wilkolaki" subclass="wilkolak_lider" tileid="pol_wilkolaki.png:3"/>
-		<description>Oto wilkołak obrońca. Strzeż się go w księżycową noc.</description>
-		<attributes>
-			<atk value="1150"/>
-			<def value="56"/>
-			<hp value="1790"/>
-			<speed value="0.7"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="141"/>
-		<experience value="21198"/>
-		<respawn value="3510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[29,129]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
-			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
-			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="2.5"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="patrolling"/>
-			<profile name="heal" params="5,50"/>
-		</ai>
-	</creature>
-
-	<creature name="wilkołak zwiadowca">
-		<type class="pol/wilkolaki" subclass="wilkolak_zwiadowca" tileid="pol_wilkolaki.png:4"/>
-		<description>Oto wilkołak zwiadowca. Strzeż się go w księżycową noc.</description>
-		<attributes>
-			<atk value="1750"/>
-			<def value="62"/>
-			<hp value="1990"/>
-			<speed value="0.9"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="171"/>
-		<experience value="30881"/>
-		<respawn value="3510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[29,129]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
-			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
-			<item value="maczeta" quantity="[1,1]" probability="22.5"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="patrolling"/>
-			<profile name="heal" params="5,50"/>
-		</ai>
-	</creature>
-
-	<creature name="wilkołak szaman">
-		<type class="pol/wilkolaki" subclass="wilkolak_szaman" tileid="pol_wilkolaki.png:5"/>
-		<description>Oto wilkołak szaman. Strzeż się go w księżycową noc.</description>
-		<attributes>
-			<atk value="1750"/>
-			<def value="62"/>
-			<hp value="1990"/>
-			<speed value="0.9"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="171"/>
-		<experience value="30881"/>
-		<respawn value="3510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[9,29]" probability="100.0"/>
-			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="5.0"/>
-			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
-			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
-			<item value="magia mroku" quantity="[1,45]" probability="47.5"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
-			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
-			<item value="zwój czyszczący" quantity="[1,2]" probability="1.25"/>
-		</drops>
-		<equips>
-			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
-			<slot name="rhand" item="klejony łuk" quantity="1"/>
-		</equips>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="heal" params="10,60"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="księżniczka wilkołaków">
-		<type class="pol/wilkolaki" subclass="wilkolak_ksiezniczka" tileid="pol_wilkolaki.png:6"/>
-		<description>Oto księżniczka wilkołaków. Strzeż się jej w księżycową noc.</description>
-		<attributes>
-			<atk value="2150"/>
-			<def value="66"/>
-			<hp value="2990"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="191"/>
-		<experience value="38335"/>
-		<respawn value="3510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[9,329]" probability="100.0"/>
-			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="15.0"/>
-			<item value="kryształ szafiru" quantity="[1,1]" probability="31.0"/>
-			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
-			<item value="magia mroku" quantity="[1,15]" probability="33.33"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
-			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
-			<item value="zwój czyszczący" quantity="[1,1]" probability="1.25"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="heal" params="10,60"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="książę wilkołaków">
-		<type class="pol/wilkolaki" subclass="wilkolak_ksiaze" tileid="pol_wilkolaki.png:7"/>
-		<description>Oto książę wilkołaków. Strzeż się go w księżycową noc.</description>
-		<attributes>
-			<atk value="2350"/>
-			<def value="68"/>
-			<hp value="2990"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="199"/>
-		<experience value="69341"/>
-		<respawn value="9510"/>
-		<corpse name="animal"/>
-		<drops>
-			<item value="money" quantity="[9,329]" probability="100.0"/>
-			<item value="kryształ szafiru" quantity="[1,1]" probability="11.0"/>
-			<item value="złota klinga" quantity="[1,1]" probability="0.05"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
-			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
-			<item value="duży eliksir" quantity="[1,7]" probability="17.0"/>
-			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.25"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="heal" params="10,60"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-	<!-- END: wilkolaki -->
-
 	<!-- START: zjawy -->
 	<creature name="szkielet uzbrojony">
 		<type class="pol/zjawy" subclass="szkielet_waleczny" tileid="pol_zjawy.png:0"/>
@@ -793,7 +520,7 @@
 		<attributes>
 			<atk value="908"/>
 			<def value="79"/>
-			<hp value="4118"/>
+			<hp value="2818"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 			<resistance value="100"/>
@@ -1027,4 +754,277 @@
 		</ai>
 	</creature>
 	<!-- END: czart -->
+
+	<!-- START: wilkolaki -->
+	<creature name="wilkołak żołdak">
+		<type class="pol/wilkolaki" subclass="wilkolak_zoldak" tileid="pol_wilkolaki.png:0"/>
+		<description>Oto wilkołak żołdak. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1250"/>
+			<def value="60"/>
+			<hp value="1290"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="159"/>
+		<experience value="26792"/>
+		<respawn value="5110"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="1.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak wojak">
+		<type class="pol/wilkolaki" subclass="wilkolak_wojak" tileid="pol_wilkolaki.png:1"/>
+		<description>Oto wilkołak wojak. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1450"/>
+			<def value="60"/>
+			<hp value="1590"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="161"/>
+		<experience value="27453"/>
+		<respawn value="7510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="20.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="10.0"/>
+			<item value="miecz cieni" quantity="[1,1]" probability="7.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak obrońca">
+		<type class="pol/wilkolaki" subclass="wilkolak_lider" tileid="pol_wilkolaki.png:3"/>
+		<description>Oto wilkołak obrońca. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1150"/>
+			<def value="56"/>
+			<hp value="1790"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="141"/>
+		<experience value="21198"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="2.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak zwiadowca">
+		<type class="pol/wilkolaki" subclass="wilkolak_zwiadowca" tileid="pol_wilkolaki.png:4"/>
+		<description>Oto wilkołak zwiadowca. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1750"/>
+			<def value="62"/>
+			<hp value="1990"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="171"/>
+		<experience value="30881"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[29,129]" probability="100.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="maczeta" quantity="[1,1]" probability="22.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak szaman">
+		<type class="pol/wilkolaki" subclass="wilkolak_szaman" tileid="pol_wilkolaki.png:5"/>
+		<description>Oto wilkołak szaman. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="1750"/>
+			<def value="62"/>
+			<hp value="1990"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="171"/>
+		<experience value="30881"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[9,29]" probability="100.0"/>
+			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="5.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
+			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
+			<item value="magia mroku" quantity="[1,45]" probability="47.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
+			<item value="zwój czyszczący" quantity="[1,2]" probability="1.25"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="10,60"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="księżniczka wilkołaków">
+		<type class="pol/wilkolaki" subclass="wilkolak_ksiezniczka" tileid="pol_wilkolaki.png:6"/>
+		<description>Oto księżniczka wilkołaków. Strzeż się jej w księżycową noc.</description>
+		<attributes>
+			<atk value="2150"/>
+			<def value="66"/>
+			<hp value="2990"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="191"/>
+		<experience value="38335"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[9,329]" probability="100.0"/>
+			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="15.0"/>
+			<item value="kryształ szafiru" quantity="[1,1]" probability="31.0"/>
+			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
+			<item value="magia mroku" quantity="[1,15]" probability="33.33"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
+			<item value="zwój czyszczący" quantity="[1,1]" probability="1.25"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="10,60"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="książę wilkołaków">
+		<type class="pol/wilkolaki" subclass="wilkolak_ksiaze" tileid="pol_wilkolaki.png:7"/>
+		<description>Oto książę wilkołaków. Strzeż się go w księżycową noc.</description>
+		<attributes>
+			<atk value="2350"/>
+			<def value="68"/>
+			<hp value="2990"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="199"/>
+		<experience value="69341"/>
+		<respawn value="9510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[9,329]" probability="100.0"/>
+			<item value="kryształ szafiru" quantity="[1,1]" probability="11.0"/>
+			<item value="złota klinga" quantity="[1,1]" probability="0.05"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,7]" probability="17.0"/>
+			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.25"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="10,60"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wilkołak łucznik">
+		<type class="pol/wilkolaki" subclass="wilkolak_lucznik" tileid="pol_wilkolaki.png:2"/>
+		<description>Oto wilkołak łucznik. Strzeż się go w księżycową noc, gdy chowa się pośród drzew.</description>
+		<attributes>
+			<atk value="1950"/>
+			<ratk value="1950"/>
+			<def value="58"/>
+			<hp value="790"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="151"/>
+		<experience value="24226"/>
+		<respawn value="3510"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="money" quantity="[129,329]" probability="90.0"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="25.0"/>
+			<item value="kryształ szmaragdu" quantity="[1,1]" probability="15.0"/>
+			<item value="klejony łuk" quantity="[1,1]" probability="7.5"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
+			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+	<!-- END: wilkolaki -->
 </creatures>
