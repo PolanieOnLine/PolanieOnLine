@@ -79,7 +79,7 @@ public class ZlotyPierscien extends AbstractQuest {
 										raiser.say("Masz już jeden złoty pierścień ode mnie...");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									} else {
-										raiser.say("Dlaczego zawracasz mi głowę skoro nie przyniosłeś mi potrzebnych składników?");
+										raiser.say("Dlaczego zawracasz mi głowę skoro nie ukończyłeś zadania?");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
@@ -129,19 +129,19 @@ public class ZlotyPierscien extends AbstractQuest {
 
 	private void step_2() {
 		final SpeakerNPC npc = npcs.get("Kowal Wincenty");
-		final List<ChatAction> ciupagaactions = new LinkedList<ChatAction>();
-		ciupagaactions.add(new DropItemAction("sztabka złota",20));
-		ciupagaactions.add(new DropItemAction("money",100000));
-		ciupagaactions.add(new DropItemAction("polano",10));
-		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;" + System.currentTimeMillis()));
+		final List<ChatAction> nagroda = new LinkedList<ChatAction>();
+		nagroda.add(new DropItemAction("sztabka złota",20));
+		nagroda.add(new DropItemAction("money",100000));
+		nagroda.add(new DropItemAction("polano",10));
+		nagroda.add(new SetQuestAction(QUEST_SLOT, "forging;" + System.currentTimeMillis()));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 								 new PlayerHasItemWithHimCondition("sztabka złota",20),
 								 new PlayerHasItemWithHimCondition("money",100000),
-								 new PlayerHasItemWithHimCondition("polano",10),
+								 new PlayerHasItemWithHimCondition("polano",10)),
 				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 1 godzinę, a złoty pierścień będzie gotowy. Przypomnij mi mówiąc #/pierścień/.",
-				new MultipleActions(ciupagaactions));
+				new MultipleActions(nagroda));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -174,16 +174,16 @@ public class ZlotyPierscien extends AbstractQuest {
 					if (timeRemaining > 0L) {
 						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
 							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-							+ ", aby odebrać nagrodę. No chyba że chcesz abym zrobił dla ciebie bełty.");
+							+ ", aby odebrać nagrodę. No chyba, że chcesz abym #zrobił dla ciebie #bełty.");
 						return;
 					}
 
-					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała?");
+					raiser.say("Chyba warto było czekać. A oto i piękny, błyszczący się złoty pierścień! Niech Ci służy...");
 					player.addXP(55000);
 					player.addKarma(25);
-					final Item zlotaCiupagaZTrzemaWasami = SingletonRepository.getEntityManager().getItem("złoty pierścień");
-					zlotaCiupagaZTrzemaWasami.setBoundTo(player.getName());
-					player.equipOrPutOnGround(zlotaCiupagaZTrzemaWasami);
+					final Item pierscien = SingletonRepository.getEntityManager().getItem("złoty pierścień");
+					pierscien.setBoundTo(player.getName());
+					player.equipOrPutOnGround(pierscien);
 					player.notifyWorldAboutChanges();
 					player.setQuest(QUEST_SLOT, "done");
 				}

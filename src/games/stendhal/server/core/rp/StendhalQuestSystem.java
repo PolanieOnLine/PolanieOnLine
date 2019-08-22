@@ -244,6 +244,7 @@ public class StendhalQuestSystem {
 		\**	                    **/
 		loadQuest(new SaltForHerbert());
 		loadQuest(new WeeklyItemWieliczkaQuest());
+		loadQuest(new ZlotyPierscien());
 		/** 					**\
 		 *     DRAGON_KNIGHTS	 *
 		\**	                    **/
