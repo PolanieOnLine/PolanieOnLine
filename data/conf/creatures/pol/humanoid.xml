@@ -722,7 +722,7 @@
 		<type class="pol/zjawy" subclass="zai_kostucha" tileid="pol_zjawy.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="698"/>
+			<atk value="708"/>
 			<def value="69"/>
 			<hp value="3818"/>
 			<speed value="1.0"/>
@@ -757,7 +757,7 @@
 		<description/>
 		<attributes>
 			<atk value="808"/>
-			<def value="73"/>
+			<def value="74"/>
 			<hp value="3318"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -779,6 +779,41 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Zawsze z humorem spoglądaj na... śmierć!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kostucha złota">
+		<type class="pol/zjawy" subclass="zai_kostucha_zlota" tileid="pol_zjawy.png:10"/>
+		<description/>
+		<attributes>
+			<atk value="908"/>
+			<def value="79"/>
+			<hp value="4118"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="400"/>
+		<experience value="97890"/>
+		<respawn value="20600"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[500,2000]" probability="75.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="20.0"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.5"/>
+			<item value="złote rękawice" quantity="[1,1]" probability="0.25"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>
