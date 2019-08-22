@@ -23,6 +23,7 @@
 			<item value="wielki eliksir" quantity="[2,5]" probability="80.0"/>
 			<item value="zbroja karmazynowa" quantity="[1,1]" probability="20.0"/>
 			<item value="karmazynowa tarcza" quantity="[1,1]" probability="10.0"/>
+			<item value="kropacz" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -56,6 +57,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="80.0"/>
 			<item value="pas olbrzymi" quantity="[1,1]" probability="1.0"/>
 			<item value="money" quantity="[30,150]" probability="100.0"/>
+			<item value="kropacz" quantity="[1,1]" probability="3.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -93,6 +95,7 @@
 			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
 			<item value="pas olbrzymi" quantity="[1,1]" probability="1.7"/>
 			<item value="miecz orków" quantity="[1,1]" probability="0.1"/>
+			<item value="kropacz" quantity="[1,1]" probability="3.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -132,6 +135,7 @@
 			<item value="pałasz" quantity="[1,1]" probability="1.0"/>
 			<item value="pas olbrzymi" quantity="[1,1]" probability="2.0"/>
 			<item value="złota klinga orków" quantity="[1,1]" probability="0.01"/>
+			<item value="kropacz" quantity="[1,1]" probability="3.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -254,7 +258,7 @@
 			<item value="money" quantity="[10,60]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[1,4]" probability="50.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="1.0"/>
-			<item value="kropacz" quantity="[1,1]" probability="0.0005"/>
+			<item value="kropacz" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>
