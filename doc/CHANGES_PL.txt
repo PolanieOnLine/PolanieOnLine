@@ -8,8 +8,8 @@
 
 *świat gry*
 - Dodano wiele nowych NPC
-- Dodano kilka nowych sklepów w Wieliczce
-- Dodano kuźnię oraz ratusz w Wieliczce
+- Dodano kilka nowych sklepów oraz pomieszczeń w Wieliczce
+- Dodano nowe jaskinie w Wieliczce oraz -1_dragon_cave_s
 - Dodano nowe zadanie w mieście Deniran oraz dwa w Wieliczce (powtarzalne)
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
