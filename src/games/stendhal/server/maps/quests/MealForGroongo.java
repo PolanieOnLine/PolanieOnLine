@@ -253,8 +253,8 @@ public class MealForGroongo extends AbstractQuest {
         res.add("Spotkałem Groongo Rahnnt w restauracji hotelu w Fado.");
 
         if ("rejected".equals(questState)) {
-            res.add("He asked me to bring him a meal of his desire, "
-                + " but I had no interest in such an errand.");
+            res.add("Poprosił mnie, abym przyniósł mu jego posiłek, "
+                + "ale nie byłem zainteresowany taką sprawą.");
         } else if ("done".equals(questState)) {
             res.add(
                 "Przyniosłem mu " +
