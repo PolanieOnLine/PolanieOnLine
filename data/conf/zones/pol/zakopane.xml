@@ -353,10 +353,7 @@
 		<portal x="13" y="67" ref="trainstation_entrance_2">
 			<destination zone="int_zakopane_trainstation" ref="trainstation_2_exit"/>
 		</portal>
-		<portal x="28" y="106" ref="cave_-1_entrance">
-			<destination zone="-1_zakopane_cave" ref="cave_-1_exit"/>
-			<attribute name="face">down</attribute>
-		</portal>
+
 		<portal x="30" y="117" ref="source_entrance">
 			<destination zone="0_zakopane_e" ref="source_exit"/>
 		</portal>
@@ -2226,19 +2223,9 @@ Aktualne ceny u Gazdy Wojtka:
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
-
-		<portal x="28" y="107" ref="cave_-1_exit">
-			<destination zone="0_zakopane_e" ref="cave_-1_entrance"/>
-			<attribute name="face">right</attribute>
-		</portal>
-		<portal x="27" y="107" ref="cave_-2_entrance">
-			<destination zone="-2_zakopane_cave" ref="cave_-2_exit"/>
-			<attribute name="face">left</attribute>
-		</portal>
 	</zone>
 
 	<!-- underground -->
-
 	<zone name="-1_zakopane_underground" file="Level -1/zakopane/underground.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
@@ -2295,21 +2282,17 @@ Aktualne ceny u Gazdy Wojtka:
 			</implementation>
 		</entity>
 
-		<portal x="28" y="107" ref="cave_-2_exit">
-			<destination zone="-1_zakopane_cave" ref="cave_-2_entrance"/>
-			<attribute name="face">right</attribute>
-		</portal>
-		<portal x="27" y="107" ref="mine_-3_entrance">
+		<portal x="28" y="107" ref="mine_-3_entrance">
 			<destination zone="-3_zakopane_mines" ref="mine_-3_exit"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
 				<parameter name="key">lina</parameter>
 				<parameter name="rejected">Potrzebujesz liny żeby zejść.</parameter>
 			</implementation>
-			<attribute name="face">left</attribute>
+			<attribute name="face">right</attribute>
 		</portal>
 	</zone>
-	<!-- underground -->
 
+	<!-- underground -->
 	<zone name="-2_zakopane_underground" file="Level -2/zakopane/underground.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
@@ -2454,7 +2437,6 @@ Aktualne ceny u Gazdy Wojtka:
 				<parameter name="key">lina</parameter>
 				<parameter name="rejected">Potrzebujesz liny żeby wyjść.</parameter>
 			</implementation>
-			<attribute name="face">right</attribute>
 		</portal>
 	</zone>
 
