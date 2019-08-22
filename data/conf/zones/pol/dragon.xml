@@ -942,6 +942,10 @@ Uciekaj!</attribute>
 			<destination zone="-1_dragon_cave" ref="dragon_tunnel_exit"/>
 		</portal>
 
+		<portal x="148" y="102" ref="dragon_cave_exit">
+			<destination zone="-1_wieliczka_cave_n" ref="dragon_cave_entrance"/>
+		</portal>
+
 		<!-- Pułapki -->
 		<portal x="43" y="50" ref="poison_pit_1_entrance">
 			<destination zone="-2_poison_pit" ref="poison_pit_exit"/>

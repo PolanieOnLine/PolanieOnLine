@@ -30,10 +30,6 @@
 			</implementation>
 		</entity>
 
-		<portal x="30" y="20" ref="cave_entrance">
-			<destination zone="-1_wieliczka_cave_s" ref="cave_exit"/>
-		</portal>
-
 		<portal x="100" y="83" ref="kowal_entrance">
 			<destination zone="int_wieliczka_blacksmith" ref="kowal_exit"/>
 			<attribute name="hidden"/>
@@ -766,9 +762,22 @@ Aktualne ceny u Zbigniewa:
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
+	</zone>
+
+	<zone name="-1_wieliczka_cave_n" level="-1" x="513952" y="18304" file="Level -1/wieliczka/cave_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 		
-		<portal x="30" y="20" ref="cave_exit">
-			<destination zone="0_wieliczka_nw" ref="cave_entrance"/>
+		<portal x="1" y="106" ref="dragon_cave_entrance">
+			<destination zone="-1_dragon_cave_s" ref="dragon_cave_exit"/>
 		</portal>
 	</zone>
 
