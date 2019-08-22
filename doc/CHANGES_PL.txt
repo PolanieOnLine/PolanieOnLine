@@ -2,15 +2,15 @@
 ---------
 1.03
 *klient*
-- Dodano kilka nowych grafik NPC
+- Dodano wiele nowych grafik
 - Poprawiono 'Wyróżnionych' oraz przycisk 'Pomoc'
 - Poprawiono linki w kliencie (przystosowane do nowej witryny)
 
 *świat gry*
 - Dodano wiele nowych NPC
 - Dodano kilka nowych sklepów oraz pomieszczeń w Wieliczce
-- Dodano nowe jaskinie w Wieliczce oraz -1_dragon_cave_s
-- Dodano nowe zadanie w mieście Deniran oraz dwa w Wieliczce (powtarzalne)
+- Dodano nowe jaskinie w Wieliczce oraz -1_dragon_cave_s i -3_dragon_cave
+- Dodano nowe zadanie w mieście Deniran oraz dwa w Wieliczce (powtarzalne (w tym nowy burmistrz))
 - Dodano piekarnie w Deniran
 - Dodano możliwość zdobycia elfickiego kapelusza
 - Pierścień szmaragdowy już więcej nie wypadnie po śmierci
@@ -19,8 +19,8 @@
 	superczłowiek olbrzym,
 	mega mag,
 	czarny szkielet gigant,
-	książę szkieletów i wszystkie kostuchy wielkie
-	oraz wszystkie dwugłowe smoki
+	książę szkieletów oraz wszystkie kostuchy wielkie
+	i wszystkie dwugłowe smoki
 
 *naprawiono błędy*
 - Poprawiono niektóre dialogi u Sally oraz Olmo
