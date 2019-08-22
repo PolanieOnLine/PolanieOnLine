@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="int_rock" tilewidth="32" tileheight="32" tilecount="140" columns="10">
+  <image source="../../tileset/building/wall/int_rock.png" width="320" height="448"/>
+ </tileset>
+ <tileset firstgid="141" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="142" name="grey_stone_stairs" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/building/stairs/grey_stone_stairs.png" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="148" name="brown" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/ground/brown.png" trans="ff00ff" width="160" height="32"/>
+ </tileset>
+ <tileset firstgid="153" name="pol_smoki" tilewidth="32" tileheight="32" tilecount="12" columns="12">
+  <image source="../../tileset/logic/creature/pol_smoki.png" width="384" height="32"/>
+ </tileset>
+ <tileset firstgid="165" name="chaos" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/chaos.png" width="224" height="32"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6D6FzC9F3JIWDVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXfP1Trgiw=
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJzt2z1u3DAQBlBdIE4ZO12MdAHSOfb9TxapELAgVr8cSpT4CLzWWM83HGkp7XvXde838tH77Nav197PCj43egA9QJxf3balB+5l6wwYlh64Fz3A1uvAsPTAOj96bxNqqd+eGTCsvxV89lqNuf+Zqd9rV08/mAHH5T5Xz7P6wAyIyX5P7ulK58JR88EMOD/7uVW61nvyH1brM+CI7MdVsgdcA87N/nfv34OpLEr2wJ4Z0Gr+UdmPuX8lf/+jm+6DUj3gHqBsrdI1ZJ/mnpqayyX2nWvAOhF7f032c7nUNANayj9q7m+t2bNcStRd/vH1iaiZ/OtwRv5TM0f+x4r8vremZkvnydH3AHv/v1byj9r7w0prNmb9rffS+96tyyKy9s4Aj8k/vffPmSvyv17+ab1y/m5U7WvpwZrtPR+Zq1fuPUXEPUDuZ2gl/0HuDEhnf8RMyal/xD2t/PfXKiL/vTPgrLOsK8vJ69mZb9Q9xdYeiHx+tfYc+w5y7gGe7ZPI75RL7xQ+vo965DnG3ezpgal9Epl/utJ+KPGeSov5jz0w957GuKae7x+Rf+nV2uyf64MpS/W5cv6t7v1IV83f3m87f3s/RtSZ4pHL3o91tRlg77ebv70f7yrXANm33QPmfrs9YO+32wOyP74H1pwtl15LZ9fcrw8ef4cq9zqU7gOZX8Pjs6acXkh/ay7z61l67pjzTBIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuL7/a/zGdA==
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJztzrkNACAQBDH6D3gbZjsgQpfY0uTTGgAAAAAAAAAAAMBbTyPN6hFKrLTTqR4BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL66sCEDZA==
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoADwAB
+  </data>
+ </layer>
+ <layer id="6" name="objects" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJzt2MEJwCAABEH778ACDBibtIM8RDgxMxXse0sBALjfmw4AAAC40JMOAACADz0dAAAAcJCaDgCADUY6AAAAANiipQNY5s8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAv0xRGwSO
+  </data>
+ </layer>
+ <layer id="7" name="collision" width="128" height="128" opacity="0.4">
+  <data encoding="base64" compression="zlib">
+   eJzt0kFuwzAQA0D/H8if+4G2SGLZ5MpDYE4GZIm7r+M4Xht6N+l7YgewA2TnfxTcFTuAHSA7/6PgvtiBKab092nS9203sc+Jd25zNpPunu66zZVpvX+68xZ3pPEd6d4brMi757a9Jd192tl884+m96T73332dqDXmZz9X9O70nOYNvtvO1txhvnnZ/9tZyvOMH/zN//u+f/2/dMzzL+jm7/y7vzPnHPX+9IzmTb/5u4b7tBsRVae2/C+9Eym7UDr/BvuMMGZ3LVP6TftbHVXZ5N8z4r/T7O6pxUx+/4duHL+/53fuHc7WNXTVbnjX+kZNDjbz9Ske9/F1KR728XEpDvbycSkO9vNpKS72tGkpLva0ZSke9pZe9L9PEFz0t08RWPSnTxNU9JdPFky6bdz/x6k38n9e5B+E/fuQvreAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABc6wd30xwW
+  </data>
+ </layer>
+ <layer id="8" name="protection" width="128" height="128">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoADwAB
+  </data>
+ </layer>
+</map>
