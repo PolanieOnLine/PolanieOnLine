@@ -44,7 +44,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="99"/>
-		<experience value="666"/>
+		<experience value="3333"/>
 		<respawn value="666"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -110,7 +110,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="142"/>
-		<experience value="1441"/>
+		<experience value="3441"/>
 		<respawn value="42187"/>
 		<corpse name="other"/>
 		<drops>
@@ -136,7 +136,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="197"/>
-		<experience value="2649"/>
+		<experience value="5649"/>
 		<respawn value="75216"/>
 		<corpse name="other"/>
 		<drops>
@@ -164,7 +164,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="89"/>
-		<experience value="5454"/>
+		<experience value="6454"/>
 		<respawn value="1818"/>
 		<corpse name="giant"/>
 		<drops>
@@ -198,7 +198,7 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="98"/>
-		<experience value="5454"/>
+		<experience value="6454"/>
 		<respawn value="1818"/>
 		<corpse name="giant"/>
 		<drops>
@@ -232,7 +232,7 @@
 		</attributes>
 		<level value="275"/>
 		<experience value="36300"/>
-		<respawn value="19300"/>
+		<respawn value="21300"/>
 		<corpse name="giant"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,3]" probability="100.0"/>
