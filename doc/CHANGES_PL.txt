@@ -1,5 +1,18 @@
 ﻿Changelog
 ---------
+1.04
+Zaktualizowano do najnowszej wersji Stendhala 1.31
+
+*świat gry*
+- Zwiększono ilość możliwego do zdobycia PD u potworów takich jak:
+	wilczykruk,
+	żółty glut,
+	czerwony glut,
+	Jožin z lesa,
+	Jožin z bažin,
+	coś niszczącego
+
+
 1.03
 *klient*
 - Dodano wiele nowych grafik
