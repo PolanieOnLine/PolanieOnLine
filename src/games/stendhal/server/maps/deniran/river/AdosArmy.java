@@ -9,49 +9,39 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.deniran;
+package games.stendhal.server.maps.deniran.river;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.PassiveNPC;
 
-/**
- * A little girl needing some eggs
- * @see games.stendhal.server.maps.quests.EggsForMarianne
- */
-public class LittleGirlNPC implements ZoneConfigurator {
+
+public class AdosArmy implements ZoneConfigurator  {
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
-		buildNPC(zone);
+		buildNPCs(zone);
 	}
 
-	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Marianne") {
-			@Override
-			public void createDialog() {
-				addGreeting("Witaj nieznajomy!");
-				addHelp("Może nie mogę Tobie pomóc, ale ty... możesz pomóc mi!");
-				addJob("Potrzebuję kurze jajeczka");
-				addOffer("Potrzebuję kilka kurzych jajek");
-				addGoodbye("Żegnaj, nieznajomy!");
-				// All further behaviours are defined in appropriate quest class.
+	private void buildNPCs(StendhalRPZone zone) {
+		final LinkedList<PassiveNPC> npclist = new LinkedList<PassiveNPC>();
+		for(int i=0; i<20; i++) {
+			for(int j=0; j<5; j++) {
+				final PassiveNPC npc = new PassiveNPC();
+				//npc.setIdea("defence");
+				npc.setEntityClass("youngsoldiernpc");
+				npc.setDescription("Oto armia żołnierzy Ados.");
+				npc.setPosition(55+i, 97+j);
+				npc.setDirection(Direction.DOWN);
+				npc.setName("Żołnierze Ados");
+				zone.add(npc);
+				npclist.add(npc);
 			}
 
-			@Override
-			protected void onGoodbye(RPEntity player) {
-				setDirection(Direction.LEFT);
-			}
-		};
-
-		npc.setPosition(89, 54);
-		npc.setEntityClass("kid5npc");
-		npc.setDescription("Widzisz małą dziewczynkę, może potrzebuje pomocy...");
-		npc.setDirection(Direction.LEFT);
-		zone.add(npc);
-	}
+		}
+	};
 }

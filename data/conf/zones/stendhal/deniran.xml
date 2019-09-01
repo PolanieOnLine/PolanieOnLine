@@ -89,7 +89,7 @@
 			<destination zone="int_deniran_castle" ref="entrance_right" />
 			<attribute name="move.continuous" />
 		</portal>
-		
+
 		<portal x="52" y="50" ref="deniran_bakery_entrance">
 			<destination zone="int_deniran_bakery" ref="entrance" />
 			<attribute name="move.continuous" />
@@ -97,7 +97,7 @@
 	</zone>
 
 	<zone name="0_deniran_s" level="0" x="499232" y="500128" file="Level 0/deniran/deniran_s.tmx">
-		<configurator class-name="games.stendhal.server.maps.deniran.LittleGirlNPC" />
+		<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.LittleGirlNPC" />
 
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -106,8 +106,8 @@
 	</zone>
 
 	<zone name="0_deniran_river_s" level="0" x="499232" y="500256" file="Level 0/deniran/deniran_river_s.tmx">
-		<configurator class-name="games.stendhal.server.maps.deniran.AdosArmy" />
-		<configurator class-name="games.stendhal.server.maps.deniran.DeniranArmy" />
+		<configurator class-name="games.stendhal.server.maps.deniran.river.AdosArmy" />
+		<configurator class-name="games.stendhal.server.maps.deniran.river.DeniranArmy" />
 
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -579,5 +579,9 @@
 			<destination zone="0_deniran" ref="deniran_bakery_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.bakery.ShopAssistantNPC" />
+		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.bakery.ChefNPC" />
 	</zone>
 </zones>

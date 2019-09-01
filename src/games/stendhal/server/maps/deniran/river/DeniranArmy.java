@@ -1,13 +1,3 @@
-/**
- * logic for the area of Deniran city.
- */
-package games.stendhal.server.maps.deniran;
-
-
-
-import java.util.LinkedList;
-
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
@@ -19,7 +9,9 @@ import java.util.LinkedList;
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+package games.stendhal.server.maps.deniran.river;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -28,7 +20,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.PassiveNPC;
 
 
-public class AdosArmy implements ZoneConfigurator  {
+public class DeniranArmy implements ZoneConfigurator  {
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
@@ -41,11 +33,22 @@ public class AdosArmy implements ZoneConfigurator  {
 			for(int j=0; j<5; j++) {
 				final PassiveNPC npc = new PassiveNPC();
 				//npc.setIdea("defence");
-				npc.setEntityClass("youngsoldiernpc");
-				npc.setDescription("Oto armia żołnierzy Ados.");
-				npc.setPosition(55+i, 97+j);
+				npc.setEntityClass("deniran_stormtrooper");
+				npc.setDescription("Oto armia żołnierzy Deniran.");
+				npc.setPosition(17+i, 83+j);
 				npc.setDirection(Direction.DOWN);
-				npc.setName("Żołnierze Ados");
+				npc.setName("Żołnierze Deniran");
+				zone.add(npc);
+				npclist.add(npc);
+			}
+			for(int j=0; j<5; j++) {
+				final PassiveNPC npc = new PassiveNPC();
+				//npc.setIdea("defence");
+				npc.setEntityClass("deniran_stormtrooper");
+				npc.setDescription("Oto armia żołnierzy Deniran.");
+				npc.setPosition(83+i, 83+j);
+				npc.setDirection(Direction.DOWN);
+				npc.setName("Żołnierze Deniran");
 				zone.add(npc);
 				npclist.add(npc);
 			}
