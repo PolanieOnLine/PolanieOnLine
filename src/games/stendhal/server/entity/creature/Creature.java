@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.Level;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
@@ -216,7 +217,11 @@ public class Creature extends NPC {
 		setAtk(copy.getAtk());
 		setRatk(copy.getRatk());
 		setDef(copy.getDef());
-		setXP(copy.getXP());
+		if(Occasion.MOREXP) {
+			setXP((int)(copy.getXP()*1.5));
+		} else {
+			setXP(copy.getXP());
+		}
 		initHP(copy.getBaseHP());
 		setName(copy.getName());
 

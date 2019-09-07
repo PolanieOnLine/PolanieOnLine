@@ -20,4 +20,6 @@ public class Occasion {
 	public final static Boolean EASTER = System.getProperty("stendhal.easter") != null;
  	// Halloween/Mine Town Weeks
 	public final static Boolean MINETOWN = System.getProperty("stendhal.minetown") != null;
+	// 50% more XP
+	public final static Boolean MOREXP = System.getProperty("pol.morexp") != null;
 }
