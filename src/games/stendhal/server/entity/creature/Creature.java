@@ -206,7 +206,11 @@ public class Creature extends NPC {
 		this.statusAttackers = copy.statusAttackers;
 		this.noises = copy.noises;
 
-		this.respawnTime = copy.respawnTime;
+		if(Occasion.MOREXP) {
+			this.respawnTime = (int) ((copy.respawnTime)*0.8);
+		} else {
+			this.respawnTime = copy.respawnTime;
+		}
 		susceptibilities = copy.susceptibilities;
 		setDamageTypes(copy.damageType, copy.rangedDamageType);
 
@@ -229,17 +233,15 @@ public class Creature extends NPC {
 		setSounds(copy.getSounds());
 		setDeathSound(copy.deathSound);
 		setMovementSound(copy.movementSound);
-
-		if (copy.getResistance() == 0) {
-			setResistance(100);
-		} else {
+		if(copy.getResistance()!=0) {
 			setResistance(copy.getResistance());
-		}
-
-		if (copy.getVisibility() == 0) {
-			setVisibility(100);
 		} else {
+			setResistance(100);
+		}
+		if(copy.getVisibility()!=0) {
 			setVisibility(copy.getVisibility());
+		} else {
+			setVisibility(100);
 		}
 
 		for (RPSlot slot : copy.slots()) {
@@ -345,18 +347,9 @@ public class Creature extends NPC {
 		setHP(hp);
 
 		setLevel(level);
-		
-		if(resistance == 0) {
-			setResistance(100);
-		} else {
-			setResistance(resistance);
-		}
 
-		if(visibility == 0) {
-			setVisibility(100);
-		} else {
-			setVisibility(visibility);
-		}
+		setResistance(resistance);
+		setVisibility(visibility);
 
 		if (Level.getLevel(xp) != level) {
 			LOGGER.debug("Wrong level for xp [" + name + "]: " + xp + " -> "
