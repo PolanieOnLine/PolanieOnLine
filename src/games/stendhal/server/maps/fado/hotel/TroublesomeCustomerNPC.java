@@ -21,9 +21,10 @@ import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
 import java.util.Map;
 
 /**
- * Provides Groongo Rahnnt, The Troublesome Customer in Fado's Hotel.
+ * Provides Groongo Rahnnt, The Troublesome Customer in Fado's Hotel Restaurant.
  *
- * Groongo offers a quest to bring him the meal he's been awaiting to order.
+ * Groongo Rahnnt offers a quest to bring him a decent meal he's been awaiting to order.
+ * Groongo Rahnnt offered quest will involve Stefan, the chef of Fado's Hotel Restaurant
  *
  * @author omero
  *
@@ -41,11 +42,6 @@ public class TroublesomeCustomerNPC implements ZoneConfigurator {
 			"... Mah! Już policzyłem wszystkie płytki na podłodze... Dwa razy...",
 			"... Meh! Zacznę tutaj nacinać nogi stołu za każdą spędzoną minutę czekając na obsługę...",
 			"... Ugh! Powinienem zacząć liczyć WSZYSTKIE robaki atakujące to miejsce..."
-			/**
-			"... Duh! I should start counting ALL the bugs infesting this place...",
-			"... Wah! I should start counting ALL the bugs infesting this place...",
-			"... Woh! I should start counting ALL the bugs infesting this place...",
-			*/
 		};
 		new MonologueBehaviour(buildNPC(zone), rants, 1);
 	}
@@ -73,9 +69,9 @@ public class TroublesomeCustomerNPC implements ZoneConfigurator {
 			}
 		};
 
-		// Finalize Groongo details
-		npc.setEntityClass("customeronchairnpc");
-		npc.setDescription("Oto Groongo Rahnt. Jest niecierpliwy, że nikt nie zwraca na niego uwagi!");
+		// Finalize Groongo Rahnnt, the Fado's Hotel Restaurant Troublesome Customer
+		npc.setEntityClass("troublesomecustomernpc");
+		npc.setDescription("Oto Groongo Rahnnt. Jest niecierpliwy, że nikt nie zwraca na niego uwagi!");
 		npc.setPosition(70, 24);
 		npc.setDirection(Direction.RIGHT);
 		npc.initHP(100);

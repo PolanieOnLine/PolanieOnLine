@@ -31,6 +31,10 @@
 			<destination zone="int_deniran_tiny_house" ref="entrance" />
 			<attribute name="move.continuous" />
 		</portal>
+		<portal x="50" y="102" ref="deniran_weapons_shop_entrance">
+			<destination zone="int_deniran_weapons_shop" ref="entrance"/>
+			<attribute name="move.continuous"/>
+		</portal>
 	</zone>
 
 	<zone name="0_deniran_sw" level="0" x="499104" y="500128" file="Level 0/deniran/deniran_sw.tmx">
@@ -134,6 +138,9 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.DeniranMarketSellerNPC1Grocery"/>
 	</zone>
 
 	<zone name="0_deniran_se" level="0" x="499360" y="500128" file="Level 0/deniran/deniran_se.tmx">
@@ -148,6 +155,9 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.deniran.river.BoatNPC"/>
 	</zone>
 
 	<zone name="0_deniran_wall_n2" level="0" x="499488" y="499744" file="Level 0/deniran/deniran_wall_n2.tmx">
@@ -487,6 +497,13 @@
 		</portal>
 	</zone>
 
+	<zone name="int_deniran_weapons_shop" file="interiors/deniran/weapons_shop.tmx">
+		<portal x="24" y="18" ref="entrance">
+			<destination zone="0_deniran_w" ref="deniran_weapons_shop_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
 	<zone name="int_deniran_bank_blue_roof" file="interiors/deniran/bank_blue_roof.tmx">
 		<portal x="15" y="14" ref="entrance">
 			<destination zone="0_deniran" ref="deniran_bank_blue_roof_entrance" />
@@ -583,5 +600,12 @@
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.bakery.ShopAssistantNPC" />
 		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.bakery.ChefNPC" />
+	</zone>
+
+	<zone name="int_deniran_dress_shop" file="interiors/deniran/dress_shop.tmx">
+		<portal x="13" y="18" ref="entrance">
+			<destination zone="0_deniran_e" ref="deniran_dress_shop_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
 	</zone>
 </zones>

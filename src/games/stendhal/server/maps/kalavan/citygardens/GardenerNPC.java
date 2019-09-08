@@ -87,7 +87,7 @@ public class GardenerNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				class SpecialProducerBehaviour extends ProducerBehaviour { 
+				class SpecialProducerBehaviour extends ProducerBehaviour {
 					SpecialProducerBehaviour(final List<String> productionActivity,
                         final String productName, final Map<String, Integer> requiredResourcesPerItem,
 											 final int productionTimePerItem) {
@@ -112,7 +112,7 @@ public class GardenerNPC implements ZoneConfigurator {
                                         + "!");
                                 return false;
 							}
-					    } 
+					    }
 						if (amount > MAX_LUNCHES) {
 							npc.say("Nie mogę wziąć więcej kanapek niż raz na tydzień! Staną się czerstwe!");
 							return false;
@@ -149,7 +149,7 @@ public class GardenerNPC implements ZoneConfigurator {
 							player.setQuest(QUEST_SLOT, amount + ";" + getProductName() + ";"
 											+ timeNow);
 							npc.say("Dziękuję! Wróć za "
-									+ getApproximateRemainingTime(player) + ", a będę miał dla Ciebie " 
+									+ getApproximateRemainingTime(player) + ", a będę miał dla Ciebie "
 									+ Grammar.quantityplnoun(amount, getProductName(), "a") + ".");
 							return true;
 						}
@@ -193,16 +193,20 @@ public class GardenerNPC implements ZoneConfigurator {
 				addReply(ConversationPhrases.NO_MESSAGES, "Lepszy niż deszczowy!");
 				addJob("Jestem ogrodnikiem. Mam nadzieję, że podobają Ci się rabatki.");
 				addHelp("Jeżeli przyniesiesz mi #drugie #śniadanie to wymienię go na magiczny zwój. Powiedz tylko #wymień.");
-				addOffer("Moje pomidory i czosnek mają się dobrze. Mam wystarczająco dużo, aby trochę sprzedać.");
+				addOffer("Moje pomidory i czosnek mają się dobrze. Mam wystarczająco dużo, aby trochę sprzedać." +
+									"I could also *cough* spare some habanero peppers and pinto beans... " +
+									"If you were interested to #buy some special ingredients for a decent meal!");
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
                 offerings.put("pomidor", 30);
                 offerings.put("czosnek", 50);
+								offerings.put("pinto beans", 55);
+                offerings.put("habanero pepper", 60);
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addReply(Arrays.asList("drugie", "śniadanie", "lunch"), "Poproszę filiżankę herbaty!");
 				addReply(Arrays.asList("sandwich", "kanapka"), "Mmm.. Chciałbym z szynką i serem.");
 				addReply(Arrays.asList("zwój kalavan", "scroll"), "To magiczny zwój, który może cię zabrać do Kalavan. Nie pytaj mnie jak działa!");
-				
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("filiżanka herbaty", 1);
 				requiredResources.put("kanapka", 1);
 
