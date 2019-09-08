@@ -1,5 +1,5 @@
 /***************************************************************************
- *                  (C) Copyright 2011 - Faiumoni e. V.                    *
+ *               (C) Copyright 2011-2019 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,7 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 
-package games.stendhal.tools;
+package games.stendhal.tools.map;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -109,12 +109,12 @@ public class ImageSplit {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        new ImageSplit("tmp/world.png", "tmp/map", "0-", 4096, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "1-", 2048, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "2-", 1024, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "3-", 512, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world-large.png", "tmp/map", "4-", 1024, 256, 0, 0, 256).split();
-        new ImageSplit("tmp/world-large.png", "tmp/map", "5-", 512, 256, 0, 0, 256).split();
-        new ImageSplit("tmp/world-large.png", "tmp/map", "6-", 256, 256, 0, 0, 256).split();
+        new ImageSplit("/tmp/world.png", "/tmp/map", "0-", 4096, 256, 0, 0, 64).split();
+        new ImageSplit("/tmp/world.png", "/tmp/map", "1-", 2048, 256, 0, 0, 64).split();
+        new ImageSplit("/tmp/world.png", "/tmp/map", "2-", 1024, 256, 0, 0, 64).split();
+        new ImageSplit("/tmp/world.png", "/tmp/map", "3-", 512, 256, 0, 0, 64).split();
+        new ImageSplit("/tmp/world-large.png", "/tmp/map", "4-", 1024, 256, 0, 0, 256).split();
+        new ImageSplit("/tmp/world-large.png", "/tmp/map", "5-", 512, 256, 0, 0, 256).split();
+        new ImageSplit("/tmp/world-large.png", "/tmp/map", "6-", 256, 256, 0, 0, 256).split();
     }
 }
