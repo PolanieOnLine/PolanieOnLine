@@ -12,6 +12,9 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 	Jožin z bažin,
 	coś niszczącego
 
+*kod gry*
+- Dodano nowe wydarzenie zatytułowane "50% więcej PD oraz 20% szybszy respawn potworów"
+
 
 1.03
 *klient*
