@@ -94,6 +94,11 @@
 			<attribute name="move.continuous" />
 		</portal>
 
+		<portal x="28" y="19" ref="deniran_grocery_store_entrance">
+			<destination zone="int_deniran_grocery_store" ref="entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+
 		<portal x="52" y="50" ref="deniran_bakery_entrance">
 			<destination zone="int_deniran_bakery" ref="entrance" />
 			<attribute name="move.continuous" />
@@ -110,13 +115,24 @@
 	</zone>
 
 	<zone name="0_deniran_river_s" level="0" x="499232" y="500256" file="Level 0/deniran/deniran_river_s.tmx">
-		<configurator class-name="games.stendhal.server.maps.deniran.river.AdosArmy" />
-		<configurator class-name="games.stendhal.server.maps.deniran.river.DeniranArmy" />
+		<configurator class-name="games.stendhal.server.maps.deniran.river.BridgePostNPC" />
+		<configurator class-name="games.stendhal.server.maps.deniran.river.PortManagerNPC" />
+<!--
+        <configurator class-name="games.stendhal.server.maps.deniran.river.AdosArmy" />
+        <configurator class-name="games.stendhal.server.maps.deniran.river.DeniranArmy" />
+ -->
 
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<entity x="63" y="26">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">You see an improvised barrier blocking access to the bridge.</attribute>
+			<attribute name="width">5</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
 	</zone>
 
 	<zone name="0_deniran_n_e2" level="0" x="499360" y="499744" file="Level 0/deniran/deniran_n_e2.tmx">
@@ -600,6 +616,13 @@
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.bakery.ShopAssistantNPC" />
 		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.bakery.ChefNPC" />
+	</zone>
+
+	<zone name="int_deniran_grocery_store" file="interiors/deniran/grocery_store.tmx">
+		<portal x="17" y="28" ref="entrance">
+			<destination zone="0_deniran" ref="deniran_grocery_store_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
 	</zone>
 
 	<zone name="int_deniran_dress_shop" file="interiors/deniran/dress_shop.tmx">
