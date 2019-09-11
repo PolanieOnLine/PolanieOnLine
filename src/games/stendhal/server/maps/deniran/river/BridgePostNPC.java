@@ -34,11 +34,11 @@ public class BridgePostNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Marcellus") {
 			@Override
 			public void createDialog() {
-				addGreeting("Hey! You stay away! You'd get yourself killed.");
-				addJob("I guard the bridge. Making sure that no thoughless civilians pass and get killed on the battle field.");
-				addHelp("The capital city of Deniran is to the north.");
+				addGreeting("Hej! Trzymaj się z daleka! Zostaniesz zabity.");
+				addJob("Strzegę mostu. Upewniając się, że żaden bezmyślny cywil nie przejdzie i nie zostanie zabity na polu bitwy.");
+				addHelp("Stolica Deniran leży na północ stąd.");
 //				addGoodbye("/me shakes his head and mutters to himself: Thoughtless civilians.");
-				addGoodbye("Thoughtless civilians.");
+				addGoodbye("Bezmyślni cywile...");
 			}
 			@Override
 			protected void onGoodbye(RPEntity player) {
@@ -49,7 +49,7 @@ public class BridgePostNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.UP);
 		npc.setPosition(65, 25);
 		npc.setEntityClass("deniran_stormtrooper");
-		npc.setDescription("You see a soldier guarding the bridge.");
+		npc.setDescription("Oto żołnierz strzegącego mostu.");
 		zone.add(npc);
 	}
 }

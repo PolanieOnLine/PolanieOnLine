@@ -129,7 +129,7 @@
 
 		<entity x="63" y="26">
 			<implementation	class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">You see an improvised barrier blocking access to the bridge.</attribute>
+			<attribute name="description">Widzisz barierę blokującą dostęp do mostu.</attribute>
 			<attribute name="width">5</attribute>
 			<attribute name="height">1</attribute>
 		</entity>

@@ -194,13 +194,13 @@ public class GardenerNPC implements ZoneConfigurator {
 				addJob("Jestem ogrodnikiem. Mam nadzieję, że podobają Ci się rabatki.");
 				addHelp("Jeżeli przyniesiesz mi #drugie #śniadanie to wymienię go na magiczny zwój. Powiedz tylko #wymień.");
 				addOffer("Moje pomidory i czosnek mają się dobrze. Mam wystarczająco dużo, aby trochę sprzedać." +
-									"I could also *cough* spare some habanero peppers and pinto beans... " +
-									"If you were interested to #buy some special ingredients for a decent meal!");
+									"Mógłbym również *kaszel* sprzedać trochę papryki habanero i fasoli pinto... " +
+									"Jeśli chciałbyś #kupić specjalne składniki na skromny posiłek!");
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
                 offerings.put("pomidor", 30);
                 offerings.put("czosnek", 50);
-								offerings.put("pinto beans", 55);
-                offerings.put("habanero pepper", 60);
+				offerings.put("fasola pinto", 55);
+                offerings.put("papryka habanero", 60);
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addReply(Arrays.asList("drugie", "śniadanie", "lunch"), "Poproszę filiżankę herbaty!");
 				addReply(Arrays.asList("sandwich", "kanapka"), "Mmm.. Chciałbym z szynką i serem.");
@@ -223,7 +223,7 @@ public class GardenerNPC implements ZoneConfigurator {
 		npc.setEntityClass("gardenernpc");
 		npc.setPosition(100, 123);
 		npc.initHP(100);
-		npc.setDescription("Widzisz Sue. Jej kwiaty są przepiękne. Ona naprawdę ma do tego rękę.");
+		npc.setDescription("Oto Sue. Jej kwiaty są przepiękne. Ona naprawdę ma do tego rękę.");
 		zone.add(npc);
 	}
 

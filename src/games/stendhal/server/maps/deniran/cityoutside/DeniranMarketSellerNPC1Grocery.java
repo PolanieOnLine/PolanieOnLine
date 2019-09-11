@@ -38,9 +38,9 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final String[] yells = {
-			"HEYOH! Grocery stuff here at the market... Come closer, have a look!",
-			"HOYEH! I have all the stuff to prepare a decent meal and more!",
-			"AHAWW! Is this a market or a cemetery?!... It seems so quiet around here..."
+			"HEYOH! Artykuły spożywcze tutaj na rynku ... Zbliż się, spójrz!",
+			"HOYEH! Mam wszystko, aby przygotować skromny posiłek i jeszcze więcej!",
+			"AHAWW! Czy to rynek czy cmentarz?!... Wydaje się, że jest tu tak cicho..."
 		};
 		new MonologueBehaviour(buildNPC(zone), yells, 1);
 	}
@@ -52,41 +52,41 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGreeting(
-						"Hello visitor! " +
-						"If you came looking for grocery stuff, I #offer grocery stuff... " + 
-						"Oh, I should really set up one of those blackboards where offers are listed!");
+						"Witaj zwiedzaczu! " +
+						"Jeśli przyszedłeś szukać jedzenia, #oferuję przedmioty spożywcze... " + 
+						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
 				addOffer(
-						"I sell grocery stuff... " +
-								"eggs, " +
-								"potatoes, " +
-								"pinto beans, " +
-								"habanero peppers, " +
-								"olive oil, " +
-								"vinegar, " +
-								"sugar... " +
-						"If you want to #buy some stuff, tell me... " +
-						"Oh, I should really set up one of those blackboards where offers are listed!");
+						"Sprzedaję przedmioty spożywcze... " +
+								"jaja, " +
+								"ziemniaki, " +
+								"fasolę pinto, " +
+								"paprykę habanero, " +
+								"oliwa z oliwek, " +
+								"ocet, " +
+								"cukier... " +
+						"Jeśli chcesz #kupić coś, powiedz mi... " +
+						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
 				//Offered items:
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-                offerings.put("egg", 35);
-                offerings.put("potato", 40);
-                offerings.put("pinto beans", 45);
-                offerings.put("habanero pepper", 50);
-                offerings.put("olive oil", 130);
-                offerings.put("vinegar", 135);
-                offerings.put("sugar", 140);                
+                offerings.put("jajo", 35);
+                offerings.put("ziemniaki", 40);
+                offerings.put("fasola pinto", 45);
+                offerings.put("papryka habanero", 50);
+                offerings.put("oliwa z oliwek", 130);
+                offerings.put("ocet", 135);
+                offerings.put("cukier", 140);                
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
                 
-				addJob("I am here to #offer grocery stuff to travelers like you... " +
-					   "If you want to #buy, tell me... " +
-					   "Oh, I should really set up one of those blackboards where offers are listed!");
+				addJob("Jestem tutaj, aby #oferować przedmioty spożywcze podróżnym takim jak ty... " +
+					   "Jeśli chcesz #kupić coś, powiedz mi... " +
+					   "Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
 				
 				addHelp(
-						"If you need some grocery stuff, I do #offer some grocery stuff... " +
-						"When you want to #buy something, tell me... " +
-						"Oh, I should really set up one of those blackboards where offers are listed");
+						"Jeśli przyszedłeś szukać jedzenia, #oferuję przedmioty spożywcze... " +
+						"Jeśli chcesz #kupić coś, powiedz mi... " +
+						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
 				
-				addGoodbye("So long...");
+				addGoodbye("Tak długo...");
 				
 			}
 
@@ -106,7 +106,7 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 		npc.setEntityClass("deniran_marketsellernpc1grocery");
 		npc.setPosition(26, 122);
 		npc.setCollisionAction(CollisionAction.REROUTE);
-		npc.setDescription("You see a busy marketplace seller...");
+		npc.setDescription("Oto zajęty sprzedawca na rynku...");
 		zone.add(npc);
 		
 		return npc;

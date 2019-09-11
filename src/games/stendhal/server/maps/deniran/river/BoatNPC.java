@@ -36,10 +36,10 @@ public class BoatNPC implements ZoneConfigurator  {
 		npc.setIgnoresCollision(true);
 		npc.setResistance(0);
 		npc.setEntityClass("row_boat");
-		npc.setDescription("You see a boat.");
+		npc.setDescription("Oto łódka.");
 		npc.setPosition(125, 68);
 		npc.setDirection(Direction.LEFT);
-		npc.setName("Boat");
+		npc.setName("Łódka");
 		zone.add(npc);
 	}
 }

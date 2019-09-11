@@ -37,13 +37,13 @@ public class PortManagerNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Fiete") {
 			@Override
 			public void createDialog() {
-				addGreeting("Moin! Ados ships #delayed. No packets available.");
-				addJob("Me port manager. Busy job. Very important! But ships from Ados delayed, so taking #break");
-				addReply(Arrays.asList("delayed", "break"),
-						"Me works hard. Very hard. So break fine, when no ships.");
-				addHelp("The capital city of Deniran is to the north.");
-				addQuest("Lots of work, when ships come. But now, no ships, no work. Return later.");
-				addGoodbye("Return later. Lot's of work, when ships come.");
+				addGreeting("Moin! Statki Ados #opóźnione. Brak dostępnych pakietów.");
+				addJob("Jestem menedżerem portu. Zajęty ważną pracą! Statki Ados opóźniły się, więc zrobiłem sobie #przerwę.");
+				addReply(Arrays.asList("delayed", "opóźnione", "break", "przerwę", "przerwa"),
+						"Pracuję ciężko. Bardzo ciężko. Więc przerwa jest dobra, kiedy nie ma statków.");
+				addHelp("Stolica Deniran leży na północ stąd.");
+				addQuest("Dużo pracy, kiedy przybywają statki. Ale teraz nie ma statków, nie ma pracy. Wróć później.");
+				addGoodbye("Wróć później. Dużo pracy, kiedy przybywają statki.");
 			}
 
 			@Override
@@ -57,7 +57,7 @@ public class PortManagerNPC implements ZoneConfigurator {
 		};
 		npc.setPosition(82, 52);
 		npc.setEntityClass("beardmannpc");
-		npc.setDescription("You see a strong man, lazily pacing.");
+		npc.setDescription("Oto silny mężczyzna, który leniwie kroczy.");
 		zone.add(npc);
 	}
 }
