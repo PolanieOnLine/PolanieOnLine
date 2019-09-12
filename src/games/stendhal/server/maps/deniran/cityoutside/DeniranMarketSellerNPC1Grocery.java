@@ -38,13 +38,13 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final String[] yells = {
-			"HEYOH! Artykuły spożywcze tutaj na rynku ... Zbliż się, spójrz!",
+			"HEYOH! Artykuły spożywcze tutaj na rynku... Zbliż się, spójrz!",
 			"HOYEH! Mam wszystko, aby przygotować skromny posiłek i jeszcze więcej!",
 			"AHAWW! Czy to rynek czy cmentarz?!... Wydaje się, że jest tu tak cicho..."
 		};
 		new MonologueBehaviour(buildNPC(zone), yells, 1);
 	}
-	
+
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		//Ambrogio is a temporary name
 		final SpeakerNPC npc = new SpeakerNPC("Ambrogio") {
@@ -76,7 +76,7 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
                 offerings.put("ocet", 135);
                 offerings.put("cukier", 140);                
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
-                
+
 				addJob("Jestem tutaj, aby #oferować przedmioty spożywcze podróżnym takim jak ty... " +
 					   "Jeśli chcesz #kupić coś, powiedz mi... " +
 					   "Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
@@ -100,7 +100,7 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		
+
 		// Finalize Deniran Market Seller NPC (Grocery)
 		//npc.setEntityClass("fatsellernpc");
 		npc.setEntityClass("deniran_marketsellernpc1grocery");
@@ -108,8 +108,7 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 		npc.setCollisionAction(CollisionAction.REROUTE);
 		npc.setDescription("Oto zajęty sprzedawca na rynku...");
 		zone.add(npc);
-		
+
 		return npc;
-		
 	}
 }
