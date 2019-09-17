@@ -627,65 +627,65 @@
  <tileset firstgid="3326" name="0_semos_mountain_n2_w3" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_semos_mountain_n2_w3.png" trans="ff00ff" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3342" name="0_deniran_deniran" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran.png" width="256" height="256"/>
+ <tileset firstgid="3342" name="0_deniran_city" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3358" name="0_deniran_deniran_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_e.png" width="256" height="256"/>
+ <tileset firstgid="3358" name="0_deniran_city_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_e.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3374" name="0_deniran_deniran_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_n.png" width="256" height="256"/>
+ <tileset firstgid="3374" name="0_deniran_forest_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_n.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3390" name="0_deniran_deniran_n_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_n_e2.png" width="256" height="256"/>
+ <tileset firstgid="3390" name="0_deniran_forest_n2_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_n2_e.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3406" name="0_deniran_deniran_n_w2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_n_w2.png" width="256" height="256"/>
+ <tileset firstgid="3406" name="0_deniran_forest_n2_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_n2_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3422" name="0_deniran_deniran_n2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_n2.png" width="256" height="256"/>
+ <tileset firstgid="3422" name="0_deniran_forest_n2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_n2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3438" name="0_deniran_deniran_ne" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_ne.png" width="256" height="256"/>
+ <tileset firstgid="3438" name="0_deniran_forest_ne" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_ne.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3454" name="0_deniran_deniran_nw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_nw.png" width="256" height="256"/>
+ <tileset firstgid="3454" name="0_deniran_forest_nw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_nw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3470" name="0_deniran_deniran_river_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_river_e.png" width="256" height="256"/>
+ <tileset firstgid="3470" name="0_deniran_river_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_river_se.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3486" name="0_deniran_deniran_river_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_river_e2.png" width="256" height="256"/>
+ <tileset firstgid="3486" name="0_deniran_river_s_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_river_s_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3502" name="0_deniran_deniran_river_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_river_s.png" width="256" height="256"/>
+ <tileset firstgid="3502" name="0_deniran_river_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_river_s.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3518" name="0_deniran_deniran_river_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_river_w.png" width="256" height="256"/>
+ <tileset firstgid="3518" name="0_deniran_river_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_river_sw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3534" name="0_deniran_deniran_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_s.png" width="256" height="256"/>
+ <tileset firstgid="3534" name="0_deniran_city_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_s.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3550" name="0_deniran_deniran_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_se.png" width="256" height="256"/>
+ <tileset firstgid="3550" name="0_deniran_city_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_se.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3566" name="0_deniran_deniran_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_sw.png" width="256" height="256"/>
+ <tileset firstgid="3566" name="0_deniran_city_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_sw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3582" name="0_deniran_deniran_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_w.png" width="256" height="256"/>
+ <tileset firstgid="3582" name="0_deniran_city_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3598" name="0_deniran_deniran_wall" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_wall.png" width="256" height="256"/>
+ <tileset firstgid="3598" name="0_deniran_city_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3614" name="0_deniran_deniran_wall_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_wall_n.png" width="256" height="256"/>
+ <tileset firstgid="3614" name="0_deniran_forest_n_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_n_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3630" name="0_deniran_deniran_wall_n2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_wall_n2.png" width="256" height="256"/>
+ <tileset firstgid="3630" name="0_deniran_forest_n2_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_forest_n2_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3646" name="0_deniran_deniran_wall_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="0_deniran_deniran_wall_s.png" width="256" height="256"/>
+ <tileset firstgid="3646" name="0_deniran_city_s_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_deniran_city_s_e2.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="3662" name="sub_1_deniran_lost_caves_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_1_deniran_lost_caves_n.png" width="256" height="256"/>
@@ -696,68 +696,68 @@
  <tileset firstgid="3694" name="sub_1_deniran_lost_caves_ne" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_1_deniran_lost_caves_ne.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3710" name="sub_1_deniran_lost_caves_ne2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_lost_caves_ne2.png" width="256" height="256"/>
+ <tileset firstgid="3710" name="sub_1_deniran_lost_caves_n2_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_lost_caves_n2_e.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="3726" name="sub_1_deniran_lost_caves_nw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_1_deniran_lost_caves_nw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3742" name="sub_1_deniran_lost_caves_nw2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_lost_caves_nw2.png" width="256" height="256"/>
+ <tileset firstgid="3742" name="sub_1_deniran_lost_caves_n2_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_lost_caves_n2_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3758" name="sub_1_deniran_lost_caves_wall_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_lost_caves_wall_n.png" width="256" height="256"/>
+ <tileset firstgid="3758" name="sub_1_deniran_lost_caves_n_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_lost_caves_n_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3774" name="sub_1_deniran_lost_caves_wall_n2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_lost_caves_wall_n2.png" width="256" height="256"/>
+ <tileset firstgid="3774" name="sub_1_deniran_lost_caves_n2_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_lost_caves_n2_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3790" name="sub_1_deniran_deniran_caves_deniran" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_deniran.png" width="256" height="256"/>
+ <tileset firstgid="3790" name="sub_1_deniran_caves" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3806" name="sub_1_deniran_deniran_caves_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_e.png" width="256" height="256"/>
+ <tileset firstgid="3806" name="sub_1_deniran_caves_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_e.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3822" name="sub_1_deniran_deniran_caves_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_s.png" width="256" height="256"/>
+ <tileset firstgid="3822" name="sub_1_deniran_caves_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_s.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3838" name="sub_1_deniran_deniran_caves_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_se.png" width="256" height="256"/>
+ <tileset firstgid="3838" name="sub_1_deniran_caves_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_se.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3854" name="sub_1_deniran_deniran_caves_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_sw.png" width="256" height="256"/>
+ <tileset firstgid="3854" name="sub_1_deniran_caves_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_sw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3870" name="sub_1_deniran_deniran_caves_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_w.png" width="256" height="256"/>
+ <tileset firstgid="3870" name="sub_1_deniran_caves_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3886" name="sub_1_deniran_deniran_caves_wall" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_wall.png" width="256" height="256"/>
+ <tileset firstgid="3886" name="sub_1_deniran_caves_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3902" name="sub_1_deniran_deniran_caves_wall_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_1_deniran_deniran_caves_wall_s.png" width="256" height="256"/>
+ <tileset firstgid="3902" name="sub_1_deniran_caves_s_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_1_deniran_caves_s_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3918" name="sub_2_deniran_deniran_caves_deniran" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_deniran.png" width="256" height="256"/>
+ <tileset firstgid="3918" name="sub_2_deniran_caves" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3934" name="sub_2_deniran_deniran_caves_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_e.png" width="256" height="256"/>
+ <tileset firstgid="3934" name="sub_2_deniran_caves_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_e.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3950" name="sub_2_deniran_deniran_caves_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_s.png" width="256" height="256"/>
+ <tileset firstgid="3950" name="sub_2_deniran_caves_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_s.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3966" name="sub_2_deniran_deniran_caves_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_se.png" width="256" height="256"/>
+ <tileset firstgid="3966" name="sub_2_deniran_caves_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_se.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3982" name="sub_2_deniran_deniran_caves_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_sw.png" width="256" height="256"/>
+ <tileset firstgid="3982" name="sub_2_deniran_caves_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_sw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="3998" name="sub_2_deniran_deniran_caves_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_w.png" width="256" height="256"/>
+ <tileset firstgid="3998" name="sub_2_deniran_caves_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4014" name="sub_2_deniran_deniran_caves_wall" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_wall.png" width="256" height="256"/>
+ <tileset firstgid="4014" name="sub_2_deniran_caves_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4030" name="sub_2_deniran_deniran_caves_wall_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_deniran_caves_wall_s.png" width="256" height="256"/>
+ <tileset firstgid="4030" name="sub_2_deniran_caves_s_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_caves_s_e2.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="4046" name="sub_2_deniran_lost_caves_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_2_deniran_lost_caves_n.png" width="256" height="256"/>
@@ -768,44 +768,44 @@
  <tileset firstgid="4078" name="sub_2_deniran_lost_caves_ne" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_2_deniran_lost_caves_ne.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4094" name="sub_2_deniran_lost_caves_ne2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_lost_caves_ne2.png" width="256" height="256"/>
+ <tileset firstgid="4094" name="sub_2_deniran_lost_caves_n2_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_lost_caves_n2_e.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="4110" name="sub_2_deniran_lost_caves_nw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_2_deniran_lost_caves_nw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4126" name="sub_2_deniran_lost_caves_nw2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_lost_caves_nw2.png" width="256" height="256"/>
+ <tileset firstgid="4126" name="sub_2_deniran_lost_caves_n2_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_lost_caves_n2_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4142" name="sub_2_deniran_lost_caves_wall_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_lost_caves_wall_n.png" width="256" height="256"/>
+ <tileset firstgid="4142" name="sub_2_deniran_lost_caves_n_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_lost_caves_n_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4158" name="sub_2_deniran_lost_caves_wall_n2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_2_deniran_lost_caves_wall_n2.png" width="256" height="256"/>
+ <tileset firstgid="4158" name="sub_2_deniran_lost_caves_n2_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_2_deniran_lost_caves_n2_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4174" name="sub_3_deniran_deniran_caves_deniran" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_deniran.png" width="256" height="256"/>
+ <tileset firstgid="4174" name="sub_3_deniran_caves" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4190" name="sub_3_deniran_deniran_caves_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_e.png" width="256" height="256"/>
+ <tileset firstgid="4190" name="sub_3_deniran_caves_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_e.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4206" name="sub_3_deniran_deniran_caves_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_s.png" width="256" height="256"/>
+ <tileset firstgid="4206" name="sub_3_deniran_caves_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_s.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4222" name="sub_3_deniran_deniran_caves_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_se.png" width="256" height="256"/>
+ <tileset firstgid="4222" name="sub_3_denirancaves_se" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_se.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4238" name="sub_3_deniran_deniran_caves_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_sw.png" width="256" height="256"/>
+ <tileset firstgid="4238" name="sub_3_deniran_caves_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_sw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4254" name="sub_3_deniran_deniran_caves_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_w.png" width="256" height="256"/>
+ <tileset firstgid="4254" name="sub_3_deniran_caves_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4270" name="sub_3_deniran_deniran_caves_wall" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_wall.png" width="256" height="256"/>
+ <tileset firstgid="4270" name="sub_3_deniran_caves_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4286" name="sub_3_deniran_deniran_caves_wall_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_deniran_caves_wall_s.png" width="256" height="256"/>
+ <tileset firstgid="4286" name="sub_3_deniran_caves_s_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_caves_s_e2.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="4302" name="sub_3_deniran_lost_caves_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_3_deniran_lost_caves_n.png" width="256" height="256"/>
@@ -816,23 +816,77 @@
  <tileset firstgid="4334" name="sub_3_deniran_lost_caves_ne" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_3_deniran_lost_caves_ne.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4350" name="sub_3_deniran_lost_caves_ne2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_lost_caves_ne2.png" width="256" height="256"/>
+ <tileset firstgid="4350" name="sub_3_deniran_lost_caves_n2_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_lost_caves_n2_e.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="4366" name="sub_3_deniran_lost_caves_nw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_3_deniran_lost_caves_nw.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4382" name="sub_3_deniran_lost_caves_nw2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_lost_caves_nw2.png" width="256" height="256"/>
+ <tileset firstgid="4382" name="sub_3_deniran_lost_caves_n2_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_lost_caves_n2_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4398" name="sub_3_deniran_lost_caves_wall_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_lost_caves_wall_n.png" width="256" height="256"/>
+ <tileset firstgid="4398" name="sub_3_deniran_lost_caves_n_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_lost_caves_n_e2.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="4414" name="sub_3_deniran_lost_caves_wall_n2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
-  <image source="sub_3_deniran_lost_caves_wall_n2.png" width="256" height="256"/>
+ <tileset firstgid="4414" name="sub_3_deniran_lost_caves_n2_e2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="sub_3_deniran_lost_caves_n2_e2.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="4430" name="0_sikhw_placeholder" tilewidth="64" tileheight="64" tilecount="256" columns="16">
   <image source="0_sikhw_placeholder.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="4686" name="0_sikhw_city" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_city.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4702" name="0_sikhw_desert_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_e.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4718" name="0_sikhw_desert_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_n.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4734" name="0_sikhw_desert_n_w2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_n_w2.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4750" name="0_sikhw_desert_ne" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_ne.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4766" name="0_sikhw_desert_nw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_nw.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4782" name="0_sikhw_desert_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_s.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4798" name="0_sikhw_desert_s_w2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_s_w2.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4814" name="0_sikhw_desert_s2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_s2.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4830" name="0_sikhw_desert_s2_e" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_s2_e.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4846" name="0_sikhw_desert_s2_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_s2_w.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4862" name="0_sikhw_desert_s2_w2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_s2_w2.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4878" name="0_sikhw_desert_sw" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_sw.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4894" name="0_sikhw_desert_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_w.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4910" name="0_sikhw_desert_w2" tilewidth="64" tileheight="64" tilecount="16" columns="4">
+  <image source="0_sikhw_desert_w2.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="4926" name="0_kalavan_castle_w" tilewidth="64" tileheight="64" tilecount="8" columns="2">
+  <image source="0_kalavan_castle_w.png" width="128" height="256"/>
+ </tileset>
+ <tileset firstgid="4934" name="0_sikhw_placeholder" tilewidth="64" tileheight="64" tilecount="256" columns="16">
+  <image source="0_sikhw_placeholder.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="5190" name="0_sikhw_sikhw_desert_se" tilewidth="64" tileheight="64" tilecount="8" columns="2">
+  <image source="0_sikhw_sikhw_desert_se.png" width="128" height="256"/>
  </tileset>
  <layer name="Sub 7" width="73" height="38" visible="0" opacity="0">
   <data encoding="base64" compression="gzip">
@@ -861,7 +915,7 @@
  </layer>
  <layer name="Sub 2" width="73" height="38" visible="0">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Sub 1" width="73" height="38" visible="0">
@@ -871,7 +925,7 @@
  </layer>
  <layer name="Floor" width="73" height="38">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Sky 1" width="73" height="38" visible="0">
