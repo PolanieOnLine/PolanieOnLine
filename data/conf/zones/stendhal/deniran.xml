@@ -518,7 +518,7 @@
 		</portal>
 
 		<!-- NPCs -->
-		<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.LittleGirlNPC" />
+		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.tinyhouse.WizardNPC" />
 	</zone>
 
 	<zone name="int_deniran_weapons_shop" file="interiors/deniran/weapons_shop.tmx">
