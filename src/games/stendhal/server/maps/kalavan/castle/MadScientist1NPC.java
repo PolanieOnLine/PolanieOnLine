@@ -19,7 +19,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import java.util.Map;
 
 /**
- * Builds a mad scientist NPC who takes your silk glands makes thread, then gives them to another NPC. 
+ * Builds a mad scientist NPC who takes your silk glands makes thread, then gives them to another NPC.
  *
  * @author kymara with modifications by tigertoes
  */
@@ -53,7 +53,7 @@ public class MadScientist1NPC implements ZoneConfigurator {
 				addGoodbye("Ta ta!");
 				// remaining behaviour defined in maps.quests.MithrilCloak
 	 	     }
-		    
+
 		};
 
 		npc.setDescription("Oto nieco dziwna osoba. Może nie powinieneś zawracać jej głowy?");

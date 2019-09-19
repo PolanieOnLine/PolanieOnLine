@@ -18,7 +18,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
- * A young lady (original name: Straznik) who heals players without charge. 
+ * A young lady (original name: Straznik) who heals players without charge.
  */
 public class StraznikNPC extends SpeakerNPCFactory {
 

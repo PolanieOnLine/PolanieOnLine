@@ -61,11 +61,11 @@ public class ArcheryDealerNPC implements ZoneConfigurator  {
 				addOffer("Spójrz na tablicę i sprawdź ceny.");
 				addQuest("Nie mam dla Ciebie zadania.");
 				addGoodbye("Bądź szczęśliwy. Dowidzenia.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyarcherstuff")), false);			    
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyarcherstuff")), false);
 			}};
 			npc.setPosition(10, 5);
 			npc.setDescription("Oto piękna czarodziejka elfów Merenwen. Skupuje przedmioty związane z łucznictwem.");
 			npc.setEntityClass("mageelfnpc");
-			zone.add(npc);		
+			zone.add(npc);
    	}
 }

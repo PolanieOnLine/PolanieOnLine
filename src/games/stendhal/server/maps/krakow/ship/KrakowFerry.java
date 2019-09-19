@@ -22,7 +22,7 @@ import java.util.List;
  * This class simulates a ferry going back and forth between the mainland and
  * the island. Note that, even though this class lies in a maps package, this is
  * not a zone configurator.
- * 
+ *
  * NPCs that have to do with the ferry:
  * <li> Eliza - brings players from the mainland docks to the ferry.
  * <li>Jessica - brings players from the island docks to the ferry.
@@ -30,10 +30,10 @@ import java.util.List;
  * captain.
  * <li>Laura - the ship galley maid.
  * <li>Ramon - offers blackjack on the ship.
- * 
+ *
  * @see games.stendhal.server.maps.pol.krakow.ship.CaptainNPC
  * @author daniel
- * 
+ *
  */
 public final class KrakowFerry implements TurnListener {
 

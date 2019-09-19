@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package games.stendhal.server.maps.semos.apothecary_lab;
 
@@ -72,6 +72,6 @@ public class ApothecaryNPC implements ZoneConfigurator {
 		npc.setPosition(7, 9);
 		npc.initHP(100);
 
-		zone.add(npc);   
+		zone.add(npc);
 	}
 }

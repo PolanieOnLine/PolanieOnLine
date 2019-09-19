@@ -33,9 +33,9 @@ import java.util.Map;
  * An oracle who lets players know how they can help others.
  */
 public class OracleNPC implements ZoneConfigurator {
-	
-	/** 
-	 * region that this NPC can give information about 
+
+	/**
+	 * region that this NPC can give information about
 	 */
 	private final List<String> regions = Arrays.asList(Region.ADOS_SURROUNDS, Region.ADOS_CITY);
 
@@ -47,14 +47,14 @@ public class OracleNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Calla") {
-			
+
 			@Override
 			public void createDialog() {
 				addGreeting("Co za moc małego kwiatka! Jaką masz moc? Obywatele Ados szukają #pomocy...");
-				
-				// use a standard action to list the names of NPCs for quests which haven't been started in this region 
+
+				// use a standard action to list the names of NPCs for quests which haven't been started in this region
 				addReply(ConversationPhrases.HELP_MESSAGES, null, new SayNPCNamesForUnstartedQuestsAction(regions));
-				
+
 				// if the player says an NPC name, describe the quest (same description as in the travel log)
 				add(ConversationStates.ATTENDING,
 						"",
@@ -68,7 +68,7 @@ public class OracleNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("sisters", "siostrach", "siostry"), "Moje siostry mieszkają w innych miastach. Znajdź je, aby dowiedzieć się jak #pomóc osobom w ich okolicy.");
 				addReply(Arrays.asList("name", "imieniu"), "Ja i moje #siostry mamy imiona po kwiatach. " +
 						"Nazywam się Calla i jest rodzaj lilli, która ma ten sam kolor co moja sukienka. Jest taka ładna.");
-				
+
 				// just to be nice :)
 				addEmotionReply("hugs", "uściski");
 				addGoodbye("Dziękuję. Miło byo cię poznać.");

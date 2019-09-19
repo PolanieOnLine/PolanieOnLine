@@ -47,4 +47,4 @@ public class FightTrainingNPC implements ZoneConfigurator {
 		npc.initHP(100);
 		zone.add(npc);
 	}
-} 
+}

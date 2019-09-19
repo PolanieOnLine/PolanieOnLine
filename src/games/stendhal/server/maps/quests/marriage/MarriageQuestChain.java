@@ -45,17 +45,17 @@ import org.apache.log4j.Logger;
  * <li> When they go to the Hotel they choose a lovers room
  * <li> Champagne and fruit baskets is put in their bag (room if possible)
  * <li> They leave the lovers room when desired with another marked scroll
- * 
+ *
  * <p>
  * REWARD:
  * <li> Wedding Ring that teleports you to your spouse if worn - 1500 XP in
  * total
  * <li> nice food in the lovers room
  * <p>
- * 
+ *
  * REPETITIONS:
  * <li> None.
- * 
+ *
  * @author kymara
  */
 public class MarriageQuestChain  {
@@ -67,7 +67,7 @@ public class MarriageQuestChain  {
 	public void addToWorld() {
 		new Engagement(marriage).addToWorld();
 		new MakeRings(marriage).addToWorld();
-		new GetOutfits(marriage).addToWorld();	
+		new GetOutfits(marriage).addToWorld();
 		new Marriage(marriage).addToWorld();
 		new Honeymoon(marriage).addToWorld();
 		new Divorce(marriage).addToWorld();
@@ -83,21 +83,21 @@ public class MarriageQuestChain  {
 		res.add("Każdy z nas musi zrobć ślubną obrączkę, by użyć jej podczas ceremonii. Ognir nam pomoże.");
 		if ("engaged".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Ognir zabrał złoto, które zgromadziłem i zgodził się odlać obrączkę, którą dam  " + getSpouseOrNickname(player)  + ".");
 		if (questState.startsWith("forging")) {
 			return res;
-		} 
+		}
 		res.add("Zabrałem mój pierścionek od Ognira. Napomknął, że moglibyśmy dostać specjalne stroje u Tymoteusza i Tamary w hotelu w Fado.");
 		if ("engaged_with_ring".equals(questState)) {
 	        res.add("Teraz muszę się tylko upewnić, że " + getSpouseOrNickname(player) + "zrobił pierścionek i będziemy mogli udać się razem do kościoła.");
 			return res;
-		} 
+		}
 		res.add("Poślubiłem " + getSpouseOrNickname(player) + " na miłej ceremonii w kościele w Fado.");
 		if ("just_married".equals(questState)) {
 			res.add("Nie odbyliśmy jeszcze podróży poślubnej, powinniśmy o nią zapytać Lindę.");
 			return res;
-		} 
+		}
 		res.add(getSpouseOrNickname(player) + " i ja spędziliśmy wspaniały miesiąc miodowy w Hotelu Fado! Pomogła nam w tym Linda.");
 		if ("done".equals(questState)) {
 			return res;
@@ -108,7 +108,7 @@ public class MarriageQuestChain  {
 		logger.error("Historia nie pasuje do stanu gracza " + player.getTitle() + " w stanie zadania " + questState);
 		return debug;
 	}
-	
+
 	private String getSpouseOrNickname(final Player player) {
 		String spouse = player.getQuest(marriage.getSpouseQuestSlot());
 		if(spouse == null) {

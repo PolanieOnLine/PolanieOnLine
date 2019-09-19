@@ -35,30 +35,30 @@ public class PrepareOfferHandler {
 	private Item item;
 	private int price;
 	private int quantity;
-	
+
 	public void add(SpeakerNPC npc) {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("sell", "sprzedam"),
-				new LevelLessThanCondition(6), 
-				ConversationStates.ATTENDING, 
+				new LevelLessThanCondition(6),
+				ConversationStates.ATTENDING,
 				"Przepraszam, ale akceptuję oferty tylko od osób, które cieszą się dobrą reputacją. Możesz zdobyć moje przyzwolenie pod warunkiem, że zdobędziesz trochę doświadczenia na przykład pomagając ludziom wykonując ich zadania lub bronić miasta przed diabelskimi potworami.", null);
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("sell", "sprzedam"), 
-				new LevelGreaterThanCondition(5), 
-				ConversationStates.ATTENDING, null, 
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("sell", "sprzedam"),
+				new LevelGreaterThanCondition(5),
+				ConversationStates.ATTENDING, null,
 				new PrepareOfferChatAction());
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("sell", "sprzedam"), null, ConversationStates.ATTENDING, null, 
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("sell", "sprzedam"), null, ConversationStates.ATTENDING, null,
 				new PrepareOfferChatAction());
-		npc.add(ConversationStates.SELL_PRICE_OFFERED, ConversationPhrases.YES_MESSAGES, 
+		npc.add(ConversationStates.SELL_PRICE_OFFERED, ConversationPhrases.YES_MESSAGES,
 				ConversationStates.ATTENDING, null, new ConfirmPrepareOfferChatAction());
-		npc.add(ConversationStates.SELL_PRICE_OFFERED, ConversationPhrases.NO_MESSAGES, null, 
+		npc.add(ConversationStates.SELL_PRICE_OFFERED, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Dobrze, w czym jeszcze mogę pomóc?", null);
 	}
-	
+
 	private void setData(Item item, int price, int quantity) {
 		this.item = item;
 		this.price = price;
 		this.quantity = quantity;
 	}
-	
+
 	/**
 	 * Builds the message for the tweet to be posted
 	 * @param i the offered item
@@ -82,7 +82,7 @@ public class PrepareOfferHandler {
 		message.append(stats);
 		return message.toString();
 	}
-	
+
 	private class PrepareOfferChatAction implements ChatAction {
 		@Override
 		public void fire(Player player, Sentence sentence, EventRaiser npc) {
@@ -114,13 +114,13 @@ public class PrepareOfferHandler {
 					}
 
 					if (item == null) {
-						npc.say("Wybacz, ale wydaje mi się, że nie masz przy sobie " 
+						npc.say("Wybacz, ale wydaje mi się, że nie masz przy sobie "
 								+ Grammar.plural(itemName)+ ".");
 						return;
 					}
 					// The item name might not be what was used for looking it up (plurals)
 					itemName = item.getName();
-					
+
 					if ((number > 1) && !(item instanceof StackableItem)) {
 						npc.say("Przykro mi, ale możesz położyć tylko jeden na sprzedaż jako indywidualny przedmiot.");
 						return;
@@ -152,7 +152,7 @@ public class PrepareOfferHandler {
 					msg.append(fee);
 					msg.append(" money prowizji.");
 					npc.say(msg.toString());
-					
+
 					npc.setCurrentState(ConversationStates.SELL_PRICE_OFFERED);
 					return;
 				}
@@ -176,7 +176,7 @@ public class PrepareOfferHandler {
 			return sentence.getNumeral().getAmount();
 		}
 	}
-	
+
 	private class ConfirmPrepareOfferChatAction implements ChatAction {
 		@Override
 		public void fire(Player player, Sentence sentence, EventRaiser npc) {
@@ -197,7 +197,7 @@ public class PrepareOfferHandler {
 
 		/**
 		 * Try creating an offer.
-		 * 
+		 *
 		 * @param player the player who makes the offer
 		 * @param item item for sale
 		 * @param price price for the item

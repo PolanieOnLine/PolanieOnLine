@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * Builds an NPC to buy previously un bought mainio weapons.
- * He is the 
+ * He is the
  *
  * @author kymara
  */
@@ -69,7 +69,7 @@ public class BuyerNPC implements ZoneConfigurator {
 	  	@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
-			}	
+			}
 
 		};
 		npc.setDescription("Oto niecierpliwy człowiek. Otacza się wojskiem lotniczym.");

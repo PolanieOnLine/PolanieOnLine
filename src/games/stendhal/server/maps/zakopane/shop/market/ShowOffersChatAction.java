@@ -57,9 +57,9 @@ public class ShowOffersChatAction implements ChatAction {
 		boolean onlyMyOffers = checkForMineFilter(sentence);
 		boolean onlyMyExpiredOffers = checkForMyExpiredFilter(sentence);
 		boolean filterForMine = false;
-		
+
 		Market market = TradeCenterZoneConfigurator.getShopFromZone(player.getZone());
-		
+
 		// Figure out what to look for
 		RPSlot offersSlot = market.getSlot(Market.OFFERS_SLOT_NAME);
 		if (onlyMyExpiredOffers) {
@@ -73,7 +73,7 @@ public class ShowOffersChatAction implements ChatAction {
 		if (!filterForMine) {
 			wordFilter = getWordFilter(sentence);
 		}
-		
+
 		//if the wordFilter is "offers" delegate back to ShowOfferItemsChatAction to prevent
 		//the messages saying there are no offers in the market
 		if(wordFilter != null && (wordFilter.startsWith("offer") || wordFilter.startsWith("oferta"))) {
@@ -149,7 +149,7 @@ public class ShowOffersChatAction implements ChatAction {
 
 	/**
 	 * Filter out offers that do not belong to a given player.
-	 * 
+	 *
 	 * @param offers list of offers to be filtered
 	 * @param player player whose offers should be retained on the list
 	 */
@@ -164,7 +164,7 @@ public class ShowOffersChatAction implements ChatAction {
 
 	/**
 	 * Filter out offers that do not match a given word.
-	 *  
+	 *
 	 * @param offers list of offers to be filtered
 	 * @param word a word to check in item name or type
 	 */
@@ -183,17 +183,17 @@ public class ShowOffersChatAction implements ChatAction {
 
 	/**
 	 * Format a message out of an offer list, and update an offermap to match it.
-	 * 
+	 *
 	 * @param message message to fill with the offer list
 	 * @param offers list of offers to format
 	 * @param map offermap to be filled
 	 * @param usingFilter was a filter used?
-	 * 
+	 *
 	 * @return number of offers added to the list and map
 	 */
 	private int buildMessage(StringBuilder message, List<Offer> offers, Map<String, Offer> map, boolean usingFilter) {
 		int counter = 0;
-		
+
 		for (Offer offer : offers) {
 			counter++;
 			if (counter > MAX_SHOWN_OFFERS) {

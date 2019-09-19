@@ -38,7 +38,7 @@ public interface BringListOfItemsQuest {
 	List<String> getTriggerPhraseToEnumerateMissingItems();
 
 	List<String> getAdditionalTriggerPhraseForQuest();
-	
+
 	double getKarmaDiffForQuestResponse();
 
 	String welcomeBeforeStartingQuest();
@@ -78,7 +78,7 @@ public interface BringListOfItemsQuest {
 	void rewardPlayer(Player player);
 
 	String respondToOfferOfNotExistingItem(String itemName);
-	
+
 	String respondToOfferOfNotMissingItem();
 
 	String respondToOfferOfNotNeededItem();

@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * Builds the post office elf NPC.
- * She may be used later for something else like a newspaper. 
+ * She may be used later for something else like a newspaper.
  * Now she sells nalwor scrolls
  * @author kymara
  */

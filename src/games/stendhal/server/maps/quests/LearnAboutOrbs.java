@@ -31,26 +31,26 @@ import java.util.List;
 
 /**
  * QUEST: Learn about Orbs
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li>Ilisa, the summon healer in Semos temple</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li>Ilisa offers to teach you about orbs</li>
  * <li>You use the orb</li>
  * <li>You tell her if you were successful.</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>50 XP</li>
  * <li>Ability to use orb in semos temple which teleports you outside into city</li>
  * <li>Ability to use other orbs e.g. in orril lich palace</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li>Can always learn about orbs but not get the xp each time</li>
@@ -61,7 +61,7 @@ public class LearnAboutOrbs extends AbstractQuest {
 	private static final String QUEST_SLOT = "learn_scrying";
 
 
-	
+
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
@@ -83,22 +83,22 @@ public class LearnAboutOrbs extends AbstractQuest {
 
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Ilisa");
-		
+
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Pewne kule mają specjalne właściwości. Mogłabym Cię nauczyć jak #używać kuli jak ta co leży na stole.", null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Mogę Ci przypomnieć jak #używać kuli.", null);
 
 		// player interested in orb
 		npc.add(ConversationStates.QUEST_OFFERED,
-			Arrays.asList("use", "używać"), 
+			Arrays.asList("use", "używać"),
 			new LevelGreaterThanCondition(10),
 			ConversationStates.QUESTION_1,
 			"Naciśnij prawy przycisk i wybierz Użyj. Dostałeś jakąś wiadomość?",
@@ -106,7 +106,7 @@ public class LearnAboutOrbs extends AbstractQuest {
 
 		// player interested in orb but level < 10
 		npc.add(ConversationStates.QUEST_OFFERED,
-			Arrays.asList("use", "używać"), 
+			Arrays.asList("use", "używać"),
 			new NotCondition(new LevelGreaterThanCondition(10)),
 			ConversationStates.ATTENDING,
 			"Aha, Dostałam wiadomość, że wciąż jesteś tutaj nowy. Może wróć później, gdy będziesz miał więcej doświadczenia. Na razie jeżeli potrzebujesz #pomocy to pytaj!",
@@ -148,12 +148,12 @@ public class LearnAboutOrbs extends AbstractQuest {
 	public String getName() {
 		return "LearnAboutOrbs";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 11;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;

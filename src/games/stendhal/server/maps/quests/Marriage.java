@@ -41,17 +41,17 @@ import java.util.List;
  * <li> When they go to the Hotel they choose a lovers room
  * <li> Champagne and fruit baskets is put in their bag (room if possible)
  * <li> They leave the lovers room when desired with another marked scroll
- * 
+ *
  * <p>
  * REWARD:
  * <li> Wedding Ring that teleports you to your spouse if worn - 1500 XP in
  * total
  * <li> nice food in the lovers room
  * <p>
- * 
+ *
  * REPETITIONS:
  * <li> None.
- * 
+ *
  * @author kymara
  */
 public class Marriage extends AbstractQuest {
@@ -63,8 +63,8 @@ public class Marriage extends AbstractQuest {
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
-	
+
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -74,7 +74,7 @@ public class Marriage extends AbstractQuest {
 		marriage = new MarriageQuestChain();
 		marriage.addToWorld();
 	}
-	
+
 		@Override
 	public List<String> getHistory(final Player player) {
 		return marriage.getHistory(player);
@@ -84,7 +84,7 @@ public class Marriage extends AbstractQuest {
 	public String getName() {
 		return "Marriage";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.FADO_CITY;

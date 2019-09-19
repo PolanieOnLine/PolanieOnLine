@@ -173,7 +173,7 @@ public class MazeGenerator {
 
 	/**
 	 * Generate the map.
-	 * 
+	 *
 	 * @param width
 	 * @param height
 	 * @return map
@@ -223,7 +223,7 @@ public class MazeGenerator {
 
 	/**
 	 * Generate random maze collisions.
-	 * 
+	 *
 	 * @param layer collision layer
 	 */
 	private void generateCollisions(LayerDefinition layer) {
@@ -279,8 +279,8 @@ public class MazeGenerator {
 
 	/**
 	 * Get the unvisited neighbors of a node.
-	 * 
-	 * @param point point whose neighbors should be checked 
+	 *
+	 * @param point point whose neighbors should be checked
 	 * @param visited all visited locations
 	 * @return list of unvisited neighbors
 	 */
@@ -317,7 +317,7 @@ public class MazeGenerator {
 	/**
 	 * Enlarge the corridors at the map corners. Creates the "rooms" for the
 	 * portal and the rewards.
-	 * 
+	 *
 	 * @param layer collision layer
 	 */
 	private void widenCorners(LayerDefinition layer) {
@@ -341,7 +341,7 @@ public class MazeGenerator {
 
 	/**
 	 * Get the map corner locations.
-	 * 
+	 *
 	 * @return map corners
 	 */
 	private List<Point> getCorners() {
@@ -360,7 +360,7 @@ public class MazeGenerator {
 
 	/**
 	 * Get the exit portal location.
-	 * 
+	 *
 	 * @return portal location
 	 */
 	private Point getPortalPosition() {
@@ -376,7 +376,7 @@ public class MazeGenerator {
 
 	/**
 	 * Change the collision at a location.
-	 * 
+	 *
 	 * @param layer collision layer
 	 * @param x x coordinate
 	 * @param y y coordinate
@@ -389,29 +389,29 @@ public class MazeGenerator {
 
 	/**
 	 * Make the zone randomly colored using the soft light blend mode.
-	 *  
+	 *
 	 * @param zone
 	 */
 	private void setRandomlyColored(StendhalRPZone zone) {
 		ZoneAttributes attr = new ZoneAttributes(zone);
-		
+
 		// Random hue, Bright color, Medium lightness
 		float[] hsl = new float[] {(float) Rand.rand(), (float) Rand.rand(), 0.5f};
 		hsl[0] = (float) Rand.rand();
 		int[] argb = new int[4];
 		HSL.hsl2rgb(hsl, argb);
 		int color = ARGB.mergeRgb(argb);
-		
+
 		attr.put("color_method", "softlight");
 		attr.put("color", Integer.toString(color));
-		
+
 		zone.setAttributes(attr);
 	}
 
 	/**
 	 * Generate a random map zone with an exit portal and prizes at the other
 	 * corners
-	 * 
+	 *
 	 * @return zone
 	 */
 	private StendhalRPZone generateZone() {
@@ -543,7 +543,7 @@ public class MazeGenerator {
 
 	/**
 	 * Give the player a reward, and notify him.
-	 * 
+	 *
 	 * @param player
 	 */
 	protected void rewardPlayer(Player player) {
@@ -585,7 +585,7 @@ public class MazeGenerator {
 
 	/**
 	 * Access the portal from MazeTest.
-	 * 
+	 *
 	 * @return the exit portal
 	 */
 	public Portal getPortal() {

@@ -22,11 +22,11 @@ import java.util.Map;
 
 /**
  * A playful puppy
- * 
+ *
  * @author AntumDeluge
  */
 public class DogNPC implements ZoneConfigurator {
-	
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -34,7 +34,7 @@ public class DogNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final PassiveNPC dog = new Puppy();
-		
+
 		dog.put("menu", "Pet|Use");
 		// Not visible, but used for the emote action
 		dog.setName("Tommy");

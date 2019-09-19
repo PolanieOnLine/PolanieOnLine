@@ -29,7 +29,7 @@ public class VaultRemover implements TurnListener {
 	/**
 	 * creates a new VaultRemover
 	 *
-	 * @param zone StendhalRPZone 
+	 * @param zone StendhalRPZone
 	 */
 	public VaultRemover(StendhalRPZone zone) {
 		this.zone = zone;

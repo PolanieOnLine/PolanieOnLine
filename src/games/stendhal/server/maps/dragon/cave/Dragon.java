@@ -23,7 +23,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import java.util.Map;
 
 /**
- * Configure Cave to include a Dragon Creature who carries a golden blade. 
+ * Configure Cave to include a Dragon Creature who carries a golden blade.
  * Then it should give a golden blade that is bound to the player.
  */
 public class Dragon implements ZoneConfigurator {

@@ -35,7 +35,7 @@ public class YanNPC implements ZoneConfigurator  {
 				// doesn't move
 				setPath(null);
 			}
-			
+
 			@Override
 			public void createDialog() {
 				addGreeting("Witaj nieznajomy!");
@@ -50,7 +50,6 @@ public class YanNPC implements ZoneConfigurator  {
 		npc.setEntityClass("swimmer4npc");
 		npc.setDescription ("Oto Yan. Wyleguje się na plaży i popija koktaile.");
 		npc.setDirection(Direction.DOWN);
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }
-

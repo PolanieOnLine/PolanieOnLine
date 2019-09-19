@@ -50,7 +50,7 @@ public class DwarfWeaponArmorGuyNPC implements ZoneConfigurator {
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(3, 24));
-				nodes.add(new Node(3, 27));				
+				nodes.add(new Node(3, 27));
 				nodes.add(new Node(11, 27));
 				nodes.add(new Node(11, 24));
 				nodes.add(new Node(19, 24));

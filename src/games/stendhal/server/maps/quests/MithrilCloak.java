@@ -57,7 +57,7 @@ import org.apache.log4j.Logger;
  * <li>Needles come from Ritati Dragontracker</li>
  * <li>Ida breaks a random number of needles, meaning you need to get more each time</li>
  * <li>Ida pricks her finger on the last needle and goes to twilight zone</li>
- * <li>Pdiddi sells the moss to get to twilight zone</li> 
+ * <li>Pdiddi sells the moss to get to twilight zone</li>
  * <li>A creature in the twilight zone drops the elixir to heal lda</li>
  * <li>After being ill Ida asks you to take a blue striped cloak to Josephine</li>
  * <li>After taking cloak to Josephine and telling Ida she asks for mithril clasp</li>
@@ -76,26 +76,26 @@ import org.apache.log4j.Logger;
  * <ul>
  * <li>None</li>
  * </ul>
- * 
+ *
  * @author kymara
  */
 public class MithrilCloak extends AbstractQuest {
 	private static final String QUEST_SLOT = "mithril_cloak";
-	
+
 	private static Logger logger = Logger.getLogger(MithrilCloak.class);
 
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
 				"Płaszcz z Mithrilu",
 				"Czy jesteś zainteresowany błyszczącym z wysoką obroną płaszczem? Możesz być osobą, która przyniesie potrzebne na to przedmioty Idzie w Ados.",
 				false);
-		
+
 		// login notifier to teleport away players logging into the twilight zone.
 		SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
 			@Override
@@ -105,7 +105,7 @@ public class MithrilCloak extends AbstractQuest {
 			}
 
 		});
-		
+
 		MithrilCloakQuestChain mithrilcloak = new MithrilCloakQuestChain();
 		mithrilcloak.addToWorld();
 	}
@@ -245,13 +245,13 @@ public class MithrilCloak extends AbstractQuest {
 	public String getName() {
 		return "MithrilCloak";
 	}
-	
+
 	// it's a long quest so they can always start it before they can necessarily finish all
 	@Override
 	public int getMinLevel() {
 		return 100;
 	}
-	
+
 	// Not sure about this one. it would make an achievement for all quests in ados city, quite hard
 	@Override
 	public String getRegion() {

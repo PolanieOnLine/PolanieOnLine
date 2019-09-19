@@ -24,17 +24,17 @@ public enum SkinColor {
 	COLOR2(0.05f, 0.55f),
 	COLOR3(0.05f, 0.40f),
 	COLOR4(0.05f, 0.25f),
-	
+
 	COLOR5(0.07f, 0.70f),
 	COLOR6(0.07f, 0.55f),
 	COLOR7(0.07f, 0.40f),
 	COLOR8(0.07f, 0.25f),
-	
+
 	COLOR9(0.09f, 0.70f),
 	COLOR10(0.09f, 0.55f),
 	COLOR11(0.09f, 0.40f),
 	COLOR12(0.09f, 0.25f),
-	
+
 	COLOR13(0.11f, 0.70f),
 	COLOR14(0.11f, 0.55f),
 	COLOR15(0.11f, 0.40f),
@@ -60,7 +60,7 @@ public enum SkinColor {
 		HSL.hsl2rgb(hsl, rgb);
 		this.color = ARGB.mergeRgb(rgb);
 	}
-	
+
 	/**
 	 * Find the nearest skin color corresponding to an integer color value.
 	 * The lookup is done based on the hue and saturation, ignoring lightness.
@@ -88,7 +88,7 @@ public enum SkinColor {
 				bestDelta = delta;
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -100,7 +100,7 @@ public enum SkinColor {
 	public int getColor() {
 		return color;
 	}
-	
+
 	/**
 	 * Check if an integer color corresponds to a valid skin color.
 	 *
@@ -113,7 +113,7 @@ public enum SkinColor {
 		int[] rgb = new int[4];
 		ARGB.splitRgb(color, rgb);
 		HSL.rgb2hsl(rgb, hsl);
-		/* 
+		/*
 		 * Lightness is not checked. We don't really want to limit it, other
 		 * than the natural limits of preventing pure black and white, and
 		 * those are already checked by having limits for saturation.
@@ -125,7 +125,7 @@ public enum SkinColor {
 		return isInRange(hsl[0], HUE_MIN, HUE_MAX, hueMargin)
 				&& isInRange(hsl[1], SAT_MIN, SAT_MAX, satMargin);
 	}
-	
+
 	private static boolean isInRange(float val, float min, float max, float margin) {
 		return (val + margin >= min) && (val - margin <= max);
 	}

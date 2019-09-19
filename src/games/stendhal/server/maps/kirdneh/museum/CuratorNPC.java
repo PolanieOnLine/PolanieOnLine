@@ -68,7 +68,7 @@ public class CuratorNPC implements ZoneConfigurator {
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("kirdnehscrolls")));
 				addGoodbye("Dowidzenia. Miło się z tobą rozmawiało.");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.RIGHT);

@@ -46,7 +46,7 @@ public class LittleGirlNPC implements ZoneConfigurator {
 
 	private void createNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Annie Jones") {
-			
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,7 +58,7 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			}
 
 			@Override
-			protected void createDialog() {	
+			protected void createDialog() {
 				// greeting and quest in maps/quests/IcecreamForAnnie.java
 			addOffer("Jestem małą dziewczynką. Nie mam nic do zaoferowania.");
 			addJob("Pomagam mojej mamusi.");

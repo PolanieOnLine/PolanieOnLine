@@ -64,19 +64,19 @@ public class BankNPC implements ZoneConfigurator {
 				addQuest("Przykro mi, ale w tej chwili nie mam dla ciebie pracy.");
  				addGoodbye("Dziękujemy za odwiedzenie naszego banku!");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
 		};
-		
+
 		npc.setDescription("Oto Rachel, która wygląda na mądrą kobietę. Pracuje w banku Ados.");
 		npc.setEntityClass("adosbankassistantnpc");
 		npc.setDirection(Direction.DOWN);
 		npc.setPosition(9, 4);
 		npc.initHP(100);
 		zone.add(npc);
-		
+
 	}
 }

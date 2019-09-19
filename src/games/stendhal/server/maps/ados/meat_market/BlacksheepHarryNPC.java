@@ -31,7 +31,7 @@ import java.util.TreeMap;
  * Inside Ados meat market.
  */
 public class BlacksheepHarryNPC implements ZoneConfigurator {
-    
+
 	/**
 	 * Configure a zone.
 	 *
@@ -84,6 +84,6 @@ public class BlacksheepHarryNPC implements ZoneConfigurator {
 	blacksheepharry.initHP(100);
 	blacksheepharry.setDescription("oto Blacksheep Harry. Jest prasowania ryb.");
 	zone.add(blacksheepharry);
-		
+
 	}
 }

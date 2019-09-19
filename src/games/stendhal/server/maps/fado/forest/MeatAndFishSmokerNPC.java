@@ -32,7 +32,7 @@ import java.util.TreeMap;
 /**
  * Provides a Meat and Fish professional smoker in Fado forest.
  *
- * @author omero 
+ * @author omero
  */
 public class MeatAndFishSmokerNPC implements ZoneConfigurator {
     /**
@@ -82,8 +82,8 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                 addReply(Arrays.asList("trout", "cod", "pstrąg", "dorsz"),
                     "Nie chciałbym ujawniać Tobie moich ulubioncyh miejsc do łowienia ryb, ale poleciłbym ci poszukanie książek na ten temat, w jednym z tych miejsc naukowych gdzie niewielu jest już zaznajomionych...");
                 addReply(Arrays.asList("meat","ham", "mięso", "szynka"),
-                    "Nie interesuje mnie skąd to pochodzi, ze słonia, z niedźwiedzia czy z lwa... Mogę to #uwędzić dla Ciebie!"); 
-                    
+                    "Nie interesuje mnie skąd to pochodzi, ze słonia, z niedźwiedzia czy z lwa... Mogę to #uwędzić dla Ciebie!");
+
                 addGoodbye("S' vegum...");
 
                 final HashSet<String> productsNames = new HashSet<String>();

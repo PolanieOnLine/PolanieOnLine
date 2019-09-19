@@ -11,7 +11,7 @@
  *                                                                         *
  ***************************************************************************/
  //zrobione na podstawie ExperiencedWarriorNPC z Semos/plains
- 
+
 package games.stendhal.server.maps.zakopane.city;
 
 import games.stendhal.common.parser.Sentence;
@@ -169,7 +169,7 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 																amountLiterals, dangerLiterals, LINE_STARTS, RESPAWN_TEXTS,
 																CARRY_TEXTS, CARRY_NOTHING_TEXTS, LOCATION_TEXTS,
 																LOCATION_UNKNOWN_TEXTS);
-																
+
   private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Sabała") {
 
@@ -271,7 +271,7 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 
 		addGoodbye("Idź z Bogiem!");
 	}
-	
+
 	   @Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -295,9 +295,9 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 		npc.setPosition(35, 46);
 		npc.setEntityClass("npcstaryprzewodnik");
 		npc.setDescription("Oto Sabała, góral podhalański, honorowy przewodnik tatrzański, muzykant, swietny myśliwy, gawędziarz i pieśniarz.");
-		zone.add(npc);	
-	}	
-				
+		zone.add(npc);
+	}
+
 	private static String getCreatureInfoZ(final Player player, final String creatureName) {
 		String result;
 		final DefaultCreature creature = SingletonRepository.getEntityManager().getDefaultCreature(creatureName);

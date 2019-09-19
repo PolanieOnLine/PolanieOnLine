@@ -89,7 +89,7 @@ public class TelepathNPC implements ZoneConfigurator {
 				        ConversationStates.QUESTION_1,
 				        null,
 				        new SayTextAction("Witaj ponownie [name]. Wyczuwam, że zostałeś naznaczony znakiem czaszki. Czy chcesz, abym to usunęła?"));
-				
+
 				// player has met io before and has not got a pk skull
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
@@ -104,18 +104,18 @@ public class TelepathNPC implements ZoneConfigurator {
 				        ConversationStates.ATTENDING,
 				        null,
 				        new SayTextAction("Witaj ponownie [name]. W czym mogę #pomóc? Nie to. Tego jeszcze nie wiem..."));
-				
+
 				// first meeting with player
-				add(ConversationStates.IDLE, 
-						ConversationPhrases.GREETING_MESSAGES, 
+				add(ConversationStates.IDLE,
+						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(getName()),
 								new QuestNotStartedCondition("meet_io")),
 						ConversationStates.ATTENDING,
-				        null, 
+				        null,
 				        new MultipleActions(
 				        		new SayTextAction("Czekałam na Ciebie [name]. Skąd znam twoje imię? To proste jestem Flotto telepatka. Chcesz, abym pokazała Ci sześć podstaw telepatii?"),
 				        		new SetQuestAction("meet_io", "start")));
-	
+
 				add(ConversationStates.QUESTION_1, ConversationPhrases.YES_MESSAGES, null, ConversationStates.ATTENDING,
 				        null, new ChatAction() {
 
@@ -124,7 +124,7 @@ public class TelepathNPC implements ZoneConfigurator {
 						       	if ((player.getLastPVPActionTime() > System.currentTimeMillis()
 											- 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK)) {
 									// player attacked another within the last two weeks
-									long timeRemaining = player.getLastPVPActionTime() - System.currentTimeMillis() 
+									long timeRemaining = player.getLastPVPActionTime() - System.currentTimeMillis()
 										+ 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
 									raiser.say("Musisz powstrzymać się od atakowania innych wojowników na dwa pełne tygodnie. Wróć za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ". Pamiętaj, że będę wiedziała jeżeli pomyślisz o czymś złym!");
 								} else if (player.getKarma() < 5) {
@@ -135,7 +135,7 @@ public class TelepathNPC implements ZoneConfigurator {
 									raiser.say("Żałujesz swoich czynów?");
 									raiser.setCurrentState(ConversationStates.QUESTION_2);
 								}
-							} 
+							}
 					    }
 				);
 				// player didn't want pk icon removed, offer other help
@@ -146,7 +146,7 @@ public class TelepathNPC implements ZoneConfigurator {
 
 					        @Override
 					        public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-								player.rehabilitate(); 	
+								player.rehabilitate();
 							} });
 				// player said no they are not really sorry
 				add(ConversationStates.QUESTION_2, ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE, "Myślałam, że nie! Dowidzenia!", null);

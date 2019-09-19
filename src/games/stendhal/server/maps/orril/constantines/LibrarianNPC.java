@@ -26,13 +26,13 @@ import java.util.Map;
 
 /**
  * Builds a npc in Constantines Villa (name:Cameron) who is a librarian
- * 
+ *
  * @author storyteller (idea) and Vanessa Julius (implemented)
  *
  */
 
 public class LibrarianNPC implements ZoneConfigurator {
-    
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -40,24 +40,24 @@ public class LibrarianNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Cameron") {
-		    
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(11, 17));
 				nodes.add(new Node(11, 7));
                 nodes.add(new Node(18, 7));
-                nodes.add(new Node(18, 17));  
+                nodes.add(new Node(18, 17));
                	setPath(new FixedPath(nodes, true));
 
 			}
 
 			@Override
-			
+
 			//Greeting and goodbye message in quest code TheMissingBooks.java
-			
+
 			protected void createDialog() {
-				addHelp("Hmm... Chyba jesteś jednym z przyjaciół Constantines. Mogę coś ci powiedzieć o ile podejdziesz #bliżej..."); 
+				addHelp("Hmm... Chyba jesteś jednym z przyjaciół Constantines. Mogę coś ci powiedzieć o ile podejdziesz #bliżej...");
 				addReply(Arrays.asList("closer", "bliżej"), "Teraz lepiej! Powinieneś odwiedzić moją przyjaciółkę Imorgen jest gdzieś w lesie Fado... Jej babcia jest wciąż chora i może potrzebować #pomocy...");
 				addReply(Arrays.asList("help", "pomocy"), "Ostatnio, gdy ją widziałem martwiła się o swoją babcię. Może w zamian za pomoc coś ci da...");
 				addJob("Jestem bibliotekarzem #'Constantines'! Niestety zgubiłem parę cennych książek... Mam nadzieje, że nigdy się o tym nie dowie!");
@@ -66,7 +66,7 @@ public class LibrarianNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("vacation", "urlop", "urlopie"), "Nie pytaj gdzie jest. Jestem tutaj ostatnim, który może coś wiedzieć... Po za tym książki są dla mnie ważniejsze.");
 				addOffer("Przepraszam, ale nie mam nic do zaoferowania.");
 				addGoodbye("Czyta...ehm...do zobaczenia wkrótce!");
-				
+
 			}
 		};
 

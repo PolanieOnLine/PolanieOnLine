@@ -23,12 +23,12 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import java.util.Map;
 
 /**
- * Configure twilight zone to include a slime Creature which drops twilight elixir. 
- * 
+ * Configure twilight zone to include a slime Creature which drops twilight elixir.
+ *
  */
 public class SlimeCreature implements ZoneConfigurator {
 
-	
+
 	/**
 	 * Configure a zone.
 	 *

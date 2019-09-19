@@ -59,7 +59,7 @@ public class MummyNPC implements ZoneConfigurator {
 				addHelp("Pomogę jeżeli będę mogła, ale muszę pilnować swojej córki.");
 				addGoodbye("Dowidzenia.");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.LEFT);

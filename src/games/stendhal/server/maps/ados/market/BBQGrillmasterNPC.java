@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * Builds a npc in Ados (name:Haunchy Meatoch) who is a grillmaster on the market
- * 
+ *
  * @author storyteller (idea) and Vanessa Julius (implemented)
  *
  */
@@ -38,17 +38,17 @@ public class BBQGrillmasterNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Haunchy Meatoch") {
-		    
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(14, 25));
 				nodes.add(new Node(15, 25));
                 nodes.add(new Node(12, 25));
-                nodes.add(new Node(16, 25));  
+                nodes.add(new Node(16, 25));
                 nodes.add(new Node(16, 24));
-                nodes.add(new Node(16, 25)); 
-                nodes.add(new Node(15, 25)); 
+                nodes.add(new Node(16, 25));
+                nodes.add(new Node(15, 25));
                 nodes.add(new Node(12, 25));
                 nodes.add(new Node(17, 25));
                 nodes.add(new Node(17, 24));
@@ -62,11 +62,11 @@ public class BBQGrillmasterNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Hej! Wspaniały dzień na grilla?");
-				addHelp("Niestety steki nie są jeszcze gotowe... Jeżeli jesteś głodny i nie możesz czekać to może przejrzysz oferty przy wyjściu jak na przykład oferty Blacksheep koło chatek rybackich w Ados lub możesz popłynąć promem do Athor, aby zdobyć trochę przekąsek..."); 
+				addHelp("Niestety steki nie są jeszcze gotowe... Jeżeli jesteś głodny i nie możesz czekać to może przejrzysz oferty przy wyjściu jak na przykład oferty Blacksheep koło chatek rybackich w Ados lub możesz popłynąć promem do Athor, aby zdobyć trochę przekąsek...");
 				addJob("Jestem mistrzem grilla jak widzisz. Kocham zapach świeżo zgrilowanego mięsa!");
 				addOffer("Mam nadzieje, że moje steki będą wkrótce gotowe. Bądź cierpliwy lub spróbuj przedtem innych przysmaków.");
 				addGoodbye("Życzę miłego dnia! Zawsze podtrzymuj ogień!");
-				
+
 			}
 		};
 

@@ -37,17 +37,17 @@ import java.util.List;
  * <ul>
  * <li> Wishman, storm trooper extraordinaire from Blordrough's dark legion, guards the remaining dragons
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
- * <li> Wishman 
+ * <li> Wishman
  * </ul>
  * <p>
  * REWARD:
  * <ul>
  * <li> admittance to dragon lair
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li> after 1 week.
@@ -62,38 +62,38 @@ public class DragonLair extends AbstractQuest {
 		return QUEST_SLOT;
 	}
 	private void step_1() {
-		
+
 		final SpeakerNPC npc = npcs.get("Wishman");
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"Czy chciałbyś odwiedzić legowisko smoków?",
 				null);
-				
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT), new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK))),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK, "Sądzę, że mają już dosyć wrażeń na jakiś czas. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK)),
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"Uważaj smoki zaczęły ziać ogniem! Czy chciałbyś ponownie odwiedzić nasze smoki?",
 				null);
-		
+
 		// Player asks for quest while quest is already active
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Już otworzyłem drzwi do legowiska smoków.",
 				null);
-		
+
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -101,13 +101,13 @@ public class DragonLair extends AbstractQuest {
 				"Wspaniale! Ciesz się wizytą. Wiem, że oni będą. Aha uważaj. Mamy parę jeźdźców smoków chaosu dowodzących naszymi smokami. Nie wchodź im w drogę!",
 				new SetQuestAction(QUEST_SLOT, "start")); // Portal closes quest
 
-		npc.add(ConversationStates.QUEST_OFFERED, 
+		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				"Dobrze, ale nasze smoki będą zawiedzione jeżeli nie wpadniesz do nich.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
-		
+
 		// Leave the dragon lair to complete quest
 	}
 
@@ -120,7 +120,7 @@ public class DragonLair extends AbstractQuest {
 				true);
 
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
@@ -138,7 +138,7 @@ public class DragonLair extends AbstractQuest {
 			if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
                 res.add("Wishman odblokował legowisko smoków.");
 				return res;
-			} 
+			}
 
 			if (isRepeatable(player)) {
 				res.add("Te smoki znów potrzebują zabawy. Powinienem je wkrótce odwiedzić.");
@@ -152,13 +152,13 @@ public class DragonLair extends AbstractQuest {
 	public String getName() {
 		return "DragonLair";
 	}
-	
+
 	// getting past the assassins to this location needs a higher level; the lair itself is dangerous too
 	@Override
 	public int getMinLevel() {
 		return 100;
 	}
-	
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),

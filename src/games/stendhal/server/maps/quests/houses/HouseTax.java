@@ -159,15 +159,15 @@ class HouseTax implements TurnListener {
 					if (payments == MAX_UNPAID_TAXES) {
 						// Give a final warning if appropriate
 						remainder = " To jest ostatnie ostrzeżenie. Jeżeli nie zapłacisz podatków w przeciągu miesiąca to "
-							+ "twój dom będzie dopuszczony do sprzedaży, a zamki zostaną zmienione. " 
+							+ "twój dom będzie dopuszczony do sprzedaży, a zamki zostaną zmienione. "
 							+ "Nie będziesz mógł się dostać do domu, ani do skrzyni.";
 
 					} else {
-						remainder = " Płać punktualnie, ponieważ będą rosły koszty zadłużenia. Jeżeli nie zapłacisz za " 
-							+ Integer.toString(MAX_UNPAID_TAXES + 1) + "  miesięcy to twój dom zostanie sprzedany."; 
+						remainder = " Płać punktualnie, ponieważ będą rosły koszty zadłużenia. Jeżeli nie zapłacisz za "
+							+ Integer.toString(MAX_UNPAID_TAXES + 1) + "  miesięcy to twój dom zostanie sprzedany.";
 					}
-					notifyIfNeeded(owner, "Jesteś dłużny " +  Integer.toString(getTaxDebt(payments)) + " money za podatek od nieruchomości za " 
-							+ Grammar.quantityplnoun(payments, "month", "one") 
+					notifyIfNeeded(owner, "Jesteś dłużny " +  Integer.toString(getTaxDebt(payments)) + " money za podatek od nieruchomości za "
+							+ Grammar.quantityplnoun(payments, "month", "one")
 							+ ". Możesz przyjść do ratusza w Ados, aby uregulować dług." + remainder);
 				}
 			}
@@ -211,7 +211,7 @@ class HouseTax implements TurnListener {
 					}
 		},
 		ConversationStates.QUESTION_1,
-		"Czy chcesz teraz zapłacić podatki?", 
+		"Czy chcesz teraz zapłacić podatki?",
 		null);
 
 		taxman.add(ConversationStates.ATTENDING,
@@ -224,7 +224,7 @@ class HouseTax implements TurnListener {
 				   },
 				   ConversationStates.ATTENDING,
 				   "Sprawdziłem moje zapiski i na razie nie jesteś nic winny. Właściciele domów są informowani przez "
-				   + "postman, gdy przyjdzie czas zapłaty.", 
+				   + "postman, gdy przyjdzie czas zapłaty.",
 				   null);
 
 		taxman.add(ConversationStates.QUESTION_1,
@@ -252,7 +252,7 @@ class HouseTax implements TurnListener {
 							}
 							npc.say(msg.toString());
 						} else {
-							npc.say("Nie masz tyle money, aby zapłacić podatki. Potrzebujesz co najmniej " 
+							npc.say("Nie masz tyle money, aby zapłacić podatki. Potrzebujesz co najmniej "
 									+ cost + " money. Nie zwlekaj, albo dług wzrośnie.");
 						}
 				}

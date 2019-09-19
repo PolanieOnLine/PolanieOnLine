@@ -46,7 +46,7 @@ public class EdragonNPC implements ZoneConfigurator {
 				addGoodbye("Powodzenia!");
 			}
 		};
-		
+
     npc.setDescription("Oto smok eDragon, uciekł z siedziby przed jej zburzeniem.");
 		npc.setEntityClass("npc_eDragon");
 		npc.setPosition(123, 71);

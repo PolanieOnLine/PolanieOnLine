@@ -21,7 +21,7 @@ import games.stendhal.server.entity.trade.Market;
 import marauroa.common.game.RPObject;
 /**
  * adds a market to a zone
- * 
+ *
  * @author madmetzger
  *
  */
@@ -36,7 +36,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		Market market = addShopToZone(zone);
 		// start checking for expired offers
 		new OfferExpirer(market);
-		
+
 		buildTradeCenterAdvisor(zone);
 	}
 

@@ -78,7 +78,7 @@ public class BarMaidNPC implements ZoneConfigurator {
 		};
 
 		//coupon for free beer
-		
+
         margaret.add(ConversationStates.ATTENDING,
                 (Arrays.asList("coupon", "coupons", "beer coupon", "free beer", "kupon", "kupony", "darmowy sok z chmielu")),
                 new PlayerHasItemWithHimCondition("kupon"),
@@ -87,7 +87,7 @@ public class BarMaidNPC implements ZoneConfigurator {
                 new MultipleActions(new DropItemAction("kupon"),
                 					new EquipItemAction("sok z chmielu"))
                 );
-        
+
         margaret.add(ConversationStates.ATTENDING,
         		(Arrays.asList("coupon", "coupons", "beer coupon", "free beer", "kupon", "kupony", "darmowy sok z chmielu")),
                 new NotCondition(new PlayerHasItemWithHimCondition("kupon")),
@@ -95,7 +95,7 @@ public class BarMaidNPC implements ZoneConfigurator {
                 "Nie kłam. Nie masz kuponu ze sobą. Dziś trudno prowadzić tawernę. Nie oszukuj mnie!",
                 null
                 );
-        
+
 		margaret.setEntityClass("tavernbarmaidnpc");
 		margaret.setDescription("Margaret wygląda na miłą osobę. Nie możesz jej pomóc, ale możesz coś od niej kupić.");
 		margaret.setPosition(11, 4);

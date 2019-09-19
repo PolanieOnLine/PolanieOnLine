@@ -68,11 +68,11 @@ public class CaptainNPC implements ZoneConfigurator  {
 			protected void onGoodbye(final RPEntity player) {
 				// Turn back to the wheel
 				setDirection(Direction.DOWN);
-			}	
+			}
 		};
 
 		new AthorFerry.FerryListener() {
-			
+
 			@Override
 			public void onNewFerryState(final Status status) {
 				ferrystate = status;
@@ -92,11 +92,11 @@ public class CaptainNPC implements ZoneConfigurator  {
 
 			}
 			};
-		
+
 		npc.setPosition(23, 38);
 		npc.setEntityClass("piratenpc");
 		npc.setDescription ("Oto Brownbeard kapitan promu Athor. Przewizie cię z lądu na wyspę.");
 		npc.setDirection(Direction.DOWN);
-		zone.add(npc);	
+		zone.add(npc);
 	}
 }

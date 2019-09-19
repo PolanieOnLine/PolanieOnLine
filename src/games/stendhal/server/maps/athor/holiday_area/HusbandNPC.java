@@ -41,7 +41,7 @@ public class HusbandNPC implements ZoneConfigurator  {
 				// doesn't move
 				setPath(null);
 	}
-	
+
 			@Override
 			public void createDialog() {
 				addGreeting("Cześć!");
@@ -55,7 +55,6 @@ public class HusbandNPC implements ZoneConfigurator  {
 		npc.setEntityClass("swimmer5npc");
 		npc.setDescription ("Oto John na plaży. Wypoczywa na plaży wraz ze swoją żoną Jane.");
 		npc.setDirection(Direction.DOWN);
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }
-

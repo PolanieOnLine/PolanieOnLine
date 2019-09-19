@@ -16,7 +16,7 @@ public class WriterNPC implements ZoneConfigurator {
 
 	/**
 	 * Configure a zone.
-	 * 
+	 *
 	 * @param zone
 	 *            The zone to be configured.
 	 * @param attributes

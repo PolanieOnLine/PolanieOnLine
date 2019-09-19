@@ -30,13 +30,13 @@ import java.util.List;
  * @author hendrik, sjtsp
  */
 public class CaptureFlagQuest extends AbstractQuest {
-	
+
 	/** name for the internal slot to store quest data */
 	private static final String SLOT_NAME = "capture_the_flag";
-	
+
 	/** player visible name for the quest */
 	private static final String QUEST_NAME = "CaptureTheFlag";
-	
+
 	private StendhalRPZone zone = null;
 
 	@Override
@@ -68,9 +68,9 @@ public class CaptureFlagQuest extends AbstractQuest {
 				addGreeting("Cześć. Dziękuję w testach w Zdobycie Flagi (ZF).  Możesz #zagrć, #zatrzymać, zarządać #flagi i #strzał.");
 
 				addJob("Pomagamy w testowaniu pomysłów, aby ZF było lepsze.");
-				
+
 				addHelp("Możesz sprawdzić ZF z innymi wojownikami.  Gdy jeden z was da tobie #flagę do ręki.  Inni otrzymają strzały pogrzebania (i łuk), a do wstawiania flagi używa się lewego przycisku.  Zauważ, że atakowanie nie działa - jedyne co musisz robić to naciskać tylko lewy przycisk.");
-				
+
 				// TODO: count the number of *full* matches that player has participated in
 				add(ConversationStates.ATTENDING,
 					Arrays.asList("play", "zagrać", "zagraj"),
@@ -84,7 +84,7 @@ public class CaptureFlagQuest extends AbstractQuest {
 					ConversationStates.ATTENDING,
 					"Już grasz.",
 					null);
-				
+
 				add(ConversationStates.ATTENDING,
 					Arrays.asList("stop", "zatrzymaj"),
 					new PlayingCTFCondition(),
@@ -110,7 +110,7 @@ public class CaptureFlagQuest extends AbstractQuest {
 						ConversationStates.ATTENDING,
 						"Musisz #zagrać, aby otrzymać testową flagę.",
 						null);
-				
+
 				// TODO: just use a compound action for all types of ammo
 				add(ConversationStates.ATTENDING,
 					Arrays.asList("snowballs", "śnieżki"),
@@ -138,7 +138,7 @@ public class CaptureFlagQuest extends AbstractQuest {
 						ConversationStates.ATTENDING,
 						"Musisz #zagrać, aby zdobyć więcej strzał.",
 						null);
-				
+
 				// TODO: remove from game, remove all ctf gear, ...
 				// TODO: the cleanup needs to happen even if player logs out, or walks away (different code path)
 				addGoodbye();

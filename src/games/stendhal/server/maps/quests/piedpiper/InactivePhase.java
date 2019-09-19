@@ -21,43 +21,43 @@ import java.util.Map;
 
 
 public class InactivePhase extends TPPQuest {
-	
+
 	private final int minPhaseChangeTime;
 	private final int maxPhaseChangeTime;
-	
+
 	private void addConversations(final SpeakerNPC mainNPC) {
 		TPP_Phase myphase = INACTIVE;
-		
+
 		// Player asking about rats
 		mainNPC.add(
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				Arrays.asList("rats", "rats!", "szczurów", "szczurów!"),
 				new TPPQuestInPhaseCondition(myphase),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Ados nie jest teraz nawiedzane przez plagę szczurów. Wciąż możesz "+
 				  "odebrać #nagrodę za ostatnią pomoc. Możesz zapytać o #szczegóły "+
-				  "jeśli chcesz.", 
+				  "jeśli chcesz.",
 				null);
-		
+
 		// Player asking about details
 		mainNPC.add(
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				Arrays.asList("details", "szczegóły"),
 				new TPPQuestInPhaseCondition(myphase),
-				ConversationStates.ATTENDING, 
-				null, 
+				ConversationStates.ATTENDING,
+				null,
 				new DetailsKillingsAction());
-		
+
 		// Player asked about reward
 		mainNPC.add(
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				Arrays.asList("reward", "nagroda", "nagrodę"),
 				new TPPQuestInPhaseCondition(myphase),
-				ConversationStates.ATTENDING, 
-				null, 
+				ConversationStates.ATTENDING,
+				null,
 				new RewardPlayerAction());
 	}
-	
+
 	/**
 	 * constructor
 	 * @param timings
@@ -74,12 +74,12 @@ public class InactivePhase extends TPPQuest {
 	public int getMinTimeOut() {
 		return minPhaseChangeTime;
 	}
-	
+
 	@Override
 	public int getMaxTimeOut() {
 		return maxPhaseChangeTime;
 	}
-	
+
 	@Override
 	public void phaseToDefaultPhase(List<String> comments) {
 		// not used
@@ -89,11 +89,11 @@ public class InactivePhase extends TPPQuest {
 	public void prepare() {
 
 	}
-	
+
 
 	@Override
 	public TPP_Phase getPhase() {
 		return TPP_Phase.TPP_INACTIVE;
 	}
-	
+
 }

@@ -38,7 +38,7 @@ public class NineSwitchesGame implements LoadableContent {
 	private SpeakerNPC npc;
 
 	private static final int CHAT_TIMEOUT = 60;
-	
+
 	private void addBoard() {
 		board = new NineSwitchesGameBoard(zone, 94, 106);
 	}
@@ -55,7 +55,7 @@ public class NineSwitchesGame implements LoadableContent {
 			protected void createDialog() {
 				addGreeting("Cześć. Witam w naszej małej grze dziewięć przycisków. Twoim zadaniem jest skierowanie wszystkich strzałekw prawo."
 						+ " Łatwe? Cóż jest pewien #haczyk.");
-				addReply(Arrays.asList("catch", "haczyk"), 
+				addReply(Arrays.asList("catch", "haczyk"),
 						" Każdy przycisk jest połączony z sąsiednim, który je zmieni. Masz jedną minutę na rozwiązanie zagadki."
 						+ " Czy chcesz #zagrać?.");
 				addJob("Jestem mistrzem tej gry.");
@@ -66,13 +66,13 @@ public class NineSwitchesGame implements LoadableContent {
 						"Powodzenia.",
 						new PlayAction(board));
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
 		};
-		npc.setEntityClass("gamesupervisornpc"); 
+		npc.setEntityClass("gamesupervisornpc");
 		npc.setPlayerChatTimeout(CHAT_TIMEOUT);
 		npc.setPosition(98, 104);
 		npc.setDescription("Oto Maltos. Nie jesteś ciekawy jego uczesania?");

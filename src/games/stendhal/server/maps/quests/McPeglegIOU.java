@@ -111,7 +111,7 @@ public class McPeglegIOU extends AbstractQuest {
 		step_1();
 		step_2();
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
@@ -121,10 +121,10 @@ public class McPeglegIOU extends AbstractQuest {
 			}
 			if (isCompleted(player)) {
 				res.add("McPegleg poznała karteczkę z jej imieniem - Dostałem za nią 250 money!");
-			} 
+			}
 			return res;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "McPeglegIOU";
@@ -138,7 +138,7 @@ public class McPeglegIOU extends AbstractQuest {
 	public String getNPCName() {
 		return "McPegleg";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_DUNGEONS;

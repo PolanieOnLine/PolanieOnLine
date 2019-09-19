@@ -69,7 +69,7 @@ public class BlacksheepBobNPC implements ZoneConfigurator {
 			requiredResources.put("truchło nietoperza", Integer.valueOf(1));
 			requiredResources.put("mięso", Integer.valueOf(1));
 			requiredResources.put("napój z winogron", Integer.valueOf(2));
-			
+
 			final ProducerBehaviour behaviour = new ProducerBehaviour("blacksheepbob_make_sausage", Arrays.asList("make", "zrób"), "paróweczka",
 			        requiredResources, 2 * 60);
 
@@ -83,6 +83,6 @@ public class BlacksheepBobNPC implements ZoneConfigurator {
 	blacksheepbob.initHP(100);
 	blacksheepbob.setDescription("Oto Blacksheep Bob. jest popularny z robienia paróweczek.");
 	zone.add(blacksheepbob);
-		
+
 	}
 }

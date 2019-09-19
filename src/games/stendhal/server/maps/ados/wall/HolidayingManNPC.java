@@ -59,7 +59,7 @@ public class HolidayingManNPC implements ZoneConfigurator {
 				addGreeting("Hi hi.");
 				addHelp("Burmistrz tego miasta jest naprawdę w porządku. Odwiedziłem go wraz z żoną wczoraj aby uzyskać pomoc.");
 				addOffer("Co takiego? Ja jestem na wczasach.");
-				addQuest("Ehm ... I nie potrzebuję pomocy w tej chwili, ale dzięki."); 
+				addQuest("Ehm ... I nie potrzebuję pomocy w tej chwili, ale dzięki.");
 				addJob("Nie nie, ja tu jestem z żoną Alice na wakacjach.");
 				addGoodbye("Do zobaczenia i zajmij się lwami za murem.");
 

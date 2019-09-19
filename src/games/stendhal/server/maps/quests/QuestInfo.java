@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * Static info about quests, filled with fillQuestInfo in each quest
- * 
+ *
  * @author hendrik
  */
 public class QuestInfo {
@@ -33,7 +33,7 @@ public class QuestInfo {
 	private Map<String, String> history = new HashMap<String, String>();
 
 	private Map<String, String> hints = new HashMap<String, String>();
-	
+
 	private int suggestedMinLevel;
 
 	public int getSuggestedMinLevel() {

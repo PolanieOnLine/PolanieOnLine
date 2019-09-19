@@ -60,12 +60,12 @@ class Honeymoon {
                         husband = player;
                         partnerName = husband.getQuest(marriage.getSpouseQuestSlot());
                         wife = SingletonRepository.getRuleProcessor().getPlayer(partnerName);
-                        
+
 						if (!(player.hasQuest(marriage.getQuestSlot())) || !("just_married".equals(player.getQuest(marriage.getQuestSlot())))) {
 							// person is not just married
 							npc.say("Przepraszam, ale nasze apartamenty na miesiąc miodowy są dostępne tylko dla klientów po ślubie.");
 							npc.setCurrentState(ConversationStates.ATTENDING);
-						} else if (wife == null) { 
+						} else if (wife == null) {
 							//wife is not online
                             npc.say("Wróć, gdy " + partnerName + " będzie z tobą - powinniście być razem podczas miesiąca miodowego!");
                             npc.setCurrentState(ConversationStates.IDLE);
@@ -77,7 +77,7 @@ class Honeymoon {
                         } else if (!hotelReception.contains(wife)) {
                         	//  wife has not bothered to come to reception desk
                             npc.say("Czy mógłbyś poprosić " + partnerName + ", aby podeszła do recepcji i zapoznała się z naszym katalogiem. Później powiedz, który pokój wybraliście.");
-                        }  else { 
+                        }  else {
                         	//wife and husband fulfill all conditions
 							npc.say("Jak słodko! Proszę zobaczcie nasz katalog i powiedzcie mi numer pokoju, który chcecie.");
 						}
@@ -114,11 +114,11 @@ class Honeymoon {
                             final StackableItem invite2 = (StackableItem) SingletonRepository.getEntityManager().getItem(
                                                                                                                   "zwój weselny");
                             invite2.setQuantity(1);
-                            // 
+                            //
 							invite1.setInfoString("honeymoon," + partnerName);
 							invite2.setInfoString("honeymoon," + husband.getTitle());
 							if (wife.equipToInventoryOnly(invite1) &&  husband.equipToInventoryOnly(invite2)) {
-								npc.say("Dobry wybór! Teraz zorganizuje to."); 
+								npc.say("Dobry wybór! Teraz zorganizuje to.");
 								husband.setQuest(marriage.getQuestSlot(), "done");
 								wife.setQuest(marriage.getQuestSlot(), "done");
 								wife.teleport(zone, 5, 5, Direction.DOWN, player);

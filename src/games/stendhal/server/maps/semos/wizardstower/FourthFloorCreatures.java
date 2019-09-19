@@ -26,7 +26,7 @@ public class FourthFloorCreatures implements ZoneConfigurator {
 
 	/**
 	 * Configure a zone.
-	 * 
+	 *
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
@@ -47,7 +47,7 @@ public class FourthFloorCreatures implements ZoneConfigurator {
 		creature.setAIProfiles(new HashMap<String, String>());
 		creature1.setAIProfiles(new HashMap<String, String>());
 		creature2.setAIProfiles(new HashMap<String, String>());
-		creature3.setAIProfiles(new HashMap<String, String>());	
+		creature3.setAIProfiles(new HashMap<String, String>());
 
 		creature.clearDropItemList();
 		creature1.clearDropItemList();
@@ -58,7 +58,7 @@ public class FourthFloorCreatures implements ZoneConfigurator {
 		creature1.setXP(0);
 		creature2.setXP(0);
 		creature3.setXP(0);
-		
+
 		creature.setPosition(15,28);
 		creature1.setPosition(29,15);
 		creature2.setPosition(1,15);

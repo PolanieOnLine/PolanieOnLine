@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Builds a information giving NPC in Kirdneh city. 
+ * Builds a information giving NPC in Kirdneh city.
  *
  * @author kymara
  */

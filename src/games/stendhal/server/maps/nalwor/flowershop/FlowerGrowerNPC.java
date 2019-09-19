@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FlowerGrowerNPC implements ZoneConfigurator {
-	
+
     /**
      * Configure a zone.
      *
@@ -34,10 +34,10 @@ public class FlowerGrowerNPC implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
         buildNPC(zone, attributes);
     }
-	
+
     private void buildNPC(final StendhalRPZone zone, final Map<String, String> attributes) {
     	final SpeakerNPC npc = new SpeakerNPC("Seremela") {
-    		
+
     		@Override
     		protected void createPath() {
     			List<Node> nodes = new ArrayList<Node>();
@@ -62,7 +62,7 @@ public class FlowerGrowerNPC implements ZoneConfigurator {
     			nodes.add(new Node(3, 3));
     			setPath(new FixedPath(nodes, true));
     		}
-    		
+
 			@Override
 			public void createDialog() {
     			addGreeting("Cześć.");
@@ -74,7 +74,7 @@ public class FlowerGrowerNPC implements ZoneConfigurator {
     			//addEmotionReply(ConversationPhrases.GOODBYE_MESSAGES, "winks");
     		}
     	};
-    	
+
     	npc.setPosition(4, 3);
     	npc.setCollisionAction(CollisionAction.REVERSE);
     	npc.setDescription("Oto piękna elfka, która kocha kwiaty.");

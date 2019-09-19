@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * A crystal NPC
- * 
+ *
  * @author AntumDeluge
  *
  */
@@ -34,9 +34,9 @@ public class YellowCrystalNPC implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(final StendhalRPZone zone) {
-		
+
 		// Create the NPC
 		final SpeakerNPC crystal = new SpeakerNPC("Żółty Kryształ") {
 
@@ -51,8 +51,8 @@ public class YellowCrystalNPC implements ZoneConfigurator {
 				addGreeting("Witaj mam nadzieję, że korzystasz z dóbr natury.");
 				addHelp("W okolicach gór jest pięknie wyglądająca wieża. Jest wielka!");
 				addJob("Jestem kryształem. Co mogę więcej powiedzieć?");
-				addGoodbye("Żegnaj i wróć, gdy będziesz potrzebował mojej pomocy.");   
-				
+				addGoodbye("Żegnaj i wróć, gdy będziesz potrzebował mojej pomocy.");
+
 			}
 		};
 
@@ -62,8 +62,8 @@ public class YellowCrystalNPC implements ZoneConfigurator {
 		crystal.initHP(100);
 		crystal.setDescription("Oto żółty kryształ. Co za energetyzujący widok.");
 		crystal.setResistance(0);
-		
+
 		zone.add(crystal);
 	}
-	
+
 }

@@ -43,19 +43,19 @@ class Divorce {
 
 		/**
 		 * Creates a clerk NPC who can divorce couples.
-		 * 
+		 *
 		 * Note: in this class, the Player variables are called husband and
 		 * wife. However, the game doesn't know the concept of genders. The
 		 * player who initiates the divorce is just called husband, the other
 		 * wife.
-		 * 
+		 *
 		 * @author immibis
-		 * 
+		 *
 		 */
 
 		SpeakerNPC clerk = npcs.get("Wilfred");
 
-		clerk.add(ConversationStates.ATTENDING, 
+		clerk.add(ConversationStates.ATTENDING,
 				Arrays.asList("divorce", "rozwód"),
 				new ChatCondition() {
 					@Override
@@ -63,7 +63,7 @@ class Divorce {
 						return (player.isQuestCompleted(marriage.getQuestSlot()))
 								&& player.isEquipped("obrączka ślubna") && player.isEquipped("money",200*player.getLevel());
 					}
-				}, 
+				},
 				ConversationStates.QUESTION_3,
 				null,
 			   	new ChatAction() {
@@ -91,7 +91,7 @@ class Divorce {
 					}
 				});
 
-		clerk.add(ConversationStates.ATTENDING, 
+		clerk.add(ConversationStates.ATTENDING,
 				  Arrays.asList("divorce", "rozwód"),
 				  new ChatCondition() {
 					  @Override
@@ -99,7 +99,7 @@ class Divorce {
 						  return (player.isQuestCompleted(marriage.getQuestSlot()))
 							  && player.isEquipped("obrączka ślubna") && !player.isEquipped("money",200*player.getLevel());
 					}
-				}, 
+				},
 				ConversationStates.QUESTION_3,
 				null,
 			   	new ChatAction() {
@@ -174,17 +174,17 @@ class Divorce {
 
 		// If they say no
 		clerk.add(ConversationStates.QUESTION_3,
-				ConversationPhrases.NO_MESSAGES, 
+				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Mam nadzieje, że miałeś szczęśliwe małżeństwo.", 
+				"Mam nadzieje, że miałeś szczęśliwe małżeństwo.",
 				null);
 
 		// If they say yes
 		clerk.add(ConversationStates.QUESTION_3,
-				ConversationPhrases.YES_MESSAGES, 
+				ConversationPhrases.YES_MESSAGES,
 				null,
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
 					@Override

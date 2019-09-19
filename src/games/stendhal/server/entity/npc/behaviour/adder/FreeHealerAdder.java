@@ -31,7 +31,7 @@ import java.util.Arrays;
 public class FreeHealerAdder {
 
     private final ServicersRegister servicersRegister = SingletonRepository.getServicersRegister();
-    
+
 	/**
 	 * Behaviour parse result in the current conversation.
 	 * Remark: There is only one conversation between a player and the NPC at any time.
@@ -48,7 +48,7 @@ public class FreeHealerAdder {
 	 *
 	 *<p>Players who have done PVP in the last 2 hours cannot be healed free,
 	 * unless they are very new to the game.
-	 * 
+	 *
 	 * @param npc
 	 *            SpeakerNPC
 	 * @param cost
@@ -77,7 +77,7 @@ public class FreeHealerAdder {
 
 						int cost = healerBehaviour.getCharge(res, player);
 						currentBehavRes = res;
-						
+
 						String badboymsg = "";
 						if (player.isBadBoy()) {
 							cost = cost * 2;

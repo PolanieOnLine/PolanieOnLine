@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * Configure Orril Dwarf Blacksmith (Underground/Level -3).
- * 
+ *
  * @author kymara
  */
 public class BlacksmithNPC implements ZoneConfigurator {
@@ -76,7 +76,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 				        null);
 				addGoodbye("Dowidzenia. Założę się, że dziś będziesz miał problemy z zaśnięciem.");
 				addReply(Arrays.asList("bobbin", "szpulka"),"Szpulki? SZPULKI?! Czy myślisz, że jestem kobietą?! Pfff idź znajdź jakiegoś innego kowala. Nie zajmuję się produkcją szpulek.");
-				
+
 			} //remaining behaviour defined in maps.quests.VampireSword and  maps.quests.MithrilCloak
 		};
 

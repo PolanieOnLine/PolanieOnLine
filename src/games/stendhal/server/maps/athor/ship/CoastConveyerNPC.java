@@ -141,7 +141,7 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 			}};
 			new AthorFerry.FerryListener() {
 
-			
+
 				@Override
 				public void onNewFerryState(final Status status) {
 					ferryState = status;
@@ -164,7 +164,7 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 			npc.setEntityClass("pirate_sailor2npc");
 			npc.setDescription ("Jackie pomaga pasażerom zejść ze statku na ląd. Jest prawdziwą piratką!");
 			npc.setDirection(Direction.LEFT);
-			zone.add(npc);	
+			zone.add(npc);
 	}
 
 	private static StendhalRPZone getMainlandDocksZone() {

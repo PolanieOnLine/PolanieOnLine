@@ -26,7 +26,7 @@ public class SecondFloorCreatures implements ZoneConfigurator {
 
 	/**
 	 * Configure a zone.
-	 * 
+	 *
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
@@ -62,7 +62,7 @@ public class SecondFloorCreatures implements ZoneConfigurator {
 		creature1.setXP(0);
 		creature2.setXP(0);
 		creature3.setXP(0);
-		
+
 		creature.setPosition(29,15);
 		creature1.setPosition(1,15);
 		creature2.setPosition(15,28);

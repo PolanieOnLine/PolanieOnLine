@@ -79,7 +79,7 @@ public class LittleGirlNPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING,
 					"Podczas Revival Weeks pod koniec października świętujemy stare i prawie martwe Mine Town na północ od miasta Semos.",
 					null);
-				
+
 				// help
 				addHelp("Miłej zabawy.");
 			}

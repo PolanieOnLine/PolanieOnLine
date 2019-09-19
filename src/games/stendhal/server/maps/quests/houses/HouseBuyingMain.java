@@ -43,7 +43,7 @@ public class HouseBuyingMain {
 
 	/**
 	 * The NPC for Kalavan Houses.
-	 *  
+	 *
 	 * @param zone target zone
 	 */
 	public void createKalavanNPC(StendhalRPZone zone) {
@@ -53,7 +53,7 @@ public class HouseBuyingMain {
 
 	/**
 	 * The NPC for Ados Houses.
-	 * 
+	 *
 	 * @param zone target zone
 	 */
 	public void createAdosNPC(StendhalRPZone zone) {
@@ -63,7 +63,7 @@ public class HouseBuyingMain {
 
 	/**
 	 * The NPC for Kirdneh Houses.
-	 * 
+	 *
 	 * @param zone target zone
 	 */
 	public void createKirdnehNPC(StendhalRPZone zone) {
@@ -73,7 +73,7 @@ public class HouseBuyingMain {
 
 	/**
 	 * The NPC for Athor Apartments.
-	 * 
+	 *
 	 * @param zone target zone
 	 */
 	public void createAthorNPC(StendhalRPZone zone) {
@@ -83,7 +83,7 @@ public class HouseBuyingMain {
 
 	/**
 	 * The NPC for Zakopane House.
-	 * 
+	 *
 	 * @param zone target zone
 	 */
 	public void createZakopaneNPC(StendhalRPZone zone) {
@@ -97,7 +97,7 @@ public class HouseBuyingMain {
 			hist.add("Nigdy nie kupiłem domu.");
 			return(hist);
 		}
-		hist.add("Kupiłem " +  HouseUtilities.getHousePortal(MathHelper.parseInt(player.getQuest("house"))).getDoorId() + ".");	
+		hist.add("Kupiłem " +  HouseUtilities.getHousePortal(MathHelper.parseInt(player.getQuest("house"))).getDoorId() + ".");
 		HousePortal playerHousePortal = HouseUtilities.getPlayersHouse(player);
 		if(playerHousePortal!=null) {
 			int unpaidPeriods = houseTax.getUnpaidTaxPeriods(player);
@@ -105,7 +105,7 @@ public class HouseBuyingMain {
 				hist.add("Zalegam z " + Grammar.quantityplnoun(unpaidPeriods, "month", "one") + " podatku.");
 			} else {
 				hist.add("Jestem na bieżąco z moimi płatnościami podatku za dom.");
-			}	
+			}
 		} else {
 			hist.add("Posiadałem już ten dom");
 		}
@@ -115,7 +115,7 @@ public class HouseBuyingMain {
 	public void addToWorld() {
 		// Start collecting taxes as well
 		houseTax = new HouseTax();
-		
+
 		StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(KALAVAN_CITY);
 		createKalavanNPC(zone);
 
@@ -131,7 +131,7 @@ public class HouseBuyingMain {
 		zone = SingletonRepository.getRPWorld().getZone(ZAKOPANE_SELLER_HOUSE);
 		createZakopaneNPC(zone);
 	}
-	
+
 	public boolean isCompleted(final Player player) {
 		return HouseUtilities.getPlayersHouse(player)!=null;
 	}

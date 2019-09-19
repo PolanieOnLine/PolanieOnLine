@@ -42,7 +42,7 @@ public class WannaBeKingNPC implements ZoneConfigurator {
 
 	/**
 	 * initialize the NPC.
-	 * 
+	 *
 	 * @param zone
 	 * @param attributes
 	 */

@@ -57,8 +57,6 @@ public class DiverNPC implements ZoneConfigurator  {
 		npc.setPosition(36, 28);
 		npc.setEntityClass("swimmer2npc");
 		npc.setDescription ("Oto Dorinel, który kocha słońce.");
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }
-
-

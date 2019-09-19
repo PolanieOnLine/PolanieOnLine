@@ -23,13 +23,13 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import java.util.Map;
 
 /**
- * Configure Drow Tunnel -1 to include a Thing Creature who carries an amulet. 
+ * Configure Drow Tunnel -1 to include a Thing Creature who carries an amulet.
  * Then it should give an amulet that is bound to the player,
   * provided that the quest KillDarkElves is not completed.
  */
 public class ThingCreature implements ZoneConfigurator {
 
-	
+
 	/**
 	 * Configure a zone.
 	 *

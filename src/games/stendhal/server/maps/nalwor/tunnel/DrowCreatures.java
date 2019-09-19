@@ -30,13 +30,13 @@ import java.util.Observer;
 import org.apache.log4j.Logger;
 
 /**
- * Configure Drow Tunnel -1 to include a Thing Creature who carries an amulet. 
+ * Configure Drow Tunnel -1 to include a Thing Creature who carries an amulet.
  * Then it should give an amulet that is bound to the player.
  */
 public class DrowCreatures implements ZoneConfigurator {
 	private static final String QUEST_SLOT="kill_dark_elves";
 	// at the beginning places there must be creatures from DarkElvesCreatures.class
-	private final List<String> creatures = 
+	private final List<String> creatures =
 		Arrays.asList("elf ciemności kapitan",
 				          "elf ciemności generał",
 				          "elf ciemności rycerz",
@@ -46,7 +46,7 @@ public class DrowCreatures implements ZoneConfigurator {
 				          "elf ciemności matrona",
 					        "elf ciemności łucznik elitarny",
 				          "elf ciemności łucznik");
-	
+
 	/**
 	 * Configure a zone.
 	 *
@@ -57,7 +57,7 @@ public class DrowCreatures implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildSecretRoomArea(zone);
 	}
-	
+
 	/**
 	 * function will fill information about victim to killer's quest slot.
 	 * @param circ - information about victim,zone and killer.
@@ -69,7 +69,7 @@ public class DrowCreatures implements ZoneConfigurator {
 				"in "+circ.getZone().getName()+
 				": "+circ.getVictim().getName()+
 				" killed by "+circ.getKiller().getName());
-		
+
 		// check if was killed by other animal/pet
 		if(!circ.getKiller().getClass().getName().equals(Player.class.getName()) ) {
 			return;
@@ -84,7 +84,7 @@ public class DrowCreatures implements ZoneConfigurator {
 			player.setQuest(QUEST_SLOT, 1+slot, victim);
 		}
 	}
-	
+
 	class DrowObserver implements Observer {
 		@Override
 		public void update(Observable o, Object arg) {
@@ -94,19 +94,19 @@ public class DrowCreatures implements ZoneConfigurator {
 
 	private void buildSecretRoomArea(final StendhalRPZone zone) {
 		Observer observer = new DrowObserver();
-		
+
 		// describe secret room tunnel here
 		final Area a1 = new Area(zone, 33, 50, 10, 20);
 		final Area a2 = new Area(zone, 23, 0,  21, 49);
-		
+
 		for(CreatureRespawnPoint p:zone.getRespawnPointList()) {
 			if(p!=null) {
 				if(a1.contains(p) || a2.contains(p)) {
 					if(creatures.indexOf(p.getPrototypeCreature().getName())!=-1) {
 						// it is our creature, set up observer now
-						p.addObserver(observer);					
+						p.addObserver(observer);
 					}
-				}				
+				}
 			}
 		}
 	}

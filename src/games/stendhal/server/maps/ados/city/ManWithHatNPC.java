@@ -25,9 +25,9 @@ import java.util.Map;
 
 /**
  * Builds a sad NPC (name: Andy) who lost his wife
- * 
+ *
  * @author Erdnuggel (idea) and Vanessa Julius (implemented)
- * 
+ *
  */
 
 public class ManWithHatNPC implements ZoneConfigurator {
@@ -39,19 +39,19 @@ public class ManWithHatNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Andy") {
-		    
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(41, 6));
 				nodes.add(new Node(41, 11));
                 nodes.add(new Node(64, 11));
-                nodes.add(new Node(64, 6));  
+                nodes.add(new Node(64, 6));
                 nodes.add(new Node(63, 6));
-                nodes.add(new Node(63, 10)); 
-                nodes.add(new Node(42, 10)); 
+                nodes.add(new Node(63, 10));
+                nodes.add(new Node(42, 10));
                 nodes.add(new Node(42, 6));
-                nodes.add(new Node(41, 6)); 
+                nodes.add(new Node(41, 6));
                	setPath(new FixedPath(nodes, true));
 
 			}
@@ -63,7 +63,7 @@ public class ManWithHatNPC implements ZoneConfigurator {
 				addJob("Przestałem pracować, gdy moja żona odeszła.");
 				addOffer("Nie mam nic do zaoferowania.");
 				addGoodbye("Dowidzenia i dziękuję za rozmowę.");
-				
+
 			}
 		};
 

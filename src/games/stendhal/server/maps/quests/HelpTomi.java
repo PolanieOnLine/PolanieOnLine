@@ -36,25 +36,25 @@ import java.util.List;
 
 /**
  * QUEST: Get tomi his Ice.
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li>tomi, a captive in hell</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li>tomi asks cryptic messages about ice</li>
  * <li>if you have an ice sword you get rewarded</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>XP</li>
  * <li>some karma</li>
  * <li>amusement</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li>yes tomi takes as many ice as you please</li>
@@ -97,43 +97,43 @@ public class HelpTomi extends AbstractQuest {
 		}
 		return res;
 	}
-	
+
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("tomi");
 
 		// says quest or ice and doesn't have an ice sword and hasn't brought one before
 		npc.add(ConversationStates.ATTENDING,
-			questTrigger, 
+			questTrigger,
 			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT), new NotCondition(new PlayerHasItemWithHimCondition("miecz lodowy"))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"mój miecz lodowy? proszę o miecz lodowy", null);
-		
+
 		// says quest or ice and doesn't have an ice sword and has brought one in the past
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
 			new AndCondition(new QuestCompletedCondition(QUEST_SLOT), new NotCondition(new PlayerHasItemWithHimCondition("miecz lodowy"))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"gdzie jest mój miecz lodowy?", null);
 
 		// says quest or ice and has ice sword with him (first time)
 		// player gets a karma bonus and some xp
 		npc.add(ConversationStates.ATTENDING,
-			questTrigger, 
+			questTrigger,
 			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT), new PlayerHasItemWithHimCondition("miecz lodowy")),
 			ConversationStates.ATTENDING,
 			"mój miecz lodowy :)",
 			new MultipleActions(new DropItemAction("miecz lodowy"), new IncreaseXPAction(1000), new IncreaseKarmaAction(30.0), new SetQuestAction(QUEST_SLOT, "done;1")));
-		
+
 		// says quest or ice and has ice sword with him (second+ time)
 		// player gets a karma bonus and some xp
 		npc.add(ConversationStates.ATTENDING,
-			questTrigger, 
+			questTrigger,
 			new AndCondition(new QuestCompletedCondition(QUEST_SLOT), new PlayerHasItemWithHimCondition("miecz lodowy")),
 			ConversationStates.ATTENDING,
 			null,
 			new ChatAction() {
 				// we are storing the number of times the player has done the quest in the quest slot like
-				// done;N. We reward based on this number. If the quest slot isn't split like this and only 'done' 
+				// done;N. We reward based on this number. If the quest slot isn't split like this and only 'done'
 				// we assume it was just done once (sorry, guys)
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
@@ -162,7 +162,7 @@ public class HelpTomi extends AbstractQuest {
 					npc.say(saybuf.toString());
 				}
 			});
-								
+
 	}
 
 	@Override
@@ -180,13 +180,13 @@ public class HelpTomi extends AbstractQuest {
 	public String getName() {
 		return "HelpTomi";
 	}
-	
+
 	// there is a minimum level requirement to get into hell - this quest is in hell
 	@Override
 	public int getMinLevel() {
 		return 200;
 	}
-	
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return true;
@@ -195,7 +195,7 @@ public class HelpTomi extends AbstractQuest {
 	public String getNPCName() {
 		return "Tomi";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.HELL;

@@ -67,7 +67,7 @@ public class DwarfGuardianNPC implements ZoneConfigurator {
 				addHelp("Uważaj, gdy będziesz biegł przez głębokie tunele kopalni w Semos. Czekają tam na Ciebie różne silne potwory! Potrzebujesz dobrego sprzętu, o oferty zapytaj Harolda w Tawernie w Semos, być może on będzie w stanie Ci pomóc...");
 				addGoodbye();
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.LEFT);

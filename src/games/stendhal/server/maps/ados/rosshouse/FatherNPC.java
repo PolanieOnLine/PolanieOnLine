@@ -73,7 +73,7 @@ public class FatherNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-			
+
 		};
 
 		npc.setOutfit(new Outfit(0, 27, 15, 34, 2));

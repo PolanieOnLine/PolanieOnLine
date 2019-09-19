@@ -99,30 +99,30 @@ public class VampireSword extends AbstractQuest {
 	}
 
 	private void prepareQuestOfferingStep() {
-		
+
 		final SpeakerNPC npc = npcs.get("Hogart");
-		
+
 		// Player asks about quests, and had previously rejected or never asked: offer it
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Mogę stworzyć potężny wysysający zdrowie miecz dla Ciebie. Będziesz musiał pójść do Katakumb, które znajdują się pod cmentarzem w Semos i pokonać Lorda Wampira. Jesteś zainteresowany?",
 			null);
-		
+
 		// Player asks about quests, but has finished this quest
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Dlaczego mnie niepokoisz? Dostałeś miecz, idź i użyj go!",
 			null);
-		
+
 		// Player asks about quests, but has not finished this quest
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Dlaczego mnie niepokoisz skoro jeszcze nie skończyłeś zadania?",
 				null);
 
@@ -134,7 +134,7 @@ public class VampireSword extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES, null,
 			ConversationStates.ATTENDING, "Później będziesz potrzebował #czarę. Weź ją do #Katakumb w Semos.",
 			new MultipleActions(gobletactions));
-		
+
 		// Player doesn't want to do the quest; remember this, but they can ask again to start it.
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
@@ -169,7 +169,7 @@ public class VampireSword extends AbstractQuest {
 		// So to ensure that the vampire lord must have been killed, we made the skull ring a required item
 		// Which the vampire lord drops if the quest is active as in games.stendhal.server.maps.semos.catacombs.VampireLordCreature
 		// But, it could have been done other ways using quests slot checks and killed conditions
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 		requiredResources.put("truchło wampira", 7);
 		requiredResources.put("truchło nietoperza", 7);
 		requiredResources.put("pierścień z czaszką", 1);
@@ -192,7 +192,7 @@ public class VampireSword extends AbstractQuest {
 		startforging.add(new IncreaseKarmaAction(5.0));
 		startforging.add(new SetQuestAction(QUEST_SLOT, "forging;"));
 		startforging.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		
+
 		// Player returned with goblet and had killed the vampire lord, and has iron, so offer to forge the sword.
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -200,60 +200,60 @@ public class VampireSword extends AbstractQuest {
 					new PlayerHasItemWithHimCondition("czara"),
 					new KilledCondition("lord wampir"),
 					new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON)),
-			ConversationStates.IDLE, 
+			ConversationStates.IDLE,
 			"Przyniosłeś wszystko czego potrzebuję do wyrobienia Vampire sword. Wróć za "
 			+ REQUIRED_MINUTES
-			+ " minutę" + ", a będzie gotowy", 
+			+ " minutę" + ", a będzie gotowy",
 			new MultipleActions(startforging));
 
 		// Player returned with goblet and had killed the vampire lord, so offer to forge the sword if iron is brought
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()), 
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT,"start"),
 						new PlayerHasItemWithHimCondition("czara"),
 						new KilledCondition("lord wampir"),
 						new NotCondition(new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON))),
-		ConversationStates.QUEST_ITEM_BROUGHT, 
+		ConversationStates.QUEST_ITEM_BROUGHT,
 		"Stoczyłeś ciężkie boje, aby przynieść ten kielich. Użyję jego zawartość do wykucia ( #forge ) miecza zwanego krwiopijcą",
 		null);
-		
+
 		// Player has only an empty goblet currently, remind to go to Catacombs
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new PlayerHasItemWithHimCondition("pusta czara"),
-					new NotCondition(new PlayerHasItemWithHimCondition("czara"))), 
-			ConversationStates.IDLE, 
+					new NotCondition(new PlayerHasItemWithHimCondition("czara"))),
+			ConversationStates.IDLE,
 			"Zgubiłeś drogę? Katakumby są na północ od Semos." +
 			" Nie wracaj tutaj bez napełnionej czary! Dowidzenia! ",
 			null);
-		
+
 		// Player has a goblet (somehow) but did not kill a vampire lord
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),  
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT,"start"),
 						new PlayerHasItemWithHimCondition("czara"),
 						new NotCondition(new KilledCondition("lord wampir"))),
-		ConversationStates.IDLE, 
+		ConversationStates.IDLE,
 		"Hm, ta czara jest pusta. Musisz zabić vampira i napełnić ją jego krwią.",
 		null);
-		
+
 		// Player lost the empty goblet?
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT,"start"),
 						new NotCondition(new PlayerHasItemWithHimCondition("pusta czara")),
-						new NotCondition(new PlayerHasItemWithHimCondition("czara"))), 
-			ConversationStates.QUESTION_1, 
-			"Mam nadzieje, że nie zgubiłeś czary! Potrzebujesz następnej?", 
+						new NotCondition(new PlayerHasItemWithHimCondition("czara"))),
+			ConversationStates.QUESTION_1,
+			"Mam nadzieje, że nie zgubiłeś czary! Potrzebujesz następnej?",
 			null);
 
 		// Player lost the empty goblet, wants another
 		npc.add(ConversationStates.QUESTION_1,
 			ConversationPhrases.YES_MESSAGES, null,
-			ConversationStates.IDLE, "Ty głupcze ..... Następnym razem bądź bardziej ostrożny. Dowidzenia!", 
+			ConversationStates.IDLE, "Ty głupcze ..... Następnym razem bądź bardziej ostrożny. Dowidzenia!",
 			new EquipItemAction("pusta czara"));
-		
+
 		// Player doesn't have the empty goblet but claims they don't need another.
 		npc.add(
 			ConversationStates.QUESTION_1,
@@ -262,7 +262,7 @@ public class VampireSword extends AbstractQuest {
 			ConversationStates.IDLE,
 			"Dlaczego tutaj wróciłeś? Idź zgładzić jakiegoś wampira! Dowidzenia!",
 			null);
-		
+
 		// Returned too early; still forging
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -270,7 +270,7 @@ public class VampireSword extends AbstractQuest {
 				ConversationStates.IDLE, null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jeszcze nie wykułem miecza. Przyjdź za " +
 						""));
-		
+
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(15.0));
@@ -282,8 +282,8 @@ public class VampireSword extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
-			ConversationStates.IDLE, 
-			"Skończyłem wykuwanie Wampirzego Miecza. Zasłużyłeś na niego. Teraz wracam do pracy, dowidzenia!", 
+			ConversationStates.IDLE,
+			"Skończyłem wykuwanie Wampirzego Miecza. Zasłużyłeś na niego. Teraz wracam do pracy, dowidzenia!",
 			new MultipleActions(reward));
 
 		npc.add(
@@ -347,7 +347,7 @@ public class VampireSword extends AbstractQuest {
 	public String getName() {
 		return "VampireSword";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 50;
@@ -357,7 +357,7 @@ public class VampireSword extends AbstractQuest {
 	public String getNPCName() {
 		return "Hogart";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ORRIL_MINES;

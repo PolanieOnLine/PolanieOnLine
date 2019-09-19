@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Builds a mad scientist NPC who give thread to a player if needed. 
+ * Builds a mad scientist NPC who give thread to a player if needed.
  *
  * @author tigertoes
  */

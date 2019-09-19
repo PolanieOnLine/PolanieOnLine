@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package games.stendhal.server.maps.ados.church;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * A praying NPC in ados church
- * 
+ *
  * @author madmetzger and storyteller
  */
 public class VergerNPC implements ZoneConfigurator {
@@ -54,7 +54,7 @@ public class VergerNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.UP);
 		npc.initHP(100);
 		zone.add(npc);
-		
+
 		return npc;
 	}
 

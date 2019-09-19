@@ -33,9 +33,9 @@ import java.util.Map;
  * An oracle who lets players know how they can help others.
  */
 public class OracleNPC implements ZoneConfigurator {
-	
-	/** 
-	 * region that this NPC can give information about 
+
+	/**
+	 * region that this NPC can give information about
 	 */
 	private final List<String> regions = Arrays.asList(Region.NALWOR_CITY, Region.ORRIL_DUNGEONS, Region.HELL);
 
@@ -50,10 +50,10 @@ public class OracleNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGreeting("Cześć. Lepiej szepczmy, aby nie zwrócić na siebie uwagi elfów.");
-				
-				// use a standard action to list the names of NPCs for quests which haven't been started in this region 
+
+				// use a standard action to list the names of NPCs for quests which haven't been started in this region
 				addReply(ConversationPhrases.HELP_MESSAGES, null, new SayNPCNamesForUnstartedQuestsAction(regions));
-			    
+
 				// if the player says an NPC name, describe the quest (same description as in the travel log)
 			    add(ConversationStates.ATTENDING,
 						"",
@@ -66,7 +66,7 @@ public class OracleNPC implements ZoneConfigurator {
 				addOffer("Tak jak moje #siostry mogę ci #pomóc w #pomocy innym.");
 				addReply(Arrays.asList("sisters", "siostry"), "Moje siostry mieszkają daleko. Znajdź je i naucz się #pomagać tym w ich rejonie. Jak ja mają #imona kwiatów.");
 				addReply(Arrays.asList("name", "imiona"), "Zinnia jest kwiatkiem, którym może stać się zielonym szmaragdem jak moja sukienka. Sądzę, że dlatego tak lubie zielone lasy.");
-				
+
 				// just to be nice :)
 				addEmotionReply("hugs", "hugs");
 				addGoodbye("Dziękuję i pamiętaj, aby poruszać się ostrożnie po magicznym lesie.");

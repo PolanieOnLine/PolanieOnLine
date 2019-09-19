@@ -106,16 +106,16 @@ public class FindJefsMom extends AbstractQuest {
 
 		// player asks about quest which he has done already and he is allowed to repeat it
 				npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "done"), new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"Minęło już trochę czasu, odkąd rozglądałeś się za moją mamą. Czy mogę Cię prosić, abyś poszukał jej raz jeszcze i powiedział mi, czy miewa się dobrze, ok?",
 				null);
 
 		// player asks about quest but time didn't pass yet
-		npc.add(ConversationStates.ATTENDING, 
+		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1,REQUIRED_MINUTES))), 
+				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1,REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING,
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Nie chcę przeszkadzać mojej mamie, nim nie wróci z powrotem, więc nie musisz jej nic przekazać. Może zapytaj mnie raz jeszcze puźniej..."));
@@ -185,18 +185,18 @@ public class FindJefsMom extends AbstractQuest {
 		amber.add(ConversationStates.ATTENDING, "Jef",
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"start"),
 							 new PlayerCanEquipItemCondition("bielikrasa")),
-                          
-			ConversationStates.IDLE, 
+
+			ConversationStates.IDLE,
 			"O, rozumiem. :) Mój syn Jef poprosił Cię, żebyś mnie poszukał. Co za kochany i troskliwy chłopiec! Proszę, daj mu tę bielikrasę. Kocham te kwiaty! Bedzie wiedział, że ze mną wszystko #w #porządku, jeśli mu ją dasz!",
-			new MultipleActions(new EquipItemAction("bielikrasa", 1, true), 
-                                new SetQuestAction(QUEST_SLOT, 0, "found_mom"))); 
-                             
+			new MultipleActions(new EquipItemAction("bielikrasa", 1, true),
+                                new SetQuestAction(QUEST_SLOT, 0, "found_mom")));
+
 
 		// don't put the flower on the ground - if player has no space, tell them
 		amber.add(ConversationStates.ATTENDING, "Jef",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 								 new NotCondition(new PlayerCanEquipItemCondition("bielikrasa"))),
-				ConversationStates.IDLE, 
+				ConversationStates.IDLE,
 				"Oh, chciałam dać Ci kwiatek dla mojego syna, żeby pokazać mu, że ze mną wszystko w porządku, ale widzę, że nie masz już miejsca w torbie. Wróć do mnie, jak będziesz mieć nieco miejsca w plecaku!",
 				null);
 
@@ -204,7 +204,7 @@ public class FindJefsMom extends AbstractQuest {
 	    amber.add(ConversationStates.ATTENDING, "Jef",
 		     	new AndCondition(new NotCondition(new QuestActiveCondition(QUEST_SLOT))),
 		    	ConversationStates.IDLE,
-		    	"Nie ufam Ci. Twój głos drżał, gdy wymieniałeś imię mojego syna. Założę się, że ma się świetnie i jest bezpieczny.", 
+		    	"Nie ufam Ci. Twój głos drżał, gdy wymieniałeś imię mojego syna. Założę się, że ma się świetnie i jest bezpieczny.",
 		    	null);
 
 	    amber.add(ConversationStates.ATTENDING, "Jef",
@@ -214,7 +214,7 @@ public class FindJefsMom extends AbstractQuest {
 	    		ConversationStates.IDLE,
 	    		"Proszę daj ten kwiatek mojemu synowi i daj mu znać, że u mnie wszystko #dobrze.",
 	    		null);
-	    
+
 	    // replace flower if lost
 	    amber.add(ConversationStates.ATTENDING, Arrays.asList("Jef", "flower", "zantedeschia", "kwiat", "bielikrasa"),
 	    		new AndCondition(
@@ -222,7 +222,7 @@ public class FindJefsMom extends AbstractQuest {
 	    				new NotCondition(new PlayerHasItemWithHimCondition("bielikrasa"))),
 	    		ConversationStates.IDLE,
 	    		"Oh zgubiłeś kwiatek? Obawiam się, że już ich nie mam. Porozmaiwaj z Jenny przy młynie. Może będzie mogła ci pomóc.",
-	    		null); 
+	    		null);
 
 	}
 
@@ -247,7 +247,7 @@ public class FindJefsMom extends AbstractQuest {
 				Arrays.asList("flower", "zantedeschia", "fine", "amber", "done", "cała", "zdrowa", "dobrze", "kwiat", "bielikrasa"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "found_mom"), new PlayerHasItemWithHimCondition("bielikrasa")),
 				ConversationStates.ATTENDING, null,
-				new MultipleActions(new DropItemAction("bielikrasa"), 
+				new MultipleActions(new DropItemAction("bielikrasa"),
                                     new IncreaseXPAction(800),
                                     new IncreaseKarmaAction(15),
 									addRandomNumberOfItemsAction,
@@ -312,7 +312,7 @@ public class FindJefsMom extends AbstractQuest {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"done"),
 				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.KIRDNEH;

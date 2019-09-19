@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Norien
  */
 public class RatChild2NPC implements ZoneConfigurator {
-	
+
 
 	/**
 	 * Configure a zone.
@@ -54,7 +54,7 @@ public class RatChild2NPC implements ZoneConfigurator {
                                 nodes.add(new Node(69, 54));
                                 nodes.add(new Node(69, 15));
                                 nodes.add(new Node(45, 15));
-                                
+
                                 setPath(new FixedPath(nodes, true));
 			}
 		};

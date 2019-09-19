@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * Builds a npc in Ados (name:Marla) who is there on vacation
- * 
+ *
  * @author erdnuggel (idea), madmetzger and Vanessa Julius
  *
  */
@@ -38,7 +38,7 @@ public class ForeignWomanNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Marla") {
-		    
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -48,12 +48,12 @@ public class ForeignWomanNPC implements ZoneConfigurator {
                 nodes.add(new Node(69, 10));
                 nodes.add(new Node(69, 12));
                 nodes.add(new Node(70, 12));
-                nodes.add(new Node(70, 34));  
+                nodes.add(new Node(70, 34));
                 nodes.add(new Node(75, 33));
-                nodes.add(new Node(75, 24)); 
-                nodes.add(new Node(74, 24)); 
+                nodes.add(new Node(75, 24));
+                nodes.add(new Node(74, 24));
                 nodes.add(new Node(74, 9));
-                nodes.add(new Node(73, 9)); 
+                nodes.add(new Node(73, 9));
                	setPath(new FixedPath(nodes, true));
 
 			}
@@ -62,11 +62,11 @@ public class ForeignWomanNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Dzień dobry.");
 				addHelp("Odwiedziłeś już człowieka o wielkiej mądrości? Znajdziesz go w bibliotece. Nazywa się Wikipedian. Jest popularny dzięki swojej wielkiej wiedzy.");
-				addQuest("Od kiedy mieszkam tutaj, w Ados, nie potrzebuję pomocy, ale to miłe, że pytasz."); 
+				addQuest("Od kiedy mieszkam tutaj, w Ados, nie potrzebuję pomocy, ale to miłe, że pytasz.");
 				addJob("Nie, jestem już zbyt stara, aby pracować!");
 				addOffer("Mogę zaoferować Ci tylko to świeże powietrze, pachnące morską bryzą.");
 				addGoodbye("Bywaj.");
-				
+
 			}
 		};
 

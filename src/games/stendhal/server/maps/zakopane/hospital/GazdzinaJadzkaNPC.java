@@ -11,7 +11,7 @@
  *                                                                         *
  ***************************************************************************/
  //Na podstawie pliku HealerNPC.
- 
+
 package games.stendhal.server.maps.zakopane.hospital;
 
 import java.util.LinkedList;

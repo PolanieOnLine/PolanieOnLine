@@ -63,7 +63,7 @@ public class DecencyAndMannersWardenNPC implements ZoneConfigurator {
 
 		npc.setDirection(Direction.RIGHT);
 		npc.setPosition(13, 38);
-		
+
 		npc.initHP(100);
 		zone.add(npc);
 	}

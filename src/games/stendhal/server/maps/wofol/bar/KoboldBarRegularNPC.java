@@ -43,7 +43,7 @@ public class KoboldBarRegularNPC implements ZoneConfigurator {
 
             @Override
             public void say(final String text) {
-               
+
                     // doesn't turn
                     say(text, false);
             }

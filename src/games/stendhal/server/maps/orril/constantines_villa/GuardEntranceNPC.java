@@ -25,13 +25,13 @@ import java.util.Map;
 
 /**
  * Builds a npc in Constantines Villa (name:Klaus) who is one of Constantines villa guards
- * 
+ *
  * @author storyteller (idea) and Vanessa Julius (implemented)
  *
  */
 
 public class GuardEntranceNPC implements ZoneConfigurator {
-    
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -39,8 +39,8 @@ public class GuardEntranceNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Klaus") {
-		    
-			//NPC walks around in the entrance hall of Constantines villa 
+
+			//NPC walks around in the entrance hall of Constantines villa
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -79,13 +79,13 @@ public class GuardEntranceNPC implements ZoneConfigurator {
 			}
 
 			@Override
-			
+
 			//Greeting and goodbye message in quest code TheMissingBooks.java
-			
+
 			protected void createDialog() {
 				addGreeting("Hej [name]! Dlaczego tutaj szukasz? Odejdź stąd NATYCHMIAST!");
 
-				
+
 			}
 		};
 

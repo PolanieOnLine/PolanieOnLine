@@ -29,7 +29,7 @@ import java.util.TreeMap;
 /**
  * Provides a Ratman chef running the Rat City bakery.
  *
- * @author omero 
+ * @author omero
  */
 public class RatChefNPC implements ZoneConfigurator {
 	/**

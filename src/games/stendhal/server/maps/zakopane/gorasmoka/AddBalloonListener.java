@@ -13,9 +13,9 @@ import java.util.Map;
  * Adds the listener for teleporting back to the islands if you login in the clouds
  */
 public class AddBalloonListener implements ZoneConfigurator {
-	
+
 	private static final String BALLOON = "balonik";
-	
+
 	/**
 	 * Configure a zone.
 	 *

@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * A bunch of butterflies
- * 
+ *
  * @author AntumDeluge
  */
 public class ButterfliesNPC implements ZoneConfigurator {

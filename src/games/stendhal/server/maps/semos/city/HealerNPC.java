@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A young lady (original name: Carmen) who heals players without charge. 
+ * A young lady (original name: Carmen) who heals players without charge.
  */
 public class HealerNPC implements ZoneConfigurator {
-	
+
 	@Override
 	public void configureZone(final StendhalRPZone zone,
 			final Map<String, String> attributes) {

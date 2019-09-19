@@ -48,7 +48,7 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 				nodes.add(new Node(3, 13));
 				nodes.add(new Node(12, 13));
 				nodes.add(new Node(12, 4));
-				
+
 				setPath(new FixedPath(nodes, true));
 			}
 
@@ -62,10 +62,10 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 			}
 		};
 		woman.setDescription("Widzisz człekoszczurzyce matkę. Wygląda na zatroskaną.");
-		
+
 
 		woman.setEntityClass("oldratwomannpc");
-		
+
 		woman.setPosition(3, 4);
 		// She has low HP
 		woman.initHP(30);

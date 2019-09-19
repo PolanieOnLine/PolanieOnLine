@@ -32,7 +32,7 @@ public class GhostNPC implements ZoneConfigurator {
 	//
 	// ZoneConfigurator
 	//
-	
+
 	/**
 	 * Configure a zone.
 	 *
@@ -43,7 +43,7 @@ public class GhostNPC implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC ghost = new GhostNPCBase("Mary") {
 			@Override
@@ -78,7 +78,7 @@ public class GhostNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-	
+
 		ghost.setDescription("Oto duch o figurze kobiety.");
 		ghost.setResistance(0);
 		ghost.setEntityClass("woman_005_npc");

@@ -43,9 +43,9 @@ public class OldWitchNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				setPath(null);
-			
+
 			}
-			
+
 
 			@Override
 			protected void createDialog() {

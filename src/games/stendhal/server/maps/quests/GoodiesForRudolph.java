@@ -75,7 +75,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	private static final int REQUIRED_MONTHS = 11;
 	private static final int REQUIRED_MINUTES = 60 * 24 * 30 * REQUIRED_MONTHS;
-	
+
 	private static final String RUDOLPH_TALK_QUEST_ACCEPT = "Słyszałem o wspaniałych #przysmakach, które masz tutaj w Semos. Jeśli zdobędziesz 5 mchów renifera, 10 jabłek i 10 marchew to dam ci nagrodę.";
 	private static final String RUDOLPH_TALK_QUEST_OFFER = "Chcę pyszne przysmaki tylko ty możesz mi pomóc je zdobyć. Czy możesz mi pomóc?";
 
@@ -116,7 +116,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			RUDOLPH_TALK_QUEST_OFFER,
 			null);
 
@@ -174,18 +174,18 @@ public class GoodiesForRudolph extends AbstractQuest {
 					new PlayerHasItemWithHimCondition("mech renifera", 5),
 					new PlayerHasItemWithHimCondition("jabłko", 10),
 					new PlayerHasItemWithHimCondition("marchew", 10))),
-			ConversationStates.QUEST_ITEM_BROUGHT, 
+			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Przepraszam! Widzę, że masz pyszne smakołyki. Są one dla mnie?",
 			null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestInStateCondition(QUEST_SLOT, "start"), 
+				new QuestInStateCondition(QUEST_SLOT, "start"),
 				new NotCondition(new AndCondition(
 					new PlayerHasItemWithHimCondition("mech renifera", 5),
 					new PlayerHasItemWithHimCondition("jabłko", 10),
 					new PlayerHasItemWithHimCondition("marchew", 10)))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Oh nie mogę się doczekać tych przysmaków, o które cię prosiłem. Mam nadzieję, że nie będę czekał długo nim mi je przyniesiesz.",
 			null);
 
@@ -201,13 +201,13 @@ public class GoodiesForRudolph extends AbstractQuest {
 		reward.add(new InflictStatusOnNPCAction("jabłko"));
 		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 		reward.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
-		
+
 		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
 			// make sure the player isn't cheating by putting the goodies
 			// away and then saying "yes"
-			
+
 			new AndCondition(
 					new PlayerHasItemWithHimCondition("mech renifera", 5),
 					new PlayerHasItemWithHimCondition("jabłko", 10),
@@ -245,12 +245,12 @@ public class GoodiesForRudolph extends AbstractQuest {
 	public String getName() {
 		return "GoodiesForRudolph";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 0;
 	}
-	
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "done"),
@@ -261,7 +261,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 	public String getRegion() {
 		return Region.SEMOS_CITY;
 	}
-	
+
 	@Override
 	public String getNPCName() {
 		return "Rudolph";

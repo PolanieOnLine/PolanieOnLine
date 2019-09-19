@@ -62,7 +62,7 @@ public class TicTacToeGame implements LoadableContent {
 
 			@Override
 			protected void createDialog() {
-				add(ConversationStates.IDLE, 
+				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new GreetingMatchesNameCondition(getName()), true,
 						ConversationStates.IDLE,
@@ -71,18 +71,18 @@ public class TicTacToeGame implements LoadableContent {
 						+ "Potrzebujesz rywala, aby #zagrać.",
 						null);
 
-				add(ConversationStates.IDLE, 
-						ConversationPhrases.HELP_MESSAGES, 
+				add(ConversationStates.IDLE,
+						ConversationPhrases.HELP_MESSAGES,
 						ConversationStates.IDLE,
 						"Musisz stanąć obok krążka, aby go przesunąć.",
 						null);
-				add(ConversationStates.IDLE, 
-						ConversationPhrases.JOB_MESSAGES, 
+				add(ConversationStates.IDLE,
+						ConversationPhrases.JOB_MESSAGES,
 						ConversationStates.IDLE,
 						"Jestem opiekunem tej gry.",
 						null);
-				add(ConversationStates.IDLE, 
-						ConversationPhrases.GOODBYE_MESSAGES, 
+				add(ConversationStates.IDLE,
+						ConversationPhrases.GOODBYE_MESSAGES,
 						ConversationStates.IDLE,
 						"Miło było Cię poznać.",
 						new NPCSetDirection(Direction.DOWN));
@@ -93,7 +93,7 @@ public class TicTacToeGame implements LoadableContent {
 						new PlayAction(board));
 			}
 		};
-		paul.setEntityClass("paulnpc"); 
+		paul.setEntityClass("paulnpc");
 		paul.setPosition(84, 112);
 		paul.setDirection(Direction.DOWN);
 		zone.add(paul);
@@ -128,7 +128,7 @@ public class TicTacToeGame implements LoadableContent {
 
 			if (board.getPlayers().isEmpty()) {
 				lastPlayerAdded = System.currentTimeMillis();
-				npc.say("Dobrze " + player.getName() + " jesteś następny do kolejnej gry. Czy ktoś chce #zagrać przeciwko " + player.getName() + "?"); 
+				npc.say("Dobrze " + player.getName() + " jesteś następny do kolejnej gry. Czy ktoś chce #zagrać przeciwko " + player.getName() + "?");
 				board.getPlayers().add(player.getName());
 			} else {
 				if (board.getPlayers().get(0).equals(player.getName())) {

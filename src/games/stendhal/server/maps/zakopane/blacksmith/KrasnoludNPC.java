@@ -66,7 +66,7 @@ public class KrasnoludNPC implements ZoneConfigurator {
 			new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("sellkopalnia")));
 
 			// Xoderos casts iron if you bring him wood and iron ore.
-			final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+			final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 			requiredResources.put("polano", 1);
 			requiredResources.put("ruda żelaza", 1);
 			requiredResources.put("piórko", 1);

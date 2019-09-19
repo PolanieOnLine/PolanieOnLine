@@ -49,7 +49,7 @@ public class CargoWorkerNPC implements ZoneConfigurator  {
 				nodes.add(new Node(17,35));
 				// to the stairs
 				nodes.add(new Node(17,39));
-				// walk between the barrels 
+				// walk between the barrels
 				nodes.add(new Node(22,39));
 				// towards the bow
 				nodes.add(new Node(22,42));
@@ -64,12 +64,12 @@ public class CargoWorkerNPC implements ZoneConfigurator  {
 				addReply(Arrays.asList("szczur", "szczury", "szczurów"),
 		        "Te szczury są wszędzie. Ciekaw jestem skąd one się biorą nawet nie zdążę ich powybijać tak szybko się pojawiają.");
 
-				new BuyerAdder().addBuyer(this, 
+				new BuyerAdder().addBuyer(this,
 						new BuyerBehaviour(SingletonRepository.getShopList().get("buypoisons")), true);
 
 				addGoodbye("Proszę zabij kilka szczurów po drodze!");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
@@ -78,7 +78,7 @@ public class CargoWorkerNPC implements ZoneConfigurator  {
 
 			new AthorFerry.FerryListener() {
 
-			
+
 				@Override
 				public void onNewFerryState(final Status status) {
 					switch (status) {

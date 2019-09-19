@@ -43,7 +43,7 @@ public class AdasNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				nodes.add(new Node(6, 3)); 
+				nodes.add(new Node(6, 3));
 				nodes.add(new Node(6, 7));
 				nodes.add(new Node(4, 7));
 				nodes.add(new Node(4, 3));
@@ -65,4 +65,3 @@ public class AdasNPC implements ZoneConfigurator {
 		zone.add(npc);
 	}
 }
-

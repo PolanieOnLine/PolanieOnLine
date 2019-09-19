@@ -11,7 +11,7 @@
  *                                                                         *
  ***************************************************************************/
  //Na podstawie pliku RetiredAdventurerNPC z Semos/guardhouse
- 
+
 package games.stendhal.server.maps.zakopane.home;
 
 import java.util.LinkedList;

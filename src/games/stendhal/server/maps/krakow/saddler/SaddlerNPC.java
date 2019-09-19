@@ -22,7 +22,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * The miller (original name: Jenny). She mills flour for players who bring
- * grain. 
+ * grain.
  */
 public class SaddlerNPC extends SpeakerNPCFactory {
 

@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Configure Magic School Cellar.
  */
 public class SpidersCreatures implements ZoneConfigurator {
-	private final List<String> creatures = 
+	private final List<String> creatures =
 		Arrays.asList("pająk","pająk ptasznik","królowa pająków");
 	private final String QUEST_SLOT="kill_all_spiders";
 
@@ -45,7 +45,7 @@ public class SpidersCreatures implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMagicSchoolCellarArea(zone);
 	}
-	
+
 	protected void updatePlayerQuest(final CircumstancesOfDeath circ) {
 		final String victim = circ.getVictim().getName();
 		final RPEntity killer = circ.getKiller();
@@ -61,19 +61,19 @@ public class SpidersCreatures implements ZoneConfigurator {
 		final Player player = (Player) killer;
 		// check if player started his quest
 		if (player.hasQuest(QUEST_SLOT) && player.getQuest(QUEST_SLOT,0).equals("started")) {
-			player.setQuest(QUEST_SLOT, 1+creatures.indexOf(victim), victim);			
+			player.setQuest(QUEST_SLOT, 1+creatures.indexOf(victim), victim);
 		}
 	}
 
 	class SpidersObserver implements Observer {
 		@Override
 		public void update(Observable o, Object arg) {
-			updatePlayerQuest((CircumstancesOfDeath) arg);			
+			updatePlayerQuest((CircumstancesOfDeath) arg);
 		}
 	}
-	
-	protected final SpidersObserver observer = new SpidersObserver(); 
-	
+
+	protected final SpidersObserver observer = new SpidersObserver();
+
 	private void buildMagicSchoolCellarArea(final StendhalRPZone zone) {
 		for(CreatureRespawnPoint p:zone.getRespawnPointList()) {
 			if(p!=null) {

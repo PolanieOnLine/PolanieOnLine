@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Builds a Teacher NPC who tries to make disciple assassins behave. 
+ * Builds a Teacher NPC who tries to make disciple assassins behave.
  *
  * @author kymara with modifications by tigertoes
  */
@@ -62,7 +62,7 @@ public class SchoolMarmNPC implements ZoneConfigurator {
 						new GreetingMatchesNameCondition(getName()), true,
 						ConversationStates.IDLE, "Dlaczego zawracasz mi głowę. Nie widzisz, że mam ręce pełne roboty! Teraz lil johnnnny. Powiedziałam Tobie, żebyś nie podbijał mu oka!", null);
 	 	     }
-		    
+
 		};
 
 		npc.setDescription("Oto raczej strapiona szkolna nauczycielka. Ma pełne ręce roboty z tymi małymi mordercami.");

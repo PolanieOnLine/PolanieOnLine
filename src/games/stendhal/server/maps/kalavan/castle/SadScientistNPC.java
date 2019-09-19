@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Builds a sad scientist NPC who gives a quest to a player. 
+ * Builds a sad scientist NPC who gives a quest to a player.
  *
  * @author kymara
  */

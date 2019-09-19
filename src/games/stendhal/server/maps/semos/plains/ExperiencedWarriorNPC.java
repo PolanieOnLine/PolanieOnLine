@@ -288,7 +288,7 @@ public class ExperiencedWarriorNPC implements ZoneConfigurator  {
 		npc.setPosition(37, 2);
 		npc.setEntityClass("experiencedwarriornpc");
 		npc.setDescription("Oto Starkad wielki wojownik i obrońca Semos.");
-		zone.add(npc);	
+		zone.add(npc);
 	}
 
 	private static String getCreatureInfo(final Player player, final String creatureName) {

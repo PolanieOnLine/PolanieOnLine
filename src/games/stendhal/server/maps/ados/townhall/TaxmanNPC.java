@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * Builds an NPC to keep track of all the traders in Faiumoni
- * This means players can come find prices of all items. 
+ * This means players can come find prices of all items.
  * The shop signs now have to be coded in XML not java because the implementation got moved over :(
  * So if you want to read them see data/conf/zones/ados.xml
  * @author kymara

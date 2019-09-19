@@ -69,7 +69,7 @@ public class NunNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.RIGHT);
 			}
-			
+
 		};
 
 		nunnpc.setDescription("Oto Sister Benedicta święta zakonnica.");

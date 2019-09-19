@@ -101,7 +101,7 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 						if (player.isBadBoy()) {
 						        price = (int) (BAD_BOY_BUYING_PENALTY * price);
 						}
-						
+
 						if ("wąska butelka".equals(requiredContainer) || "butla czwórniaczka".equals(requiredContainer)) {
 							if (!player.isEquipped(requiredContainer, amount) || !player.isEquipped("money", price)) {
 								seller.say("Hau! Mogę sprzedać Tobie tylko "
@@ -116,7 +116,7 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 									+ " jeżeli masz wystarczająco dużo money.");
 						        return false;
 						}
-						
+
                         /**
                          * If the user tries to buy several of a non-stackable item,
                          * he is forced to buy only one.
@@ -126,7 +126,7 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
                         } else {
                             res.setAmount(1);
                         }
-						
+
 						if (player.equipToInventoryOnly(item)) {
 							player.drop("money", price);
 							if (!"".equals(requiredContainer)) {
@@ -148,7 +148,7 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
                 // edit prices here and they'll be correct everywhere else
                 final int MILD_KOBOLDISH_TORCIBUD_PRICE = 95;
                 final int STRONG_KOBOLDISH_TORCIBUD_PRICE = 195;
-                
+
 				final Map<String, Integer> items = new HashMap<String, Integer>();
 				//beer and wine have higher than average prices here.
 				items.put("sok z chmielu", 18);

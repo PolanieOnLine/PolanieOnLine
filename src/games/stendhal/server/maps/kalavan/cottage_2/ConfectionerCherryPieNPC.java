@@ -51,7 +51,7 @@ public class ConfectionerCherryPieNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				
+
 				addJob("Mieszkam tutaj z moja bliźniaczą siostrą #Martha. Naszą pasją jest wypiekanie pysznych ciast owocowych!");
 
 				addReply("Martha",

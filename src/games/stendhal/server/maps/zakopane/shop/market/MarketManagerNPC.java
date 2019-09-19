@@ -25,7 +25,7 @@ import games.stendhal.server.entity.npc.condition.TextHasParameterCondition;
 import games.stendhal.server.entity.trade.Offer;
 
 public final class MarketManagerNPC extends SpeakerNPC {
-	
+
 	private Map<String,Offer> offers = new HashMap<String, Offer>();
 
 	MarketManagerNPC(String name) {
@@ -39,7 +39,7 @@ public final class MarketManagerNPC extends SpeakerNPC {
 	protected void createPath() {
 		// npc is lazy and does not move
 	}
-	
+
 	@Override
 	protected void onGoodbye(RPEntity player) {
 		//clean the offer map on leaving of a player

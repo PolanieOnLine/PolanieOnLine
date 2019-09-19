@@ -54,7 +54,7 @@ class MakeRings {
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("obrączka ślubna","obrączka", "wedding", "pierścionek ślubny", "ślub"),
 				new QuestStateStartsWithCondition(marriage.getQuestSlot(), "engaged"),
-				ConversationStates.QUEST_ITEM_QUESTION, 
+				ConversationStates.QUEST_ITEM_QUESTION,
 				null,
 				new ChatAction() {
 					@Override
@@ -112,16 +112,16 @@ class MakeRings {
 
 		// Here the behaviour is defined for if you make a wedding ring enquiry to Ognir and your
 		// ring is being made
-	 	npc.add(ConversationStates.ATTENDING, 
+	 	npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("obrączka ślubna", "wedding", "pierścionek ślubny", "ślub"),
 		 		new QuestStateStartsWithCondition(marriage.getQuestSlot(), "forging"),
-				ConversationStates.IDLE, 
-		 		null, 
+				ConversationStates.IDLE,
+		 		null,
 				new ChatAction() {
 	 				@Override
 	 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 	 					final String[] tokens = player.getQuest(marriage.getQuestSlot()).split(";");
-						final long delayInMIlliSeconds = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE; 
+						final long delayInMIlliSeconds = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
 						final long timeRemaining = (Long.parseLong(tokens[1]) + delayInMIlliSeconds)
 								- System.currentTimeMillis();
 						// ring is not ready yet
@@ -131,7 +131,7 @@ class MakeRings {
 									+ ". Dowidzenia.");
 							return;
 						}
-						/*The ring is ready now. It was either forging ready for a wedding or 
+						/*The ring is ready now. It was either forging ready for a wedding or
 						 * forging again because a married player lost theirs.
 						 * In each case we bind to the player. If player is engaged the rings get swapped at marriage ceremony
 						 * If this is a forgingagain we must set the infostring to spouse name so the ring works
@@ -145,7 +145,7 @@ class MakeRings {
 							npc.say("Skończyłem pracę nad następną obrączką ślubną. Następnym razem bądź ostrożniejszy!");
 							weddingRing.setInfoString(player.getQuest(marriage.getSpouseQuestSlot()));
 							player.setQuest(marriage.getQuestSlot(), "done");
-						} else {							
+						} else {
 							npc.say("Zostałem poproszony, aby przekazać, że obrączka ślubna dla twojej narzeczonej jest już skończona! Upewnij się, że jedna jest dla Ciebie! *psst* jeszcze mała rada ( #hint ) na dzień ślubu ...");
 							player.setQuest(marriage.getQuestSlot(), "engaged_with_ring");
 							player.addXP(500);
@@ -159,9 +159,9 @@ class MakeRings {
 
 		// player says yes, they want a wedding ring made
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
-				ConversationPhrases.YES_MESSAGES, 
+				ConversationPhrases.YES_MESSAGES,
 				null,
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
 					@Override

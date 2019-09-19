@@ -30,23 +30,23 @@ import java.util.Arrays;
 
 class Engagement {
 	private MarriageQuestInfo marriage;
-	
+
 	private final NPCList npcs = SingletonRepository.getNPCList();
 	private SpeakerNPC nun;
 
 	private Player groom;
 	private Player bride;
-	
+
 	public Engagement(final MarriageQuestInfo marriage) {
 		this.marriage = marriage;
 	}
-	
+
 	private void engagementStep() {
 		nun = npcs.get("Sister Benedicta");
 		nun.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				null,
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
 					@Override
@@ -87,10 +87,10 @@ class Engagement {
 				+ "i powiedz mi #zaręcz #imię.",
 				null);
 
-		nun.add(ConversationStates.ATTENDING, 
-				Arrays.asList("engage", "zaręcz"), 
+		nun.add(ConversationStates.ATTENDING,
+				Arrays.asList("engage", "zaręcz"),
 				null,
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
 					@Override
@@ -108,9 +108,9 @@ class Engagement {
 				});
 
 		nun.add(ConversationStates.QUESTION_1,
-				ConversationPhrases.YES_MESSAGES, 
+				ConversationPhrases.YES_MESSAGES,
 				null,
-				ConversationStates.QUESTION_2, 
+				ConversationStates.QUESTION_2,
 				null,
 				new ChatAction() {
 					@Override
@@ -120,17 +120,17 @@ class Engagement {
 					}
 				});
 
-		nun.add(ConversationStates.QUESTION_1, 
+		nun.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.NO_MESSAGES,
-				null, 
-				ConversationStates.IDLE, 
-				"Co za szkoda! Dowidzenia!", 
+				null,
+				ConversationStates.IDLE,
+				"Co za szkoda! Dowidzenia!",
 				null);
 
 		nun.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.YES_MESSAGES, 
+				ConversationPhrases.YES_MESSAGES,
 				null,
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
 					@Override
@@ -140,11 +140,11 @@ class Engagement {
 					}
 				});
 
-		nun.add(ConversationStates.QUESTION_2, 
+		nun.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.NO_MESSAGES,
-				null, 
-				ConversationStates.IDLE, 
-				"Co za szkoda! Dowidzenia!", 
+				null,
+				ConversationStates.IDLE,
+				"Co za szkoda! Dowidzenia!",
 				null);
 	}
 
@@ -158,7 +158,7 @@ class Engagement {
 		if (!inFrontOfNun.contains(groom)) {
 			nun.say("Mój słuch nie jest zbyt dobry. Proszę podejdźcie oboje bliżej i powiedzcie mi z kim chcecie się zaręczyć.");
 		} else if (marriage.isMarried(groom)) {
-			nun.say("Jesteś już żonaty z " 
+			nun.say("Jesteś już żonaty z "
 					+ groom.getName()
 					+ "! Nie możesz się znowu ożenić.");
 		} else if ((bride == null) || !inFrontOfNun.contains(bride)) {
@@ -166,7 +166,7 @@ class Engagement {
 		} else if (bride.getName().equals(groom.getName())) {
 			nun.say("Nie możesz wziąć ślubu ze sobą!");
 		} else if (marriage.isMarried(bride)) {
-			nun.say("Jesteś już żonaty z " 
+			nun.say("Jesteś już żonaty z "
 					+ bride.getName()
 					+ "! Nie możesz się ponownie ożenić.");
 		} else {
@@ -202,7 +202,7 @@ class Engagement {
 	}
 
 	private void finishEngagement() {
-		// we check if each of the bride and groom are engaged, or both, and only give invites 
+		// we check if each of the bride and groom are engaged, or both, and only give invites
 		// if they were not already engaged.
 		String additional;
 		if (!marriage.isEngaged(groom)) {
@@ -211,17 +211,17 @@ class Engagement {
 				giveInvite(bride);
 				additional = "A tutaj mam trochę zaproszeń, które możecie rozdać gościom.";
 			} else {
-				additional = "Dałam zaproszenia dla gości " + groom.getName() + ". " + bride.getName() 
+				additional = "Dałam zaproszenia dla gości " + groom.getName() + ". " + bride.getName()
 					+ ", jeżeli Ognir już wyrabia tobie pierścień to powinieneś pójść do niego i zapytać czy nie zrobiłby następnego.";
 				}
 		} else if (!marriage.isEngaged(bride)) {
 			giveInvite(bride);
-			additional = "Dałam zaproszenia dla gości " + bride.getName() + ". " + groom.getName() 
+			additional = "Dałam zaproszenia dla gości " + bride.getName() + ". " + groom.getName()
 					+ ", jeżeli Ognir już wyrabia tobie pierścień to powinieneś pójść do niego i zapytać czy nie zrobiłby następnego.";
 		} else {
 			additional = "Nie dam wam więcej zaproszeń skoro jesteście już zaręczeni i dostaliście je wcześniej."
 				+ " Jeżeli posiadacie już pierścienie to musicie zrobić je jeszcze raz.";
-		}		
+		}
 		nun.say("Gratulacje "
 				+ groom.getName()
 				+ " i tobie "

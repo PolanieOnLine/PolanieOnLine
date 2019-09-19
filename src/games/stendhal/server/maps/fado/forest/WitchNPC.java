@@ -45,9 +45,9 @@ public class WitchNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				setPath(null);
-			
+
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);

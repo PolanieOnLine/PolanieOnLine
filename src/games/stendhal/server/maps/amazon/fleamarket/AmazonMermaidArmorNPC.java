@@ -50,7 +50,7 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(8, 92));
-				nodes.add(new Node(9, 92));				
+				nodes.add(new Node(9, 92));
 				nodes.add(new Node(9, 93));
 				nodes.add(new Node(11, 93));
 				nodes.add(new Node(11, 94));
@@ -58,7 +58,7 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 				nodes.add(new Node(13, 96));
 				nodes.add(new Node(14, 96));
 				nodes.add(new Node(14, 98));
-				nodes.add(new Node(16, 98));				
+				nodes.add(new Node(16, 98));
 				nodes.add(new Node(16, 97));
 				nodes.add(new Node(15, 97));
 				nodes.add(new Node(15, 95));

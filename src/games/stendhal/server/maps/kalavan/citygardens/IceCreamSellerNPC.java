@@ -69,12 +69,12 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 				addJob("Sprzedaje pyszne lody.");
 				addHelp("Mogę #zaoferować odświeżającą porcję lodów.");
 				addQuest("Prowadzę proste życie. Nie potrzebuję wiele do szczęścia.");
-			 
-			 add(ConversationStates.ATTENDING, 
-					ConversationPhrases.YES_MESSAGES, 
-					null, 
-					ConversationStates.ATTENDING, 
-					null, 
+
+			 add(ConversationStates.ATTENDING,
+					ConversationPhrases.YES_MESSAGES,
+					null,
+					ConversationStates.ATTENDING,
+					null,
 					new ChatAction() {
 						@Override
 						public void fire(final Player player,final Sentence sentence, final EventRaiser npc) {
@@ -86,9 +86,9 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 				offers.put("lody", 30);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offers));
 				addGoodbye("Dowidzenia. Ciesz się dniem!");
-				
+
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);

@@ -86,7 +86,7 @@ public class DeathmatchRecruiterNPC implements ZoneConfigurator {
 				addOffer("Opowiem Ci o #deathmatchu w Ados.");
 				add(ConversationStates.ATTENDING, Arrays.asList("deathmatch", "deathmatchu"), null, ConversationStates.ATTENDING,
 				        "Wiele groźnych potworów będzie Cię atakować na arenie deathmatcha. Jest tylko dla prawdziwych #bohaterów.", null);
-				// response to 'heroes' is defined in maps.quests.AdosDeathmatch 
+				// response to 'heroes' is defined in maps.quests.AdosDeathmatch
 				// because we need here to know about who is in the deathmatch. The teleport action is done there also.
 				addGoodbye("Mam nadzieje, że spodoba się Tobie #Deathmatch w Ados!");
 			}

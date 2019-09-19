@@ -70,7 +70,7 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 				addReply("money","Każdy ich potrzebuje. Po za tym potrzebne są do zakupienia specjalnych składników bez których złota ciupaga będzie nie wiele warta. Nie zdradzę Tobie o jakie chodzi. To tajemnica rodzinna przekazywana z pokolenia na pokolenie.");
 
 				// Joshua makes gold if you bring him gold nugget and wood
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("polano", 1);
 				requiredResources.put("ruda żelaza", 1);
 

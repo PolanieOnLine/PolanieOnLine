@@ -24,7 +24,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
  * A little boy who lives at a farm.
- * 
+ *
  * @see games.stendhal.server.maps.quests.PlinksToy
  */
 public class LittleBoyNPC implements ZoneConfigurator {
@@ -72,7 +72,7 @@ public class LittleBoyNPC implements ZoneConfigurator {
 				addOffer("Hej nie oddam tobie mojego misia! Jest mój! *ściska*");
 				addGoodbye();
 			}
-	
+
 		};
 		npc.setEntityClass("plinknpc");
 		npc.setDescription("Widzisz młodego chłopca o imieniu Plink. On płacze i potrzebuje pomocy ...");

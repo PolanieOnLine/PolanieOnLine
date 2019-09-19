@@ -72,11 +72,11 @@ public class HistorianGeographerNPC implements ZoneConfigurator {
 		        // player before and react accordingly
 						        // NPC_name quest doesn't exist anywhere else neither is
 						        // used for any other purpose
-				add(ConversationStates.IDLE, 
+				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(getName()),
-								new QuestNotCompletedCondition("Zynn")), 
-						ConversationStates.ATTENDING, 
+								new QuestNotCompletedCondition("Zynn")),
+						ConversationStates.ATTENDING,
 						"Witaj czytelniku! Znajdziesz tutaj zapisy z historii Semos i wiele innych interesujących faktów o wyspie Faiumoni. Jeżeli chcesz mogę udzielić szybkiego wstępu do geografii i historii! Mam też najświeższe wiadomości.",
 						new SetQuestAction("Zynn", "done"));
 

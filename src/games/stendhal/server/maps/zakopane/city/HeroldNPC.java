@@ -61,7 +61,7 @@ public class HeroldNPC implements ZoneConfigurator {
 
 	// 1.5 mins at 300 ms/turn
 	private static final int CHAT_TIMEOUT = 300;
-	private static final int MONEY = 100; 
+	private static final int MONEY = 100;
 	protected RentedSignList rentedSignList;
 
 	@Override
@@ -80,22 +80,22 @@ public class HeroldNPC implements ZoneConfigurator {
 				addJob("Wynajmuję znaki na jeden dzień. Powiedz tylko #wynajmij");
 				addHelp("Jeżeli chcesz wynająć znak to powiedz #wynajmij i treść co powinno być na nim napisane. Jeśli chcesz usunąć to powiedz #usuń.");
 				setPlayerChatTimeout(CHAT_TIMEOUT);
-		
+
 				add(ConversationStates.ATTENDING, "",
 					new AndCondition(getRentMatchCond(), new LevelLessThanCondition(6)),
-					ConversationStates.ATTENDING, 
+					ConversationStates.ATTENDING,
 					"Przepraszam, ale nie wynajmuję znaków osobom, które mają mało doświadczenia jak ty.",
 					null);
 
-				add(ConversationStates.ATTENDING, "", 
-					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new NotCondition(new TextHasParameterCondition())), 
-					ConversationStates.ATTENDING, 
+				add(ConversationStates.ATTENDING, "",
+					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new NotCondition(new TextHasParameterCondition())),
+					ConversationStates.ATTENDING,
 					"Powiedz mi #wynajmij, a następnie tekst, który chciałbyś, abym umieścił na nim.",
 					null);
 
-				add(ConversationStates.ATTENDING, "", 
-					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new TextHasParameterCondition()), 
-					ConversationStates.BUY_PRICE_OFFERED, 
+				add(ConversationStates.ATTENDING, "",
+					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new TextHasParameterCondition()),
+					ConversationStates.BUY_PRICE_OFFERED,
 					null,
 					new ChatAction() {
 						@Override
@@ -117,9 +117,9 @@ public class HeroldNPC implements ZoneConfigurator {
 						}
 				});
 
-				add(ConversationStates.ATTENDING, "wynajmij", 
-					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new TextHasParameterCondition()), 
-					ConversationStates.BUY_PRICE_OFFERED, 
+				add(ConversationStates.ATTENDING, "wynajmij",
+					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new TextHasParameterCondition()),
+					ConversationStates.BUY_PRICE_OFFERED,
 					null,
 					new ChatAction() {
 						@Override
@@ -141,9 +141,9 @@ public class HeroldNPC implements ZoneConfigurator {
 						}
 				});
 
-				add(ConversationStates.ATTENDING, "rent", 
-					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new TextHasParameterCondition()), 
-					ConversationStates.BUY_PRICE_OFFERED, 
+				add(ConversationStates.ATTENDING, "rent",
+					new AndCondition(getRentMatchCond(), new LevelGreaterThanCondition(5), new TextHasParameterCondition()),
+					ConversationStates.BUY_PRICE_OFFERED,
 					null,
 					new ChatAction() {
 						@Override
@@ -164,7 +164,7 @@ public class HeroldNPC implements ZoneConfigurator {
 							return "remember text";
 						}
 				});
-		
+
 				add(ConversationStates.BUY_PRICE_OFFERED,
 					ConversationPhrases.YES_MESSAGES,
 					new NotCondition(new PlayerHasItemWithHimCondition("money", MONEY)),
@@ -177,24 +177,24 @@ public class HeroldNPC implements ZoneConfigurator {
 					ConversationStates.IDLE, null,
 					new RentSignChatAction());
 
-				add(ConversationStates.BUY_PRICE_OFFERED, 
+				add(ConversationStates.BUY_PRICE_OFFERED,
 					ConversationPhrases.NO_MESSAGES, null,
 					ConversationStates.ATTENDING,
 					"Jeżeli zmienisz zdanie to porozmawiaj ze mną.", null);
 
-				add(ConversationStates.ATTENDING, Arrays.asList("remove", "usuń"), 
+				add(ConversationStates.ATTENDING, Arrays.asList("remove", "usuń"),
 					new PlayerHasStorableEntityCondition(rentedSignList),
 					ConversationStates.ATTENDING,
 					"Dobrze usunę twój znak.",
 					new RemoveStorableEntityAction(rentedSignList));
 
-				add(ConversationStates.ATTENDING, Arrays.asList("remove", "usuń"), 
+				add(ConversationStates.ATTENDING, Arrays.asList("remove", "usuń"),
 					new NotCondition(new PlayerHasStorableEntityCondition(rentedSignList)),
 					ConversationStates.ATTENDING,
 					"Nie wynająłeś żadnego znaku, więc co mam usunąć.", null);
 
 				// admins may remove signs (even low level admins)
-				add(ConversationStates.ATTENDING, Arrays.asList("delete", "usuń"), 
+				add(ConversationStates.ATTENDING, Arrays.asList("delete", "usuń"),
 					new AdminCondition(100),
 					ConversationStates.ATTENDING, null,
 					new ChatAction() {

@@ -40,7 +40,7 @@ public class TouristFromAdosNPC implements ZoneConfigurator  {
 				// doesn't move
 				setPath(null);
 			}
-	
+
 			@Override
 			public void createDialog() {
 				addGreeting("Miło Cię poznać!");
@@ -55,6 +55,6 @@ public class TouristFromAdosNPC implements ZoneConfigurator  {
 		npc.setEntityClass("swimmer8npc");
 		npc.setDirection(Direction.DOWN);
 		npc.setDescription("Oto Zara opalająca się na plaży i sądząca, że za bardzo się spiekła.");
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }

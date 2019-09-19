@@ -104,7 +104,7 @@ public class FishermanNPC implements ZoneConfigurator {
 				// make sure peqoud tells player to remind him to get oil back by overriding transactAgreedDeal
 				// override giveProduct so that he doesn't say 'welcome back', which is a greeting,
 				// in the middle of an active conversation.
-				class SpecialProducerBehaviour extends ProducerBehaviour { 
+				class SpecialProducerBehaviour extends ProducerBehaviour {
 					SpecialProducerBehaviour(final List<String> productionActivity,
                         final String productName, final Map<String, Integer> requiredResourcesPerItem,
 											 final int productionTimePerItem) {
@@ -115,7 +115,7 @@ public class FishermanNPC implements ZoneConfigurator {
 					/**
 					 * Tries to take all the resources required to produce the agreed amount of
 					 * the product from the player. If this is possible, initiates an order.
-					 * 
+					 *
 					 * @param res
 					 *
 					 * @param npc
@@ -156,7 +156,7 @@ public class FishermanNPC implements ZoneConfigurator {
 					 * product. It checks if the NPC is already done with the order. If that is
 					 * the case, the player is given the product. Otherwise, the NPC asks the
 					 * player to come back later.
-					 * 
+					 *
 					 * @param npc
 					 *            The producing NPC
 					 * @param player
@@ -193,7 +193,7 @@ public class FishermanNPC implements ZoneConfigurator {
 						}
 					}
 				}
-				
+
 				final ProducerBehaviour behaviour = new SpecialProducerBehaviour(Arrays.asList("make", "zrób"), "olejek",
 				        requiredResources, 10 * 60);
 

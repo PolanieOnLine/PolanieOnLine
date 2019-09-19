@@ -23,7 +23,7 @@ import java.util.List;
  * This class simulates a ferry going back and forth between the mainland and
  * the island. Note that, even though this class lies in a maps package, this is
  * not a zone configurator.
- * 
+ *
  * NPCs that have to do with the ferry:
  * <li> Eliza - brings players from the mainland docks to the ferry.
  * <li>Jessica - brings players from the island docks to the ferry.
@@ -31,10 +31,10 @@ import java.util.List;
  * captain.
  * <li>Laura - the ship galley maid.
  * <li>Ramon - offers blackjack on the ship.
- * 
+ *
  * @see games.stendhal.server.maps.athor.ship.CaptainNPC
  * @author daniel
- * 
+ *
  */
 public final class AthorFerry implements TurnListener {
 
@@ -46,9 +46,9 @@ public final class AthorFerry implements TurnListener {
 
 	private Status current;
 
-	
 
-	
+
+
 
 	/**
 	 * A list of non-player characters that get notice when the ferry arrives or
@@ -80,7 +80,7 @@ public final class AthorFerry implements TurnListener {
 	public Status getState() {
 		return current;
 	}
-	
+
 	/**
 	 * Gets a textual description of the ferry's status.
 	 *
@@ -111,7 +111,7 @@ public final class AthorFerry implements TurnListener {
 	public void addListener(final IFerryListener npc) {
 		listeners.add(npc);
 	}
-	
+
 	/**
 	 * Auto registers the listener to Athorferry.
 	 * deregistration must be implemented if it is used for short living objects
@@ -123,7 +123,7 @@ public final class AthorFerry implements TurnListener {
 			SingletonRepository.getAthorFerry().addListener(this);
 		}
 
-		
+
 	}
 
 	public interface IFerryListener {

@@ -28,24 +28,24 @@ import java.util.List;
 
 /**
  * QUEST: ElvishArmor
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li> Lupos, an albino elf who live in Fado Forest</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Lupos wants to see every piece of elvish equipment you can bring him</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li> 20000 XP</li>
  * <li> Karma:25</li>
  * <li> ability to sell elvish stuff and also drow sword</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li> None.</li>
@@ -55,9 +55,9 @@ public class ElvishArmor extends AbstractQuest implements
 		BringListOfItemsQuest {
 
 	private static final String QUEST_SLOT = "elvish_armor";
-	
+
 	private BringListOfItemsQuestLogic bringItems;
-	
+
 	private static final List<String> NEEDEDITEMS = Arrays.asList(
 			"zbroja elficka", "spodnie elfickie", "buty elfickie", "miecz elficki",
 			"płaszcz elficki", "tarcza elficka");
@@ -66,7 +66,7 @@ public class ElvishArmor extends AbstractQuest implements
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		return bringItems.getHistory(player);
@@ -180,7 +180,7 @@ public class ElvishArmor extends AbstractQuest implements
 	public String respondToLastItemBrought() {
 		return "Zbadam to! Albino elfy mają dług wdzięczności wobec Ciebie.";
 	}
-								
+
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
 		return "Kłamca! Nie masz "
@@ -205,7 +205,7 @@ public class ElvishArmor extends AbstractQuest implements
 	@Override
 	public String respondToQuestAfterItHasAlreadyBeenCompleted() {
 		return "Jestem teraz zajęty badaniem właściwości elfickich części zbroi, które mi przyniosłeś. To intrygujące. Dopóki nie będę ich produkował to będę je skupywał od Ciebie."
-         + "Liczę na twoje zangażowanie."; 
+         + "Liczę na twoje zangażowanie.";
 	}
 
 	@Override
@@ -261,7 +261,7 @@ public class ElvishArmor extends AbstractQuest implements
 	public String getNPCName() {
 		return "Lupos";
 	}
-	
+
 	// it's technically in Fado forest but much nearer Kirdneh city
 	@Override
 	public String getRegion() {

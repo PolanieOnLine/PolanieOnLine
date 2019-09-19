@@ -57,7 +57,7 @@ public class EntwifeNPC implements ZoneConfigurator {
 		entwife.setAlternativeImage("tendertwig");
 		entwife.setPosition(25, 35);
 		entwife.initHP(100);
-		entwife.setDescription("Widzisz starego i mądrego entwife. Zwą go Tendertwig, jest strażnikiem tej okolicy."); 
+		entwife.setDescription("Widzisz starego i mądrego entwife. Zwą go Tendertwig, jest strażnikiem tej okolicy.");
 		zone.add(entwife);
 	}
 }

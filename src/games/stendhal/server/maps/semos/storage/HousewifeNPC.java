@@ -43,7 +43,7 @@ public class HousewifeNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				nodes.add(new Node(4, 12)); 
+				nodes.add(new Node(4, 12));
 				nodes.add(new Node(6, 12));
 				nodes.add(new Node(6, 13));
 				nodes.add(new Node(15, 13));

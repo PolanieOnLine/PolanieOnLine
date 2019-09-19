@@ -51,7 +51,7 @@ public class KirdnehFishyMarketNPC implements ZoneConfigurator {
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(63, 89));
-				nodes.add(new Node(63, 88));				
+				nodes.add(new Node(63, 88));
 				nodes.add(new Node(64, 88));
 				nodes.add(new Node(64, 87));
 				nodes.add(new Node(68, 87));

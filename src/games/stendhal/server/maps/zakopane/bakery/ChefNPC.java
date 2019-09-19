@@ -10,8 +10,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
-//Zrobiony na podstawie ChefNPC z Semos. 
+
+//Zrobiony na podstawie ChefNPC z Semos.
 
 package games.stendhal.server.maps.zakopane.bakery;
 

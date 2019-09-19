@@ -28,7 +28,7 @@ import java.util.TreeMap;
 
 /**
  * The miller (original name: Jenny). She mills flour for players who bring
- * grain. 
+ * grain.
  */
 public class MillerNPC implements ZoneConfigurator {
 
@@ -37,7 +37,7 @@ public class MillerNPC implements ZoneConfigurator {
 			Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(StendhalRPZone zone) {
 		SpeakerNPC npc = new SpeakerNPC("Jenny") {
 			@Override
@@ -46,7 +46,7 @@ public class MillerNPC implements ZoneConfigurator {
 				addReply("kłosy",
 				        "Niedaleko jest farma. Zazwyczaj pozwalają ludziom tam zbierać kłosy zboża. Oczywiście potrzebujesz #kosy do ich ścięcia.");
 				addReply("kosy",
-					    "Kuźnia jest miejscem gdzie możesz ją dostać"); 
+					    "Kuźnia jest miejscem gdzie możesz ją dostać");
 				addHelp("Znasz piekarnię w Semos? Jestem dumna, że używają mojej mąki, ale wilki znowu zjadły mojego dostawcę... albo może uciekł... hm.");
 				addGoodbye();
 				addOffer("Możesz #zasadzić moje nasiona, aby wyrosły z nich piękne kwiatki.");
@@ -61,7 +61,7 @@ public class MillerNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-			
+
 		};
 		// Jenny mills flour if you bring her grain.
 		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
@@ -72,7 +72,7 @@ public class MillerNPC implements ZoneConfigurator {
 		new SellerAdder().addSeller(npc, new SeedSellerBehaviour());
 		new ProducerAdder().addProducer(npc, behaviour,"Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.");
 		npc.setPosition(19, 39);
-		npc.setDescription("Oto Jenny. Pracuje w młynie.");	
+		npc.setDescription("Oto Jenny. Pracuje w młynie.");
 		npc.setDirection(Direction.DOWN);
 		npc.setEntityClass("woman_003_npc");
 		zone.add(npc);

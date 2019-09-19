@@ -49,16 +49,16 @@ public class FarmerNPC implements ZoneConfigurator {
 	private void buildFarmer(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Karl") {
 
-			/* 
+			/*
 			 * Karl walks around near the red barn and along the path some way.
 			 */
-			
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(64, 76));
-				nodes.add(new Node(64, 86));	
-				nodes.add(new Node(68, 86));	
+				nodes.add(new Node(64, 86));
+				nodes.add(new Node(68, 86));
 				nodes.add(new Node(68, 84));
 				nodes.add(new Node(76, 84));
 				nodes.add(new Node(68, 84));
@@ -69,7 +69,7 @@ public class FarmerNPC implements ZoneConfigurator {
 				nodes.add(new Node(64, 86));
 				setPath(new FixedPath(nodes, true));
 			}
-			
+
 			@Override
 			protected void createDialog() {
 				addGreeting("Heja! Miło Cię widzieć w naszym gospodarstwie.");

@@ -53,15 +53,15 @@ public class MayorNPC implements ZoneConfigurator {
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(3, 9));
-				nodes.add(new Node(8, 9));	
-				nodes.add(new Node(8, 16));	
+				nodes.add(new Node(8, 9));
+				nodes.add(new Node(8, 16));
 				nodes.add(new Node(25, 16));
 				nodes.add(new Node(25, 13));
 				nodes.add(new Node(37, 13));
 				nodes.add(new Node(25, 13));
 				nodes.add(new Node(25, 16));
 				nodes.add(new Node(8, 16));
-				nodes.add(new Node(8, 9));	
+				nodes.add(new Node(8, 9));
 				setPath(new FixedPath(nodes, true));
 			}
 

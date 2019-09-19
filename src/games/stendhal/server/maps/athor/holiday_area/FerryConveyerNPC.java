@@ -121,7 +121,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 
 			new AthorFerry.FerryListener() {
 
-		
+
 				@Override
 				public void onNewFerryState(final Status status) {
 					ferrystate = status;
@@ -142,7 +142,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			npc.setEntityClass("woman_008_npc");
 			npc.setDescription ("Oto Jessica. Swoją łódką zabiera pasażerów na pokład statku.");
 			npc.setDirection(Direction.LEFT);
-			zone.add(npc);	
+			zone.add(npc);
 	}
 
 }

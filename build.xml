@@ -19,7 +19,6 @@
 	<!-- check for some executables -->
 	<available property="python.present" file="python${exe.ext}" filepath="${env.PATH}"/>
 	<available property="python3.present" file="python3${exe.ext}" filepath="${env.PATH}"/>
-	<available property="git.present" file="git${exe.ext}" filepath="${env.PATH}"/>
 
 	<property file="build.ant-private.properties"/>
 	<property file="build.ant.properties"/>
@@ -810,7 +809,7 @@
 	</target>
 
 	<!-- FIXME: should this depend on "rendermaps" to make sure we are using updated maps? -->
-	<target name="renderworldmap" description="Exports the world.tmx file to .png" depends="compile_polanieonlinetools">
+	<target name="renderworldmap" description="Exports the world.tmx file to .png" depends="rendermaps">
 		<property name="pycmd" value="python3" if:true="${python3.present}"/>
 		<property name="pycmd" value="python" unless:true="${python3.present}" if:true="${python.present}"/>
 
@@ -826,7 +825,7 @@
 		<!-- FIXME: this should be skipped if previous Python script was not run -->
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
-				<pathelement path="${build_stendhaltools}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="${tiled_jar}"/>
 			</classpath>
 		</taskdef>
@@ -835,23 +834,8 @@
 				<include name="world.tmx"/>
 			</fileset>
 		</maprenderer>
-
-		<!-- reset individual area images -->
-		<exec executable="git" if:true="${git.present}">
-			<arg value="add"/>
-			<arg value="--"/>
-			<arg value="./tiled/world/world.png"/>
-		</exec>
-		<exec executable="git" if:true="${git.present}">
-			<arg value="checkout"/>
-			<arg value="--"/>
-			<arg value="./tiled/world/"/>
-		</exec>
-		<exec executable="git" if:true="${git.present}">
-			<arg value="reset"/>
-			<arg value="--"/>
-			<arg value="./tiled/world/"/>
-		</exec>
+		
+		<!-- FIXME: should 'rendermaps' be called again to remove labels from individual images? -->
 	</target>
 
 	<target name="renderatlas" description="Generates the files for the Stendhal Atlas" depends="compile_polanieonlinetools">
@@ -960,6 +944,20 @@
 				<include name="*.jar"/>
 			</fileset>
 		</updatesigner>
+	</target>
+
+	<target name="cleanwhitespace" description="cleans whitespace in source and other specified file types" depends="compile_polanieonlinetools">
+		<java classname="games.stendhal.tools.CleanWhitespace">
+			<classpath>
+				<pathelement path="${build_polanieonlinetools}"/>
+			</classpath>
+			<arg value="src/"/>
+			<arg value="tests/"/>
+			<arg value="srcjs/"/>
+			<arg value="data/"/>
+			<arg value="tiled/"/>
+			<arg value="java,xml,js,xsd,lua,py"/>
+		</java>
 	</target>
 
 

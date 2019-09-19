@@ -67,7 +67,7 @@ public class BuyerNPC implements ZoneConfigurator {
 				addHelp("#Pohandluję rzadką bronią. Tutaj znajdziesz Ognira, który wyrabia pierścionki, a także skupuje dziwne kamienie.");
 				addOffer("Spójrz na tablicę na ścianie, aby zobaczyć co skupuję.");
 				addQuest("Dziękuję, ale niczego nie potrzebuję.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrare2")), false); 
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrare2")), false);
 				addGoodbye("Do zobaczenie wkrótce.");
 			}
 		};

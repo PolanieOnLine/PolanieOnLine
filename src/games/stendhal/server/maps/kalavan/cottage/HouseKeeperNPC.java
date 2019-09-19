@@ -65,7 +65,7 @@ public class HouseKeeperNPC implements ZoneConfigurator {
 				addQuest("Mam ból głowy i małą Annie, która za każdym razem jak schodzi to hałasuje. Może mógłbyś dać jej jakieś zajęcie? ... tak, aby się uciszyła ...");
 				addGoodbye("Dowidzenia.");
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("mleko", 1);
 				requiredResources.put("miód", 1);
 

@@ -79,7 +79,7 @@ public class WalkingWomanNPC implements ZoneConfigurator  {
 				nodes.add(new Node(52,29));
 				nodes.add(new Node(52,28));
 				nodes.add(new Node(76,28));
-				// The same way back 
+				// The same way back
 				nodes.add(new Node(52,28));
 				nodes.add(new Node(52,29));
 				nodes.add(new Node(47,29));
@@ -135,6 +135,6 @@ public class WalkingWomanNPC implements ZoneConfigurator  {
 		npc.setPosition(5, 49);
 		npc.setEntityClass("swimmer7npc");
 		npc.setDescription ("Dziewczyna obok ciebie to Kelicia, która spaceruje wzdłuż wybrzeża.");
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }

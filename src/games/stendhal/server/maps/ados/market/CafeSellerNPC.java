@@ -53,10 +53,10 @@ public class CafeSellerNPC implements ZoneConfigurator {
 				// just to be nice :)
 				addEmotionReply("thanks", "ciepłe podziękowanie");
 				addEmotionReply("smile", "uśmiecha się");
-				
+
 				addGoodbye("Wróć ponownie!");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);

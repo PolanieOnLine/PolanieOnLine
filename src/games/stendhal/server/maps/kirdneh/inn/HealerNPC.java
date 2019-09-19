@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Builds a Healer NPC for kirdneh. 
+ * Builds a Healer NPC for kirdneh.
  * She likes a drink
  *
  * @author kymara
@@ -69,14 +69,14 @@ public class HealerNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 			    addGreeting("Hik #całusik!");
-                addReply("picie", null, new ListProducedItemsOfClassAction("drink","Lubię [#items]. *hic*"));  
+                addReply("picie", null, new ListProducedItemsOfClassAction("drink","Lubię [#items]. *hic*"));
 				add(
 					ConversationStates.ATTENDING,
 					"",
 					new TriggerIsProducedItemOfClassCondition("drink"),
 					ConversationStates.ATTENDING,
 					null,
-					new ListProducedItemDetailAction()				
+					new ListProducedItemDetailAction()
 				);
                 addReply(Arrays.asList("kiss", "całusik"), "łee kiepski");
                 addReply(":*", "*:");
@@ -101,18 +101,18 @@ public class HealerNPC implements ZoneConfigurator {
 	    final HealerBehaviour healerBehaviour = new HealerBehaviour(cost);
 		final Engine engine = npc.getEngine();
 
-		engine.add(ConversationStates.ATTENDING, 
-				ConversationPhrases.OFFER_MESSAGES, 
-				null, 
-				false, 
-				ConversationStates.ATTENDING, 
+		engine.add(ConversationStates.ATTENDING,
+				ConversationPhrases.OFFER_MESSAGES,
+				null,
+				false,
+				ConversationStates.ATTENDING,
 				"Daj mi pieniądze na picie, a uleczę. Hik kasa.", null);
 
-		engine.add(ConversationStates.ATTENDING, 
-				Arrays.asList("heal", "ulecz"), 
-				null, 
-				false, 
-				ConversationStates.HEAL_OFFERED, 
+		engine.add(ConversationStates.ATTENDING,
+				Arrays.asList("heal", "ulecz"),
+				null,
+				false,
+				ConversationStates.HEAL_OFFERED,
 		        null, new ChatAction() {
 			        @Override
 			        public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -124,17 +124,17 @@ public class HealerNPC implements ZoneConfigurator {
 			        		badboymsg = " Dla takich jak ty jest drożej.";
 			        		currentBehavRes.setAmount(2);
 			        	}
-			        	
+
 						if (cost != 0) {
 	                    	raiser.say("To kosztuje " + cost + " money, ok?" + badboymsg);
 	                    }
 			        }
 		        });
 
-		engine.add(ConversationStates.HEAL_OFFERED, 
-				ConversationPhrases.YES_MESSAGES, 
+		engine.add(ConversationStates.HEAL_OFFERED,
+				ConversationPhrases.YES_MESSAGES,
 				null,
-		        false, 
+		        false,
 		        ConversationStates.IDLE,
 		        null, new ChatAction() {
 			        @Override
@@ -150,11 +150,11 @@ public class HealerNPC implements ZoneConfigurator {
 			        }
 		        });
 
-		engine.add(ConversationStates.HEAL_OFFERED, 
-				ConversationPhrases.NO_MESSAGES, 
+		engine.add(ConversationStates.HEAL_OFFERED,
+				ConversationPhrases.NO_MESSAGES,
 				null,
-		        false, 
-		        ConversationStates.ATTENDING, 
+		        false,
+		        ConversationStates.ATTENDING,
 		        "Czego chcesz?", null);
 	}
 

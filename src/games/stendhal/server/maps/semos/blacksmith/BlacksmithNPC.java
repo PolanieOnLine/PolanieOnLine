@@ -33,9 +33,9 @@ import java.util.TreeMap;
  * The blacksmith (original name: Xoderos). Brother of the goldsmith in Ados.
  * He refuses to sell weapons, but he casts iron for the player, and he sells
  * tools.
- * 
+ *
  * @author daniel
- * 
+ *
  * @see games.stendhal.server.maps.quests.HungryJoshua
  */
 public class BlacksmithNPC implements ZoneConfigurator  {
@@ -92,7 +92,7 @@ public class BlacksmithNPC implements ZoneConfigurator  {
 				new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("selltools")));
 
 		// Xoderos casts iron if you bring him wood and iron ore.
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();	
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 		requiredResources.put("polano", 1);
 		requiredResources.put("ruda żelaza", 1);
 

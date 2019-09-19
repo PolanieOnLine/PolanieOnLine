@@ -30,9 +30,9 @@ import java.util.Map;
  * @author dine
  */
 public class TeacherNPC implements ZoneConfigurator {
-	
+
 	private static final int TIME_OUT = 60;
-	
+
 	/**
 	 * Configure a zone.
 	 *
@@ -67,7 +67,7 @@ public class TeacherNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("oil", "olejek"),"Pomyliłeś się. Idź i zapytaj Pequoda o olejek. Mieszka w sąsiedniej chatce.");
 			}
 		};
-		fisherman.setPlayerChatTimeout(TIME_OUT); 
+		fisherman.setPlayerChatTimeout(TIME_OUT);
 		fisherman.setEntityClass("fishermannpc");
 		fisherman.setDirection(Direction.DOWN);
 		fisherman.setPosition(3, 3);

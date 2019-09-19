@@ -64,7 +64,7 @@ public class MakeupArtistNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Cześć. Czy potrzebujesz mojej #pomocy?");
 				addHelp(getHelpDescription());
-				
+
 				// this is a hint that one of the items Anna wants is a dress (goblin dress)
 				addQuest("Szukasz zabawek dla Anny? Ona kocha moje kostiumy. Może będzie chciała przymierzyć #ubranie. Jeżeli już masz to sądzę, że poczeka aż nie zrobię nowych kostiumów!");
 				addJob("Jestem charakteryzatorką.");

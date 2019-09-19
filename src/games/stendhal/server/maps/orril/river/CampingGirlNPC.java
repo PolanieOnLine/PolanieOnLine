@@ -49,7 +49,7 @@ public class CampingGirlNPC implements ZoneConfigurator {
 				addJob("Praca? Jestem tylko małą dziewczynką! Skautem.");
 				addHelp("Możesz znaleźć sporo użytecznych rzeczy w lesie na przykład drewno i grzyby. Uważaj, niektóre grzyby są trujące!");
 				addGoodbye();
-				// remaining behaviour is defined in maps.quests.Campfire.				
+				// remaining behaviour is defined in maps.quests.Campfire.
 			}
 		};
 

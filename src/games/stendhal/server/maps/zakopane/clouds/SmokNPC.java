@@ -40,7 +40,7 @@ public class SmokNPC implements ZoneConfigurator {
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
-	
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -61,7 +61,7 @@ public class SmokNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj. Jam jest Panem wszystkich smoków.");
-				addJob("Może zrobisz dla mnie #zadanie?");								
+				addJob("Może zrobisz dla mnie #zadanie?");
 				addHelp("W zamian za pomoc szepnę słówko do Krasnoluda, aby zrobił dla ciebie złotą ciupagę z dwoma wąsami.");
 				addGoodbye("Trzymaj się dzielnie");
 			}

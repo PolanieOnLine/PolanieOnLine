@@ -34,11 +34,11 @@ import org.apache.log4j.Logger;
 public class DarkElvesCreatures implements ZoneConfigurator {
 	private static final String QUEST_SLOT = "kill_dark_elves";
 	// be sure to have synchronized creatures lists with DrowCreatures.class
-	private final List<String> creatures = 
+	private final List<String> creatures =
 		Arrays.asList("elf ciemności kapitan"
 				      ,"elf ciemności generał"
 				     );
-	
+
 	/**
 	 * Configure a zone.
 	 *
@@ -49,11 +49,11 @@ public class DarkElvesCreatures implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildSecretRoomArea(zone);
 	}
-	
+
 	/**
 	 * function will fill information about victim to killer's quest slot.
 	 * @param circ - information about victim,zone and killer.
-	 */	
+	 */
 	private void updatePlayerQuest(final CircumstancesOfDeath circ) {
 		final RPEntity killer = circ.getKiller();
 		final String victim = circ.getVictim().getName();
@@ -61,7 +61,7 @@ public class DarkElvesCreatures implements ZoneConfigurator {
 				"in "+circ.getZone().getName()+
 				": "+circ.getVictim().getName()+
 				" killed by "+circ.getKiller().getName());
-		
+
 		// check if was killed by other animal/pet
 		if(!circ.getKiller().getClass().getName().equals(Player.class.getName()) ) {
 			return;
@@ -76,7 +76,7 @@ public class DarkElvesCreatures implements ZoneConfigurator {
 			player.setQuest(QUEST_SLOT, 1+slot, victim);
 		}
 	}
-	
+
 	class DrowObserver implements Observer {
 		@Override
 		public void update(Observable o, Object arg) {

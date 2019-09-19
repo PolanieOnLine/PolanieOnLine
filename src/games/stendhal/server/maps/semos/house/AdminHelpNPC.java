@@ -101,7 +101,7 @@ public class AdminHelpNPC implements ZoneConfigurator {
 				// do not walk so that admins can
 				// idle here 24/7 without using cpu and bandwith.
 			}
-			
+
 		};
 		new HealerAdder().addHealer(npc, 0);
 		npc.setPosition(16, 7);
@@ -110,5 +110,5 @@ public class AdminHelpNPC implements ZoneConfigurator {
 		npc.setEntityClass("beautifulgirlnpc");
 		zone.add(npc);
 	}
-	
+
 }

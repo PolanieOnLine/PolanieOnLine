@@ -33,10 +33,10 @@ public class SellerNPC implements ZoneConfigurator {
 			Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(StendhalRPZone zone) {
 		SpeakerNPC npc = new SpeakerNPC("Sarzina") {
-			
+
 			@Override
 			public void createDialog() {
 				addGreeting();
@@ -53,7 +53,7 @@ public class SellerNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-			
+
 		};
 		new SellerAdder().addSeller(npc, new SellerBehaviour(SingletonRepository.getShopList().get("superhealing")));
 		npc.setPosition(3, 5);

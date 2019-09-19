@@ -24,7 +24,7 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 
 	/**
 	 * Creates a new BuyHouseChatAction.
-	 * 
+	 *
 	 * @param cost how much does the house cost
 	 * @param questSlot name of quest slot
 	 */
@@ -51,7 +51,7 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 
 		final String owner = houseportal.getOwner();
 		if (owner.length() == 0) {
-			
+
 			// it's available, so take money
 			if (player.isEquipped("money", cost)) {
 				final Item key = SingletonRepository.getEntityManager().getItem(
@@ -61,12 +61,12 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 
 				final int locknumber = houseportal.getLockNumber();
 				((HouseKey) key).setup(doorId, locknumber, player.getName());
-			
+
 				if (player.equipToInventoryOnly(key)) {
 					raiser.say("Gratulacje, a oto i klucz do " + doorId
 							   + ". Upewnij się, że zmieniłeś zamki o ile zgubiłeś klucze. Czy chcesz kupić zapasowy klucz w cenie  "
 							   + HouseChatAction.COST_OF_SPARE_KEY + " money?");
-					
+
 					player.drop("money", cost);
 					// remember what house they own
 					player.setQuest(questslot, itemName);
@@ -83,11 +83,11 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 				} else {
 					raiser.say("Przepraszam, ale nie możesz wziąć więcej kluczy!");
 				}
-			
+
 			} else {
 				raiser.say("Nie masz wystarczająco dużo pieniędzy, aby kupić dom");
 			}
-		
+
 		} else {
 			raiser.say("Przepraszam dom " + itemName
 					   + " został już sprzedany. Poproś o listę #niesprzedanych domów lub podaj numer innego domu.");

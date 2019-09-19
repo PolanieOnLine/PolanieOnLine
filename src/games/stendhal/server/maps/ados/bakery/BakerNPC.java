@@ -85,7 +85,7 @@ public class BakerNPC implements ZoneConfigurator {
 				// addGreeting("Hi, most of the people are out of town at the moment.");
 				addJob("Jestem lokalnym piekarzem. Mimo iż dostajemy większość zapasów z Semos to i tak jest sporo pracy do zrobienia.");
 				addReply(Arrays.asList("mąka", "mięso", "marchew"),
-               "W Ados brakuje zapasów. Dostajemy większość jedzenia z Semos, które jest na zachód stąd.");  
+               "W Ados brakuje zapasów. Dostajemy większość jedzenia z Semos, które jest na zachód stąd.");
 				addReply(Arrays.asList("button mushroom","pieczarka"),
 					    "Doszły nas słuchy, że w kuchni brakuje żywności. Postanowiliśmy powiększyć zapasy grzybów. Teraz znajdziesz ich większą ilość w lasach. ");
 				addHelp("Jeżeli posiadasz mnóstwo mięsa lub sera to możesz sprzedać Siandrze w barze Ados.");

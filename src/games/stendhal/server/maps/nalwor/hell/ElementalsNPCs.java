@@ -89,7 +89,7 @@ public class ElementalsNPCs implements ZoneConfigurator {
 						ConversationStates.IDLE,
 						"Nie rozmawiaj z nami tylko z heroldami Piekła!",
 						null);
-			
+
 				}
 			};
 			npc.setEntityClass("fireelementalnpc");

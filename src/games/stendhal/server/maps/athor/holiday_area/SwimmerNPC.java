@@ -40,7 +40,7 @@ public class SwimmerNPC implements ZoneConfigurator  {
 				nodes.add(new Node(67,63));
 				setPath(new FixedPath(nodes, true));
 			}
-			
+
 			@Override
 			public void createDialog() {
 				addGreeting("Nie przeszkadzaj mi. Próbuję pobić rekord!");
@@ -54,6 +54,6 @@ public class SwimmerNPC implements ZoneConfigurator  {
 		npc.setPosition(67, 63);
 		npc.setEntityClass("swimmer3npc");
 		npc.setDescription ("Oto Enrique pływa dookoła basenu jakby chciał ustanowić rekord.");
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }

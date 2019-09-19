@@ -63,7 +63,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 				nodes.add(new Node(67, 17));
 				setPath(new FixedPath(nodes, true));
 			}
-			
+
 		};
 		final Map<String, Integer> buyitems = new HashMap<String, Integer>();
 		buyitems.put("sheep", 1500);
@@ -73,7 +73,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 		zone.add(npc);
 		npc.setDescription("Widzisz śmierdzącego orka Tor'Kooma. Jego żołądek wydaje dziwne dźwięki");
 	}
-	
+
 	private static final class SheepBuyerBehaviour extends BuyerBehaviour {
 		SheepBuyerBehaviour(final Map<String, Integer> items) {
 			super(items);

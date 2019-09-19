@@ -28,19 +28,19 @@ import java.util.Map;
 
 /**
  * The bridge tollbooth NPC
- * 
+ *
  * @author AntumDeluge
  */
 public class TollboothNPC implements ZoneConfigurator  {
-    
+
     private final int REQUIRED_COINS = 25;
-    
+
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Toller") {
 
@@ -48,7 +48,7 @@ public class TollboothNPC implements ZoneConfigurator  {
 			protected void createPath() {
 				setPath(null);
 			}
-			
+
 			@Override
 			public void createDialog() {
 			    addGreeting("Witaj jeśli chcesz przekroczyć most #Antum to musisz #zapłacić " + REQUIRED_COINS + " money.");
@@ -56,15 +56,15 @@ public class TollboothNPC implements ZoneConfigurator  {
 				addJob("Pilnuję mostu, który łączy Semos z Antum.");
 				addGoodbye("Żegnaj.");
 				addReply("antum", "Antum jest wspaniałe.");
-				
+
 			}
-			
+
             @Override
             protected void onGoodbye(RPEntity player) {
                 setDirection(Direction.LEFT);
             }
 		};
-        
+
         // Player has enough money and pays toll
         npc.add(ConversationStates.ATTENDING,
                 Arrays.asList("pay", "zapłacić", "zapłać", "zaplac"),
@@ -74,7 +74,7 @@ public class TollboothNPC implements ZoneConfigurator  {
                 new MultipleActions(new DropItemAction("money", 25),
                         new TeleportAction("0_semos_canyon", 36, 29, Direction.UP))
                 );
-        
+
         // Player does not have enough money for toll
         npc.add(ConversationStates.ATTENDING,
                 Arrays.asList("pay"),
@@ -83,7 +83,7 @@ public class TollboothNPC implements ZoneConfigurator  {
                 "Przykro mi, ale nie masz pieniędzy.",
                 null
                 );
-        
+
         npc.setPosition(37, 30);
         npc.setDirection(Direction.LEFT);
         npc.setEntityClass("youngsoldiernpc");

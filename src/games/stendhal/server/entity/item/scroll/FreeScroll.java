@@ -32,7 +32,7 @@ public class FreeScroll extends TeleportScroll {
 
 	/**
 	 * Creates a new free teleport scroll.
-	 * 
+	 *
 	 * @param name
 	 * @param clazz
 	 * @param subclass
@@ -45,7 +45,7 @@ public class FreeScroll extends TeleportScroll {
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param item
 	 *            item to copy
 	 */
@@ -56,7 +56,7 @@ public class FreeScroll extends TeleportScroll {
 	/**
 	 * Is invoked when a teleporting scroll is used. Tries to put the player on
 	 * the scroll's destination, or near it.
-	 * 
+	 *
 	 * @param player
 	 *            The player who used the scroll and who will be teleported
 	 * @return true if teleport was successful

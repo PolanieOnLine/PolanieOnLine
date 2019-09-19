@@ -23,8 +23,8 @@ import java.util.Map;
 
 /**
  * Builds a NPC in a house on Ados market (name:Caroline) who is the daughter of fisherman Fritz
- * 
- * @author Vanessa Julius 
+ *
+ * @author Vanessa Julius
  *
  */
 public class FishermansDaughterNPC implements ZoneConfigurator {
@@ -36,7 +36,7 @@ public class FishermansDaughterNPC implements ZoneConfigurator {
 
 	public void createFishermansDaughterSellingNPC(final StendhalRPZone zone) {
 
-		    
+
 		final SpeakerNPC npc = new SpeakerNPC("Caroline") {
 			@Override
 			protected void createPath() {
@@ -50,7 +50,7 @@ public class FishermansDaughterNPC implements ZoneConfigurator {
 				addHelp("Odwiedziłeś już targ w Ados? Znajdziesz tam bardzo dużo #'fajnych ludzi' spacerujących wokoło i robiących #'przepyszne jedzenie'!");
 				addReply("przepyszne jedzenie", "Próbowałam zupy rybnej i grilowanych steków, były przesmaczne!");
 				addReply("fajnych ludzi", "Florence Boullabaisse jest jednym z moich najlepszych przyjaciół, a Haunchy to naprawdę przemiły gość!");
-				addQuest("Obecnie staram się dowiedzieć, w jaki sposób założyć swoją własną firmę. Uwielbiam gotować i chcę otworzyć już wkrótce własną firmę #kateringową."); 
+				addQuest("Obecnie staram się dowiedzieć, w jaki sposób założyć swoją własną firmę. Uwielbiam gotować i chcę otworzyć już wkrótce własną firmę #kateringową.");
 				addReply(Arrays.asList("kateringową","kateringiem"), "Słyszałam, że niektóre #hotele potrzebują obiadów dla gości, a ich kuchnie są zbyt małe, więc potrzebują kogoś, kto wyręczy ich w gotowaniu i przygotuje coś to jedzenia i przyniesie jakieś potrzebne składniki.");
 				addReply("hotele", "Ogromny hotel w Fado jest dobrze znany nowożeńcom. To naprawdę miłe i przyjemne miejsce, by świętować w nim swój ślub.");
 				addJob("Mój tata, #Fritz, jest rybakiem. A ja myślę o otworzeniu własnej firmy, zajmującej się #kateringiem.");
@@ -59,7 +59,7 @@ public class FishermansDaughterNPC implements ZoneConfigurator {
 				addOffer("Nic nie mogę Ci teraz zaoferować, ale kiedyś - kto wie.");
 				addGoodbye("Dziękuję, że odwiedziłeś nas tutaj! Miłego dnia! :)");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);

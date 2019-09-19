@@ -27,7 +27,7 @@ public class PathsBuildHelper {
 	 * @return - incoming path
 	 */
 	public static List<RPZonePath> getAdosIncomingPath() {
-		final List<RPZonePath> fullPath = 
+		final List<RPZonePath> fullPath =
 			new LinkedList<RPZonePath>();
 
 		final List<Node> localroute = new LinkedList<Node>();
@@ -114,11 +114,11 @@ public class PathsBuildHelper {
 
 		// city central
 		localroute.clear();
-		localroute.add(new Node(52,0));	
-		localroute.add(new Node(52,5));	
-		localroute.add(new Node(55,5));	
-		localroute.add(new Node(55,8));	
-		localroute.add(new Node(60,8));	
+		localroute.add(new Node(52,0));
+		localroute.add(new Node(52,5));
+		localroute.add(new Node(55,5));
+		localroute.add(new Node(55,8));
+		localroute.add(new Node(60,8));
 		localroute.add(new Node(60,11));
 		localroute.add(new Node(66,11));
 		localroute.add(new Node(66,55));
@@ -130,7 +130,7 @@ public class PathsBuildHelper {
 				new RPZonePath("0_ados_city",
 				new LinkedList<Node>(localroute)));
 
-		// town hall 
+		// town hall
 		localroute.clear();
 		localroute.add(new Node(22,16));
 		localroute.add(new Node(22,8));
@@ -162,7 +162,7 @@ public class PathsBuildHelper {
 		//localroute.add(new Node(26,14)); // very left point
 		//localroute.add(new Node(32,14)); // very right point
 		fullPath.add(
-				new RPZonePath("int_ados_town_hall_2", 
+				new RPZonePath("int_ados_town_hall_2",
 				new LinkedList<Node>(localroute)));
 
 		return fullPath;
@@ -174,7 +174,7 @@ public class PathsBuildHelper {
 	 * @return - outgoing path
 	 */
 	public static List<RPZonePath> getAdosTownHallBackwardPath() {
-		final List<RPZonePath> fullPath = 
+		final List<RPZonePath> fullPath =
 			new LinkedList<RPZonePath>();
 
 		final List<Node> localroute = new LinkedList<Node>();
@@ -201,7 +201,7 @@ public class PathsBuildHelper {
 				new RPZonePath("int_ados_town_hall_1",
 				new LinkedList<Node>(localroute)));
 
-		// town hall 
+		// town hall
 		localroute.clear();
 		localroute.add(new Node(5,4));
 		localroute.add(new Node(9,4));
@@ -337,7 +337,7 @@ public class PathsBuildHelper {
 		localroute.add(new Node(28,12));
 		localroute.add(new Node(28,41));
 		localroute.add(new Node(31,41));
-		
+
 		globalroute.clear();
 		globalroute.add(
 				new RPZonePath("0_ados_city_s",
@@ -490,7 +490,7 @@ public class PathsBuildHelper {
 		globalroute.add(
 				new RPZonePath("0_ados_wall",
 				new LinkedList<Node>(localroute)));
-		fullPath.add(new LinkedList<RPZonePath>(globalroute));	
+		fullPath.add(new LinkedList<RPZonePath>(globalroute));
 
 		/*
 		 * ados Farmers' family house
@@ -512,7 +512,7 @@ public class PathsBuildHelper {
 
 
 		/*
-		 * thats all :) 
+		 * thats all :)
 		 */
 		return fullPath;
 	}

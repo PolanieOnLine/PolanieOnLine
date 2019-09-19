@@ -30,9 +30,9 @@ import org.apache.log4j.Logger;
  * <p>
  * They move much faster than sheep
  * <p>
- * 
+ *
  * @author edi18028 (based on cat by kymara and on sheep by Daniel Herding)
- * 
+ *
  */
 public class OwczarekPodhalanski extends Pet {
 
@@ -43,7 +43,7 @@ public class OwczarekPodhalanski extends Pet {
 	void setUp() {
 		HP = 1000;
 		// each chicken or fish would give +5 HP
-		incHP = 6; 
+		incHP = 6;
 		ATK = 20;
 		DEF = 60;
 		XP = 100;
@@ -76,7 +76,7 @@ public class OwczarekPodhalanski extends Pet {
 
 	/**
 	 * Creates a new Owczarek Podhalanski that may be owned by a player.
-	 * @param owner 
+	 * @param owner
 	 */
 	public OwczarekPodhalanski(final Player owner) {
 		// call set up before parent constructor is called as it needs those
@@ -99,7 +99,7 @@ public class OwczarekPodhalanski extends Pet {
 	/**
 	 * Creates a Owczarek based on an existing owczarek podhalanski RPObject, and assigns it to a
 	 * player.
-	 * 
+	 *
 	 * @param object
 	 * @param owner
 	 *            The player who should own the owczarek podhalanski

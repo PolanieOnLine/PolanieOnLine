@@ -152,7 +152,7 @@ class SkinColorSelector extends AbstractColorSelector<SkinColorSelector.SkinColo
 			/*
 			 * At high and low lightness changing the base color does not
 			 * always change the resulting color. Force a repaint so that
-			 * the new base color get highlighted. 
+			 * the new base color get highlighted.
 			 */
 			repaint();
 		}
@@ -178,7 +178,7 @@ class SkinColorSelector extends AbstractColorSelector<SkinColorSelector.SkinColo
 			enumColor = color;
 			setSelectedColor(new Color(enumColor.getColor()));
 		}
-		
+
 		SkinColor getSkinColor() {
 			return enumColor;
 		}
@@ -188,7 +188,7 @@ class SkinColorSelector extends AbstractColorSelector<SkinColorSelector.SkinColo
 			if (color != null) {
 				boolean keepLightness = enumColor != null;
 				enumColor = SkinColor.fromInteger(color.getRGB());
-				
+
 				int[] argb = new int[4];
 				ARGB.splitRgb(enumColor.getColor(), argb);
 				float[] hsl = new float[3];

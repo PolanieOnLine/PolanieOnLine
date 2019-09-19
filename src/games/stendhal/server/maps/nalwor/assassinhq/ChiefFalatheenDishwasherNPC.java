@@ -53,12 +53,11 @@ public class ChiefFalatheenDishwasherNPC implements ZoneConfigurator  {
 				addQuest("Mógłbyś mi pomóc w #ucieczce od tych bandziorów. Cóż... może nie.");
 				addGoodbye("Nie zapomnij gdzie teraz jestem. Wróć kiedyś. Jestem tutaj samotny.");
 				addReply(Arrays.asList("escape", "ucieczce"), "Tak! Chce spełnić swoje marzenie. Mother Helena zaoferowała mi wspaniałą pracę. Potrzebuje osoby do zmywania naczyń. Pełno narzekających klientów!!!");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyveggiesandherbs")), false);			    
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyveggiesandherbs")), false);
 			}};
 			npc.setPosition(20, 3);
 			npc.setDescription("Oto wyglądający na silnego mężczyzna. Je dużo zdrowych warzyw, aby tak wyglądać!");
 			npc.setEntityClass("chieffalatheennpc");
-			zone.add(npc);		
+			zone.add(npc);
 			   	}
 }
-

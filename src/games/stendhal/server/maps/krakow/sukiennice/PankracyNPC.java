@@ -76,7 +76,7 @@ public class PankracyNPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING,
 					"Witaj na targu w sukiennicach.",
 					null);
-				addGoodbye();            
+				addGoodbye();
 
 			}
 		};

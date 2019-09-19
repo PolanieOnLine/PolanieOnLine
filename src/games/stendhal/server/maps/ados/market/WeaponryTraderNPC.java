@@ -69,16 +69,16 @@ public class WeaponryTraderNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj. W czym mogę #'pomóc'?");
 				addHelp("Byłbym wdzięczny, gdybym mógł pomóc tobie skupując twoje przedmioty. Pomoże to nam obu.");
-				
+
 				// this is a hint that one of the items Anna wants is a dress (goblin dress)
 				addQuest("Nie mam dla Ciebie zadań.");
 				addJob("Jestem handlarzem broni. Wolę sam pracować.");
 				//addReply("offer", "Look at the blackboard to see my offers.");
 				addGoodbye("Dowidzenia. Wracaj szybko.");
-				
-				final Map<String, Integer> pricelist = 
+
+				final Map<String, Integer> pricelist =
 					SingletonRepository.getShopList().get("buyadosarmors");
-				
+
 				final BuyerBehaviour behaviour = new BuyerBehaviour(pricelist);
 				new BuyerAdder().addBuyer(this, behaviour, true);
 			}

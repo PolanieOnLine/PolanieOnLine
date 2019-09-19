@@ -50,7 +50,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 		}
 		return shipZone;
 	}
-	
+
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Eliza") {
 
@@ -124,7 +124,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 
 
 			}};
-			
+
 				new AthorFerry.FerryListener() {
 				@Override
 					public void onNewFerryState(final Status status) {
@@ -141,11 +141,11 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 						}
 					}
 				};
-			
+
 			npc.setPosition(101, 103);
 			npc.setDescription("Oto Eliza. Zabiera klientów na pokład promu do Athor island.");
 			npc.setEntityClass("woman_008_npc");
 			npc.setDirection(Direction.LEFT);
-			zone.add(npc);		
+			zone.add(npc);
 	}
 }

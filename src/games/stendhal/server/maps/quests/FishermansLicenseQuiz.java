@@ -39,38 +39,38 @@ import marauroa.common.game.RPObjectNotFoundException;
 
 /**
  * QUEST: Fisherman's license Quiz.
- * 
- * PARTICIPANTS: 
+ *
+ * PARTICIPANTS:
  * <ul>
  * <li>Santiago the fisherman</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> The fisherman puts all fish species onto the table and the player must
  * 		identify the names of the fish in the correct order.</li>
  * <li> The player has one try per day.</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li> 500 XP</li>
  * <li> Karma: 15</li>
  * <li> The 2nd part of the exam will be unlocked.</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li> If the player has failed the quiz, he can retry after 24 hours.</li>
  * <li> After passing the quiz, no more repetitions are possible.</li>
  * </ul>
- * 
+ *
  * @author dine
  */
 
 public class FishermansLicenseQuiz extends AbstractQuest {
 	static final String QUEST_SLOT = "fishermans_license1";
-	
+
 	// TODO: use standard conditions and actions
 
 	private final List<String> speciesList = Arrays.asList("pstrąg", "okoń",
@@ -147,7 +147,7 @@ public class FishermansLicenseQuiz extends AbstractQuest {
 			return 0L;
 		}
 		final long timeLastFailed = Long.parseLong(player.getQuest(QUEST_SLOT));
-		final long onedayInMilliseconds = 60 * 60 * 24 * 1000; 
+		final long onedayInMilliseconds = 60 * 60 * 24 * 1000;
 		final long timeRemaining = timeLastFailed + onedayInMilliseconds
 				- System.currentTimeMillis();
 
@@ -249,7 +249,7 @@ public class FishermansLicenseQuiz extends AbstractQuest {
 
 		fisherman.add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
 				ConversationStates.IDLE, "Dowidzenia.", new ChatAction() {
-			
+
 		    // this should be put into a custom ChatAction for this quest when the quest is refactored
 			@Override
 			public void fire(final Player player, final Sentence sentence,
@@ -267,12 +267,12 @@ public class FishermansLicenseQuiz extends AbstractQuest {
 				false);
 		createQuizStep();
 	}
-	
+
 	@Override
 	public String getName() {
 		return "FishermansLicenseQuiz";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ADOS_CITY;

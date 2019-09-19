@@ -33,7 +33,7 @@ public class TradingUtility {
 
 	/**
 	 * substracts the trading fee from the player depending on the given price
-	 * 
+	 *
 	 * @param player
 	 * @param price
 	 * @return true iff player dropped the amount of money
@@ -45,7 +45,7 @@ public class TradingUtility {
 
 	/**
 	 * checks if a player can afford the trading fee depending on price
-	 * 
+	 *
 	 * @param player
 	 * @param price
 	 * @return true iff player has enough money
@@ -83,7 +83,7 @@ public class TradingUtility {
 
 	/**
 	 * checks if a player has not already placed the max number of offers
-	 * 
+	 *
 	 * @param player
 	 * @return true if the player is within the limit, false otherwise
 	 */

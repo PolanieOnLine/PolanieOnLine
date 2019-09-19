@@ -22,7 +22,7 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
-/** The sale of a spare key has been agreed, player meets conditions, 
+/** The sale of a spare key has been agreed, player meets conditions,
  * here is the action to simply sell it. */
 final class BuySpareKeyChatAction extends HouseChatAction implements ChatAction {
 
@@ -46,7 +46,7 @@ final class BuySpareKeyChatAction extends HouseChatAction implements ChatAction 
 				raiser.say("Przepraszam, ale stało się coś złego. Jest mi bardzo przykro.");
 				return;
 			}
-			
+
 			final int locknumber = houseportal.getLockNumber();
 			final String doorId = houseportal.getDoorId();
 			((HouseKey) key).setup(doorId, locknumber, player.getName());

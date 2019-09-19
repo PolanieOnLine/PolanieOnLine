@@ -30,11 +30,11 @@ import java.util.Arrays;
 public class RemoveOfferHandler extends OfferHandler {
 	@Override
 	public void add(SpeakerNPC npc) {
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("remove", "usuń"), null, ConversationStates.ATTENDING, null, 
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("remove", "usuń"), null, ConversationStates.ATTENDING, null,
 				new RemoveOfferChatAction());
-		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.YES_MESSAGES, 
+		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.YES_MESSAGES,
 				ConversationStates.ATTENDING, null, new ConfirmRemoveOfferChatAction());
-		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES, null, 
+		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Jak jeszcze mogę ci pomóc?", null);
 	}
 
@@ -87,7 +87,7 @@ public class RemoveOfferHandler extends OfferHandler {
 			}
 		}
 	}
-	
+
 	protected class ConfirmRemoveOfferChatAction implements ChatAction {
 		@Override
 		public void fire(Player player, Sentence sentence, EventRaiser npc) {
@@ -96,7 +96,7 @@ public class RemoveOfferHandler extends OfferHandler {
 			((MarketManagerNPC) npc.getEntity()).getOfferMap().clear();
 		}
 	}
-	
+
 	private void removeOffer(Player player, EventRaiser npc) {
 		Offer offer = getOffer();
 		Market m = TradeCenterZoneConfigurator.getShopFromZone(player.getZone());

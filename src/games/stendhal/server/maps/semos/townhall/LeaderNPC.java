@@ -101,7 +101,7 @@ public class LeaderNPC implements ZoneConfigurator {
 					        		// player didn't have a weapon, as getWeapon returned null.
 					        		raiser.say("Och, nie mogę nic opowiedzieć o Twojej broni o ile jakieś nie będziesz używał. To niezbyt mądre w dzisiejszych czasach!");
 					        	}
-							} 
+							}
 					    }
 				);
 			}
@@ -112,7 +112,7 @@ public class LeaderNPC implements ZoneConfigurator {
 		npc.setPosition(23, 15);
 		npc.initHP(100);
 		zone.add(npc);
-		
+
 		return npc;
 	}
 }

@@ -42,9 +42,9 @@ public class CookNPC implements ZoneConfigurator  {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-		        // to the oven 
+		        // to the oven
 				nodes.add(new Node(27,28));
-				// to the table 
+				// to the table
 				nodes.add(new Node(27,31));
 				// to the dining room
 				nodes.add(new Node(18,31));
@@ -88,7 +88,7 @@ public class CookNPC implements ZoneConfigurator  {
 			npc.setPosition(27, 28);
 			npc.setEntityClass("tavernbarmaidnpc");
 			npc.setDescription ("Laura prowadzi kambuz na statku. Porozmawiaj z nią jeśli zgłodniejesz lub będziesz spragniony.");
-			zone.add(npc);	
+			zone.add(npc);
 
 	}
 }

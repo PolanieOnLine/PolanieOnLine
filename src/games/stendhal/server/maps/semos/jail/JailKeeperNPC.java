@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * Semos Jail - Level -2.
- * 
+ *
  * @author hendrik
  */
 public class JailKeeperNPC implements ZoneConfigurator {

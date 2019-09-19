@@ -31,11 +31,11 @@ import java.util.Arrays;
 public class ProlongOfferHandler extends OfferHandler {
 	@Override
 	public void add(SpeakerNPC npc) {
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("prolong", "przedłuż"), null, ConversationStates.ATTENDING, null, 
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("prolong", "przedłuż"), null, ConversationStates.ATTENDING, null,
 				new ProlongOfferChatAction());
-		npc.add(ConversationStates.SERVICE_OFFERED, ConversationPhrases.YES_MESSAGES, 
+		npc.add(ConversationStates.SERVICE_OFFERED, ConversationPhrases.YES_MESSAGES,
 				ConversationStates.ATTENDING, null, new ConfirmProlongOfferChatAction());
-		npc.add(ConversationStates.SERVICE_OFFERED, ConversationPhrases.NO_MESSAGES, null, 
+		npc.add(ConversationStates.SERVICE_OFFERED, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Zatem, jak jeszcze mogę ci pomóc?", null);
 	}
 
@@ -56,7 +56,7 @@ public class ProlongOfferHandler extends OfferHandler {
 			MarketManagerNPC manager = (MarketManagerNPC) npc.getEntity();
 			try {
 				String offerNumber = getOfferNumberFromSentence(sentence).toString();
-				
+
 				Map<String,Offer> offerMap = manager.getOfferMap();
 				if (offerMap == null) {
 					npc.say("Proszę, sprawdź najpierw swoje oferty.");
@@ -112,7 +112,7 @@ public class ProlongOfferHandler extends OfferHandler {
 			Offer offer = getOffer();
 			if (!wouldOverflowMaxOffers(player, offer)) {
 				Integer fee = Integer.valueOf(TradingUtility.calculateFee(player, offer.getPrice()).intValue());
-				if (player.isEquipped("money", fee)) { 
+				if (player.isEquipped("money", fee)) {
 					if (prolongOffer(player, offer)) {
 						TradingUtility.substractTradingFee(player, offer. getPrice());
 						npc.say("Przedłużam ofertę i pobieram znów prowizję w wysokości "+fee.toString()+".");
@@ -132,7 +132,7 @@ public class ProlongOfferHandler extends OfferHandler {
 
 		/**
 		 * Check if prolonging an offer would result the player having too many active offers on market.
-		 * 
+		 *
 		 * @param player the player to be checked
 		 * @param offer the offer the player wants to prolong
 		 * @return true if prolonging the offer should be denied

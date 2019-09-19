@@ -22,7 +22,7 @@ public class WoodSourceFactory implements ConfigurableFactory {
 
 	/**
 	 * Extract the species name from a context.
-	 * 
+	 *
 	 * @param ctx
 	 *            The configuration context.
 	 * @return The species name.
@@ -39,12 +39,12 @@ public class WoodSourceFactory implements ConfigurableFactory {
 
 	/**
 	 * Create a personal wood source.
-	 * 
+	 *
 	 * @param ctx
 	 *            Configuration context.
-	 * 
+	 *
 	 * @return A WoodSource.
-	 * 
+	 *
 	 * @see WoodSource
 	 */
 	public Object create(final ConfigurableFactoryContext ctx) {

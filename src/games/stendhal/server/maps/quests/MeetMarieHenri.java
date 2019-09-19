@@ -80,12 +80,12 @@ public class MeetMarieHenri extends AbstractQuest {
 	public String getRegion() {
 		return Region.ADOS_CITY;
 	}
-	
+
 	@Override
 	public String getNPCName() {
 		return "Marie-Henri";
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();

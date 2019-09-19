@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  * <li> Leander (the baker in Semos)
  * <li> NPC's all over the world (as customers)
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Leander gives you a pizza and tells you who ordered it, and how much
@@ -67,7 +67,7 @@ import org.apache.log4j.Logger;
  * <li> gold coins (As a tip, if you were fast enough; amount varies depending
  * on customer.)
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li> As many as wanted, but you can't get a new task while you still have the
@@ -78,7 +78,7 @@ public class PizzaDelivery extends AbstractQuest {
 	private static final Logger logger = Logger.getLogger(PizzaDelivery.class);
 	// FIXME: return to "final" after outfit testing is finished
 	private static Outfit UNIFORM;
-	
+
 	public PizzaDelivery() {
 		UNIFORM = new Outfit(null, null, null, Integer.valueOf(75), null);
 	}
@@ -147,10 +147,10 @@ public class PizzaDelivery extends AbstractQuest {
 			this.messageOnColdPizza = messageCold;
 			this.level = level;
 		}
-		
+
 		/**
 		 * Get the minimum level needed for the NPC
-		 * 
+		 *
 		 * @return minimum level
 		 */
 		public int getLevel() {
@@ -168,7 +168,7 @@ public class PizzaDelivery extends AbstractQuest {
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -205,16 +205,16 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Prosciutto",
 				// minutes to deliver. Tested by mort: 6:30
 				// min, with killing some orcs.
-				7,  
+				7,
 				// tip when delivered on time. Quite
 				// high because you can't do much
 				// senseful on top of the hill and must
 				// walk down again.
 				200,
 				// experience gain for delivery
-				300, 
+				300,
 				"Dziękuję! Zastanawiam się jakim sposobem udało Ci się dostarczyć pizzę tak szybko. Weź te %d monet jako napiwek. Tutaj nie mam ich jak wydać!",
-				"Brrr. ta %s nie jest gorąca. Dziękuję, że próbowaleś.", 
+				"Brrr. ta %s nie jest gorąca. Dziękuję, że próbowaleś.",
 				10));
 
 		customerDB.put("Cyk",
@@ -226,11 +226,11 @@ public class PizzaDelivery extends AbstractQuest {
 				// ferry, 5 min for the crossing, and 0.5
 				// min from the docks to the beach, so you
 				// need a bit of luck for this one.
-				20, 
+				20,
 				// tip when delivered on time
-				300, 
+				300,
 				// experience gain for delivery
-				500, 
+				500,
 				"Nie sądziłem, że uda Ci się to dostarczyć! Jesteś wielki! Weź tę %s pieniędzy!",
 				"Przyszła zimna, ale czego się mogłem spodziewać skoro pizza jest z piekarni daleko stąd... Dzięki.",
 				20));
@@ -242,11 +242,11 @@ public class PizzaDelivery extends AbstractQuest {
 				// minutes to deliver. Tested by mort: 6
 				// min, ignoring slow animals and not
 				// walking through the swamps.
-				7, 
+				7,
 				// tip when delivered on time.
-				170, 
+				170,
 				// experience gain for delivery
-				300, 
+				300,
 				"Nieprawdopodobne! Wciąż gorąca! Kup coś sobie za %d złota!",
 				"Co za szkoda. Przyszła zimna. W każdym razie dziękuję!",
 				20));
@@ -257,11 +257,11 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Napoli",
 				// minutes to deliver. Tested by mort: about
 				// 6 min, outrunning all enemies.
-				7,  
+				7,
 				// tip when delivered on time
-				150, 
+				150,
 				// experience gain for delivery
-				200, 
+				200,
 				"Dziękuję bardzo! Urodziłeś się wprost do roznoszenia pizzy. Trzymaj %d złota jako napiwek!",
 				"Brr. Zimna pizza.",
 				15));
@@ -272,11 +272,11 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Diavolo",
 				// minutes to deliver. Tested by kymara:
 				// exactly 3 min.
-				4,  
+				4,
 				// tip when delivered on time
-				80, 
+				80,
 				// experience gain for delivery
-				150, 
+				150,
 				"Ach, moja %s! I jest świeżo wyjęta z pieca! Weź te %d monet jako napiwek!",
 				"Mam nadzieję, że następnym razem dostanę gorącą pizzę.",
 				10));
@@ -288,11 +288,11 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Margherita",
 				// minutes to deliver. Tested by mort: can
 				// be done in 1:15 min, with no real danger.
-				2,  
+				2,
 				// tip when delivered on time
-				20, 
+				20,
 				// experience gain for delivery
-				50, 
+				50,
 				"Ach, przyniosłeś mi %s! Bardzo miło! Weź te %d monet jako napiwek!",
 				"Co za szkoda. Twój serwis pizzy nie umie dostarczyć gorącej pizzy choć piekarnia jest tuż za rogiem.",
 				2));
@@ -304,11 +304,11 @@ public class PizzaDelivery extends AbstractQuest {
 				// minutes to deliver. Tested by mort: 5:30
 				// min, leaving the slow monsters on the way
 				// behind.
-				6,  
+				6,
 				// tip when delivered on time
-				140, 
+				140,
 				// experience gain for delivery
-				200, 
+				200,
 				"Och. Nie  spodziewałam się tak wcześnie pizzy. Super! Zazwyczaj nie daje napiwków, ale dla Ciebie zrobię wyjątek. Weź %d złota.",
 				"Niedobrze... Będę musiała użyć extra silnego zaklęcia, aby pizza była gorąca.",
 				5));
@@ -319,26 +319,26 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Vegetale",
 				// minutes to deliver. Tested by kymara in
 				// 3:25 min, leaving behind the orcs.
-				4,  
+				4,
 				// tip when delivered on time
-				100, 
+				100,
 				// experience gain for delivery
-				200, 
+				200,
 				"A! Moja %s! Weź %d złota jako napiwek!",
 				"Ee. Nie cierpię zimnej pizzy. Chyba nakarmię nią zwierzęta.",
 				10));
 
-		customerDB.put("Marcus", 
+		customerDB.put("Marcus",
 			new CustomerData(
 				"Marcus jest strażnikiem z więzienia w Semos.", "Pizza Tonno",
 				// minutes to deliver. Tested by kymara: takes longer than before due to fence in village
-				3, 
+				3,
 				// tip when delivered on time. A bit higher than Jenny
 				// because you can't do anything else in the jail and need
 				// to walk out again.
-				25, 
+				25,
 				// experience gain for delivery
-				100, 
+				100,
 				"Ach, moja %s! Oto twój napiwek: %d złota.",
 				"Nareszcie! Dlaczego zajęło to Tobie tyle czasu?",
 				2));
@@ -349,11 +349,11 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Pasta",
 				// minutes to deliver. Tested by mort: easy
 				// to do in less than 1 min.
-				1,  
+				1,
 				// tip when delivered on time
-				10, 
+				10,
 				// experience gain for delivery
-				25,  
+				25,
 				"Dziękuję! Szybki jesteś. Weź te %d złota jako napiwek!",
 				"Niedobrze. Przyniosłeś zimną. W każdym razie dziękuję.",
 				0));
@@ -364,11 +364,11 @@ public class PizzaDelivery extends AbstractQuest {
 				"Pizza Quattro Stagioni",
 				// minutes to deliver. Tested by mort: can
 				// be done in 45 sec with no danger.
-				1,  
+				1,
 				// tip when delivered on time
-				10, 
+				10,
 				// experience gain for delivery
-				25,  
+				25,
 				"Dziękuję! Dobrze jest mieć usługę pizzy zaraz za rogiem. Weź %d monet!",
 				"Powinienem osobiście kupić pizzę, Byłoby szybciej.",
 				0));
@@ -383,11 +383,11 @@ public class PizzaDelivery extends AbstractQuest {
 				// luck, you need to wait up to 12 mins for
 				// the ferry to arrive at the mainland, so
 				// you need a bit of luck for this one.
-				14, 
+				14,
 				// tip when delivered on time
-				250, 
+				250,
 				// experience gain for delivery
-				400, 
+				400,
 				"Dziękuję bardzo! Nareszcie dostałem lepsze jedzenie niż to które gotuje Laura. Weź te %d złota jako napiwek!",
 				"Niedobrze. Jest zimna. Miałem nadzieje, że dostanę coś lepszego niż okrętowe jedzenie.",
 				20));
@@ -396,31 +396,31 @@ public class PizzaDelivery extends AbstractQuest {
 			new CustomerData(
 				"Tor'Koom jest orkiem, który żyje w podziemiach pod miastem. Owce są jego ulubionym jedzeniem.",
 				// "Pizza sheep" in Italian ;)
-				"Pizza Pecora", 
+				"Pizza Pecora",
 				// minutes to deliver. Tested by kymara:
 				// done in about 8 min, with lots of monsters getting in your way.
-				9, 
+				9,
 				// tip when delivered on time
 				170,
 				// experience gain for delivery
-				300, 
+				300,
 				"Pychota %s! Weź %d pieniędzy!",
 				"Grrr. Pizza zimna. Ruszasz sie jak owca.",
 				15));
-				
+
     customerDB.put("Martin Farmer",
 				new CustomerData(
 					"Martin Farmer jest na urlopie Ados City. Musisz iść stąd na wschód.",
 					"Pizza Fiorentina",
 					// minutes to deliver. Time for Fidorea was 7, so 8 should be ok for martin
-					8,  
+					8,
 					// tip when delivered on time
-					160, 
+					160,
 					// experience gain for delivery
-					220, 
+					220,
 					"Ooooh, Uwielbiam świeżą, gorącą pizze, dziękuję. Weź %d pieniędzy...!",
 					"Hmpf.. zimna pizza.. ok.. Niech już będzie. Ale następnym razem proszę pospiesz się.",
-					10));		
+					10));
 	}
 
 	private void startDelivery(final Player player, final EventRaiser npc) {
@@ -449,10 +449,10 @@ public class PizzaDelivery extends AbstractQuest {
 			npc.say("Wróć gdy będziesz miał miejsce na pizzę!");
 		}
 	}
-	
+
 	/**
 	 * Get a list of customers appropriate for a player
-	 * 
+	 *
 	 * @param player the player doing the quest
 	 * @return list of customer data
 	 */
@@ -463,14 +463,14 @@ public class PizzaDelivery extends AbstractQuest {
 			if (level >= entry.getValue().getLevel()) {
 				allowed.add(entry.getKey());
 			}
-		}		
+		}
 		return allowed;
 	}
 
 	/**
 	 * Checks whether the player has failed to fulfil his current delivery job
 	 * in time.
-	 * 
+	 *
 	 * @param player
 	 *            The player.
 	 * @return true if the player is too late. false if the player still has
@@ -482,7 +482,7 @@ public class PizzaDelivery extends AbstractQuest {
 			final String customerName = questData[0];
 			final CustomerData customerData = customerDB.get(customerName);
 			final long bakeTime = Long.parseLong(questData[1]);
-			final long expectedTimeOfDelivery = bakeTime 
+			final long expectedTimeOfDelivery = bakeTime
 				+ (long) 60 * 1000 * customerData.expectedMinutes;
 			if (System.currentTimeMillis() > expectedTimeOfDelivery) {
 				return true;
@@ -500,7 +500,7 @@ public class PizzaDelivery extends AbstractQuest {
 				if (data.flavor.equals(flavor)) {
 					player.drop(pizza);
 					// Check whether the player was supposed to deliver the
-					// pizza. 
+					// pizza.
 					if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
 						if (isDeliveryTooLate(player)) {
 							if (data.messageOnColdPizza.contains("%s")) {
@@ -527,7 +527,7 @@ public class PizzaDelivery extends AbstractQuest {
 						player.setQuest(QUEST_SLOT, "done");
 						putOffUniform(player);
 					} else {
-						// This should not happen: a player cannot pick up a pizza from the ground 
+						// This should not happen: a player cannot pick up a pizza from the ground
 						// that did have a flavor, those are bound. If a pizza has flavor the player
 						// should only have got it from the quest.
 						npc.say("Blee! Ta pizza jest brudna! Znalazłeś ją na ziemi?");
@@ -542,7 +542,7 @@ public class PizzaDelivery extends AbstractQuest {
 		}
 	}
 
-	/** Takes away the player's uniform, if the he is wearing it. 
+	/** Takes away the player's uniform, if the he is wearing it.
 	 * @param player to remove uniform from*/
 	private void putOffUniform(final Player player) {
 		if (UNIFORM.isPartOf(player.getOutfit())) {
@@ -557,18 +557,18 @@ public class PizzaDelivery extends AbstractQuest {
 		leander.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new OutfitCompatibleWithClothesCondition(), new QuestNotActiveCondition(QUEST_SLOT)),
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"Musisz szybko dostarczyć gorącą pizzę. Jeżeli będziesz szybki to dostaniesz niezły napiwek. Dasz radę?",
 				null);
-		
+
 		// haven't done the pizza quest before or already delivered the last one, outfit would be incompatible with pizza outfit
 		leander.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new NotCondition(new OutfitCompatibleWithClothesCondition()), new QuestNotActiveCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Przykro mi, ale nie możesz nosić naszego stroju dostawcy pizzy tak wyglądając. Jeżeli się przebierzesz to możesz znów mnie zapytać o #zadanie.",
 				null);
-		
+
 		// pizza quest is active: check if the delivery is too late already or not
 		leander.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, new QuestActiveCondition(QUEST_SLOT),
@@ -663,7 +663,7 @@ public class PizzaDelivery extends AbstractQuest {
 	public String getName() {
 		return "PizzaDelivery";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;

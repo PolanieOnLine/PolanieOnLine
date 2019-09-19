@@ -32,7 +32,7 @@ public class AdventureIslandRemover implements TurnListener {
 	/**
 	 * creates a new AdventureIslandRemover
 	 *
-	 * @param zone StendhalRPZone 
+	 * @param zone StendhalRPZone
 	 */
 	public AdventureIslandRemover(StendhalRPZone zone) {
 		this.zone = zone;
@@ -54,7 +54,7 @@ public class AdventureIslandRemover implements TurnListener {
 			}
 
 			SingletonRepository.getRPWorld().removeZone(zone);
-		} 
+		}
 	}
 
 }

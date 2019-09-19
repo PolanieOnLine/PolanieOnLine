@@ -30,8 +30,8 @@ import java.util.List;
 
 /**
  * QUEST: Wawel brama
- * 
- 
+ *
+
  * </ul>
  */
 public class WawelBrama extends AbstractQuest {
@@ -61,20 +61,20 @@ public class WawelBrama extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Strażnik");
 
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Na teren Wawelu mogą #wejść tylko osoby wyższego stanu.", null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Chciałbyś #wejść i pokłonić się naszemu Królowi.", null);
 
 		// player interested in wejscie
 		npc.add(ConversationStates.QUEST_OFFERED,
-			Arrays.asList("enter", "wejść", "wejście", "wejścia"), 
+			Arrays.asList("enter", "wejść", "wejście", "wejścia"),
 			new LevelGreaterThanCondition(99),
 			ConversationStates.QUESTION_1,
 			"Jeżeli chcesz przejść to powiedz #tak, nie zapomnij pokłonić się naszemu Królowi",
@@ -82,7 +82,7 @@ public class WawelBrama extends AbstractQuest {
 
 		// player interested in wejscie but level < 99
 		npc.add(ConversationStates.QUEST_OFFERED,
-			Arrays.asList("enter", "wejść", "wejście", "wejścia"), 
+			Arrays.asList("enter", "wejść", "wejście", "wejścia"),
 			new NotCondition(new LevelGreaterThanCondition(99)),
 			ConversationStates.ATTENDING,
 			"Zdobądź sławę jeżeli chcesz pokłonić się naszemu Królowi, to nie miejsce dla chłopów i kmieci.",

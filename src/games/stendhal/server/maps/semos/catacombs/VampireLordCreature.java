@@ -23,11 +23,11 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import java.util.Map;
 
 /**
- * Configure Catacombs to include a Vampire lord Creature who carries a skull ring. 
+ * Configure Catacombs to include a Vampire lord Creature who carries a skull ring.
  * Then it should give an skull ring that is bound to the player, only while they have that quest active.
  */
 public class VampireLordCreature implements ZoneConfigurator {
-	
+
 	/**
 	 * Configure a zone.
 	 *

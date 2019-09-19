@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package games.stendhal.server.maps.quests.houses;
 
@@ -16,7 +16,7 @@ final class ListUnboughtHousesAction implements ChatAction {
 
 	/**
 	 * Creates a new ListUnboughtHousesAction.
-	 * 
+	 *
 	 * @param location
 	 *            where are the houses?
 	 */

@@ -48,7 +48,7 @@ public class SmithNPC implements ZoneConfigurator {
 				addGoodbye("Na razie");
 				addHelp("Mógłbym Ci pomóc w zdobyciu #specjalnego przedmiotu...");
 				addJob("Używałem do wykuwania broni dla Króla Faiumoni, ale było to dawno temu. Teraz droga jest zablokowana.");
-				
+
 				add(
 				        ConversationStates.ATTENDING,
 				        Arrays.asList("special", "specjalnego"),

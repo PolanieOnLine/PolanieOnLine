@@ -35,18 +35,18 @@ import games.stendhal.server.entity.trade.Offer;
 public class AcceptOfferHandler extends OfferHandler {
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(AcceptOfferChatAction.class);
-	private static final List<String> TRIGGERS = Arrays.asList("buy", "accept", "kupię", "akceptuję"); 
-	
+	private static final List<String> TRIGGERS = Arrays.asList("buy", "accept", "kupię", "akceptuję");
+
 	@Override
 	public void add(SpeakerNPC npc) {
-		npc.add(ConversationStates.ATTENDING, TRIGGERS, null, ConversationStates.ATTENDING, null, 
+		npc.add(ConversationStates.ATTENDING, TRIGGERS, null, ConversationStates.ATTENDING, null,
 				new AcceptOfferChatAction());
-		npc.add(ConversationStates.BUY_PRICE_OFFERED, ConversationPhrases.YES_MESSAGES, 
+		npc.add(ConversationStates.BUY_PRICE_OFFERED, ConversationPhrases.YES_MESSAGES,
 				ConversationStates.ATTENDING, null, new ConfirmAcceptOfferChatAction());
-		npc.add(ConversationStates.BUY_PRICE_OFFERED, ConversationPhrases.NO_MESSAGES, null, 
+		npc.add(ConversationStates.BUY_PRICE_OFFERED, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Dobrze. W czym jeszcze mogę ci pomóc?", null);
 	}
-	
+
 	class AcceptOfferChatAction extends KnownOffersChatAction {
 		@Override
 		public void fire(Player player, Sentence sentence, EventRaiser npc) {

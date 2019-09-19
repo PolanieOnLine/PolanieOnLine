@@ -20,8 +20,8 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import java.util.Map;
 
 /**
- * An elven inmate (original name: Conual). He's just decoration. 
- * 
+ * An elven inmate (original name: Conual). He's just decoration.
+ *
  * @author hendrik
  */
 public class InmateNPC implements ZoneConfigurator  {
@@ -49,8 +49,6 @@ public class InmateNPC implements ZoneConfigurator  {
 			npc.setEntityClass("militiaelfnpc");
 			npc.setDirection(Direction.DOWN);
 			npc.setDescription("Oto Conual. On jest skazany na dożywocie. Wydaje się, że naprawdę zrobił coś złego.");
-			zone.add(npc);		
+			zone.add(npc);
 	}
 }
-
-

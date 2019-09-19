@@ -69,7 +69,7 @@ public class ChengNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(100);
 		zone.add(npc);
-		
+
 		final Sign book = new Sign();
 		book.setPosition(24, 32);
 		book.setText(" -- Skup -- \n bursztyn\t\t 20\n wielka perła\t 1500\n bryłka mithrilu\t 10\n korale\t\t 10000");

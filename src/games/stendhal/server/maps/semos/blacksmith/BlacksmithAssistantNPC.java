@@ -31,7 +31,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 /**
  * The blacksmith's young assistant (original name: Hackim Easso).
  * He smuggles out weapons.
- * 
+ *
  * @see games.stendhal.server.maps.quests.MeetHackim
  */
 public class BlacksmithAssistantNPC implements ZoneConfigurator  {
@@ -68,7 +68,7 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 
 	@Override
 			public void createDialog() {
-				
+
 				// A little trick to make NPC remember if it has met
 		        // player before and react accordingly
 		        // NPC_name quest doesn't exist anywhere else neither is
@@ -80,7 +80,7 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 						ConversationStates.ATTENDING,
 						"Witaj nieznajomy. Zwą mnie Hackim Easso i jestem czeladnikiem kowala. Czy przybyłeś tu by kupić broń?",
 				        new SetQuestAction("meet_hackim","start"));
-				
+
 				addGreeting(null, new SayTextAction("Witaj ponownie [name]. W czym mogę #pomóc?"));
 
 				addHelp("Jestem czeladnikiem kowala. Powiedz mi... Czy przybyłeś tu by kupić broń?");
@@ -93,8 +93,6 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 		npc.setPosition(5, 2);
 		npc.setEntityClass("naughtyteennpc");
 		npc.setDescription("Oto Hackim Easso, pomocnik kowala.");
-		zone.add(npc);		
+		zone.add(npc);
 	}
 }
-
-		

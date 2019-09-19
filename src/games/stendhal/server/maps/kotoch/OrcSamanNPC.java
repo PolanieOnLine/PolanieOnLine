@@ -48,7 +48,7 @@ public class OrcSamanNPC implements ZoneConfigurator {
 				nodes.add(new Node(16, 113));
 				nodes.add(new Node(16, 115));
 				nodes.add(new Node(22, 115));
-				nodes.add(new Node(22, 119));				
+				nodes.add(new Node(22, 119));
 				nodes.add(new Node(8, 119));
 				setPath(new FixedPath(nodes, true));
 			}

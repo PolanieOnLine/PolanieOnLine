@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Builds a little girl NPC (Elisabeth) in Kirdneh city. 
+ * Builds a little girl NPC (Elisabeth) in Kirdneh city.
  *
  * @author Vanessa Julius idea by miasma
  */
@@ -49,7 +49,7 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				setPath(null);
-		
+
 			}
 
 			@Override

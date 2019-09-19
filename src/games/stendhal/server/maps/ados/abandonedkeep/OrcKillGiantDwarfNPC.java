@@ -40,7 +40,7 @@ public class OrcKillGiantDwarfNPC implements ZoneConfigurator {
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
-	
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -61,7 +61,7 @@ public class OrcKillGiantDwarfNPC implements ZoneConfigurator {
 				nodes.add(new Node(12, 114));
 				nodes.add(new Node(5, 114));
 				setPath(new FixedPath(nodes, true));
-	
+
 			}
 
 			@Override

@@ -42,7 +42,7 @@ public class Maze extends AbstractQuest {
 	private static final int COOLING_TIME = MathHelper.MINUTES_IN_ONE_HOUR * 24;
 	private MazeSign sign;
 	private MazeGenerator maze = null;
-	
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -52,7 +52,7 @@ public class Maze extends AbstractQuest {
 		addMazeSign();
 		setupConversation();
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
@@ -92,40 +92,40 @@ public class Maze extends AbstractQuest {
 	public String getSlotName() {
 		return "maze";
 	}
-	
+
 	@Override
 	public boolean isRepeatable(Player player) {
 		return new TimePassedCondition(getSlotName(), 1, COOLING_TIME).fire(player, null, null);
 	}
-	
+
 	private SpeakerNPC getNPC() {
 		return npcs.get("Haizen");
 	}
-	
+
 	private void addMazeSign() {
 		setSign(new MazeSign());
 		getSign().setPosition(10, 7);
 		getNPC().getZone().add(getSign());
 	}
-	
+
 	private void setupConversation() {
 		SpeakerNPC npc = getNPC();
-		
+
 		npc.addQuest("Mogę pokazać ci #labirynt, z którego będziesz musiał znaleźć drogę wyjścia. W tej niebieskiej księdze znajdziesz imiona rycerzy, którzy najszybciej pokonali drogę i znaleźli wyjście.");
-	
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("maze", "labirynt"),
 				new TimePassedCondition(getSlotName(), 1, COOLING_TIME),
 				ConversationStates.QUEST_OFFERED,
 				"W przeciwległym rogu znajdziesz wyjście z labiryntu. Zwykle w pozostałych rogach umieszczam zwoje, które możesz zabrać o ile pozwoli ci na to czas. Czy chcesz podjąć wyzwanie?",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("maze", "labirynt"),
 				new NotCondition(new TimePassedCondition(getSlotName(), 1, COOLING_TIME)),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(getSlotName(), 1, 
+				new SayTimeRemainingAction(getSlotName(), 1,
 						COOLING_TIME, "Mogę wysłać cię do labiryntu tylko raz dziennie. Można tam powrócić za"));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -134,7 +134,7 @@ public class Maze extends AbstractQuest {
 				ConversationStates.IDLE,
 				null,
 				new SendToMazeChatAction());
-		
+
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
@@ -142,7 +142,7 @@ public class Maze extends AbstractQuest {
 				"Dobrze. Wyglądasz jakbyś już się zgubił.",
 				null);
 	}
-	
+
 	private void setSign(MazeSign sign) {
 		this.sign = sign;
 	}
@@ -172,7 +172,7 @@ public class Maze extends AbstractQuest {
 
 	/**
 	 * Access the portal from MazeTest.
-	 * 
+	 *
 	 * @return return portal from the maze
 	 */
 	protected Portal getPortal() {
@@ -183,7 +183,7 @@ public class Maze extends AbstractQuest {
 	public String getNPCName() {
 		return "Haizen";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ADOS_SURROUNDS;

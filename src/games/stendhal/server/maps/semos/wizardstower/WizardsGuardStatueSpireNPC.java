@@ -73,14 +73,14 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 				addReply("cassandra", "Cassandra jest piękną kobietą, ale przede wszystkim potężna czarodziejką. Domeną Cassandry jest woda i lód. Może być zimna jak lód by tylko osiągnąć swój cel.");
 				addReply("silvanus", "Silvanus to stary druid i najprawdopodobniej najstarszy z wszystkich elfów. Jest przyjacielem zwierząt, drzew, wróżek oraz entów. Jego domeną jest Ziemia.");
 				addReply("malleus", "Malleus to najpotężniejszy magik oraz przywódca destruktywnych magów. Jego domeną jest ogień. Żył z demonami aby zrozumieć ich ambicje.");
-				
+
 				//behavior for enhancing lion shield
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("enhanced lion shield", "shields", "shield", "wzmocniona lwia tarcza", "tarcza"),
 						ConversationStates.INFORMATION_1,
 					    "Mogę zmienić tarczę płytową w wzmocnioną lwią tarczę przy użyciu żelaza, ale potrzebuję ośmiu kawałków żelaza i tarczy, aby to zrobić. Czy chcesz wzmocnioną lwią tarczę?",
 					    null);
-				add(ConversationStates.INFORMATION_1, 
+				add(ConversationStates.INFORMATION_1,
 						ConversationPhrases.YES_MESSAGES,
 						new AndCondition(
 								new NotCondition(new PlayerHasItemWithHimCondition("żelazo", 8)),
@@ -88,7 +88,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						"Nie masz wystarczającej ilości Żelaza. Potrzebuję 8 sztabek żelaza i tarczy płytowej.",
 						null);
-				add(ConversationStates.INFORMATION_1, 
+				add(ConversationStates.INFORMATION_1,
 						ConversationPhrases.YES_MESSAGES,
 						new AndCondition(
 								new NotCondition(new PlayerHasItemWithHimCondition("tarcza płytowa", 1)),
@@ -96,7 +96,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						"Nie masz tarczy dla mnie do wzmocnienia. Potrzebuję tarczy płytowej i 8 sztabek żelaza.",
 						null);
-				add(ConversationStates.INFORMATION_1, 
+				add(ConversationStates.INFORMATION_1,
 						ConversationPhrases.YES_MESSAGES,
 						new AndCondition(
 								new PlayerHasItemWithHimCondition("żelazo", 8),
@@ -108,20 +108,20 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 							new DropItemAction("tarcza płytowa", 1),
 							new EquipItemAction("wzmocniona lwia tarcza", 1, true),
 							new IncreaseXPAction(250)));
-					add(ConversationStates.INFORMATION_1, 
-						ConversationPhrases.NO_MESSAGES, 
+					add(ConversationStates.INFORMATION_1,
+						ConversationPhrases.NO_MESSAGES,
 						null,
 						ConversationStates.ATTENDING,
-						"Dobrze. Powiedz mi kiedy będziesz chciał wzmocnioną lwią tarczę.", 
+						"Dobrze. Powiedz mi kiedy będziesz chciał wzmocnioną lwią tarczę.",
 						null);
-					
+
 					//behavior for forging a demon fire sword
 					add(ConversationStates.ATTENDING,
 							Arrays.asList("demon fire sword", "swords", "sword", "ognisty miecz demonów", "miecz"),
 							ConversationStates.INFORMATION_1,
 						    "Mogę wykuć dla ciebie ognisty miecz demonów jeśli przyniesiesz miecz demonów i miecz ognisty.",
 						    null);
-					add(ConversationStates.INFORMATION_1, 
+					add(ConversationStates.INFORMATION_1,
 							ConversationPhrases.YES_MESSAGES,
 							new AndCondition(
 									new NotCondition(new PlayerHasItemWithHimCondition("miecz ognisty", 1)),
@@ -129,7 +129,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 							ConversationStates.ATTENDING,
 							"Nie masz miecza ognistego. Potrzebuję obu miecz demonów i miecza ognistego.",
 							null);
-					add(ConversationStates.INFORMATION_1, 
+					add(ConversationStates.INFORMATION_1,
 							ConversationPhrases.YES_MESSAGES,
 							new AndCondition(
 									new NotCondition(new PlayerHasItemWithHimCondition("miecz demonów", 1)),
@@ -137,7 +137,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 							ConversationStates.ATTENDING,
 							"Nie masz miecza demonów. Potrzebuję obu miecza ognistego i miecz demonów.",
 							null);
-					add(ConversationStates.INFORMATION_1, 
+					add(ConversationStates.INFORMATION_1,
 							ConversationPhrases.YES_MESSAGES,
 							new AndCondition(
 									new PlayerHasItemWithHimCondition("miecz demonów", 1),
@@ -149,11 +149,11 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 								new DropItemAction("miecz ognisty", 1),
 								new EquipItemAction("ognisty miecz demonów", 1, true),
 								new IncreaseXPAction(11250)));
-						add(ConversationStates.INFORMATION_1, 
-							ConversationPhrases.NO_MESSAGES, 
+						add(ConversationStates.INFORMATION_1,
+							ConversationPhrases.NO_MESSAGES,
 							null,
 							ConversationStates.ATTENDING,
-							"Dobrze. Powiedz mi kiedy będziesz chciał, abym wykuł dla ciebie ognisty miecz demonów.", 
+							"Dobrze. Powiedz mi kiedy będziesz chciał, abym wykuł dla ciebie ognisty miecz demonów.",
 							null);
 
 /**				// behavior on special item BLANK SCROLL
@@ -162,13 +162,13 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 				    ConversationStates.INFORMATION_1,
 				    "I will create a blank scroll for you, but I need eight pieces of wood for that. The blank scroll can be enchanted by wizards. Do you want a blank scroll?",
 				    null);
-				add(ConversationStates.INFORMATION_1, 
+				add(ConversationStates.INFORMATION_1,
 					ConversationPhrases.YES_MESSAGES,
 					new NotCondition(new PlayerHasItemWithHimCondition("wood", 8)),
 					ConversationStates.ATTENDING,
-					"You don't have enough wood, I will need eight pieces.", 
+					"You don't have enough wood, I will need eight pieces.",
 					null);
-				add(ConversationStates.INFORMATION_1, 
+				add(ConversationStates.INFORMATION_1,
 					ConversationPhrases.YES_MESSAGES,
 					new PlayerHasItemWithHimCondition("wood", 8),
 					ConversationStates.ATTENDING,
@@ -177,11 +177,11 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 						new DropItemAction("wood", 8),
 						new EquipItemAction("blank scroll", 1, true),
 						new IncreaseXPAction(250)));
-				add(ConversationStates.INFORMATION_1, 
-					ConversationPhrases.NO_MESSAGES, 
+				add(ConversationStates.INFORMATION_1,
+					ConversationPhrases.NO_MESSAGES,
 					null,
 					ConversationStates.ATTENDING,
-					"Well, maybe later. Just tell me when you want a blank scroll.", 
+					"Well, maybe later. Just tell me when you want a blank scroll.",
 					null);
 
 				//behavior on special item RIFT CLOAK
@@ -191,7 +191,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 				    "I will create a rift cloak for you, but I have to fuse a carbuncle and a sapphire in the magic. The cloak is useless in battle and will protect you only one time, when entering a magical rift."+
 					" The rift disintegrates the cloak instead of you. There is no way to get the cloak back. If you want to enter the rift again, you will need a new rift cloak. Shall I create one for you?",
 				     null);
-				add(ConversationStates.INFORMATION_2, 
+				add(ConversationStates.INFORMATION_2,
 					ConversationPhrases.YES_MESSAGES,
 					new AndCondition(
 							new NotCondition(new PlayerHasItemWithHimCondition("carbuncle", 1)),
@@ -199,7 +199,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING,
 					"You don't have a carbuncle, I will need a sapphire and a carbuncle.",
 					null);
-				add(ConversationStates.INFORMATION_2, 
+				add(ConversationStates.INFORMATION_2,
 					ConversationPhrases.YES_MESSAGES,
 					new AndCondition(
 							new NotCondition(new PlayerHasItemWithHimCondition("sapphire", 1)),
@@ -218,8 +218,8 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 							new DropItemAction("sapphire", 1),
 							new EquipItemAction("rift cloak", 1, true),
 							new IncreaseXPAction(5000)));
-				add(ConversationStates.INFORMATION_2, 
-					ConversationPhrases.NO_MESSAGES, 
+				add(ConversationStates.INFORMATION_2,
+					ConversationPhrases.NO_MESSAGES,
 					null,
 					ConversationStates.ATTENDING,
 					"Don't forget that you can't enter a magical rift without a rift cloak.",

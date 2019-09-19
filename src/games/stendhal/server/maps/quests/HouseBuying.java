@@ -31,28 +31,28 @@ public class HouseBuying extends AbstractQuest {
 
 		quest = new HouseBuyingMain();
 		quest.addToWorld();
-		
+
 		fillQuestInfo(
 				"Kupno Domu",
 				"Mieszkania można kupić w całej Faiumoni i ziemiach Polan.",
 				false);
 	}
-	
+
 	@Override
 	public LinkedList<String> getHistory(final Player player) {
 		return quest.getHistory(player);
 	}
-	
+
 	@Override
 	public String getName() {
 		return "HouseBuying";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 50;
 	}
-	
+
 	@Override
 	public boolean isCompleted(final Player player) {
 		return quest.isCompleted(player);

@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Builds a wizard npc, an expert in textiles.
  *
- * @author kymara 
+ * @author kymara
  */
 public class WizardNPC implements ZoneConfigurator {
 
@@ -62,7 +62,7 @@ public class WizardNPC implements ZoneConfigurator {
 				addGoodbye("Żegnaj.");
 				// remaining behaviour defined in maps.quests.MithrilCloak
 	 	     }
-		    
+
 		};
 
 		npc.setDescription("Oto czarodziej mithrilbourghtów zwiedzający muzeum");

@@ -11,7 +11,7 @@
  *                                                                         *
  ***************************************************************************/
  //Zrobione na podstawie GoldsmithNPC z Ados/goldsmith
- 
+
 package games.stendhal.server.maps.zakopane.city;
 
 import games.stendhal.server.core.config.ZoneConfigurator;

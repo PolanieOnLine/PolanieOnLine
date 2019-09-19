@@ -23,7 +23,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import java.util.Map;
 
 /**
- * Configure Kanmararn Prison to include a Duergar King Creature who carries a key. 
+ * Configure Kanmararn Prison to include a Duergar King Creature who carries a key.
  * Then it should give a key that is bound to the player.
  */
 public class DuergarKingCreature implements ZoneConfigurator {

@@ -59,9 +59,9 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				
+
 				String greetingBasis = "Hej, ty! Trzymaj się. Właśnie opuszczasz miasto! ";
-				
+
 				// When the players level is below 15 AND (he has a shield equipped OR he completed the "meet_hayunn" quest)
 				add(
 						ConversationStates.IDLE,
@@ -96,7 +96,7 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						greetingBasis + "Oh teraz widzę jesteś silny i odważny! Miłej zabawy :)",
 						null);
-				
+
 				addJob("Moją pracą jest obserwowanie złych potworów! Moi rodzice przydzielili mi tą specjalną #służbę!");
 				addReply(Arrays.asList("duty", "służbę"), "Tak jest specjalna i ważna!");
 				addHelp("Mój ojciec zawsze mówi, abym #skradał się po lesie, którego nie znam... Mówił też, że powinienem mieć zawsze coś do #jedzenia i #picia, aby być bezpieczny!");
@@ -107,7 +107,7 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 				addQuest("Jestem na misji :) Mam oko na złe potwory, złych typków i ostrzegam ludzi, aby im #pomóc! Ale nic nie mam dla ciebie...");
 				addGoodbye("Ciii nie mów zbyt głośno! Dowidzenia i trzymaj się!");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);

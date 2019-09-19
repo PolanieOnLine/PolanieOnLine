@@ -23,7 +23,7 @@ import games.stendhal.server.entity.trade.Market;
 import java.util.Set;
 /**
  * chat action to let a player fetch his earnings from the market
- * 
+ *
  * @author madmetzger
  *
  */

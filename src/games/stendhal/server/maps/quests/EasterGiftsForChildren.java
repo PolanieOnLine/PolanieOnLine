@@ -71,7 +71,7 @@ public class EasterGiftsForChildren extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "easter_gifts_[year]";
 
-	
+
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -103,7 +103,7 @@ public class EasterGiftsForChildren extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Potrzebuję pomocy w pakowaniu Wielkanocnych koszyków dla dzieci z Faiumoni. Wiem, że odwiedzi je zajączek, ale są takie kochane tak, że chcę je uszczęśliwić. Czy możesz mi pomóc?",
 			null);
 
@@ -111,10 +111,10 @@ public class EasterGiftsForChildren extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Bardzo dziękuję za słodycze! Już rozdałam wszystkie koszyki Wielkanocne dzieciom z Faiumoni i są teraz szczęśliwe! :) Niestety w tym momencie nie ma innych zadań dla ciebie. Życzę szczęśliwych świąt Wielkanocnych!",
 			null);
-		
+
 		// Player asks for quests after it is already started
 		npc.add(
 			ConversationStates.ATTENDING,
@@ -148,7 +148,7 @@ public class EasterGiftsForChildren extends AbstractQuest {
 			null,
 			ConversationStates.ATTENDING,
 			"Jest wiele czekoladowych słodkości, ale chciałabym także zapełnić mój koszyk owocami.", null);
-		
+
 		// player wants to know where he can get this sweets from
 		npc.add(
 				ConversationStates.ATTENDING,
@@ -156,21 +156,21 @@ public class EasterGiftsForChildren extends AbstractQuest {
 				null,
 				ConversationStates.ATTENDING,
 				"Tabliczka czekolady jest sprzedawana w tawernach i słyszałem też, że pare złych dzieci też je nosi. Jeśli znajdziesz je to pamiętaj, że Elizabeth w Kirdneh też uwielbia czekoladę. :)", null);
-		
+
 		npc.add(
 				ConversationStates.ATTENDING,
 				Arrays.asList("apple", "apples", "jabłko", "jabłka"),
 				null,
 				ConversationStates.ATTENDING,
 				"Jabłka można znaleść na farmie na wschód od miasta. Są naprawdę zdrowe i możesz z nich upiec wspaniały jabłecznik. Można też dostać z ogrodów Marthy w mieście Kalavan.", null);
-		
+
 		npc.add(
 				ConversationStates.ATTENDING,
 				Arrays.asList("cherry", "cherries", "wisienka", "wisienki"),
 				null,
 				ConversationStates.ATTENDING,
 				"Old Mother Helena w Fado sprzedaje najpiękniejsze wisienki. Są naprawdę pyszne! Mam nadzieję, że spróbowałeś wspaniałego ciasta z wiśniami upieczonego przez Gerthę będącą w ogrodach miasta Kalavan.", null);
-		
+
 		npc.add(
 				ConversationStates.ATTENDING,
 				Arrays.asList("small easter egg", "chocolate egg", "małe jajo wielkanocne", "czekoladowe jajko"),
@@ -191,19 +191,19 @@ public class EasterGiftsForChildren extends AbstractQuest {
 					new PlayerHasItemWithHimCondition("małe jajo wielkanocne",1),
 					new PlayerHasItemWithHimCondition("jabłko", 5),
 					new PlayerHasItemWithHimCondition("wisienka", 5))),
-			ConversationStates.QUEST_ITEM_BROUGHT, 
+			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Jak miło! Widzę, że masz ze sobą słodycze. Są one dla koszyka Wielkanocnego, który teraz przygotowuję?",
 			null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestInStateCondition(QUEST_SLOT, "start"), 
+				new QuestInStateCondition(QUEST_SLOT, "start"),
 				new NotCondition(new AndCondition(
 					new PlayerHasItemWithHimCondition("tabliczka czekolady", 5),
 					new PlayerHasItemWithHimCondition("małe jajo wielkanocne",1),
 					new PlayerHasItemWithHimCondition("jabłko", 5),
 					new PlayerHasItemWithHimCondition("wisienka", 5)))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Oh nie. Wciąż brakuję słodyczy, których potrzebuję do koszyka Wielkanocnego. Mam nadzieję, że wkrótce znajdziesz je...",
 			null);
 
@@ -217,15 +217,15 @@ public class EasterGiftsForChildren extends AbstractQuest {
 		reward.add(new IncreaseXPAction(100));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(50));
-		
-		
-		
+
+
+
 		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
 			// make sure the player isn't cheating by putting the sweets
 			// away and then saying "yes"
-			
+
 			new AndCondition(
 					new PlayerHasItemWithHimCondition("tabliczka czekolady", 5),
 					new PlayerHasItemWithHimCondition("małe jajo wielkanocne", 1),
@@ -264,17 +264,17 @@ public class EasterGiftsForChildren extends AbstractQuest {
 	public String getName() {
 		return "EasterGiftsForChildren";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 0;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ADOS_CITY;
 	}
-	
+
 	@Override
 	public String getNPCName() {
 		return "Caroline";

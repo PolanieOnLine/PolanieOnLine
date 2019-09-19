@@ -15,12 +15,12 @@ import java.util.Map;
  * after which it will teleport player to a random location in 0_zakopane_c.
  */
 public class MagicznyScroll extends TimedTeleportScroll {
-	
+
 	private static final long DELAY = 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
-	
+
 	/**
 	 * Creates a new timed marked MagicznyScroll scroll.
-	 * 
+	 *
 	 * @param name
 	 * @param clazz
 	 * @param subclass
@@ -33,14 +33,14 @@ public class MagicznyScroll extends TimedTeleportScroll {
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param item
 	 *            item to copy
 	 */
 	public MagicznyScroll(final MagicznyScroll item) {
 		super(item);
 	}
-	
+
 	@Override
 	protected boolean useTeleportScroll(final Player player) {
 		final String QUEST_SLOT = "ozo";
@@ -78,7 +78,7 @@ public class MagicznyScroll extends TimedTeleportScroll {
 			return false;
 		}
 	}
-	
+
 	@Override
 	protected String getBeforeReturnMessage() {
 		return "Powoli tracisz moc...";

@@ -71,10 +71,10 @@ import org.apache.log4j.Logger;
  * <li>Not repeatable.</li>
  * </ul>
  */
- 
+
  public class JailedBarbarian extends AbstractQuest {
  	private static final String QUEST_SLOT = "jailedbarb";
- 	
+
 	private static Logger logger = Logger.getLogger(JailedBarbarian.class);
 
  	@Override
@@ -82,22 +82,22 @@ import org.apache.log4j.Logger;
 		return QUEST_SLOT;
 	}
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Lorenz");	
-		
+		final SpeakerNPC npc = npcs.get("Lorenz");
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"Potrzebuję pomocy przy ucieczce z tego więzienia. Te wstrętne Amazonki! Czy możesz mi pomóc?",
 				null);
-							
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
 				"Dziękuję za pomoc! Teraz mogę uciec!",
 				null);
-		
+
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, null,
@@ -111,20 +111,20 @@ import org.apache.log4j.Logger;
 				"Odejdź ktoś inny mi pomoże!",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
-	
+
 	private void step2() {
-	final SpeakerNPC npc = npcs.get("Lorenz");	
-	
+	final SpeakerNPC npc = npcs.get("Lorenz");
+
 	    final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("kosa"));
 		reward.add(new IncreaseXPAction(1000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "capture"));
 		reward.add(new IncreaseKarmaAction(10));
-		
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("kosa","kosy"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 				new PlayerHasItemWithHimCondition("kosa")),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Dziękuję!! Pierwszą część mamy za sobą! Teraz mogę ściąć wszystkie te kwiatki! Zapytaj Princess Esclara dlaczego tutaj jestem! Sądzę, że coś powie, gdy podasz jej moje imię...",
 				new MultipleActions(reward));
 
@@ -134,68 +134,68 @@ import org.apache.log4j.Logger;
 			ConversationStates.ATTENDING,
 			"Nie masz jeszcze kosy! Idź i zdobądź jakąś dla mnie. Pospiesz się!",
 			null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING,
 				"Już się Ciebie pytałem o przyniesienie mi #kosy do ścięcia tych kwiatków!",
 				null);
 	}
-	
+
 	private void step3() {
 	final SpeakerNPC npc = npcs.get("Princess Esclara");
-	
+
 		npc.add(ConversationStates.ATTENDING, "Lorenz",
 				new QuestInStateCondition(QUEST_SLOT, "capture"),
 				ConversationStates.ATTENDING,
 				"Chcesz wiedzieć dlaczego on tutaj jest? On i jego wstrętni przyjaciele kopali #tunel do naszej cudownej wyspy! Dlatego został uwięziony!",
 				new SetQuestAction(QUEST_SLOT, "princess"));
-		
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("tunnel", "tunel"),
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
 				ConversationStates.ATTENDING, "Jestem teraz wściekła i nie chce już o tym rozmawiać! Jeżeli chcesz się dowiedzieć więcej to musisz go zapytać o #tunel!",
-				null);	
+				null);
 
 	}
-	
+
 	private void step4() {
 	final SpeakerNPC npc = npcs.get("Lorenz");
-	
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("tunnel", "tunel"),
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Co chce mnie doprowadzić do szaleństwa jak wszystkie te kwiatki! Robię się głodny. Przynieś #jajo dla mnie! Daj znać, gdy zdobędziesz.",
-				new SetQuestAction(QUEST_SLOT, "jajo"));	
-		
+				new SetQuestAction(QUEST_SLOT, "jajo"));
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "capture"),
 				ConversationStates.ATTENDING,
 				"Proszę zapytaj Princess Esclara dlaczego tutaj jestem! Sądzę, że wypowiadając moje imię sprowokujesz ją do wyjawienia powodu",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
 				ConversationStates.ATTENDING,
 				"Założę się, że Princess Esclara powiedziała, że zostałem uwięziony za #tunel ... ",
 				null);
 	}
-	
+
 	private void step5() {
-		final SpeakerNPC npc = npcs.get("Lorenz");	
-		
+		final SpeakerNPC npc = npcs.get("Lorenz");
+
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("jajo"));
 		reward.add(new IncreaseXPAction(1000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "jailed"));
-		reward.add(new IncreaseKarmaAction(10)); 
-		
+		reward.add(new IncreaseKarmaAction(10));
+
 		npc.add(ConversationStates.ATTENDING, "jajo",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "jajo"),
 						new PlayerHasItemWithHimCondition("jajo")),
-						ConversationStates.ATTENDING, 
+						ConversationStates.ATTENDING,
 						"Dziękuję przyjacielu. Teraz musisz powiedzieć Princess Ylflia w Zamku Kalavan, że jestem tutaj #uwięziony. Pospiesz się!",
 						new MultipleActions(reward));
 
@@ -205,33 +205,33 @@ import org.apache.log4j.Logger;
 			ConversationStates.ATTENDING,
 			"Nie widzę jaja!!",
 			null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "jajo"),
 				ConversationStates.ATTENDING,
 				"Prosiłem Ciebie o przyniesienie #jaja!",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("jailed", "uwięziony"),
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
 				ConversationStates.ATTENDING, "Wiem to, *Jestem* uwięziony! Potrzebuję Ciebie, abyś powiedział Princess Ylflia, że jestem tutaj!",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
 				ConversationStates.ATTENDING,
 				"Potrzebuję Ciebie, abyś poszedł do Princess Ylflia i powiedział, że jestem tutaj #uwięziony.",
 				null);
 	}
-	
+
 	private void step6() {
 	final SpeakerNPC npc = npcs.get("Princess Ylflia");
-	
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("jailed", "Lorenz", "uwięziony"),
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Och. Mój ojciec nie powinien wiedzieć o tym. Mam nadzieje, że Lorenz ma się dobrze! Dziękuję za wiadomość! Wyślij mu #pozdrowienia! Lepiej wróć do niego. Może potrzebować pomocy.",
 				new SetQuestAction(QUEST_SLOT, "spoken"));
 
@@ -244,35 +244,35 @@ import org.apache.log4j.Logger;
 
 	private void step7() {
 	final SpeakerNPC npc = npcs.get("Lorenz");
-	
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("greetings", "pozdrowienia"),
 				new QuestInStateCondition(QUEST_SLOT, "spoken"),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Dziękuję przyjacielu. Teraz ostatnie zadanie! Przynieś mi barbarian armor. Bez tego nie ucieknę stąd! Idź! Idź! I daj znać, gdy zdobędziesz #zbroję!",
 				new SetQuestAction(QUEST_SLOT, "armor"));
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "greetings"),
 				ConversationStates.ATTENDING,
 				"Teraz musisz porozmawiać z Princess Ylflia ... Mam nadzieję, że przesłała swoje najgorętsze #pozdrowienia...",
 				null);
 	}
-	
+
 	private void step8() {
-		final SpeakerNPC npc = npcs.get("Lorenz");	
+		final SpeakerNPC npc = npcs.get("Lorenz");
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("zbroja barbarzyńcy"));
 		reward.add(new IncreaseXPAction(50000));
 		reward.add(new EquipItemAction("sztabka złota", 20));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new IncreaseKarmaAction(15)); 
-		
+		reward.add(new IncreaseKarmaAction(15));
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("armor", "zbroja", "zbroję"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
 						new PlayerHasItemWithHimCondition("zbroja barbarzyńcy")),
-						ConversationStates.ATTENDING, 
+						ConversationStates.ATTENDING,
 						"To wszystko! Teraz jestem gotowy do mojej ucieczki! Oto coś dla Ciebie. Ukradłem Princess Esclara! Żeby tylko się nie dowiedziała. Teraz zostaw mnie!",
 						new MultipleActions(reward));
 
@@ -282,15 +282,15 @@ import org.apache.log4j.Logger;
 			ConversationStates.ATTENDING,
 			"Nie posiadasz zbroi barbarzyńcy przy sobie! Idź i zdobądź!",
 			null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "armor"),
 				ConversationStates.ATTENDING,
 				"Czekam na  #zbroję barbarzyńcy od Ciebie. Teraz jestem dość silny, aby uciec.",
 				null);
 	}
-	
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -306,7 +306,7 @@ import org.apache.log4j.Logger;
 		step7();
 		step8();
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -319,14 +319,14 @@ import org.apache.log4j.Logger;
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomóc Lorenzowi w  wycięciu kwiatów. Za cokolwiek skazany, założę się, że na to zasłużył.");
 			return res;
-		} 
+		}
 		if ("start".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Lorenz chce abym udał się do Princess Esclara z zapytaniem: 'dlaczego on pojmany'. Muszę powiedzieć jej jego imię aby jej przypomnieć.");
 		if ("capture".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Księżniczka powiedziała mi, że Lorenz jest skazany za kopanie tunelu! Tak więc należy mu powiedzieć, to za tunel.");
 		if ("princess".equals(questState)) {
 			return res;
@@ -357,18 +357,18 @@ import org.apache.log4j.Logger;
 		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
 		return debug;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "JailedBarbarian";
 	}
-	
+
 	// Amazon is dangerous below this level - don't hint to go there
 	@Override
 	public int getMinLevel() {
 		return 70;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.AMAZON_ISLAND;
@@ -378,4 +378,3 @@ import org.apache.log4j.Logger;
 		return "Lorenz";
 	}
 }
- 

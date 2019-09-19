@@ -320,7 +320,7 @@ public class CreatureInfoZ {
 				if (result.length() > 0) {
 					result.append(", ");
 				}
-				
+
 				prevProbability = prevProbability.replaceAll("%s",
 						Grammar.enumerateCollection(items));
 				prevProbability = prevProbability.replaceAll("%a",
@@ -341,7 +341,7 @@ public class CreatureInfoZ {
 
 		if (result.length() > 0) {
 			result.append(", ");
-		} 
+		}
 		if (prevProbability != null) {
 			result.append(prevProbability.replaceAll("%s",
 					Grammar.enumerateCollection(items)));

@@ -45,12 +45,12 @@ import java.util.Map;
 
 /**
  * QUEST: Mixture for Ortiv
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li>Ortiv Milquetoast, the retired teacher who lives in the Kirdneh River house</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li>Ortiv asks you for some ingredients for a mixture which will help him to keep the assassins and bandits in the cellar</li>
@@ -58,14 +58,14 @@ import java.util.Map;
  * <li>Take the ingredients back to Ortiv</li>
  * <li>Ortiv gives you a reward</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>karma +35</li>
  * <li>5000 XP</li>
  * <li>a bounded assassin dagger</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li>None</li>
@@ -110,13 +110,13 @@ public class MixtureForOrtiv extends AbstractQuest {
 					new LevelGreaterThanCondition(2),
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new NotCondition(new QuestInStateCondition(QUEST_SLOT,"rejected"))),
-			ConversationStates.QUESTION_1, 
+			ConversationStates.QUESTION_1,
 			"Oh obcy znalazł mój dom. Witaj! Możesz mi w czymś pomóc?", null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT,"rejected")),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Hej czy myślałeś o ponownej pomocy? Zrobisz to?", null);
 
 		npc.add(
@@ -172,28 +172,28 @@ public class MixtureForOrtiv extends AbstractQuest {
 
 			npc.addReply("skrzydlica","Skrzydlica jest ciężka do znalezienia...jest okryta białymi prążkami na przemian z czerwonymi, zielonymi " +
 					" lub brązowymi. Słyszałem o miejscach w Faiumoni gdzie możesz ją złowić, ale uważaj. Każdy kolec jest trujący!");
-			
+
 			npc.addReply("kokuda","Kokuda ciężko jest znaleść. Byłbym wdzięczny, gdybyś zdobył jakąś z wyspy Athor...");
 
 			npc.addReply("lukrecja", "To małe ciągotki, które w mieście magów sprzedaje młoda dziewczyna. Są wspaniałe i słodkie.");
-			
+
 			npc.addReply("napój z winogron", "Hmm nie ma nic lepszego niż połączenie dwóch rzeczy razem podczas delektowania się szklanką tego napoju *kaszlnięcie*, ale potrzebuję też mikstury... Założe się, że możesz kupić go w tawernie lub pubie...");
-			
+
 			npc.addReply("czosnek", "Znam zabójców i bandytów i nie są wampirami, ale staram się używać tego także przeciwko nim. Jest miła ogrodniczka w Kalavan City Gardens, która może sprzedać kilka główek jej hodowli.");
-			
+
 			npc.addReply(Arrays.asList("pestle","mortar","moździerz","moździerz z tłuczkiem"), "Może jakiś piekarz lub kucharz używa tego.");
 	}
 
 	private void prepareBringingStep() {
 		final SpeakerNPC npc = npcs.get("Ortiv Milquetoast");
-	
+
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.QUESTION_2,
 				"Witaj ponownie! Cieszę się, że cię widzę. Przyniosłeś #składniki do mojej mikstury?",
 				null);
-		
+
 		/* player asks what exactly is missing (says ingredients) */
 		npc.add(ConversationStates.QUESTION_2, Arrays.asList("ingredients", "składników", "składniki"), null,
 				ConversationStates.QUESTION_2, null,
@@ -228,7 +228,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.NO_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Dobrze muszę być trochę cierpliwy. Daj mi znać jeżeli będę mógł jakoś #pomóc.", 
+				"Dobrze muszę być trochę cierpliwy. Daj mi znać jeżeli będę mógł jakoś #pomóc.",
 				null);
 
 		/* player says he didn't bring any items to different question */
@@ -238,14 +238,14 @@ public class MixtureForOrtiv extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Dobrze, muszę być trochę cierpliwy. Daj mi znać jeżeli będę mógł jakoś #pomóc.", null);
 
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestCompletedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Dziękuję bardzo! Mogę teraz spać bezpiecznie! Uratowałeś mnie!", null);
 	}
-	
+
 
 	@Override
 	public void addToWorld() {
@@ -268,7 +268,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 	}
 
 	public String getTitle() {
-		
+
 		return "Mikstua dla Ortiva";
 	}
 
@@ -276,7 +276,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 	public String getNPCName() {
 		return "Ortiv Milquetoast";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.KIRDNEH;

@@ -98,31 +98,31 @@ public class SuntanCreamForZara extends AbstractQuest {
 		final SpeakerNPC zara = npcs.get("Zara");
 
 		zara.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Nie mam nowego zadania dla ciebie. Ale dziękuję za krem do opalania. Czuję, że moja skóra ma się coraz lepiej!",
 			null);
-		
+
 		zara.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "rejected"),
-				ConversationStates.QUEST_OFFERED, 
-				"Ostatnio zgodziłeś się mi pomóc, a moja skóra ma się coraz gorzej. " 
+				ConversationStates.QUEST_OFFERED,
+				"Ostatnio zgodziłeś się mi pomóc, a moja skóra ma się coraz gorzej. "
 				+ "Proszę czy mógłbyś przynieść mi #'olejek do opalania', który #ratownicy produkują?",
 				null);
-		
+
 		zara.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Zapomniałeś o obietnicy zapytania się #ratowników o #'olejek do opalania'?",
 				null);
-		
+
 		zara.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestNotInStateCondition(QUEST_SLOT, "rejected")),
-				ConversationStates.QUEST_OFFERED, 
+				ConversationStates.QUEST_OFFERED,
 				"Czuję się śpiąca na słońcu, a moja skóra jest teraz spalona. Czy możesz mi przynieść #'olejek do opalania' wyrabiany przez #ratowników?",
 				null);
 
@@ -172,16 +172,16 @@ public class SuntanCreamForZara extends AbstractQuest {
 			new AndCondition(new GreetingMatchesNameCondition(zara.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("olejek do opalania")),
-			ConversationStates.QUEST_ITEM_BROUGHT, 
+			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Wspaniale! Dostałeś olejek! Jest dla mnie?",
 			null);
-		
+
 		zara.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(zara.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new NotCondition(new PlayerHasItemWithHimCondition("olejek do opalania"))),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Wiem, że #'olejek do opalania' jest trudno dostać, ale mam nadzieję, że nie zapomniałeś o moim problemie...",
 				null);
 
@@ -233,7 +233,7 @@ public class SuntanCreamForZara extends AbstractQuest {
 	public String getNPCName() {
 		return "Zara";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ATHOR_ISLAND;

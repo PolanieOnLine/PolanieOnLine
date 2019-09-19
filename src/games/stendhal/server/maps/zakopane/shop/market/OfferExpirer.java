@@ -46,7 +46,7 @@ public class OfferExpirer implements TurnListener{
 	/**
 	 * Time after earnings that the owner has not collected are pocketted by Harold.
 	 */
-	private static final int DAYS_BEFORE_REMOVING_EARNINGS = 28; 
+	private static final int DAYS_BEFORE_REMOVING_EARNINGS = 28;
 
 	/**
 	 * Total time in seconds before sending the player a warning.
@@ -57,7 +57,7 @@ public class OfferExpirer implements TurnListener{
 	 */
 	protected static final int TIME_TO_EXPIRING = (DAYS_TO_WARNING + DAYS_TO_EXPIRING) * MathHelper.SECONDS_IN_ONE_DAY;
 	/**
-	 * Total time in seconds before removing an offer completely. 
+	 * Total time in seconds before removing an offer completely.
 	 */
 	private static final int TIME_TO_REMOVING = (DAYS_TO_WARNING + DAYS_TO_EXPIRING + DAYS_TO_REMOVING) * MathHelper.SECONDS_IN_ONE_DAY;
 	private long timeStamp = 0;
@@ -87,8 +87,8 @@ public class OfferExpirer implements TurnListener{
 	 * Run the expiration checks and restart the timer.
 	 */
 	private void runChecksAndRestart() {
-		// Check the expired offers first, to avoid sending warning messages 
-		// about offers that are expired too. 
+		// Check the expired offers first, to avoid sending warning messages
+		// about offers that are expired too.
 		checkExpired();
 		checkWarnings();
 		checkRemoved();
@@ -99,7 +99,7 @@ public class OfferExpirer implements TurnListener{
 
 	/**
 	 * sends a message to player via postman
-	 * 
+	 *
 	 * @param player the recipient of the message
 	 * @param message the message itself
 	 */
@@ -127,7 +127,7 @@ public class OfferExpirer implements TurnListener{
 			}
 			builder.append(Grammar.a_noun(itemname));
 			builder.append(" wygasła. Masz ");
-			builder.append(TimeUtil.approxTimeUntil((int) (offer.getTimestamp() 
+			builder.append(TimeUtil.approxTimeUntil((int) (offer.getTimestamp()
 					- System.currentTimeMillis()) / 1000 + TIME_TO_REMOVING));
 			builder.append(" czasu aby odebrać przedmiot lub przedłużyć ofertę.");
 			sendMessage(offer.getOfferer(), builder);
@@ -158,8 +158,8 @@ public class OfferExpirer implements TurnListener{
 
 		long time = System.currentTimeMillis();
 		for (Offer offer : list) {
-			// Send the warning only once, unless the server has been 
-			// restarted since the last check. In that case, message the 
+			// Send the warning only once, unless the server has been
+			// restarted since the last check. In that case, message the
 			// player always to be sure that she gets at least one warning.
 			long timeDiff = time - timeStamp;
 			if (timeStamp != 0 && ((time - offer.getTimestamp() - TIME_TO_WARNING * 1000) > timeDiff)) {
@@ -175,7 +175,7 @@ public class OfferExpirer implements TurnListener{
 			sendMessage(offer.getOfferer(), builder);
 		}
 
-		// timeStamp should be set here, rather than after all the checks, as it's used only 
+		// timeStamp should be set here, rather than after all the checks, as it's used only
 		// for figuring out if the player has been warned before. Thus storing the time value
 		// used here.
 		timeStamp = time;

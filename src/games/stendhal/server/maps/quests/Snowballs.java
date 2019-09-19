@@ -61,11 +61,11 @@ import java.util.List;
  * REPETITIONS: <li> Unlimited, but 2 hours of waiting is
  * required between repetitions
  */
- 
+
 public class Snowballs extends AbstractQuest {
 
 	private static final int REQUIRED_SNOWBALLS = 25;
-	
+
 	private static final int REQUIRED_MINUTES = 120;
 
 	private static final String QUEST_SLOT = "snowballs";
@@ -78,7 +78,7 @@ public class Snowballs extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return player.hasQuest(QUEST_SLOT)
-				&& !player.getQuest(QUEST_SLOT).equals("start") 
+				&& !player.getQuest(QUEST_SLOT).equals("start")
 				&& !player.getQuest(QUEST_SLOT).equals("rejected");
 	}
 
@@ -116,36 +116,36 @@ public class Snowballs extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Mr. Yeti");
 
 		// says hi without having started quest before
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
 				"Witam nieznajomego! Czy widziałeś moją śnieżną rzeźbę? Czy możesz mi wyświadczyć #przysługę?",
 				null);
-		
-		// says hi - got the snow yeti asked for 
-		npc.add(ConversationStates.IDLE, 
+
+		// says hi - got the snow yeti asked for
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new PlayerHasItemWithHimCondition("śnieżka", REQUIRED_SNOWBALLS)),
-				ConversationStates.QUEST_ITEM_BROUGHT, 
+				ConversationStates.QUEST_ITEM_BROUGHT,
 				"Witam nieznajomego! Widzę, że masz śnieżki, o które pytałem. Czy te śnieżki są dla mnie?",
 				null);
 
-		// says hi - didn't get the snow yeti asked for 
+		// says hi - didn't get the snow yeti asked for
 		npc.add(ConversationStates.IDLE,
       ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new NotCondition(new PlayerHasItemWithHimCondition("śnieżka", REQUIRED_SNOWBALLS))),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Wróciłeś? Nie zapomnij, że obiecałeś zebrać kupkę śnieżek dla mnie!",
 				null);
 
 		// says hi - quest was done before and is now repeatable
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStartedCondition(QUEST_SLOT),
@@ -156,7 +156,7 @@ public class Snowballs extends AbstractQuest {
 				null);
 
 		// says hi - quest was done before and is not yet repeatable
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStartedCondition(QUEST_SLOT),
@@ -164,7 +164,7 @@ public class Snowballs extends AbstractQuest {
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, REQUIRED_MINUTES, "Mam wystarczającą ilość śniegu na moją rzeźbę. Dziękuję za pomoc! " 
+				new SayTimeRemainingAction(QUEST_SLOT, REQUIRED_MINUTES, "Mam wystarczającą ilość śniegu na moją rzeźbę. Dziękuję za pomoc! "
 						+ "Mogę zacząć nową za" ));
 
 		// asks about quest - has never started it
@@ -174,15 +174,15 @@ public class Snowballs extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED,
 				"Uwielbiam tworzyć śnieżne rzeźby, ale śnieg w tej jaskini nie jest wystarczająco dobry. Pomożesz mi w zdobyciu kilku śnieżek? Potrzebuję w sumie dwadzieścia pięć.",
 				null);
-		
+
 		// asks about quest but already on it
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
 			"Już mi obiecałeś, że przyniesiesz kilka śnieżek! Dwadzieścia pięć kulek pamiętaj ...",
 			null);
-		
+
 		// asks about quest - has done it but it's repeatable now
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -245,16 +245,16 @@ public class Snowballs extends AbstractQuest {
 				});
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES, 
+			ConversationPhrases.YES_MESSAGES,
 			new PlayerHasItemWithHimCondition("śnieżka", REQUIRED_SNOWBALLS),
 			ConversationStates.ATTENDING,
 			null,
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES, 
+			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("śnieżka", REQUIRED_SNOWBALLS)),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Hej! Gdzie położyłeś śnieżki?",
 			null);
 
@@ -292,10 +292,10 @@ public class Snowballs extends AbstractQuest {
 	public String getNPCName() {
 		return "Mr. Yeti";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_YETI_CAVE;
 	}
-	
+
 }

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Builds a information giving NPC in Kirdneh city. 
+ * Builds a information giving NPC in Kirdneh city.
  *
  * @author Vanessa Julius idea by miasma
  */
@@ -65,7 +65,7 @@ public class MummyNPC implements ZoneConfigurator {
 				addReply("Elisabeth", "Jest takim kochanym dzieckiem. Zawsze dbam o nią!");
 				addGoodbye("Dziękuję za spotkanie.");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);

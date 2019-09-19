@@ -50,9 +50,9 @@ import java.util.List;
 import marauroa.common.game.IRPZone;
 
 /**
- * Controls player access to the Wizard's Bank via an NPC. 
+ * Controls player access to the Wizard's Bank via an NPC.
  * <p>He takes a fee to enter. Players are allowed only 5 minutes access at once.
- * 
+ *
  * @author kymara
  */
 
@@ -61,7 +61,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 	private static final String QUEST_SLOT = "zakopane_clouds";
 
 	private static final String ZLOTA_CIUPAGA_WAS_QUEST_SLOT = "zlota_ciupaga_was";
-	
+
 	private static final String MITHRILSHIELD_QUEST_QUEST_SLOT = "mithrilshield_quest";
 
 	private static final String ZAGADKI_QUEST_SLOT = "zagadki";
@@ -95,7 +95,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 		private final String playername;
 		/**
 		 * Starts a teleport-out-timer.
-		 * 
+		 *
 		 * @param player
 		 *            the player who started the timer
 		 */
@@ -112,7 +112,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			
+
 			if (playername == null) {
 				return prime * result;
 			} else {
@@ -132,7 +132,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				return false;
 			}
 			Timer other = (Timer) obj;
-			
+
 			if (playername == null) {
 				if (other.playername != null) {
 					return false;
@@ -192,7 +192,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(super.getName()),
-								new QuestCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT), 
+								new QuestCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT),
 								new QuestCompletedCondition(MITHRILSHIELD_QUEST_QUEST_SLOT),
 								new QuestCompletedCondition(ZAGADKI_QUEST_SLOT),
 								new QuestCompletedCondition(QUEST_SLOT)),
@@ -204,7 +204,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(super.getName()),
-								new QuestCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT), 
+								new QuestCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT),
 								new QuestCompletedCondition(MITHRILSHIELD_QUEST_QUEST_SLOT),
 								new QuestCompletedCondition(ZAGADKI_QUEST_SLOT),
 								new QuestNotStartedCondition(QUEST_SLOT)),
@@ -216,7 +216,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(super.getName()),
-								new QuestCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT), 
+								new QuestCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT),
 								new QuestCompletedCondition(MITHRILSHIELD_QUEST_QUEST_SLOT),
 								new QuestCompletedCondition(ZAGADKI_QUEST_SLOT),
 								new QuestActiveCondition(QUEST_SLOT)),
@@ -229,8 +229,8 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(super.getName()),
 						new OrCondition(
-								new QuestNotCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT), 
-								new QuestNotCompletedCondition(MITHRILSHIELD_QUEST_QUEST_SLOT), 
+								new QuestNotCompletedCondition(ZLOTA_CIUPAGA_WAS_QUEST_SLOT),
+								new QuestNotCompletedCondition(MITHRILSHIELD_QUEST_QUEST_SLOT),
 								new QuestNotCompletedCondition(ZAGADKI_QUEST_SLOT))),
 						ConversationStates.IDLE,
 						"Nie mogę cię przepuścić do władcy smoków dopóki nie posiądziesz złotej ciupagi z wąsem, mithril shieldu. Zrób tagże zadanie u Brzezdoma. Dowidzenia!",
@@ -255,7 +255,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				add(ConversationStates.ATTENDING,
 						ConversationPhrases.YES_MESSAGES,
 						new AndCondition(
-								new PlayerHasItemWithHimCondition("money", COST), 
+								new PlayerHasItemWithHimCondition("money", COST),
 								new QuestNotActiveCondition(QUEST_SLOT)),
 								ConversationStates.ATTENDING,
 								"Uważaj tam na serafina!!!  Czasami pojawia się niespodziewanie.",
@@ -273,7 +273,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				add(ConversationStates.ATTENDING,
 						ConversationPhrases.YES_MESSAGES,
 						new AndCondition(
-								new NotCondition(new PlayerHasItemWithHimCondition("money", COST)), 
+								new NotCondition(new PlayerHasItemWithHimCondition("money", COST)),
 								new QuestNotActiveCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						"Nie masz tyle pieniędzy!",
@@ -312,7 +312,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 						new QuestActiveCondition(QUEST_SLOT),
 						ConversationStates.ATTENDING,
 						"I jak było u władcy smoków?",
-						// we used to use teleportAway() here 
+						// we used to use teleportAway() here
 						new MultipleActions(
 								new TeleportAction(ZONE_NAME, 9, 12, Direction.DOWN),
 								new SetQuestAction(QUEST_SLOT, "done"),
@@ -341,7 +341,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 	public void onLoggedIn(final Player player) {
 		/*
 		 *  Stop any possible running notifiers that might be left after the player
-		 *  logged out while in the bank. Otherwise the player could be thrown out 
+		 *  logged out while in the bank. Otherwise the player could be thrown out
 		 *  too early if he goes back.
 		 */
 		SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
@@ -350,7 +350,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 
 	/**
 	 * Finishes the time and teleports the player out.
-	 * 
+	 *
 	 * @param player
 	 *            the player to teleport out
 	 */

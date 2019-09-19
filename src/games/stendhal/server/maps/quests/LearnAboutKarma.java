@@ -32,25 +32,25 @@ import java.util.List;
 
 /**
  * QUEST: Learn about Karma
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li>Sarzina, the friendly wizardess who also sells potions in Fado</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li>Sarzina asks if you are a helpful person</li>
  * <li>You get good or bad karma depending on what you say</li>
  * <li>You get the chance to learn about karma and find out what yours is.</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li>Some Karma</li>
  * <li>Knowledge</li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li>Can always learn about karma but not get the bonus each time</li>
@@ -81,18 +81,18 @@ public class LearnAboutKarma extends AbstractQuest {
 
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Sarzina");
-		
+
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Czy jesteś tym, który lubi pomagać innym?", null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
-			"Jeśli chcesz by towarzyszyła ci dobra #karma jedyne co musisz robić, to pomagać innym. Znam dziewczę o imieniu Sally, która potrzebuje drewna, " 
+			ConversationStates.ATTENDING,
+			"Jeśli chcesz by towarzyszyła ci dobra #karma jedyne co musisz robić, to pomagać innym. Znam dziewczę o imieniu Sally, która potrzebuje drewna, "
 			+ "i znam inne dziewczę co zwie się Annie, która uwielbia lody. Cóż, znam wielu mieszkańców tej krainy, którzy stale potrzebować będą pomocy. Jestem pewna, że jeśli im pomożesz czeka cię sowita zapłata.", null);
 
 		// player is willing to help other people
@@ -112,7 +112,7 @@ public class LearnAboutKarma extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Wiedziałam ... pewnie otacza cię zła #karma.",
 			new MultipleActions(
-					new DecreaseKarmaAction(10.0), 
+					new DecreaseKarmaAction(10.0),
 					new SetQuestAction(QUEST_SLOT, "done"),
 					new EnableFeatureAction("karma_indicator")));
 
@@ -122,8 +122,8 @@ public class LearnAboutKarma extends AbstractQuest {
 			"karma",
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_1,
-			"Gdy robisz dobre rzeczy dla innych takie jak #zadania dostajesz dobrą karmę. Dobra karma oznacza, że " 
-			+ " będzie ci się powodzić w bitwach, w łowieniu ryb, poszukiwaniu złota i drogocennych kamieni. " 
+			"Gdy robisz dobre rzeczy dla innych takie jak #zadania dostajesz dobrą karmę. Dobra karma oznacza, że "
+			+ " będzie ci się powodzić w bitwach, w łowieniu ryb, poszukiwaniu złota i drogocennych kamieni. "
 			+ " Chcesz wiedzieć jaką masz teraz karmę?",
 			null);
 
@@ -168,7 +168,7 @@ public class LearnAboutKarma extends AbstractQuest {
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES,
 			null, ConversationStates.ATTENDING,
 			"Zatem, mogę ci jeszcze jakoś pomóc?", null);
-		
+
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.QUEST_MESSAGES,
 				null, ConversationStates.QUESTION_1,
 				"Jeśli popytasz o zadania tu i tam, wypełnisz je, wówczas twoja karma urośnie. Chcesz wiedzieć jaką masz teraz karmę?", null);
@@ -177,17 +177,17 @@ public class LearnAboutKarma extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Nauka o Karmie", 
-				"Sarzina nauczy mnie o Karmie.", 
+				"Nauka o Karmie",
+				"Sarzina nauczy mnie o Karmie.",
 				false);
 		step1();
 	}
-	
+
 	@Override
 	public String getName() {
 		return "LearnAboutKarma";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.FADO_CITY;

@@ -55,7 +55,7 @@ public class DiceDealerNPC implements ZoneConfigurator {
 				addHelp("Jeżeli szukasz Ouchita to jest on na górze.");
 				addGoodbye();
 			}
-		
+
 		@Override
 		protected void onGoodbye(RPEntity player) {
 			setDirection(Direction.DOWN);
@@ -69,7 +69,7 @@ public class DiceDealerNPC implements ZoneConfigurator {
 		ricardo.setDescription("Ricardo wygląda na zbyt młodą osobę , aby mieć swój własny interes w tawernie.");
 		ricardo.initHP(100);
 		final Rectangle tableArea = new Rectangle(25, 4, 2, 3);
-		
+
 		zone.add(ricardo);
 		ricardo.setTableArea(tableArea);
 	}

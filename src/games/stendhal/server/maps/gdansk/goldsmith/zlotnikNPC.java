@@ -49,7 +49,7 @@ public class zlotnikNPC implements ZoneConfigurator {
 				nodes.add(new Node(14, 3));
 				setPath(new FixedPath(nodes, true));
 			}
-			
+
 			@Override
 			protected void createDialog() {
 				addGreeting("Witam. W czym mogę #'pomóc'?");

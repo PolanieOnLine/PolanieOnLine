@@ -25,9 +25,9 @@ import games.stendhal.server.entity.npc.condition.TextHasParameterCondition;
 import games.stendhal.server.entity.trade.Offer;
 
 public final class MarketManagerNPC extends SpeakerNPC {
-	
+
 	private Map<String,Offer> offers = new HashMap<String, Offer>();
-	
+
 	MarketManagerNPC(String name) {
 		super(name);
 		// Use smaller than normal range to not interfere players trying to talk

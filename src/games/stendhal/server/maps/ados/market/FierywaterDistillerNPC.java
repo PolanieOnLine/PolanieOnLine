@@ -26,7 +26,7 @@ import java.util.TreeMap;
 /**
  * Provides Uncle Dag NPC, in Ados Market.
  * He will produce fierywater bottles if he is given sugar canes (from cane fields)
- * 
+ *
  * @author omero
  */
 public class FierywaterDistillerNPC implements ZoneConfigurator {
@@ -38,7 +38,7 @@ public class FierywaterDistillerNPC implements ZoneConfigurator {
 
     private void buildNPC(final StendhalRPZone zone) {
         final SpeakerNPC npc = new SpeakerNPC("Uncle Dag") {
-            
+
             @Override
             protected void createPath() {
                 setPath(null);
@@ -48,7 +48,7 @@ public class FierywaterDistillerNPC implements ZoneConfigurator {
             protected void createDialog() {
                 addGreeting("Cześć!");
                 addHelp("Jestem tutaj nowy. Nie mogę ci za bardzo pomóc!");
-                addQuest("Oh cóż... Nie jestem zbyt dobry w tych rzeczach... Jestem prostym człowiekiem z prostymi potrzebami, ale dziękuję, że zapytałeś."); 
+                addQuest("Oh cóż... Nie jestem zbyt dobry w tych rzeczach... Jestem prostym człowiekiem z prostymi potrzebami, ale dziękuję, że zapytałeś.");
                 addJob("Mogę #wywarzyć #'ekstrakt litworowy' dla Ciebie o ile przyniesiesz mi wystarczająco dużo #trzciny #cukrowej i #polano!");
                 addOffer("Jeżeli potrzebujesz #'ekstrakt litworowy' to poproś mnie o #wywarzenie dla Ciebie!");
                 addReply(Arrays.asList("fierywater", "ekstrakt litworowy"),

@@ -44,16 +44,16 @@ import java.util.Map;
  */
 public class RetiredAdventurerNPC implements ZoneConfigurator {
 	private static final String QUEST_SLOT="meet_hayunn";
-	
+
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(StendhalRPZone zone) {
 		SpeakerNPC npc = new SpeakerNPC("Hayunn Naratha") {
-			
+
 			@Override
 			public void createDialog() {
 				// A little trick to make NPC remember if it has met
@@ -81,7 +81,7 @@ public class RetiredAdventurerNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						"Witaj ponownie. Jakiej #pomocy mogę Ci teraz udzielić?",
 						null);
-				 
+
 				addHelp("Jak już mówiłem, byłem kiedyś poszukiwaczem przygód, a teraz jestem nauczycielem. Chcesz bym nauczył Cię co sam potrafię?");
 				addJob("Moją pracą jest ochrona ludzi w Semos przed potworami, które mogą uciec z podziemi! Od kiedy młodzi ludzie wyruszyli na południe, aby walczyć ze złymi legionami Blordroughtów, potwory stały się pewniejsze i zaczęły wychodzić na powierzchnię. Semos oczekuje pomocy właśnie od ludzi takich jak ty. Idź do burmistrza i zapytaj o zadanie, z pewnością ma jakieś dla Ciebie.");
 				addGoodbye();
@@ -98,7 +98,7 @@ public class RetiredAdventurerNPC implements ZoneConfigurator {
 				nodes.add(new Node(11, 9));
 				setPath(new FixedPath(nodes, true));
 			}
-		
+
 		};
 		npc.setPosition(4, 9);
 		npc.setEntityClass("oldheronpc");

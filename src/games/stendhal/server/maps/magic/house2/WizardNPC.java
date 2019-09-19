@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Builds a wizard npc, an expert in textiles.
  *
- * @author kymara 
+ * @author kymara
  */
 public class WizardNPC implements ZoneConfigurator {
 
@@ -53,7 +53,7 @@ public class WizardNPC implements ZoneConfigurator {
 				addGoodbye("Do następnego razu.");
 				// remaining behaviour defined in maps.quests.MithrilCloak
 	 	     }
-		    
+
 		};
 
 		npc.setDescription("Oto Whiggins. Wygląda na spokojnego i szczęśliwego.");

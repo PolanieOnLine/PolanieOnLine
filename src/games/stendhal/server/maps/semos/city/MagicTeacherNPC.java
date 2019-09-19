@@ -23,19 +23,19 @@ import marauroa.common.game.RPSlot;
 
 /**
  * An NPC for testing purposes, that easily enables a player to play around with magic
- * 
+ *
  * @author madmetzger
  */
 @TestServerOnly
 public class MagicTeacherNPC implements ZoneConfigurator {
-	
+
 	/**
 	 * This ChatAction prepares a player with all he needs to play around with magic
-	 * 
+	 *
 	 * @author madmetzger
 	 */
 	private final class TeachMagicAction implements ChatAction {
-		
+
 		@Override
 		public void fire(Player player, Sentence sentence, EventRaiser npc) {
 			enableSpellsFeature(player);
@@ -43,7 +43,7 @@ public class MagicTeacherNPC implements ZoneConfigurator {
 			equipSpells(player);
 			equipManaPotions(player);
 		}
-		
+
 		private void equipManaPotions(Player player) {
 			StackableItem potion = (StackableItem) SingletonRepository.getEntityManager().getItem("mana");
 			potion.setQuantity(1000);
@@ -68,7 +68,7 @@ public class MagicTeacherNPC implements ZoneConfigurator {
 		private void enableSpellsFeature(Player player) {
 			player.setFeature("spells", true);
 		}
-		
+
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class MagicTeacherNPC implements ZoneConfigurator {
 				add(ConversationStates.ATTENDING, Arrays.asList("teach", "naucz"), null, ConversationStates.SERVICE_OFFERED, "Czy chcesz się nauczyć czegoś o magii?", null);
 				add(ConversationStates.SERVICE_OFFERED, ConversationPhrases.YES_MESSAGES, null, ConversationStates.ATTENDING, null, new TeachMagicAction());
 			}
-			
+
 		};
 		npc.addGreeting("Witaj jestem nauczycielem magii! Mogę cię #nauczyć magii.");
 		npc.addJob("Moją pracą jest #uczenie ciebie o magii, którą możesz tu wypróbować.");

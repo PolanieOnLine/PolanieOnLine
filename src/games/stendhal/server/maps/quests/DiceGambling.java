@@ -95,9 +95,9 @@ public class DiceGambling extends AbstractQuest {
 					player.equipOrPutOnGround(dice);
 				}
 			});
-		
+
 		ricardo.add(ConversationStates.QUESTION_1,
-			ConversationPhrases.YES_MESSAGES, 
+			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("money", STAKE)),
 			ConversationStates.ATTENDING,
 			"Hej! Nie masz pieniędzy!", null);
@@ -109,7 +109,7 @@ public class DiceGambling extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Tchórz! Jak chcesz zostać bohaterem skoro boisz się zaryzykować?",
 			null);
-		
+
 		fillQuestInfo(
 				"Hazard Koścmi",
 				"Spróbuj szczęścia w kości w Semos's Tavern.",
@@ -144,7 +144,7 @@ public class DiceGambling extends AbstractQuest {
 				"Wyglądasz niesamowicie w tym modnym karmazynowym płaszczu!"));
 		map.put(18, new Pair<String, String>("hełm zabójcy",
 				"Trafiłeś JACKPOT! Hełm zabójcy!"));
-		
+
 		return map;
 	}
 
@@ -152,17 +152,17 @@ public class DiceGambling extends AbstractQuest {
 	public String getName() {
 		return "DiceGambling";
 	}
-	
+
 	@Override
 	public boolean isVisibleOnQuestStatus() {
 		return false;
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;

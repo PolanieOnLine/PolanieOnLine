@@ -81,7 +81,7 @@ import marauroa.common.Pair;
 	private static final String QUEST_NPC = "Despot Halb Errvl";
 	private static final String QUEST_SLOT = "kill_enemy_army";
 	private static final int delay = MathHelper.MINUTES_IN_ONE_WEEK;
-	
+
 	protected HashMap<String, Pair<Integer, String>> enemyForces = new HashMap<String, Pair<Integer,String>>();
 	protected HashMap<String, List<String>> enemys = new HashMap<String, List<String>>();
 
@@ -346,7 +346,7 @@ import marauroa.common.Pair;
 
 			player.equipOrPutOnGround(money);
 			player.addKarma(karmabonus);
-		
+
 		}
 	}
 
@@ -402,7 +402,7 @@ import marauroa.common.Pair;
 	 * add quest state to npc's fsm.
 	 */
 	private void step_1() {
-		
+
 		SpeakerNPC npc = npcs.get(QUEST_NPC);
 
 		// quest can be given
@@ -522,34 +522,34 @@ import marauroa.common.Pair;
 	public String getName() {
 		return "KillEnemyArmy";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 80;
-	}	
-	
+	}
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
-	
+
  	@Override
  	public List<String> getHistory(final Player player) {
  		LinkedList<String> history = new LinkedList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return history;
 		}
-		
+
 		if(player.getQuest(QUEST_SLOT, 0).equals("start")) {
 	        final String givenEnemies = player.getQuest(QUEST_SLOT, 1);
-	        final int givenNumber = enemyForces.get(givenEnemies).first(); 
+	        final int givenNumber = enemyForces.get(givenEnemies).first();
 	        // updating firstly
 			if(new KillsQuestSlotNeedUpdateCondition(QUEST_SLOT, 2, enemys.get(givenEnemies), true).fire(player, null, null)) {
 				// still need update??
 			}
 	        final int killedNumber = getKilledCreaturesNumber(player);
-	        
+
 			history.add("Despot Halb Errvl poprosił mnie o zabicie "+
 					givenNumber+" "+
 					Grammar.plnoun(givenNumber, givenEnemies));
@@ -565,32 +565,31 @@ import marauroa.common.Pair;
 			} else {
 				int enemyleft = givenNumber - killedNumber;
 				history.add("Zostało "+enemyleft+" "+
-						Grammar.plnoun(enemyleft, givenEnemies)+" do zabicia.");	
+						Grammar.plnoun(enemyleft, givenEnemies)+" do zabicia.");
 			}
 		}
-		
+
 		if(isCompleted(player)) {
 			history.add("Ukończyłem zadanie Despot's Halb Errvl i otrzymałem moja nagrodę!");
-		}	
+		}
 		if (isRepeatable(player)) {
 			history.add("Despot Halb Errvl dostaje znowu paranoi o swoim bezpieczeństwie. Mogę teraz zaoferować swoje usługi.");
-		} 
+		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 3);
 		if (repetitions > 0) {
 			history.add("Rozgromiłem "
 					+ Grammar.quantityplnoun(repetitions, "całą armię") + " dla Despot Halb Errvl.");
 		}
-		return history; 
+		return history;
  	}
 
 	@Override
 	public String getNPCName() {
 		return "Despot Halb Errvl";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_SURROUNDS;
 	}
 }
-

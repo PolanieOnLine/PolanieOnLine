@@ -30,8 +30,8 @@ import java.util.Map;
 
 /**
  * Builds a NPC in Semos Mine (name:Barbarus) who is a miner and informs players about his job
- * 
- * @author storyteller and Vanessa Julius 
+ *
+ * @author storyteller and Vanessa Julius
  *
  */
 public class MinerNPC implements ZoneConfigurator {
@@ -43,17 +43,17 @@ public class MinerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Barbarus") {
-		    
+
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(57, 78));
 				nodes.add(new Node(55, 78));
                 nodes.add(new Node(55, 80));
-                nodes.add(new Node(53, 80));  
+                nodes.add(new Node(53, 80));
                 nodes.add(new Node(53, 82));
-                nodes.add(new Node(55, 82)); 
-                nodes.add(new Node(55, 84)); 
+                nodes.add(new Node(55, 82));
+                nodes.add(new Node(55, 84));
                 nodes.add(new Node(59, 84));
                 nodes.add(new Node(59, 78));
                 nodes.add(new Node(58, 78));
@@ -76,12 +76,12 @@ public class MinerNPC implements ZoneConfigurator {
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
                 offerings.put("kilof", 400);
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
-				addQuest("Przykro mi, ale jak widzisz jestem pokryty pyłem i wciąż nie skończyłem swojej pracy. Nie mogę teraz myśleć o zadaniach dla ciebie, ale możesz mi pomóc przynosząc trochę węgla."); 
+				addQuest("Przykro mi, ale jak widzisz jestem pokryty pyłem i wciąż nie skończyłem swojej pracy. Nie mogę teraz myśleć o zadaniach dla ciebie, ale możesz mi pomóc przynosząc trochę węgla.");
 				addJob("Jestem górnikiem. Pracuję ciężko w kopalni. Jeżeli pójdziesz w głąb ziemi to będzie coraz cieplej i będzie więcej pyłu. Jak widzisz ciężko jest tutaj coś zobaczyć w tym słabym świetle...");
 				addReply(Arrays.asList("map", "mapę", "mapa"), "To jest mapa Semos Mine, którą sam narysowałem jakiś czas temu. Może ci pomóc znaleść drogę, ale uważaj nie wszystko jest dokładne tak jak powinno!",
 						new ExamineChatAction("map-semos-mine.png", "Semos Mine", "Rough map of Semos Mine"));
 				addGoodbye("Miło było cię zobaczyć. Powodzenia!");
-				
+
 			}
 		};
 

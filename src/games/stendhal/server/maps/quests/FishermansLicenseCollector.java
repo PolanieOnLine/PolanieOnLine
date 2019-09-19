@@ -36,17 +36,17 @@ import java.util.List;
 
 /**
  * QUEST: Fisherman's license Collector
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li> Santiago the fisherman</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> The player must bring all kinds of fishes to the fisherman</li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li> 2000 XP</li>
@@ -71,8 +71,8 @@ public class FishermansLicenseCollector extends AbstractQuest {
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
-	private static final List<String> neededFish = 
+
+	private static final List<String> neededFish =
 		Arrays.asList("pstrąg", "okoń", "makrela", "dorsz", "płotka", "palia alpejska", "błazenek", "pokolec");
 
 	/**
@@ -250,7 +250,7 @@ public class FishermansLicenseCollector extends AbstractQuest {
 		step_3();
 	}
 
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
@@ -265,12 +265,12 @@ public class FishermansLicenseCollector extends AbstractQuest {
 			}
 			return res;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "FishermansLicenseCollector";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ADOS_CITY;

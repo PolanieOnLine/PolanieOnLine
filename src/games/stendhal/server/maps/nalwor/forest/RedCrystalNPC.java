@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * A crystal NPC
- * 
+ *
  * @author AntumDeluge
  *
  */
@@ -29,16 +29,16 @@ public class RedCrystalNPC implements ZoneConfigurator {
 	 *
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
-	 * 
+	 *
 	 * @author AntumDeluge
 	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(final StendhalRPZone zone) {
-		
+
 		// Create the NPC
 		final SpeakerNPC crystal = new SpeakerNPC("Czerwony Kryształ") {
 
@@ -53,9 +53,9 @@ public class RedCrystalNPC implements ZoneConfigurator {
 				addGreeting("Witaj nieznajomy. Miło cię poznać.");
 				addHelp("Trzymaj się. Femme Fatale opowiedziała mi o szkole zabójców. Biegają tam dookoła i są nieznośni dla swoich nauczycieli!");
 				addJob("Jestem kryształem. Cóż więcej mogę powiedzieć?");
-				addGoodbye("Żegnaj. Wróć, gdy będziesz potrzebował mojej pomocy."); 
-				
-			
+				addGoodbye("Żegnaj. Wróć, gdy będziesz potrzebował mojej pomocy.");
+
+
 			}
 		};
 
@@ -65,8 +65,8 @@ public class RedCrystalNPC implements ZoneConfigurator {
 		crystal.initHP(100);
 		crystal.setDescription("Oto czerwony kryształ. Patrząc na niego czujesz się trochę poruszony.");
 		crystal.setResistance(0);
-		
+
 		zone.add(crystal);
 	}
-	
+
 }

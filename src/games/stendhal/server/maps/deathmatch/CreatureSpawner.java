@@ -90,7 +90,7 @@ public class CreatureSpawner  {
 
 	/**
 	 * Gives the daily quest creature to the player,
-	 * if he hasn't found it yet, to be nice to the player. 
+	 * if he hasn't found it yet, to be nice to the player.
 	 * @param player the player taking the Deathmatch
 	 * @param dmInfo the Deathmatch's Info
 	 */

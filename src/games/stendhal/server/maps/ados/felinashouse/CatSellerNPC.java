@@ -124,7 +124,7 @@ public class CatSellerNPC implements ZoneConfigurator {
 		npc.initHP(100);
 		npc.setDescription("Felina opiekuje się kotami. Ich miauczenie dochodzi z każdego kąta.");
 		zone.add(npc);
-		
+
 		// Also put a cat in her bedroom (people can't Own it as it is behind a fence)
 		final Cat hercat = new Cat();
                 hercat.setPosition(19, 3);

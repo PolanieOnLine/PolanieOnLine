@@ -77,7 +77,7 @@ public class GoldProspectorNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-			
+
 		};
 
 		bill.setEntityClass("oldcowboynpc");

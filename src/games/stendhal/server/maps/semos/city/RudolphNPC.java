@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class RudolphNPC implements ZoneConfigurator {
 
-	
+
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
@@ -59,24 +59,24 @@ public class RudolphNPC implements ZoneConfigurator {
 				path.add(new Node(21, 14));
 				path.add(new Node(21, 3));
 				setPath(new FixedPath(path, true));
-			}			
-			
+			}
+
 			@Override
 			public void createDialog() {
 				addGreeting("Cześć jestem wesołym przyjacielem. Co za wspaniała pora roku!");
 				addHelp("Oh nie mogę ci pomóc. To nie tak, że mogę wpłynąć na Mikołaja.");
 				addJob("Ciągnę sanie w Bożo Narodzeniową noc. Mój świecący nos daje mi tyle zabawy, że Święty może zobaczyć dokąd leci.");
 				addGoodbye("Miło było cię poznać.");
-			
+
 				// remaining behaviour defined in games.stendhal.server.maps.quests.GoodiesForRudolph
-			
+
 			}
 
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-			
+
 		};
 		npc.setPosition(2, 3);
 		npc.setDirection(Direction.DOWN);

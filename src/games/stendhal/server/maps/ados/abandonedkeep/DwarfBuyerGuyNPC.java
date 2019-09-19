@@ -31,7 +31,7 @@ import java.util.Map;
  * Inside Ados Abandoned Keep - level -3 .
  */
 public class DwarfBuyerGuyNPC implements ZoneConfigurator  {
-	
+
     private final ShopList shops = SingletonRepository.getShopList();
 
 	@Override
@@ -65,12 +65,12 @@ public class DwarfBuyerGuyNPC implements ZoneConfigurator  {
 			    addReply(Arrays.asList("buy", "kupić"), "Niczego nie sprzedaję, ale możesz spojżeć na moją tablicę co skupuję. Albo zapytaj o #specjały.");
 			    addReply(Arrays.asList("YOU", "TOBIE"), "Tak mówię do CIEBIE! Z kim jeszcze miałbym rozmawiać!");
 
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyoddsandends")), false);			    
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyoddsandends")), false);
 			}};
-			    
+
 			npc.setPosition(25, 32);
 			npc.setEntityClass("olddwarfnpc");
 			npc.setDescription("Oto Ritati Dragontracker, który skupuje graty i drobiazgi.");
-			zone.add(npc);		
+			zone.add(npc);
 			   	}
 }

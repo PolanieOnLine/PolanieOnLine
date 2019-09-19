@@ -23,7 +23,7 @@ import java.util.Map;
 import marauroa.common.game.RPObject;
 /**
  * adds a market to a zone
- * 
+ *
  * @author madmetzger
  *
  */
@@ -39,7 +39,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		Market market = addShopToZone(zone);
 		// start checking for expired offers
 		new OfferExpirer(market);
-		
+
 		buildTradeCenterAdvisor(zone);
 	}
 
@@ -50,7 +50,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 			market.setVisibility(0);
 			zone.add(market, false);
 		}
-		
+
 		return market;
 	}
 
@@ -76,7 +76,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		speaker.setDescription("Herold jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
 		zone.add(speaker);
 	}
-	
+
 	public static Market getShopFromZone(StendhalRPZone zone) {
 		for (RPObject rpObject : zone) {
 			if(rpObject.getRPClass().getName().equals(Market.MARKET_RPCLASS_NAME)) {
