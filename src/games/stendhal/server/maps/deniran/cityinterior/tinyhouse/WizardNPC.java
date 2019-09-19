@@ -53,7 +53,7 @@ public class WizardNPC implements ZoneConfigurator  {
 			}};
 			npc.setPosition(4, 2);
 			npc.setDirection(Direction.DOWN);
-			npc.setEntityClass("wizardpc");
+			npc.setEntityClass("wizardnpc");
 			npc.setDescription("Oto Byron Mcgalister. Przypomina wyglądem czarodzieja.");
 			zone.add(npc);
 	}
