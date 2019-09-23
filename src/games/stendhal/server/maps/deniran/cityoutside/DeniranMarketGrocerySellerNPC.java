@@ -33,7 +33,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
  * @author omero
  *
  */
-public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
+public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
@@ -80,23 +80,22 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 				addJob("Jestem tutaj, aby #oferować przedmioty spożywcze podróżnym takim jak ty... " +
 					   "Jeśli chcesz #kupić coś, powiedz mi... " +
 					   "Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
-				
 				addHelp(
 						"Jeśli przyszedłeś szukać jedzenia, #oferuję przedmioty spożywcze... " +
 						"Jeśli chcesz #kupić coś, powiedz mi... " +
 						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
-				
 				addGoodbye("Tak długo...");
-				
 			}
 
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
+				nodes.add(new Node(29, 120));
+				nodes.add(new Node(20, 121));
+				nodes.add(new Node(20, 118));
+				nodes.add(new Node(23, 118));
 				nodes.add(new Node(23, 116));
 				nodes.add(new Node(29, 116));
-				nodes.add(new Node(29, 120));
-				nodes.add(new Node(20, 120));
 				setPath(new FixedPath(nodes, true));
 			}
 		};
@@ -105,8 +104,8 @@ public class DeniranMarketSellerNPC1Grocery implements ZoneConfigurator {
 		//npc.setEntityClass("fatsellernpc");
 		npc.setEntityClass("deniran_marketsellernpc1grocery");
 		npc.setPosition(26, 122);
-		npc.setCollisionAction(CollisionAction.REROUTE);
-		npc.setDescription("Oto zajęty sprzedawca na rynku...");
+		npc.setCollisionAction(CollisionAction.REVERSE);
+		npc.setDescription("Oto Ambrogio, zapracowany sprzedawca na rynku...");
 		zone.add(npc);
 
 		return npc;

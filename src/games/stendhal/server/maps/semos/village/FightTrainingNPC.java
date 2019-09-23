@@ -35,14 +35,14 @@ public class FightTrainingNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("train", "trening", "trenować", "ćwiczenie", "ćwiczyć"), "Podczas #walki ty i twój przeciwnik atakujecie się nawzajem aż do śmierci.");
 				addReply(Arrays.asList("combat", "walka", "walki", "walczyć"), "W walce obowiązują 2 podstawowe statystyki, #waga i #obrażenia.");
 				addReply(Arrays.asList("damage", "obrażenia"),
-						"Im wyższe OBRAŻENIA twej broni, tym więcej HP przeciwnik straci przy każdym trafieniu.");
+						"Im wyższe OBRAŻENIA twej broni, tym więcej PŻ przeciwnik straci przy każdym trafieniu.");
 				addReply(Arrays.asList("rate", "waga"), "Im mniejsza WAGA twojej broni, tym szybciej będziesz atakował.");
 				addGoodbye("Dopóki się nie spotkamy!");
 			}
 		};
 
 		npc.setEntityClass("jailedbarbariannpc");
-		npc.setDescription("Widzisz Rochar-Zith, stojącego tam mocno, wpatrującego się w horyzont.");
+		npc.setDescription("Widzisz Rochar-Zith, stojącego tam nieruchomo, wpatrującego się w horyzont.");
 		npc.setPosition(23, 30);
 		npc.initHP(100);
 		zone.add(npc);
