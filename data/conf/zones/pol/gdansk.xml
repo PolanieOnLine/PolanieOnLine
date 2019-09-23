@@ -8,7 +8,7 @@
 	<!-- Ground level -->
 
 	<!-- gdansk_nw -->
-	<zone name="0_gdansk_city_nw" level="0" x="613312" y="27024" file="Level 0/gdansk/city_nw.tmx">
+	<zone name="0_gdansk_city_nw" level="0" x="512928" y="17024" file="Level 0/gdansk/city_nw.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -57,7 +57,7 @@
 	</zone>
 
 	<!-- gdansk_n -->
-	<zone name="0_gdansk_city_n" level="0" x="613440" y="27024" file="Level 0/gdansk/city_n.tmx">
+	<zone name="0_gdansk_city_n" level="0" x="513056" y="17024" file="Level 0/gdansk/city_n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -103,7 +103,7 @@
 	</zone>
 
 	<!-- gdansk_ne -->
-	<zone name="0_gdansk_city_ne" level="0" x="613568" y="27024" file="Level 0/gdansk/city_ne.tmx">
+	<zone name="0_gdansk_city_ne" level="0" x="513184" y="17024" file="Level 0/gdansk/city_ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -114,42 +114,56 @@
 	</zone>
 
 	<!-- gdansk_forest_w -->
-	<zone name="0_gdansk_forest_w" level="0" x="613312" y="27152" file="Level 0/gdansk/forest_w.tmx">
+	<zone name="0_gdansk_forest_w" level="0" x="512928" y="17152" file="Level 0/gdansk/forest_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
 	<!-- gdansk_forest -->
-	<zone name="0_gdansk_forest" level="0" x="613440" y="27152" file="Level 0/gdansk/forest.tmx">
+	<zone name="0_gdansk_forest" level="0" x="513056" y="17152" file="Level 0/gdansk/forest.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
 	<!-- gdansk_forest_e -->
-	<zone name="0_gdansk_forest_e" level="0" x="613568" y="27152" file="Level 0/gdansk/forest_e.tmx">
+	<zone name="0_gdansk_forest_e" level="0" x="513184" y="17152" file="Level 0/gdansk/forest_e.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
 	<!-- gdansk_forest_sw -->
-	<zone name="0_gdansk_forest_sw" level="0" x="613312" y="27280" file="Level 0/gdansk/forest_sw.tmx">
+	<zone name="0_gdansk_forest_sw" level="0" x="512928" y="17280" file="Level 0/gdansk/forest_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
 	<!-- gdansk_forest_s -->
-	<zone name="0_gdansk_forest_s" level="0" x="613440" y="27280" file="Level 0/gdansk/forest_s.tmx">
+	<zone name="0_gdansk_forest_s" level="0" x="513056" y="17280" file="Level 0/gdansk/forest_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
 	<!-- gdansk_forest_se -->
-	<zone name="0_gdansk_forest_se" level="0" x="613568" y="27280" file="Level 0/gdansk/forest_se.tmx">
+	<zone name="0_gdansk_forest_se" level="0" x="513184" y="17280" file="Level 0/gdansk/forest_se.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+	</zone>
+
+	<!-- gdansk_road_n -->
+	<zone name="0_gdansk_road_n" level="0" x="513056" y="17408" file="Level 0/gdansk/road_n.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+	</zone>
+
+	<!-- gdansk_road_s -->
+	<zone name="0_gdansk_road_s" level="0" x="513056" y="17536" file="Level 0/gdansk/road_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
