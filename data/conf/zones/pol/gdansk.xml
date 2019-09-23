@@ -8,8 +8,8 @@
 	<!-- Ground level -->
 
 	<!-- gdansk_nw -->
-	<zone name="0_gdansk_nw" level="0" x="613312" y="27024" file="Level 0/gdansk/gdansk_nw.tmx">
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.ship.FerryConveyerNPC"/>
+	<zone name="0_gdansk_city_nw" level="0" x="613312" y="27024" file="Level 0/gdansk/city_nw.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -57,7 +57,7 @@
 	</zone>
 
 	<!-- gdansk_n -->
-	<zone name="0_gdansk_n" level="0" x="613440" y="27024" file="Level 0/gdansk/gdansk_n.tmx">
+	<zone name="0_gdansk_city_n" level="0" x="613440" y="27024" file="Level 0/gdansk/city_n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -103,7 +103,7 @@
 	</zone>
 
 	<!-- gdansk_ne -->
-	<zone name="0_gdansk_ne" level="0" x="613568" y="27024" file="Level 0/gdansk/gdansk_ne.tmx">
+	<zone name="0_gdansk_city_ne" level="0" x="613568" y="27024" file="Level 0/gdansk/city_ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -113,43 +113,43 @@
 		</portal>
 	</zone>
 
-	<!-- gdansk_w -->
-	<zone name="0_gdansk_w" level="0" x="613312" y="27152" file="Level 0/gdansk/gdansk_w.tmx">
+	<!-- gdansk_forest_w -->
+	<zone name="0_gdansk_forest_w" level="0" x="613312" y="27152" file="Level 0/gdansk/forest_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
-	<!-- gdansk_c -->
-	<zone name="0_gdansk_c" level="0" x="613440" y="27152" file="Level 0/gdansk/gdansk_c.tmx">
+	<!-- gdansk_forest -->
+	<zone name="0_gdansk_forest" level="0" x="613440" y="27152" file="Level 0/gdansk/forest.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
-	<!-- gdansk_e -->
-	<zone name="0_gdansk_e" level="0" x="613568" y="27152" file="Level 0/gdansk/gdansk_e.tmx">
+	<!-- gdansk_forest_e -->
+	<zone name="0_gdansk_forest_e" level="0" x="613568" y="27152" file="Level 0/gdansk/forest_e.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
-	<!-- gdansk_sw -->
-	<zone name="0_gdansk_sw" level="0" x="613312" y="27280" file="Level 0/gdansk/gdansk_sw.tmx">
+	<!-- gdansk_forest_sw -->
+	<zone name="0_gdansk_forest_sw" level="0" x="613312" y="27280" file="Level 0/gdansk/forest_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
-	<!-- gdansk_s -->
-	<zone name="0_gdansk_s" level="0" x="613440" y="27280" file="Level 0/gdansk/gdansk_s.tmx">
+	<!-- gdansk_forest_s -->
+	<zone name="0_gdansk_forest_s" level="0" x="613440" y="27280" file="Level 0/gdansk/forest_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
 
-	<!-- gdansk_se -->
-	<zone name="0_gdansk_se" level="0" x="613568" y="27280" file="Level 0/gdansk/gdansk_se.tmx">
+	<!-- gdansk_forest_se -->
+	<zone name="0_gdansk_forest_se" level="0" x="613568" y="27280" file="Level 0/gdansk/forest_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -160,8 +160,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.ship.CoastConveyerNPC"/>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.ship.CaptainNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.ship.CoastConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.ship.CaptainNPC"/>
 	</zone>
 
 	<!-- interiors -->
@@ -297,26 +297,26 @@
 		
 		
 		<portal x="20" y="14" ref="bank_exit">
-			<destination zone="0_gdansk_n" ref="bank_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="bank_entrance"/>
 		</portal>
 		<portal x="21" y="14" ref="bank_exit">
-			<destination zone="0_gdansk_n" ref="bank_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="bank_entrance"/>
 		</portal>
 	</zone>
 	
 		<!-- Museum 0 -->
 	<zone name="int_gdansk_museum_0" file="interiors/gdansk/int_museum_0.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.museum.MieczysławNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.museum.MieczysławNPC"/>
 		
 		<portal x="23" y="26" ref="museum_1_exit">
-			<destination zone="0_gdansk_n" ref="museum_entrance_1"/>
+			<destination zone="0_gdansk_city_n" ref="museum_entrance_1"/>
 		</portal>
 		<portal x="24" y="26" ref="museum_2_exit">
-			<destination zone="0_gdansk_n" ref="museum_entrance_2"/>
+			<destination zone="0_gdansk_city_n" ref="museum_entrance_2"/>
 		</portal>
 		<portal x="25" y="26" ref="museum_3_exit">
-			<destination zone="0_gdansk_n" ref="museum_entrance_3"/>
+			<destination zone="0_gdansk_city_n" ref="museum_entrance_3"/>
 		</portal>
 		
 		<portal x="41" y="1" ref="museum_1_entrance_1">
@@ -342,8 +342,8 @@
 		<!-- Goldsmith -->
 	<zone name="int_gdansk_goldsmith" file="interiors/gdansk/goldsmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.goldsmith.ItemsOnTable" />
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.goldsmith.zlotnikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.ItemsOnTable" />
+		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.zlotnikNPC"/>
 		
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -354,15 +354,15 @@
 		</entity>
 		
 		<portal x="10" y="19" ref="gs_exit">
-			<destination zone="0_gdansk_nw" ref="gs_entrance"/>
+			<destination zone="0_gdansk_city_nw" ref="gs_entrance"/>
 		</portal>
 	</zone>
 	
 		<!-- Blacksmith -->
 	<zone name="int_gdansk_blacksmith" file="interiors/gdansk/blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.blacksmith.AmetystNPC" />
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.blacksmith.BlackSmithNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.blacksmith.AmetystNPC" />
+		<configurator class-name="games.stendhal.server.maps.gdansk.blacksmith.BlackSmithNPC"/>
 		
 		<entity x="1" y="1">
 			<implementation
@@ -408,7 +408,7 @@
 		</entity>
 		
 		<portal x="9" y="14" ref="bs_exit">
-			<destination zone="0_gdansk_nw" ref="bs_entrance"/>
+			<destination zone="0_gdansk_city_nw" ref="bs_entrance"/>
 		</portal>
 	</zone>
 	
@@ -426,26 +426,26 @@
 		</entity>
 		
 		<portal x="30" y="30" ref="bar_exit">
-			<destination zone="0_gdansk_n" ref="bar_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="bar_entrance"/>
 		</portal>
 		<portal x="31" y="30" ref="bar_exit">
-			<destination zone="0_gdansk_n" ref="bar_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="bar_entrance"/>
 		</portal>
 		<portal x="32" y="30" ref="bar_exit">
-			<destination zone="0_gdansk_n" ref="bar_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="bar_entrance"/>
 		</portal>
 	</zone>
 	
 	<!-- Knight room Malteis -->
 	<zone name="int_gdansk_knight_room" file="interiors/gdansk/knight_room.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.knight_room.MalteisNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.knight_room.MalteisNPC"/>
 
 		<portal x="11" y="18" ref="kr_exit">
-			<destination zone="0_gdansk_ne" ref="kr_entrance"/>
+			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
 		</portal>
 		<portal x="12" y="18" ref="kr_exit">
-			<destination zone="0_gdansk_ne" ref="kr_entrance"/>
+			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
 		</portal>
 	</zone>
 	
@@ -463,17 +463,17 @@
 		</entity>
 		
 		<portal x="6" y="19" ref="tv1_exit">
-			<destination zone="0_gdansk_n" ref="tv1_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="tv1_entrance"/>
 		</portal>
 		<portal x="7" y="19" ref="tv1_exit">
-			<destination zone="0_gdansk_n" ref="tv1_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="tv1_entrance"/>
 		</portal>
 		
 		<portal x="34" y="19" ref="tv2_exit">
-			<destination zone="0_gdansk_n" ref="tv2_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="tv2_entrance"/>
 		</portal>
 		<portal x="35" y="19" ref="tv2_exit">
-			<destination zone="0_gdansk_n" ref="tv2_entrance"/>
+			<destination zone="0_gdansk_city_n" ref="tv2_entrance"/>
 		</portal>
 	</zone>
 	
