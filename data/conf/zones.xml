@@ -18,7 +18,6 @@
 	<group uri="zones/pol/desert.xml"/>
 	<group uri="zones/pol/dragon.xml"/>
 	<group uri="zones/pol/dragon_knights.xml"/>
-	<!-- DISABLED DISABLED -->
 	<group uri="zones/pol/gdansk.xml"/>
 	<group uri="zones/pol/koscielisko.xml"/>
 	<group uri="zones/pol/krakow.xml"/>
