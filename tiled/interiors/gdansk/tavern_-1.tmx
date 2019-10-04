@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="31" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="int_plazy" tilewidth="32" tileheight="32" tilecount="27" columns="3">
+  <image source="../../tileset/pol/waly/int_plazy.png" width="96" height="288"/>
+ </tileset>
+ <tileset firstgid="28" name="door_drewno_int" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/pol/domki/drzwi/door_drewno_int.png" width="160" height="96"/>
+ </tileset>
+ <tileset firstgid="43" name="stairs" tilewidth="32" tileheight="32" tilecount="12" columns="2">
+  <image source="../../tileset/building/stairs/stairs.png" width="64" height="192"/>
+ </tileset>
+ <tileset firstgid="55" name="floors_3" tilewidth="32" tileheight="32" tilecount="12" columns="6">
+  <image source="../../tileset/ground/indoor/floors_3.png" width="192" height="64"/>
+ </tileset>
+ <tileset firstgid="67" name="beczki" tilewidth="32" tileheight="32" tilecount="40" columns="8">
+  <image source="../../tileset/pol/wyposazenie/beczki.png" width="256" height="160"/>
+ </tileset>
+ <tileset firstgid="107" name="balia_kukurydza" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/pol/wyposazenie/jedzenie/balia_kukurydza.png" width="64" height="32"/>
+ </tileset>
+ <tileset firstgid="109" name="ziemniaki" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/pol/wyposazenie/jedzenie/ziemniaki.png" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="111" name="iron_lamp" tilewidth="32" tileheight="32" tilecount="3" columns="1">
+  <image source="../../tileset/furniture/light/iron_lamp.png" width="32" height="96"/>
+ </tileset>
+ <tileset firstgid="114" name="flames" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/furniture/light/flames.png" width="192" height="32"/>
+ </tileset>
+ <tileset firstgid="120" name="latarnia_blaszczysko" tilewidth="32" tileheight="32" tilecount="25" columns="5">
+  <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png" width="160" height="160"/>
+ </tileset>
+ <tileset firstgid="145" name="brown" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/ground/brown.png" width="160" height="32"/>
+ </tileset>
+ <tileset firstgid="150" name="protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/protection.png" width="64" height="32"/>
+ </tileset>
+ <tileset firstgid="152" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="153" name="small_animal" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/logic/creature/small_animal.png" width="160" height="32"/>
+ </tileset>
+ <tileset firstgid="158" name="animal" tilewidth="32" tileheight="32" tilecount="30" columns="30">
+  <image source="../../tileset/logic/creature/animal.png" width="960" height="32"/>
+ </tileset>
+ <layer name="0_floor" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJztz0ENADAIBDBkLZOJ4rlYLtBHBbSrqoF1britj/ORh4eHh4dH2iOVRxaPLB5ZPLJsewCzPDxfUXU=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJztlssKgzAQRdNabO0DH9vixq3//3+dhaEQ0LkJYxS9B85uYDiLkHGOEHJGLuJ1AwtgdxHRcROf4iujb7FUdvuZmI5PxLwFtft3zO32MyjsSGepYwxmUPbWEc6gsCMddszDjnTW6mjEVrGf1OYQuxU67uJDMUSbR6yMO5A7McTqVvwadqB34jBpfTN2hh253zkCO/bFmTuQ/yO3/o9BQf6PrawiOgghx+IHVjIOgg==
+  </data>
+ </layer>
+ <layer name="2_object" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJztltsKwjAMhvMgIoivooji6W7D0wrqlWOw978xYR10krrGOjYlH/ysDW36h5VQAEVRFCWEJWrBxA9fPGOG2tpxgTIe5YKchRXlnaMS1I5ZR3lLZ14ya0JZe/KTcvuNJYOqli7ZeOKmZV+KWgnOyQRru4buIHnfQ1VnaseSeoYA3cHUijDO3PRjKQiuxxhoen6dS4nZ63L0xKlXcj3mU9r6nYnMf0JdmHgC/h4j6cEP1A11FfqSckedoVlL5ojzVetdPZS39l+rL0bOeNybC+XfmDjjaW8uwvC9zbh4zDtO+T1i/veQ7sqQ3sSKoigKwBO0CyCg
+  </data>
+ </layer>
+ <layer name="3_roof" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEKgDAMBdDi5NGcxUXvUPT+k7pJ8aMliY3hPwiEIpLQQJMSEVE7K8gl8hELiNr/5JffbiDXcK29tgdvnuofP6nC1gDyCP4+f1LR+pf2M6lU4dPcugAKrS/CM7SbneddEVp7nAW0m92da+9xUUnu29OsSO7b06zw3SIiIgs7xD4OAw==
+  </data>
+ </layer>
+ <layer name="4_roof_add" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEKACAMA8C+WUS/7wdcikoH78ZAIGMiAOq06gEAAKTMTebT/WUcdPu1FQDASwsMMwJG
+  </data>
+ </layer>
+ <layer name="objects" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEOABAMhWH3vwG7e4pVQiKop/5vY9FWpUIAAOCu1NmPzTqfDmSgF+PLdtXTqjYe72BkNt/2vVi6ebYCr705k5fXGkAHPbZOqYa754ZSbpVVPK/P/t//DwCgrgCOggyy
+  </data>
+ </layer>
+ <layer name="collision" width="50" height="31" opacity="0.5">
+  <data encoding="base64" compression="zlib">
+   eJztlEEOgCAMBPv/F/BcT14MpYvdhhp3kzlIzMIAOsxsCCGEaMUd5B00zLl3ery+bHb2helhi/HnfGiqPXaS7enoga6rg8fq2/Geo77ZXjA8on1hJZrXO+OsS+YfEK2/4l7NehG/6Lyy94BNZb885PEFD68PGWOH6XAyf/fo5FL1jQshhHjHBS5wt2c=
+  </data>
+ </layer>
+ <layer name="protection" width="50" height="31" visible="0" opacity="0.4">
+  <data encoding="base64" compression="zlib">
+   eJztzwEJAAAIwDD7BzCvNQ7usACfkfSxjfPR4qPFR4uPFh8tPlp8tPho8dHio0XSzw5jW+xA
+  </data>
+ </layer>
+ <layer name="blend_ground" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJzt1s0KgzAQRWEfW63WVlv7r33kHlwnFDLEzOJ+cDaCEJjNrSoRkf2NNNGFrjSXfU6yG93pQU96lX1Osjd9aKGVvmWfIyIisqmpoZYO1EW+edfTkQY60TnyzbvQfsu96Sz3jv0b2m+5N53l3rF/Q/st96az3NvT/rfc29P+t9xb+19ERP75AR8mO5g=
+  </data>
+ </layer>
+ <layer name="blend_roof" width="50" height="31">
+  <data encoding="base64" compression="zlib">
+   eJzt1s0KgzAQRWEfW63WVlv7r33kHlwnFDLEzOJ+cDaCEJjNrSoRkf2NNNGFrjSXfU6yG93pQU96lX1Osjd9aKGVvmWfIyIisqmpoZYO1EW+edfTkQY60TnyzbvQfsu96Sz3jv0b2m+5N53l3rF/Q/st96az3NvT/rfc29P+t9xb+19ERP75AR8mO5g=
+  </data>
+ </layer>
+</map>

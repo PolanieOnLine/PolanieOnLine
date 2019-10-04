@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="18" height="18" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="../../tileset/furniture/carpet/carpets_2.png" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+  <image source="../../tileset/furniture/carpet/carpets_2.png" trans="ff00ff" width="128" height="96"/>
+ </tileset>
+ <tileset firstgid="13" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="14" name="../../tileset/item/pot/pot_tall.png" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/item/pot/pot_tall.png" trans="ff00ff" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="16" name="../../tileset/ground/square_patch.png" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/ground/square_patch.png" trans="ffffff" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="25" name="../../tileset/building/wall/int_wall_pale.png" tilewidth="32" tileheight="32" tilecount="16" columns="2">
+  <image source="../../tileset/building/wall/int_wall_pale.png" trans="ff00ff" width="64" height="256"/>
+ </tileset>
+ <tileset firstgid="41" name="../../tileset/building/wall/int_wall_purple.png" tilewidth="32" tileheight="32" tilecount="20" columns="2">
+  <image source="../../tileset/building/wall/int_wall_purple.png" trans="ff00ff" width="64" height="320"/>
+ </tileset>
+ <tileset firstgid="61" name="../../tileset/furniture/shelve/dark_bookshelf.png" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/furniture/shelve/dark_bookshelf.png" trans="ff00ff" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="67" name="../../tileset/item/corpse/skull_pale.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/item/corpse/skull_pale.png" trans="ff00ff" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="68" name="../../tileset/item/corpse/skeleton.png" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/corpse/skeleton.png" trans="ff00ff" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="72" name="../../tileset/building/decoration/webs.png" tilewidth="32" tileheight="32" tilecount="6" columns="2">
+  <image source="../../tileset/building/decoration/webs.png" width="64" height="96"/>
+ </tileset>
+ <tileset firstgid="78" name="../../tileset/logic/creature/animal.png" tilewidth="32" tileheight="32" tilecount="30" columns="30">
+  <image source="../../tileset/logic/creature/animal.png" width="960" height="32"/>
+ </tileset>
+ <tileset firstgid="108" name="../../tileset/logic/portal.png" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/portal.png" width="224" height="32"/>
+ </tileset>
+ <tileset firstgid="115" name="huge_animal.png" tilewidth="32" tileheight="32" tilecount="14" columns="14">
+  <image source="../../tileset/logic/creature/huge_animal.png" width="451" height="32"/>
+ </tileset>
+ <tileset firstgid="129" name="stairs.png" tilewidth="32" tileheight="32" tilecount="12" columns="2">
+  <image source="../../tileset/building/stairs/stairs.png" width="64" height="192"/>
+ </tileset>
+ <tileset firstgid="141" name="blood/floor_stain.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/item/blood/floor_stain.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="142" name="int_blue_green" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_blue_green.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="158" name="int_green_blue_2" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/building/wall/int_green_blue_2.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="166" name="int_green_blue" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_green_blue.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="182" name="blue_green" tilewidth="32" tileheight="32" tilecount="8" columns="2">
+  <image source="../../tileset/building/entrance/blue_green.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="190" name="../../tileset/ground/indoor/black_hole.png" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="../../tileset/ground/indoor/black_hole.png" trans="ff00ff" width="96" height="128"/>
+ </tileset>
+ <layer name="0_floor" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+NhYGDgGcUDhkUGgRtG8WgcjSR8FIqxyQEAy1rs3hAFAAA=
+  </data>
+ </layer>
+ <layer name="1_terrain" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC93SywrCMBSE4TyCrbb2paPWaut14Upx0U19QP9FAhICJxfc9MDHQBfDQLNRSm2xy8gWe3SY8EnIA47o8VDp98bZ7JF6tOG70dmzQOFRRu5ZYvVDm6yEHneP22NJPdKe0J657bHvwLfH/qOcPTXWHo3QE/OeY/ak3j/2DHjilZAns+eCK24Bac/9fscX2iBTaRAFAAA=
+  </data>
+ </layer>
+ <layer name="2_object" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoC6wBWI7ILan0BwHIHYEYidKHYQHuACxKw3NJwTcgNh9AO0fBQjgTKbcUAX8OMRhfkVOm70EzMFlFrXBNiDeTgVzdgDxThxyACmTTrIQBQAA
+  </data>
+ </layer>
+ <layer name="3_roof" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC/NiYGDwZqAc+ACxL5XMGQWjYBRgB3xUNIdaZg0nAACx9DnrEAUAAA==
+  </data>
+ </layer>
+ <layer name="objects" width="18" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAXRA+0ACkEFnexJoJM9gw3E08BMPxzi5KbFBDL1jQJUAACdBllLEAUAAA==
+  </data>
+ </layer>
+ <layer name="collision" width="18" height="18" opacity="0.52">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+NlYGDgHeSYFECJ3lFzRs0ZKeaQaxY18ig+c4gpB2hZ1gAAjMZkQxAFAAA=
+  </data>
+ </layer>
+ <layer name="protection" width="18" height="18" opacity="0.31">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYBSMglEAAgCc28dnEAUAAA==
+  </data>
+ </layer>
+ <layer name="blend_ground" width="18" height="18" opacity="0.39">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGLnABYhdB9B+NyB2H0D7RwECOJMpN9wAzK8jNW0CAMlbFVkQBQAA
+  </data>
+ </layer>
+</map>
