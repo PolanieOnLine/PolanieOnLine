@@ -74,4 +74,3 @@ public class MieszkaniecGdanska3NPC implements ZoneConfigurator {
 		zone.add(npc);
 	}
 }
-

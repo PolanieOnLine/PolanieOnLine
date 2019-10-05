@@ -92,7 +92,7 @@ public class MieszkaniecGdanska4NPC implements ZoneConfigurator {
 				addJob("Nie mam żadnej pracy Tobie do zaoferowania, ale może jak się przejdziesz do naszego #'muzeum' to.... *Ciii* Właściciel tego muzeum szuka chętnych osób do pracy.");
 				addHelp("Pomocy? Nie potrzebuję jakiejkolwiek pomocy.");
 				addOffer("Nie posiadam nic do sprzedania. Przejdź się do #'tawerny' lub #'karczmy' (różnie ludzie to nazywają), która znajduje się tutaj zarazem obok muzeum lub pójdź do #'baru'. Możesz również tutaj sobie odpocząć wynajmując własny #'domek'.");
-				addReply("baru", 
+				addReply("baru",
 						"Widzę, że jednak nie stąd jesteś... Bar znajduje po wschodniej części centrum naszego miasta.");
 				addReply(Arrays.asList("tawerna", "karczma", "tavern"),
 						"W tawernie pracuje pewna osoba o imieniu Rosa. Jest ona barmantką tego lokalu. Słyszałem również, że właścicel tej tawerny ma mały #'problem ze szczurami' i poprosiła Rose o poszukaniu odpowiedniej osoby do tej roboty.");
@@ -102,7 +102,7 @@ public class MieszkaniecGdanska4NPC implements ZoneConfigurator {
 						"Muzeum jest chlubą tego miasta.. Pokazuje ono jak kiedyś miasto wyglądało oraz jak się rozwinęło. *Właściciel tego budynku szuka pracowników, jak już mówiłem wcześniej* *Ciii, ja Ci tego nie mówiłem*");
 				addReply(Arrays.asList("domek", "domki", "house", "houses"),
 						"Tak jak powiedziałem wcześniej.. *ekhem* Możesz wynająć swój własny domek u #'Teodora'. Domki znajdują się dalej od baru... na wschód od centrum miasta.");
-				addReply("Teodor", 
+				addReply("Teodor",
 						"Teodor jest właścicielem domków, krótko mówiąc zajmuje się nieruchomościami naszego miasta. Możesz go znaleźć #'w domku o numerze 700'. Dom ten wyróżnia się na tle innych, jest strasznie wysoki.");
 				addGoodbye("Życzę Ci powodzenia!");
 			}
@@ -115,4 +115,3 @@ public class MieszkaniecGdanska4NPC implements ZoneConfigurator {
 		zone.add(npc);
 	}
 }
-

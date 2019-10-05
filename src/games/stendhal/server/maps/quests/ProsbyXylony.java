@@ -114,7 +114,7 @@ public class ProsbyXylony extends AbstractQuest {
 					}
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce	
+		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"start"),
 								 new KilledForQuestCondition(QUEST_SLOT, 1),
@@ -198,7 +198,7 @@ public class ProsbyXylony extends AbstractQuest {
 					}
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce	
+		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"dwuglowyzielonysmok"),
 								 new KilledForQuestCondition(QUEST_SLOT, 1),
@@ -244,7 +244,7 @@ public class ProsbyXylony extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_kiel"),
-								 // czas minal, dalszy krok 
+								 // czas minal, dalszy krok
 								 new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)),
 				ConversationStates.ATTENDING,
 				"Dobrze więc... Tym razem potrzebuję nowych składników. #Pomożesz mi?",
@@ -264,8 +264,8 @@ public class ProsbyXylony extends AbstractQuest {
 
 	private void step4() {
 		final SpeakerNPC npc = npcs.get("Xylona");
-		
-		//player nie ma potrzebnych resurce	
+
+		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"kielsmoka"),
 							 new NotCondition(new PlayerHasItemWithHimCondition("kieł smoka", 50))),
@@ -349,7 +349,7 @@ public class ProsbyXylony extends AbstractQuest {
 					}
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce	
+		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"czarnesmoczysko"),
 								 new KilledForQuestCondition(QUEST_SLOT, 1),
@@ -485,7 +485,7 @@ public class ProsbyXylony extends AbstractQuest {
 
 	private void step7() {
 		final SpeakerNPC npc = npcs.get("Xylona");
-		//player nie ma potrzebnych resurce	
+		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"glodna"),
 								 new NotCondition(
@@ -586,7 +586,7 @@ public class ProsbyXylony extends AbstractQuest {
 					}
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce	
+		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"ostatnie"),
 								 new KilledForQuestCondition(QUEST_SLOT, 1),
@@ -673,10 +673,10 @@ public class ProsbyXylony extends AbstractQuest {
 			res.add("Nie mam ochoty wykonywać próśb czarownicy - Xylony.");
 			return res;
 		}
-		res.add("Xylona jej pierwsza prośba była, abym zabił błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki."); 
+		res.add("Xylona jej pierwsza prośba była, abym zabił błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
 		if ("start".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Zabiłem błękitnego smoka i zaniosłem Xylonie jego skórę w dowód, że pokonałem go samodzielnie!");
 		if (questState.startsWith("czas_składniki")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
@@ -706,7 +706,7 @@ public class ProsbyXylony extends AbstractQuest {
 		res.add("Powiedz: pomoge.");
 		if ("kly?".equals(questState)) {
 			return res;
-		} 
+		}
 		res.add("Xylona tym razem nie chciała abym coś dla niej zabił. Mam jej przynieść tylko 50 kłów smoka.");
 		if ("kielsmoka".equals(questState)) {
 			return res;
@@ -776,7 +776,7 @@ public class ProsbyXylony extends AbstractQuest {
 			return res;
 		}
 		res.add("Xylona dała mi swoje ostatnie zadanie. Mam zabić resztę smoków, o które prosi oraz przynieść mi ich skóry. "
-		+ "Dokładnie mam zabić: dwugłowy czarny smok, dwugłowy czerwony smok, smok dwugłowy niebieski, czerwony smok, zielony smok oraz złoty smok." 
+		+ "Dokładnie mam zabić: dwugłowy czarny smok, dwugłowy czerwony smok, smok dwugłowy niebieski, czerwony smok, zielony smok oraz złoty smok."
 		+ "Mam przynieść: 10 skór czarnego smoka, 10 skór czerwonego smoka, 10 skór niebieskiego smoka, 10 skór zielonego smoka, 10 skó złotego smoka.");
 		if ("ostatnie".equals(questState)) {
 			return res;

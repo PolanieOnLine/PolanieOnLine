@@ -45,28 +45,28 @@ public class ChefNPC implements ZoneConfigurator  {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				// to the well 
+				// to the well
 				nodes.add(new Node(15,3));
-				// to a barrel 
+				// to a barrel
 				nodes.add(new Node(15,8));
-				// to the baguette on the table 
+				// to the baguette on the table
 				nodes.add(new Node(13,8));
-				// around the table 
+				// around the table
 				nodes.add(new Node(13,10));
 				nodes.add(new Node(10,10));
-				// to the sink 
+				// to the sink
 				nodes.add(new Node(10,12));
-				// to the pizza/cake/whatever 
+				// to the pizza/cake/whatever
 				nodes.add(new Node(7,12));
 				nodes.add(new Node(7,10));
-				// to the pot 
+				// to the pot
 				nodes.add(new Node(3,10));
-				// towards the oven 
+				// towards the oven
 				nodes.add(new Node(3,4));
 				nodes.add(new Node(5,4));
 				// to the oven
 				nodes.add(new Node(5,3));
-				// one step back 
+				// one step back
 				nodes.add(new Node(5,4));
 				// towards the well
 				nodes.add(new Node(15,4));
@@ -110,6 +110,6 @@ public class ChefNPC implements ZoneConfigurator  {
 			npc.setPosition(15, 3);
 			npc.setEntityClass("chefnpc");
 			npc.setDescription("Oto Ernest. Jego praca daje mu piękny zapach.");
-			zone.add(npc);		
+			zone.add(npc);
 	}
 }

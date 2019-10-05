@@ -49,7 +49,7 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 
 			@Override
 			public void createDialog() {
-				addJob("Jestem naukowcem i pracuję nad bardzo #'mocnym eliksirem', który uleczy nawet umarłych. Jeszcze nie mam pojęcia jak go nazwać!"); 
+				addJob("Jestem naukowcem i pracuję nad bardzo #'mocnym eliksirem', który uleczy nawet umarłych. Jeszcze nie mam pojęcia jak go nazwać!");
 				addReply(Arrays.asList("mocny eliksir", "mocnym eliksirem", "eliksirem"),
 				"Taki eliksir potrafiłby uleczyć nawet umarłych. *HIHIHIHI*");
 				addReply("królikiem doświadczalnym",
@@ -79,4 +79,3 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 		zone.add(npc);
 	}
 }
-

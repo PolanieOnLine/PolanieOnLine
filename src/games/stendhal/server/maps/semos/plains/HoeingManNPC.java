@@ -50,7 +50,7 @@ public class HoeingManNPC implements ZoneConfigurator {
 	            "... This is so relaxing... Hoeing and seeding... If only I could remember... What happened to #Hazen... Where is #Kirdneh... Ah my poor #memory..."
 			};
 			//1,2,3,4,5 minutes
-			
+
 			new MonologueBehaviour(buildNPC(zone),rambles, 1);
 			*/
 	}

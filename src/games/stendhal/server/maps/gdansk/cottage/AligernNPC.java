@@ -46,7 +46,7 @@ public class AligernNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				nodes.add(new Node(9, 3)); 
+				nodes.add(new Node(9, 3));
 				nodes.add(new Node(3, 3));
 				nodes.add(new Node(3, 9));
 				nodes.add(new Node(5, 9));
@@ -88,4 +88,3 @@ public class AligernNPC implements ZoneConfigurator {
 		zone.add(npc);
 	}
 }
-

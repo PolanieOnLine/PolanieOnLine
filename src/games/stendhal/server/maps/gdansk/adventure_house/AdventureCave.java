@@ -39,7 +39,7 @@ public class AdventureCave extends StendhalRPZone {
 	private static final int MIN1_Y = 3;
 	private static final int MAX1_X = 53;
 	private static final int MAX1_Y = 60;
-	
+
 	/** max numbers of fails to place a creature before we just make the island as it is. */
 	private static final int ALLOWED_FAILS = 5;
 	/** The creatures spawned are between player level * ratio and player level. */
@@ -64,20 +64,20 @@ public class AdventureCave extends StendhalRPZone {
 		int count = 0;
 		// max ALLOWED_FAILS fails to place all creatures before we give up
 		while (numCreatures < NUMBER_OF_CREATURES && count < ALLOWED_FAILS) {
-			int level = Rand.randUniform((int) (player.getLevel() * LEVEL_RATIO), player.getLevel()); 
+			int level = Rand.randUniform((int) (player.getLevel() * LEVEL_RATIO), player.getLevel());
 			CreatureSpawner creatureSpawner = new CreatureSpawner();
 			Creature creature = new Creature(creatureSpawner.calculateNextCreature(level));
 				if (StendhalRPAction.placeat(this, creature, Rand.randUniform(MIN1_X, MAX1_X), Rand.randUniform(MIN1_Y, MAX1_Y))) {
 					numCreatures++;
 				} else {
 					logger.info(" could not add a creature to adventure cave: " + creature);
-					count++;	
+					count++;
 				}
 		}
 		disallowIn();
 		this.addMovementListener(new ChallengeMovementListener(player.getX(), player.getY()));
 	}
-	
+
 	/**
 	 * Get the number of monsters originally created on the zone
 	 * @return number of creatures
@@ -89,10 +89,10 @@ public class AdventureCave extends StendhalRPZone {
 	private static final class ChallengeMovementListener implements MovementListener {
 		private static final Rectangle2D area = new Rectangle2D.Double(0, 0, 100, 100);
 		final int returnX, returnY;
-		
+
 		/**
 		 * Create a new ChallengeMovementListener.
-		 * 
+		 *
 		 * @param x x coordinate of the player return position from the zone
 		 * @param y y coordinate of the player return position from the zone
 		 */
@@ -105,13 +105,13 @@ public class AdventureCave extends StendhalRPZone {
 		public Rectangle2D getArea() {
 			return area;
 		}
-		
+
 		@Override
 			public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX,
 								  final int newY) {
 				// ignore
 			}
-		
+
 		@Override
 		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
 							 final int oldY) {
@@ -119,9 +119,9 @@ public class AdventureCave extends StendhalRPZone {
 				return;
 			}
 			if (zone.getPlayers().size() == 1) {
-				// since we are about to destroy the arena, change the player zoneid to house1 so that 
-				// if they are relogging, 
-				// they can enter back to the bank (not the default zone of PlayerRPClass). 
+				// since we are about to destroy the arena, change the player zoneid to house1 so that
+				// if they are relogging,
+				// they can enter back to the bank (not the default zone of PlayerRPClass).
 				// If they are scrolling out or walking out the portal it works as before.
 			    	entity.put("zoneid", "int_gdansk_adventure_house");
 			    // Use the correct position from the portal, so that the client
@@ -134,14 +134,14 @@ public class AdventureCave extends StendhalRPZone {
 					TurnNotifier.get().notifyInSeconds(15*60, new AdventureCaveRemover(zone));
 			}
 		}
-		
+
 		@Override
 		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
 							final int oldY, final int newX, final int newY) {
-			
+
 			// ignore
 		}
-		
+
 		@Override
 		public void beforeMove(ActiveEntity entity, StendhalRPZone zone,
 				int oldX, int oldY, int newX, int newY) {

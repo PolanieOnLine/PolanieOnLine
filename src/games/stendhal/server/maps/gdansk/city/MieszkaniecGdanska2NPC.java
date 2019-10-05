@@ -49,7 +49,7 @@ public class MieszkaniecGdanska2NPC implements ZoneConfigurator {
 				addJob("Nie mam dla Ciebie żadnego zadania.");
 				addHelp("Nie potrzebuję Twojej pomocy.");
 				addOffer("Nie mam nic Tobie do zaoferowania... Możesz się przejść do naszej karczmy w Gdańsku, która się znajduje w centrum naszego miasta, tam może znajdziesz coś dla siebie.");
-				addReply("Jagoda", 
+				addReply("Jagoda",
 						"Jagoda jest moją małą córeczką, nie pozwalam jej się zadawać z obcymi...");
 				addGoodbye();
 			}
@@ -63,4 +63,3 @@ public class MieszkaniecGdanska2NPC implements ZoneConfigurator {
 		zone.add(npc);
 	}
 }
-
