@@ -436,4 +436,10 @@ Wyjście do #Zakopca!
 			<attribute name="class">default</attribute>
 		</entity>
 	</zone> -->
+
+	<zone name="int_adventure_cave" file="interiors/abstract/adventure_cave.tmx" accessible="false">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
 </zones>
