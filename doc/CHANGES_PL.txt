@@ -3,7 +3,17 @@
 1.04
 Zaktualizowano do najnowszej wersji Stendhala 1.31
 
+*klient*
+- Dodano wiele nowych grafik NPC
+- Odświeżono grafiki trzech zwoi - tatrzański, krakowski, gdański (ten ostatni był cały czas w kliencie od wersji 1.00)
+
 *świat gry*
+- Dodano nowo-odświeżoną nadmorską krainę - Gdańsk
+- Dodano kilka nowych NPC
+- Dodano kilka nowych zadań oraz sklepów (nadmorska kraina)
+- Dodano podziemia w Gdańsku
+- Dodano kilka nowych przedmiotów (smoczy eliksir - 2400 HP, duży smoczy eliksir - 3000 HP oraz zwój gdańsk do gry)
+- Można wyprodukować smoczy eliksir u Agrypin'a (nowy budynek w Wieliczce) oraz duży smoczy eliksir u Aron'a (piwnica Aligerna)
 - Zwiększono ilość możliwego do zdobycia PD u potworów takich jak:
 	wilczykruk,
 	żółty glut,
