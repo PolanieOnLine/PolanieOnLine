@@ -31,7 +31,7 @@ public class FlowerMarket implements ZoneConfigurator {
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Lena") {
+		final SpeakerNPC npc = new SpeakerNPC("Lisa") {
 
 			@Override
 			public void createDialog() {
@@ -54,7 +54,7 @@ public class FlowerMarket implements ZoneConfigurator {
 
 		npc.setPosition(111, 49);
 		npc.setEntityClass("woman_001_npc");
-		npc.setDescription("Oto Lena. Sprzedaje kwiatki dla młodych par.");
+		npc.setDescription("Oto Lisa. Sprzedaje kwiatki dla młodych par.");
 		zone.add(npc);
 	}
 }
