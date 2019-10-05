@@ -54,17 +54,17 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 				"Taki eliksir potrafiłby uleczyć nawet umarłych. *HIHIHIHI*");
 				addReply("królikiem doświadczalnym",
 		        "Tak... *HIHIHI*.. królikiem... Jak moja receptura się sprawdzi możesz doznać bardzo mocnego ożywienia, dodatkowej siły.");
-				addOffer("Mogę sporządzić dla Ciebie #'smoczy eliksir'. Do tego będę potrzebował 2 razy #'krew smoka' oraz bardzo dużo pieniędzy! *HIHIHI* Powiedz tylko #sporządź.");
-				addReply("smoczy eliksir", "Jest to bardzo i to bardzo silny eliksir.*HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 smoczy eliksir'.");
+				addOffer("Mogę sporządzić dla Ciebie #'mocniejszy smoczy eliksir'. Do tego będę potrzebował 4 razy #'krew smoka' oraz bardzo dużo pieniędzy! *HIHIHI* Powiedz tylko #sporządź.");
+				addReply("mocniejszy smoczy eliksir", "Jest to bardzo i to bardzo silny eliksir.*HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 mocniejszy smoczy eliksir'.");
 				addHelp("Jeżeli chcesz być mądry tak jak ja to powinieneś odwiedzić bibliotekę. Tam jest sporo pomocy naukowych.");
 				addGoodbye("Dowidzenia.");
 
 				// (uses sorted TreeMap instead of HashMap)
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("money", 800);
-				requiredResources.put("krew smoka", 2);
+				requiredResources.put("money", 1200);
+				requiredResources.put("krew smoka", 4);
 				final ProducerBehaviour behaviour = new ProducerBehaviour("aron_concoct_potion",
-						Arrays.asList("concoct", "sporządź"), "smoczy eliksir", requiredResources, 2 * 60);
+						Arrays.asList("concoct", "sporządź"), "mocniejszy smoczy eliksir", requiredResources, 2 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
 				"Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?");
