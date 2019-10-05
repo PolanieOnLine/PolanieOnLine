@@ -858,8 +858,31 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+	
+	<item name="smoczy eliksir">
+		<type class="drink" subclass="dragon_potion" tileid="-1"/>
+		<description>Oto smoczy eliksir. Sporządzany ze smoczej krwi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="2400"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="2400"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="48000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 
-	<item name="eliksir magiczny">
+	<!-- <item name="eliksir magiczny">
 		<type class="drink" subclass="magic_potion" tileid="-1"/>
 		<description>Widzisz eliksir magiczny. Jeszcze nie wprowadzony do gry.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
@@ -903,5 +926,5 @@
 			<slot name="lhand"/>
 			<slot name="rhand"/>
 		</equipable>
-	</item>
+	</item> -->
 </items>
