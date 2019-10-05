@@ -9,7 +9,10 @@
 
 	<!-- gdansk_nw -->
 	<zone name="0_gdansk_city_nw" level="0" x="512928" y="17024" file="Level 0/gdansk/city_nw.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.pol.gdansk.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska1NPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska2NPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska3NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -62,6 +65,7 @@
 
 	<!-- gdansk_n -->
 	<zone name="0_gdansk_city_n" level="0" x="513056" y="17024" file="Level 0/gdansk/city_n.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska4NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -107,6 +111,10 @@
 		</portal>
 		<portal x="10" y="97" ref="tv2_entrance">
 			<destination zone="int_gdansk_tavern_0" ref="tv2_exit"/>
+		</portal>
+
+		<portal x="13" y="79" ref="mieczyslaw_house_entrance">
+			<destination zone="int_gdansk_mieczyslaw_house_0" ref="mieczyslaw_house_exit"/>
 		</portal>
 	</zone>
 
@@ -409,6 +417,24 @@
 			</implementation>
 		</entity>
 		
+		<entity x="18" y="12">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Śliczny drewniany stolik.</attribute>
+		</entity>
+
+		<entity x="18" y="14">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Śliczny drewniany stolik.</attribute>
+		</entity>
+
+		<entity x="18" y="16">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Śliczny drewniany stolik.</attribute>
+		</entity>
+		
 		<portal x="10" y="19" ref="gs_exit">
 			<destination zone="0_gdansk_city_nw" ref="gs_entrance"/>
 		</portal>
@@ -521,6 +547,17 @@
 			</implementation>
 		</entity>
 
+		<entity x="13" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">rosa</parameter>
+				<parameter name="title">Sklep Rosy</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Rosa sprzedaje jedzenie i napoje.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
 		<!-- Tavern 1 -->
 		<portal x="37" y="5" ref="tvup_entrance">
 			<destination zone="int_gdansk_tavern_1" ref="tvup_exit"/>
@@ -547,15 +584,56 @@
 
 	<!-- Tavern 1 -->
 	<zone name="int_gdansk_tavern_1" file="interiors/gdansk/tavern_1.tmx">
+		<!--<configurator class-name="games.stendhal.server.maps.pol.gdansk.tavern.HandlarzBroniaGDNPC"/>
+		<configurator class-name="games.stendhal.server.maps.pol.gdansk.tavern.PinBallDealerNPC"/>-->
 		<entity x="1" y="1">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">kettle-1, bottle-2, trash-1, trash-21, trash-3, metal-can-1, drain-water-11, dishbreak-1, dishbreak-2, dishes-1, dishes-21, creaky-door-1, creaky-door-2, ice-cubes-1, glass-break-1, window-close-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
-				<parameter name="volume">15</parameter>
+				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
+
+		<!-- <entity x="3" y="6">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
+			<attribute name="text">Oto stół bilardowy. Zielony kolor na górze wygląda jakby wiele gier na nim rozegrano.</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">2</attribute>
+		</entity>
+
+		<entity x="33" y="10">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">sharrison</parameter>
+				<parameter name="title">Sklep Harrisona (sprzedaję)</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Możesz kupić te rzeczy od Harrisona.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
+		<entity x="34" y="10">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">kuptawernagdansk</parameter>
+				<parameter name="title">Sklep Harrisona (skupuję)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Harrisonowi.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
+		<entity x="32" y="11">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.NPCOwnedChest">
+				<parameter name="npc">Harrison</parameter>
+			</implementation>
+		</entity> -->
 
 		<portal x="37" y="5" ref="tvup_exit">
 			<destination zone="int_gdansk_tavern_0" ref="tvup_entrance"/>
@@ -564,13 +642,56 @@
 	
 	<!-- Tavern -1 -->
 	<zone name="int_gdansk_tavern_-1" file="interiors/gdansk/tavern_-1.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
 		<entity x="1" y="1">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">kettle-1, bottle-2, trash-1, trash-21, trash-3, metal-can-1, drain-water-11, dishbreak-1, dishbreak-2, dishes-1, dishes-21, creaky-door-1, creaky-door-2, ice-cubes-1, glass-break-1, window-close-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
-				<parameter name="volume">15</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="39" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="42" y="20">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="18" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="13" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="7" y="21">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
 
@@ -582,6 +703,59 @@
 	<!-- Cottage 0 -->
 	<zone name="int_gdansk_cottage_0" file="interiors/gdansk/cottage_0.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.cottage.AligernNPC"/>
+		
+		<portal x="30" y="6" ref="cottage_key_entrance">
+			<destination zone="int_gdansk_cottage_0" ref="cottage_key_exit"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
+				<parameter name="key">kluczyk Aligerna</parameter>
+				<parameter name="rejected">Musisz zasłużyć na to, aby odwiedzić wielkiego mistrza!</parameter>
+			</implementation>
+		</portal>
+		
+		<portal x="33" y="6" ref="cottage_key_exit">
+			<destination zone="int_gdansk_cottage_0" ref="cottage_key_entrance"/>
+		</portal>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="35" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="38" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="12" y="16">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="6" y="16">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 		
 		<portal x="36" y="3" ref="cottage-1_1_entrance">
 			<destination zone="int_gdansk_cottage_-1" ref="cottage-1_1_exit"/>
@@ -599,11 +773,130 @@
 	<zone name="int_gdansk_cottage_-1" file="interiors/gdansk/cottage_-1.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.cottage.SzalonyNaukowiecNPC"/>
 		
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="39" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="42" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="22" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="29" y="7">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="22" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="29" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="8" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">7</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+		<entity x="7" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">11</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="17" y="7">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="33" y="7">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="radius">6</parameter>
+			</implementation>
+		</entity>
+		
 		<portal x="40" y="6" ref="cottage-1_1_exit">
 			<destination zone="int_gdansk_cottage_0" ref="cottage-1_1_entrance"/>
 		</portal>
 		<portal x="41" y="6" ref="cottage-1_2_exit">
 			<destination zone="int_gdansk_cottage_0" ref="cottage-1_2_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Mieczysław House 0 -->
+	<zone name="int_gdansk_mieczyslaw_house_0" file="interiors/gdansk/mieczyslaw_house_0.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="17" y="8" ref="mieczyslaw_house-1_entrance">
+			<destination zone="int_gdansk_mieczyslaw_house_-1" ref="mieczyslaw_house-1_exit"/>
+		</portal>
+		<portal x="18" y="8" ref="mieczyslaw_house-1_entrance">
+			<destination zone="int_gdansk_mieczyslaw_house_-1" ref="mieczyslaw_house-1_exit"/>
+		</portal>
+
+		<portal x="17" y="20" ref="mieczyslaw_house_exit">
+			<destination zone="0_gdansk_city_n" ref="mieczyslaw_house_entrance"/>
+		</portal>
+		<portal x="18" y="20" ref="mieczyslaw_house_exit">
+			<destination zone="0_gdansk_city_n" ref="mieczyslaw_house_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Mieczysław House -1 -->
+	<zone name="int_gdansk_mieczyslaw_house_-1" file="interiors/gdansk/mieczyslaw_house_-1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="17" y="6" ref="mieczyslaw_house-1_exit">
+			<destination zone="int_gdansk_mieczyslaw_house_0" ref="mieczyslaw_house-1_entrance"/>
+		</portal>
+		<portal x="18" y="6" ref="mieczyslaw_house-1_exit">
+			<destination zone="int_gdansk_mieczyslaw_house_0" ref="mieczyslaw_house-1_entrance"/>
 		</portal>
 	</zone>
 	
@@ -624,6 +917,29 @@
 		<configurator class-name="games.stendhal.server.maps.gdansk.bakery.ItemsOnTable"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.bakery.ChefNPC"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.bakery.ShopAssistantNPC"/>
+
+		<entity x="16" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">6</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="13" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">4</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="29" y="6">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.NPCOwnedChest">
+				<parameter name="npc">Lena</parameter>
+			</implementation>
+		</entity>
 		
 		<portal x="26" y="14" ref="bakery_exit">
 			<destination zone="0_gdansk_city_nw" ref="bakery_entrance"/>
@@ -642,6 +958,25 @@
 
 	<!-- Adventure house -->
 	<zone name="int_gdansk_adventure_house" file="interiors/gdansk/adventure_house.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.adventure_house.AdventureNPC"/>
+
+		<portal x="1" y="4" ref="5">
+			<destination zone="int_adventure_cave" ref="6"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
+				<parameter name="key">1234567890</parameter>
+				<parameter name="rejected">Nie możesz wejść ponownie do jaskini z potworami!</parameter>
+			</implementation>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="5" y="9" ref="entrance">
+			<destination zone="int_gdansk_adventure_house" ref="exit"/>
+		</portal>
+		<portal x="5" y="15" ref="exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
 		<portal x="18" y="18" ref="adh_exit">
 			<destination zone="0_gdansk_forest_w" ref="adh_entrance"/>
 		</portal>
