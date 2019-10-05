@@ -802,7 +802,7 @@ public final class ShopList {
 
 		// XylonaNPC sprzedaje:
 		shops.add("xylona", "zwój przywołania", 200);
-		shops.add("xylona", "zwój gdańska", 250);
+		shops.add("xylona", "zwój gdańsk", 350);
 		shops.add("xylona", "zwój krakowski", 450);
 		shops.add("xylona", "zwój wieliczka", 600);
 		shops.add("xylona", "zwój tatrzański", 800);
