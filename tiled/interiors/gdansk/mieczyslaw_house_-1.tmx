@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="36" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="int_plazy" tilewidth="32" tileheight="32" tilecount="27" columns="3">
+  <image source="../../tileset/pol/waly/int_plazy.png" width="96" height="288"/>
+ </tileset>
+ <tileset firstgid="28" name="deski_kafle" tilewidth="32" tileheight="32" tilecount="10" columns="5">
+  <image source="../../tileset/pol/domki/podloga/deski_kafle.png" width="161" height="64"/>
+ </tileset>
+ <tileset firstgid="38" name="blue_stone" tilewidth="32" tileheight="32" tilecount="3" columns="3">
+  <image source="../../tileset/building/stairs/blue_stone.png" width="96" height="32"/>
+ </tileset>
+ <tileset firstgid="41" name="ground" tilewidth="32" tileheight="32" tilecount="33" columns="3">
+  <image source="../../tileset/ground/ground.png" width="96" height="352"/>
+ </tileset>
+ <tileset firstgid="74" name="grass_edges" tilewidth="32" tileheight="32" tilecount="36" columns="12">
+  <image source="../../tileset/ground/grass_edges.png" width="384" height="96"/>
+ </tileset>
+ <tileset firstgid="110" name="grass_corners" tilewidth="32" tileheight="32" tilecount="24" columns="6">
+  <image source="../../tileset/ground/grass_corners.png" width="192" height="128"/>
+ </tileset>
+ <tileset firstgid="134" name="pool_corners" tilewidth="32" tileheight="32" tilecount="72" columns="3">
+  <image source="../../tileset/ground/water/pool_corners.png" width="96" height="768"/>
+ </tileset>
+ <tileset firstgid="206" name="warmer" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/furniture/kitchen/warmer.png" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="208" name="clothes_rack" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/furniture/other/clothes_rack.png" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="210" name="mannequins" tilewidth="32" tileheight="32" tilecount="28" columns="7">
+  <image source="../../tileset/furniture/other/mannequins.png" width="224" height="128"/>
+ </tileset>
+ <tileset firstgid="238" name="oriental_screen" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/furniture/other/oriental_screen.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="242" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="243" name="protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/protection.png" width="64" height="32"/>
+ </tileset>
+ <tileset firstgid="245" name="black_hole" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="../../tileset/ground/indoor/black_hole.png" width="96" height="128"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztzqENACAMBMCOgkay/161GAQCSiGBJ+mL86ciokQElw5F+uTOD5/S7LxufcqA5/Ty4zm9/qxOiI91Qn1mJ+RndOLHPkX5EF4FDKxp6w==
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJzt0bsKgDAMheHMXvDybDo4OuhrCD65OaBQKm3tkMYhPxwQQfiIRJZl/aGKV2euEfS0vI233zs/fNMJe9weW8wl7Zl4s/cerpCpxH0OertCppL/C66UqaQHpUylPShm0vCgkEnLg3zTQroetDrPuJG2x7+RpKfnDZkbBT2WfheCHxMP
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDFagBsTqUKyBJH5hYJyD1T03gfgiEJ8fIDcNdnALiO8OtCOg4AMUf4TiUTAKRsEoGAWjgBYAAHh7Cfs=
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJzt0MEJwCAQRNGtaes0reVgwDJMCyrMIYieZ4PzYNjrZ81E5E8y7k2tiOvpK+wIqNiLnSb1XeyID8cSOwTcYjW5xWqae9hNqx5m066H/SeRoQFjsRCr
+  </data>
+ </layer>
+ <layer id="5" name="objects" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20JT6AAAAA+BgxgAAE=
+  </data>
+ </layer>
+ <layer id="6" name="collision" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJz7xMDA8GkUj+JRPGgxDAyk3chuQGcPpHsIgcHgHmS1A+2egU4/A+2+UfeMumfUPaN4FNMHAwDh2niJ
+  </data>
+ </layer>
+ <layer id="7" name="protection" width="36" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztzrEJADAMxEDvv+4vkNaYxIEUeRcSqL8IIiJ6SW5ASekJKWaZqsdt2nmcppPHZeo8DtPN89s0zUOUW2MuMV0=
+  </data>
+ </layer>
+ <layer id="8" name="blend_ground" width="36" height="22" opacity="0.22">
+  <data encoding="base64" compression="zlib">
+   eJztzrEJADAMxEDP9PsPl9aYxIEUeRcSqL8IIiJ6SW5ASekJKWaZqsdt2nmcppPHZeo8DtPN89s0zUOUW4E+Cik=
+  </data>
+ </layer>
+</map>
