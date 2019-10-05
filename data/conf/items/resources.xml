@@ -1610,7 +1610,6 @@
 		<description>Oto złoty amulet. Ma przed czymś chronić?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="3"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1234"/>
