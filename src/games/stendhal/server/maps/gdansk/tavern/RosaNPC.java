@@ -62,7 +62,7 @@ public class RosaNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Pracuję jako barmanka tutejszej tawerny.");
 				addHelp("W naszej tawernie jest dużo miejsca, można tutaj sobie odpocząć. Sprzedaję różne napoje oraz dobre jedzenie. Sprawdź moją #'ofertę' lub spójrz na tablicę obok.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("urodziny")));
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("rosa")));
 				addGoodbye();
 			}
 		};

@@ -812,6 +812,15 @@ public final class ShopList {
 		shops.add("buygold", "bryłka złota", 5);
 		shops.add("buygold", "sztabka złota", 200);
 		shops.add("buygold", "sztabka mithrilu", 2000);
+		
+		// Rosa sprzedaje:
+		shops.add("rosa", "sok z chmielu", 5);
+		shops.add("rosa", "napój z winogron", 8);
+		shops.add("rosa", "napój z oliwką", 45);
+		shops.add("rosa", "mięso", 15);
+		shops.add("rosa", "szynka", 25);
+		shops.add("rosa", "hotdog", 110);
+		shops.add("rosa", "hotdog z serem", 135);
 	}
 
 	private static ShopList instance;
