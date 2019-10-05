@@ -62,7 +62,7 @@ public class MieszkaniecGdanska3NPC implements ZoneConfigurator {
 				addGreeting("Witaj dzielny wojowniku na mojej farmie!");
 				addJob("Prace.. praca... praca... Może znajdzie się coś dla Ciebie.");
 				addHelp("Pomocy? Może znajdzie się pewne #'zadanie' dla Ciebie. Jak je wykonasz to wtedy możemy chwilę pogawędzić.");
-				addOffer("Nie mam nic do zaoferowania. Posiadam jedynie tą farmę... jak zechcesz możesz wziąść parę warzyw dla siebie.");
+				addOffer("Nie mam nic do zaoferowania. Posiadam jedynie tę farmę... jak zechcesz możesz wziąść parę warzyw dla siebie.");
 				addGoodbye();
 			}
 		};

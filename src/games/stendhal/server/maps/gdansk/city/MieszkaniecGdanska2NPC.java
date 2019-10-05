@@ -55,7 +55,7 @@ public class MieszkaniecGdanska2NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto mama Jagody. Nie wygląda na taką osobę aby chciała chwilę porozmawiać.");
+		npc.setDescription("Oto Adela, mama Jagody. Nie wygląda na taką osobę aby chciała chwilę porozmawiać.");
 		npc.setEntityClass("woman_003_npc");
 		npc.setPosition(111, 103);
 		npc.setDirection(Direction.DOWN);

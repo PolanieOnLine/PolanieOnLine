@@ -90,20 +90,14 @@ public class MieszkaniecGdanska4NPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witam, nazywam się Ścibor i jestem mieszkańcem tego miasteczka.");
 				addJob("Nie mam żadnej pracy Tobie do zaoferowania, ale może jak się przejdziesz do naszego #'muzeum' to.... *Ciii* Właściciel tego muzeum szuka chętnych osób do pracy.");
-				addHelp("Pomocy? Nie potrzebuję jakiejkolwiek pomocy.");
-				addOffer("Nie posiadam nic do sprzedania. Przejdź się do #'tawerny' lub #'karczmy' (różnie ludzie to nazywają), która znajduje się tutaj zarazem obok muzeum lub pójdź do #'baru'. Możesz również tutaj sobie odpocząć wynajmując własny #'domek'.");
-				addReply("baru",
-						"Widzę, że jednak nie stąd jesteś... Bar znajduje po wschodniej części centrum naszego miasta.");
+				addHelp("Pomocy? Ja nie potrzebuję pomocy.");
+				addOffer("Nie posiadam nic do sprzedania. Przejdź się do #'tawerny' lub #'karczmy' (różnie ludzie to nazywają), która znajduje się tutaj zarazem obok muzeum.");
 				addReply(Arrays.asList("tawerna", "karczma", "tavern"),
 						"W tawernie pracuje pewna osoba o imieniu Rosa. Jest ona barmantką tego lokalu. Słyszałem również, że właścicel tej tawerny ma mały #'problem ze szczurami' i poprosiła Rose o poszukaniu odpowiedniej osoby do tej roboty.");
 				addReply("problem ze szczurami",
 						"Słyszałem jedynie pogłoski tego. Nie jestem do końca przekonany, ale możesz pójść i sprawdzić pytając się Rosy o #'zadanie'. Jak to będzie prawda możliwe, że otrzymasz jakąś nagrodę za wykonanie tego zlecenia.");
 				addReply(Arrays.asList("muzeum", "museum"),
-						"Muzeum jest chlubą tego miasta.. Pokazuje ono jak kiedyś miasto wyglądało oraz jak się rozwinęło. *Właściciel tego budynku szuka pracowników, jak już mówiłem wcześniej* *Ciii, ja Ci tego nie mówiłem*");
-				addReply(Arrays.asList("domek", "domki", "house", "houses"),
-						"Tak jak powiedziałem wcześniej.. *ekhem* Możesz wynająć swój własny domek u #'Teodora'. Domki znajdują się dalej od baru... na wschód od centrum miasta.");
-				addReply("Teodor",
-						"Teodor jest właścicielem domków, krótko mówiąc zajmuje się nieruchomościami naszego miasta. Możesz go znaleźć #'w domku o numerze 700'. Dom ten wyróżnia się na tle innych, jest strasznie wysoki.");
+						"Muzeum jest chlubą tego miasta.. Pokazuje ono jak kiedyś miasto wyglądało oraz jak się rozwinęło.");
 				addGoodbye("Życzę Ci powodzenia!");
 			}
 		};
