@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +20,10 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+
+/**
+ * @author KarajuSs
+ */
 
 public class BlackSmithNPC implements ZoneConfigurator {
 
@@ -53,7 +57,7 @@ public class BlackSmithNPC implements ZoneConfigurator {
 				addReply("wojtek",
 						"Pracuje u mnie jako czeladnik. Można powiedzieć, że jest moją prawą ręką oraz zajmuje się cześcią mojej pracy. Potrafi oszlifować kryształ #ametystu, wystarczy do niego podejść, gdyż ja mam zbyt dużo pracy na głowie.");
 				addJob("Jestem jedynym kowalem w tym miasteczku.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 			}
 		};
 

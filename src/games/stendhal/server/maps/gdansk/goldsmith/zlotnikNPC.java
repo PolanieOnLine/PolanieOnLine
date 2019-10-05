@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,6 +24,10 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
+
+/**
+ * @author KarajuSs
+ */
 
 public class zlotnikNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.pol.gdansk.adventure_house;
+package games.stendhal.server.maps.gdansk.adventure_house;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -43,7 +42,7 @@ import org.apache.log4j.Logger;
 /**
  * The Chaos Sorcerer controlling entry to the adventure island
  *
- * @author kymara
+ * @author kymara @edit KarajuSs
  */
 public class AdventureNPC implements ZoneConfigurator  {
 

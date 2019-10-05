@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,9 +25,11 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-/*
- * Twilight zone is a copy of sewing room in dirty colours with a delirious sick lda (like Ida) in it
+
+/**
+ * @author KarajuSs
  */
+
 public class AmetystNPC implements ZoneConfigurator {
 
 	/**
@@ -55,7 +57,6 @@ public class AmetystNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Dzień dobry.");
@@ -79,7 +80,7 @@ public class AmetystNPC implements ZoneConfigurator {
 			}
 		};
 
-		wojtek.setEntityClass("man_001_npc");
+		wojtek.setEntityClass("weaponsellernpc");
 		wojtek.setPosition(4, 11);
 		wojtek.setDirection(Direction.RIGHT);
 		wojtek.initHP(100);

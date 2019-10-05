@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.pol.gdansk.adventure_house;
+package games.stendhal.server.maps.gdansk.adventure_house;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.Spot;
@@ -28,7 +27,6 @@ import games.stendhal.server.maps.deathmatch.CreatureSpawner;
 import java.awt.geom.Rectangle2D;
 
 import org.apache.log4j.Logger;
-
 
 public class AdventureCave extends StendhalRPZone {
 
