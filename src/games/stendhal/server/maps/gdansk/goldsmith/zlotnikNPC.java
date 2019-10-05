@@ -52,12 +52,12 @@ public class zlotnikNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witam. W czym mogę #'pomóc'?");
+				addGreeting();
 				addJob("Jestem złotnikiem. Zbieram wszystko co jest związane ze złotem.");
 				addHelp("Byłbym wdzięczny, gdybyś sprzedał mi parę cennych minerałów.");
 				addQuest("Nie posiadam dla Ciebie zadań.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buygold")), true);
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 			}
 		};
 

@@ -81,12 +81,11 @@ public class WitchNPC implements ZoneConfigurator {
 				addHelp("Mogę Cię uleczyć. Powiedz tylko #ulecz. Jeżeli szukać pracy to powiedz tylko #'zadanie'.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("xylona")));
 				new HealerAdder().addHealer(this, 500);
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        Arrays.asList("magic", "scroll", "scrolls", "magia", "magiczne", "zwój", "zwoje"),
 				        null,
 				        ConversationStates.ATTENDING,
-				        "#Oferuję zwoje, które pomogą Tobie w podróży: #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka' i #'niezapisany zwój'. Dla bardziej doświadczonych klientów mam #'zwój przywołania'!",
+				        "#Oferuję zwoje, które pomogą Tobie w podróży: #'zwój gdańska', #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka' i #'niezapisany zwój'. Dla bardziej doświadczonych klientów mam #'zwój przywołania'!",
 				        null);
 				add(ConversationStates.ATTENDING, Arrays.asList("tatrzański", "zakopane", "zwój tatrzański"), null,
 				        ConversationStates.ATTENDING,

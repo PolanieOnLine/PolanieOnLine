@@ -50,12 +50,12 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addJob("Jestem naukowcem i pracuję nad bardzo #'mocnym eliksirem', który uleczy nawet umarłych. Jeszcze nie mam pojęcia jak go nazwać!"); 
-				addReply("mocny eliksir",
+				addReply(Arrays.asList("mocny eliksir", "mocnym eliksirem", "eliksirem"),
 				"Taki eliksir potrafiłby uleczyć nawet umarłych. *HIHIHIHI*");
 				addReply("królikiem doświadczalnym",
 		        "Tak... *HIHIHI*.. królikiem... Jak moja receptura się sprawdzi możesz doznać bardzo mocnego ożywienia, dodatkowej siły.");
-				addOffer("Mogę sporządzić dla Ciebie #'magiczny eliksir'. Do tego będę potrzebował 2 razy #'krew smoka' oraz bardzo dużo pieniędzy! *HIHIHI* Powiedz tylko #sporządź.");
-				addReply("magiczny eliksir", "Jest to bardzo i to bardzo silny eliksir.*HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 magiczny eliksir'.");
+				addOffer("Mogę sporządzić dla Ciebie #'smoczy eliksir'. Do tego będę potrzebował 2 razy #'krew smoka' oraz bardzo dużo pieniędzy! *HIHIHI* Powiedz tylko #sporządź.");
+				addReply("smoczy eliksir", "Jest to bardzo i to bardzo silny eliksir.*HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 smoczy eliksir'.");
 				addHelp("Jeżeli chcesz być mądry tak jak ja to powinieneś odwiedzić bibliotekę. Tam jest sporo pomocy naukowych.");
 				addGoodbye("Dowidzenia.");
 
@@ -64,14 +64,14 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 				requiredResources.put("money", 800);
 				requiredResources.put("krew smoka", 2);
 				final ProducerBehaviour behaviour = new ProducerBehaviour("aron_concoct_potion",
-						Arrays.asList("concoct", "sporządź"), "magiczny eliksir", requiredResources, 2 * 60);
+						Arrays.asList("concoct", "sporządź"), "smoczy eliksir", requiredResources, 2 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
 				"Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?");
 			}
 		};
 
-		npc.setDescription("Widzisz szalonego naukowca. Lepiej z nim długo nie rozmawiać.");
+		npc.setDescription("Oto szalony naukowiec zwany Aron. Lepiej z nim długo nie rozmawiać.");
 		npc.setEntityClass("madscientistnpc");
 		npc.setPosition(26, 8);
 		npc.setDirection(Direction.UP);
