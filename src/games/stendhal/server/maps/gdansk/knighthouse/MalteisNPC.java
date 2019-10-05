@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.gdansk.knight_room;
+package games.stendhal.server.maps.gdansk.knighthouse;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +20,10 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+
+/**
+ * @author KarajuSs
+ */
 
 public class MalteisNPC implements ZoneConfigurator {
 
@@ -45,8 +49,9 @@ public class MalteisNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj wędrowcze.");
-				addOffer("Nie mam nic do zaoferowania, lecz możesz mi w czymś #pomóc.");
-				addHelp("My, rycerze potrzebujemy pomocy w pewnej sprawie. Jeżeli chcesz się dowiedzieć więcej powiedz mi #zadanie.");
+				addOffer("Nie mam nic do zaoferowania.");
+				//addOffer("Nie mam nic do zaoferowania, lecz możesz mi w czymś #pomóc.");
+				//addHelp("My, rycerze potrzebujemy pomocy w pewnej sprawie. Jeżeli chcesz się dowiedzieć więcej powiedz mi #zadanie.");
 				addGoodbye("Dowidzenia. Niech światłość Ci sprzyja.");
 			}
 		};
@@ -54,7 +59,6 @@ public class MalteisNPC implements ZoneConfigurator {
 		npc.setEntityClass("malteisnpc");
 		npc.setPosition(11, 4);
 		npc.initHP(100);
-		npc.setDescription("Oto Malteis.");
 		zone.add(npc);
 	}
 }
