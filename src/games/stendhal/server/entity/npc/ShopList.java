@@ -799,6 +799,19 @@ public final class ShopList {
 		shops.add("zwojewieliczka", "zwój krakowski", 550);
 		shops.add("zwojewieliczka", "zwój tatrzański", 650);
 		shops.add("zwojewieliczka", "niezapisany zwój", 2100);
+
+		// XylonaNPC sprzedaje:
+		shops.add("xylona", "zwój przywołania", 200);
+		shops.add("xylona", "zwój gdańska", 250);
+		shops.add("xylona", "zwój krakowski", 450);
+		shops.add("xylona", "zwój wieliczka", 600);
+		shops.add("xylona", "zwój tatrzański", 800);
+		shops.add("xylona", "niezapisany zwój", 1900);
+		
+		// ZlotnikNPC kupuje:
+		shops.add("buygold", "bryłka złota", 5);
+		shops.add("buygold", "sztabka złota", 200);
+		shops.add("buygold", "sztabka mithrilu", 2000);
 	}
 
 	private static ShopList instance;
