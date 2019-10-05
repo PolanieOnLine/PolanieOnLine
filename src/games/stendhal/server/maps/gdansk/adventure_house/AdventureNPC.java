@@ -151,7 +151,7 @@ public class AdventureNPC implements ZoneConfigurator  {
 
 				// player meets conditions, first remind them of the dangers and wait for a 'yes'
 				add(ConversationStates.ANY,
-						Arrays.asList("challenge", "fight", "battle", "walka", "walki", "wyzwanie"),
+						Arrays.asList("challenge", "fight", "battle", "walka", "walki", "wyzwanie", "walcz"),
 						new AndCondition(new LevelGreaterThanCondition(MIN_LEVEL - 1),
 								 new TimePassedCondition(QUEST_SLOT, DAYS_BEFORE_REPEAT * MINUTES_IN_DAYS)),
 								ConversationStates.QUEST_OFFERED,
@@ -160,7 +160,7 @@ public class AdventureNPC implements ZoneConfigurator  {
 								null);
 				// player returns within DAYS_BEFORE_REPEAT days, and his island has expired
 				add(ConversationStates.ANY,
-						Arrays.asList("challenge", "fight", "battle", "fee", "walka", "walki", "opłata", "opłatę", "wyzwanie"),
+						Arrays.asList("challenge", "fight", "battle", "fee", "walka", "walki", "walcz", "opłata", "opłatę", "wyzwanie"),
 						new AndCondition(
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT, DAYS_BEFORE_REPEAT * MINUTES_IN_DAYS)),
 								 new NotCondition(new AdventureZoneExistsCondition())
@@ -171,7 +171,7 @@ public class AdventureNPC implements ZoneConfigurator  {
 
 				// player returns within DAYS_BEFORE_REPEAT days, if the zone still exists that he was in before, send him straight up.
 				add(ConversationStates.ANY,
-						Arrays.asList("challenge", "fight", "battle", "fee", "wyzwanie", "walka", "walki", "opłata", "opłatę", "wyzwanie"),
+						Arrays.asList("challenge", "fight", "battle", "fee", "wyzwanie", "walka", "walki", "walcz", "opłata", "opłatę", "wyzwanie"),
 						new AndCondition(
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT, DAYS_BEFORE_REPEAT * MINUTES_IN_DAYS)),
 								 new AdventureZoneExistsCondition()
@@ -182,7 +182,7 @@ public class AdventureNPC implements ZoneConfigurator  {
 
 				// player below MIN_LEVEL
 				add(ConversationStates.ANY,
-						Arrays.asList("challenge", "fight", "battle", "fee", "wyzwanie", "walka", "walki", "opłata", "opłatę", "wyzwanie"),
+						Arrays.asList("challenge", "fight", "battle", "fee", "wyzwanie", "walka", "walki", "walcz", "opłata", "opłatę", "wyzwanie"),
 						new LevelLessThanCondition(MIN_LEVEL),
 						ConversationStates.ATTENDING,
 						"Jesteś zbyt słaby, aby walczyć przeciwko " + NUMBER_OF_CREATURES  + " na raz. Wróć, gdy osiągniesz co najmniej " + MIN_LEVEL + " poziom.",
