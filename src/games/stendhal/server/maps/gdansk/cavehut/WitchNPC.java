@@ -85,7 +85,7 @@ public class WitchNPC implements ZoneConfigurator {
 				        Arrays.asList("magic", "scroll", "scrolls", "magia", "magiczne", "zwój", "zwoje"),
 				        null,
 				        ConversationStates.ATTENDING,
-				        "#Oferuję zwoje, które pomogą Tobie w podróży: #'zwój gdańska', #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka' i #'niezapisany zwój'. Dla bardziej doświadczonych klientów mam #'zwój przywołania'!",
+				        "#Oferuję zwoje, które pomogą Tobie w podróży: #'zwój gdański', #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka' i #'niezapisany zwój'. Dla bardziej doświadczonych klientów mam #'zwój przywołania'!",
 				        null);
 				add(ConversationStates.ATTENDING, Arrays.asList("tatrzański", "zakopane", "zwój tatrzański"), null,
 				        ConversationStates.ATTENDING,

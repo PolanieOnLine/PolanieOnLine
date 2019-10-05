@@ -802,7 +802,7 @@ public final class ShopList {
 
 		// XylonaNPC sprzedaje:
 		shops.add("xylona", "zwój przywołania", 200);
-		shops.add("xylona", "zwój gdańsk", 350);
+		shops.add("xylona", "zwój gdański", 350);
 		shops.add("xylona", "zwój krakowski", 450);
 		shops.add("xylona", "zwój wieliczka", 600);
 		shops.add("xylona", "zwój tatrzański", 800);
@@ -821,6 +821,11 @@ public final class ShopList {
 		shops.add("rosa", "szynka", 25);
 		shops.add("rosa", "hotdog", 110);
 		shops.add("rosa", "hotdog z serem", 135);
+
+		// MieczyslawNPC sprzedaje:
+		shops.add("mieczyslaw", "zwój gdański", 250);
+		shops.add("mieczyslaw", "zwój tatrzański", 700);
+		shops.add("mieczyslaw", "niezapisany zwój", 1800);
 	}
 
 	private static ShopList instance;

@@ -418,9 +418,9 @@
 		</equipable>
 	</item>
 
-	<item name="zwój gdańsk">
+	<item name="zwój gdański">
     	<type class="scroll" subclass="gdansk" tileid="-1"/>
-    	<description>Oto zwój gdańsk, który zabierze cię w nadmorską krainę.</description>
+    	<description>Oto zwój gdański, który zabierze cię w nadmorską krainę.</description>
     	<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
     	<attributes>
 			<infostring value="0_gdansk_city_n 33 98"/>

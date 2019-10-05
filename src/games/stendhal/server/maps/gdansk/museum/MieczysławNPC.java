@@ -14,10 +14,15 @@ package games.stendhal.server.maps.gdansk.museum;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class MieczysławNPC implements ZoneConfigurator {
+	private final ShopList shops = SingletonRepository.getShopList();
 
 	/**
 	 * Configure a zone.
@@ -35,10 +40,11 @@ public class MieczysławNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj.");
+				addGreeting();
 				addJob("Jestem Mieczysław. Opiekuje się miastem Gdańsk!");
 				addHelp("Nasze miasto potrzebuje różnych rzeczy. Jeżeli potrzebujesz banku to znajdziesz go na południe od muzeum.");
-				addOffer("Już nie sprzedaję zwojów. Tym zajmuje się teraz Juhas. Może chciałbyś się zasłużyć dla Gdańska podejmując się #zadania. Nagroda Cię nie minie.");
+				addOffer("Mogę sprzedać #'zwój gdański', #'zwój tatrzański' oraz #'niezapisany zwój'. Chyba, że szukasz u mnie #zadania.");
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("mieczyslaw")));
 				addGoodbye("Życzę powodzenia!");
 			}
 		};
