@@ -235,9 +235,9 @@ public class Pizza extends AbstractQuest {
 				"Przyszła zimna, ale czego się mogłem spodziewać skoro pizza jest z piekarni daleko stąd... Dzięki.",
 				20));
 
-		customerDB.put("Kazimierz",
+		customerDB.put("Bankier Kazimierz",
 			new CustomerData(
-				"Kazimierz, zwany kiedyś jako #'Bankier Kazimierz', znajduje się aktualnie w naszym banku.",
+				"Bankier Kazimierz znajduje się aktualnie w zakopiańskim banku.",
 				"Pizza del Mare",
 				// minutes to deliver. Tested by mort: 6
 				// min, ignoring slow animals and not

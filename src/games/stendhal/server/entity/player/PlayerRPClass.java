@@ -99,6 +99,7 @@ public class PlayerRPClass {
 		player.addRPSlot("bank_deniran", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_fado", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_nalwor", 36, Definition.HIDDEN);
+		player.addRPSlot("bank_gdansk", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_krakow", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_zakopane", 36, Definition.HIDDEN);
 		player.addRPSlot("zaras_chest_ados", 36, Definition.HIDDEN);

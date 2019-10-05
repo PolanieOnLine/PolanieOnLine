@@ -46,6 +46,9 @@ public class UndergroundZoneAchievementFactory extends AbstractAchievementFactor
 		list.add(createAchievement("zone.underground.wieliczka", "Solny Zbieracz", "Odwiedził wszystkie podziemne obszary w regionie Wieliczka", 
 									Achievement.HARD_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("wieliczka", Boolean.TRUE, Boolean.FALSE)));
+		list.add(createAchievement("zone.underground.gdansk", "Podmorski szperacz", "Odwiedził wszystkie podziemne obszary w regionie Gdańsk", 
+									Achievement.EASY_BASE_SCORE, true,
+									new PlayerVisitedZonesInRegionCondition("gdansk", Boolean.TRUE, Boolean.FALSE)));
 		return list;
 	}
 

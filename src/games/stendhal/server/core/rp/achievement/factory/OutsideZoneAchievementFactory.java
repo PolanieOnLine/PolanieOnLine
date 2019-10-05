@@ -59,9 +59,9 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("zakopane", Boolean.TRUE, Boolean.TRUE)));
 
-		/**list.add(createAchievement("zone.outside.gdansk", "Nadmorska kraina", "Odwiedził wszystkie obszary w regionie Gdańsk",
+		list.add(createAchievement("zone.outside.gdansk", "Nadmorska kraina", "Odwiedził wszystkie obszary w regionie Gdańsk",
 									Achievement.MEDIUM_BASE_SCORE, true,
-									new PlayerVisitedZonesInRegionCondition("gdansk", Boolean.TRUE, Boolean.TRUE)));*/
+									new PlayerVisitedZonesInRegionCondition("gdansk", Boolean.TRUE, Boolean.TRUE)));
 
 		list.add(createAchievement("zone.outside.wieliczka", "Kraina soli", "Odwiedził wszystkie obszary w regionie Wieliczka",
 									Achievement.MEDIUM_BASE_SCORE, true,
@@ -88,7 +88,7 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 		//Special zone achievements
 		list.add(createAchievement("zone.special.bank", "Depozyt", "Odwiedził wszystkie banki",
 									Achievement.MEDIUM_BASE_SCORE, true,
-									new PlayerVisitedZonesCondition("int_semos_bank", "int_nalwor_bank", "int_kirdneh_bank"/**, "int_gdansk_bank"*/,
+									new PlayerVisitedZonesCondition("int_semos_bank", "int_nalwor_bank", "int_kirdneh_bank", "int_gdansk_bank",
 												"int_fado_bank", "int_magic_bank", "int_ados_bank", "int_deniran_bank_blue_roof", "int_zakopane_bank_0",
 												"int_krakow_bank_0")));
 

@@ -259,11 +259,11 @@ public class StendhalQuestSystem {
 		/** 					**\
 		 *         GDAŃSK		 *
 		\**	                    **/
-		//loadQuest(new SkorySmokow());
-		//loadQuest(new DailyMuseumGdanskQuest());
-		//loadQuest(new DzikiiWilki());
-		//loadQuest(new Pizza());
-		//loadQuest(new RosaBasementRats());
+		loadQuest(new SkorySmokow());
+		loadQuest(new DailyMuseumGdanskQuest());
+		loadQuest(new DzikiiWilki());
+		loadQuest(new Pizza());
+		loadQuest(new RosaBasementRats());
 		/**						**\
 		 *         INNE  	 	 *
 		\**	                    **/
