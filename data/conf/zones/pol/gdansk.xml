@@ -142,6 +142,13 @@
 		<portal x="121" y="11" ref="adh_entrance">
 			<destination zone="int_gdansk_adventure_house" ref="adh_exit"/>
 		</portal>
+
+		<entity x="12" y="96">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WellSource"/>
+		</entity>
+		<entity x="13" y="96">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WellSource"/>
+		</entity>
 	</zone>
 
 	<!-- gdansk_forest -->
