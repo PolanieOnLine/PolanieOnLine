@@ -80,7 +80,7 @@
 			</implementation>
 		</entity>
 		
-		<portal x="32" y="106" ref="gdansk_restart_life">
+		<portal x="33" y="98" ref="gdansk_restart_life">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 		
