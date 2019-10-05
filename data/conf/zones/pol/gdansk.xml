@@ -9,7 +9,7 @@
 
 	<!-- gdansk_nw -->
 	<zone name="0_gdansk_city_nw" level="0" x="512928" y="17024" file="Level 0/gdansk/city_nw.tmx">
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska1NPC"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska2NPC"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska3NPC"/>
@@ -118,15 +118,15 @@
 		</portal>
 	</zone>
 
-	<!-- gdansk_ne -->
+	<!-- gdansk_city_ne -->
 	<zone name="0_gdansk_city_ne" level="0" x="513184" y="17024" file="Level 0/gdansk/city_ne.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 		
-		<!-- <portal x="114" y="83" ref="kr_entrance">
+		<portal x="17" y="80" ref="kr_entrance">
 			<destination zone="int_gdansk_knight_room" ref="kr_exit"/>
-		</portal> -->
+		</portal>
 	</zone>
 
 	<!-- gdansk_forest_w -->
@@ -235,8 +235,20 @@
 
 	<!-- interiors -->
 
+	<!-- Knight room Malteis -->
+	<zone name="int_gdansk_knight_room" file="interiors/gdansk/knight_room.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.knighthouse.MalteisNPC"/>
+
+		<portal x="11" y="18" ref="kr_exit">
+			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
+		</portal>
+		<portal x="12" y="18" ref="kr_exit">
+			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
+		</portal>
+	</zone>
+
 	<!-- Bank 0 -->
-	<zone name="int_gdansk_bank" file="interiors/gdansk/bank_gdansk.tmx">
+	<zone name="int_gdansk_bank" file="interiors/gdansk/bank.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="11" y="7">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -515,21 +527,6 @@
 		</portal>
 		<portal x="32" y="30" ref="bar_exit">
 			<destination zone="0_gdansk_city_n" ref="bar_entrance"/>
-		</portal>
-	</zone>
-	-->
-	
-	<!-- Knight room Malteis -->
-	<!--
-	<zone name="int_gdansk_knight_room" file="interiors/gdansk/knight_room.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.knight_room.MalteisNPC"/>
-
-		<portal x="11" y="18" ref="kr_exit">
-			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
-		</portal>
-		<portal x="12" y="18" ref="kr_exit">
-			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
 		</portal>
 	</zone>
 	-->
