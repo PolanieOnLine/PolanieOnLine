@@ -117,6 +117,21 @@
 		</equipable>
 	</item>
 
+	<item name="biała bila">
+		<type class="misc" subclass="whiteball" tileid="-1"/>
+		<description>Oto biała bila, która służy do gry w bilarda.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Ball"/>
+		<attributes/>
+		<weight value="0.05"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="pluszowy miś">
 		<type class="misc" subclass="teddy" tileid="-1"/>
 		<description>Oto pluszowy miś. Jest miękki i puszysty. Dzieci go uwielbiają.</description>

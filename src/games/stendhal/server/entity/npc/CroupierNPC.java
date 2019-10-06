@@ -16,6 +16,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.item.Ball;
 import games.stendhal.server.entity.item.Dice;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
@@ -102,5 +103,37 @@ public abstract class CroupierNPC extends SpeakerNPC {
 	 */
 	public Area getPlayingArea() {
 		return playingArea;
+	}
+
+	public void onThrownBill(final Ball ball, final Player player) {
+		if (playingArea.contains(ball)) {
+			final int sum = ball.getSum();
+			processWinBill(player, sum);
+			// The croupier takes the dice away from the table after some time.
+			// This is simulated by shortening the degradation time of the dice.
+			SingletonRepository.getTurnNotifier().dontNotify(ball);
+			SingletonRepository.getTurnNotifier().notifyInSeconds(CLEAR_PLAYING_AREA_TIME, ball);
+		}
+	}
+
+	void processWinBill(final Player player, final int sum) {
+		final Pair<String, String> prizeAndText = prizes.get(sum);
+		if (prizeAndText != null) {
+			final String prizeName = prizeAndText.first();
+			final String text = prizeAndText.second();
+			final Item prize = SingletonRepository.getEntityManager().getItem(
+					prizeName);
+			if (prizeName.equals("spodnie mainiocyjskie")) {
+				prize.setBoundTo(player.getName());
+			}
+
+			say("Gratulacje " + player.getTitle() + ", zbiłeś bilę o numerze "
+					+ sum + ". " + text);
+			player.equipOrPutOnGround(prize);
+		} else {
+			say("Przepraszam "
+					+ player.getTitle()
+					+ ", nie udało Ci się żadnej bili zbić ze stołu. Nie wygrałeś niczego. Następnym razem będzie lepiej!");
+		}
 	}
 }

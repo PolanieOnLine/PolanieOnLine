@@ -588,8 +588,8 @@
 
 	<!-- Tavern 1 -->
 	<zone name="int_gdansk_tavern_1" file="interiors/gdansk/tavern_1.tmx">
-		<!--<configurator class-name="games.stendhal.server.maps.pol.gdansk.tavern.HandlarzBroniaGDNPC"/>
-		<configurator class-name="games.stendhal.server.maps.pol.gdansk.tavern.PinBallDealerNPC"/>-->
+		<configurator class-name="games.stendhal.server.maps.gdansk.tavern.HandlarzBroniaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.tavern.MarisNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">kettle-1, bottle-2, trash-1, trash-21, trash-3, metal-can-1, drain-water-11, dishbreak-1, dishbreak-2, dishes-1, dishes-21, creaky-door-1, creaky-door-2, ice-cubes-1, glass-break-1, window-close-1</parameter>
@@ -599,7 +599,7 @@
 			</implementation>
 		</entity>
 
-		<!-- <entity x="3" y="6">
+		<entity x="3" y="6">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
 			<attribute name="text">Oto stół bilardowy. Zielony kolor na górze wygląda jakby wiele gier na nim rozegrano.</attribute>
@@ -611,7 +611,7 @@
 		<entity x="33" y="10">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
-				<parameter name="shop">sharrison</parameter>
+				<parameter name="shop">sprzedazbroni</parameter>
 				<parameter name="title">Sklep Harrisona (sprzedaję)</parameter>
 				<parameter name="seller">true</parameter>
 				<parameter name="caption">Możesz kupić te rzeczy od Harrisona.</parameter>
@@ -623,7 +623,7 @@
 		<entity x="34" y="10">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
-				<parameter name="shop">kuptawernagdansk</parameter>
+				<parameter name="shop">kupujetohar</parameter>
 				<parameter name="title">Sklep Harrisona (skupuję)</parameter>
 				<parameter name="seller">false</parameter>
 				<parameter name="caption">Możesz sprzedać te rzeczy Harrisonowi.</parameter>
@@ -637,7 +637,7 @@
 				class-name="games.stendhal.server.entity.mapstuff.chest.NPCOwnedChest">
 				<parameter name="npc">Harrison</parameter>
 			</implementation>
-		</entity> -->
+		</entity>
 
 		<portal x="37" y="5" ref="tvup_exit">
 			<destination zone="int_gdansk_tavern_0" ref="tvup_entrance"/>

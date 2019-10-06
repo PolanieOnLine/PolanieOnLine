@@ -259,6 +259,7 @@ public class StendhalQuestSystem {
 		/** 					**\
 		 *         GDAŃSK		 *
 		\**	                    **/
+		loadQuest(new BilliardGame());
 		loadQuest(new SkorySmokow());
 		loadQuest(new DailyMuseumGdanskQuest());
 		loadQuest(new DzikiiWilki());
@@ -505,7 +506,7 @@ public class StendhalQuestSystem {
 				return questInfo.getDescription();
 			}
 		}
-		return null;
+		return "";
 	}
 
 	/**

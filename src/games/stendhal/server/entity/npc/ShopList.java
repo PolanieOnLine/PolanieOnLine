@@ -458,7 +458,7 @@ public final class ShopList {
 		shops.add("buyblack", "czarne spodnie", 40000);
 		shops.add("buyblack", "czarna tarcza", 75000);
 		shops.add("buyblack", "czarny miecz", 20000);
-		shops.add("buyblack", "kosa czarna", 40000);
+		shops.add("buyblack", "czarna kosa", 40000);
 		shops.add("buyblack", "halabarda czarna", 30000);
 
 		// ados market
@@ -800,6 +800,7 @@ public final class ShopList {
 		shops.add("zwojewieliczka", "zwój tatrzański", 650);
 		shops.add("zwojewieliczka", "niezapisany zwój", 2100);
 
+		// Gdańsk //
 		// XylonaNPC sprzedaje:
 		shops.add("xylona", "zwój przywołania", 200);
 		shops.add("xylona", "zwój gdański", 350);
@@ -826,6 +827,24 @@ public final class ShopList {
 		shops.add("mieczyslaw", "zwój gdański", 250);
 		shops.add("mieczyslaw", "zwój tatrzański", 700);
 		shops.add("mieczyslaw", "niezapisany zwój", 1800);
+		
+		// Harrison sprzedaje:
+		shops.add("sprzedazbroni", "bułat", 400);
+		shops.add("sprzedazbroni", "topór bojowy", 515);
+		shops.add("sprzedazbroni", "berdysz", 620);
+		shops.add("sprzedazbroni", "pałasz", 740);
+		shops.add("sprzedazbroni", "młot bojowy", 900);
+		shops.add("sprzedazbroni", "kosa", 1850);
+		shops.add("sprzedazbroni", "lekka kusza", 15000);
+		// Harrison skupuje:
+		shops.add("kupujetohar", "kusza", 600);
+		shops.add("kupujetohar", "kusza łowcy", 1000);
+		shops.add("kupujetohar", "karmazynowe rękawice", 800);
+		shops.add("kupujetohar", "lazurowe rękawice", 1000);
+		shops.add("kupujetohar", "ogniste rękawice", 2500);
+		shops.add("kupujetohar", "magiczny topór obosieczny", 8000);
+		shops.add("kupujetohar", "topór Durina", 10000);
+		shops.add("kupujetohar", "topór chaosu", 12000);
 	}
 
 	private static ShopList instance;
