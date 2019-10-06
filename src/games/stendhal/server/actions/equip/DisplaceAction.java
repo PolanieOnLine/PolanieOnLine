@@ -110,7 +110,9 @@ public class DisplaceAction implements ActionListener {
 				&& destInRange(player, entity, x, y)
 				&& !entityCollides(player, zone, x, y, entity)
 				&& (isGamblingZoneAndIsDice(entity, player) || pathToDest(player, zone, x, y, entity))
-				&& !isNotOwnCorpseAndTooFar(entity, player, x, y);
+				&& (isPlayingBilliardAndIsBall(entity, player) || pathToDest(player, zone, x, y, entity))
+				&& !isNotOwnCorpseAndTooFar(entity, player, x, y)
+				&& (isTargetOccupiable(player, zone, x, y) || pathToDest(player, zone, x, y, entity));
 	}
 
 	/**
@@ -210,31 +212,24 @@ public class DisplaceAction implements ActionListener {
 	 * @return true, iff allowed
 	 */
 	private boolean pathToDest(final Player player, final StendhalRPZone zone, final int x, final int y, final PassiveEntity entity) {
-		final List<Node> path = Path.searchPath(entity, zone,
-				player.getX(), player.getY(), new Rectangle(x, y, 1, 1),
-				64 /* maxDestination * maxDestination */, false);
-		// Check if there are any WalkerBlocker instances in path
-		// FIXME: Should be done Path.searchPath()?
-		boolean blockerInPath = false;
-		for (final Node node: path) {
-			final int pathX = node.getX();
-			final int pathY = node.getY();
-		 	blockerInPath = !zone.isAreaOccupiable(pathX, pathY);
-		 	if (blockerInPath) {
-				break;
-			}
-		}
-		final boolean res = !path.isEmpty() && !blockerInPath;
-		if (!res) {
+		final List<Node> path = Path.searchPath(entity, zone, player.getX(), player.getY(), new Rectangle(x, y, 1, 1), 64 /* maxDestination * maxDestination */, false);
+
+		if (path.isEmpty()) {
 			player.sendPrivateText("Nie ma łatwiejszego przejścia do tego miejsca.");
 		}
-		return res;
+		return !path.isEmpty();
 	}
 
 	/* returns true if zone is semos tavern and entity is dice */
 	private boolean isGamblingZoneAndIsDice(final Entity entity, final Player player) {
 		final StendhalRPZone zone = player.getZone();
 		return "int_semos_tavern_0".equals(zone.getName()) && ("kości do gry").equals(entity.getTitle());
+	}
+	
+	/* returns true if zone is gdansk tavern and entity is ball */
+	private boolean isPlayingBilliardAndIsBall(final Entity entity, final Player player) {
+		final StendhalRPZone zone = player.getZone();
+		return "int_gdansk_tavern_1".equals(zone.getName()) && ("biała bila").equals(entity.getTitle());
 	}
 
 	/* returns true if entity is a corpse, it's not owner by that player, and the distance is far */
@@ -317,4 +312,26 @@ public class DisplaceAction implements ActionListener {
 		return newItem;
 	}
 
+	/**
+	 * Checks if an area can be occupied by an entity.
+	 *
+	 * @param player
+	 * 		Player that is dropping the item.
+	 * @param zone
+	 * 		Zone where item is dropped.
+	 * @param x
+	 * 		Horizontal coordinate of target position.
+	 * @param y
+	 * 		Vertical coordinate of target position.
+	 * @return
+	 * 		<code>true</code> if the area can be occupied.
+	 */
+	public static boolean isTargetOccupiable(final Player player, final StendhalRPZone zone, final int x, final int y) {
+		if (!zone.isAreaOccupiable(x, y)) {
+			player.sendPrivateText("Nie ma tam miejsca.");
+			return false;
+		}
+
+		return true;
+	}
 }

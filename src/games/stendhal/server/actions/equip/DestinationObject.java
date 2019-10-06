@@ -236,7 +236,7 @@ class DestinationObject extends MoveableObject {
 				return false;
 			}
 
-			if (!isGamblingZoneAndIsDice(entity, player)) {
+			if (!isGamblingZoneAndIsDice(entity, player) && !isPlayingBilliardAndIsBall(entity, player)) {
 				// and there is a path there
 				final List<Node> path = Path.searchPath(entity, zone,
 						player.getX(), player.getY(), new Rectangle(x, y, 1, 1),
@@ -262,6 +262,11 @@ class DestinationObject extends MoveableObject {
 	private boolean isGamblingZoneAndIsDice(final Entity entity, final Player player) {
 		final StendhalRPZone zone = player.getZone();
 		return "int_semos_tavern_0".equals(zone.getName()) && ("kości do gry").equals(entity.getTitle());
+	}
+
+	private boolean isPlayingBilliardAndIsBall(final Entity entity, final Player player) {
+		final StendhalRPZone zone = player.getZone();
+		return "int_gdansk_tavern_1".equals(zone.getName()) && ("biała bila").equals(entity.getTitle());
 	}
 
 	/** returns true when this DestinationObject is valid. */

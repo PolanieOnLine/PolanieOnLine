@@ -86,7 +86,7 @@ public class GroundSlot extends EntitySlot {
 			return false;
 		}
 
-		if (!isGamblingZoneAndIsDice(item)) {
+		if (!isGamblingZoneAndIsDice(item) && !isPlayingBilliardAndIsBall(item)) {
 			// and there is a path there
 			final List<Node> path = Path.searchPath(entity, zone,
 					entity.getX(), entity.getY(), new Rectangle(x, y, 1, 1),
@@ -110,7 +110,9 @@ public class GroundSlot extends EntitySlot {
 		return "int_semos_tavern_0".equals(zone.getName()) && ("kości do gry").equals(entity.getTitle());
 	}
 
-
+	private boolean isPlayingBilliardAndIsBall(final Entity entity) {
+		return "int_gdansk_tavern_1".equals(zone.getName()) && ("biała bila").equals(entity.getTitle());
+	}
 
 	/**
 	 * Checks whether the item is below <b>another</b> player.
