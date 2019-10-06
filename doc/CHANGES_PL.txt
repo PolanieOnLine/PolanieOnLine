@@ -5,6 +5,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 
 *klient*
 - Dodano wiele nowych grafik NPC
+- Dodano kilka nowych grafik przedmiotów
 - Odświeżono grafiki trzech zwoi - tatrzański, krakowski, gdański
 
 *świat gry*
