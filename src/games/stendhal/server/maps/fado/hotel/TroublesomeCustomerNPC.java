@@ -38,12 +38,12 @@ public class TroublesomeCustomerNPC implements ZoneConfigurator {
 			"... Boh! Od czasu do czasu ja też chciałbym zjeść jakiś skromny posiłek...",
 			"... Doh! Nic dziwnego, że to miejsce jest prawie opuszczone... Jeden czeka wieczność na skromny posiłek...",
 			"... Gah! To miejsce musi zatrudniać niewidzialnych kelenerów i leniwego szefa kuchni...",
-			"... Hgh! HalOoo?! Zastanawiam się... Czy jest TU KTOŚ?!",
 			"... Mah! Już policzyłem wszystkie płytki na podłodze... Dwa razy...",
 			"... Meh! Zacznę tutaj nacinać nogi stołu za każdą spędzoną minutę czekając na obsługę...",
 			"... Ugh! Powinienem zacząć liczyć WSZYSTKIE robaki atakujące to miejsce..."
 		};
-		new MonologueBehaviour(buildNPC(zone), rants, 1);
+		//minutes between rants, 5
+		new MonologueBehaviour(buildNPC(zone), rants, 5);
 	}
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
@@ -56,9 +56,9 @@ public class TroublesomeCustomerNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Gah! Już czas, aby ktoś się tutaj pojawił! Czy jesteś gotowy, aby teraz wykonać swoje #'zadanie'?!");
-				addHelp("POMOCY?! Chcesz, abym JA ci ...pomógł... TOBIE?! Zapytaj mnie o zadanie i dam ci jedno!");
-				addJob("Ah! Nareszcie... Chcesz #zadanie?");
+				addGreeting("Gah! W końcu ktoś się pojawił, aby wykonać swoje #'zadanie'...");
+				addHelp("Zamiast tego powinieneś poprosić mnie o #'zadanie'!");
+				addJob("Ach! Wreszcie ktoś chce #'zadanie'...");
 				addOffer("Wykonaj dla mnie #zadanie, a dostaniesz dobry napiwek!");
 				addGoodbye("Ty... TY... Uciekaj teraz!");
 			}

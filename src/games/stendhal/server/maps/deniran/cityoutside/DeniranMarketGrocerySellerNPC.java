@@ -40,9 +40,9 @@ public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 		final String[] yells = {
 			"HEYOH! Artykuły spożywcze tutaj na rynku... Zbliż się, spójrz!",
 			"HOYEH! Mam wszystko, aby przygotować skromny posiłek i jeszcze więcej!",
-			"AHAWW! Czy to rynek czy cmentarz?!... Wydaje się, że jest tu tak cicho..."
+			"HAYAH! Czy to rynek czy cmentarz?!... Wydaje się, że jest tu tak cicho..."
 		};
-		new MonologueBehaviour(buildNPC(zone), yells, 1);
+		new MonologueBehaviour(buildNPC(zone), yells, 3);
 	}
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
@@ -52,29 +52,30 @@ public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGreeting(
-						"Witaj zwiedzaczu! " +
+						"Witaj zwiedzaczu! Nie wyglądasz znajomo..." +
 						"Jeśli przyszedłeś szukać jedzenia, #oferuję przedmioty spożywcze... " + 
 						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
 				addOffer(
-						"Sprzedaję przedmioty spożywcze... " +
-								"jaja, " +
-								"ziemniaki, " +
-								"fasolę pinto, " +
-								"paprykę habanero, " +
-								"oliwa z oliwek, " +
-								"ocet, " +
-								"cukier... " +
-						"Jeśli chcesz #kupić coś, powiedz mi... " +
+						"Och, głównie sprzedaję przedmioty spożywcze... " +
+								"Jaja, ziemniaki, dobre fasolki pinto, " +
+								"prawdziwą paprykę habanero (naprawdę OSTRE rzeczy), " +
+								"trochę oliwy z oliwek lub ocet... " +
+								"i cukier oczywiście... Mam tego mnóstwo! " +
+								"Oraz miód też jeżeli naprawdę tego potrzebujesz..." +
+						"Jeśli chcesz coś #kupić, to powiedz mi czego potrzebujesz... " +
 						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
 				//Offered items:
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-                offerings.put("jajo", 35);
-                offerings.put("ziemniaki", 40);
-                offerings.put("fasola pinto", 45);
-                offerings.put("papryka habanero", 50);
+                offerings.put("jajo", 5);
+                offerings.put("ziemniaki", 5);
+                offerings.put("fasola pinto", 5);
+                offerings.put("papryka habanero", 25);
                 offerings.put("oliwa z oliwek", 130);
                 offerings.put("ocet", 135);
-                offerings.put("cukier", 140);                
+                offerings.put("kekik", 135);
+                offerings.put("sclaria", 135);
+                offerings.put("cukier", 250);
+                offerings.put("miód", 350);
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 
 				addJob("Jestem tutaj, aby #oferować przedmioty spożywcze podróżnym takim jak ty... " +

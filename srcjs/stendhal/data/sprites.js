@@ -4,7 +4,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Affero General Public License as        *
- *   published by the Free Software Foundation; either version 3 of the    * 
+ *   published by the Free Software Foundation; either version 3 of the    *
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
@@ -56,13 +56,13 @@ stendhal.data.sprites = {
 			}
 		}
 	},
-	
+
 	/**
 	 * Get an image element whose image data is an area of a specified image.
 	 * If the area matches the original image, the image itself is returned.
 	 * Otherwise <em>a copy</em> of the image data is returned. This is meant
 	 * to be used for obtaining the drag image for drag and drop.
-	 * 
+	 *
 	 * @param image original image
 	 * @param width width of the area
 	 * @param height height of the area
@@ -87,13 +87,47 @@ stendhal.data.sprites = {
 		newImage.src = canvas.toDataURL("image/png");
 		return newImage;
 	},
-	
+
 	/**
 	 * @param {string} fileName
 	 * @param {string} filter
 	 * @param {number=} param
 	 */
 	getFiltered: function(fileName, filter, param) {
+    const img = this.get(fileName);
+		if (!img) {
+			return null;
+		}
+		let filterFn;
+		if (typeof(filter) === "undefined"
+			|| !(filterFn = stendhal.data.sprites.filter[filter])
+			|| img.width === 0 || img.height === 0) {
+			return img;
+		}
+		const filteredName = fileName + " " + filter + " " + param;
+		let filtered = this[filteredName];
+		if (typeof(filtered) === "undefined") {
+			const canvas = document.createElement("canvas");
+			canvas.width  = img.width;
+			canvas.height = img.height;
+			const ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0);
+			const imgData = ctx.getImageData(0, 0, img.width, img.height);
+			const data = imgData.data;
+			filterFn(data, param);
+			ctx.putImageData(imgData, 0, 0);
+			this[filteredName] = filtered = canvas;
+		}
+
+		return filtered;
+	},
+
+	/**
+	 * @param {string} fileName
+	 * @param {string} filter
+	 * @param {number=} param
+	 */
+	getFilteredWithPromise: function(fileName, filter, param) {
 		const imgPromise = this.getWithPromise(fileName);
 		return imgPromise.then(function (img) {
 			let filterFn;
@@ -120,7 +154,7 @@ stendhal.data.sprites = {
 			return filtered;
 		});
 	},
-	
+
 	/** Image filters */
 	filter: {
 		// Helper functions
@@ -151,7 +185,7 @@ stendhal.data.sprites = {
 			var r = rgb[0] / 255;
 			var g = rgb[1] / 255;
 			var b = rgb[2] / 255;
-			
+
 			var max, min, maxVar;
 			// Find the max and minimum colors, and remember which one it was
 			if (r > g) {
@@ -198,10 +232,10 @@ stendhal.data.sprites = {
 				// Normalize to range [0, 1]. It's more useful than the usual 360
 				h /= 6;
 			}
-			
+
 			return [h, s, l];
 		},
-		
+
 		/**
 		 * @param {Array<Number>} hsl
 		 * @return {Array<Number>}
@@ -234,7 +268,7 @@ stendhal.data.sprites = {
 
 			return [r, g, b];
 		},
-		
+
 		/**
 		 * @param {Number} hue
 		 * @param {Number} val1
@@ -254,7 +288,7 @@ stendhal.data.sprites = {
 
 			return res;
 		},
-		
+
 		/**
 		 * @param {Number} hue
 		 */

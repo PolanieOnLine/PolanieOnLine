@@ -23,7 +23,6 @@ stendhal.main = {
 		var deserializer = marauroa.Deserializer.fromBase64(data);
 		deserializer.readAttributes(zoneinfo);
 		document.getElementById("zoneinfo").textContent = zoneinfo["readable_name"];
-		console.log("zoneinfo", zoneinfo);
 		stendhal.main.zoneFile = zoneinfo["file"];
 		// Object { file: "Level 0/semos/city_easter.tmx", danger_level: "0.036429932929822995", zoneid: "", readable_name: "Semos city", id: "-1", color_method: "multiply" }
 	},
@@ -76,19 +75,21 @@ stendhal.main = {
 				if (typeof(items[i]["name"]) == "undefined") {
 					continue;
 				}
-				if (items[i]["name"].match(".collision$")
-					|| items[i]["name"].match(".data_map$")) {
-					items[i]["ack"] = true;
-				}
+				items[i]["ack"] = true;
 			}
 		};
 
 		marauroa.clientFramework.onTransfer = function(items) {
+      var data = {};
 			for (var i in items) {
-				if (items[i]["name"].match(".data_map$")) {
+        var name = items[i]["name"];
+				name = name.substring(name.indexOf(".") + 1);
+				data[name] = items[i]["data"];
+				if (name === "data_map") {
 					stendhal.main.onDataMap(items[i]["data"]);
 				}
 			}
+      stendhal.data.map.onTransfer(data);
 		};
 
 		// update user interface on perceptions
@@ -108,6 +109,9 @@ stendhal.main = {
 	 * registers global browser event handlers.
 	 */
 	registerBrowserEventHandlers: function() {
+    document.addEventListener("keydown", stendhal.ui.gamewindow.onKeyDown);
+		document.addEventListener("keyup", stendhal.ui.gamewindow.onKeyUp);
+
 		var gamewindow = document.getElementById("gamewindow");
 		gamewindow.setAttribute("draggable", true);
 		gamewindow.addEventListener("mousedown", stendhal.ui.gamewindow.onMouseDown);
@@ -128,7 +132,6 @@ stendhal.main = {
 
 		var chatinput = document.getElementById("chatinput");
 		chatinput.addEventListener("keydown", stendhal.ui.chatinput.onKeyDown);
-		chatinput.addEventListener("keyup", stendhal.ui.chatinput.onKeyUp);
 		chatinput.addEventListener("keypress", stendhal.ui.chatinput.onKeyPress);
 	},
 
@@ -146,15 +149,6 @@ stendhal.main = {
 		if (document.getElementById("gamewindow")) {
 			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
 
-			document.addEventListener("click", function(e) {
-				if (e.target.dataItem) {
-					marauroa.clientFramework.sendAction({
-						type: "use",
-						"target_path": e.target.dataItem.getIdPath(),
-						"zone": marauroa.currentZoneName
-					});
-				}
-			});
 		}
 	},
 

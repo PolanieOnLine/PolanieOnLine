@@ -42,6 +42,11 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<portal x="55" y="9" ref="deniran_inn_entrance">
+			<destination zone="int_deniran_inn" ref="entrance" />
+			<attribute name="move.continuous" />
+		</portal>
 	</zone>
 
 	<zone name="0_deniran_river_sw" level="0" x="499104" y="500256" file="Level 0/deniran/river_sw.tmx">
@@ -522,6 +527,102 @@
 		</attributes>
 	</zone>
 
+	<!--  Level -4 -->
+	<zone name="-4_deniran_lost_caves_n2_w" level="-4" x="499104" y="499744" file="Level -4/deniran/lost_caves_n2_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_lost_caves_nw" level="-4" x="499104" y="499872" file="Level -4/deniran/lost_caves_nw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_w" level="-4" x="499104" y="500000" file="Level -4/deniran/caves_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_sw" level="-4" x="499104" y="500128" file="Level -4/deniran/caves_sw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_lost_caves_n2" level="-4" x="499232" y="499744" file="Level -4/deniran/lost_caves_n2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_lost_caves_n" level="-4" x="499232" y="499872" file="Level -4/deniran/lost_caves_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves" level="-4" x="499232" y="500000" file="Level -4/deniran/caves.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_s" level="-4" x="499232" y="500128" file="Level -4/deniran/caves_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_lost_caves_n2_e" level="-4" x="499360" y="499744" file="Level -4/deniran/lost_caves_n2_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_lost_caves_ne" level="-4" x="499360" y="499872" file="Level -4/deniran/lost_caves_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_e" level="-4" x="499360" y="500000" file="Level -4/deniran/caves_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_se" level="-4" x="499360" y="500128" file="Level -4/deniran/caves_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_denrian_lost_caves_n2_e2" level="-4" x="499488" y="499744" file="Level -4/deniran/lost_caves_n2_e2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_denrian_lost_caves_n_e2" level="-4" x="499488" y="499872" file="Level -4/deniran/lost_caves_n_e2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_e2" level="-4" x="499488" y="500000" file="Level -4/deniran/caves_e2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="-4_deniran_caves_s_e2" level="-4" x="499488" y="500128" file="Level -4/deniran/caves_s_e2.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
 
 	<!-- interiors -->
 	<zone name="int_deniran_tiny_house" file="interiors/deniran/tiny_house.tmx">
@@ -681,5 +782,12 @@
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.library.LibrarianNPC" />
+	</zone>
+
+	<zone name="int_deniran_inn" file="interiors/deniran/inn.tmx">
+		<portal x="14" y="18" ref="entrance">
+			<destination zone="0_deniran_city_sw" ref="deniran_inn_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
 	</zone>
 </zones>

@@ -76,7 +76,7 @@ stendhal.ui.OutfitDialog = function() {
 		_getPartSprite(part, index, color = null) {
 			const fname = "/data/sprites/outfit/" + part + "/" + part + "_0" + indexString(index) + ".png";
 			if (color != null) {
-				return stendhal.data.sprites.getFiltered(fname, "trueColor", color);
+				return stendhal.data.sprites.getFilteredWithPromise(fname, "trueColor", color);
 			}
 			return stendhal.data.sprites.getWithPromise(fname);
 		}
@@ -331,7 +331,7 @@ stendhal.ui.OutfitDialog = function() {
 				img.width  = width;
 				img.height = height;
 				const ctx = img.getContext("2d");
-				
+
 				const blockWidth = width / 4;
 				const blockHeight = height / 4;
 
@@ -371,25 +371,25 @@ stendhal.ui.OutfitDialog = function() {
 	"<button type='button' id='setoutfitprevhair'>&lt;</button>"+
 	"<canvas id='setoutfithaircanvas' width='48' height='64'></canvas>" +
 	"<button type='button' id='setoutfitnexthair'>&gt;</button>" +
-	"</div>" + 
+	"</div>" +
 
 	"<div class='horizontalgroup'>" +
 	"<button type='button' id='setoutfitprevhead'>&lt;</button>" +
 	"<canvas id='setoutfitheadcanvas' width='48' height='64'></canvas>" +
 	"<button type='button' id='setoutfitnexthead'>&gt;</button><br>" +
-	"</div>" + 
+	"</div>" +
 
 	"<div class='horizontalgroup'>" +
 	"<button type='button' id='setoutfitprevbody'>&lt;</button>" +
 	"<canvas id='setoutfitbodycanvas' width='48' height='64'></canvas>" +
 	"<button type='button' id='setoutfitnextbody'>&gt;</button><br>" +
-	"</div>" + 
+	"</div>" +
 
 	"<div class='horizontalgroup'>" +
 	"<button type='button' id='setoutfitprevdress'>&lt;</button>" +
 	"<canvas id='setoutfitdresscanvas' width='48' height='64'></canvas>" +
 	"<button type='button' id='setoutfitnextdress'>&gt;</button>" +
-	"</div>" + 
+	"</div>" +
 	"</div>" + // part selectors
 
 	"<div class='verticalgroup'>" + // color selectors
@@ -437,24 +437,28 @@ stendhal.ui.OutfitDialog = function() {
 
 	function makeSelector(part, partChanged) {
 		const outfit = marauroa.me["outfit"];
-		let maxindex;
+		let outfitCount;
 		let divider;
 		switch (part) {
-			case "hair": divider = 1000000;
-				maxindex = 85;
+			case "hair":
+				divider = 1000000;
+				outfitCount = 85;
 				break;
-			case "head" : divider = 10000;
-				maxindex = 22;
+			case "head":
+				divider = 10000;
+				outfitCount = 22;
 				break;
-			case "dress" : divider = 100;
-				maxindex = 73;
+			case "dress":
+				divider = 100;
+				outfitCount = 73;
 				break;
-			case "body": divider = 1;
-				maxindex = 28;
+			case "body":
+				divider = 1;
+				outfitCount = 28;
 				break;
 		}
 		const index = Math.floor(outfit/divider) % 100;
-		const selector = new PartSelector(part, index, maxindex, partChanged);
+		const selector = new PartSelector(part, index, outfitCount - 1, partChanged);
 
 		document.getElementById("setoutfitprev" + part).addEventListener("click", function(e) {
 			selector.previous();

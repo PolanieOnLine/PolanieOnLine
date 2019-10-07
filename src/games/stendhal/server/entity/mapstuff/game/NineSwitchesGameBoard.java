@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,16 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.entity.mapstuff.game;
 
+import java.util.ArrayList;
+
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.entity.DressedEntity;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.player.Player;
-
-import java.util.ArrayList;
 
 /**
  * The game board for the 9 switches game.
@@ -81,25 +80,27 @@ public class NineSwitchesGameBoard implements TurnListener {
 		switchGameSwitch(gameSwitch);
 		boolean completed = checkBoard();
 		if (completed) {
-			npc.say("Gratulacje " + user.getName() + " wygrałeś! Proszę przyjmij ten balonik.");
-			Outfit balloonOutfit;
-			balloonOutfit = new Outfit(1, null, null, null, null);
+			if (user instanceof DressedEntity) {
+				npc.say("Gratulacje " + user.getName() + " wygrałeś! Proszę przyjmij ten balonik.");
+				final DressedEntity dressed = (DressedEntity) user;
+				final Outfit balloonOutfit = new Outfit(1, null, null, null, null);
 
-			// FIXME: temp hack to preserve original outfit
-			String outfit_org = null;
-			if (user.has("outfit_org")) {
-				outfit_org = user.get("outfit_org");
-			}
- 			// Players should use overridden method
-			if (user instanceof Player) {
-				((Player) user).setOutfit(balloonOutfit);
+				// FIXME: temp hack to preserve original outfit
+				String outfit_org = null;
+				if (dressed.has("outfit_org")) {
+					outfit_org = dressed.get("outfit_org");
+				}
+
+				dressed.setOutfit(balloonOutfit);
+
+				if (outfit_org != null) {
+					user.put("outfit_org", outfit_org);
+				}
+
+				user.put("outfit_colors", "detail", Rand.rand(balloonColors));
 			} else {
-				user.setOutfit(balloonOutfit);
+				npc.say("Umm ... Przepraszam, ale nie sądzę, że możesz nosić ten balon.");
 			}
- 			if (outfit_org != null) {
-				user.put("outfit_org", outfit_org);
-			}
-			user.put("outfit_colors", "detail", Rand.rand(balloonColors));
 
 			playerName = null;
 			TurnNotifier.get().dontNotify(this);

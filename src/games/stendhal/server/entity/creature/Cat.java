@@ -114,8 +114,8 @@ public class Cat extends Pet {
 	@Override
 	protected List<String> getFoodNames() {
 		return Arrays.asList("udko", "pstrąg", "dorsz", "makrela", "palia alpejska",
-				"okoń", "płotka", "pokolec", "błazenek","leszcz","karp",
-				"karp lustrzeń", "tarta z rybnym nadzieniem", "kanapka z tuńczykiem", "mleko");
+				"okoń", "płotka", "pokolec", "błazenek", "leszcz", "karp", "karp lustrzeń",
+				"tarta z rybnym nadzieniem", "kanapka z tuńczykiem", "mleko", "flaczki");
 	}
 
 	/**
@@ -127,6 +127,4 @@ public class Cat extends Pet {
 	protected boolean takesPartInCombat() {
 		return false;
 	}
-
-
 }

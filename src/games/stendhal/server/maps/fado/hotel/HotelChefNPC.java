@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,17 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.hotel;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a NPC in a house on Ados market (name:Stefan) who is the daughter of fisherman Fritz
@@ -71,6 +70,55 @@ public class HotelChefNPC implements ZoneConfigurator {
 				addOffer("Kuchnia jest teraz zamknięta ale wkrótce znów będę mógł ją otworzyć. Muszę pomyśleć nad rozwiązaniem mojego #problemu...");
 				addReply(Arrays.asList("problem", "problemu"), "Pracuję w tej hotelowej kuchni sam, całymi dniami! To strasznie męczące.");
 				addGoodbye("Dowidzenia! Miłego pobytu w Fado!");
+				
+				addReply(Arrays.asList("chicken", "egg", "milk", "butter", "udko", "jajo", "mleko", "osełka masła"),
+	                    "Łatwe... Zawsze sprawdzam obszary rolnicze w pobliżu Semos...");
+
+				//in nearby forests, plenty of the stuff
+				addReply(Arrays.asList("porcini", "button mushroom", "sclaria", "kekik", "borowik", "pieczarka"),
+	                    "Sprawdź w jakimś lesie, niedaleko Semos...");
+
+				//around fado, plenty of the stuff
+				addReply(Arrays.asList("garlic", "onion", "carrot", "courgette", "czosnek", "cebula", "marchew", "cukinia"),
+	                    "Bardzo łatwe! Sprawdź w okolicy Fado ...");
+
+				//dropped by easy critters, goblins, orcs, kalavan housewives, cannibals
+                //also found in grocery stores and market places
+                addReply(Arrays.asList("vinegar", "olive oil", "ocet", "oliwa z oliwek"),
+                    "Kiedy będziesz wystarczająco odważny, walcz!" +
+                    "W przeciwnym razie szukaj sklepu spożywczego lub rynku... " +
+                    "Gdzieś nie daleko.");                
+
+                //the serra near Kalavan
+				addReply(Arrays.asList("potato", "tomato", "pinto beans", "habanero pepper", "habanero peppers", "ziemniaki", "pomidor", "fasola pinto", "papryka habanero", "papryczki habanero"),
+	                    "Nie jestem pewien, ale może gdzieś w okolicy ogrodów Kalavan...");
+
+				addReply(Arrays.asList("meat", "cheese", "ham", "mięso", "ser", "szynka"),
+	                    "Ehhhh... Nie możesz być taki kiepski!");
+
+				addReply(Arrays.asList("beer", "flour", "sok z chmielu", "mąka"),
+	                    "Ooohh... Nie możesz być taki kiepski!");
+
+				addReply(Arrays.asList("perch", "trout", "okoń", "pstrąg"),
+	                    "Ahahah... Niezła próba! Nigdy nie zdradzę ci moich ulubionych miejsc do łowienia ryb... Powinieneś więcej eksplorować świata!");
+
+				//All ingredients for dessert should be trigger words
+				//Ingredients for preparing dessert for the troublesome customer
+				addReply(Arrays.asList("banana", "coconut", "pineapple", "banan", "kokos", "ananas"),
+	                    "Egzotyczne owoce ... Może gdzieś w sklepie spożywczym lub na rynku... " +
+	                    "Powinieneś więcej eksplorować!");
+
+				addReply(Arrays.asList("apple", "pear", "watermelon", "jabłko", "gruszka", "arbuz"),
+	                    "Hmm... nie taki egzotyczny owoc... Może w sklepie spożywczym lub gdzieś na rynku... " +
+	                    "Powinieneś więcej eksplorować!");
+
+				//the serra near Kalavan
+                addReply(Arrays.asList("lemon", "cytryna"),
+                		"Nie jestem pewien, ale może gdzieś w okolicy ogrodów Kalavan...");
+
+				addReply(Arrays.asList("sugar", "cukier"),
+	                    "Nie jest tak łatwo zdobyć w czasach wojny! Powinieneś trochę zmielić sam... " +
+	                    "Lub znajdź kogoś, kto sprzedaje to!");
 			}
 
 		};
