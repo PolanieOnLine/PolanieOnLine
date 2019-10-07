@@ -75,8 +75,14 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                 addOffer("#Uwędze dla Ciebie #'mięso wędzone', #'szynka wędzona', #'wędzony pstrąg' lub #'wędzony dorsz', ale musisz mi przynieść to co potrzebuję.");
                 addHelp("Zapytaj mnie o #uwędzenie dla Ciebie #'mięso wędzone', #'szynka wędzona', #'wędzony pstrąg' lub #'wędzony dorsz'. To jest to w czym jestem dobry i jeśli gdy przyniesiesz mi to co potrzebuję.");
 
-                addReply(Arrays.asList("smoked", "smoked meat", "smoked ham", "smoked trout", "smoked cod", "uwędzić", "uwędze", "uwędzenie", "wędzenia", "uwędzonych", "mięso wędzone", "szynka wędzona", "wędzony pstrąg", "wędzony dorsz"),
-                    "Sekret tkwi w tym jakie zioła dla aromatu wraz z wystarczającą ilością drewna mi przyniesiesz dla idealnego #'wędzenia'.");
+                addReply(Arrays.asList("smoked", "smoked meat", "smoked ham", "smoked trout", "smoked cod", "uwędzić", "uwędze", "uwędzenie", "uwędzonych", "mięso wędzone", "szynka wędzona", "wędzony pstrąg", "wędzony dorsz"),
+                    "Sekret tkwi w tym jakie #zioła dla aromatu wraz z wystarczającą ilością #drewna mi przyniesiesz dla idealnego #'wędzenia'.");
+                addReply(Arrays.asList("wędzenia", "smoke"),
+                        "Powiedz mi tylko #'uwędź' oraz co dokładnie chciałbyś uwędzić...");
+                addReply(Arrays.asList("zioła", "ziół", "ziele"),
+                     "Zależy jakie ziele... Dla mięsa oraz szynki #kekik, dla pstrąga oraz dorsza to #sclaria...");
+                addReply(Arrays.asList("drewno", "wood"),
+                        "Nie załamuj mnie wojowniku... Polano znajdziesz gdzieś w lasach Semos.");
                 addReply(Arrays.asList("sclaria", "kekik"),
                     "Rośnie w wielu miejscach na krawędziach lub na skrajach lasu.");
                 addReply(Arrays.asList("trout", "cod", "pstrąg", "dorsz"),
@@ -133,7 +139,7 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
 
                 final MultiProducerBehaviour behaviour = new MultiProducerBehaviour(
                     "olmo_smoke_meatandfish",
-                    Arrays.asList("smoke", "uwędź"),
+                    Arrays.asList("smoke", "uwędź", "uwędzić"),
                     productsNames,
                     requiredResourcesPerProduct,
                     productionTimesPerProduct,

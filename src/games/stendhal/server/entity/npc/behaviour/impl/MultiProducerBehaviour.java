@@ -323,7 +323,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
         String productName = res.getChosenItemName();
 
         if (getMaximalAmount(productName, player) < amount) {
-            npc.say("Mogę zrobić " + getProductionActivity() + " "
+            npc.say("Mogę zrobić "
                     + Grammar.quantityplnoun(amount, productName, "")
                     + " jeśli przyniesiesz mi "
                     + getRequiredResourceNamesWithHashes(productName, amount) + ".");
@@ -332,7 +332,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 			res.setAmount(amount);
             npc.say("Potrzebuję, abyś dostarczył mi "
                     + getRequiredResourceNamesWithHashes(productName, amount)
-					+ " to tej pracy, która zajmie mi "
+					+ " do tej pracy, która zajmie mi "
                     + TimeUtil.approxTimeUntil(getProductionTime(productName, amount))
                     + ". Czy masz to co potrzebuję?");
                    
@@ -358,7 +358,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
         if (getMaximalAmount(productName, player) < amount) {
             // The player tried to cheat us by placing the resource
             // onto the ground after saying "yes"
-            npc.say("Hey! I'm over here! You'd better not be trying to trick me...");
+            npc.say("Hej! Jestem tutaj! Lepiej nie próbuj mnie oszukać...");
             return false;
         } else {
             for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerProduct(productName).entrySet()) {
@@ -393,9 +393,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
         final String productName = order[1];
 
 		if (!isOrderReady(player)) {
-			npc.say("Witaj z powrotem! Wciąż zajmuje się twoim zleceniem "
-					+ getProductionActivity() + " " + Grammar.quantityplnoun(numberOfProductItems, productName, "a")
-					+ ". Wróć za "
+			npc.say("Witaj z powrotem! Wciąż zajmuje się twoim zleceniem. Wróć za "
 					+ getApproximateRemainingTime(player) + ", aby odebrać.");
 		} else {
 			final StackableItem products = (StackableItem) SingletonRepository.getEntityManager().getItem(productName);
