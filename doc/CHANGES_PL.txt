@@ -31,6 +31,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 
 *naprawiono błędy*
 - Naprawiono sklep u Balduina za wykonanie ostatniego zadania
+- Naprawiono nieśmiertelność wilkołaków szamanów
 - Poprawiono wypożyczanie kostiumów u Saski oraz Liliany
 
 
