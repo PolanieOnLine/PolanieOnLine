@@ -907,7 +907,7 @@
 			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
 			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
-			<item value="zwój czyszczący" quantity="[1,2]" probability="1.25"/>
+			<item value="zwój czyszczący" quantity="[1,1]" probability="1.25"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
