@@ -246,6 +246,21 @@
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
+	
+	<!-- Level -3 -->
+	<zone name="-3_gdansk_underground_forest" level="-3" x="513056" y="17280" file="Level -3/gdansk/underground_forest.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<portal x="110" y="110" ref="forest_entrance">
+			<destination zone="int_gdansk_cavehut" ref="forest_exit"/>
+		</portal>
+
+		<portal x="109" y="110" ref="orb_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
 
 	<!-- interiors -->
 
@@ -914,6 +929,31 @@
 	<!-- Cavehut -->
 	<zone name="int_gdansk_cavehut" file="interiors/gdansk/cavehut.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.cavehut.WitchNPC"/>
+
+		<portal x="12" y="8" ref="orb_left">
+			<destination zone="-3_gdansk_underground_forest" ref="orb_destination" />
+
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">learn_scrying</parameter>
+				<parameter name="rejected">Jeżeli Ilisa cię zapyta to powiedz #tak iż dostałeś wiadomość od kuli.</parameter>
+			</implementation>
+			<attribute name="use" />
+		</portal>
+		<portal x="13" y="8" ref="orb_right">
+			<destination zone="-3_gdansk_underground_forest" ref="orb_destination" />
+
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">learn_scrying</parameter>
+				<parameter name="rejected">Jeżeli Ilisa cię zapyta to powiedz #tak iż dostałeś wiadomość od kuli.</parameter>
+			</implementation>
+			<attribute name="use" />
+		</portal>
+
+		<portal x="14" y="23" ref="forest_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
 
 		<portal x="15" y="30" ref="cavehut_exit">
 			<destination zone="-1_gdansk_cave_sw" ref="cavehut_entrance"/>
