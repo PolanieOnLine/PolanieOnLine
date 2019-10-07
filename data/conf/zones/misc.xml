@@ -453,5 +453,9 @@ Wyjście do #Zakopca!
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+
+		<portal x="58" y="19" ref="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
 	</zone>
 </zones>
