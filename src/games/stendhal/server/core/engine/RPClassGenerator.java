@@ -122,11 +122,6 @@ public class RPClassGenerator {
 		}
 
 		// Entity sub-classes
-		if (!RPClass.hasRPClass("dressed_entity")) {
-			DressedEntity.generateRPClass();
-		}
-
-		// DressedEntity sub-classes
 		if (!RPClass.hasRPClass("active_entity")) {
 			ActiveEntity.generateRPClass();
 		}
@@ -253,6 +248,11 @@ public class RPClassGenerator {
 		// ActiveEntity sub-classes
 		if (!RPClass.hasRPClass("rpentity")) {
 			RPEntity.generateRPClass();
+		}
+
+		// DressedEntity sub-classes
+		if (!RPClass.hasRPClass("dressed_entity")) {
+			DressedEntity.generateRPClass();
 		}
 
 		// RPEntity sub-classes
