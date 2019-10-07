@@ -25,7 +25,7 @@
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
-		
+
 		<!-- 1 studnia -->
 		<entity x="106" y="89">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WellSource"/>
@@ -40,19 +40,19 @@
 		<entity x="14" y="119">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WellSource"/>
 		</entity>
-		
+
 		<portal x="103" y="81" ref="gs_entrance">
 			<destination zone="int_gdansk_goldsmith" ref="gs_exit"/>
 		</portal>
-		
+
 		<portal x="113" y="75" ref="bs_entrance">
 			<destination zone="int_gdansk_blacksmith" ref="bs_exit"/>
 		</portal>
-		
+
 		<portal x="123" y="91" ref="bakery_entrance">
 			<destination zone="int_gdansk_bakery" ref="bakery_exit"/>
 		</portal>
-		
+
 		<!-- <portal x="69" y="30" ref="ship_entrance">
 			<destination zone="0_gdansk_ship_n2_w2" ref="ship_exit"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
@@ -69,7 +69,7 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
-		
+
 		<entity x="41" y="125">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
@@ -79,19 +79,19 @@
 				<parameter name="volume">45</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="33" y="98" ref="gdansk_restart_life">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
-		
+
 		<portal x="114" y="49" ref="cottage_entrance">
 			<destination zone="int_gdansk_cottage_0" ref="cottage_exit"/>
 		</portal>
-		
+
 		<portal x="41" y="124" ref="bank_entrance">
 			<destination zone="int_gdansk_bank" ref="bank_exit"/>
 		</portal>
-		
+
 		<portal x="32" y="89" ref="museum_entrance_1">
 			<destination zone="int_gdansk_museum_0" ref="museum_1_exit"/>
 		</portal>
@@ -101,11 +101,11 @@
 		<portal x="34" y="89" ref="museum_entrance_3">
 			<destination zone="int_gdansk_museum_0" ref="museum_3_exit"/>
 		</portal>
-		
+
 		<!-- <portal x="99" y="87" ref="bar_entrance">
 			<destination zone="int_gdansk_bar" ref="bar_exit"/>
 		</portal> -->
-		
+
 		<portal x="3" y="97" ref="tv1_entrance">
 			<destination zone="int_gdansk_tavern_0" ref="tv1_exit"/>
 		</portal>
@@ -123,7 +123,7 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
-		
+
 		<portal x="17" y="80" ref="kr_entrance">
 			<destination zone="int_gdansk_knight_room" ref="kr_exit"/>
 		</portal>
@@ -134,11 +134,11 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
-		
+
 		<portal x="114" y="4" ref="ab_cottage_entrance">
 			<destination zone="int_gdansk_abandoned_cottage" ref="ab_cottage_exit"/>
 		</portal>
-		
+
 		<portal x="121" y="11" ref="adh_entrance">
 			<destination zone="int_gdansk_adventure_house" ref="adh_exit"/>
 		</portal>
@@ -170,7 +170,7 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
-		
+
 		<portal x="16" y="75" ref="cave_entrance">
 			<destination zone="-1_gdansk_cave_sw" ref="cave_exit"/>
 		</portal>
@@ -190,6 +190,13 @@
 		</attributes>
 	</zone>
 
+	<!-- gdansk_forest_s2_w -->
+	<zone name="0_gdansk_forest_s2_w" level="0" x="512928" y="17408" file="Level 0/gdansk/forest_s2_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+	</zone>
+
 	<!-- gdansk_road_n -->
 	<zone name="0_gdansk_road_n" level="0" x="513056" y="17408" file="Level 0/gdansk/road_n.tmx">
 		<attributes>
@@ -203,7 +210,7 @@
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
-	
+
 	<!-- Ship -->
 	<zone name="int_gdansk_ship" file="interiors\gdansk\gdansk_ship.tmx">
 		<attributes>
@@ -227,13 +234,13 @@
 			<destination zone="0_gdansk_forest_sw" ref="cave_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<zone name="-1_gdansk_cave_s" level="-1" x="513056" y="17280" file="Level -1/gdansk/cave_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 	</zone>
-	
+
 	<zone name="-1_gdansk_cave_se" level="-1" x="513184" y="17280" file="Level -1/gdansk/cave_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -289,7 +296,7 @@
 				<parameter name="rules"/>
 			</implementation>
 		</entity>
-		
+
 		<!-- Bank Chests -->
 		<entity x="3" y="11">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
@@ -297,59 +304,59 @@
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="2" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_gdansk</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="7" y="11">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="6" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_gdansk</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="11" y="11">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="10" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_gdansk</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="15" y="11">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="14" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_gdansk</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="26" y="11">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="27" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_gdansk</parameter>
@@ -362,13 +369,13 @@
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="31" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_gdansk</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="34" y="11">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
@@ -381,8 +388,8 @@
 				<parameter name="slot">bank_gdansk</parameter>
 			</implementation>
 		</entity>
-		
-		
+
+
 		<portal x="20" y="14" ref="bank_exit">
 			<destination zone="0_gdansk_city_n" ref="bank_entrance"/>
 		</portal>
@@ -390,11 +397,11 @@
 			<destination zone="0_gdansk_city_n" ref="bank_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Museum 0 -->
 	<zone name="int_gdansk_museum_0" file="interiors/gdansk/int_museum_0.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.museum.MieczysławNPC"/>
-		
+
 		<portal x="23" y="26" ref="museum_1_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_1"/>
 		</portal>
@@ -404,7 +411,7 @@
 		<portal x="25" y="26" ref="museum_3_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_3"/>
 		</portal>
-		
+
 		<portal x="41" y="1" ref="museum_1_entrance_1">
 			<destination zone="int_gdansk_museum_1" ref="museum_0_exit_1"/>
 		</portal>
@@ -412,9 +419,9 @@
 			<destination zone="int_gdansk_museum_1" ref="museum_0_exit_2"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Museum 1 -->
-	<zone name="int_gdansk_museum_1" file="interiors/gdansk/int_museum_1.tmx">		
+	<zone name="int_gdansk_museum_1" file="interiors/gdansk/int_museum_1.tmx">
 		<portal x="31" y="2" ref="museum_0_exit_1">
 			<destination zone="int_gdansk_museum_0" ref="museum_1_entrance_1"/>
 		</portal>
@@ -422,12 +429,12 @@
 			<destination zone="int_gdansk_museum_0" ref="museum_1_entrance_2"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Goldsmith -->
 	<zone name="int_gdansk_goldsmith" file="interiors/gdansk/goldsmith.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.ItemsOnTable" />
 		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.zlotnikNPC"/>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
@@ -435,7 +442,7 @@
 				<parameter name="max">120</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="18" y="12">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
@@ -453,17 +460,17 @@
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
 			<attribute name="description">Śliczny drewniany stolik.</attribute>
 		</entity>
-		
+
 		<portal x="10" y="19" ref="gs_exit">
 			<destination zone="0_gdansk_city_nw" ref="gs_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Blacksmith -->
 	<zone name="int_gdansk_blacksmith" file="interiors/gdansk/blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.blacksmith.AmetystNPC" />
 		<configurator class-name="games.stendhal.server.maps.gdansk.blacksmith.BlackSmithNPC"/>
-		
+
 		<entity x="1" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -472,7 +479,7 @@
 				<parameter name="max">60</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="17" y="5">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -481,7 +488,7 @@
 				<parameter name="max">30</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="27" y="4">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -490,7 +497,7 @@
 				<parameter name="max">30</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="17" y="5">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -498,7 +505,7 @@
 				<parameter name="volume">50</parameter>
 			</implementation>
 		</entity>
-		
+
 		<entity x="27" y="4">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -506,12 +513,12 @@
 				<parameter name="volume">50</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="9" y="14" ref="bs_exit">
 			<destination zone="0_gdansk_city_nw" ref="bs_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Bar -->
 	<!--
 	<zone name="int_gdansk_bar" file="interiors/gdansk/bar.tmx">
@@ -525,7 +532,7 @@
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="30" y="30" ref="bar_exit">
 			<destination zone="0_gdansk_city_n" ref="bar_entrance"/>
 		</portal>
@@ -537,7 +544,7 @@
 		</portal>
 	</zone>
 	-->
-	
+
 	<!-- Tavern 0 -->
 	<zone name="int_gdansk_tavern_0" file="interiors/gdansk/tavern_0.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.tavern.RosaNPC"/>
@@ -577,7 +584,7 @@
 		<portal x="7" y="19" ref="tv1_exit">
 			<destination zone="0_gdansk_city_n" ref="tv1_entrance"/>
 		</portal>
-		
+
 		<portal x="34" y="19" ref="tv2_exit">
 			<destination zone="0_gdansk_city_n" ref="tv2_entrance"/>
 		</portal>
@@ -643,7 +650,7 @@
 			<destination zone="int_gdansk_tavern_0" ref="tvup_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Tavern -1 -->
 	<zone name="int_gdansk_tavern_-1" file="interiors/gdansk/tavern_-1.tmx">
 		<attributes>
@@ -703,11 +710,11 @@
 			<destination zone="int_gdansk_tavern_0" ref="tvdown_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Cottage 0 -->
 	<zone name="int_gdansk_cottage_0" file="interiors/gdansk/cottage_0.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.cottage.AligernNPC"/>
-		
+
 		<portal x="30" y="6" ref="cottage_key_entrance">
 			<destination zone="int_gdansk_cottage_0" ref="cottage_key_exit"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
@@ -715,7 +722,7 @@
 				<parameter name="rejected">Musisz zasłużyć na to, aby odwiedzić wielkiego mistrza!</parameter>
 			</implementation>
 		</portal>
-		
+
 		<portal x="33" y="6" ref="cottage_key_exit">
 			<destination zone="int_gdansk_cottage_0" ref="cottage_key_entrance"/>
 		</portal>
@@ -760,7 +767,7 @@
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="36" y="3" ref="cottage-1_1_entrance">
 			<destination zone="int_gdansk_cottage_-1" ref="cottage-1_1_exit"/>
 		</portal>
@@ -776,7 +783,7 @@
 	<!-- Cottage -1 -->
 	<zone name="int_gdansk_cottage_-1" file="interiors/gdansk/cottage_-1.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.cottage.SzalonyNaukowiecNPC"/>
-		
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">creaky-door-1, creaky-door-2, window-close-1</parameter>
@@ -864,7 +871,7 @@
 				<parameter name="radius">6</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="40" y="6" ref="cottage-1_1_exit">
 			<destination zone="int_gdansk_cottage_0" ref="cottage-1_1_entrance"/>
 		</portal>
@@ -903,7 +910,7 @@
 			<destination zone="int_gdansk_mieczyslaw_house_0" ref="mieczyslaw_house-1_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Cavehut -->
 	<zone name="int_gdansk_cavehut" file="interiors/gdansk/cavehut.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.cavehut.WitchNPC"/>
@@ -944,12 +951,12 @@
 				<parameter name="npc">Lena</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="26" y="14" ref="bakery_exit">
 			<destination zone="0_gdansk_city_nw" ref="bakery_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Abandoned cottage -->
 	<zone name="int_gdansk_abandoned_cottage" file="interiors/gdansk/abandoned_cottage.tmx">
 		<portal x="11" y="16" ref="ab_cottage_exit">
