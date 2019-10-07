@@ -70,7 +70,7 @@ public class HotelChefNPC implements ZoneConfigurator {
 				addOffer("Kuchnia jest teraz zamknięta ale wkrótce znów będę mógł ją otworzyć. Muszę pomyśleć nad rozwiązaniem mojego #problemu...");
 				addReply(Arrays.asList("problem", "problemu"), "Pracuję w tej hotelowej kuchni sam, całymi dniami! To strasznie męczące.");
 				addGoodbye("Dowidzenia! Miłego pobytu w Fado!");
-				
+
 				addReply(Arrays.asList("chicken", "egg", "milk", "butter", "udko", "jajo", "mleko", "osełka masła"),
 	                    "Łatwe... Zawsze sprawdzam obszary rolnicze w pobliżu Semos...");
 
@@ -87,7 +87,7 @@ public class HotelChefNPC implements ZoneConfigurator {
                 addReply(Arrays.asList("vinegar", "olive oil", "ocet", "oliwa z oliwek"),
                     "Kiedy będziesz wystarczająco odważny, walcz!" +
                     "W przeciwnym razie szukaj sklepu spożywczego lub rynku... " +
-                    "Gdzieś nie daleko.");                
+                    "Gdzieś nie daleko.");
 
                 //the serra near Kalavan
 				addReply(Arrays.asList("potato", "tomato", "pinto beans", "habanero pepper", "habanero peppers", "ziemniaki", "pomidor", "fasola pinto", "papryka habanero", "papryczki habanero"),
