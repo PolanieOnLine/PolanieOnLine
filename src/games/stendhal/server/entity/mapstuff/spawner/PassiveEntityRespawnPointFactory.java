@@ -282,7 +282,9 @@ public class PassiveEntityRespawnPointFactory {
 			passiveEntityrespawnPoint = new VegetableGrower("rzepa", "rzepa");
 			break;
 		case 5:
-			passiveEntityrespawnPoint = new VegetableGrower("truskawka", "truskawka");
+			//passiveEntityrespawnPoint = new VegetableGrower("truskawka", "truskawka");
+			passiveEntityrespawnPoint = new PassiveEntityRespawnPoint("truskawka", 100);
+			passiveEntityrespawnPoint.setDescription("Oto miejsce, gdzie rośnie truskawka.");
 			break;
 		case 6:
 			passiveEntityrespawnPoint = new VegetableGrower("granat", "pomegranate");
