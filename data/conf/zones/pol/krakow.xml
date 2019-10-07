@@ -7,6 +7,21 @@
 
 	<!-- Ground level -->
 
+	<!-- krakow_nw2 -->
+	<zone name="0_krakow_n_w2" level="0" x="513184" y="17664" file="Level 0/krakow/n_w2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto2</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
 	<!-- krakow_nw -->
 	<zone name="0_krakow_nw" level="0" x="513312" y="17664" file="Level 0/krakow/nw.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.EdragonNPC"/>
