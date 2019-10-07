@@ -63,27 +63,31 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		// (what's null doesn't change that part of the outfit)
 		// so true means we put on over
 		// FIXME: Use new outfit system
-		final Pair<Outfit, Boolean> GLASSES = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(33), null, null), true);
-		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(35), null, null), true);
-		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(34), null, null), true);
+		final Pair<Outfit, Boolean> GLASSES = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(32), null, null), true);
+		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(34), null, null), true);
+		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(33), null, null), true);
 		final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(Integer.valueOf(07), null, null, null, null), true);
 
 		// these outfits must replace the current outfit (what's null simply isn't there)
-		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(23)), false);
-		final Pair<Outfit, Boolean> GREEN_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(19)), false);
-		final Pair<Outfit, Boolean> RED_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(18)), false);
-		final Pair<Outfit, Boolean> BLUE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(21)), false);
-		final Pair<Outfit, Boolean> GINGERBREAD_MAN = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(00), Integer.valueOf(22)), false);
+		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(93)), false);
+		final Pair<Outfit, Boolean> GREEN_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(89)), false);
+		final Pair<Outfit, Boolean> RED_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(88)), false);
+		final Pair<Outfit, Boolean> BLUE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(91)), false);
+		final Pair<Outfit, Boolean> GINGERBREAD_MAN = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(92)), false);
+		final Pair<Outfit, Boolean> WHITE_CAT = new Pair<Outfit, Boolean>(new Outfit(null, 0, 98, 0, 78), false);
+		final Pair<Outfit, Boolean> BLACK_CAT = new Pair<Outfit, Boolean>(new Outfit(null, 0, 98, 0, 79), false);
 
-		outfitTypes.put("glasses", GLASSES);
-		outfitTypes.put("goblin face", GOBLIN_FACE);
-		outfitTypes.put("thing face", THING_FACE);
-		outfitTypes.put("umbrella", Umbrella);
-		outfitTypes.put("purple slime", PURPLE_SLIME);
-		outfitTypes.put("green slime", GREEN_SLIME);
-		outfitTypes.put("red slime", RED_SLIME);
-		outfitTypes.put("blue slime", BLUE_SLIME);
-		outfitTypes.put("gingerbread man", GINGERBREAD_MAN);
+		outfitTypes.put("okulary", GLASSES);
+		outfitTypes.put("twarz goblina", GOBLIN_FACE);
+		outfitTypes.put("twarz cosia", THING_FACE);
+		outfitTypes.put("parasol", Umbrella);
+		outfitTypes.put("fioletowy szlam", PURPLE_SLIME);
+		outfitTypes.put("zielony szlam", GREEN_SLIME);
+		outfitTypes.put("czerwony szlam", RED_SLIME);
+		outfitTypes.put("niebieski szlam", BLUE_SLIME);
+		outfitTypes.put("piernikowy ludzik", GINGERBREAD_MAN);
+		outfitTypes.put("biały kot", WHITE_CAT);
+		outfitTypes.put("czarny kot", BLACK_CAT);
 	}
 
 	private void buildBoutiqueArea(final StendhalRPZone zone) {
@@ -126,10 +130,8 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 						final boolean type = outfitPair.second();
 
 						if (type) {
-							if ((player.getOutfit().getBody() > 17
-									&& player.getOutfit().getBody() < 20)
-									|| (player.getOutfit().getBody() > 20
-									&& player.getOutfit().getBody() < 24)) {
+							if (player.getOutfit().getBody() > 80
+									&& player.getOutfit().getBody() < 99) {
 								seller.say("Już masz magiczne ubranie, które gryzie się z resztą - mógłbyś założyć coś bardziej konwencjonalnego i zapytać ponownie? Dziękuję!");
 								return false;
 							}
@@ -162,15 +164,17 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 					}
 				}
 				final Map<String, Integer> priceList = new HashMap<String, Integer>();
-				priceList.put("glasses", (int) (N * 400));
-				priceList.put("goblin face", (int) (N * 500));
-				priceList.put("thing face", (int) (N * 500));
-				priceList.put("purple slime", (int) (N * 3000));
-				priceList.put("red slime", (int) (N * 3000));
-				priceList.put("blue slime", (int) (N * 3000));
-				priceList.put("green slime", (int) (N * 3000));
-				priceList.put("gingerbread man", (int) (N * 1200));
-				priceList.put("umbrella", (int) (N * 300));
+				priceList.put("okulary", (int) (N * 400));
+				priceList.put("twarz goblina", (int) (N * 500));
+				priceList.put("twarz cosia", (int) (N * 500));
+				priceList.put("fioletowy szlam", (int) (N * 3000));
+				priceList.put("czerwony szlam", (int) (N * 3000));
+				priceList.put("niebieski szlam", (int) (N * 3000));
+				priceList.put("zielony szlam", (int) (N * 3000));
+				priceList.put("piernikowy ludzik", (int) (N * 1200));
+				priceList.put("parasol", (int) (N * 300));
+				priceList.put("czarny kot", (int) (N * 4500));
+				priceList.put("biały kot", (int) (N * 4500));
 			    addGreeting("Witaj. Mam nadzieję, że podziwiasz ten wspaniały sklep.");
 				addQuest("Wygląda wspaniale!");
 				add(
@@ -179,13 +183,13 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 					null,
 					ConversationStates.ATTENDING,
 					"Powiedz mi, które chciałbyś ubranie."
-					+ " Powiedz #'wypożycz glasses', #'wypożycz goblin face',"
-					+ " #'wypożycz thing face', #'wypożycz umbrella',"
-					+ " #'wypożycz purple slime', #'wypożycz green slime',"
-					+ " #'wypożycz red slime', #'wypożycz blue slime',"
-					+ " #'wypożycz gingerbread man',"
-					+ " #'wypożycz white cat' lub #'wypożycz black cat'.",
-					new ExamineChatAction("outfits2.png", "Kostiumy", "Różna cena"));
+					+ " Powiedz #'wypożycz okulary', #'wypożycz twarz goblina',"
+					+ " #'wypożycz twarz cosia', #'wypożycz parasol',"
+					+ " #'wypożycz fioletowy szlam', #'wypożycz zielony szlam',"
+					+ " #'wypożycz czerwony szlam', #'wypożycz niebieski szlam',"
+					+ " #'wypożycz piernikowy ludzik',"
+					+ " #'wypożycz biały kot' lub #'wypożycz czarny kot'.",
+					new ExamineChatAction("outfits2.png", "Kostiumy", "Różne ceny"));
 				addJob("Pracuję przy pomocy magii! Zapytaj o #ofertę.");
 				addHelp("Mogę rzucić zaklęcie, aby ubrać Ciebie w magiczne ubranie. Zdejmuje się po pewnym czasie. Mam nadzieję, że mogę coś #zaoferować. Jeżeli nie to Liliana może wypożyczyć jakieś stroje.");
 				addGoodbye("Dowidzenia!");
