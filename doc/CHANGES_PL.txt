@@ -6,14 +6,17 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 *klient*
 - Dodano wiele nowych grafik NPC
 - Dodano kilka nowych grafik przedmiotów
+- Dodano kilka nowych strojów do wypożyczenia
 - Odświeżono grafiki czterech zwoi - tatrzański, krakowski, gdański, wieliczki
 
 *świat gry*
 - Dodano nowo-odświeżoną nadmorską krainę - Gdańsk
+- Dodano nową mapę w górnej części krakowa (0_krakow_n_w2) umożliwiającą przejście na pieszo do Gdańska
 - Dodano kilka nowych NPC
 - Dodano kilka nowych zadań oraz sklepów (nadmorska kraina)
 - Dodano podziemia w Gdańsku
 - Dodano kilka nowych przedmiotów (smoczy eliksir - 2400 HP, duży smoczy eliksir - 3000 HP oraz zwój gdańsk do gry)
+- Dodano możliwość wypożyczenia małego oraz dużego statku u Liliany jako kostium
 - Można wyprodukować smoczy eliksir u Agrypin'a (nowy budynek w Wieliczce) oraz duży smoczy eliksir u Aron'a (piwnica Aligerna)
 - Zwiększono ilość możliwego do zdobycia PD u potworów takich jak:
 	wilczykruk,
@@ -28,6 +31,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 
 *naprawiono błędy*
 - Naprawiono sklep u Balduina za wykonanie ostatniego zadania
+- Poprawiono wypożyczanie kostiumów u Saski oraz Liliany
 
 
 1.03
