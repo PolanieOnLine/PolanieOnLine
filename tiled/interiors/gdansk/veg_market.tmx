@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="../../tileset/furniture/table/grey_plain.png" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/furniture/table/grey_plain.png" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="10" name="../../tileset/item/pot/barrel.png" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/item/pot/barrel.png" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="12" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="13" name="Untitled" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/furniture/carpet/carpets.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="21" name="Untitled" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/glass.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="37" name="Untitled" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/furniture/table/grey_fancy_horizontal.png" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="46" name="Untitled" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/item/pot/barrels_2.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="54" name="wall/int_grey" tilewidth="32" tileheight="32" tilecount="121" columns="11">
+  <image source="../../tileset/building/wall/int_grey.png" width="352" height="352"/>
+ </tileset>
+ <tileset firstgid="175" name="entrance/grey" tilewidth="32" tileheight="32" tilecount="25" columns="5">
+  <image source="../../tileset/building/entrance/grey.png" width="160" height="160"/>
+ </tileset>
+ <tileset firstgid="200" name="indoor/grey_gradients" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/ground/indoor/grey_gradients.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="208" name="vegetable" tilewidth="32" tileheight="32" tilecount="13" columns="13">
+  <image source="../../tileset/logic/item/vegetable.png" width="416" height="32"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAChNiYGAQGkSYlwAe7voHQ7iTo2ao6BccYP30TgcMBOQBt5nkBgAEAAA=
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACrNkYGCwAmJrErENENsCsQsQiwKxGIlYAog9gDgXiGWBmAuKCQGYOgUgLkfSD5ODAQ0g1oRiLTT9DDj0IwNtINaBYl0s8oT0EwKj+jH1MxKhD6YGm35WIvTD1NBCPycR+tnR9M8BYkUgVsaBT+MQVwHiBUC8HIhXAPFKHPg8DvFVQLwaiAETN9d0AAQAAA==
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGJ7AAImtN2CuGAWkAH0i1BjR0H5DItQY45FjJ0I/J5FuAYGNUHozCXqQwTYovQOPGgAiHhqtAAQAAA==
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBQMRrARSm8mU/82IN4OxDvwqAEAQW9vgQAEAAA=
+  </data>
+ </layer>
+ <layer id="5" name="objects" width="16" height="32">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGJ7gEhL71oC5YhSQAi4SoeYGDe2/TISamzS0fxSMglEwCugJAOgIdocACAAA
+  </data>
+ </layer>
+ <layer id="6" name="collision" width="16" height="16" visible="0" opacity="0.44">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACuNhYGDgGUSYEMCnjwePOgY0NaTaS8gdo/op109s/A9W/aQAUvIDLfMbAPXysOIABAAA
+  </data>
+ </layer>
+ <layer id="7" name="protection" width="16" height="16" opacity="0.69">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBSMVAAALq+17wAEAAA=
+  </data>
+ </layer>
+</map>

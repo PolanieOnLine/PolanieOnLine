@@ -116,6 +116,40 @@
 		<portal x="13" y="79" ref="mieczyslaw_house_entrance">
 			<destination zone="int_gdansk_mieczyslaw_house_0" ref="mieczyslaw_house_exit"/>
 		</portal>
+		
+		<portal x="15" y="117" ref="entrance">
+			<destination zone="int_gdansk_scibor_house_0" ref="exit"/>
+		</portal>
+		
+		<portal x="27" y="77" ref="s_entrance">
+			<destination zone="int_gdansk_storage_0" ref="s_exit"/>
+		</portal>
+		
+		<portal x="6" y="102" ref="h_entrance">
+			<destination zone="int_gdansk_hostel" ref="h_exit"/>
+		</portal>
+		
+		<portal x="43" y="105" ref="veg_entrance">
+			<destination zone="int_gdansk_vegetable_market" ref="veg_exit"/>
+		</portal>
+		
+		<portal x="49" y="96" ref="meat_entrance">
+			<destination zone="int_gdansk_meat_market" ref="meat_exit"/>
+		</portal>
+		
+		<portal x="99" y="91" ref="l1_entrance">
+			<destination zone="int_gdansk_library" ref="l1_exit"/>
+		</portal>
+		<portal x="104" y="91" ref="l2_entrance">
+			<destination zone="int_gdansk_library" ref="l2_exit"/>
+		</portal>
+		
+		<portal x="81" y="40" ref="ps1_entrance">
+			<destination zone="int_gdansk_pirates_ship_-1" ref="ps1_exit"/>
+		</portal>
+		<portal x="82" y="40" ref="ps2_entrance">
+			<destination zone="int_gdansk_pirates_ship_-1" ref="ps2_exit"/>
+		</portal>
 	</zone>
 
 	<!-- gdansk_city_ne -->
@@ -1030,6 +1064,79 @@
 
 		<portal x="18" y="18" ref="adh_exit">
 			<destination zone="0_gdansk_forest_w" ref="adh_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Scibor house 0 -->
+	<zone name="int_gdansk_scibor_house_0" file="interiors/gdansk/scibor_house_0.tmx">
+		<portal x="3" y="3" ref="up">
+			<destination zone="int_gdansk_scibor_house_1" ref="down"/>
+		</portal>
+		<portal x="7" y="14" ref="exit">
+			<destination zone="0_gdansk_city_n" ref="entrance"/>
+		</portal>
+	</zone>
+	<!-- Scibor house 1 -->
+	<zone name="int_gdansk_scibor_house_1" file="interiors/gdansk/scibor_house_1.tmx">
+		<portal x="3" y="3" ref="down">
+			<destination zone="int_gdansk_scibor_house_0" ref="up"/>
+		</portal>
+	</zone>
+	
+	<!-- Storage 0 -->
+	<zone name="int_gdansk_storage_0" file="interiors/gdansk/storage_0.tmx">
+		<portal x="16" y="2" ref="down">
+			<destination zone="int_gdansk_storage_-1" ref="up"/>
+		</portal>
+		<portal x="9" y="14" ref="s_exit">
+			<destination zone="0_gdansk_city_n" ref="s_entrance"/>
+		</portal>
+	</zone>
+	<!-- Storage -1 -->
+	<zone name="int_gdansk_storage_-1" file="interiors/gdansk/storage_-1.tmx">
+		<portal x="26" y="10" ref="up">
+			<destination zone="int_gdansk_storage_0" ref="down"/>
+		</portal>
+	</zone>
+	
+	<!-- Hostel -->
+	<zone name="int_gdansk_hostel" file="interiors/gdansk/hostel.tmx">
+		<portal x="12" y="23" ref="h_exit">
+			<destination zone="0_gdansk_city_n" ref="h_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Meat market -->
+	<zone name="int_gdansk_meat_market" file="interiors/gdansk/meat_market.tmx">
+		<portal x="8" y="14" ref="meat_exit">
+			<destination zone="0_gdansk_city_n" ref="meat_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Vegetable market -->
+	<zone name="int_gdansk_vegetable_market" file="interiors/gdansk/veg_market.tmx">
+		<portal x="8" y="14" ref="veg_exit">
+			<destination zone="0_gdansk_city_n" ref="veg_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Library -->
+	<zone name="int_gdansk_library" file="interiors/gdansk/library.tmx">
+		<portal x="8" y="30" ref="l1_exit">
+			<destination zone="0_gdansk_city_n" ref="l1_entrance"/>
+		</portal>
+		<portal x="21" y="30" ref="l2_exit">
+			<destination zone="0_gdansk_city_n" ref="l2_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Pirates ship -1 -->
+	<zone name="int_gdansk_pirates_ship_-1" file="interiors/gdansk/pirates_ship_-1.tmx">
+		<portal x="11" y="44" ref="ps1_exit">
+			<destination zone="0_gdansk_city_n" ref="ps1_entrance"/>
+		</portal>
+		<portal x="12" y="44" ref="ps2_exit">
+			<destination zone="0_gdansk_city_n" ref="ps2_entrance"/>
 		</portal>
 	</zone>
 </zones>
