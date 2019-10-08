@@ -12,7 +12,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 *świat gry*
 - Dodano nowo-odświeżoną nadmorską krainę - Gdańsk
 - Dodano nową mapę w górnej części krakowa (0_krakow_n_w2) umożliwiającą przejście na pieszo do Gdańska
-- Dodano kilka nowych NPC
+- Dodano wiele nowych NPC
 - Dodano kilka nowych zadań oraz sklepów (nadmorska kraina)
 - Dodano podziemia w Gdańsku
 - Dodano kilka nowych przedmiotów (smoczy eliksir - 2400 HP, duży smoczy eliksir - 3000 HP oraz zwój gdańsk do gry)
