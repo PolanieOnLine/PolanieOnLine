@@ -60,7 +60,7 @@ public class zlotnikNPC implements ZoneConfigurator {
 				addJob("Jestem złotnikiem. Zbieram wszystko co jest związane ze złotem.");
 				addHelp("Byłbym wdzięczny, gdybyś sprzedał mi parę cennych minerałów.");
 				addQuest("Nie posiadam dla Ciebie zadań.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buygold")), true);
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buygold")), false);
 				addGoodbye();
 			}
 		};
