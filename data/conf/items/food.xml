@@ -35,7 +35,7 @@
 			<frequency value="12" />
 			<quantity value="1" />
 			<regen value="3" />
-			<menu value="Eat|Use"/>
+			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0" />
 		<value value="1" />
@@ -81,7 +81,7 @@
 			<frequency value="12" />
 			<quantity value="1" />
 			<regen value="3" />
-			<menu value="Eat|Use"/>
+			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0" />
 		<value value="1" />
