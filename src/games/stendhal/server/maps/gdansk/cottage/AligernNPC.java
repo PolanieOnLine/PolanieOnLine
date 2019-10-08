@@ -77,7 +77,9 @@ public class AligernNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj młody wędrowcze.");
+				addJob("Pracują dla pewnego naukowca, który zadomowił się u mnie w domu.");
 				addHelp("Szukam pomocy już kilka lat, lecz kto się tutaj zjawił od razu rezygnowali. Powiedz tylko #'zadanie', a się dowiesz więcej na ten temat.");
+				addOffer("Wykonaj dla mnie specjalnie #'zadanie', a cię wynagrodzę.");
 				addGoodbye();
 			}
 		};
