@@ -33,7 +33,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 - Naprawiono sklep u Balduina za wykonanie ostatniego zadania
 - Naprawiono nieśmiertelność wilkołaków szamanów
 - Poprawiono wypożyczanie kostiumów u Saski oraz Liliany
-- Poprawiono dialogi u Olmo
+- Poprawiono dialogi u Olmo (powinno bez problemu reagować na "uwędź 1 mięso wędzone" itd...)
 
 
 1.03
