@@ -154,12 +154,52 @@
 
 	<!-- gdansk_city_ne -->
 	<zone name="0_gdansk_city_ne" level="0" x="513312" y="17024" file="Level 0/gdansk/city_ne.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.ArmoryNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.FishyNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.GroceryNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.PotionNPC"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.FlowerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
 
+		<entity x="28" y="77">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyarmor</parameter>
+				<parameter name="title">Sklep Dariusza</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Dariuszowi.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+		<entity x="41" y="73">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">sellgrocery</parameter>
+				<parameter name="title">Sklep spożywczy Herminy</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Możesz kupić te rzeczy.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+		<entity x="36" y="79">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyfishes</parameter>
+				<parameter name="title">Sklepik rybny</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te ryby Joachimowi.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
 		<portal x="17" y="80" ref="kr_entrance">
 			<destination zone="int_gdansk_knight_room" ref="kr_exit"/>
+		</portal>
+		
+		<portal x="75" y="80" ref="gr_entrance">
+			<destination zone="int_gdansk_greenhouse" ref="gr_exit"/>
 		</portal>
 	</zone>
 
@@ -1108,6 +1148,19 @@
 	
 	<!-- Meat market -->
 	<zone name="int_gdansk_meat_market" file="interiors/gdansk/meat_market.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.market.meatNPC"/>
+
+		<entity x="10" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">sellmeat</parameter>
+				<parameter name="title">Sklep mięsny</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Czesław sprzedaje mięso.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
 		<portal x="8" y="14" ref="meat_exit">
 			<destination zone="0_gdansk_city_n" ref="meat_entrance"/>
 		</portal>
@@ -1115,6 +1168,19 @@
 	
 	<!-- Vegetable market -->
 	<zone name="int_gdansk_vegetable_market" file="interiors/gdansk/veg_market.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.market.vegNPC"/>
+
+		<entity x="10" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">sellveg</parameter>
+				<parameter name="title">Sklep wegetariański</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Colin sprzedaje warzywa.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+		
 		<portal x="8" y="14" ref="veg_exit">
 			<destination zone="0_gdansk_city_n" ref="veg_entrance"/>
 		</portal>
@@ -1137,6 +1203,13 @@
 		</portal>
 		<portal x="12" y="44" ref="ps2_exit">
 			<destination zone="0_gdansk_city_n" ref="ps2_entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Greenhouse -->
+	<zone name="int_gdansk_greenhouse" file="interiors/gdansk/greenhouse.tmx">
+		<portal x="7" y="19" ref="gr_exit">
+			<destination zone="0_gdansk_city_ne" ref="gr_entrance"/>
 		</portal>
 	</zone>
 </zones>

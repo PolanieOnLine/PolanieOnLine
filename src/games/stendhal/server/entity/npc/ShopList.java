@@ -827,7 +827,7 @@ public final class ShopList {
 		shops.add("mieczyslaw", "zwój gdański", 250);
 		shops.add("mieczyslaw", "zwój tatrzański", 700);
 		shops.add("mieczyslaw", "niezapisany zwój", 1800);
-		
+
 		// Harrison sprzedaje:
 		shops.add("sprzedazbroni", "bułat", 400);
 		shops.add("sprzedazbroni", "topór bojowy", 515);
@@ -837,14 +837,71 @@ public final class ShopList {
 		shops.add("sprzedazbroni", "kosa", 1850);
 		shops.add("sprzedazbroni", "lekka kusza", 15000);
 		// Harrison skupuje:
+		shops.add("kupujetohar", "złota kolczuga", 62);
+		shops.add("kupujetohar", "spodnie lazurowe", 117);
+		shops.add("kupujetohar", "tarcza piaskowa", 148);
 		shops.add("kupujetohar", "kusza", 600);
 		shops.add("kupujetohar", "kusza łowcy", 1000);
 		shops.add("kupujetohar", "karmazynowe rękawice", 800);
 		shops.add("kupujetohar", "lazurowe rękawice", 1000);
 		shops.add("kupujetohar", "ogniste rękawice", 2500);
+		shops.add("kupujetohar", "ciupaga", 3700);
 		shops.add("kupujetohar", "magiczny topór obosieczny", 8000);
 		shops.add("kupujetohar", "topór Durina", 10000);
 		shops.add("kupujetohar", "topór chaosu", 12000);
+
+		// Czeslaw sprzedaje:
+		shops.add("sellmeat", "udko", 14);
+		shops.add("sellmeat", "mięso", 17);
+		shops.add("sellmeat", "szynka", 45);
+		shops.add("sellmeat", "stek", 80);
+
+		// Colin sprzedaje:
+		shops.add("sellveg", "marchew", 10);
+		shops.add("sellveg", "sałata", 12);
+		shops.add("sellveg", "cebula", 21);
+		shops.add("sellveg", "kapusta", 27);
+		shops.add("sellveg", "kapusta pekińska", 30);
+		shops.add("sellveg", "ziemniaki", 30);
+		shops.add("sellveg", "czosnek", 33);
+		shops.add("sellveg", "szpinak", 33);
+		shops.add("sellveg", "fasola pinto", 35);
+		shops.add("sellveg", "papryka habanero", 40);
+		
+		// Dariusz skupuje:
+		shops.add("buyarmor", "pas krasnoludzki", 2700);
+		shops.add("buyarmor", "pas olbrzymi", 5200);
+		shops.add("buyarmor", "złoty pas", 9000);
+		shops.add("buyarmor", "kamienne rękawice", 4000);
+		shops.add("buyarmor", "rękawice cieni", 9000);
+		shops.add("buyarmor", "czarne rękawice", 13000);
+		shops.add("buyarmor", "zbroja karmazynowa", 800);
+		shops.add("buyarmor", "zbroja szamana barbarzyńców", 12000);
+		shops.add("buyarmor", "zbroja krasnoludzka", 14000);
+		shops.add("buyarmor", "zbroja chaosu", 19000);
+		shops.add("buyarmor", "lodowa zbroja", 23000);
+		
+		// Hermina sprzedaje:
+		shops.add("sellgrocery", "fasola pinto", 5);
+		shops.add("sellgrocery", "jajo", 7);
+		shops.add("sellgrocery", "ziemniaki", 7);
+		shops.add("sellgrocery", "rzodkiewka", 7);
+		shops.add("sellgrocery", "papryka habanero", 30);
+		shops.add("sellgrocery", "kekik", 135);
+		shops.add("sellgrocery", "sclaria", 135);
+		shops.add("sellgrocery", "cukier", 200);
+		shops.add("sellgrocery", "oliwa z oliwek", 250);
+		shops.add("sellgrocery", "ocet", 275);
+		shops.add("sellgrocery", "miód", 350);
+		shops.add("sellgrocery", "osełka masła", 400);
+		
+		// Manuela sprzedaje:
+		shops.add("sellpotion", "antidotum", 45);
+		shops.add("sellpotion", "mocne antidotum", 120);
+		shops.add("sellpotion", "mały eliksir", 185);
+		shops.add("sellpotion", "eliksir", 400);
+		shops.add("sellpotion", "duży eliksir", 850);
+		shops.add("sellpotion", "wielki eliksir", 1300);
 	}
 
 	private static ShopList instance;
