@@ -227,6 +227,7 @@
 
 	<!-- gdansk_forest -->
 	<zone name="0_gdansk_forest" level="0" x="513184" y="17152" file="Level 0/gdansk/forest.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.city.SheepSellerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
