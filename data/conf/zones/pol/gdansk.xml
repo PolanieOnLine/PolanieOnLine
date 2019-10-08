@@ -808,7 +808,7 @@
 			<destination zone="int_gdansk_cottage_0" ref="cottage_key_exit"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
 				<parameter name="key">kluczyk Aligerna</parameter>
-				<parameter name="rejected">Musisz zasłużyć na to, aby odwiedzić wielkiego mistrza!</parameter>
+				<parameter name="rejected">Musisz zasłużyć na to, aby odwiedzić podziemnego naukowca!</parameter>
 			</implementation>
 		</portal>
 
