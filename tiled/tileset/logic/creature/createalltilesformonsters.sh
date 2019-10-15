@@ -33,4 +33,6 @@
 #./createtileset.sh ../../../../data/sprites/monsters/stendhal/undead 48x64+48+128 undead.png
 #./createtileset.sh ../../../../data/sprites/monsters/stendhal/vampire 48x64+48+128 vampire.png
 #./createtileset.sh ../../../../data/sprites/monsters/stendhal/holiday 48x64+48+128 holiday.png
-./createtileset.sh ../../../../data/sprites/monsters/pol/ogniki 48x64+48+128 pol_ogniki.png
+#./createtileset.sh ../../../../data/sprites/monsters/pol/ogniki 48x64+48+128 pol_ogniki.png
+#./createtileset.sh ../../../../data/sprites/monsters/pol/malze 32x32+32+64 pol_sea_animal.png
+#./createtileset.sh ../../../../data/sprites/monsters/pol/zwierzeta 48x64+48+128 pol_zwierzeta.png
