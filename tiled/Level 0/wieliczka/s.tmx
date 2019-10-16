@@ -57,6 +57,9 @@
  <tileset firstgid="392" name="latarnia_blaszczysko" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png" width="160" height="160"/>
  </tileset>
+ <tileset firstgid="417" name="reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3aQZLCIBBA0dxHd+MdvfZsrBorQ2miQHfz/+IvtYAHiUYv27ZdnrrvuiRo5HgyzTO67Pb6113nHuOq9N6VItrrn9t+pn/0PFde46w+mee9yhpnHpv+f+sQPYZI/+g52nwjz36N9GfnMx92I5w8+3XSn9soJ+1rNMLfs18nr/3svPaz04qd/uz0Z6c/O/3Z6c9Of24+p2GnPzvt2enPzWs/O/3r9NOol3/03Oy8fY99oH+N9Gf3zr/X/cBypj87/dnpb/qb9lYh9yc3r1HrdsRU//U687lT/3ZVn7Oe/e6pv/76/7en+LdeEz2H6Gj+pr/pb/pbbf+jeyB6jJlb3T96fNmr7v9qH0SPqUKr+Nvn9voz05+d/uz0Z6c/O/253Tf9yenPbW+vPyvt2enPTnt2+rPTn53+7PRnpz87/dnpz05/dvqz05+d/tz87Yed/tz83wc77dnpz017dvqz05+b9uz0Z6f/2K4JxqC96W+v7PWfV4Z7gvbs9M/RtZH21toXPfaJ9/31OrM/9OemPTvtuXn22WnPzbPPTXt2+nPTnp323Dz73LRnpz837blpz017bi17/Tlpz017dtqzG+l/exQ9R5trf9sVPU+b57+31z9vPf1b7vrnrof9K3ftc/eNv+71+8T/nbv2dTrjr/t6vfPXfO1a/kfMtc/RGatWz/66x/et50j/6LWp3GzXXkWvW4Wijb6xmvW73y/cF3eKAAABAA==
@@ -84,7 +87,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3dMQqAMBAEwNgKIj5U/19aCtoKe3ozL9gmXLIhZAwAAAAAulrSAQqb0wEAIMQMBAAAAKALXRgAwJM9EgAAfN+WDgBA3D6lEwAAAFxnE30V/I913Y++CaCvwwyA9tZ0AAAAAAAAACjM/28AAAAAAAAAAAAAAAAAAFCH978AAAAAAADAnXtEAAAAAAAAAAAAeNcJc4+L8QAAAQA=
+   H4sIAAAAAAAACu3dMQqAMBAEwNgKFj5Uf5V/WgqKnbDRm3nBNskld4S0BgAAAEBVSzrAwOZ0AAAIUQMBAAAAqEIvDADgzhkJAAC+b00HACBum9IJAAAAzruJfhX8j3Vdj34TQF27GgDldfsAAAAAAAAAPPL/GwAAAAAAAAAAAAAAAAAAjMP7XwAAAAAAAODKHBEAAAAAAAAAAADedQDeodyaAAABAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.3">

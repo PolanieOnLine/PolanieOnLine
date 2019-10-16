@@ -136,8 +136,8 @@ QAMAWDUpdQAEAAA=
  </layer>
  <layer name="collision" width="16" height="16" visible="0" opacity="0.37">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAHNiYGBwGiQYG6CWfmLMxaceXY5W9uNSQ4x+XH5BN4PYsCRFnBr6kd2H7lZCfscG
-SA0/dHlcZhBrPyn6SQ1famEAj+O2NgAEAAA=
+   H4sIAAAAAAAAAHNiYGBwGiQYG6CWfmLMRZYjZBYt7cemhhj96Orx+Y8c/fjEqaEf2X3obiXkd2yA
+1PBDl8dlBrH2k6Kf1PClFgYAIvm0tgAEAAA=
   </data>
  </layer>
  <layer name="protection" width="16" height="16">

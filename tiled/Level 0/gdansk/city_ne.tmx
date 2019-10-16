@@ -70,7 +70,7 @@
   <image source="../../tileset/logic/item/vegetable.png" width="416" height="32"/>
  </tileset>
  <tileset firstgid="448" name="rats" tilewidth="32" tileheight="32" tilecount="5" columns="5">
-  <image source="../../tileset/logic/creature/small_animal.png" width="160" height="32"/>
+  <image source="../../tileset/logic/creature/rodent.png" width="160" height="32"/>
  </tileset>
  <tileset firstgid="453" name="door" tilewidth="32" tileheight="32" tilecount="6" columns="3">
   <image source="../../tileset/building/door/door.png" width="96" height="64"/>

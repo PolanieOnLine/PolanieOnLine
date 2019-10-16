@@ -24,11 +24,17 @@
  <tileset firstgid="188" name="skeleton" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/item/corpse/skeleton.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="192" name="mythical_animal" tilewidth="32" tileheight="32" tilecount="2" columns="2">
-  <image source="../../tileset/logic/creature/mythical_animal.png" width="64" height="32"/>
+ <tileset firstgid="192" name="kobold" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/kobold.png" width="192" height="32"/>
  </tileset>
- <tileset firstgid="194" name="kobold" tilewidth="32" tileheight="32" tilecount="5" columns="5">
-  <image source="../../tileset/logic/creature/kobold.png" width="160" height="32"/>
+ <tileset firstgid="198" name="dragon" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/dragon.png" width="224" height="32"/>
+ </tileset>
+ <tileset firstgid="205" name="undead_skeleton" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/undead_skeleton.png" width="192" height="32"/>
+ </tileset>
+ <tileset firstgid="211" name="undead_specter" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/undead_specter.png" width="192" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="zlib">
@@ -52,7 +58,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eJzt3U0OgjAQBlDufwNX/t/Aja40kXu5NDEatK1Mad/bEsi3Ih06HYYBAAAAAAAAAPq0iw4AQLZjdAAAunCIDgAAwNdW0QFYtG10AIBOrKMDAADQPL2B9Urde90XTQEA7bH+IZeebACYdokOAADwwTU6AAAAAFCF1F5LPQMA89tMXPduBoAn58riOa8AQC7z/QCWTV0GbbE2AwAAWuP/kjCfkv0Dt4LPAuA3vhMDAAC0R60HACyZfX8AaIf5JABEukcHAKp3SrzvXDQFUNoYHeAPzCYHeK/mus+eJwAA8EqdAAAAAAAA9OQBQREYXA==
+   eJzt3TsOwjAQBcDc/wZU/A9BCxIFJVWOQ4mEQAHbZB17po0SvSryxuvNMAAAAAAAAABAn3bRAQDIdowOAEAXDtEBAAD42io6AIu2jQ4A0Il1dAAAAJqnN7BeqXuv+6IpAKA91j/k0pMNANPG6AAAAB/cogMAAAAAVUjttdQzADC/zcR172YAeHKuLJ7zCgDkMt8PYNnUZdAWazMAAKA1/i8J8ynZP3Av+CwAfuM7MQAAQHvUegDAktn3B4B2mE8CQKRzdACgetfE+05FUwClXaID/IHZ5ADv1Vz32fMEAABeqRMAAAAAAICePAB62xih
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.4">

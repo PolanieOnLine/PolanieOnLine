@@ -1,61 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="17" height="13" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="int_wall_dark_red" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="1">
+ <tileset firstgid="1" name="int_wall_dark_red" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="17" name="int_wall_dark_red_corners" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ <tileset firstgid="17" name="int_wall_dark_red_corners" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="33" name="dark_red_ns" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ <tileset firstgid="33" name="dark_red_ns" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="../../tileset/building/entrance/dark_red_ns.png" width="96" height="128"/>
  </tileset>
- <tileset firstgid="45" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+ <tileset firstgid="45" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="46" name="obrazy" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/wyposazenie/obrazy.png"/>
+ <tileset firstgid="46" name="obrazy" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/pol/wyposazenie/obrazy.png" width="256" height="128"/>
  </tileset>
- <tileset firstgid="78" name="kafelki" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace.png"/>
+ <tileset firstgid="78" name="kafelki" tilewidth="32" tileheight="32" tilecount="36" columns="6">
+  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace.png" width="192" height="192"/>
  </tileset>
- <tileset firstgid="114" name="kafelki2" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace2.png"/>
+ <tileset firstgid="114" name="kafelki2" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace2.png" width="96" height="64"/>
  </tileset>
- <tileset firstgid="120" name="huge_animal" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/huge_animal.png"/>
+ <tileset firstgid="120" name="dragon" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/dragon.png" width="224" height="32"/>
  </tileset>
- <layer name="0_floor" width="17" height="13">
+ <layer id="1" name="0_floor" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAMthYGDIIRGjA1L1U8sMdLOQxYqAuBiIS3DoQZfHZkYpEJcBcTkOM9DlaeWXwWLG
-UA/TwQIABEnrdnQDAAA=
+   H4sIAAAAAAAACsthYGDIIRGjA1L1U8sMdLOQxYqAuBiIS3DoQZfHZkYpEJcBcTkOM9DlaeWXwWLGUA/TwQIABEnrdnQDAAA=
   </data>
  </layer>
- <layer name="1_terrain" width="17" height="13">
+ <layer id="2" name="1_terrain" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAABNkYGAQIgMLQ7EIEIsCsRgQs5OBxYFYBmoGGwN5gHvUDKxmSI6agWGGFBBz4cBK
-eOSkoWbIArEcHqyKR04eiBWAGAD+Gw6adAMAAA==
+   H4sIAAAAAAAAChNkYGAQIgMLQ7EIEIsCsRgQs5OBxYFYBmoGGwN5gHvUDKxmSI6agWGGFBBz4cBKeOSkoWbIArEcHqyKR04eiBWAGAD+Gw6adAMAAA==
   </data>
  </layer>
- <layer name="2_object" width="17" height="13">
+ <layer id="3" name="2_object" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgQAADIDaEsp2A2BnKdgFiVyjbAYgdGXADCyC2hLK9gNgbyvYBYl8o2wOIPfGY
-MQpGAb2BIpRWpsAMFSitRkAdAPOi0nh0AwAA
+   H4sIAAAAAAAACmNgQAADIDaEsp2A2BnKdgFiVyjbAYgdGXADCyC2hLK9gNgbyvYBYl8o2wOIPfGYMQpGAb2BIpRWpsAMFSitRkAdAPOi0nh0AwAA
   </data>
  </layer>
- <layer name="objects" width="17" height="13">
+ <layer id="4" name="objects" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAVDEVQNtANGAdkAADLuQLt0AwAA
+   H4sIAAAAAAAACmNgGAVDEVQPtANGAdkAAAX5ogZ0AwAA
   </data>
  </layer>
- <layer name="collision" width="17" height="13">
+ <layer id="5" name="collision" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAANNlYGDQHUSYHDBqxqgZpJiBL+3RI40DAKC4fW10AwAA
+   H4sIAAAAAAAACtNlYGDQHUSYHDBqxqgZpJiBL+3RI40DAKC4fW10AwAA
   </data>
  </layer>
- <layer name="protection" width="17" height="13">
+ <layer id="6" name="protection" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBTQEwAAX9FJ7XQDAAA=
+   H4sIAAAAAAAACmNgGAWjYBTQEwAAX9FJ7XQDAAA=
   </data>
  </layer>
 </map>

@@ -24,35 +24,16 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 //import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
 
 /**
- * Provides A man hoeing the farm ground near the Mill north of Semos
- * @see games.stendhal.server.maps.quests.AdMemoriaInPortfolio
- *
- * Jingo Radish offers a quest to unlock the portfolio container
- * Involves Hazen in Kirdneh
+ * Provides a Hoeing Man, hoeing farm ground north of Semos,
+ * near Jenny's Mill
  *
  * @author omero
  *
  */
 public class HoeingManNPC implements ZoneConfigurator {
 
-	@Override
-	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
-			// TODO: NPC Hazen does not exist, and should probably not be named so similar to Haizen.
-			/*
-			final String[] rambles = {
-				"... This is so relaxing... Hoeing and seeding... Hoeing and seeding... ",
-				"... This is so relaxing... #Hazen... #Kirdneh... Ohh my poor #memory... ",
-				"... This is so relaxing... #Kirdneh... #Hazen... Ahh my fainting  #memory...",
-				"... This is so relaxing... Hoeing and seeding... #Hazen... #Memory... #Kirdneh...",
-				"... This is so relaxing... Hoeing and seeding... #Kirdneh... Oh poor #memory... #Hazen...",
-				"... This is so relaxing... Hoeing and seeding... #Hazen... #Kirdneh...  Where is my #memory gone... ",
-	            "... This is so relaxing... Hoeing and seeding... If only I could remember... What happened to #Hazen... Where is #Kirdneh... Ah my poor #memory..."
-			};
-			//1,2,3,4,5 minutes
-
-			new MonologueBehaviour(buildNPC(zone),rambles, 1);
-			*/
 	}
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
@@ -77,19 +58,9 @@ public class HoeingManNPC implements ZoneConfigurator {
 	                    "Oh cóż nie ma nic specjalnego w mojej motyce... Jeżeli potrzebujesz dobrego narzędzia rolniczego jak #kosa to odwiedź kowala w pobliskim miaście Semos!");
 				addReply(Arrays.asList("scythe", "kosa"),
 	                    "Ach cóż... Jeżeli potrzebujesz dobrego narzędzia rolniczego jak #kosa to odwiedź kowala w pobliskim miaście Semos!");
-				/**
-				addReply("hazen",
-	                    "Ja... ja mam siostrę... Pamiętam miasto... Kirdneh");
-				addReply("kirdneh",
-	                    "Ja... pamiętam nazwę miasta... Kirdneh... Mam tam siostrę... Hazen!");
-				addReply("name",
-	                    "Ja... nie pamiętam... Co to było... Nazwa... Nazwa #zadania...");
-				addOffer("Zrobisz dla mnie #zadanie?");
-				*/
 				addGoodbye("Żegnaj! Może Twoja droga będzie wolna od chwastów.");
 			}
 		};
-
 		// Finalize Jingo Radish, the hoeing man near the Mill north of Semos
 		npc.setEntityClass("hoeingmannpc");
 		npc.setDescription("Widzisz człowieka z motyką, który zajęty jest odchwaszczaniem...");

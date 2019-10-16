@@ -77,7 +77,7 @@
 	<!-- START: militant -->
 
 	<creature name="gnom zwiadowca">
-		<type class="stendhal/gnome" subclass="infantryman" tileid="gnome_patrol.png:0"/>
+		<type class="stendhal/gnome" subclass="infantryman" tileid="gnome.png:2"/>
 		<description>Oto gnom zwiadowca. Będzie bronił wioski póki... nie ucieknie.</description>
 		<attributes>
 			<atk value="58"/>
@@ -113,7 +113,7 @@
 	</creature>
 
 	<creature name="gnom kawalerzysta">
-		<type class="stendhal/gnome" subclass="cavalryman" tileid="gnome_patrol.png:1"/>
+		<type class="stendhal/gnome" subclass="cavalryman" tileid="gnome.png:3"/>
 		<description>Oto gnom kawalerzysta. Zapuszcza się daleko szukając złota.</description>
 		<attributes>
 			<atk value="90"/>

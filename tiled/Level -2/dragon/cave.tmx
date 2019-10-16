@@ -42,11 +42,8 @@
  <tileset firstgid="262" name="pol_smoki" tilewidth="32" tileheight="32" tilecount="12" columns="12">
   <image source="../../tileset/logic/creature/pol_smoki.png" width="384" height="32"/>
  </tileset>
- <tileset firstgid="274" name="huge_animal" tilewidth="32" tileheight="32" tilecount="14" columns="14">
-  <image source="../../tileset/logic/creature/huge_animal.png" width="451" height="32"/>
- </tileset>
- <tileset firstgid="288" name="huger_animal" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../tileset/logic/creature/huger_animal.png" width="32" height="32"/>
+ <tileset firstgid="274" name="dragon" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/dragon.png" width="224" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="164">
   <data encoding="base64" compression="gzip">
@@ -70,7 +67,7 @@
  </layer>
  <layer id="5" name="objects" width="128" height="164">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3cSw5AMBQF0Jr4TySGBva/SmMhRDRUnbOCRujrfa2GAAAAAAAA+RqKt0cAAABAbipZEwAAACCKRp8FgAhK9QTgttFcCsAPzOodAAAAAAAAB+wnAcA3dGo2AAAAAHBRr6+4MnkeAAAAEJV73AAAAPgzuRgAAAAAeEKrFwlkwFwGIVS+AwAAAHbU8iIAAGwM1sl8lL1xAIB3uQMCAOAeZxgAAADgOaUcDgAAAAAApxr9dCKYvUcAAEDCOpkFSJD/TQEAAAAAAAAASN0CieJYRwBIAQA=
+   H4sIAAAAAAAACu3cSw5AMBQF0Jr4TwyE/a/UWAgRDVXnrKAR+npfqyEAAAAAAEC+huLtEQAAAJCbStYEAAAAiKLRZwEgglI9AbhtNJcC8AOTegcAAAAAAMAB+0kA8A2dmg0AAAAAXNTrK67MngcAAABE5R43AAAA/kwuBgAAAACe0OpFAhkwl0EIle8AAACAHbW8CAAAG4N1Mh9lbxwA4F3ugAAAuMcZBgAAAHhOKYcDAAAAAMCpRj+dCCbvEQAAkLBOZgES5H9TAAAAAAAAAABStwBjxHviAEgBAA==
   </data>
  </layer>
  <layer id="6" name="collision" width="128" height="164" opacity="0.37">

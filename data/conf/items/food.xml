@@ -235,6 +235,29 @@
 	</item>
 	Removing crab meat -->
 
+	<item name="kukurydza">
+		<type class="food" subclass="real_corn" tileid="-1"/>
+		<description>Oto kłos prawdziwej kukurydzy. Można ją ugrillować, zjeść na surowo lub zamienić w mąkę... Twój wybór.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="15"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="2"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="winogrona">
 		<type class="food" subclass="grapes" tileid="-1"/>
 		<description>Oto winogrona. Wyglądają na soczyste i pyszne.</description>

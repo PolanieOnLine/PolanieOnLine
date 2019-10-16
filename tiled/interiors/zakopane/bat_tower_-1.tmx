@@ -1,65 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="../../tileset/logic/collision.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="2" name="sciany_kamienne" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/sciany_kamienne.png"/>
+ <tileset firstgid="2" name="sciany_kamienne" tilewidth="32" tileheight="32" tilecount="30" columns="6">
+  <image source="../../tileset/pol/domki/sciany_kamienne.png" width="192" height="160"/>
  </tileset>
- <tileset firstgid="32" name="tower_stone_ucha" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/okna/tower_stone_ucha.png"/>
+ <tileset firstgid="32" name="tower_stone_ucha" tilewidth="32" tileheight="32" tilecount="18" columns="9">
+  <image source="../../tileset/pol/domki/okna/tower_stone_ucha.png" width="288" height="64"/>
  </tileset>
- <tileset firstgid="50" name="green_stairs" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/stairs/green_stairs.png"/>
+ <tileset firstgid="50" name="green_stairs" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/building/stairs/green_stairs.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="54" name="animal" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/animal.png"/>
+ <tileset firstgid="54" name="small_animal" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/logic/creature/rodent.png" width="160" height="32"/>
  </tileset>
- <tileset firstgid="84" name="small_animal" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/small_animal.png"/>
+ <tileset firstgid="59" name="pothole" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/ground/pothole.png" width="128" height="32"/>
  </tileset>
- <tileset firstgid="89" name="pothole" tilewidth="32" tileheight="32">
-  <image source="../../tileset/ground/pothole.png"/>
+ <tileset firstgid="63" name="slate_tiles" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/ground/slate_tiles.png" width="160" height="96"/>
  </tileset>
- <tileset firstgid="93" name="slate_tiles" tilewidth="32" tileheight="32">
-  <image source="../../tileset/ground/slate_tiles.png"/>
+ <tileset firstgid="78" name="spider" tilewidth="32" tileheight="32" tilecount="3" columns="3">
+  <image source="../../tileset/logic/creature/spider.png" width="96" height="32"/>
  </tileset>
- <layer name="0_floor" width="15" height="15">
+ <layer id="1" name="0_floor" width="15" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAABNiYGAQogBLkIFhemOBOI4EHI+kNwmI00jAKaN6R/USoZcUfTBMbj6AYQDn4wMn
-hAMAAA==
+   H4sIAAAAAAAAChNiYGAQogBLkIFheu2B2IEE7Iik1wWIPUjAbqN6R/USoZcUfTBMbj6AYQCFV7trhAMAAA==
   </data>
  </layer>
- <layer name="1_terrain" width="15" height="15">
+ <layer id="2" name="1_terrain" width="15" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGL4gGorJ1ZtNRbeMAvoBYwr1q5MgjkstKQAA02BuJoQDAAA=
+   H4sIAAAAAAAACmNgGL7AForJ1etLRbeMAvoBYwr1q5MgjkstKQAAblqY6YQDAAA=
   </data>
  </layer>
- <layer name="2_object" width="15" height="15">
+ <layer id="3" name="2_object" width="15" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGDxAFo0mBLKIkM8m0xxi9A0kwOc+QuFCqnmDKSzIcctgcj82AACrQ52nhAMA
-AA==
+   H4sIAAAAAAAACmNgGDxAFo0mBHyIkPcl0xxi9A0kwOc+QuFCqnmDKSzIcctgcj82AAB5cAgRhAMAAA==
   </data>
  </layer>
- <layer name="3_roof" width="15" height="15">
+ <layer id="4" name="3_roof" width="15" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBTAgBAZmFIAAJOZ4W+EAwAA
+   H4sIAAAAAAAACmNgGAWjYBTAgBAZmFIAAJOZ4W+EAwAA
   </data>
  </layer>
- <layer name="objects" width="15" height="15">
+ <layer id="5" name="objects" width="15" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGBogAoe4BxXtCCfS/DAq2jmQAFeY0hvgi0NahzW2OKc3AAA55zPWhAMAAA==
+   H4sIAAAAAAAACmNgGBrACoe4HxXtsCTSfAsq2jmQAFeY0hvgi0NahzW2OKc3AAA4J+tshAMAAA==
   </data>
  </layer>
- <layer name="collision" width="15" height="15" opacity="0.47">
+ <layer id="6" name="collision" width="15" height="15" opacity="0.47">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNkYGBgHCCMDhjRaGwAl15iwKjeUb201EsuBgAKBAVxhAMAAA==
+   H4sIAAAAAAAACmNkYGBgHCCMDhjRaGwAl15iwKjeUb201EsuBgAKBAVxhAMAAA==
   </data>
  </layer>
- <layer name="protection" width="15" height="15" opacity="0.43">
+ <layer id="7" name="protection" width="15" height="15" opacity="0.43">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBQMJAAA7Ly31YQDAAA=
+   H4sIAAAAAAAACmNgGAWjYBQMJAAA7Ly31YQDAAA=
   </data>
  </layer>
 </map>

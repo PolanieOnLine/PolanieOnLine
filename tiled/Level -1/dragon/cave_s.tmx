@@ -60,8 +60,8 @@
  <tileset firstgid="189" name="int_rock" tilewidth="32" tileheight="32" tilecount="140" columns="10">
   <image source="../../tileset/building/wall/int_rock.png" width="320" height="448"/>
  </tileset>
- <tileset firstgid="329" name="huge_animal" tilewidth="32" tileheight="32" tilecount="14" columns="14">
-  <image source="../../tileset/logic/creature/huge_animal.png" width="451" height="32"/>
+ <tileset firstgid="329" name="dragon" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/dragon.png" width="224" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="150" height="150">
   <data encoding="base64" compression="gzip">
@@ -85,7 +85,7 @@
  </layer>
  <layer id="5" name="objects" width="150" height="150">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3cSw6CMABFUdiOv40wMXHoJ2Li/rfg0CHGAK8t5yyA3lEp0NJ1AAAAAAAAAAAAUJ/7wtcf+oUHAAAAAAAAKMQrHQAAAADwp1s6AAAAAKBB3rnANj3SAQAAAAAAAAAAAAAAAAAAAJV7pgMACnbp0wWQdUgHAMDGDNafAITt0gEAAAAAADM7pQMAAIDiXdMBE872FgJA8d7pAAAAAAB+5p9KAABQJuc/YDs8mwPMy7wKALQisa45BsaEUozpAACgKr7nAgAAAAAAwNc+HQArc3alHeYvAJjmfska7MsEAAAAAGBJH4GPgwCQXwEA
+   H4sIAAAAAAAACu3c2w2CMACGUVjH2yKSOICXiIn7r+CjjxgD/G05ZwD6PZUCLV0HAAAAAAAAAAAA9bkvfP2hX3gAAAAAAACAQrzSAQAAAAB/uqUDAAAAABrknQts0yMdAAAAAAAAAAAAAAAAAAAAULlnOgCgYJc+XQBZh3QAAGzMYP0JQNguHQAAAAAAMLNTOgAAACjeNR0w4WxvIQAU750OAAAAAOBn/qkEAABlcv4DtsOzOcC8zKsAQCsS65pjYEwoxZgOAACq4nsuAAAAAAAAfO3TAbAyZ1faYf4CgGnul6zBvkwAAAAAAJb0AXtFfnGQXwEA
   </data>
  </layer>
  <layer id="6" name="collision" width="150" height="150" opacity="0.3">

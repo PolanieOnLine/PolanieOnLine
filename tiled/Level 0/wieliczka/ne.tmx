@@ -52,13 +52,19 @@
   <image source="../../tileset/pol/domki/okna/wioska_okna2.png" width="32" height="128"/>
  </tileset>
  <tileset firstgid="413" name="smlanml" tilewidth="32" tileheight="32" tilecount="5" columns="5">
-  <image source="../../tileset/logic/creature/small_animal.png" width="160" height="32"/>
+  <image source="../../tileset/logic/creature/rodent.png" width="160" height="32"/>
  </tileset>
  <tileset firstgid="418" name="wies" tilewidth="32" tileheight="32" tilecount="3" columns="3">
   <image source="../../tileset/logic/creature/pol_wiesniacy.png" width="96" height="32"/>
  </tileset>
  <tileset firstgid="421" name="latarnia_blaszczysko" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png" width="160" height="160"/>
+ </tileset>
+ <tileset firstgid="446" name="reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
+ </tileset>
+ <tileset firstgid="452" name="fowl" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/fowl.png" width="192" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -87,7 +93,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3bOVLDMBgG0OT+Z0gKoGedgVtQQQGXocoQgj22HO16r1SWcSLpk/Jb2e0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgJ7c7UtfQTkjf3YAABjNU4T3eI7wHgDk9Vb6AigixroPAEB+S/dv7/NcBhV43PCaY8D9/xtnBZoX0t8wqprPRW3JeQCgb6+lLwCA6jxsfGxk7wHP/QhsP/kMbD/5Xnj85LbiekZJU327to32XNPfPeQA+cZA7V5KX0AmoX17fo8sVQ4sWZrvc2LlQG97wdhzvqccGEWO/k697l+ewfiaed1cDvQ2r0OZ8/SQA5fmciC2Fs+ApV77/f+1fud9dtj/b5t6XmjblNz7/9AcGGk/0MvaL2+2Sz0Gaqn75doPtKiXHGCdErWfNTkwtZdW/09D/Y8S/d1q/b9X5vxYcud+LXU/OfDL2j+vxXruFlv69hhYJzxXSw70LPRMozlPrDGwNjdrr//3ztpPzjGg/l+n2Hs9OdCenLlfSw7wl7V/TIcNZ/pT5sCSkvX/Ec6XlM6BLd+x/3DGlWIM1FL3sx9Yx9o/nsvaXYr+jp0DS/zev475DQDQhlHOLwEAAAAA1OoHVhiRrgAAAQA=
+   H4sIAAAAAAAACu3bO1LDMBQF0GT/ayAF0DPQQEXF0FJBAZuhyhCCjS1Hf51TKp9xIulKflF2OwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgJ7f70ldQzsifHQAARvMQ4T2e3UMANOep9AVQRIx1HwCA/JZ+v73LcxlU4H7Daw4Btbtrdb7mhfQ3jKrmc1Fbch4A6Ntj6QsAoDov/9zX/vfYyN4Cnvse2H70Edh+9LXw+NGNvp001bdr22jPJf3dQw6QbwzU7nWQNSG0b09/I0uVA0uW5vucWDnQ214w9pzvKQdGkaO/U6/752cwPmdeN5cDvc3rUOY8PeTAubkciK3FM2Cp137/f63faZ9d7f+2TT0vtG1K7v1/aA6MtB/oZe2XN9ulHgO11P1y7Qda1EsOsE6J2s+aHJjaS6v/p6H+R4n+brX+3ytzfiy5c7+Wup8c+GHtn9diPXeLLX17CKwTnqolB3oWeqbRnCfWGFibm7XX/3tn7SfnGFD/r1PsvZ4caE/O3K8lB/jN2j+mqw1n+lPmwJKS9f8RzpeUzoEt37H/cMaVYgzUUvezH1jH2j+e89pdiv6OnQNL3O9fxvwGAGjDKOeXAAAAAABq9Q1SjBmbAAABAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.4">

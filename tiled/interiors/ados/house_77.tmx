@@ -106,7 +106,7 @@
  <tileset firstgid="314" name="pool" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/water/pool.png"/>
  </tileset>
- <tileset firstgid="386" name="tiloes" tilewidth="32" tileheight="32">
+ <tileset firstgid="386" name="tiles" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/indoor/tiles.png"/>
  </tileset>
  <tileset firstgid="394" name="kitchen" tilewidth="32" tileheight="32">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="31" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="31" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
  <tileset firstgid="1" name="int_plazy" tilewidth="32" tileheight="32" tilecount="27" columns="3">
   <image source="../../tileset/pol/waly/int_plazy.png" width="96" height="288"/>
  </tileset>
@@ -40,57 +40,60 @@
   <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="153" name="small_animal" tilewidth="32" tileheight="32" tilecount="5" columns="5">
-  <image source="../../tileset/logic/creature/small_animal.png" width="160" height="32"/>
+  <image source="../../tileset/logic/creature/rodent.png" width="160" height="32"/>
  </tileset>
  <tileset firstgid="158" name="animal" tilewidth="32" tileheight="32" tilecount="30" columns="30">
   <image source="../../tileset/logic/creature/animal.png" width="960" height="32"/>
  </tileset>
- <layer name="0_floor" width="50" height="31">
+ <tileset firstgid="188" name="reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJztz0ENADAIBDBkLZOJ4rlYLtBHBbSrqoF1britj/ORh4eHh4dH2iOVRxaPLB5ZPLJsewCzPDxfUXU=
   </data>
  </layer>
- <layer name="1_terrain" width="50" height="31">
+ <layer id="2" name="1_terrain" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJztlssKgzAQRdNabO0DH9vixq3//3+dhaEQ0LkJYxS9B85uYDiLkHGOEHJGLuJ1AwtgdxHRcROf4iujb7FUdvuZmI5PxLwFtft3zO32MyjsSGepYwxmUPbWEc6gsCMddszDjnTW6mjEVrGf1OYQuxU67uJDMUSbR6yMO5A7McTqVvwadqB34jBpfTN2hh253zkCO/bFmTuQ/yO3/o9BQf6PrawiOgghx+IHVjIOgg==
   </data>
  </layer>
- <layer name="2_object" width="50" height="31">
+ <layer id="3" name="2_object" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJztltsKwjAMhvMgIoivooji6W7D0wrqlWOw978xYR10krrGOjYlH/ysDW36h5VQAEVRFCWEJWrBxA9fPGOG2tpxgTIe5YKchRXlnaMS1I5ZR3lLZ14ya0JZe/KTcvuNJYOqli7ZeOKmZV+KWgnOyQRru4buIHnfQ1VnaseSeoYA3cHUijDO3PRjKQiuxxhoen6dS4nZ63L0xKlXcj3mU9r6nYnMf0JdmHgC/h4j6cEP1A11FfqSckedoVlL5ojzVetdPZS39l+rL0bOeNybC+XfmDjjaW8uwvC9zbh4zDtO+T1i/veQ7sqQ3sSKoigKwBO0CyCg
   </data>
  </layer>
- <layer name="3_roof" width="50" height="31">
+ <layer id="4" name="3_roof" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJzt1jEKgDAMBdDi5NGcxUXvUPT+k7pJ8aMliY3hPwiEIpLQQJMSEVE7K8gl8hELiNr/5JffbiDXcK29tgdvnuofP6nC1gDyCP4+f1LR+pf2M6lU4dPcugAKrS/CM7SbneddEVp7nAW0m92da+9xUUnu29OsSO7b06zw3SIiIgs7xD4OAw==
   </data>
  </layer>
- <layer name="4_roof_add" width="50" height="31">
+ <layer id="5" name="4_roof_add" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJzt1jEKACAMA8C+WUS/7wdcikoH78ZAIGMiAOq06gEAAKTMTebT/WUcdPu1FQDASwsMMwJG
   </data>
  </layer>
- <layer name="objects" width="50" height="31">
+ <layer id="6" name="objects" width="50" height="31">
   <data encoding="base64" compression="zlib">
-   eJzt1jEOABAMhWH3vwG7e4pVQiKop/5vY9FWpUIAAOCu1NmPzTqfDmSgF+PLdtXTqjYe72BkNt/2vVi6ebYCr705k5fXGkAHPbZOqYa754ZSbpVVPK/P/t//DwCgrgCOggyy
+   eJzt1sENABAMhWH7b8AudhNXCYmgnvq/GxdtVSoEAADuSp392Kzz6UAGejG+bFc9rWrj8Q5GZvNt34ulm2cr8NqbM3l5rQF00GPrlGq4e24o5VZZxfP67P/9/wAA6gq37wzi
   </data>
  </layer>
- <layer name="collision" width="50" height="31" opacity="0.5">
+ <layer id="7" name="collision" width="50" height="31" opacity="0.5">
   <data encoding="base64" compression="zlib">
    eJztlEEOgCAMBPv/F/BcT14MpYvdhhp3kzlIzMIAOsxsCCGEaMUd5B00zLl3ery+bHb2helhi/HnfGiqPXaS7enoga6rg8fq2/Geo77ZXjA8on1hJZrXO+OsS+YfEK2/4l7NehG/6Lyy94BNZb885PEFD68PGWOH6XAyf/fo5FL1jQshhHjHBS5wt2c=
   </data>
  </layer>
- <layer name="protection" width="50" height="31" visible="0" opacity="0.4">
+ <layer id="8" name="protection" width="50" height="31" visible="0" opacity="0.4">
   <data encoding="base64" compression="zlib">
    eJztzwEJAAAIwDD7BzCvNQ7usACfkfSxjfPR4qPFR4uPFh8tPlp8tPho8dHio0XSzw5jW+xA
   </data>
  </layer>
- <layer name="blend_ground" width="50" height="31">
+ <layer id="9" name="blend_ground" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJzt1s0KgzAQRWEfW63WVlv7r33kHlwnFDLEzOJ+cDaCEJjNrSoRkf2NNNGFrjSXfU6yG93pQU96lX1Osjd9aKGVvmWfIyIisqmpoZYO1EW+edfTkQY60TnyzbvQfsu96Sz3jv0b2m+5N53l3rF/Q/st96az3NvT/rfc29P+t9xb+19ERP75AR8mO5g=
   </data>
  </layer>
- <layer name="blend_roof" width="50" height="31">
+ <layer id="10" name="blend_roof" width="50" height="31">
   <data encoding="base64" compression="zlib">
    eJzt1s0KgzAQRWEfW63WVlv7r33kHlwnFDLEzOJ+cDaCEJjNrSoRkf2NNNGFrjSXfU6yG93pQU96lX1Osjd9aKGVvmWfIyIisqmpoZYO1EW+edfTkQY60TnyzbvQfsu96Sz3jv0b2m+5N53l3rF/Q/st96az3NvT/rfc29P+t9xb+19ERP75AR8mO5g=
   </data>

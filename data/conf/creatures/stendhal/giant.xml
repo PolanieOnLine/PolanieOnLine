@@ -4,7 +4,7 @@
 
 	<!-- START: amazon -->
 	<creature name="amazonka olbrzymia">
-		<type class="stendhal/giant_human" subclass="amazoness_giant" tileid="giant_human.png:10"/>
+		<type class="stendhal/amazon" subclass="amazoness_giant" tileid="amazon.png:10"/>
 		<description>Oto amazonka olbrzymia. Wygląda pięknie lecz niech cię to nie zwiedzie!</description>
 		<attributes>
 			<atk value="974"/>
@@ -238,43 +238,6 @@
 		</ai>
 	</creature>
 	<!-- END: imperial -->
-
-	<!-- START: kobold -->
-	<creature name="kobold olbrzymi">
-		<type class="stendhal/huge_animal" subclass="giant_kobold" tileid="huge_animal.png:4"/>
-		<description>Oto kobold olbrzymi. Choć jest zabawny to nie jest świadomy swej siły. Kiedy zaproponuje przytulenie to najjlepiej jest odrzucić jego szczodrą ofertę.</description>
-		<attributes>
-			<atk value="440"/>
-			<def value="57"/>
-			<hp value="400"/>
-			<speed value="1.0"/>
-			<size value="2,2"/>
-		</attributes>
-		<level value="55"/>
-		<experience value="2210"/>
-		<respawn value="1650"/>
-		<corpse name="giant_humanoid" width="2" height="2"/>
-		<drops>
-			<item value="money" quantity="[10,60]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,4]" probability="50.0"/>
-			<item value="złota zbroja" quantity="[1,1]" probability="1.0"/>
-			<item value="kropacz" quantity="[1,1]" probability="1.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Huu?"/>
-			</says>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="lifesteal" params="0.3"/>
-			<profile name="heal" params="5,50"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-	<!-- END: kobold -->
 
 	<!-- START: madaram -->
 	<creature name="kasarkutominubat">

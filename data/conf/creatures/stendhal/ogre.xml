@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: ogre -->
+	<creature name="ogr">
+		<type class="stendhal/ogre" subclass="ogre" tileid="ogre.png:0"/>
+		<description>To jest ogr. Jest goły i ordynarny.</description>
+		<attributes>
+			<atk value="151"/>
+			<def value="20"/>
+			<hp value="140"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="12"/>
+		<experience value="231"/>
+		<respawn value="1210"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,19]" probability="100.0"/>
+			<item value="pyrlik" quantity="[1,1]" probability="7.0"/>
+			<item value="złoty pyrlik" quantity="[1,1]" probability="0.7"/>
+			<item value="kolczuga" quantity="[1,1]" probability="10.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="0.9"/>
+			<item value="piernacz" quantity="[1,1]" probability="0.9"/>
+			<item value="fasola pinto" quantity="[1,5]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="ogr starszy">
+		<type class="stendhal/ogre" subclass="elder_ogre" tileid="ogre.png:1"/>
+		<description>Oto ogr starszy. Zostały mu ostatnie minuty zycia. Zmiłuj się nad nim.</description>
+		<attributes>
+			<atk value="195"/>
+			<def value="13"/>
+			<hp value="350"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="17"/>
+		<experience value="376"/>
+		<respawn value="1240"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,27]" probability="100.0"/>
+			<item value="zbroja łuskowa" quantity="[1,1]" probability="4.0"/>
+			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="1.0"/>
+			<item value="kij z czaszką" quantity="[1,1]" probability="1.0"/>
+			<item value="fasola pinto" quantity="[5,10]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="ogr żołnierz">
+		<type class="stendhal/ogre" subclass="ogre_soldier" tileid="ogre.png:2"/>
+		<description>Oto ogr żołnierz. Śmierdzi jakby nie brał kąpieli od roku. Łeee.</description>
+		<attributes>
+			<atk value="222"/>
+			<def value="40"/>
+			<hp value="132"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="22"/>
+		<experience value="677"/>
+		<respawn value="1270"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,31]" probability="100.0"/>
+			<item value="topór bojowy" quantity="[1,1]" probability="2.0"/>
+			<item value="fasola pinto" quantity="[5,10]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="superogr">
+		<type class="stendhal/ogre" subclass="superogre" tileid="ogre.png:3"/>
+		<description>Oto superogr, który jest członkiem przyziemnej rodziny Ogrów. Nim to się stało ten szczególny hełm był wśród nich czczony. Uważaj potrafi uderzyć!</description>
+		<attributes>
+			<atk value="296"/>
+			<def value="52"/>
+			<hp value="195"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="33"/>
+		<experience value="1345"/>
+		<respawn value="1380"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[6,31]" probability="100.0"/>
+			<item value="fasola pinto" quantity="[5,10]" probability="50.0"/>
+			<item value="flaczki" quantity="[5,10]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="yell-1"/>
+				<sound value="groan-1"/>
+				<sound value="moan-1"/>
+				<sound value="fart-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+  <!-- END: ogre -->
+</creatures>

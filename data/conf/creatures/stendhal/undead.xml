@@ -3,39 +3,6 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<!-- START: animal -->
-	<creature name="szczur zombie">
-		<type class="stendhal/small_animal" subclass="zombierat" tileid="small_animal.png:4"/>
-		<description>Oto nienasycony szczur zombie. Raczej cię nie lubi.</description>
-		<attributes>
-			<atk value="105"/>
-			<def value="19"/>
-			<hp value="70"/>
-			<speed value="0.6"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="7"/>
-		<experience value="70"/>
-		<respawn value="1200"/>
-		<corpse name="small_animal" harmless="tail_rodent" />
-		<drops>
-			<item value="money" quantity="[3,10]" probability="100.0"/>
-			<item value="ser" quantity="[2,5]" probability="50.0"/>
-			<item value="śmiertelna trucizna" quantity="[1,1]" probability="8.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="SZREEEK!!"/>
-				<noise state="idle follow fight" value="SZAAAAAAA!!"/>
-			</says>
-			<profile name="poisonous" params="5,śmiertelna trucizna"/>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-		</ai>
-	</creature>
-
 	<creature name="duch psa">
 		<type class="stendhal/undead" subclass="ghosthound" tileid="undead.png:13"/>
 		<description>Dostrzegając kudłaty kształt i błyszczące złe spojrzenie to przypominasz sobie wszystkie opowieści grozy o duchu psa!</description>
@@ -429,7 +396,7 @@
 
 	<!-- START: skeleton -->
 	<creature name="szkielet">
-		<type class="stendhal/undead" subclass="skeleton" tileid="undead.png:9"/>
+		<type class="stendhal/undead" subclass="skeleton" tileid="undead_skeleton.png:0"/>
 		<description>Oto szkielet co wyszedł z grobu szukać zemsty.</description>
 		<attributes>
 			<atk value="98"/>
@@ -471,7 +438,7 @@
 	</creature>
 
 	<creature name="szkielecik">
-		<type class="stendhal/hybrid" subclass="tiny_skelly" tileid="hybrid.png:9"/>
+		<type class="stendhal/undead" subclass="tiny_skelly" tileid="undead_skeleton.png:1"/>
 		<description>Oto szkielecik. Chociaż mały, jest wyjątkowo złośliwy. Uważaj na jego truciznę.</description>
 		<attributes>
 			<atk value="173"/>
@@ -506,7 +473,7 @@
 	</creature>
 
 	<creature name="szkielet waleczny">
-		<type class="stendhal/undead" subclass="warrior_skeleton" tileid="undead.png:10"/>
+		<type class="stendhal/undead" subclass="warrior_skeleton" tileid="undead_skeleton.png:2"/>
 		<description>Oto szkielet waleczny. Jest normalnym szkieletem tyle, że z tarczą!</description>
 		<attributes>
 			<atk value="233"/>
@@ -547,7 +514,7 @@
 	</creature>
 
 	<creature name="szkielet starszy">
-		<type class="stendhal/undead" subclass="elder_skeleton" tileid="undead.png:7"/>
+		<type class="stendhal/undead" subclass="elder_skeleton" tileid="undead_skeleton.png:3"/>
 		<description>Oto szkielet starszy. Jest już stary i na pewno wie wiele co wyróżnia go od reszty mściwych szieletów, które zmarły w młodym wieku.</description>
 		<attributes>
 			<atk value="253"/>
@@ -586,7 +553,7 @@
 	</creature>
 
 	<creature name="demoniczny szkielet">
-		<type class="stendhal/undead" subclass="demon_skeleton" tileid="undead.png:3"/>
+		<type class="stendhal/undead" subclass="demon_skeleton" tileid="undead_skeleton.png:4"/>
 		<description>Oto demoniczny szkielet. Demoniczne szkielety przyszły z podziemnego świata i chcą zapanować nad światem. Powinieneś je zabić nim będzie za późno!</description>
 		<attributes>
 			<atk value="316"/>
@@ -623,7 +590,7 @@
 	</creature>
 
 	<creature name="gashadokuro">
-		<type class="stendhal/mythical_animal" subclass="gashadokuro" tileid="mythical_animal.png:1"/>
+		<type class="stendhal/undead" subclass="gashadokuro" tileid="undead_skeleton.png:5"/>
 		<description>Gigantyczna sylwetka zrobiona z kości zwana jako gashadokuro. Składa się z kości konających ludzi.</description>
 		<attributes>
 			<atk value="6000"/>
@@ -654,7 +621,7 @@
 
 	<!-- START: specter -->
 	<creature name="duch">
-		<type class="stendhal/undead" subclass="ghost" tileid="undead.png:5"/>
+		<type class="stendhal/undead" subclass="ghost" tileid="undead_specter.png:0"/>
 		<description>Widzisz ducha! Bój się.</description>
 		<attributes>
 			<atk value="171"/>
@@ -688,7 +655,7 @@
 	</creature>
 
 	<creature name="śmierć">
-		<type class="stendhal/undead" subclass="death" tileid="undead.png:2"/>
+		<type class="stendhal/undead" subclass="death" tileid="undead_specter.png:3"/>
 		<description>Oto śmierć. Masz na tyle odwagi, aby stanąć z nią twarzą w twarz? Dziś nie ma nastroju na targo z twoją duszą.</description>
 		<attributes>
 			<atk value="283"/>
@@ -723,7 +690,7 @@
 	</creature>
 
 	<creature name="niewidoczny człowiek">
-		<type class="stendhal/undead" subclass="invisible_man" tileid="undead_fallen.png:6"/>
+		<type class="stendhal/undead" subclass="invisible_man" tileid="undead_specter.png:1"/>
 		<description>Nic nie widzisz. Może gdy się przypatrzysz miejscu skąd padają ciosy zauważysz kontur człowieka!</description>
 		<attributes>
 			<atk value="367"/>
@@ -787,7 +754,7 @@
 	</creature>
 
 	<creature name="żywa zbroja">
-		<type class="stendhal/undead" subclass="incorporeal_armor" tileid="undead_fallen.png:5"/>
+		<type class="stendhal/undead" subclass="incorporeal_armor" tileid="undead_specter.png:2"/>
 		<description>Oto zbroja. Nieźle cię zaskoczyło, że porusza się sama w twoją stronę, bo nikogo w niej nie widać.</description>
 		<attributes>
 			<atk value="565"/>
@@ -819,7 +786,7 @@
 	</creature>
 
 	<creature name="czarna śmierć">
-		<type class="stendhal/huge_animal" subclass="black_death" tileid="huge_animal.png:0"/>
+		<type class="stendhal/huge_animal" subclass="black_death" tileid="undead_specter.png:4"/>
 		<description>Oto czarna śmierć. Swą kosą wytnie twą duszę i zaniesie ją za rzekę, gdzie pozostanie do nadejścia dnia sądu.</description>
 		<attributes>
 			<atk value="3451"/>
@@ -866,7 +833,7 @@
 	</creature>
 
 	<creature name="złota śmierć">
-		<type class="stendhal/huge_animal" subclass="golden_death" tileid="huge_animal.png:12"/>
+		<type class="stendhal/huge_animal" subclass="golden_death" tileid="undead_specter.png:5"/>
 		<description>Oto złota śmierć. Jest tu aby zabrać twą duszę i zapłacić nią za twoje winy.</description>
 		<attributes>
 			<atk value="3968"/>
@@ -1017,7 +984,7 @@
 
 	<!-- START: zombie -->
 	<creature name="krwawy zombi">
-		<type class="stendhal/undead" subclass="bloody_zombie" tileid="undead.png:0"/>
+		<type class="stendhal/undead" subclass="bloody_zombie" tileid="undead_zombie.png:0"/>
 		<description>Oto krwawy zombi. Czy zauważyłeś, że z jego ciała leje się krew?</description>
 		<attributes>
 			<atk value="182"/>
@@ -1056,7 +1023,7 @@
 	</creature>
 
 	<creature name="zombi">
-		<type class="stendhal/undead" subclass="zombie" tileid="undead.png:11"/>
+		<type class="stendhal/undead" subclass="zombie" tileid="undead_zombie.png:1"/>
 		<description>Oto zombi. Budzi się tylko, aby dokonać zemsty. Poruszaj się cicho.</description>
 		<attributes>
 			<atk value="202"/>
@@ -1093,7 +1060,7 @@
 	</creature>
 
 	<creature name="bezgłowy potwór">
-		<type class="stendhal/undead" subclass="headless_monster" tileid="undead.png:6"/>
+		<type class="stendhal/undead" subclass="headless_monster" tileid="undead_zombie.png:2"/>
 		<description>Oto bezgłowy potwór. Jak może usłyszeć, że się zbliżacie?</description>
 		<attributes>
 			<atk value="221"/>
@@ -1125,7 +1092,7 @@
 	</creature>
 
 	<creature name="cuchnący zombi">
-		<type class="stendhal/undead" subclass="rotten_zombie" tileid="undead.png:8"/>
+		<type class="stendhal/undead" subclass="rotten_zombie" tileid="undead_zombie.png:3"/>
 		<description>Oto cuchnący i gnijący zombi. Robi ci się niedobrze na sam widok jego gnijącej skóry zwisającej płatami z pogniłych resztek wystających kości.</description>
 		<attributes>
 			<atk value="256"/>
@@ -1166,7 +1133,7 @@
 
 	<!-- Disabled until future review
 	<creature name="myling">
-		<type class="stendhal/undead" subclass="myling" tileid="undead.png:14"/>
+		<type class="stendhal/undead" subclass="myling" tileid="undead_zombie.png:4"/>
 		<description>Oto myling, który wędruje w poszukiwaniu osoby, która mogłaby mu wyprawić stosowny pogrzeb.</description>
 		<attributes>
 			<atk value="1153"/>

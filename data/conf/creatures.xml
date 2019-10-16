@@ -10,14 +10,21 @@
 	<group uri="creatures/stendhal/dwarf.xml" />
 	<group uri="creatures/stendhal/elemental.xml" />
 	<group uri="creatures/stendhal/elf.xml" />
+	<group uri="creatures/stendhal/fowl.xml" />
 	<group uri="creatures/stendhal/giant.xml" />
     <group uri="creatures/stendhal/gnome.xml" />
 	<group uri="creatures/stendhal/goblin.xml" />
 	<group uri="creatures/stendhal/human.xml" />
 	<group uri="creatures/stendhal/humanoid.xml" />
 	<group uri="creatures/stendhal/hybrid.xml" />
-    <group uri="creatures/stendhal/oni.xml" />
-    <group uri="creatures/stendhal/orc.xml" />
+	<group uri="creatures/stendhal/kobold.xml" />
+	<group uri="creatures/stendhal/ogre.xml" />
+	<group uri="creatures/stendhal/oni.xml" />
+	<group uri="creatures/stendhal/orc.xml" />
+	<group uri="creatures/stendhal/reptile.xml" />
+	<group uri="creatures/stendhal/rodent.xml" />
+	<group uri="creatures/stendhal/slime.xml" />
+	<group uri="creatures/stendhal/spider.xml" />
 	<group uri="creatures/stendhal/troll.xml" />
 	<group uri="creatures/stendhal/undead.xml" />
 

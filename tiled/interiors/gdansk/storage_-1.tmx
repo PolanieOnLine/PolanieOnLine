@@ -24,8 +24,8 @@
  <tileset firstgid="67" name="../../tileset/building/stairs/dark_stairs.png" tilewidth="32" tileheight="32" tilecount="2" columns="1">
   <image source="../../tileset/building/stairs/dark_stairs.png" trans="ff00ff" width="32" height="64"/>
  </tileset>
- <tileset firstgid="69" name="../../tileset/logic/creature/small_animal.png" tilewidth="32" tileheight="32" tilecount="5" columns="5">
-  <image source="../../tileset/logic/creature/small_animal.png" width="160" height="32"/>
+ <tileset firstgid="69" name="../../tileset/logic/creature/rodent.png" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/logic/creature/rodent.png" width="160" height="32"/>
  </tileset>
  <tileset firstgid="74" name="../../tileset/logic/creature/animal.png" tilewidth="32" tileheight="32" tilecount="30" columns="30">
   <image source="../../tileset/logic/creature/animal.png" width="960" height="32"/>
@@ -38,6 +38,9 @@
  </tileset>
  <tileset firstgid="107" name="light_5x5" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/light/light_5x5.png" width="160" height="160"/>
+ </tileset>
+ <tileset firstgid="132" name="reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="50" height="32">
   <data encoding="base64" compression="gzip">
@@ -61,7 +64,7 @@
  </layer>
  <layer id="5" name="objects" width="50" height="32">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3UsQ0AIAwDMJ6Dnf+fYWNlAKlQ7AuiJmopAAC5tegACzU6wCE7d765oyz9/OLmLQFk4M++pUcHYNIFxBhcCE3VABkAAA==
+   H4sIAAAAAAAACu3UsQ0AIAwDMJ6Dz/ibjZUBpEKxL4iaqKUAAOTWogMs1OgAh+zc+eaOsvTzi5u3BJCBP/uWHh2ASRcQYwDxn56vABkAAA==
   </data>
  </layer>
  <layer id="6" name="collision" width="50" height="32" visible="0" opacity="0.45">

@@ -17,7 +17,7 @@
   <image source="../../tileset/logic/creature/dwarf.png"/>
  </tileset>
  <tileset firstgid="266" name="small_animal" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/small_animal.png"/>
+  <image source="../../tileset/logic/creature/rodent.png"/>
  </tileset>
  <tileset firstgid="271" name="animal" tilewidth="32" tileheight="32">
   <image source="../../tileset/logic/creature/animal.png"/>

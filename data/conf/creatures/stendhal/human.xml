@@ -1722,7 +1722,7 @@
 	</creature>
 
 	<creature name="weteran imperium">
-		<type class="stendhal/human" subclass="imperial_veteran" tileid="human_kalavan.png:0"/>
+		<type class="stendhal/human" subclass="imperial_veteran" tileid="human_imperial.png:14"/>
 		<description>Oto weteran żołnierzy imperium. Brał udział w wielu bitwach i wojnach. Teraz jest stary, lecz mimo swojego wieku wciąż szuka wroga by stoczyć z nim pojedynek na śmierć i życie.</description>
 		<attributes>
 			<atk value="330"/>
