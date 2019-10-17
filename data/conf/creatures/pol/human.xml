@@ -25,6 +25,9 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Arrrrgghh!"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -54,6 +57,9 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Arrgh! Co się szwendasz jak szczur na pokładzie?"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -81,6 +87,10 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ahoj!"/>
+				<noise state="idle follow fight" value="Mam ochotę zakotwiczyć w Twojej lagunie!"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -110,6 +120,11 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Argh!"/>
+				<noise state="idle follow fight" value="Arrrghh! Potnę Cię moją szablą!"/>
+				<noise state="idle follow fight" value="Chodź i obejrzyj me miecze!"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -139,6 +154,9 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ahoj! Morskie podróże są wspaniałe!"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -169,6 +187,11 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Arrrgh! Przygotować się do abordażu!"/>
+				<noise state="idle follow fight" value="Czekam aż we mnie wystrzelisz!"/>
+				<noise state="idle follow fight" value="Nie masz nic naprzeciwko, że strzelę w ciebie z armaty?"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -392,6 +415,8 @@
 			<item value="sztabka złota" quantity="[1,4]" probability="5.0"/>
 		</drops>
 		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="długi łuk" quantity="1"/>
 		</equips>
 		<ai>
 			<says>
@@ -796,6 +821,8 @@
 			<item value="tarta" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
+			<slot name="lhand" item="strzała złota" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>
 			<says>
@@ -832,10 +859,13 @@
 			<item value="tarta" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
+			<slot name="lhand" item="strzała z mithrilu" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Mą profesją jest strzelanie do wszystkiego co się rusza! HAHAHA!"/>
+				<noise state="idle follow fight" value="Moje... cenne... strzały... Aż szkoda marnowania na taką istotę jak TY!"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -850,6 +880,7 @@
 		<description></description>
 		<attributes>
 			<atk value="1800"/>
+			<ratk value="1800"/>
 			<def value="48"/>
 			<hp value="2000"/>
 			<speed value="0.4"/>
@@ -866,6 +897,8 @@
 			<item value="tarta" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
+			<slot name="lhand" item="magia mroku" quantity="10000"/>
+			<slot name="rhand" item="różdżka Swaroga" quantity="1"/>
 		</equips>
 		<ai>
 			<says>
@@ -873,6 +906,7 @@
 				<noise state="idle follow fight" value="Na twoim miejscu bym się już więcej nie zbliżał!"/>
 			</says>
 			<profile name="brave"/>
+			<profile name="archer"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
