@@ -9,6 +9,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31.5
 
 *świat gry*
 - Dodano do gry dwa nowe klany piratów (lutin oraz truskull; co daje łącznie 22 nowych potworów!)
+- Piraci wykrzykują swe monologi
 
 *naprawiono błędy*
 - Klient będzie ignorował błędy, które informują o braku pewnych dźwięków pogody (mgła oraz śnieg)
