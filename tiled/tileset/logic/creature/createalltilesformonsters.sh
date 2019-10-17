@@ -42,3 +42,7 @@
 #./createtileset.sh ../../../../data/sprites/monsters/pol/ogniki 48x64+48+128 pol_ogniki.png
 #./createtileset.sh ../../../../data/sprites/monsters/pol/malze 32x32+32+64 pol_sea_animal.png
 #./createtileset.sh ../../../../data/sprites/monsters/pol/zwierzeta 48x64+48+128 pol_zwierzeta.png
+#./createtileset.sh ../../../../data/sprites/monsters/pol/rycerze 48x64+48+128 rycerze.png
+#./createtileset.sh ../../../../data/sprites/monsters/pol/piraci 48x64+48+128 pol_piraci.png
+#./createtileset.sh ../../../../data/sprites/monsters/pol/piraci_lutin 48x64+48+128 pol_piraci_lutin.png
+./createtileset.sh ../../../../data/sprites/monsters/pol/piraci_truskull 48x64+48+128 pol_piraci_truskull.png
