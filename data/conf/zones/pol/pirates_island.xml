@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom. **
+		Please respect it!
+	-->
+
+	<!-- Ground level -->
+
+	<!-- Island W -->
+	<zone name="0_pirates_island_w" level="0" x="513184" y="1024" file="Level 0/pirates/island_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+	</zone>
+
+	<!-- Island E -->
+	<zone name="0_pirates_island_e" level="0" x="513312" y="1024" file="Level 0/pirates/island_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+	</zone>
+</zones>
