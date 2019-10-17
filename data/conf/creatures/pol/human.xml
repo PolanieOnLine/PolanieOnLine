@@ -544,14 +544,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_warrior" tileid="pol_piraci_truskull.png:0"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
+			<atk value="700"/>
 			<def value="31"/>
-			<hp value="540"/>
+			<hp value="500"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="120"/>
-		<experience value="14444"/>
+		<experience value="13310"/>
 		<respawn value="12000"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -578,14 +578,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_knight" tileid="pol_piraci_truskull.png:1"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="740"/>
+			<def value="27"/>
+			<hp value="800"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="130"/>
-		<experience value="14444"/>
+		<experience value="14150"/>
 		<respawn value="13000"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -612,14 +612,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_priest" tileid="pol_piraci_truskull.png:2"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="500"/>
+			<def value="32"/>
+			<hp value="1200"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="135"/>
-		<experience value="14444"/>
+		<experience value="11111"/>
 		<respawn value="13500"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -645,14 +645,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_commander" tileid="pol_piraci_truskull.png:3"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="800"/>
+			<def value="57"/>
+			<hp value="1100"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="140"/>
-		<experience value="14444"/>
+		<experience value="17777"/>
 		<respawn value="14000"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -680,14 +680,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_scientist" tileid="pol_piraci_truskull.png:4"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
+			<atk value="755"/>
 			<def value="31"/>
-			<hp value="540"/>
+			<hp value="1000"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="142"/>
-		<experience value="14444"/>
+		<experience value="15555"/>
 		<respawn value="14200"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -717,12 +717,12 @@
 		<attributes>
 			<atk value="790"/>
 			<def value="31"/>
-			<hp value="540"/>
+			<hp value="1500"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="147"/>
-		<experience value="14444"/>
+		<experience value="18850"/>
 		<respawn value="14700"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -745,14 +745,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_ice_warrior" tileid="pol_piraci_truskull.png:6"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="990"/>
+			<def value="42"/>
+			<hp value="1750"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="148"/>
-		<experience value="14444"/>
+		<experience value="21111"/>
 		<respawn value="14800"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -778,14 +778,15 @@
 		<type class="pol/piraci_truskull" subclass="truskull_archer" tileid="pol_piraci_truskull.png:7"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
+			<atk value="1200"/>
+			<ratk value="1200"/>
 			<def value="31"/>
-			<hp value="540"/>
+			<hp value="700"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="150"/>
-		<experience value="14444"/>
+		<experience value="23540"/>
 		<respawn value="15700"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -813,14 +814,15 @@
 		<type class="pol/piraci_truskull" subclass="truskull_armed_archer" tileid="pol_piraci_truskull.png:8"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="1400"/>
+			<ratk value="1400"/>
+			<def value="39"/>
+			<hp value="1400"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="165"/>
-		<experience value="14444"/>
+		<experience value="31450"/>
 		<respawn value="16700"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -847,14 +849,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_electro" tileid="pol_piraci_truskull.png:9"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="1800"/>
+			<def value="48"/>
+			<hp value="2000"/>
 			<speed value="0.4"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="170"/>
-		<experience value="14444"/>
+		<level value="180"/>
+		<experience value="34444"/>
 		<respawn value="17700"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -881,14 +883,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="1970"/>
+			<def value="77"/>
+			<hp value="2135"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="187"/>
-		<experience value="14444"/>
+		<experience value="37890"/>
 		<respawn value="18700"/>
 		<corpse name="humanoid"/>
 		<drops>
@@ -915,14 +917,14 @@
 		<type class="pol/piraci_truskull" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
 		<description></description>
 		<attributes>
-			<atk value="790"/>
-			<def value="31"/>
-			<hp value="540"/>
+			<atk value="2200"/>
+			<def value="21"/>
+			<hp value="2500"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="190"/>
-		<experience value="14444"/>
+		<level value="193"/>
+		<experience value="55555"/>
 		<respawn value="19700"/>
 		<corpse name="humanoid"/>
 		<drops>
