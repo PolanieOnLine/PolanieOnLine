@@ -1,5 +1,19 @@
-﻿Changelog
+Changelog
 ---------
+1.05
+Zaktualizowano do najnowszej wersji Stendhala 1.31.5
+
+*klient*
+- Dodano łącznie 22 nowych wyglądów dla nowych potworów
+- Dodano kilka nowych grafik NPC
+
+*świat gry*
+- Dodano do gry dwa nowe klany piratów (lutin oraz truskull; co daje łącznie 22 nowych potworów!)
+
+*naprawiono błędy*
+- Klient będzie ignorował błędy, które informują o braku pewnych dźwięków pogody (mgła oraz śnieg)
+
+
 1.04
 Zaktualizowano do najnowszej wersji Stendhala 1.31
 
