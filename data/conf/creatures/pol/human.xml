@@ -330,7 +330,7 @@
 		</equips>
 		<ai>
 			<says>
-				<noise state="idle follow fight" value="Precz od mojego łupu!"/>
+				<noise state="idle follow fight" value="Precz od mojego skarbu!"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -362,7 +362,7 @@
 		</equips>
 		<ai>
 			<says>
-				<noise state="idle follow fight" value="Precz od mojego łupu!"/>
+				<noise state="idle follow fight" value="Trochę rumu nie zaszkodzi!"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -395,7 +395,7 @@
 		</equips>
 		<ai>
 			<says>
-				<noise state="idle follow fight" value="Precz od mojego łupu!"/>
+				<noise state="idle follow fight" value="Arrrgh! Czas na polowanie!"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -428,7 +428,8 @@
 		</equips>
 		<ai>
 			<says>
-				<noise state="idle follow fight" value="Precz od mojego łupu!"/>
+				<noise state="idle follow fight" value="Będę chronił swój klan!"/>
+				<noise state="idle follow fight" value="Wynocha!"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -537,6 +538,413 @@
 		</ai>
 	</creature>
 	<!-- END: lutin piraci -->
+
+	<!-- START: truskull piraci -->
+	<creature name="pirat truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_warrior" tileid="pol_piraci_truskull.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="120"/>
+		<experience value="14444"/>
+		<respawn value="12000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Dostarcz nam więcej rozrywki!"/>
+				<noise state="idle follow fight" value="Możemy Cię trochę potorturować? HA! Nie będziemy się was pytać! Po prostu to zrobimy!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kwatermistrz truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_knight" tileid="pol_piraci_truskull.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="130"/>
+		<experience value="14444"/>
+		<respawn value="13000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Chętnie sobie wezmę kilka z twoich cudownych uzbrojeń!"/>
+				<noise state="idle follow fight" value="Masz coś co może mnie zainteresować... To sobię wezmę!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kapłan truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_priest" tileid="pol_piraci_truskull.png:2"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="135"/>
+		<experience value="14444"/>
+		<respawn value="13500"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Dostarcz nam więcej rozrywki!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="komandor truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_commander" tileid="pol_piraci_truskull.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="140"/>
+		<experience value="14444"/>
+		<respawn value="14000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ci śmieszni lutinowie myślą, że nas pokonają?! HAHA!"/>
+				<noise state="idle follow fight" value="Strach przed nami to normalność!"/>
+				<noise state="idle follow fight" value="My zawsze walczymy za swe skarby!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="naukowiec truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_scientist" tileid="pol_piraci_truskull.png:4"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="142"/>
+		<experience value="14444"/>
+		<respawn value="14200"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Chętnie przyjrzę się Tobie bliżej..."/>
+				<noise state="idle follow fight" value="Bliżej.. bliżej!"/>
+				<noise state="idle follow fight" value="Wykorzystałbym Cię do moich eksperymentów, ale... niestety... masz szczęście!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="mutant truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_mutant" tileid="pol_piraci_truskull.png:5"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="147"/>
+		<experience value="14444"/>
+		<respawn value="14700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="lodowy pirat truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_ice_warrior" tileid="pol_piraci_truskull.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="148"/>
+		<experience value="14444"/>
+		<respawn value="14800"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Arrrgh! Zakneblowałbym ci te parszywe usta..."/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	
+	<creature name="łucznik truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_archer" tileid="pol_piraci_truskull.png:7"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="150"/>
+		<experience value="14444"/>
+		<respawn value="15700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Przetestujemy na Tobie moje nowe zatrute strzały?"/>
+				<noise state="idle follow fight" value="Mój... mój.. łuk jest najdroższym skarbem!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="elitarny łucznik truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_armed_archer" tileid="pol_piraci_truskull.png:8"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="165"/>
+		<experience value="14444"/>
+		<respawn value="16700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Mą profesją jest strzelanie do wszystkiego co się rusza! HAHAHA!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarnoksiężnik truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_electro" tileid="pol_piraci_truskull.png:9"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="170"/>
+		<experience value="14444"/>
+		<respawn value="17700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Moja moc przewyższa nawet serafina!"/>
+				<noise state="idle follow fight" value="Na twoim miejscu bym się już więcej nie zbliżał!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="upadły duch truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="187"/>
+		<experience value="14444"/>
+		<respawn value="18700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Mogę pożyczyć twoje ciało?"/>
+				<noise state="idle follow fight" value="Chętnie przejąłbym nad tobą kontrolę!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="lord truskull">
+		<type class="pol/piraci_truskull" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
+		<description></description>
+		<attributes>
+			<atk value="790"/>
+			<def value="31"/>
+			<hp value="540"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="190"/>
+		<experience value="14444"/>
+		<respawn value="19700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
+			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Chcesz poczuć największą siłę na tym świecie?"/>
+				<noise state="idle follow fight" value="Jasne... uciekaj ode mnie szczurze!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: truskull piraci -->
 
 	<!-- START: magowie -->
 	<creature name="Baba Dżaga">
