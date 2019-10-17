@@ -240,7 +240,7 @@
 			<atk value="480"/>
 			<def value="47"/>
 			<hp value="600"/>
-			<speed value="0.6"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="71"/>
@@ -305,7 +305,7 @@
 			<atk value="600"/>
 			<def value="70"/>
 			<hp value="750"/>
-			<speed value="0.5"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="85"/>
@@ -437,7 +437,7 @@
 			<atk value="670"/>
 			<def value="81"/>
 			<hp value="600"/>
-			<speed value="0.4"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="91"/>
@@ -459,7 +459,6 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
-			<profile name="patrolling"/>
 		</ai>
 	</creature>
 
@@ -470,7 +469,7 @@
 			<atk value="790"/>
 			<def value="60"/>
 			<hp value="850"/>
-			<speed value="0.7"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="100"/>
@@ -502,7 +501,7 @@
 			<atk value="800"/>
 			<def value="36"/>
 			<hp value="500"/>
-			<speed value="0.4"/>
+			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="110"/>
@@ -535,7 +534,7 @@
 			<atk value="790"/>
 			<def value="31"/>
 			<hp value="540"/>
-			<speed value="0.6"/>
+			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="107"/>
@@ -572,7 +571,7 @@
 			<atk value="700"/>
 			<def value="31"/>
 			<hp value="500"/>
-			<speed value="0.8"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="120"/>
@@ -606,7 +605,7 @@
 			<atk value="740"/>
 			<def value="27"/>
 			<hp value="800"/>
-			<speed value="0.8"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="130"/>
@@ -640,7 +639,7 @@
 			<atk value="500"/>
 			<def value="32"/>
 			<hp value="1200"/>
-			<speed value="0.6"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="135"/>
@@ -708,7 +707,7 @@
 			<atk value="755"/>
 			<def value="31"/>
 			<hp value="1000"/>
-			<speed value="0.8"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="142"/>
@@ -743,7 +742,7 @@
 			<atk value="790"/>
 			<def value="31"/>
 			<hp value="1500"/>
-			<speed value="0.6"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="147"/>
@@ -773,7 +772,7 @@
 			<atk value="990"/>
 			<def value="42"/>
 			<hp value="1750"/>
-			<speed value="0.8"/>
+			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="148"/>
@@ -807,7 +806,7 @@
 			<ratk value="1200"/>
 			<def value="31"/>
 			<hp value="700"/>
-			<speed value="0.6"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="150"/>
@@ -845,7 +844,7 @@
 			<ratk value="1400"/>
 			<def value="39"/>
 			<hp value="1400"/>
-			<speed value="0.5"/>
+			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="165"/>
@@ -883,7 +882,7 @@
 			<ratk value="1800"/>
 			<def value="48"/>
 			<hp value="2000"/>
-			<speed value="0.4"/>
+			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="180"/>
@@ -954,7 +953,7 @@
 			<atk value="2200"/>
 			<def value="21"/>
 			<hp value="2500"/>
-			<speed value="0.9"/>
+			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="193"/>
