@@ -1380,11 +1380,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-	<!-- END: rycerze -->
 
-	<!-- START: rycerze jazda -->
 	<creature name="rycerz na białym koniu">
-		<type class="pol/rycerze_jazda" subclass="rycerz_na_bialym_koniu" tileid="pol_rycerze_jazda.png:0"/>
+		<type class="pol/rycerze" subclass="straznik_na_koniu" tileid="pol_rycerze.png:8"/>
 		<description/>
 		<attributes>
 			<atk value="1374"/>
@@ -1414,5 +1412,5 @@
 			<profile name="attack weakest"/>
 		</ai>
 	</creature>
-	<!-- END: rycerze jazda -->
+	<!-- END: rycerze -->
 </creatures>
