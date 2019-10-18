@@ -4,13 +4,13 @@ Changelog
 Zaktualizowano do najnowszej wersji Stendhala 1.31.5
 
 *klient*
-- Dodano łącznie 22 grafiki dla nowych potworów
+- Dodano łącznie 22 grafiki dla nowych potworów + odświeżono wygląd ptaka dodo
 - Dodano kilka nowych grafik NPC
 - Dodano kilka nowych dźwięków
 
 *świat gry*
 - Dodano do gry dwa nowe klany piratów (lutin oraz truskull; co daje łącznie 22 nowych potworów!)
-- Dodano wyspę piratów lutinów
+- Dodano wyspę piratów lutinów (od 71 do 110 poziomu (przedział levelowy lutinów)) oraz podziemia należące do truskull (od 120 do 193 poziomu (przedział levelowy truskull))
 - Piraci wykrzykują swe monologi
 
 *naprawiono błędy*
