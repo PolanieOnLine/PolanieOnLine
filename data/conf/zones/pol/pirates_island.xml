@@ -13,6 +13,10 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
+
+		<portal x="58" y="48" ref="sk_entrance">
+			<destination zone="int_pirates_island_treasury" ref="sk_exit"/>
+		</portal>
 	</zone>
 
 	<!-- Island E -->
@@ -20,5 +24,21 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
+	</zone>
+	
+	<!-- interiors -->
+
+	<!-- skarbiec -->
+	<zone name="int_pirates_island_treasury" file="interiors/pirates/skarbiec.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<portal x="36" y="1" ref="sk_exit">
+			<destination zone="0_pirates_island_w" ref="sk_entrance"/>
+		</portal>
+		<portal x="37" y="1" ref="sk_exit">
+			<destination zone="0_pirates_island_w" ref="sk_entrance"/>
+		</portal>
 	</zone>
 </zones>
