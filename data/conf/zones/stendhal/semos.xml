@@ -265,6 +265,107 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="text">Wejście tylko dla pracowników kopalni.</attribute>
 		</entity>
 
+		<!-- START MINE TOWN WEEKS -->
+		<!-- Scrying orbs -->
+		<entity x="46" y="107" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.useable.ViewChangeEntity">
+			<parameter name="x">35</parameter>
+			<parameter name="y">115</parameter>
+		  </implementation>
+		</entity>
+		<entity x="46" y="113" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.useable.ViewChangeEntity">
+			<parameter name="x">35</parameter>
+			<parameter name="y">115</parameter>
+		  </implementation>
+		</entity>
+		<entity x="46" y="120" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.useable.ViewChangeEntity">
+			<parameter name="x">35</parameter>
+			<parameter name="y">115</parameter>
+		  </implementation>
+		</entity>
+
+		<!-- writing on the wooden arch MINE TOWN WEEKS -->
+		<entity x="94" y="118" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+		  <attribute name="text">Witamy na wydarzeniu Mine Town Revival!</attribute>
+		  <attribute name="class">transparent</attribute>
+		  <attribute name="resistance">0</attribute>
+		</entity>
+
+		<!-- writing on the wooden arch MINE TOWN WEEKS -->
+		<entity x="95" y="119" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+		  <attribute name="text">Witamy na wydarzeniu Mine Town Revival!</attribute>
+		  <attribute name="class">transparent</attribute>
+		  <attribute name="resistance">0</attribute>
+		</entity>
+
+		<!-- writing on the wooden arch MINE TOWN WEEKS -->
+		<entity x="96" y="119" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+		  <attribute name="text">Witamy na wydarzeniu Mine Town Revival!</attribute>
+		  <attribute name="class">transparent</attribute>
+		  <attribute name="resistance">0</attribute>
+		</entity>
+
+		<!-- Caroline Shop signs for MINE TOWN WEEKS -->
+		<entity x="60" y="105" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+			<parameter name="shop">sellrevivalweeks</parameter>
+			<parameter name="title">Przekąski oraz napoje Caroline'y (sprzedaje)parameter>
+			<parameter name="seller">true</parameter>
+			<parameter name="caption">Caroline'a sprzedaje przekąski oraz napoje podczas trwania tygodniowego wydarzenia Mine Town Revival.</parameter>
+		  </implementation>
+		  <attribute name="class">blackboard</attribute>
+		</entity>
+
+		<entity x="55" y="105" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+			<parameter name="shop">sellrevivalweeks</parameter>
+			<parameter name="title">Przekąski oraz napoje Caroline'y (sprzedaje)</parameter>
+			<parameter name="seller">true</parameter>
+			<parameter name="caption">Caroline'a sprzedaje przekąski oraz napoje podczas trwania tygodniowego wydarzenia Mine Town Revival.</parameter>
+		  </implementation>
+		  <attribute name="class">blackboard</attribute>
+		</entity>
+
+		<!-- Tables during Mine Town -->
+		<entity x="55" y="110" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+		  <attribute name="description">Widzisz ładny, czysty stolik, przy którym możesz odpocząć z napojem.</attribute>
+		  <attribute name="width">4</attribute>
+		  <attribute name="height">2</attribute>
+		</entity>
+
+		<entity x="61" y="110" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+		  <attribute name="description">Widzisz ładny, czysty stolik, przy którym możesz odpocząć z napojem.</attribute>
+		  <attribute name="width">4</attribute>
+		  <attribute name="height">2</attribute>
+		</entity>
+
+		<entity x="67" y="110" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+		  <attribute name="description">Widzisz ładny, czysty stolik, przy którym możesz odpocząć z napojem.</attribute>
+		  <attribute name="width">4</attribute>
+		  <attribute name="height">2</attribute>
+		</entity>
+
+		<!-- Square tables -->
+		<entity x="56" y="117" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+		  <attribute name="description">Widzisz stolik, gdzie ustawione są napoje oraz jedzenie.</attribute>
+		  <attribute name="width">2</attribute>
+		</entity>
+
+		<entity x="62" y="117" condition="stendhal.minetown">
+		  <implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+		  <attribute name="description">Widzisz stolik, gdzie ustawione są napoje oraz jedzenie.</attribute>
+		  <attribute name="width">2</attribute>
+		</entity>
+		<!-- ENDMINE TOWN WEEKS -->
 	</zone>
 
 	<zone name="int_semos_frank_house" file="interiors/semos/frank_house.tmx">
