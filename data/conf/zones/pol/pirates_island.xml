@@ -71,6 +71,10 @@
 		<portal x="58" y="48" ref="sk_entrance">
 			<destination zone="int_pirates_island_treasury" ref="sk_exit"/>
 		</portal>
+
+		<portal x="116" y="44" ref="cave_entrance">
+			<destination zone="-1_pirates_island_cave_w" ref="cave_exit"/>
+		</portal>
 	</zone>
 
 	<!-- Island E -->
@@ -78,6 +82,42 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
+
+		<portal x="93" y="47" ref="cave1_entrance">
+			<destination zone="-1_pirates_island_cave_e" ref="cave1_exit"/>
+		</portal>
+
+		<portal x="86" y="78" ref="cave2_entrance">
+			<destination zone="-1_pirates_island_cave_e" ref="cave2_exit"/>
+		</portal>
+	</zone>
+
+	<!-- Level -1 -->
+
+	<!-- Cave W -->
+	<zone name="-1_pirates_island_cave_w" level="-1" x="513184" y="1024" file="Level -1/pirates/cave_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<portal x="113" y="17" ref="cave_exit">
+			<destination zone="0_pirates_island_w" ref="cave_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Cave E -->
+	<zone name="-1_pirates_island_cave_e" level="-1" x="513312" y="1024" file="Level -1/pirates/cave_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<portal x="83" y="13" ref="cave1_exit">
+			<destination zone="0_pirates_island_e" ref="cave1_entrance"/>
+		</portal>
+
+		<portal x="78" y="109" ref="cave2_exit">
+			<destination zone="0_pirates_island_e" ref="cave2_entrance"/>
+		</portal>
 	</zone>
 
 	<!-- interiors -->
