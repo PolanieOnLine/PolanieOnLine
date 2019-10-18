@@ -2,6 +2,62 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<item name="płaszcz truskull">
+		<type class="cloak" subclass="truskull_cloak" tileid="-1"/>
+		<description>Oto piracki płaszcz bractwa truskull.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="16"/>
+		</attributes>
+		<weight value="5.0"/>
+		<value value="40824"/>
+		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+	
+	<item name="płaszcz lutinów">
+		<type class="cloak" subclass="lutin_cloak" tileid="-1"/>
+		<description>Oto piracki płaszcz bractwa lutinów.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="10"/>
+		</attributes>
+		<weight value="5.0"/>
+		<value value="40824"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="peleryna piracka">
+		<type class="cloak" subclass="pirate_cloak" tileid="-1"/>
+		<description>Oto peleryna piracka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="3"/>
+		</attributes>
+		<weight value="5.0"/>
+		<value value="40824"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="czarny płaszcz">
 		<type class="cloak" subclass="black_cloak" tileid="-1"/>
 		<description>Oto czarny płaszcz. Ostatni właściciel miał złe myśli. A jakie masz ty?</description>
