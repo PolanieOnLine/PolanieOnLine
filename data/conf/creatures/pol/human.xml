@@ -27,6 +27,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Arrrrgghh!"/>
+				<sound value="pol-pirate-arr"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -59,6 +60,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Arrgh! Co się szwendasz jak szczur na pokładzie?"/>
+				<sound value="pol-pirate-aww03"/>
+				<sound value="pol-pirate-arr"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -90,6 +93,8 @@
 			<says>
 				<noise state="idle follow fight" value="Ahoj!"/>
 				<noise state="idle follow fight" value="Mam ochotę zakotwiczyć w Twojej lagunie!"/>
+				<sound value="pol-pirate-aww02"/>
+				<sound value="pol-pirate-laugh"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -124,6 +129,8 @@
 				<noise state="idle follow fight" value="Argh!"/>
 				<noise state="idle follow fight" value="Arrrghh! Potnę Cię moją szablą!"/>
 				<noise state="idle follow fight" value="Chodź i obejrzyj me miecze!"/>
+				<sound value="pol-pirate-aww01"/>
+				<sound value="pol-pirate-laugh"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -156,6 +163,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Ahoj! Morskie podróże są wspaniałe!"/>
+				<sound value="pol-pirate-aww03"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -191,6 +199,7 @@
 				<noise state="idle follow fight" value="Arrrgh! Przygotować się do abordażu!"/>
 				<noise state="idle follow fight" value="Czekam aż we mnie wystrzelisz!"/>
 				<noise state="idle follow fight" value="Nie masz nic naprzeciwko, że strzelę w ciebie z armaty?"/>
+				<sound value="pol-pirate-arr"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -224,6 +233,10 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<sound value="pol-pirate-laught"/>
+				<sound value="pol-pirate-arr"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -258,6 +271,7 @@
 			<says>
 				<noise state="idle follow fight" value="Aye, aye kapitanie!"/>
 				<noise state="idle follow fight" value="Johoho i butelka rumu!"/>
+				<sound value="pol-pirate-arr"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -322,6 +336,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Przygotuj się do spaceru po desce..."/>
+				<sound value="pol-pirate-laught"/>
+				<sound value="pol-pirate-arr"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -356,6 +372,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Precz od mojego skarbu!"/>
+				<sound value="pol-pirate-aww02"/>
+				<sound value="pol-pirate-laught"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -393,6 +411,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Trochę rumu nie zaszkodzi!"/>
+				<sound value="pol-pirate-aww02"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -430,6 +449,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Arrrgh! Czas na polowanie!"/>
+				<sound value="pol-pirate-aww01"/>
+				<sound value="pol-pirate-arr"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -463,6 +484,7 @@
 			<says>
 				<noise state="idle follow fight" value="Będę chronił swój skarb!"/>
 				<noise state="idle follow fight" value="Wynocha!"/>
+				<sound value="pol-pirate-aww03"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -494,6 +516,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Precz od mojego łupu!"/>
+				<sound value="pol-pirate-arr"/>
+				<sound value="pol-pirate-aww01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -528,6 +552,8 @@
 			<says>
 				<noise state="idle follow fight" value="Nie wtrącaj się w pirackie interesy. Nasz statek i kogo na nim trzymamy to nasza sprawa!"/>
 				<noise state="idle follow fight" value="Ciii zachowaj ten sekret dla siebie o więźniach na naszym statku..."/>
+				<sound value="pol-pirate-aww01"/>
+				<sound value="pol-pirate-laugh"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -563,6 +589,7 @@
 				<noise state="idle follow fight" value="Milcz, albo zamknę cię na moim statku tak jak zamknąłem dziewczynkę Susi!"/>
 				<noise state="idle follow fight" value="Przypominasz mi dziewczynkę z Ados, którą porwaliśmy, aby wyszorowała nam nasz statek!"/>
 				<noise state="idle follow fight" value="Mógłabyś godnie zastąpić dziewczynkę Susi na naszym statku..."/>
+				<sound value="pol-pirate-laugh"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
