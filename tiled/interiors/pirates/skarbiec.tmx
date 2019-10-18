@@ -108,7 +108,7 @@
  </layer>
  <layer id="9" name="blend_ground" width="53" height="25" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu2Wxw4DIQxE98fTeza9/G/mws3BDS9C4klztDwag2EYZMygObSAltBKWFcLid81tIG20A7aK+s9vS3k/CYO0BE6QWdoVNZ7elvI+U1coCt0g+7QQ1nv6W0h5zfxhF7QG/pAX2W9p7eFnN/oem9vDTX3XM29EeWt5t6I8kb1pvLRZlbi7lpzoXpT+WgzK3F3rblQval8tJlxc5XMveROo/LRZsbNNeoe/4PKR5sZN9eo9z8Sbq5R778E6xvBzTXi/Zd6nfrce5B6bencS73WPPdapF6n/Pd6aclrp9Nplx9SOJrvtBQAAA==
+   H4sIAAAAAAAACu2WSQ7DIBAE/fHszp44+3/TF24TZmOMHFFSHdG0GgzuusY/MYNzuIBLuKqahkeSdw03sIdbuFOu98y2kMub2MMDPMITPCvXe2ZbyOVNXOAVDvAG78r1ntkWcnkTD/iEL/iGH+V6z2wLubzR672zNdS852reG1HZat4bUdmo2VQ/2s5KfLvWXqjZVD/azkp8u9ZeqNlUP9rOuH2V7HvJO43qR9sZt69R3/EvqH60nXH7GvX+R8Lta9T7L8H6RnD7GvH+S7OOfe49SLNO6dxLs9Y891qkWcf87/UypayNBsUXuLjYYbQUAAA=
   </data>
  </layer>
  <layer id="10" name="blend_roof" width="53" height="25" visible="0">

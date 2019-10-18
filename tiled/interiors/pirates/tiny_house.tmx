@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="wooden" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/furniture/table/wooden.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="3" name="wooden" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/furniture/chair/wooden.png" width="160" height="32"/>
+ </tileset>
+ <tileset firstgid="8" name="pot_on_stone" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/item/pot/pot_on_stone.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="9" name="notes" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/documents/notes.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="13" name="rack" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/furniture/shelve/rack.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="21" name="small_shelf" tilewidth="32" tileheight="32" tilecount="8" columns="2">
+  <image source="../../tileset/furniture/shelve/small_shelf.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="29" name="int_plazy" tilewidth="32" tileheight="32" tilecount="27" columns="3">
+  <image source="../../tileset/pol/waly/int_plazy.png" width="96" height="288"/>
+ </tileset>
+ <tileset firstgid="56" name="door_drewno_int" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/pol/domki/drzwi/door_drewno_int.png" width="160" height="96"/>
+ </tileset>
+ <tileset firstgid="71" name="kafelki_rozne" tilewidth="32" tileheight="32" tilecount="80" columns="16">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png" width="512" height="160"/>
+ </tileset>
+ <tileset firstgid="151" name="pol_piraci_lutin" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/creature/pol_piraci_lutin.png" width="256" height="64"/>
+ </tileset>
+ <tileset firstgid="167" name="door_s.png" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/building/door/door_s.png" width="96" height="64"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="8" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACgtkYGAIHMEYAJ2p4hQAAQAA
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="8" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACpNlYGCQw4HlgVgBiNWAWB0NawCxElReE4g5GCCABUpro8mDADsQM+GRRwakyOsAsS4a1oPKKwOxCg6sCsQAuXJ+7QABAAA=
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="8" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNggABOKC0OxDwMmIAbiLmwiOMDfEDMi0deCIgFSTQTFxAD4uVAvAKIV+JQswqIVwPxGiQxANL7U7UAAQAA
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="8" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGNkAAFiFlg0AAQAA
+  </data>
+ </layer>
+ <layer id="5" name="objects" width="8" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgoC5YgEN8PglmzKOCO4gFAGhWAh4AAQAA
+  </data>
+ </layer>
+ <layer id="6" name="collision" width="8" height="8" opacity="0.43">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNkYGBgpBJGBrjkGAnIE9KPSx5ZHSluBgAOvrdfAAEAAA==
+  </data>
+ </layer>
+ <layer id="7" name="protection" width="8" height="8">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGNkAAFiFlg0AAQAA
+  </data>
+ </layer>
+</map>
