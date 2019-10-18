@@ -347,6 +347,8 @@
 		<drops>
 			<item value="money" quantity="[40,75]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
+			<item value="eliksir" quantity="[1,3]" probability="10.0"/>
+			<item value="szafir" quantity="[1,1]" probability="5.0"/>
 			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
@@ -377,9 +379,14 @@
 		<respawn value="8900"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[40,75]" probability="80.0"/>
+			<item value="money" quantity="[80,220]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
-			<item value="sztabka złota" quantity="[1,4]" probability="5.0"/>
+			<item value="makrela" quantity="[1,4]" probability="20.0"/>
+			<item value="pstrąg" quantity="[1,3]" probability="20.0"/>
+			<item value="kapusta pekińska" quantity="[2,6]" probability="17.0"/>
+			<item value="czosnek" quantity="[1,6]" probability="12.0"/>
+			<item value="leżakowana nalewka litworowa" quantity="[1,2]" probability="2.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[2,4]" probability="15.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -396,7 +403,7 @@
 
 	<creature name="lutin łucznik">
 		<type class="pol/piraci_lutin" subclass="lutin_bowman" tileid="pol_piraci_lutin.png:5"/>
-		<description>Oto lutin łucznik. Uważaj na jego strzały! Prawdopodobnie wykorzystuje truciznę na swych grotach od strzał...</description>
+		<description>Oto lutin łucznik. Uważaj na jego strzały! Prawdopodobnie wykorzystuje truciznę na swych grotach...</description>
 		<attributes>
 			<atk value="650"/>
 			<ratk value="650"/>
@@ -412,7 +419,9 @@
 		<drops>
 			<item value="money" quantity="[40,75]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
-			<item value="sztabka złota" quantity="[1,4]" probability="5.0"/>
+			<item value="sztabka złota" quantity="[1,2]" probability="5.0"/>
+			<item value="strzała płonąca" quantity="[2,21]" probability="12.5"/>
+			<item value="śmiertelna trucizna" quantity="[1,1]" probability="1.5"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
@@ -447,7 +456,6 @@
 		<drops>
 			<item value="money" quantity="[40,75]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
-			<item value="sztabka złota" quantity="[1,4]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -477,9 +485,9 @@
 		<respawn value="10000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[40,75]" probability="80.0"/>
+			<item value="money" quantity="[90,215]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
-			<item value="sztabka złota" quantity="[1,4]" probability="5.0"/>
+			<item value="rubin" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -496,12 +504,12 @@
 
 	<creature name="diabelski pirat">
 		<type class="pol/piraci_lutin" subclass="lutin_demon" tileid="pol_piraci_lutin.png:8"/>
-		<description></description>
+		<description>Oto diabelski pirat. Nawet wśród swych kompanów niesie grozę oraz strach... Nie chciałbyś wiedzieć co robi uwiezionym na statku...</description>
 		<attributes>
 			<atk value="800"/>
 			<def value="36"/>
 			<hp value="500"/>
-			<speed value="0.7"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="110"/>
@@ -509,8 +517,9 @@
 		<respawn value="11000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[40,155]" probability="80.0"/>
-			<item value="żelazo" quantity="[1,3]" probability="5.0"/>
+			<item value="money" quantity="[80,355]" probability="80.0"/>
+			<item value="sztabka złota" quantity="[2,3]" probability="5.0"/>
+			<item value="żelazo" quantity="[2,6]" probability="7.0"/>
 			<item value="obsydian" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
@@ -523,13 +532,12 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
-			<profile name="patrolling"/>
 		</ai>
 	</creature>
 
 	<creature name="lider piratów">
 		<type class="pol/piraci_lutin" subclass="lutin_lider" tileid="pol_piraci_lutin.png:9"/>
-		<description></description>
+		<description>Oto lider piratów. Jest jednym z najbardziej docenianych piratów z klanu lutinów. Nie chcesz go spotkać na swej drodze...</description>
 		<attributes>
 			<atk value="790"/>
 			<def value="31"/>
@@ -542,10 +550,11 @@
 		<respawn value="10700"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[40,155]" probability="80.0"/>
+			<item value="money" quantity="[80,455]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
-			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
-			<item value="tarta" quantity="[1,1]" probability="5.0"/>
+			<item value="sztabka złota" quantity="[2,5]" probability="5.5"/>
+			<item value="rubin" quantity="[1,3]" probability="1.75"/>
+			<item value="tarta" quantity="[2,6]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
