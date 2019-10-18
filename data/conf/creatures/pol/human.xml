@@ -441,7 +441,7 @@
 
 	<creature name="lutin ochroniaż">
 		<type class="pol/piraci_lutin" subclass="lutin_guard" tileid="pol_piraci_lutin.png:6"/>
-		<description>Oto lutin ochroniaż. Za wszelką cenę będzie chronił swój klan!</description>
+		<description>Oto lutin ochroniaż. Za wszelką cenę będzie chronił swój skarb!</description>
 		<attributes>
 			<atk value="670"/>
 			<def value="81"/>
@@ -461,7 +461,7 @@
 		</equips>
 		<ai>
 			<says>
-				<noise state="idle follow fight" value="Będę chronił swój klan!"/>
+				<noise state="idle follow fight" value="Będę chronił swój skarb!"/>
 				<noise state="idle follow fight" value="Wynocha!"/>
 			</says>
 			<profile name="brave"/>
