@@ -9,13 +9,17 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31.5
 - Dodano kilka nowych dźwięków
 
 *świat gry*
+- Dodano kilku nowych NPC
 - Dodano do gry dwa nowe bractwa piratów (lutin oraz truskull; co daje łącznie 22 nowych potworów!)
 - Dodano wyspę piratów lutinów (od 71 do 110 poziomu (przedział levelowy lutinów)) oraz podziemia należące do truskull (od 120 do 193 poziomu (przedział levelowy truskull))
 - Dodano trzy nowe płaszcze dla każdego z pirackich bractw
+- Dodano możliwość dopłynięcia promem na piracką wyspę (z Gdańska)
+- Dodano warunki pogodowe w nadmorskiej krainie
 - Piraci wykrzykują swe monologi
 
 *naprawiono błędy*
 - Klient będzie ignorował błędy, które informują o braku pewnych dźwięków pogody (mgła oraz śnieg)
+- Poprawiono kolizję statku płynącego z Gdańska do Warszawy (i na odwrót)
 
 
 1.04
