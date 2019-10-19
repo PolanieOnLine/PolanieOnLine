@@ -110,6 +110,10 @@ public class TeleporterBehaviour implements TurnListener {
 			zones.add(world.getZone("0_semos_plains_ne"));
 			zones.add(world.getZone("0_semos_road_e"));
 			zones.add(world.getZone("0_semos_plains_s"));
+			zones.add(world.getZone("0_zakopane_s"));
+			zones.add(world.getZone("0_zakopane_se"));
+			zones.add(world.getZone("0_zakopane_c"));
+			zones.add(world.getZone("0_zakopane_e"));
 		}
 	}
 
@@ -129,6 +133,11 @@ public class TeleporterBehaviour implements TurnListener {
 		badZones.add("0_fado_forest_se");
 		badZones.add("0_fado_forest_s_e2");
 		badZones.add("0_semos_mountain_n_w4");
+		badZones.add("0_zakopane_nw");
+		badZones.add("0_zakopane_ne");
+		badZones.add("0_zakopane_n");
+		badZones.add("0_zakopane_w");
+		badZones.add("0_tatry_kuznice");
 		// the following have historically been very hard to find a path in
 		badZones.add("0_ados_city_n");
 		badZones.add("0_ados_ocean_e");
