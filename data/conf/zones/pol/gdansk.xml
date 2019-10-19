@@ -15,6 +15,7 @@
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska3NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 		<entity y="108" x="67">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -69,6 +70,7 @@
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska4NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 
 		<entity x="41" y="125">
@@ -162,6 +164,7 @@
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.FlowerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 
 		<entity x="28" y="77">
@@ -208,6 +211,7 @@
 	<zone name="0_gdansk_forest_w" level="0" x="513056" y="17152" file="Level 0/gdansk/forest_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 
 		<portal x="114" y="4" ref="ab_cottage_entrance">
@@ -231,6 +235,7 @@
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.SheepSellerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
@@ -238,6 +243,7 @@
 	<zone name="0_gdansk_forest_e" level="0" x="513312" y="17152" file="Level 0/gdansk/forest_e.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
@@ -245,6 +251,7 @@
 	<zone name="0_gdansk_forest_sw" level="0" x="513056" y="17280" file="Level 0/gdansk/forest_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 
 		<portal x="16" y="75" ref="cave_entrance">
@@ -256,6 +263,7 @@
 	<zone name="0_gdansk_forest_s" level="0" x="513184" y="17280" file="Level 0/gdansk/forest_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
@@ -263,6 +271,7 @@
 	<zone name="0_gdansk_forest_se" level="0" x="513312" y="17280" file="Level 0/gdansk/forest_se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
@@ -270,6 +279,7 @@
 	<zone name="0_gdansk_forest_s2_w" level="0" x="513056" y="17408" file="Level 0/gdansk/forest_s2_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
@@ -277,6 +287,7 @@
 	<zone name="0_gdansk_road_n" level="0" x="513184" y="17408" file="Level 0/gdansk/road_n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
@@ -284,22 +295,50 @@
 	<zone name="0_gdansk_road_s" level="0" x="513184" y="17536" file="Level 0/gdansk/road_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
 	<!-- Ship -->
 	<zone name="int_gdansk_ship" file="interiors/gdansk/gdansk_ship.tmx">
-		<attributes>
-			<parameter name="color_method">time</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.gdansk.ship.CoastConveyerNPC"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.ship.CaptainNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		
+		<entity x="23" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">water-2</parameter>
+				<parameter name="radius">40</parameter>
+				<parameter name="volume">100</parameter>
+			</implementation>
+		</entity>
+		<entity x="30" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-3</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">8</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wave-11</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">15</parameter>
+				<parameter name="radius">8</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- Level -1 -->
 	<zone name="-1_gdansk_cave_sw" level="-1" x="513056" y="17280" file="Level -1/gdansk/cave_sw.tmx">
 		<attributes>
-			<parameter name="color_method">time</parameter>
+			<parameter name="color_method">dark</parameter>
 		</attributes>
 
 		<portal x="18" y="109" ref="cavehut_entrance">
@@ -313,13 +352,13 @@
 
 	<zone name="-1_gdansk_cave_s" level="-1" x="513184" y="17280" file="Level -1/gdansk/cave_s.tmx">
 		<attributes>
-			<parameter name="color_method">time</parameter>
+			<parameter name="color_method">dark</parameter>
 		</attributes>
 	</zone>
 
 	<zone name="-1_gdansk_cave_se" level="-1" x="513312" y="17280" file="Level -1/gdansk/cave_se.tmx">
 		<attributes>
-			<parameter name="color_method">time</parameter>
+			<parameter name="color_method">dark</parameter>
 		</attributes>
 	</zone>
 	
