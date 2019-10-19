@@ -62,7 +62,7 @@ public class HealerNPC implements ZoneConfigurator {
 		npc.setPosition(5, 46);
 		npc.setDescription("Widzisz przyjazną Carmen. Wygląda ona na kogoś, kogo możesz poprosić o pomoc.");
 		npc.setEntityClass("welcomernpc");
-		npc.setSounds(Arrays.asList("giggle-1", "giggle-2"));
+		npc.setSounds(Arrays.asList("giggle-1", "giggle-2", "giggle-female-01", "giggle-female-02"));
 		zone.add(npc);
 	}
 

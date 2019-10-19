@@ -12,6 +12,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.village;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,12 +30,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class SheepSellerNPC implements ZoneConfigurator {
 
@@ -113,7 +113,7 @@ public class SheepSellerNPC implements ZoneConfigurator {
 		npc.setDescription("Nishiya patroluje ścieżki szukając owiec. Możesz kupić jedną od niego.");
 		npc.setPosition(33, 44);
 		npc.initHP(100);
-		npc.setSounds(Arrays.asList("cough-11", "cough-2", "cough-3"));
+		npc.setSounds(Arrays.asList("cough-male-01", "cough-male-02", "cough-male-03"));
 		zone.add(npc);
 	}
 }

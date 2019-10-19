@@ -12,6 +12,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.actions.admin.AdministrationAction;
@@ -26,11 +31,6 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.StoreMessageAction;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A crazy old man (original name: Diogenes) who walks around the city.
@@ -106,7 +106,7 @@ public class RetireeNPC implements ZoneConfigurator {
 		npc.setPosition(24, 43);
 		npc.setEntityClass("beggarnpc");
 		npc.setDescription("Diogenes jest starszym mężczyzną, ale żwawym jak na swój wiek. Wygląda na przyjaznego i pomocnego.");
-		npc.setSounds(Arrays.asList("laugh-1", "laugh-2"));
+		npc.setSounds(Arrays.asList("laugh-old-man-01", "laugh-old-man-02"));
 		zone.add(npc);
 	}
 

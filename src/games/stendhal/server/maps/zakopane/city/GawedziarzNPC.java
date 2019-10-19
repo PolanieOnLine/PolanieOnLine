@@ -14,6 +14,12 @@
 
 package games.stendhal.server.maps.zakopane.city;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -29,12 +35,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Experienced warrior knowing a lot about creatures (location zakopane_s).
@@ -295,6 +295,7 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 		npc.setPosition(35, 46);
 		npc.setEntityClass("npcstaryprzewodnik");
 		npc.setDescription("Oto Sabała, góral podhalański, honorowy przewodnik tatrzański, muzykant, swietny myśliwy, gawędziarz i pieśniarz.");
+		npc.setSounds("laugh-02");
 		zone.add(npc);
 	}
 

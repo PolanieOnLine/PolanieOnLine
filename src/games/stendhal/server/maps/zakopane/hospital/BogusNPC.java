@@ -13,6 +13,7 @@
 // Base on ../games/stendhal/server/maps/ados/barracks/BuyerNPC.java
 package games.stendhal.server.maps.zakopane.hospital;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,7 @@ public class BogusNPC implements ZoneConfigurator {
 		npc.setDescription("Oto Boguś wyglądający na uczciwego.");
 		npc.setEntityClass("npcjuhasboguslaw");
 		npc.setPosition(4, 4);
+		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);
 	}
 }

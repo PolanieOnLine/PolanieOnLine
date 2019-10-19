@@ -19,6 +19,7 @@
 	 
 package games.stendhal.server.maps.zakopane.city;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,7 @@ public class FryderykNPC implements ZoneConfigurator {
 		npc.setEntityClass("npcfryderyk"); /* was: paulnpc */
 		npc.setPosition(21, 8);
 		npc.initHP(1000);
+		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-male-01"));
 		zone.add(npc);
 	}
 }

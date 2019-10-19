@@ -12,15 +12,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.home;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class AdasNPC implements ZoneConfigurator {
 	/**
@@ -62,6 +63,7 @@ public class AdasNPC implements ZoneConfigurator {
 		npc.setEntityClass("npcdzieckogoralskie");
 		npc.setPosition(6, 3);
 		npc.initHP(100);
+		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
 		zone.add(npc);
 	}
 }

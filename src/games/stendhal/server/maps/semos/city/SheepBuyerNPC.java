@@ -1,5 +1,15 @@
 package games.stendhal.server.maps.semos.city;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import java.awt.geom.Rectangle2D;
+
+import marauroa.common.game.RPObject;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -17,15 +27,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.semos.village.SheepSellerNPC;
 import games.stendhal.server.util.Area;
-
-import java.awt.geom.Rectangle2D;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import marauroa.common.game.RPObject;
 
 /**
  * A merchant (original name: Sato) who buys sheep from players.
@@ -181,7 +182,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 		npc.setPosition(40, 45);
 		npc.setEntityClass("buyernpc");
 		npc.setDescription("Oto Sato, który kocha owce.");
-		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
+		npc.setSounds(Arrays.asList("hiccup-01", "hiccup-1", "sneeze-male-01", "sneeze-1"));
 		zone.add(npc);
 	}
 

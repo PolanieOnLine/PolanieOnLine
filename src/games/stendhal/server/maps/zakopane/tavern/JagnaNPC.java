@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.tavern;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -64,6 +65,7 @@ public class JagnaNPC implements ZoneConfigurator {
 		jagna.setPosition(25, 3);
 		jagna.setDirection(Direction.DOWN);
 		jagna.initHP(100);
+		jagna.setSounds(Arrays.asList("hiccup-1", "hiccup-2", "hiccup-3"));
 		zone.add(jagna);
 
 		final Sign book = new Sign();

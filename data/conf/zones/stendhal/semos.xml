@@ -135,23 +135,36 @@
 		<entity x="77" y="119">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-6b, bird-2b, lark-1</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">15</parameter>
 				<parameter name="radius">10</parameter>
 				<parameter name="volume">65</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="62" y="127">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">woodpecker-1</parameter>
-				<parameter name="min">3</parameter>
-				<parameter name="max">15</parameter>
-				<parameter name="radius">14</parameter>
-				<parameter name="volume">65</parameter>
-			</implementation>
+		  <implementation
+			class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<parameter name="sound">bird-woodpecker-01</parameter>
+			<parameter name="min">3</parameter>
+			<parameter name="max">15</parameter>
+			<parameter name="radius">14</parameter>
+			<parameter name="volume">65</parameter>
+		  </implementation>
 		</entity>
+		
+		<entity x="14" y="20">
+		  <implementation
+			class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<parameter name="sound">bird-woodpecker-01, bird-crow-01, bird-crow-02, bird-raven-01</parameter>
+			<parameter name="min">3</parameter>
+			<parameter name="max">30</parameter>
+			<parameter name="radius">40</parameter>
+			<parameter name="volume">65</parameter>
+		  </implementation>
+		</entity>
+
 		<portal x="8" y="22" ref="apothecary_entrance">
 			<destination zone="0_semos_city" ref="house_exit_1" />
 		</portal>
@@ -597,7 +610,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<entity x="65" y="6">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">woodpecker-1</parameter>
+				<parameter name="sound">bird-woodpecker-1</parameter>
 				<parameter name="min">3</parameter>
 				<parameter name="max">15</parameter>
 				<parameter name="radius">24</parameter>
@@ -1626,7 +1639,7 @@ Oszuści wśród prostaków wolą nacisnąć na potworze. To też działa!
 		<entity x="50" y="16">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">lark-1, lark-2</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">10</parameter>
@@ -1636,7 +1649,7 @@ Oszuści wśród prostaków wolą nacisnąć na potworze. To też działa!
 		<entity x="16" y="20">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">10</parameter>
@@ -1945,12 +1958,11 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 			</implementation>
 		</entity>
 
-
 		<!-- birds and chicken -->
 		<entity x="29" y="8">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">10</parameter>
@@ -2004,7 +2016,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 		<entity x="16" y="20">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">10</parameter>

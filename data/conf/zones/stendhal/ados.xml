@@ -845,7 +845,7 @@ Zachód: Semos
 
     <entity x="100" y="26">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">bird-2b, blackbird-6b, blackbird-7b, blackbird-8b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">1</parameter>
         <parameter name="max">20</parameter>
         <parameter name="radius">25</parameter>
@@ -1035,7 +1035,7 @@ Zachód: Semos
 
     <entity x="27" y="117">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">bird-2b, bird-1b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">1</parameter>
         <parameter name="max">10</parameter>
         <parameter name="radius">25</parameter>
@@ -1045,7 +1045,7 @@ Zachód: Semos
 
     <entity x="42" y="41">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">bird-2b, bird-1b, bird-3b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">1</parameter>
         <parameter name="max">10</parameter>
         <parameter name="radius">25</parameter>
@@ -1055,7 +1055,7 @@ Zachód: Semos
 
     <entity x="13" y="46">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">blackbird-6b, blackbird-8b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">1</parameter>
         <parameter name="max">15</parameter>
         <parameter name="radius">20</parameter>
@@ -1065,7 +1065,7 @@ Zachód: Semos
 
     <entity x="33" y="10">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">bird-2b, bird-1b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">1</parameter>
         <parameter name="max">10</parameter>
         <parameter name="radius">25</parameter>
@@ -5094,7 +5094,7 @@ Południowy-wschód: Doki
 
     <entity x="44" y="12">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">blackbird-6b, blackbird-7b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">2</parameter>
         <parameter name="max">15</parameter>
         <parameter name="radius">20</parameter>
@@ -5104,7 +5104,7 @@ Południowy-wschód: Doki
 
     <entity x="67" y="23">
       <implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-        <parameter name="sound">bird-2b, bird-1b</parameter>
+        <parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
         <parameter name="min">1</parameter>
         <parameter name="max">10</parameter>
         <parameter name="radius">25</parameter>

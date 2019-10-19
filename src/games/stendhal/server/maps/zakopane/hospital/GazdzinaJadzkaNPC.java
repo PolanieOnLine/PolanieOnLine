@@ -14,6 +14,7 @@
 
 package games.stendhal.server.maps.zakopane.hospital;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class GazdzinaJadzkaNPC implements ZoneConfigurator {
 		npc.setEntityClass("npcgenowefa");
 		npc.setPosition(20, 10);
 		npc.initHP(100);
+		npc.setSounds(Arrays.asList("giggle-female-01", "giggle-female-02"));
 		zone.add(npc);
 	}
 }

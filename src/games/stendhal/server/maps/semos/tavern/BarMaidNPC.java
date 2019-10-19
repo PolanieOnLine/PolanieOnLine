@@ -12,6 +12,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -27,11 +32,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /*
  * Food and drink seller,  Inside Semos Tavern - Level 0 (ground floor)
@@ -100,7 +100,7 @@ public class BarMaidNPC implements ZoneConfigurator {
 		margaret.setDescription("Margaret wygląda na miłą osobę. Nie możesz jej pomóc, ale możesz coś od niej kupić.");
 		margaret.setPosition(11, 4);
 		margaret.initHP(100);
-		margaret.setSounds(Arrays.asList("hiccup-1", "hiccup-2", "hiccup-3"));
+		margaret.setSounds(Arrays.asList("hiccup-01", "hiccup-1", "hiccup-2", "hiccup-3"));
 		zone.add(margaret);
 	}
 }
