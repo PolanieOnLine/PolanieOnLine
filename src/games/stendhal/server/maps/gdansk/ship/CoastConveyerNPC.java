@@ -109,7 +109,7 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 								switch (ferryState) {
 									case ANCHORED_AT_GDANSK:
-										player.teleport(getMainlandDocksZone(), 70, 37, Direction.LEFT, null);
+										player.teleport(getMainlandDocksZone(), 71, 37, Direction.DOWN, null);
 										npc.setCurrentState(ConversationStates.IDLE);
 										break;
 									case ANCHORED_AT_WARSZAWA:
