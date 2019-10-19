@@ -14,6 +14,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-piracka-wyspa</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
 
 		<entity x="74" y="56">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -85,6 +91,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-piracka-wyspa</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
 		
 		<entity x="64" y="54">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -119,6 +131,12 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="102" y="63" ref="cave_up">
 			<destination zone="-2_pirates_island_cave_w" ref="cave_down"/>
@@ -134,6 +152,12 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="83" y="13" ref="cave1_exit">
 			<destination zone="0_pirates_island_e" ref="cave1_entrance"/>
@@ -151,6 +175,12 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="104" y="20" ref="cave_down">
 			<destination zone="-1_pirates_island_cave_w" ref="cave_up"/>
@@ -162,6 +192,12 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 
 		<!-- <portal x="83" y="13" ref="cave_-3_entrance">
 			<destination zone="-3_pirates_island_cave_e" ref="cave_-3_exit"/>

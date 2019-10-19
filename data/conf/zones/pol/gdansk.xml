@@ -17,6 +17,13 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina2</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
+
 		<entity y="108" x="67">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">hammer-1, smith-1</parameter>
@@ -72,6 +79,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina2</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
 
 		<entity x="41" y="125">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -166,6 +179,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina2</parameter>
+				<parameter name="volume">25</parameter>
+			</implementation>
+		</entity>
 
 		<entity x="28" y="77">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -213,6 +232,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="114" y="4" ref="ab_cottage_entrance">
 			<destination zone="int_gdansk_abandoned_cottage" ref="ab_cottage_exit"/>
@@ -237,7 +262,14 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
+	
 
 	<!-- gdansk_forest_e -->
 	<zone name="0_gdansk_forest_e" level="0" x="513312" y="17152" file="Level 0/gdansk/forest_e.tmx">
@@ -245,6 +277,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- gdansk_forest_sw -->
@@ -253,6 +291,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="16" y="75" ref="cave_entrance">
 			<destination zone="-1_gdansk_cave_sw" ref="cave_exit"/>
@@ -265,6 +309,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- gdansk_forest_se -->
@@ -273,6 +323,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- gdansk_forest_s2_w -->
@@ -281,6 +337,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- gdansk_road_n -->
@@ -289,6 +351,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- gdansk_road_s -->
@@ -297,6 +365,12 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- Ship -->
@@ -307,7 +381,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
-		
+
 		<entity x="23" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-2, wave-11</parameter>
@@ -339,6 +413,12 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark2</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="18" y="109" ref="cavehut_entrance">
 			<destination zone="int_gdansk_cavehut" ref="cavehut_exit"/>
@@ -353,12 +433,24 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark2</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<zone name="-1_gdansk_cave_se" level="-1" x="513312" y="17280" file="Level -1/gdansk/cave_se.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark2</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 	
 	<!-- Level -3 -->
@@ -366,6 +458,12 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="110" y="110" ref="forest_entrance">
 			<destination zone="int_gdansk_cavehut" ref="forest_exit"/>
