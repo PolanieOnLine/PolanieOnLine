@@ -26,6 +26,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31.5
 *naprawiono błędy*
 - Klient będzie ignorował błędy, które informują o braku pewnych dźwięków pogody (mgła oraz śnieg)
 - Poprawiono kolizję statku płynącego z Gdańska do Warszawy (i na odwrót)
+- Poprawiono wymiary grafiki pierścienia barona
 
 
 1.04
