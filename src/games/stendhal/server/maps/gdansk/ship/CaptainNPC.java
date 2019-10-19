@@ -65,7 +65,7 @@ public class CaptainNPC implements ZoneConfigurator  {
 			@Override
 			protected void onGoodbye(final RPEntity player) {
 				// Turn back to the wheel
-				setDirection(Direction.LEFT);
+				setDirection(Direction.DOWN);
 			}
 		};
 
@@ -85,13 +85,13 @@ public class CaptainNPC implements ZoneConfigurator  {
 						break;
 					}
 					// Turn back to the wheel
-					npc.setDirection(Direction.LEFT);
+					npc.setDirection(Direction.DOWN);
 			}
 		};
 
 		npc.setPosition(23, 36);
 		npc.setEntityClass("npc_kptjacekwrobel");
-		npc.setDirection(Direction.LEFT);
+		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}
 }

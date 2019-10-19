@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.warszawa.ship;
+package games.stendhal.server.maps.pirate_island.ship;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -22,36 +25,32 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.gdansk.ship.GdanskFerry;
-import games.stendhal.server.maps.gdansk.ship.GdanskFerry.Status;
+import games.stendhal.server.maps.pirate_island.ship.PirateFerry.Status;
 
-import java.util.Arrays;
-import java.util.Map;
+/** Factory for cargo worker on Athor Ferry. */
 
-/**
- * Factory for an NPC who brings players from the docks to Gdansk Ferry
- * in a rowing boat.
- */
-public class FerryConveyerGdanskNPC implements ZoneConfigurator {
+public class CoastConveyerNPC implements ZoneConfigurator  {
 
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
 		buildNPC(zone);
 	}
+	private static StendhalRPZone islandDocksZone;
+	private static StendhalRPZone mainlandDocksZone;
 
-	protected Status ferrystate;
-	private static StendhalRPZone shipZone;
-
-	public static StendhalRPZone getShipZone() {
-		if (shipZone == null) {
-			shipZone = SingletonRepository.getRPWorld().getZone("int_gdansk_ship");
+	private StendhalRPZone getIslandDockZone() {
+		if (islandDocksZone == null) {
+			islandDocksZone = SingletonRepository.getRPWorld().getZone("0_gdansk_city_n");
 		}
-		return shipZone;
+
+		return islandDocksZone;
 	}
 
+	private Status ferryState;
+
 	private void buildNPC(StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Władek") {
+		final SpeakerNPC npc = new SpeakerNPC("Fionella") {
 
 			@Override
 			protected void createPath() {
@@ -61,13 +60,10 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGoodbye("Dowidzenia!");
-				addGreeting("Witam w Warszawskim #ferry service! W czym mogę #pomóc?");
-				addHelp("Możesz wejść na #prom tylko za "
-						+ GdanskFerry.PRICE
-						+ " złota, ale tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom.");
-				addJob("Jeżeli pasażerowie chcą #wejść na #prom do Gdańskiem to ja ich zabieram na statek.");
-				addReply(Arrays.asList("ferry", "prom", "promu"), "Prom żegluje regularnie pomiędzy Warszawą, a Gdańskiem. Możesz #wejść na statek tylko kiedy jest tutaj. Zapytaj mnie o #status jeżeli chcesz sprawdzić gdzie aktualnie się znajduje.");
-				addReply(Arrays.asList("Gdansk", "Gdanskiem"), "Gdansk to miasto leżące na północy Polski posiadające wiele zabytków oraz świetne miasto wypoczynku.");
+				addGreeting("Ahoj, Przyjacielu! W czym mogę #pomóc?");
+				addHelp("Tak, możesz zejść mówiąc #zejdź, ale wtedy kiedy zacumujemy na przystani. Zapytaj mnie o #status jeżeli nie masz pojęcia gdzie jesteśmy.");
+				addJob("Zabieram kamratów, którzy chcą zejść na ląd.");
+
 				add(ConversationStates.ATTENDING, "status",
 						null,
 						ConversationStates.ATTENDING,
@@ -75,25 +71,31 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 						new ChatAction() {
 							@Override
 							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-								npc.say(ferrystate.toString());
+								npc.say(ferryState.toString());
 							}
 						});
 
 				add(ConversationStates.ATTENDING,
-						Arrays.asList("board", "wejdź", "wejść"),
+						Arrays.asList("disembark", "leave", "zejdź", "opuść"),
 						null,
 						ConversationStates.ATTENDING,
 						null,
 						new ChatAction() {
 							@Override
 							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-								if (ferrystate == Status.ANCHORED_AT_WARSZAWA) {
-									npc.say("Aby wejść na prom musisz zapłacić " + GdanskFerry.PRICE
-											+ " złota. Czy chcesz zapłacić?");
-									npc.setCurrentState(ConversationStates.SERVICE_OFFERED);
-								} else {
-									npc.say(ferrystate.toString()
-											+ " Możesz wejść na prom wtedy, kiedy prom jest zacumowany.");
+								switch (ferryState) {
+									case ANCHORED_AT_ISLAND:
+										npc.say("Czy chcesz, abym zabrała Ciebie na wyspę?");
+										npc.setCurrentState(ConversationStates.SERVICE_OFFERED);
+										break;
+									case ANCHORED_AT_GDANSK:
+										npc.say("Czy chcesz, abym zabrała Ciebie do Gdańska?");
+										npc.setCurrentState(ConversationStates.SERVICE_OFFERED);
+										break;
+
+									default:
+										npc.say(ferryState.toString()
+											+ " Możesz zejść na ląd kiedy jesteśmy zacumowani na przystani.");
 								}
 							}
 						});
@@ -105,10 +107,17 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 						new ChatAction() {
 							@Override
 							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-								if (player.drop("money", GdanskFerry.PRICE)) {
-									player.teleport(getShipZone(), 26, 34, Direction.LEFT, null);
-								} else {
-									npc.say("Hej! Nie masz tyle pieniędzy!");
+								switch (ferryState) {
+									case ANCHORED_AT_ISLAND:
+										player.teleport(getMainlandDocksZone(), 9, 87, Direction.UP, null);
+										npc.setCurrentState(ConversationStates.IDLE);
+										break;
+									case ANCHORED_AT_GDANSK:
+										player.teleport(getIslandDockZone(), 96, 27, Direction.DOWN, null);
+										npc.setCurrentState(ConversationStates.IDLE);
+										break;
+									default:
+										npc.say("Niedobrze! Statek już wypłynął.");
 								}
 							}
 						});
@@ -117,31 +126,40 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 						ConversationPhrases.NO_MESSAGES,
 						null,
 						ConversationStates.ATTENDING,
-						"Nie wiesz co tracisz, szczurze lądowy!",
-						null);
+						"Aye, przyjacielu!", null);
 			}
 		};
 
-		new GdanskFerry.FerryListener() {
+		new PirateFerry.FerryListener() {
+
 			@Override
 			public void onNewFerryState(final Status status) {
-				ferrystate = status;
+				ferryState = status;
 				switch (status) {
-					case ANCHORED_AT_WARSZAWA:
-						npc.say("UWAGA: Prom przybył do wybrzeża! Można wejść na statek mówiąc #wejdź.");
+					case ANCHORED_AT_ISLAND:
+						npc.say("UWAGA: Prom dobił na piracką wyspę! Możesz teraz zejść mówiąc #zejdź.");
 						break;
-					case DRIVING_TO_GDANSK:
-						npc.say("UWAGA: Prom odpłynął. Nie można się już dostać na statek.");
+					case ANCHORED_AT_GDANSK:
+						npc.say("UWAGA: Prom dobił do Gdańska! Możesz teraz zejść mówiąc #zejdź.");
 						break;
 					default:
+						npc.say("UWAGA: Prom wypłynął.");
 						break;
 				}
 			}
 		};
 
-		npc.setPosition(22, 90);
-		npc.setEntityClass("npcflisak1");
+		npc.setPosition(28, 34);
+		npc.setEntityClass("pirate_sailor2npc");
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
+	}
+
+	private static StendhalRPZone getMainlandDocksZone() {
+		if (mainlandDocksZone == null) {
+			mainlandDocksZone = SingletonRepository.getRPWorld().getZone("0_pirates_island_e");
+		}
+
+		return mainlandDocksZone;
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2019 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.krakow.ship;
+package games.stendhal.server.maps.pirate_island.ship;
+
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -21,12 +23,10 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.krakow.ship.KrakowFerry.Status;
-
-import java.util.Map;
+import games.stendhal.server.maps.pirate_island.ship.PirateFerry.Status;
 
 
-/** Factory for the captain of Krakow Ferry. */
+/** Factory for the captain of Gdansk Ferry. */
 public class CaptainNPC implements ZoneConfigurator  {
 
 	private Status ferrystate;
@@ -37,7 +37,7 @@ public class CaptainNPC implements ZoneConfigurator  {
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Kapitan Jacek") {
+		final SpeakerNPC npc = new SpeakerNPC("Kapitan Hak") {
 
 			@Override
 			public void createDialog() {
@@ -69,13 +69,13 @@ public class CaptainNPC implements ZoneConfigurator  {
 			}
 		};
 
-		new KrakowFerry.FerryListener() {
+		new PirateFerry.FerryListener() {
 			@Override
 			public void onNewFerryState(final Status status) {
 				ferrystate = status;
 					switch (status) {
-					case ANCHORED_AT_WARSZAWA:
-					case ANCHORED_AT_KRAKOW:
+					case ANCHORED_AT_ISLAND:
+					case ANCHORED_AT_GDANSK:
 						// capital letters symbolize shouting
 						npc.say("ZRZUCIĆ CUMY!");
 						break;

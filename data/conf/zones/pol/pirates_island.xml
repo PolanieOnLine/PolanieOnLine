@@ -79,6 +79,7 @@
 
 	<!-- Island E -->
 	<zone name="0_pirates_island_e" level="0" x="513312" y="1024" file="Level 0/pirates/island_e.tmx">
+		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.FerryConveyerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
@@ -149,6 +150,15 @@
 	</zone>
 
 	<!-- interiors -->
+
+	<!-- Ship -->
+	<zone name="int_pirate_ship" file="interiors/pirates/ship.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+		</attributes>
+		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.CoastConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.CaptainNPC"/>
+	</zone>
 
 	<!-- skarbiec -->
 	<zone name="int_pirates_island_treasury" file="interiors/pirates/skarbiec.tmx">

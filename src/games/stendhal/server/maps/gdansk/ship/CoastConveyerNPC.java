@@ -157,7 +157,7 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 
 	private static StendhalRPZone getMainlandDocksZone() {
 		if (mainlandDocksZone == null) {
-			mainlandDocksZone = SingletonRepository.getRPWorld().getZone("0_gdansk_nw");
+			mainlandDocksZone = SingletonRepository.getRPWorld().getZone("0_gdansk_city_nw");
 		}
 
 		return mainlandDocksZone;

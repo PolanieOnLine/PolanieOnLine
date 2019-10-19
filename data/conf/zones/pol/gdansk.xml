@@ -65,6 +65,7 @@
 
 	<!-- gdansk_n -->
 	<zone name="0_gdansk_city_n" level="0" x="513184" y="17024" file="Level 0/gdansk/city_n.tmx">
+		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerPirateIslandNPC"/>
 		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska4NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -287,7 +288,7 @@
 	</zone>
 
 	<!-- Ship -->
-	<zone name="int_gdansk_ship" file="interiors\gdansk\gdansk_ship.tmx">
+	<zone name="int_gdansk_ship" file="interiors/gdansk/gdansk_ship.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 		</attributes>
