@@ -17,6 +17,9 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31.5
 - Dodano warunki pogodowe w nadmorskiej krainie
 - Piraci wykrzykują swe monologi
 
+*serwer*
+- Zaktualizowano marauroa do wersji 3.9.7
+
 *naprawiono błędy*
 - Klient będzie ignorował błędy, które informują o braku pewnych dźwięków pogody (mgła oraz śnieg)
 - Poprawiono kolizję statku płynącego z Gdańska do Warszawy (i na odwrót)
