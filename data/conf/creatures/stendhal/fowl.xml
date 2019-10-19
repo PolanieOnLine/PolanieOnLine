@@ -92,6 +92,7 @@
 			<says>
 				<noise state="idle follow fight" value="Bałk Bałk"/>
 				<noise state="idle follow fight" value="Bałłłk"/>
+				<sound value="bird-dodo-01"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
