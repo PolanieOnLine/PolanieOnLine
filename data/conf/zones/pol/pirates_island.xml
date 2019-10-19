@@ -12,6 +12,7 @@
 	<zone name="0_pirates_island_w" level="0" x="513184" y="1024" file="Level 0/pirates/island_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
 
 		<entity x="74" y="56">
@@ -82,7 +83,25 @@
 		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.FerryConveyerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
 		</attributes>
+		
+		<entity x="64" y="54">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2, water-3</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">28</parameter>
+			</implementation>
+		</entity>
+		<entity x="88" y="54">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2, water-3</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">21</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="93" y="47" ref="cave1_entrance">
 			<destination zone="-1_pirates_island_cave_e" ref="cave1_exit"/>
@@ -153,11 +172,37 @@
 
 	<!-- Ship -->
 	<zone name="int_pirate_ship" file="interiors/pirates/ship.tmx">
-		<attributes>
-			<parameter name="color_method">time</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.CoastConveyerNPC"/>
 		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.CaptainNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		
+		<entity x="23" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-2, wave-11</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+		<entity x="30" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-3, wave-11</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+		<entity x="16" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">wave-11</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">8</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- skarbiec -->
