@@ -467,6 +467,8 @@
 			<parameter name="file" condition="stendhal.minetown">Level 0/zakopane/s_halloween.tmx</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
+		
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.HalloweenSellerNPC" condition="stendhal.minetown"/>
 
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.BacaZbyszekNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.FryderykNPC"/>
