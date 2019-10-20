@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.06
+*klient*
+- Zmniejszono rozmiary grafiki statków, co sprawia, że pasek zdrowia jest niżej (tylko dla tych outfitów)
+
+
 1.05
 Zaktualizowano do najnowszej wersji Stendhala 1.31.5
 
