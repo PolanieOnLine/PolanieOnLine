@@ -5,6 +5,9 @@ Changelog
 - Zmniejszono rozmiary grafiki statków, co sprawia, że pasek zdrowia jest niżej (tylko dla tych outfitów)
 - Usunięto zielone pixele w grafice potwora 'upadły duch truskull'
 
+*naprawiono błędy*
+- Naprawiono grafikę żmiji
+
 
 1.05
 Zaktualizowano do najnowszej wersji Stendhala 1.31.5
