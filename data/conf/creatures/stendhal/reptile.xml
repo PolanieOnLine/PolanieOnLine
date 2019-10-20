@@ -4,7 +4,7 @@
 
 	<!-- START: reptile -->
 	<creature name="żmija">
-		<type class="stendhal/farm_animal" subclass="grass_snake" tileid="reptile.png:0"/>
+		<type class="stendhal/reptile" subclass="grass_snake" tileid="reptile.png:0"/>
 		<description>Oto żmija. Może cię boleśnie ukąsić.</description>
 		<attributes>
 			<atk value="68"/>
