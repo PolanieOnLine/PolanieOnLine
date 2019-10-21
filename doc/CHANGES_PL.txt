@@ -1,14 +1,17 @@
-Changelog
+﻿Changelog
 ---------
 1.06
 *klient*
 - Zmniejszono rozmiary grafiki statków, co sprawia, że pasek zdrowia jest niżej (tylko dla tych outfitów)
 - Usunięto zielone pixele w grafice potwora 'upadły duch truskull'
 
+*świat gry*
+- Usunięto kolizję na mapie 1_koscielisko_podzamcze (w lesie), by móc przejść do NPC Cień
+
 *naprawiono błędy*
 - Naprawiono grafikę żmiji
+- Naprawiono osiągnięcie za maksymalny poziom
 - Poprawiono nazwy przedmiotów w cotygodniowym zadaniu na przedmiot w muzeum Kirdneh
-- Usunięto kolizję, by móc przejść do NPC Cień na mapie 1_koscielisko_podzamcze
 
 
 1.05
