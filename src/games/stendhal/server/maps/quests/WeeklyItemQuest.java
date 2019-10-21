@@ -109,8 +109,8 @@ public class WeeklyItemQuest extends AbstractQuest {
 		items.put("zbroja xenocyjska",1);
 
 		// axe
-		items.put("topór oburęczny złoty",1);
-		items.put("topór oburęczny magiczny",1);
+		items.put("złoty topór obosieczny",1);
+		items.put("magiczny topór obosieczny",1);
 
 		// boots
 		items.put("buty chaosu",1);
