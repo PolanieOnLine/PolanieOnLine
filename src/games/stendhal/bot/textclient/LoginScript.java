@@ -36,28 +36,19 @@ public class LoginScript {
 	 * performs some steps after an admin login
 	 */
 	public void adminLogin() {
-		ghostmode();
-		teleportToAdminLocation();
+		teleportToPostofficeLocation();
 	}
-
-	/**
-	 * activates ghostmode
-	 */
-	private void ghostmode() {
-		RPAction action = new RPAction();
-		action.put("type", "ghostmode");
-		action.put("mode", "true");
-		client.send(action);
-	}
-
 
 	/**
 	 * teleports to the admin house
 	 */
-	private void teleportToAdminLocation() {
+	private void teleportToPostofficeLocation() {
 		RPAction action = new RPAction();
-		action.put("type", "teleportto");
-		action.put("target", "Skye");
+		action.put("type", "teleport");
+		action.put("target", "postman");
+		action.put("zone", "int_zakopane_postoffice");
+		action.put("x", "4");
+		action.put("y", "5");
 		client.send(action);
 	}
 }
