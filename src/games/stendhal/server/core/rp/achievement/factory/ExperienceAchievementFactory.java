@@ -59,7 +59,7 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 		xpAchievements.add(createAchievement("xp.level.550", "Książe", "Osiągnął poziom 550", Achievement.HARD_BASE_SCORE, true,
 												new LevelGreaterThanCondition(549)));
 		xpAchievements.add(createAchievement("xp.level.597", "Król", "Osiągnął poziom 597", Achievement.LEGENDARY_BASE_SCORE, true,
-				new LevelGreaterThanCondition(597)));
+												new LevelGreaterThanCondition(596)));
 		return xpAchievements;
 	}
 
