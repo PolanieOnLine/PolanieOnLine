@@ -1,11 +1,11 @@
 package games.stendhal.server.core.rp.achievement.factory;
 
-import games.stendhal.server.core.rp.achievement.Achievement;
-import games.stendhal.server.core.rp.achievement.Category;
-//import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
-
 import java.util.Collection;
 import java.util.LinkedList;
+
+import games.stendhal.server.core.rp.achievement.Achievement;
+import games.stendhal.server.core.rp.achievement.Category;
+import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 
 /**
  * factory for item GDANSK related achievements.
@@ -23,7 +23,7 @@ public class GdanskJewelleryQuestAchievementFactory extends AbstractAchievementF
 	@Override
 	public Collection<Achievement> createAchievements() {
 		LinkedList<Achievement> achievements = new LinkedList<Achievement>();
-		/**achievements.add(createAchievement("quest.special.daily_museum_gdansk_quest.0005", "Młody Podróżnik", "Ukończył co dwu-dniowe zadanie na przedmiot 5 razy",
+		achievements.add(createAchievement("quest.special.daily_museum_gdansk_quest.0005", "Młody Podróżnik", "Ukończył co dwu-dniowe zadanie na przedmiot 5 razy",
 				Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 4)));
 		achievements.add(createAchievement("quest.special.daily_museum_gdansk_quest.0025", "Podróżnik", "Ukończył co dwu-dniowe zadanie na przedmiot 25 razy",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 24)));
@@ -32,7 +32,7 @@ public class GdanskJewelleryQuestAchievementFactory extends AbstractAchievementF
 		achievements.add(createAchievement("quest.special.daily_museum_gdansk_quest.0100", "Depozytor Gdańska", "Ukończył co dwu-dniowe zadanie na przedmiot 100 razy",
 				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 99)));
 		achievements.add(createAchievement("quest.special.daily_museum_gdansk_quest.0200", "Skarbnik Gdańska", "Ukończył co dwu-dniowe zadanie na przedmiot 200 razy",
-				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 199)));*/
+				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 199)));
 		return achievements;
 	}
 }
