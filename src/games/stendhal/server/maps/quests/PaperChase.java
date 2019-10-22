@@ -212,7 +212,7 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 			Arrays.asList("paper", "chase"),
 			new SystemPropertyCondition("stendhal.minetown"),
 			ConversationStates.ATTENDING,
-			"Musisz zapytać się każdej osoby po drodze o #paper #chase. Na początku musisz pójść Semos Road, aby odnaleść młodego chłopca, który ostrzega wojowników o niebezpieczeństwu w Faiumoni. "
+			"Musisz zapytać się każdej osoby po drodze o #paper #chase. Na początku musisz pójść do Semos Village, tam znajdziesz sprzedawcę owiec. "
 			+ "Ostrzegam: możesz się teleportować podczas podróży, ale każdy teleport będzie kosztował dodatkowe " + TELEPORT_PENALTY_IN_MINUTES + " minut w punktacji.",
 			startAction);
 
