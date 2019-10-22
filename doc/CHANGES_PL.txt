@@ -6,11 +6,13 @@ Changelog
 - Usunięto zielone pixele w grafice potwora 'upadły duch truskull'
 
 *świat gry*
+- Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
 - Usunięto kolizję na mapie 1_koscielisko_podzamcze (w lesie), by móc przejść do NPC Cień
+- Utworzono ścieżkę w 0_gdansk_forest_se umożliwiającą odblokowanie osiągnięcia "Nadmorska kraina"
 
 *naprawiono błędy*
 - Naprawiono grafikę żmiji
-- Naprawiono osiągnięcie za maksymalny poziom
+- Naprawiono osiągnięcie za maksymalny poziom oraz "Pogromca smoków"
 - Poprawiono nazwy przedmiotów w cotygodniowym zadaniu na przedmiot w muzeum Kirdneh
 
 
