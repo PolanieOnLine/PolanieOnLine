@@ -15,7 +15,7 @@ Changelog
 - Usunięto kolizję na mapie 1_koscielisko_podzamcze (w lesie), by móc przejść do NPC Cień
 
 *naprawiono błędy*
-- Naprawiono grafikę żmiji
+- Naprawiono grafikę żmiji (błąd z klienta 1.05)
 - Naprawiono osiągnięcie za maksymalny poziom oraz "Pogromca smoków"
 - Naprawiono zadanie PaperChase
 - Poprawiono nazwy przedmiotów w cotygodniowym zadaniu na przedmiot w muzeum Kirdneh
