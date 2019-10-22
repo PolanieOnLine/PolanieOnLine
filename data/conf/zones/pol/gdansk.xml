@@ -661,6 +661,16 @@
 	<zone name="int_gdansk_goldsmith" file="interiors/gdansk/goldsmith.tmx">
 		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.ItemsOnTable" />
 		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.zlotnikNPC"/>
+		
+		<entity x="15" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buygold</parameter>
+				<parameter name="title">Sklep Jerzego (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Jerzemu.</parameter>
+			</implementation>
+			<attribute name="class">book_red</attribute>
+		</entity>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
