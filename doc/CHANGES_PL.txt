@@ -3,6 +3,7 @@ Changelog
 1.05.5
 *klient*
 - Zmniejszono rozmiary grafiki statków, co sprawia, że pasek zdrowia jest niżej (tylko dla tych outfitów)
+- Zmieniono wygląd balonów
 - Usunięto zielone pixele w grafice potwora 'upadły duch truskull'
 
 *świat gry*
