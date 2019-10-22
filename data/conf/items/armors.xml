@@ -26,8 +26,8 @@
 		<description>Oto zbroja wampirza. Czuć bardzo dziwny metalowy zapach krwi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="27"/>
-			<min_level value="170"/>
+			<def value="26"/>
+			<min_level value="160"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="86000"/>
@@ -45,7 +45,7 @@
 		<description>Oto czarna zbroja. Czy jej posiadanie wpędza cię w zły humor?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="29"/>
+			<def value="28"/>
 			<min_level value="200"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -159,8 +159,8 @@
 		<description>Oto zbroja elficka. Zrobiona ze splecionych liści jest lekka ale zadziwiająco wytrzymała.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="11"/>
-			<min_level value="55"/>
+			<def value="14"/>
+			<min_level value="30"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="19208"/>
@@ -237,12 +237,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="19"/>
-		<min_level value="80"/>
+			<min_level value="80"/>
 		</attributes>
 		<weight value="35.0"/>
 		<value value="48013"/>
-		<susceptibility type="ice" value="0.91"/>
-		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="ice" value="0.61"/>
+		<susceptibility type="fire" value="1.41"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -355,7 +355,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="22"/>
-		<min_level value="125"/>
+			<min_level value="125"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="86000"/>
@@ -374,12 +374,11 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="30"/>
-			<min_level value="300"/>
 		</attributes>
 		<weight value="42.0"/>
 		<value value="323032"/>
-		<susceptibility type="dark" value="1.11"/>
-		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="dark" value="1.21"/>
+		<susceptibility type="light" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -487,12 +486,16 @@
 		<description>Oto zbroja akwalungowa z przymocowanym ciężkim hełmem. Zapewnia wystarczającą ochronę i jest doskonała do nurkowania.</description>
 		<implementation class-name="games.stendhal.server.entity.item.LifeSupportGear"/>
 		<attributes>
-			<def value="19"/>
-			<min_level value="95"/>
+			<def value="15"/>
+			<min_level value="50"/>
 			<life_support value="water"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="34391"/>
+		<susceptibility type="fire" value="0.81"/>
+		<susceptibility type="ice" value="1.51"/>
+		<susceptibility type="dark" value="1.41"/>
+		<susceptibility type="light" value="1.41"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -512,8 +515,8 @@
 		</attributes>
 		<weight value="40.0"/>
 		<value value="34391"/>
-		<susceptibility type="light" value="1.11"/>
-		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="light" value="1.31"/>
+		<susceptibility type="dark" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -570,7 +573,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="21"/>
-			<min_level value="105"/>
+			<min_level value="120"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="76000"/>
@@ -588,7 +591,7 @@
 		<description>Oto zardzewiała zbroja płytowa. Poszukaj kowala, może potrafi ją oczyścić.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="9"/>
+			<def value="7"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="7000"/>
@@ -610,7 +613,7 @@
 		</attributes>
 		<weight value="45.0"/>
 		<value value="28672"/>
-		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="fire" value="1.41"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -629,7 +632,7 @@
 		</attributes>
 		<weight value="45.0"/>
 		<value value="28672"/>
-		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="fire" value="1.41"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -645,6 +648,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="19"/>
+			<min_level value="65"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="33625"/>
@@ -664,6 +668,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="23"/>
+			<min_level value="135"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="86000"/>
@@ -685,7 +690,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>
-			<min_level value="125"/>
+			<min_level value="145"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="123032"/>

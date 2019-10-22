@@ -7,7 +7,7 @@
 		<description>Oto skórzany hełm, ale bardziej przypomina kapelusz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="1"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="7"/>
@@ -44,7 +44,7 @@
 		<description>Oto kapelusz leśniczego. Jest ładny i stylowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="3"/>
+			<def value="2"/>
 		</attributes>
 		<weight value="6.0"/>
 		<value value="56"/>
@@ -62,7 +62,7 @@
 		<description>Widzisz hełm nabijany ćwiekami. Powinien bronić cię przed zadrapaniami, ale nie silnymi ciosami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="6"/>
+			<def value="2"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="56"/>
@@ -80,7 +80,7 @@
 		<description>Oto elficki kapelusz. Elficki rzemieślnik zrobił z najsilniejszego liściastego materiału.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"></implementation>
 		<attributes>
-			<def value="6"/>
+			<def value="3"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="7"/>
@@ -99,7 +99,7 @@
 		<description>Widzisz hełm kolczy. Będzie doskonałą ochroną twojej głowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="4"/>
 		</attributes>
 		<weight value="6.0"/>
 		<value value="448"/>
@@ -117,7 +117,7 @@
 		<description>Widzsz hełm wikingów. Poprzedniemu właścicielowi towarzyszył na wielu bitwach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="14"/>
+			<def value="5"/>
 		</attributes>
 		<weight value="6.0"/>
 		<value value="875"/>
@@ -135,7 +135,8 @@
 		<description>Oto misiurka. Hełm kolczy pochodzący ze wschodu idealnie pasuje na twoją głowę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<def value="6"/>
+			<min_level value="5"/>
 		</attributes>
 		<weight value="6.0"/>
 		<value value="1512"/>
@@ -153,7 +154,8 @@
 		<description>Oto całkiem nowy lazurowy hełm.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="16"/>
+			<def value="7"/>
+			<min_level value="10"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="3012"/>
@@ -171,7 +173,8 @@
 		<description>Widzisz karmazynowy hełm, który dość dobrze chroni twoją głowę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="18"/>
+			<def value="7"/>
+			<min_level value="10"/>
 		</attributes>
 		<weight value="6.0"/>
 		<value value="1512"/>
@@ -189,7 +192,8 @@
 		<description>Widzisz złoty hełm. Gruby metal powinien chronić cię przed prawie wszystkim.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="13"/>
+			<def value="9"/>
+			<min_level value="20"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="5103"/>
@@ -207,7 +211,8 @@
 		<description>Widzisz złoty hełm wikingów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="15"/>
+			<def value="12"/>
+			<min_level value="30"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="12096"/>
@@ -225,12 +230,13 @@
 		<description>Widzisz hełm cieni. Zamiast lśnić jakby pochłaniał światło.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="21"/>
+			<def value="10"/>
+			<min_level value="30"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="7000"/>
-		<susceptibility type="light" value="1.11"/>
-		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="light" value="1.31"/>
+		<susceptibility type="dark" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -240,26 +246,13 @@
 		</equipable>
 	</item>
 
-	<!-- xeno notes
-
-	Some other possible DEF : LVL values:
-	15 : 70-80
-	17-21 : 90-105
-	23 : 115-125
-	25 : 135-145
-	27-28 : 155-195
-
-	Possible drops:
-	xenocium at 1.5%
-
-	Possibly add to weekly item quest. -->
-
 	<item name="hełm xenocyjski">
 		<type class="helmet" subclass="xeno_helmet" tileid="-1" />
 		<description>Oto hełm xenocyjski.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item" />
 		<attributes>
-			<def value="24" />
+			<def value="13"/>
+			<min_level value="45"/>
 		</attributes>
 		<weight value="4.0" />
 		<value value="75000" />
@@ -277,7 +270,8 @@
 		<description>Widzisz hełm chaosu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="20"/>
+			<def value="14"/>
+			<min_level value="65"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="19208"/>
@@ -295,7 +289,8 @@
 		<description>Widzisz hełm mainiocyjski. Pownien chronić cię bardzo dobrze.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="12"/>
+			<def value="16"/>
+			<min_level value="85"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="39208"/>
@@ -313,7 +308,8 @@
 		<description>Widzisz magiczny hełm kolczy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="21"/>
+			<def value="22"/>
+			<min_level value="110"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="74536"/>
@@ -337,7 +333,8 @@
 		<description>Widzisz hełm libertyński. Jest lekki i potężny. Pownieneś się w nim czuć jakbyś nic na sobie nie miał.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="22"/>
+			<def value="24"/>
+			<min_level value="130"/>
 		</attributes>
 		<weight value="5.0"/>
 		<value value="100208"/>
@@ -356,12 +353,13 @@
 		<description>Widzisz czarny hełm.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="23"/>
+			<def value="26"/>
+			<min_level value="150"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="123032"/>
-		<susceptibility type="light" value="1.11"/>
-		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="light" value="1.31"/>
+		<susceptibility type="dark" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -376,12 +374,13 @@
 		<description>Widzisz hełm z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="24"/>
+			<def value="29"/>
+			<min_level value="200"/>
 		</attributes>
 		<weight value="12.0"/>
 		<value value="323032"/>
-		<susceptibility type="light" value="0.91"/>
-		<susceptibility type="dark" value="1.11"/>
+		<susceptibility type="light" value="0.81"/>
+		<susceptibility type="dark" value="1.31"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -397,6 +396,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>
+			<min_level value="25"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="56"/>
@@ -414,7 +414,7 @@
 		<description>Widzisz kapelusz safari. Świetnie się nadaje na wyprawy przez pustynie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<def value="2"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="7"/>
@@ -433,11 +433,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
+			<min_level value="35"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="74536"/>
-		<susceptibility type="fire" value="1.11"/>
-		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="fire" value="1.31"/>
+		<susceptibility type="ice" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -452,7 +453,7 @@
 		<description>Oto góralski kapelusz. Chroni przed słońcem i przypadkowym uderzeniem ciupagą.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="2"/>
+			<def value="1"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="7"/>
@@ -471,6 +472,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
+			<min_level value="15"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="74536"/>
@@ -488,7 +490,8 @@
 		<description>Widzisz hełm zabójcy. Dodaje furii w walce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="17"/>
+			<def value="19"/>
+			<min_level value="100"/>
 		</attributes>
 		<weight value="5.0"/>
 		<value value="100208"/>
@@ -507,10 +510,11 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="9"/>
+			<min_level value="20"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="7"/>
-		<susceptibility type="earth" value="0.91"/>
+		<susceptibility type="earth" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

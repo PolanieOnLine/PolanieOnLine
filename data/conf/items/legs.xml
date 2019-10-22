@@ -7,13 +7,13 @@
 		<description>Oto para czarnych spodni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="19"/>
-			<min_level value="190"/>
+			<def value="18"/>
+			<min_level value="100"/>
 		</attributes>
 		<weight value="25.0"/>
 		<value value="23625"/>
-		<susceptibility type="light" value="1.11"/>
-		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="light" value="1.21"/>
+		<susceptibility type="dark" value="0.81"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -28,8 +28,8 @@
 		<description>Oto para spodni wampirzych.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="17"/>
-			<min_level value="170"/>
+			<def value="16"/>
+			<min_level value="95"/>
 		</attributes>
 		<weight value="21.0"/>
 		<value value="23625"/>
@@ -103,8 +103,8 @@
 		<description>Oto spodnie krasnoludzkie. Zaprojektowane przez najlepszego projektanta.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="9"/>
-			<min_level value="63"/>
+			<def value="14"/>
+			<min_level value="65"/>
 		</attributes>
 		<weight value="32.0"/>
 		<value value="1512"/>
@@ -220,12 +220,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="20"/>
-			<min_level value="200"/>
+			<min_level value="130"/>
 		</attributes>
 		<weight value="22.0"/>
 		<value value="53625"/>
-		<susceptibility type="light" value="0.91"/>
-		<susceptibility type="dark" value="1.11"/>
+		<susceptibility type="light" value="0.81"/>
+		<susceptibility type="dark" value="1.31"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -263,7 +263,7 @@
 		</attributes>
 		<weight value="25.0"/>
 		<value value="5103"/>
-		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="light" value="1.21"/>
 		<susceptibility type="dark" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
@@ -279,8 +279,8 @@
 		<description>Oto spodnie kamienne. Są wytrzymałe, ale krępują ruchy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="15"/>
-			<min_level value="120"/>
+			<def value="14"/>
+			<min_level value="70"/>
 		</attributes>
 		<weight value="28.0"/>
 		<value value="1512"/>
@@ -300,7 +300,7 @@
 		<description>Oto spodnie nabijane ćwiekami. Nie jesteś pewnien czy są splamione krwią ostatniego właściciela lub jego przeciwników.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<def value="2"/>
 		</attributes>
 		<weight value="12.0"/>
 		<value value="56"/>
@@ -338,6 +338,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
+			<min_level value="10"/>
 		</attributes>
 		<weight value="12.0"/>
 		<value value="1512"/>
@@ -357,8 +358,8 @@
 		<description>Oto spodnie zabójcy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="14"/>
-			<min_level value="200"/>
+			<def value="15"/>
+			<min_level value="80"/>
 		</attributes>
 		<weight value="25.0"/>
 		<value value="23625"/>
@@ -380,8 +381,8 @@
 		</attributes>
 		<weight value="12.0"/>
 		<value value="56"/>
-		<susceptibility type="fire" value="1.11"/>
-		<susceptibility type="ice" value="1.11"/>
+		<susceptibility type="fire" value="1.31"/>
+		<susceptibility type="ice" value="1.31"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -400,8 +401,8 @@
 		</attributes>
 		<weight value="12.0"/>
 		<value value="56"/>
-		<susceptibility type="fire" value="1.11"/>
-		<susceptibility type="ice" value="1.11"/>
+		<susceptibility type="fire" value="1.31"/>
+		<susceptibility type="ice" value="1.31"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
