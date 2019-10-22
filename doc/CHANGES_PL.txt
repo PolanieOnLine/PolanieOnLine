@@ -1,18 +1,22 @@
 Changelog
 ---------
-1.06
+1.05.5
 *klient*
 - Zmniejszono rozmiary grafiki statków, co sprawia, że pasek zdrowia jest niżej (tylko dla tych outfitów)
 - Usunięto zielone pixele w grafice potwora 'upadły duch truskull'
 
 *świat gry*
 - Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
-- Usunięto kolizję na mapie 1_koscielisko_podzamcze (w lesie), by móc przejść do NPC Cień
+- Dodano możliwość wydropienia hełmu xenocyjskiego, co umożliwia jednocześnie zdobycie osiągnięcia za zdobycie całego zestawu xeno
+- Dodano możliwość wydropienia zbroji z mithrilu
+- Zmieniono ilość punktów defensywnych w zbrojach, butach, hełmach, spodniach oraz zwiększono odporności niektórym przedmiotom
 - Utworzono ścieżkę w 0_gdansk_forest_se umożliwiającą odblokowanie osiągnięcia "Nadmorska kraina"
+- Usunięto kolizję na mapie 1_koscielisko_podzamcze (w lesie), by móc przejść do NPC Cień
 
 *naprawiono błędy*
 - Naprawiono grafikę żmiji
 - Naprawiono osiągnięcie za maksymalny poziom oraz "Pogromca smoków"
+- Naprawiono zadanie PaperChase
 - Poprawiono nazwy przedmiotów w cotygodniowym zadaniu na przedmiot w muzeum Kirdneh
 
 
