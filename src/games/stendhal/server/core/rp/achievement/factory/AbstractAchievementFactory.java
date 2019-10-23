@@ -77,7 +77,7 @@ public abstract class AbstractAchievementFactory {
 		list.add(new KuzniceMonsterQuestAchievementFactory());
 		list.add(new MithrilbourghEnemyArmyAchievementFactory());
 		list.add(new ZakopaneItemQuestAchievementsFactory());
-		//list.add(new GdanskJewelleryQuestAchievementFactory());
+		list.add(new GdanskJewelleryQuestAchievementFactory());
 		return list;
 	}
 
