@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.06
+*świat gry*
+- Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
+
+
 1.05.5
 *klient*
 - Zmniejszono rozmiary grafik obu statków, co sprawia, że pasek zdrowia jest niżej (tylko dla tych outfitów)
@@ -7,7 +12,6 @@ Changelog
 - Usunięto zielone pixele w grafice potwora 'upadły duch truskull'
 
 *świat gry*
-- Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
 - Dodano możliwość wydropienia hełmu xenocyjskiego, co umożliwia jednocześnie zdobycie osiągnięcia za zdobycie całego zestawu xeno
 - Dodano możliwość wydropienia zbroji z mithrilu
 - Dodano u złotnika (Jerzego) w Gdańsku książkę opisującą co on skupuje
