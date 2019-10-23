@@ -2,6 +2,7 @@ Changelog
 ---------
 1.06
 *świat gry*
+- Dodano drop czarnego pierścienia oraz pierścienia z mithrilu odpowiednio u azazela i serafina
 - Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
 
 
