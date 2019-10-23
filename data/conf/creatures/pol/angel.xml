@@ -27,6 +27,7 @@
 			<item value="pióro serafina" quantity="[1,1]" probability="100.0"/>
 			<item value="magia światła" quantity="[11,99]" probability="100.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="20.0"/>
+			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia światła" quantity="10000"/>
@@ -74,6 +75,7 @@
 			<item value="pióro azazela" quantity="[1,1]" probability="100.0"/>
 			<item value="magia mroku" quantity="[11,99]" probability="90.0"/>
 			<item value="różdżka Peruna" quantity="[1,1]" probability="7.5"/>
+			<item value="czarny pierścień" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia mroku" quantity="10000"/>
