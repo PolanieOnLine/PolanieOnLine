@@ -27,6 +27,7 @@ stendhal.main = {
 		// Object { file: "Level 0/semos/city_easter.tmx", danger_level: "0.036429932929822995", zoneid: "", readable_name: "Semos city", id: "-1", color_method: "multiply" }
 	},
 
+
 	/**
 	 * register marauroa event handlers.
 	 */
@@ -70,6 +71,7 @@ stendhal.main = {
 			stendhal.ui.chatLog.addLine("client", "Ladowanie swiata...");
 		};
 
+
 		marauroa.clientFramework.onTransferREQ = function(items) {
 			for (var i in items) {
 				if (typeof(items[i]["name"]) == "undefined") {
@@ -80,16 +82,18 @@ stendhal.main = {
 		};
 
 		marauroa.clientFramework.onTransfer = function(items) {
-      var data = {};
+			var data = {};
+			var zoneName = ""
 			for (var i in items) {
-        var name = items[i]["name"];
+				var name = items[i]["name"];
+				zoneName = name.substring(0, name.indexOf("."));
 				name = name.substring(name.indexOf(".") + 1);
 				data[name] = items[i]["data"];
 				if (name === "data_map") {
 					stendhal.main.onDataMap(items[i]["data"]);
 				}
 			}
-      stendhal.data.map.onTransfer(data);
+			stendhal.data.map.onTransfer(zoneName, data);
 		};
 
 		// update user interface on perceptions
@@ -100,17 +104,17 @@ stendhal.main = {
 				stendhal.ui.buddyList.update();
 				stendhal.ui.equip.update();
 				stendhal.ui.stats.update();
-				stendhal.data.map.load(marauroa.currentZoneName, stendhal.main.zoneFile);
 			}
 		}
 	},
+
 
 	/**
 	 * registers global browser event handlers.
 	 */
 	registerBrowserEventHandlers: function() {
-    document.addEventListener("keydown", stendhal.ui.gamewindow.onKeyDown);
-		document.addEventListener("keyup", stendhal.ui.gamewindow.onKeyUp);
+		document.addEventListener("keydown", stendhal.ui.keyhandler.onKeyDown);
+		document.addEventListener("keyup", stendhal.ui.keyhandler.onKeyUp);
 
 		var gamewindow = document.getElementById("gamewindow");
 		gamewindow.setAttribute("draggable", true);
@@ -148,7 +152,6 @@ stendhal.main = {
 
 		if (document.getElementById("gamewindow")) {
 			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
-
 		}
 	},
 
