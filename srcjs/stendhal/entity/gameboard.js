@@ -4,7 +4,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Affero General Public License as        *
- *   published by the Free Software Foundation; either version 3 of the    * 
+ *   published by the Free Software Foundation; either version 3 of the    *
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
@@ -28,7 +28,7 @@ marauroa.rpobjectFactory["game_board"] = marauroa.util.fromProto(marauroa.rpobje
 	set: function(key, value) {
 		marauroa.rpobjectFactory["entity"].set.apply(this, arguments);
 		if (key === "class") {
-			this.sprite.filename = "data/sprites/gameboard/" 
+			this.sprite.filename = "data/sprites/gameboard/"
 				+ this["class"] + ".png";
 		}
 	},
@@ -36,5 +36,9 @@ marauroa.rpobjectFactory["game_board"] = marauroa.util.fromProto(marauroa.rpobje
 	isVisibleToAction: function(filter) {
 		return false;
 	},
+
+  getCursor: function(x, y) {
+		return "url(/data/sprites/cursor/walk.png) 1 3, auto";
+	}
 });
 }());

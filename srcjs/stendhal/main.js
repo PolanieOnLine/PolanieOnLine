@@ -34,7 +34,7 @@ stendhal.main = {
 	registerMarauroaEventHandlers: function() {
 
 		marauroa.clientFramework.onDisconnect = function(reason, error){
-			stendhal.ui.chatLog.addLine("error", "Disconnected: " + error);
+			stendhal.ui.chatLog.addLine("error", "Rozlaczono: " + error);
 		};
 
 		marauroa.clientFramework.onLoginRequired = function() {
@@ -119,6 +119,7 @@ stendhal.main = {
 		var gamewindow = document.getElementById("gamewindow");
 		gamewindow.setAttribute("draggable", true);
 		gamewindow.addEventListener("mousedown", stendhal.ui.gamewindow.onMouseDown);
+    gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);

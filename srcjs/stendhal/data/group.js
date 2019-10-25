@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Stendhal                    *
+ *                   (C) Copyright 2017 - Faiumoni e. V.                   *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -11,30 +11,28 @@
 
 "use strict";
 
-var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
+stendhal.data = stendhal.data || {};
 
-marauroa.rpobjectFactory["sign"] = marauroa.util.fromProto(marauroa.rpobjectFactory["entity"], {
-	zIndex: 5000,
-	"class": "default",
+stendhal.data.group = {
+	members: [],
+	lootmode: "",
+	leader: "",
 
-	draw: function(ctx) {
-		if (!this.imagePath) {
-			this.imagePath = "/data/sprites/signs/" + this["class"] + ".png";
+	updateGroupStatus: function(members, leader, lootmode) {
+		if (members) {
+			var memberArray = members.substring(1, members.length - 1).split("\t");
+			stendhal.data.group.members = {};
+			for (var i = 0; i < memberArray.length; i++) {
+				stendhal.data.group.members[memberArray[i]] = true;
+			}
+			stendhal.data.group.leader = leader;
+			stendhal.data.group.lootmode = lootmode;
+		} else {
+			stendhal.data.group.members = [];
+			stendhal.data.group.leader = "";
+			stendhal.data.group.lootmode = "";
 		}
-		var image = stendhal.data.sprites.get(this.imagePath);
-		if (image.height) {
-			var localX = this["x"] * 32;
-			var localY = this["y"] * 32;
-			ctx.drawImage(image, localX, localY);
-		}
-	},
-
-	isVisibleToAction: function(filter) {
-		return true;
-	},
-
-  getCursor: function(x, y) {
-		return "url(/data/sprites/cursor/look.png) 1 3, auto";
 	}
-});
+
+}

@@ -256,14 +256,14 @@ stendhal.slashActionRepository = {
 			}
 
 			if (remainder.length > 0) {
-				if (remainder.indexOf("Open Quests") > -1) {
-					action["progress_type"] = "Open Quests";
+				if (remainder.indexOf("Otwarte zadania") > -1) {
+					action["progress_type"] = "Otwarte zadania";
 					remainder = remainder.substring(12);
-				} else if (remainder.indexOf("Completed Quests") > -1) {
-					action["progress_type"] = "Completed Quests";
+				} else if (remainder.indexOf("Ukończone zadania") > -1) {
+					action["progress_type"] = "Ukończone zadania";
 					remainder = remainder.substring(17);
-				} else if (remainder.indexOf("Production") > -1) {
-					action["progress_type"] = "Production";
+				} else if (remainder.indexOf("Produkcja") > -1) {
+					action["progress_type"] = "Produkcja";
 					remainder = remainder.substring(11);
 				} else {
 

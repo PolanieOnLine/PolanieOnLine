@@ -29,32 +29,35 @@ stendhal.ui.gamewindow = {
 		var startTime = new Date().getTime();
 
 		if (marauroa.me && document.visibilityState === "visible") {
-			var canvas = document.getElementById("gamewindow");
-			this.targetTileWidth = 32;
-			this.targetTileHeight = 32;
-			this.drawingError = false;
+      if (marauroa.currentZoneName === stendhal.data.map.currentZoneName) {
+				var canvas = document.getElementById("gamewindow");
+				this.targetTileWidth = 32;
+				this.targetTileHeight = 32;
+				this.drawingError = false;
 
-			this.ctx = canvas.getContext("2d");
-			this.ctx.globalAlpha = 1.0;
-			this.adjustView(canvas);
-      this.ctx.fillStyle = "black";
-			this.ctx.fillRect(0, 0, 10000, 10000);
+				this.ctx = canvas.getContext("2d");
+				this.ctx.globalAlpha = 1.0;
+				this.adjustView(canvas);
+				this.ctx.fillStyle = "black";
+				this.ctx.fillRect(0, 0, 10000, 10000);
 
-			var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
-			var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
+				var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
+				var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
 
-			for (var drawingLayer=0; drawingLayer < stendhal.data.map.layers.length; drawingLayer++) {
-				var name = stendhal.data.map.layerNames[drawingLayer];
-				if (name !== "protection" && name !== "collision" && name !== "secret"
-				  && name !== "objects" && name !== "blend_ground" && name !== "blend_roof") {
-					this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
+				for (var drawingLayer=0; drawingLayer < stendhal.data.map.layers.length; drawingLayer++) {
+					var name = stendhal.data.map.layerNames[drawingLayer];
+					if (name !== "protection" && name !== "collision" && name !== "objects"
+						&& name !== "blend_ground" && name !== "blend_roof") {
+						this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
+					}
+					if (name === "2_object") {
+						this.drawEntities();
+					}
 				}
-				if (name === "2_object") {
-					this.drawEntities();
-				}
+
+        this.drawEntitiesTop();
+				this.drawTextSprites();
 			}
-			this.drawEntitiesTop();
-			this.drawTextSprites();
 		}
 		setTimeout(function() {
 			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
@@ -260,6 +263,13 @@ stendhal.ui.gamewindow = {
 
 		return _onMouseDown;
 	})(),
+
+  onMouseMove: function(e) {
+		var x = e.offsetX + stendhal.ui.gamewindow.offsetX;
+		var y = e.offsetY + stendhal.ui.gamewindow.offsetY;
+		var entity = stendhal.zone.entityAt(x, y);
+		document.getElementById("gamewindow").style.cursor = entity.getCursor(x, y);
+	},
 
 	// ***************** Drag and drop ******************
 	onDragStart: function(e) {

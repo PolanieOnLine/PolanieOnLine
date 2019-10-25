@@ -56,14 +56,26 @@ marauroa.rpeventFactory["global_visual_effect"] = marauroa.util.fromProto(maraur
 
 marauroa.rpeventFactory["group_change_event"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-		// TODO: new GroupChangeEvent();
+    if (rpobject !== marauroa.me) {
+			return;
+		}
+		stendhal.data.group.updateGroupStatus(this["members"], this["leader"], this["lootmode"]);
 	}
 });
 
 
 marauroa.rpeventFactory["group_invite_event"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-		// TODO: new GroupInviteEvent();
+    if (rpobject !== marauroa.me) {
+			return;
+		}
+		if (this["expire"]) {
+			stendhal.ui.chatLog.addLine("normal", "Twoje zaproszenie do grupy " + this["leader"] + " wygasło.");
+		} else {
+			stendhal.ui.chatLog.addLine("normal", "Zostałeś zaproszony przez " + this["leader"] + ", aby dołączyć do grupy.");
+			stendhal.ui.chatLog.addLine("normal", "Jeśli chcesz dołączyć, wpisz: /group join " + this["leader"]);
+			stendhal.ui.chatLog.addLine("normal", "Aby opuścić grupę w dowolnym momencie, wpisz: /group part " + this["leader"]);
+		}
 	}
 });
 
@@ -99,23 +111,15 @@ marauroa.rpeventFactory["private_text"] = marauroa.util.fromProto(marauroa.rpeve
 
 marauroa.rpeventFactory["progress_status_event"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-    var progressType = "";
-		if (this["progress_type"]) {
-			progressType = this["progress_type"] + " ";
-		}
+		var progressType = this["progress_type"];
+		var dataItems = this["data"].substring(1, this["data"].length - 1).split(/\t/);
 
-		var items = this["data"].substring(1, this["data"].length - 1).split(/\t/);
-		if (!this["item"]) {
-			stendhal.ui.chatLog.addLine("normal", "Please use one of these commands:");
-			for (var i = 0; i < items.length; i++) {
-				stendhal.ui.chatLog.addLine("normal", "   /progressstatus " + progressType + items[i]);
-			}
+		if (!this["progress_type"]) {
+			stendhal.ui.travellog.open(dataItems);
+		} else if (!this["item"]) {
+			stendhal.ui.travellog.progressTypeData(progressType, dataItems);
 		} else {
-			stendhal.ui.chatLog.addLine("normal", this["item"]);
-			stendhal.ui.chatLog.addLine("normal", this["description"]);
-			for (var i = 0; i < items.length; i++) {
-				stendhal.ui.chatLog.addLine("normal", "* " + items[i]);
-			}
+			stendhal.ui.travellog.itemData(progressType, this["item"], this["description"], dataItems);
 		}
 	}
 });
@@ -137,7 +141,7 @@ marauroa.rpeventFactory["show_item_list"] = marauroa.util.fromProto(marauroa.rpe
 			stendhal.ui.chatLog.addLine("normal", this["caption"]);
 		}
 		if (this.hasOwnProperty("content")) {
-			stendhal.ui.chatLog.addLine("normal", "Item\t-\tPrice\t-\tDescription");
+			stendhal.ui.chatLog.addLine("normal", "Przedmiot\t-\tCena\t-\tOpis");
 			for (var obj in this["content"]) {
 				if (this["content"].hasOwnProperty(obj)) {
 					var slotObj = this["content"][obj];
@@ -164,6 +168,7 @@ marauroa.rpeventFactory["sound_event"] = marauroa.util.fromProto(marauroa.rpeven
 				// Can't calculate the distance yet. Ignore the sound.
 				return;
 			}
+
 			var radius = parseInt(this["radius"], 10);
 			var xdist = marauroa.me["_x"] - rpobject["_x"];
 			var ydist = marauroa.me["_y"] - rpobject["_y"];
@@ -209,3 +214,4 @@ marauroa.rpeventFactory["view_change"] = marauroa.util.fromProto(marauroa.rpeven
 		// TODO: new ViewChangeEvent();
 	}
 });
+// Dummy comment to prevent accidental re-push of a rebase done into the wrong direction
