@@ -139,6 +139,7 @@ stendhal.data.map = {
 		stendhal.data.map.decodeMapLayer(content, "4_roof_add");
 		stendhal.data.map.protection = stendhal.data.map.decodeMapLayer(content, "protection");
 		stendhal.data.map.collisionData = stendhal.data.map.decodeMapLayer(content, "collision");
+    stendhal.data.map.secret = stendhal.data.map.decodeMapLayer(content, "secret");
 
 	},
 
@@ -202,6 +203,10 @@ stendhal.data.map = {
 
 	collision: function(x, y) {
 		return this.collisionData[y * stendhal.data.map.zoneSizeX + x] != 0;
+	},
+
+  isSecret: function(x, y) {
+		return this.secret[y * stendhal.data.map.zoneSizeX + x] != 0;
 	},
 
 	isProtected: function(x, y) {
