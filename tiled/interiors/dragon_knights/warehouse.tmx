@@ -1,80 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="17" height="13" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="int_wall_dark_red" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="int_wall_dark_red" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="17" name="int_wall_dark_red_corners" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ <tileset firstgid="17" name="int_wall_dark_red_corners" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="34" name="drewniany_stol_obrus" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/wyposazenie/stoly/drewniany_stol_obrus.png"/>
+ <tileset firstgid="34" name="drewniany_stol_obrus" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/pol/wyposazenie/stoly/drewniany_stol_obrus.png" width="96" height="96"/>
  </tileset>
- <tileset firstgid="43" name="kafelki_rozne" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ <tileset firstgid="43" name="kafelki_rozne" tilewidth="32" tileheight="32" tilecount="80" columns="16">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png" width="512" height="160"/>
  </tileset>
- <tileset firstgid="123" name="miecze" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/wyposazenie/miecze.png"/>
+ <tileset firstgid="123" name="miecze" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/pol/wyposazenie/miecze.png" width="256" height="128"/>
  </tileset>
- <tileset firstgid="155" name="dzabny" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/pot/pots_pink_blue.png"/>
+ <tileset firstgid="155" name="dzabny" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/pot/pots_pink_blue.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="159" name="beczka" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/pot/small_barrel.png"/>
+ <tileset firstgid="159" name="beczka" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/item/pot/small_barrel.png" width="32" height="64"/>
  </tileset>
- <tileset firstgid="161" name="beczki" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/pot/mine_barrels.png"/>
+ <tileset firstgid="161" name="beczki" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/item/pot/mine_barrels.png" width="256" height="64"/>
  </tileset>
- <tileset firstgid="177" name="depo" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/chest/chest_2.png"/>
+ <tileset firstgid="177" name="depo" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/item/chest/chest_2.png" width="96" height="64"/>
  </tileset>
- <tileset firstgid="183" name="dark_red_ew" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ <tileset firstgid="183" name="dark_red_ew" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+  <image source="../../tileset/building/entrance/dark_red_ew.png" width="128" height="96"/>
  </tileset>
- <layer name="0_floor" width="17" height="13">
+ <layer id="1" name="0_floor" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAALNlYGCwHcWjeBTTDQMACqAbe3QDAAA=
+   H4sIAAAAAAAACrNlYGCwHcWjeBTTDQMACqAbe3QDAAA=
   </data>
  </layer>
- <layer name="1_terrain" width="17" height="13">
+ <layer id="2" name="1_terrain" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAABNkYGAQogCLALEkEIsBMTsZWByIJaBmsDGQB7ipaIboIDBDZhCZMVjihVpmSAEx
-FxlYGmqGLBDLUYAVgBgASfDwN3QDAAA=
+   H4sIAAAAAAAAChNkYGAQogCLALEkEIsBMTsZWByIJaBmsDGQB7ipaIYokhmqQKxGBFbHY4YGEGsSgbWQzJBBM4Mcv1DLjMESL9QyQwqIucjA0lAzZIFYjgKsAMQAp/hr0HQDAAA=
   </data>
  </layer>
- <layer name="2_object" width="17" height="13">
+ <layer id="3" name="2_object" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGFxgARRTWy2xYCcQ74KyVYFYjQisjmbGXiDeB2VrALEmEVgLzYyDQHyISn6i
-BthCY/WkgLVAvA6IVwLxKjQ5mBhMzWAEAJ6Wc0d0AwAA
+   H4sIAAAAAAAACmNgoD2YRoLaBVBMbbXEgp1AvAuJPxeNno1DHBnsBeJ9FLrjIBAfotAMaoItNFZPClgLxOuAeCUQr0KTg4nB1AxGAAAov+zFdAMAAA==
   </data>
  </layer>
- <layer name="3_roof" width="17" height="13">
+ <layer id="4" name="3_roof" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgoB6YD8XoYBoJaqkFlIBYmQisQsCcuTR0I73ARhqrJwUsBeJlQLwQiBehycHE
-YGqGKwAA/NKaQXQDAAA=
+   H4sIAAAAAAAACmNgoB6YD8XUVksOUAJiZSKwCg3dMFjARhqrJwUsBeJlQLwQiBehycHEYGqGKwAAos0AJHQDAAA=
   </data>
  </layer>
- <layer name="4_roof_add" width="17" height="13">
+ <layer id="5" name="4_roof_add" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGN5gHpSeg0bPw6IWH5gLpWej8ediUTsKRgE+AAAUoIpmdAMAAA==
+   H4sIAAAAAAAACmNgGN5gHpSeg0bPw6J2FIwCegAAEp4UZnQDAAA=
   </data>
  </layer>
- <layer name="objects" width="17" height="13">
+ <layer id="6" name="objects" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBTQEwAAX9FJ7XQDAAA=
+   H4sIAAAAAAAACmNgGAWjYBTQEwAAX9FJ7XQDAAA=
   </data>
  </layer>
- <layer name="collision" width="17" height="13">
+ <layer id="7" name="collision" width="17" height="13" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAFNkYGBQHISYGIBPL6l2UdsMcgE54UAPM0g1h1L9uMzBJUaK+oHGADz1Gcp0AwAA
+   H4sIAAAAAAAAClNkYGBQHISYGECJXkJm4TMfl52UugGXOwaDGaSaQ894IVX9QGMABZ0o8nQDAAA=
   </data>
  </layer>
- <layer name="protection" width="17" height="13">
+ <layer id="8" name="protection" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBTQEwAAX9FJ7XQDAAA=
+   H4sIAAAAAAAACmNgGAWjYBTQEwAAX9FJ7XQDAAA=
   </data>
  </layer>
 </map>
