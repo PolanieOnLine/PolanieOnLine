@@ -33,20 +33,9 @@ public class OutfitStore {
 
 	/** outfit directory */
 	private static final String OUTFITS = "data/sprites/outfit";
-	/** body directory */
-	private static final String BODIES = OUTFITS + "/body";
-	/** dress directory */
-	private static final String DRESSES = OUTFITS + "/dress";
-	/** head directory */
-	private static final String HEADS = OUTFITS + "/head";
-	/** mouth directory */
-	private static final String MOUTHS = OUTFITS + "/mouth";
-	/** eyes directory */
-	private static final String EYES = OUTFITS + "/eyes";
-	/** hair directory */
-	private static final String HAIRS = OUTFITS + "/hair";
-	/** detail directory */
-	private static final String DETAILS = OUTFITS + "/detail";
+
+	// these layers should return an empty sprite for index "0"
+	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mouth", "mask", "hair", "hat", "detail");
 
 	/**
 	 * The singleton.
@@ -220,23 +209,12 @@ public class OutfitStore {
 	/**
 	 * Get the failsafe outfit.
 	 *
-	 * @return The failsafe outfit tileset.
-	 */
-	public Sprite getFailsafeOutfit() {
-		try {
-			return getOutfit(0, OutfitColor.PLAIN);
-		} catch (RuntimeException e) {
-			logger.warn("Cannot build failsafe outfit. Trying to use standard failsafe sprite.", e);
-			return store.getFailsafe();
-		}
-	}
-
-	/**
-	 * Get the hair sprite tileset.
-	 *
+	 * @param layer
+	 * 		Name of the layer.
 	 * @param index
-	 *            The resource index.
-	 * @param color coloring data
+	 * 		The resource index.
+	 * @param color
+	 * 		Layer coloring.
 	 *
 	 * @return The sprite, or <code>null</code>.
 	 */
@@ -364,7 +342,10 @@ public class OutfitStore {
 	private Sprite getOutfit(final int code, final OutfitColor color,
 			final String reference) {
 		final SpriteCache cache = SpriteCache.get();
-		Sprite sprite = cache.get(reference);
+
+		// FIXME: set sprite to null until reference for extended outfit is fixed
+		//Sprite sprite = cache.get(reference);
+		Sprite sprite = null;
 
 		if (sprite == null) {
 			sprite = buildOutfit(code, color);
@@ -392,12 +373,17 @@ public class OutfitStore {
 			// Use the normalized string for the reference
 			final String reference = buildReference(code, color.toString());
 			String fullRef = reference + ":" + adjColor.getRGB() + blend.toString();
-			Sprite sprite = cache.get(fullRef);
+
+			// FIXME: set sprite to null until reference for extended outfit is fixed
+			//Sprite sprite = cache.get(fullRef);
+			Sprite sprite = null;
+
 			if (sprite == null) {
 				Sprite plain = getOutfit(code, color);
 				sprite = store.modifySprite(plain, adjColor, blend, fullRef);
 
 			}
+
 			return sprite;
 		}
 	}
@@ -412,5 +398,5 @@ public class OutfitStore {
 	private String buildReference(final int code, final String colorCode) {
 		return "OUTFIT:" + code + "@" + colorCode;
 	}
-	
+	*/
 }

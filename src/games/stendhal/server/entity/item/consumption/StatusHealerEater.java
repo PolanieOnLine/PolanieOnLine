@@ -13,6 +13,7 @@ package games.stendhal.server.entity.item.consumption;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 
 import games.stendhal.server.core.events.TurnListener;
@@ -42,7 +43,7 @@ public class StatusHealerEater implements TurnListener {
 	 */
 	public StatusHealerEater(final RPEntity entity, final StatusType status) {
 		entityReference = new WeakReference<RPEntity>(entity);
-		statuses.add(status);
+		statuses = EnumSet.of(status);
 	}
 
 	/**

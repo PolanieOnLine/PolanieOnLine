@@ -30,16 +30,14 @@ public interface J2DClientGUI {
 	void afterPainting();
 	void beforePainting();
 	void chooseOutfit();
-
 	/**
 	 * Get the objects that should be informed about user position changes.
-	 * 
+	 *
 	 * @return
 	 */
 	Collection<PositionChangeListener> getPositionChangeListeners();
 	JFrame getFrame();
 	boolean isOffline();
-
 	/**
 	 * Resets the clients width and height to their default values.
 	 */
@@ -48,7 +46,6 @@ public interface J2DClientGUI {
 	void setChatLine(String text);
 	void setOffline(boolean offline);
 	void switchToSpellState(RPObject spell);
-
 	/**
 	 * Requests repaint at the window areas that are painted according to the
 	 * game loop frame rate.

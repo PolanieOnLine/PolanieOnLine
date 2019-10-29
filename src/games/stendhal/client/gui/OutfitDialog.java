@@ -55,8 +55,6 @@ import marauroa.common.game.RPAction;
  * Outfit selection dialog.
  */
 class OutfitDialog extends JDialog {
-	private static final long serialVersionUID = -3664354578167942825L;
-
 	/** the logger instance. */
 	private static final Logger LOGGER = Logger.getLogger(OutfitDialog.class);
 
@@ -593,7 +591,6 @@ class OutfitDialog extends JDialog {
 	 * An image label for outfit and outfit parts.
 	 */
 	private static class OutfitLabel extends JLabel implements IndexChangeListener {
-		private static final long serialVersionUID = -5659219077740988626L;
 		final SpriteRetriever[] retrievers;
 
 		/**

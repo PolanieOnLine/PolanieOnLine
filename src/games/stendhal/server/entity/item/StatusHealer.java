@@ -24,7 +24,6 @@ import games.stendhal.server.entity.status.StatusType;
  *
  * @author AntumDeluge
  */
-
 public class StatusHealer extends ConsumableItem {
 	private final Set<StatusType> immunizations = EnumSet.noneOf(StatusType.class);
 
@@ -53,6 +52,7 @@ public class StatusHealer extends ConsumableItem {
 	 */
 	public StatusHealer(StatusHealer item) {
 		super(item);
+
 		immunizations.addAll(item.getImmunizations());
 	}
 
