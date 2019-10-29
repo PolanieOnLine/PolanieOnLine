@@ -63,21 +63,19 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		// (what's null doesn't change that part of the outfit)
 		// so true means we put on over
 		// FIXME: Use new outfit system
-		final Pair<Outfit, Boolean> GLASSES = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(32), null, null), true);
-		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(34), null, null), true);
-		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, Integer.valueOf(33), null, null), true);
-		final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(Integer.valueOf(07), null, null, null, null), true);
+		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 34, -1, -1, -1, null), true);
+		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 33, -1, -1, -1, null), true);
+		final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(null, null, null, null, null, null, 7), true);
 
 		// these outfits must replace the current outfit (what's null simply isn't there)
-		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(93)), false);
-		final Pair<Outfit, Boolean> GREEN_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(89)), false);
-		final Pair<Outfit, Boolean> RED_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(88)), false);
-		final Pair<Outfit, Boolean> BLUE_SLIME = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(91)), false);
-		final Pair<Outfit, Boolean> GINGERBREAD_MAN = new Pair<Outfit, Boolean>(new Outfit(null, Integer.valueOf(00), Integer.valueOf(98), Integer.valueOf(00), Integer.valueOf(92)), false);
-		final Pair<Outfit, Boolean> WHITE_CAT = new Pair<Outfit, Boolean>(new Outfit(null, 0, 98, 0, 78), false);
-		final Pair<Outfit, Boolean> BLACK_CAT = new Pair<Outfit, Boolean>(new Outfit(null, 0, 98, 0, 79), false);
+		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(93, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> GREEN_SLIME = new Pair<Outfit, Boolean>(new Outfit(89, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> RED_SLIME = new Pair<Outfit, Boolean>(new Outfit(88, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> BLUE_SLIME = new Pair<Outfit, Boolean>(new Outfit(91, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> GINGERBREAD_MAN = new Pair<Outfit, Boolean>(new Outfit(92, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> WHITE_CAT = new Pair<Outfit, Boolean>(new Outfit(78, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> BLACK_CAT = new Pair<Outfit, Boolean>(new Outfit(79, -1, -1, -1, -1, -1, null), false);
 
-		outfitTypes.put("okulary", GLASSES);
 		outfitTypes.put("twarz goblina", GOBLIN_FACE);
 		outfitTypes.put("twarz cosia", THING_FACE);
 		outfitTypes.put("parasol", Umbrella);
@@ -164,7 +162,6 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 					}
 				}
 				final Map<String, Integer> priceList = new HashMap<String, Integer>();
-				priceList.put("okulary", (int) (N * 400));
 				priceList.put("twarz goblina", (int) (N * 500));
 				priceList.put("twarz cosia", (int) (N * 500));
 				priceList.put("fioletowy szlam", (int) (N * 3000));
@@ -183,7 +180,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 					null,
 					ConversationStates.ATTENDING,
 					"Powiedz mi, które chciałbyś ubranie."
-					+ " Powiedz #'wypożycz okulary', #'wypożycz twarz goblina',"
+					+ " Powiedz #'wypożycz twarz goblina',"
 					+ " #'wypożycz twarz cosia', #'wypożycz parasol',"
 					+ " #'wypożycz fioletowy szlam', #'wypożycz zielony szlam',"
 					+ " #'wypożycz czerwony szlam', #'wypożycz niebieski szlam',"
