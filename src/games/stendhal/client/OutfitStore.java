@@ -12,10 +12,15 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import static games.stendhal.common.Outfits.RECOLORABLE_OUTFIT_PARTS;
 
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +29,7 @@ import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteCache;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.common.Outfits;
 
 /**
  * An outfit store.
@@ -65,57 +71,47 @@ public class OutfitStore {
 	/**
 	 * Build an outfit sprite.
 	 *
-	 * The outfit is described by an "outfit code". It is an 8-digit integer of
-	 * the form TTRRHHDDBB where TT is the number of the detail graphics (optional)
-	 * RR is the number of the hair graphics (optional), HH for the
-	 * head, DD for the dress, and BB for the body.
-	 *
-	 * @param code
-	 *            The outfit code.
-	 * @param color coloring data
-	 *
+	 * @param strcode
+	 * @param color
+	 * 		coloring data
 	 * @return A walking state tileset.
 	 */
-	private Sprite buildOutfit(int code, final OutfitColor color) {
-		final int bodycode = (code % 100);
-		code /= 100;
+	private Sprite buildOutfit(final String strcode, final OutfitColor color) {
+		final Map<String, Integer> layer_map = new HashMap<>();
 
-		final int dresscode = (code % 100);
-		code /= 100;
-
-		final int headcode = (code % 100);
-		code /= 100;
-
-		final int haircode = (code % 100);
-		code /= 100;
-
-		final int detailcode = (code % 100);
-
-		// Body layer
-		Sprite layer = getBodySprite(bodycode, color);
-		if (layer == null) {
-			throw new IllegalArgumentException(
-					"No body image found for outfit: " + bodycode);
+	    // initialize outfit parts to 0 in case some haven't been specified
+		for (String n: Outfits.LAYER_NAMES) {
+			layer_map.put(n, 0);
 		}
 
-		final ImageSprite sprite = new ImageSprite(layer);
+		for (String layer: strcode.split(",")) {
+			if (layer.contains("=")) {
+				final String[] key = layer.split("=");
+				layer_map.put(key[0], Integer.parseInt(key[1]));
+			}
+		}
+
+		ImageSprite sprite;
+
+		// Body layer
+		Sprite layer = getLayerSprite("body", layer_map.get("body"), color);
+		if (layer == null) {
+			throw new IllegalArgumentException(
+					"No body image found for outfit: " + layer_map.get("body"));
+		}
+
+		sprite = new ImageSprite(layer);
 		final Graphics g = sprite.getGraphics();
 
-		// Dress layer
-		layer = getDressSprite(dresscode, color);
-		layer.draw(g, 0, 0);
-
-		// Head layer
-		layer = getHeadSprite(headcode, color);
-		layer.draw(g, 0, 0);
-
-		// Hair layer
-		layer = getHairSprite(haircode, color);
-		layer.draw(g, 0, 0);
-
-		// Item layer
-		layer = getDetailSprite(detailcode, color);
-		layer.draw(g, 0, 0);
+		final List<String> layer_names = Arrays.asList("dress", "head", "mask", "hair", "hat", "detail");
+		for (String lname: layer_names) {
+			if (RECOLORABLE_OUTFIT_PARTS.contains(lname)) {
+				layer = getLayerSprite(lname, layer_map.get(lname), color);
+			} else {
+				layer = getLayerSprite(lname, layer_map.get(lname));
+			}
+			layer.draw(g, 0, 0);
+		}
 
 		return sprite;
 	}
@@ -140,7 +136,7 @@ public class OutfitStore {
 	 * FIXME:	Probably not necessary since there are no more than 100
 	 * 			sprites for each group.
 	 */
-	public String getSpriteSuffix(final int index) {
+	private String getSpriteSuffix(final int index) {
 		String suffix;
 
 		/** Get the value of the index using xxx naming convention */
@@ -156,48 +152,6 @@ public class OutfitStore {
 	}
 
 	/**
-	 * Get the body sprite tileset.
-	 *
-	 * @param index
-	 *            The resource index.
-	 * @param color Skin color
-	 *
-	 * @return The sprite, or <code>null</code>.
-	 */
-	public Sprite getBodySprite(final int index, OutfitColor color) {
-		final String suffix = getSpriteSuffix(index);
-
-		final String ref = BODIES + "/body_" + suffix + ".png";
-
-		if (!store.existsSprite(ref)) {
-			return null;
-		}
-
-		return store.getColoredSprite(ref, color.getColor(OutfitColor.SKIN));
-	}
-
-	/**
-	 * Get the dress sprite tileset.
-	 *
-	 * @param index
-	 *            The resource index.
-	 * @param color coloring data
-	 *
-	 * @return The sprite, or <code>null</code>.
-	 */
-	public Sprite getDressSprite(final int index, OutfitColor color) {
-		if (index == 0) {
-			return getEmptySprite();
-		}
-
-		final String suffix = getSpriteSuffix(index);
-
-		final String ref = DRESSES + "/dress_" + suffix + ".png";
-
-		return store.getColoredSprite(ref, color.getColor(OutfitColor.DRESS));
-	}
-
-	/**
 	 * Get the empty sprite tileset.
 	 *
 	 * @return The sprite.
@@ -207,7 +161,7 @@ public class OutfitStore {
 	}
 
 	/**
-	 * Get the failsafe outfit.
+	 * Get the layer sprite tileset.
 	 *
 	 * @param layer
 	 * 		Name of the layer.
@@ -216,131 +170,83 @@ public class OutfitStore {
 	 * @param color
 	 * 		Layer coloring.
 	 *
-	 * @return The sprite, or <code>null</code>.
+	 * @return The Sprite or <code>null</code>.
 	 */
-	public Sprite getHairSprite(final int index, OutfitColor color) {
-		if (index == 0) {
-			return getEmptySprite();
+	public Sprite getLayerSprite(final String layer, final int index, final OutfitColor color) {
+		if (emptyForZeroIndex.contains(layer)) {
+			if (index <= 0) {
+				return getEmptySprite();
+			}
+		} else {
+			if (index < 0) {
+				return getEmptySprite();
+			}
 		}
 
 		final String suffix = getSpriteSuffix(index);
+		final String ref = OUTFITS + "/" + layer + "/" + layer + "_" + suffix + ".png";
 
-		final String ref = HAIRS + "/hair_" + suffix + ".png";
-
-		return store.getColoredSprite(ref, color.getColor(OutfitColor.HAIR));
+		if (color == null) {
+			return store.getSprite(ref);
+		} else {
+			return store.getColoredSprite(ref, color.getColor(layer));
+		}
 	}
 
 	/**
-	 * Get the eyes sprite tileset.
+	 * Get the layer sprite tileset.
 	 *
+	 * @param layer
+	 * 		Name of the layer.
 	 * @param index
-	 *            The resource index.
-	 * @param color Eye color
-	 * @return The sprite, or <code>null</code>
+	 * 		The resource index.
+	 *
+	 * @return The Sprite or <code>null</code>.
 	 */
-	public Sprite getEyesSprite(final int index, OutfitColor color) {
-		final String suffix = getSpriteSuffix(index);
-
-		final String ref = EYES + "/eyes_" + suffix + ".png";
-
-		if (!store.existsSprite(ref)) {
-			return null;
-		}
-
-		return store.getColoredSprite(ref, color.getColor(OutfitColor.EYES));
+	public Sprite getLayerSprite(final String layer, final int index) {
+		return getLayerSprite(layer, index, null);
 	}
 
 	/**
-	 * Get the mouth sprite tileset.
+	 * Get the failsafe outfit.
 	 *
-	 * @param index
-	 *            The resource index.
-	 * @return The sprite, or <code>null</code>
+	 * @return The failsafe outfit tileset.
 	 */
-	public Sprite getMouthSprite(final int index) {
-		final String suffix = getSpriteSuffix(index);
-
-		final String ref = MOUTHS + "/mouth_" + suffix + ".png";
-
-		if (!store.existsSprite(ref)) {
-			return null;
+	public Sprite getFailsafeOutfit() {
+		try {
+			final String failsafe_str = "body=0,dress=0,head=0,mask=0,hair=0,hat=0,detail=0";
+			return getOutfit(failsafe_str, OutfitColor.PLAIN);
+		} catch (RuntimeException e) {
+			logger.warn("Cannot build failsafe outfit. Trying to use standard failsafe sprite.", e);
+			return store.getFailsafe();
 		}
-
-		return store.getSprite(ref);
-	}
-
-	/**
-	 * Get the head sprite tileset.
-	 *
-	 * @param index
-	 *            The resource index.
-	 * @param color Skin color
-	 *
-	 * @return The sprite, or <code>null</code>.
-	 */
-	public Sprite getHeadSprite(final int index, OutfitColor color) {
-		final String suffix = getSpriteSuffix(index);
-
-		final String ref = HEADS + "/head_" + suffix + ".png";
-
-		if (!store.existsSprite(ref)) {
-			return null;
-		}
-
-		return store.getColoredSprite(ref, color.getColor(OutfitColor.SKIN));
-	}
-
-	/**
-	 * Get the item sprite tileset.
-	 *
-	 * @param index
-	 *            The resource index.
-	 * @param color coloring data
-	 *
-	 * @return The sprite, or <code>null</code>.
-	 */
-	private Sprite getDetailSprite(final int index, OutfitColor color) {
-		if (index == 0) {
-			return getEmptySprite();
-		}
-
-		final String suffix = getSpriteSuffix(index);
-
-		final String ref = DETAILS + "/detail_" + suffix + ".png";
-
-		return store.getColoredSprite(ref, color.getColor(OutfitColor.DETAIL));
 	}
 
 	/**
 	 * Get an outfit sprite.
 	 *
-	 * The outfit is described by an "outfit code". It is an 10-digit integer of
-	 * the form TTRRHHDDBB where where TT is the number of the detail graphics (optional)
-	 * RR is the number of the hair graphics, HH for the
-	 * head, DD for the dress, and BB for the body.
-	 *
-	 * @param code
-	 *            The outfit code.
-	 * @param color Colors for coloring some outfit parts
-	 *
-	 * @return An walking state tileset.
+	 * @param strcode
+	 * @param color
+	 * 		Colors for coloring some outfit parts.
+	 * @return outfit
 	 */
-	private Sprite getOutfit(final int code, final OutfitColor color) {
+	private Sprite getOutfit(final String strcode, final OutfitColor color) {
 		// Use the normalized string for the reference
-		final String reference = buildReference(code, color.toString());
-		return getOutfit(code, color, reference);
+		final String reference = buildReference(strcode, color.toString());
+		return getOutfit(strcode, color, reference);
 	}
 
 	/**
 	 * Get outfit for a known outfit reference.
 	 *
-	 * @param code outfit code
-	 * @param color Color information for outfit parts
-	 * @param reference outfit reference
+	 * @param strcode
+	 * @param color
+	 * 		Colors for coloring some outfit parts.
+	 * @param reference
+	 * 		Outfit reference.
 	 * @return outfit
 	 */
-	private Sprite getOutfit(final int code, final OutfitColor color,
-			final String reference) {
+	private Sprite getOutfit(final String strcode, final OutfitColor color, final String reference) {
 		final SpriteCache cache = SpriteCache.get();
 
 		// FIXME: set sprite to null until reference for extended outfit is fixed
@@ -348,7 +254,7 @@ public class OutfitStore {
 		Sprite sprite = null;
 
 		if (sprite == null) {
-			sprite = buildOutfit(code, color);
+			sprite = buildOutfit(strcode, color);
 			cache.add(reference, sprite);
 		}
 
@@ -357,21 +263,12 @@ public class OutfitStore {
 
 	/**
 	 * Get an outfit with color adjustment, such as a player in colored light.
-	 *
-	 * @param code outfit code
-	 * @param color Color information for outfit parts
-	 * @param adjColor adjustment color for the entire outfit
-	 * @param blend blend mode for applying the adjustment color
-	 * @return color adjusted outfit
 	 */
-	public Sprite getAdjustedOutfit(final int code, OutfitColor color,
-			Color adjColor, Composite blend) {
-		if ((adjColor == null) || (blend == null)) {
-			return getOutfit(code, color);
+	public Sprite getAdjustedOutfit(final String strcode, final OutfitColor color, final Color adjColor, final Composite blend) {
+		if (adjColor == null || blend == null) {
+			return getOutfit(strcode, color);
 		} else {
-			final SpriteCache cache = SpriteCache.get();
-			// Use the normalized string for the reference
-			final String reference = buildReference(code, color.toString());
+			final String reference = buildReference(strcode, color.toString());
 			String fullRef = reference + ":" + adjColor.getRGB() + blend.toString();
 
 			// FIXME: set sprite to null until reference for extended outfit is fixed
@@ -379,9 +276,8 @@ public class OutfitStore {
 			Sprite sprite = null;
 
 			if (sprite == null) {
-				Sprite plain = getOutfit(code, color);
+				Sprite plain = getOutfit(strcode, color);
 				sprite = store.modifySprite(plain, adjColor, blend, fullRef);
-
 			}
 
 			return sprite;
@@ -395,7 +291,14 @@ public class OutfitStore {
 	 * @param colorCode color information for outfit parts
 	 * @return outfit reference
 	 */
-	private String buildReference(final int code, final String colorCode) {
+	private String buildReference(final String strcode, final String colorCode) {
+		return "OUTFIT:" + strcode + "@" + colorCode;
+	}
+
+	/*
+	@Deprecated
+	private String buildReference(final int code, final int mask, final int hat,
+			final String colorCode) {
 		return "OUTFIT:" + code + "@" + colorCode;
 	}
 	*/
