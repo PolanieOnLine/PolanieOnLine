@@ -173,7 +173,7 @@ public class BowsForOuchitTest {
 		// the state wasn't remembered across the new test method so we need to set it to what it was when we ended the last
 		player.setQuest(QUEST_SLOT, "hair");
 		// nor was what the player was equipped with
-		PlayerTestHelper.equipWithItem(player, "koński włos");
+		PlayerTestHelper.equipWithItem(player, "horse hair");
 
 		// remember the xp and karma, did it go up?
 		final int xp = player.getXP();

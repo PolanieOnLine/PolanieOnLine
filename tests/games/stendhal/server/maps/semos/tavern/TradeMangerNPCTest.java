@@ -80,7 +80,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithItem(player, "topór");
+		PlayerTestHelper.equipWithItem(player, "axe");
 		PlayerTestHelper.equipWithStackableItem(player, "money", 42);
 
 		assertTrue(en.step(player, "hello"));
@@ -107,7 +107,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		Item item = SingletonRepository.getEntityManager().getItem("topór");
+		Item item = SingletonRepository.getEntityManager().getItem("axe");
 		StackableItem playersMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(1500);
@@ -140,7 +140,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithItem(player, "topór");
+		PlayerTestHelper.equipWithItem(player, "axe");
 		PlayerTestHelper.equipWithStackableItem(player, "money", 42);
 
 		assertTrue(en.step(player, "hello"));
@@ -168,7 +168,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithStackableItem(player, "węgiel", 10);
+		PlayerTestHelper.equipWithStackableItem(player, "coal", 10);
 		PlayerTestHelper.equipWithMoney(player, 100);
 
 		assertTrue(en.step(player, "hello"));
@@ -193,7 +193,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithItem(player, "sztylecik");
+		PlayerTestHelper.equipWithItem(player, "dagger");
 		PlayerTestHelper.equipWithMoney(player, 100);
 
 		assertTrue(en.step(player, "hello"));
@@ -272,7 +272,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithStackableItem(player, "stokrotki", 5);
+		PlayerTestHelper.equipWithStackableItem(player, "daisies", 5);
 		PlayerTestHelper.equipWithMoney(player, 100);
 
 		assertTrue(en.step(player, "hello"));

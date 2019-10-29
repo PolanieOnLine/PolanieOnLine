@@ -68,7 +68,7 @@ public class GateTest {
 		gate.setPosition(3, 3);
 		zone.add(gate);
 		assertTrue("Sanity check", gate.isOpen());
-		final Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
+		final Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
 		creature.setPosition(3, 3);
 		zone.add(creature);
 		System.err.println("RESISTANCE: " + creature.getResistance());

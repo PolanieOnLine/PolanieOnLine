@@ -69,12 +69,12 @@ public class KillBlordroughsTest {
 	public void setUp() {
 		player = PlayerTestHelper.createPlayer("player");
 		PlayerTestHelper.registerPlayer(player);
-		PlayerTestHelper.equipWithItem(player, "złota klinga");
-		PlayerTestHelper.equipWithItem(player, "płaszcz z mithrilu");
-		PlayerTestHelper.equipWithItem(player, "buty z mithrilu");
-		PlayerTestHelper.equipWithItem(player, "spodnie z mithrilu");
-		PlayerTestHelper.equipWithItem(player, "zbroja z mithril");
-		PlayerTestHelper.equipWithItem(player, "czarny hełm");
+		PlayerTestHelper.equipWithItem(player, "golden blade");
+		PlayerTestHelper.equipWithItem(player, "mithril cloak");
+		PlayerTestHelper.equipWithItem(player, "mithril boots");
+		PlayerTestHelper.equipWithItem(player, "mithril legs");
+		PlayerTestHelper.equipWithItem(player, "mithril armor");
+		PlayerTestHelper.equipWithItem(player, "black helmet");
 		PlayerTestHelper.equipWithItem(player, "money");
 
 

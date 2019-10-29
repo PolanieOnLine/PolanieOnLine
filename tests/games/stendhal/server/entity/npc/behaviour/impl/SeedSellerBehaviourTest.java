@@ -57,7 +57,7 @@ public class SeedSellerBehaviourTest {
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		PlayerTestHelper.equipWithMoney(bob, 100);
 		sb.transactAgreedDeal(res, new EventRaiser(speakerNPC), bob);
-		final Item seed = bob.getFirstEquipped("nasionka");
+		final Item seed = bob.getFirstEquipped("seed");
 		assertNotNull(seed);
 		assertEquals("lilia", seed.getInfoString());
 		assertEquals(90, ((Stackable<?>) bob.getFirstEquipped("money")).getQuantity());
@@ -78,7 +78,7 @@ public class SeedSellerBehaviourTest {
 
 		item = sb.getAskedItem("daisies seed");
 		assertTrue(item instanceof Seed);
-		assertEquals("stokrotki", item.getInfoString());
+		assertEquals("daisies", item.getInfoString());
 	}
 
 }

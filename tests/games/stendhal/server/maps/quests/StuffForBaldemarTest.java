@@ -297,13 +297,13 @@ public class StuffForBaldemarTest extends ZonePlayerAndNPCTestImpl {
 	public void testItemsAllAfterBlackShield() {
 		player.setQuest(questSlot, "start;20;1;1;5;10;10;1;0;0;0;0;0;0;0");
 
-		PlayerTestHelper.equipWithItem(player, "magiczna tarcza płytowa");
-		PlayerTestHelper.equipWithStackableItem(player, "sztabka złota", 10);
-		PlayerTestHelper.equipWithStackableItem(player, "żelazo", 20);
-		PlayerTestHelper.equipWithStackableItem(player, "czarna perła", 10);
+		PlayerTestHelper.equipWithItem(player, "magic plate shield");
+		PlayerTestHelper.equipWithStackableItem(player, "gold bar", 10);
+		PlayerTestHelper.equipWithStackableItem(player, "iron", 20);
+		PlayerTestHelper.equipWithStackableItem(player, "black pearl", 10);
 		PlayerTestHelper.equipWithStackableItem(player, "shuriken", 20);
-		PlayerTestHelper.equipWithStackableItem(player, "kolorowe kulki", 15);
-		PlayerTestHelper.equipWithItem(player, "zima zaklęta w kuli");
+		PlayerTestHelper.equipWithStackableItem(player, "marbles", 15);
+		PlayerTestHelper.equipWithItem(player, "snowglobe");
 
 		en.setCurrentState(ConversationStates.IDLE);
 		en.step(player, "hi");
