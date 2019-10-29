@@ -20,6 +20,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import utilities.PlayerTestHelper;
@@ -42,10 +43,10 @@ public class NakedConditionTest {
 	@Test
 	public final void testFire() {
 		final Player bob = PlayerTestHelper.createPlayer("player");
-		bob.setOutfit(0);
+		bob.setOutfit(new Outfit(0));
 		assertTrue(bob.getOutfit().isNaked());
 		assertTrue(new NakedCondition().fire(bob, null, null));
-		bob.setOutfit(100);
+		bob.setOutfit(new Outfit(100));
 		assertFalse("finally dressed", bob.getOutfit().isNaked());
 		assertFalse("should be false when dressed", new NakedCondition().fire(
 				bob, null, null));

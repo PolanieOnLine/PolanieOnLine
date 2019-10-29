@@ -15,6 +15,7 @@ package games.stendhal.server.maps.quests.revivalweeks;
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.maps.ados.rosshouse.FatherNPC;
@@ -44,7 +45,7 @@ public class DadNPC implements LoadableContent {
 			}
 		};
 
-		npc2.setOutfit(1, 34, 7, 27, 0);
+		npc2.setOutfit(new Outfit(0, 27, 7, 34, 1));
 		npc2.setPosition(21, 10);
 		npc2.setDirection(Direction.LEFT);
 		npc2.initHP(100);

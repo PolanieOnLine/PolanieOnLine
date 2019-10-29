@@ -12,15 +12,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.rosshouse;
 
-import java.util.Arrays;
-import java.util.Map;
-
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+
+import java.util.Arrays;
+import java.util.Map;
 /**
  * <p>Creates a normal version of mr ross in the ross house.
  */
@@ -75,7 +76,7 @@ public class FatherNPC implements ZoneConfigurator {
 
 		};
 
-		npc.setOutfit(2, 34, 15, 27, 0);
+		npc.setOutfit(new Outfit(0, 27, 15, 34, 2));
 		npc.setPosition(12, 7);
 		npc.setDirection(Direction.DOWN);
 		npc.initHP(100);

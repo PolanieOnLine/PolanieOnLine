@@ -605,63 +605,26 @@ class SwingClientGUI implements J2DClientGUI {
 	public void chooseOutfit() {
 		final RPObject player = userContext.getPlayer();
 
-		if (!player.has("outfit_ext")) {
-			final int code;
+		final int outfit;
 
-			if (player.has("outfit_org")) {
-				code = player.getInt("outfit_org");
-			} else {
-				code = player.getInt("outfit");
-			}
-
-			final int body = code % 100;
-			final int dress = code / 100 % 100;
-			final int head = (int) (code / Math.pow(100, 2) % 100);
-			final int hair = (int) (code / Math.pow(100, 3) % 100);
-			final int detail = (int) (code / Math.pow(100, 4) % 100);
-
-			final StringBuilder sb = new StringBuilder();
-			sb.append("body=" + body);
-			sb.append("dress=" + dress);
-			sb.append("head=" + head);
-			sb.append("mask=0");
-			sb.append("hair=" + hair);
-			sb.append("hat=0");
-			sb.append("detail=" + detail);
-
-			if (outfitDialog == null) {
-				// Here we actually want to call new OutfitColor(). Modifying
-				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", sb.toString(), new OutfitColor(player));
-
-				outfitDialog.setVisible(true);
-			} else {
-				// XXX: (AntumDeluge) why does this use "OutfitColor.get" but above uses "new OutfitColor"???
-				outfitDialog.setState(sb.toString(), OutfitColor.get(player));
-
-				outfitDialog.setVisible(true);
-				outfitDialog.toFront();
-			}
+		if (player.has("outfit_org")) {
+			outfit = player.getInt("outfit_org");
 		} else {
-			final String stroutfit;
+			outfit = player.getInt("outfit");
+		}
 
-			if (player.has("outfit_ext_orig")) {
-				stroutfit = player.get("outfit_ext_orig");
-			} else {
-				stroutfit = player.get("outfit_ext");
-			}
+		if (outfitDialog == null) {
+			// Here we actually want to call new OutfitColor(). Modifying
+			// OutfitColor.PLAIN would be a bad thing.
+			outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", outfit,
+					new OutfitColor(player));
 
-			if (outfitDialog == null) {
-				// Here we actually want to call new OutfitColor(). Modifying
-				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "Set outfit", stroutfit, new OutfitColor(player));
-				outfitDialog.setVisible(true);
-			} else {
-				outfitDialog.setState(stroutfit, OutfitColor.get(player));
+			outfitDialog.setVisible(true);
+		} else {
+			outfitDialog.setState(outfit, OutfitColor.get(player));
 
-				outfitDialog.setVisible(true);
-				outfitDialog.toFront();
-			}
+			outfitDialog.setVisible(true);
+			outfitDialog.toFront();
 		}
 	}
 

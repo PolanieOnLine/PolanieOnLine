@@ -40,8 +40,7 @@ public class OutfitAction implements ActionListener {
 	@Override
 	public void onAction(final Player player, final RPAction action) {
 		if (action.has(VALUE)) {
-			final Outfit outfit = new Outfit(action.get(VALUE));
-
+			final Outfit outfit = new Outfit(action.getInt(VALUE));
 			if (outfit.isChoosableByPlayers()) {
 				new GameEvent(player.getName(), OUTFIT,
 						action.get(VALUE)).raise();
@@ -66,7 +65,7 @@ public class OutfitAction implements ActionListener {
 				}
 				
 				// Server changes us gender if we set definite body
-				if ((player.getOutfit().getLayer("body") > 5 && player.getOutfit().getLayer("body") < 12) || player.getOutfit().getLayer("body") == 13) {
+				if ((player.getOutfit().getBody() > 5 && player.getOutfit().getBody() < 12) || player.getOutfit().getBody() == 13) {
 					player.setGender("F");
 				} else {
 					player.setGender("M");

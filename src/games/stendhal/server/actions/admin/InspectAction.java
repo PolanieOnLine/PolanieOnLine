@@ -87,23 +87,10 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nPoziom:  " + inspected.getLevel());
 			st.append("\nKarma:  " + inspected.getKarma());
 			//st.append("\nMana:  " + inspected.getMana() + " / " + inspected.getBaseMana());
-
-			if (inspected.has("outfit_ext")) {
-				st.append("\nUbiór: ");
-				if (inspected.has("outfit_ext_orig")) {
-					st.append(inspected.get("outfit_ext_orig") + "\nUbiór (tymcz.): ");
-				}
-				st.append(inspected.get("outfit_ext"));
-			}
 			if (inspected.has("outfit")) {
-				st.append("\nKod ubioru: ");
-				if (inspected.has("outfit_org")) {
-					st.append(inspected.get("outfit_org") + "\nKod ubioru (tymcz.): ");
-				}
-				st.append(inspected.get("outfit"));
-			}
-			if (inspected.has("class")) {
-				st.append("\nUbiór (klasa):  " + inspected.get("class"));
+				st.append("\nOutfit:  " + inspected.get("outfit"));
+			} else if (inspected.has("class")) {
+				st.append("\nOutfit:  " + inspected.get("class"));
 			}
 			st.append("\n---------------------------");
 			st.append("\nWyposażenie");

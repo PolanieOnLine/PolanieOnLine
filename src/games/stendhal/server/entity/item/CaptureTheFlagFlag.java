@@ -102,7 +102,7 @@ public class CaptureTheFlagFlag extends Item {
 			DressedEntity dressed = (DressedEntity) equipper;
 
 			Outfit flagOutfit;
-			flagOutfit  = new Outfit(null, null, null, null, null, null, this.detailValue);
+			flagOutfit  = new Outfit(this.detailValue, null, null, null, null);
 
 			dressed.put("outfit_colors", "detail", this.colorValue);
 			dressed.setOutfit(flagOutfit.putOver(dressed.getOutfit()));
@@ -141,7 +141,7 @@ public class CaptureTheFlagFlag extends Item {
 			// note that we just replace the outfit detail, versus
 			// trying to replace what was there originally.
 			//
-			Outfit   noFlagOutfit = new Outfit(null, null, null, null, null, null, 0);
+			Outfit   noFlagOutfit = new Outfit(0, null, null, null, null);
 			DressedEntity entity       = (DressedEntity) owner;
 
 			entity.setOutfit(noFlagOutfit.putOver(entity.getOutfit()));

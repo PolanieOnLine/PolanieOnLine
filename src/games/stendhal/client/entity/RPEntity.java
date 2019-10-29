@@ -190,10 +190,7 @@ public abstract class RPEntity extends AudibleEntity {
 	/**
 	 * The outfit code.
 	 */
-	private String outfit_ext;
 	private int outfit;
-	private int outfitMask;
-	private int outfitHat;
 	
 	private String gender;
 
@@ -415,16 +412,6 @@ public abstract class RPEntity extends AudibleEntity {
 	 *
 	 * @return The outfit code.
 	 */
-	public String getExtOutfit() {
-		return outfit_ext;
-	}
-
-	/**
-	 * Get the outfit code.
-	 *
-	 * @return The outfit code.
-	 */
-	@Deprecated
 	public int getOutfit() {
 		return outfit;
 	}
@@ -1059,22 +1046,8 @@ public abstract class RPEntity extends AudibleEntity {
 		/*
 		 * Outfit
 		 */
-		/*
-		outfitMask = OUTFIT_UNSET;
-		outfitHat = OUTFIT_UNSET;
-		*/
-		if (object.has("outfit_ext")) {
-			outfit_ext = object.get("outfit_ext");
-		} else {
-			outfit_ext = null;
-		}
-
 		if (object.has("outfit")) {
 			outfit = object.getInt("outfit");
-			/*
-			if (object.has("outfit_mask")) outfitMask = object.getInt("outfit_mask"); else object.put("outfit_mask", 0);
-			if (object.has("outfit_hat")) outfitHat = object.getInt("outfit_hat"); else object.put("outfit_hat", 0);
-			*/
 		} else {
 			outfit = OUTFIT_UNSET;
 		}
@@ -1222,24 +1195,8 @@ public abstract class RPEntity extends AudibleEntity {
 			/*
 			 * Outfit
 			 */
-			if (changes.has("outfit_ext") || changes.has("outfit")) {
-				if (changes.has("outfit_ext")) {
-					outfit_ext = changes.get("outfit_ext");
-					fireChange(PROP_OUTFIT);
-				}
-				if (changes.has("outfit")) {
-					/*
-					outfitMask = 0;
-					outfitHat = 0;
-					*/
-
-					outfit = changes.getInt("outfit");
-					/*
-					if (changes.has("outfit_mask")) outfitMask = changes.getInt("outfit_mask");
-					if (changes.has("outfit_hat")) outfitHat = changes.getInt("outfit_hat");
-					*/
-				}
-
+			if (changes.has("outfit")) {
+				outfit = changes.getInt("outfit");
 				fireChange(PROP_OUTFIT);
 			}
 
@@ -1583,18 +1540,8 @@ public abstract class RPEntity extends AudibleEntity {
 		/*
 		 * Outfit
 		 */
-		if (changes.has("outfit_ext") || changes.has("outfit")) {
-			if (changes.has("outfit_ext")) {
-				outfit_ext = null;
-			}
-			if (changes.has("outfit")) {
-				outfit = OUTFIT_UNSET;
-				/*
-				outfitMask = OUTFIT_UNSET;
-				outfitHat = OUTFIT_UNSET;
-				*/
-			}
-
+		if (changes.has("outfit")) {
+			outfit = OUTFIT_UNSET;
 			fireChange(PROP_OUTFIT);
 		}
 

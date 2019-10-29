@@ -12,7 +12,6 @@
 package games.stendhal.server.entity.player;
 
 import static games.stendhal.common.NotificationType.getServerNotificationType;
-import static games.stendhal.common.Outfits.RECOLORABLE_OUTFIT_PARTS;
 import static games.stendhal.common.constants.Actions.ADMINLEVEL;
 import static games.stendhal.common.constants.Actions.AUTOWALK;
 import static games.stendhal.common.constants.Actions.AWAY;
@@ -188,12 +187,8 @@ public class Player extends DressedEntity implements UseListener {
 
 		// define outfit
 		Outfit outfit = null;
-		if (template != null) {
-			if (template.has("outfit_ext")) {
-				outfit = new Outfit(template.get("outfit_ext"));
-			} else if (template.has("outfit")) {
-				outfit = new Outfit(Integer.toString(template.getInt("outfit")));
-			}
+		if (template != null && template.has("outfit")) {
+			outfit = new Outfit(template.getInt("outfit"));
 		}
 
 		if (outfit == null || !outfit.isChoosableByPlayers()) {
@@ -201,7 +196,7 @@ public class Player extends DressedEntity implements UseListener {
 		}
 		player.setOutfit(outfit);
 
-		if (((player.getOutfit().getLayer("body") > 5) && (player.getOutfit().getLayer("body") < 12)) || (player.getOutfit().getLayer("body") == 13)) {
+		if (((player.getOutfit().getBody() > 5) && (player.getOutfit().getBody() < 12)) || (player.getOutfit().getBody() == 13)) {
 			player.put("gender", "F");
 		} else {
 			player.put("gender", "M");
@@ -1759,15 +1754,14 @@ public class Player extends DressedEntity implements UseListener {
 		if (originalOutfit != null) {
 
 			// do not restore details layer, unless the detail is still present
-			if (originalOutfit.getLayer("detail") > 0) {
+			if (originalOutfit.getDetail() > 0) {
 				final Outfit currentOutfit = getOutfit();
-				if (!currentOutfit.getLayer("detail").equals(
-						originalOutfit.getLayer("detail"))) {
+				if (!currentOutfit.getDetail().equals(
+						originalOutfit.getDetail())) {
 					originalOutfit.removeDetail();
 				}
 			}
 
-			remove("outfit_ext_orig");
 			remove("outfit_org");
 			setOutfit(originalOutfit, false);
 
