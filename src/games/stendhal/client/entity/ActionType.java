@@ -139,7 +139,7 @@ public enum ActionType {
 			return fillTargetPath(super.fillTargetInfo(entity), entity);
 		}
 	},
-	SET_OUTFIT("outfit", "Ustaw wygląd"),
+	SET_OUTFIT(Actions.OUTFIT, "Ustaw wygląd"),
 	WHERE("where", "Gdzie") {
 		@Override
 		public RPAction fillTargetInfo(final IEntity entity) {

@@ -66,12 +66,30 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 		ZoneInfo info = ZoneInfo.get();
 
 		try {
-			final int code = ((RPEntity) entity).getOutfit();
+			final RPEntity npc = entity;
+			final int code = npc.getOutfit();
+			final String strcode = npc.getExtOutfit();
 
-			if (code != RPEntity.OUTFIT_UNSET) {
-				return OutfitStore.get().getAdjustedOutfit(code,
-						OutfitColor.PLAIN,
-						info.getZoneColor(), info.getColorMethod());
+			if (strcode != null) {
+				return OutfitStore.get().getAdjustedOutfit(strcode, OutfitColor.PLAIN, info.getZoneColor(), info.getColorMethod());
+			} else if (code != RPEntity.OUTFIT_UNSET) {
+				final int body = code % 100;
+				final int dress = code / 100 % 100;
+				final int head = (int) (code / Math.pow(100, 2) % 100);
+				final int hair = (int) (code / Math.pow(100, 3) % 100);
+				final int detail = (int) (code / Math.pow(100, 4) % 100);
+
+				final StringBuilder sb = new StringBuilder();
+				sb.append("body=" + body);
+				sb.append("dress=" + dress);
+				sb.append("head=" + head);
+				//sb.append("mask=0");
+				sb.append("hair=" + hair);
+				//sb.append("hat=0");
+				sb.append("detail=" + detail);
+
+				return OutfitStore.get().getAdjustedOutfit(sb.toString(), OutfitColor.PLAIN, info.getZoneColor(),
+						info.getColorMethod());
 			} else {
 				// This NPC's outfit is read from a single file.
 				return store.getModifiedSprite(translate("npc/"

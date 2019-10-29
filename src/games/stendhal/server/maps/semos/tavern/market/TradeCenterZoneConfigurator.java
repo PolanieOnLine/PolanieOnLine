@@ -12,14 +12,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern.market;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.Outfit;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.trade.Market;
-
 import java.util.Map;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.trade.Market;
 import marauroa.common.game.RPObject;
 /**
  * adds a market to a zone
@@ -71,7 +69,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
 		speaker.setEntityClass("tradecenteradvisornpc");
-		speaker.setOutfit(new Outfit(0, 5, 2, 34, 2));
+		speaker.setOutfit(2, 34, 2, 5, 0);
 		speaker.initHP(100);
 		speaker.setDescription("Herold jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
 		zone.add(speaker);
