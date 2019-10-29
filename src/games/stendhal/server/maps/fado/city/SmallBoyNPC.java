@@ -63,7 +63,7 @@ public class SmallBoyNPC implements ZoneConfigurator {
 			}
 		};
 
-		boynpc.setOutfit(1, 3, 19, 33, 0);
+		boynpc.setOutfit(1, 3, 19, null, 33, null, 0);
 		boynpc.setPosition(42, 30);
 		boynpc.setDirection(Direction.RIGHT);
 		boynpc.initHP(100);

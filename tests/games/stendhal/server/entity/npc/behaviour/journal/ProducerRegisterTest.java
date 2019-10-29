@@ -62,7 +62,7 @@ public class ProducerRegisterTest {
 		requiredResources.put("cod", 2);
 		requiredResources.put("mackerel", 1);
 		requiredResources.put("leek", 1);
-		final ProducerBehaviour behaviour = new ProducerBehaviour("linzo_make_fish_pie", "make", "fish pie",
+		final ProducerBehaviour behaviour = new ProducerBehaviour("linzo_make_fish_pie", Arrays.asList("make", "zrób"), "fish pie",
 		        requiredResources, 5 * 60);
 
 		producerRegister.add("Linzo", behaviour);

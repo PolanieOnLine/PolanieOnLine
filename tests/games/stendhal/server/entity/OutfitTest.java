@@ -37,8 +37,6 @@ public class OutfitTest {
 		// extended layers
 		assertEquals(Integer.valueOf(0), ou.getLayer("hat"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("mask"));
-		assertEquals(Integer.valueOf(0), ou.getLayer("eyes"));
-		assertEquals(Integer.valueOf(0), ou.getLayer("mouth"));
 	}
 
 	/**
@@ -84,8 +82,6 @@ public class OutfitTest {
 		assertEquals(Integer.valueOf(0), ou.getLayer("body"));
 
 		// extended layers
-		assertEquals(Integer.valueOf(0), ou.getLayer("mouth"));
-		assertEquals(Integer.valueOf(0), ou.getLayer("eyes"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("mask"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("hat"));
 
@@ -97,8 +93,6 @@ public class OutfitTest {
 		assertEquals(Integer.valueOf(4), ou.getLayer("body"));
 
 		// extended layers
-		assertEquals(Integer.valueOf(0), ou.getLayer("mouth"));
-		assertEquals(Integer.valueOf(0), ou.getLayer("eyes"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("mask"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("hat"));
 
@@ -111,8 +105,6 @@ public class OutfitTest {
 		assertEquals(Integer.valueOf(4), ou.getLayer("body"));
 
 		// extended layers
-		assertEquals(Integer.valueOf(0), ou.getLayer("mouth"));
-		assertEquals(Integer.valueOf(0), ou.getLayer("eyes"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("mask"));
 		assertEquals(Integer.valueOf(0), ou.getLayer("hat"));
 	}
@@ -280,10 +272,6 @@ public class OutfitTest {
 		of = new Outfit(0, Outfits.CLOTHES_OUTFITS, 0, 0, 0, 0, 0, 0, null);
 		assertFalse(of.isChoosableByPlayers());
 		of = new Outfit(0, 0, Outfits.HEAD_OUTFITS, 0, 0, 0, 0, 0, null);
-		assertFalse(of.isChoosableByPlayers());
-		of = new Outfit(0, 0, 0, Outfits.MOUTH_OUTFITS, 0, 0, 0, 0, null);
-		assertFalse(of.isChoosableByPlayers());
-		of = new Outfit(0, 0, 0, 0, Outfits.EYES_OUTFITS, 0, 0, 0, null);
 		assertFalse(of.isChoosableByPlayers());
 		of = new Outfit(0, 0, 0, 0, 0, Outfits.MASK_OUTFITS, 0, 0, null);
 		assertFalse(of.isChoosableByPlayers());

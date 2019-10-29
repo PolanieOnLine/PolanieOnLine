@@ -682,7 +682,6 @@ mortar	OBJ	mortars
 moss	OBJ	mosses
 mountain	OBJ	mountains
 mouse	OBJ	mice
-mouth	OBJ	mouths
 mumak	OBJ	mumakil
 mushroom	OBJ-FOO	mushrooms
 my	OBJ-OBS	my

@@ -53,7 +53,7 @@ public class Outfit {
 	 * current outfit.
 	 *
 	 * Currently supported layers should be in this order:
-	 * 		body, dress, head, mouth, eyes, mask, hair, hat, detail
+	 * 		body, dress, head, mask, hair, hat, detail
 	 *
 	 * @param layers
 	 * 		Integer indexes of each outfit layer or null.
@@ -323,7 +323,7 @@ public class Outfit {
 	 * NOTE: If a part does not match, the current outfit part will remain the same.
 	 *
 	 * Currently supported layers should be in this order:
-	 * 		body, dress, head, mouth, eyes, mask, hair, hat, detail
+	 * 		body, dress, head, mask, hair, hat, detail
 	 *
 	 * @param layers
 	 * 		Integer indexes of each outfit layer that should be removed.
