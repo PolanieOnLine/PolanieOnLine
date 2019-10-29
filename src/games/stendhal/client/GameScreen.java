@@ -730,7 +730,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * @param width The world width.
 	 * @param height The height width.
 	 */
-	public void setMaxWorldSize(final double width, final double height) {
+	private void setMaxWorldSize(final double width, final double height) {
 		ww = (int) width;
 		wh = (int) height;
 		calculateView(x, y);
@@ -765,7 +765,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 						* RemovableSprite.STANDARD_PERSISTENCE_TIME / 50)));
 	}
 
- 	/**
+	/**
 	 * Adjust the position of boxes placed at the same point to make it
 	 * clear for the player there are more than one.
 	 */

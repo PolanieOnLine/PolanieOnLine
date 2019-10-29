@@ -9,19 +9,17 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.client.gui.settings;
 
 /**
- * Public properties for UI settings
- * 
+ * Public properties for UI settings.
+ *
  * @author AntumDeluge
  */
-
 public class SettingsProperties {
-	/** Property used for double-tap direction to initiate auto-walk. */
+	/** property used for double-tap direction to initiate auto-walk. */
 	public static final String DOUBLE_TAP_AUTOWALK_PROPERTY = "move.doubletapautowalk";
-	
-	/** Property for continuous movement trough map changes & portals (currently disabled for portals). */
 	public static final String MOVE_CONTINUOUS_PROPERTY = "move.continuous";
+
+	/** Property for continuous movement through map changes & portals (currently disabled for portals). */
 }

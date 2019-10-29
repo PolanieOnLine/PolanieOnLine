@@ -55,17 +55,19 @@ class ChatLogArea {
 		tabs.setFocusable(false);
 		List<JComponent> logs = createChannelComponents();
 		BitSet changedChannels = new BitSet(logs.size());
-		
+
 		// Must be done before adding tabs
 		setupTabChangeHandling(changedChannels);
-		
+
 		Iterator<NotificationChannel> it = channelManager.getChannels().iterator();
 		for (JComponent tab : logs) {
 			tabs.add(it.next().getName(), tab);
 		}
- 		setupHiddenChannelMessageHandling(changedChannels);
+
+		setupHiddenChannelMessageHandling(changedChannels);
 		setupAnimation(changedChannels);
- 		return tabs;
+
+		return tabs;
 	}
 
 	/**
@@ -77,18 +79,21 @@ class ChatLogArea {
 		List<JComponent> list = new ArrayList<>();
 		KTextEdit edit = new KTextEdit();
 		list.add(edit);
- 		NotificationChannel mainChannel = setupMainChannel(edit);
+
+		NotificationChannel mainChannel = setupMainChannel(edit);
 		channelManager.addChannel(mainChannel);
- 		// ** Private channel **
+
+		// ** Private channel **
 		edit = new KTextEdit();
 		list.add(edit);
 		NotificationChannel personal = setupPersonalChannel(edit);
 		channelManager.addChannel(personal);
- 		return list;
+
+		return list;
 	}
 
- 	private NotificationChannel setupPersonalChannel(KTextEdit edit) {
 		edit.setChannelName("Prywatny");
+	private NotificationChannel setupPersonalChannel(KTextEdit edit) {
 		/*
 		 * Give it a different background color to make it different from the
 		 * main chat log.
@@ -102,12 +107,12 @@ class ChatLogArea {
 		String personalDefault = NotificationType.PRIVMSG.toString() + ","
 				+ NotificationType.CLIENT + "," + NotificationType.GROUP + ","
 				+ NotificationType.TUTORIAL + "," + NotificationType.SUPPORT;
-		
 		return new NotificationChannel("Prywatny", edit, false, personalDefault);
+
 	}
 
- 	private NotificationChannel setupMainChannel(KTextEdit edit) {
 		NotificationChannel channel = new NotificationChannel("Główny", edit, true, "");
+	private NotificationChannel setupMainChannel(KTextEdit edit) {
 
 		// Follow settings changes for the main channel
 		WtWindowManager wm = WtWindowManager.getInstance();
@@ -123,20 +128,10 @@ class ChatLogArea {
 				channel.setTypeFiltering(NotificationType.POISON, Boolean.parseBoolean(newValue));
 			}
 		});
-		/**
-		 * FIXME: Wiadomości się nie pokazują po zadaniu obrażeń!
-		 * 
-		wm.registerSettingChangeListener("ui.damagemessage", new SettingChangeAdapter("ui.damagemessage", "false") {
-			@Override
-			public void changed(String newValue) {
-				channel.setTypeFiltering(NotificationType.DAMAGE, Boolean.parseBoolean(newValue));
-			}
-		});
-		 */
 		return channel;
 	}
 
- 	private void setupTabChangeHandling(BitSet changedChannels) {
+	private void setupTabChangeHandling(BitSet changedChannels) {
 		tabs.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -193,9 +188,10 @@ class ChatLogArea {
 			initColors();
 		}
 
- 		private void initColors() {
+		private void initColors() {
 			Color endColor;
- 			Style style = StyleUtil.getStyle();
+
+			Style style = StyleUtil.getStyle();
 			if (style != null) {
 				colors[0] = style.getHighLightColor();
 				endColor = style.getPlainColor();
@@ -203,7 +199,8 @@ class ChatLogArea {
 				colors[0] = Color.BLUE;
 				endColor = Color.DARK_GRAY;
 			}
- 			int r = colors[0].getRed();
+
+			int r = colors[0].getRed();
 			int g = colors[0].getGreen();
 			int b = colors[0].getBlue();
 			int alpha = 0xff;
@@ -221,7 +218,7 @@ class ChatLogArea {
 				colors[i] = new Color(r - i * rDelta / STEPS, g - i * gDelta / STEPS, b - i * bDelta / STEPS, alpha);
 			}
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			colorIndex += change;
@@ -229,7 +226,8 @@ class ChatLogArea {
 				change = -change;
 				colorIndex += change;
 			}
- 			for (int i = changedChannels.nextSetBit(0); i >= 0; i = changedChannels.nextSetBit(i + 1)) {
+
+			for (int i = changedChannels.nextSetBit(0); i >= 0; i = changedChannels.nextSetBit(i + 1)) {
 				tabs.setBackgroundAt(i, colors[colorIndex]);
 			}
 		}

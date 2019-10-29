@@ -110,8 +110,9 @@ class GameKeyHandler implements KeyListener {
 				 * key is pressed.
 				 */
 				User user = User.get();
-				if ((user.getRPObject().has(AUTOWALK) 
-						|| ("true".equals(WtWindowManager.getInstance().getProperty(DOUBLE_TAP_AUTOWALK_PROPERTY, "false")) && doublePress))) {
+				if ((user.getRPObject().has(AUTOWALK) ||
+						("true".equals(WtWindowManager.getInstance().getProperty(DOUBLE_TAP_AUTOWALK_PROPERTY, "false"))
+						&& doublePress))) {
 					/* Face direction pressed and toggle auto-walk. */
 					this.processAutoWalk(direction, user);
 				} else {
@@ -188,19 +189,20 @@ class GameKeyHandler implements KeyListener {
 	 *
 	 * FIXME: Delayed direction release seems to interfere sometimes.
 	 *
+	 * @param keyCode Key to check for double press
 	 * @return <code>true</code> if same key is pressed a second time within threshold limit
 	 */
 	public boolean isDoublePress(final int keyCode) {
-			if (!(doublePressStart < 0)) {
-				if (keyCode == prevKeyPress && (System.currentTimeMillis() - doublePressStart) < doublePressThreshold) {
-					// Reset key press values
-					prevKeyPress = -1;
-					doublePressStart = -1;
-					
-					return true;
-				}
+		if (!(doublePressStart < 0)) {
+			if (keyCode == prevKeyPress && (System.currentTimeMillis() - doublePressStart) < doublePressThreshold) {
+				// Reset key press values
+				prevKeyPress = -1;
+				doublePressStart = -1;
+
+				return true;
+			}
 		}
-			
+
 		prevKeyPress = keyCode;
 		doublePressStart = System.currentTimeMillis();
 		return false;
@@ -359,7 +361,7 @@ class GameKeyHandler implements KeyListener {
 			}
 		}
 
- 		// Flush direction keys in pressed state.
+		// Flush direction keys in pressed state.
 		for (final Integer keyCode : Arrays.asList(KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_UP, KeyEvent.VK_DOWN)) {
 			if (client.keyIsPressed(keyCode)) {
 				client.onKeyReleased(keyCode);

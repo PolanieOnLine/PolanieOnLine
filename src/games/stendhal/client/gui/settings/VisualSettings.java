@@ -32,7 +32,6 @@ import javax.swing.JList;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
-//import games.stendhal.client.stendhal;
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.layout.SBoxLayout;
@@ -78,19 +77,6 @@ class VisualSettings {
 	private static final String GAMESCREEN_BLOOD = "gamescreen.blood";
 
 	private static final String SCALE_SCREEN_PROPERTY = "ui.scale_screen";
-	
-	/**
-	private static final int DEFAULT_WIDTH_GAMESCREEN = 800;
-	private static final int DEFAULT_HEIGHT_GAMESCREEN = 500;
-	
-	private static final int MIN_GAMESCREEN_WIDTH_SIZE = DEFAULT_WIDTH_GAMESCREEN;
-	private static final int MAX_GAMESCREEN_WIDTH_SIZE = 1424;
-	private static final int MIN_GAMESCREEN_HEIGHT_SIZE = DEFAULT_HEIGHT_GAMESCREEN;
-	private static final int MAX_GAMESCREEN_HEIGHT_SIZE = 768;
-	
-	private static final String DEFAULT_GAMESCREEN = DEFAULT_WIDTH_GAMESCREEN + ", " + DEFAULT_HEIGHT_GAMESCREEN;
-	*/
-	
 	/** Property used for toggling map coloring on. */
 	private static final String MAP_COLOR_PROPERTY = "ui.colormaps";
 
@@ -157,10 +143,10 @@ class VisualSettings {
 				String msg = "Krew i zwłoki zostały " + tmp
 						+ ". Niektóre zmiany zaczną działać dopiero po ponownym uruchomieniu klienta.";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
-				
 			}
+
 		});
-		
+
 		// show creature speech bubbles
 		JCheckBox showCreatureSpeechToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CREATURESPEECH, true,
 										"Pokaż dymki potworów", "Pokazuje dymki potworów w ekranie klienta");
@@ -194,8 +180,6 @@ class VisualSettings {
 		// Font stuff
 		page.add(createFontSizeSelector());
 		page.add(createFontSelector(), SLayout.EXPAND_X);
-		
-		//page.add(createGameScreenSizes());
 	}
 
 	/**
@@ -318,7 +302,9 @@ class VisualSettings {
 		if (this.customStyleSelector.isSelected()) {
 			custom = true;
 		}
+
 		Component[] components = container.getComponents();
+
 		for (Component c : components) {
 			if (c.getName() == "defined") {
 				c.setEnabled(!custom);
@@ -349,6 +335,7 @@ class VisualSettings {
 		definedStyleSelector = new JRadioButton("Use a pre-defined style", true);
 		customStyleSelector = new JRadioButton("Use a custom style");
 		ButtonGroup styleTypeSelection = new ButtonGroup();
+
 		// Defined style selector
 		styleTypeSelection.add(definedStyleSelector);
 		*/
@@ -368,6 +355,7 @@ class VisualSettings {
 		// Custom style options
 		styleTypeSelection.add(customStyleSelector);
 		styleBox.add(customStyleSelector);
+
 		// Text and border colors
 		final JPanel colorsPanel = new JPanel();
 		colorsPanel.setName("custom");
@@ -389,7 +377,9 @@ class VisualSettings {
 		for (ccount = 0; ccount < colorButtons.size(); ccount++) {
 			colorsPanel.add(colorButtons.get(ccount));
 		}
+
 		styleBox.add(colorsPanel);
+
 		// Background image
 		JLabel bgSelectorText = new JLabel("Background image");
 		bgSelectorText.setName("custom");
@@ -400,15 +390,19 @@ class VisualSettings {
 		JComponent bgSelectorHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
 		bgSelectorHBox.add(bgSelectorButton);
 		bgSelectorHBox.add(bgSelectorInput);
+
 		styleBox.add(bgSelectorText);
 		styleBox.add(bgSelectorHBox);
+
 		bgSelectorButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
 						selectBGImage();
 					}
 				});
+
 		styleBox.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+
 		// Add event handlers for the style selector radio buttons
 		definedStyleSelector.addActionListener(
 				new ActionListener() {
@@ -436,9 +430,9 @@ class VisualSettings {
 	private JComponent createFontSizeSelector() {
 		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
 		container.add(new JLabel("Rozmiar czcionki:"));
-		
+
 		final JComboBox<Object> selector = new JComboBox<>();
-		
+
 		// Fill the selector, and set current size as the selection
 		int current = WtWindowManager.getInstance().getPropertyInt(FONT_SIZE_PROPERTY, DEFAULT_FONT_SIZE);
 		selector.addItem("domyślny (12)");
@@ -470,36 +464,6 @@ class VisualSettings {
 		container.setToolTipText("Domyślny rozmiar czcionki");
 		return container;
 	}
-	
-	// TODO: Należy sprawdzić dlaczego nie wyświetla listy możliwych do wyboru rozdzielczości
-	// 		 lub napisać zupełnie inną funkcje odpowiedzialną za wybór rozdzielczości okna gry.
-	
-	/**private JComponent createGameScreenSizes() {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		final Dimension displaySize = stendhal.getDisplaySize();
-		
-		container.add(new JLabel("Rozdzielczość:"));
-		final JComboBox<Object> selector = new JComboBox<>();
-		
-		// Fill the selector, and set current size as the selection
-		int current = WtWindowManager.getInstance().getPropertyIntInt(displaySize.width, displaySize.height);
-		selector.addItem(DEFAULT_GAMESCREEN);
-		for (int size1 = MIN_GAMESCREEN_WIDTH_SIZE; size1 <= MIN_GAMESCREEN_HEIGHT_SIZE; size1 += 50) {
-			for (int size2 = MAX_GAMESCREEN_WIDTH_SIZE; size2 <= MAX_GAMESCREEN_HEIGHT_SIZE; size2 += 50) {
-				Integer obj1 = size1;
-				Integer obj2 = size2;
-				selector.addItem(obj1);
-				if ((size1 == current) && (size1 != DEFAULT_WIDTH_GAMESCREEN && size1 != DEFAULT_HEIGHT_GAMESCREEN)) {
-					selector.setSelectedItem(obj1);
-				} else if ((size2 == current) && (size2 != DEFAULT_WIDTH_GAMESCREEN && size2 != DEFAULT_HEIGHT_GAMESCREEN)) {
-					selector.setSelectedItem(obj2);
-				}
-			}
-		}
-		container.add(selector);
-		container.setToolTipText("Domyślna rozdzielczość");
-		return container;
-	}*/
 
 	/**
 	 * Create selector for the font used in the quest log and achievements.
@@ -590,6 +554,7 @@ class VisualSettings {
 		bgSelector.setDialogType(JFileChooser.OPEN_DIALOG | JFileChooser.FILES_ONLY);
 		bgSelector.setDialogTitle("Select an image to use for the client background");
 		//bgSelector.createDialog(this.page);
+
 		// Returning null until I figure out how to use JFileChooser
 		return null;
 	}

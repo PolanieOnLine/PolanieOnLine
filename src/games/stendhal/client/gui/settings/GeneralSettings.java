@@ -57,8 +57,6 @@ class GeneralSettings {
 	private static final String HEALING_MESSAGE_PROPERTY = "ui.healingmessage";
 
 	private static final String POISON_MESSAGE_PROPERTY = "ui.poisonmessage";
-	
-	//private static final String DAMAGE_MESSAGE_PROPERTY = "ui.damagemessage";
 
 	private static final String DIMENSIONS_PROPERTY = "ui.dimensions";
 
@@ -131,24 +129,7 @@ class GeneralSettings {
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
-		/**
-		 * FIXME: Nie pokazują się wiadomości po zadaniu/otrzymaniu obrażeń!
-		 *
-		// show damage messages
-		JCheckBox showDamageToggle = SettingsComponentFactory.createSettingsToggle(DAMAGE_MESSAGE_PROPERTY, false,
-				"Pokaż wiadomości o obrażeniach", "Pokazuje wiadomości o obrażeniach w oknie rozmowy");
-		page.add(showDamageToggle);
-		showDamageToggle.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Wiadomości o obrażeniach zostały " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
-			}
-		});
-		 */
-		
+
 		// Double-tap direction for auto-walk
 		JCheckBox doubleTapAutowalkToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_TAP_AUTOWALK_PROPERTY, false,
 				"Automatyczne chodzenie (zbugowane)", "Włącza automatyczne chodzenie, gdy klawisz kierunkowy został podwójnie kliknięty");
@@ -176,10 +157,11 @@ class GeneralSettings {
 				new SettingChangeListener() {
 			@Override
 			public void changed(String newValue) {
-				moveContinuousToggle.setSelected(Boolean.parseBoolean(newValue)); 
+				moveContinuousToggle.setSelected(Boolean.parseBoolean(newValue));
 			}
 		});
 		page.add(moveContinuousToggle);
+
 
 		if (System.getProperty("stendhal.karmaconfig") != null) {
 			// combat karma
@@ -254,9 +236,9 @@ class GeneralSettings {
 			selector.addItem(mode);
 		}
 
- 		final RPObject player = StendhalClient.get().getPlayer();
+		final RPObject player = StendhalClient.get().getPlayer();
 
- 		// use player attribute if available to set combat karma mode
+		// use player attribute if available to set combat karma mode
 		final String currentMode;
 		if (player.has(COMBAT_KARMA) && KARMA_SETTINGS.contains(player.get(COMBAT_KARMA))) {
 			currentMode = player.get(COMBAT_KARMA);
@@ -265,8 +247,8 @@ class GeneralSettings {
 		}
 		selector.setSelectedItem(currentMode);
 
- 		selector.addActionListener(new ActionListener() {
- 			/**
+		selector.addActionListener(new ActionListener() {
+			/**
 			 * Sends action to the server.
 			 */
 			@Override
@@ -275,9 +257,9 @@ class GeneralSettings {
 			}
 		});
 
- 		WtWindowManager.getInstance().registerSettingChangeListener("combat.karma",
+		WtWindowManager.getInstance().registerSettingChangeListener("combat.karma",
 				new SettingChangeListener() {
- 			/**
+			/**
 			 * Updates the GUI when setting is changed via slash command.
 			 */
 			@Override
@@ -286,10 +268,10 @@ class GeneralSettings {
 			}
 		});
 
- 		final JComponent karmaBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		final JComponent karmaBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		final JComponent karmaHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
 
- 		karmaHBox.add(selectorLabel);
+		karmaHBox.add(selectorLabel);
 		karmaHBox.add(selector);
 
 		// tooltip info
@@ -307,8 +289,8 @@ class GeneralSettings {
 		descr.append("<br><br>Poniższe trzy ustawienia określają, kiedy karma jest używana w walce:");
 		karmaHBox.setToolTipText(ConvenienceMapper.createTooltip(descr.toString(), tooltipData));
 
- 		karmaBox.add(karmaHBox);
+		karmaBox.add(karmaHBox);
 
- 		return karmaBox;
+		return karmaBox;
 	}
 }
