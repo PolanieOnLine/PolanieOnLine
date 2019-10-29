@@ -11,15 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.city;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Creates a Small Boy NPC
@@ -64,7 +63,7 @@ public class SmallBoyNPC implements ZoneConfigurator {
 			}
 		};
 
-		boynpc.setOutfit(new Outfit(0, 33, 19, 3, 1));
+		boynpc.setOutfit(1, 3, 19, 33, 0);
 		boynpc.setPosition(42, 30);
 		boynpc.setDirection(Direction.RIGHT);
 		boynpc.initHP(100);

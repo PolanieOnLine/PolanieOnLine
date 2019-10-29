@@ -146,12 +146,31 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 			OutfitColor color = OutfitColor.get(entity.getRPObject());
 			ZoneInfo info = ZoneInfo.get();
 
-			/* TODO: Remove condition and duplicate code after outfit testing
-			 * is finished.
-			 */
+			final String strcode = entity.getExtOutfit();
+			final int code = entity.getOutfit();
+
 			Sprite outfit;
-			outfit = store.getAdjustedOutfit(entity.getOutfit(),
-					color, info.getZoneColor(), info.getColorMethod());
+
+			if (strcode == null) {
+				final int body = code % 100;
+				final int dress = code / 100 % 100;
+				final int head = (int) (code / Math.pow(100, 2) % 100);
+				final int hair = (int) (code / Math.pow(100, 3) % 100);
+				final int detail = (int) (code / Math.pow(100, 4) % 100);
+
+				final StringBuilder sb = new StringBuilder();
+				sb.append("body=" + body);
+				sb.append("dress=" + dress);
+				sb.append("head=" + head);
+				//sb.append("mask=0");
+				sb.append("hair=" + hair);
+				//sb.append("hat=0");
+				sb.append("detail=" + detail);
+
+				outfit = store.getAdjustedOutfit(sb.toString(), color, info.getZoneColor(), info.getColorMethod());
+			} else {
+				outfit = store.getAdjustedOutfit(strcode, color, info.getZoneColor(), info.getColorMethod());
+			}
 
 			if (entity.hasStatus(StatusID.ZOMBIE)) {
 				outfit = SpriteStore.get().modifySprite(outfit, ZOMBIE_COLOR, Blend.TrueColor, null);
