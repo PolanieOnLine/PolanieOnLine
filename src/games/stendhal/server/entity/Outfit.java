@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -21,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Outfits;
 import games.stendhal.common.Rand;
+
 /**
  * A data structure that represents the outfit of an RPEntity. This RPEntity can
  * either be an NPC which uses the outfit sprite system, or of a player.
@@ -164,6 +164,7 @@ public class Outfit {
 	private void initLayers() {
 		// make sure layer map is empty
 		layers.clear();
+
 		// set all layer values to "0"
 		for (final String n: Outfits.LAYER_NAMES) {
 			layers.put(n, 0);
@@ -181,6 +182,8 @@ public class Outfit {
 
 	/**
 	 * Represents this outfit in a numeric code.
+	 *
+	 * This is for backward-compatibility with old outfit system.
 	 *
 	 * @return A 10-digit decimal number where the first pair of digits stand for
 	 *         detail, the second pair for hair, the third pair for head, the
@@ -264,7 +267,7 @@ public class Outfit {
 		}
 		if (newDetail == null) {
 			newDetail = old.getLayer("detail");
-		}		
+		}
 
 		return new Outfit(newBody, newDress, newHead, newMask, newHair, newHat, newDetail);
 	}
@@ -289,7 +292,7 @@ public class Outfit {
 
 		// wear the this outfit 'over' the other outfit;
 		// use the other outfit for parts that are not defined for this outfit.
-		if ((newBody == null) || newBody.equals(other.getLayer("body"))) {
+		if (newBody == null || newBody.equals(other.getLayer("body"))) {
 			newBody = 0;
 		}
 		if ((newDress == null) || newDress.equals(other.getLayer("dress"))) {
@@ -409,6 +412,7 @@ public class Outfit {
 		if (isCompatibleWithClothes()) {
 			return (dress == null) || dress.equals(0);
 		}
+
 		return false;
 	}
 
@@ -424,7 +428,6 @@ public class Outfit {
 	 * </ul>
 	 * @return the new random outfit
 	 */
-
 	public static Outfit getRandomOutfit() {
 		final int newHair = Rand.randUniform(0, Outfits.HAIR_OUTFITS - 1);
 		final int newHead = Rand.randUniform(0, Outfits.HEAD_OUTFITS - 1);
@@ -458,12 +461,10 @@ public class Outfit {
 			Outfit outfit = (Outfit)other;
 			return this.getCode() == outfit.getCode();
 		}
-
 	}
 
 	@Override
 	public int hashCode() {
 		return this.getCode();
 	}
-
 }

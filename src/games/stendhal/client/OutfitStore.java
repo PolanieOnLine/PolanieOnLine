@@ -39,6 +39,7 @@ public class OutfitStore {
 
 	/** outfit directory */
 	private static final String OUTFITS = "data/sprites/outfit";
+
 	// these layers should return an empty sprite for index "0"
 	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mouth", "mask", "hair", "hat", "detail");
 
@@ -163,10 +164,9 @@ public class OutfitStore {
 	 * Get the layer sprite tileset.
 	 *
 	 * @param layer
-	 *            Name of the layer.
-	 *
+	 * 		Name of the layer.
 	 * @param index
-	 *            The resource index.
+	 * 		The resource index.
 	 * @param color
 	 * 		Layer coloring.
 	 *
@@ -235,6 +235,7 @@ public class OutfitStore {
 		final String reference = buildReference(strcode, color.toString());
 		return getOutfit(strcode, color, reference);
 	}
+
 	/**
 	 * Get outfit for a known outfit reference.
 	 *
@@ -247,15 +248,19 @@ public class OutfitStore {
 	 */
 	private Sprite getOutfit(final String strcode, final OutfitColor color, final String reference) {
 		final SpriteCache cache = SpriteCache.get();
+
 		// FIXME: set sprite to null until reference for extended outfit is fixed
 		//Sprite sprite = cache.get(reference);
 		Sprite sprite = null;
+
 		if (sprite == null) {
 			sprite = buildOutfit(strcode, color);
 			cache.add(reference, sprite);
 		}
+
 		return sprite;
 	}
+
 	/**
 	 * Get an outfit with color adjustment, such as a player in colored light.
 	 */
@@ -265,13 +270,16 @@ public class OutfitStore {
 		} else {
 			final String reference = buildReference(strcode, color.toString());
 			String fullRef = reference + ":" + adjColor.getRGB() + blend.toString();
+
 			// FIXME: set sprite to null until reference for extended outfit is fixed
 			//Sprite sprite = cache.get(fullRef);
 			Sprite sprite = null;
+
 			if (sprite == null) {
 				Sprite plain = getOutfit(strcode, color);
 				sprite = store.modifySprite(plain, adjColor, blend, fullRef);
 			}
+
 			return sprite;
 		}
 	}

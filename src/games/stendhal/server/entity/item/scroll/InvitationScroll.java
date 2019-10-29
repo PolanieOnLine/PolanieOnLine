@@ -5,6 +5,9 @@
  */
 package games.stendhal.server.entity.item.scroll;
 
+import java.util.Map;
+import java.util.StringTokenizer;
+
 //
 //
 
@@ -12,9 +15,6 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Represents an teleport scroll that acts as an invitation to an event. The
@@ -30,7 +30,7 @@ public class InvitationScroll extends TeleportScroll {
 	private static final String HOTEL_SPOT = "4 40";
 	/*
 	 * Creates a new invitation teleport scroll.
-	 * 
+	 *
 	 * @param name
 	 * @param clazz
 	 * @param subclass
@@ -43,7 +43,7 @@ public class InvitationScroll extends TeleportScroll {
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param item
 	 *            item to copy
 	 */
@@ -53,12 +53,12 @@ public class InvitationScroll extends TeleportScroll {
 
 	/**
 	 * Try to teleport to a marked scroll infostring style place.
-	 * 
+	 *
 	 * @param where
 	 *            A location in the form of <em>zone x y</em>.
 	 * @param player
 	 *            The player to teleport.
-	 * 
+	 *
 	 * @return <code>true</code> if teleport was successful.
 	 */
 	protected boolean teleportTo(final String where, final Player player) {
@@ -100,10 +100,10 @@ public class InvitationScroll extends TeleportScroll {
 
 	/**
 	 * Is invoked when a teleporting scroll is actually used.
-	 * 
+	 *
 	 * @param player
 	 *            The player who used the scroll and who will be teleported.
-	 * 
+	 *
 	 * @return <code>true</code> if teleport was successful.
 	 */
 	@Override

@@ -41,9 +41,9 @@ import games.stendhal.common.constants.Nature;
  * An utility for drawing the attack sprites.
  */
 public final class AttackPainter {
-	/** Logger instance */
+	/* Logger instance */
 	private static final Logger logger = Logger.getLogger(AttackPainter.class);
-	
+
 	/** Number of frames in attack sprites. */
 	private static final int NUM_ATTACK_FRAMES = 3;
 	/** Tile size for convenience. */
@@ -488,7 +488,7 @@ public final class AttackPainter {
 	 * @param width attacker width
 	 * @param height attacker height
 	 */
-	public void drawDistanceAttack(Graphics2D g2d, RPEntity entity, 
+	public void drawDistanceAttack(Graphics2D g2d, RPEntity entity,
 			IEntity target, int x, int y, int width, int height) {
 		Nature nature = entity.getShownDamageType();
 
