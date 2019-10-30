@@ -129,12 +129,27 @@ class VisualSettings {
 			}
 		});
 
+		// shadows
+		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", false,
+				"Pokaż cienie (eksperymentalne)", "Pokazuje cienie pod różnymi obiektami.");
+		page.add(shadows);
+		shadows.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+				String tmp = enabled ? "włączone" : "wyłączone";
+				String msg = "Cienie zostały " + tmp
+						+ ". Niektóre zmiany zaczną działać dopiero po ponownym uruchomieniu klienta.";
+				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+			}
+		});
+
 		// blood
 		JCheckBox showBloodToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_BLOOD, true,
 				"Pokaż krew i zwłoki", "Pokazuje plamy krwi podczas uderzenia w walce i zwłoki.");
 		page.add(showBloodToggle);
 		// Inform players that some images won-t update until after client is restarted.
-		// FIXME: Van't images be updated via map change?
+		// FIXME: Can't images be updated via map change?
 		showBloodToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
