@@ -47,21 +47,21 @@ import marauroa.common.game.RPObject;
  */
 public class Jail implements ZoneConfigurator, LoginListener {
 	private static final Outfit UNIFORM = new Outfit(null, 99, null, null, null, 998, null);
-	private static final Outfit UNIFORM1 = new Outfit(8, 99, 21, null, null, 998, null);
-	private static final Outfit UNIFORM2 = new Outfit(2, 99, 21, null, null, 998, null);
-	private static final Outfit MANHORSE1 = new Outfit(25, null, 36, null, null, null, null);
-	private static final Outfit MANHORSE2 = new Outfit(31, null, 36, null, null, null, null);
-	private static final Outfit MANHORSE3 = new Outfit(32, null, 36, null, null, null, null);
-	private static final Outfit MANHORSE4 = new Outfit(33, null, 36, null, null, null, null);
-	private static final Outfit MANHORSE5 = new Outfit(37, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE1 = new Outfit(24, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE2 = new Outfit(26, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE3 = new Outfit(27, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE4 = new Outfit(28, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE5 = new Outfit(29, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE6 = new Outfit(30, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE7= new Outfit(34, null, 36, null, null, null, null);
-	private static final Outfit WOMANHORSE8= new Outfit(35, null, 36, null, null, null, null);
+	private static final Outfit UNIFORM1 = new Outfit(8, 99, 19, null, null, 998, null);
+	private static final Outfit UNIFORM2 = new Outfit(2, 99, 19, null, null, 998, null);
+	private static final Outfit MANHORSE1 = new Outfit(25, null, null, null, null, null, null);
+	private static final Outfit MANHORSE2 = new Outfit(31, null, null, null, null, null, null);
+	private static final Outfit MANHORSE3 = new Outfit(32, null, null, null, null, null, null);
+	private static final Outfit MANHORSE4 = new Outfit(33, null, null, null, null, null, null);
+	private static final Outfit MANHORSE5 = new Outfit(37, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE1 = new Outfit(24, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE2 = new Outfit(26, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE3 = new Outfit(27, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE4 = new Outfit(28, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE5 = new Outfit(29, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE6 = new Outfit(30, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE7= new Outfit(34, null, null, null, null, null, null);
+	private static final Outfit WOMANHORSE8= new Outfit(35, null, null, null, null, null, null);
 	static StendhalRPZone jailzone;
 
 	private static final Logger LOGGER = Logger.getLogger(Jail.class);
