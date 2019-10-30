@@ -151,13 +151,13 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 		final int currentHat = origOutfit.getLayer("hat");
 		int santaHat = 999;
 		// unique Santa hats
-		if (currentHat == 3) {
+		if (currentHat == 4) {
 			santaHat = 996;
-		} else if (currentHat == 4) {
+		} else if (currentHat == 5) {
 			santaHat = 997;
 		}
 
-		player.setOutfit(new Outfit(null, null, null, null, null, null, null, santaHat, null).putOver(origOutfit), true);
+		player.setOutfit(new Outfit(null, null, null, null, null, santaHat, null).putOver(origOutfit), true);
 		player.registerOutfitExpireTime(43200);
 	}
 
