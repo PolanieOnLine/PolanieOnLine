@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="33" columns="3">
   <image source="../../tileset/ground/ground.png" trans="ffffff" width="96" height="352"/>
  </tileset>
@@ -102,11 +102,14 @@
  <tileset firstgid="1140" name="herb" tilewidth="32" tileheight="32" tilecount="5" columns="5">
   <image source="../../tileset/logic/item/herb.png" width="160" height="32"/>
  </tileset>
- <tileset firstgid="1145" name="resources" tilewidth="32" tileheight="32" tilecount="6" columns="6">
-  <image source="../../tileset/logic/item/resources.png" width="192" height="32"/>
+ <tileset firstgid="1145" name="resources" tilewidth="32" tileheight="32" tilecount="0" columns="0">
+  <image source="../../tiled/tileset/logic/item/resources.png" width="192" height="32"/>
  </tileset>
- <tileset firstgid="1151" name="logic/creature/reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+ <tileset firstgid="1145" name="logic/creature/reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
   <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
+ </tileset>
+ <tileset firstgid="1151" name="logic/creature/insect" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/creature/insect.png" width="64" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -135,7 +138,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3d2Q0CIRAA0I2xZI9fG9PYhe34o4nZ4LUBloH3KiDhnIEM0wQAy+22a7cAAIDarpu1WwDAUuJ4enV2PgEASOoxj7MX1wzlpL9DKpF/kNOAMsytPuhHSoo6vuSM83Aeh5gO5i4QwHOtsmaNK2qsAQAA0DJxNozh+YbSXR652Udi0m/UYqz1z90N8MqaAAAAAAAAY0rdDbsvhno+1Uq5VKqjcnzMefUeASCPWwO10FpoAwCwjH0cAAAAyKHWmwMA0krkev3L1Qd7NAAAjEMcB8A37/KI3pICjCVV38N9AkC/1HapS44OoG/zf5bsswAAY5BDB37V8vuLeQzrL2H4X655U2utcGcBEFPLZ0rWZ3wAxFYiTpPjAQAAAAAAAEZ0B+KGUhgAAAEA
+   H4sIAAAAAAAACu3dWwoCIRQA0CFacg/op5UVLa2fghjsNajj1XNWIPi894pOEwAst9uu3QIAAGq7bdZuAQBLiePp1cX5BAAgqcc8zl5cM5ST/g6pRP5BTgPKMLf6oB8pKer4kjPOw3kcYjqYu0AAz7XKmjWuqLEGAABAy8TZMIbnHUq1PHKzj8Sk36jFWOuf2g3wypoAAAAAAABjStWG1Yuhnk9vpVwrvaNyfMx57z0CQB7nBvbUFtoAACxjHwcAAAByqHXnAIC0Erle/3L1wR4NAADjEMcB8M27PKK7pABjSb3voZ4A0C9vu9QlRwfQt/k/S/ZZAIAxyKEDv2r5/sU8hvWXMPwv17yptVaoWQDE1PKZkvUZHwCxlYjT5HgAAAAAAACAEd0B9dSbqQAAAQA=
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" visible="0" opacity="0.37">

@@ -17,7 +17,9 @@
 	<group uri="creatures/stendhal/human.xml" />
 	<group uri="creatures/stendhal/humanoid.xml" />
 	<group uri="creatures/stendhal/hybrid.xml" />
+	<group uri="creatures/stendhal/insect.xml" />
 	<group uri="creatures/stendhal/kobold.xml" />
+	<group uri="creatures/stendhal/mutant.xml" />
 	<group uri="creatures/stendhal/mythical_being.xml" />
 	<group uri="creatures/stendhal/ogre.xml" />
 	<group uri="creatures/stendhal/oni.xml" />
