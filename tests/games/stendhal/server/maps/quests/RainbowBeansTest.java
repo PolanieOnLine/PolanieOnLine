@@ -108,7 +108,7 @@ public class RainbowBeansTest {
 		en.step(player, "bye");
 		assertEquals("Bye.", getReply(npc));
 
-		assertFalse(player.isEquipped("magiczne fasolki"));
+		assertFalse(player.isEquipped("rainbow beans"));
 		assertFalse(player.isEquipped("money"));
 
 		// don't have money
@@ -131,7 +131,7 @@ public class RainbowBeansTest {
 		assertEquals("Alright, here's the beans. Once you take them, you come down in about 30 minutes. And if you get nervous up there, hit one of the green panic squares to take you back here.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye.", getReply(npc));
-		assertTrue(player.isEquipped("magiczne fasolki"));
+		assertTrue(player.isEquipped("rainbow beans"));
 		assertFalse(player.isEquipped("money"));
 
 		assertNotNull(player.getQuest(questSlot));
@@ -170,14 +170,14 @@ public class RainbowBeansTest {
 	public void testTooFastUse() {
 		long now = System.currentTimeMillis();
 		player.setQuest(questSlot,"bought;" + now + ";taken;" + now);
-		PlayerTestHelper.equipWithItem(player, "magiczne fasolki");
-		Item beans = player.getFirstEquipped("magiczne fasolki");
+		PlayerTestHelper.equipWithItem(player, "rainbow beans");
+		Item beans = player.getFirstEquipped("rainbow beans");
 		if (beans instanceof RainbowBeansScroll) {
 			((RainbowBeansScroll) beans).onUsed(player);
 		} else {
 			fail();
 		}
 		assertEquals("You were just sick from overuse of the rainbow beans. Classy!", PlayerTestHelper.getPrivateReply(player));
-		assertFalse("Beans should be used up", player.isEquipped("magiczne fasolki"));
+		assertFalse("Beans should be used up", player.isEquipped("rainbow beans"));
 	}
 }

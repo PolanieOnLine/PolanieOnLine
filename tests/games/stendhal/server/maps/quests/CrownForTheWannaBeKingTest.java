@@ -297,7 +297,7 @@ public class CrownForTheWannaBeKingTest {
 	 */
 	@Test
 	public void testQuestion1ToQuestion1Itembrought() {
-		final String[] triggers = { "obsidian", "diamond", "carbuncle", "sapphire", "emerald", "sztabka złota" };
+		final String[] triggers = { "obsidian", "diamond", "carbuncle", "sapphire", "emerald", "gold bar" };
 
 		for (final String playerSays : triggers) {
 			final Player bob = PlayerTestHelper.createPlayer("bob");
@@ -368,8 +368,8 @@ public class CrownForTheWannaBeKingTest {
 
 		// is("I need 2 #gold bar, 4 #emerald, 3 #sapphire, 2 #carbuncle,
 		// 2 #diamond, and 1 #obsidian. Did you bring something?"));
-		final String[] triggers = { "obsydian", "diament", "diament", "rubin", "rubin", "szafir", "szafir",
-				"szafir", "szmaragd", "szmaragd", "szmaragd", "szmaragd", "sztabka złota" };
+		final String[] triggers = { "obsidian", "diamond", "diamond", "carbuncle", "carbuncle", "sapphire", "sapphire",
+				"sapphire", "emerald", "emerald", "emerald", "emerald", "gold bar" };
 		npcEngine.setCurrentState(ConversationStates.QUESTION_1);
 		for (final String playerSays : triggers) {
 			PlayerTestHelper.equipWithItem(bob, playerSays);
@@ -382,11 +382,11 @@ public class CrownForTheWannaBeKingTest {
 			assertThat(bob.getQuest(QUEST_SLOT), not((is(CrownForTheWannaBeKing.NEEDED_ITEMS))));
 		}
 
-		PlayerTestHelper.equipWithItem(bob, "sztabka złota");
+		PlayerTestHelper.equipWithItem(bob, "gold bar");
 		assertThat(bob.isQuestCompleted(QUEST_SLOT), is(false));
 		assertThat(bob.getQuest(QUEST_SLOT), not((is("reward"))));
 
-		npcEngine.step(bob, "sztabka złota");
+		npcEngine.step(bob, "gold bar");
 		assertEquals(
 				"You have served me well, my crown will be the mightiest of them all! Go to see Kendra Mattori in the Wizard City to get your #reward.",
 				getReply(npc));

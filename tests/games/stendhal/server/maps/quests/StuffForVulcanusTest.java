@@ -174,7 +174,7 @@ public class StuffForVulcanusTest extends ZonePlayerAndNPCTestImpl {
 	public void testBroughtGoldButNotEnoughIronBars() {
 		en.setCurrentState(ConversationStates.IDLE);
 		player.setQuest(questSlot, "start;10;0;0;0");
-		PlayerTestHelper.equipWithStackableItem(player, "sztabka złota", 12);
+		PlayerTestHelper.equipWithStackableItem(player, "gold bar", 12);
 
 		en.step(player, "hi");
 		assertEquals("I cannot #forge it without the missing 5 pieces of iron.", getReply(vulcanus));
@@ -182,15 +182,15 @@ public class StuffForVulcanusTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "forge");
 		assertEquals("I will need 5 #'pieces of iron', 26 #'pieces of wood', 12 #'gold bars' and 6 #'giant hearts'.", getReply(vulcanus));
 
-		assertTrue(player.isEquipped("sztabka złota", 12));
+		assertTrue(player.isEquipped("gold bar", 12));
 	}
 
 	@Test
 	public void testBroughtRemainingIronAndGold() {
 		en.setCurrentState(ConversationStates.IDLE);
 		player.setQuest(questSlot, "start;10;0;0;0");
-		PlayerTestHelper.equipWithStackableItem(player, "sztabka złota", 12);
-		PlayerTestHelper.equipWithStackableItem(player, "żelazo", 10);
+		PlayerTestHelper.equipWithStackableItem(player, "gold bar", 12);
+		PlayerTestHelper.equipWithStackableItem(player, "iron", 10);
 
 		en.step(player, "hi");
 		assertEquals("How do you expect me to #forge it without missing 26 pieces of wood for the fire?", getReply(vulcanus));
@@ -198,20 +198,20 @@ public class StuffForVulcanusTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "forge");
 		assertEquals("I will need 26 #'pieces of wood', 12 #'gold bars' and 6 #'giant hearts'.", getReply(vulcanus));
 
-		assertTrue(player.isEquipped("sztabka złota", 12));
+		assertTrue(player.isEquipped("gold bar", 12));
 	}
 
 	@Test
 	public void testBroughtWoodAndGold() {
 		en.setCurrentState(ConversationStates.IDLE);
 		player.setQuest(questSlot, "start;15;0;0;0");
-		PlayerTestHelper.equipWithStackableItem(player, "sztabka złota", 12);
-		PlayerTestHelper.equipWithStackableItem(player, "polano", 26);
+		PlayerTestHelper.equipWithStackableItem(player, "gold bar", 12);
+		PlayerTestHelper.equipWithStackableItem(player, "wood", 26);
 
 		en.step(player, "hi");
 		assertEquals("It is the base element of the enchantment. I need 6 giant hearts still.", getReply(vulcanus));
 
-		assertFalse(player.isEquipped("sztabka złota"));
+		assertFalse(player.isEquipped("gold bar"));
 	}
 
 	@Test
@@ -266,7 +266,7 @@ public class StuffForVulcanusTest extends ZonePlayerAndNPCTestImpl {
 	public void testBrought2GiantHearts() {
 		en.setCurrentState(ConversationStates.IDLE);
 		player.setQuest(questSlot, "start;15;26;12;0");
-		PlayerTestHelper.equipWithStackableItem(player, "serce olbrzyma", 2);
+		PlayerTestHelper.equipWithStackableItem(player, "giant heart", 2);
 
 		en.step(player, "hi");
 		assertEquals("It is the base element of the enchantment. I need 4 giant hearts still.", getReply(vulcanus));
@@ -291,14 +291,14 @@ public class StuffForVulcanusTest extends ZonePlayerAndNPCTestImpl {
 	public void testBroughtRemainingGiantHearts() {
 		en.setCurrentState(ConversationStates.IDLE);
 		player.setQuest(questSlot, "start;15;26;12;2");
-		PlayerTestHelper.equipWithStackableItem(player, "serce olbrzyma", 4);
+		PlayerTestHelper.equipWithStackableItem(player, "giant heart", 4);
 
 		en.step(player, "hi");
 		assertEquals("Did you really get those giant hearts yourself? I don't think so! This powerful sword can only be given to those that are strong enough to kill a #giant.", getReply(vulcanus));
 		en.step(player, "giant");
 		assertEquals("There are ancient stories of giants living in the mountains at the north of Semos and Ados.", getReply(vulcanus));
 
-		assertFalse(player.isEquipped("serce olbrzyma"));
+		assertFalse(player.isEquipped("giant heart"));
 		assertHistory(HISTORY_DEFAULT, HISTORY_START, HISTORY_BROUGHT_ALL_ITEMS, HISTORY_NEED_KILL_GIANT);
 	}
 

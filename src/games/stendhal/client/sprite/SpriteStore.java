@@ -354,18 +354,7 @@ public class SpriteStore {
 			logger.debug("Using safe image: " + safeRef);
 			ref = safeRef;
 		}
-		
-	/*
-		// Old outfits mode
-		boolean OldOutfits = Boolean.parseBoolean(WtWindowManager.getInstance().getProperty("gamescreen.oldoutfits", "true"));
-		String oldRef = ref.split(".png")[0] + "-noblood.png";
-		URL oldURL = DataLoader.getResource(oldRef);
-		if (!OldOutfits && (oldURL != null)) {	
-			logger.debug("Using old outfits image: " + oldRef);
-			ref = oldRef;
-		}
-	*/
-		
+
 		try {
 			URL url;
 			if (ref.startsWith("http://") || ref.startsWith("https://")) {

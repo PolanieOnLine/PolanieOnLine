@@ -263,7 +263,7 @@ public class CampfireTest {
 
 			en.setCurrentState(ConversationStates.ATTENDING);
 			en.step(player, request);
-			assertEquals("My campfire needs wood again! Could you please get some from the forest for me? I need ten pieces.", getReply(npc));
+			assertEquals("My campfire needs wood again, ten pieces of #wood will be enough. Could you please get those #wood pieces from the forest for me? Please say yes!", getReply(npc));
 			assertEquals(ConversationStates.QUEST_OFFERED, en.getCurrentState());
 			assertEquals("quest state unchanged", questState, player.getQuest(CAMPFIRE));
 		}

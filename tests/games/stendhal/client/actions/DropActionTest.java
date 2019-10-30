@@ -190,11 +190,11 @@ public class DropActionTest {
 
 		// create a player and give him some money
 		final RPObject player = createPlayer();
-		player.getSlot("bag").addPreservingId(createItem("czarny miecz", SILVER_SWORD_ID, 1));
+		player.getSlot("bag").addPreservingId(createItem("silver sword", SILVER_SWORD_ID, 1));
 
 		// issue "/drop money"
 		final DropAction action = new DropAction();
-		assertTrue(action.execute(new String[]{"czarny"}, "miecz"));
+		assertTrue(action.execute(new String[]{"silver"}, "sword"));
 		assertEquals("", clientUI.getEventBuffer());
 	}
 

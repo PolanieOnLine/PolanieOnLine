@@ -128,7 +128,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(AMBER_TALK_GIVE_FLOWER, getReply(npc));
 
 		assertEquals("found_mom", player.getQuest(questSlot));
-		assertTrue(player.isEquipped("bielikrasa"));
+		assertTrue(player.isEquipped("zantedeschia"));
 		assertFalse(npc.isTalking());
 		assertHistory(HISTORY_DEFAULT, HISTORY_FOUND_MOM);
 	}
@@ -136,7 +136,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testTalkToAmberAgain() {
 		player.setQuest(questSlot, "found_mom");
-		PlayerTestHelper.equipWithItem(player, "bielikrasa");
+		PlayerTestHelper.equipWithItem(player, "zantedeschia");
 
 		startTalkingToNpc("Amber");
 
@@ -172,7 +172,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(AMBER_TALK_REJECT, getReply(npc));
 
 		assertNull(player.getQuest(questSlot));
-		assertFalse(player.isEquipped("bielikrasa"));
+		assertFalse(player.isEquipped("zantedeschia"));
 		assertFalse(npc.isTalking());
 		assertNoHistory();
 	}
@@ -180,7 +180,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToJef() {
 		int initialXp = player.getXP();
-		PlayerTestHelper.equipWithItem(player, "bielikrasa");
+		PlayerTestHelper.equipWithItem(player, "zantedeschia");
 		player.setQuest(questSlot, "found_mom");
 
 		startTalkingToNpc("Jef");
@@ -188,8 +188,8 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "fine");
 		assertThat(getReply(npc), startsWith("Thank you"));
 
-		assertFalse(player.isEquipped("bielikrasa"));
-		assertTrue(player.isEquipped("skrzydlica"));
+		assertFalse(player.isEquipped("zantedeschia"));
+		assertTrue(player.isEquipped("red lionfish"));
 		assertGainKarma(15);
 		assertEquals(800, player.getXP() - initialXp);
 		assertEquals("done", player.getQuest(questSlot, 0));

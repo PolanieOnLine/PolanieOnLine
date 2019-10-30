@@ -304,7 +304,7 @@ public final class stendhal {
 
 			waitForLogin();
 			CStatusSender.send();
-			
+
 			/*
 			 * Pass the continuous movement setting is to the server.
 			 * It is done in game loop to ensure that the server version is
@@ -320,7 +320,7 @@ public final class stendhal {
 					}
 				}
 			});
-			
+
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {

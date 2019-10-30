@@ -47,7 +47,7 @@ import java.util.List;
  */
 public class MeetGuslarz extends AbstractQuest {
 	// quest slot changed ready for 2012
-	private static final String QUEST_SLOT = "meet_guslarz_13";
+	private static final String QUEST_SLOT = "meet_guslarz_[seasonyear]";
 
 	/** the Guslarz NPC. */
 	protected SpeakerNPC guslarz;

@@ -28,22 +28,22 @@ public class Outfits {
 	 */
 
 	/** number of player selectable heads */
-	public static final int HEAD_OUTFITS = 36;
+	public static final int HEAD_OUTFITS = 28;
 
 	/** number of player selectable dresses */
 	public static final int CLOTHES_OUTFITS = 99;
 
 	/** number of player selectable hair styles */
-	public static final int HAIR_OUTFITS = 64;
+	public static final int HAIR_OUTFITS = 46;
 
 	/** number of player selectable body shapes */
-	public static final int BODY_OUTFITS = 38;
+	public static final int BODY_OUTFITS = 37;
 
 	/** number of player selectable hats */
-	public static final int HAT_OUTFITS = 2;
+	public static final int HAT_OUTFITS = 20;
 
 	/** number of player selectable masks */
-	public static final int MASK_OUTFITS = 4;
+	public static final int MASK_OUTFITS = 13;
 
 	// layers used for building outfits
 	public static final List<String> LAYER_NAMES = Arrays.asList(

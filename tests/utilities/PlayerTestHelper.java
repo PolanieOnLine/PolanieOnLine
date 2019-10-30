@@ -106,7 +106,7 @@ public abstract class PlayerTestHelper {
 	public static Player createPlayerWithOutFit(final String name) {
 		final Player player = createPlayer(name);
 
-		player.setOutfit(0, 1, 1, 1, 1);
+		player.setOutfit(1, 1, 1, 0, 0, 0, 1, 0, 0);
 
 		return player;
 	}
@@ -255,16 +255,25 @@ public abstract class PlayerTestHelper {
 	}
 
 	/**
-	 * Reset the conversation state of the named NPC.
+	 * Reset the conversation state of the NPC.
 	 *
-	 * @param npcName
+	 * @param npc
+	 * 		SpeakerNPC
 	 */
-	public static void resetNPC(final String npcName) {
-		final SpeakerNPC npc = SingletonRepository.getNPCList().get(npcName);
-
+	public static void resetNPC(final SpeakerNPC npc) {
 		if (npc != null) {
 			npc.setCurrentState(ConversationStates.IDLE);
 		}
+	}
+
+	/**
+	 * Reset the conversation state of the named NPC.
+	 *
+	 * @param npcName
+	 * 		NPC string name
+	 */
+	public static void resetNPC(final String npcName) {
+		resetNPC(SingletonRepository.getNPCList().get(npcName));
 	}
 
 	/**

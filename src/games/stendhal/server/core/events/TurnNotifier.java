@@ -98,6 +98,7 @@ public final class TurnNotifier {
 
 		if (set != null) {
 			for (final TurnListener turnListener : set) {
+
 				try {
 					turnListener.onTurnReached(currentTurn);
 				} catch (final RuntimeException e) {

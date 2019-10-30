@@ -197,7 +197,7 @@ public class SpellTest {
 		Player caster = createWizard();
 		caster.setID(new ID(99, "test"));
 		caster.setAtk(10);
-		Creature targetCreature = SingletonRepository.getEntityManager().getCreature("szczur");
+		Creature targetCreature = SingletonRepository.getEntityManager().getCreature("rat");
 		targetCreature.setID(new ID(999, "test"));
 		Integer startingValue = Integer.valueOf(targetCreature.getHP());
 		zone.add(targetCreature);

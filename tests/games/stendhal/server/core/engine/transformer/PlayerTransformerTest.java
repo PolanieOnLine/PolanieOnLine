@@ -79,7 +79,7 @@ public class PlayerTransformerTest {
 		RPObject transObj = new PlayerTransformer().transform(obje);
 		assertTrue(transObj.hasSlot("bag"));
 
-		assertThat(transObj.getSlot("bag").getFirst().get("name"), is("skórzana zbroja"));
+		assertThat(transObj.getSlot("bag").getFirst().get("name"), is("leather armor"));
 	}
 	/**
 	 * Tests for transformBind.
@@ -92,7 +92,7 @@ public class PlayerTransformerTest {
 		RPSlot slot = new RPSlot("bag");
 
 		obje.addSlot(slot);
-		Item item = new Item("złoty klucz Licha","clazz","subclass",null);
+		Item item = new Item("lich gold key","clazz","subclass",null);
 		 slot.add(item);
 
 		assertFalse(item.isBound());
@@ -115,7 +115,7 @@ public class PlayerTransformerTest {
 
 		obje.addSlot(slot);
 
-		Item item = new Item("zwój zapisany","clazz","subclass",null);
+		Item item = new Item("marked scroll","clazz","subclass",null);
 		item.setBoundTo("bob");
 		 slot.add(item);
 		assertTrue(item.isBound());

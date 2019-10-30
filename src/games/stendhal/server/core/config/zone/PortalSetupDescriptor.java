@@ -43,7 +43,7 @@ public class PortalSetupDescriptor extends EntitySetupDescriptor {
 	 * Whether replacing an existing portal at that location.
 	 */
 	protected boolean replacing;
-	
+
 	/**
 	 * Create a portal setup descriptor.
 	 *
@@ -167,7 +167,8 @@ public class PortalSetupDescriptor extends EntitySetupDescriptor {
 			if (destIdentifier != null) {
 				portal.setDestination(getDestinationZone(), destIdentifier);
 			}
-			
+
+			// Set facing direction for portal used as destination.
 			if (portal.has("face")) {
 				portal.setFaceDirection(portal.get("face"));
 			}

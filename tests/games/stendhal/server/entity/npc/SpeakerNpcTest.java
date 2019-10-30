@@ -23,7 +23,7 @@ import utilities.PlayerTestHelper;
 @RunWith(Parameterized.class)
 public class SpeakerNpcTest {
 
-	private static final String ZONES_PATH = "/data/conf/zones/stendhal";
+	private static final String ZONES_PATH = "/data/conf/zones";
 
 	private static final String ZONE_PATH_ADOS = ZONES_PATH + "/ados.xml";
 	private static final String ZONE_PATH_AMAZON = ZONES_PATH + "/amazon.xml";

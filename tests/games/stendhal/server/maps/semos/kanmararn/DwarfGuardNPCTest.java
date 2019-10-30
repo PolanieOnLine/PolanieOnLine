@@ -71,7 +71,7 @@ public class DwarfGuardNPCTest extends ZonePlayerAndNPCTestImpl {
 		// Hunel doesn't listen to us until we get the prison key.
 		assertFalse(en.step(player, "bye"));
 
-		equipWithItem(player, "klucz do więzienia Kanmararn");
+		equipWithItem(player, "kanmararn prison key");
 
 		assertTrue(en.step(player, "hi Hunel"));
 		assertEquals("You got the key to unlock me! *mumble*  Errrr ... it doesn't look too safe out there for me ... I think I'll just stay here ... perhaps someone could #offer me some good equipment ... ", getReply(npc));
@@ -88,7 +88,7 @@ public class DwarfGuardNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("Hunel");
 		final Engine en = npc.getEngine();
 
-		equipWithItem(player, "klucz do więzienia Kanmararn");
+		equipWithItem(player, "kanmararn prison key");
 
 		assertTrue(en.step(player, "hi"));
 		assertEquals("You got the key to unlock me! *mumble*  Errrr ... it doesn't look too safe out there for me ... I think I'll just stay here ... perhaps someone could #offer me some good equipment ... ", getReply(npc));

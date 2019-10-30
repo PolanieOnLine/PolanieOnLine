@@ -514,13 +514,13 @@ public class AdministrationActionTest {
 		pl.setAdminLevel(5000);
 		RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "szczur");
+		action.put("creature", "rat");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);
 		assertEquals(1, pl.getID().getObjectID());
 		final Creature rat = (Creature) zone.getEntityAt(0, 0);
-		assertEquals("szczur", rat.get("subclass"));
+		assertEquals("rat", rat.get("subclass"));
 
 		action = new RPAction();
 		action.put("type", "altercreature");
@@ -766,7 +766,7 @@ public class AdministrationActionTest {
 	public final void testOnDestroyRat() {
 		CreatureTestHelper.generateRPClasses();
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -791,7 +791,7 @@ public class AdministrationActionTest {
 	public final void testOnDestroyRatWithTargetID() {
 
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -815,7 +815,7 @@ public class AdministrationActionTest {
 	@Test
 	public final void testOnInspectRatWithTargetID() {
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -875,19 +875,19 @@ public class AdministrationActionTest {
 		action.put("type", "summonat");
 		action.put("target", "hugo");
 		action.put("slot", "bag");
-		action.put("item", "sztylecik");
-		assertFalse(player.isEquipped("sztylecik"));
+		action.put("item", "dagger");
+		assertFalse(player.isEquipped("dagger"));
 		CommandCenter.execute(player, action);
 		// If the following fails, chances are quite good, the "items.xml" configuration file could not be loaded.
 		assertTrue(player.events().isEmpty());
-		assertTrue(player.isEquipped("sztylecik"));
+		assertTrue(player.isEquipped("dagger"));
 		player.clearEvents();
 
 		action = new RPAction();
 		action.put("type", "summonat");
 		action.put("target", "noone");
 		action.put("slot", "bag");
-		action.put("item", "sztylecik");
+		action.put("item", "dagger");
 
 		CommandCenter.execute(player, action);
 		assertEquals("Player \"noone\" not found.", player.events().get(0).get("text"));

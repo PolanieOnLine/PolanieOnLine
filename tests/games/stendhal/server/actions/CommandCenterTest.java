@@ -53,6 +53,27 @@ public class CommandCenterTest {
 	}
 
 	/**
+	 * Tests for registerTwice.
+	 */
+	@Test
+	public void testRegisterTwice() {
+		CommandCenter.register("this", new ActionListener() {
+
+			@Override
+			public void onAction(final Player player, final RPAction action) {
+				// do nothing
+			}
+		});
+
+		CommandCenter.register("this", new ActionListener() {
+			@Override
+			public void onAction(final Player player, final RPAction action) {
+				// do nothing
+			}
+		});
+	}
+
+	/**
 	 * Tests for executeNullNull.
 	 */
 	@Test
@@ -67,6 +88,26 @@ public class CommandCenterTest {
 	@Test
 	public void testExecuteUnknown() {
 		final RPAction action = new RPAction();
+
+		CommandCenter.register("this", new ActionListener() {
+			@Override
+			public void onAction(final Player player, final RPAction action) {
+				// do nothing
+			}
+		});
+		CommandCenter.register("that", new ActionListener() {
+			@Override
+			public void onAction(final Player player, final RPAction action) {
+				// do nothing
+			}
+		});
+		CommandCenter.register("thus", new ActionListener() {
+			@Override
+			public void onAction(final Player player, final RPAction action) {
+				// do nothing
+			}
+		});
+
 
 		action.put("type", "");
 		final Player caster = PlayerTestHelper.createPlayer("bob");

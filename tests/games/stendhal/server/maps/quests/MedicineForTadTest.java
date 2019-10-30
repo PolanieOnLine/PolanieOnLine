@@ -151,9 +151,9 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	}
 
 	@Test
-	public void testBackToTadWithflasza() {
+	public void testBackToTadWithFlask() {
 		player.setQuest(questSlot, MedicineForTad.STATE_START);
-		PlayerTestHelper.equipWithItem(player, "flasza");
+		PlayerTestHelper.equipWithItem(player, "flask");
 
 		String firstReply = startTalkingToNpc("Tad");
 
@@ -165,9 +165,9 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	}
 
 	@Test
-	public void testGoToIlisaWithflasza() {
+	public void testGoToIlisaWithFlask() {
 		player.setQuest(questSlot, MedicineForTad.STATE_ILISA);
-		PlayerTestHelper.equipWithItem(player, "flasza");
+		PlayerTestHelper.equipWithItem(player, "flask");
 
 		String firstReply = startTalkingToNpc("Ilisa");
 
@@ -187,7 +187,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToTadWithoutPotion() {
 		player.setQuest(questSlot, MedicineForTad.STATE_HERB);
-		PlayerTestHelper.equipWithItem(player, "flasza");
+		PlayerTestHelper.equipWithItem(player, "flask");
 
 		String firstReply = startTalkingToNpc("Tad");
 
@@ -197,7 +197,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToIlisaWithoutHerb() {
 		player.setQuest(questSlot, MedicineForTad.STATE_HERB);
-		PlayerTestHelper.equipWithItem(player, "flasza");
+		PlayerTestHelper.equipWithItem(player, "flask");
 
 		String firstReply = startTalkingToNpc("Ilisa");
 
@@ -207,7 +207,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToIlisaWithHerb() {
 		player.setQuest(questSlot, MedicineForTad.STATE_HERB);
-		PlayerTestHelper.equipWithItem(player, "flasza");
+		PlayerTestHelper.equipWithItem(player, "flask");
 		PlayerTestHelper.equipWithItem(player, "arandula");
 
 		String firstReply = startTalkingToNpc("Ilisa");

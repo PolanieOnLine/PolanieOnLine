@@ -42,7 +42,6 @@ class TileStore implements Tileset {
 	 * actual tile number.
 	 */
 	private static final int TILE_ID_MASK = 0xFFFFFFFF ^ TILE_FLIP_MASK;
-
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(TileStore.class);
 
