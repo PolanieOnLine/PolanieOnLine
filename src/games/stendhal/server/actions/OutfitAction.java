@@ -66,7 +66,9 @@ public class OutfitAction implements ActionListener {
 				}
 				
 				// Server changes us gender if we set definite body
-				if ((player.getOutfit().getLayer("body") > 5 && player.getOutfit().getLayer("body") < 12) || player.getOutfit().getLayer("body") == 13) {
+				if ((player.getOutfit().getLayer("body") > 5 && player.getOutfit().getLayer("body") < 12) || player.getOutfit().getLayer("body") == 13
+						|| player.getOutfit().getLayer("body") == 24 || player.getOutfit().getLayer("body") > 25 && player.getOutfit().getLayer("body") < 31
+						|| player.getOutfit().getLayer("body") == 33 || player.getOutfit().getLayer("body") == 34) {
 					player.setGender("F");
 				} else {
 					player.setGender("M");
