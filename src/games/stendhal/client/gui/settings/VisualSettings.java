@@ -139,7 +139,7 @@ class VisualSettings {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Cienie zostały " + tmp
-						+ ". Niektóre zmiany zaczną działać dopiero po ponownym uruchomieniu klienta.";
+						+ ". Niektóre zmiany zaczną działać dopiero po zmianie mapy lub przelogowaniu się.";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
