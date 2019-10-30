@@ -80,7 +80,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		final Pair<Outfit, Boolean> NOOB = new Pair<Outfit, Boolean>(new Outfit(null, null, 31, null, null, null, null), true);
 
 		// these outfits must replace the current outfit (what's null simply isn't there)
-		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(null, 111, null, null, null, null, null), false);
+		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(null, 999, null, null, null, null, null), false);
 		final Pair<Outfit, Boolean> HORSE = new Pair<Outfit, Boolean>(new Outfit(97, null, null, null, null, null, null), false);
 		final Pair<Outfit, Boolean> GIRL_HORSE = new Pair<Outfit, Boolean>(new Outfit(96, null, null, null, null, null, null), false);
 		final Pair<Outfit, Boolean> ALIEN = new Pair<Outfit, Boolean>(new Outfit(95, null, null, null, null, null, null), false);
