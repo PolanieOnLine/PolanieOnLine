@@ -12,6 +12,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -32,14 +40,6 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 /**
  * QUEST: Pizza Delivery
@@ -76,12 +76,7 @@ import org.apache.log4j.Logger;
  */
 public class Pizza extends AbstractQuest {
 	private static final Logger logger = Logger.getLogger(Pizza.class);
-	// FIXME: return to "final" after outfit testing is finished
-	private static Outfit UNIFORM;
-	
-	public Pizza() {
-		UNIFORM = new Outfit(null, null, null, Integer.valueOf(75), null);
-	}
+	private final static Outfit UNIFORM = new Outfit(null, Integer.valueOf(990), null, null, null, null, null, null, null);
 
 	/**
 	 * A customer data object.
