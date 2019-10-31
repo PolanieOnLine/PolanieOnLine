@@ -1,7 +1,7 @@
 Changelog
 ---------
 1.06
-Zaktualizowano do najnowszej wersji Stendhala 1.32
+Zaktualizowano po części do najnowszej wersji Stendhala 1.32
 
 *klient*
 - Dodano opcje pokazywania cieni pod pewnymi obiektami (potworami/npc'tami/graczami)
