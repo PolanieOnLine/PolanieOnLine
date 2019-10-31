@@ -4,8 +4,9 @@ Changelog
 Zaktualizowano do najnowszej wersji Stendhala 1.32
 
 *klient*
-- Sporo zmian z outfitami Charas (dodano czapki, maski i nie tylko...)
 - Dodano opcje pokazywania cieni pod pewnymi obiektami (potworami/npc'tami/graczami)
+- Sporo zmian z outfitami Charas (dodano czapki, maski i nie tylko...)
+- Poprawiono dźwięk śmiechu piratów
 
 *świat gry*
 - Dodano drop czarnego pierścienia oraz pierścienia z mithrilu odpowiednio u azazela i serafina
