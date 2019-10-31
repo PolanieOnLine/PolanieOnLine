@@ -380,6 +380,8 @@
 		</abilities>
 		<ai>
 			<says>
+				<sound value="pol-dragon-roaring"/>
+				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
