@@ -660,20 +660,8 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<portal x="46" y="18" ref="postoffice_entrance_right">
 			<destination zone="int_zakopane_postoffice" ref="postoffice_right_exit"/>
 		</portal>
-		<portal x="59" y="39" ref="football_entrance_1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
-		</portal>
-		<portal x="60" y="39" ref="football_entrance_2">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
-		</portal>
-		<portal x="61" y="38" ref="football_entrance_3">
-			<destination zone="1_football_playground" ref="entrance_football_3"/>
-		</portal>
-		<portal x="62" y="39" ref="football_entrance_4">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
-		</portal>
-		<portal x="63" y="39" ref="football_entrance_5">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		<portal x="61" y="38" ref="football_entrance">
+			<destination zone="1_football_playground" ref="entrance_football"/>
 		</portal>
 
 		<!-- po zmianach -->
@@ -2615,20 +2603,20 @@ Aktualne ceny u Gazdy Wojtka:
 			</implementation>
 		</entity>
 
-		<portal x="29" y="47" ref="entrance_football_1">
-			<destination zone="0_zakopane_s" ref="football_entrance_1"/>
+		<portal x="31" y="47" ref="entrance_football">
+			<destination zone="0_zakopane_s" ref="football_entrance"/>
 		</portal>
-		<portal x="30" y="47" ref="entrance_football_2">
-			<destination zone="0_zakopane_s" ref="football_entrance_2"/>
+		<portal x="29" y="47" ref="entrance_football">
+			<destination zone="0_zakopane_s" ref="football_entrance"/>
 		</portal>
-		<portal x="31" y="47" ref="entrance_football_3">
-			<destination zone="0_zakopane_s" ref="football_entrance_3"/>
+		<portal x="30" y="47" ref="entrance_football">
+			<destination zone="0_zakopane_s" ref="football_entrance"/>
 		</portal>
-		<portal x="32" y="47" ref="entrance_football_4">
-			<destination zone="0_zakopane_s" ref="football_entrance_4"/>
+		<portal x="32" y="47" ref="entrance_football">
+			<destination zone="0_zakopane_s" ref="football_entrance"/>
 		</portal>
-		<portal x="33" y="47" ref="entrance_football_5">
-			<destination zone="0_zakopane_s" ref="football_entrance_5"/>
+		<portal x="33" y="47" ref="entrance_football">
+			<destination zone="0_zakopane_s" ref="football_entrance"/>
 		</portal>
 	</zone>
 
