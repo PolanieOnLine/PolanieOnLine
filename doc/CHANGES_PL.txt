@@ -13,6 +13,11 @@ Zaktualizowano po części do najnowszej wersji Stendhala 1.32
 - Dodano drop czarnego pierścienia oraz pierścienia z mithrilu odpowiednio u azazela i serafina
 - Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
 - Zmieniono system nagród u wszystkich burmistrzów (gdy postać osiągnie dany limit siły to ten NPC przestanie nagradzać go w postaci punktów umiejętności)
+	- Zakopane oraz Semos: do 100 ataku
+	- Ados: do 105 ataku
+	- Kuźnice oraz Gdańsk: do 110 ataku
+	- Kuźnice oraz Gdańsk: do 110 ataku
+	- Wieliczka oraz Kirdneh: do 115 ataku
 
 *naprawiono błędy*
 - Naprawiono różne odmiany potworów mermaid
