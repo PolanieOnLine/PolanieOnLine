@@ -12,6 +12,7 @@ Zaktualizowano po części do najnowszej wersji Stendhala 1.32
 *świat gry*
 - Dodano drop czarnego pierścienia oraz pierścienia z mithrilu odpowiednio u azazela i serafina
 - Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
+- W zadaniu na płaszcz kapturka (u Balbiny) rozbudowano dziennik zadań (jest więcej informacji o etapach)
 - Zmieniono system nagród u wszystkich burmistrzów (gdy postać osiągnie dany limit siły to ten NPC przestanie nagradzać go w postaci punktów umiejętności)
 	- Zakopane oraz Semos: do 100 ataku
 	- Ados: do 105 ataku
