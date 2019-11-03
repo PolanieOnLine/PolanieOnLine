@@ -83,7 +83,7 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                      "Zależy jakie ziele... Dla mięsa oraz szynki #kekik, dla pstrąga oraz dorsza to #sclaria...");
                 addReply(Arrays.asList("drewno", "wood"),
                         "Nie załamuj mnie wojowniku... Polano znajdziesz gdzieś w lasach Semos.");
-                addReply(Arrays.asList("sclaria", "kekik"),
+                addReply(Arrays.asList("arandula", "sclaria", "kekik"),
                     "Rośnie w wielu miejscach na krawędziach lub na skrajach lasu.");
                 addReply(Arrays.asList("trout", "cod", "pstrąg", "dorsz"),
                     "Nie chciałbym ujawniać Tobie moich ulubioncyh miejsc do łowienia ryb, ale poleciłbym ci poszukanie książek na ten temat, w jednym z tych miejsc naukowych gdzie niewielu jest już zaznajomionych...");
@@ -101,7 +101,7 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                 final Map<String, Integer> reqRes_smokedMeat = new TreeMap<String, Integer>();
                 reqRes_smokedMeat.put("polano", 2);
                 reqRes_smokedMeat.put("mięso", 1);
-                reqRes_smokedMeat.put("kekik", 1);
+                reqRes_smokedMeat.put("arandula", 1);
 
                 final Map<String, Integer> reqRes_smokedHam = new TreeMap<String, Integer>();
                 reqRes_smokedHam.put("polano", 3);
@@ -112,11 +112,13 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                 reqRes_smokedTrout.put("polano", 1);
                 reqRes_smokedTrout.put("pstrąg", 1);
                 reqRes_smokedTrout.put("sclaria", 1);
+                reqRes_smokedTrout.put("arandula", 1);
 
                 final Map<String, Integer> reqRes_smokedCod = new TreeMap<String, Integer>();
                 reqRes_smokedCod.put("polano", 1);
                 reqRes_smokedCod.put("dorsz", 1);
                 reqRes_smokedCod.put("sclaria", 2);
+                reqRes_smokedCod.put("arandula", 1);
 
 
                 final HashMap<String, Map<String, Integer>> requiredResourcesPerProduct = new HashMap<String, Map<String, Integer>>();
