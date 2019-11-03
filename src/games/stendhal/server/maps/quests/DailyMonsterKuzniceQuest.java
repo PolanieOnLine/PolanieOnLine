@@ -33,9 +33,11 @@ import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.ComparisonOperator;
 import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
+import games.stendhal.server.entity.npc.condition.PlayerStatLevelCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
@@ -63,6 +65,8 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 	private final static int delay = 2 * MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
 
+	/** Limit statystyk */
+	private final static int STAT_LIMIT = 110;
 
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
@@ -422,7 +426,8 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 				new AndCondition(
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
-				        new KilledForQuestCondition(QUEST_SLOT, 0)),
+				        new KilledForQuestCondition(QUEST_SLOT, 0),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, STAT_LIMIT)),
 				ConversationStates.ATTENDING,
 				"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Zakopanego i dzielnicy!",
 				new MultipleActions(
@@ -430,6 +435,24 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 						new IncreaseAtkXPDependentOnLevelAction(4, 110.0),
 						new IncreaseDefXPDependentOnLevelAction(4, 110.0),
 						new IncreaseRatkXPDependentOnLevelAction(4, 110.0),
+						new IncreaseKarmaAction(5.0),
+						new IncrementQuestAction(QUEST_SLOT, 2, 1),
+						new SetQuestToTimeStampAction(QUEST_SLOT,1),
+						new SetQuestAction(QUEST_SLOT,0,"done")
+		));
+
+		// player killed creature but stats are greater than NPC want to give
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.FINISH_MESSAGES,
+				new AndCondition(
+						new QuestStartedCondition(QUEST_SLOT),
+						new QuestNotCompletedCondition(QUEST_SLOT),
+						new KilledForQuestCondition(QUEST_SLOT, 0),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.GREATER_OR_EQUALS, STAT_LIMIT)),
+				ConversationStates.ATTENDING,
+				"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Zakopanego i dzielnicy! Niestety, ale wynagrodzenie będzie mniejsze... Jesteś zbyt potężny...",
+				new MultipleActions(
+						new IncreaseXPDependentOnLevelAction(4, 110.0),
 						new IncreaseKarmaAction(5.0),
 						new IncrementQuestAction(QUEST_SLOT, 2, 1),
 						new SetQuestToTimeStampAction(QUEST_SLOT,1),
