@@ -652,7 +652,7 @@ class SwingClientGUI implements J2DClientGUI {
 			if (outfitDialog == null) {
 				// Here we actually want to call new OutfitColor(). Modifying
 				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "Set outfit", stroutfit, new OutfitColor(player));
+				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", stroutfit, new OutfitColor(player));
 				outfitDialog.setVisible(true);
 			} else {
 				outfitDialog.setState(stroutfit, OutfitColor.get(player));
