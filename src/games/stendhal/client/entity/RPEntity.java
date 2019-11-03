@@ -192,8 +192,6 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	private String outfit_ext;
 	private int outfit;
-	private int outfitMask;
-	private int outfitHat;
 	
 	private String gender;
 
@@ -1059,10 +1057,6 @@ public abstract class RPEntity extends AudibleEntity {
 		/*
 		 * Outfit
 		 */
-		/*
-		outfitMask = OUTFIT_UNSET;
-		outfitHat = OUTFIT_UNSET;
-		*/
 		if (object.has("outfit_ext")) {
 			outfit_ext = object.get("outfit_ext");
 		} else {
@@ -1071,10 +1065,6 @@ public abstract class RPEntity extends AudibleEntity {
 
 		if (object.has("outfit")) {
 			outfit = object.getInt("outfit");
-			/*
-			if (object.has("outfit_mask")) outfitMask = object.getInt("outfit_mask"); else object.put("outfit_mask", 0);
-			if (object.has("outfit_hat")) outfitHat = object.getInt("outfit_hat"); else object.put("outfit_hat", 0);
-			*/
 		} else {
 			outfit = OUTFIT_UNSET;
 		}
@@ -1228,16 +1218,7 @@ public abstract class RPEntity extends AudibleEntity {
 					fireChange(PROP_OUTFIT);
 				}
 				if (changes.has("outfit")) {
-					/*
-					outfitMask = 0;
-					outfitHat = 0;
-					*/
-
 					outfit = changes.getInt("outfit");
-					/*
-					if (changes.has("outfit_mask")) outfitMask = changes.getInt("outfit_mask");
-					if (changes.has("outfit_hat")) outfitHat = changes.getInt("outfit_hat");
-					*/
 				}
 
 				fireChange(PROP_OUTFIT);

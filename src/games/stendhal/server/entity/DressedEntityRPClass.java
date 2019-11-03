@@ -30,11 +30,5 @@ public class DressedEntityRPClass {
 		entity.addAttribute("outfit_org", Type.INT, Definition.PRIVATE);
 		entity.addAttribute("outfit_colors", Type.MAP);
 		entity.addAttribute("outfit_expire_age", Type.INT, Definition.HIDDEN);
-
-		/* unused */
-		entity.addAttribute("outfit_mask", Type.INT, Definition.VOLATILE);
-		entity.addAttribute("outfit_mask_org", Type.INT, (byte) (Definition.PRIVATE|Definition.VOLATILE));
-		entity.addAttribute("outfit_hat", Type.INT, Definition.VOLATILE);
-		entity.addAttribute("outfit_hat_org", Type.INT, (byte) (Definition.PRIVATE|Definition.VOLATILE));
 	}
 }
