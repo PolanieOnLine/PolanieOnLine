@@ -64,15 +64,24 @@ public class PlaszczKapturka extends AbstractQuest {
 		res.add("Spotkałem Balbine wraz z przyjaciółmi w parku zabaw");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie chcę pomagać Balbinie");
+			res.add("Nie chcę pomagać Balbinie w sprawie płaszcza czarwonego kapturka");
 			return res;
 		}
-		res.add("Nie chcę pomagać Balbinie w sprawie płaszcza czarwonego kapturka");
+		res.add("Chcę pomóc małej Balbinie");
+		if (questState.equals("start")) {
+			res.add("Muszę porozmawiać z jej mamą na temat płaszcza czerwonego kapturka. Słowo: kapturkiem");
+		}
+		if (questState.equals("mummy")) {
+			res.add("Mama Balbiny poleciła mi pójście do miejscowego krawca, by uszyć taki płaszcz. Słowo: Balbina");
+		}
+		if (questState.equals("krawiec")) {
+			res.add("Muszę znaleźć skórę czerwonego smoka dla krawca");
+		}
 		if (player.isEquipped("płaszcz kapturka") || isCompleted(player)) {
 			res.add("Mam już płaszcz kapturka dla Balbiny");
 		}
 		if (isCompleted(player)) {
-			res.add("Dałem Balbinie jej wymarzony płaszcz czerwonego kapturka.");
+			res.add("Przekazałem Balbinie jej wymarzony płaszcz czerwonego kapturka.");
 		}
 		return res;
 	}
@@ -90,7 +99,7 @@ public class PlaszczKapturka extends AbstractQuest {
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
-			ConversationStates.IDLE, "Dziękuję! Porozmawiaj z moją mamą gdzie można dostać taki płaszcz, bo ja nie wiem.",
+			ConversationStates.IDLE, "Dziękuję! Porozmawiaj z moją mamą gdzie można dostać taki płaszcz.",
 			new SetQuestAction(QUEST_SLOT, "start"));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
