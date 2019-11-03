@@ -58,8 +58,10 @@ public abstract class DressedEntity extends RPEntity {
 			sb.append("body=" + code % 100);
 			sb.append(",dress=" + code / 100 % 100);
 			sb.append(",head=" + (int) (code / Math.pow(100, 2) % 100));
-			sb.append(",hair=" + (int) (code / Math.pow(100, 3) % 100));
-			sb.append(",detail=" + (int) (code / Math.pow(100, 4) % 100));
+			sb.append(",mask=" + (int) (code / Math.pow(100, 3) % 100));
+			sb.append(",hair=" + (int) (code / Math.pow(100, 4) % 100));
+			sb.append(",hat=" + (int) (code / Math.pow(100, 5) % 100));
+			sb.append(",detail=" + (int) (code / Math.pow(100, 6) % 100));
 
 			// "outfit_ext" actually manages the entity's outfit
 			super.put("outfit_ext", sb.toString());
@@ -254,8 +256,6 @@ public abstract class DressedEntity extends RPEntity {
 
 			// re-add detail
 			put("outfit", outfitCode);
-			put("outfit_mask", outfit.getLayer("mask"));
-			put("outfit_hat", outfit.getLayer("hat"));
 			notifyWorldAboutChanges();
 		}
 	}
