@@ -96,7 +96,7 @@
 	</item>
 
 	<item name="jabłko">
-		<type class="food" subclass="apple" tileid="-1"/>
+		<type class="food" subclass="apple_red" tileid="-1"/>
 		<description>Oto smaczne jabłko z górskich sadów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
@@ -117,9 +117,56 @@
 			<slot name="trade" />
 		</equipable>
 	</item>
+	
+	<!-- START: SPECIAL APPLES -->
+	<item name="fioletowe jabłko">
+		<type class="food/apple_special" subclass="apple_purple" tileid="-1"/>
+		<description>Oto fioletowe jabłko. Jest pełen wspomnień.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="4" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="1" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
+	
+	<item name="jabłko fiołkowe">
+		<type class="food/apple_special" subclass="apple_mauve" tileid="-1"/>
+		<description>Oto jabłko fiołkowe. Jest pełen wspomnień.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="4" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="1" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
 
 	<item name="jabłko niezgody">
-		<type class="food" subclass="blackapple" tileid="-1"/>
+		<type class="food/apple_special" subclass="apple_black" tileid="-1"/>
 		<description>Oto jabłko niezgody. Jest zapewne podarkiem od Johnnnny'ego. To człowiek co ma czarne przedmioty.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
@@ -140,6 +187,7 @@
 			<slot name="trade" />
 		</equipable>
 	</item>
+	<!-- END: SPECIAL APPLES -->
 
 	<item name="banan">
 		<type class="food" subclass="banana" tileid="-1"/>
@@ -1620,9 +1668,9 @@
 		</equipable>
 	</item>
 
-	<item name="greenmint">
+	<item name="miętowy cukierek">
 		<type class="food" subclass="greenmint" tileid="-1"/>
-		<description>You see a green mint.</description>
+		<description>Oto miętowy cukierek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="90"/>
@@ -1666,9 +1714,9 @@
 		</equipable>
 	</item>
 
-	<item name="lemondrop">
+	<item name="kwaśny cukierek">
 		<type class="food" subclass="lemondrop" tileid="-1"/>
-		<description>You see a sweet and tangy lemon drop.</description>
+		<description>Oto słodki i jednocześnie kwaśny cukierek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="90"/>
@@ -1712,9 +1760,9 @@
 		</equipable>
 	</item>
 
-	<item name="peppermint">
+	<item name="cukierek peppermint">
 		<type class="food" subclass="peppermint" tileid="-1"/>
-		<description>You see a sweet, little peppermint.</description>
+		<description>Oto mały, słodki cukierek peppermint.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="90"/>
