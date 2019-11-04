@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="stendhal ../../creatures.xsd ">
-
-  <!-- START: northpole-->
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
   <creature name="elf builder1">
     <type class="stendhal/northpole" subclass="elf_builder1" tileid="northpole.png:0"></type>
@@ -19,10 +17,10 @@
     <respawn value="300" />
     <corpse name="humanoid" ></corpse>
     <drops>
-      <item value="lemondrop" quantity="[1,1]" probability="100.0"/>
-      <item value="gumdrops" quantity="[1,1]" probability="100.0" />
-      <item value="lollipop" quantity="[1,1]" probability="100.0"/>
-      <item value="greenmint" quantity="[1,1]" probability="100.0" />
+      <item value="kwaśny cukierek" quantity="[1,1]" probability="100.0"/>
+      <item value="żelki" quantity="[1,1]" probability="100.0" />
+      <item value="lizak" quantity="[1,1]" probability="100.0"/>
+      <item value="miętowy cukierek" quantity="[1,1]" probability="100.0" />
     </drops>
     <equips>
     </equips>
@@ -48,10 +46,11 @@
     <respawn value="300" />
     <corpse name="humanoid"/>
     <drops>
-      <item value="lemondrop" quantity="[1,1]" probability="100.0"/>
-      <item value="gumdrops" quantity="[1,1]" probability="100.0" />
-      <item value="lollipop" quantity="[1,1]" probability="100.0"/>
-      <item value="greenmint" quantity="[1,1]" probability="100.0" />    </drops>
+      <item value="kwaśny cukierek" quantity="[1,1]" probability="100.0"/>
+      <item value="żelki" quantity="[1,1]" probability="100.0" />
+      <item value="lizak" quantity="[1,1]" probability="100.0"/>
+      <item value="miętowy cukierek" quantity="[1,1]" probability="100.0" />
+	</drops>
     <equips>
 
     </equips>
@@ -77,10 +76,11 @@
     <respawn value="300" />
     <corpse name="humanoid"/>
     <drops>
-      <item value="lemondrop" quantity="[1,1]" probability="100.0"/>
-      <item value="gumdrops" quantity="[1,1]" probability="100.0" />
-      <item value="lollipop" quantity="[1,1]" probability="100.0"/>
-      <item value="greenmint" quantity="[1,1]" probability="100.0" />     </drops>
+      <item value="kwaśny cukierek" quantity="[1,1]" probability="100.0"/>
+      <item value="żelki" quantity="[1,1]" probability="100.0" />
+      <item value="lizak" quantity="[1,1]" probability="100.0"/>
+      <item value="miętowy cukierek" quantity="[1,1]" probability="100.0" />
+	</drops>
     <equips>
     </equips>
     <ai>
@@ -105,10 +105,11 @@
     <respawn value="300" />
     <corpse name="tiny_humanoid"/>
     <drops>
-      <item value="lemondrop" quantity="[1,1]" probability="100.0"/>
-      <item value="gumdrops" quantity="[1,1]" probability="100.0" />
-      <item value="lollipop" quantity="[1,1]" probability="100.0"/>
-      <item value="greenmint" quantity="[1,1]" probability="100.0" />    </drops>
+      <item value="kwaśny cukierek" quantity="[1,1]" probability="100.0"/>
+      <item value="żelki" quantity="[1,1]" probability="100.0" />
+      <item value="lizak" quantity="[1,1]" probability="100.0"/>
+      <item value="miętowy cukierek" quantity="[1,1]" probability="100.0" />
+	</drops>
     <equips>
     </equips>
     <ai>
@@ -136,10 +137,10 @@
     <respawn value="300" />
   	<corpse name="tiny_humanoid" />
   	<drops>
-      <item value="lemondrop" quantity="[1,1]" probability="100.0"/>
-      <item value="gumdrops" quantity="[1,1]" probability="100.0" />
-      <item value="lollipop" quantity="[1,1]" probability="100.0"/>
-      <item value="greenmint" quantity="[1,1]" probability="100.0" />
+      <item value="kwaśny cukierek" quantity="[1,1]" probability="100.0"/>
+      <item value="żelki" quantity="[1,1]" probability="100.0" />
+      <item value="lizak" quantity="[1,1]" probability="100.0"/>
+      <item value="miętowy cukierek" quantity="[1,1]" probability="100.0" />
   	</drops>
   	<equips>
   	</equips>
@@ -168,10 +169,10 @@
     <respawn value="300" />
   	<corpse name="tiny_humanoid" />
   	<drops>
-      <item value="peppermint" quantity="[1,1]" probability="100.0"/>
-      <item value="candycane" quantity="[1,1]" probability="100.0"/>
-      <item value="taffy" quantity="[1,1]" probability="100.0"/>
-      <item value="fairy cake" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek peppermint" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierkowa laska" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek taffy" quantity="[1,1]" probability="100.0"/>
+      <item value="mufinka" quantity="[1,1]" probability="100.0"/>
   	</drops>
   	<equips>
   	</equips>
@@ -187,7 +188,7 @@
   </creature>
   <creature name="elf kid4">
     <type class="stendhal/northpole" subclass="elf_kid4" tileid="northpole.png:6"/>
-    <description>You see a little bully. Be careful, he is coming for you.</description>    
+    <description>You see a little bully. Be careful, he is coming for you.</description>
   	<attributes>
       <atk value="40" />
       <def value="20" />
@@ -200,10 +201,10 @@
     <respawn value="300" />
   	<corpse name="tiny_humanoid" />
   	<drops>
-      <item value="peppermint" quantity="[1,1]" probability="100.0"/>
-      <item value="candycane" quantity="[1,1]" probability="100.0"/>
-      <item value="taffy" quantity="[1,1]" probability="100.0"/>
-      <item value="fairy cake" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek peppermint" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierkowa laska" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek taffy" quantity="[1,1]" probability="100.0"/>
+      <item value="mufinka" quantity="[1,1]" probability="100.0"/>
   	</drops>
   	<equips>
   	</equips>
@@ -219,7 +220,7 @@
   </creature>
   <creature name="elf kid5">
     <type class="stendhal/northpole" subclass="elf_kid5" tileid="northpole.png:7"/>
-    <description>You see a rather obnoxious little kid who has had way too much candy.</description>    
+    <description>You see a rather obnoxious little kid who has had way too much candy.</description>
   	<attributes>
       <atk value="40" />
       <def value="20" />
@@ -232,10 +233,10 @@
     <respawn value="300" />
   	<corpse name="tiny_humanoid" />
   	<drops>
-      <item value="peppermint" quantity="[1,1]" probability="100.0"/>
-      <item value="candycane" quantity="[1,1]" probability="100.0"/>
-      <item value="taffy" quantity="[1,1]" probability="100.0"/>
-      <item value="fairy cake" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek peppermint" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierkowa laska" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek taffy" quantity="[1,1]" probability="100.0"/>
+      <item value="mufinka" quantity="[1,1]" probability="100.0"/>
   	</drops>
   	<equips>
   	</equips>
@@ -264,17 +265,17 @@
     <respawn value="300" />
   	<corpse name="humanoid" />
   	<drops>
-      <item value="peppermint" quantity="[1,1]" probability="100.0"/>
-      <item value="candycane" quantity="[1,1]" probability="100.0"/>
-      <item value="taffy" quantity="[1,1]" probability="100.0"/>
-      <item value="fairy cake" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek peppermint" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierkowa laska" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek taffy" quantity="[1,1]" probability="100.0"/>
+      <item value="mufinka" quantity="[1,1]" probability="100.0"/>
   	</drops>
   	<equips>
   	</equips>
   	<ai>
       <says>
         <noise state="idle follow fight" value="I have a code in my nodze"/>
-      </says>  	
+      </says>
       <profile name="brave" />
       <profile name="offensive" />
       <profile name="patrolling" />
@@ -296,10 +297,10 @@
     <respawn value="300"/>
     <corpse name="humanoid"/>
     <drops>
-      <item value="peppermint" quantity="[1,1]" probability="100.0"/>
-      <item value="candycane" quantity="[1,1]" probability="100.0"/>
-      <item value="taffy" quantity="[1,1]" probability="100.0"/>
-      <item value="fairy cake" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek peppermint" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierkowa laska" quantity="[1,1]" probability="100.0"/>
+      <item value="cukierek taffy" quantity="[1,1]" probability="100.0"/>
+      <item value="mufinka" quantity="[1,1]" probability="100.0"/>
     </drops>
     <equips>
     </equips>
@@ -309,7 +310,4 @@
       <profile name="patrolling"/>
     </ai>
   </creature>
-
-  <!-- END: northpole -->
-
 </creatures>
