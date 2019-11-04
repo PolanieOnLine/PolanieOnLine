@@ -90,8 +90,8 @@
  <tileset firstgid="402" name="terrain/stairs/stone" tilewidth="32" tileheight="32" tilecount="18" columns="3">
   <image source="../../tileset/terrain/stairs/stone.png" width="96" height="192"/>
  </tileset>
- <tileset firstgid="420" name="item/statue/swordsman2" tilewidth="32" tileheight="32" tilecount="12" columns="4">
-  <image source="../../tileset/item/statue/swordsman2.png" width="128" height="96"/>
+ <tileset firstgid="420" name="item/statue/swordsman" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+  <image source="../../tileset/item/statue/swordsman.png" width="128" height="96"/>
  </tileset>
  <tileset firstgid="432" name="terrain/wall/stone_red" tilewidth="32" tileheight="32" tilecount="72" columns="8">
   <image source="../../tileset/terrain/wall/stone_red.png" width="256" height="288"/>

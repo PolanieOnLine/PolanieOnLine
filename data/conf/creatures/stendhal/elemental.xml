@@ -208,44 +208,6 @@
 		</ai>
 	</creature>
 
-	<creature name="lodowy golem">
-		<type class="stendhal/golem" subclass="ice_golem" tileid="golem.png:2"/>
-		<description>Oto lodowy golem. Lodowe golemy są żywiołami z lodu. Powinieneś uważać na ich lodowe pięści, bo mogą tobie zaszkodzić.</description>
-		<attributes>
-			<atk value="381"/>
-			<def value="53"/>
-			<hp value="390"/>
-			<speed value="0.6"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="45"/>
-		<experience value="1360"/>
-		<respawn value="1620"/>
-		<corpse name="humanoid"/>
-		<drops>
-			<item value="money" quantity="[5,27]" probability="100.0"/>
-			<item value="śnieżka" quantity="[1,4]" probability="75"/>
-			<item value="miecz lodowy" quantity="[1,1]" probability="0.05"/>
-			<item value="lodowa zbroja" quantity="[1,1]" probability="0.005"/>
-			<item value="hełm lodowy" quantity="[1,1]" probability="0.005"/>
-			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.075"/>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<damage type="ice"/>
-			<susceptibility type="ice" value="0.5"/>
-			<susceptibility type="fire" value="1.5"/>
-		</abilities>
-		<ai>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="heal" params="5,50"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
 	<creature name="lodowy olbrzym">
 		<type class="stendhal/giant_human" subclass="ice_giant" tileid="giant_human.png:2"/>
 		<description>Oto lodowy olbrzym. Jego skóra pokryta jest szadzią, a jego oddech jest niczym mroźny powiew północnego wiatru.</description>
@@ -289,82 +251,6 @@
 
 	<!-- END: ice -->
 
-	<!-- START: stone -->
-
-	<creature name="kamienny golem">
-		<type class="stendhal/golem" subclass="stone_golem" tileid="golem.png:0"/>
-		<description>Oto kamienny golem, który istnieje tylko, aby chronić. Co ma chronić i ma zrobić, gdy nie ma już celu?</description>
-		<attributes>
-			<atk value="297"/>
-			<def value="85"/>
-			<hp value="95"/>
-			<speed value="0.6"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="32"/>
-		<experience value="640"/>
-		<respawn value="1380"/>
-		<corpse name="rock" harmless="rock" />
-		<drops>
-			<item value="money" quantity="[5,27]" probability="100.0"/>
-			<item value="płaszcz kamienny" quantity="[1,1]" probability="2.5"/>
-			<item value="buty kamienne" quantity="[1,1]" probability="0.5"/>
-			<item value="kamienna tarcza" quantity="[1,1]" probability="0.15"/>
-			<item value="hełm kamienny" quantity="[1,1]" probability="0.05"/>
-			<item value="kamienne rękawice" quantity="[1,1]" probability="0.075"/>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<susceptibility type="ice" value="0.9"/>
-			<susceptibility type="fire" value="0.9"/>
-		</abilities>
-		<ai>
-			<says>
-				<sound value="loop-grind-stone-1" />
-			</says>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="heal" params="5,50"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
-	<creature name="krasnal golem">
-		<type class="stendhal/giant_animal" subclass="dwarf_golem" tileid="giant_human.png:5"/>
-		<description>Oto krasnal golem. Niegdyś krasnal, dziś przemieniony w głaz przez starożytne siły. By ocalić przyjaciół inne krasnale z kamieni ułożyły golema! Od tego czasu mieszka on z nimi.</description>
-		<attributes>
-			<atk value="939"/>
-			<def value="99"/>
-			<hp value="2700"/>
-			<speed value="1.0"/>
-			<size value="3,2"/>
-		</attributes>
-		<level value="170"/>
-		<experience value="50800"/>
-		<respawn value="16000"/>
-		<corpse name="giant_humanoid" width="2" height="2"/>
-		<drops>
-			<item value="money" quantity="[30,150]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
-			<item value="kamienna zbroja" quantity="[1,1]" probability="2.0"/>
-			<item value="topór Durina" quantity="[1,1]" probability="0.25"/>
-			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="1.0"/>
-			<item value="spodnie krasnoludzkie" quantity="[1,1]" probability="1.5" />
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="heal" params="5,50"/>
-		</ai>
-	</creature>
-
-	<!-- END: stone -->
-
 	<!-- START: water -->
 
 	<creature name="żywioł wody">
@@ -406,38 +292,6 @@
 	<!-- END: water -->
 
 	<!-- START: wood -->
-
-	<creature name="drewniany golem">
-		<type class="stendhal/golem" subclass="wooden_golem" tileid="golem.png:1"/>
-		<description>Oto drewniany golem. Zwój ze starodawnym napisem na jego głowie powoduje, że potrafi chodzić.</description>
-		<attributes>
-			<atk value="251"/>
-			<def value="34"/>
-			<hp value="223"/>
-			<speed value="0.3"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="24"/>
-		<experience value="370"/>
-		<respawn value="1290"/>
-		<corpse name="humanoid"/>
-		<drops>
-			<item value="money" quantity="[5,19]" probability="100.0"/>
-			<item value="polano" quantity="[1,2]" probability="7.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<susceptibility type="fire" value="1.2"/>
-		</abilities>
-		<ai>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="heal" params="5,50"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
 
 	<creature name="drzewiec">
 		<type class="stendhal/ent" subclass="treant" tileid="ent.png:2"/>

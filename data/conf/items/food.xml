@@ -1595,6 +1595,169 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+	
+	<!-- northpole goodies -->
+	<item name="cukierkowa laska">
+		<type class="food" subclass="candycane" tileid="-1"/>
+		<description>Oto przepszyna cukierkowa laska.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="greenmint">
+		<type class="food" subclass="greenmint" tileid="-1"/>
+		<description>You see a green mint.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="żelki">
+		<type class="food" subclass="gumdrops" tileid="-1"/>
+		<description>Oto mieszanka żelek.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lemondrop">
+		<type class="food" subclass="lemondrop" tileid="-1"/>
+		<description>You see a sweet and tangy lemon drop.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lizak">
+		<type class="food" subclass="lolipop" tileid="-1"/>
+		<description>Oto lizak.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="peppermint">
+		<type class="food" subclass="peppermint" tileid="-1"/>
+		<description>You see a sweet, little peppermint.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="cukierek taffy">
+		<type class="food" subclass="taffy" tileid="-1"/>
+		<description>Oto trochę lepkich cukierków taffy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="90"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="10"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="150"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+    <!-- end of northpole goodies -->
 
 	<item name="mufinka">
 		<type class="food" subclass="fairy_cake" tileid="-1"/>
