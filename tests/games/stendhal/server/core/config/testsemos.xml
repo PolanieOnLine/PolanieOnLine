@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../zones.xsd ">
+	<!--
+		** Load zones. Written from left to right and from top to bottom. **
+		Please respect it!
+	-->
+
+	<!--  Ground level -->
+
+	<zone name="0_semos_mountain_n_w4" level="0" x="499616" y="499744"
+		file="Level 0/semos/mountain_n_w4.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n2_w2" level="0" x="499744" y="499744"
+		file="Level 0/semos/mountain_n2_w2.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n2_w" level="0" x="499872" y="499744"
+		file="Level 0/semos/mountain_n2_w.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n2" level="0" x="500000" y="499744"
+		file="Level 0/semos/mountain_n2.tmx">
+	</zone>
+	<zone name="int_semos_frank_house" file="interiors/semos/frank_house.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n2_e" level="0" x="500128" y="499744"
+		file="Level 0/semos/mountain_n2_e.tmx">
+	</zone>
+
+	<zone name="int_mithrilbourgh_stores" file="interiors/mithrilbourgh/stores.tmx">
+	</zone>
+	<zone name="int_mithrilbourgh_throne_room" file="interiors/mithrilbourgh/throne_room.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n2_e2" level="0" x="500256" y="499744"
+		file="Level 0/semos/mountain_n2_e2.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n_w3" level="0" x="499744" y="499872"
+		file="Level 0/semos/mountain_n_w3.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n_w2" level="0" x="499872" y="499872"
+		file="Level 0/semos/mountain_n_w2.tmx">
+	</zone>
+
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_basement" file="interiors/semos/wizards_tower_basement.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_1" file="interiors/semos/wizards_tower_1.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_2" file="interiors/semos/wizards_tower_2.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_3" file="interiors/semos/wizards_tower_3.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_4" file="interiors/semos/wizards_tower_4.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_5" file="interiors/semos/wizards_tower_5.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_6" file="interiors/semos/wizards_tower_6.tmx">
+    </zone>
+    <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_7" file="interiors/semos/wizards_tower_7.tmx">
+     </zone>
+     <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_8" file="interiors/semos/wizards_tower_spire_1.tmx">
+    </zone>
+
+     <!-- Interiors of the wizards tower -->
+    <zone name="int_semos_wizards_tower_9" file="interiors/semos/wizards_tower_spire_2.tmx">
+    </zone>
+     <!-- Plains of the wizards -->
+    <zone name="malleus_plain" file="interiors/abstract/malleus_plain.tmx">
+    </zone>
+
+    <zone name="bone_pillar" file="interiors/abstract/malleus_plain_bone_pillar.tmx">
+    </zone>
+
+   	<zone name="0_semos_plains_n" level="0" x="500000" y="499872">
+	</zone>
+
+	<zone name="0_semos_plains_ne" level="0" x="500128" y="499872"
+		file="Level 0/semos/plains_ne.tmx">
+	</zone>
+
+	<zone name="0_semos_plains_n_e2" level="0" x="500192" y="499872"
+		file="Level 0/semos/plains_n_e2.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_n_e2" level="0" x="500256" y="499872"
+		file="Level 0/semos/mountain_n_e2.tmx">
+	</zone>
+
+	<zone name="0_semos_mountain_w2" level="0" x="499744" y="500000"
+		file="Level 0/semos/mountain_w2.tmx">
+	</zone>
+
+	<zone name="0_semos_plains_w" level="0" x="499872" y="500000"
+		file="Level 0/semos/plains_w.tmx">
+	</zone>
+
+	<zone name="int_semos_guard_house" file="interiors/semos/guard_house.tmx">
+	</zone>
+
+	<zone name="int_semos_hostel" file="interiors/semos/hostel.tmx">
+	</zone>
+
+	<zone name="0_semos_village_w" level="0" x="500000" y="500000"
+		file="Level 0/semos/village_w.tmx">
+	</zone>
+
+	<zone name="0_semos_city" level="0" x="500064" y="500000"
+		file="Level 0/semos/city.tmx">
+	</zone>
+
+
+	<zone name="int_semos_tavern_0" file="interiors/semos/tavern_0.tmx">
+	</zone>
+
+	<zone name="int_semos_tavern_1" file="interiors/semos/tavern_1.tmx">
+	</zone>
+
+	<zone name="int_semos_temple" file="interiors/semos/temple.tmx">
+	</zone>
+
+	<zone name="int_semos_blacksmith" file="interiors/semos/blacksmith.tmx">
+	</zone>
+
+	<zone name="int_semos_library" file="interiors/semos/library.tmx">
+	</zone>
+
+	<zone name="int_semos_storage_-1" file="interiors/semos/storage_-1.tmx">
+	</zone>
+
+	<zone name="int_semos_bank" file="interiors/semos/bank.tmx">
+	</zone>
+
+	<zone name="int_semos_townhall" file="interiors/semos/townhall.tmx">
+	</zone>
+
+	<zone name="int_semos_bakery" file="interiors/semos/bakery.tmx">
+	</zone>
+
+	<!--for the admin house -->
+	<zone name="int_semos_house" file="interiors/semos/house.tmx" accessible="false" >
+	</zone>
+
+	<zone name="0_semos_road_e" level="0" x="500128" y="500000">
+	</zone>
+
+	<zone name="int_semos_swanky_pad" file="interiors/semos/swanky_pad.tmx">
+	</zone>
+
+	<zone name="0_semos_road_se" level="0" x="500128" y="500064"
+		file="Level 0/semos/road_se.tmx">
+	</zone>
+
+	<zone name="0_semos_plains_s" level="0" x="500000" y="500064"
+		file="Level 0/semos/plains_s.tmx">
+	</zone>
+
+	<zone name="0_semos_forest_s" level="0" x="500000" y="500128"
+		file="Level 0/semos/forest_s.tmx">
+	</zone>
+
+	<!--  Level -1 -->
+
+	<zone name="-1_semos_mine_n2_w2" level="-1" x="499744" y="499744"
+		file="Level -1/semos/mine_n2_w2.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_n2_e" level="-1" x="500128" y="499616"
+		file="Level -1/semos/mine_n2_e.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_n2_e2" level="-1" x="500256" y="499616"
+		file="Level -1/semos/mine_n2_e2.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_n2" level="-1" x="500000" y="499744"
+		file="Level -1/semos/mine_n2.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_ne" level="-1" x="500128" y="499744"
+		file="Level -1/semos/mine_ne.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_n_e2" level="-1" x="500256" y="499744"
+		file="Level -1/semos/mine_n_e2.tmx">
+	</zone>
+
+	<zone name="int_wofol_house1" file="interiors/wofol/house1.tmx">
+	</zone>
+	<zone name="int_wofol_house2" file="interiors/wofol/house2.tmx">
+	</zone>
+	<zone name="int_wofol_house3" file="interiors/wofol/house3.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_n_w2" level="-1" x="499744" y="499872"
+		file="Level -1/semos/mine_n_w2.tmx">
+	</zone>
+
+	<zone name="int_wofol_house4" file="interiors/wofol/house4.tmx">
+	</zone>
+
+	<zone name="int_wofol_house5" file="interiors/wofol/house5.tmx">
+	</zone>
+	<zone name="int_wofol_house7" file="interiors/wofol/house7.tmx">
+	</zone>
+	<zone name="int_wofol_blacksmith" file="interiors/wofol/blacksmith.tmx">
+	</zone>
+	<zone name="int_wofol_house8" file="interiors/wofol/house8.tmx">
+	</zone>
+	<zone name="int_wofol_house9" file="interiors/wofol/house9.tmx">
+	</zone>
+	<zone name="int_wofol_house6" file="interiors/wofol/house6.tmx">
+	</zone>
+	<zone name="int_wofol_house10" file="interiors/wofol/house10.tmx">
+	</zone>
+
+	<zone name="int_wofol_library_0" file="interiors/wofol/library_0.tmx">
+	</zone>
+	<zone name="int_wofol_library_1" file="interiors/wofol/library_1.tmx">
+	</zone>
+	<zone name="int_wofol_library_2" file="interiors/wofol/library_2.tmx">
+	</zone>
+
+	<zone name="int_wofol_bar" file="interiors/wofol/bar.tmx">
+	</zone>
+
+	<zone name="int_wofol_bakery" file="interiors/wofol/bakery.tmx">
+	</zone>
+	<zone name="int_wofol_townhall" file="interiors/wofol/townhall.tmx">
+	</zone>
+	<zone name="int_wofol_warehouse" file="interiors/wofol/warehouse.tmx">
+	</zone>
+	<zone name="int_wofol_weaponshop" file="interiors/wofol/weaponshop.tmx">
+	</zone>
+
+	<zone name="-1_semos_mine_nw" level="-1" x="499872" y="499872"
+		file="Level -1/semos/mine_nw.tmx">
+	</zone>
+
+	<zone name="-1_semos_caves" level="-1" x="500256" y="499872"
+		file="Level -1/semos/caves.tmx">
+	</zone>
+
+	<zone name="-1_kotoch_entrance_n" level="-1" x="499744" y="500000"
+		file="Level -1/kotoch/entrance_n.tmx">
+	</zone>
+
+	<zone name="-1_semos_dungeon" level="-1" x="500064" y="500000"
+		file="Level -1/semos/dungeon.tmx">
+	</zone>
+
+	<zone name="-1_semos_jail" level="-1" x="499872" y="500000"
+		file="Level -1/semos/jail.tmx">
+	</zone>
+
+	<zone name="-1_semos_catacombs_ne" level="-1" x="500064" y="499872"
+		file="Level -1/semos/catacombs_ne.tmx">
+	</zone>
+
+	<zone name="-1_semos_catacombs_nw" level="-1" x="500000" y="499872"
+		file="Level -1/semos/catacombs_nw.tmx">
+	</zone>
+
+	<zone name="-1_semos_catacombs_se" level="-1" x="500064" y="499936"
+		file="Level -1/semos/catacombs_se.tmx">
+	</zone>
+
+	<zone name="-1_semos_catacombs_sw" level="-1" x="500000" y="499936"
+		file="Level -1/semos/catacombs_sw.tmx">
+	</zone>
+
+
+	<zone name="-1_semos_yeti_cave" level="-1" x="499616" y="499872"
+		file="Level -1/semos/yeticave.tmx">
+	</zone>
+
+	<!--  Level -2 -->
+
+	<zone name="-2_semos_mine_n2_e" level="-2" x="500128" y="499616"
+		file="Level -2/semos/mine_n2_e.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_n2_e2" level="-2" x="500256" y="499616"
+		file="Level -2/semos/mine_n2_e2.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_n2_e3" level="-2" x="500384" y="499616"
+		file="Level -2/semos/mine_n2_e3.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_ne" level="-2" x="500128" y="499744"
+		file="Level -2/semos/mine_ne.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_n_e2" level="-2" x="500256" y="499744"
+		file="Level -2/semos/mine_n_e2.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_n_e3" level="-2" x="500384" y="499744"
+		file="Level -2/semos/mine_n_e3.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_e" level="-2" x="500128" y="499872"
+		file="Level -2/semos/mine_e.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_e2" level="-2" x="500256" y="499872"
+		file="Level -2/semos/mine_e2.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_e3" level="-2" x="500384" y="499872"
+		file="Level -2/semos/mine_e3.tmx">
+	</zone>
+
+	<zone name="-2_semos_mine_w2" level="-2" x="499744" y="499872"
+		file="Level -2/semos/mine_w2.tmx">
+	</zone>
+
+	<zone name="-2_semos_dungeon" level="-2" x="500096" y="500032"
+		file="Level -2/semos/dungeon.tmx">
+	</zone>
+
+	<zone name="-2_semos_jail" level="-2" x="499872" y="500000"
+		file="Level -2/semos/jail.tmx">
+	</zone>
+
+	<zone name="-3_semos_jail" level="-3" x="499872" y="500000"
+		file="Level -3/semos/jail_walk.tmx">
+	</zone>
+
+	<zone name="-2_semos_catacombs" level="-2" x="500000" y="499872"
+		file="Level -2/semos/catacombs.tmx">
+	</zone>
+
+
+	<!--  Level -3 -->
+
+	<zone name="-3_semos_dungeon" level="-3" x="500096" y="500032"
+		file="Level -3/semos/dungeon.tmx">
+	</zone>
+
+	<zone name="-3_semos_catacombs" level="-3" x="500064" y="499872"
+		file="Level -3/semos/catacombs.tmx">
+	</zone>
+
+
+	<!--  Level -4 -->
+
+	<zone name="-4_semos_dungeon" level="-4" x="500096" y="500064"
+		file="Level -4/semos/dungeon.tmx">
+	</zone>
+
+
+	<!--  Level -5 -->
+
+	<zone name="-5_kanmararn_entrance" level="-5" x="500096" y="500064"
+		file="Level -5/kanmararn/entrance.tmx">
+	</zone>
+
+
+	<!--  Level -6 -->
+
+	<zone name="-6_kanmararn_city" level="-6" x="500160" y="500064"
+		file="Level -6/kanmararn/city.tmx">
+	</zone>
+
+
+	<!--  Level -7 -->
+
+	<!--
+		If we call it _jail, players can't move items around in it for
+		security reasons
+	-->
+	<zone name="-7_kanmararn_prison" level="-7" x="500160" y="500064"
+		file="Level -7/kanmararn/jail.tmx">
+	</zone>
+
+
+
+	<!--  Level 1 -->
+
+	<zone name="1_dreamscape" file="interiors/abstract/dreamscape.tmx">
+	</zone>
+
+	<!--  Level 2 -->
+
+
+	<!--  Level 3 -->
+
+
+	<!--  Level 4 -->
+
+
+	<!--  Level 5 -->
+
+
+	<!--  Level 6 -->
+
+</zones>

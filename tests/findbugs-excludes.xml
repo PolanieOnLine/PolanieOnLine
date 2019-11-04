@@ -1,0 +1,116 @@
+<FindBugsFilter>
+	<Match>
+		<Bug pattern="EQ_UNUSUAL" />
+		<Or>
+			<Package name="games.stendhal.server.entity.npc.action" />
+			<Package name="games.stendhal.server.entity.npc.condition" />
+			<Package name="games.stendhal.server.entity.trade" />
+		</Or>
+	</Match>
+
+	<Match>
+		<Bug pattern="EQ_DOESNT_OVERRIDE_EQUALS" />
+		<Package name="~games\.stendhal\.server\.entity.*" />
+	</Match>
+
+	<!-- disable refactoring hint for named static inner classes -->
+	<Match>
+		<Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+	</Match>
+
+	<!-- disable non-transient / non-serializable warnings -->
+	<Match><Bug pattern="SE_BAD_FIELD"/></Match>
+	<Match><Bug pattern="SE_BAD_FIELD_STORE"/></Match>
+	<Match><Bug pattern="SE_BAD_FIELD_INNER_CLASS"/></Match>
+	<Match><Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/></Match>
+	<Match><Bug pattern="SE_NO_SERIALVERSIONID"/></Match>
+
+	<!-- don't warn on non-locale string case conversions -->
+	<Match>
+		<Bug pattern="DM_CONVERT_CASE" />
+	</Match>
+
+	<!-- don't warn on checking debug constants -->
+	<Match>
+		<Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+		<Or>
+			<Package name="~games\.stendhal\.client\..*" />
+			<Package name="~games.stendhal.server.actions.*" />
+			<Package name="games.stendhal.server.core.engine" />
+		</Or>
+	</Match>
+
+	<!-- allow to call exit() -->
+	<Match>
+		<Bug pattern="DM_EXIT" />
+		<Or>
+			<Package name="~games\.stendhal\.client\..*" />
+			<Package name="games.stendhal.server.actions" />
+			<Package name="games.stendhal.server.core.engine" />
+		</Or>
+	</Match>
+
+	<!-- allow lower case class names for the entry point classes -->
+	<Match>
+		<Bug>NM_CLASS_NAMING_CONVENTION</Bug>
+		<Package name="games.stendhal.client" />
+	</Match>
+
+	<!-- allow method names starting with an upper case letter -->
+	<Match>
+		<Bug pattern="NM_METHOD_NAMING_CONVENTION" />
+		<Class name="games.stendhal.common.grammar.Grammar" />
+	</Match>
+
+	<Match>
+		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+		<Class name="games.stendhal.common.math" />
+	</Match>
+
+	<Match>
+		<!--the class loader is created inside a do privileged block,
+		    the code was just extracted in into its own method  -->
+		<Bug pattern="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" />
+		<Class name="games.stendhal.client.update.Bootstrap" />
+	</Match>
+
+	<!-- There is no need for a default case in all switches -->
+	<Match>
+		<Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+	</Match>
+
+	<!-- createBunny() is not yet needed -->
+	<Match>
+		<Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+		<Class name="games.stendhal.server.maps.quests.MeetBunny"/>
+	</Match>
+
+	<!-- disable warning for exposeRaw() method -->
+	<Match>
+		<Bug pattern="EI_EXPOSE_REP"/>
+		<Class name="games.stendhal.tools.tiled.LayerDefinition"/>
+	</Match>
+
+	<!-- disable warnings for casts to java.awt.Graphics2D -->
+	<Match>
+		<Bug pattern="BC_UNCONFIRMED_CAST"/>
+		<Or>
+			<Class name="games.stendhal.client.gui.DragLayer"/>
+			<Class name="games.stendhal.client.gui.ScrollerPanel"/>
+		</Or>
+	</Match>
+
+	<!-- disable unnecessary warning for cast to DomesticAnimal -->
+	<Match>
+		<Bug pattern="BC_UNCONFIRMED_CAST"/>
+		<Class name="games.stendhal.server.core.rp.StendhalRPAction"/>
+		<Method name="startAttack"/>
+	</Match>
+
+	<!-- disable misleading warning to use Random.nextInt() instead of Random.nextDouble() -->
+	<Match>
+		<Bug pattern="DM_NEXTINT_VIA_NEXTDOUBLE"/>
+		<Class name="games.stendhal.common.rand"/>
+		<Method name="randExponential"/>
+	</Match>
+</FindBugsFilter>
