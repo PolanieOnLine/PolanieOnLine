@@ -64,7 +64,7 @@
   <image source="../../tileset/terrain/grassland.png" width="256" height="352"/>
  </tileset>
  <tileset firstgid="630" name="cave" tilewidth="32" tileheight="32" tilecount="12" columns="3">
-  <image source="../../tileset/terrain/cave.png" width="96" height="128"/>
+  <image source="../../tileset/terrain/cave_opening.png" width="96" height="128"/>
  </tileset>
  <tileset firstgid="642" name="vertical_dark" tilewidth="32" tileheight="32" tilecount="3" columns="3">
   <image source="../../tileset/ground/ladder/vertical_dark.png" width="96" height="32"/>

@@ -77,7 +77,7 @@
   <image source="../../tileset/terrain/ground/stone-red.png"/>
  </tileset>
  <tileset firstgid="409" name="terrain/cave" tilewidth="32" tileheight="32">
-  <image source="../../tileset/terrain/cave.png"/>
+  <image source="../../tileset/terrain/cave_opening.png"/>
  </tileset>
  <tileset firstgid="421" name="ground/rock/lava_rock" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/rock/lava_rock.png"/>

@@ -61,7 +61,7 @@
   <image source="../../tileset/logic/creature/human_evil.png" width="320" height="32"/>
  </tileset>
  <tileset firstgid="464" name="cave" tilewidth="32" tileheight="32">
-  <image source="../../tileset/terrain/cave.png" width="96" height="128"/>
+  <image source="../../tileset/terrain/cave_opening.png" width="96" height="128"/>
  </tileset>
  <tileset firstgid="476" name="vertical_dark" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/ladder/vertical_dark.png" width="96" height="32"/>
