@@ -57,21 +57,25 @@ public class StyleFactory {
 	 * Available style definitions.
 	 */
 	private static enum StyleDefinition {
-		WOOD("Jasne drewno (domyślnie)") {
+		WOOD("Jasne drewno (default)") {
 			@Override
 			Style create() {
-				return new PixmapStyle("data/gui/panelwood120.jpg", true,
-						new Color(163, 120, 97), new Color(50, 25, 12),
-						new Color(107, 72, 50), Color.white);
+				Color highlight = new Color(163, 120, 97);
+				Color shadow = new Color(50, 25, 12);
+				return new PixmapStyle("data/gui/panelwood120.jpg",
+						true, highlight, shadow, new Color(107, 72, 50), Color.white);
 			}
 		},
 
-		LWOOD("Ciemne drewno") {
+		DARK_WOOD("Ciemne drewno") {
 			@Override
 			Style create() {
-				return new PixmapStyle("data/gui/panelwood119.jpg", true,
-						new Color(163, 120, 97), new Color(50, 25, 12),
-						new Color(107, 72, 50), Color.white);
+				Color highlight = new Color(163, 120, 97);
+				Color shadow = new Color(50, 25, 12);
+				PixmapStyle style = new PixmapStyle("data/gui/panelwood119.jpg",
+						true, highlight, shadow, new Color(107, 72, 50), Color.white);
+				
+				return style;
 			}
 		},
 
@@ -161,7 +165,7 @@ public class StyleFactory {
 		PARQUET_BROWN("Parquet Brown") {
 			@Override
 			Style create() {
-				Color highlight = new Color(59, 25, 0); // Dark brwon
+				Color highlight = new Color(59, 25, 0); // Dark brown
 				Color shadow = new Color(225, 173, 110);
 				PixmapStyle style = new PixmapStyle("data/gui/panel_parquet_brown_001.png",
 						false, highlight, shadow, Color.white, Color.white);
@@ -179,8 +183,8 @@ public class StyleFactory {
 		STONE("Stone") {
 			@Override
 			Style create() {
-				Color highlight = new Color(50, 50, 50); // Dark Grey (also text shadow)
-				Color shadow = new Color(175, 175, 175); // Light rey (also inactive text color)
+				Color highlight = new Color(50, 50, 50); // Dark grey (also text shadow)
+				Color shadow = new Color(175, 175, 175); // Light grey (also inactive text color)
 				PixmapStyle style = new PixmapStyle("data/gui/paneldrock048.jpg",
 						false, highlight, shadow, Color.white, Color.white);
 				Color bhighout = new Color(130, 130, 130);
