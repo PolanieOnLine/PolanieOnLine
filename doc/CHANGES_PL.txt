@@ -23,6 +23,7 @@ Zaktualizowano po części do najnowszej wersji Stendhala 1.32
 
 *naprawiono błędy*
 - Naprawiono różne odmiany potworów mermaid
+- Naprawiono błąd z komunikatem o braku domyślnego wyglądu klienta
 
 
 1.05.5
