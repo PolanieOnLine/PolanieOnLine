@@ -40,7 +40,7 @@ public class Outfits {
 	public static final int BODY_OUTFITS = 37;
 
 	/** number of player selectable hats */
-	public static final int HAT_OUTFITS = 20;
+	public static final int HAT_OUTFITS = 21;
 
 	/** number of player selectable masks */
 	public static final int MASK_OUTFITS = 13;
