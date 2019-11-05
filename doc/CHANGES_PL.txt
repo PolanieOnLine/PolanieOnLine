@@ -1,7 +1,7 @@
 Changelog
 ---------
 1.06
-Zaktualizowano po części do najnowszej wersji Stendhala 1.32
+Zaktualizowano po części do najnowszej wersji Stendhala
 
 *klient*
 - Dodano opcje pokazywania cieni pod pewnymi obiektami (potworami/npc'tami/graczami)
@@ -48,7 +48,7 @@ Zaktualizowano po części do najnowszej wersji Stendhala 1.32
 
 
 1.05
-Zaktualizowano do najnowszej wersji Stendhala 1.31.5
+Zaktualizowano do najnowszej wersji Stendhala 1.31.1
 
 *klient*
 - Dodano łącznie 22 grafiki dla nowych potworów + odświeżono wygląd ptaka dodo
