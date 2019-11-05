@@ -37,16 +37,16 @@ class MemberPopupMenu extends JPopupMenu {
 	MemberPopupMenu(String member, boolean showLeaderOps) {
 		this.member = member;
 
-		JMenuItem item = new JMenuItem("Where");
+		JMenuItem item = new JMenuItem("Gdzie");
 		item.addActionListener(new WhereAction());
 		add(item);
 
 		if (showLeaderOps) {
-			item = new JMenuItem("Kick");
+			item = new JMenuItem("Wykop");
 			add(item);
 			item.addActionListener(new KickAction());
 
-			item = new JMenuItem("Make Leader");
+			item = new JMenuItem("Powołaj Lidera");
 			add(item);
 			item.addActionListener(new TransferLeadershipAction());
 		}
