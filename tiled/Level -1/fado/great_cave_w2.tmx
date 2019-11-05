@@ -96,8 +96,8 @@
  <tileset firstgid="837" name="fancy gate" tilewidth="32" tileheight="32">
   <image source="../../tileset/building/decoration/fancy_gate.png" width="96" height="64"/>
  </tileset>
- <tileset firstgid="843" name="item/statue/swordsman" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/statue/swordsman.png" width="128" height="96"/>
+ <tileset firstgid="843" name="item/statue/swordsman2" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/swordsman2.png" width="128" height="96"/>
  </tileset>
  <tileset firstgid="855" name="waterfall" tilewidth="32" tileheight="32">
   <image source="../../tileset/ground/water/waterfall.png" width="256" height="480"/>
