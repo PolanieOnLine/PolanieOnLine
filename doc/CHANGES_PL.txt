@@ -1,15 +1,17 @@
 Changelog
 ---------
 1.06
-Zaktualizowano po części do najnowszej wersji Stendhala
+Zaktualizowano do najnowszej wersji Stendhala
 
 *klient*
 - Dodano opcje pokazywania cieni pod pewnymi obiektami (potworami/npc'tami/graczami)
 - Dodano nowe dźwięki dla smoków
+- Dodano dwie nowe grafiki przedmiotów
 - Zmiany dot. outfitów typu Charas (dodano czapki, maski i nie tylko...)
 - Poprawiono dźwięk pirackiego śmiechu
 
 *świat gry*
+- Dodano dwa nowe naszyjniki
 - Dodano drop czarnego pierścienia oraz pierścienia z mithrilu odpowiednio u azazela i serafina
 - Dodano nowe osiągnięcia za wykonywanie co dwudniowych zadań na przedmiot w Gdańsku
 - W zadaniu na płaszcz kapturka (u Balbiny) rozbudowano dziennik zadań (jest więcej informacji o etapach)
@@ -17,7 +19,6 @@ Zaktualizowano po części do najnowszej wersji Stendhala
 - Zmieniono system nagród u wszystkich burmistrzów (gdy postać osiągnie dany limit siły to ten NPC przestanie nagradzać go w postaci punktów umiejętności)
 	- Zakopane oraz Semos: do 100 ataku
 	- Ados: do 105 ataku
-	- Kuźnice oraz Gdańsk: do 110 ataku
 	- Kuźnice oraz Gdańsk: do 110 ataku
 	- Wieliczka oraz Kirdneh: do 115 ataku
 
