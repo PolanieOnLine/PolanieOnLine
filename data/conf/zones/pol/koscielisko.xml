@@ -609,7 +609,7 @@ kopalnia węgla!
 	</zone>
 	
 	<!-- -1_koscielisko_cave -->
-	<zone name="-1_koscielisko_cave" level="-1" x="512928" y="18432" file="Level -1/koscielisko/-1_cave.tmx">
+	<zone name="-1_koscielisko_cave" level="-1" x="512928" y="18432" file="Level -1/koscielisko/cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -631,7 +631,7 @@ kopalnia węgla!
 	<!-- Level -2 -->
 	
 	<!-- -2_koscielisko_cave -->
-	<zone name="-2_koscielisko_cave" level="-2" x="512928" y="18432" file="Level -2/koscielisko/-2_cave.tmx">
+	<zone name="-2_koscielisko_cave" level="-2" x="512928" y="18432" file="Level -2/koscielisko/cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -652,7 +652,7 @@ kopalnia węgla!
 
 	<!-- Level -3 -->
 	
-	<zone name="-3_koscielisko_cave" level="-3" x="512928" y="18432" file="Level -3/koscielisko/-3_cave.tmx">
+	<zone name="-3_koscielisko_cave" level="-3" x="512928" y="18432" file="Level -3/koscielisko/cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
