@@ -788,7 +788,7 @@ Aktualne ceny u Zbigniewa:
 			</implementation>
 		</entity>
 		
-		<portal x="1" y="106" ref="dragon_cave_entrance">
+		<portal x="2" y="106" ref="dragon_cave_entrance">
 			<destination zone="-1_dragon_cave_s" ref="dragon_cave_exit"/>
 		</portal>
 	</zone>
