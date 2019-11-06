@@ -43,7 +43,7 @@ public class Outfits {
 	public static final int HAT_OUTFITS = 22;
 
 	/** number of player selectable masks */
-	public static final int MASK_OUTFITS = 13;
+	public static final int MASK_OUTFITS = 15;
 
 	// layers used for building outfits
 	public static final List<String> LAYER_NAMES = Arrays.asList(
