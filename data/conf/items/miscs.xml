@@ -24,7 +24,7 @@
 
 	<item name="bulwa">
 		<type class="misc" subclass="bulb" tileid="-1"/>
-		<description>To jest bulwa. Można ją zasadzić wszędzie, ale rozwinie się tylko na urodzajnej glebie.</description>
+		<description>Oto jest bulwa. Można ją zasadzić wszędzie, ale rozwinie się tylko na urodzajnej glebie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Seed"/>
 		<attributes>
 			<quantity value="1"/>
@@ -235,7 +235,7 @@
 
 	<item name="kolorowe kulki">
 		<type class="misc" subclass="marbles" tileid="-1"/>
-		<description>Widzisz kolorowe kulki. Cóż, w każdym facecie zostaje coś z dziecka.</description>
+		<description>Oto kolorowe kulki. Cóż, w każdym facecie zostaje coś z dziecka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -255,7 +255,7 @@
 
 	<item name="prasowany tuńczyk">
 		<type class="misc" subclass="canotuna" tileid="-1"/>
-		<description>To prasowany tuńczyk. Och jaka szkoda, że nie wiesz jak się do niego dostać.</description>
+		<description>Oto prasowany tuńczyk. Och jaka szkoda, że nie wiesz jak się do niego dostać.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -301,7 +301,7 @@
 	<!--must be stackable as it is a produced item-->
 	<item name="szpulka do maszyny">
 		<type class="misc" subclass="bobbin" tileid="-1"/>
-		<description>Widzisz szpulkę do maszyny do szycia.</description>
+		<description>Oto szpulka do maszyny do szycia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

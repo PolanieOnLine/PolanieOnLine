@@ -164,7 +164,7 @@
 
 	<item name="sukno">
 		<type class="resource" subclass="cloth" tileid="-1"/>
-		<description>Widzisz sukno najwyższej jakości.</description>
+		<description>Oto sukno najwyższej jakości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

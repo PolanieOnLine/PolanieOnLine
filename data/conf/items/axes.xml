@@ -67,7 +67,7 @@
 
 	<item name="czarna halabarda">
 		<type class="axe" subclass="black_halberd" tileid="-1"/>
-		<description>Widzisz czarną halabardę. Jest ogromnie ciężka, ale mimo powolnych ruchów potrafisz zadawać nią mocne ciosy.</description>
+		<description>Oto czarna halabarda. Jest ogromnie ciężka, ale mimo powolnych ruchów potrafisz zadawać nią mocne ciosy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="57"/>
@@ -112,7 +112,7 @@
 
 	<item name="topór chaosu">
 		<type class="axe" subclass="chaos_axe" tileid="-1"/>
-		<description>Widzisz topór chaosu. Jego rękojeść wydaje się zlepiona z wielu metali. Dzierżąc go czujesz się nieswojo.</description>
+		<description>Oto topór chaosu. Jego rękojeść wydaje się zlepiona z wielu metali. Dzierżąc go czujesz się nieswojo.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="52"/>
@@ -135,7 +135,7 @@
 
 	<item name="topór Durina">
 		<type class="axe" subclass="durin_axe" tileid="-1"/>
-		<description>Widzisz topór Durina, jest to wielka nagroda od krasnali.</description>
+		<description>Oto topór Durina, jest to wielka nagroda od krasnali.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="47"/>
@@ -223,7 +223,7 @@
 
 	<item name="magiczny topór obosieczny">
 		<type class="axe" subclass="magic_twosided_poleaxe" tileid="-1"/>
-		<description>Widzisz magiczny topór obosieczny. Natura magii nie jest Ci do końca jasna.</description>
+		<description>Oto magiczny topór obosieczny. Natura magii nie jest Ci do końca jasna.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="40"/>

@@ -4,7 +4,7 @@
 
 	<item name="karteczka">
 		<type class="documents" subclass="paper" tileid="-1"/>
-		<description>Widzisz karteczkę.</description>
+		<description>Oto karteczka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 		</attributes>
@@ -20,7 +20,7 @@
 
 	<item name="kupon">
 		<type class="documents" subclass="coupon" tileid="-1"/>
-		<description>Widzisz kupon.</description>
+		<description>Oto kupon.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 		</attributes>

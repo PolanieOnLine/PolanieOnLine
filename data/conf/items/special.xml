@@ -65,7 +65,7 @@
 
 	<item name="magiczne skorupki">
 		<type class="special" subclass="eggshells" tileid="-1"/>
-		<description>Widzisz magiczne skorupki. Mają magiczne właściwości.</description>
+		<description>Oto magiczne skorupki. Mają magiczne właściwości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

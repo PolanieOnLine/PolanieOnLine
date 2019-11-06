@@ -81,7 +81,7 @@
 
 	<item name="spodnie chaosu">
 		<type class="legs" subclass="chaos_legs" tileid="-1"/>
-		<description>Widzisz spodnie chaosu. Dziwny kolor dezorientuje cię.</description>
+		<description>Oto spodnie chaosu. Dziwny kolor dezorientuje cię.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -159,7 +159,7 @@
 
 	<item name="spodnie nabijane klejnotami">
 		<type class="legs" subclass="jewelled_legs" tileid="-1"/>
-		<description>Widzisz piękne spodnie nabijane klejnotami. Wielki rubin jako zapinka dodaje im szyku.</description>
+		<description>Oto piękne spodnie nabijane klejnotami. Wielki rubin jako zapinka dodaje im szyku.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>

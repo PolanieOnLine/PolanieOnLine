@@ -4,7 +4,7 @@
 
 	<item name="młot chaosu">
 		<type class="club" subclass="chaos_hammer" tileid="-1"/>
-		<description>Widzisz młot chaosu. Straszliwa broń.</description>
+		<description>Oto młot chaosu. Straszliwa broń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="42"/>
@@ -26,7 +26,7 @@
 
 	<item name="maczuga">
 		<type class="club" subclass="club" tileid="-1"/>
-		<description>Widzisz maczugę. Pomachaj nią, może coś przypadkiem zatłuczesz.</description>
+		<description>Oto maczuga. Pomachaj nią, może coś przypadkiem zatłuczesz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="6"/>
@@ -47,7 +47,7 @@
 
 	<item name="maczuga cierniowa">
 		<type class="club" subclass="club_of_thorns" tileid="-1"/>
-		<description>Widzisz maczuge cierniową. Kolce jej są pełne krwi. Jest bardzo potężna, ale jeśli chcesz jej używac to musisz tchnąć w nią trochę życia.</description>
+		<description>Oto maczuga cierniowa. Kolce jej są pełne krwi. Jest bardzo potężna, ale jeśli chcesz jej używac to musisz tchnąć w nią trochę życia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="48"/>
@@ -68,7 +68,7 @@
 
 	<item name="piernacz">
 		<type class="club" subclass="enhanced_mace" tileid="-1"/>
-		<description>Widzisz piernacz. Ciężki koniec sprawia że broń jest trudna do opanowania. To twój "list żelazny" na niegościnnych terenach.</description>
+		<description>Oto piernacz. Ciężki koniec sprawia że broń jest trudna do opanowania. To twój "list żelazny" na niegościnnych terenach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="19"/>
@@ -88,7 +88,7 @@
 
 	<item name="kiścień">
 		<type class="club" subclass="flail" tileid="-1"/>
-		<description>Widzisz kiścień. Jest to efektywna broń.</description>
+		<description>Oto kiścień. Jest to efektywna broń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="19"/>
@@ -108,7 +108,7 @@
 
 	<item name="złoty pyrlik">
 		<type class="club" subclass="golden_hammer" tileid="-1"/>
-		<description>Widzisz wartościowy złoty pyrlik. Ta złota broń może dla kogoś dużo znaczyć.</description>
+		<description>Oto wartościowy złoty pyrlik. Ta złota broń może dla kogoś dużo znaczyć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="36"/>
@@ -129,7 +129,7 @@
 
 	<item name="złoty buzdygan">
 		<type class="club" subclass="golden_mace" tileid="-1"/>
-		<description>Widzisz błyszczący złoty buzdygan. Jest wystarczająco ostry, aby zadać obrażenia.</description>
+		<description>Oto błyszczący złoty buzdygan. Jest wystarczająco ostry, aby zadać obrażenia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="22"/>
@@ -150,7 +150,7 @@
 
 	<item name="pyrlik">
 		<type class="club" subclass="hammer" tileid="-1"/>
-		<description>Widzisz górniczy pyrlik. Jest wystaczający, aby zadać dobre obrażenia, ale jest powolny.</description>
+		<description>Oto górniczy pyrlik. Jest wystaczający, aby zadać dobre obrażenia, ale jest powolny.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="31"/>
@@ -171,7 +171,7 @@
 
 	<item name="lodowy młot bojowy">
 		<type class="club" subclass="ice_grand_warhammer" tileid="-1"/>
-		<description>Widzisz lodowy młot bojowy. Ostatni właściciel musiał być ogromny żeby go unieść. Bez obaw, nie skruszy się.</description>
+		<description>Oto lodowy młot bojowy. Ostatni właściciel musiał być ogromny żeby go unieść. Bez obaw, nie skruszy się.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="45"/>
@@ -193,7 +193,7 @@
 
 	<item name="buzdygan">
 		<type class="club" subclass="mace" tileid="-1"/>
-		<description>Widzisz buzdygan. Jest trochę stary, bo używany od lat.</description>
+		<description>Oto buzdygan. Jest trochę stary, bo używany od lat.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="16"/>
@@ -213,7 +213,7 @@
 
 	<item name="złoty kiścień">
 		<type class="club" subclass="golden_flail" tileid="-1"/>
-		<description>Widzisz złoty kiścień zwany Gwiazdą Zaranną. Jest to bardzo rzadka broń ale z racji użytych kolców niezwykle zajadła.</description>
+		<description>Oto złoty kiścień zwany Gwiazdą Zaranną. Jest to bardzo rzadka broń ale z racji użytych kolców niezwykle zajadła.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="25"/>
@@ -255,7 +255,7 @@
 
 	<item name="rod of the gm">
 		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>
-		<description>Widzisz rod of the GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
+		<description>Oto rod of the GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="100"/>
@@ -276,7 +276,7 @@
 
 	<item name="kij z czaszką">
 		<type class="club" subclass="skull_staff" tileid="-1"/>
-		<description>Widzisz rzadko spotykany kij z czaszką. Jest mistyczny, ale włada się nim jak każdym innym kijem.</description>
+		<description>Oto rzadko spotykany kij z czaszką. Jest mistyczny, ale włada się nim jak każdym innym kijem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="22"/>
@@ -300,7 +300,7 @@
 
 	<item name="kij">
 		<type class="club" subclass="staff" tileid="-1"/>
-		<description>Widzisz kij. Jest to rzadko używana broń.</description>
+		<description>Oto kij. Jest to rzadko używana broń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="2"/>
@@ -321,7 +321,7 @@
 
 	<item name="kropacz">
 		<type class="club" subclass="ugmash" tileid="-1"/>
-		<description>Widzisz kropacz. Może atakować szybciej niż inne maczugi, a kolce jakimi jest nabity zadają okropne rany.</description>
+		<description>Oto kropacz. Może atakować szybciej niż inne maczugi, a kolce jakimi jest nabity zadają okropne rany.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="40"/>
@@ -342,7 +342,7 @@
 
 	<item name="młot wulkanów">
 		<type class="club" subclass="vulcano_hammer" tileid="-1"/>
-		<description>Widzisz młot wulkanów. Ludzie mówią, że to broń bogów, ale jest wolna jak ślimak.</description>
+		<description>Oto młot wulkanów. Ludzie mówią, że to broń bogów, ale jest wolna jak ślimak.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="48"/>
@@ -364,7 +364,7 @@
 
 	<item name="młot bojowy">
 		<type class="club" subclass="grand_warhammer" tileid="-1"/>
-		<description>Widzisz ogromny młot bojowy. Wygląda na to że jest mocny, ale ciężki i dla tego powolny.</description>
+		<description>Oto ogromny młot bojowy. Wygląda na to że jest mocny, ale ciężki i dla tego powolny.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="38"/>

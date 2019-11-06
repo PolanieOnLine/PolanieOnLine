@@ -24,7 +24,7 @@
 
 	<item name="długi łuk">
 		<type class="ranged" subclass="longbow" tileid="-1"/>
-		<description>Widzisz długi łuk. Z tą bronią w jednej ręce i strzałami w drugiej, będziesz mógł atakować z dystansu.</description>
+		<description>Oto długi łuk. Z tą bronią w jednej ręce i strzałami w drugiej, będziesz mógł atakować z dystansu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<ratk value="14"/>

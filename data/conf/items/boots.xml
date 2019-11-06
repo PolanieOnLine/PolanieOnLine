@@ -82,7 +82,7 @@
 
 	<item name="buty chaosu">
 		<type class="boots" subclass="chaos_boots" tileid="-1"/>
-		<description>Widzisz buty chaosu. Twoje kroki są chwiejne, ale dodatkowa obrona sprawia że są tego warte.</description>
+		<description>Oto buty chaosu. Twoje kroki są chwiejne, ale dodatkowa obrona sprawia że są tego warte.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -101,7 +101,7 @@
 
 	<item name="buty elfickie">
 		<type class="boots" subclass="elvish_boots" tileid="-1"/>
-		<description>Widzisz buty elfickie.</description>
+		<description>Oto buty elfickie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
@@ -122,7 +122,7 @@
 
 	<item name="złote buty">
 		<type class="boots" subclass="golden_boots" tileid="-1"/>
-		<description>Widzisz złote buty. Są ciężkie, ale warte swojej ceny.</description>
+		<description>Oto złote buty. Są ciężkie, ale warte swojej ceny.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
@@ -141,7 +141,7 @@
 
 	<item name="buty z zielonego potwora">
 		<type class="boots" subclass="green_dragon_boots" tileid="-1"/>
-		<description>Widzisz buty z zielonego potwora. Są glutowate w środku i zalatują śledziami, fujjjj.</description>
+		<description>Oto buty z zielonego potwora. Są glutowate w środku i zalatują śledziami, fujjjj.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="12"/>
@@ -161,7 +161,7 @@
 
 	<item name="buty zabójcy">
 		<type class="boots" subclass="killer_boots" tileid="-1"/>
-		<description>Widzisz buty zabójcy. Jesteś na tyle odważny, aby je nosić?</description>
+		<description>Oto buty zabójcy. Jesteś na tyle odważny, aby je nosić?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="22"/>
@@ -179,7 +179,7 @@
 
 	<item name="buty skórzane">
 		<type class="boots" subclass="leather_boots" tileid="-1"/>
-		<description>Widzisz buty skórzane, które ogrzewają ci stopy.</description>
+		<description>Oto buty skórzane, które ogrzewają ci stopy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
@@ -197,7 +197,7 @@
 
 	<item name="buty mainiocyjskie">
 		<type class="boots" subclass="mainio_boots" tileid="-1"/>
-		<description>Widzisz buty mainiocyjskie. Ciężko uwierzyć, że wyglądają tak samo dobrze jak chronią.</description>
+		<description>Oto buty mainiocyjskie. Ciężko uwierzyć, że wyglądają tak samo dobrze jak chronią.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -216,7 +216,7 @@
 
 	<item name="buty z mithrilu">
 		<type class="boots" subclass="mithril_boots" tileid="-1"/>
-		<description>Widzisz buty z mithrilu.</description>
+		<description>Oto buty z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="18"/>
@@ -237,7 +237,7 @@
 
 	<item name="buty karmazynowe">
 		<type class="boots" subclass="red_boots" tileid="-1"/>
-		<description>Widzisz buty karmazynowe, kolor przypomina o świeżej krwi.</description>
+		<description>Oto buty karmazynowe, kolor przypomina o świeżej krwi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="5"/>
@@ -255,7 +255,7 @@
 
 	<item name="buty cieni">
 		<type class="boots" subclass="shadow_boots" tileid="-1"/>
-		<description>Widzisz buty cieni. Nie możesz pojąć z czego są zrobione.</description>
+		<description>Oto buty cieni. Nie możesz pojąć z czego są zrobione.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="9"/>
@@ -276,7 +276,7 @@
 
 	<item name="buty żelazne">
 		<type class="boots" subclass="steel_boots" tileid="-1"/>
-		<description>Widzisz buty żelazne, pasujące na każdego wojownika.</description>
+		<description>Oto buty żelazne, pasujące na każdego wojownika.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
@@ -297,7 +297,7 @@
 
 	<item name="buty kamienne">
 		<type class="boots" subclass="stone_boots" tileid="-1"/>
-		<description>Widzisz buty kamienne. Mogą być ciężkie, ale dobrze bronią twoje stopy.</description>
+		<description>Oto buty kamienne. Mogą być ciężkie, ale dobrze bronią twoje stopy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>
@@ -320,7 +320,7 @@
 
 	<item name="buty nabijane ćwiekami">
 		<type class="boots" subclass="studded_boots" tileid="-1"/>
-		<description>Widzisz buty nabijane ćwiekami z ochoną dla twoich stóp.</description>
+		<description>Oto buty nabijane ćwiekami z ochoną dla twoich stóp.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="2"/>
@@ -338,7 +338,7 @@
 
 	<item name="buty xenocyjskie">
 		<type class="boots" subclass="xeno_boots" tileid="-1"/>
-		<description>Widzisz buty xenocyjskie.</description>
+		<description>Oto buty xenocyjskie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>
@@ -376,7 +376,7 @@
 
 	<item name="kierpce">
 		<type class="boots" subclass="goralskie_kierpce" tileid="-1"/>
-		<description>Widzisz kierpce. Skóra trochę skrzypi i wróg może cię wcześniej usłyszeć.</description>
+		<description>Oto kierpce. Skóra trochę skrzypi i wróg może cię wcześniej usłyszeć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>

@@ -87,7 +87,7 @@
 
 	<item name="tarcza królewska">
 		<type class="shield" subclass="crown_shield" tileid="-1"/>
-		<description>Widzisz tarczę królewską. Jest w świetnym stanie.</description>
+		<description>Oto tarcza królewska. Jest w świetnym stanie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="24"/>

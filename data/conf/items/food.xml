@@ -446,7 +446,7 @@
 
 	<item name="karczoch">
 		<type class="food" subclass="artichoke" tileid="-1"/>
-		<description>Widzisz karczocha. Może być składnikiem potrawy, ale nadaje się też do jedzenia osobno.</description>
+		<description>Oto karczocha. Może być składnikiem potrawy, ale nadaje się też do jedzenia osobno.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
@@ -1346,7 +1346,7 @@
 
 	<item name="miód">
 		<type class="food" subclass="honey" tileid="-1"/>
-		<description>Widzisz dzbanek słodkiego miodu.</description>
+		<description>Oto dzbanek słodkiego miodu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20"/>
@@ -1577,7 +1577,7 @@
 	<!-- dropped -->
 	<item name="ser">
 		<type class="food" subclass="cheese" tileid="-1"/>
-		<description>Widzisz kawałek sera. Zjedz go a zobaczysz co się stanie.</description>
+		<description>Oto kawałek sera. Zjedz go a zobaczysz co się stanie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20"/>

@@ -189,7 +189,7 @@
 
 	<item name="napój z winogron">
 		<type class="drink" subclass="wine" tileid="-1"/>
-		<description>Widzisz napój z winogron. Zaspokoi twoje pragnienie.</description>
+		<description>Oto napój z winogron. Zaspokoi twoje pragnienie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="10"/>
@@ -375,7 +375,7 @@
 
 	<item name="trucizna">
 		<type class="drink" subclass="poison" tileid="-1"/>
-		<description>Widzisz truciznę. Nie pij tego!</description>
+		<description>Oto trucizna. Nie pij tego!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="-40"/>
@@ -421,7 +421,7 @@
 
 	<item name="śmiertelna trucizna">
 		<type class="drink" subclass="deadly_poison" tileid="-1"/>
-		<description>Oto śmiertelna trucizna.	Nie pij tego!</description>
+		<description>Oto śmiertelna trucizna. Nie pij tego!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="-100"/>
@@ -513,7 +513,7 @@
 
 	<item name="mały eliksir">
 		<type class="drink" subclass="minor_potion" tileid="-1"/>
-		<description>Widzisz mały eliksir. Nie jest to za wiele ale zawsze coś.</description>
+		<description>Oto mały eliksir. Nie jest to za wiele ale zawsze coś.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="50"/>
@@ -536,7 +536,7 @@
 
 	<item name="zupa">
 		<type class="drink" subclass="soup" tileid="-1"/>
-		<description>Widzisz zupę. Pyszna grochóweczka, przywróci sporą ilośc życia.</description>
+		<description>Oto zupę. Pyszna grochóweczka, przywróci sporą ilośc życia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="2500"/>
@@ -584,7 +584,7 @@
 
 	<item name="eliksir">
 		<type class="drink" subclass="potion" tileid="-1"/>
-		<description>Widzisz eliksir. Wypij go w trakcie walki a pożyjesz dłużej.</description>
+		<description>Oto eliksir. Wypij go w trakcie walki a pożyjesz dłużej.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="100"/>
@@ -607,7 +607,7 @@
 
 	<item name="duży eliksir">
 		<type class="drink" subclass="greater_potion" tileid="-1"/>
-		<description>Widzisz duży eliksir, przydatny w walce.</description>
+		<description>Oto duży eliksir, przydatny w walce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="300"/>
@@ -630,7 +630,7 @@
 
 	<item name="wielki eliksir">
 		<type class="drink" subclass="mega_potion" tileid="-1"/>
-		<description>Widzisz wielki eliksir. Silnie ulecza.</description>
+		<description>Oto wielki eliksir. Silnie ulecza.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="800"/>
@@ -723,7 +723,7 @@
 
 	<item name="gigantyczny eliksir">
 		<type class="drink" subclass="giant_potion" tileid="-1"/>
-		<description>Widzisz gigantyczny eliksir. Chyba postawi na nogi nawet umarłego!</description>
+		<description>Oto gigantyczny eliksir. Chyba postawi na nogi nawet umarłego!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="1600"/>
@@ -904,50 +904,4 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
-
-	<!-- <item name="eliksir magiczny">
-		<type class="drink" subclass="magic_potion" tileid="-1"/>
-		<description>Widzisz eliksir magiczny. Jeszcze nie wprowadzony do gry.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
-		<attributes>
-			<amount value="1"/>
-			<frequency value="1"/>
-			<quantity value="1"/>
-			<regen value="1"/>
-			<menu value="Wypij|Użyj"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="48000"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-		</equipable>
-	</item>
-
-	<item name="mocny eliksir magiczny">
-		<type class="drink" subclass="magic_greater_potion" tileid="-1"/>
-		<description>Widzisz mocny eliksir magiczny. Jeszcze nie wprowadzony do gry.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
-		<attributes>
-			<amount value="1"/>
-			<frequency value="1"/>
-			<quantity value="1"/>
-			<regen value="1"/>
-			<menu value="Wypij|Użyj"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="48000"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-		</equipable>
-	</item> -->
 </items>

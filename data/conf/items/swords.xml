@@ -176,7 +176,7 @@
 
 	<item name="sztylecik">
 		<type class="sword" subclass="dagger" tileid="-1"/>
-		<description>Widzisz sztylecik, jest bardziej dekoracją niż szybką bronią.</description>
+		<description>Oto sztylecik, jest bardziej dekoracją niż szybką bronią.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
@@ -196,7 +196,7 @@
 
 	<item name="sztylet mroku">
 		<type class="sword" subclass="dark_dagger" tileid="-1"/>
-		<description>Widzisz sztylet mroku. Jest zaprojektowany tak, aby zadawać nim szybkie ciosy.</description>
+		<description>Oto sztylet mroku. Jest zaprojektowany tak, aby zadawać nim szybkie ciosy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
@@ -395,7 +395,7 @@
 
 	<item name="piekielny sztylet">
 		<type class="sword" subclass="hell_dagger" tileid="-1"/>
-		<description>Widzisz piekielny sztylet. Czy błyszczą to ognie piekielne?</description>
+		<description>Oto piekielny sztylet. Czy błyszczą to ognie piekielne?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="9"/>
@@ -503,7 +503,7 @@
 
 	<item name="mieczyk">
 		<type class="sword" subclass="knife" tileid="-1"/>
-		<description>Widzisz tępy mieczyk, który zadaje małe obrażenia.</description>
+		<description>Oto tępy mieczyk, który zadaje małe obrażenia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="7"/>
@@ -587,7 +587,7 @@
 
 	<item name="obsydianowy saks">
 		<type class="sword" subclass="obsidian_knife" tileid="-1"/>
-		<description>Widzisz obsydianowy saks, którego ostrze zrobione jest z drogocennego kamienia.</description>
+		<description>Oto obsydianowy saks, którego ostrze zrobione jest z drogocennego kamienia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="4"/>
@@ -712,7 +712,7 @@
 
 	<item name="miecz dusz">
 		<type class="sword" subclass="soul_dagger" tileid="-1"/>
-		<description>Widzisz miecz dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
+		<description>Oto miecz dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="7"/>
@@ -819,7 +819,7 @@
 
 	<item name="krwawy miecz orków">
 		<type class="sword" subclass="orc_blood" tileid="-1"/>
-		<description>Widzisz krwawy miecz orków. Niejednego wroga rozpłatał na dwie połowy.</description>
+		<description>Oto krwawy miecz orków. Niejednego wroga rozpłatał na dwie połowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="33"/>

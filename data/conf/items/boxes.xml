@@ -4,7 +4,7 @@
 
 	<item name="prezent">
 		<type class="box" subclass="present" tileid="-1"/>
-		<description>Widzisz prezent. Otwórz go.</description>
+		<description>Oto prezent. Otwórz go.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Present"/>
 		<attributes>
 		</attributes>
@@ -20,7 +20,7 @@
 
 	<item name="koszyk">
 		<type class="box" subclass="basket" tileid="-1"/>
-		<description>Widzisz koszyk. Spójrz do niego.</description>
+		<description>Oto koszyk. Spójrz do niego.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Basket"/>
 		<attributes>
 		</attributes>
@@ -52,7 +52,7 @@
 
 	<item name="skrzynka">
 		<type class="box" subclass="skrzynka" tileid="-1"/>
-		<description>Widzisz skrzynkę. Otwórz ją.</description>
+		<description>Oto skrzynka. Otwórz ją.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Present"/>
 		<attributes>
 		</attributes>
@@ -68,7 +68,7 @@
 	
 	<item name="brązowa skrzynia">
 		<type class="box" subclass="brazowa_skrzynia" tileid="-1"/>
-		<description>Widzisz brązową skrzynie. Otwórz ją.</description>
+		<description>Oto brązowa skrzynia. Otwórz ją.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BrazowaSkrzynia"/>
 		<attributes>
 			<quantity value="1"/>
@@ -85,7 +85,7 @@
 	
 	<item name="srebrna skrzynia">
 		<type class="box" subclass="srebrna_skrzynia" tileid="-1"/>
-		<description>Widzisz srebrną skrzynkę. Otwórz ją.</description>
+		<description>Oto srebrna skrzynia. Otwórz ją.</description>
 		<implementation class-name="games.stendhal.server.entity.item.SrebrnaSkrzynia"/>
 		<attributes>
 			<quantity value="1"/>
@@ -102,7 +102,7 @@
 	
 	<item name="złota skrzynia">
 		<type class="box" subclass="zlota_skrzynia" tileid="-1"/>
-		<description>Widzisz złotą skrzynkę. Otwórz ją.</description>
+		<description>Oto złota skrzynia. Otwórz ją.</description>
 		<implementation class-name="games.stendhal.server.entity.item.ZlotaSkrzynia"/>
 		<attributes>
 			<quantity value="1"/>
