@@ -184,7 +184,7 @@ public class EggsForMarianne extends AbstractQuest {
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
 				"Potrzebuję jaja. " +
-				"Moja mama poprosiła mnie o zebranie kilku jajek, a ona zrobi mi naleśniki! " +
+				"Moja mama poprosiła mnie o zebranie tuzin jajek, a ona zrobi mi naleśniki! " +
 				"Boję się zbliżyć do tych kurczaków! " +
 				"Czy możesz zebrać jajka dla mnie? " +
 				"Pamiętaj... Potrzebuję jaja...",
@@ -199,7 +199,7 @@ public class EggsForMarianne extends AbstractQuest {
 						new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)),
 				ConversationStates.QUEST_OFFERED,
 				"Moja mama znów potrzebuje jajek! " +
-				"Czy mogłabym Cię ponownie poprosić o zebranie więcej jaj dla mnie?",
+				"Czy mogłabym Cię ponownie poprosić o zebranie tuzin jaj dla mnie?",
 				null);
 
 		// player returns - enough time has passed
@@ -222,7 +222,7 @@ public class EggsForMarianne extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"W porządku. Możesz znaleźć jaja polując na kurczaki! " +
 			"Możesz je znaleźć w całym mieście. "+
-			"Wróć, kiedy zbierzesz dwanaście jajek!",
+			"Wróć, kiedy zbierzesz tuzin jajek!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 2));
 
 		// player is not willing to help
