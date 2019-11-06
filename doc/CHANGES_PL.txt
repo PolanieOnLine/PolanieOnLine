@@ -4,7 +4,7 @@ Changelog
 Zaktualizowano do najnowszej wersji Stendhala
 
 *klient*
-- Dodano opcje pokazywania cieni pod pewnymi obiektami (potworami/npc'tami/graczami)
+- Dodano opcje pokazywania cieni pod pewnymi obiektami (niektórymi potworami/npc'tami/graczami)
 - Dodano nowe dźwięki dla smoków
 - Dodano dwie nowe grafiki przedmiotów
 - Zmiany dot. outfitów typu Charas (dodano czapki, maski i nie tylko...)
