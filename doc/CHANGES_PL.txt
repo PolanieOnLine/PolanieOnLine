@@ -8,7 +8,9 @@ Zaktualizowano do najnowszej wersji Stendhala
 - Dodano nowe dźwięki dla smoków
 - Dodano dwie nowe grafiki przedmiotów
 - Zmiany dot. outfitów typu Charas (dodano czapki, maski i nie tylko...)
+- Zmieniono wygląd kapelusza safari
 - Poprawiono dźwięk pirackiego śmiechu
+- Poprawiono wymiary grafiki wianka
 
 *świat gry*
 - Dodano dwa nowe naszyjniki
