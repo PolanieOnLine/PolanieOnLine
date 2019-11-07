@@ -942,7 +942,7 @@ Uciekaj!</attribute>
 			<destination zone="-1_dragon_cave" ref="dragon_tunnel_exit"/>
 		</portal>
 
-		<portal x="148" y="102" ref="dragon_cave_exit">
+		<portal x="147" y="102" ref="dragon_cave_exit">
 			<destination zone="-1_wieliczka_cave_n" ref="dragon_cave_entrance"/>
 		</portal>
 
