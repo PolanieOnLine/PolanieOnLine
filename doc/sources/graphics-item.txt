@@ -338,8 +338,6 @@ tuna_sandwich.png          Katie Russell (kymara); GPL 2.0; Stendhal
 unknown_fish.png           Kimmo Rundelin (kiheru); CC BY-SA 3.0; Stendhal
 vanillashake.png           tigertoes?; ???; ???
 watermelon.png             Red Queen?; ???; ???
--- POL
-tuna.png		   KarajuSs; CC BY-SA 3.0; PolskaGRA
 
 data/sprites/items/grower/
 
@@ -563,9 +561,6 @@ sugarcane.png       wmbec7718; ???; ???
 wood.png            Daniel Herding (mort); GPL 2.0; Stendhal
 wool.png            Nadine Schlonies (dine); GPL 2.0; Stendhal
 yarn.png            tiborius; GPL 2.0; Stendhal
-/**pol**/
-copper_ore.*        KarajuSs; GPL 2.0; PolskaGRA
-copper_bar.*        KarajuSs; GPL 2.0; PolskaGRA
 
 data/sprites/items/ring/
 
@@ -730,18 +725,86 @@ shovel.png            laabadon, Jordan Irwin (AntumDeluge); CC0; http://openclip
 shovel_old.png        David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 sugarmill.png         ???; ???; ???
 
+/////////
+// POL //
+/////////
+
+data/sprites/items/ammunition/
+
+mithril_arrow.png	KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+r_wooden_arrow.png	KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/box/
+
+brazowa_skrzynia.png	KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+srebrna_skrzynia.png	KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+zlota_skrzynia.png		KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/cloak/
+
+ice_cloak.*			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+magic_cloak.*		KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+
+data/sprites/items/drink/
+
+dragon_potion.png				KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+greater_dragon_potion.png		KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+
+data/sprites/items/food/
+
+tuna.png			KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/glove/
+
+stone_gloves.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+vampire_gloves.png			KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/helmet/
+
+desert_helmet.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+
+data/sprites/items/necklace/
+
+fire_amulet.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+ice_amulet.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+
+data/sprites/items/resource/
+
+copper_ore.*        			KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+copper_bar.*        			KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+pazur_arktycznego_smoka.png		KarajuSs; CC BY-SA 3.0; POL (PolskaOnLine)
+pioro_azazela.png				KarajuSs; CC BY-SA 3.0; POL (PolskaOnLine)
+pioro_mr_archaniola.png			KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+skora_arktycznego_smoka.png		KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+golden_amulet.png				KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
 data/sprites/items/pas/
 
-pas_zbojecki.png                 Tomko?; CC0?; PolskaOnLine
-zwykly_skorzany_pas.png          KarajuSs; CC BY-SA 3.0; PolskaGRA
-wzmocniony_skorzany_pas.png      KarajuSs; CC BY-SA 3.0; PolskaGRA
-karmazynowy_pas.png              KarajuSs; CC BY-SA 3.0; PolskaGRA
-zloty_kolczany_pas.png           KarajuSs; CC BY-SA 3.0; PolskaGRA
-kolczany_pas.png                 KarajuSs; CC BY-SA 3.0; PolskaGRA
-wampirzy_pas.png                 KarajuSs; CC BY-SA 3.0; PolskaGRA
-elficki_pas_z_rubinem.png        KarajuSs; CC BY-SA 3.0; PolskaGRA
-zloty_pas.png                    KarajuSs; CC BY-SA 3.0; PolskaGRA
-pas_z_mithrilu.png               KarajuSs; CC BY-SA 3.0; PolskaGRA
-czarny_pas.png                   KarajuSs; CC BY-SA 3.0; PolskaGRA
-olbrzymi_pas.png                 KarajuSs; CC BY-SA 3.0; PolskaGRA
-krasnoludzki_pas.png             KarajuSs; CC BY-SA 3.0; PolskaGRA
+pas_zbojecki.png                 Tomko?; CC0?; POL (PolskaOnLine)
+zwykly_skorzany_pas.png          KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+wzmocniony_skorzany_pas.png      KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+karmazynowy_pas.png              KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+zloty_kolczany_pas.png           KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+kolczany_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+wampirzy_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+elficki_pas_z_rubinem.png        KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+zloty_pas.png                    KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+pas_z_mithrilu.png               KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+czarny_pas.png                   KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+olbrzymi_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+krasnoludzki_pas.png             KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/ring/
+
+black_ring.png             KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/scroll/
+
+gdansk.png				KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+zakopane.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+wieliczka.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+grod_kraka.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+
+data/sprites/items/sword/
+
+excalibur.png			KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
