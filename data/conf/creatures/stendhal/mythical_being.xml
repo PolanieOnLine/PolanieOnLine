@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="mermaid">
-	    <type class="stendhal/hybrid" subclass="mermaid" tileid="mythical_being.png:7"/>
+	    <type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
 	    <description>Oto mermaid. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
 	    <attributes>
 	      <atk value="547"/>
@@ -33,7 +33,7 @@
 	</creature>
 
   <creature name="szmaragdowa mermaid">
-    <type class="mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
+    <type class="stendhal/mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
     <description></description>
     <attributes>
       <atk value="1120"/>
@@ -70,7 +70,7 @@
   </creature>
 
   <creature name="ametystowa mermaid">
-    <type class="mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
+    <type class="stendhal/mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
     <description></description>
     <attributes>
       <atk value="1120"/>
@@ -107,7 +107,7 @@
   </creature>
 
   <creature name="rubinowa mermaid">
-    <type class="mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
+    <type class="stendhal/mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
     <description></description>
     <attributes>
       <atk value="1120"/>
@@ -144,7 +144,7 @@
   </creature>
 
   <creature name="szafirowa mermaid">
-    <type class="mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
+    <type class="stendhal/mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
     <description></description>
     <attributes>
       <atk value="1120"/>
