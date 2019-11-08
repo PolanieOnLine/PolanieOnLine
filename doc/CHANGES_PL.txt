@@ -26,7 +26,9 @@ Zaktualizowano do najnowszej wersji Stendhala
 
 *naprawiono błędy*
 - Naprawiono różne odmiany potworów mermaid
+- Naprawiono wymiary grafiki przedmiotu "czterolistna koniczyna"
 - Naprawiono błąd z komunikatem o braku domyślnego wyglądu klienta
+- Waga "Baby Dragon'a" nie może spaść poniżej minimalnej wartości (1)
 
 
 1.05.5
