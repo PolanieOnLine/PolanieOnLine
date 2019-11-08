@@ -2224,7 +2224,7 @@
 	</item>
 
 	<item name="zielone jabłuszko">
-		<type class="food" subclass="apple" tileid="-1"/>
+		<type class="food" subclass="greenapple" tileid="-1"/>
 		<description>Oto kwaśne zielone jabłuszko. Ależ ono pachnie...</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
