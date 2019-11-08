@@ -81,6 +81,9 @@ public class BabyDragon extends Pet {
 		setUp();
 		setRPClass("baby_dragon");
 		put("type", "baby_dragon");
+		
+		int minWeight = 1;
+		setWeight(minWeight);
 
 		if (owner != null) {
 			// add pet to zone and create RPID to be used in setPet()
@@ -104,6 +107,11 @@ public class BabyDragon extends Pet {
 
 		setRPClass("baby_dragon");
 		put("type", "baby_dragon");
+
+		int minWeight = 1;
+		if (!has("weight")) {
+			setWeight(minWeight);
+		}
 
 		update();
 	}
