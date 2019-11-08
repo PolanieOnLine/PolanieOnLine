@@ -1,5 +1,11 @@
 Changelog
 ---------
+1.06.1
+*naprawiono błędy*
+- Naprawiono ścieżki graficzne do wszystkich odmian mermaid
+- Poprawiono grafikę przedmiotu "zielone jabłuszko"
+
+
 1.06
 Zaktualizowano do najnowszej wersji Stendhala
 
