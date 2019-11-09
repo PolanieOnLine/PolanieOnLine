@@ -11,9 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
@@ -27,8 +31,12 @@ import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.PlayerCanEquipItemCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
@@ -56,7 +64,7 @@ import java.util.List;
  * <ul>
  * <li>1000 XP</li>
  * <li>5 greater antidote
- * <li>note to apothecary (disabled until Antivenom Ring quest is ready)
+ * <li>note to apothecary (if Antivenom Ring quest not started)
  * <li>Can sell rodent traps to Klaas</li>
  * <li>Karma: 10</li>
  * </ul>
@@ -165,13 +173,23 @@ public class TrapsForKlaas extends AbstractQuest {
 		// Reward
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("pułapka na gryzonie", 20));
-		// Replacing "not to apothecary" reward with antidotes until Antivenom Ring quest is done.
-		//reward.add(new EquipItemAction("liścik do aptekarza", 1, true));
 		reward.add(new EquipItemAction("mocne antidotum", 5));
 		reward.add(new IncreaseXPAction(1000));
 		reward.add(new IncreaseKarmaAction(10));
         reward.add(new SetQuestAction(QUEST_SLOT, "done"));
         reward.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
+
+        // action that gives player note to apothecary
+        final ChatAction equipNoteAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final Item note = SingletonRepository.getEntityManager().getItem("karteczka");
+				note.setInfoString("liścik do aptekarza");
+				note.setDescription("Oto liścik do aptekarza. To jest rekomendacja od Klaasa.");
+				note.setBoundTo(player.getName());
+				player.equipOrPutOnGround(note);
+			}
+        };
 
 		// Player has all 20 traps
 		npc.add(ConversationStates.IDLE,
@@ -202,13 +220,25 @@ public class TrapsForKlaas extends AbstractQuest {
 				"Przykro mi, ale potrzebuję 20 #pułapek #na #gryzonie",
 				null);
 
+		// brings traps & has already started/completed antivenom ring quest
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.YES_MESSAGES,
 				new PlayerHasItemWithHimCondition("pułapka na gryzonie", 20),
 				ConversationStates.ATTENDING,
-				// Not mentioning apothecary until Antivenom Ring quest is ready
-				"Dziękuję! Muszę je teraz przygotować tak szybko jak to możliwe. Weź te antidota jako nagrodę.", // Znam starego #aptekarza. Zabierz do niego ten liścik. Może w czymś ci pomoże.",
+				"Dziękuję! Muszę je teraz przygotować tak szybko jak to możliwe. Weź te antidota jako nagrodę.",
 				new MultipleActions(reward));
+		
+		// brings traps & has not started antivenom ring quest
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						new PlayerHasItemWithHimCondition("pułapka na gryzonie", 20),
+						new QuestNotStartedCondition("antivenom_ring")),
+				ConversationStates.ATTENDING,
+				"Dziękuję! Muszę je teraz przygotować tak szybko jak to możliwe. Weź te antidota jako nagrodę. Znam starego #aptekarza. Zabierz do niego ten liścik. Może w czymś ci pomoże.",
+				new MultipleActions(
+						new MultipleActions(reward),
+						equipNoteAction));
 
         // Player says did not bring items
 		npc.add(
@@ -220,7 +250,6 @@ public class TrapsForKlaas extends AbstractQuest {
 			null);
 
 		// Player asks about the apothecary
-		/* Disabling until Antivenom Ring quest is ready
 		npc.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("apothecary", "aptekarza", "aptekarz"),
@@ -232,13 +261,26 @@ public class TrapsForKlaas extends AbstractQuest {
 		// Player has lost note
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new NotCondition(new PlayerHasItemWithHimCondition("liścik do aptekarza")),
+				new AndCondition(
+						new NotCondition(new PlayerHasItemWithHimCondition("liścik do aptekarza")),
+						new PlayerCanEquipItemCondition("karteczka"),
 						new QuestCompletedCondition(QUEST_SLOT),
 						new QuestNotStartedCondition("antivenom_ring")),
 				ConversationStates.ATTENDING,
 				"Zgubiłeś liścik? Cóż napiszę kolejny, ale bądź ostrożny tym razem.",
-				new EquipItemAction("note to apothecary", 1, true));
-		*/
+				equipNoteAction);
+		
+		// player lost note, but doesn't have room in inventory
+		npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(
+						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", "liścik do aptekarza")),
+						new NotCondition(new PlayerCanEquipItemCondition("karteczka")),
+						new QuestCompletedCondition(QUEST_SLOT),
+						new QuestNotStartedCondition("antivenom_ring")),
+				ConversationStates.ATTENDING,
+				"Zgubiłeś liścik do aptekarza? Cóż, mógłbym napisać kolejny, ale nie wygląda, że masz wolne miejsce na to.",
+				null);
 	}
 
 	@Override

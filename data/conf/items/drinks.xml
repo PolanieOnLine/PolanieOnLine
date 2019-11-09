@@ -904,4 +904,20 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="jad kobry">
+		<type class="drink" subclass="cobra_venom" tileid="-1"/>
+		<description>Oto fiolka wypełniona jadem kobry.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 </items>

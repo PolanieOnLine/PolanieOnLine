@@ -23,7 +23,6 @@
 		</equipable>
 	</item>
 
-	<!-- DISABLED
 	<item name="pierścień antyjadowy">
 		<type class="ring" subclass="antivenom_ring" tileid="-1"/>
 		<description>Oto pierścień antyjadowy. Posiada dobre właściwości chroniące przed zatruciem gdy nosisz go na palcu.</description>
@@ -44,9 +43,10 @@
 		</equipable>
 	</item>
 
-	<item name="pierścień antytoksynowy gm">
+	<!-- DISABLED
+	<item name="pierścień antytoksynowy">
 		<type class="ring" subclass="antitoxin_ring" tileid="-1"/>
-		<description>Oto pierścień antytoksynowy gm. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
+		<description>Oto pierścień antytoksynowy. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 		</attributes>

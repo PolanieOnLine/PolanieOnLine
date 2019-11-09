@@ -164,9 +164,10 @@
 			<parameter name="volume">65</parameter>
 		  </implementation>
 		</entity>
-
-		<portal x="8" y="22" ref="apothecary_entrance">
-			<destination zone="0_semos_city" ref="house_exit_1" />
+		
+		<!-- Portals -->
+		<portal x="8" y="22" ref="apothecary_entrance" >
+			<destination zone="int_apothecary_cabin" ref="exit" />
 		</portal>
 	</zone>
 
@@ -175,12 +176,11 @@
 	<zone name="int_apothecary_cabin" file="interiors/semos/apothecary_cabin.tmx" accessible="false">
 
 		<!-- Portals -->
-		<!-- add portal at 0_semos_mountain_n2_w to enable this zone
 		<portal x="7" y="19" ref="exit">
 			<destination zone="0_semos_mountain_n2_w" ref="apothecary_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-		-->
+
 		<portal x="3" y="13" ref="lab_entrance">
 			<destination zone="int_apothecary_lab" ref="lab_exit" />
 			<implementation
@@ -216,9 +216,10 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 
 	<zone name="int_apothecary_lab" file="interiors/semos/apothecary_lab.tmx" accessible="false">
 		<!-- NPCs -->
-		<!-- Disabled until Antivenom Ring quest is ready
 		<configurator class-name="games.stendhal.server.maps.semos.apothecary_lab.ApothecaryNPC" />
-		-->
+
+		<!-- vial on table -->
+		<configurator class-name="games.stendhal.server.maps.semos.apothecary_lab.VialOnTable" />
 
 		<!-- Portals -->
 		<portal x="33" y="13" ref="lab_exit">

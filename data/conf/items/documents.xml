@@ -196,7 +196,7 @@
 		</equipable>
 	</item>-->
 
-	<!--<item name="liścik do aptekarza">
+	<item name="liścik do aptekarza">
     <type class="documents" subclass="paper" tileid="-1"/>
 		<description>Oto liścik do aptekarza. To jest rekomendacja od Klaasa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -211,7 +211,7 @@
 			<slot name="lhand" />
 			<slot name="rhand" />
 		</equipable>
-	</item>-->
+	</item>
 	
 	<item name="wyniki badań">
     <type class="documents" subclass="paper" tileid="-1"/>
