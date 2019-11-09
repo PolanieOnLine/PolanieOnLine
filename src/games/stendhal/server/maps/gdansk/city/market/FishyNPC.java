@@ -63,7 +63,7 @@ public class FishyNPC implements ZoneConfigurator {
 				addReply("aye", "Cóż dreszcz mnie przeszedł! Sprawdź tablicę, aby zobaczyć po jakiej cenie i co skupuję");
 				addReply(Arrays.asList("nie", "no"), "Ty tchórzliwa lilio, łobuzie! Dlaczego marnujesz mój czas?");
 				addHelp("Co sobie myślisz, że taki jak ja stary wyjadacz potrzebuje pomocy?");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyfishes")), false);
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("skupryb")), false);
 				addOffer("Sprawdź na tablicy ile dudków mogę dać.");
 				addQuest("Nie masz towaru, którego ja potrzebuję.");
 				addGoodbye("Arrgh, do zobaczenia!");

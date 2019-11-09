@@ -435,6 +435,7 @@ public final class ShopList {
 		shops.add("buyfishes", "pokolec", 15);
 		shops.add("buyfishes", "pstrąg", 45);
 		shops.add("buyfishes", "dorsz", 10);
+		shops.add("buyfishes", "skrzydlica", 120);
 
 		// semos trading - swords)
 		shops.add("tradeswords", "sztylecik", 10);
@@ -745,7 +746,7 @@ public final class ShopList {
 		shops.add("buyryby", "pokolec", 9);
 		shops.add("buyryby", "pstrąg", 9);
 		shops.add("buyryby", "błazenek", 11);
-		
+
 		//Kacper kupuje:
 		shops.add("buykacper", "śnieżka", 5);
 		shops.add("buykacper", "kamienie", 6);
@@ -778,7 +779,7 @@ public final class ShopList {
 
 		//Thomas sprzedaje:
 		shops.add("sellthomas", "tuńczyk", 5);
-		
+
 		// Wieliczka //
 		//Arthur sprzedaje
 		shops.add("arthur", "zwój wieliczka", 300);
@@ -793,7 +794,7 @@ public final class ShopList {
 		shops.add("buyarmorywieliczka", "lodowy płaszcz", 25000);
 		shops.add("buyarmorywieliczka", "tarcza cieni", 16500);
 		shops.add("buyarmorywieliczka", "rękawice cieni", 11000);
-		
+
 		// Zbigniew sprzedaje:
 		shops.add("zwojewieliczka", "zwój wieliczka", 250);
 		shops.add("zwojewieliczka", "zwój krakowski", 550);
@@ -808,12 +809,12 @@ public final class ShopList {
 		shops.add("xylona", "zwój wieliczka", 600);
 		shops.add("xylona", "zwój tatrzański", 800);
 		shops.add("xylona", "niezapisany zwój", 1900);
-		
+
 		// ZlotnikNPC kupuje:
 		shops.add("buygold", "bryłka złota", 5);
 		shops.add("buygold", "sztabka złota", 200);
 		shops.add("buygold", "sztabka mithrilu", 2000);
-		
+
 		// Rosa sprzedaje:
 		shops.add("rosa", "sok z chmielu", 5);
 		shops.add("rosa", "napój z winogron", 8);
@@ -867,7 +868,7 @@ public final class ShopList {
 		shops.add("sellveg", "szpinak", 33);
 		shops.add("sellveg", "fasola pinto", 35);
 		shops.add("sellveg", "papryka habanero", 40);
-		
+
 		// Dariusz skupuje:
 		shops.add("buyarmor", "pas krasnoludzki", 2700);
 		shops.add("buyarmor", "pas olbrzymi", 5200);
@@ -880,7 +881,7 @@ public final class ShopList {
 		shops.add("buyarmor", "zbroja krasnoludzka", 14000);
 		shops.add("buyarmor", "zbroja chaosu", 19000);
 		shops.add("buyarmor", "lodowa zbroja", 23000);
-		
+
 		// Hermina sprzedaje:
 		shops.add("sellgrocery", "fasola pinto", 5);
 		shops.add("sellgrocery", "jajo", 7);
@@ -894,14 +895,21 @@ public final class ShopList {
 		shops.add("sellgrocery", "ocet", 275);
 		shops.add("sellgrocery", "miód", 350);
 		shops.add("sellgrocery", "osełka masła", 400);
-		
-		// Manuela sprzedaje:
+
+		// Manulea sprzedaje:
 		shops.add("sellpotion", "antidotum", 45);
 		shops.add("sellpotion", "mocne antidotum", 120);
 		shops.add("sellpotion", "mały eliksir", 185);
 		shops.add("sellpotion", "eliksir", 400);
 		shops.add("sellpotion", "duży eliksir", 850);
 		shops.add("sellpotion", "wielki eliksir", 1300);
+
+		// Joachim skupuje:
+		shops.add("skupryb", "tuńczyk", 3);
+		shops.add("skupryb", "leszcz", 15);
+		shops.add("skupryb", "szczupak", 25);
+		shops.add("skupryb", "karp", 35);
+		shops.add("skupryb", "karp lustrzeń", 40);
 	}
 
 	private static ShopList instance;
