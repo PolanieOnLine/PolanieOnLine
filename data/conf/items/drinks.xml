@@ -3,50 +3,50 @@
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="oliwa z oliwek">
-    <type class="drink" subclass="olive_oil" tileid="-1"/>
-    <description>Oto butelka oliwy z oliwek. Wypicie go w czystej postaci sprawi, że poczujesz się niedobrze!</description>
-    <implementation class-name="games.stendhal.server.entity.item.Drink"/>
-    <attributes>
-      <amount value="-1"/>
-      <frequency value="90"/>
-      <quantity value="1"/>
-      <regen value="-1"/>
-      <menu value="Wypij|Użyj"/>
-    </attributes>
-    <weight value="1.0"/>
-    <value value="1"/>
-    <equipable>
-      <slot name="ground"/>
-      <slot name="content"/>
-      <slot name="lhand"/>
-      <slot name="rhand"/>
-      <slot name="bag"/>
-      <slot name="trade"/>
-    </equipable>
-  </item>
+		<type class="drink" subclass="olive_oil" tileid="-1"/>
+		<description>Oto butelka oliwy z oliwek. Wypicie go w czystej postaci sprawi, że poczujesz się niedobrze!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-1"/>
+			<frequency value="90"/>
+			<quantity value="1"/>
+			<regen value="-1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 
-  <item name="ocet">
-    <type class="drink" subclass="vinegar" tileid="-1"/>
-    <description>Oto butelka octu. Wypicie go w czystej postaci sprawi, że poczujesz się niedobrze!</description>
-    <implementation class-name="games.stendhal.server.entity.item.Drink"/>
-    <attributes>
-      <amount value="-1"/>
-      <frequency value="90"/>
-      <quantity value="1"/>
-      <regen value="-1"/>
-      <menu value="Wypij|Użyj"/>
-    </attributes>
-    <weight value="1.0"/>
-    <value value="1"/>
-    <equipable>
-      <slot name="ground"/>
-      <slot name="content"/>
-      <slot name="lhand"/>
-      <slot name="rhand"/>
-      <slot name="bag"/>
-      <slot name="trade"/>
-    </equipable>
-  </item>
+	<item name="ocet">
+		<type class="drink" subclass="vinegar" tileid="-1"/>
+		<description>Oto butelka octu. Wypicie go w czystej postaci sprawi, że poczujesz się niedobrze!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="-1"/>
+			<frequency value="90"/>
+			<quantity value="1"/>
+			<regen value="-1"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 
 	<item name="ekstrakt litworowy">
 		<type class="drink" subclass="fierywater" tileid="-1"/>
@@ -907,9 +907,14 @@
 
 	<item name="jad kobry">
 		<type class="drink" subclass="cobra_venom" tileid="-1"/>
-		<description>Oto fiolka wypełniona jadem kobry.</description>
+		<description>Oto fiolka wypełniona jadem kobry. Nawet w niewielkiej ilości może być śmiertelne, gdy zostanie połknięte.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
+			<amount value="-1000"/>
+			<frequency value="10"/>
+			<quantity value="1"/>
+			<regen value="-60"/>
+			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
