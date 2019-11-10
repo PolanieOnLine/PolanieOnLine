@@ -93,7 +93,7 @@ public class EmotionCrystals extends AbstractQuest {
 		}
 
 		// Only include Julius in the quest log if player has spoken to him
-		if (player.isQuestInState(QUEST_SLOT, 0, "start") || player.isQuestInState(QUEST_SLOT, 0,  "rejected")) {
+		if (player.isQuestInState(QUEST_SLOT, 0, "start") || player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
 			res.add("Rozmawiałem z żołnierzen Juliusem, który pilnuje wejścia do Ados.");
 			if (player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
 				res.add("Jestem emocjonalnie nie przygotowany i musiałem odrzucić jego prośbę.");
@@ -108,8 +108,10 @@ public class EmotionCrystals extends AbstractQuest {
 
 		for (String color : crystalColors) {
 			if (player.isEquipped(color + " kryształ emocji")) {
-				gatheredCrystals.add(color + " kryształ emocji");
-			} else {
+				if (!gatheredCrystals.contains(color + " kryształ emocji")) {
+					gatheredCrystals.add(color + " kryształ emocji");
+				}
+			} if (!gatheredCrystals.contains(color + " kryształ emocji")) {
 				hasAllCrystals = false;
 			}
 		}
@@ -122,7 +124,7 @@ public class EmotionCrystals extends AbstractQuest {
 		if (hasAllCrystals) {
 			res.add("Zdobyłem wszystkie kryształy emocji i powinienem zanieść je do Juliusa w Ados.");
 		}
-		
+
 		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
 			res.add("Dałem kryształy Juliusowi dla jego żony. Dostałem doświadczenie, karmę i przydatne spodnie kamienne.");
 		}
