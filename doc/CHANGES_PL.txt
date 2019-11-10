@@ -4,6 +4,7 @@ Changelog
 *naprawiono błędy*
 - Naprawiono ścieżki graficzne do wszystkich odmian mermaid
 - Poprawiono grafikę przedmiotu "zielone jabłuszko"
+- Koniczynki stackują się ze sobą (dopiero po automatycznemu podpisaniu przedmiotu)
 
 
 1.06
