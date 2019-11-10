@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2013 - Stendhal                    *
+ *                   (C) Copyright 2019 - Stendhal                         *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -150,9 +150,10 @@ public class AntivenomRing extends AbstractQuest {
 				"Pierścień Antyjadowy",
 				"Jak przysługę dla starego przyjaciela aptekarz Jameson wzmocni pierścień leczniczy.",
 				false);
+
 		prepareHintNPCs();
-		new ApothecaryStage(apothecary, QUEST_SLOT);
-		new ZoologistStage(zoologist, QUEST_SLOT);
+		new ApothecaryStage(apothecary, QUEST_SLOT).addToWorld();
+		new ZoologistStage(zoologist, QUEST_SLOT).addToWorld();
 	}
 
 	@Override

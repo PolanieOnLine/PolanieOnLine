@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018 - Arianne                          *
+ *                   (C) Copyright 2019 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -40,24 +40,27 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
  * - cobra venom
  * - +5 karma
  */
-public class ZoologistStage extends AVRQuestStage {
+ public class ZoologistStage extends AVRStage {
+ 	private final SpeakerNPC zoologist;
+ 	private final String subquestName;
 
 	private static final int EXTRACT_TIME = 20;
 
-	public ZoologistStage(final String npc, final String questSlot) {
-		super(npc, questSlot, questSlot + "_extract");
+	public ZoologistStage(final String npcName, final String questName) {
+		super(questName);
+
+		zoologist = SingletonRepository.getNPCList().get(npcName);
+		subquestName = questName + "_extract";
 	}
 
 	@Override
-	protected void addDialogue() {
+	public void addToWorld() {
 		prepareNPCInfo();
 		prepareRequestVenom();
 		prepareExtractVenom();
 	}
 
 	private void prepareNPCInfo() {
-		final SpeakerNPC zoologist = npcs.get(npcName);
-
 		// prepare helpful info
 		final String jobInfo = "Jestem zoologiem i pracuję tu w pełnym wymiarze godzin w sanktuarium zwierząt. Specjalizuję się w #jadowitych zwierzętach.";
 		zoologist.addJob(jobInfo);
@@ -76,14 +79,12 @@ public class ZoologistStage extends AVRQuestStage {
 	}
 
 	private void prepareRequestVenom() {
-		final SpeakerNPC zoologist = npcs.get(npcName);
-
 		// player asks for venom
 		zoologist.add(ConversationStates.ATTENDING,
 				Arrays.asList(
 						"jameson", "apothecary", "antivenom", "extract", "cobra", "venom", "snake",
 						"snakes", "poison", "milk", "wydoić", "ekstrakcji", "trucizn", "jad", "kobra", "węża", "wąż", "gruczoł"),
-				new QuestActiveCondition(QUEST_SLOT),
+				new QuestActiveCondition(questName),
 				ConversationStates.QUESTION_1,
 				"Co to jest? Potrzebujesz jadu do stworzenia antyjadu? Mogę wyodrębnić jad z gruczołu jadu "
 				+ "kobry, ale potrzębuję fiolki, aby gdzieś to przetrzymywa. Czy masz te przedmioty?",
@@ -127,8 +128,6 @@ public class ZoologistStage extends AVRQuestStage {
 	}
 
 	private void prepareExtractVenom() {
-		final SpeakerNPC zoologist = npcs.get(npcName);
-
 		// player returns too soon
 		zoologist.add(
 				ConversationStates.IDLE,

@@ -1,6 +1,14 @@
-/**
- *
- */
+/***************************************************************************
+ *                   (C) Copyright 2019 - Stendhal                         *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.semos.apothecary_lab;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -60,6 +68,7 @@ public class ApothecaryNPC implements ZoneConfigurator {
 				addReply("kokuda", "Kokuda to zioło, które można znaleść tylko w środku labiryntu na wyspie #Athor.");
 				addReply("Athor", "Jeszcze nie odwiedziłeś Athor? To piękna wyspa. Wspaniałe miejsce na oderwanie się od trosk życia codziennego. Ale trzymaj się z daleka od terytorium kanibali. Jeśli zaproszą cię na obiad to możesz nigdy nie zobaczyć domu.");
 				addReply(Arrays.asList("Apothecary", "aptekarzem"), "I was head researcher of a team that worked for one of Faimouni's most powerful leaders. However this leader became corrupt and demanded that I use my skills to make deadly weapons of war. Anyway, I escaped and have been hiding out here ever since.");
+				addQuest("Wybacz, ale w tej chwili nie mam nic dla ciebie.");
 				addGoodbye("Proszę nikomu nie mów o moim laboratorium.");
 			}
 		};
