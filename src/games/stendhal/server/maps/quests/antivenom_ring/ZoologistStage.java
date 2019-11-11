@@ -13,6 +13,7 @@ package games.stendhal.server.maps.quests.antivenom_ring;
 
 import java.util.Arrays;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
