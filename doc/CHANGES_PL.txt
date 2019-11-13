@@ -4,6 +4,7 @@ Changelog
 *świat*
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
 - Można sprzedać skrzydlice na rynku w Kirdneh za 120 money
+- Po wyborze ciała kawalerzysty lub glutka (w zmianach swojego wyglądu), automatycznie zostanie nam zdjęta reszta ubrań
 
 *naprawiono błędy*
 - Naprawiono ścieżki graficzne do wszystkich odmian mermaid
