@@ -395,14 +395,14 @@ public class Outfit {
 	 */
 	public static Outfit getRandomOutfit() {
 		final int newHair = Rand.randUniform(0, Outfits.HAIR_OUTFITS - 1);
-		final int newHead = Rand.randUniform(0, Outfits.HEAD_OUTFITS - 1);
+		final int newHead = Rand.randUniform(1, Outfits.HEAD_OUTFITS - 1);
 		final int newDress = Rand.randUniform(1, Outfits.CLOTHES_OUTFITS - 1);
 		final int newBody = Rand.randUniform(0, Outfits.BODY_OUTFITS - 1);
 
 		LOGGER.debug("chose random outfit: "
 				+ newHair + " " + newHead
 				+ " " + newDress + " " + newBody);
-		return new Outfit(newBody, newDress, newHead, newHair, 0);
+		return new Outfit(newBody, newDress, newHead, 0, newHair, 0, 0);
 	}
 
 	/**
@@ -412,7 +412,8 @@ public class Outfit {
 	 */
 	public boolean isCompatibleWithClothes() {
 		final Integer body = layers.get("body");
-		return body == null || !(body > 80 && body < 99);
+		return body == null || !(body > 21 && body < 37)
+				&& !(body == 50 && body == 51) && !(body > 77 && body < 99);
 	}
 
 	@Override
