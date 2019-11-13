@@ -66,7 +66,7 @@ public class OutfitAction implements ActionListener {
 				}
 
 				// Remove dress, head, mask, hair, hat & detail layers when we choose any cavalry body
-				if (player.getOutfit().getLayer("body") > 16 && player.getOutfit().getLayer("body") < 37) {
+				if (player.getOutfit().getLayer("body") > 21 && player.getOutfit().getLayer("body") < 37) {
 					player.setOutfit(new Outfit(player.getOutfit().getLayer("body"), 0, 0, 0, 0, 0, 0), false);
 				}
 
