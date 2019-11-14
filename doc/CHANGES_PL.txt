@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.06.1
+*klient*
+- Dokonano kolejnych zmian w wyglądach postaci
+
 *świat*
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
 - Można sprzedać skrzydlice na rynku w Kirdneh za 120 money
