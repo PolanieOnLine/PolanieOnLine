@@ -412,7 +412,7 @@ public class Outfit {
 	 */
 	public boolean isCompatibleWithClothes() {
 		final Integer body = layers.get("body");
-		return body == null || !(body > 21 && body < 37)
+		return body == null || !(body > 17 && body < 33)
 				&& !(body == 50 && body == 51) && !(body > 77 && body < 99);
 	}
 
