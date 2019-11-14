@@ -201,9 +201,9 @@ public class Player extends DressedEntity implements UseListener {
 		}
 		player.setOutfit(outfit);
 
-		if ((player.getOutfit().getLayer("body") > 5 && player.getOutfit().getLayer("body") < 12) || player.getOutfit().getLayer("body") == 13
-				|| player.getOutfit().getLayer("body") == 24 || player.getOutfit().getLayer("body") > 25 && player.getOutfit().getLayer("body") < 31
-				|| player.getOutfit().getLayer("body") == 33 || player.getOutfit().getLayer("body") == 34) {
+		if ((player.getOutfit().getLayer("body") > 4 && player.getOutfit().getLayer("body") < 11)
+				|| player.getOutfit().getLayer("body") == 20 || player.getOutfit().getLayer("body") > 21 && player.getOutfit().getLayer("body") < 27
+				|| player.getOutfit().getLayer("body") == 29 || player.getOutfit().getLayer("body") == 30) {
 			player.put("gender", "F");
 		} else {
 			player.put("gender", "M");

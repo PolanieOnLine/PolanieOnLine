@@ -66,14 +66,14 @@ public class OutfitAction implements ActionListener {
 				}
 
 				// Remove dress, head, mask, hair, hat & detail layers when we choose any cavalry body
-				if (player.getOutfit().getLayer("body") > 21 && player.getOutfit().getLayer("body") < 37) {
+				if (player.getOutfit().getLayer("body") > 17 && player.getOutfit().getLayer("body") < 33) {
 					player.setOutfit(new Outfit(player.getOutfit().getLayer("body"), 0, 0, 0, 0, 0, 0), false);
 				}
 
 				// Server changes us gender if we set definite body
-				if ((player.getOutfit().getLayer("body") > 5 && player.getOutfit().getLayer("body") < 12) || player.getOutfit().getLayer("body") == 13
-						|| player.getOutfit().getLayer("body") == 24 || player.getOutfit().getLayer("body") > 25 && player.getOutfit().getLayer("body") < 31
-						|| player.getOutfit().getLayer("body") == 33 || player.getOutfit().getLayer("body") == 34) {
+				if ((player.getOutfit().getLayer("body") > 4 && player.getOutfit().getLayer("body") < 11)
+						|| player.getOutfit().getLayer("body") == 20 || player.getOutfit().getLayer("body") > 21 && player.getOutfit().getLayer("body") < 27
+						|| player.getOutfit().getLayer("body") == 29 || player.getOutfit().getLayer("body") == 30) {
 					player.setGender("F");
 				} else {
 					player.setGender("M");
