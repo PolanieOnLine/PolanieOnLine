@@ -65,7 +65,7 @@ public class OutfitAction implements ActionListener {
 					player.remove(COLOR_MAP, "dress");
 				}
 
-				// Remove dress, head, mask, hair, hat & detail layers when we choose any cavalry body
+				// Remove dress, head, mask, hair, hat & detail layers when we choose any cavalry body or magical skin or alien skin
 				if (player.getOutfit().getLayer("body") > 17 && player.getOutfit().getLayer("body") < 33) {
 					player.setOutfit(new Outfit(player.getOutfit().getLayer("body"), 0, 0, 0, 0, 0, 0), false);
 				}
