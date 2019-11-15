@@ -46,7 +46,7 @@ public class RingOfLife extends Item {
 	 *	it's intact
 	 */
 	public boolean isBroken() {
-		return  getInt("amount") == 0;
+		return getInt("amount") == 0;
 	}
 
 	/**
