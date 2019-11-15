@@ -145,7 +145,7 @@ public class WeddingRing extends Item {
 			return false;
 		}
 
-		if (spouse.isEquipped("obrączka ślubna")) { 
+		if (spouse.isEquipped("obrączka ślubna")) {
 			// spouse is equipped with ring but could be divorced and
 			// have another
 
