@@ -35,7 +35,7 @@ public class RingOfLife extends Item {
 	 * Create a RingOfLife.
 	 */
 	public RingOfLife() {
-		super("emerald ring", "ring", "emerald-ring", null);
+		super("pierścień szmaragdowy", "ring", "emerald-ring", null);
 		put("amount", 1);
 	}
 
