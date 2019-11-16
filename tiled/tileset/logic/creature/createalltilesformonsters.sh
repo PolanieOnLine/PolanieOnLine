@@ -46,4 +46,4 @@
 #./createtileset.sh ../../../../data/sprites/monsters/pol/piraci 48x64+48+128 pol_piraci.png
 #./createtileset.sh ../../../../data/sprites/monsters/pol/piraci_lutin 48x64+48+128 pol_piraci_lutin.png
 #./createtileset.sh ../../../../data/sprites/monsters/pol/piraci_truskull 48x64+48+128 pol_piraci_truskull.png
-./createtileset.sh ../../../../data/sprites/monsters/stendhal/mythical_being 48x64+48+128 mythical_being1.png
+./createtileset.sh ../../../../data/sprites/monsters/stendhal/elemental_legendary 512x512+512+1024 elemental_legendary.png
