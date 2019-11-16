@@ -172,6 +172,42 @@
 
 	<!-- START: ice -->
 
+	<creature name="legendarny żywioł lodu">
+		<type class="stendhal/elemental_legendary" subclass="elemental_legendary_ice" tileid="elemental_legendary.png:0"/>
+		<description>Oto legendarny żywioł lodu...</description>
+		<attributes>
+			<atk value="400"/>
+			<def value="61"/>
+			<hp value="350"/>
+			<speed value="1.0"/>
+			<size value="8,6"/>
+		</attributes>
+		<level value="50"/>
+		<experience value="1750"/>
+		<respawn value="1660"/>
+		<corpse name="puddle_light_blue_2x2" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,3]" probability="10.0"/>
+			<item value="miecz lodowy" quantity="[1,1]" probability="100.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="100.0"/>
+			<item value="lodowy płaszcz" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.2"/>
+			<susceptibility type="fire" value="2.0"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
 	<creature name="żywioł lodu">
 		<type class="stendhal/elemental" subclass="ice_elemental" tileid="elemental.png:5"/>
 		<description>Oto żywioł lodu, który powoduje, że przechodzą cię ciarki na plecach.</description>
