@@ -153,9 +153,8 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="animal"/>
+			<profile name="brave"/>
 			<profile name="offensive"/>
-			<profile name="human"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
