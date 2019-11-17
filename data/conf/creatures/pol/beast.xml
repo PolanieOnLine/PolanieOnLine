@@ -72,7 +72,7 @@
 		<type class="pol/mutanty" subclass="cerber" tileid="pol_mutanty.png:2"/>
 		<description>Oto cerber - strażnik ogni piekielnych. Jego wzrok wypala piętno na twej duszy.</description>
 		<attributes>
-			<atk value="186"/>
+			<atk value="586"/>
 			<def value="30"/>
 			<hp value="582"/>
 			<speed value="0.9"/>
@@ -101,21 +101,22 @@
 	
 	<creature name="gryf">
 		<type class="pol/mutanty" subclass="gryf" tileid="pol_mutanty.png:5"/>
-		<description></description>
+		<description>Oto mityczny gryf. Lubi polować na duże zwierzyny.</description>
 		<attributes>
-			<atk value="1"/>
-			<def value="1"/>
-			<hp value="1"/>
-			<speed value="1.0"/>
+			<atk value="600"/>
+			<def value="44"/>
+			<hp value="700"/>
+			<speed value="0.9"/>
 			<size value="2,2"/>
 		</attributes>
-		<level value="1"/>
-		<experience value="1"/>
-		<respawn value="1"/>
+		<level value="76"/>
+		<experience value="5555"/>
+		<respawn value="77777"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,1]" probability="100.0"/>
-			<item value="stek" quantity="[1,19]" probability="80.0"/>
+			<item value="money" quantity="[1,55]" probability="100.0"/>
+			<item value="stek" quantity="[1,14]" probability="80.0"/>
+			<item value="piórko" quantity="[1,4]" probability="60.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -132,32 +133,30 @@
 	
 	<creature name="harpia">
 		<type class="pol/mutanty" subclass="harpia" tileid="pol_mutanty.png:6"/>
-		<description></description>
+		<description>Oto harpia. Stwory te są bardzo złośliwe, okrutne i brutalne...</description>
 		<attributes>
-			<atk value="1"/>
-			<def value="1"/>
-			<hp value="1"/>
-			<speed value="1.0"/>
+			<atk value="444"/>
+			<def value="55"/>
+			<hp value="570"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="1"/>
-		<experience value="1"/>
-		<respawn value="1"/>
+		<level value="63"/>
+		<experience value="3999"/>
+		<respawn value="1630"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,1]" probability="100.0"/>
-			<item value="stek" quantity="[1,19]" probability="80.0"/>
+			<item value="money" quantity="[1,40]" probability="100.0"/>
+			<item value="udko" quantity="[1,4]" probability="20.0"/>
+			<item value="piórko" quantity="[1,9]" probability="40.0"/>
+			<item value="płaszcz cieni" quantity="[1,1]" probability="0.25"/>
 		</drops>
 		<equips/>
 		<ai>
-			<says>
-				<noise state="idle follow fight" value="Rrraar!"/>
-				<sound value="pol-growl"/>
-			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
+			<profile name="human"/>
 			<profile name="patrolling"/>
-			<profile name="heal" params="5,30"/>
 		</ai>
 	</creature>
 
