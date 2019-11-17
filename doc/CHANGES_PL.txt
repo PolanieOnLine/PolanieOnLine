@@ -3,7 +3,7 @@ Changelog
 1.06.1
 *klient*
 - Dokonano kolejnych zmian w wyglądach postaci
-- Odświeżono kolory pióra azazela oraz mrocznego archanioła
+- Odświeżono kolory pióra azazela oraz archanioła ciemności
 
 *świat*
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
