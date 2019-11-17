@@ -3,7 +3,9 @@ Changelog
 1.06.1
 *klient*
 - Dokonano kolejnych zmian w wyglądach postaci
+- Dodano 3 nowe grafiki potworów: legendarny żywioł lodu, gryf oraz harpia
 - Odświeżono kolory pióra azazela oraz archanioła ciemności
+- Zmieniono wygląd wszystkich kanibali
 
 *świat*
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
