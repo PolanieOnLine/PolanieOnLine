@@ -16,7 +16,7 @@
 	 * MeetFryderyk
 	 * ScytheForFryderyk
 	 */
-	 
+
 package games.stendhal.server.maps.zakopane.city;
 
 import java.util.Arrays;
@@ -39,7 +39,7 @@ public class FryderykNPC implements ZoneConfigurator {
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
-	
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -65,7 +65,7 @@ public class FryderykNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("npcfryderyk"); /* was: paulnpc */
+		npc.setEntityClass("paulnpc");
 		npc.setPosition(21, 8);
 		npc.initHP(1000);
 		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-male-01"));
