@@ -6,6 +6,7 @@ Changelog
 - Dodano 3 nowe grafiki potworów: legendarny żywioł lodu, gryf oraz harpia
 - Odświeżono kolory pióra azazela oraz archanioła ciemności
 - Zmieniono wygląd wszystkich kanibali
+- Ogromna ilość poprawek w wyglądach NPC
 
 *świat*
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
