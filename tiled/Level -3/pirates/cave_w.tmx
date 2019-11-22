@@ -24,9 +24,12 @@
  <tileset firstgid="225" name="large_green" tilewidth="32" tileheight="32" tilecount="9" columns="3">
   <image source="../../tileset/plant/bush/large_green.png" width="96" height="96"/>
  </tileset>
+ <tileset firstgid="234" name="pol_piraci_truskull" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/creature/pol_piraci_truskull.png" width="256" height="64"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eJzt3UFOwzAQQNHcvMdk0cuwrYKdODTO2J63eBK0IKz5EygsyGvbthcAAAAwjPcAZwCe5brnvf3dg/fBc3w30xHOtT9f6bGW56jPuWXu0XtQe3uEM86s1PtoJ546U+3t0lntwnfd97OOnm3ta9bOpf3/Ztwy232TyPOdqX0ux7PdP9Y6597na2le+3kQPeOR1eZzdda9zvbf/rpfn/HVuR/tz527efY6z3XfZydGub5a+u/3JXqGKzia+f7jenf3vT9e6XXh019P77j2kXMutfbzPrZHRP/aLhw9zryufr/Xfz219mfvs76srwN/KqLPFdm99NpwFbXeWXfgrPlK/a+0z7IDK/W9s3uG/qu3/6Z7lh1Y1V3ts/ef8feBO9tn7z8j7XO6+7rXfy7659Wjvf5z6NVe/znon5v+uemem/a56Z6b9rlpj+7oztkuRJ8LAAAAAAAAAAAAAAAAAAB41mz/L5t+7e1CLqveO4f2/u6fnUvWe+dhD3Af9cyu3leZtZTup/75XPT56Ne99H7pPtr2YC2l+yVrnU+pf/SZiNkDf/PJy7XPJ7uQg8656Q8AAAAAAAAAAAAAAAAAAADAqH4BPj24TQ==
+   eJzt3UFOwzAQQNHcvMdk0cuwrYKdODTO2J63eBK0IKz5EygsyGvbthcAAAAwjPcAZwCe5brnvf3dg/fBc3w30xHOtT9f6bGW56jPuWXu0XtQe3uEM86s1PtoJ546U+3t0lntwnfd97OOnm3ta9bOpf3/Ztwy232TyPOdqX0ux7PdP9Y6597na2le+3kQPeOR1eZzdda9zvbf/rpfn/HVuR/tz527efY6z3XfZydGub5a+u/3JXqGKzia+f7jenf3vT9e6XXh019P77j2kXMutfbzPrZHRP/aLhw9zryufr/Xfz219mfvs76srwN/KqLPFdm99NpwFbXeWXfgrPlK/a+0z7IDK/W9s3uG/qu3/6Z7lh1Y1V3ts/ef8feBO9tn7z8j7XO6+7rXfy7659Wjvf5z6NVe/znon5v+uemem/a5aZ+b9rnpj+5oz9kuRJ8LAAAAAAAAAAAAAAAAAAB41mz/L5t+7e1CLqveO4f2/u6fnUvWe+dhD3Af9cyu3leZtZTup/75XPT56Ne99H7pPtr2YC2l+yVrnU+pf/SZiNkDf/PJy7XPJ7uQg8656Q8AAAAAAAAAAAAAAAAAAADAqH4BcuG7ZQ==
   </data>
  </layer>
  <layer id="2" name="1_terrain" width="128" height="128">
@@ -36,7 +39,7 @@
  </layer>
  <layer id="3" name="2_object" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eJzt3M0Jg0AQBlD7saOkCNNeyon5tYsMeNvjRl3jvAcfzGVhDsLCsE7XAQAAAAAAALCFa+sGAA5oiFwqzp0i54V7AQAAAGA/audGAAAAUMtbBACAmRk9v/D9/I++dQMAAAAAAKR0i4yRe1GTwyPyjLyKmhzekU9kKmpycgfk5g7IzR0AAPl4WwoAAAD7Zt8KAAAAAAAAAAAAAAC04X98AAAAYClr7g4wwwAAAADIzd5KAAAAAAAAAAA4ni+jXyKu
+   eJzt3MENgkAQBVD6sSMpQqqxF8tBBbULJ/G23lZ0kXkv+cleCHMgmWSyTNcBAAAAAAAA8Aun1gUAbNAhMlQ8t4/0C9cCAAAAwLtjo/fWzo0AAACglrsIAAAvZvR8wvfzP3atCwAAAAAAIKUxco5cijM5XCNTZC7O5HCL3COP4kxOekBuekBuegAA5ONuKQAAAKybfSsAAAAAAAAAAAAAANCG//EBAACApXxzd4AZBgAAAEBu9lYCAAAAAAAAAMD2PAHEMCNE
   </data>
  </layer>
  <layer id="5" name="3_roof" width="128" height="128">
@@ -46,7 +49,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoADwAB
+   eJzt3VsKhDAMBVD3v9R5P//ndxAUZygmac9ZQL0IrSZKO00AAAAARLlFB4ABmGcAAGT3ig4wmL1qhFbXUdOsW7s/l91S0Lt7w7FODccCANZdowMAUM4jOgBl6eHBdvpj0DfPRHrT8htRT96Nxjk3GoccDtEB4Iv1O49jdIAgld+LrecseUYHIKXK6x2Mbmn+Rsxr/QHIS30AfWrV48/K/1/wmwq1fYWMAAAAwP70DPqhrwsAAAAAgH3JAGobdW8RAAAYnT1j+uLMV/6lLwAAAHk5zxkA2EKPDwCgnqxnydkXrDbn0wAAAEBtlWv7ytlhROYsAAAAAAAAAAAAAAAw9wE/vizF
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.4">
