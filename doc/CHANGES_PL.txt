@@ -3,12 +3,13 @@ Changelog
 1.06.1
 *klient*
 - Dokonano kolejnych zmian w wyglądach postaci
-- Dodano 3 nowe grafiki potworów: legendarny żywioł lodu, gryf oraz harpia
 - Odświeżono kolory pióra azazela oraz archanioła ciemności
 - Zmieniono wygląd wszystkich kanibali
 - Ogromna ilość poprawek w wyglądach NPC
 
 *świat*
+- Dodano 3 nowe potwory: legendarny żywioł lodu, gryf oraz harpia
+- Dodano 2 nowe przedmioty: rękawice chaosu oraz rękawice mainiocyjskie
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
 - Można sprzedać skrzydlice na rynku w Kirdneh za 120 money
 - Po wyborze ciała kawalerzysty (w zmianach swojego wyglądu), automatycznie zostanie nam zdjęta reszta ubrań
