@@ -136,6 +136,25 @@
 		</equipable>
 	</item>
 
+	<item name="rękawice mainiocyjskie">
+		<type class="glove" subclass="maino_gloves" tileid="-1"/>
+		<description>Oto rękawice mainiocyjska. Są bardzo wytrzymałe, dzięki temu świetnie sprawują się w walce.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="6"/>
+		</attributes>
+		<weight value="22.0"/>
+		<value value="717"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="lodowe rękawice">
 		<type class="glove" subclass="ice_gloves" tileid="-1"/>
 		<description>Oto ice gloves. Trochę w nich zimno, ale chronią przed ciosami.</description>
@@ -207,6 +226,24 @@
 		<value value="1551"/>
 		<susceptibility type="dark" value="0.91"/>
 		<susceptibility type="light" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rękawice chaosu">
+		<type class="glove" subclass="chaos_gloves" tileid="-1"/>
+		<description>Oto rękawice chaosu. Czujesz się bezpieczniej w nich oraz wyglądają olśniewająco.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="8"/>
+		</attributes>
+		<weight value="33.0"/>
+		<value value="919"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
