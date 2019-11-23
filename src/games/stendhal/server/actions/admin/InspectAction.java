@@ -105,6 +105,12 @@ public class InspectAction extends AdministrationAction {
 			if (inspected.has("class")) {
 				st.append("\nUbiór (klasa):  " + inspected.get("class"));
 			}
+			st.append("\n\nOdporności:");
+			for (final String key: target) {
+				if (key.startsWith("resist_")) {
+					st.append("\n  " + key + ": " + target.get(key));
+				}
+			}
 			st.append("\n---------------------------");
 			st.append("\nWyposażenie");
 
