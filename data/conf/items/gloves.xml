@@ -157,7 +157,7 @@
 
 	<item name="lodowe rękawice">
 		<type class="glove" subclass="ice_gloves" tileid="-1"/>
-		<description>Oto ice gloves. Trochę w nich zimno, ale chronią przed ciosami.</description>
+		<description>Oto lodowe rękawice. Trochę w nich zimno, ale chronią przed ciosami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="-3"/>
