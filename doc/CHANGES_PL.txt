@@ -9,7 +9,7 @@ Changelog
 
 *świat*
 - Dodano 3 nowe potwory: legendarny żywioł lodu, gryf oraz harpia
-- Dodano 2 nowe przedmioty: rękawice chaosu oraz rękawice mainiocyjskie
+- Dodano 3 nowe przedmioty: rękawice chaosu, rękawice mainiocyjskie oraz rękawice xenocyjskie
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
 - Można sprzedać skrzydlice na rynku w Kirdneh za 120 money
 - Po wyborze ciała kawalerzysty (w zmianach swojego wyglądu), automatycznie zostanie nam zdjęta reszta ubrań
@@ -17,7 +17,7 @@ Changelog
 *naprawiono błędy*
 - Naprawiono ścieżki graficzne do wszystkich odmian mermaid
 - Naprawiono wyświetlanie wcześniej zebranych klejnotów w dzienniku zadań
-- Poprawiono grafikę przedmiotu "zielone jabłuszko"
+- Poprawiono grafikę przedmiotu "zielone jabłuszko" oraz kolory wampirzych rękawic
 - Poprawiono opis lodowych rękawic
 - Koniczynki stackują się ze sobą (dopiero po automatycznemu podpisaniu przedmiotu)
 
