@@ -718,6 +718,7 @@
 			<item value="miecz xenocyjski" quantity="[1,1]" probability="0.5"/>
 			<item value="zbroja xenocyjska" quantity="[1,1]" probability="1.5"/>
 			<item value="spodnie xenocyjskie" quantity="[1,1]" probability="1.5"/>
+			<item value="rękawice xenocyjskie" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra xenocium" quantity="[1,1]" probability="100.0"/>
 		</drops>
 		<equips>
