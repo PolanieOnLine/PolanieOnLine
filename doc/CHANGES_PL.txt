@@ -18,6 +18,7 @@ Changelog
 - Naprawiono ścieżki graficzne do wszystkich odmian mermaid
 - Naprawiono wyświetlanie wcześniej zebranych klejnotów w dzienniku zadań
 - Poprawiono grafikę przedmiotu "zielone jabłuszko"
+- Poprawiono opis lodowych rękawic
 - Koniczynki stackują się ze sobą (dopiero po automatycznemu podpisaniu przedmiotu)
 
 
