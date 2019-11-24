@@ -235,6 +235,25 @@
 		</equipable>
 	</item>
 
+	<item name="rękawice xenocyjskie">
+		<type class="glove" subclass="xeno_gloves" tileid="-1"/>
+		<description>Oto rękawice xenocyjskie. Są one twarde i przez to ograniczają zamachy mieczem...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<def value="5"/>
+		</attributes>
+		<weight value="44.0"/>
+		<value value="1551"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="rękawice chaosu">
 		<type class="glove" subclass="chaos_gloves" tileid="-1"/>
 		<description>Oto rękawice chaosu. Czujesz się bezpieczniej w nich oraz wyglądają olśniewająco.</description>
