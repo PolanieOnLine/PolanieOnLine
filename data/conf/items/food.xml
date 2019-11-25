@@ -284,7 +284,7 @@
 	Removing crab meat -->
 
 	<item name="kukurydza">
-		<type class="food" subclass="real_corn" tileid="-1"/>
+		<type class="food" subclass="corn" tileid="-1"/>
 		<description>Oto kłos prawdziwej kukurydzy. Można ją ugrillować, zjeść na surowo lub zamienić w mąkę... Twój wybór.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>

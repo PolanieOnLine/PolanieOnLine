@@ -317,7 +317,7 @@ pizza.png                  ???; ???; ???
 pomegranate.png            Bluelads4?; ???; ???
 porcini.png                Daniel Herding (mort); GPL 2.0; Stendhal; Needs verified
 pumpkin.png                sshk5?; ???; ???; Committed by Migule Angel
-real_corn.png              sshk5?; ???; ???; Committed by Miguel Angel
+corn.png              sshk5?; ???; ???; Committed by Miguel Angel
 red-lionfish.png           Kimmo Rundelin (kiheru); CC BY-SA 3.0; Stendhal
 roach.png                  Kimmo Rundelin (kiheru); CC BY-SA 3.0; Stendhal
 rotten_egg.png             kymara?; ???; ???
