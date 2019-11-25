@@ -285,7 +285,7 @@
 	</item>
 
 	<item name="hełm mainiocyjski">
-		<type class="helmet" subclass="lion_clan_helmet" tileid="-1"/>
+		<type class="helmet" subclass="mainio_helmet" tileid="-1"/>
 		<description>Oto hełm mainiocyjski. Pownien chronić cię bardzo dobrze.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>

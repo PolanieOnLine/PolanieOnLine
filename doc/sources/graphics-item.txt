@@ -387,7 +387,7 @@ holy_forest_helmet.png      ???; ???; ???
 horned_helmet.png           David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 leather_helmet.png          David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 liberty_helmet.png          ???; ???; ???
-lion_clan_helmet.png        ???; ???; ???
+mainio_helmet.png        ???; ???; ???
 magic_chain_helmet.png      David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/; edited?
 mithril_helmet.png          David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/; edited?
 red_helmet.png              kymara?; ???; ???
