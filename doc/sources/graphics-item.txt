@@ -413,7 +413,7 @@ carbuncle.png           David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.
 carbuncle_crystal.png   David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 emerald.png             David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 emerald_crystal.png     David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
-greater_brilliant.*     ???; ???; ???
+diamond.*     ???; ???; ???
 greater_carbuncle.png   David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 greater_emerald.png     David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
 greater_sapphire.png    David E. Gervais; CC BY 3.0; http://pousse.rapiere.free.fr/tome/
