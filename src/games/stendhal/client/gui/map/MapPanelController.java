@@ -26,14 +26,12 @@ import games.stendhal.client.Zone;
 import games.stendhal.client.entity.DomesticAnimal;
 import games.stendhal.client.entity.EntityChangeListener;
 import games.stendhal.client.entity.FlyOverArea;
-import games.stendhal.client.entity.Goat;
 import games.stendhal.client.entity.HousePortal;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.NPC;
 import games.stendhal.client.entity.Player;
 import games.stendhal.client.entity.Portal;
 import games.stendhal.client.entity.RPEntity;
-import games.stendhal.client.entity.Sheep;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.WalkBlocker;
 import games.stendhal.client.entity.Wall;
@@ -41,8 +39,6 @@ import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.CollisionDetection;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.npc.NPCList;
 
 /**
  * Controller object for the map panel.
