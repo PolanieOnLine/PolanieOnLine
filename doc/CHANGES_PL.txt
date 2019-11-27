@@ -2,6 +2,7 @@ Changelog
 ---------
 1.06.1
 *klient*
+- Dodano widoczność NPC'tów na minimapie
 - Dokonano kolejnych zmian w wyglądach postaci
 - Odświeżono kolory pióra azazela oraz archanioła ciemności
 - Zmieniono wygląd wszystkich kanibali
