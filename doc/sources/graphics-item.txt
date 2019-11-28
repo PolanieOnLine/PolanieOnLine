@@ -783,16 +783,16 @@ data/sprites/items/pas/
 pas_zbojecki.png                 Tomko?; CC0?; POL (PolskaOnLine)
 zwykly_skorzany_pas.png          KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 wzmocniony_skorzany_pas.png      KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-karmazynowy_pas.png              KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-zloty_kolczany_pas.png           KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-kolczany_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-wampirzy_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-elficki_pas_z_rubinem.png        KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-zloty_pas.png                    KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+karmazynowy_pas.png              KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+zloty_kolczany_pas.png           KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+kolczany_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+wampirzy_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+elficki_pas_z_rubinem.png        KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+zloty_pas.png                    KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
 pas_z_mithrilu.png               KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 czarny_pas.png                   KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 olbrzymi_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-krasnoludzki_pas.png             KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+krasnoludzki_pas.png             KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
 
 data/sprites/items/ring/
 
