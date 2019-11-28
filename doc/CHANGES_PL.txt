@@ -16,7 +16,7 @@ Changelog
 
 *świat*
 - Dodano 3 nowe potwory: legendarny żywioł lodu, gryf oraz harpia
-- Dodano 3 nowe przedmioty: rękawice chaosu, rękawice mainiocyjskie oraz rękawice xenocyjskie
+- Dodano 4 nowe przedmioty: rękawice chaosu, rękawice mainiocyjskie, rękawice xenocyjskie oraz pas cieni
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
 - Można sprzedać skrzydlice na rynku w Kirdneh za 120 money
 - Po wyborze ciała kawalerzysty (w zmianach swojego wyglądu), automatycznie zostanie nam zdjęta reszta ubrań
