@@ -5,6 +5,12 @@ Changelog
 - Dodano widoczność NPC'tów na minimapie
 - Dokonano kolejnych zmian w wyglądach postaci
 - Odświeżono kolory pióra azazela oraz archanioła ciemności
+- Zmieniono wygląd pasów takich jak:
+	* karmazynowy pas,
+	* pas elficki,
+	* pas krasnoludzki,
+	* pas wampirzy oraz
+	* złoty pas
 - Zmieniono wygląd wszystkich kanibali
 - Ogromna ilość poprawek w wyglądach NPC
 
