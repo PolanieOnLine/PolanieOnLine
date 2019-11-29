@@ -72,4 +72,21 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
+
+	<item name="złoty amulet">
+		<type class="relic" subclass="golden_amulet" tileid="-1"/>
+		<description>Oto złoty amulet. Ma przed czymś chronić?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1234"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
 </items>

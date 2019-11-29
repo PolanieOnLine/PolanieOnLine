@@ -776,6 +776,8 @@ pazur_arktycznego_smoka.png		KarajuSs; CC BY-SA 3.0; POL (PolskaOnLine)
 pioro_azazela.png				KarajuSs; CC BY-SA 3.0; POL (PolskaOnLine)
 pioro_mr_archaniola.png			KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 skora_arktycznego_smoka.png		KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+
+data/sprites/items/relic/
 golden_amulet.png				KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 
 data/sprites/items/pas/
@@ -784,8 +786,8 @@ pas_zbojecki.png                 Tomko?; CC0?; POL (PolskaOnLine)
 zwykly_skorzany_pas.png          KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 wzmocniony_skorzany_pas.png      KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
 karmazynowy_pas.png              KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-zloty_kolczany_pas.png           KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-kolczany_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+zloty_kolczany_pas.png           Clint Bellanger, KarajuSs; CC BY-SA 3.0; http://opengameart.org/content/studded-belt, POL (PolanieOnLine)
+kolczany_pas.png                 Clint Bellanger; CC BY-SA 3.0; http://opengameart.org/content/studded-belt
 wampirzy_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
 elficki_pas_z_rubinem.png        KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
 zloty_pas.png                    KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
