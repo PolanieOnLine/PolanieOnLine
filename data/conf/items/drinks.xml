@@ -916,6 +916,8 @@
 			<regen value="-60"/>
 			<menu value="Wypij|Użyj"/>
 		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
