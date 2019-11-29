@@ -1,72 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="17" height="17" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="17" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="34" name="roslinki_doniczki" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/natura/kwiaty/roslinki_doniczki.png"/>
+ <tileset firstgid="34" name="roslinki_doniczki" tilewidth="32" tileheight="32" tilecount="32" columns="16">
+  <image source="../../tileset/pol/natura/kwiaty/roslinki_doniczki.png" width="512" height="64"/>
  </tileset>
- <tileset firstgid="66" name="kafelki" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace3smok.png"/>
+ <tileset firstgid="66" name="kafelki" tilewidth="32" tileheight="32" tilecount="91" columns="7">
+  <image source="../../tileset/pol/domki/podloga/kafelki_blyszczace3smok.png" width="224" height="416"/>
  </tileset>
- <tileset firstgid="157" name="skrzynie" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/wyposazenie/skrzynie.png"/>
+ <tileset firstgid="157" name="skrzynie" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/pol/wyposazenie/skrzynie.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="161" name="drzwi" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/entrance/dark_red_ns.png"/>
+ <tileset firstgid="161" name="drzwi" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="../../tileset/building/entrance/dark_red_ns.png" width="96" height="128"/>
  </tileset>
- <tileset firstgid="173" name="dark_red_ew" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ <tileset firstgid="173" name="dark_red_ew" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+  <image source="../../tileset/building/entrance/dark_red_ew.png" width="128" height="96"/>
  </tileset>
- <tileset firstgid="185" name="pol_rycerze" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ <tileset firstgid="185" name="pol_rycerze" tilewidth="32" tileheight="32" tilecount="9" columns="9">
+  <image source="../../tileset/logic/creature/pol_rycerze.png" width="288" height="32"/>
  </tileset>
- <layer name="0_floor" width="17" height="17">
+ <layer id="1" name="0_floor" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAMXQtVJDARCG0ftswYIT3Anu7u7urg/LKcJMyrsUUJzZ6v+KzSRJkvkD2V/uSiil
-jHIqgq1KqqimhlrqqA80GsjRSBPNtNAaaLTRTgeddNFNT6DRSx95+hlgkKFAY5gRRhljnAkmA40p
-pplhljnmWQg0FllimRVWWWM9xXa/cDfYZIttdthlL0XjjPNC64BDjjjmhNMUjVvuiloXXHLFNTcp
-Gi+8FrXueeCRJ54DP/1pvfHOB598BRr/4RvQOh4VhAQAAA==
+   H4sIAAAAAAAACsXQtVJDARCG0ftswYIT3Anu7u7urg/LKcJMyrsUUJzZ6v+KzSRJkvkD2V/uSiiljHIqgq1KqqimhlrqqA80GsjRSBPNtNAaaLTRTgeddNFNT6DRSx95+hlgkKFAY5gRRhljnAkmA40ppplhljnmWQg0FllimRVWWWM9xXa/cDfYZIttdthlL0XjjPNC64BDjjjmhNMUjVvuiloXXHLFNTcpGi+8FrXueeCRJ54DP/1pvfHOB598BRr/4RvQOh4VhAQAAA==
   </data>
  </layer>
- <layer name="1_terrain" width="17" height="17">
+ <layer id="2" name="1_terrain" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAABNkYGAQpgCLALEoEIsBMTsZWByIZaBmsDGQB7hHzRg1Y9QMssyQAmIuMrA01AxZ
-IJanACsAMQDJvSbVhAQAAA==
+   H4sIAAAAAAAAChNkYGAQpgCLALEoEIsBMTsZWByIZaBmsDGQB7hHzRg1Y9QMssyQAmIuMrA01AxZIJanACsAMQDJvSbVhAQAAA==
   </data>
  </layer>
- <layer name="2_object" width="17" height="17">
+ <layer id="3" name="2_object" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAN3NNxKAMAwAQX8LPkvOOfM8jp5ghBu4mW08kqzUeQlSZBczd+UoUL648bUatMLd
-CjUGjMIbHXosWIU3JszC3bOch/Ou4f//mAXb0KwHH4Hm+1EhIsSa73sbMRRxgIQEAAA=
+   H4sIAAAAAAAACt3NNxKAMAwAQX8LPkvOOfM8jp5ghBu4mW08kqzUeQlSZBczd+UoUL648bUatMLdCjUGjMIbHXosWIU3JszC3bOch/Ou4f//mAXb0KwHH4Hm+1EhIsSa73sbMRRxgIQEAAA=
   </data>
  </layer>
- <layer name="3_roof" width="17" height="17">
+ <layer id="4" name="3_roof" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjgDCYS6L6eTRxxfACmkCsRQO1Qw0AAJROdFiEBAAA
+   H4sIAAAAAAAACmNgGAWjgDCYS6L6eTRxxfACmkCsRQO1Qw0AAJROdFiEBAAA
   </data>
  </layer>
- <layer name="objects" width="17" height="17">
+ <layer id="5" name="objects" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAVDEewdaAeQCfZRWd0oGPoAAOv6O/KEBAAA
+   H4sIAAAAAAAACmNgGAVDEewdaAeQCfZRWd0oGPoAAOv6O/KEBAAA
   </data>
  </layer>
- <layer name="collision" width="17" height="17">
+ <layer id="6" name="collision" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAFNkYGBQpDFmIFEtqWC4mkEJoLZfSDWHGvE7mj4Im0GKWZTkVWL1k4MB2enA4oQE
-AAA=
+   H4sIAAAAAAAAClNkYGBQpDFmIFEtqWC4mkEJoLZfSDWHGvE7mj4Im0GKWZTkVWL1k4MB2enA4oQEAAA=
   </data>
  </layer>
- <layer name="protection" width="17" height="17">
+ <layer id="7" name="protection" width="17" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMgoEDAJPZHwSEBAAA
+   H4sIAAAAAAAACmNgGAWjYBSMgoEDAJPZHwSEBAAA
   </data>
  </layer>
 </map>

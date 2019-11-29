@@ -15,22 +15,22 @@
  <tileset firstgid="43" name="kafelki_rozne" tilewidth="32" tileheight="32" tilecount="80" columns="16">
   <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png" width="512" height="160"/>
  </tileset>
- <tileset firstgid="123" name="miecze" tilewidth="32" tileheight="32" tilecount="32" columns="8">
-  <image source="../../tileset/pol/wyposazenie/miecze.png" width="256" height="128"/>
+ <tileset firstgid="123" name="miecze" tilewidth="32" tileheight="32" tilecount="24" columns="6">
+  <image source="../../tileset/pol/wyposazenie/miecze.png" width="192" height="128"/>
  </tileset>
- <tileset firstgid="155" name="dzabny" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+ <tileset firstgid="147" name="dzabny" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/item/pot/pots_pink_blue.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="159" name="beczka" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+ <tileset firstgid="151" name="beczka" tilewidth="32" tileheight="32" tilecount="2" columns="1">
   <image source="../../tileset/item/pot/small_barrel.png" width="32" height="64"/>
  </tileset>
- <tileset firstgid="161" name="beczki" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+ <tileset firstgid="153" name="beczki" tilewidth="32" tileheight="32" tilecount="16" columns="8">
   <image source="../../tileset/item/pot/mine_barrels.png" width="256" height="64"/>
  </tileset>
- <tileset firstgid="177" name="depo" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+ <tileset firstgid="169" name="depo" tilewidth="32" tileheight="32" tilecount="6" columns="3">
   <image source="../../tileset/item/chest/chest_2.png" width="96" height="64"/>
  </tileset>
- <tileset firstgid="183" name="dark_red_ew" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+ <tileset firstgid="175" name="dark_red_ew" tilewidth="32" tileheight="32" tilecount="12" columns="4">
   <image source="../../tileset/building/entrance/dark_red_ew.png" width="128" height="96"/>
  </tileset>
  <layer id="1" name="0_floor" width="17" height="13">
@@ -45,17 +45,17 @@
  </layer>
  <layer id="3" name="2_object" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgoD2YRoLaBVBMbbXEgp1AvAuJPxeNno1DHBnsBeJ9FLrjIBAfotAMaoItNFZPClgLxOuAeCUQr0KTg4nB1AxGAAAov+zFdAMAAA==
+   H4sIAAAAAAAACmNgoD2YQILaGVBMbbXEgo1AvAmJPxWNnoxDHBlsBeJtFLpjJxDvotAMaoI1NFZPClgKxMuAeCEQL0KTg4nB1AxGAACRCU+/dAMAAA==
   </data>
  </layer>
  <layer id="4" name="3_roof" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgoB6YD8XUVksOUAJiZSKwCg3dMFjARhqrJwUsBeJlQLwQiBehycHEYGqGKwAAos0AJHQDAAA=
+   H4sIAAAAAAAACmNgoB6YDsXUVksOUAJiZSKwCg3dMFjAShqrJwXMBeJ5QDwTiGehycHEYGqGKwAAXc1YonQDAAA=
   </data>
  </layer>
  <layer id="5" name="4_roof_add" width="17" height="13">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGN5gHpSeg0bPw6J2FIwCegAAEp4UZnQDAAA=
+   H4sIAAAAAAAACmNgGN5gGpSegkZPw6J2FIwCegAAgJ40YnQDAAA=
   </data>
  </layer>
  <layer id="6" name="objects" width="17" height="13">

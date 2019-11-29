@@ -1,70 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="24" height="10" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red.png"/>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="24" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="wall red" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png"/>
+ <tileset firstgid="17" name="int red wall" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+ <tileset firstgid="33" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="34" name="kafelki_rozne" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png"/>
+ <tileset firstgid="34" name="kafelki_rozne" tilewidth="32" tileheight="32" tilecount="80" columns="16">
+  <image source="../../tileset/pol/domki/podloga/kafelki_rozne.png" width="512" height="160"/>
  </tileset>
- <tileset firstgid="114" name="chest_2" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/chest/chest_2.png"/>
+ <tileset firstgid="114" name="chest_2" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/item/chest/chest_2.png" width="96" height="64"/>
  </tileset>
- <tileset firstgid="120" name="pol_rycerze" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/pol_rycerze.png"/>
+ <tileset firstgid="120" name="pol_rycerze" tilewidth="32" tileheight="32" tilecount="9" columns="9">
+  <image source="../../tileset/logic/creature/pol_rycerze.png" width="288" height="32"/>
  </tileset>
- <tileset firstgid="128" name="dark_red_ew" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/entrance/dark_red_ew.png"/>
+ <tileset firstgid="129" name="dark_red_ew" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+  <image source="../../tileset/building/entrance/dark_red_ew.png" width="128" height="96"/>
  </tileset>
- <tileset firstgid="140" name="int_wall_dark_red_corners_2" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_dark_red_corners_2.png"/>
+ <tileset firstgid="141" name="int_wall_dark_red_corners_2" tilewidth="32" tileheight="32" tilecount="8" columns="2">
+  <image source="../../tileset/building/wall/int_wall_dark_red_corners_2.png" width="64" height="128"/>
  </tileset>
- <tileset firstgid="148" name="sztabki_zlota" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/wyposazenie/sztabki_zlota.png"/>
+ <tileset firstgid="149" name="sztabki_zlota" tilewidth="32" tileheight="32" tilecount="6" columns="2">
+  <image source="../../tileset/pol/wyposazenie/sztabki_zlota.png" width="64" height="96"/>
  </tileset>
- <tileset firstgid="154" name="barierki_zlote" tilewidth="32" tileheight="32">
-  <image source="../../tileset/pol/ogrodzenie/barierki_zlote.png"/>
+ <tileset firstgid="155" name="barierki_zlote" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/pol/ogrodzenie/barierki_zlote.png" width="160" height="96"/>
  </tileset>
- <layer name="0_floor" width="24" height="10">
+ <layer id="1" name="0_floor" width="24" height="10">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAItlYGCIHcWjeBQPSQwAQFlVW8ADAAA=
+   H4sIAAAAAAAACotlYGCIHcWjeBQPSQwAQFlVW8ADAAA=
   </data>
  </layer>
- <layer name="1_terrain" width="24" height="10">
+ <layer id="2" name="1_terrain" width="24" height="10">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAABNkYGAQohEWAWJRIBYDYnYqY3EglgBiSSBmY6A+4B5g83uAuJcCPrr5S4B4FhDP
-RpJnQ1NPKh/Z/JlQ8QU0NH8GFvNLKeDDzJcCYi40LI0mTg4fZL4sEMvRCCsAMQDfEy8nwAMAAA==
+   H4sIAAAAAAAAChNkYGAQohEWAWJRIBYDYnYqY3EglgBiSSBmY6A+4B5g83uBuI8CPrr5S4F4NhDPQZJnQ1NPKh/Z/FlQ8YU0NH8mFvNLKeDDzJcCYi40LI0mTg4fZL4sEMvRCCsAMQDsT7a5wAMAAA==
   </data>
  </layer>
- <layer name="2_object" width="24" height="10">
+ <layer id="3" name="2_object" width="24" height="10">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGNqgCYibaWh+GxC309D8LiDupqH5ww0sH2gHDDIAAIT3SwzAAwAA
+   H4sIAAAAAAAACmNgGNqgGYhbaGh+OxB30ND8biDuoaH5ww2sGGgHDDIAAJOVy8TAAwAA
   </data>
  </layer>
- <layer name="3_roof" width="24" height="10">
+ <layer id="4" name="3_roof" width="24" height="10">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjgHagiEL+KMAPAJM/jJ7AAwAA
+   H4sIAAAAAAAACmNgGAWjgHagiEL+KMAPAJM/jJ7AAwAA
   </data>
  </layer>
- <layer name="objects" width="24" height="10">
+ <layer id="5" name="objects" width="24" height="10">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGD6gfqAdMMhB7UA7YBRQHQAAKoMnHcADAAA=
+   H4sIAAAAAAAACmNgGD6gfqAdQAVQO9AOGAVDCgAApg90JsADAAA=
   </data>
  </layer>
- <layer name="collision" width="24" height="10">
+ <layer id="6" name="collision" width="24" height="10" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAFNkYGBQHAaY2oCWZqObj80OdHFy+bjsobb5DESqp7b5ilTgD2UMAGn5qSHAAwAA
+   H4sIAAAAAAAAClNkYGBQHAaY2oCWZqObj80OdHFy+bjsobb5DESqp7b5ilTgD2UMAGn5qSHAAwAA
   </data>
  </layer>
- <layer name="protection" width="24" height="10">
+ <layer id="7" name="protection" width="24" height="10">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBQMVQAAewDiOMADAAA=
+   H4sIAAAAAAAACmNgGAWjYBQMVQAAewDiOMADAAA=
   </data>
  </layer>
 </map>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="26" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="26" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="int_wall_thin_bricks" tilewidth="32" tileheight="32" tilecount="12" columns="2">
   <image source="../../tileset/building/wall/int_wall_thin_bricks.png" width="64" height="192"/>
  </tileset>
@@ -27,72 +27,72 @@
  <tileset firstgid="182" name="drewniany_stol3" tilewidth="32" tileheight="32" tilecount="9" columns="3">
   <image source="../../tileset/pol/wyposazenie/stoly/drewniany_stol3.png" width="96" height="96"/>
  </tileset>
- <tileset firstgid="191" name="miecze" tilewidth="32" tileheight="32" tilecount="32" columns="8">
-  <image source="../../tileset/pol/wyposazenie/miecze.png" width="256" height="128"/>
+ <tileset firstgid="191" name="miecze" tilewidth="32" tileheight="32" tilecount="24" columns="6">
+  <image source="../../tileset/pol/wyposazenie/miecze.png" width="192" height="128"/>
  </tileset>
- <tileset firstgid="223" name="pioro_ksiazki" tilewidth="32" tileheight="32" tilecount="3" columns="1">
+ <tileset firstgid="215" name="pioro_ksiazki" tilewidth="32" tileheight="32" tilecount="3" columns="1">
   <image source="../../tileset/pol/wyposazenie/pioro_ksiazki.png" width="32" height="96"/>
  </tileset>
- <tileset firstgid="226" name="bibeloty_na_stol" tilewidth="32" tileheight="32" tilecount="14" columns="7">
+ <tileset firstgid="218" name="bibeloty_na_stol" tilewidth="32" tileheight="32" tilecount="14" columns="7">
   <image source="../../tileset/pol/wyposazenie/bibeloty_na_stol.png" width="224" height="64"/>
  </tileset>
- <tileset firstgid="240" name="skrzynie" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+ <tileset firstgid="232" name="skrzynie" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/pol/wyposazenie/skrzynie.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="244" name="wooden_pale" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+ <tileset firstgid="236" name="wooden_pale" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/furniture/chair/wooden_pale.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="248" name="nsew_stains" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+ <tileset firstgid="240" name="nsew_stains" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/item/blood/nsew_stains.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="252" name="floor_stains_2" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+ <tileset firstgid="244" name="floor_stains_2" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/item/blood/floor_stains_2.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="256" name="skull_pale" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../tileset/item/corpse/skull_pale.png" width="32" height="32"/>
+ <tileset firstgid="248" name="skull_pale" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/item/corpse/skull_pale.png" width="64" height="32"/>
  </tileset>
- <tileset firstgid="257" name="skeleton" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+ <tileset firstgid="250" name="skeleton" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/item/corpse/skeleton.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="261" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+ <tileset firstgid="254" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <layer name="0_floor" width="26" height="20">
+ <layer id="1" name="0_floor" width="26" height="20">
   <data encoding="base64" compression="zlib">
    eJyzZWBgsANiWxrTIOxEB5rW/hgI/+gMM/8Mt/gZ9c+of0b9M+ofavrHiE7+sSUgDwDw639Z
   </data>
  </layer>
- <layer name="1_terrain" width="26" height="20">
+ <layer id="2" name="1_terrain" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJztlMkKwjAQhuNycDu4VX0DBQ9aqx6sL+76WEJFqX8ghSEkIZsXceCDkpnJV1pmEsbY0IIJSCxrVb1jUAM9A3Uwsqw19XaYPp6gbVnL4wFO4AwupHcOFor6F3l28TCNZylyBXhr+lw9V3ADd9K7AmtSU0Tw+PZ+y8O/X8j/MXlK6e4qyoieBugKUrABGTlrRvBMwYBAg57PAj3yLqEh749+gEfeJQeQgyNT75FWgMf1Hf+e3/TQOfUhFXdmilw14/Kc+rAFO7DX5PmMfwC1PiDT
+   eJztlMkKwjAQhuNycDu4VX0DBQ9aqx6sL+76SEJF6dU/kMIQkpDNizjwQcnM5CstMwljbGjBBCSWtareMaiBnoE6GFnWmno7TB9P0Las5fEAJ3AGF9I7BwtF/Ys8u3iYxrMUuQK8NX2uniu4gTvpXYE1qSkieHx7v+Xh3y/k/5g8pXR3FWVETwN0BSnYgIycNSN4pmBAoEHPZ4EeeZfQkPdHP8Aj75IDyMGRqfdIK8Dj+o5/z2966Jz6kIo7M0WumnF5Tn3Ygh3Ya/J8xj+vACB7
   </data>
  </layer>
- <layer name="2_object" width="26" height="20">
+ <layer id="3" name="2_object" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYKAOOE+kuh9I7FtAvJ9IfQeB+BAQXwfiA1CxbUC8HYh3EGkGGDCSohgCHgHxeyB+QCPzkcF9XMYCzWWi0Gxk8JV6Rg1a8AuNT+0wRAbMQHNZsJj9nzbWYYDfdLKHVmAOEM8F4nk0tOMEEC8H4hVAvBKIbwPxTSrb8QFKbwLizUC8hcrmg8AFIP5EA3PRwQ062TMKIOAwEB8ZaEegAQC3DR6V
+   eJztkE0LAVEUhuf//wZssUXY+czGbHxF/gApJRbETM1zc9XtRl05Z1h46mnunM5932miSIZx4N7BOc+xE3ivh32cYNfOmtjCdmCG4fLG7oM1bnCllO+yfDG/4u3DbJe9YNavcvTepf+hS4Lpk/lZqc/nlFOPFgUsYkmxY4RlrGAVFzgT7tjaZw3r2BDON8S4U8j1mebU8+fOAIff/giPDHz6Jcs=
   </data>
  </layer>
- <layer name="3_roof" width="26" height="20">
+ <layer id="4" name="3_roof" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFxIC3A+2AUTAKBgCYALEpEJvR2B5zILYAYksa2zNcwIeBdsAoGBEAAJCPAyU=
+   eJxjYBgFxICnA+2AUTAKBgCYALEpEJvR2B5zILYAYksa2zNcwIuBdsAoGBEAAEWPAxU=
   </data>
  </layer>
- <layer name="4_roof_add" width="26" height="20">
+ <layer id="5" name="4_roof_add" width="26" height="20">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIKBBXOAeC4Qzxtoh4yCUTAK4AAAnb4B2A==
   </data>
  </layer>
- <layer name="objects" width="26" height="20">
+ <layer id="6" name="objects" width="26" height="20">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMApGwShABQAIIAAB
   </data>
  </layer>
- <layer name="collision" width="26" height="20" opacity="0.3">
+ <layer id="7" name="collision" width="26" height="20" opacity="0.3">
   <data encoding="base64" compression="zlib">
-   eJxjZWRgYB2GGB8gRS029fS2h1R9pABa+mfUHurbg24OuWmTFHsoyWsj0R6YODJNKaDUnYPdHlqBgbKHUkwLM8nBAM1ABdE=
+   eJz7x8DA8G8YYnyAFLXY1NPbHlL1kQJo6Z9Re6hvD7o55KZNUuyhJK+NRHsYsNCUAkrdOdjtoRUYKHsoxbQwkxwMAMv49hE=
   </data>
  </layer>
- <layer name="protection" width="26" height="20">
+ <layer id="8" name="protection" width="26" height="20">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMApGwShABQAIIAAB
   </data>
