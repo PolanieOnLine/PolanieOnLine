@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.06.1
+1.07
 *klient*
 - Dodano widoczność NPC'tów na minimapie
 - Dokonano kolejnych zmian w wyglądach postaci
