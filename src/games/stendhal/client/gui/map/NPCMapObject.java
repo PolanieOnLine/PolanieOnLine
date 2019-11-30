@@ -25,7 +25,7 @@ public class NPCMapObject extends RPEntityMapObject {
 		mapX += scale_2;
 		mapY += scale_2;
 
-		g.setColor(Color.WHITE);
-		g.fillRect(mapX, mapY, size, size);
+		g.setColor(Color.YELLOW);
+		g.drawRect(mapX - 1, mapY - 1, size, size);
 	}
 }
