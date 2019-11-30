@@ -322,19 +322,17 @@ class SourceObject extends MoveableObject {
 			return false;
 		}
 
-		if (item.getName().equals("czterolistna koniczyna")) {
-			if (dest.getContentSlotName() != null) {
-				Stackable<?> newStack = (StackableItem) removeFromWorld();
-				if (newStack.getQuantity() > 1) {
-					newStack.setQuantity(newStack.getQuantity());
-				} else {
-					newStack.setQuantity(1);
-				}
-				dest.addToWorld((Entity) newStack, player);
-				
-				return true;
+		if (!(dest.getContentSlotName() == null)
+				&& item.getName().equals("czterolistna koniczyna")) {
+			Stackable<?> newStack = (StackableItem) removeFromWorld();
+			if (newStack.getQuantity() > 1) {
+				newStack.setQuantity(newStack.getQuantity());
+			} else {
+				newStack.setQuantity(1);
 			}
-			return false;
+			dest.addToWorld((Entity) newStack, player);
+
+			return true;
 		}
 
 		final String[] srcInfo = getLogInfo();
