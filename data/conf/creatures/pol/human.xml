@@ -1181,6 +1181,7 @@
 			<item value="płaszcz karmazynowy" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,4]" probability="40.0"/>
+			<item value="zaklęcie pustelnika" quantity="[11,29]" probability="60.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała" quantity="10000"/>
@@ -1265,6 +1266,7 @@
 			<item value="lazurowy płaszcz elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,9]" probability="100.0"/>
+			<item value="zaklęcie pustelnika" quantity="[2,7]" probability="80.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia ziemi" quantity="10000"/>
@@ -1349,6 +1351,7 @@
 			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="0.5"/>
 			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
 			<item value="magia mroku" quantity="[1,19]" probability="75.0"/>
+			<item value="zaklęcie pustelnika" quantity="[1,12]" probability="80.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia mroku" quantity="10000"/>
