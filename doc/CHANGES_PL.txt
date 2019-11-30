@@ -13,13 +13,16 @@ Changelog
 	* złoty pas
 - Zmieniono wygląd wszystkich kanibali
 - Ogromna ilość poprawek w wyglądach NPC
+- Oraz różne mniejsze poprawki przedmiotów i nie tylko...
 
 *świat*
 - Dodano 3 nowe potwory: legendarny żywioł lodu, gryf oraz harpia
 - Dodano 4 nowe przedmioty: rękawice chaosu, rękawice mainiocyjskie, rękawice xenocyjskie oraz pas cieni
+- Dodano możliwość zdobycia zaklęcia pustelnika w grze
 - Joachim (rynek w Gdańsku) skupuje ryby ze świata POL
 - Można sprzedać skrzydlice na rynku w Kirdneh za 120 money
 - Po wyborze ciała kawalerzysty (w zmianach swojego wyglądu), automatycznie zostanie nam zdjęta reszta ubrań
+- Zwiększono szansę na zdobycie setu zabójcy z samuraja
 
 *naprawiono błędy*
 - Naprawiono ścieżki graficzne do wszystkich odmian mermaid
