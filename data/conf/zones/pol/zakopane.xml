@@ -1842,7 +1842,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 	<zone name="int_zakopane_home_-1" file="interiors/zakopane/home_-1.tmx">
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-caveruner</parameter>
+				<parameter name="sound">pol-dj_zai-darkbells</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
