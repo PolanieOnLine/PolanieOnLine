@@ -73,7 +73,7 @@
 
 	<item name="płonąca strzałka">
 		<type class="missile" subclass="dart" tileid="-1"/>
-		<description>Oto płonąca strzałka. Musisz być blisko kogoś aby w niego trafić. </description>
+		<description>Oto płonąca strzałka. Musisz być blisko kogoś aby w niego trafić.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<ratk value="4"/>
