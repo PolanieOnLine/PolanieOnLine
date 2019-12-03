@@ -32,11 +32,9 @@ import games.stendhal.server.entity.npc.action.StartRecordingRandomItemCollectio
 import games.stendhal.server.entity.npc.action.SayRequiredItemAction;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.ComparisonOperator;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasRecordedItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.PlayerStatLevelCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
@@ -60,10 +58,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK; 
 
 	/** How often the quest may be repeated */
-	private static final int delay = 2*MathHelper.MINUTES_IN_ONE_DAY;
-
-	/** Limit statystyk */
-	private final static int STAT_LIMIT = 110;
+	private static final int delay = 2*MathHelper.MINUTES_IN_ONE_DAY; 
 
 	/**
 	 * All items which are possible/easy enough to find. If you want to do
@@ -175,33 +170,14 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		actions.add(new IncreaseDefXPDependentOnLevelAction(6, 70.0));
 		actions.add(new IncreaseRatkXPDependentOnLevelAction(6, 70.0));
 		actions.add(new IncreaseKarmaAction(15.0));
-		
-		final List<ChatAction> actions_greater_than = new LinkedList<ChatAction>();
-		actions.add(new DropRecordedItemAction(QUEST_SLOT,0));
-		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		actions.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
-		actions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
-		actions.add(new IncreaseXPDependentOnLevelAction(6, 70.0));
-		actions.add(new IncreaseKarmaAction(15.0));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0),
-						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, STAT_LIMIT)),
+								 new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0)),
 				ConversationStates.ATTENDING, 
-				"Dobra robota! Pozwól sobie podziękować w imieniu obywateli Gdańska! W nagrodę dostałeś punkty umiejętności ataku i obrony oraz strzelania.",
+				"Dobra robota! Pozwól sobie podziękować w imieniu obywateli Gdańska! W nagrodę dostałeś punkty umiejętności ataku i obrony.",
 				new MultipleActions(actions));
-
-		// player bring the item but stats are greater than NPC want to give
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.FINISH_MESSAGES,
-				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0),
-						new PlayerStatLevelCondition("atk", ComparisonOperator.GREATER_OR_EQUALS, STAT_LIMIT)),
-				ConversationStates.ATTENDING,
-				"Dobra robota! Pozwól sobie podziękować w imieniu obywateli Gdańska! Niestety, ale wynagrodzenie będzie mniejsze... Jesteś zbyt potężny...",
-				new MultipleActions(actions_greater_than));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,

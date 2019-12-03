@@ -12,16 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -43,11 +33,9 @@ import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.ComparisonOperator;
 import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.PlayerStatLevelCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
@@ -55,6 +43,16 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import org.apache.log4j.Logger;
 
 /**
  * QUEST: Daily Monster Kill Quest.
@@ -84,8 +82,6 @@ public class DailyMonsterQuest extends AbstractQuest {
 	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
 
-	/** Limit statystyk */
-	private final static int STAT_LIMIT = 100;
 
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
@@ -445,32 +441,13 @@ public class DailyMonsterQuest extends AbstractQuest {
 				new AndCondition(
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
-				        new KilledForQuestCondition(QUEST_SLOT, 0),
-						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, STAT_LIMIT)),
-		ConversationStates.ATTENDING,
-		"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Semos!",
-		new MultipleActions(
-				new IncreaseXPDependentOnLevelAction(5, 95.0),
-				new IncreaseAtkXPDependentOnLevelAction(5, 95.0),
-				new IncreaseDefXPDependentOnLevelAction(5, 95.0),
-				new IncreaseKarmaAction(5.0),
-				new IncrementQuestAction(QUEST_SLOT, 2, 1),
-				new SetQuestToTimeStampAction(QUEST_SLOT,1),
-				new SetQuestAction(QUEST_SLOT,0,"done")
-		));
-
-		// player killed creature but stats are greater than NPC want to give
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.FINISH_MESSAGES,
-				new AndCondition(
-						new QuestStartedCondition(QUEST_SLOT),
-						new QuestNotCompletedCondition(QUEST_SLOT),
-						new KilledForQuestCondition(QUEST_SLOT, 0),
-						new PlayerStatLevelCondition("atk", ComparisonOperator.GREATER_THAN, STAT_LIMIT)),
+				        new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
-				"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Semos! Niestety, ale wynagrodzenie będzie mniejsze... Jesteś zbyt potężny...",
+				"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Semos!",
 				new MultipleActions(
 						new IncreaseXPDependentOnLevelAction(5, 95.0),
+						new IncreaseAtkXPDependentOnLevelAction(5, 95.0),
+						new IncreaseDefXPDependentOnLevelAction(5, 95.0),
 						new IncreaseKarmaAction(5.0),
 						new IncrementQuestAction(QUEST_SLOT, 2, 1),
 						new SetQuestToTimeStampAction(QUEST_SLOT,1),

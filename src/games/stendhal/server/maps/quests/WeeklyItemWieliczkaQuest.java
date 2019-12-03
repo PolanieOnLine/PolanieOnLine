@@ -42,11 +42,9 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.StartRecordingRandomItemCollectionAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.ComparisonOperator;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasRecordedItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.PlayerStatLevelCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
@@ -63,9 +61,6 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 
 	/** How often the quest may be repeated */
 	private static final int delay = MathHelper.MINUTES_IN_ONE_WEEK;
-
-	/** Limit statystyk */
-	private final static int STAT_LIMIT = 115;
 
 	/**
 	 * All items which are hard enough to find but not tooo hard and not in Daily quest. If you want to do
@@ -294,49 +289,18 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 			}
 		});
 
-		final List<ChatAction> actions_greater_than = new LinkedList<ChatAction>();
-		actions.add(new DropRecordedItemAction(QUEST_SLOT,0));
-		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		actions.add(new IncrementQuestAction(QUEST_SLOT,2,1));
-		actions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
-		actions.add(new IncreaseXPDependentOnLevelAction(5.0/3.0, 290.0));
-		actions.add(new IncreaseKarmaAction(50.0));
-		actions.add(new ChatAction() {
-			@Override
-			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				int goldamount;
-				final StackableItem money = (StackableItem) SingletonRepository.getEntityManager()
-								.getItem("money");
-				goldamount = 500 * Rand.roll1D20();
-				money.setQuantity(goldamount);
-				player.equipOrPutOnGround(money);
-				raiser.say("Wspaniale! Oto " + Integer.toString(goldamount) + " pieniędzy na pokrycie strat. Niestety, ale wynagrodzenie będzie mniejsze... Jesteś zbyt potężny...");
-			}
-		});
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0),
-						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, STAT_LIMIT)),
+								 new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0)),
 				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(actions));
-		
-		// player bring the item but stats are greater than NPC want to give
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.FINISH_MESSAGES,
-				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0),
-						new PlayerStatLevelCondition("atk", ComparisonOperator.GREATER_OR_EQUALS, STAT_LIMIT)),
-				ConversationStates.ATTENDING,
-				null,
-				new MultipleActions(actions_greater_than));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						new NotCondition(new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0))),
+								 new NotCondition(new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0))),
 				ConversationStates.ATTENDING,
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Nie masz ze sobą [item]"
