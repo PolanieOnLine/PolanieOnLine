@@ -49,7 +49,7 @@ public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 			int reward = (int) ((next - start) / (def_xpDiff) / 20);
 			player.setDefXP(reward + player.getDefXP());
 		} else {
-			int reward = (int) (((next - start) / (def_xpDiff) / 30) / 2);
+			int reward = (int) ((next - start) / (def_xpDiff) / 60);
 			player.setDefXP(reward + player.getDefXP());
 		}
 		player.notifyWorldAboutChanges();

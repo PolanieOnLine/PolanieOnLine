@@ -48,7 +48,7 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 			int reward = (int) ((next - start) / (ratk_xpDiff) / 20);
 			player.setRatkXP(reward + player.getRatkXP());
 		} else {
-			int reward = (int) (((next - start) / (ratk_xpDiff) / 30) / 2);
+			int reward = (int) ((next - start) / (ratk_xpDiff) / 60);
 			player.setRatkXP(reward + player.getRatkXP());
 		}
 		player.notifyWorldAboutChanges();

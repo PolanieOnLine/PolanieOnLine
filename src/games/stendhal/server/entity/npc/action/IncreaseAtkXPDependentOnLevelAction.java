@@ -48,7 +48,7 @@ public class IncreaseAtkXPDependentOnLevelAction implements ChatAction {
 			int reward = (int) ((next - start) / (atk_xpDiff) / 20);
 			player.setAtkXP(reward + player.getAtkXP());
 		} else {
-			int reward = (int) (((next - start) / (atk_xpDiff) / 30) / 2);
+			int reward = (int) ((next - start) / (atk_xpDiff) / 60);
 			player.setAtkXP(reward + player.getAtkXP());
 		}
 		player.notifyWorldAboutChanges();
