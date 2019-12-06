@@ -1,5 +1,17 @@
 Changelog
 ---------
+1.07.1
+Wersja poprawiająca działanie systemu limitów u burmistrzów następująco:
+	zamiast niedawania punktów umiejętności za osiągnięcie danego poziomu ataku, to każdy osobno skill, który osiągnie dany limit (atak - 110; obr - 140; str - 90),
+	zostanie nałożone ograniczenie, które zmniejszy o 75% możliwych punktów do zdobycia.
+	Przykładowo:
+		Osiągneliśmy obrone na poziomie 140 to każda kolejna misja u burmistrza ograniczy ilość możliwych do zdobycia punktów dla tej umiejętności o 75%,
+		natomiast reszta będzie miała normalny przelicznik dopóki nie osiągnięmy wcześniej wyznaczonego limitu.
+
+*klient*
+- Dodano kilka nowo-odświeżonych grafik
+
+
 1.07
 *klient*
 - Dodano widoczność NPC'tów na minimapie
