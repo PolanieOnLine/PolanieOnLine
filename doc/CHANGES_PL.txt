@@ -11,6 +11,9 @@ Wersja poprawiająca działanie systemu limitów u burmistrzów następująco:
 *klient*
 - Dodano kilka nowo-odświeżonych grafik
 
+*naprawiono błędy*
+- Naprawiono mapę -1_semos_caves
+
 
 1.07
 *klient*
