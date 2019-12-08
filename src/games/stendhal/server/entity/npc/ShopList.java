@@ -182,6 +182,7 @@ public final class ShopList {
 		shops.add("buyrare", "zbroja płytowa", 62);
 		shops.add("buyrare", "tarcza płytowa", 40);
 		shops.add("buyrare", "lwia tarcza", 50);
+		shops.add("buyrare", "spodnie lazurowe",500);
 
 		// rare elf weapons buyer  ElodrinNPC (nalwor) kupuje:
 		shops.add("elfbuyrare", "kij", 75);
