@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.08
+*świat*
+- Przystosowano niektóre mapy zakopanego do Xmas
+
+
 1.07.1
 Wersja poprawiająca działanie systemu limitów u burmistrzów następująco:
 	zamiast niedawania punktów umiejętności za osiągnięcie danego poziomu ataku, to każdy osobno skill, który osiągnie dany limit (atak - 110; obr - 140; str - 90),
