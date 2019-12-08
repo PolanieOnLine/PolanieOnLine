@@ -1817,6 +1817,7 @@
 			<item value="butelka wody" quantity="[1,2]" probability="10.0"/>
 			<item value="antidotum" quantity="[1,2]" probability="2.0"/>
 			<item value="kij" quantity="[1,1]" probability="3.0"/>
+			<item value="środek uspokajający" quantity="[2,3]" probability="25.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -1918,6 +1919,7 @@
 			<item value="zbroja cieni" quantity="[1,1]" probability="0.7"/>
 			<item value="pas cieni" quantity="[1,1]" probability="1.0"/>
 			<item value="sztylet mroku" quantity="[1,1]" probability="0.1"/>
+			<item value="środek uspokajający" quantity="[2,5]" probability="19.0"/>
 		</drops>
 		<equips>
 		</equips>
