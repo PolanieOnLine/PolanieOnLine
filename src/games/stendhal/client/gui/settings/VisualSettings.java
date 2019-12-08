@@ -130,8 +130,8 @@ class VisualSettings {
 		});
 
 		// shadows
-		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", false,
-				"Pokaż cienie (eksperymentalne)", "Pokazuje cienie pod różnymi obiektami.");
+		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", true,
+				"Pokaż cienie", "Pokazuje cienie pod różnymi obiektami.");
 		page.add(shadows);
 		shadows.addItemListener(new ItemListener() {
 			@Override
@@ -176,7 +176,7 @@ class VisualSettings {
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
-		
+
 		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY,
 				false, "Skaluj widok, aby pasował do okna", "<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
 		page.add(scaleScreenToggle);
