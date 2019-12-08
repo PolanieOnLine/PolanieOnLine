@@ -84,16 +84,16 @@ public abstract class RPEntity extends GuidedEntity {
 	protected static final String ATTR_TITLE = "title";
 
 	private static final float WEAPON_DEF_MULTIPLIER = 4.0f;
-	private static final float BOOTS_DEF_MULTIPLIER = 1.5f;
-	private static final float LEG_DEF_MULTIPLIER = 2.0f;
-	private static final float HELMET_DEF_MULTIPLIER = 2.0f;
+	private static final float BOOTS_DEF_MULTIPLIER = 1.0f;
+	private static final float LEG_DEF_MULTIPLIER = 1.0f;
+	private static final float HELMET_DEF_MULTIPLIER = 1.0f;
 	private static final float CLOAK_DEF_MULTIPLIER = 1.5f;
-	private static final float ARMOR_DEF_MULTIPLIER = 3.0f;
-	private static final float SHIELD_DEF_MULTIPLIER = 4.5f;
+	private static final float ARMOR_DEF_MULTIPLIER = 2.0f;
+	private static final float SHIELD_DEF_MULTIPLIER = 4.0f;
 	private static final float RING_DEF_MULTIPLIER = 1.0f;
 	private static final float NECKLACE_DEF_MULTIPLIER = 1.0f;
-	private static final float GLOVE_DEF_MULTIPLIER = 2.0f;
-	private static final float PAS_DEF_MULTIPLIER = 1.5f;
+	private static final float GLOVE_DEF_MULTIPLIER = 1.5f;
+	private static final float PAS_DEF_MULTIPLIER = 1.0f;
 
 	/**
 	 * To prevent players from gaining attack and defense experience by fighting
