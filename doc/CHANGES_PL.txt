@@ -3,6 +3,7 @@ Changelog
 1.08
 *świat*
 - Przystosowano niektóre mapy zakopanego do Xmas
+- Zbalansowano mnożnik ilości punktów defensywnych z setów
 
 
 1.07.1
