@@ -276,7 +276,7 @@ class OutfitDialog extends JDialog {
 		column.add(selector);
 		SBoxLayout.addSpring(column);
 
-		// --------- outfit parts column 1 ----------
+		// --------- outfit parts column 2 ----------
 
 		final JComponent partialsColumn2 = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		content.add(partialsColumn2);
