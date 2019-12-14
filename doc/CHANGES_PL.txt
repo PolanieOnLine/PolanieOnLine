@@ -1,9 +1,18 @@
 Changelog
 ---------
 1.08
+*klient*
+- Dodano muzykę w tle w mieście Fado
+- Rozbudowano nową funkcję rysowania cieni pod obiektami
+
 *świat*
 - Przystosowano niektóre mapy zakopanego do Xmas
 - Zbalansowano mnożnik ilości punktów defensywnych z setów
+- McPegleg skupuje teraz spodnie lazurowe
+- Dodano więcej możliwości zdobycia przedmiotu: 'środek uspokajający'
+
+*naprawiono błędy*
+- Naprawiono znacznik oznaczający, że zadanie można powtórzyć dla: 'Gra w zgadywanie' & 'Znajdź Szczurze Dzieci'
 
 
 1.07.1
