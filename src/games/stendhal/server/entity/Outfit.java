@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.MathHelper;
 import games.stendhal.common.Outfits;
 import games.stendhal.common.Rand;
 
@@ -42,6 +43,8 @@ public class Outfit {
 
 	/** the logger instance. */
 	private static final Logger LOGGER = Logger.getLogger(Outfit.class);
+
+	private static final Map<String, String> EMPTY_MAP = new HashMap<>();
 
 	private final Map<String, Integer> layers = new HashMap<>();
 
@@ -99,7 +102,9 @@ public class Outfit {
 				this.layers.put("body", code % 100);
 				this.layers.put("dress", code / 100 % 100);
 				this.layers.put("head", (int) (code / Math.pow(100, 2) % 100));
+				this.layers.put("mask", 0);
 				this.layers.put("hair", (int) (code / Math.pow(100, 3) % 100));
+				this.layers.put("hat", 0);
 				this.layers.put("detail", (int) (code / Math.pow(100, 4) % 100));
 			} catch (NumberFormatException e) {
 				LOGGER.warn("Can't parse outfit code, setting failsafe outfit.");
@@ -432,5 +437,45 @@ public class Outfit {
 	@Override
 	public int hashCode() {
 		return this.getCode();
+	}
+
+	public String getData(Map<String, String> colors) {
+		if (colors == null) {
+			colors = EMPTY_MAP;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("body-" + getLayer("body") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("base"), 0)));
+		sb.append("_dress-" + getLayer("dress") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("dress"), 0)));
+		sb.append("_head-" + getLayer("head") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("head"), 0)));
+		sb.append("_mask-" + getLayer("mask") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("mask"), 0)));
+		sb.append("_hair-" + getLayer("hair") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("hair"), 0)));
+		sb.append("_hat-" + getLayer("hat") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("hat"), 0)));
+		sb.append("_detail-" + getLayer("detail") + "-");
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("detail"), 0)));
+		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+
+		int idx = 0;
+		for (final String layer: Outfits.LAYER_NAMES) {
+			if (layers.containsKey(layer)) {
+				if (idx > 0) {
+					sb.append(",");
+				}
+				sb.append(layer + "=" + layers.get(layer));
+			}
+			idx++;
+		}
+
+		return sb.toString();
 	}
 }

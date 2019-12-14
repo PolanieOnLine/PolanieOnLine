@@ -193,6 +193,14 @@ public class StendhalPlayerDatabase {
 			transaction.execute("UPDATE buddy SET relationtype = 'buddy' WHERE relationtype IS NULL", null);
 
 		}
+
+		// 1.32: add outfit layers
+		if (!transaction.doesColumnExist("npcs", "outfit_layers")) {
+			transaction.execute("ALTER TABLE npcs ADD COLUMN (outfit_layers VARCHAR(255));", null);
+		}
+		if (!transaction.doesColumnExist("character_stats", "outfit_layers")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (outfit_layers VARCHAR(255));", null);
+		}
 	}
 
 
