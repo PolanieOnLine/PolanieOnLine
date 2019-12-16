@@ -388,7 +388,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 
 	//
 	// START - Methods controlling random movement (alphabetical)
-	// Currently may only work for PassiveNPC.
+	// Currently may only work for SilentNPC.
 	//
 
     /**

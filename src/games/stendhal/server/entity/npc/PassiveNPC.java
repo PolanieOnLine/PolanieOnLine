@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2013 - Stendhal                    *
+ *                   (C) Copyright 2019 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,32 +13,15 @@ package games.stendhal.server.entity.npc;
 
 import games.stendhal.server.entity.CollisionAction;
 
-
-/**
- * A stripped down SpeakerNPC that does not interact with players
- *
- * @author AntumDeluge
- *
- */
 public class PassiveNPC extends NPC {
-	/**
-	 * Creates a new PassiveNPC.
-	 */
 	public PassiveNPC() {
+		put("title_type", "npc");
+
 		baseSpeed = 0.2;
 		createPath();
-
-		put("title_type", "npc");
-		// Entity name is not drawn because of "unnamed" attribute
-        setName("PassiveNPC");
-		put("unnamed", "");
-		// Health bar drawing is supressed
-		put("no_hpbar", "");
-		// Remove "attack" option from menus
-		put("no_attack", "");
 		setSize(1, 1);
 
-		updateModifiedAttributes();
+		// NOTE: sub-classes must call updateModifiedAttributes()
 	}
 
 	/**
@@ -47,32 +30,32 @@ public class PassiveNPC extends NPC {
 	protected void createPath() {
 	}
 
-    @Override
-    protected void handleObjectCollision() {
-    	CollisionAction action = getCollisionAction();
+	@Override
+	protected void handleObjectCollision() {
+		CollisionAction action = getCollisionAction();
 
-        if (usesRandomPath()) {
-            setRandomPathFrom(getX(), getY(), getMovementRange() / 2);
-        } else if (action == CollisionAction.REVERSE) {
-            reversePath();
-        } else if (action == CollisionAction.REROUTE) {
-            reroute();
-        } else {
-            stop();
-        }
-    }
+		if (usesRandomPath()) {
+			setRandomPathFrom(getX(), getY(), getMovementRange() / 2);
+		} else if (action == CollisionAction.REVERSE) {
+			reversePath();
+		} else if (action == CollisionAction.REROUTE) {
+			reroute();
+		} else {
+			stop();
+		}
+	}
 
-    @Override
-    protected void handleSimpleCollision(final int nx, final int ny) {
-    	CollisionAction action = getCollisionAction();
-    	if (!ignoresCollision()) {
-	        if (usesRandomPath()) {
-	            setRandomPathFrom(getX(), getY(), getMovementRange() / 2);
-	        } else if (action == CollisionAction.REROUTE) {
-	            reroute();
-	        } else {
-	            stop();
-	        }
-    	}
-    }
+	@Override
+	protected void handleSimpleCollision(final int nx, final int ny) {
+		CollisionAction action = getCollisionAction();
+		if (!ignoresCollision()) {
+			if (usesRandomPath()) {
+				setRandomPathFrom(getX(), getY(), getMovementRange() / 2);
+			} else if (action == CollisionAction.REROUTE) {
+				reroute();
+			} else {
+				stop();
+			}
+		}
+	}
 }

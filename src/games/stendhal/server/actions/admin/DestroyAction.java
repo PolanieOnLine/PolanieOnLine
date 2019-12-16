@@ -13,6 +13,7 @@ package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.NAME;
 import static games.stendhal.common.constants.Actions.TARGET;
+
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.ItemLogger;
@@ -29,7 +30,6 @@ import games.stendhal.server.entity.item.SlotActivatedItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.mapstuff.spawner.FlowerGrower;
 import games.stendhal.server.entity.npc.PassiveNPC;
-import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -99,12 +99,6 @@ class DestroyAction extends AdministrationAction {
 		} else {
 			if (inspected instanceof Player) {
 				final String text = "Nie możesz usuwać wojowników";
-				player.sendPrivateText(text);
-				return;
-			}
-
-			if (inspected instanceof SpeakerNPC) {
-				final String text = "Nie możesz usuwać SpeakerNPCów";
 				player.sendPrivateText(text);
 				return;
 			}

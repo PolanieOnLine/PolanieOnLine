@@ -13,7 +13,7 @@ package games.stendhal.server.maps.fado.city;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.PassiveNPC;
+import games.stendhal.server.entity.npc.SilentNPC;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,18 +35,18 @@ public class RabbitNPC implements ZoneConfigurator {
 	private void buildNPC(final StendhalRPZone zone) {
 
 	    // All rabbits
-	    List<PassiveNPC> rabbits = new LinkedList<PassiveNPC>();
+	    List<SilentNPC> rabbits = new LinkedList<SilentNPC>();
 
-		final PassiveNPC r1 = new PassiveNPC();
+		final SilentNPC r1 = new SilentNPC();
         r1.setPosition(50, 29);
         rabbits.add(r1);
 
-		final PassiveNPC r2 = new PassiveNPC();
+		final SilentNPC r2 = new SilentNPC();
 		r2.setPosition(120, 97);
 		rabbits.add(r2);
 
 		// Add rabbits to zone
-		for (PassiveNPC mammal : rabbits) {
+		for (SilentNPC mammal : rabbits) {
 	        mammal.setDescription("Oto królik.");
 	        mammal.setEntityClass("animal/rabbit");
 	        mammal.setBaseSpeed(0.2);

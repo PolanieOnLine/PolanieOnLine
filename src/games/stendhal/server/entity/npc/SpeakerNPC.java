@@ -118,7 +118,7 @@ import games.stendhal.server.entity.player.Player;
  * transition happens, no matter in which state the FSM really is, with the
  * exception of the IDLE state.
  */
-public class SpeakerNPC extends NPC {
+public class SpeakerNPC extends PassiveNPC {
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(SpeakerNPC.class);
 
@@ -179,17 +179,13 @@ public class SpeakerNPC extends NPC {
 	 *            The NPC's name. Please note that names should be unique.
 	 */
 	public SpeakerNPC(final String name) {
-		baseSpeed = 0.2;
-		createPath();
+		super();
 
 		lastMessageTurn = 0;
 
 		setName(name);
 		createDialog();
 		createDefaultReplies();
-		put("title_type", "npc");
-
-		setSize(1, 1);
 
 		// Set default collision action to reverse.
 		setCollisionAction(CollisionAction.REVERSE);
@@ -209,10 +205,6 @@ public class SpeakerNPC extends NPC {
 
 	public boolean isAllowedToActAlone() {
 		return(actingAlone);
-	}
-
-	protected void createPath() {
-		// sub classes can implement this method
 	}
 
 	protected void createDialog() {
@@ -923,30 +915,6 @@ public class SpeakerNPC extends NPC {
 
 	public Engine getEngine() {
 		return engine;
-	}
-
-	@Override
-	protected void handleObjectCollision() {
-		CollisionAction action = getCollisionAction();
-	    if (action == CollisionAction.REVERSE) {
-	        reversePath();
-	    } else if (action == CollisionAction.REROUTE) {
-	    	reroute();
-	    }
-	    else {
-	        stop();
-	    }
-	}
-
-	@Override
-	protected void handleSimpleCollision(final int nx, final int ny) {
-		CollisionAction action = getCollisionAction();
-	    if (action == CollisionAction.REROUTE) {
-	        reroute();
-	    }
-	    else {
-	        stop();
-	    }
 	}
 
 	/**

@@ -445,11 +445,11 @@ public class Outfit {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("body-" + getLayer("body") + "-");
-		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("base"), 0)));
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("skin"), 0)));
 		sb.append("_dress-" + getLayer("dress") + "-");
 		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("dress"), 0)));
 		sb.append("_head-" + getLayer("head") + "-");
-		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("head"), 0)));
+		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("skin"), 0)));
 		sb.append("_mask-" + getLayer("mask") + "-");
 		sb.append(Integer.toHexString(MathHelper.parseIntDefault(colors.get("mask"), 0)));
 		sb.append("_hair-" + getLayer("hair") + "-");
