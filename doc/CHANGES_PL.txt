@@ -10,9 +10,12 @@ Changelog
 - Zbalansowano mnożnik ilości punktów defensywnych z setów
 - McPegleg skupuje teraz spodnie lazurowe
 - Dodano więcej możliwości zdobycia przedmiotu: 'środek uspokajający'
+- Dodano respy nowych potworów (z poprzedniej aktualizacji 1.07): gryf oraz harpia - 0_gdansk_forest_s2_w, legendarny żywioł lodu: 0_ados_rock
+- Dodano prawie cały nowy set przedmiotów (set królewski)
 
 *naprawiono błędy*
 - Naprawiono znacznik oznaczający, że zadanie można powtórzyć dla: 'Gra w zgadywanie' & 'Znajdź Szczurze Dzieci'
+- NPC'ty, którzy odwracają się podczas kolizji, teraz zatrzymują się, jeżeli nie będą mieli dokąd pójść
 
 
 1.07.1
