@@ -252,6 +252,29 @@
 		</equipable>
 	</item>
 
+	<item name="królewska zbroja">
+		<type class="armor" subclass="royal_armor" tileid="-1"/>
+		<description>Oto królewska zbroja. Odpowiednia dla króla.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="25"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="45.0"/>
+		<value value="3584"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="light" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="armor"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="żelazna zbroja łuskowa">
 		<type class="armor" subclass="iron_scale_armor" tileid="-1"/>
 		<description>Oto żelazna zbroja łuskowa. Jej zaokrąglone płytki ochronią cię przed wieloma ciosami.</description>

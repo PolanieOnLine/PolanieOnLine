@@ -253,6 +253,29 @@
 		</equipable>
 	</item>
 
+	<item name="królewskie buty">
+		<type class="boots" subclass="royal_boots" tileid="-1"/>
+		<description>Oto para królewskich butów. Mają magiczne właściwości.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="16"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="17.0"/>
+		<value value="23625"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="light" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="feet"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="buty cieni">
 		<type class="boots" subclass="shadow_boots" tileid="-1"/>
 		<description>Oto buty cieni. Nie możesz pojąć z czego są zrobione.</description>

@@ -312,6 +312,30 @@
 		</equipable>
 	</item>
 
+	<item name="królewska tarcza">
+		<type class="shield" subclass="royal_shield" tileid="-1"/>
+		<description>Oto królewska tarcza. Ma magiczną jakość otaczającą go.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="41"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="24.0"/>
+		<value value="448000"/>
+		<susceptibility type="fire" value="0.97"/>
+		<susceptibility type="ice" value="0.97"/>
+		<susceptibility type="dark" value="0.97"/>
+		<susceptibility type="light" value="0.97"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="tarcza cieni">
 		<type class="shield" subclass="shadow_shield" tileid="-1"/>
 		<description>Oto tarcza cieni. Wygląda na to że absorbuje światło.</description>

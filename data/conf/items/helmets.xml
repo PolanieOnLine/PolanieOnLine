@@ -541,4 +541,27 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+	<item name="królewski hełm">
+		<type class="helmet" subclass="royal_helmet" tileid="-1"/>
+		<description>Oto królewski hełm.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="23"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="15.0"/>
+		<value value="74536"/>
+		<susceptibility type="fire" value="0.98"/>
+		<susceptibility type="ice" value="0.98"/>
+		<susceptibility type="dark" value="0.98"/>
+		<susceptibility type="light" value="0.98"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="helmet"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>

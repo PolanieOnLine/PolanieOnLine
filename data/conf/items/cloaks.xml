@@ -493,6 +493,29 @@
 		</equipable>
 	</item>
 
+	<item name="królewski płaszcz">
+		<type class="cloak" subclass="royal_cloak" tileid="-1"/>
+		<description>Oto królewski płaszcz. Będzie cię chronić przed potężnymi wrogami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="24"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="17.0"/>
+		<value value="23625"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="light" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="płaszcz cieni">
 		<type class="cloak" subclass="shadow_cloak" tileid="-1"/>
 		<description>Oto płaszcz cieni, który w mroku jakieś złowrogie cienie przebiegają.</description>

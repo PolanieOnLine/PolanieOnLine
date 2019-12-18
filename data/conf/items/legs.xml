@@ -252,6 +252,29 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+	
+	<item name="królewskie spodnie">
+		<type class="legs" subclass="royal_legs" tileid="-1"/>
+		<description>Oto para królewskich spodni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="16"/>
+			<min_level value="200"/>
+		</attributes>
+		<weight value="17.0"/>
+		<value value="23625"/>
+		<susceptibility type="fire" value="0.98"/>
+		<susceptibility type="ice" value="0.98"/>
+		<susceptibility type="dark" value="0.98"/>
+		<susceptibility type="light" value="0.98"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 
 	<item name="spodnie cieni">
 		<type class="legs" subclass="shadow_legs" tileid="-1"/>

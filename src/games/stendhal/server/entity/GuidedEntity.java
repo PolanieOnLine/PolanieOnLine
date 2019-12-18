@@ -10,7 +10,6 @@ import static games.stendhal.common.constants.General.PATHSET;
 
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -158,24 +157,6 @@ public abstract class GuidedEntity extends ActiveEntity {
     }
 
 	/**
-	 * Changed the entity's path to walk in the oppisite direction
-	 */
-	public void reversePath() {
-	    if (!randomPath && guide.path.isLoop()) {
-	        List<Node> reverseNodes = guide.path.getNodeList();
-
-	        // Sets the position for the reversed path
-	        int reversePosition = (guide.path.getNodeList().size() - 1) - guide.getPreviousPosition();
-
-	        Collections.reverse(reverseNodes);
-	        setPath(new FixedPath(reverseNodes, guide.path.isLoop()), reversePosition);
-	        }
-	    else {
-	    	stop();
-	    }
-	}
-
-	/**
 	 * Remove PATHSET attribute if available and stop entity movement.
 	 */
 	@Override
@@ -254,10 +235,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 * Plan a new path to the old destination.
 	 */
 	public void reroute() {
-		if (getPath().isLoop()) {
-			// If entity cannot be rerouted use reversePath
-			reversePath();
-		} else if (hasPath()) {
+		if (hasPath()) {
 			Node node = guide.path.getDestination();
 			final List<Node> path = Path.searchPath(this, node.getX(), node.getY());
 
