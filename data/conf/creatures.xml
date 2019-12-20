@@ -2,7 +2,6 @@
 <groups xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal groups.xsd ">
 	<!-- Potworki z Stendhal -->
-	<group uri="creatures/stendhal/amphibian.xml" />
 	<group uri="creatures/stendhal/angel.xml" />
 	<group uri="creatures/stendhal/animal.xml" />
 	<group uri="creatures/stendhal/beast.xml" />
