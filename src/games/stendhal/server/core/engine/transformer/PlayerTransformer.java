@@ -29,6 +29,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rp.StendhalRPAction;
+import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Pet;
@@ -97,6 +98,11 @@ public class PlayerTransformer implements Transformer {
 
 		if (System.getProperty("stendhal.container") != null) {
 			UpdateConverter.updateKeyring(player);
+		}
+
+		// update player with 'outfit_ext' attribute
+		if (!player.has("outfit_ext")) {
+			player.put("outfit_ext", new Outfit(player.get("outfit")).toString());
 		}
 
 		logger.debug("Finally player is :" + player);
@@ -271,8 +277,6 @@ public class PlayerTransformer implements Transformer {
 
 			zone.placeObjectAtEntryPoint(player);
 		}
-
-
 	}
 
 	public static void placeSheepAndPetIntoWorld(final Player player) {
@@ -405,6 +409,7 @@ public class PlayerTransformer implements Transformer {
 			}
 		}
 	}
+
 	/**
 	 * binds special items to the player.
 	 *
@@ -421,7 +426,6 @@ public class PlayerTransformer implements Transformer {
 
 		item.autobind(player.getName());
 	}
-
 
 
 	public static final String DEFAULT_ENTRY_ZONE = "int_zakopane_home";
@@ -477,5 +481,4 @@ public class PlayerTransformer implements Transformer {
 		return StendhalRPAction.placeat(playerZone, animal, player.getX(),
 				player.getY());
 	}
-
 }

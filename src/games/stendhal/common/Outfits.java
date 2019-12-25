@@ -28,10 +28,10 @@ public class Outfits {
 	 */
 
 	/** number of player selectable heads */
-	public static final int HEAD_OUTFITS = 28;
+	public static final int HEAD_OUTFITS = 20;
 
 	/** number of player selectable dresses */
-	public static final int CLOTHES_OUTFITS = 99;
+	public static final int CLOTHES_OUTFITS = 91;
 
 	/** number of player selectable hair styles */
 	public static final int HAIR_OUTFITS = 46;

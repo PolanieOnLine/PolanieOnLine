@@ -43,36 +43,36 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 		// outfit type, in the order: hair, head, dress, base.
 		// One of these outfit will be chosen randomly.
 
-		// FIXME: Use new outfit system
 		// swimsuits for men
 		outfitTypes.put("trunks", Arrays.asList(
-				new Outfit(95, null, null, null, null, null, null),
-				new Outfit(96, null, null, null, null, null, null),
-				new Outfit(97, null, null, null, null, null, null),
-				new Outfit(98, null, null, null, null, null, null)));
+				new Outfit("dress=980"),
+				new Outfit("dress=981"),
+				new Outfit("dress=982"),
+				new Outfit("dress=983")));
 
 		// swimsuits for women
 		outfitTypes.put("swimsuit", Arrays.asList(
-				new Outfit(91, null, null, null, null, null, null),
-				new Outfit(92, null, null, null, null, null, null),
-				new Outfit(93, null, null, null, null, null, null),
-				new Outfit(94, null, null, null, null, null, null)));
+				new Outfit("dress=976"),
+				new Outfit("dress=977"),
+				new Outfit("dress=978"),
+				new Outfit("dress=979")));
 
 		outfitTypes.put("mask", Arrays.asList(
-				new Outfit(null, null, null, 0, 80, null, null),
-				new Outfit(null, null, null, 0, 81, null, null),
-				new Outfit(null, null, null, 0, 82, null, null),
-				new Outfit(null, null, null, 0, 83, null, null),
-				new Outfit(null, null, null, 0, 84, null, null),
-				new Outfit(null, null, null, 0, 85, null, null)));
+				// hair & hat are set to "-1" so that they are not drawn over the mask
+				new Outfit("mask=994,hair=-1,hat=-1"),
+				new Outfit("mask=995,hair=-1,hat=-1"),
+				new Outfit("mask=996,hair=-1,hat=-1"),
+				new Outfit("mask=997,hair=-1,hat=-1"),
+				new Outfit("mask=998,hair=-1,hat=-1"),
+				new Outfit("mask=999,hair=-1,hat=-1")));
 
 		// wedding dress for brides
 		// it seems this must be an array as list even though it's only one item
-		outfitTypes.put("gown", Arrays.asList(new Outfit(null, 73, null, null, null, null, 6)));
+		outfitTypes.put("gown", Arrays.asList(new Outfit("dress=73,detail=6")));
 
 		// // wedding suit for grooms
 		// it seems this must be an array as list even though it's only one item
-		outfitTypes.put("suit", Arrays.asList(new Outfit(null, 72, null, null, null, null, null)));
+		outfitTypes.put("suit", Arrays.asList(new Outfit("dress=72")));
 	}
 
 	/**

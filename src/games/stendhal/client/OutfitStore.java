@@ -41,7 +41,7 @@ public class OutfitStore {
 	private static final String OUTFITS = "data/sprites/outfit";
 
 	// these layers should return an empty sprite for index "0"
-	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mask", "hair", "hat", "detail");
+	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mask", "hair", "hat", "head", "detail");
 
 	/**
 	 * The singleton.

@@ -107,27 +107,6 @@ public abstract class DressedEntity extends RPEntity {
 	}
 
 	/**
-	 * Uses 'outfit' attribute to get a string formatted for 'outfit_ext' attribute.
-	 * If entity does not have 'outfit' attribute, either the value of 'outfit_ext'
-	 * attribute will be returned if found or a random outfit string will be generated.
-	 *
-	 * @return outfit_ext
-	 */
-	protected String getOutfitExtFromOutfitCode() {
-		if (!has("outfit")) {
-			if (has("outfit_ext")) {
-				logger.info("DressedEntity.getOutfitExtFromOutfitCode: Returning value of 'outfit_ext' attribute");
-				return get("outfit_ext");
-			} else {
-				logger.info("DressedEntity.getOutfitExtFromOutfitCode: Returning random outfit");
-				return Outfit.getRandomOutfit().toString();
-			}
-		}
-
-		return new Outfit(get("outfit")).toString();
-	}
-
-	/**
 	 * Sets this entity's outfit.
 	 *
 	 * Note: some entities (e.g. sheep, many NPC's, all monsters) don't use
@@ -210,8 +189,6 @@ public abstract class DressedEntity extends RPEntity {
 		sb.append("detail=" + newOutfit.getLayer("detail"));
 
 		put("outfit_ext", sb.toString());
-		// FIXME: can't update "outfit" attribute without affecting "outfit_ext" (see: overridden method DressedEntity.put)
-		//put("outfit", newOutfit.getCode());
 		notifyWorldAboutChanges();
 	}
 
@@ -250,35 +227,14 @@ public abstract class DressedEntity extends RPEntity {
 		setOutfit(new Outfit(layers), temporary);
 	}
 
-	public void setOutfit(final String strcode, final boolean temporary) {
-		setOutfit(new Outfit(strcode), temporary);
-	}
-
-	public void setOutfit(final String strcode) {
-		setOutfit(strcode, false);
-	}
-
-	// Hack to preserve detail layer
-	public void setOutfitWithDetail(final Outfit outfit) {
-		setOutfitWithDetail(outfit, false);
-	}
-
 	// Hack to preserve detail layer
 	public void setOutfitWithDetail(final Outfit outfit, final boolean temporary) {
-		// preserve detail layer
-		final int detailCode = getOutfit().getLayer("detail");
-
-		// set the new outfit
-		setOutfit(outfit, temporary);
-
-		if (detailCode > 0) {
-			// get current outfit code
-			final int outfitCode = outfit.getCode() + (detailCode * 100000000);
-
-			// re-add detail
-			put("outfit", outfitCode);
-			notifyWorldAboutChanges();
+		int oldDetailCode = getOutfit().getLayer("detail");
+		int newDetailCode = outfit.getLayer("detail");
+		if (oldDetailCode > 0 && newDetailCode == 0) {
+			outfit.setLayer("detail", oldDetailCode);
 		}
+		setOutfit(outfit, temporary);
 	}
 
 	@Override

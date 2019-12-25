@@ -11,21 +11,19 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc;
 
-import java.util.ArrayList;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.Collections;
 import java.util.List;
 
-import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.common.Direction;
 import games.stendhal.server.core.pathfinder.EntityGuide;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
-import games.stendhal.server.entity.Entity;
 
 public class PassiveNPC extends NPC {
-
-	// used for entities with fixed path to check if movement is possible
-	private boolean pathBlocked = false;
 
 	public PassiveNPC() {
 		put("title_type", "npc");
@@ -61,52 +59,57 @@ public class PassiveNPC extends NPC {
 	    	stop();
 	    }
 	}
-	
+
+	/**
+	 * Retrieves the coordinates of the next position on the entity's path or `null`.
+	 */
+	private Point getPosFront() {
+		if (hasPath()) {
+			final Node next = getGuide().nextNode();
+			final Rectangle2D area = new Rectangle.Double();
+			area.setRect(next.getX(), next.getY(), 1, 1);
+			final Direction dir = getDirectionToward(area);
+
+			return new Point(getX() + dir.getdx(), getY() + dir.getdy());
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieves the coordinates of the previous position on the entity's path or `null`.
+	 */
+	private Point getPosBehind() {
+		if (hasPath()) {
+			final Node prev = getGuide().prevNode();
+			final Rectangle2D area = new Rectangle.Double();
+			area.setRect(prev.getX(), prev.getY(), 1, 1);
+			final Direction dir = getDirectionToward(area);
+
+			return new Point(getX() + dir.getdx(), getY() + dir.getdy());
+		}
+
+		return null;
+	}
+
 	/**
 	 * Checks if entity can move.
-	 *
-	 * For entities with fixed path, checks if collision occurred with previous movement.
-	 * For other entities, checks adjacent nodes for collision.
 	 */
 	private boolean pathIsBlocked() {
 		if (!usesRandomPath()) {
-			return pathBlocked;
+			/* for entities with fixed path we check collision of adjacent nodes
+			 * on entity's path only
+			 */
+			return !canMoveTo(getPosFront()) && !canMoveTo(getPosBehind());
 		}
 
-		List<Boolean> blockedNodes = new ArrayList<>();
-
-		final StendhalRPZone zone = getZone();
-		final List<Node> adjacentNodes = getAdjacentNodes();
-		for (final Node node: adjacentNodes) {
-			if (zone.collides(node.getX(), node.getY())) {
-				blockedNodes.add(true);
-				continue;
-			} else {
-				final List<Entity> entities = zone.getEntitiesAt(node.getX(), node.getY());
-				if (entities.isEmpty()) {
-					// no entities at node
-					return false;
-				}
-
-				boolean blocked = false;
-				for (final Entity entity: entities) {
-					if (entity.getResistance() >= 100) {
-						blocked = true;
-						break;
-					}
-				}
-
-				blockedNodes.add(blocked);
-			}
-		}
-
-		for (final Boolean b: blockedNodes) {
-			if (!b) {
+		/* for entities with random path we check collision of all adjacent nodes */
+		for (final Node node: getAdjacentNodes()) {
+			if (canMoveTo(node.getX(), node.getY())) {
 				return false;
 			}
 		}
 
-		// all directions are blocked
 		return true;
 	}
 
@@ -126,11 +129,6 @@ public class PassiveNPC extends NPC {
 	@Override
 	protected void onMoved(final int oldX, final int oldY, final int newX, final int newY) {
 		super.onMoved(oldX, oldY, newX, newY);
-
-		if (pathBlocked) {
-			// was able to move
-			pathBlocked = false;
-		}
 	}
 
 	@Override
@@ -151,8 +149,6 @@ public class PassiveNPC extends NPC {
 		} else {
 			stop();
 		}
-
-		pathBlocked = true;
 	}
 
 	@Override
@@ -167,7 +163,5 @@ public class PassiveNPC extends NPC {
 				stop();
 			}
 		}
-
-		pathBlocked = true;
 	}
 }
