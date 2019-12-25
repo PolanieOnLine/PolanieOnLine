@@ -184,7 +184,7 @@
 		</attributes>
 		<level value="400"/>
 		<experience value="550000"/>
-		<respawn value="1200000"/>
+		<respawn value="140000"/>
 		<corpse name="puddle_light_blue_2x2" width="2" height="2"/>
 		<drops>
 			<item value="money" quantity="[5,40]" probability="100.0"/>
