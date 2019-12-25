@@ -319,7 +319,7 @@ Idź dalej, a wrócisz do krainy, w której żyjesz...
 	<zone name="int_pathfinding" file="interiors/abstract/pathfinding.tmx"
 		accessible="false">
 
-		<configurator class-name="games.stendhal.server.maps.FeaturesTestArea" />
+		<!-- <configurator class-name="games.stendhal.server.maps.FeaturesTestArea" /> -->
 
 		<portal x="50" y="10" ref="locked_outside">
 			<destination zone="int_pathfinding" ref="locked_inside" />
