@@ -4,6 +4,7 @@ Changelog
 *klient*
 - Dodano muzykę w zamku Kalavan, w mieście Kalavan, w mieście Kirdneh, na rynku Ados
 - Zmniejszono ilość dostępnych specjalnych strojów
+- Odświeżono kilka grafik
 
 *świat*
 - Legendarny żywioł lodu doznał zmian w statystykach
