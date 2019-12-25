@@ -1,5 +1,20 @@
 Changelog
 ---------
+1.08.1
+*klient*
+- Dodano muzykę w zamku Kalavan, w mieście Kalavan, w mieście Kirdneh, na rynku Ados
+- Zmniejszono ilość dostępnych specjalnych strojów
+
+*świat*
+- Legendarny żywioł lodu doznał zmian w statystykach
+
+*kod*
+- Zoptymalizowano kod nowego systemu outfitów
+
+*naprawiono błędy*
+- Naprawiono świąteczną mapę int_zakopane_bank_0
+
+
 1.08
 *klient*
 - Dodano muzykę w tle w mieście Fado
