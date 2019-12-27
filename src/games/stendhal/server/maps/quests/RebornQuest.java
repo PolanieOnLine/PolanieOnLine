@@ -36,14 +36,24 @@ import games.stendhal.server.maps.Region;
  * @author KarajuSs 00:33:57 11-07-2018
  */
 
-public class ResetLVL extends AbstractQuest {
-
+public class RebornQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "reset_level";
 
 	private static final int XP_TO_RESET = 0;
 	private static final int LEVEL_TO_RESET = 0;
 
-	private static Logger logger = Logger.getLogger(ResetLVL.class);
+	private static Logger logger = Logger.getLogger(RebornQuest.class);
+
+	/** DIALOGI **/
+	private static final String POWITANIE_1 = "Dzielny wojowniku, czy jesteś gotów by narodzić się na nowo?";
+	private static final String POWITANIE_2 = "Abym mógła cofnąć Ciebie w czasie to musisz osiągnąć maksymalny poziom! Aktualnie twój poziom to: #";
+	private static final String POWITANIE_3 = "Witaj ponownie. Przyszedłeś ponownie, by narodzić się na nowo?";
+
+	private static final String INFORMACJA_1 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz aktualne #'punkty życia' już nie! Chcesz tego? (#'tak')";
+	private static final String INFORMACJA_2 = "Proszę... Zastanów się jeszcze raz. Czy jesteś tego pewien? (#'tak')";
+	private static final String INFORMACJA_3 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')";
+
+	private static final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 
 	@Override
 	public List<String> getHistory(Player player) {
@@ -51,7 +61,7 @@ public class ResetLVL extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem smoka Yerena w jaskini w domku na górze Zakopane.");
+		res.add("Spotkałem smoka Yerena w jaskini, w domku na górze Zakopane.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		res.add("Odmówiłem cofnięcia się w czasie.");
 		if ("rejected".equals(questState)) {
@@ -88,10 +98,9 @@ public class ResetLVL extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.getLevel() == 597) {
-							raiser.say("Dzielny wojowniku, czy jesteś gotów cofnąć swój aktualny poziom?");
+							raiser.say(POWITANIE_1);
 						} else {
-							npc.say("Abym mógła cofnąć Ciebie w czasie to musisz osiągnąć maksymalny poziom! Twój aktualny poziom to: #"
-									+ player.getLevel());
+							npc.say(POWITANIE_2 + player.getLevel());
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					}
@@ -101,28 +110,28 @@ public class ResetLVL extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!",
+				ODRZUCENIE,
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_1,
-				"Pamiętaj, że twój poziom zostanie &'zresetowany', ale #'zadania', #'skille' jak i #'punkty życia' już nie! Chcesz tego? (#'tak')",
+				INFORMACJA_1,
 				new SetQuestAction(QUEST_SLOT, "start"));
 
 		npc.add(ConversationStates.INFORMATION_1,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_2,
-				"Proszę, zastanów się jeszcze raz. Czy jesteś tego pewien? (#'tak')",
+				INFORMACJA_2,
 				null);
 
 		npc.add(ConversationStates.INFORMATION_2,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_3,
-				"Cofnięcie się w czasie spowoduje, że twój aktualny #poziom się &'wyzeruje', ale twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')",
+				INFORMACJA_3,
 				null);
 
 		// Jeżeli gracz wróci do smoka
@@ -131,21 +140,21 @@ public class ResetLVL extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start")),
 				ConversationStates.INFORMATION_4,
-		        "Witaj ponownie. Przyszedłeś by narodzić się na nowo?",
+				POWITANIE_3,
 				null);
 
 		npc.add(ConversationStates.INFORMATION_4,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_5,
-				"Cofnięcie się w czasie spowoduje, że twój aktualny #poziom się &'wyzeruje', ale twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')",
+				INFORMACJA_3,
 				null);
 
 		npc.add(ConversationStates.INFORMATION_5,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_6,
-				"Proszę, zastanów się jeszcze raz. Czy jesteś tego pewien? (#'tak')",
+				INFORMACJA_2,
 				null);
 	}
 
@@ -175,7 +184,7 @@ public class ResetLVL extends AbstractQuest {
 				ConversationStates.INFORMATION_3},
 				ConversationPhrases.NO_MESSAGES,
 				null, ConversationStates.ATTENDING,
-				"To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!",
+				ODRZUCENIE,
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 
 	}
@@ -192,7 +201,7 @@ public class ResetLVL extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "ResetLVL";
+		return "RebornQuest";
 	}
 
 	@Override

@@ -200,7 +200,7 @@ public class StendhalQuestSystem {
 		loadQuest(new PochorowaneKonie());
 		loadQuest(new PomocChlopcowi());
 		loadQuest(new Ratownik());
-		loadQuest(new ResetLVL());
+		loadQuest(new RebornQuest());
 		loadQuest(new ScytheForFryderyk());
 		loadQuest(new WegielNaOpal());
 		loadQuest(new ZakopaneBank());
