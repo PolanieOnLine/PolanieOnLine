@@ -16,7 +16,6 @@ import static games.stendhal.common.constants.General.COMBAT_KARMA;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -180,95 +179,6 @@ public abstract class RPEntity extends GuidedEntity {
 	 * weak enemies
 	 */
 	private static final double WEIGHT_EFFECT = 0.5;
-
-	/**
-	 * A helper class for building a size limited list of killer names. If there
-	 * are more killers than the limit, then "others" is set as the last killer.
-	 * Only living creatures and online players are included in the killer name
-	 * list. RPEntities on other zones are not included.
-	 */
-	private class KillerList {
-		/** Maximum amount of killer names. */
-		private static final int MAX_SIZE = 10;
-		/** List of killer names. */
-		private final LinkedList<String> list = new LinkedList<>();
-		/**
-		 * A flag for detecting when the killer list has grown over the
-		 * maximum size.
-		 */
-		private boolean more;
-
-		/**
-		 * Add an entity to the killer list.
-		 *
-		 * @param e entity
-		 */
-		void addEntity(Entity e) {
-			if (e instanceof RPEntity) {
-				// Only list the killers on the zone where the death happened.
-				if (e.getZone() != getZone()) {
-					return;
-				}
-				// Try to keep player names at the start of the list
-				if (e instanceof Player) {
-					if (((Player) e).isDisconnected()) {
-						return;
-					}
-					list.addFirst(e.getName());
-				} else {
-					if (((RPEntity) e).getHP() <= 0) {
-						return;
-					}
-					list.add(e.getName());
-				}
-			} else {
-				list.add(e.getName());
-			}
-			trim();
-		}
-
-		/**
-		 * Set the official killer. If the killer was already on the list, move
-		 * it first. Otherwise prepend the list with the official killer. This
-		 * means that a creature can appear before players if it is the official
-		 * killer. Also an item "poison" can be the first on the list this way.
-		 * (And, as of this writing (2015-04-01) it is the only way anything but
-		 * RPEntities can be shown on the killer list).
-		 *
-		 * @param killer The official killer
-		 */
-		void setKiller(String killer) {
-			if (list.contains(killer)) {
-				list.remove(killer);
-				list.addFirst(killer);
-			} else {
-				list.addFirst(killer);
-				trim();
-			}
-		}
-
-		/**
-		 * Keep the name list at most {@link #MAX_SIZE}.
-		 */
-		private void trim() {
-			if (list.size() > MAX_SIZE) {
-				list.remove(list.size() - 1);
-				more = true;
-			}
-		}
-
-		/**
-		 * Get the name list of the added entities.
-		 *
-		 * @return name list.
-		 */
-		List<String> asList() {
-			if (more) {
-				list.set(list.size() - 1, "others");
-			}
-			return Collections.unmodifiableList(list);
-		}
-	}
 
 	@Override
 	protected boolean handlePortal(final Portal portal) {
@@ -1859,30 +1769,6 @@ public abstract class RPEntity extends GuidedEntity {
 		DBCommandQueue.get().enqueue(new LogKillEventCommand(this, killer));
 
 		die(killer, remove);
-	}
-
-	/**
-	 * Build a list of killer names.
-	 *
-	 * @param killerName The "official" killer. This will be always included in
-	 *	the list
-	 * @return list of killers
-	 */
-	private List<String> buildKillerList(String killerName) {
-		KillerList killers = new KillerList();
-
-		for (Entry<Entity, Integer> entry : damageReceived.entrySet()) {
-			final int damageDone = entry.getValue();
-			if (damageDone == 0) {
-				continue;
-			}
-
-			killers.addEntity(entry.getKey());
-		}
-		if (killerName != null) {
-			killers.setKiller(killerName);
-		}
-		return killers.asList();
 	}
 
 	/**
