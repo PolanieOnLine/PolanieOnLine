@@ -1,5 +1,11 @@
 Changelog
 ---------
+1.09
+*świat*
+- Dodano nowe osiągnięcie za wykonanie zadania na zresetowanie poziomu
+- Poprawiono dialogi w zadaniu na zresetowanie poziomu
+
+
 1.08.1
 *klient*
 - Dodano muzykę w zamku Kalavan, w mieście Kalavan, w mieście Kirdneh, na rynku Ados
