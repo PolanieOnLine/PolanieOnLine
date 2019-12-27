@@ -40,8 +40,8 @@ public class ResetLVL extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "reset_level";
 
-	private static int XP_TO_RESET = 0;
-	private static int LEVEL_TO_RESET = 0;
+	private static final int XP_TO_RESET = 0;
+	private static final int LEVEL_TO_RESET = 0;
 
 	private static Logger logger = Logger.getLogger(ResetLVL.class);
 
