@@ -101,7 +101,7 @@ public class ResetLVL extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"To jest tylko Twoja decyzja czy chcesz być ponownie na zerowym poziomie. Życzę powodzenia!",
+				"To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!",
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -122,7 +122,7 @@ public class ResetLVL extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_3,
-				"Cofnięcie się w czasie zpowoduje, że twój aktualny #poziom się &'wyzeruje', ale twoje #umiejętności zostaną takie jakie były wcześniej! Twoje aktualne zdrowie również zostaną bez zmian. Czy jesteś tego pewien? (#'tak')",
+				"Cofnięcie się w czasie spowoduje, że twój aktualny #poziom się &'wyzeruje', ale twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')",
 				null);
 
 		// Jeżeli gracz wróci do smoka
@@ -131,14 +131,14 @@ public class ResetLVL extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start")),
 				ConversationStates.INFORMATION_4,
-		        "Witaj ponownie. Przyszedłeś, aby cofnąć swój aktualny poziom?",
+		        "Witaj ponownie. Przyszedłeś by narodzić się na nowo?",
 				null);
 
 		npc.add(ConversationStates.INFORMATION_4,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.INFORMATION_5,
-				"Cofnięcie się w czasie zpowoduje, że twój aktualny #poziom się &'wyzeruje', ale twoje #umiejętności zostaną takie jakie były wcześniej! Twoje aktualne zdrowie również zostaną bez zmian. Czy jesteś tego pewien? (#'tak')",
+				"Cofnięcie się w czasie spowoduje, że twój aktualny #poziom się &'wyzeruje', ale twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')",
 				null);
 
 		npc.add(ConversationStates.INFORMATION_5,
@@ -155,7 +155,7 @@ public class ResetLVL extends AbstractQuest {
 		npc.add(new ConversationStates[] { ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
 				null, ConversationStates.ATTENDING,
-				"Proszę bardzo! Cofnąłeś się do momentu kiedy miałeś jeszcze poziom zerowy! Życzę Ci powodzenia na nowej drodze!",
+				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -175,7 +175,7 @@ public class ResetLVL extends AbstractQuest {
 				ConversationStates.INFORMATION_3},
 				ConversationPhrases.NO_MESSAGES,
 				null, ConversationStates.ATTENDING,
-				"To jest tylko Twoja decyzja czy chcesz być ponownie na zerowym poziomie. Życzę powodzenia!",
+				"To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!",
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 
 	}
