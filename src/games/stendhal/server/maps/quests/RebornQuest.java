@@ -163,30 +163,33 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(new ConversationStates[] { ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
-				null, ConversationStates.ATTENDING,
+				null,
+				ConversationStates.ATTENDING,
 				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
 
+							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 							player.setXP(XP_TO_RESET);
 							player.setLevel(LEVEL_TO_RESET);
 
+							// Ustaw zadanie na zakończone
 							player.setQuest(QUEST_SLOT, "done");
 						}
 					}
 				});
 
 		npc.add(new ConversationStates[] { ConversationStates.QUEST_OFFERED,
-				ConversationStates.INFORMATION_1,
-				ConversationStates.INFORMATION_2,
-				ConversationStates.INFORMATION_3},
+					ConversationStates.INFORMATION_1,
+					ConversationStates.INFORMATION_2,
+					ConversationStates.INFORMATION_3 },
 				ConversationPhrases.NO_MESSAGES,
-				null, ConversationStates.ATTENDING,
+				null,
+				ConversationStates.ATTENDING,
 				ODRZUCENIE,
 				new SetQuestAction(QUEST_SLOT, "rejected"));
-
 	}
 
 	@Override
