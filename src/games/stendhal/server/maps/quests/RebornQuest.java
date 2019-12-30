@@ -55,6 +55,8 @@ public class RebornQuest extends AbstractQuest {
 
 	private final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 
+	private final String NAGRODA = "Proszę bardzo! Cofnęłam Cię do twych pierwszych narodzin na tym świecie! Życzę Ci powodzenia na nowej drodze!";
+
 	@Override
 	public List<String> getHistory(Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -165,12 +167,11 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING,
-				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				NAGRODA,
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
-
 							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 							player.setXP(XP_TO_RESET);
 							player.setLevel(LEVEL_TO_RESET);
@@ -242,12 +243,11 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "second"),
 				ConversationStates.ATTENDING,
-				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				NAGRODA,
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
-
 							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 							player.setXP(XP_TO_RESET);
 							player.setLevel(LEVEL_TO_RESET);
@@ -311,12 +311,11 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "third"),
 				ConversationStates.ATTENDING,
-				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				NAGRODA,
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
-
 							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 							player.setXP(XP_TO_RESET);
 							player.setLevel(LEVEL_TO_RESET);
@@ -380,12 +379,11 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "fourth"),
 				ConversationStates.ATTENDING,
-				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				NAGRODA,
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
-
 							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 							player.setXP(XP_TO_RESET);
 							player.setLevel(LEVEL_TO_RESET);
@@ -449,12 +447,11 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "fifth"),
 				ConversationStates.ATTENDING,
-				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				NAGRODA,
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
-
 							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 							player.setXP(XP_TO_RESET);
 							player.setLevel(LEVEL_TO_RESET);
@@ -472,7 +469,7 @@ public class RebornQuest extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Smok, który włada czasem",
-				"Yerena potrafi cofnąć wojownika w czasie kiedy był jeszcze początkujący.",
+				"Yerena potrafi cofnąć wojownika w czasie, do momentu jego pierwszych narodzin.",
 				false);
 		// Pierwszy reset
 		offerresetlevel();
