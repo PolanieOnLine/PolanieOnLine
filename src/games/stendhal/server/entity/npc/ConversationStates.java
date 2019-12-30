@@ -99,6 +99,15 @@ public enum ConversationStates {
 	 * reject it.
 	 */
 	QUEST_3_OFFERED,
+	
+	/**
+	 * The SpeakerNPC offered a rebirth for player.
+	 */
+	OFFERED_1_REBORN,
+	OFFERED_2_REBORN,
+	OFFERED_3_REBORN,
+	OFFERED_4_REBORN,
+	OFFERED_5_REBORN,
 
 	/**
 	 * The player has just started the quest.

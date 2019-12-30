@@ -93,7 +93,7 @@ public class RebornQuest extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED,
+				ConversationStates.OFFERED_1_REBORN,
 				null, new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -106,16 +106,16 @@ public class RebornQuest extends AbstractQuest {
 					}
 				});
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.OFFERED_1_REBORN,
 				ConversationPhrases.NO_MESSAGES,
-				null,
+				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
 				ODRZUCENIE,
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.OFFERED_1_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				null,
+				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_1,
 				new SetQuestAction(QUEST_SLOT, "start"));
@@ -161,9 +161,9 @@ public class RebornQuest extends AbstractQuest {
 	private void startresetlevel() {
 		final SpeakerNPC npc = npcs.get("Yerena");
 
-		npc.add(new ConversationStates[] { ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_1_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
-				null,
+				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING,
 				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
 				new ChatAction() {
@@ -181,7 +181,7 @@ public class RebornQuest extends AbstractQuest {
 					}
 				});
 
-		npc.add(new ConversationStates[] { ConversationStates.QUEST_OFFERED,
+		npc.add(new ConversationStates[] {
 					ConversationStates.INFORMATION_1,
 					ConversationStates.INFORMATION_2,
 					ConversationStates.INFORMATION_3 },
@@ -191,6 +191,282 @@ public class RebornQuest extends AbstractQuest {
 				ODRZUCENIE,
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 	}
+	
+	private void secofferresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done"),
+				ConversationStates.OFFERED_2_REBORN,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.getLevel() == 597) {
+							raiser.say(POWITANIE_1);
+						} else {
+							npc.say(POWITANIE_2 + player.getLevel());
+							raiser.setCurrentState(ConversationStates.ATTENDING);
+						}
+					}
+				});
+
+		npc.add(ConversationStates.OFFERED_2_REBORN,
+				ConversationPhrases.NO_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done"),
+				ConversationStates.ATTENDING,
+				ODRZUCENIE,
+				new SetQuestAction(QUEST_SLOT, "rejected"));
+
+		npc.add(ConversationStates.OFFERED_2_REBORN,
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done"),
+				ConversationStates.INFORMATION_1,
+				INFORMACJA_1,
+				new SetQuestAction(QUEST_SLOT, "second"));
+
+		// Jeżeli gracz wróci do smoka
+		npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new QuestInStateCondition(QUEST_SLOT, "second")),
+				ConversationStates.INFORMATION_4,
+				POWITANIE_3,
+				null);
+	}
+
+	private void secstartresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_2_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "second"),
+				ConversationStates.ATTENDING,
+				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+
+							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
+							player.setXP(XP_TO_RESET);
+							player.setLevel(LEVEL_TO_RESET);
+							player.setHP(player.getHP() - 3000);
+							player.setBaseHP(player.getBaseHP() - 3000);
+
+							// Ustaw zadanie na zakończone
+							player.setQuest(QUEST_SLOT, "done;2");
+						}
+					}
+				});
+	}
+	
+	private void thofferresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				ConversationStates.OFFERED_3_REBORN,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.getLevel() == 597) {
+							raiser.say(POWITANIE_1);
+						} else {
+							npc.say(POWITANIE_2 + player.getLevel());
+							raiser.setCurrentState(ConversationStates.ATTENDING);
+						}
+					}
+				});
+
+		npc.add(ConversationStates.OFFERED_3_REBORN,
+				ConversationPhrases.NO_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				ConversationStates.ATTENDING,
+				ODRZUCENIE,
+				new SetQuestAction(QUEST_SLOT, "rejected"));
+
+		npc.add(ConversationStates.OFFERED_3_REBORN,
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				ConversationStates.INFORMATION_1,
+				INFORMACJA_1,
+				new SetQuestAction(QUEST_SLOT, "third"));
+
+		// Jeżeli gracz wróci do smoka
+		npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new QuestInStateCondition(QUEST_SLOT, "third")),
+				ConversationStates.INFORMATION_4,
+				POWITANIE_3,
+				null);
+	}
+
+	private void thstartresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_3_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "third"),
+				ConversationStates.ATTENDING,
+				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+
+							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
+							player.setXP(XP_TO_RESET);
+							player.setLevel(LEVEL_TO_RESET);
+							player.setHP(player.getHP() - 3000);
+							player.setBaseHP(player.getBaseHP() - 3000);
+
+							// Ustaw zadanie na zakończone
+							player.setQuest(QUEST_SLOT, "done;3");
+						}
+					}
+				});
+	}
+	
+	private void forofferresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				ConversationStates.OFFERED_4_REBORN,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.getLevel() == 597) {
+							raiser.say(POWITANIE_1);
+						} else {
+							npc.say(POWITANIE_2 + player.getLevel());
+							raiser.setCurrentState(ConversationStates.ATTENDING);
+						}
+					}
+				});
+
+		npc.add(ConversationStates.OFFERED_4_REBORN,
+				ConversationPhrases.NO_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				ConversationStates.ATTENDING,
+				ODRZUCENIE,
+				new SetQuestAction(QUEST_SLOT, "rejected"));
+
+		npc.add(ConversationStates.OFFERED_4_REBORN,
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				ConversationStates.INFORMATION_1,
+				INFORMACJA_1,
+				new SetQuestAction(QUEST_SLOT, "fourth"));
+
+		// Jeżeli gracz wróci do smoka
+		npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new QuestInStateCondition(QUEST_SLOT, "fourth")),
+				ConversationStates.INFORMATION_4,
+				POWITANIE_3,
+				null);
+	}
+
+	private void forstartresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_4_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "fourth"),
+				ConversationStates.ATTENDING,
+				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+
+							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
+							player.setXP(XP_TO_RESET);
+							player.setLevel(LEVEL_TO_RESET);
+							player.setHP(player.getHP() - 3000);
+							player.setBaseHP(player.getBaseHP() - 3000);
+
+							// Ustaw zadanie na zakończone
+							player.setQuest(QUEST_SLOT, "done;4");
+						}
+					}
+				});
+	}
+
+	private void fifofferresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				ConversationStates.OFFERED_5_REBORN,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.getLevel() == 597) {
+							raiser.say(POWITANIE_1);
+						} else {
+							npc.say(POWITANIE_2 + player.getLevel());
+							raiser.setCurrentState(ConversationStates.ATTENDING);
+						}
+					}
+				});
+
+		npc.add(ConversationStates.OFFERED_5_REBORN,
+				ConversationPhrases.NO_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				ConversationStates.ATTENDING,
+				ODRZUCENIE,
+				new SetQuestAction(QUEST_SLOT, "rejected"));
+
+		npc.add(ConversationStates.OFFERED_5_REBORN,
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				ConversationStates.INFORMATION_1,
+				INFORMACJA_1,
+				new SetQuestAction(QUEST_SLOT, "fifth"));
+
+		// Jeżeli gracz wróci do smoka
+		npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new QuestInStateCondition(QUEST_SLOT, "fifth")),
+				ConversationStates.INFORMATION_4,
+				POWITANIE_3,
+				null);
+	}
+
+	private void fifstartresetlevel() {
+		final SpeakerNPC npc = npcs.get("Yerena");
+
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_5_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
+				ConversationPhrases.YES_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "fifth"),
+				ConversationStates.ATTENDING,
+				"Proszę bardzo! Cofnąłeś się do pierwszych narodzin! Życzę Ci powodzenia na nowej drodze!",
+				new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+
+							// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
+							player.setXP(XP_TO_RESET);
+							player.setLevel(LEVEL_TO_RESET);
+							player.setHP(player.getHP() - 3000);
+							player.setBaseHP(player.getBaseHP() - 3000);
+
+							// Ustaw zadanie na zakończone
+							player.setQuest(QUEST_SLOT, "done;5");
+						}
+					}
+				});
+	}
 
 	@Override
 	public void addToWorld() {
@@ -198,8 +474,21 @@ public class RebornQuest extends AbstractQuest {
 				"Smok, który włada czasem",
 				"Yerena potrafi cofnąć wojownika w czasie kiedy był jeszcze początkujący.",
 				false);
+		// Pierwszy reset
 		offerresetlevel();
 		startresetlevel();
+		// Drugi reset
+		secofferresetlevel();
+		secstartresetlevel();
+		// Trzeci reset
+		thofferresetlevel();
+		thstartresetlevel();
+		// Czwarty reset
+		forofferresetlevel();
+		forstartresetlevel();
+		// Piąty reset
+		fifofferresetlevel();
+		fifstartresetlevel();
 	}
 
 	@Override
