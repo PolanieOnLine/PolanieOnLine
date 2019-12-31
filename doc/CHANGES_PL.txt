@@ -4,6 +4,7 @@ Changelog
 *świat*
 - Dodano nowe osiągnięcie za wykonanie zadania na zresetowanie poziomu
 - Poprawiono dialogi w zadaniu na zresetowanie poziomu
+- Rozbudowano zadanie na reset poziomu do 5 etapów
 
 
 1.08.1
