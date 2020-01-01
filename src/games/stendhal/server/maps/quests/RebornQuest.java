@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
@@ -47,11 +48,14 @@ public class RebornQuest extends AbstractQuest {
 	/** DIALOGI **/
 	private final String POWITANIE_1 = "Dzielny wojowniku, czy jesteś gotów by narodzić się na nowo?";
 	private final String POWITANIE_2 = "Abym mógła cofnąć Ciebie w czasie to musisz osiągnąć maksymalny poziom! Aktualnie twój poziom to: #";
-	private final String POWITANIE_3 = "Witaj ponownie. Przyszedłeś ponownie, by narodzić się na nowo?";
+	private final String POWITANIE_3 = "Witaj ponownie. Przybyłeś znów, by narodzić się na nowo?";
 
-	private final String INFORMACJA_1 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz aktualne #'punkty życia' już nie! Chcesz tego? (#'tak')";
+	private final String INFORMACJA_1 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz aktualne #'punkty zdrowia' już nie! Chcesz tego? (#'tak')";
 	private final String INFORMACJA_2 = "Proszę... Zastanów się jeszcze raz. Czy jesteś tego pewien? (#'tak')";
 	private final String INFORMACJA_3 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')";
+
+	private final String INFORMACJA_4 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania' oraz #'umiejętności' już nie! Chcesz tego? (#'tak')";
+	private final String INFORMACJA_5 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej! Czy jesteś tego pewien? (#'tak')";
 
 	private final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 
@@ -89,6 +93,20 @@ public class RebornQuest extends AbstractQuest {
 		return QUEST_SLOT;
 	}
 
+	private ChatAction Welcome() {
+		return new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+				if (player.getLevel() == 597) {
+					raiser.say(POWITANIE_1);
+				} else {
+					raiser.say(POWITANIE_2 + player.getLevel());
+					raiser.setCurrentState(ConversationStates.ATTENDING);
+				}
+			}
+		};
+	}
+
 	private void offerresetlevel() {
 		final SpeakerNPC npc = npcs.get("Yerena");
 
@@ -96,17 +114,7 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.OFFERED_1_REBORN,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (player.getLevel() == 597) {
-							raiser.say(POWITANIE_1);
-						} else {
-							npc.say(POWITANIE_2 + player.getLevel());
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
+				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_1_REBORN,
 				ConversationPhrases.NO_MESSAGES,
@@ -131,9 +139,20 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(ConversationStates.INFORMATION_2,
 				ConversationPhrases.YES_MESSAGES,
-				null,
+				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.INFORMATION_3,
 				INFORMACJA_3,
+				null);
+
+		npc.add(ConversationStates.INFORMATION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "start;2"),
+					new QuestInStateCondition(QUEST_SLOT, "start;3"),
+					new QuestInStateCondition(QUEST_SLOT, "start;4"),
+					new QuestInStateCondition(QUEST_SLOT, "start;5")),
+				ConversationStates.INFORMATION_3,
+				INFORMACJA_5,
 				null);
 
 		// Jeżeli gracz wróci do smoka
@@ -147,9 +166,20 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(ConversationStates.INFORMATION_4,
 				ConversationPhrases.YES_MESSAGES,
-				null,
+				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.INFORMATION_5,
 				INFORMACJA_3,
+				null);
+
+		npc.add(ConversationStates.INFORMATION_4,
+				ConversationPhrases.YES_MESSAGES,
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "start;2"),
+					new QuestInStateCondition(QUEST_SLOT, "start;3"),
+					new QuestInStateCondition(QUEST_SLOT, "start;4"),
+					new QuestInStateCondition(QUEST_SLOT, "start;5")),
+				ConversationStates.INFORMATION_5,
+				INFORMACJA_5,
 				null);
 
 		npc.add(ConversationStates.INFORMATION_5,
@@ -200,17 +230,7 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done"),
 				ConversationStates.OFFERED_2_REBORN,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (player.getLevel() == 597) {
-							raiser.say(POWITANIE_1);
-						} else {
-							npc.say(POWITANIE_2 + player.getLevel());
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
+				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_2_REBORN,
 				ConversationPhrases.NO_MESSAGES,
@@ -223,14 +243,14 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done"),
 				ConversationStates.INFORMATION_1,
-				INFORMACJA_1,
-				new SetQuestAction(QUEST_SLOT, "second"));
+				INFORMACJA_4,
+				new SetQuestAction(QUEST_SLOT, "start;2"));
 
 		// Jeżeli gracz wróci do smoka
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "second")),
+						new QuestInStateCondition(QUEST_SLOT, "start;2")),
 				ConversationStates.INFORMATION_4,
 				POWITANIE_3,
 				null);
@@ -241,7 +261,7 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(new ConversationStates[] { ConversationStates.OFFERED_2_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "second"),
+				new QuestInStateCondition(QUEST_SLOT, "start;2"),
 				ConversationStates.ATTENDING,
 				NAGRODA,
 				new ChatAction() {
@@ -268,17 +288,7 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;2"),
 				ConversationStates.OFFERED_3_REBORN,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (player.getLevel() == 597) {
-							raiser.say(POWITANIE_1);
-						} else {
-							npc.say(POWITANIE_2 + player.getLevel());
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
+				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_3_REBORN,
 				ConversationPhrases.NO_MESSAGES,
@@ -291,14 +301,14 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;2"),
 				ConversationStates.INFORMATION_1,
-				INFORMACJA_1,
-				new SetQuestAction(QUEST_SLOT, "third"));
+				INFORMACJA_4,
+				new SetQuestAction(QUEST_SLOT, "start;3"));
 
 		// Jeżeli gracz wróci do smoka
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "third")),
+						new QuestInStateCondition(QUEST_SLOT, "start;3")),
 				ConversationStates.INFORMATION_4,
 				POWITANIE_3,
 				null);
@@ -309,7 +319,7 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(new ConversationStates[] { ConversationStates.OFFERED_3_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "third"),
+				new QuestInStateCondition(QUEST_SLOT, "start;3"),
 				ConversationStates.ATTENDING,
 				NAGRODA,
 				new ChatAction() {
@@ -336,17 +346,7 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;3"),
 				ConversationStates.OFFERED_4_REBORN,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (player.getLevel() == 597) {
-							raiser.say(POWITANIE_1);
-						} else {
-							npc.say(POWITANIE_2 + player.getLevel());
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
+				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_4_REBORN,
 				ConversationPhrases.NO_MESSAGES,
@@ -359,14 +359,14 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;3"),
 				ConversationStates.INFORMATION_1,
-				INFORMACJA_1,
-				new SetQuestAction(QUEST_SLOT, "fourth"));
+				INFORMACJA_4,
+				new SetQuestAction(QUEST_SLOT, "start;4"));
 
 		// Jeżeli gracz wróci do smoka
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "fourth")),
+						new QuestInStateCondition(QUEST_SLOT, "start;4")),
 				ConversationStates.INFORMATION_4,
 				POWITANIE_3,
 				null);
@@ -377,7 +377,7 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(new ConversationStates[] { ConversationStates.OFFERED_4_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "fourth"),
+				new QuestInStateCondition(QUEST_SLOT, "start;4"),
 				ConversationStates.ATTENDING,
 				NAGRODA,
 				new ChatAction() {
@@ -404,17 +404,7 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;4"),
 				ConversationStates.OFFERED_5_REBORN,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (player.getLevel() == 597) {
-							raiser.say(POWITANIE_1);
-						} else {
-							npc.say(POWITANIE_2 + player.getLevel());
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
+				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_5_REBORN,
 				ConversationPhrases.NO_MESSAGES,
@@ -427,14 +417,14 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;4"),
 				ConversationStates.INFORMATION_1,
-				INFORMACJA_1,
-				new SetQuestAction(QUEST_SLOT, "fifth"));
+				INFORMACJA_4,
+				new SetQuestAction(QUEST_SLOT, "start;5"));
 
 		// Jeżeli gracz wróci do smoka
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "fifth")),
+						new QuestInStateCondition(QUEST_SLOT, "start;5")),
 				ConversationStates.INFORMATION_4,
 				POWITANIE_3,
 				null);
@@ -445,7 +435,7 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(new ConversationStates[] { ConversationStates.OFFERED_5_REBORN, ConversationStates.INFORMATION_3, ConversationStates.INFORMATION_6 },
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "fifth"),
+				new QuestInStateCondition(QUEST_SLOT, "start;5"),
 				ConversationStates.ATTENDING,
 				NAGRODA,
 				new ChatAction() {
