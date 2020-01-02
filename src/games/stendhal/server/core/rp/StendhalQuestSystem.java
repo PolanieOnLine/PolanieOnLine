@@ -530,6 +530,7 @@ public class StendhalQuestSystem {
 		}
 		return "";
 	}
+
 	/**
 	 * gets details on the progress of the quest
 	 *
@@ -550,7 +551,6 @@ public class StendhalQuestSystem {
 		}
 		return res;
 	}
-
 
 	/**
 	 * gets the IQuest object for a named quest.
