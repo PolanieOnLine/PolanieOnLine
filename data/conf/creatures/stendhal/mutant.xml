@@ -3,6 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<!-- START: mutant -->
+	<!-- disabled
 	<creature name="trujący grzyb">
 		<type class="stendhal/mutant" subclass="poison_shroom_small" tileid="mutant.png:6"/>
 		<description></description>
@@ -25,5 +26,6 @@
 			<profile name="strategy" params=",outfit_changer(hand_to_hand;poison_shroom_small;poison_shroom),"/>
 		</ai>
 	</creature>
+	-->
 	<!-- END: mutant -->
 </creatures>

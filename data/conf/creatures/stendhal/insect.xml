@@ -3,6 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<!-- START: insect -->
+	<!-- disabled
 	<creature name="mały skarabeusz">
 		<type class="stendhal/insect" subclass="scarab_tiny" tileid="insect.png:1"/>
 		<description></description>
@@ -68,6 +69,7 @@
 		    <profile name="patrolling"/>
 		</ai>
 	</creature>
+	-->
 
 	<creature name="zabójcza pszczoła">
 		<type class="stendhal/insect" subclass="killer_bee" tileid="insect.png:0"/>

@@ -64,11 +64,11 @@ public class ApothecaryNPC implements ZoneConfigurator {
 				addJob("Kiedyś byłem #aptekarzem, ale teraz jestem na emeryturze.");
 				addHelp("Przykro mi, ale nie jestem w stanie tobie pomóc.");
 				addOffer("Nie mam nic do zaoferowania.");
-				addReply("Klaas", "Oh tak mój stary, dobry przyjaciel. Powinienem często podróżować do #'Athor', aby zdobyć bardzo rzadkie zioło #kokuda. Poznałem Klaasa bardzo dobrze.");
-				addReply("kokuda", "Kokuda to zioło, które można znaleść tylko w środku labiryntu na wyspie #Athor.");
+				addQuest("Wybacz, ale w tej chwili nie mam nic dla ciebie."); // Antivenom Ring quest not loaded
 				addReply("Athor", "Jeszcze nie odwiedziłeś Athor? To piękna wyspa. Wspaniałe miejsce na oderwanie się od trosk życia codziennego. Ale trzymaj się z daleka od terytorium kanibali. Jeśli zaproszą cię na obiad to możesz nigdy nie zobaczyć domu.");
-				addReply(Arrays.asList("Apothecary", "aptekarzem"), "I was head researcher of a team that worked for one of Faimouni's most powerful leaders. However this leader became corrupt and demanded that I use my skills to make deadly weapons of war. Anyway, I escaped and have been hiding out here ever since.");
-				addQuest("Wybacz, ale w tej chwili nie mam nic dla ciebie.");
+				addReply(Arrays.asList("Apothecary", "aptekarzem"), "Byłem głównym badaczem oraz pracowałem dla jednego z najpotężniejszych przywódców Faimouni."
+						+ "Jednak ten przywódca został skorumpowany i zażądał, abym wykorzystał swoje umiejętności do stworzenia śmiercionośnej broni wojennej."
+						+ "W każdym razie uciekłem i odtąd się tu chowam.");
 				addGoodbye("Proszę nikomu nie mów o moim laboratorium.");
 			}
 		};

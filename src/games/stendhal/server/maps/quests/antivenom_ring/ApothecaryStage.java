@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -37,6 +36,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
@@ -52,10 +52,13 @@ public class ApothecaryStage extends AVRStage {
 	private static final String NOTE_INFOSTRING = "liścik do aptekarza";
 
 	/* items taken to apothecary to create antivenom */
-	private static final String MIX_ITEMS = "pierścień leczniczy=1;jad kobry=1;mandragora=2;mufinka=20";
-	private static final List<String> MIX_NAMES = Arrays.asList("pierścień leczniczy", "jad kobry", "mandragora", "mufinka");
+	private static final String MIX_ITEMS = "jad kobry=1;mandragora=2;mufinka=20";
+	private static final List<String> MIX_NAMES = Arrays.asList("jad kobry", "mandragora", "mufinka");
 
-	private static final int FUSE_TIME = MathHelper.MINUTES_IN_ONE_DAY * 3;
+	// time required to mix the antivenom
+	private static final int MIX_TIME_MINUTES = 30;
+
+	private static final String QUEST_STATE_NAME = "mixing";
 
 	public ApothecaryStage(final String npcName, final String questName) {
 		super(questName);
@@ -71,7 +74,8 @@ public class ApothecaryStage extends AVRStage {
 	public void addToWorld() {
 		addRequestQuestDialogue();
 		addGatheringItemsDialogue();
-		addBusyEnhancingDialogue();
+		addBusyMixingDialogue();
+		addDoneMixingDialogue();
 		addQuestDoneDialogue();
 		addGeneralResponsesDialogue();
 	}
@@ -123,7 +127,8 @@ public class ApothecaryStage extends AVRStage {
 						new IncreaseKarmaAction(5.0),
 						new DropInfostringItemAction("karteczka", NOTE_INFOSTRING),
 						new SayRequiredItemsFromCollectionAction(questName,
-								"Klaas poprosił mnie o pomoc tobie. Mogę zrobić tobie pierścień, który zwiększy twoją odporność na truciznę. Musisz przynieść mi [items]. Czy masz przy sobie któreś z nich?",
+								"Klaas poprosił mnie o pomoc tobie. Mogę zrobić mieszanine antyjadu, który później połączy się z twoim pierścieniem, by zwiększyć twoją odporność na truciznę."
+								+ " Musisz przynieść mi [items]. Czy masz przy sobie któreś z nich?",
 								false)
 				)
 		);
@@ -131,7 +136,10 @@ public class ApothecaryStage extends AVRStage {
 		// Player accepts quest but dropped note
 		apothecary.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
-				new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING)),
+				new AndCondition(
+						new NotCondition(new QuestInStateCondition(questName, "antivenom")),
+						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING))
+				),
 				ConversationStates.ATTENDING,
 				"Okej, więc będę musiał... poczekać, gdzie zgubiłeś ten liścik?",
 				null
@@ -142,7 +150,7 @@ public class ApothecaryStage extends AVRStage {
 				ConversationPhrases.GOODBYE_MESSAGES,
 				null,
 				ConversationStates.QUEST_OFFERED,
-				"To nie pytanie typu \"tak\" lub \"nie\". Powiedziałem czy ten liścik, który masz jest dla mnie?",
+				"To nie pytanie typu #tak lub #nie. Powiedziałem czy ten liścik, który masz jest dla mnie?",
 				null);
 
 		// Player rejects quest
@@ -162,7 +170,9 @@ public class ApothecaryStage extends AVRStage {
 	private void addGatheringItemsDialogue() {
 		final ChatCondition gatheringStateCondition = new AndCondition(
 				new QuestActiveCondition(questName),
-				new NotCondition(new QuestStateStartsWithCondition(questName, "enhancing;")));
+				new NotCondition(new QuestInStateCondition(questName, QUEST_STATE_NAME)),
+				new NotCondition(new QuestInStateCondition(questName, RingMakerStage.QUEST_STATE_NAME)),
+				new NotCondition(new QuestInStateCondition(questName, 0, "antivenom")));
 
 		// Player asks for quest after it is started
 		apothecary.add(ConversationStates.ATTENDING,
@@ -231,23 +241,6 @@ public class ApothecaryStage extends AVRStage {
 				null,
 				new SayRequiredItemsFromCollectionAction(questName, "Dobrze. Wciąż potrzebuję [items]", false));
 
-/*		// player says he didn't bring any items (says no)
-		apothecary.add(ConversationStates.ATTENDING,
-				ConversationPhrases.NO_MESSAGES,
-				new QuestActiveCondition(questName),
-				ConversationStates.IDLE,
-				"Dobrze. Daj znać, gdy coś znajdziesz.",
-				null);
-
-		// player says he didn't bring any items to different question
-		apothecary.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.NO_MESSAGES,
-				new QuestActiveCondition(questName),
-				ConversationStates.IDLE,
-				"Dobrze. Daj znać, gdy coś znajdziesz.",
-				null);
-		*/
-
 		// player offers item that isn't in the list.
 		apothecary.add(ConversationStates.QUESTION_2, "",
 			new AndCondition(
@@ -257,9 +250,9 @@ public class ApothecaryStage extends AVRStage {
 			"Nie wieżę, że prosiłem o to.", null);
 
 		ChatAction mixAction = new MultipleActions (
-		new SetQuestAction(questName, "enhancing;" + Long.toString(System.currentTimeMillis())),
-		new SayTextAction("Dziękuję. Biorę się do pracy nad sprządzeniem antyjadu dla twojego pierścienia, ale to jak zjem parę mufinek. Proszę wróć za "
-				+ Integer.toString(FUSE_TIME / MathHelper.MINUTES_IN_ONE_DAY) + " dni.")
+		new SetQuestAction(questName, QUEST_STATE_NAME + ";" + Long.toString(System.currentTimeMillis())),
+		new SayTextAction("Dziękuję. Biorę się do pracy nad sprządzeniem antyjadu, ale to jak zjem parę mufinek. Proszę wróć za "
+				+ Integer.toString(MIX_TIME_MINUTES) + " minut.")
 		);
 
 		/* add triggers for the item names */
@@ -279,37 +272,85 @@ public class ApothecaryStage extends AVRStage {
 		}
 	}
 
-
-	private void addBusyEnhancingDialogue() {
+	private void addBusyMixingDialogue() {
 		// Returned too early; still working
 		apothecary.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
 						new GreetingMatchesNameCondition(apothecary.getName()),
-						new QuestStateStartsWithCondition(questName, "enhancing;"),
-						new NotCondition(new TimePassedCondition(questName, 1, FUSE_TIME))),
+						new QuestStateStartsWithCondition(questName, QUEST_STATE_NAME),
+						new NotCondition(new TimePassedCondition(questName, 1, MIX_TIME_MINUTES))),
 				ConversationStates.IDLE,
 				null,
-				new SayTimeRemainingAction(questName, 1, FUSE_TIME, "Jeszcze nie skończyłem pierścienia. Wróć później za "));
+				new SayTimeRemainingAction(questName, 1, MIX_TIME_MINUTES, "Jeszcze nie skończyłem mieszać antyjadu. Wróć później za "));
 
 		final List<ChatAction> mixReward = new LinkedList<ChatAction>();
-		mixReward.add(new IncreaseXPAction(2000));
+		mixReward.add(new IncreaseXPAction(1000));
 		mixReward.add(new IncreaseKarmaAction(25.0));
-		mixReward.add(new EquipItemAction("pierścień antyjadowy", 1, true));
-		mixReward.add(new SetQuestAction(questName, "done"));
+		mixReward.add(new EquipItemAction("antyjad", 1, true));
+		mixReward.add(new SetQuestAction(questName, "donantivenome"));
 		mixReward.add(new SetQuestAction(questName + "_extract", null)); // clear sub-quest slot
 
 		apothecary.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(apothecary.getName()),
-						new QuestInStateCondition(questName, 0, "enhancing"),
-						new TimePassedCondition(questName, 1, FUSE_TIME)
+						new QuestInStateCondition(questName, 0, QUEST_STATE_NAME),
+						new TimePassedCondition(questName, 1, MIX_TIME_MINUTES)
 				),
 			ConversationStates.IDLE,
-			"Skończyłem przerabiać twój pierścień. Teraz zjem resztę mufinek.",
+			"Skończyłem mieszać antyjad. Ognir jest wykwalifikowanym kowalem pierścieniowym. Może połączyć antyjad z twym pierścieniem."
+			+ " Teraz sobie zjem resztę mufinek jeśli pozwolisz.",
 			new MultipleActions(mixReward));
 	}
 
+	/**
+	 * Conversation states for NPC after antivenom has been acquired
+	 */
+	private void addDoneMixingDialogue() {
+		final ChatCondition missingAntivenom = new AndCondition(
+				new QuestInStateCondition(questName, 0, "antivenom"),
+				new NotCondition(new PlayerHasItemWithHimCondition("antyjad")));
+
+		apothecary.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(
+				new QuestInStateCondition(questName, 0, "antivenom"),
+				new PlayerHasItemWithHimCondition("antyjad")
+			),
+			ConversationStates.IDLE,
+			"Czy czasem nie widziałeś już twórcy pierścieni Ognira?",
+			null);
+
+		// player lost antivenom
+		apothecary.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				missingAntivenom,
+				ConversationStates.QUEST_OFFERED,
+				"Co jest? Straciłeś antyjad? Mogę wymieszać kolejną partię, ale potrzebuję, abyś ponownie zebrał dla mnie składniki. Czy chcesz, żebym wymieszał inny antyjad?",
+				null);
+
+		// NPC offers to mix another vial of antivenom
+
+		// this is so player doesn't lose karma by saying "no"
+		apothecary.add(ConversationStates.QUEST_OFFERED,
+			ConversationPhrases.NO_MESSAGES,
+			missingAntivenom,
+			ConversationStates.IDLE,
+			"No cóż, wróć do mnie, jeśli nie znajdziesz swojego antyjadu.",
+			null);
+
+		apothecary.add(ConversationStates.QUEST_OFFERED,
+			ConversationPhrases.YES_MESSAGES,
+			missingAntivenom,
+			ConversationStates.ATTENDING,
+			null,
+			new MultipleActions(
+				new SetQuestAction(questName, MIX_ITEMS),
+				new SayRequiredItemsFromCollectionAction(questName,
+					"Dobra, potrzebuję, żebyś przyniósł mi [items]. Czy masz przy sobie któreś z nich?",
+					false))
+			);
+	}
 
 	/**
 	 * Conversation states for NPC after quest is completed.
@@ -336,129 +377,49 @@ public class ApothecaryStage extends AVRStage {
 				ConversationPhrases.NO_MESSAGES,
 				new QuestCompletedCondition(questName),
 				ConversationStates.ATTENDING,
-				"Oh, to bardzo źle.",
+				"Och, to bardzo źle.",
 				null);
 	}
 
 	private void addGeneralResponsesDialogue() {
-		/*
-        // Player asks about required items
-		apothecary.add(ConversationStates.QUESTION_1,
-				Arrays.asList("gland", "venom gland", "glands", "venom glands", "gruczoł jadowy"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Niektóre #węże mają gruczoł, w którym mieści się jad.",
-				null);
-
-		apothecary.add(ConversationStates.QUESTION_1,
-				Arrays.asList("mandragora", "mandragoras", "root of mandragora", "roots of mandragora", "root of mandragoras", "roots of mandragoras"),
-				null,
-				ConversationStates.QUESTION_1,
-				"To jest moje ulubione ziele i bardzo rzadkie. W Kalavan jest ukryta ścieżka wśród drzew, a na jej końcu znajdziesz to co szukasz.",
-				null);
-		*/
-		apothecary.add(ConversationStates.QUESTION_1,
-				Arrays.asList("cake", "fairy cake", "mufinka"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Oh, one są najlepszym lekarstwem jakie mogłem spróbować. Tylko najbardziej anielskie istoty mogą zrobić tak anielskie jedzenie.",
-				null);
+		apothecary.addReply(
+				"Klaas",
+				"O tak, mój stary dobry przyjaciel. Często podróżowałem na wyspę #Athor, aby zbierać bardzo rzadkie zioła"
+				+ " #kokuda. Dzięki temu bardzo dobrze poznałem Klaasa.");
+		// XXX: should kokuda be added as required ingredient? would make quest a little more difficult
+		apothecary.addReply(
+				"kokuda",
+				"Kokuda to zioło, które można znaleźć tylko w labiryncie na wyspie #Athor.");
 
 		// Player asks about rings
-		apothecary.add(ConversationStates.QUESTION_1,
+		apothecary.addReply(
 				Arrays.asList("ring", "rings", "pierścień", "pierścienie"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Jest wiele rodzai pierścieni.",
-				null);
-
-		apothecary.add(ConversationStates.QUESTION_1,
+				"Jest wiele rodzai pierścieni.");
+		apothecary.addReply(
 				Arrays.asList("medicinal ring", "medicinal rings", "pierścień leczniczy"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Niektóre trujące potwory noszą go ze sobą.",
-				null);
-
-		apothecary.add(ConversationStates.QUESTION_1,
+				"Niektóre trujące potwory noszą go ze sobą.");
+		apothecary.addReply(
 				Arrays.asList("antivenom ring", "antivenom rings", "pierścień antyjadowy", "pierścienie antyjadowy"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #pierścień #leczniczy.",
-				null);
+				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #pierścień #leczniczy.");
 
-		apothecary.add(ConversationStates.QUESTION_1,
+		/* this item is not available
+		apothecary.addReply(
 				Arrays.asList("antitoxin ring", "antitoxin rings", "pierścień antytoksyczny", "pierścienie antytoksyczne"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Heh! Oto ostateczna ochroną przed zatruciami. Powodzenia w zdobyciu!",
-				null);
-		/*
-		// Player asks about snakes
-		apothecary.add(ConversationStates.QUESTION_1,
-				Arrays.asList("snake", "snakes", "cobra", "cobras", "wąż", "węże", "kobra", "kobry"),
-				null,
-				ConversationStates.QUESTION_1,
-				"Słyszałem najnowszą wieść, że odkryto jamę pełną węży gdzieś w Ados, ale nie sprawdzałem tego. Ten rodzaj pracy lepiej pozostawić podróżnikom.",
-				null);
-
-        // Player asks about required items
-		apothecary.add(ConversationStates.ATTENDING,
-				Arrays.asList("gland", "venom gland", "glands", "venom glands", "gruczoł", "jadowy", "gruczoł jadowy"),
-				null,
-				ConversationStates.ATTENDING,
-				"Parę #węży posiada gruczoł jadowy, w których znajduje się jad.",
-				null);
-
-		apothecary.add(ConversationStates.ATTENDING,
+				"Heh! Oto ostateczna ochroną przed zatruciami. Powodzenia w zdobyciu!");
+		*/
+		apothecary.addReply(
+				Arrays.asList("gland", "venom gland", "glands", "venom glands", "gruczoł", "gruczoły", "jadowy", "gruczoł jadowy", "gruczoły jadowe"),
+				"Parę #węży posiada gruczoł jadowy, w których znajduje się jad.");
+		apothecary.addReply(
+				Arrays.asList("snake", "snakes", "cobra", "cobras", "wąż", "węże", "węży", "kobra", "kobry"),
+				"Słyszałem najnowszą wieść, że odkryto jamę pełną węży gdzieś w Ados, ale"
+				+ " nie sprawdzałem tego. Ten rodzaj pracy lepiej pozostawić podróżnikom.");
+		apothecary.addReply(
 				Arrays.asList("mandragora", "mandragoras", "root of mandragora", "roots of mandragora", "root of mandragoras", "roots of mandragoras"),
-				null,
-				ConversationStates.ATTENDING,
-				"To mój ulubiony z pośród wszystkich ziół i den z najrzadszych. Obok Kalavan jest ukryta ścieżka pomiędzy drzewami. Na jej końcu znajdziesz to czego szukasz.",
-				null);
-		*/
-		apothecary.add(ConversationStates.ATTENDING,
+				"To mój ulubiony z pośród wszystkich ziół i den z najrzadszych. Obok Kalavan jest ukryta"
+				+ " ścieżka pomiędzy drzewami. Na jej końcu znajdziesz to czego szukasz.");
+		apothecary.addReply(
 				Arrays.asList("cake", "fairy cake", "mufinka"),
-				null,
-				ConversationStates.ATTENDING,
-				"Oh, są one najlepszą przekąską jaką próbowałem. Tylko najbardziej niebiańskie istoty mogły zrobić tak nieziemskie jedzenie.",
-				null);
-
-		// Player asks about rings
-		apothecary.add(ConversationStates.ATTENDING,
-				Arrays.asList("ring", "rings", "pierścień", "pierścienie"),
-				null,
-				ConversationStates.ATTENDING,
-				"Jest wiele różnych typów pierścieni.",
-				null);
-
-		apothecary.add(ConversationStates.ATTENDING,
-				Arrays.asList("medicinal ring", "medicinal rings", "pierścień leczniczy", "pierścienie lecznicze"),
-				null,
-				ConversationStates.ATTENDING,
-				"Parę jadowitych potworów ma je przy sobie.",
-				null);
-
-		apothecary.add(ConversationStates.ATTENDING,
-				Arrays.asList("antivenom ring", "antivenom rings", "pierścień antyjadowy", "pierścienie antyjadowe"),
-				null,
-				ConversationStates.ATTENDING,
-				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #pierścień #leczniczy.",
-				null);
-
-		apothecary.add(ConversationStates.ATTENDING,
-				Arrays.asList("antitoxin ring", "antitoxin rings", "gm antitoxin ring", "gm antitoxin rings", "pierścień antytoksynowy gm", "pierścienie antytoksynowe gm"),
-				null,
-				ConversationStates.ATTENDING,
-				"Heh! To jest ostateczna ochrona przed trucizną. Powodzenia w zdobyciu jednego!",
-				null);
-		/*
-		// Player asks about snakes
-		apothecary.add(ConversationStates.ATTENDING,
-				Arrays.asList("snake", "snakes", "cobra", "cobras", "wąż", "węże", "kobra", "kobry"),
-				null,
-				ConversationStates.ATTENDING,
-				"Słyszałem najnowszą wieść, że odkryto jamę pełną węży gdzieś w Ados, ale nie sprawdzałem tego. Ten rodzaj pracy lepiej pozostawić podróżnikom.",
-				null);
-		*/
+				"Och, są one najlepszą przekąską jaką próbowałem. Tylko najbardziej niebiańskie istoty mogły zrobić tak nieziemskie jedzenie.");
 	}
 }

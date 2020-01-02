@@ -98,7 +98,6 @@ public class Engine {
 		add(triggerExpressions, state, condition, secondary, nextState, reply, action);
 	}
 
-
 	/**
 	 * Adds a new transition to FSM.
 	 *

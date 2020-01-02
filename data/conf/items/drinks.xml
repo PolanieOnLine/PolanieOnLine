@@ -927,4 +927,28 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="antyjad">
+		<type class="drink" subclass="antivenom" tileid="-1"/>
+		<description>Oto fiolka wypełniona antyjadem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<immunization value="poisoned"/>
+			<amount value="1600"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="0"/>
+			<menu value="Wypij|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 </items>
