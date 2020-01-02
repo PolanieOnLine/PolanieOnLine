@@ -66,6 +66,7 @@ public class StendhalQuestSystem {
 	 * Initializes the QuestSystem.
 	 */
 	public void init() {
+//		loadQuest(new AdMemoriaInPortfolio());
 		loadQuest(new AdosDeathmatch());
 		loadQuest(new AmazonPrincess());
 		loadQuest(new AntivenomRing());
@@ -111,7 +112,6 @@ public class StendhalQuestSystem {
 		loadQuest(new HerbsForCarmen());
 		/* Disabled, incomplete
 		loadQuest(new HerbsForJynath()); */
-//		loadQuest(new AdMemoriaInPortfolio());
 		loadQuest(new HouseBuying());
 		loadQuest(new HungryJoshua());
 		loadQuest(new IcecreamForAnnie());
