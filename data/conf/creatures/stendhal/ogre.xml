@@ -24,7 +24,8 @@
 			<item value="kolczuga" quantity="[1,1]" probability="10.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="0.9"/>
 			<item value="piernacz" quantity="[1,1]" probability="0.9"/>
-			<item value="fasola pinto" quantity="[1,5]" probability="50.0"/>
+			<item value="fasola pinto" quantity="[1,2]" probability="10.0"/>
+			<item value="flaczki" quantity="[1,1]" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -61,7 +62,8 @@
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="4.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="1.0"/>
 			<item value="kij z czaszką" quantity="[1,1]" probability="1.0"/>
-			<item value="fasola pinto" quantity="[5,10]" probability="50.0"/>
+			<item value="fasola pinto" quantity="[1,3]" probability="30.0"/>
+			<item value="flaczki" quantity="[1,1]" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -96,7 +98,8 @@
 		<drops>
 			<item value="money" quantity="[6,31]" probability="100.0"/>
 			<item value="topór bojowy" quantity="[1,1]" probability="2.0"/>
-			<item value="fasola pinto" quantity="[5,10]" probability="50.0"/>
+			<item value="fasola pinto" quantity="[1,2]" probability="30.0"/>
+			<item value="flaczki" quantity="[1,1]" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -130,8 +133,8 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[6,31]" probability="100.0"/>
-			<item value="fasola pinto" quantity="[5,10]" probability="50.0"/>
-			<item value="flaczki" quantity="[5,10]" probability="50.0"/>
+			<item value="fasola pinto" quantity="[1,5]" probability="50.0"/>
+			<item value="flaczki" quantity="[1,2]" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>

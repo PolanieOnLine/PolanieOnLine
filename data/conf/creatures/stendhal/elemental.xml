@@ -176,18 +176,20 @@
 		<type class="stendhal/elemental_legendary" subclass="elemental_legendary_ice" tileid="elemental_legendary.png:0"/>
 		<description>Oto legendarny żywioł lodu...</description>
 		<attributes>
-			<atk value="7800"/>
-			<def value="561"/>
-			<hp value="11350"/>
+			<atk value="7900"/>
+			<def value="541"/>
+			<hp value="12000"/>
 			<speed value="1.0"/>
 			<size value="8,6"/>
 		</attributes>
 		<level value="400"/>
-		<experience value="550000"/>
+		<experience value="570000"/>
 		<respawn value="140000"/>
 		<corpse name="puddle_light_blue_2x2" width="2" height="2"/>
 		<drops>
-			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="money" quantity="[3000,16000]" probability="100.0"/>
+			<item value="gigantyczny eliksir" quantity="[1,4]" probability="35.0"/>
+			<item value="wielki eliksir" quantity="[2,8]" probability="60.0"/>
 			<item value="mocne antidotum" quantity="[1,3]" probability="10.0"/>
 			<item value="miecz lodowy" quantity="[1,1]" probability="9.0"/>
 			<item value="lodowa zbroja" quantity="[1,1]" probability="2.0"/>
