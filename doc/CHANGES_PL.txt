@@ -1,8 +1,12 @@
 Changelog
 ---------
 1.09
+*klient*
+- Dodano oraz odświeżono wiele grafik (sloty/ikony/przedmioty/potwory)
+
 *świat*
 - Dodano nowe osiągnięcie za wykonanie zadania na zresetowanie poziomu
+- Poprawiono statystyki oraz drop potwora: legendarny żywioł lodu
 - Poprawiono dialogi w zadaniu na zresetowanie poziomu
 - Rozbudowano zadanie na reset poziomu do 5 etapów
 
