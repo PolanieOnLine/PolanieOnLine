@@ -116,16 +116,23 @@ public class RebornQuest extends AbstractQuest {
 				ConversationStates.OFFERED_1_REBORN,
 				null, Welcome());
 
-		npc.add(ConversationStates.OFFERED_1_REBORN,
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_1_REBORN,
+					ConversationStates.INFORMATION_1,
+					ConversationStates.INFORMATION_2,
+					ConversationStates.INFORMATION_3 },
 				ConversationPhrases.NO_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
+				new OrCondition(
+					new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestInStateCondition(QUEST_SLOT, "start")),
 				ConversationStates.ATTENDING,
 				ODRZUCENIE,
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 
 		npc.add(ConversationStates.OFFERED_1_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
+				new OrCondition(
+					new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestInStateCondition(QUEST_SLOT, "rejected")),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_1,
 				new SetQuestAction(QUEST_SLOT, "start"));
@@ -211,16 +218,6 @@ public class RebornQuest extends AbstractQuest {
 						}
 					}
 				});
-
-		npc.add(new ConversationStates[] {
-					ConversationStates.INFORMATION_1,
-					ConversationStates.INFORMATION_2,
-					ConversationStates.INFORMATION_3 },
-				ConversationPhrases.NO_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				ODRZUCENIE,
-				new SetQuestAction(QUEST_SLOT, "rejected"));
 	}
 	
 	private void secofferresetlevel() {
@@ -228,20 +225,29 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;2")),
 				ConversationStates.OFFERED_2_REBORN,
 				null, Welcome());
 
-		npc.add(ConversationStates.OFFERED_2_REBORN,
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_2_REBORN,
+					ConversationStates.INFORMATION_1,
+					ConversationStates.INFORMATION_2,
+					ConversationStates.INFORMATION_3 },
 				ConversationPhrases.NO_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done"),
+					new QuestInStateCondition(QUEST_SLOT, "start;2")),
 				ConversationStates.ATTENDING,
 				ODRZUCENIE,
-				new SetQuestAction(QUEST_SLOT, "rejected"));
+				new SetQuestAction(QUEST_SLOT, "rejected;2"));
 
 		npc.add(ConversationStates.OFFERED_2_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;2")),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;2"));
@@ -286,20 +292,29 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;2"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;3")),
 				ConversationStates.OFFERED_3_REBORN,
 				null, Welcome());
 
-		npc.add(ConversationStates.OFFERED_3_REBORN,
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_3_REBORN,
+					ConversationStates.INFORMATION_1,
+					ConversationStates.INFORMATION_2,
+					ConversationStates.INFORMATION_3 },
 				ConversationPhrases.NO_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;2"),
+					new QuestInStateCondition(QUEST_SLOT, "start;3")),
 				ConversationStates.ATTENDING,
 				ODRZUCENIE,
-				new SetQuestAction(QUEST_SLOT, "rejected"));
+				new SetQuestAction(QUEST_SLOT, "rejected;3"));
 
 		npc.add(ConversationStates.OFFERED_3_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;2"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;3")),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;3"));
@@ -344,20 +359,29 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;3"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;4")),
 				ConversationStates.OFFERED_4_REBORN,
 				null, Welcome());
 
-		npc.add(ConversationStates.OFFERED_4_REBORN,
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_4_REBORN,
+					ConversationStates.INFORMATION_1,
+					ConversationStates.INFORMATION_2,
+					ConversationStates.INFORMATION_3 },
 				ConversationPhrases.NO_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;3"),
+					new QuestInStateCondition(QUEST_SLOT, "start;4")),
 				ConversationStates.ATTENDING,
 				ODRZUCENIE,
-				new SetQuestAction(QUEST_SLOT, "rejected"));
+				new SetQuestAction(QUEST_SLOT, "rejected;4"));
 
 		npc.add(ConversationStates.OFFERED_4_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;3"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;4")),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;4"));
@@ -402,20 +426,29 @@ public class RebornQuest extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;4"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;5")),
 				ConversationStates.OFFERED_5_REBORN,
 				null, Welcome());
 
-		npc.add(ConversationStates.OFFERED_5_REBORN,
-				ConversationPhrases.NO_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+		npc.add(new ConversationStates[] { ConversationStates.OFFERED_5_REBORN,
+					ConversationStates.INFORMATION_1,
+					ConversationStates.INFORMATION_2,
+					ConversationStates.INFORMATION_3 },
+					ConversationPhrases.NO_MESSAGES,
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;4"),
+					new QuestInStateCondition(QUEST_SLOT, "start;5")),
 				ConversationStates.ATTENDING,
 				ODRZUCENIE,
-				new SetQuestAction(QUEST_SLOT, "rejected"));
+				new SetQuestAction(QUEST_SLOT, "rejected;5"));
 
 		npc.add(ConversationStates.OFFERED_5_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				new OrCondition(
+					new QuestInStateCondition(QUEST_SLOT, "done;4"),
+					new QuestInStateCondition(QUEST_SLOT, "rejected;5")),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;5"));
