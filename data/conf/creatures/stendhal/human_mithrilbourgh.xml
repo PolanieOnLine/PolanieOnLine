@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="mithrilbourgh żołnierz">
+		<type class="stendhal/human" subclass="soldier_common" tileid="human_soldier.png:2"/>
+		<description></description>
+		<attributes>
+			<atk value="490"/>
+			<def value="78"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="64"/>
+		<experience value="4218"/>
+		<respawn value="1960"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="buty kamienne" quantity="[1,1]" probability="1.5"/>
+			<item value="pałasz" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="mithrilbourgh łucznik">
+		<type class="stendhal/human" subclass="soldier_archer" tileid="human_soldier.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="487"/>
+			<ratk value="487"/>
+			<def value="76"/>
+			<hp value="540"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="68"/>
+		<experience value="4436"/>
+		<respawn value="2140"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="strzała złota" quantity="[5,20]" probability="5.0"/>
+			<item value="klejony łuk" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała złota" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz mithrilbourgh">
+		<type class="stendhal/human" subclass="soldier_knight" tileid="human_soldier.png:5"/>
+		<description></description>
+		<attributes>
+			<atk value="523"/>
+			<def value="78"/>
+			<hp value="595"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="71"/>
+		<experience value="4913"/>
+		<respawn value="2290"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="1.5"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.08"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="0.08"/>
+			<item value="złoty hełm wikingów" quantity="[1,1]" probability="0.5"/>
+			<item value="półtorak" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="elitarny łucznik mithrilbourgh">
+		<type class="stendhal/human" subclass="soldier_elite_archer" tileid="human_soldier.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="500"/>
+			<ratk value="500"/>
+			<def value="73"/>
+			<hp value="608"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="72"/>
+		<experience value="4742"/>
+		<respawn value="2350"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="strzała płonąca" quantity="[1,5]" probability="5.0"/>
+			<item value="strzała złota" quantity="[3,15]" probability="10.0"/>
+			<item value="klejony łuk" quantity="[1,1]" probability="2.5"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="sierżant mithrilbourgh">
+		<type class="stendhal/human" subclass="soldier_sergeant" tileid="human_soldier.png:7"/>
+		<description></description>
+		<attributes>
+			<atk value="547"/>
+			<def value="80"/>
+			<hp value="650"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="76"/>
+		<experience value="5476"/>
+		<respawn value="2570"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,63]" probability="100.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.1"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="0.7"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="porucznik mithrilbourgh">
+		<type class="stendhal/human" subclass="soldier_lieutenant" tileid="human_soldier.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="577"/>
+			<def value="80"/>
+			<hp value="760"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="83"/>
+		<experience value="6233"/>
+		<respawn value="3010"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,63]" probability="100.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.1"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="1.0"/>
+			<item value="hełm chaosu" quantity="[1,1]" probability="0.4"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="pułkownik mithrilbourgh">
+		<type class="stendhal/human" subclass="soldier_colonel" tileid="human_soldier.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="610"/>
+			<def value="82"/>
+			<hp value="860"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="89"/>
+		<experience value="7022"/>
+		<respawn value="3450"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,95]" probability="100.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="0.7"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="czarodziej mithrilbourgh">
+		<type class="stendhal/human" subclass="soldier_wizard" tileid="human_soldier.png:8"/>
+		<description></description>
+		<attributes>
+			<atk value="634"/>
+			<def value="80"/>
+			<hp value="911"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="92"/>
+		<experience value="7429"/>
+		<respawn value="3690"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,93]" probability="100.0"/>
+			<item value="niezapisany zwój" quantity="[1,2]" probability="10.0"/>
+			<item value="różdżka Strzyboga" quantity="[1,1]" probability="0.5"/>
+			<item value="magia światła" quantity="[1,11]" probability="50.0"/>
+			<item value="zwój czyszczący" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<susceptibility type="dark" value="0.9"/>
+			<susceptibility type="light" value="0.9"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="mithrilbourgh generał">
+		<type class="stendhal/human" subclass="soldier_general" tileid="human_soldier.png:4"/>
+		<description>Oto mithrilbourgh generał. Niektórzy nazywają go sokolim okiem. Rzucił wzrokiem z murów miasta i zobaczył cię z bardzo daleka, że się zbliżasz.</description>
+		<attributes>
+			<atk value="624"/>
+			<def value="83"/>
+			<hp value="960"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="95"/>
+		<experience value="7665"/>
+		<respawn value="3940"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,100]" probability="100.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="0.1"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="2.0"/>
+			<item value="płaszcz cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="pas cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz lodowy" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+</creatures>

@@ -45,6 +45,9 @@ public class Outfits {
 	/** number of player selectable masks */
 	public static final int MASK_OUTFITS = 15;
 
+	// hair should not be drawn with hat indexes in this list
+	public static final List<Integer> HATS_NO_HAIR = Arrays.asList(3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 996, 997);
+
 	// layers used for building outfits
 	public static final List<String> LAYER_NAMES = Arrays.asList(
 					"body", "dress", "head", "mask",

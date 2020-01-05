@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="obrońca imperium">
+		<type class="stendhal/human" subclass="imperial_defender" tileid="human_imperial.png:5"/>
+		<description></description>
+		<attributes>
+			<atk value="325"/>
+			<def value="36"/>
+			<hp value="400"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="36"/>
+		<experience value="1440"/>
+		<respawn value="1520"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="zbroja płytowa" quantity="[1,1]" probability="7.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="0.3"/>
+			<item value="złoty pas" quantity="[1,1]" probability="0.02"/>
+			<item value="tarcza jednorożca" quantity="[1,1]" probability="2.0"/>
+			<item value="pas cieni" quantity="[1,1]" probability="0.1"/>
+			<item value="tarcza cieni" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="weteran imperium">
+		<type class="stendhal/human" subclass="imperial_veteran" tileid="human_imperial.png:14"/>
+		<description>Oto weteran żołnierzy imperium. Brał udział w wielu bitwach i wojnach. Teraz jest stary, lecz mimo swojego wieku wciąż szuka wroga by stoczyć z nim pojedynek na śmierć i życie.</description>
+		<attributes>
+			<atk value="330"/>
+			<def value="57"/>
+			<hp value="230"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="37"/>
+		<experience value="1673"/>
+		<respawn value="1460"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,30]" probability="100.0"/>
+			<item value="skórzany kirys z naramiennikami" quantity="[1,1]" probability="20.0"/>
+			<item value="tarcza płytowa" quantity="[1,1]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="łucznik imperium">
+		<type class="stendhal/human" subclass="imperial_archer" tileid="human_imperial.png:2"/>
+		<description></description>
+		<attributes>
+			<atk value="331"/>
+			<ratk value="331"/>
+			<def value="77"/>
+			<hp value="180"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="40"/>
+		<experience value="2005"/>
+		<respawn value="1600"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="strzała żelazna" quantity="[1,15]" probability="10.0"/>
+			<item value="długi łuk" quantity="[1,1]" probability="5.0"/>
+			<item value="bełt stalowy" quantity="[1,4]" probability="10.0"/>
+			<item value="bełt" quantity="[1,9]" probability="30.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
+			<slot name="rhand" item="długi łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kapłan imperium">
+		<type class="stendhal/human" subclass="imperial_priest" tileid="human_imperial.png:12"/>
+		<description>Oto kapłan imperium. Kościół popadł w niełaskę wraz z obywatelami, ale ten kapłan imperium wciąż trzyma się wiary.</description>
+		<attributes>
+			<atk value="368"/>
+			<def value="57"/>
+			<hp value="300"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="42"/>
+		<experience value="2055"/>
+		<respawn value="1620"/>
+		<corpse name="humanoid" harmless="cloaked_blue" />
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="butelka wody" quantity="[1,2]" probability="10.0"/>
+			<item value="antidotum" quantity="[1,2]" probability="2.0"/>
+			<item value="kij" quantity="[1,1]" probability="3.0"/>
+			<item value="środek uspokajający" quantity="[2,3]" probability="25.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.3"/>
+			<susceptibility type="light" value="0.6"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="elitarny strażnik imperium">
+		<type class="stendhal/human" subclass="imperial_elite_guardian" tileid="human_imperial.png:7"/>
+		<description>Oto elitarny strażnik imperium. Jest dobrze wyszkolonym strażnikiem, który ma za zadanie chronić swoje otoczenie do końca.</description>
+		<attributes>
+			<atk value="376"/>
+			<def value="52"/>
+			<hp value="380"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="43"/>
+		<experience value="2091"/>
+		<respawn value="1620"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,40]" probability="100.0"/>
+			<item value="zbroja cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="pas cieni" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.0001"/>
+			<item value="tarcza cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz zaczepny" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="uczony imperium">
+		<type class="stendhal/human" subclass="imperial_scientist" tileid="human_imperial.png:13"/>
+		<description>Oto uczony imperium. Jest całkiem mądry, ale czasami trochę szalony i niestety czasami używa swojego intelektu złych eksperymentów.</description>
+		<attributes>
+			<atk value="393"/>
+			<def value="49"/>
+			<hp value="480"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="50"/>
+		<experience value="2485"/>
+		<respawn value="1660"/>
+		<corpse name="humanoid" harmless="cloaked_white" />
+		<drops>
+			<item value="money" quantity="[5,30]" probability="100.0"/>
+			<item value="butelka wody" quantity="[2,4]" probability="8.0"/>
+			<item value="płaszcz kamienny" quantity="[1,1]" probability="2.0"/>
+			<item value="zbroja cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="pas cieni" quantity="[1,1]" probability="0.1"/>
+			<item value="sztylet mroku" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wysoki kapłan imperium">
+		<type class="stendhal/human" subclass="imperial_high_priest" tileid="human_imperial.png:9"/>
+		<description>Oto wysoki kapłan imperium, który jest zaniepokojony działaniami imperialnego departamentu nauki. Bądź ostrożny ponieważ może przenieść swoje frustracje na ciebie!</description>
+		<attributes>
+			<atk value="437"/>
+			<def value="52"/>
+			<hp value="580"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="55"/>
+		<experience value="3012"/>
+		<respawn value="1920"/>
+		<corpse name="humanoid" harmless="cloaked_blue" />
+		<drops>
+			<item value="money" quantity="[5,30]" probability="100.0"/>
+			<item value="butelka wody" quantity="[1,2]" probability="10.0"/>
+			<item value="mocne antidotum" quantity="[1,2]" probability="2.0"/>
+			<item value="zbroja cieni" quantity="[1,1]" probability="0.7"/>
+			<item value="pas cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="sztylet mroku" quantity="[1,1]" probability="0.1"/>
+			<item value="środek uspokajający" quantity="[2,5]" probability="19.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.3"/>
+			<susceptibility type="light" value="0.6"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="łucznik imperium lider">
+		<type class="stendhal/human" subclass="imperial_archer_leader" tileid="human_imperial.png:1"/>
+		<description></description>
+		<attributes>
+			<atk value="440"/>
+			<ratk value="440"/>
+			<def value="69"/>
+			<hp value="500"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="61"/>
+		<experience value="3602"/>
+		<respawn value="2000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="strzała płonąca" quantity="[1,10]" probability="8.0"/>
+			<item value="klejony łuk" quantity="[1,1]" probability="1.5"/>
+			<item value="bełt płonący" quantity="[1,10]" probability="7.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="elitarny łucznik imperium">
+		<type class="stendhal/human" subclass="imperial_elite_archer" tileid="human_imperial.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="461"/>
+			<ratk value="461"/>
+			<def value="62"/>
+			<hp value="600"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="64"/>
+		<experience value="3809"/>
+		<respawn value="2000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,53]" probability="100.0"/>
+			<item value="strzała płonąca" quantity="[3,10]" probability="5.0"/>
+			<item value="kusza" quantity="[1,1]" probability="1.75"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="rhand" item="klejony łuk" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="archer"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="imperialny lider">
+		<type class="stendhal/human" subclass="imperial_leader" tileid="human_imperial.png:11"/>
+		<description>Oto imperialny lider. Jest dobrze ubrany, a jego wojsko spróbuje cię stąd wypędzić.</description>
+		<attributes>
+			<atk value="493"/>
+			<def value="64"/>
+			<hp value="600"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="65"/>
+		<experience value="4093"/>
+		<respawn value="1420"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,30]" probability="100.0"/>
+			<item value="zbroja cieni" quantity="[1,1]" probability="0.4"/>
+			<item value="tarcza cieni" quantity="[1,1]" probability="0.07"/>
+			<item value="pas cieni" quantity="[1,1]" probability="0.02"/>
+			<item value="miecz dwuręczny" quantity="[1,1]" probability="2.5"/>
+			<item value="złoty pas" quantity="[1,1]" probability="0.0075"/>
+			<item value="złoty kiścień" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz imperium">
+		<type class="stendhal/human" subclass="imperial_knight" tileid="human_imperial.png:10"/>
+		<description></description>
+		<attributes>
+			<atk value="536"/>
+			<def value="88"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="72"/>
+		<experience value="5230"/>
+		<respawn value="3000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.008"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.05"/>
+			<item value="ognisty miecz demonów" quantity="[1,1]" probability="0.002"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szef żołnierzy imperium">
+		<type class="stendhal/human" subclass="imperial_chief" tileid="human_imperial.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="533"/>
+			<def value="82"/>
+			<hp value="600"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="72"/>
+		<experience value="5121"/>
+		<respawn value="3490"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="2.0"/>
+			<item value="buty chaosu" quantity="[1,1]" probability="0.08"/>
+			<item value="złoty hełm wikingów" quantity="[1,1]" probability="0.5"/>
+			<item value="miecz ognisty" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="komandor imperium">
+		<type class="stendhal/human" subclass="imperial_commander" tileid="human_imperial.png:4"/>
+		<description></description>
+		<attributes>
+			<atk value="567"/>
+			<def value="122"/>
+			<hp value="400"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="82"/>
+		<experience value="6860"/>
+		<respawn value="2990"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="złoty hełm wikingów" quantity="[1,1]" probability="1.0"/>
+			<item value="płaszcz cieni" quantity="[1,1]" probability="2.0"/>
+			<item value="pas cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.05"/>
+			<item value="ognisty miecz demonów" quantity="[1,1]" probability="0.001"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nasze oddziały zmiażdżą cię!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="heal" params="5,20"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="generał imperium">
+		<type class="stendhal/human" subclass="imperial_general" tileid="human_imperial.png:8"/>
+		<description>Oto generał imperium z wielką blizną obok oka. Jest wciąż silny i nie myśl, że cię nie zauważy!</description>
+		<attributes>
+			<atk value="631"/>
+			<def value="102"/>
+			<hp value="700"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="93"/>
+		<experience value="7941"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.3"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
+			<item value="ognisty miecz demonów" quantity="[1,1]" probability="0.01"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nasze oddziały zmiotą cię z powierzchni ziemi!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,20"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="cesarz dalmung">
+		<type class="stendhal/human" subclass="emperor_dalmung" tileid="human_imperial.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="705"/>
+			<def value="91"/>
+			<hp value="1100"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="108"/>
+		<experience value="10716"/>
+		<respawn value="5300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[80,130]" probability="100.0"/>
+			<item value="bukłak z wodą" quantity="[2,5]" probability="30.0"/>
+			<item value="miecz chaosu" quantity="[1,1]" probability="1.0"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.1"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="0.03"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.8"/>
+			<susceptibility type="light" value="1.1"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Moje imperium jest niepokonane!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,30"/>
+			<profile name="lifesteal" params="0.1"/>
+		</ai>
+	</creature>
+</creatures>

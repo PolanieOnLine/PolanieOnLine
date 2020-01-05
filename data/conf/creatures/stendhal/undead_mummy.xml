@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="mumia">
+		<type class="stendhal/mummy" subclass="mummy" tileid="mummy.png:0"/>
+		<description>Widzisz mumię egipską. Chyba uciekła z sarkofagu.</description>
+		<attributes>
+			<atk value="154"/>
+			<def value="42"/>
+			<hp value="55"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="12"/>
+		<experience value="130"/>
+		<respawn value="1210"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,20]" probability="90.0"/>
+			<item value="zbroja ćwiekowa" quantity="[1,1]" probability="10.0"/>
+			<item value="krótki miecz" quantity="[1,1]" probability="3.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="undead-5" />
+				<sound value="undead-06" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="mumia królewska">
+		<type class="stendhal/mummy" subclass="royal_mummy" tileid="mummy.png:1"/>
+		<description>Oto mumia królewska. Zastanawiasz się co trzyma królewską duszę od zaznania pokoju.</description>
+		<attributes>
+			<atk value="250"/>
+			<def value="71"/>
+			<hp value="80"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="24"/>
+		<experience value="370"/>
+		<respawn value="1290"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,33]" probability="100.0"/>
+			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="3.0"/>
+			<item value="misiurka" quantity="[1,1]" probability="1.0"/>
+			<item value="tarcza z czaszką" quantity="[1,1]" probability="5.5"/>
+			<item value="chopesz" quantity="[1,1]" probability="1.0"/>
+			<item value="zatruty sztylet egipski" quantity="[1,1]" probability="0.1"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="undead-5" />
+				<sound value="undead-06" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+</creatures>

@@ -65,11 +65,16 @@ public class ApothecaryNPC implements ZoneConfigurator {
 				addHelp("Przykro mi, ale nie jestem w stanie tobie pomóc.");
 				addOffer("Nie mam nic do zaoferowania.");
 				addQuest("Wybacz, ale w tej chwili nie mam nic dla ciebie."); // Antivenom Ring quest not loaded
-				addReply("Athor", "Jeszcze nie odwiedziłeś Athor? To piękna wyspa. Wspaniałe miejsce na oderwanie się od trosk życia codziennego. Ale trzymaj się z daleka od terytorium kanibali. Jeśli zaproszą cię na obiad to możesz nigdy nie zobaczyć domu.");
+				addGoodbye("Proszę nikomu nie mów o moim laboratorium.");
 				addReply(Arrays.asList("Apothecary", "aptekarzem"), "Byłem głównym badaczem oraz pracowałem dla jednego z najpotężniejszych przywódców Faimouni."
 						+ "Jednak ten przywódca został skorumpowany i zażądał, abym wykorzystał swoje umiejętności do stworzenia śmiercionośnej broni wojennej."
 						+ "W każdym razie uciekłem i odtąd się tu chowam.");
-				addGoodbye("Proszę nikomu nie mów o moim laboratorium.");
+				addReply("Klaas", "O tak, mój stary dobry przyjaciel. Często podróżowałem na wyspę #Athor, aby zbierać bardzo rzadkie zioła"
+						+ " #kokuda. Dzięki temu bardzo dobrze poznałem Klaasa.");
+				addReply("Athor", "Jeszcze nie odwiedziłeś Athor? To piękna wyspa. Wspaniałe miejsce na oderwanie się od trosk życia codziennego."
+						+ " Ale trzymaj się z daleka od terytorium kanibali. Jeśli zaproszą cię na obiad to możesz nigdy nie zobaczyć domu.");
+				// XXX: should kokuda be added as required ingredient? would make quest a little more difficult
+				addReply("kokuda", "Kokuda to zioło, które można znaleźć tylko w labiryncie na wyspie #Athor.");
 			}
 		};
 

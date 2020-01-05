@@ -382,16 +382,7 @@ public class ApothecaryStage extends AVRStage {
 	}
 
 	private void addGeneralResponsesDialogue() {
-		apothecary.addReply(
-				"Klaas",
-				"O tak, mój stary dobry przyjaciel. Często podróżowałem na wyspę #Athor, aby zbierać bardzo rzadkie zioła"
-				+ " #kokuda. Dzięki temu bardzo dobrze poznałem Klaasa.");
-		// XXX: should kokuda be added as required ingredient? would make quest a little more difficult
-		apothecary.addReply(
-				"kokuda",
-				"Kokuda to zioło, które można znaleźć tylko w labiryncie na wyspie #Athor.");
-
-		// Player asks about rings
+		// responses to quest related items/ingredients
 		apothecary.addReply(
 				Arrays.asList("ring", "rings", "pierścień", "pierścienie"),
 				"Jest wiele rodzai pierścieni.");
@@ -401,12 +392,15 @@ public class ApothecaryStage extends AVRStage {
 		apothecary.addReply(
 				Arrays.asList("antivenom ring", "antivenom rings", "pierścień antyjadowy", "pierścienie antyjadowy"),
 				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #pierścień #leczniczy.");
-
 		/* this item is not available
 		apothecary.addReply(
 				Arrays.asList("antitoxin ring", "antitoxin rings", "pierścień antytoksyczny", "pierścienie antytoksyczne"),
 				"Heh! Oto ostateczna ochroną przed zatruciami. Powodzenia w zdobyciu!");
 		*/
+		apothecary.addReply(
+				Arrays.asList("venom", "cobra venom", "jad", "jad kobry"),
+				"Ktoś specjalizujący się w zwierzętach może wiedzieć, jak to zdobyć."
+				+ " Proponuję odwiedzić sanktuarium w Ados.");
 		apothecary.addReply(
 				Arrays.asList("gland", "venom gland", "glands", "venom glands", "gruczoł", "gruczoły", "jadowy", "gruczoł jadowy", "gruczoły jadowe"),
 				"Parę #węży posiada gruczoł jadowy, w których znajduje się jad.");

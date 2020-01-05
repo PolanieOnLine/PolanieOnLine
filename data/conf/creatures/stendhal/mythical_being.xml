@@ -50,7 +50,7 @@
       <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
       <item value="szmaragd" quantity="[1,1]" probability="5.0"/>
       <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.10"/>
+      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
       <item value="pierścień szmaragdowy" quantity="[1,1]" probability="0.01"/>
       <item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
     </drops>
@@ -87,8 +87,8 @@
       <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
       <item value="ametyst" quantity="[1,1]" probability="5.0"/>
       <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.10"/>
-      <item value="zbroja cieni" quantity="[1,1]" probability="1.0"/>
+      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
+      <item value="hełm cieni" quantity="[1,1]" probability="2.0"/>
       <item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
     </drops>
     <equips>
@@ -124,7 +124,7 @@
       <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
       <item value="rubin" quantity="[1,1]" probability="5.0"/>
       <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.10"/>
+      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
       <item value="piekielny sztylet" quantity="[1,1]" probability="0.01"/>
       <item value="miecz ognisty" quantity="[1,1]" probability="1.0"/>
     </drops>
@@ -161,8 +161,8 @@
       <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
       <item value="szafir" quantity="[1,1]" probability="5.0"/>
       <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.10"/>
-      <item value="zbroja lazurowa" quantity="[1,1]" probability="1.0"/>
+      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
+      <item value="zbroja lazurowa" quantity="[1,1]" probability="10.0"/>
       <item value="lodowa zbroja" quantity="[1,1]" probability="0.01"/>
     </drops>
     <equips>

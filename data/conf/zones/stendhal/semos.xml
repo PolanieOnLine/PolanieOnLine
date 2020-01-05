@@ -168,6 +168,7 @@
 		<!-- Portals -->
 		<portal x="8" y="22" ref="apothecary_entrance" >
 			<destination zone="int_apothecary_cabin" ref="exit" />
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -224,7 +225,6 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<!-- Portals -->
 		<portal x="33" y="13" ref="lab_exit">
 			<destination zone="int_apothecary_cabin" ref="lab_entrance" />
-			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- Clock -->

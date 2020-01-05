@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="duch">
+		<type class="stendhal/undead" subclass="ghost" tileid="undead_specter.png:0"/>
+		<description>Widzisz ducha! Bój się.</description>
+		<attributes>
+			<atk value="171"/>
+			<def value="25"/>
+			<hp value="140"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="25"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="15"/>
+		<experience value="180"/>
+		<respawn value="1230"/>
+		<corpse name="cloaked_white" harmless="cloaked_white" />
+		<drops>
+			<item value="money" quantity="[4,23]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Uuuuuuuuu!"/>
+				<sound value="ghost-1"/>
+				<sound value="ghost-2"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="coward"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="śmierć">
+		<type class="stendhal/undead" subclass="death" tileid="undead_specter.png:3"/>
+		<description>Oto śmierć. Masz na tyle odwagi, aby stanąć z nią twarzą w twarz? Dziś nie ma nastroju na targo z twoją duszą.</description>
+		<attributes>
+			<atk value="283"/>
+			<def value="69"/>
+			<hp value="120"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="30"/>
+		<experience value="570"/>
+		<respawn value="1350"/>
+		<corpse name="cloaked_blue" harmless="cloaked_blue" />
+		<drops>
+			<item value="money" quantity="[4,20]" probability="100.0"/>
+			<item value="zbroja płytowa" quantity="[1,1]" probability="2.5"/>
+			<item value="kosa" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Sąd Ostateczny już blisko!"/>
+				<noise state="idle follow fight" value="Oh, mój tyś jest, mój!"/>
+				<sound value="laugh-evil-3"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarna śmierć">
+		<type class="stendhal/undead" subclass="black_death" tileid="undead_specter.png:4"/>
+		<description>Oto czarna śmierć. Swą kosą wytnie twą duszę i zaniesie ją za rzekę, gdzie pozostanie do nadejścia dnia sądu.</description>
+		<attributes>
+			<atk value="3451"/>
+			<def value="154"/>
+			<hp value="5900"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+			<visibility value="75"/>
+		</attributes>
+		<level value="300"/>
+		<experience value="270000"/>
+		<respawn value="70000"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
+			<item value="money" quantity="[3000,10000]" probability="100.0"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="1.0"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="2.0"/>
+			<item value="czarne buty" quantity="[1,1]" probability="1.0"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="1.0"/>
+			<item value="czarna kosa" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.6"/>
+			<susceptibility type="light" value="1.3"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nadszedł dzień twej śmierci!"/>
+				<noise state="idle follow fight" value="Pożegnaj się z tym światem!"/>
+				<sound value="laugh-evil-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="lifesteal" params="0.05"/>
+			<profile name="heal" params="35,50"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="złota śmierć">
+		<type class="stendhal/undead" subclass="golden_death" tileid="undead_specter.png:5"/>
+		<description>Oto złota śmierć. Jest tu aby zabrać twą duszę i zapłacić nią za twoje winy.</description>
+		<attributes>
+			<atk value="3968"/>
+			<def value="171"/>
+			<hp value="14000"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
+			<visibility value="75"/>
+		</attributes>
+		<level value="450"/>
+		<experience value="700000"/>
+		<respawn value="240000"/>
+		<corpse name="giant_humanoid" width="2" height="2"/>
+		<drops>
+			<item value="wielki eliksir" quantity="[5,20]" probability="80.0"/>
+			<item value="sztabka złota" quantity="[2,10]" probability="30.0"/>
+			<item value="money" quantity="[8000,40000]" probability="100.0"/>
+			<item value="pierścień szmaragdowy" quantity="[1,1]" probability="2.0"/>
+			<item value="złota klinga" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.1"/>
+			<susceptibility type="light" value="0.8"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Będziesz śnił o mnie tej nocy..."/>
+				<noise state="idle follow fight" value="Zapłacisz za swą chciwość!"/>
+				<sound value="laugh-evil-1"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="20,50"/>
+			<profile name="lifesteal" params="0.1"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="niewidoczny człowiek">
+		<type class="stendhal/undead" subclass="invisible_man" tileid="undead_specter.png:1"/>
+		<description>Nic nie widzisz. Może gdy się przypatrzysz miejscu skąd padają ciosy zauważysz kontur człowieka!</description>
+		<attributes>
+			<atk value="367"/>
+			<def value="59"/>
+			<hp value="275"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="50"/>
+		</attributes>
+		<level value="42"/>
+		<experience value="1160"/>
+		<respawn value="1660"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,30]" probability="90.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Pojawiam się i znikam..."/>
+				<noise state="idle follow fight" value="Moje zdolności budzą strach!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="żywa zbroja">
+		<type class="stendhal/undead" subclass="incorporeal_armor" tileid="undead_specter.png:2"/>
+		<description>Oto zbroja. Nieźle cię zaskoczyło, że porusza się sama w twoją stronę, bo nikogo w niej nie widać.</description>
+		<attributes>
+			<atk value="565"/>
+			<def value="78"/>
+			<hp value="707"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+			<resistance value="100"/>
+			<visibility value="75"/>
+		</attributes>
+		<level value="79"/>
+		<experience value="5720"/>
+		<respawn value="2750"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,30]" probability="90.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Powiadam ci, nie ograbisz mnie!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+</creatures>

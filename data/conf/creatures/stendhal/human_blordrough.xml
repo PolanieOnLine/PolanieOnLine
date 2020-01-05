@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="blordrough kwatermistrz">
+		<type class="stendhal/human" subclass="armored_warrior" tileid="human_armored.png:0"></type>
+		<description>Oto człowiek, który oddał swoje życie jak marionetka armi Blordroughtów, a wszystko to dla miłości smoków. Jest niezwykle szczęśliwy.</description>
+		<attributes>
+			<atk value="727"/>
+			<def value="94"/>
+			<hp value="1317"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="114"/>
+		<experience value="11721"/>
+		<respawn value="5900"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="bukłak z wodą" quantity="[1,2]" probability="10.0"/>
+			<item value="spodnie chaosu" quantity="[1,1]" probability="2.0"/>
+			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.5"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.05"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Możemy być w ukryciu, ale WCIĄŻ będziemy potężni."/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="uzbrojony lider">
+		<type class="stendhal/human" subclass="armored_leader" tileid="human_armored.png:1"/>
+		<description>Widzisz człowieka, który czuje, że jego przeszłość wskazuje jak powinien być traktowany, ale teraz desperacko pragnie prowadzić intelektualną grę w szachy.</description>
+		<attributes>
+			<atk value="842"/>
+			<def value="97"/>
+			<hp value="1898"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="140"/>
+		<experience value="16389"/>
+		<respawn value="9700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="bukłak z wodą" quantity="[1,2]" probability="20.0"/>
+			<item value="spodnie chaosu" quantity="[1,1]" probability="2.5"/>
+			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.5"/>
+			<item value="rękawice chaosu" quantity="[1,1]" probability="0.5"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.25"/>
+			<item value="czarna halabarda" quantity="[1,1]" probability="0.01"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.005"/>
+			<item value="diament" quantity="[1,1]" probability="1.0"/>
+			<item value="zwój deniran" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Okażesz nam szacunek na jaki zasługujemy!"/>
+				<noise state="idle follow fight" value="Martwisz się o wynik meczu szachowego?"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="superczłowiek">
+		<type class="stendhal/human" subclass="super_human" tileid="human_armored.png:2"/>
+		<description>Widzisz człowieka, który jest tylko ułamkiem jego dawnej świetności, jako jednego z najgroźniejszych wrogów Faiumoni. Teraz jego głównym zadaniem jest utrzymanie w domu czystości i schludności.</description>
+		<attributes>
+			<atk value="921"/>
+			<def value="98"/>
+			<hp value="2618"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="165"/>
+		<experience value="21018"/>
+		<respawn value="15000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="20.0"/>
+			<item value="rękawice chaosu" quantity="[1,1]" probability="0.75"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.5"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.1"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Oczyść buty nim wejdziesz w nasze progi."/>
+				<noise state="idle follow fight" value="Nauczę cię czci dla naszego sanktuarium."/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="żołnierz blordrough">
+		<type class="stendhal/human" subclass="armored_soldier" tileid="human_armored.png:3"/>
+		<description>Widzisz człowieka, który jest szybki i silny.</description>
+		<attributes>
+			<atk value="670"/>
+			<def value="102"/>
+			<hp value="2618"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="170"/>
+		<experience value="49900"/>
+		<respawn value="14000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,300]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="20.0"/>
+			<item value="tarcza chaosu" quantity="[1,1]" probability="0.5"/>
+			<item value="rękawice chaosu" quantity="[1,1]" probability="0.25"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.1"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.008"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Argh, jestem silniejszy od ciebie."/>
+				<noise state="idle follow fight" value="Zabiorę cię na dół!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="elitarny żołnierz">
+		<type class="stendhal/human" subclass="armored_elite" tileid="human_armored.png:4"/>
+		<description>Widzisz człowieka, który się starzeje, ale wie, jak walczyć.</description>
+		<attributes>
+			<atk value="665"/>
+			<def value="112"/>
+			<hp value="2618"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="175"/>
+		<experience value="52300"/>
+		<respawn value="16000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,300]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="20.0"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.5"/>
+			<item value="spodnie chaosu" quantity="[1,1]" probability="0.1"/>
+			<item value="rękawice chaosu" quantity="[1,1]" probability="1.0"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Zadzierasz z niewłaściwym wojownikiem!"/>
+				<noise state="idle follow fight" value="Przegrana jest dla przegranych."/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="piechota blordrough">
+		<type class="stendhal/human" subclass="armored_infantry" tileid="human_armored.png:5"/>
+		<description>Widzisz człowieka, który ma płonące rude włosy i czerwone paciorkowate oczy.</description>
+		<attributes>
+			<atk value="693"/>
+			<def value="105"/>
+			<hp value="3318"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="190"/>
+		<experience value="47300"/>
+		<respawn value="17000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,500]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="20.0"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.5"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.1"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.008"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Właśnie otworzyłeś puszkę robaków."/>
+				<noise state="idle follow fight" value="Teraz jest czas na łowienie ryb."/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kapitan blordrough">
+		<type class="stendhal/human" subclass="armored_captain" tileid="human_armored.png:6"/>
+		<description>Widzisz doświadczonego wojownika.</description>
+		<attributes>
+			<atk value="685"/>
+			<def value="115"/>
+			<hp value="3640"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="200"/>
+		<experience value="52600"/>
+		<respawn value="18000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,500]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="20.0"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.5"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.1"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.02"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Opuścisz to miejsce."/>
+				<noise state="idle follow fight" value="To jest moja strefa."/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="generał blordrough">
+		<type class="stendhal/human" subclass="armored_general" tileid="human_armored.png:7"/>
+		<description>Widzisz chudą maszynę do walki.</description>
+		<attributes>
+			<atk value="727"/>
+			<def value="106"/>
+			<hp value="4333"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="210"/>
+		<experience value="57000"/>
+		<respawn value="19000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[200,2000]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="20.0"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="0.1"/>
+			<item value="magiczny płaszcz" quantity="[1,1]" probability="0.02"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Znam wszystkie sztuki walki!"/>
+				<noise state="idle follow fight" value="Zadzierasz z niewłaściwym człowiekiem!"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+</creatures>

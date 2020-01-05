@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- These chess pieces are given a high level to keep them out of deathmatch
+		and the mayor's daily quest. They all reward 0 XP to deter people from
+		killing them. And a token amount of money. Of course they have to be
+		killable so that when black takes whites piece, he literally kills it
+		(doesn't have to push it away, say.) The AI profiles ensure they do not
+		move except when pushed by player. -->
+
+	<!-- START: chaos -->
+
+	<creature name="pionek chaos">
+		<type class="stendhal/chaos" subclass="chaos_soldier" tileid="chess.png:0"/>
+		<hidden/>
+		<description>Oto figura pionka do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="wieża chaos">
+		<type class="stendhal/chaos" subclass="chaos_commander" tileid="chess.png:1"/>
+		<hidden/>
+		<description>Oto figura wieży do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz chaos">
+		<type class="stendhal/chaos" subclass="chaos_dragonrider" tileid="chess.png:2"/>
+		<hidden/>
+		<description>Oto figura konia do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="goniec chaos">
+		<type class="stendhal/chaos" subclass="chaos_sorceror" tileid="chess.png:3"/>
+		<hidden/>
+		<description>Oto figura gońca do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="król chaos">
+		<type class="stendhal/chaos" subclass="chaos_lord" tileid="chess.png:4"/>
+		<hidden/>
+		<description>Oto figura króla do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="królowa chaos">
+		<type class="stendhal/chaos" subclass="chaos_overlord" tileid="chess.png:5"/>
+		<hidden/>
+		<description>Oto figura królowej do szachów. Nie otrzymasz nagrody jeśli ją zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+		</ai>
+	</creature>
+
+	<!-- START: madaram -->
+
+	<creature name="pionek madaram">
+		<type class="stendhal/madaram" subclass="madaram_peasant" tileid="chess.png:6"/>
+		<hidden />
+		<description>Oto figura pionka do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="wieża madaram">
+		<type class="stendhal/madaram" subclass="madaram_axeman" tileid="chess.png:7"/>
+		<hidden/>
+		<description>Oto figura wieży do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz madaram">
+		<type class="stendhal/madaram" subclass="madaram_cavalry" tileid="chess.png:8"/>
+		<hidden/>
+		<description>Oto figura konia do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="goniec madaram">
+		<type class="stendhal/madaram" subclass="madaram_healer" tileid="chess.png:9"/>
+		<hidden/>
+		<description>Oto figura gońca do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="król madaram">
+		<type class="stendhal/madaram" subclass="madaram_buster_blader" tileid="chess.png:10"/>
+		<hidden/>
+		<description>Oto figura króla do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+
+	<creature name="królowa madaram">
+		<type class="stendhal/madaram" subclass="madaram_queen" tileid="chess.png:11"/>
+		<hidden/>
+		<description>Oto figura królowej do szachów. Nie otrzymasz nagrody jeśli ją zabijesz.</description>
+		<attributes>
+			<atk value="100"/>
+			<def value="20"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="1000"/>
+		<experience value="0"/>
+		<respawn value="5000"/>
+		<corpse name="humanoid"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="non offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>	
+</creatures>

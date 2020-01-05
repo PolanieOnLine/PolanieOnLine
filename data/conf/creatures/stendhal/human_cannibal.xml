@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="kanibalska">
+		<type class="stendhal/human" subclass="cannibalwoman" tileid="human_cannibal.png:1"/>
+		<description>Oto pani kanibalska. Chce przyrządzić zupę z Twoich kości!</description>
+		<attributes>
+			<atk value="244"/>
+			<def value="75"/>
+			<hp value="80"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="24"/>
+		<experience value="992"/>
+		<respawn value="1290"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[3,37]" probability="100.0"/>
+			<item value="bursztyn" quantity="[1,2]" probability="10.0"/>
+			<item value="skórzany hełm" quantity="[1,1]" probability="2.5"/>
+			<item value="płaszcz pustynny" quantity="[1,1]" probability="1.0"/>
+			<item value="dynia" quantity="[1,1]" probability="1.0"/>
+			<item value="cebula" quantity="[1,1]" probability="18.0"/>
+			<item value="por" quantity="[1,1]" probability="15.0"/>
+			<item value="pomidor" quantity="[1,2]" probability="20.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Unga-Bunga!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="kanibal">
+		<type class="stendhal/human" subclass="cannibal" tileid="human_cannibal.png:0"/>
+		<description>Oto kanibal. Chce cię złapać by ugotować i zjeść! Bezsensownie jest krzyczeć, że jesteś niesmaczny, lepiej stań z nim do walki lub uciekaj!</description>
+		<attributes>
+			<atk value="281"/>
+			<def value="91"/>
+			<hp value="70"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="30"/>
+		<experience value="1461"/>
+		<respawn value="1350"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[5,39]" probability="100.0"/>
+			<item value="włócznia" quantity="[10,20]" probability="40.0"/>
+			<item value="kapelusz safari" quantity="[1,1]" probability="3.5"/>
+			<item value="tarcza piaskowa" quantity="[1,1]" probability="1.0"/>
+			<item value="ziemniaki" quantity="[1,2]" probability="20.0"/>
+      		<item value="marchew" quantity="[1,2]" probability="20.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Czatanoga Czu Czu!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="starszy kanibal">
+		<type class="stendhal/human" subclass="elder_cannibal" tileid="human_cannibal.png:2"/>
+		<description></description>
+		<attributes>
+			<atk value="315"/>
+			<def value="111"/>
+			<hp value="83"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="35"/>
+		<experience value="1988"/>
+		<respawn value="1420"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[7,48]" probability="100.0"/>
+			<item value="bursztyn" quantity="[1,2]" probability="20.0"/>
+			<item value="tarcza piaskowa" quantity="[1,1]" probability="1.5"/>
+			<item value="eliksir" quantity="[1,3]" probability="20.0"/>
+			<item value="pomidor" quantity="[1,2]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Mniam!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wojownik kanibal">
+		<type class="stendhal/human" subclass="cannibal_warrior" tileid="human_cannibal.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="321"/>
+			<def value="125"/>
+			<hp value="105"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="36"/>
+		<experience value="2163"/>
+		<respawn value="1450"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="włócznia" quantity="[10,25]" probability="45.0"/>
+			<item value="ziemniaki" quantity="[1,2]" probability="20.0"/>
+      		<item value="marchew" quantity="[1,2]" probability="20.0"/>
+      		<item value="tarcza piaskowa" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+		</ai>
+	</creature>
+</creatures>

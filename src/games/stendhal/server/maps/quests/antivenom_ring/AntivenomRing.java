@@ -79,21 +79,30 @@ public class AntivenomRing extends AbstractQuest {
 		if (player.hasQuest(QUEST_SLOT)) {
 			res.add("Znalazłem aptekarza pustelnika w laboratorium w górach Semos.");
 
-			final String questState = player.getQuest(QUEST_SLOT);
-			if (questState.equals("done")) {
-				res.add("Znalazłem wszystko o co poprosił mnie " + apothecary + ".");
-				res.add("Użył specjalnej mikstury na moim pierścieniu, która zwiększyła odporność na truciznę. Dostałem także PD i karmę.");
-			} else if (questState.equals("rejected")) {
+			final String questState = player.getQuest(QUEST_SLOT, 0);
+			if (questState.equals("rejected")) {
 				res.add("Trucizna jest zbyt niebezpieczna. Nie chcę sobie zaszkodzić.");
 			} else {
-				if (questState.startsWith("enhancing;")) {
-					res.add("Znalazłem wszystko o co poprosił mnie " + apothecary + ".");
-					res.add(apothecary + " teraz ulepsza mój pierścień.");
+				if (questState.equals("mixing") || questState.equals("antivenom") || questState.equals("fusing") || questState.equals("done")) {
+					res.add("Znalazłem wszystko o co mnie poprosił " + apothecary + ".");
+					if (questState.equals("mixing")) {
+						res.add("Aktualnie miesza dla mnie antyjad.");
+					} else if (questState.equals("antivenom") || questState.equals("fusing") || questState.equals("done")) {
+						res.add("Stworzył już specjalną mieszaninę antyjadu.");
+						res.add(apothecary + " powiedział, abym odnalazł " + ringmaker + "'a, który mógłby wykorzystać antyjad do zwiększenia odporności mojego pierścienia leczniczego.");
+						if (questState.equals("fusing")) {
+							res.add(ringmaker + " aktualnie aplikuje antyjad do mojego pierścienia.");
+						} else if (questState.equals("done")) {
+							res.add(ringmaker + " skończył swą pracę nad moim pierścieniem.");
+						}
+					}
 				} else {
-					ItemCollection itemList = new ItemCollection();
-					itemList.addFromString(questState.replace(";", ","));
+					final ItemCollection itemList = new ItemCollection();
+					itemList.addFromString(player.getQuest(QUEST_SLOT).replace(";", ","));
 
-					res.add(apothecary + " poprosił mnie o przyniesienie niektórzych przedmiotów. Wciąż muszę je dostarczyć " + apothecary + " " + Grammar.enumerateCollection(itemList.toStringList()) + ".");
+					if (itemList.size() > 0) {
+						res.add("Wciąż muszę zebrać przedmioty dla " + apothecary + ": " + Grammar.enumerateCollection(itemList.toStringList()) + ".");
+					}
 				}
 			}
 		}
