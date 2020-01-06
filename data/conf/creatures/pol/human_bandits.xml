@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: zbojnicy lesni -->
+
+	<creature name="zbójnik leśny">
+		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_mlodszy" tileid="pol_zbojnicy_lesni.png:0"/>
+		<description/>
+		<attributes>
+			<atk value="185"/>
+			<def value="20"/>
+			<hp value="233"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="27"/>
+		<experience value="870"/>
+		<respawn value="1160"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[10,40]" probability="100.0"/>
+			<item value="polska tarcza kolcza" quantity="[1,1]" probability="0.4"/>
+			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
+			<item value="góralski kapelusz" quantity="[1,1]" probability="0.002"/>
+			<item value="sztylecik" quantity="[1,1]" probability="5.0"/>
+			<item value="wzmocniony skórzany pas" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Kruca-fuks! To jest napad!"/>
+				<sound value="pol-zbo_les"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik leśny oszust">
+		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_oszust" tileid="pol_zbojnicy_lesni.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="299"/>
+			<def value="19"/>
+			<hp value="233"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="36"/>
+		<experience value="1470"/>
+		<respawn value="1160"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+			<item value="polska tarcza lekka" quantity="[1,1]" probability="3.0"/>
+			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
+			<item value="sztylet mroku" quantity="[1,1]" probability="0.0001"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Idźze stąd! Jo ino grzyby zbieram."/>
+				<sound value="pol-zbo_les_oszust"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik leśny starszy">
+		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_starszy" tileid="pol_zbojnicy_lesni.png:2"/>
+		<description/>
+		<attributes>
+			<atk value="205"/>
+			<def value="20"/>
+			<hp value="233"/>
+			<speed value="0.4"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="35"/>
+		<experience value="1310"/>
+		<respawn value="1360"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[10,270]" probability="100.0"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="3.0"/>
+			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
+			<item value="góralski kapelusz" quantity="[1,1]" probability="0.1"/>
+			<item value="krótki miecz" quantity="[1,1]" probability="4.0"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.02"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.25"/>
+			<item value="pas zbójecki" quantity="[1,1]" probability="0.3"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Kulawego starca bijesz?!"/>
+				<sound value="pol-zbo_las_starszy"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik leśny zwiadowca">
+		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_zwiadowca" tileid="pol_zbojnicy_lesni.png:3"/>
+		<description/>
+		<attributes>
+			<atk value="225"/>
+			<def value="29"/>
+			<hp value="233"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="37"/>
+		<experience value="1520"/>
+		<respawn value="1460"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[10,11]" probability="100.0"/>
+			<item value="polska tarcza ciężka" quantity="[1,1]" probability="3.0"/>
+			<item value="złota zbroja" quantity="[1,1]" probability="0.0004"/>
+			<item value="spodnie nabijane ćwiekami" quantity="[1,1]" probability="1.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.35"/>
+			<item value="pas zbójecki" quantity="[1,1]" probability="0.5"/>
+			<item value="okoń" quantity="[1,1]" probability="5.0"/>
+			<item value="leszcz" quantity="[1,1]" probability="5.0"/>
+			<item value="karp" quantity="[1,1]" probability="0.5"/>
+			<item value="karp lustrzeń" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie ryzykuj!"/>
+				<sound value="pol-zbo_les_zwiadowca"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik leśny tchórzliwy">
+		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_tchorzliwy" tileid="pol_zbojnicy_lesni.png:4"/>
+		<description/>
+		<attributes>
+			<atk value="185"/>
+			<def value="60"/>
+			<hp value="233"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="26"/>
+		<experience value="970"/>
+		<respawn value="1060"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[10,40]" probability="100.0"/>
+			<item value="polska tarcza kolcza" quantity="[1,1]" probability="0.4"/>
+			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
+			<item value="napój z winogron" quantity="[1,15]" probability="9.0"/>
+			<item value="kiść winogron" quantity="[1,1]" probability="50.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie rusz się!"/>
+				<noise state="idle follow fight" value="Nie widzę z której strony atakować!"/>
+				<sound value="pol-zbo_les_tchorzliwy"/>
+			</says>
+			<profile name="coward"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="banita">
+		<type class="pol/zbojnicy_lesni" subclass="banita" tileid="pol_zbojnicy_lesni.png:5"/>
+		<description/>
+		<attributes>
+			<atk value="161"/>
+			<def value="34"/>
+			<hp value="83"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="39"/>
+		<experience value="870"/>
+		<respawn value="1520"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
+			<item value="portki bukowe" quantity="[1,1]" probability="10.0"/>
+			<item value="góralski kapelusz" quantity="[1,1]" probability="2.0"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.1"/>
+			<item value="kierpce" quantity="[1,1]" probability="0.05"/>
+			<item value="okoń" quantity="[1,1]" probability="5.0"/>
+			<item value="leszcz" quantity="[1,1]" probability="5.0"/>
+			<item value="karp" quantity="[1,1]" probability="0.5"/>
+			<item value="karp lustrzeń" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ten las to mój dom!"/>
+				<sound value="pol-banita"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="banita gajowy">
+		<type class="pol/zbojnicy_lesni" subclass="banita_gajowy" tileid="pol_zbojnicy_lesni.png:6"/>
+		<description/>
+		<attributes>
+			<atk value="131"/>
+			<def value="30"/>
+			<hp value="83"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="29"/>
+		<experience value="770"/>
+		<respawn value="1520"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
+			<item value="portki bukowe" quantity="[1,1]" probability="0.5"/>
+			<item value="góralski kapelusz" quantity="[1,1]" probability="1.0"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.05"/>
+			<item value="kierpce" quantity="[1,1]" probability="0.05"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Nie wynoś drzewa z lasu!"/>
+				<sound value="pol-banita-gajowy"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="banitka">
+		<type class="pol/zbojnicy_lesni" subclass="banitka" tileid="pol_zbojnicy_lesni.png:7"/>
+		<description/>
+		<attributes>
+			<atk value="121"/>
+			<def value="25"/>
+			<hp value="89"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="30"/>
+		<experience value="670"/>
+		<respawn value="1220"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
+			<item value="chusta góralska" quantity="[1,1]" probability="10.0"/>
+			<item value="góralski gorset" quantity="[1,1]" probability="5.0"/>
+			<item value="góralska biała spódnica" quantity="[1,1]" probability="1.0"/>
+			<item value="góralska spódnica" quantity="[1,1]" probability="10.0"/>
+			<item value="korale" quantity="[1,1]" probability="0.005"/>
+			<item value="kierpce" quantity="[1,1]" probability="0.05"/>
+			<item value="wianek" quantity="[1,1]" probability="1.0"/>
+			<item value="truskawka" quantity="[1,1]" probability="90.0"/>
+			<item value="babka lekarska" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Ka diabeł nie moze, to babe wyśle!"/>
+				<sound value="pol-banitka"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<!-- START: zbojnicy gorscy -->
+
+	<creature name="zbójnik górski">
+		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski" tileid="pol_zbojnicy_gorscy.png:0"/>
+		<description>Oto zbójnik górski, który kryje się w jaskiniach.</description>
+		<attributes>
+			<atk value="250"/>
+			<def value="49"/>
+			<hp value="290"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="59"/>
+		<experience value="3110"/>
+		<respawn value="3110"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[9,29]" probability="100.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.25"/>
+			<item value="polska tarcza lekka" quantity="[1,1]" probability="3.2"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik górski goniec">
+		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_goniec" tileid="pol_zbojnicy_gorscy.png:1"/>
+		<description>Oto zbójnik górski goniec, który donosi o wszystkim hersztowi.</description>
+		<attributes>
+			<atk value="290"/>
+			<def value="52"/>
+			<hp value="333"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="60"/>
+		<experience value="3330"/>
+		<respawn value="3110"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[9,10]" probability="100.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.05"/>
+			<item value="polska tarcza kolcza" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik górski złośliwy">
+		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zlosliwy" tileid="pol_zbojnicy_gorscy.png:2"/>
+		<description>Oto zbójnik górski złośliwy, który chociaż gruby atakuje zwinnie.</description>
+		<attributes>
+			<atk value="390"/>
+			<def value="53"/>
+			<hp value="309"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="62"/>
+		<experience value="3630"/>
+		<respawn value="3110"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.5"/>
+			<item value="polska tarcza ciężka" quantity="[1,1]" probability="3.5"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik górski zwiadowca">
+		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zwiadowca" tileid="pol_zbojnicy_gorscy.png:3"/>
+		<description>Oto zbójnik górski zwiadowca, który atakuje cicho i nagle.</description>
+		<attributes>
+			<atk value="330"/>
+			<def value="54"/>
+			<hp value="345"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="63"/>
+		<experience value="3530"/>
+		<respawn value="3110"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.5"/>
+			<item value="pas zbójecki" quantity="[1,1]" probability="1.0"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="4.5"/>
+			<item value="polska tarcza ciężka" quantity="[1,1]" probability="4.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik górski starszy">
+		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_starszy" tileid="pol_zbojnicy_gorscy.png:4"/>
+		<description>Oto zbójnik górski starszy, który chociaż brodę ma siwą zręcznie włada maczugą.</description>
+		<attributes>
+			<atk value="410"/>
+			<def value="51"/>
+			<hp value="290"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="64"/>
+		<experience value="3830"/>
+		<respawn value="3110"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="futro" quantity="[1,1]" probability="10.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="0.005"/>
+			<item value="pas zbójecki" quantity="[1,1]" probability="1.0"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.04"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="zbójnik górski herszt">
+		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_herszt" tileid="pol_zbojnicy_gorscy.png:5"/>
+		<description>Oto herszt zbójników górskich, którego zła sława dotarła daleko poza granice tej krainy.</description>
+		<attributes>
+			<atk value="440"/>
+			<def value="58"/>
+			<hp value="490"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="66"/>
+		<experience value="4400"/>
+		<respawn value="6110"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="pióro herszta hordy zbójeckiej" quantity="[1,1]" probability="100.0"/>
+			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="ciupaga" quantity="[1,1]" probability="4.0"/>
+			<item value="pas zbójecki" quantity="[1,1]" probability="1.15"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.4"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="2.2"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+</creatures>

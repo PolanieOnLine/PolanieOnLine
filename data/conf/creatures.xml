@@ -59,6 +59,9 @@
 	<group uri="creatures/pol/elf.xml" />
 	<group uri="creatures/pol/giant.xml" />
 	<group uri="creatures/pol/human.xml" />
+	<group uri="creatures/pol/human_bandits.xml" />
+	<group uri="creatures/pol/human_knights.xml" />
+	<group uri="creatures/pol/human_pirates.xml" />
 	<group uri="creatures/pol/humanoid.xml" />
 	<group uri="creatures/pol/immortal.xml" />
 	<group uri="creatures/pol/shrub.xml" />

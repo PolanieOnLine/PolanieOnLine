@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="rycerz szafirowy">
+		<type class="pol/rycerze" subclass="rycerz_blekitny" tileid="pol_rycerze.png:0"/>
+		<description/>
+		<attributes>
+			<atk value="556"/>
+			<def value="88"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="74"/>
+		<experience value="5500"/>
+		<respawn value="3000"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="szafir" quantity="[1,1]" probability="0.008"/>
+			<item value="lazurowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz karmazynowy">
+		<type class="pol/rycerze" subclass="rycerz_karmazynowy" tileid="pol_rycerze.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="576"/>
+			<def value="88"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="77"/>
+		<experience value="6000"/>
+		<respawn value="3000"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="rubin" quantity="[1,1]" probability="0.0008"/>
+			<item value="karmazynowy płaszcz smoczy" quantity="[1,1]" probability="20.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz szmaragdowy">
+		<type class="pol/rycerze" subclass="rycerz_szmaragdowy" tileid="pol_rycerze.png:2"/>
+		<description/>
+		<attributes>
+			<atk value="536"/>
+			<def value="88"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="72"/>
+		<experience value="5100"/>
+		<respawn value="3000"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="szmaragd" quantity="[1,1]" probability="0.0008"/>
+			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="20.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz w złotej zbroi">
+		<type class="pol/rycerze" subclass="rycerz_zloty" tileid="pol_rycerze.png:3"/>
+		<description/>
+		<attributes>
+			<atk value="616"/>
+			<def value="88"/>
+			<hp value="500"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="81"/>
+		<experience value="6600"/>
+		<respawn value="3000"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[30,80]" probability="100.0"/>
+			<item value="sztabka złota" quantity="[1,1]" probability="0.001"/>
+			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarny rycerz">
+		<type class="pol/rycerze" subclass="czarny_rycerz" tileid="pol_rycerze.png:4"/>
+		<description/>
+		<attributes>
+			<atk value="600"/>
+			<def value="40"/>
+			<hp value="800"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="102"/>
+		<experience value="6420"/>
+		<respawn value="3020"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[4,60]" probability="100.0"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.005"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.003"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.0025"/>
+			<item value="czarny sztylet" quantity="[1,1]" probability="0.0025"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.04"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="strażnik">
+		<type class="pol/rycerze" subclass="straznik" tileid="pol_rycerze.png:5"/>
+		<description/>
+		<attributes>
+			<atk value="400"/>
+			<def value="35"/>
+			<hp value="800"/>
+			<speed value="0.8"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="92"/>
+		<experience value="6820"/>
+		<respawn value="3020"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[4,60]" probability="100.0"/>
+			<item value="polska tarcza drewniana" quantity="[1,1]" probability="20.0"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="2.0"/>
+			<item value="hełm kolczy" quantity="[1,1]" probability="50.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="strażnik grobli">
+		<type class="pol/rycerze" subclass="straznik_grobli" tileid="pol_rycerze.png:6"/>
+		<description/>
+		<attributes>
+			<atk value="475"/>
+			<def value="40"/>
+			<hp value="800"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="102"/>
+		<experience value="9320"/>
+		<respawn value="4020"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[4,60]" probability="100.0"/>
+			<item value="polska tarcza drewniana" quantity="[1,1]" probability="20.0"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="2.0"/>
+			<item value="hełm kolczy" quantity="[1,1]" probability="50.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="strażnik bramy">
+		<type class="pol/rycerze" subclass="straznik_bramy" tileid="pol_rycerze.png:7"/>
+		<description/>
+		<attributes>
+			<atk value="550"/>
+			<def value="55"/>
+			<hp value="1100"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="122"/>
+		<experience value="11420"/>
+		<respawn value="3020"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[4,60]" probability="100.0"/>
+			<item value="polska tarcza drewniana" quantity="[1,1]" probability="20.0"/>
+			<item value="buty żelazne" quantity="[1,1]" probability="2.0"/>
+			<item value="hełm kolczy" quantity="[1,1]" probability="50.0"/>
+			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="rycerz na białym koniu">
+		<type class="pol/rycerze" subclass="straznik_na_koniu" tileid="pol_rycerze.png:8"/>
+		<description/>
+		<attributes>
+			<atk value="1374"/>
+			<def value="90"/>
+			<hp value="2800"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="202"/>
+		<experience value="71420"/>
+		<respawn value="3020"/>
+		<corpse name="huge_animalhuman" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[4,60]" probability="100.0"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.005"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.003"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="0.0025"/>
+			<item value="czarny sztylet" quantity="[1,1]" probability="0.0025"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.005"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+</creatures>
