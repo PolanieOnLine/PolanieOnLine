@@ -568,6 +568,23 @@ public class StendhalQuestSystem {
 	}
 
 	/**
+	 * gets the IQuest object for a quest.
+	 *
+	 * @param questSlot
+	 * 		Slot name used for quest.
+	 * @return
+	 * 		IQuest or <code>null</code> if it does not exist.
+	 */
+	public IQuest getQuestFromSlot(final String questSlot) {
+		for (final IQuest quest : quests) {
+			if (quest.getSlotName().equals(questSlot)) {
+				return quest;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * unloads a quest and removes the things related to it from the world.
 	 * <p>Note: The quest in question has to support this</p>
 	 *

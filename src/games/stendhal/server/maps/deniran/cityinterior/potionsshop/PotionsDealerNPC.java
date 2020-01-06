@@ -28,6 +28,7 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.NPCEmoteAction;
@@ -57,6 +58,7 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 
 		final Map<String, Integer> pricesBuy = new HashMap<String, Integer>() {{
 			put("mandragora", 1500);
+			put("kokuda", 5000);
 			put("muchomor", 60);
 			put("mocna trucizna", 60);
 			put("bardzo mocna trucizna", 500);
@@ -77,6 +79,15 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 
 		new BuyerAdder().addBuyer(npc, new BuyerBehaviour(pricesBuy));
 		new SellerAdder().addSeller(npc, new SellerBehaviour(pricesSell));
+
+		// add Wanda's shop to the general shop list
+		final ShopList shops = ShopList.get();
+		for (final String key: pricesBuy.keySet()) {
+			shops.add("deniranpotionsbuy", key, pricesBuy.get(key));
+		}
+		for (final String key: pricesSell.keySet()) {
+			shops.add("deniranpotionssell", key, pricesSell.get(key));
+		}
 
 		npc.addGreeting("Witamy w sklepie z miksturami w mieście Deniran.");
 		npc.addJob("Zarządzam tym sklepem z miksturami. Zapytaj mnie o moje #ceny.");

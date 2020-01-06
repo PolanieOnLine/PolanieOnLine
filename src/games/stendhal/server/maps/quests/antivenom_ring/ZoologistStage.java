@@ -57,6 +57,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 	@Override
 	public void addToWorld() {
 		prepareNPCInfo();
+		prepareResponses();
 		prepareRequestVenom();
 		prepareExtractVenom();
 	}
@@ -68,7 +69,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 		zoologist.addHelp(jobInfo);
 		zoologist.addOffer(jobInfo);
 		zoologist.addReply(Arrays.asList("venomous", "jadowitych"), "Mogę użyć mojego sprzętu do #ekstrakcji trucizny z jadowitych zwierząt.");
-		zoologist.addQuest("Nie potrzebuję teraz niczego. Ale może mógłbyś mi pomóc #wydoić niektóre #węże.");
+		zoologist.addQuest("Nie potrzebuję niczego w tym momencie. Ale może mógłbyś mi pomóc #wydoić niektóre #węże.");
 
 		// player speaks to Zoey after starting antivenom ring quest
 		zoologist.add(ConversationStates.IDLE,
@@ -76,6 +77,39 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 				null,
 				ConversationStates.ATTENDING,
 				"O! Zaskoczyłeś mnie. Nie widziałam cię tam. Jestem bardzo zajęta, więc jeśli potrzebujesz czegoś, proszę, powiedz mi szybko.",
+				null);
+	}
+
+	private void prepareResponses() {
+		final String replyVial = "Hmmm... Nie mam tego tutaj. Ale może znajdziesz gdzieś w laboratorium.";
+		final String replyGland = "Potrzebowałabym gruczołu z wystarczająco dużego węża, aby wydobyć przyzwoitą ilość.";
+
+		zoologist.add(ConversationStates.ATTENDING,
+				Arrays.asList("vial", "fiolka"),
+				null,
+				ConversationStates.ATTENDING,
+				replyVial,
+				null);
+
+		zoologist.add(ConversationStates.QUESTION_1,
+				Arrays.asList("vial", "fiolka"),
+				null,
+				ConversationStates.QUESTION_1,
+				replyVial + " Więc... Masz te przedmioty?",
+				null);
+
+		zoologist.add(ConversationStates.ATTENDING,
+				Arrays.asList("gland", "venom gland", "gruczoł", "gruczołu jadu", "gruczoł jadu"),
+				null,
+				ConversationStates.ATTENDING,
+				replyGland,
+				null);
+
+		zoologist.add(ConversationStates.QUESTION_1,
+				Arrays.asList("gland", "venom gland", "gruczoł", "gruczołu jadu", "gruczoł jadu"),
+				null,
+				ConversationStates.QUESTION_1,
+				replyGland + " Więc... Masz te przedmioty?",
 				null);
 	}
 
@@ -87,15 +121,15 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 						"snakes", "poison", "milk", "wydoić", "ekstrakcji", "trucizn", "jad", "kobra", "węża", "wąż", "gruczoł"),
 				new QuestActiveCondition(questName),
 				ConversationStates.QUESTION_1,
-				"Co to jest? Potrzebujesz jadu do stworzenia antyjadu? Mogę wyodrębnić jad z gruczołu jadu "
-				+ "kobry, ale potrzębuję fiolki, aby gdzieś to przetrzymywa. Czy masz te przedmioty?",
+				"Co jest? Potrzebujesz jadu do stworzenia antyjadu? Mogę wyodrębnić jad z #'gruczołu jadu'"
+				+ " kobry, ale potrzębuję fiolki, aby gdzieś to przetrzymywać. Czy masz te przedmioty?",
 				null);
 
 		zoologist.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"O? W porządku. Wróć kiedy to zdobędziesz.",
+				"Och? W porządku. Wróć kiedy to zdobędziesz.",
 				null);
 
 		// player requests venom but doesn't have required items
@@ -105,7 +139,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 						new PlayerHasItemWithHimCondition("fiolka"),
 						new PlayerHasItemWithHimCondition("gruczoł jadowy"))),
 				ConversationStates.IDLE,
-				"Oh? Więc gdzie to jest?",
+				"Och? Więc gdzie to jest?",
 				null);
 
 		// player requests venom and has required items

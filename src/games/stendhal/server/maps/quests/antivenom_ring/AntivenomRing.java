@@ -83,11 +83,11 @@ public class AntivenomRing extends AbstractQuest {
 			if (questState.equals("rejected")) {
 				res.add("Trucizna jest zbyt niebezpieczna. Nie chcę sobie zaszkodzić.");
 			} else {
-				if (questState.equals("mixing") || questState.equals("antivenom") || questState.equals("fusing") || questState.equals("done")) {
+				if (questState.equals("mixing") || questState.equals("ringmaker") || questState.equals("fusing") || questState.equals("done")) {
 					res.add("Znalazłem wszystko o co mnie poprosił " + apothecary + ".");
 					if (questState.equals("mixing")) {
 						res.add("Aktualnie miesza dla mnie antyjad.");
-					} else if (questState.equals("antivenom") || questState.equals("fusing") || questState.equals("done")) {
+					} else if (questState.equals("ringmaker") || questState.equals("fusing") || questState.equals("done")) {
 						res.add("Stworzył już specjalną mieszaninę antyjadu.");
 						res.add(apothecary + " powiedział, abym odnalazł " + ringmaker + "'a, który mógłby wykorzystać antyjad do zwiększenia odporności mojego pierścienia leczniczego.");
 						if (questState.equals("fusing")) {

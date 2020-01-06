@@ -16,6 +16,7 @@ import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
@@ -65,7 +66,7 @@ public class RingMakerStage extends AVRStage {
 			ConversationStates.ATTENDING,
 			keywords,
 			new AndCondition(
-				new QuestInStateCondition(questName, "antivenom"),
+				new QuestInStateCondition(questName, "ringmaker"),
 				new NotCondition(new AndCondition(
 					new PlayerHasItemWithHimCondition("antyjad"),
 					new PlayerHasItemWithHimCondition("pierścień leczniczy"),
@@ -77,25 +78,45 @@ public class RingMakerStage extends AVRStage {
 			+ " Wymagam również opłaty w wysokości 1000 money.",
 			null);
 
-		// player has items
+		/* player has items
+		 *
+		 * Checked other quests related to Ognir. Using QUESTION_1 state appears to be safe to use here.
+		 */
 		ringmaker.add(
 			ConversationStates.ATTENDING,
 			keywords,
 			new AndCondition(
-				new QuestInStateCondition(questName, "antivenom"),
+				new QuestInStateCondition(questName, "ringmaker"),
 				new PlayerHasItemWithHimCondition("antyjad"),
 				new PlayerHasItemWithHimCondition("pierścień leczniczy"),
 				new PlayerHasItemWithHimCondition("money", FEE)
-			),
+					),
+			ConversationStates.QUESTION_1,
+			"Mogę wzmocnić twój pierścień leczniczy, ale potrzebuję fiolki z antyjadem."
+			+ " Wymagam również opłaty w wysokości 1000 money. Czy chcesz zapłacić tę kwotę?",
+			null);
+
+		ringmaker.add(
+			ConversationStates.QUESTION_1,
+			ConversationPhrases.YES_MESSAGES,
+			new QuestInStateCondition(questName, "ringmaker"),
 			ConversationStates.IDLE,
-			"Natychmiast zabiorę cię do połączenia twojego pierścienia antyjadem. Proszę, wróć za "
-			+ Integer.toString(FUSE_TIME_DAYS) + " dni. Pamiętaj, aby poprosić o swój #'pierścień antyjadowy'.",
+			"Natychmiast zabiorę się do połączenia twojego pierścienia z antyjadem. Proszę, wróć za "
+			+ Integer.toString(FUSE_TIME_DAYS) + " dni. Pamiętaj, aby przypomnieć mi o swój #'pierścień antyjadowy'.",
 			new MultipleActions(
 				new DropItemAction("antyjad"),
 				new DropItemAction("pierścień leczniczy"),
 				new DropItemAction("money", 1000),
 				new SetQuestAction(questName, QUEST_STATE_NAME + ";" + Long.toString(System.currentTimeMillis()))
 			));
+
+		ringmaker.add(
+				ConversationStates.QUESTION_1,
+				ConversationPhrases.NO_MESSAGES,
+				new QuestInStateCondition(questName, "ringmaker"),
+				ConversationStates.ATTENDING,
+				"W porządku. Daj mi znać, jeśli zmienisz zdanie.",
+				null);
 	}
 
 	private void addFusingDialogue() {
@@ -120,7 +141,7 @@ public class RingMakerStage extends AVRStage {
 					new TimePassedCondition(questName, 1, FUSE_TIME_MINUTES)
 				),
 			ConversationStates.IDLE,
-			"Skończyłem... Twój pierścień antyjadowy jest gotowy.",
+			"Skończyłem... Twój pierścień antyjadowy jest już gotowy.",
 			new MultipleActions(
 				new EquipItemAction("pierścień antyjadowy", 1, true),
 				new IncreaseXPAction(2000),

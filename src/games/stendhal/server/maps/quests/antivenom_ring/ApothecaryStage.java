@@ -52,8 +52,8 @@ public class ApothecaryStage extends AVRStage {
 	private static final String NOTE_INFOSTRING = "liścik do aptekarza";
 
 	/* items taken to apothecary to create antivenom */
-	private static final String MIX_ITEMS = "jad kobry=1;mandragora=2;mufinka=20";
-	private static final List<String> MIX_NAMES = Arrays.asList("jad kobry", "mandragora", "mufinka");
+	private static final String MIX_ITEMS = "jad kobry=1;mandragora=2;kokuda=1;mufinka=20";
+	private static final List<String> MIX_NAMES = Arrays.asList("jad kobry", "mandragora", "kokuda", "mufinka");
 
 	// time required to mix the antivenom
 	private static final int MIX_TIME_MINUTES = 30;
@@ -137,7 +137,7 @@ public class ApothecaryStage extends AVRStage {
 		apothecary.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
-						new NotCondition(new QuestInStateCondition(questName, "antivenom")),
+						new NotCondition(new QuestInStateCondition(questName, "ringmaker")),
 						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING))
 				),
 				ConversationStates.ATTENDING,
@@ -172,7 +172,7 @@ public class ApothecaryStage extends AVRStage {
 				new QuestActiveCondition(questName),
 				new NotCondition(new QuestInStateCondition(questName, QUEST_STATE_NAME)),
 				new NotCondition(new QuestInStateCondition(questName, RingMakerStage.QUEST_STATE_NAME)),
-				new NotCondition(new QuestInStateCondition(questName, 0, "antivenom")));
+				new NotCondition(new QuestInStateCondition(questName, 0, "ringmaker")));
 
 		// Player asks for quest after it is started
 		apothecary.add(ConversationStates.ATTENDING,
@@ -288,7 +288,7 @@ public class ApothecaryStage extends AVRStage {
 		mixReward.add(new IncreaseXPAction(1000));
 		mixReward.add(new IncreaseKarmaAction(25.0));
 		mixReward.add(new EquipItemAction("antyjad", 1, true));
-		mixReward.add(new SetQuestAction(questName, "donantivenome"));
+		mixReward.add(new SetQuestAction(questName, "ringmaker"));
 		mixReward.add(new SetQuestAction(questName + "_extract", null)); // clear sub-quest slot
 
 		apothecary.add(ConversationStates.IDLE,
@@ -308,13 +308,13 @@ public class ApothecaryStage extends AVRStage {
 	 */
 	private void addDoneMixingDialogue() {
 		final ChatCondition missingAntivenom = new AndCondition(
-				new QuestInStateCondition(questName, 0, "antivenom"),
+				new QuestInStateCondition(questName, 0, "ringmaker"),
 				new NotCondition(new PlayerHasItemWithHimCondition("antyjad")));
 
 		apothecary.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
-				new QuestInStateCondition(questName, 0, "antivenom"),
+				new QuestInStateCondition(questName, 0, "ringmaker"),
 				new PlayerHasItemWithHimCondition("antyjad")
 			),
 			ConversationStates.IDLE,
@@ -391,7 +391,7 @@ public class ApothecaryStage extends AVRStage {
 				"Niektóre trujące potwory noszą go ze sobą.");
 		apothecary.addReply(
 				Arrays.asList("antivenom ring", "antivenom rings", "pierścień antyjadowy", "pierścienie antyjadowy"),
-				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #pierścień #leczniczy.");
+				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #'pierścień leczniczy'.");
 		/* this item is not available
 		apothecary.addReply(
 				Arrays.asList("antitoxin ring", "antitoxin rings", "pierścień antytoksyczny", "pierścienie antytoksyczne"),
@@ -409,9 +409,10 @@ public class ApothecaryStage extends AVRStage {
 				"Słyszałem najnowszą wieść, że odkryto jamę pełną węży gdzieś w Ados, ale"
 				+ " nie sprawdzałem tego. Ten rodzaj pracy lepiej pozostawić podróżnikom.");
 		apothecary.addReply(
-				Arrays.asList("mandragora", "mandragoras", "root of mandragora", "roots of mandragora", "root of mandragoras", "roots of mandragoras"),
-				"To mój ulubiony z pośród wszystkich ziół i den z najrzadszych. Obok Kalavan jest ukryta"
-				+ " ścieżka pomiędzy drzewami. Na jej końcu znajdziesz to czego szukasz.");
+				Arrays.asList("mandragora", "mandragoras", "root of mandragora", "roots of mandragora", "root of mandragoras", "roots of mandragoras",
+						"mandragory", "korzeń mandragory", "korzenie mandragory"),
+				"To mój ulubiony z pośród wszystkich ziół i ten z najrzadszych. W Faimouni jest tylko"
+				+ " kilka miejsc, w których rośnie. Miej czujne oko, bo przegapisz je.");
 		apothecary.addReply(
 				Arrays.asList("cake", "fairy cake", "mufinka"),
 				"Och, są one najlepszą przekąską jaką próbowałem. Tylko najbardziej niebiańskie istoty mogły zrobić tak nieziemskie jedzenie.");

@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -37,15 +42,10 @@ import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
+import games.stendhal.server.entity.npc.condition.QuestRegisteredCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Traps for Klaas
@@ -132,7 +132,7 @@ public class TrapsForKlaas extends AbstractQuest {
 		// Player asks for quest after already started
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestStartedCondition(QUEST_SLOT),
+				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
 				"Wiem, że już się ciebie pytałem o zdobycie " + REQUIRED_TRAPS + " pułapek na gryzonie.",
 				null);
@@ -223,7 +223,9 @@ public class TrapsForKlaas extends AbstractQuest {
 		// brings traps & has already started/completed antivenom ring quest
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.YES_MESSAGES,
-				new PlayerHasItemWithHimCondition("pułapka na gryzonie", 20),
+				new AndCondition(
+						new NotCondition(new QuestRegisteredCondition("antivenom_ring")),
+						new PlayerHasItemWithHimCondition("pułapka na gryzonie", 20)),
 				ConversationStates.ATTENDING,
 				"Dziękuję! Muszę je teraz przygotować tak szybko jak to możliwe. Weź te antidota jako nagrodę.",
 				new MultipleActions(reward));
@@ -232,6 +234,7 @@ public class TrapsForKlaas extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
+						new QuestRegisteredCondition("antivenom_ring"),
 						new PlayerHasItemWithHimCondition("pułapka na gryzonie", 20),
 						new QuestNotStartedCondition("antivenom_ring")),
 				ConversationStates.ATTENDING,
@@ -262,6 +265,7 @@ public class TrapsForKlaas extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
+						new QuestRegisteredCondition("antivenom_ring"),
 						new NotCondition(new PlayerHasItemWithHimCondition("liścik do aptekarza")),
 						new PlayerCanEquipItemCondition("karteczka"),
 						new QuestCompletedCondition(QUEST_SLOT),

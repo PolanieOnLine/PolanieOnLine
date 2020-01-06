@@ -73,7 +73,9 @@ public class ApothecaryNPC implements ZoneConfigurator {
 						+ " #kokuda. Dzięki temu bardzo dobrze poznałem Klaasa.");
 				addReply("Athor", "Jeszcze nie odwiedziłeś Athor? To piękna wyspa. Wspaniałe miejsce na oderwanie się od trosk życia codziennego."
 						+ " Ale trzymaj się z daleka od terytorium kanibali. Jeśli zaproszą cię na obiad to możesz nigdy nie zobaczyć domu.");
-				// XXX: should kokuda be added as required ingredient? would make quest a little more difficult
+				/* this is a required ingredient for Antivenom Ring quest, but reply is added here because Jameson highlights
+				 * keyword "kokuda" even if quest is not active
+				 */
 				addReply("kokuda", "Kokuda to zioło, które można znaleźć tylko w labiryncie na wyspie #Athor.");
 			}
 		};
