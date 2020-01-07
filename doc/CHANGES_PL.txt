@@ -1,11 +1,14 @@
 Changelog
 ---------
 1.09
+Zaktualizowano do najnowszej wersji Stendhala 1.32
+
 *klient*
-- Dodano oraz odświeżono wiele grafik (sloty/ikony/przedmioty/potwory)
+- Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
+- Poprawiono cień u szczurów
 
 *świat*
-- Dodano nowe osiągnięcie za wykonanie zadania na zresetowanie poziomu
+- Dodano 5 nowych osiągnięć za odradzanie u Yereny
 - Poprawiono statystyki oraz drop potwora: legendarny żywioł lodu
 - Poprawiono dialogi w zadaniu na zresetowanie poziomu
 - Rozbudowano zadanie na reset poziomu do 5 etapów
