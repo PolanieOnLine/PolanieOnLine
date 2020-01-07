@@ -125,10 +125,6 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement("friend.pet.condition", "Mój domowy przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
 				Achievement.EASY_BASE_SCORE, true, new PlayerHasPetOrSheepCondition()));
 
-		// reborn
-		achievements.add(createAchievement("friend.quests.reborn", "Odrodzony", "Narodził się na nowo",
-				Achievement.HARD_BASE_SCORE, true, new QuestCompletedCondition("reset_level")));
-
 		return achievements;
 	}
 

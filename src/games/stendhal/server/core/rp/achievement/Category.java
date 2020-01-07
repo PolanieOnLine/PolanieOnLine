@@ -55,6 +55,8 @@ public enum Category {
 	/** kuznice monster quest */
 	QUEST_KUZNICE_MONSTER,
 	/** pets weight **/
-	WEIGHT;
+	WEIGHT,
+	/** rebirths **/
+	REBORN;
 
 }

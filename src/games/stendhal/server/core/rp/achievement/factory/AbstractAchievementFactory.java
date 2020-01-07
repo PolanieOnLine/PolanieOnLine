@@ -78,6 +78,7 @@ public abstract class AbstractAchievementFactory {
 		list.add(new MithrilbourghEnemyArmyAchievementFactory());
 		list.add(new ZakopaneItemQuestAchievementsFactory());
 		list.add(new GdanskJewelleryQuestAchievementFactory());
+		list.add(new RebornAchievementFactory());
 		return list;
 	}
 
