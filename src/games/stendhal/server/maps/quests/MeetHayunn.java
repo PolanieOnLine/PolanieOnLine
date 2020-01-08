@@ -198,7 +198,7 @@ public class MeetHayunn extends AbstractQuest {
 		"To proste, naprawdę. Naciskaj raz na miejsce do którego chcesz się udać. Tam jest więcej informacji, których nie mogę sobie przypomnieć. Wyleciały mi z głowy... chcesz wiedzieć gdzie można o nich poczytać?",
 			null);
 
-		final String epilog = "Na #http://polanieonline.eu możesz znaleźć wiele odpowiedzi, listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Na #http://polanieonline.eu/tabela-doswiadczenia.html możesz znaleźć informacje o punktach doświadczenia i zdobywaniu poziomów\nNa #http://polanieonline.eu/world/hall-of-fame/all_overview.html możesz poczytać o najlepszych wojownikach\n ";
+		final String epilog = "Na #https://polanieonline.eu możesz znaleźć wiele odpowiedzi, listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Na #https://polanieonline.eu/tabela-doswiadczenia.html możesz znaleźć informacje o punktach doświadczenia i zdobywaniu poziomów\nNa #https://polanieonline.eu/world/hall-of-fame/all_overview.html możesz poczytać o najlepszych wojownikach\n ";
 		
 			//This is used if the player returns, asks for #help and then say #yes
 			npc.add(ConversationStates.ATTENDING,

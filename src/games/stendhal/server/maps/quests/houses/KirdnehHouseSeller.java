@@ -76,7 +76,7 @@ final class KirdnehHouseSeller extends HouseSellerNPCBase {
 				null,
 				new BuyHouseChatAction(getCost(), QUEST_SLOT));
 
-		addJob("Jestem agentem nieruchomości z prostymi zasadami. Sprzedaję domy dla miasta Kirdneh. Zapytaj mnie o #cenę jeżeli jesteś zainteresowany. Nasza broszura znajduje się na #http://polanieonline.eu/");
+		addJob("Jestem agentem nieruchomości z prostymi zasadami. Sprzedaję domy dla miasta Kirdneh. Zapytaj mnie o #cenę jeżeli jesteś zainteresowany. Nasza broszura znajduje się na #https://polanieonline.eu/");
 		addReply(Arrays.asList("reputation", "reputacji", "reputację"), "Zapytam Hazel o Ciebie. Jeżeli wykonałeś każde jej zadanie, o które Cię poprosiła i nie zostawiłeś niedokończonego to nie będę widział problemu, aby sprzedać Tobie dom w Kirdneh.");
 		addReply("Amber", "Oh Amber... Tęsknie za nią. Mieliśmy kłótnię po której #odeszła. Mam nadzieje, że u niej wszystko w porządku.");
 		addReply(Arrays.asList("left", "odeszła"), "Osobiście to nie wiem gdzie teraz jest. Jej syn Jef czeka na nią w mieście, ale słyszałem, że jest gdzieś w południowych lasach Fado.");

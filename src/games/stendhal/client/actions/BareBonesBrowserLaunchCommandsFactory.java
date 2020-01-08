@@ -27,14 +27,14 @@ class BareBonesBrowserLaunchCommandsFactory {
 
 	private static void initialize() {
 		commandsAndUrls = new HashMap<String, String>();
-		commandsAndUrls.put("beginnersguide", "http://polanieonline.eu/wprowadzenie.html");
-		commandsAndUrls.put("faq", "http://polanieonline.eu/faq.html");
-		commandsAndUrls.put("manual", "http://polanieonline.eu/wprowadzenie.html");
-		commandsAndUrls.put("rules", "http://polanieonline.eu/regulamin-gry-polanieonline-mmorpg.html");
-		commandsAndUrls.put("changepassword", "http://polanieonline.eu/account/change-password.html");
-		commandsAndUrls.put("loginhistory", "http://polanieonline.eu/account/history.html");
-		commandsAndUrls.put("merge", "http://polanieonline.eu/account/merge.html");
-		commandsAndUrls.put("halloffame", "http://polanieonline.eu/world/hall-of-fame/all_overview.html");
+		commandsAndUrls.put("beginnersguide", "https://polanieonline.eu/wprowadzenie.html");
+		commandsAndUrls.put("faq", "https://polanieonline.eu/faq.html");
+		commandsAndUrls.put("manual", "https://polanieonline.eu/wprowadzenie.html");
+		commandsAndUrls.put("rules", "https://polanieonline.eu/regulamin-gry-polanieonline-mmorpg.html");
+		commandsAndUrls.put("changepassword", "https://polanieonline.eu/account/change-password.html");
+		commandsAndUrls.put("loginhistory", "https://polanieonline.eu/account/history.html");
+		commandsAndUrls.put("merge", "https://polanieonline.eu/account/merge.html");
+		commandsAndUrls.put("halloffame", "https://polanieonline.eu/world/hall-of-fame/all_overview.html");
 	}
 
 	/**

@@ -64,7 +64,7 @@
 			<name>Wejście do Kikareukin</name>
 			<type>dungeon</type>
 			<description>Wejście do Kikareukin i droga do góry do nieba.</description>
-			<url>http://polanieonline.eu/semos</url>
+			<url>https://polanieonline.eu/semos</url>
 		</point-of-interest>
 
 	</zone>
@@ -85,7 +85,7 @@
 			<name>Jaskinia Yeti w Semos</name>
 			<type>dungeon</type>
 			<description>Lepiej na drogę zabierz ze sobą jakieś ciepłe ubrania. (Poziom Wojownika 80 - 200)</description>
-			<url>http://polanieonline.eu/semos</url>
+			<url>https://polanieonline.eu/semos</url>
 		</point-of-interest>
 
 	</zone>
@@ -264,7 +264,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		  <name>Kopalnie Semos</name>
 		  <type>dungeon</type>
 		  <description>Zachodnie wejście do kopalni Semos, miasta Wofoli i ogromnego systemu tuneli prowadzącego w góry. (Poziom Wojownika 6 - 597)</description>
-		  <url>http://polanieonline.eu/semos.html</url>
+		  <url>https://polanieonline.eu/semos.html</url>
 		</point-of-interest>
 
 		<!-- Portals -->
@@ -1356,7 +1356,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<name>Katakumby Semos</name>
 			<type>dungeon</type>
 			<description>Dziura w ziemi na cmentarzu w Semos. Przygotuj się na walkę z nieumarłymi.</description>
-			<url>http://polanieonline.eu/semos</url>
+			<url>https://polanieonline.eu/semos</url>
 		</point-of-interest>
 
 		<entity x="77" y="66">
@@ -1468,7 +1468,7 @@ Południowy-Wschód: Farma
 	 		<title>Jaskinie Semos</title>
 			<type>dungeon</type>
 			<description>Jedno z kilku wejść do systemu tuneli pod północnymi górami. Droga do Mithrilbourghtów i połączenie z jaskiniami Ados. (Poziom Wojownika 15 - 125)</description>
-			<url>http://polanieonline.eu/semos</url>
+			<url>https://polanieonline.eu/semos</url>
 		</point-of-interest>
 
 		<point-of-interest x="115" y="36">
@@ -1476,7 +1476,7 @@ Południowy-Wschód: Farma
 	 		<title>Jaskinie Semos</title>
 			<type>dungeon</type>
 			<description>Jedno z kilku wejść do systemu tuneli pod północnymi górami. Droga do Mithrilbourghtów i połączenie z jaskiniami Ados. Uważaj jeśli wciąż masz niski poziom. (Poziom Wojownika 15 - 125)</description>
-			<url>http://polanieonline.eu/semos</url>
+			<url>https://polanieonline.eu/semos</url>
 		</point-of-interest>
 
 	</zone>
@@ -1866,7 +1866,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 			<name>Podziemia Semos</name>
 			<type>dungeon</type>
 			<description>Jasknie są zaraz w centrum miasta. (Poziom Wojownika 0 - 50)</description>
-			<url>http://polanieonline.eu/semos</url>
+			<url>https://polanieonline.eu/semos</url>
 		</point-of-interest>
 
 		<portal x="30" y="40" ref="semos_restart_life">
@@ -1913,7 +1913,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 			<name>Bank Semos</name>
 			<type>bank</type>
 			<description>Miejsce gdzie możesz zostawić swój dobytek.</description>
-			<url>http://polanieonline.eu/faq</url>
+			<url>https://polanieonline.eu/faq</url>
 		</point-of-interest>
 
 		<portal x="18" y="22" ref="bank_entrance">

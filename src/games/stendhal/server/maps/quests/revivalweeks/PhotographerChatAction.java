@@ -200,7 +200,7 @@ public class PhotographerChatAction implements ChatAction {
 		try {
 			String hash = hmac(i + "_" + outfit, Configuration.getConfiguration().get("stendhal.secret"));
 			StringBuilder sb = new StringBuilder();
-			sb.append("http://polanieonline.eu/content/game/photo.php?outfit=");
+			sb.append("https://polanieonline.eu/content/game/photo.php?outfit=");
 			sb.append(outfit);
 			sb.append("&i=");
 			sb.append(i);

@@ -50,7 +50,7 @@ public class RetireeNPC implements ZoneConfigurator {
 			public void createDialog() {
 				addGreeting();
 				addJob("Ha ha! Praca? Od dawna jestem na emeryturze po tym jak byłem #listonoszem! Ha ha!");
-				addHelp("Nie mogę Ci pomóc, ale ty możesz pomóc PolanieOnLine mówiąc znajomym i pomagając w rozwoju gry! Wejdź na http://polanieonline.eu i zobacz jak możesz nam pomóc!");
+				addHelp("Nie mogę Ci pomóc, ale ty możesz pomóc PolanieOnLine mówiąc znajomym i pomagając w rozwoju gry! Wejdź na https://polanieonline.eu i zobacz jak możesz nam pomóc!");
 				addGoodbye();
 				addReply("listonoszem", "Powinienem dostarczyć wiadomości. Ale teraz jest nowy dzieciak, który się tym zajmuje. Wiesz co wyślę mu wiadomość, aby dostarcył ją tobie.", new StoreMessageAction("Diogenes", "Cześć to była miła rozmowa z tobą w Semos. Jeżeli chcesz skorzystać z listonosza, aby wysłać wiadomość innym, których teraz nie ma to powiedz /msg postman"));
 				addOffer("Cóż cóż... Wciąż mógłbym zaopiekować się twoimi listami, ale jestem teraz na emeryturze i ktoś inny ma teraz moją posadę. Możesz odwiedzić tą osobę, nowego #listonosza na równinach Semos na północ stąd.");
