@@ -201,7 +201,9 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING,
-				NAGRODA,
+				NAGRODA, 
+			new MultipleAction(,
+				new TeleportAction("int_zakopane_home", 4, 16, Direction.DOWN),
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
