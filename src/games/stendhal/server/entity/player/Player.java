@@ -1586,6 +1586,7 @@ public class Player extends DressedEntity implements UseListener {
 		final String textksiaze = "Oto książe " + getTitle() + ".\n" + getTitle()
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
+		// Rangi administratorów
 		final String texttutor = "Oto #Tutor " + getTitle() + ".\n" + getTitle()
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
@@ -1599,14 +1600,8 @@ public class Player extends DressedEntity implements UseListener {
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
 
-		/**
-		 * final String text = "Oto " + getTitle() + ".\n" + getTitle()
-		 *		+ " posiada poziom " + getLevel() + ". Wiek " + time
-		 *		+ ".";
-		 */
-
 		final StringBuilder sb = new StringBuilder();
-		if (getAdminLevel() < 1) {
+		if (getAdminLevel() == 0) {
 			if (getLevel() < 50) {
 				sb.append(textparobek);
 			} else if ((getLevel() >= 50) && (getLevel() < 100)) {
@@ -1814,7 +1809,6 @@ public class Player extends DressedEntity implements UseListener {
 		 * If we are too far from dependents, then disallow zone change
 		 */
 		final Sheep sheep = getSheep();
-
 		if (sheep != null) {
 			if (squaredDistance(sheep) > 7 * 7) {
 				return false;
@@ -1822,7 +1816,6 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		final Goat goat = getGoat();
-
 		if (goat != null) {
 			if (squaredDistance(goat) > 7 * 7) {
 				return false;
@@ -1830,7 +1823,6 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		final Pet pet = getPet();
-
 		if (pet != null) {
 			if (squaredDistance(pet) > 7 * 7) {
 				return false;
