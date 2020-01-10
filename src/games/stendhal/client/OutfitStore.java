@@ -116,7 +116,7 @@ public class OutfitStore {
 				continue;
 			}
 
-			// other outfit layers isn't drawn under cavalery dress
+			// other outfit layers isn't drawn with cavalery body
 			final boolean body_without_layers = BODY_WITHOUT_OTHER_LAYERS.contains(layer_map.get("body"));
 			if ((lname.equals("dress") && body_without_layers)
 					|| (lname.equals("head") && body_without_layers)
