@@ -5,13 +5,17 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 
 *klient*
 - Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
+- Dodano wiele nowych dźwięków potworów
 - Poprawiono cień u szczurów
+- Poprawiono system ukrywania strojów po wyborze ciała kawalerzysty (nie będzie nam usuwać wcześniejszego outfitu),
+oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 
 *świat*
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
-- Poprawiono statystyki oraz drop potwora: legendarny żywioł lodu
-- Poprawiono dialogi w zadaniu na zresetowanie poziomu
 - Rozbudowano zadanie na reset poziomu do 5 etapów
+- Po wykonaniu danego etapu[1-5] na zresetowanie poziomu zostaniemy przeteleportowani do int_zakopane_home
+- Poprawiono dialogi w zadaniu na zresetowanie poziomu
+- Poprawiono statystyki oraz drop potwora: legendarny żywioł lodu
 
 
 1.08.1
