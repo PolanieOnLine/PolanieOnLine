@@ -28,7 +28,7 @@ public class Outfits {
 	 */
 
 	/** number of player selectable heads */
-	public static final int HEAD_OUTFITS = 20;
+	public static final int HEAD_OUTFITS = 19;
 
 	/** number of player selectable dresses */
 	public static final int CLOTHES_OUTFITS = 91;
@@ -47,6 +47,10 @@ public class Outfits {
 
 	// hair should not be drawn with hat indexes in this list
 	public static final List<Integer> HATS_NO_HAIR = Arrays.asList(3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 996, 997);
+	// dress should not be drawn with silme body indexes in this list
+	public static final List<Integer> SLIMEBODY_NO_DRESS = Arrays.asList(13, 14, 15, 16, 17);
+	// some outfit layers should not be drawn with cavalery dress indexes in this list
+	public static final List<Integer> BODY_WITHOUT_OTHER_LAYERS = Arrays.asList(18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 50, 51);
 
 	// layers used for building outfits
 	public static final List<String> LAYER_NAMES = Arrays.asList(

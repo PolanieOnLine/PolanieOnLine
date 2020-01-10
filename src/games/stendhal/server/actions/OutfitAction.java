@@ -65,11 +65,6 @@ public class OutfitAction implements ActionListener {
 					player.remove(COLOR_MAP, "dress");
 				}
 
-				// Remove dress, head, mask, hair, hat & detail layers when we choose any cavalry body or magical skin or alien skin
-				if (player.getOutfit().getLayer("body") > 17 && player.getOutfit().getLayer("body") < 33) {
-					player.setOutfit(new Outfit(player.getOutfit().getLayer("body"), 0, 0, 0, 0, 0, 0), false);
-				}
-
 				// Server changes us gender if we set definite body
 				if ((player.getOutfit().getLayer("body") > 4 && player.getOutfit().getLayer("body") < 11)
 						|| player.getOutfit().getLayer("body") == 20 || player.getOutfit().getLayer("body") > 21 && player.getOutfit().getLayer("body") < 27

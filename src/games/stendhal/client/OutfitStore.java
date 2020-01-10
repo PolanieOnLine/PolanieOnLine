@@ -13,6 +13,8 @@
 package games.stendhal.client;
 
 import static games.stendhal.common.Outfits.HATS_NO_HAIR;
+import static games.stendhal.common.Outfits.BODY_WITHOUT_OTHER_LAYERS;
+import static games.stendhal.common.Outfits.SLIMEBODY_NO_DRESS;
 import static games.stendhal.common.Outfits.LAYER_NAMES;
 import static games.stendhal.common.Outfits.RECOLORABLE_OUTFIT_PARTS;
 
@@ -42,7 +44,7 @@ public class OutfitStore {
 	private static final String OUTFITS = "data/sprites/outfit";
 
 	// these layers should return an empty sprite for index "0"
-	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mask", "hair", "hat", "head", "detail");
+	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mask", "hair", "hat", "detail");
 
 	/**
 	 * The singleton.
@@ -107,6 +109,15 @@ public class OutfitStore {
 		for (String lname: LAYER_NAMES) {
 			// hair is not drawn under certain hats/helmets
 			if (lname.equals("hair") && HATS_NO_HAIR.contains(layer_map.get("hat"))) {
+				continue;
+			}
+			// dress is no drawn with silme body
+			if (lname.equals("dress") && SLIMEBODY_NO_DRESS.contains(layer_map.get("body"))) {
+				continue;
+			}
+			// other outfit layers isn't drawn under cavalery dress
+			if ((lname.equals("dress") && lname.equals("head") && lname.equals("hair") && lname.equals("mask")
+					&& lname.equals("hat") && lname.equals("detail")) && BODY_WITHOUT_OTHER_LAYERS.contains(layer_map.get("body"))) {
 				continue;
 			}
 
