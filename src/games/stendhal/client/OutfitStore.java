@@ -115,9 +115,15 @@ public class OutfitStore {
 			if (lname.equals("dress") && SLIMEBODY_NO_DRESS.contains(layer_map.get("body"))) {
 				continue;
 			}
+
 			// other outfit layers isn't drawn under cavalery dress
-			if ((lname.equals("dress") && lname.equals("head") && lname.equals("hair") && lname.equals("mask")
-					&& lname.equals("hat") && lname.equals("detail")) && BODY_WITHOUT_OTHER_LAYERS.contains(layer_map.get("body"))) {
+			final boolean body_without_layers = BODY_WITHOUT_OTHER_LAYERS.contains(layer_map.get("body"));
+			if ((lname.equals("dress") && body_without_layers)
+					|| (lname.equals("head") && body_without_layers)
+					|| (lname.equals("hair") && body_without_layers)
+					|| (lname.equals("mask") && body_without_layers)
+					|| (lname.equals("hat") && body_without_layers)
+					|| (lname.equals("detail") && body_without_layers)) {
 				continue;
 			}
 
