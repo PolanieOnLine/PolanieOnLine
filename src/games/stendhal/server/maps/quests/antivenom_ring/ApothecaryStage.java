@@ -55,8 +55,8 @@ public class ApothecaryStage extends AVRStage {
 	private static final String MIX_ITEMS = "jad kobry=1;mandragora=2;kokuda=1;mufinka=20";
 	private static final List<String> MIX_NAMES = Arrays.asList("jad kobry", "mandragora", "kokuda", "mufinka");
 
-	// time required to mix the antivenom
-	private static final int MIX_TIME_MINUTES = 30;
+	// time required (in minutes) to mix the antivenom
+	private static final int MIX_TIME = 30;
 
 	private static final String QUEST_STATE_NAME = "mixing";
 
@@ -252,7 +252,7 @@ public class ApothecaryStage extends AVRStage {
 		ChatAction mixAction = new MultipleActions (
 		new SetQuestAction(questName, QUEST_STATE_NAME + ";" + Long.toString(System.currentTimeMillis())),
 		new SayTextAction("Dziękuję. Biorę się do pracy nad sprządzeniem antyjadu, ale to jak zjem parę mufinek. Proszę wróć za "
-				+ Integer.toString(MIX_TIME_MINUTES) + " minut.")
+				+ Integer.toString(MIX_TIME) + " minut.")
 		);
 
 		/* add triggers for the item names */
@@ -279,14 +279,14 @@ public class ApothecaryStage extends AVRStage {
 				new AndCondition(
 						new GreetingMatchesNameCondition(apothecary.getName()),
 						new QuestStateStartsWithCondition(questName, QUEST_STATE_NAME),
-						new NotCondition(new TimePassedCondition(questName, 1, MIX_TIME_MINUTES))),
+						new NotCondition(new TimePassedCondition(questName, 1, MIX_TIME))),
 				ConversationStates.IDLE,
 				null,
-				new SayTimeRemainingAction(questName, 1, MIX_TIME_MINUTES, "Jeszcze nie skończyłem mieszać antyjadu. Wróć później za "));
+				new SayTimeRemainingAction(questName, 1, MIX_TIME, "Jeszcze nie skończyłem mieszać antyjadu. Wróć później za "));
 
 		final List<ChatAction> mixReward = new LinkedList<ChatAction>();
 		mixReward.add(new IncreaseXPAction(1000));
-		mixReward.add(new IncreaseKarmaAction(25.0));
+		mixReward.add(new IncreaseKarmaAction(50.0));
 		mixReward.add(new EquipItemAction("antyjad", 1, true));
 		mixReward.add(new SetQuestAction(questName, "ringmaker"));
 		mixReward.add(new SetQuestAction(questName + "_extract", null)); // clear sub-quest slot
@@ -295,11 +295,11 @@ public class ApothecaryStage extends AVRStage {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(apothecary.getName()),
 						new QuestInStateCondition(questName, 0, QUEST_STATE_NAME),
-						new TimePassedCondition(questName, 1, MIX_TIME_MINUTES)
+						new TimePassedCondition(questName, 1, MIX_TIME)
 				),
 			ConversationStates.IDLE,
 			"Skończyłem mieszać antyjad. Ognir jest wykwalifikowanym kowalem pierścieniowym. Może połączyć antyjad z twym pierścieniem."
-			+ " Teraz sobie zjem resztę mufinek jeśli pozwolisz.",
+			+ " Zapytaj jego o #'pierścień antyjadowy'. Teraz sobie zjem resztę mufinek jeśli pozwolisz.",
 			new MultipleActions(mixReward));
 	}
 

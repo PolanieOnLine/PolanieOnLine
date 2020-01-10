@@ -3,180 +3,207 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="mermaid">
-	    <type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
-	    <description>Oto mermaid. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
-	    <attributes>
-	      <atk value="547"/>
-	      <def value="76"/>
-	      <hp value="680"/>
-	      <speed value="1.0"/>
-	      <size value="1,1"/>
-	    </attributes>
-	    <level value="76"/>
-	    <experience value="5406"/>
-	    <respawn value="2570"/>
-	    <corpse name="humanoid"/>
-	    <drops>
-	      <item value="money" quantity="[10,50]" probability="100.0"/>
-	      <item value="mocne antidotum" quantity="[1,3]" probability="70.0"/>
-	      <item value="duży eliksir" quantity="[1,2]" probability="35.0"/>
-	      <item value="czarna perła" quantity="[1,1]" probability="30.0"/>
-	    </drops>
-	    <equips>
-	    </equips>
-	    <ai>
-	      <profile name="offensive"/>
-	      <profile name="human"/>
-	      <profile name="heal" params="5,30"/>
-	      <profile name="patrolling"/>
-	    </ai>
+			<type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
+			<description>Oto mermaid. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
+			<attributes>
+				<atk value="547"/>
+				<def value="76"/>
+				<hp value="680"/>
+				<speed value="1.0"/>
+				<size value="1,1"/>
+			</attributes>
+			<level value="76"/>
+			<experience value="5406"/>
+			<respawn value="2570"/>
+			<corpse name="humanoid"/>
+			<drops>
+				<item value="money" quantity="[10,50]" probability="100.0"/>
+				<item value="mocne antidotum" quantity="[1,3]" probability="70.0"/>
+				<item value="duży eliksir" quantity="[1,2]" probability="35.0"/>
+				<item value="czarna perła" quantity="[1,1]" probability="30.0"/>
+			</drops>
+			<equips>
+			</equips>
+			<ai>
+				<says>
+					<sound value="mermaid_song-01"/>
+					<sound value="mermaid_song-02"/>
+					<sound value="mermaid_song-03"/>
+					<sound value="mermaid_song-04"/>
+					<sound value="mermaid_song-05"/>
+				</says>
+				<profile name="offensive"/>
+				<profile name="human"/>
+				<profile name="heal" params="5,30"/>
+				<profile name="patrolling"/>
+			</ai>
 	</creature>
 
-  <creature name="szmaragdowa mermaid">
-    <type class="stendhal/mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
-    <description></description>
-    <attributes>
-      <atk value="1120"/>
-      <def value="105"/>
-      <hp value="4333"/>
-      <speed value="1.0"/>
-      <size value="2,2"/>
-    </attributes>
-    <level value="215"/>
-    <experience value="90000"/>
-    <respawn value="28000"/>
-    <corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
-    <drops>
-      <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
-      <item value="szmaragd" quantity="[1,1]" probability="5.0"/>
-      <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
-      <item value="pierścień szmaragdowy" quantity="[1,1]" probability="0.01"/>
-      <item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
-    </drops>
-    <equips>
-    </equips>
-    <ai>
-      <says>
-        <noise state="idle follow fight" value="Opuść to miejsce."/>
-        <noise state="idle follow fight" value="Rzucę na ciebie klątwę."/>
-      </says>
-      <profile name="brave"/>
-      <profile name="animal"/>
-      <profile name="offensive"/>
-      <profile name="heal" params="5,50"/>
-      <profile name="patrolling"/>
-    </ai>
-  </creature>
+	<creature name="szmaragdowa mermaid">
+		<type class="stendhal/mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
+		<description></description>
+		<attributes>
+			<atk value="1120"/>
+			<def value="105"/>
+			<hp value="4333"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="215"/>
+		<experience value="90000"/>
+		<respawn value="28000"/>
+		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<drops>
+			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="szmaragd" quantity="[1,1]" probability="5.0"/>
+			<item value="money" quantity="[200,2000]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
+			<item value="pierścień szmaragdowy" quantity="[1,1]" probability="0.01"/>
+			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Opuść to miejsce."/>
+				<noise state="idle follow fight" value="Rzucę na ciebie klątwę."/>
+				<sound value="mermaid_song-01"/>
+				<sound value="mermaid_song-02"/>
+				<sound value="mermaid_song-03"/>
+				<sound value="mermaid_song-04"/>
+				<sound value="mermaid_song-05"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 
-  <creature name="ametystowa mermaid">
-    <type class="stendhal/mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
-    <description></description>
-    <attributes>
-      <atk value="1120"/>
-      <def value="105"/>
-      <hp value="4333"/>
-      <speed value="1.0"/>
-      <size value="2,2"/>
-    </attributes>
-    <level value="215"/>
-    <experience value="90000"/>
-    <respawn value="28000"/>
-    <corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
-    <drops>
-      <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
-      <item value="ametyst" quantity="[1,1]" probability="5.0"/>
-      <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
-      <item value="hełm cieni" quantity="[1,1]" probability="2.0"/>
-      <item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
-    </drops>
-    <equips>
-    </equips>
-    <ai>
-      <says>
-        <noise state="idle follow fight" value="Opuść nasz dom."/>
-        <noise state="idle follow fight" value="Jestem tutaj, aby zniszczyć wszystkich ludzi."/>
-      </says>
-      <profile name="brave"/>
-      <profile name="animal"/>
-      <profile name="offensive"/>
-      <profile name="heal" params="5,50"/>
-      <profile name="patrolling"/>
-    </ai>
-  </creature>
+	<creature name="ametystowa mermaid">
+		<type class="stendhal/mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
+		<description></description>
+		<attributes>
+			<atk value="1120"/>
+			<def value="105"/>
+			<hp value="4333"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="215"/>
+		<experience value="90000"/>
+		<respawn value="28000"/>
+		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<drops>
+			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="ametyst" quantity="[1,1]" probability="5.0"/>
+			<item value="money" quantity="[200,2000]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
+			<item value="hełm cieni" quantity="[1,1]" probability="2.0"/>
+			<item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Opuść nasz dom."/>
+				<noise state="idle follow fight" value="Jestem tutaj, aby zniszczyć wszystkich ludzi."/>
+				<sound value="mermaid_song-01"/>
+				<sound value="mermaid_song-02"/>
+				<sound value="mermaid_song-03"/>
+				<sound value="mermaid_song-04"/>
+				<sound value="mermaid_song-05"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 
-  <creature name="rubinowa mermaid">
-    <type class="stendhal/mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
-    <description></description>
-    <attributes>
-      <atk value="1120"/>
-      <def value="105"/>
-      <hp value="4333"/>
-      <speed value="1.0"/>
-      <size value="2,2"/>
-    </attributes>
-    <level value="215"/>
-    <experience value="90000"/>
-    <respawn value="28000"/>
-    <corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
-    <drops>
-      <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
-      <item value="rubin" quantity="[1,1]" probability="5.0"/>
-      <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
-      <item value="piekielny sztylet" quantity="[1,1]" probability="0.01"/>
-      <item value="miecz ognisty" quantity="[1,1]" probability="1.0"/>
-    </drops>
-    <equips>
-    </equips>
-    <ai>
-      <says>
-        <noise state="idle follow fight" value="Opuść to miejsce."/>
-        <noise state="idle follow fight" value="Wyniosę cię stąd."/>
-      </says>
-      <profile name="brave"/>
-      <profile name="animal"/>
-      <profile name="offensive"/>
-      <profile name="heal" params="5,50"/>
-      <profile name="patrolling"/>
-    </ai>
-  </creature>
+	<creature name="rubinowa mermaid">
+		<type class="stendhal/mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
+		<description></description>
+		<attributes>
+			<atk value="1120"/>
+			<def value="105"/>
+			<hp value="4333"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="215"/>
+		<experience value="90000"/>
+		<respawn value="28000"/>
+		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<drops>
+			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="rubin" quantity="[1,1]" probability="5.0"/>
+			<item value="money" quantity="[200,2000]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
+			<item value="piekielny sztylet" quantity="[1,1]" probability="0.01"/>
+			<item value="miecz ognisty" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Opuść to miejsce."/>
+				<noise state="idle follow fight" value="Wyniosę cię stąd."/>
+				<sound value="mermaid_song-01"/>
+				<sound value="mermaid_song-02"/>
+				<sound value="mermaid_song-03"/>
+				<sound value="mermaid_song-04"/>
+				<sound value="mermaid_song-05"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 
-  <creature name="szafirowa mermaid">
-    <type class="stendhal/mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
-    <description></description>
-    <attributes>
-      <atk value="1120"/>
-      <def value="105"/>
-      <hp value="4333"/>
-      <speed value="1.0"/>
-      <size value="2,2"/>
-    </attributes>
-    <level value="215"/>
-    <experience value="90000"/>
-    <respawn value="28000"/>
-    <corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
-    <drops>
-      <item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
-      <item value="szafir" quantity="[1,1]" probability="5.0"/>
-      <item value="money" quantity="[200,2000]" probability="100.0"/>
-      <item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
-      <item value="zbroja lazurowa" quantity="[1,1]" probability="10.0"/>
-      <item value="lodowa zbroja" quantity="[1,1]" probability="0.01"/>
-    </drops>
-    <equips>
-    </equips>
-    <ai>
-      <says>
-        <noise state="idle follow fight" value="Jesteś skazany na ZAGŁADĘ."/>
-        <noise state="idle follow fight" value="Nie rzucaj mi wyzwania."/>
-      </says>
-      <profile name="brave"/>
-      <profile name="animal"/>
-      <profile name="offensive"/>
-      <profile name="heal" params="5,50"/>
-      <profile name="patrolling"/>
-    </ai>
-  </creature>
+	<creature name="szafirowa mermaid">
+		<type class="stendhal/mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="1120"/>
+			<def value="105"/>
+			<hp value="4333"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="215"/>
+		<experience value="90000"/>
+		<respawn value="28000"/>
+		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<drops>
+			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="szafir" quantity="[1,1]" probability="5.0"/>
+			<item value="money" quantity="[200,2000]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
+			<item value="zbroja lazurowa" quantity="[1,1]" probability="10.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="0.01"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Jesteś skazany na ZAGŁADĘ."/>
+				<noise state="idle follow fight" value="Nie rzucaj mi wyzwania."/>
+				<sound value="mermaid_song-01"/>
+				<sound value="mermaid_song-02"/>
+				<sound value="mermaid_song-03"/>
+				<sound value="mermaid_song-04"/>
+				<sound value="mermaid_song-05"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 </creatures>

@@ -53,7 +53,7 @@ import games.stendhal.server.util.ItemCollection;
  * <ul>
  * <li>3000 XP (1000 from Jameson & 2000 from Ognir)</li>
  * <li>antivenom ring</li>
- * <li>Karma: 75 (25 from Jameson & 50 from Ognir)</li>
+ * <li>Karma: 205 total (50 (+5 for starting) from Jameson & 150 from Ognir)</li>
  * </ul>
  *
  * REPETITIONS:
@@ -89,7 +89,8 @@ public class AntivenomRing extends AbstractQuest {
 						res.add("Aktualnie miesza dla mnie antyjad.");
 					} else if (questState.equals("ringmaker") || questState.equals("fusing") || questState.equals("done")) {
 						res.add("Stworzył już specjalną mieszaninę antyjadu.");
-						res.add(apothecary + " powiedział, abym odnalazł " + ringmaker + "'a, który mógłby wykorzystać antyjad do zwiększenia odporności mojego pierścienia leczniczego.");
+						res.add(apothecary + " powiedział, abym odnalazł " + ringmaker + "'a, który mógłby wykorzystać antyjad do zwiększenia odporności "
+								+ "mojego pierścienia leczniczego. Powinienem się go spytać o pierścień antyjadowy.");
 						if (questState.equals("fusing")) {
 							res.add(ringmaker + " aktualnie aplikuje antyjad do mojego pierścienia.");
 						} else if (questState.equals("done")) {
@@ -102,6 +103,8 @@ public class AntivenomRing extends AbstractQuest {
 
 					if (itemList.size() > 0) {
 						res.add("Wciąż muszę zebrać przedmioty dla " + apothecary + ": " + Grammar.enumerateCollection(itemList.toStringList()) + ".");
+						res.add(apothecary + " zalecił, żebym odwiedził sanktuarium dla zwierząt w pobliżu Ados, aby dowiedzieć się, "
+								+ "jak mogę zdobyć jad kobry.");
 					}
 				}
 			}
@@ -192,7 +195,7 @@ public class AntivenomRing extends AbstractQuest {
 				hintNPC4.getName(),
 				null,
 				ConversationStates.ATTENDING,
-				hintNPC4.getName() + " jest czarodziejem, który mieszka na zachód stąd.",
+				hintNPC4.getName() + " jest czarodziejem, który mieszka na zachód od miasta Ados.",
 				null);
 
 		/* Haizen */
@@ -219,7 +222,7 @@ public class AntivenomRing extends AbstractQuest {
 				null);
 
 		hintNPC4.add(ConversationStates.ATTENDING,
-				hintNPC5.getName(),
+				Arrays.asList(hintNPC5.getName(), "Ortiv"),
 				null,
 				ConversationStates.ATTENDING,
 				hintNPC5.getName() + " jest byłym instruktorem alchemii, przeszedł na emeryturę i mieszka w Kirdneh City.",

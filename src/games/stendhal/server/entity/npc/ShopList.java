@@ -464,6 +464,11 @@ public final class ShopList {
 		shops.add("buyblack", "halabarda czarna", 30000);
 
 		// ados market
+		shops.add("buyadosarmors", "lazurowy hełm", 900);
+		shops.add("buyadosarmors", "buty lazurowe", 200);
+		shops.add("buyadosarmors", "prążkowany płaszcz lazurowy", 500);
+		shops.add("buyadosarmors", "zbroja lazurowa", 13000);
+		shops.add("buyadosarmors", "spodnie lazurowe", 400);
 		shops.add("buyadosarmors", "lazurowa tarcza", 900);
 
 		// Athor ferry
