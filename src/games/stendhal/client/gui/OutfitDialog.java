@@ -13,6 +13,8 @@
 package games.stendhal.client.gui;
 
 import static games.stendhal.common.Outfits.HATS_NO_HAIR;
+import static games.stendhal.common.Outfits.BODY_WITHOUT_OTHER_LAYERS;
+import static games.stendhal.common.Outfits.SLIMEBODY_NO_DRESS;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -320,6 +322,19 @@ class OutfitDialog extends JDialog {
 				for (SpriteRetriever retriever : retrievers) {
 					// hair is not drawn under certain hats/helmets
 					if (retriever.equals(hairRetriever) && HATS_NO_HAIR.contains(hat.getIndex())) {
+						continue;
+					}
+					// dress is not drawn with slime body
+					if (retriever.equals(dressRetriever) && SLIMEBODY_NO_DRESS.contains(body.getIndex())) {
+						continue;
+					}
+					// other outfit layers isn't drawn with cavalery body
+					final boolean body_without_layers = BODY_WITHOUT_OTHER_LAYERS.contains(body.getIndex());
+					if ((retriever.equals(dressRetriever) && body_without_layers)
+							|| (retriever.equals(headRetriever) && body_without_layers)
+							|| (retriever.equals(hairRetriever) && body_without_layers)
+							|| (retriever.equals(maskRetriever) && body_without_layers)
+							|| (retriever.equals(hatRetriever) && body_without_layers)) {
 						continue;
 					}
 
