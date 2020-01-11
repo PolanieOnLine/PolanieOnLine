@@ -33,6 +33,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 - Poprawiono dialogi w zadaniu na zresetowanie poziomu
 - Poprawiono statystyki oraz drop potwora: legendarny żywioł lodu
 - Zmieniono parametry mieczyka (+2 ataku więcej - czyli 9/3)
+- Zwiększono nieco możliwe wartości money do zdobycia u banity & banitki
 
 *naprawiono błędy*
 - Naprawiono niewyświetlające się zagadki w hell'u
