@@ -12,6 +12,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 
 *świat*
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
+- Dodano bonus ataku/obrony za dany etap odradzania (to nie jest w postaci punktów umiejętności!)
 - Rozbudowano zadanie na reset poziomu do 5 etapów
 - Po wykonaniu danego etapu[1-5] na zresetowanie poziomu zostaniemy przeteleportowani do int_zakopane_home
 - Poprawiono dialogi w zadaniu na zresetowanie poziomu
