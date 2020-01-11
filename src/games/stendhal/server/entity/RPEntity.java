@@ -482,8 +482,9 @@ public abstract class RPEntity extends GuidedEntity {
 		int effectiveAttackerLevel = getLevel() + 5;
 		int effectiveDefenderLevel = defender.getLevel() + 5;
 
-		if (!(defender instanceof Player)) {
-			final Player player = (Player) this;
+		if (this instanceof Player) {
+			Player player = (Player) this;
+
 			final String QUEST_SLOT = "reset_level";
 
 			final int value = 250;
