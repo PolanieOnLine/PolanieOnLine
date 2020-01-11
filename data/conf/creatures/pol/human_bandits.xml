@@ -24,6 +24,7 @@
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
 			<item value="góralski kapelusz" quantity="[1,1]" probability="0.002"/>
 			<item value="sztylecik" quantity="[1,1]" probability="5.0"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.0"/>
 			<item value="wzmocniony skórzany pas" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips/>
@@ -57,6 +58,7 @@
 			<item value="money" quantity="[1,2]" probability="100.0"/>
 			<item value="polska tarcza lekka" quantity="[1,1]" probability="3.0"/>
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.5"/>
 			<item value="sztylet mroku" quantity="[1,1]" probability="0.0001"/>
 		</drops>
 		<equips/>
@@ -166,6 +168,7 @@
 			<item value="money" quantity="[10,40]" probability="100.0"/>
 			<item value="polska tarcza kolcza" quantity="[1,1]" probability="0.4"/>
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.0"/>
 			<item value="napój z winogron" quantity="[1,15]" probability="9.0"/>
 			<item value="kiść winogron" quantity="[1,1]" probability="50.0"/>
 		</drops>
@@ -198,12 +201,13 @@
 		<respawn value="1520"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="money" quantity="[11,31]" probability="99.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="portki bukowe" quantity="[1,1]" probability="10.0"/>
 			<item value="góralski kapelusz" quantity="[1,1]" probability="2.0"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.1"/>
 			<item value="kierpce" quantity="[1,1]" probability="0.05"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
 			<item value="okoń" quantity="[1,1]" probability="5.0"/>
 			<item value="leszcz" quantity="[1,1]" probability="5.0"/>
 			<item value="karp" quantity="[1,1]" probability="0.5"/>
@@ -243,6 +247,7 @@
 			<item value="góralski kapelusz" quantity="[1,1]" probability="1.0"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.05"/>
 			<item value="kierpce" quantity="[1,1]" probability="0.05"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.75"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -272,7 +277,7 @@
 		<respawn value="1220"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="money" quantity="[9,21]" probability="99.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="chusta góralska" quantity="[1,1]" probability="10.0"/>
 			<item value="góralski gorset" quantity="[1,1]" probability="5.0"/>

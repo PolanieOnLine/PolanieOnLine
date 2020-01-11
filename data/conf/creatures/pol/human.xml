@@ -450,6 +450,7 @@
 			<item value="money" quantity="[7,11]" probability="99.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="siekierka" quantity="[1,1]" probability="20.0"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
 			<item value="wzmocniony skórzany pas" quantity="[1,1]" probability="1.0"/>
 			<item value="dwojaki" quantity="[1,1]" probability="0.05"/>
 		</drops>

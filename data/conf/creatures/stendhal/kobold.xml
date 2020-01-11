@@ -109,6 +109,7 @@
 			<item value="skórzana zbroja łuskowa" quantity="[1,1]" probability="10.0"/>
 			<item value="strzała" quantity="[3,12]" probability="6.0"/>
 			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
 			<item value="drewniany łuk" quantity="[1,1]" probability="0.5"/>
 			<item value="złoty kolczany pas" quantity="[1,1]" probability="0.75"/>
 		</drops>
@@ -153,6 +154,7 @@
 			<item value="kiścień" quantity="[1,1]" probability="10.0"/>
 			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
 			<item value="topór" quantity="[1,1]" probability="2.0"/>
+			<item value="nożyk" quantity="[1,1]" probability="0.7"/>
 			<item value="buty nabijane ćwiekami" quantity="[1,1]" probability="0.5"/>
 			<item value="skórzany hełm" quantity="[1,1]" probability="1.5"/>
 			<item value="krótki miecz" quantity="[1,1]" probability="1.0"/>
