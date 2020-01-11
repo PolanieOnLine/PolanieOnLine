@@ -94,7 +94,7 @@ public class ShowOfferItemsChatAction implements ChatAction {
 			}
 			sb.append("#'" + item + "'");
 		}
-		sb.append("Powiedz #'pokaż <nazwa przedmiotu>', aby poznać cenę oraz ilość danego towaru.");
+		sb.append(" Powiedz #'pokaż <nazwa przedmiotu>', aby poznać cenę oraz ilość danego towaru.");
 		return sb.toString();
 	}
 }

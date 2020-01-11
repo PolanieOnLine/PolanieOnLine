@@ -49,20 +49,20 @@ public final class MarketManagerNPC extends SpeakerNPC {
 
 	@Override
 	protected void createDialog() {
-		addGreeting("Witam w centrum handlu w Semos. W czym mogę #pomóc?");
+		addGreeting("Witam w centrum handlu w Zakopane. W czym mogę #pomóc?");
 		addJob("Jestem tutaj, aby #pomóc Tobie w sprzedaży przedmiotów.");
 		addOffer("Aby wystawić ofertę na rynku powiedz #sprzedam #przedmiot #cena - wtedy każdy będzie mógł to kupić " +
                 "nawet, gdy Ciebie nie ma. W celu uzyskania szczegółów zapytaj o #pomoc.");
 		addHelp("Czy chciałbyś uzyskać pomoc w #kupowaniu lub #sprzedaży?");
 		addReply(Arrays.asList("buying", "kupowaniu", "kupić"),"Jeżeli chcesz coś kupić to powiedz #pokaż, a wtedy pojawią się aktualne oferty z " +
-				 "liczbą ofert. Jeżeli będziesz chciał wybrać jedną z ofert to powiedz #akceptuję #numer, aby kupić " +
+				 "liczbą ofert. Jeżeli będziesz chciał wybrać jedną z ofert to powiedz #'akceptuję numer', aby kupić " +
 				 "oferowany towar z tym numerem. Ciesze się, że mogę przefiltrować listę dla ciebie. Powiedz tylko " +
-				 "na przykład #pokaż #meat, aby zobaczyć tylko oferty z mięsem.");
-		addReply(Arrays.asList("selling", "sprzedaży"),"Powiedz #sprzedam #przedmiot #cena, aby wystawić przedmiot na rynku. Jeżeli chcesz zdjąć " +
-				 "ofertę z rynku to powiedz mi #'pokaż mine', a wtedy zobaczysz swoje oferty. Powiedz #usuń " +
-				 "#numer, a wtedy usunę ten przedmiot z ofert. Jeżeli masz wygaśnięte oferty to możesz o nie zapytać " +
-				 "mówiąc #pokaż #wygaśnięte. Możesz przedłużyć ważność wygaśniętych ofert mówiąc #przedłuż #numer. Jeżeli sprzedałeś jakieś przedmioty " +
-				 "to możesz powiedzieć mi #wypłata, a wtedy wypłacę Tobie twoje zarobki.");
+				 "na przykład #'pokaż mięso', aby zobaczyć tylko oferty z mięsem.");
+		addReply(Arrays.asList("selling", "sprzedaży"),"Powiedz #'sprzedam przedmiot cena', aby wystawić przedmiot na rynku. Jeżeli chcesz zobaczyć " +
+				 "swoją ofertę na rynku to powiedz mi #'pokaż moje'. Powiedz mi #'usuń numer', a " +
+				 "wtedy usunę ten przedmiot z ofert. Jeżeli masz wygaśnięte oferty to możesz o nie zapytać " +
+				 "mówiąc #'pokaż wygaśnięte'. Możesz również przedłużyć ważność wygaśniętych ofert mówiąc #'przedłuż numer'. Jeżeli sprzedałeś jakieś przedmioty " +
+				 "to możesz powiedzieć mi #wypłata, a wtedy wypłacę twoje zarobki.");
 		new PrepareOfferHandler().add(this);
 		add(ConversationStates.ATTENDING, Arrays.asList("show", "pokaż"), new NotCondition(new TextHasParameterCondition()),
 				ConversationStates.ATTENDING, null, new ShowOfferItemsChatAction());

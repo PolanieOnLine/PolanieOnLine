@@ -53,7 +53,7 @@ public class ExamineOfferChatAction extends KnownOffersChatAction {
 			}
 			npc.say("Wybacz, ale musisz wybrać liczbę z spośród tych, które ci podałem.");
 		} catch (NumberFormatException e) {
-			npc.say("Wybacz, ale musisz powiedzieć #akceptuję #numer");
+			npc.say("Wybacz, ale musisz powiedzieć #'akceptuję numer'.");
 		}
 	}
 

@@ -18,7 +18,9 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.trade.Market;
+import games.stendhal.server.maps.semos.tavern.market.OfferExpirer;
 import marauroa.common.game.RPObject;
+
 /**
  * adds a market to a zone
  *

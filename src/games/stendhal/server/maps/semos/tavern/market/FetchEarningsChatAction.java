@@ -46,15 +46,24 @@ public class FetchEarningsChatAction implements ChatAction {
 		Market market = TradeCenterZoneConfigurator.getShopFromZone(player.getZone());
 		Set<Earning> earnings = market.fetchEarnings(player);
 		int collectedSum = 0;
+		final String text = "Wypłaciłem tobie zarobione pieniądze. Co jeszcze mogę zrobić?";
 		for (Earning earning : earnings) {
 			collectedSum += earning.getValue().intValue();
 		}
         if (collectedSum > 0) {
-		    player.sendPrivateText("Zebrałeś "+Integer.valueOf(collectedSum).toString()+" money.");
-		    npc.say("Witaj w centrum handlu Semos. Wypłaciłem tobie zarobione pieniądze. Co jeszcze mogę zrobić?");
+        	player.sendPrivateText("Zebrałeś "+Integer.valueOf(collectedSum).toString()+" money.");
+        	if (npc.getName().equals("Radzimir")) {
+        		npc.say("Witaj w centrum handlu Zakopane. " + text);
+        	} else {
+        		npc.say("Witaj w centrum handlu Semos. " + text);
+        	}
         } else {
-			//either you have no space in your bag or there isn't anything to collect
-           	npc.say("Witaj w centrum handlu Semos. W czym mogę #pomóc?");
+        	//either you have no space in your bag or there isn't anything to collect
+        	if (npc.getName().equals("Radzimir")) {
+        		npc.say("Witaj w centrum handlu Zakopane. W czym mogę #pomóc?");
+        	} else {
+        		npc.say("Witaj w centrum handlu Semos. W czym mogę #pomóc?");
+        	}
 		}
 		npc.setCurrentState(ConversationStates.ATTENDING);
 	}
