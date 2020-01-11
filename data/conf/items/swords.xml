@@ -1051,4 +1051,25 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="drewniany sztylecik">
+		<type class="sword" subclass="wooden_dagger" tileid="-1"/>
+		<description>Oto drewniany sztylecik. Przez swoją dziwną budowę posiada otwory w głowni, by móc szybciej zadawać ciosy, przez co bardzo szybko się niszczy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<rate value="1"/>
+			<uses value="250"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 </items>
