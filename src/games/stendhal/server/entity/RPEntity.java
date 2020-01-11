@@ -479,8 +479,40 @@ public abstract class RPEntity extends GuidedEntity {
 	int damageDone(RPEntity defender, double attackingWeaponsValue, Nature damageType,
 			boolean isRanged, int maxRange) {
 		// Don't start from 0 to mitigate weird behaviour at very low levels
-		final int effectiveAttackerLevel = getLevel() + 5;
-		final int effectiveDefenderLevel = defender.getLevel() + 5;
+		int effectiveAttackerLevel = getLevel() + 5;
+		int effectiveDefenderLevel = defender.getLevel() + 5;
+
+		if (!(defender instanceof Player)) {
+			final Player player = (Player) this;
+			final String QUEST_SLOT = "reset_level";
+
+			final int value = 250;
+			int getLevel = defender.getLevel();
+
+			if (player.isQuestInState(QUEST_SLOT, "done")) {
+				effectiveAttackerLevel = getLevel() + 1 * value;
+			} else if (player.isQuestInState(QUEST_SLOT, "done;2")) {
+				effectiveAttackerLevel = getLevel() + 2 * value;
+			} else if (player.isQuestInState(QUEST_SLOT, "done;3")) {
+				effectiveAttackerLevel = getLevel() + 3 * value;
+			} else if (player.isQuestInState(QUEST_SLOT, "done;4")) {
+				effectiveAttackerLevel = getLevel() + 4 * value;
+			} else if (player.isQuestInState(QUEST_SLOT, "done;5")) {
+				effectiveAttackerLevel = getLevel() + 5 * value;
+			}
+
+			if (player.isQuestInState(QUEST_SLOT, "done")) {
+				effectiveDefenderLevel = getLevel + (1 * (value / 2));
+			} else if (player.isQuestInState(QUEST_SLOT, "done;2")) {
+				effectiveDefenderLevel = getLevel + (2 * (value / 2));
+			} else if (player.isQuestInState(QUEST_SLOT, "done;3")) {
+				effectiveDefenderLevel = getLevel + (3 * (value / 2));
+			} else if (player.isQuestInState(QUEST_SLOT, "done;4")) {
+				effectiveDefenderLevel = getLevel + (4 * (value / 2));
+			} else if (player.isQuestInState(QUEST_SLOT, "done;5")) {
+				effectiveDefenderLevel = getLevel + (5 * (value / 2));
+			}
+		}
 
 		// Defending side
 		final double armor = defender.getItemDef();
