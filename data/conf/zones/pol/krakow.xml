@@ -319,6 +319,7 @@
 
 	<!-- krakow_wawel_w -->
 	<zone name="0_krakow_wawel_w" level="0" x="513440" y="18048" file="Level 0/krakow/wawel_w.tmx">
+		<configurator class-name="games.stendhal.server.maps.krakow.wawel.StraznikNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -336,12 +337,6 @@
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>
 			</implementation>
-		</entity>
-		<entity x="102" y="82">
-			<implementation class-name="games.stendhal.server.maps.krakow.wawel.StraznikNPC">
-				<parameter name="name">Strażnik</parameter>
-			</implementation>
-			<attribute name="class">transparentnpc</attribute>
 		</entity>
 
 		<portal x="96" y="80" ref="krakow_restart_life">
