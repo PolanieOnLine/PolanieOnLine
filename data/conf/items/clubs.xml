@@ -4,7 +4,7 @@
 
 	<item name="młot chaosu">
 		<type class="club" subclass="chaos_hammer" tileid="-1"/>
-		<description>Oto młot chaosu. Straszliwa broń.</description>
+		<description>Oto młot chaosu. Przerażająca broń, pozwalająca ranić wrogów i jednocześnie leczyć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="42"/>

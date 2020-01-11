@@ -133,7 +133,7 @@
 
 	<item name="miecz chaosu">
 		<type class="sword" subclass="chaos_sword" tileid="-1"/>
-		<description>Oto miecz chaosu. Nie tylko zabija potwory, ale zwraca ci życie.</description>
+		<description>Oto miecz chaosu. Potężna broń, która nie tylko zabija potwory, ale jednocześnie zwraca ci zdrowie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="32"/>
