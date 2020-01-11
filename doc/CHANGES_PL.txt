@@ -21,7 +21,10 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 
 *świat*
 - Aktywowano zadanie na pierścień antyjadowy (więcej na ten temat w changelogu Stendhala 1.32)
-- Dodano nowy przedmiot: antyjad (przedmiot zadaniowy na pierścień antyjadowy)
+- Dodano kilka nowych przedmiotów:
+	* antyjad (przedmiot zadaniowy na pierścień antyjadowy)
+	* nożyk (na miejsce wcześniejszego mieczyka - 7/3)
+	* drewniany sztylecik (1/1 + 250 użyć)
 - Dodano 8 nowych zagadek w hell'u
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
 - Dodano bonus ataku/obrony za dany etap odradzania (to nie jest w postaci punktów umiejętności!)
@@ -29,6 +32,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 - Po wykonaniu danego etapu[1-5] na zresetowanie poziomu zostaniemy przeteleportowani do int_zakopane_home
 - Poprawiono dialogi w zadaniu na zresetowanie poziomu
 - Poprawiono statystyki oraz drop potwora: legendarny żywioł lodu
+- Zmieniono parametry mieczyka (+2 ataku więcej - czyli 9/3)
 
 *naprawiono błędy*
 - Naprawiono niewyświetlające się zagadki w hell'u
