@@ -5,12 +5,23 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 
 *klient*
 - Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
+	* wszystkie szczury (szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie, wściekły szczur)
+	* jedzenie: banan, kokos, jajo wielkanocne, jajko wielkanocne, gruszka, granat
+	* zasoby: gadzie jajo, złote jajo, koński włos
+	* miecze: bułat
+	* ikona gracza online/offline na liście znajomych, ikona płaszcza w eq gracza
+	* oraz wiele innych grafik na mapach
 - Dodano wiele nowych dźwięków potworów
-- Poprawiono cień u szczurów
+	* 5 różnych dźwięków dla wszystkich potworów typu mermaid
+	* 5 różnych dźwięków dla syren, wysokich syren oraz uzbrojonych syren
+	* 2 różne dźwieki dla lamii
+- Poprawiono rysowany cień u szczurów
 - Poprawiono system ukrywania strojów po wyborze ciała kawalerzysty (nie będzie nam usuwać wcześniejszego outfitu),
 oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 
 *świat*
+- Aktywowano zadanie na pierścień antyjadowy (więcej na ten temat w changelogu Stendhala 1.32)
+- Dodano nowy przedmiot: antyjad (przedmiot zadaniowy na pierścień antyjadowy)
 - Dodano 6 nowych zagadek w hell'u
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
 - Dodano bonus ataku/obrony za dany etap odradzania (to nie jest w postaci punktów umiejętności!)
