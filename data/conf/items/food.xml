@@ -1210,10 +1210,10 @@
 		<description>Oto szynka wędzona.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food" />
 		<attributes>
-			<amount value="160" />
-			<frequency value="10" />
+			<amount value="240" />
+			<frequency value="24" />
 			<quantity value="1" />
-			<regen value="12" />
+			<regen value="124" />
 			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0" />
@@ -1256,10 +1256,10 @@
 		<description>Oto wędzony dorsz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food" />
 		<attributes>
-			<amount value="80" />
-			<frequency value="10" />
+			<amount value="240" />
+			<frequency value="18" />
 			<quantity value="1" />
-			<regen value="8" />
+			<regen value="18" />
 			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0" />
@@ -1279,10 +1279,10 @@
 		<description>Oto wędzony pstrąg.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food" />
 		<attributes>
-			<amount value="90" />
-			<frequency value="10" />
+			<amount value="180" />
+			<frequency value="24" />
 			<quantity value="1" />
-			<regen value="8" />
+			<regen value="24" />
 			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0" />
