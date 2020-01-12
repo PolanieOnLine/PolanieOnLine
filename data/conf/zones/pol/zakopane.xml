@@ -664,6 +664,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<destination zone="1_football_playground" ref="entrance_football"/>
 		</portal>
 
+		<portal x="121" y="94" ref="sewing_entrance">
+			<destination zone="int_zakopane_sewing_house_0" ref="sewing_exit"/>
+		</portal>
+
 		<!-- po zmianach -->
 		<portal x="51" y="49" ref="hospital_entrance_1">
 			<destination zone="int_zakopane_hospital" ref="hospital_1_exit"/>
@@ -2039,6 +2043,39 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 		</portal>
 		<portal x="17" y="26" ref="stable_2_exit">
 			<destination zone="0_zakopane_sw" ref="stable_entrance_2"/>
+		</portal>
+	</zone>
+
+	<!-- Sewing house 0 -->
+	<zone name="int_zakopane_sewing_house_0" file="interiors/zakopane/sewing_house_0.tmx">
+		<!-- <entity x="12" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buygloves</parameter>
+				<parameter name="title">Skup rękawic oraz skóry</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Ludwina kupi te rękawice oraz skóry.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+			<attribute name="resistance">10</attribute>
+		</entity> -->
+
+		<portal x="16" y="10" ref="sewing_up">
+			<destination zone="int_zakopane_sewing_house_1" ref="sewing_down"/>
+			<attribute name="face">left</attribute>
+		</portal>
+
+		<portal x="12" y="17" ref="sewing_exit">
+			<destination zone="0_zakopane_s" ref="sewing_entrance"/>
+			<attribute name="face">left</attribute>
+		</portal>
+	</zone>
+
+	<!-- Sewing house 1 -->
+	<zone name="int_zakopane_sewing_house_1" file="interiors/zakopane/sewing_house_1.tmx">
+
+		<portal x="16" y="10" ref="sewing_down">
+			<destination zone="int_zakopane_sewing_house_0" ref="sewing_up"/>
+			<attribute name="face">left</attribute>
 		</portal>
 	</zone>
 
