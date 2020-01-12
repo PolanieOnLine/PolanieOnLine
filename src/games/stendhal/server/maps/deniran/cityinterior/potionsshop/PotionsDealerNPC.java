@@ -60,9 +60,11 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 			put("mandragora", 1500);
 			put("kokuda", 5000);
 			put("muchomor", 60);
+			put("trucizna", 40);
 			put("mocna trucizna", 60);
 			put("bardzo mocna trucizna", 500);
-			put("zabójcza trucizna", 2000);
+			put("śmiertelna trucizna", 1000);
+			put("zabójcza poison", 2000);
 			put("środek uspokajający", 200);
 			put("gruczoł jadowy", 2000);
 		}};
