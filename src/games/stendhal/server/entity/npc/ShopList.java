@@ -631,17 +631,17 @@ public final class ShopList {
 		//Ludwina skupuje
 		shops.add("buygloves", "skóra tygrysa", 800);
 		shops.add("buygloves", "skóra lwa", 1700);
-		shops.add("buygloves", "skórzane rękawice", 80);
-		shops.add("buygloves", "skórzane wzmocnione rękawice", 120);
-		shops.add("buygloves", "skórzane twarde rękawice", 180);
+		shops.add("buygloves", "skórzane rękawice", 60);
+		shops.add("buygloves", "skórzane wzmocnione rękawice", 140);
+		shops.add("buygloves", "skórzane twarde rękawice", 210);
 		shops.add("buygloves", "karmazynowe rękawice", 650);
 		shops.add("buygloves", "lazurowe rękawice", 700);
-		shops.add("buygloves", "rękawice xenocyjskie", 1800);
-		shops.add("buygloves", "ogniste rękawice", 2000);
-		shops.add("buygloves", "lodowe rękawice", 2100);
-		shops.add("buygloves", "rękawice chaosu", 2700);
-		shops.add("buygloves", "rękawice cieni", 3000);
-		shops.add("buygloves", "rękawice mainiocyjskie", 3400);
+		shops.add("buygloves", "rękawice xenocyjskie", 2400);
+		shops.add("buygloves", "ogniste rękawice", 2700);
+		shops.add("buygloves", "lodowe rękawice", 2700);
+		shops.add("buygloves", "rękawice cieni", 4000);
+		shops.add("buygloves", "rękawice chaosu", 4500);
+		shops.add("buygloves", "rękawice mainiocyjskie", 5300);
 
 		//Radomil sprzedaje
 		shops.add("eliksiry", "antidotum", 50);
