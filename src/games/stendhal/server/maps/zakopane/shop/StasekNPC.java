@@ -44,9 +44,9 @@ public class StasekNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Pozdrawiam, przyjacielu.");
-				addHelp("Może będziesz mi potrzebny...");
-				addJob("Zarządzam właśnie tym sklepem z uzbrojeniem.");
+				addGreeting("Przyjacielu, w czym mogę #pomóc.");
+				addHelp("Zapytaj mnie o #zadanie, a może będziesz w stanie mi pomóc...");
+				addJob("Zarządzam tym sklepem z uzbrojeniem w Zakopcu.");
 				addGoodbye("Miło było Cię poznać.");
 				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("wegiel_na_opal", "Musiałbyś wykonać moje #'zadanie', abym mógł tobie zaufać!", shops.get("stasek")), false);
 			}
