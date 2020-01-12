@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.zakopane.sewing;
+package games.stendhal.server.maps.zakopane.sewinghouse;
 
 import java.util.Map;
 

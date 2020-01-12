@@ -2048,7 +2048,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 0 -->
 	<zone name="int_zakopane_sewing_house_0" file="interiors/zakopane/sewing_house_0.tmx">
-		<configurator class-name="games.stendhal.server.maps.zakopane.sewing.GlovesBuyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.GlovesBuyerNPC"/>
 		<entity x="12" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">buygloves</parameter>
