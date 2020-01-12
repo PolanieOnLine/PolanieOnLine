@@ -642,6 +642,8 @@ public final class ShopList {
 		shops.add("buygloves", "rękawice cieni", 4000);
 		shops.add("buygloves", "rękawice chaosu", 4500);
 		shops.add("buygloves", "rękawice mainiocyjskie", 5300);
+		shops.add("buygloves", "czarne rękawice", 9600);
+		shops.add("buygloves", "złote rękawice", 11400);
 
 		//Radomil sprzedaje
 		shops.add("eliksiry", "antidotum", 50);
