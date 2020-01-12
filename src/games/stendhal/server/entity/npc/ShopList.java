@@ -699,11 +699,11 @@ public final class ShopList {
 		shops.add("buymerchand", "hełm wikingów", 300);
 
 		//Mr Manas kupi:
-		shops.add("buymanas", "magia ziemi", 5);
-		shops.add("buymanas", "magia płomieni", 7);
-		shops.add("buymanas", "magia deszczu", 10);
-		shops.add("buymanas", "magia mroku", 14);
-		shops.add("buymanas", "magia światła", 16);
+		shops.add("buymanas", "magia ziemi", 3);
+		shops.add("buymanas", "magia płomieni", 5);
+		shops.add("buymanas", "magia deszczu", 8);
+		shops.add("buymanas", "magia mroku", 12);
+		shops.add("buymanas", "magia światła", 14);
 
 		//Winicjusz sprzedaje:
 		shops.add("sellwinicjusz", "kiść winogron", 9);
