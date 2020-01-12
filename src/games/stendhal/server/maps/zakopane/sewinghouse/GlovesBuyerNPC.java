@@ -45,7 +45,9 @@ public class GlovesBuyerNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj w szwalni rękawic! W czym mogę #pomóc.");
-				addHelp("Moja znajoma, która szyje rękawice, znajduje się piętro wyżej. Zapytaj ją, może będzie potrzebować pomocy.");
+				addHelp("Możesz sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
+				//addHelp("Moja znajoma, która szyje rękawice, znajduje się piętro wyżej. Zapytaj ją, może będzie potrzebować pomocy. "
+				//+ "Możesz również sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
 				addJob("Zajmuję się skupem starych rękawic oraz skór zwierząt.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buygloves")), false);
 				addOffer("Spójrz na książkę, by zaznajomić się z cenami skupu.");
