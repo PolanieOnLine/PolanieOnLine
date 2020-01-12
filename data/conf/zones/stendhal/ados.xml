@@ -2182,23 +2182,22 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 
     <!-- Signs -->
     <entity x="16" y="8">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
-				<parameter name="shop">buycloaks</parameter>
-				<parameter name="title">Szwalnia Idy</parameter>
-				<parameter name="seller">false</parameter>
-				<parameter name="caption">Ida kupi te płaszcze.</parameter>
-			</implementation>
-			<attribute name="class">book_blue</attribute>
-			<attribute name="resistance">10</attribute>
-		</entity>
+		<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+			<parameter name="shop">buycloaks</parameter>
+			<parameter name="title">Szwalnia Idy</parameter>
+			<parameter name="seller">false</parameter>
+			<parameter name="caption">Ida kupi te płaszcze.</parameter>
+		</implementation>
+		<attribute name="class">book_blue</attribute>
+		<attribute name="resistance">10</attribute>
+	</entity>
 
-		<entity x="10" y="5">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
-			<attribute name="text">Oto maszyna do szycia Idy. Wygląda na starą, ale poradzi sobie z uszyciem mithril thread.</attribute>
-			<attribute name="class">transparent</attribute>
-			<attribute name="width">1</attribute>
-		</entity>
-
+	<entity x="10" y="5">
+		<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
+		<attribute name="text">Oto maszyna do szycia Idy. Wygląda na starą, ale poradzi sobie z uszyciem mithril thread.</attribute>
+		<attribute name="class">transparent</attribute>
+		<attribute name="width">1</attribute>
+	</entity>
   </zone>
 
   <zone name="int_ados_twilight_zone" file="interiors/ados/sewing_room.tmx">
