@@ -69,7 +69,7 @@ public class BogusNPC implements ZoneConfigurator {
 				addOffer("Wszystko czym handluję znajdziesz w tych książkach.");
 				addQuest("O, dziękuję, ale niczego już nie potrzebuję.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyskin")), false);
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellskin")), false);
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellskin")));
 				addGoodbye("Dowidzenia.");
 			}
 		};
