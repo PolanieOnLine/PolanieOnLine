@@ -799,7 +799,7 @@ public final class ShopList {
 		shops.add("buyarmorywieliczka", "lodowe spodnie", 21000);
 		shops.add("buyarmorywieliczka", "lodowy płaszcz", 25000);
 		shops.add("buyarmorywieliczka", "tarcza cieni", 16500);
-		shops.add("buyarmorywieliczka", "rękawice cieni", 11000);
+		shops.add("buyarmorywieliczka", "rękawice cieni", 10000);
 
 		// Zbigniew sprzedaje:
 		shops.add("zwojewieliczka", "zwój wieliczka", 250);
