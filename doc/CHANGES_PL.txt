@@ -26,6 +26,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 	* antyjad (przedmiot zadaniowy na pierścień antyjadowy)
 	* nożyk (na miejsce wcześniejszego mieczyka - 7/3)
 	* drewniany sztylecik (1/1 + 250 użyć)
+- Dodano nowy budynek w Zakopane (w południowej części zakopane_s): int_zakopane_sewing_house_0 oraz int_zakopane_sewing_house_1
 - Dodano 8 nowych zagadek w hell'u
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
 - Dodano bonus ataku/obrony za dany etap odradzania (to nie jest w postaci punktów umiejętności!)
