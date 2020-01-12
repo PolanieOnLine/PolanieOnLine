@@ -67,12 +67,12 @@
  </layer>
  <layer id="2" name="1_terrain" width="20" height="19">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAECr2S2QrCQAxFq332H9z3Fdd3ffTJBXeJ+v//4BnJgBRqaWcwcLgTMrnJ0G6CINh6YofPHi5whXVGTO8NDmD87uAagsG//cbMnESYkn9HThNBk/abcWceYUFuo8Ah1ETQJD+9GitLKiutCurqZ/aLe29J56QVX+8tM7gCVaiBgMt76/Q3oAktEHDxa9PfgS70QMDFr0//AIYwAgEXP9o/Efd9bT2Nmv8lrw2C+tgv/OFX1FoWEZrsfg/OT0de6ndET5444/MGvBabo/AFAAA=
+   H4sIAAAAAAAECs2SNw7CQBBFDa65AzlHEXsoXRFERgPc/w68RePG0trY64KVnv6OZv/XjOyt53m7nNiTc4Ar3CDIiPHe4Qgm7wGuRwj4x7yCLvbLfFPeziLM1W+kBL7Wgibtu+DNMsKKOjxrLhstBE3K06dWMfPZ9q1YXfGNNPvGJVVp1qAODRBw2beJvwVt6ICAS14Xfw/6MAABl7wh/hGMYQICLnnYv8f2fcN+GjX/S1ENguYxnx+TV9ZeFhFM4XxP7i9H3pp3Qs85cSHnAzwwynTwBQAA
   </data>
  </layer>
  <layer id="3" name="2_object" width="20" height="19">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAECmNggAB/IEUJhhoz6Kk+oAv7iXClLQE1HUD5TiQ1XEA2NxDzIIkhM42QOTRk89HQbGSjZYEcOWSBQcImNn4JORc9fgmpxyVfgUMCll5gNA5lw0aY3PSCnp7bgCHSToVQQY9fNiqYiW5EC7oAEXx8enqI0I+uBF0PAABCPaTwBQAA
+   H4sIAAAAAAAECmNggAB/IEUJhhoz6Kk+oAv7qeDKDqAZnUjmcAHZ3EDMgySGzLRF5lCBbYTDDD4c4tQWlgUaKEdtQ6lgHq3il1ynVeDQCEsvMBqHsmEjTG56QU/PbcAQaadCqKDnXzYqmIluRAu6ABF8fHp6iNCPrgRdDwC+mfj78AUAAA==
   </data>
  </layer>
  <layer id="4" name="3_roof" width="20" height="19">
@@ -85,9 +85,9 @@
    H4sIAAAAAAAECmNgGAWjITAaAqMhMBoCIyEEABjRTYrwBQAA
   </data>
  </layer>
- <layer id="6" name="collision" width="20" height="19" visible="0" opacity="0.37">
+ <layer id="6" name="collision" width="20" height="19" opacity="0.37">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAECtWPCwrAMAhDe4ze/6RrkFAX7LBzg02o/zxsb631H7xxYsn0jyXYECvP12T7ns85R0Qf5ufs2WR63WE9N/Z4Xhflns9cY6S76kEPUw77Ns176pSXJ8Sbb/Oq/Kpef/0UDxyY8ljbNO9XvDzhvLni3b2PdOq/Hg9fiWkE8AUAAA==
+   H4sIAAAAAAAECtWPUQ7AIAhDOYb3P+lsSCOrIcGxj41kYqV9umFm4wfffGKr9B9bsBlWXtQnbORQMc8zn6xVPdTL4Rxoztijh3vOtOscWj3U9FY7cijmY/fJ2Zrxzii7O76Ld+yu+onyVNdJ7uzm9b63eOCglEft0/qa8eqEuzPjPX0f6cx/vV8PGM9O8AUAAA==
   </data>
  </layer>
  <layer id="7" name="protection" width="20" height="19" visible="0">
