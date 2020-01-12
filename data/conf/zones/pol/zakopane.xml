@@ -2048,16 +2048,17 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 0 -->
 	<zone name="int_zakopane_sewing_house_0" file="interiors/zakopane/sewing_house_0.tmx">
-		<!-- <entity x="12" y="5">
+		<configurator class-name="games.stendhal.server.maps.zakopane.sewing.GlovesBuyerNPC"/>
+		<entity x="12" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">buygloves</parameter>
 				<parameter name="title">Skup rękawic oraz skóry</parameter>
 				<parameter name="seller">false</parameter>
-				<parameter name="caption">Ludwina kupi te rękawice oraz skóry.</parameter>
+				<parameter name="caption">Ludwina chętnie kupi oto te rękawice oraz skóry.</parameter>
 			</implementation>
 			<attribute name="class">book_blue</attribute>
 			<attribute name="resistance">10</attribute>
-		</entity> -->
+		</entity>
 
 		<portal x="16" y="10" ref="sewing_up">
 			<destination zone="int_zakopane_sewing_house_1" ref="sewing_down"/>
