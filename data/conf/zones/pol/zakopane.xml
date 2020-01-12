@@ -2073,6 +2073,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 1 -->
 	<zone name="int_zakopane_sewing_house_1" file="interiors/zakopane/sewing_house_1.tmx">
+		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.SewingNPC"/>
 
 		<portal x="16" y="10" ref="sewing_down">
 			<destination zone="int_zakopane_sewing_house_0" ref="sewing_up"/>
