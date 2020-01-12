@@ -7,7 +7,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 - Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
 	* wszystkie szczury (szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie, wściekły szczur)
 	* jedzenie: banan, kokos, jajo wielkanocne, jajko wielkanocne, gruszka, granat
-	* zasoby: gadzie jajo, złote jajo, koński włos, pazur arktycznego smoka
+	* zasoby: gadzie jajo, złote jajo, koński włos, pazur arktycznego smoka, kieł tygrysi, kieł wilczy
 	* zwoje: bilet turystyczny
 	* miecze: bułat, nożyk
 	* pierścienie: pierścień skorupy żółwia, złoty pierścień, srebrny pierścień
