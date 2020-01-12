@@ -57,14 +57,14 @@ import java.util.List;
  * PARTICIPANTS:
  * <ul>
  * <li> Annie Jones (a little girl playing in Kalavan City Gardens) </li>
- * <li> Mrs Jones (Annie's mum) </li>
+ * <li> Mrs. Jones (Annie's mum) </li>
  * </ul>
  *
  * STEPS:
  * <ul>
  * <li> Annie asks you for an icecream. </li>
  * <li> You buy icecream from Sam who is nearby. </li>
- * <li> Speak to Mrs Jones, Annie's mum. </li>
+ * <li> Speak to Mrs. Jones, Annie's mum. </li>
  * <li> Now give the icecream to Annie. </li>
  * </ul>
  *
@@ -256,7 +256,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 	}
 
 	private void meetMummyStep() {
-		final SpeakerNPC mummyNPC = npcs.get("Mrs Jones");
+		final SpeakerNPC mummyNPC = npcs.get("Mrs. Jones");
 
 		// player speaks to mummy before annie
 		mummyNPC.add(ConversationStates.IDLE,

@@ -60,8 +60,8 @@ public class HousePortalTest {
 	public void testOwner() {
 		final HousePortal portal = new HousePortal("henhouse");
 		assertEquals("", portal.getOwner());
-		portal.setOwner("Mr Taxman");
-		assertEquals("Mr Taxman", portal.getOwner());
+		portal.setOwner("Mr. Taxman");
+		assertEquals("Mr. Taxman", portal.getOwner());
 	}
 
 	/**
@@ -71,8 +71,8 @@ public class HousePortalTest {
 	public void testDescribe() {
 		final HousePortal portal = new HousePortal("henhouse");
 		assertEquals("For sale!", portal.describe());
-		portal.setOwner("Mr Taxman");
-		assertEquals("Here lives Mr Taxman.", portal.describe());
+		portal.setOwner("Mr. Taxman");
+		assertEquals("Here lives Mr. Taxman.", portal.describe());
 	}
 
 	/**

@@ -698,7 +698,7 @@ public final class ShopList {
 		shops.add("buymerchand", "bułat", 250);
 		shops.add("buymerchand", "hełm wikingów", 300);
 
-		//Mr Manas kupi:
+		//Mr. Manas kupi:
 		shops.add("buymanas", "magia ziemi", 3);
 		shops.add("buymanas", "magia płomieni", 5);
 		shops.add("buymanas", "magia deszczu", 8);

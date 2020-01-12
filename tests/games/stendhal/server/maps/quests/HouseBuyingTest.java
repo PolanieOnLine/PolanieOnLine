@@ -81,7 +81,7 @@ public class HouseBuyingTest extends ZonePlayerAndNPCTestImpl {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		SingletonRepository.getNPCList().add(new SpeakerNPC("Mr Taxman"));
+		SingletonRepository.getNPCList().add(new SpeakerNPC("Mr. Taxman"));
 
 		new HouseBuying().addToWorld();
 	}
@@ -111,12 +111,12 @@ public class HouseBuyingTest extends ZonePlayerAndNPCTestImpl {
 		}
 
 		PlayerTestHelper.removeNPC("Cyk");
-		PlayerTestHelper.removeNPC("Mr Taxman");
+		PlayerTestHelper.removeNPC("Mr. Taxman");
 		PlayerTestHelper.removeNPC("Roger Frampton");
 	}
 
 	public HouseBuyingTest() {
-		super(ZONE_NAME, "Barrett Holmes", "Reg Denson", "Mr Taxman");
+		super(ZONE_NAME, "Barrett Holmes", "Reg Denson", "Mr. Taxman");
 	}
 
 	/**

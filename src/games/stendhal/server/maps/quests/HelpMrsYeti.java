@@ -48,11 +48,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- * QUEST: Mrs Yeti Needs Help
+ * QUEST: Mrs. Yeti Needs Help
  *
  * PARTICIPANTS:
  * <ul>
- * <li>Mrs Yeti, who lives in a snowy dungeon</li>
+ * <li>Mrs. Yeti, who lives in a snowy dungeon</li>
  * <li>Salva Mattori, Healer at magic city</li>
  * <li>Hackim Easso, Blacksmith assistant semos</li>
  * </ul>
@@ -339,8 +339,8 @@ import org.apache.log4j.Logger;
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Pomoc Mrs Yeti",
-				"Mrs Yeti jest nieszczęśliwa z miłością swojego życia, ponieważ jej mąż odwrócił się od niej. Teraz para jest w dużych kłopotach. Tylko specjalny napój miłosny może pomóc Mrs Yeti, aby odzyskać męża. Pomożesz jej?",
+				"Pomoc Mrs. Yeti",
+				"Mrs. Yeti jest nieszczęśliwa z miłością swojego życia, ponieważ jej mąż odwrócił się od niej. Teraz para jest w dużych kłopotach. Tylko specjalny napój miłosny może pomóc Mrs. Yeti, aby odzyskać męża. Pomożesz jej?",
 				true);
 		startQuest();
 		makePotion();

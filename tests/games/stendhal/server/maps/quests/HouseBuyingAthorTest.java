@@ -72,7 +72,7 @@ public class HouseBuyingAthorTest extends ZonePlayerAndNPCTestImpl {
 			setupZone(zone);
 		}
 
-		SpeakerNPC taxman = new SpeakerNPC("Mr Taxman");
+		SpeakerNPC taxman = new SpeakerNPC("Mr. Taxman");
 		SingletonRepository.getNPCList().add(taxman);
 
 		new HouseBuying().addToWorld();
@@ -110,7 +110,7 @@ public class HouseBuyingAthorTest extends ZonePlayerAndNPCTestImpl {
 
 
 	public HouseBuyingAthorTest() {
-		super(ZONE_NAME, "Barrett Holmes", "Reg Denson", "Mr Taxman", "Cyk");
+		super(ZONE_NAME, "Barrett Holmes", "Reg Denson", "Mr. Taxman", "Cyk");
 	}
 
 	/**

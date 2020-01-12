@@ -67,8 +67,8 @@ public class HouseKeyTest {
 		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("house key");
 		key.setup("henhouse", 42, null);
 		assertEquals(key.describe(), "You see a key to henhouse.");
-		key.setup("outhouse", 13, "Mr Taxman");
-		assertEquals(key.describe(), "You see a key to Mr Taxman's property, outhouse.");
+		key.setup("outhouse", 13, "Mr. Taxman");
+		assertEquals(key.describe(), "You see a key to Mr. Taxman's property, outhouse.");
 	}
 
 	/**
@@ -105,19 +105,19 @@ public class HouseKeyTest {
 		key.setup("henhouse", 42, null);
 		String image = key.get("subclass");
 		assertTrue(image.length() > 0);
-		key.setup("henhouse", 42, "Mr Taxman");
+		key.setup("henhouse", 42, "Mr. Taxman");
 		assertTrue(image.equals(key.get("subclass")));
 
 		key.setup("henhouse", 13, null);
 		image = key.get("subclass");
 		assertTrue(image.length() > 0);
-		key.setup("henhouse", 13, "Mr Taxman");
+		key.setup("henhouse", 13, "Mr. Taxman");
 		assertTrue(image.equals(key.get("subclass")));
 
 		key.setup("outhouse", 0, "newbie");
 		image = key.get("subclass");
 		assertTrue(image.length() > 0);
-		key.setup("outhouse", 0, "Mr Taxman");
+		key.setup("outhouse", 0, "Mr. Taxman");
 		assertTrue(image.equals(key.get("subclass")));
 	}
 }

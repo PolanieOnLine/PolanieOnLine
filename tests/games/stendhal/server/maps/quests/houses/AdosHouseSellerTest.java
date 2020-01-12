@@ -69,7 +69,7 @@ public class AdosHouseSellerTest {
 
 	@Before
 	public void setUp() {
-		SingletonRepository.getNPCList().add(new SpeakerNPC("Mr Taxman"));
+		SingletonRepository.getNPCList().add(new SpeakerNPC("Mr. Taxman"));
 		seller = new AdosHouseSeller("bob", "nirvana", new HouseTax());
 	}
 
@@ -97,7 +97,7 @@ public class AdosHouseSellerTest {
 			}
 		}
 
-		PlayerTestHelper.removeNPC("Mr Taxman");
+		PlayerTestHelper.removeNPC("Mr. Taxman");
 	}
 
 	/**

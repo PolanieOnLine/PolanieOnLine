@@ -130,7 +130,7 @@ public class IcecreamForAnnieTest {
 		en.step(player, "hi");
 		assertEquals("Mummy says I mustn't talk to you any more. You're a stranger.", getReply(npc));
 
-		npc = SingletonRepository.getNPCList().get("Mrs Jones");
+		npc = SingletonRepository.getNPCList().get("Mrs. Jones");
 		en = npc.getEngine();
 
 		en.step(player, "hi");

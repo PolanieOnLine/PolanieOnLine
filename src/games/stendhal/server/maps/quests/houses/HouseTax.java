@@ -194,11 +194,11 @@ class HouseTax implements TurnListener {
 	 * @param message the delivered message
 	 */
 	private void notifyIfNeeded(final String owner, final String message) {
-		DBCommandQueue.get().enqueue(new MaybeStoreMessageCommand("Mr Taxman", owner, message));
+		DBCommandQueue.get().enqueue(new MaybeStoreMessageCommand("Mr. Taxman", owner, message));
 	}
 
 	private void setupTaxman() {
-		final SpeakerNPC taxman = SingletonRepository.getNPCList().get("Mr Taxman");
+		final SpeakerNPC taxman = SingletonRepository.getNPCList().get("Mr. Taxman");
 
 		taxman.addReply(Arrays.asList("tax", "podatek"),"Wszyscy właściciele domów muszą #płacić podatki pośrednikowi.");
 

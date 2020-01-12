@@ -22,7 +22,7 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 /**
- * <p>Creates a normal version of mr ross in the ross house.
+ * <p>Creates a normal version of Mr. Ross in the ross house.
  */
 public class FatherNPC implements ZoneConfigurator {
 
@@ -39,7 +39,7 @@ public class FatherNPC implements ZoneConfigurator {
 
 	public void createDadNPC(final StendhalRPZone zone) {
 
-		final SpeakerNPC npc = new SpeakerNPC("Mr Ross") {
+		final SpeakerNPC npc = new SpeakerNPC("Mr. Ross") {
 			@Override
 			protected void createPath() {
 				setPath(null);

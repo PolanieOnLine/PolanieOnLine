@@ -43,7 +43,7 @@ public class MummyNPC implements ZoneConfigurator {
 
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC mummyNPC = new SpeakerNPC("Mrs Jones") {
+		final SpeakerNPC mummyNPC = new SpeakerNPC("Mrs. Jones") {
 			@Override
 			protected void createPath() {
 			    // does not move

@@ -2276,7 +2276,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
     <!-- This must be after the NPC configurator -->
     <entity x="9" y="12">
       <implementation class-name="games.stendhal.server.entity.mapstuff.chest.NPCOwnedChest">
-        <parameter name="npc">Mr Taxman</parameter>
+        <parameter name="npc">Mr. Taxman</parameter>
       </implementation>
     </entity>
 

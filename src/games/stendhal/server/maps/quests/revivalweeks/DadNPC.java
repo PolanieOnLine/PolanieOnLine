@@ -25,7 +25,7 @@ import games.stendhal.server.maps.ados.rosshouse.FatherNPC;
 public class DadNPC implements LoadableContent {
 	private void createDadNPC() {
 		final StendhalRPZone zone2 = SingletonRepository.getRPWorld().getZone("int_semos_frank_house");
-		final SpeakerNPC npc2 = new SpeakerNPC("Mr Ross") {
+		final SpeakerNPC npc2 = new SpeakerNPC("Mr. Ross") {
 
 			@Override
 			protected void createPath() {
@@ -67,7 +67,7 @@ public class DadNPC implements LoadableContent {
 
 	@Override
 	public void addToWorld() {
-		removeNPC("Mr Ross");
+		removeNPC("Mr. Ross");
 		createDadNPC();
 	}
 
@@ -79,7 +79,7 @@ public class DadNPC implements LoadableContent {
 	 */
 	@Override
 	public boolean removeFromWorld() {
-		removeNPC("Mr Ross");
+		removeNPC("Mr. Ross");
 
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_ados_ross_house");
 		new FatherNPC().createDadNPC(zone);

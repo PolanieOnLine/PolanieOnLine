@@ -43,7 +43,7 @@ public class MrManasNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Mr Manas") {
+		final SpeakerNPC npc = new SpeakerNPC("Mr. Manas") {
 
 			@Override
 			protected void createDialog() {
@@ -59,7 +59,7 @@ public class MrManasNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Mr Manas. Kiedyś chciał zostać czarodziejem, jednak okazało się, że nie ma do tego talentu. Lecz nie przestał interesować się magią.");
+		npc.setDescription("Oto Mr. Manas. Kiedyś chciał zostać czarodziejem, jednak okazało się, że nie ma do tego talentu. Lecz nie przestał interesować się magią.");
 		npc.setEntityClass("npcmanas");
 		npc.setPosition(12, 13);
 		npc.setDirection(Direction.UP);
