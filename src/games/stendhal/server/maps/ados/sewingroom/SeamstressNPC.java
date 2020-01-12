@@ -70,7 +70,7 @@ public class SeamstressNPC implements ZoneConfigurator {
 		seamstress.setEntityClass("woman_002_npc");
 		seamstress.setPosition(7, 7);
 		seamstress.initHP(100);
-		seamstress.setDescription("Ida jest znaną szwaczką w przemyśle stoczniowym. Ale może tobie też może pomóc.");
+		seamstress.setDescription("Oto Ida, jest znaną szwaczką w przemyśle stoczniowym. Ale może też tobie pomóc.");
 		zone.add(seamstress);
 	}
 }
