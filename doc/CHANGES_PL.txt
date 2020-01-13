@@ -5,7 +5,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 
 *klient*
 - Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
-	* wszystkie szczury (szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie, wściekły szczur)
+	* potwory: szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie, wściekły szczur, dzik
 	* jedzenie: banan, kokos, jajo wielkanocne, jajko wielkanocne, gruszka, granat
 	* zasoby: gadzie jajo, złote jajo, koński włos, pazur arktycznego smoka, kieł tygrysi, kieł wilczy
 	* zwoje: bilet turystyczny
