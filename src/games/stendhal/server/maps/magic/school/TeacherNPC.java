@@ -67,6 +67,7 @@ public class TeacherNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto wiedźma latająca na miotle. Wygląda na to, że robi pokaz dla grupy uczniów.");
 		npc.setEntityClass("witch3npc");
+		npc.setShadowStyle("floating");
 		npc.setPosition(29, 19);
 		npc.initHP(100);
 		npc.setSounds(Arrays.asList("witch-cackle-1"));

@@ -94,6 +94,7 @@ public class OracleNPC implements ZoneConfigurator {
 		npc.setPosition(75, 117);
 		npc.setDescription("Oto Zinnia. Wygląda jakoś wyjątkowo.");
 		npc.setEntityClass("oracle3npc");
+		npc.setShadowStyle("floating");
 		zone.add(npc);
 	}
 

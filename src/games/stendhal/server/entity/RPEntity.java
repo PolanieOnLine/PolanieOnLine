@@ -3570,4 +3570,20 @@ public abstract class RPEntity extends GuidedEntity {
 	private Predicate<Item> nameMatches(String name) {
 		return it -> name.equals(it.getName());
 	}
+
+	/**
+	 * Sets the attribute to define the shadow that the client should use.
+	 *
+	 * @param st
+	 * 		String name of the shadow to use.
+	 */
+	public void setShadowStyle(final String st) {
+		if (st == null) {
+			remove("shadow_style");
+			put("no_shadow", "");
+			return;
+		}
+
+		put("shadow_style", st);
+	}
 }

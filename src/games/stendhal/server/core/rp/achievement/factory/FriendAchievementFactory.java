@@ -64,9 +64,15 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						// Jef, Kirdneh
 						new QuestCompletedCondition("find_jefs_mom"),
 						// Hughie, Ados farmhouse
-						new AndCondition(new QuestActiveCondition("fishsoup_for_hughie"), new QuestNotInStateCondition("fishsoup_for_hughie", "start"),
+						new AndCondition(new QuestActiveCondition("fishsoup_for_hughie"), new QuestNotInStateCondition("fishsoup_for_hughie", "start")),
 						// Finn Farmer, George
-						new QuestCompletedCondition("coded_message")))));
+						new QuestCompletedCondition("coded_message"),
+						// Marianne, Deniran City S
+						new AndCondition(
+								new QuestActiveCondition("eggs_for_marianne"),
+								new QuestNotInStateCondition("eggs_for_marianne", "start")
+						)
+				)));
 
 		// quests about finding people
 		achievements.add(createAchievement("friend.quests.find", "Prywatny detektyw", "Znalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",

@@ -86,7 +86,7 @@ public class WitchNPC implements ZoneConfigurator {
 				new HealerAdder().addHealer(this, 1500);
 				add(
 				        ConversationStates.ATTENDING,
-				        Arrays.asList("magic", "scroll", "scrolls"),
+				        Arrays.asList("magic", "scroll", "scrolls", "zwój", "zwoje"),
 				        null,
 				        ConversationStates.ATTENDING,
 				        "#Oferuję zwoje, które pomogą Tobie w podróży: #'zwój semos' i #'niezapisany zwój'. Dla bardziej doświadczonych klientów mam #'zwój przywołania'!",
@@ -113,6 +113,7 @@ public class WitchNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("witchnpc");
+		npc.setShadowStyle("floating");
 		npc.setPosition(24, 7);
 		npc.initHP(100);
 		npc.setDescription("Widzisz wiedźmę Jynath. Ona lata na miotle.");

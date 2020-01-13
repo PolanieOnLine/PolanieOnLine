@@ -255,6 +255,7 @@ public abstract class RPEntity extends AudibleEntity {
 
 	/** entity casts shadow by default */
 	private boolean castShadow = true;
+	private String shadowStyle;
 
 	/** Possible attack results. */
 	public enum Resolution {
@@ -1129,6 +1130,7 @@ public abstract class RPEntity extends AudibleEntity {
 		if (object.has("no_shadow")) {
 			castShadow = false;
 		}
+		shadowStyle = object.get("shadow_style");
 
 		initializeSounds();
 	}
@@ -1664,5 +1666,19 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public boolean castsShadow() {
 		return castShadow;
+	}
+
+	/**
+	 * Retrieves the name that should be used to override shadow.
+	 *
+	 * @return
+	 * 		String path to shadow file to use or <code>null</code>.
+	 */
+	public String getShadowStyle() {
+		if (shadowStyle == null) {
+			return null;
+		}
+
+		return "data/sprites/shadow-" + shadowStyle + ".png";
 	}
 }

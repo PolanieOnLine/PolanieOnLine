@@ -386,7 +386,7 @@
 
 	<creature name="zielony potwór">
 		<type class="stendhal/hybrid" subclass="grobble_monster" tileid="hybrid.png:12"/>
-		<description></description>
+		<description>Oto zielony potwór. Możesz spotkać go pod łóżkiem, w szafie lub w najciemniejszych koszmarach.</description>
 		<attributes>
 			<atk value="609"/>
 			<def value="73"/>

@@ -117,6 +117,7 @@ public class OracleNPC implements ZoneConfigurator {
 		npc.setPosition(62, 86);
 		npc.setDescription("Oto Calla. Czuć od niej liliami.");
 		npc.setEntityClass("oracle2npc");
+		npc.setShadowStyle("floating");
 		zone.add(npc);
 	}
 
