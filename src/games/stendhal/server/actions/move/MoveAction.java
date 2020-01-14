@@ -48,7 +48,7 @@ public class MoveAction implements ActionListener {
 
 			player.applyClientDirection(true);
 		}
-		
+
 		if (player.has(AWAY)) {
 			player.remove(AWAY);
 			player.setVisibility(100);
