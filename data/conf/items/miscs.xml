@@ -8,7 +8,6 @@
 	    <implementation class-name="games.stendhal.server.entity.item.Item" />
 	    <attributes>
 	      <quantity value="1" />
-	      <menu value="Użyj|Użyj"/>
 	    </attributes>
 	    <weight value="1.0" />
 	    <value value="1" />
@@ -137,7 +136,7 @@
 		<description>Oto pluszowy miś. Jest miękki i puszysty. Dzieci go uwielbiają.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<behavior class-name="games.stendhal.server.entity.item.behavior.MessagingUseBehavior">
-			<parameter name="public" value="!me przytul pluszowego misia."/>
+			<parameter name="public" value="!me przytulił pluszowego misia."/>
 			<parameter name="private" value="Pluszowy miś jest miękki i kojący."/>
 		</behavior>
 		<attributes>

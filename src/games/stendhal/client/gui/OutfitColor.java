@@ -24,6 +24,8 @@ import marauroa.common.game.RPObject;
  * A helper object for accessing players' outfit color data.
  */
 public class OutfitColor {
+	/** Identifier for hat color. */
+	public static final String HAT = "hat";
 	/** Identifier for hair color. */
 	public static final String HAIR = "hair";
 	/** Identifier for dress color. */
@@ -33,7 +35,7 @@ public class OutfitColor {
 	/** Identifier for detail color. */
 	public static final String DETAIL = "detail";
 
-	private static final String[] parts = { DRESS, SKIN, HAIR, DETAIL };
+	private static final String[] parts = { DRESS, SKIN, HAIR, DETAIL, HAT };
 	public static final OutfitColor PLAIN = new OutfitColor();
 
 	private Map<String, Color> map = new TreeMap<String, Color>();

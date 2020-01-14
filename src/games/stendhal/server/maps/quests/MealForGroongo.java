@@ -50,6 +50,7 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerOwnsItemIncludingBankCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
@@ -657,7 +658,7 @@ public class MealForGroongo extends AbstractQuest {
                         	getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
                         " na deser.";
                 decentMeal.setInfoString("Skromny posiłek dla Groongo");
-                decentMeal.setBoundTo("Groongo Rahnnt");
+                decentMeal.setBoundTo(player.getName());
                 decentMeal.setDescription(
                     "Widzisz pokryty kopułą skromny posiłek, który składa się z " +
                     decentMealDescription);
@@ -1621,6 +1622,54 @@ public class MealForGroongo extends AbstractQuest {
             ConversationStates.IDLE,
             null,
             new MultipleActions(normalEndQuestActions)
+        );
+        
+        // player has lost meal
+        npc_chef.add(ConversationStates.ATTENDING,
+        	Arrays.asList("meal", "dessert"),
+        	new AndCondition(
+        		new QuestInStateCondition(QUEST_SLOT, 0, "deliver_decentmeal"),
+        		new NotCondition(new PlayerOwnsItemIncludingBankCondition("skromny posiłek"))
+        	),
+        	ConversationStates.QUESTION_2,
+        	"Straciłeś posiłek!? Mogę zrobić kolejny, ale będę potrzebował, abyś ponownie przyniósł mi składniki. Czy jesteś na to gotowy?",
+        	null
+        );
+
+        // player wants another
+        npc_chef.add(ConversationStates.QUESTION_2,
+        	ConversationPhrases.YES_MESSAGES,
+        	new AndCondition(
+            		new QuestInStateCondition(QUEST_SLOT, 0, "deliver_decentmeal"),
+            		new NotCondition(new PlayerOwnsItemIncludingBankCondition("skromny posiłek"))
+            	),
+        	ConversationStates.QUESTION_1,
+        	null,
+        	new MultipleActions(
+        		new SetQuestAction(QUEST_SLOT, 0, "fetch_maindish"),
+        		new checkIngredientsForMainDishAction()
+        	)
+        );
+
+        // player wants another meal but found decent meal
+        npc_chef.add(ConversationStates.QUESTION_2,
+        	ConversationPhrases.YES_MESSAGES,
+        	new AndCondition(
+            		new QuestInStateCondition(QUEST_SLOT, 0, "deliver_decentmeal"),
+            		new PlayerOwnsItemIncludingBankCondition("skromny posiłek")
+            	),
+        	ConversationStates.IDLE,
+        	"Wygląda na to, że znalazłeś skromny posiłek!",
+        	null
+        );
+
+        // player does not want another meal
+        npc_chef.add(ConversationStates.QUESTION_2,
+        	ConversationPhrases.NO_MESSAGES,
+       		new QuestInStateCondition(QUEST_SLOT, 0, "deliver_decentmeal"),
+       		ConversationStates.IDLE,
+       		"Och? Przypomniałeś gdzie zostawiłeś posiłek?",
+       		null
         );
     }
 }
