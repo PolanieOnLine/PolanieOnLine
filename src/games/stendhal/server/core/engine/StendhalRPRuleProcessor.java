@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine;
 
+import static games.stendhal.common.constants.Actions.AWAY;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -373,7 +375,6 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 		entityToKill.clear();
 	}
 
-
 	@Override
 	public synchronized void endTurn() {
 		final int currentTurn = getTurn();
@@ -465,6 +466,11 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 				StendhalRPAction.transferContent(player);
 
 				getOnlinePlayers().add(player);
+
+				if (player.has(AWAY)) {
+					player.remove(AWAY);
+					player.setVisibility(100);
+				}
 
 				if (!player.isGhost()) {
 					notifyOnlineStatus(true, player);
