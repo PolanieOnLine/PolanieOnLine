@@ -1323,7 +1323,7 @@
 	<!-- sold -->
 	<item name="osełka masła">
 		<type class="food" subclass="butter" tileid="-1"/>
-		<description>To jest osełka masła. Możesz ją dodać do czegoś lub zjeść jeśli masz taką ochotę.</description>
+		<description>Oto jest osełka masła. Możesz ją dodać do czegoś lub zjeść jeśli masz taką ochotę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="25"/>
