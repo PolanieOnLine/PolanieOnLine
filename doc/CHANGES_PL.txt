@@ -5,9 +5,13 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 
 *klient*
 - Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
-	* potwory: szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie, wściekły szczur, dzik
-	* jedzenie: banan, kokos, jajo wielkanocne, jajko wielkanocne, gruszka, granat
-	* zasoby: gadzie jajo, złote jajo, koński włos, pazur arktycznego smoka, kieł tygrysi, kieł wilczy
+	* npc: Juhas
+	* potwory: szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie,
+		wściekły szczur, dzik
+	* jedzenie: banan, kokos, jajo wielkanocne, małe jajo wielkanocne, gruszka, granat,
+		cytryna, zielone jabłuszko, ser, duży ser
+	* zasoby: gadzie jajo, złote jajo, koński włos, pazur arktycznego smoka,
+		kieł tygrysi, kieł wilczy
 	* zwoje: bilet turystyczny
 	* miecze: bułat, nożyk
 	* pierścienie: pierścień skorupy żółwia, złoty pierścień, srebrny pierścień
@@ -28,6 +32,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 	* nożyk (na miejsce wcześniejszego mieczyka - 7/3)
 	* drewniany sztylecik (1/1 + 250 użyć)
 	* pierścień skorupy żółwia (+1 def)
+	* duży ser
 - Dodano nowy budynek w Zakopane (w południowej części zakopane_s): int_zakopane_sewing_house_0 oraz int_zakopane_sewing_house_1
 - Dodano 8 nowych zagadek w hell'u
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
