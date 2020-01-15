@@ -1667,7 +1667,7 @@
 		</equipable>
 	</item>
 	
-	<!-- northpole goodies -->
+	<!-- DISABLED: northpole goodies 
 	<item name="cukierkowa laska">
 		<type class="food" subclass="candycane" tileid="-1"/>
 		<description>Oto przepszyna cukierkowa laska.</description>
@@ -1828,7 +1828,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-    <!-- end of northpole goodies -->
+    end of northpole goodies -->
 
 	<item name="mufinka">
 		<type class="food" subclass="fairy_cake" tileid="-1"/>
