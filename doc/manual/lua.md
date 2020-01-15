@@ -37,7 +37,7 @@ if game:setZone("0_semos_city") then
 	npc:setEntityClass("littlegirlnpc")
 	npc:setPosition(10, 55)
 	npc:setBaseSpeed(0.1)
-	nodes = {
+	local nodes = {
 		{10, 55},
 		{11, 55},
 		{11, 56},
@@ -52,6 +52,24 @@ if game:setZone("0_semos_city") then
 	npc:add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES, nil, ConversationStates.ATTENDING, "I am sad, because I do not have a job.", nil)
 	npc:addGoodbye();
 	npc:setCollisionAction(CollisionAction.STOP)
+
+	-- Some custom replies using conditions & actions
+	npc:add(
+		ConversationStates.ATTENDING,
+		"Lua",
+		newCondition("PlayerNextToCondition"),
+		ConversationStates.ATTENDING,
+		"Czy mógłbyś się trochę cofnąć? Czuję twój oddech.",
+		newAction("NPCEmoteAction", "coughs", false)
+	)
+	npc:add(
+		ConversationStates.ATTENDING,
+		"Lua",
+		newCondition("NotCondition", newCondition("PlayerNextToCondition")),
+		ConversationStates.ATTENDING,
+		"To moje imię, nie nadużywaj go!",
+		newAction("NPCEmoteAction", "giggles", false)
+	)
 
 	-- Add the NPC to the world
 	game:add(npc)
