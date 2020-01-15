@@ -34,6 +34,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 	* pierścień skorupy żółwia (+1 def)
 	* duży ser
 - Dodano nowy budynek w Zakopane (w południowej części zakopane_s): int_zakopane_sewing_house_0 oraz int_zakopane_sewing_house_1
+- Dodano nowy sklep skupu rękawic (w nowym budynku)
 - Dodano 8 nowych zagadek w hell'u
 - Dodano 5 nowych osiągnięć za odradzanie u Yereny
 - Dodano bonus ataku/obrony za dany etap odradzania (to nie jest w postaci punktów umiejętności!)
