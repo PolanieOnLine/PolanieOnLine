@@ -50,7 +50,7 @@
 
 	<creature name="trol">
 		<type class="stendhal/troll" subclass="troll" tileid="troll.png:0"/>
-		<description>To jest trol. Uważaj, bo jesteś na jego ziemi.</description>
+		<description>Oto trol. Uważaj, bo jesteś na jego ziemi.</description>
 		<attributes>
 			<atk value="135"/>
 			<def value="34"/>

@@ -82,7 +82,7 @@
 
 	<item name="bratek">
 		<type class="flower" subclass="pansy" tileid="-1"/>
-		<description>To jest bratek, piękny i kolorowy.</description>
+		<description>Oto bratek, piękny i kolorowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

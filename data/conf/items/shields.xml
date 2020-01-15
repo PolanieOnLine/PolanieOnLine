@@ -627,7 +627,7 @@
 
 	<item name="polska płytowa tarcza">
 		<type class="shield" subclass="polish_metal_shield" tileid="-1"/>
-		<description>To polska płytowa tarcza. Jest sporo warta.</description>
+		<description>Oto polska płytowa tarcza. Jest sporo warta.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>

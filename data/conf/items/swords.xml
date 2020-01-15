@@ -798,7 +798,7 @@
 
 	<item name="krwiopijca">
 		<type class="sword" subclass="vampire_sword" tileid="-1"/>
-		<description>To osławiony krwiopijca, miecz który zabiera życie tym, których atakujesz.</description>
+		<description>Oto osławiona krwiopijca, miecz który zabiera życie tym, których atakujesz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="22"/>

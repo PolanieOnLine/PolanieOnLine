@@ -23,7 +23,7 @@
 
 	<item name="bulwa">
 		<type class="misc" subclass="bulb" tileid="-1"/>
-		<description>Oto jest bulwa. Można ją zasadzić wszędzie, ale rozwinie się tylko na urodzajnej glebie.</description>
+		<description>Oto bulwa. Można ją zasadzić wszędzie, ale rozwinie się tylko na urodzajnej glebie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Seed"/>
 		<attributes>
 			<quantity value="1"/>

@@ -304,7 +304,7 @@
 
 	<item name="antidotum">
 		<type class="drink" subclass="antidote" tileid="-1"/>
-		<description>To jest antidotum, aby odkazić cię i obronić od jadu przez chwilkę.</description>
+		<description>Oto antidotum, aby odkazić cię i obronić od jadu przez chwilkę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusHealer"/>
 		<attributes>
 			<immunization value="poisoned"/>
@@ -328,7 +328,7 @@
 
 	<item name="mocne antidotum">
 		<type class="drink" subclass="greater_antidote" tileid="-1"/>
-		<description>To jest mocne antidotum, aby odkazić cię i obronić od jadu przez dłuższą chwilkę.</description>
+		<description>Oto mocne antidotum, aby odkazić cię i obronić od jadu przez dłuższą chwilkę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusHealer"/>
 		<attributes>
 			<immunization value="poisoned"/>
@@ -444,7 +444,7 @@
 
 	<item name="zabójcza trucizna">
 		<type class="drink" subclass="disease_poison" tileid="-1"/>
-		<description>To zabójcza trucizna.</description>
+		<description>Oto zabójcza trucizna.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="-2000"/>
@@ -467,7 +467,7 @@
 
 	<item name="bardzo mocna trucizna">
 		<type class="drink" subclass="mega_poison" tileid="-1"/>
-		<description>To bardzo mocna trucizna. Nie pij tego!</description>
+		<description>Oto bardzo mocna trucizna. Nie pij tego!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="-500"/>

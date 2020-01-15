@@ -4,7 +4,7 @@
 
 	<item name="czterolistna koniczyna">
 		<type class="special" subclass="lucky_charm" tileid="-1"/>
-		<description>To czterolistna koniczyna. Trzymaj ją przy sobie, a może przyniesie ci szczęście.</description>
+		<description>Oto czterolistna koniczyna. Trzymaj ją przy sobie, a może przyniesie ci szczęście.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

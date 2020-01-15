@@ -861,7 +861,7 @@
 
 	<item name="makrela">
 		<type class="food" subclass="mackerel" tileid="-1"/>
-		<description>To makrela.</description>
+		<description>Oto makrela.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
@@ -884,7 +884,7 @@
 
 	<item name="okoń">
 		<type class="food" subclass="perch" tileid="-1"/>
-		<description>To okoń.</description>
+		<description>Oto okoń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="35"/>
@@ -930,7 +930,7 @@
 
 	<item name="błazenek">
 		<type class="food" subclass="clown-fish" tileid="-1"/>
-		<description>To egzotyczna ryba błazenek.</description>
+		<description>Oto egzotyczna ryba błazenek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="10"/>
@@ -1069,7 +1069,7 @@
 
 	<item name="naleśniki z polewą czekoladową">
 		<type class="food" subclass="crepesuzette" tileid="-1"/>
-		<description>To pyszne naleśniki z polewą czekoladową.</description>
+		<description>Oto pyszne naleśniki z polewą czekoladową.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="100"/>
@@ -1323,7 +1323,7 @@
 	<!-- sold -->
 	<item name="osełka masła">
 		<type class="food" subclass="butter" tileid="-1"/>
-		<description>Oto jest osełka masła. Możesz ją dodać do czegoś lub zjeść jeśli masz taką ochotę.</description>
+		<description>Oto osełka masła. Możesz ją dodać do czegoś lub zjeść jeśli masz taką ochotę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="25"/>
@@ -2386,7 +2386,7 @@
 
 	<item name="szczupak">
 		<type class="food" subclass="szczupak" tileid="-1"/>
-		<description>To szczupak. Pochwal się wszystkim, że złowiłeś tak wielkiego.</description>
+		<description>Oto szczupak. Pochwal się wszystkim, że złowiłeś tak wielkiego.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="45"/>
@@ -2409,7 +2409,7 @@
 
 	<item name="leszcz">
 		<type class="food" subclass="leszcz" tileid="-1"/>
-		<description>To leszcz. Pospolita rybka.</description>
+		<description>Oto leszcz. Pospolita rybka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="15"/>
@@ -2432,7 +2432,7 @@
 
 	<item name="karp">
 		<type class="food" subclass="karp" tileid="-1"/>
-		<description>To karp. Na co ci on, skoro je się go tylko raz na rok?</description>
+		<description>Oto karp. Na co ci on, skoro je się go tylko raz na rok?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="35"/>
@@ -2455,7 +2455,7 @@
 
 	<item name="karp lustrzeń">
 		<type class="food" subclass="karp_lustrzen" tileid="-1"/>
-		<description>To błyszczy karp lustrzeń. Zaskakująco wielka ryba!</description>
+		<description>Oto błyszczy karp lustrzeń. Zaskakująco wielka ryba!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="45"/>

@@ -4,7 +4,7 @@
 
 	<item name="polano">
 		<type class="resource" subclass="wood" tileid="-1"/>
-		<description>To polano z wyciętego w lesie drzewa.</description>
+		<description>Oto polano z wyciętego w lesie drzewa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -24,7 +24,7 @@
 
 	<item name="trzcina cukrowa">
 		<type class="resource" subclass="sugarcane" tileid="-1"/>
-		<description>To jest trzcina cukrowa. Można z niej wyrobić cukier.</description>
+		<description>Oto trzcina cukrowa. Można z niej wyrobić cukier.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -44,7 +44,7 @@
 
 	<item name="zboże">
 		<type class="resource" subclass="grain" tileid="-1"/>
-		<description>To kłos zboża.</description>
+		<description>Oto kłos zboża.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -84,7 +84,7 @@
 
 	<item name="ruda żelaza">
 		<type class="resource" subclass="iron_ore" tileid="-1"/>
-		<description>To ruda żelaza.</description>
+		<description>Oto ruda żelaza.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -124,7 +124,7 @@
 
 	<item name="wełna">
 		<type class="resource" subclass="wool" tileid="-1"/>
-		<description>To wełna, jest dość krótka.</description>
+		<description>Oto wełna, jest dość krótka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -344,7 +344,7 @@
 
 	<item name="nakrapiane jajo">
 		<type class="food" subclass="spotted_egg" tileid="-1"/>
-		<description>To jest nakrapiane jajo i jest podobno smaczne.</description>
+		<description>Oto nakrapiane jajo, które jest podobno smaczne.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="1000"/>
@@ -407,7 +407,7 @@
 
 	<item name="przędza jedwabna">
 		<type class="resource" subclass="silkthread" tileid="-1"/>
-		<description>To przędza jedwabna skradziona z pajęczyny królowej pająków.</description>
+		<description>Oto przędza jedwabna skradziona z pajęczyny królowej pająków.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -447,7 +447,7 @@
 
 	<item name="przędza z mithrilu">
 		<type class="resource" subclass="mithril_thread" tileid="-1"/>
-		<description>To przędza z mithrilu przeplatanego jedwabiem.</description>
+		<description>Oto przędza z mithrilu przeplatanego jedwabiem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -607,7 +607,7 @@
 
 	<item name="grudziarka">
 		<type class="resource" subclass="grudziarka" tileid="-1"/>
-		<description>To ścierka płócienna do przecedzania ściętego mleka.</description>
+		<description>Oto ścierka płócienna do przecedzania ściętego mleka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

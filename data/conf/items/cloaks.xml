@@ -21,7 +21,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-	
+
 	<item name="płaszcz lutinów">
 		<type class="cloak" subclass="lutin_cloak" tileid="-1"/>
 		<description>Oto piracki płaszcz bractwa lutinów.</description>
@@ -200,7 +200,7 @@
 
 	<item name="peleryna">
 		<type class="cloak" subclass="cloak" tileid="-1"/>
-		<description>To zwykła peleryna. Załóż ją to nie bedzie ci zimno.</description>
+		<description>Oto zwykła peleryna. Załóż ją to nie bedzie ci zimno.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
@@ -599,7 +599,7 @@
 
 	<item name="chusta góralska">
 		<type class="cloak" subclass="goralska_chusta" tileid="-1"/>
-		<description>To chusta góralska. Bardziej chroni przed zimnem niż przed atakiem.</description>
+		<description>Oto chusta góralska. Bardziej chroni przed zimnem niż przed atakiem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
@@ -617,7 +617,7 @@
 
 	<item name="futro">
 		<type class="cloak" subclass="futro" tileid="-1"/>
-		<description>To futro ogrzeje cię w zimne dni.</description>
+		<description>Oto futro, które ogrzeje cię w zimne dni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="4"/>

@@ -5,7 +5,7 @@
 	<!-- START: ogre -->
 	<creature name="ogr">
 		<type class="stendhal/ogre" subclass="ogre" tileid="ogre.png:0"/>
-		<description>To jest ogr. Jest goły i ordynarny.</description>
+		<description>Oto ogr. Jest goły i ordynarny.</description>
 		<attributes>
 			<atk value="151"/>
 			<def value="20"/>

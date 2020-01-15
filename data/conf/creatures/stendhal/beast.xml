@@ -515,7 +515,7 @@
 
 	<creature name="coś">
 		<type class="stendhal/huge_animal" subclass="thing" tileid="huge_animal.png:8"/>
-		<description>To jest coś. Niby nic, ale czymś jednak jest. Być może ludzkim mutantem lub może potworem z innego świata.</description>
+		<description>Oto coś. Niby nic, ale czymś jednak jest. Być może ludzkim mutantem lub może potworem z innego świata.</description>
 		<attributes>
 			<atk value="977"/>
 			<def value="121"/>

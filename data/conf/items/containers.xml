@@ -62,7 +62,7 @@
 
 	<item name="buteleczka">
 		<type class="container" subclass="bottle" tileid="-1"/>
-		<description>To buteleczka. Jest pusta, ale możesz nalać do niej wodę.</description>
+		<description>Oto buteleczka. Jest pusta, ale możesz nalać do niej wodę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -116,7 +116,7 @@
 
 	<item name="butla czwórniaczka">
 		<type class="container" subclass="bottle_eared" tileid="-1"/>
-		<description>To butla czwórniaczka. Jest pusta. Ktoś wypił z niej wszystko do ostatniej kropelki.</description>
+		<description>Oto butla czwórniaczka. Jest pusta. Ktoś wypił z niej wszystko do ostatniej kropelki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -152,7 +152,7 @@
 
 	<item name="mała okrągła butelka">
 		<type class="container" subclass="bottle_short_rounded" tileid="-1"/>
-		<description>To mała okrągła butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<description>Oto mała okrągła butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -170,7 +170,7 @@
 
 	<item name="mała trójkątna butelka">
 		<type class="container" subclass="bottle_short_triangular" tileid="-1"/>
-		<description>To mała trójkątna butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
+		<description>Oto mała trójkątna butelka. Jest pusta. Ktoś opróżnił ją do ostatniej kropelki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

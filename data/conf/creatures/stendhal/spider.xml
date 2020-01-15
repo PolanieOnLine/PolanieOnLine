@@ -30,7 +30,7 @@
 
 	<creature name="pająk ptasznik">
 		<type class="stendhal/spider" subclass="poisonous_spider" tileid="spider.png:1"/>
-		<description>To pająk ptasznik! Powiadają, że jego trucizna wpierw cię osłabi, a potem może uśmiercić!</description>
+		<description>Oto pająk ptasznik! Powiadają, że jego trucizna wpierw cię osłabi, a potem może uśmiercić!</description>
 		<attributes>
 			<atk value="244"/>
 			<def value="61"/>

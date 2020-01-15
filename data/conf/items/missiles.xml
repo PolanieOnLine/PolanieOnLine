@@ -50,7 +50,7 @@
 
 	<item name="strzałka">
 		<type class="missile" subclass="dart" tileid="-1"/>
-		<description>To jest strzałka. Musisz być blisko, żeby użyc jej jako broń.</description>
+		<description>Oto strzałka. Musisz być blisko, żeby użyc jej jako broń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<ratk value="2"/>

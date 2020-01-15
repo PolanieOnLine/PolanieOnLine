@@ -64,7 +64,7 @@
 
 	<item name="mandragora">
 		<type class="herb" subclass="mandragora" tileid="-1"/>
-		<description>To jest korzeń mandragory. Ma właściwości lecznicze o ile wiesz jak je wydobyć.</description>
+		<description>Oto korzeń mandragory. Ma właściwości lecznicze o ile wiesz jak je wydobyć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
