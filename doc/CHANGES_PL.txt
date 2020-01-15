@@ -9,7 +9,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 	* potwory: szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie,
 		wściekły szczur, dzik
 	* jedzenie: banan, kokos, jajo wielkanocne, małe jajo wielkanocne, gruszka, granat,
-		cytryna, zielone jabłuszko, ser, duży ser
+		cytryna, zielone jabłuszko, ser, duży ser, osełka masła
 	* zasoby: gadzie jajo, złote jajo, koński włos, pazur arktycznego smoka,
 		kieł tygrysi, kieł wilczy
 	* zwoje: bilet turystyczny
