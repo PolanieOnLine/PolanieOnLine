@@ -440,6 +440,7 @@
 		<drops>
 			<item value="money" quantity="[5,22]" probability="100.0"/>
 			<item value="ser" quantity="[4,8]" probability="85.0"/>
+			<item value="duży ser" quantity="[3,6]" probability="40.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.5"/>
@@ -478,6 +479,7 @@
 		<drops>
 			<item value="money" quantity="[5,22]" probability="100.0"/>
 			<item value="ser" quantity="[4,8]" probability="85.0"/>
+			<item value="duży ser" quantity="[3,6]" probability="40.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.5"/>

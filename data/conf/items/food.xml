@@ -1577,7 +1577,7 @@
 	<!-- dropped -->
 	<item name="ser">
 		<type class="food" subclass="cheese" tileid="-1"/>
-		<description>Oto kawałek sera. Zjedz go a zobaczysz co się stanie.</description>
+		<description>Oto kawałek sera. Zjedz go, a zobaczysz co się stanie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20"/>
@@ -1588,6 +1588,29 @@
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="duży ser">
+		<type class="food" subclass="cheese_big" tileid="-1"/>
+		<description>Oto duży ser. Wygląda na świeży. Zjedz go, a zobaczysz co się stanie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="40"/>
+			<frequency value="8"/>
+			<quantity value="1"/>
+			<regen value="3"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="2"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
