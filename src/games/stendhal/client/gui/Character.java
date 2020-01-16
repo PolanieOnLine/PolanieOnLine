@@ -118,25 +118,25 @@ Inspectable {
 		 */
 		left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
 
-		ItemPanel panel = createItemPanel(itemClass, store, "neck", "data/gui/neck-slot.png");
+		ItemPanel panel = createItemPanel(itemClass, store, "neck", "data/gui/slot-neck.png");
 		left.add(panel);
-		panel = createItemPanel(itemClass, store, "rhand", "data/gui/weapon-slot.png");
+		panel = createItemPanel(itemClass, store, "rhand", "data/gui/slot-weapon.png");
 		left.add(panel);
-		panel = createItemPanel(itemClass, store, "finger", "data/gui/ring-slot.png");
+		panel = createItemPanel(itemClass, store, "finger", "data/gui/slot-ring.png");
 		left.add(panel);
-		panel = createItemPanel(itemClass, store, "fingerb", "data/gui/ringb-slot.png");
+		panel = createItemPanel(itemClass, store, "fingerb", "data/gui/slot-ringb.png");
 		left.add(panel);
 
 		// Fill the middle column
-		panel = createItemPanel(itemClass, store, "head", "data/gui/helmet-slot.png");
+		panel = createItemPanel(itemClass, store, "head", "data/gui/slot-helmet.png");
 		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "armor", "data/gui/armor-slot.png");
+		panel = createItemPanel(itemClass, store, "armor", "data/gui/slot-armor.png");
 		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "pas", "data/gui/belt-slot.png");
+		panel = createItemPanel(itemClass, store, "pas", "data/gui/slot-belt.png");
 		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "legs", "data/gui/legs-slot.png");
+		panel = createItemPanel(itemClass, store, "legs", "data/gui/slot-legs.png");
 		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "feet", "data/gui/boots-slot.png");
+		panel = createItemPanel(itemClass, store, "feet", "data/gui/slot-boots.png");
 		middle.add(panel);
 
 		/*
@@ -146,13 +146,13 @@ Inspectable {
 		 * the column uses the other half at the bottom.
 		 */
 		right.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-		panel = createItemPanel(itemClass, store, "cloak", "data/gui/cloak-slot.png");
+		panel = createItemPanel(itemClass, store, "cloak", "data/gui/slot-cloak.png");
 		right.add(panel);
-		panel = createItemPanel(itemClass, store, "lhand", "data/gui/shield-slot.png");
+		panel = createItemPanel(itemClass, store, "lhand", "data/gui/slot-shield.png");
 		right.add(panel);
-		panel = createItemPanel(itemClass, store, "glove", "data/gui/gloves-slot.png");
+		panel = createItemPanel(itemClass, store, "glove", "data/gui/slot-gloves.png");
 		right.add(panel);
-		panel = createItemPanel(itemClass, store, "money", "data/gui/money-slot.png");
+		panel = createItemPanel(itemClass, store, "money", "data/gui/slot-pouch.png");
 		right.add(panel);
 
 		// Bag, keyring, etc
@@ -162,9 +162,9 @@ Inspectable {
 		specialSlots.setVisible(false);
 		content.add(specialSlots);
 
-		panel = createItemPanel(itemClass, store, "back", "data/gui/bag-slot.png");
+		panel = createItemPanel(itemClass, store, "back", "data/gui/slot-bag.png");
 		specialSlots.add(panel);
-		panel = createItemPanel(itemClass, store, "belt", "data/gui/key-slot.png");
+		panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
 		specialSlots.add(panel);
 
 		setContent(content);
