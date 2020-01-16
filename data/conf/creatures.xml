@@ -33,7 +33,7 @@
 	<group uri="creatures/stendhal/kobold.xml" />
 	<group uri="creatures/stendhal/mutant.xml" />
 	<group uri="creatures/stendhal/mythical_being.xml" />
-	<group uri="creatures/stendhal/northpole.xml" />
+	<!-- <group uri="creatures/stendhal/northpole.xml" /> -->
 	<group uri="creatures/stendhal/ogre.xml" />
 	<group uri="creatures/stendhal/oni.xml" />
 	<group uri="creatures/stendhal/orc.xml" />
