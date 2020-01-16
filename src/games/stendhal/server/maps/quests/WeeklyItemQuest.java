@@ -18,6 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
@@ -25,6 +27,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -43,6 +46,8 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.StartRecordingRandomItemCollectionAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
+import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasRecordedItemWithHimCondition;
@@ -79,6 +84,9 @@ import games.stendhal.server.maps.Region;
  */
 public class WeeklyItemQuest extends AbstractQuest {
 
+	/** the logger instance */
+	private static final Logger logger = Logger.getLogger(WeeklyItemQuest.class);
+
 	private static final String QUEST_SLOT = "weekly_item";
 
 	/** How long until the player can give up and start another quest */
@@ -91,117 +99,203 @@ public class WeeklyItemQuest extends AbstractQuest {
 	 * All items which are hard enough to find but not tooo hard and not in Daily quest. If you want to do
 	 * it better, go ahead. *
 	 */
-	private static Map<String,Integer> items;
+	private static final Map<String, Integer> items_easy = new HashMap<String, Integer>();
+	private static final Map<String, Integer> items_med = new HashMap<String, Integer>();
+	private static final Map<String, Integer> items_hard = new HashMap<String, Integer>();
+
+	private static final int LEVEL_MED = 51;
+	private static final int LEVEL_HARD = 151;
 
 	private static void buildItemsMap() {
-		items = new HashMap<String, Integer>();
+		// levels 0-50
 
-		// armor
-		items.put("zbroja barbarzyńcy",1);
-		items.put("zbroja chaosu",1);
-		items.put("zbroja krasnoludzka",1);
-		items.put("złota zbroja",1);
-		items.put("lodowa zbroja",1);
-		items.put("magiczna zbroja płytowa",1);
-		items.put("zbroja mainiocyjska",1);
-		items.put("zbroja cieni",1);
-		items.put("kamienna zbroja",1);
-		items.put("zbroja xenocyjska",1);
+		// armor (easy difficulty)
+		addEasy("zbroja cieni",1);
+		addEasy("kamienna zbroja",1);
 
-		// axe
-		items.put("złoty topór obosieczny",1);
-		items.put("magiczny topór obosieczny",1);
+		// boots (easy difficulty)
+		addEasy("złote buty",1);
+		addEasy("buty żelazne",1);
+		addEasy("buty kamienne",1);
 
-		// boots
-		items.put("buty chaosu",1);
-		items.put("złote buty",1);
-		items.put("buty mainiocyjskie",1);
-		items.put("buty cieni",1);
-		items.put("buty żelazne",1);
-		items.put("buty kamienne",1);
-		items.put("buty xenocyjskie",1);
+		// cloak (easy difficulty)
+		addEasy("prążkowany płaszcz lazurowy",1);
 
+		// club (easy difficulty)
+		addEasy("kij z czaszką",1);
 
-		// cloak
-		items.put("lazurowy płaszcz smoczy",1);
-		items.put("prążkowany płaszcz lazurowy",1);
-		items.put("płaszcz chaosu",1);
-		items.put("złoty płaszcz",1);
-		items.put("płaszcz mainiocyjski",1);
-		items.put("karmazynowy płaszcz smoczy",1);
-		items.put("płaszcz cieni",1);
-		items.put("płaszcz xenocyjski",1);
+		// drink (easy difficulty)
+		addEasy("wielki eliksir",5);
+		addEasy("zupa rybna",3);
 
-		// club
-		items.put("kij z czaszką",1);
+		// special (easy difficulty)
+		addEasy("czterolistna koniczyna",1);
 
-		// drinks
-		items.put("wielki eliksir",5);
-		items.put("zupa rybna",3);
+		// shield (easy difficulty)
+		addEasy("szmaragdowa tarcza smocza",1);
+		addEasy("tarcza cieni",1);
 
-		// helmet
-		items.put("hełm chaosu",1);
-		items.put("złoty hełm",1);
-		items.put("złoty hełm wikingów",1);
-		items.put("hełm mainiocyjski",1);
-		items.put("hełm cieni",1);
+		// sword (easy difficulty)
+		addEasy("sztylet mroku",1);
+		addEasy("miecz demonów",1);
 
-		// jewellery
-		items.put("diament",1);
-		items.put("obsydian",1);
+		// levels 51-150
 
-		// legs
-		items.put("spodnie chaosu",1);
-		items.put("spodnie krasnoludzkie",1);
-		items.put("złote spodnie",1);
-		items.put("spodnie mainiocyjskie",1);
-		items.put("spodnie cieni",1);
-		items.put("spodnie xenocyjskie",1);
+		// armor (medium difficulty)
+		addMed("zbroja barbarzyńcy",1);
+		addMed("zbroja krasnoludzka",1);
+		addMed("złota zbroja",1);
+		addMed("magiczna zbroja płytowa",1);
 
-		// misc
-		items.put("serce olbrzyma",5);
-		items.put("gruczoł jadowy",1);
+		// axe (medium difficulty)
+		addMed("złoty topór obosieczny",1);
 
-		// resource
-		items.put("sztabka mithrilu",3);
-		items.put("bryłka mithrilu",5);
-		items.put("gruczoł przędzy",7);
+		// boots (medium difficulty)
+		addMed("buty chaosu",1);
+		addMed("buty mainiocyjskie",1);
+		addMed("buty cieni",1);
 
-		// special
-		items.put("czterolistna koniczyna",1);
-		items.put("mityczne jajo",1);
+		// cloak (medium difficulty)
+		addMed("lazurowy płaszcz smoczy",1);
+		addMed("płaszcz chaosu",1);
+		addMed("złoty płaszcz",1);
+		addMed("karmazynowy płaszcz smoczy",1);
+		addMed("płaszcz cieni",1);
 
-		// shield
-		items.put("tarcza chaosu",1);
-		items.put("złota tarcza",1);
-		items.put("szmaragdowa tarcza smocza",1);
-		items.put("magiczna tarcza płytowa",1);
-		items.put("tarcza mainiocyjska",1);
-		items.put("tarcza cieni",1);
-		items.put("tarcza xenocyjska",1);
+		// helmet (medium difficulty)
+		addMed("złoty hełm",1);
+		addMed("złoty hełm wikingów",1);
+		addMed("hełm mainiocyjski",1);
+		addMed("hełm cieni",1);
 
-		// sword
-		items.put("sztylet mordercy",1);
-		items.put("pogromca",1);
-		items.put("miecz chaosu",1);
-		items.put("sztylet mroku",1);
-		items.put("miecz demonów",1);
-		items.put("miecz elfów ciemności",1);
-		items.put("miecz ognisty",1);
-		items.put("półtorak",1);
-		items.put("piekielny sztylet",1);
-		items.put("miecz lodowy",1);
-		items.put("miecz nieśmiertelnych",1);
-		items.put("czarny sztylet",1);
-		items.put("miecz xenocyjski",1);
+		// jewellery (medium difficulty)
+		addMed("diament",1);
 
+		// legs (medium difficulty)
+		addMed("spodnie chaosu",1);
+		addMed("spodnie krasnoludzkie",1);
+		addMed("złote spodnie",1);
+		addMed("spodnie mainiocyjskie",1);
+		addMed("spodnie cieni",1);
+
+		// misc (medium difficulty)
+		addMed("serce olbrzyma",5);
+		addMed("gruczoł jadowy",1);
+		
+		// resource (medium difficulty)
+		addMed("sztabka mithrilu",1);
+		addMed("bryłka mithrilu",1);
+		addMed("gruczoł przędzy",7);
+
+		// ring (medium difficulty)
+		addMed("pierścień leczniczy", 1);
+
+		// special (medium difficulty)
+		addMed("mityczne jajo",1);
+
+		// shield (medium difficulty)
+		addMed("tarcza chaosu",1);
+		addMed("złota tarcza",1);
+		addMed("magiczna tarcza płytowa",1);
+		addMed("tarcza mainiocyjska",1);
+
+		// sword (medium difficulty)
+		addMed("sztylet mordercy",1);
+		addMed("pogromca",1);
+		addMed("miecz chaosu",1);
+		addMed("miecz elfów ciemności",1);
+		addMed("miecz ognisty",1);
+		addMed("półtorak",1);
+		addMed("miecz lodowy",1);
+		addMed("czarny sztylet",1);
+
+		// levels 151+
+		
+		// armor (hard difficulty)
+		addHard("zbroja chaosu",1);
+		addHard("lodowa zbroja",1);
+		addHard("zbroja mainiocyjska",1);
+		addHard("zbroja xenocyjska",1);
+
+		// axe (hard difficulty)
+		addHard("magiczny topór obosieczny",1);
+
+		// boots (hard difficulty)
+		addHard("buty xenocyjskie",1);
+
+		// cloak (hard difficulty)
+		addHard("płaszcz mainiocyjski",1);
+		addHard("płaszcz xenocyjski",1);
+
+		// helmet (hard difficulty)
+		addHard("hełm chaosu",1);
+
+		// jewellery (hard difficulty)
+		addHard("obsydian",1);
+
+		// legs (hard difficulty)
+		addHard("spodnie xenocyjskie",1);
+
+		// shield (hard difficulty)
+		addHard("tarcza xenocyjska",1);
+
+		// sword (hard difficulty)
+		addHard("piekielny sztylet",1);
+		addHard("miecz nieśmiertelnych",1);
+		addHard("miecz xenocyjski",1);
+
+		// add "easy" items to "medium" list
+		for (final String key: items_easy.keySet()) {
+			items_med.put(key, items_easy.get(key));
+		}
+
+		// add "medium" items to "hard" list
+		for (final String key: items_med.keySet()) {
+			items_hard.put(key, items_med.get(key));
+		}
 	}
 
-	private ChatAction startQuestAction() {
+	private static void addEasy(final String item, final int quant) {
+		if (DailyItemQuest.utilizes(item)) {
+			logger.warn("Not adding item already utilized in DailyItemQuest: " + item);
+			return;
+		}
+
+		items_easy.put(item, quant);
+	}
+
+	private static void addMed(final String item, final int quant) {
+		if (DailyItemQuest.utilizes(item)) {
+			logger.warn("Not adding item already utilized in DailyItemQuest: " + item);
+			return;
+		}
+
+		items_med.put(item, quant);
+	}
+
+	private static void addHard(final String item, final int quant) {
+		if (DailyItemQuest.utilizes(item)) {
+			logger.warn("Not adding item already utilized in DailyItemQuest: " + item);
+			return;
+		}
+
+		items_hard.put(item, quant);
+	}
+
+	private ChatAction startQuestAction(final String level) {
 		// common place to get the start quest actions as we can both starts it and abort and start again
 
+		final Map<String, Integer> items;
+		if (level.equals("easy")) {
+			items = items_easy;
+		} else if (level.equals("med") || level.equals("medium")) {
+			items = items_med;
+		} else {
+			items = items_hard;
+		}
+
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
-		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT,0,items,"Chcę, aby muzeum w Kirdneh było największe w krainie! Dostarcz mi [item]"
+		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT, 0, items, "Chcę, aby muzeum w Kirdneh było największe w krainie! Dostarcz mi [item]"
 				+ " i powiedz #'załatwione', gdy przyniesiesz."));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 
@@ -210,6 +304,32 @@ public class WeeklyItemQuest extends AbstractQuest {
 
 	private void getQuest() {
 		final SpeakerNPC npc = npcs.get("Hazel");
+
+		final ChatCondition startEasyCondition = new AndCondition(
+				new LevelLessThanCondition(LEVEL_MED),
+				new OrCondition(
+						new QuestNotStartedCondition(QUEST_SLOT),
+						new AndCondition(
+								new QuestCompletedCondition(QUEST_SLOT),
+								new TimePassedCondition(QUEST_SLOT,1,delay))));
+
+		final ChatCondition startMedCondition = new AndCondition(
+				new LevelGreaterThanCondition(LEVEL_MED - 1),
+				new LevelLessThanCondition(LEVEL_HARD),
+				new OrCondition(
+						new QuestNotStartedCondition(QUEST_SLOT),
+						new AndCondition(
+								new QuestCompletedCondition(QUEST_SLOT),
+								new TimePassedCondition(QUEST_SLOT,1,delay))));
+
+		final ChatCondition startHardCondition = new AndCondition(
+				new LevelGreaterThanCondition(LEVEL_HARD - 1),
+				new OrCondition(
+						new QuestNotStartedCondition(QUEST_SLOT),
+						new AndCondition(
+								new QuestCompletedCondition(QUEST_SLOT),
+								new TimePassedCondition(QUEST_SLOT,1,delay))));
+
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))),
@@ -233,13 +353,26 @@ public class WeeklyItemQuest extends AbstractQuest {
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT,1, delay, "Muzeum może Cię prosić o przyniesienie przedmiotu tylko raz w tygodniu. Wróć za "));
 
+		// for players levels 50 & below
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
-				new OrCondition(new QuestNotStartedCondition(QUEST_SLOT),
-								new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-												 new TimePassedCondition(QUEST_SLOT,1,delay))),
+				startEasyCondition,
 				ConversationStates.ATTENDING,
 				null,
-				startQuestAction());
+				startQuestAction("easy"));
+
+		// for players levels 51-150
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				startMedCondition,
+				ConversationStates.ATTENDING,
+				null,
+				startQuestAction("med"));
+
+		// for players levels 151+
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				startHardCondition,
+				ConversationStates.ATTENDING,
+				null,
+				startQuestAction("hard"));
 	}
 
 	private void completeQuest() {
@@ -304,13 +437,42 @@ public class WeeklyItemQuest extends AbstractQuest {
 	private void abortQuest() {
 		final SpeakerNPC npc = npcs.get("Hazel");
 
+		final ChatCondition startEasyCondition = new AndCondition(
+				new LevelLessThanCondition(LEVEL_MED),
+				new QuestActiveCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,1,expireDelay));
+
+		final ChatCondition startMedCondition = new AndCondition(
+				new LevelGreaterThanCondition(LEVEL_MED - 1),
+				new LevelLessThanCondition(LEVEL_HARD),
+				new QuestActiveCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,1,expireDelay));
+
+		final ChatCondition startHardCondition = new AndCondition(
+				new LevelGreaterThanCondition(LEVEL_HARD - 1),
+				new QuestActiveCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,1,expireDelay));
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
-				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-						 		 new TimePassedCondition(QUEST_SLOT,1,expireDelay)),
+				startEasyCondition,
 				ConversationStates.ATTENDING,
 				null,
-				startQuestAction());
+				startQuestAction("easy"));
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.ABORT_MESSAGES,
+				startMedCondition,
+				ConversationStates.ATTENDING,
+				null,
+				startQuestAction("med"));
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.ABORT_MESSAGES,
+				startHardCondition,
+				ConversationStates.ATTENDING,
+				null,
+				startQuestAction("hard"));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
