@@ -8,7 +8,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="42"/>
-			<rate value="9"/>
+			<rate value="8"/>
 			<lifesteal value="0.3"/>
 			<min_level value="80"/>
 		</attributes>
