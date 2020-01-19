@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
-
+	<!-- DISABLED
     <item name="plecak">
 		<type class="container" subclass="backpack" tileid="-1"/>
 		<description>Oto plecak.</description>
@@ -16,14 +16,31 @@
 		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
-<!--		<slot name="content"/>  -->
+			<slot name="content"/>
 			<slot name="back"/>
-<!--		<slot name="bag"/>
+			<slot name="bag"/>
 			<slot name="trade"/>
--->      
 		</equipable>
 	</item>
 
+	<item name="rzemyk">
+		<type class="container" subclass="keyring" tileid="-1"/>
+		<description>Oto rzemyk.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Container"/>
+		<attributes>
+			<slot_name value="keyring"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="belt"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+	-->
 	<item name="pusty worek">
 		<type class="container" subclass="empty_sack" tileid="-1"/>
 		<description>Oto pusty worek. Napełnij go, a będziesz mógł ustawić go pod ścianą.</description>
@@ -289,25 +306,6 @@
 			<slot name="content"/>
 			<slot name="bag"/>
 			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="rzemyk">
-		<type class="container" subclass="keyring" tileid="-1"/>
-		<description>Oto rzemyk.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Container"/>
-		<attributes>
-			<slot_name value="keyring"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="1"/>
-		<equipable>
-			<slot name="ground"/>
-<!--		<slot name="content"/>  -->
-			<slot name="belt"/>
-<!--		<slot name="bag"/>
-			<slot name="trade"/>
--->      
 		</equipable>
 	</item>
 
