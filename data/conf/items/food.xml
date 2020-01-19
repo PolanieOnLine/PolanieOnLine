@@ -118,7 +118,7 @@
 		</equipable>
 	</item>
 	
-	<!-- START: SPECIAL APPLES -->
+	<!-- START: SPECIAL APPLES
 	<item name="fioletowe jabłko">
 		<type class="food/apple_special" subclass="apple_purple" tileid="-1"/>
 		<description>Oto fioletowe jabłko. Jest pełen wspomnień.</description>
@@ -187,7 +187,7 @@
 			<slot name="trade" />
 		</equipable>
 	</item>
-	<!-- END: SPECIAL APPLES -->
+	 END: SPECIAL APPLES -->
 
 	<item name="banan">
 		<type class="food" subclass="banana" tileid="-1"/>
