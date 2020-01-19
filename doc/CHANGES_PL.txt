@@ -26,7 +26,7 @@ Zaktualizowano do najnowszej wersji Stendhala 1.32
 oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 
 *świat*
-- Aktywowano zadanie na pierścień antyjadowy (więcej na ten temat w changelogu Stendhala 1.32)
+- Dodano nowe zadanie na pierścień antyjadowy
 - Dodano kilka nowych przedmiotów:
 	* antyjad (przedmiot zadaniowy na pierścień antyjadowy)
 	* nożyk (na miejsce wcześniejszego mieczyka - 7/3)
