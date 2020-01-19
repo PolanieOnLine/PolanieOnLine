@@ -141,7 +141,7 @@
 	</item>
 
 	<item name="zwój papieru">
-		<type class="documents" subclass="scroll" tileid="-1"/>
+		<type class="documents" subclass="ice_scroll" tileid="-1"/>
 		<description>Oto zwój papieru.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
