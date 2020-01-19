@@ -4,7 +4,7 @@ Changelog
 Zaktualizowano do najnowszej wersji Stendhala 1.32
 
 *klient*
-- Dodano oraz odświeżono wiele grafik (gui/przedmioty/potwory)
+- Dodano oraz odświeżono wiele grafik (npc/potwory/przedmioty/gui)
 	* npc: Juhas, Gaździna Jadźka, Wikary, Radomil, Ojciec Honorat
 	* potwory: szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie,
 		wściekły szczur, dzik
