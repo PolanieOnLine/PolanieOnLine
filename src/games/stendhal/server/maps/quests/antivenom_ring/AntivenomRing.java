@@ -267,7 +267,7 @@ public class AntivenomRing extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Pierścień Antyjadowy",
-				"Jak przysługę dla starego przyjaciela aptekarz Jameson wzmocni pierścień leczniczy.",
+				"Jako przysługę dla starego przyjaciela, aptekarz Jameson pomoże wzmocnić pierścień leczniczy.",
 				false);
 
 		prepareHintNPCs();
