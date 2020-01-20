@@ -242,6 +242,26 @@
 		</equipable>
 	</item>
 
+	<item name="złoże platyny">
+		<type class="resource" subclass="platinum_ore" tileid="-1"/>
+		<description>Oto złoże platyny. Połyskuje srebrno-białym kolorem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="żelazo">
 		<type class="resource" subclass="iron" tileid="-1"/>
 		<description>Oto żelazo.</description>
@@ -305,6 +325,26 @@
 	<item name="sztabka mithrilu">
 		<type class="resource" subclass="mithril_bar" tileid="-1"/>
 		<description>Oto sztabka mithrilu. Można zrobić z niej doskonały pancerz i jest sporo warta.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sztabka platyny">
+		<type class="resource" subclass="platinum_bar" tileid="-1"/>
+		<description>Oto sztabka platyny. Można zrobić z niej doskonały pancerz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
