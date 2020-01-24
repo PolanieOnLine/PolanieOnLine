@@ -4,12 +4,16 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.PlayerGotNumberOfItemsFromWellCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasHarvestedNumberOfItemsCondition;
 import games.stendhal.server.entity.npc.condition.PlayerMinedNumberOfItemsCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * factory for obtaining items related achievements.
@@ -17,6 +21,9 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
  * @author madmetzger
  */
 public class ObtainAchievementsFactory extends AbstractAchievementFactory {
+
+	public static final String ID_APPLES = "obtain.apple";
+	public static final int COUNT_APPLES = 1000;
 
 	@Override
 	protected Category getCategory() {
@@ -52,15 +59,41 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerMinedNumberOfItemsCondition(50, "bryłka złota", "bryłka mithrilu", "kryształ ametystu", "kryształ rubinu", "kryształ szafiru", "kryształ szmaragdu", "kryształ obsydianu")));
 
-		//ultimate collector quest achievement
+		// ultimate collector quest achievement
 		achievements.add(createAchievement("quest.special.collector", "Największy kolekcjoner", "Ukończył zadanie największego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("ultimate_collector")));
 
-		//goralski kolekcjoner quest achievement
+		// goralski kolekcjoner quest achievement
 		achievements.add(createAchievement("quest.special.goralcollector", "Góralski kolekcjoner", "Ukończył ostatnie zadanie u góralskiego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
+
+		// flower harvest
+		achievements.add(createAchievement("obtain.harvest.flower", "Zielony Kciuk", "Zebrał 20 każdego rodzaju uprawianego kwiatu",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasHarvestedNumberOfItemsCondition(20, "stokrotki", "lilia", "bratek", "bielikrasa")));
+
+		// herb harvest
+		achievements.add(createAchievement("obtain.harvest.herb", "Ziołolecznik", "Zebrał 20 każdego rodzaju rosnącego zioła w Faiumoni",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasHarvestedNumberOfItemsCondition(20, "arandula", "kekik", "mandragora", "sclaria")));
+
+		// loot or harvest apples
+		// XXX: it appears that looting action will not trigger check for Category.OBTAIN
+		//      inactive until fixed
+		achievements.add(createAchievement(
+				ID_APPLES, "Kołysząc się na Jabłkach", "Zebrał lub zrabował 1,000 jabłek",
+				Achievement.EASY_BASE_SCORE, false,
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+						final int harvested = player.getQuantityOfHarvestedItems("jabłko");
+						final int looted = player.getNumberOfLootsForItem("jabłko");
+
+						return harvested + looted >= COUNT_APPLES;
+					}
+				}));
 
 		return achievements;
 	}

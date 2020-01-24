@@ -13,6 +13,7 @@
 	<group uri="zones/stendhal/nalwor.xml"/>
 	<group uri="zones/stendhal/orril.xml"/>
 	<group uri="zones/stendhal/semos.xml"/>
+	<group uri="zones/stendhal/sikhw.xml"/>
 
 	<!-- Mapa prasłowiańska -->
 	<group uri="zones/pol/desert.xml"/>

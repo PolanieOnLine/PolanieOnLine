@@ -11,9 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.core.scripting;
 
-import java.util.HashMap;
+import java.io.File;
+import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.luaj.vm2.Globals;
@@ -25,6 +25,8 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.lib.jse.LuajavaLib;
 
 import games.stendhal.server.core.scripting.lua.NPCHelper;
+import games.stendhal.server.entity.mapstuff.sign.Reader;
+import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -34,49 +36,31 @@ public class ScriptInLua extends ScriptingSandbox {
 
 	private static final Logger logger = Logger.getLogger(ScriptInLua.class);
 
-	private Globals globals;
+	private static ScriptInLua instance;
+	private static Globals globals;
+	private static LuaValue game;
 
 	private final String luaScript;
 
-	private LuaValue game;
 
-	// classes to be bound to Lua objects
-	final Map<String, String> bind_classes = new HashMap<String, String>() {{
-		put("ConversationStates", "games.stendhal.server.entity.npc.ConversationStates");
-		put("ConversationPhrases", "games.stendhal.server.entity.npc.ConversationPhrases");
-		put("CollisionAction", "games.stendhal.server.entity.CollisionAction");
-		put("SkinColor", "games.stendhal.common.constants.SkinColor");
-	}};
+	public ScriptInLua() {
+		super(null);
 
+		luaScript = null;
+	}
 
-	public ScriptInLua(String filename) {
+	public ScriptInLua(final String filename) {
 		super(filename);
 
-		globals = JsePlatform.standardGlobals();
 		luaScript = filename;
+	}
 
-		globals.load(new JseBaseLib());
-		globals.load(new PackageLib());
-		globals.load(new LuajavaLib());
-
-		game = CoerceJavaToLua.coerce(this);
-		globals.set("game", game);
-		globals.set("logger", CoerceJavaToLua.coerce(logger));
-		globals.set("npcHelper", CoerceJavaToLua.coerce(new NPCHelper()));
-
-		final StringBuilder sb = new StringBuilder();
-
-		// FIXME: make these methods of npcHelper
-		sb.append("newCondition = function(classname, ...)"
-				+ " return luajava.newInstance(\"games.stendhal.server.entity.npc.condition.\" .. classname, ...) end\n");
-		sb.append("newAction = function(classname, ...)"
-				+ " return luajava.newInstance(\"games.stendhal.server.entity.npc.action.\" .. classname, ...) end\n");
-
-		for (final String key: bind_classes.keySet()) {
-			sb.append(key + " = luajava.bindClass(\"" + bind_classes.get(key) + "\")\n");
+	public static ScriptInLua getInstance() {
+		if (instance == null) {
+			instance = new ScriptInLua();
 		}
 
-		globals.load(sb.toString()).call();
+		return instance;
 	}
 
 	/**
@@ -93,5 +77,47 @@ public class ScriptInLua extends ScriptingSandbox {
 		chunk.call();
 
 		return true;
+	}
+
+	/**
+	 * Loads lua master script.
+	 */
+	public static void init() {
+		globals = JsePlatform.standardGlobals();
+
+		globals.load(new JseBaseLib());
+		globals.load(new PackageLib());
+		globals.load(new LuajavaLib());
+
+		game = CoerceJavaToLua.coerce(getInstance());
+		globals.set("game", game);
+		globals.set("logger", CoerceJavaToLua.coerce(logger));
+		globals.set("npcHelper", CoerceJavaToLua.coerce(new NPCHelper()));
+
+		// load built-in master script
+		final String master = new File(ScriptRunner.class.getPackage().getName().replace(".", "/") + "/lua/init.lua").getPath();
+		final URL url = ScriptInLua.class.getClassLoader().getResource(master);
+
+		if (url != null) {
+			globals.loadfile(master).call();
+		}
+	}
+
+	/**
+	 * Creates a new Sign entity.
+	 *
+	 * @return
+	 * 		Sign object.
+	 */
+	public Sign createSign() {
+		return createSign(true);
+	}
+
+	public Sign createSign(final boolean visible) {
+		if (visible) {
+			return new Sign();
+		}
+
+		return new Reader();
 	}
 }

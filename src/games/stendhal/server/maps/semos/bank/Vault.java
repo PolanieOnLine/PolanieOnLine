@@ -99,16 +99,33 @@ public class Vault extends StendhalRPZone {
 					if (!(item.getX() == 2 && item.getY() == 5)) {
 						Player player = (Player) entity;
 						String message;
-						boolean equippedToBag = player.equip("bag", item);
+
+						String slotName = "bag";
+						String slotNamePL = "plecaka";
+						boolean equippedToBag = false;
+
+						// attempt to equip money in pouch first
+						if (item.getName().equals("money")) {
+							equippedToBag = player.equip("pouch", item);
+							if (equippedToBag) {
+								slotName = "money";
+								slotNamePL = "sakiewki";
+							}
+						}
+
+						if (!equippedToBag) {
+							equippedToBag = player.equip("bag", item);
+						}
+
 						if (equippedToBag) {
 
 							message = Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
 												+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
-												+ "zwrócone do plecaka.";
+												+ "zwrócone do " + slotNamePL + ".";
 
-							new GameEvent(player.getName(), "equip", item.getName(), "vault", "bag", Integer.toString(item.getQuantity())).raise();
+							new GameEvent(player.getName(), "equip", item.getName(), "vault", slotName, Integer.toString(item.getQuantity())).raise();
 							// Make it look like a normal equip
-							new ItemLogger().equipAction(player, item, new String[] {"ground", zone.getName(), item.getX() + " " + item.getY()}, new String[] {"slot", player.getName(), "bag"});
+							new ItemLogger().equipAction(player, item, new String[] {"ground", zone.getName(), item.getX() + " " + item.getY()}, new String[] {"slot", player.getName(), slotName});
 						} else {
 							boolean equippedToBank = player.equip("bank", item);
 							if (equippedToBank) {

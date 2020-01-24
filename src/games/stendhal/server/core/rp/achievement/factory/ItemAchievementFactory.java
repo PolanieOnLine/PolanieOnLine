@@ -35,19 +35,23 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> itemAchievements = new LinkedList<Achievement>();
 
-		itemAchievements.add(createAchievement("item.money.100", "Pierwsze kieszonkowe", "Zdobył 100 money na potworach", 
+		itemAchievements.add(createAchievement("item.money.100", "Pierwsze kieszonkowe", "Zdobył 100 monet na potworach", 
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100, "money")));
 
-		itemAchievements.add(createAchievement("item.money.100000", "Mała fortuna", "Zdobył 100000 money na potworach", 
+		itemAchievements.add(createAchievement("item.money.10000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(10000, "money")));
+
+		itemAchievements.add(createAchievement("item.money.100000", "Mała fortuna", "Zdobył 100,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100000, "money")));
 		
-		itemAchievements.add(createAchievement("item.money.1000000", "Już nie potrzebujesz więcej", "Zdobył 1000000 money na potworach", 
+		itemAchievements.add(createAchievement("item.money.1000000", "Już nie potrzebujesz więcej", "Zdobył 1,000,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000000, "money")));
 				
-		itemAchievements.add(createAchievement("item.money.10000000", "Masz ich aż za dużo:)", "Zdobył 10000000 money na potworach", 
+		itemAchievements.add(createAchievement("item.money.10000000", "Masz ich aż za dużo:)", "Zdobył 10,000,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000000, "money")));
 				
@@ -115,6 +119,14 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja wampirza", "spodnie wampirze", "płaszcz wampirzy", "rękawice wampirze",
 						"buty wampirze", "pas wampirzy")));
+
+		itemAchievements.add(createAchievement("item.cheese.2000", "Serowy Czarodziej", "Zdobył 2,000 sera",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(2000, "ser")));
+
+		itemAchievements.add(createAchievement("item.ham.2500", "Stado Szynek", "Zdobył 2,500 szynki",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(2500, "szynka")));
 
 		return itemAchievements;
 	}

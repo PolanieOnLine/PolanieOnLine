@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.server.constants.KillType;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.core.rp.achievement.condition.KilledRareCreatureCondition;
@@ -29,6 +30,26 @@ import games.stendhal.server.entity.npc.condition.PlayerHasKilledNumberOfCreatur
  * @author madmetzger
  */
 public class FightingAchievementFactory extends AbstractAchievementFactory {
+
+	// enemies required for David vs. Goliath
+	public static final String[] ENEMIES_GIANTS = {
+			"olbrzym", "olbrzym starszy", "amazonka olbrzymia", "olbrzym mistrz", "czarny olbrzym",
+			"imperialny generał gigant", "kasarkutominubat", "kobold olbrzymi", "gigantyczny krasnal",
+			"supeczłowiek olbrzym", "lodowy olbrzym", "lodowy starszy olbrzym", "Dhohr Nuggetcutter",
+			"Lord Durin"
+	};
+	public static final String ID_GIANTS = "fight.solo.giant";
+	public static final int COUNT_GIANTS = 20;
+
+	// enemies required for Heavenly Wrath
+	public static final String[] ENEMIES_ANGELS = {
+			"anioł", "archanioł", "anioł ciemności", "archanioł ciemności", "upadły anioł"
+	};
+	public static final String ID_ANGELS = "fight.general.angels";
+	public static final int COUNT_ANGELS = 100;
+
+	public static final String ID_WEREWOLF = "fight.general.werewolf";
+	public static final int COUNT_WEREWOLF = 500;
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -67,6 +88,22 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new KilledSoloAllCreaturesCondition()));
 		fightingAchievements.add(createAchievement("fight.special.allshared", "Wojownik drużyny", "Zabił z drużyną wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSharedAllCreaturesCondition()));
+
+		fightingAchievements.add(createAchievement(
+				ID_GIANTS, "Dawid kontra Goliat", "Zabił conajmniej 20 każdego rodzaju olbrzyma solo",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_GIANTS, KillType.SOLO, ENEMIES_GIANTS)));
+
+		fightingAchievements.add(createAchievement(
+				ID_ANGELS, "Niebiański Gniew", "Zabił conajmniej 100 każdego rodzaju anioła",
+				Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_ANGELS, ENEMIES_ANGELS)));
+
+		fightingAchievements.add(createAchievement(
+				ID_WEREWOLF, "Srebrny Pocisk", "Zabił 500 wilkołaków",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_WEREWOLF, "wilkołak")));
+
 		return fightingAchievements;
 	}
 

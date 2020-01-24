@@ -147,6 +147,7 @@ public final class AchievementNotifier {
 	 */
 	public void onLevelChange(Player player) {
 		getAndCheckAchievementsInCategory(player, Category.EXPERIENCE);
+		getAndCheckAchievementsInCategory(player, Category.REBORN);
 	}
 
 
@@ -173,6 +174,9 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.OBTAIN);
 		getAndCheckAchievementsInCategory(player, Category.PRODUCTION);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_MITHRILBOURGH_ENEMY_ARMY);
+		getAndCheckAchievementsInCategory(player, Category.QUEST_ZAKOPANE_ITEMS);
+		getAndCheckAchievementsInCategory(player, Category.QUEST_GDANSK_JEWELLERY);
+		getAndCheckAchievementsInCategory(player, Category.QUEST_KUZNICE_MONSTER);
 	}
 
 	/**
@@ -214,12 +218,15 @@ public final class AchievementNotifier {
 	}
 
 	/**
-	 * check all achievements for a player that belong to the obtain category
+	 * Check all achievements for a player that belong to the obtain &
+	 * commerce categories.
 	 *
 	 * @param player
 	 */
 	public void onObtain(Player player) {
 		getAndCheckAchievementsInCategory(player, Category.OBTAIN);
+		getAndCheckAchievementsInCategory(player, Category.COMMERCE);
+		getAndCheckAchievementsInCategory(player, Category.WEIGHT);
 	}
 
 	/**
