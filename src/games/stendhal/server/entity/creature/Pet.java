@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.Rand;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.Killer;
@@ -202,6 +203,9 @@ public abstract class Pet extends DomesticAnimal {
 	private void eat(final Item food) {
 		if (weight < MAX_WEIGHT) {
 			setWeight(weight + 1);
+		}
+		if (owner != null) {
+			SingletonRepository.getAchievementNotifier().onObtain(owner);
 		}
 		food.removeOne();
 		hunger = START_HUNGER_VALUE;

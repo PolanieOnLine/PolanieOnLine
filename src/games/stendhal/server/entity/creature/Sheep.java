@@ -360,6 +360,9 @@ public class Sheep extends DomesticAnimal {
 				setWeight(weight + 1);
 				updateSoundList();
 			}
+			if (owner != null) {
+				SingletonRepository.getAchievementNotifier().onObtain(owner);
+			}
 
 			heal(incHP);
 			hunger = 0;
