@@ -205,7 +205,7 @@ public abstract class Pet extends DomesticAnimal {
 			setWeight(weight + 1);
 		}
 		if (owner != null) {
-			SingletonRepository.getAchievementNotifier().onObtain(owner);
+			SingletonRepository.getAchievementNotifier().onPet(owner);
 		}
 		food.removeOne();
 		hunger = START_HUNGER_VALUE;

@@ -227,6 +227,15 @@ public final class AchievementNotifier {
 	public void onObtain(Player player) {
 		getAndCheckAchievementsInCategory(player, Category.OBTAIN);
 		getAndCheckAchievementsInCategory(player, Category.COMMERCE);
+	}
+
+	/**
+	 * Check all achievements for a player that belong to the pet category
+	 *
+	 * @param player
+	 */
+	public void onPet(Player player) {
+		getAndCheckAchievementsInCategory(player, Category.FRIEND);
 		getAndCheckAchievementsInCategory(player, Category.WEIGHT);
 	}
 

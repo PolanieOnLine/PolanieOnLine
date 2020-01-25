@@ -361,7 +361,7 @@ public class Sheep extends DomesticAnimal {
 				updateSoundList();
 			}
 			if (owner != null) {
-				SingletonRepository.getAchievementNotifier().onObtain(owner);
+				SingletonRepository.getAchievementNotifier().onPet(owner);
 			}
 
 			heal(incHP);
