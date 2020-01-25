@@ -33,6 +33,7 @@ Changelog
 *naprawiono błędy*
 - Naprawiono niszczenie się drewnianego sztylecika
 - Naprawiono pierścień skorupy żółwia, który nie dawał bonusu na drugim palcu
+- Naprawiono wyświetlanie się osiągnięcia w kliencie po zakończeniu danego etapu odrodzenia
 
 
 1.09
