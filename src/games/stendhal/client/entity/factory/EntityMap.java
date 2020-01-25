@@ -140,7 +140,6 @@ public final class EntityMap {
 		register("sign", null, null, Sign.class);
 		register("rented_sign", null, null, Sign.class);
 		register("shop_sign", null, null, Sign.class);
-		register("tradecentersign", null, null, Sign.class);
 
 		register("item", null, null, Item.class);
 		register("item", "box", null, Box.class);

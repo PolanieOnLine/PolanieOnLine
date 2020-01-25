@@ -138,7 +138,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="animal"/>
 			<profile name="coward"/>
 			<profile name="patrolling"/>
@@ -167,7 +166,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="animal"/>
 			<profile name="coward"/>
 			<profile name="patrolling"/>
@@ -484,7 +482,6 @@
 				<sound value="horse-2" />
 			</says>
 			<profile name="animal"/>
-			<profile name="non offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -614,7 +611,6 @@
 				<sound value="horse-2" />
 			</says>
 			<profile name="animal"/>
-			<profile name="non offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -726,7 +722,7 @@
 
 	<creature name="słoń">
 		<type class="stendhal/animal" subclass="elephant" tileid="animal.png:11"/>
-		<description>Oto słoń. Wielkie zwierzę i niebezpieczne.</description>
+		<description>Oto słoń. Wielkie zwierzę i niebezpieczne. Czy na pewno chcesz go zaatakować?</description>
 		<attributes>
 			<atk value="73"/>
 			<def value="6"/>
@@ -753,9 +749,43 @@
 				<sound value="elephant-3" />
 				<sound value="elephant-rumble-1" />
 			</says>
-			<profile name="non offensive"/>
 			<profile name="animal"/>
 			<profile name="coward"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="słoń z kłami">
+		<type class="stendhal/animal" subclass="elephant_bull" tileid="animal.png:12"/>
+		<description>Oto słoń. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
+		<attributes>
+			<atk value="327"/>
+			<def value="100"/>
+			<hp value="2250"/>
+			<speed value="0.6"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="86"/>
+		<experience value="7175"/>
+		<respawn value="3400"/>
+		<corpse name="animal_2x2"/>
+		<drops>
+			<item value="mięso" quantity="[1,10]" probability="100.0"/>
+			<item value="szynka" quantity="[2,8]" probability="70.0"/>
+			<item value="stek" quantity="[1,11]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="UUUUUUFFFZZZZ!!!"/>
+				<sound value="elephant-1" />
+				<sound value="elephant-2" />
+				<sound value="elephant-3" />
+				<sound value="elephant-rumble-1" />
+			</says>
+			<profile name="offensive"/>
+			<profile name="animal"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -893,7 +923,6 @@
 		<equips/>
 		<ai>
 			<profile name="brave"/>
-			<profile name="non offensive"/>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
 			<profile name="rare"/>
@@ -926,7 +955,6 @@
 		<ai>
 			<profile name="brave"/>
 			<profile name="animal"/>
-			<profile name="non offensive"/>
 			<profile name="patrolling"/>
 			<profile name="rare"/>
 		</ai>
@@ -956,7 +984,6 @@
 		<ai>
 			<profile name="brave"/>
 			<profile name="animal"/>
-			<profile name="non offensive"/>
 			<profile name="heal" params="10,50"/>
 			<profile name="rare"/>
 			<profile name="patrolling"/>

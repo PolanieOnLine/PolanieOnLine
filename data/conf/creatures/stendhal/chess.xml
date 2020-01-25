@@ -31,7 +31,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -56,7 +55,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -81,7 +79,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -106,7 +103,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -131,7 +127,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -156,7 +151,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
 		</ai>
@@ -184,7 +178,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -209,7 +202,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -234,7 +226,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -259,7 +250,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -284,7 +274,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>
@@ -309,7 +298,6 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="non offensive"/>
 			<profile name="human"/>
 		</ai>
 	</creature>	

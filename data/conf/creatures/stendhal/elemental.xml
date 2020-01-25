@@ -317,12 +317,40 @@
 		</equips>
 		<abilities>
 			<susceptibility type="fire" value="1.2"/>
-			<susceptibility type="ice" value="0.7"/>
+			<susceptibility type="water" value="0.7"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="demon wody">
+		<type class="stendhal/elemental" subclass="water_demon" tileid="elemental.png:7"/>
+		<description></description>
+		<attributes>
+			<atk value="735"/>
+			<def value="155"/>
+			<hp value="4120"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="212"/>
+		<experience value="86999"/>
+		<respawn value="23000"/>
+		<corpse name="puddle_light_blue_2x2" harmless="puddle_light_blue_2x2" width="2" height="2"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<susceptibility type="water" value="1.3"/>
+		</abilities>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>

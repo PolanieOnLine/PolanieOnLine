@@ -31,7 +31,6 @@
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
-			<profile name="non offensive"/>
 			<profile name="coward"/>
 		</ai>
 	</creature>
@@ -62,7 +61,6 @@
 				<sound value="chicken-2"/>
 			</says>
 			<profile name="animal"/>
-			<profile name="non offensive"/>
 			<profile name="patrolling"/>
 			<profile name="coward"/>
 		</ai>
@@ -96,7 +94,6 @@
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
-			<profile name="non offensive"/>
 		</ai>
 	</creature>
 
@@ -127,7 +124,6 @@
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
-			<profile name="non offensive"/>
 		</ai>
 	</creature>
 
@@ -190,7 +186,6 @@
 				<sound value="bird-pigeon-flap-1" />
 			</says>
 			<profile name="animal"/>
-			<profile name="non offensive"/>
 			<profile name="patrolling"/>
 			<profile name="coward"/>
 		</ai>
