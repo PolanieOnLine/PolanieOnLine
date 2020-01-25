@@ -34,6 +34,7 @@ Changelog
 - Naprawiono niszczenie się drewnianego sztylecika
 - Naprawiono pierścień skorupy żółwia, który nie dawał bonusu na drugim palcu
 - Naprawiono wyświetlanie się osiągnięcia w kliencie po zakończeniu danego etapu odrodzenia
+- Naprawiono wyswietlanie się osiągnięcia w kliencie za osiągniętą wagę danego przygarniętego zwierzęcia
 
 
 1.09
