@@ -39,7 +39,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		final List<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Kupił 100 butelek soku z chmielu & 100 kieliszków napoju z winogron",
+				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił 100 butelek soku z chmielu oraz 100 kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(COUNT_HAPPY_HOUR, ITEMS_HAPPY_HOUR)));
 
