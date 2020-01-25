@@ -111,6 +111,7 @@ public class PetOwner {
 	 */
 	public void setPet(final Pet pet) {
 		player.put(ATTR_PET, pet.getID().getObjectID());
+		SingletonRepository.getAchievementNotifier().onPet(player);
 		pet.setOwner(player);
 	}
 
@@ -122,11 +123,19 @@ public class PetOwner {
 	 */
 	public void setSheep(final Sheep sheep) {
 		player.put(ATTR_SHEEP, sheep.getID().getObjectID());
+		SingletonRepository.getAchievementNotifier().onPet(player);
 		sheep.setOwner(player);
 	}
-	
+
+	/**
+	 * Set the player's goat. This will also set the goat's owner.
+	 *
+	 * @param goat
+	 *            The goat.
+	 */
 	public void setGoat(final Goat goat) {
 		player.put(ATTR_GOAT, goat.getID().getObjectID());
+		SingletonRepository.getAchievementNotifier().onPet(player);
 		goat.setOwner(player);
 	}
 
