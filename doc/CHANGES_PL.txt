@@ -1,5 +1,40 @@
 Changelog
 ---------
+1.10
+*klient*
+- Dodano/Odświeżono kilka grafik potworów/przedmiotów (słoń, słoń z rogami, demon wody, wodny skarabeusz, imperialny pierścień, sztabka platyny, złoże platyny)
+- Po kliknięciu monet ze zwłok zostaną przeniesione nie do plecaka, a do swojego slota w eq (gdy mamy włożony choć 1 pieniążek w tym slocie)
+
+*świat*
+- Dodano nowe potwory:
+	- słoń z rogami
+	- demon wody
+	- wodny skarabeusz
+	- mały skarabeusz
+	- trujący grzyb
+- Dodano nowe przedmioty:
+	- imperialny pierścień
+	- sztabka platyny
+	- złoże platyny
+- Dodano nowe osiągnięcia:
+	- "Gdzieś jest Szczęśliwa Godzina"
+	- "Dawid kontra Goliat"
+	- "Niebiański Gniew"
+	- "Srebrny Pocisk"
+	- "Człowiek z zachodu"
+	- "Speleolog"
+	- "Złoty Prysznic"
+	- "Serowy Czarodziej"
+	- "Stado Szynek"
+	- "Zielony Kciuk"
+	- "Ziołolecznik"
+- NPC D J Smith sprzedaje shuriken (77), płonący shuriken (99) oraz włócznie (110)
+
+*naprawiono błędy*
+- Naprawiono niszczenie się drewnianego sztylecika
+- Naprawiono pierścień skorupy żółwia, który nie dawał bonusu na drugim palcu
+
+
 1.09
 Zaktualizowano do najnowszej wersji Stendhala 1.32
 
