@@ -1,50 +1,11 @@
 Changelog
 ---------
-1.10
+1.09.5
 *klient*
 - Dodano/Odświeżono bardzo dużo grafik potworów/przedmiotów
 - Po kliknięciu monet ze zwłok zostaną przeniesione nie do plecaka, a do swojego slota w eq (gdy mamy włożony choć 1 pieniążek w tym slocie)
 
 *świat*
-- Dodano nowe potwory: (21)
-	- słoń z rogami
-	- mamut włochaty
-	- demon wody
-	- wodny skarabeusz
-	- mały skarabeusz
-	- trujący grzyb
-	- gnom gigant
-	- panna gnom gigant
-	- centaur słoneczny
-	- centaur lodowy
-	- król centaurów
-	- jednorożec biały
-	- jednorożec czarny
-	- jednorożec złoty
-	- mały pegaz
-	- pegaz brązowy
-	- pegaz kościsty
-	- pegaz hebanowy
-	- nietoperz olbrzymi
-	- nietoperz wampir olbrzymi
-	- niedźwiedź biały
-- Dodano nowe przedmioty: (3)
-	- imperialny pierścień
-	- sztabka platyny
-	- złoże platyny
-- Dodano nowe osiągnięcia: (12)
-	- "Gdzieś jest Szczęśliwa Godzina"
-	- "Dawid kontra Goliat"
-	- "Niebiański Gniew"
-	- "Srebrny Pocisk"
-	- "Człowiek z zachodu"
-	- "Speleolog"
-	- "Złoty Prysznic"
-	- "Serowy Czarodziej"
-	- "Stado Szynek"
-	- "Zielony Kciuk"
-	- "Ziołolecznik"
-	- "Serenada Syren"
 - Zmieniono nazwy potworom takim jak:
 	- mermaid -> syrenka
 	- ametystowa mermaid -> syrena ametystowa
