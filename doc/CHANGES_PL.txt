@@ -2,21 +2,37 @@ Changelog
 ---------
 1.10
 *klient*
-- Dodano/Odświeżono kilka grafik potworów/przedmiotów (słoń, słoń z rogami, demon wody, wodny skarabeusz, imperialny pierścień, sztabka platyny, złoże platyny)
+- Dodano/Odświeżono bardzo dużo grafik potworów/przedmiotów
 - Po kliknięciu monet ze zwłok zostaną przeniesione nie do plecaka, a do swojego slota w eq (gdy mamy włożony choć 1 pieniążek w tym slocie)
 
 *świat*
-- Dodano nowe potwory:
+- Dodano nowe potwory: (21)
 	- słoń z rogami
+	- mamut włochaty
 	- demon wody
 	- wodny skarabeusz
 	- mały skarabeusz
 	- trujący grzyb
-- Dodano nowe przedmioty:
+	- gnom gigant
+	- panna gnom gigant
+	- centaur słoneczny
+	- centaur lodowy
+	- król centaurów
+	- jednorożec biały
+	- jednorożec czarny
+	- jednorożec złoty
+	- mały pegaz
+	- pegaz brązowy
+	- pegaz kościsty
+	- pegaz hebanowy
+	- nietoperz olbrzymi
+	- nietoperz wampir olbrzymi
+	- niedźwiedź biały
+- Dodano nowe przedmioty: (3)
 	- imperialny pierścień
 	- sztabka platyny
 	- złoże platyny
-- Dodano nowe osiągnięcia:
+- Dodano nowe osiągnięcia: (12)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -28,6 +44,13 @@ Changelog
 	- "Stado Szynek"
 	- "Zielony Kciuk"
 	- "Ziołolecznik"
+	- "Serenada Syren"
+- Zmieniono nazwy potworom takim jak:
+	- mermaid -> syrenka
+	- ametystowa mermaid -> syrena ametystowa
+	- szmaragdowa mermaid -> syrena szmaragdowa
+	- rubinowa mermaid -> syrena rubinowa
+	- szafirowa mermaid -> syrena szafirowa
 - NPC D J Smith sprzedaje shuriken (77), płonący shuriken (99) oraz włócznie (110)
 
 *naprawiono błędy*
