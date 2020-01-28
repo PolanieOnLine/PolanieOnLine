@@ -2,9 +2,10 @@
 <creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
-			<type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
+	<!-- START: mermaids -->
 
 	<creature name="syrenka">
+			<type class="stendhal/mythical_being" subclass="syrenka" tileid="mythical_being.png:7"/>
 			<description>Oto syrenka. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
 			<attributes>
 				<atk value="547"/>
@@ -40,7 +41,7 @@
 			</ai>
 	</creature>
 
-	<creature name="szmaragdowa mermaid">
+	<creature name="syrena szmaragdowa">
 		<type class="stendhal/mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
 		<description></description>
 		<attributes>
@@ -82,7 +83,6 @@
 		</ai>
 	</creature>
 
-	<creature name="ametystowa mermaid">
 	<creature name="syrena ametystowa">
 		<type class="stendhal/mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
 		<description></description>
@@ -125,7 +125,7 @@
 		</ai>
 	</creature>
 
-	<creature name="rubinowa mermaid">
+	<creature name="syrena rubinowa">
 		<type class="stendhal/mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
 		<description></description>
 		<attributes>
@@ -167,6 +167,7 @@
 		</ai>
 	</creature>
 
+	<creature name="syrena szafirowa">
 		<type class="stendhal/mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
 		<description></description>
 		<attributes>
@@ -207,6 +208,8 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+
+	<!-- END: mermaids -->
 	
 	<!-- START: unicorn -->
 
@@ -214,6 +217,10 @@
 		<type class="stendhal/mythical_being" subclass="unicorn" tileid="mythical_being.png:1"/>
 		<description>Oto jednorożec. Powszechnie uznawany za mit.</description>
 		<attributes>
+			<atk value="308"/>
+			<def value="108"/>
+			<hp value="200"/>
+			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="48"/>
@@ -221,6 +228,16 @@
 		<!-- once in 2 months -->
 		<respawn value="17280000"/>
 		<corpse name="animal"/>
+		<drops>
+			<item value="cudowna krew" quantity="[1,1]" probability="100.0"/>
+			<item value="tarcza jednorożca" quantity="[1,1]" probability="80.0"/>
+			<item value="czterolistna koniczyna" quantity="[1,1]" probability="80.0"/>
+			<item value="diament" quantity="[1,1]" probability="20.0"/>
+			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
 			<profile name="rare"/>
@@ -228,6 +245,10 @@
 	</creature>
 
 	<creature name="jednorożec biały">
+		<type class="stendhal/mythical_being" subclass="unicorn_white" tileid="mythical_being.png:8"/>
+		<description></description>
+		<attributes>
+			<atk value="801"/>
 			<def value="206"/>
 			<hp value="2500"/>
 			<speed value="1.0"/>
@@ -235,6 +256,16 @@
 		</attributes>
 		<level value="250"/>
 		<experience value="125000"/>
+		<respawn value="36000"/>
+		<corpse name="animal_2x2" width="3" height="2"/>
+		<drops>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
 	</creature>
 
 	<creature name="jednorożec czarny">
@@ -242,6 +273,10 @@
 		<description></description>
 		<attributes>
 			<atk value="821"/>
+			<def value="221"/>
+			<hp value="2750"/>
+			<speed value="1.0"/>
+			<size value="3,2"/>
 		</attributes>
 		<level value="275"/>
 		<experience value="150000"/>
@@ -249,6 +284,16 @@
 		<corpse name="animal_2x2" width="3" height="2"/>
 		<drops>
 			<item value="pierścień skorupy żółwia" quantity="[1,1]" probability="0.5"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="jednorożec złoty">
 		<type class="stendhal/mythical_being" subclass="unicorn_gold" tileid="mythical_being.png:10"/>
 		<description></description>
 		<attributes>
@@ -257,6 +302,7 @@
 			<hp value="3000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
+		</attributes>
 		<level value="300"/>
 		<experience value="175000"/>
 		<respawn value="44000"/>
