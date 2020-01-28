@@ -1,10 +1,6 @@
 Changelog
 ---------
 1.10
-*klient*
-- Dodano/Odświeżono bardzo dużo grafik potworów/przedmiotów
-- Po kliknięciu monet ze zwłok zostaną przeniesione nie do plecaka, a do swojego slota w eq (gdy mamy włożony choć 1 pieniążek w tym slocie)
-
 *świat*
 - Dodano nowe potwory: (21)
 	- słoń z rogami
@@ -45,6 +41,14 @@ Changelog
 	- "Zielony Kciuk"
 	- "Ziołolecznik"
 	- "Serenada Syren"
+
+
+1.09.5
+*klient*
+- Dodano/Odświeżono bardzo dużo grafik potworów/przedmiotów
+- Po kliknięciu monet ze zwłok zostaną przeniesione nie do plecaka, a do swojego slota w eq (gdy mamy włożony choć 1 pieniążek w tym slocie)
+
+*świat*
 - Zmieniono nazwy potworom takim jak:
 	- mermaid -> syrenka
 	- ametystowa mermaid -> syrena ametystowa
