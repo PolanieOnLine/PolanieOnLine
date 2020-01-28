@@ -173,7 +173,7 @@
 	<!-- START: ice -->
 
 	<creature name="legendarny żywioł lodu">
-		<type class="stendhal/elemental_legendary" subclass="elemental_legendary_ice" tileid="elemental_legendary.png:0"/>
+		<type class="stendhal/elemental_legendary" subclass="elemental_legendary_ice" tileid="elemental.png:8"/>
 		<description>Oto legendarny żywioł lodu...</description>
 		<attributes>
 			<atk value="7900"/>

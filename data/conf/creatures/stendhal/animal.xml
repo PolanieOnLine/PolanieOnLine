@@ -733,7 +733,7 @@
 		<level value="5"/>
 		<experience value="50"/>
 		<respawn value="1200"/>
-		<corpse name="animal_2x2"/>
+		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
 		<drops>
 			<item value="mięso" quantity="[1,10]" probability="100.0"/>
 			<item value="szynka" quantity="[2,8]" probability="70.0"/>
@@ -757,7 +757,7 @@
 
 	<creature name="słoń z kłami">
 		<type class="stendhal/animal" subclass="elephant_bull" tileid="animal.png:12"/>
-		<description>Oto słoń. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
+		<description>Oto słoń z kłami. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
 		<attributes>
 			<atk value="327"/>
 			<def value="100"/>
@@ -768,7 +768,7 @@
 		<level value="86"/>
 		<experience value="7175"/>
 		<respawn value="3400"/>
-		<corpse name="animal_2x2"/>
+		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
 		<drops>
 			<item value="mięso" quantity="[1,10]" probability="100.0"/>
 			<item value="szynka" quantity="[2,8]" probability="70.0"/>
@@ -786,6 +786,35 @@
 			</says>
 			<profile name="offensive"/>
 			<profile name="animal"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="mamut włochaty">
+		<type class="stendhal/animal" subclass="woolly_mammoth" tileid="animal.png:7"/>
+		<description></description>
+		<attributes>
+			<atk value="690"/>
+			<def value="200"/>
+			<hp value="4300"/>
+			<speed value="0.8"/>
+			<size value="5,3"/>
+		</attributes>
+		<level value="191"/>
+		<experience value="51000"/>
+		<respawn value="17600"/>
+		<corpse name="animal_2x2" harmless="bag_2x2" width="5" height="3"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="elephant-1" />
+				<sound value="elephant-2" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -894,100 +923,95 @@
 		</ai>
 	</creature>
 
-	<!-- END: mammal -->
-
-	<!-- START: mythical -->
-
-	<creature name="jednorożec">
-		<type class="stendhal/mythical_being" subclass="unicorn" tileid="mythical_being.png:1"/>
-		<description>Oto jednorożec. Powszechnie uznawany za mit.</description>
+	<creature name="niedźwiedź biały">
+		<type class="stendhal/animal" subclass="polar_bear" tileid="animal.png:3"/>
+		<description></description>
 		<attributes>
-			<atk value="308"/>
-			<def value="108"/>
-			<hp value="200"/>
-			<speed value="1.0"/>
+			<atk value="225"/>
+			<def value="51"/>
+			<hp value="185"/>
+			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="48"/>
-		<experience value="2000"/>
-		<!-- once in 2 months -->
-		<respawn value="17280000"/>
+		<level value="22"/>
+		<experience value="325"/>
+		<respawn value="1220"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="cudowna krew" quantity="[1,1]" probability="100.0"/>
-			<item value="tarcza jednorożca" quantity="[1,1]" probability="80.0"/>
-			<item value="czterolistna koniczyna" quantity="[1,1]" probability="80.0"/>
-			<item value="diament" quantity="[1,1]" probability="20.0"/>
-			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="animal"/>
-			<profile name="patrolling"/>
-			<profile name="rare"/>
-		</ai>
-	</creature>
-
-	<creature name="centaur">
-		<type class="stendhal/mythical_being" subclass="centaur" tileid="mythical_being.png:0"/>
-		<description>Oto nobliwy cenatur. Jest w połowie człowiekiem, a w połowie koniem. Wygląda groźnie lecz zapewne mu podołasz.</description>
-		<attributes>
-			<atk value="849"/>
-			<def value="76"/>
-			<hp value="350"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="56"/>
-		<experience value="3000"/>
-		<!-- once in 2 weeks -->
-		<respawn value="4032000"/>
-		<!-- uh, should this one be an animal or humanoid? -->
-		<corpse name="humanoid"/>
-		<drops>
-			<item value="money" quantity="[10,100]" probability="70.0"/>
-			<item value="duży eliksir" quantity="[1,4]" probability="30.0"/>
-			<item value="włócznia" quantity="[20,40]" probability="30.0"/>
 		</drops>
 		<equips>
 		</equips>
 		<ai>
-			<profile name="brave"/>
+			<says>
+				<sound value="bear-1"/>
+				<sound value="bear-2"/>
+				<sound value="bear-3"/>
+			</says>
 			<profile name="animal"/>
+			<profile name="offensive"/>
 			<profile name="patrolling"/>
-			<profile name="rare"/>
 		</ai>
 	</creature>
 
-	<creature name="pegaz">
-		<type class="stendhal/mythical_being" subclass="pegasus" tileid="mythical_being.png:2"/>
-		<description>Oto Pegaz - uskrzydlony koń. Imię jego - Błyskawica i miota strzałami Peruna.</description>
+	<!-- END: mammal -->
+
+	<creature name="nietoperz olbrzymi">
+		<type class="stendhal/animal" subclass="bat_giant" tileid="animal.png:5"/>
+		<description></description>
 		<attributes>
-			<atk value="1590"/>
-			<def value="214"/>
-			<hp value="5000"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
+			<atk value="700"/>
+			<def value="150"/>
+			<hp value="1475"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
 		</attributes>
-		<level value="340"/>
-		<experience value="122346"/>
-		<!-- once in 6 weeks -->
-		<respawn value="12096000"/>
-		<corpse name="animal"/>
+		<level value="150"/>
+		<experience value="33501"/>
+		<respawn value="12000"/>
+		<corpse name="winged_2x2" width="2" height="2"/>
 		<drops>
-			<item value="miecz lodowy" quantity="[1,1]" probability="20.0"/>
-			<item value="jabłko" quantity="[10,30]" probability="80.0"/>
-			<item value="zbroja z mithrilu" quantity="[1,1]" probability="0.9"/>
 		</drops>
-		<equips/>
+		<equips>
+		</equips>
 		<ai>
-			<profile name="brave"/>
+			<says>
+				<sound value="bat-1" />
+				<sound value="bat-2" />
+				<sound value="bat-3" />
+			</says>
 			<profile name="animal"/>
-			<profile name="heal" params="10,50"/>
-			<profile name="rare"/>
+			<profile name="offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-	<!-- END: mythical -->
+	
+	<creature name="nietoperz olbrzymi wampir">
+		<type class="stendhal/animal" subclass="bat_giant_red" tileid="animal.png:6"/>
+		<description></description>
+		<attributes>
+			<atk value="752"/>
+			<def value="161"/>
+			<hp value="1825"/>
+			<speed value="0.8"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="154"/>
+		<experience value="37090"/>
+		<respawn value="12000"/>
+		<corpse name="winged_2x2" width="2" height="2"/>
+		<drops>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bat-1" />
+				<sound value="bat-2" />
+				<sound value="bat-3" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 </creatures>
