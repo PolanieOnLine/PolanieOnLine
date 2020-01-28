@@ -244,6 +244,7 @@
 		</ai>
 	</creature>
 
+	<!--
 	<creature name="jednorożec biały">
 		<type class="stendhal/mythical_being" subclass="unicorn_white" tileid="mythical_being.png:8"/>
 		<description></description>
@@ -316,7 +317,7 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	-->
 	<!-- END: unicorn -->
 
 	<!-- START: pegasus -->
@@ -351,6 +352,7 @@
 		</ai>
 	</creature>
 
+	<!--
 	<creature name="mały pegaz">
 		<type class="stendhal/mythical_being" subclass="pegasus_baby" tileid="mythical_being.png:11"/>
 		<description></description>
@@ -446,7 +448,7 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	-->
 	<!-- END: pegasus -->
 
 	<!-- START: centaur -->
@@ -480,6 +482,7 @@
 		</ai>
 	</creature>
 
+	<!--
 	<creature name="centaur słoneczny">
 		<type class="stendhal/mythical_being" subclass="centaur_solar" tileid="mythical_being.png:15"/>
 		<description></description>
@@ -561,5 +564,6 @@
 			<profile name="archer"/>
 		</ai>
 	</creature>
+	-->
 	<!-- END: centaur -->
 </creatures>

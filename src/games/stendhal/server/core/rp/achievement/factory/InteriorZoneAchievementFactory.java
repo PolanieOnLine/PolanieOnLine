@@ -38,9 +38,9 @@ public class InteriorZoneAchievementFactory extends AbstractAchievementFactory {
 		list.add(createAchievement("zone.interior.magiccity", "Magiczne Miasto", "Odwiedził wszystkie pomieszczenia w podziemnym mieście Magic",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("magic city", Boolean.FALSE, Boolean.FALSE)));
-		list.add(createAchievement("zone.interior.deniran", "Samotna kraina", "Odwiedził wszystkie pomieszczenia w regionie Deniran",
-									Achievement.EASY_BASE_SCORE, false,
-									new PlayerVisitedZonesInRegionCondition("deniran", false, false)));
+		//list.add(createAchievement("zone.interior.deniran", "Samotna kraina", "Odwiedził wszystkie pomieszczenia w regionie Deniran",
+		//							Achievement.EASY_BASE_SCORE, false,
+		//							new PlayerVisitedZonesInRegionCondition("deniran", false, false)));
 
 		list.add(createAchievement("zone.interior.krakowcity", "Miasto Kraków", "Odwiedził wszystkie pomieszczenia w regionie Krakowa",
 									Achievement.MEDIUM_BASE_SCORE, true,

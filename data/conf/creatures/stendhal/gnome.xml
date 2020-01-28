@@ -152,7 +152,7 @@
 	<!-- END: militant -->
 
 	<!-- START: giant -->
-
+	<!--
 	<creature name="gnom gigant">
 		<type class="stendhal/gnome" subclass="gnome_giant" tileid="gnome.png:4"/>
 		<description></description>
@@ -198,6 +198,6 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	-->
 	<!-- END: giant -->
 </creatures>

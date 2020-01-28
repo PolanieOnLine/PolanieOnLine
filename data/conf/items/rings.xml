@@ -254,6 +254,7 @@
 		</equipable>
 	</item>
 
+	<!--
 	<item name="imperialny pierścień">
 		<type class="ring" subclass="imperial_ring" tileid="-1"/>
 		<description></description>
@@ -273,4 +274,5 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
+	-->
 </items>

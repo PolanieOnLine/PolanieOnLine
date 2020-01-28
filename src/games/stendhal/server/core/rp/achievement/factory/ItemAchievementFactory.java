@@ -39,9 +39,9 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100, "money")));
 
-		itemAchievements.add(createAchievement("item.money.10000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
-				Achievement.EASY_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(10000, "money")));
+		//itemAchievements.add(createAchievement("item.money.10000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
+		//		Achievement.EASY_BASE_SCORE, true,
+		//		new PlayerLootedNumberOfItemsCondition(10000, "money")));
 
 		itemAchievements.add(createAchievement("item.money.100000", "Mała fortuna", "Zdobył 100,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
@@ -120,6 +120,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja wampirza", "spodnie wampirze", "płaszcz wampirzy", "rękawice wampirze",
 						"buty wampirze", "pas wampirzy")));
 
+		/**
 		itemAchievements.add(createAchievement("item.cheese.2000", "Serowy Czarodziej", "Zdobył 2,000 sera",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ser")));
@@ -127,6 +128,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement("item.ham.2500", "Stado Szynek", "Zdobył 2,500 szynki",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2500, "szynka")));
+		*/
 
 		return itemAchievements;
 	}

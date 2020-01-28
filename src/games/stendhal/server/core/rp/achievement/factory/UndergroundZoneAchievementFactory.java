@@ -37,9 +37,9 @@ public class UndergroundZoneAchievementFactory extends AbstractAchievementFactor
 		list.add(createAchievement("zone.underground.ados", "Kopacz", "Odwiedził wszystkie podziemne obszary w regionie Ados",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("ados", Boolean.TRUE, Boolean.FALSE)));
-		list.add(createAchievement("zone.underground.deniran", "Speleolog", "Odwiedził wszystkie podziemne obszary w regionie Deniran",
-									Achievement.HARD_BASE_SCORE, true,
-									new PlayerVisitedZonesInRegionCondition("deniran", true, false)));
+		//list.add(createAchievement("zone.underground.deniran", "Speleolog", "Odwiedził wszystkie podziemne obszary w regionie Deniran",
+		//							Achievement.HARD_BASE_SCORE, true,
+		//							new PlayerVisitedZonesInRegionCondition("deniran", true, false)));
 
 		list.add(createAchievement("zone.underground.krakow", "Szperacz", "Odwiedził wszystkie podziemne obszary w regionie Kraków", 
 									Achievement.MEDIUM_BASE_SCORE, true,

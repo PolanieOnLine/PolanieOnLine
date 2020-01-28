@@ -22,8 +22,10 @@ import games.stendhal.server.entity.player.Player;
  */
 public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 
+	/**
 	public static final String ID_APPLES = "obtain.apple";
 	public static final int COUNT_APPLES = 1000;
+	*/
 
 	@Override
 	protected Category getCategory() {
@@ -69,6 +71,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
 
+		/**
 		// flower harvest
 		achievements.add(createAchievement("obtain.harvest.flower", "Zielony Kciuk", "Zebrał 20 każdego rodzaju uprawianego kwiatu",
 				Achievement.EASY_BASE_SCORE, true,
@@ -94,6 +97,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 						return harvested + looted >= COUNT_APPLES;
 					}
 				}));
+		*/
 
 		return achievements;
 	}

@@ -241,7 +241,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-
+	<!--
 	<item name="złoże platyny">
 		<type class="resource" subclass="platinum_ore" tileid="-1"/>
 		<description>Oto złoże platyny. Połyskuje srebrno-białym kolorem.</description>
@@ -261,7 +261,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-
+	-->
 	<item name="żelazo">
 		<type class="resource" subclass="iron" tileid="-1"/>
 		<description>Oto żelazo.</description>
@@ -341,7 +341,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-
+	<!--
 	<item name="sztabka platyny">
 		<type class="resource" subclass="platinum_bar" tileid="-1"/>
 		<description>Oto sztabka platyny. Można zrobić z niej doskonały pancerz.</description>
@@ -361,7 +361,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-
+	-->
 	<item name="złote jajo">
 		<type class="resource" subclass="golden_egg" tileid="-1"/>
 		<description>Nic to innego jak drogocenne, złote jajo!</description>

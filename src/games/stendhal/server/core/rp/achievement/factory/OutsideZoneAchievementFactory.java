@@ -44,9 +44,9 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 		list.add(createAchievement("zone.outside.kikareukin", "Podniebna wieża", "Odwiedził wszystkie obszary w regionie Kikareukin",
 									Achievement.HARD_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("kikareukin", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.deniran", "Człowiek z zachodu", "Odwiedził wszystkie obszary w regionie Deniran",
-									Achievement.EASY_BASE_SCORE, true,
-									new PlayerVisitedZonesInRegionCondition("deniran", true, true)));
+		//list.add(createAchievement("zone.outside.deniran", "Człowiek z zachodu", "Odwiedził wszystkie obszary w regionie Deniran",
+		//							Achievement.EASY_BASE_SCORE, true,
+		//							new PlayerVisitedZonesInRegionCondition("deniran", true, true)));
 
 		list.add(createAchievement("zone.outside.krakow", "Królewskie miasto", "Odwiedził wszystkie obszary w regionie Kraków",
 									Achievement.EASY_BASE_SCORE, true,

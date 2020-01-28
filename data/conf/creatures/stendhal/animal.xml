@@ -754,7 +754,7 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	<!--
 	<creature name="słoń z kłami">
 		<type class="stendhal/animal" subclass="elephant_bull" tileid="animal.png:12"/>
 		<description>Oto słoń z kłami. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
@@ -818,7 +818,7 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	-->
 	<creature name="tygrys">
 		<type class="stendhal/animal" subclass="tiger" tileid="animal.png:19"/>
 		<description>Oto tygrys co ludzkim mięsem nie pogardzi.</description>
@@ -922,7 +922,7 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	<!--
 	<creature name="niedźwiedź biały">
 		<type class="stendhal/animal" subclass="polar_bear" tileid="animal.png:3"/>
 		<description></description>
@@ -952,9 +952,9 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-
+	-->
 	<!-- END: mammal -->
-
+	<!--
 	<creature name="nietoperz olbrzymi">
 		<type class="stendhal/animal" subclass="bat_giant" tileid="animal.png:5"/>
 		<description></description>
@@ -1014,4 +1014,5 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+	-->
 </creatures>

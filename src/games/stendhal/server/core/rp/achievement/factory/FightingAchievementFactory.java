@@ -35,6 +35,7 @@ import games.stendhal.server.entity.player.Player;
  */
 public class FightingAchievementFactory extends AbstractAchievementFactory {
 
+	/**
 	// enemies required for David vs. Goliath
 	public static final String[] ENEMIES_GIANTS = {
 			"olbrzym", "olbrzym starszy", "amazonka olbrzymia", "olbrzym mistrz", "czarny olbrzym",
@@ -61,6 +62,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	};
 	public static final String ID_MERMAIDS = "fight.general.mermaids";
 	public static final int COUNT_MERMAIDS = 10000;
+	*/
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -100,6 +102,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		fightingAchievements.add(createAchievement("fight.special.allshared", "Wojownik drużyny", "Zabił z drużyną wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSharedAllCreaturesCondition()));
 
+		/**
 		fightingAchievements.add(createAchievement(
 				ID_GIANTS, "Dawid kontra Goliat", "Zabił conajmniej 20 każdego rodzaju olbrzyma solo",
 				Achievement.MEDIUM_BASE_SCORE, true,
@@ -130,6 +133,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 						return kills >= COUNT_MERMAIDS;
 					}
 				}));
+		*/
 
 		return fightingAchievements;
 	}
