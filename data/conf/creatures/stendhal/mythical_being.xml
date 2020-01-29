@@ -5,7 +5,7 @@
 	<!-- START: mermaids -->
 
 	<creature name="syrenka">
-			<type class="stendhal/mythical_being" subclass="syrenka" tileid="mythical_being.png:7"/>
+			<type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
 			<description>Oto syrenka. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
 			<attributes>
 				<atk value="547"/>
