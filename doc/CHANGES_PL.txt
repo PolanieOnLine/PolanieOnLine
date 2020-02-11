@@ -28,7 +28,7 @@ Changelog
 	- imperialny pierścień
 	- sztabka platyny
 	- złoże platyny
-- Dodano nowe osiągnięcia: (12)
+- Dodano nowe osiągnięcia: (14)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -41,6 +41,8 @@ Changelog
 	- "Zielony Kciuk"
 	- "Ziołolecznik"
 	- "Serenada Syren"
+	- "Imperialistyczny Sługus"
+	- "Imperialistyczny Żołnierz"
 
 
 1.09.5

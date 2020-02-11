@@ -318,7 +318,7 @@ class MakingFabric {
 		npc.addReply("przędza","To jest jedwab z gruczołów gigantycznych pająków.");
 		npc.addReply("bryłek mithrilu","Możesz sam je znaleźć.");
 		npc.addReply("Whiggins","Znajdź czarodzieja Whiggins w domku w magicznym mieście.");
-		npc.addReply("scientists","Słyszałem o eksperymentach głęboko w zamku Kalavan. Naukowcy są szaleni, ale poszukaj naukowca Vincento Price. Może on będzie na tyle normalny, aby Ci pomóc.");
+		npc.addReply("naukowiec","Słyszałem o eksperymentach głęboko w zamku Kalavan. Naukowcy są szaleni, ale poszukaj naukowca Vincento Price. Może on będzie na tyle normalny, aby Ci pomóc.");
 
 
 		// player says yes they brought the items needed

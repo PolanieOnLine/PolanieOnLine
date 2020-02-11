@@ -392,5 +392,42 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+
+	<creature name="smok rysin">
+		<type class="stendhal/dragon" subclass="rysin_dragon" tileid="dragon.png:7"/>
+		<description></description>
+		<attributes>
+			<atk value="1350"/>
+			<def value="153"/>
+			<hp value="5610"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="295"/>
+		<experience value="250290"/>
+		<respawn value="11000"/>
+		<corpse name="dragon_3x3" harmless="bag_2x2" width="3" height="3"/>
+		<drops>
+			<item value="kieł smoka" quantity="[1,1]" probability="7.5"/>
+			<item value="magiczne buty płytowe" quantity="[1,1]" probability="1.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<damage type="fire"/>
+		</abilities>
+		<ai>
+			<says>
+				<sound value="pol-dragon-roaring"/>
+				<sound value="pol-dragon-taunt"/>
+				<sound value="roar-large-1" />
+				<sound value="wings-flap-large-1" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+			<profile name="strategy" params="archer,attack weakest,dual attack"/>
+		</ai>
+	</creature>
 	<!-- STOP: flying -->
 </creatures>

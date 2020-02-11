@@ -237,6 +237,7 @@ public class DailyItemQuest extends AbstractQuest {
 
 		// misc
 		items.put("kości do gry",1);
+		items.put("skórzana nić", 20);
 		items.put("kolorowe kulki", 2);
 		items.put("pułapka na gryzonie",5);
 		items.put("pluszowy miś",1);

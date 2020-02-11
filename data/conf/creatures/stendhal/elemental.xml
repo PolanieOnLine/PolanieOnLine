@@ -203,6 +203,9 @@
 			<susceptibility type="fire" value="2.0"/>
 		</abilities>
 		<ai>
+			<says>
+				<noise state="idle follow fight" value="Zamrożę cię do szpiku kości."/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -342,6 +345,9 @@
 		<respawn value="23000"/>
 		<corpse name="puddle_light_blue_2x2" harmless="puddle_light_blue_2x2" width="2" height="2"/>
 		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="mocne antidotum" quantity="[1,2]" probability="20.0"/>
 		</drops>
 		<equips>
 		</equips>

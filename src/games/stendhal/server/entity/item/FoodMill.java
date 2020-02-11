@@ -37,6 +37,7 @@ public class FoodMill extends Item {
 	/** Items that do not require a "container" */
 	private final List<String> containerNotRequired = new ArrayList<String>() {{
 		add("zwój czyszczący");
+		add("obrotowy nożyk");
 	}};
 
     public FoodMill(final String name, final String clazz,
@@ -52,13 +53,18 @@ public class FoodMill extends Item {
 
     /** Sets up the input, output and container based on item name */
     private void init() {
-    	if ("młynek do cukru".equals(getName())) {
+    	final String tool = getName();
+
+    	if ("młynek do cukru".equals(tool)) {
     		input = "trzcina cukrowa";
     		container = "pusty worek";
     		output = "cukier";
-    	} else if ("zwój czyszczący".equals(getName())) {
+    	} else if ("zwój czyszczący".equals(tool)) {
     		input = "zwój zapisany";
     		output = "niezapisany zwój";
+    	} else if ("obrotowy nożyk".equals(tool)) {
+    		input = "skóra";
+    		output = "skórzana nić";
     	} else {
     		input = "jabłko";
     		container = "buteleczka";
@@ -129,7 +135,14 @@ public class FoodMill extends Item {
     		user.drop(container);
     	}
     	
-    	user.equipOrPutOnGround(item);
+    	if ("obrotowy nożyk".equals(tool)) {
+    		final StackableItem stackable = (StackableItem) item;
+    		stackable.setQuantity(5);
+
+    		user.equipOrPutOnGround(stackable);
+    	} else {
+    		user.equipOrPutOnGround(item);
+    	}
 
     	return true;
     }

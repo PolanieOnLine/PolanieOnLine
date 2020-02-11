@@ -82,7 +82,9 @@
 		<respawn value="3900"/>
 		<corpse name="snake_2x2" harmless="snake_2x2-safe" width="2" height="2" />
 		<drops>
-			<item value="zaizolowany pierścień" quantity="1" probability="0.08"/>
+			<item value="trucizna" quantity="[2,5]" probability="20.0"/>
+			<item value="zaizolowany pierścień" quantity="[1,1]" probability="0.08"/>
+			<item value="magiczne buty płytowe" quantity="[1,1]" probability="0.01"/>
 		</drops>
 		<equips>
 		</equips>
@@ -114,6 +116,7 @@
 		<corpse name="snake_3x2" harmless="snake_3x2-safe" width="3" height="2"/>
 		<drops>
 			<item value="zabójcza trucizna" quantity="[1,1]" probability="5.0"/>
+			<item value="magiczne spodnie płytowe" quantity="[1,1]" probability="0.25"/>
 		</drops>
 		<equips>
 		</equips>

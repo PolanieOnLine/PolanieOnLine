@@ -123,6 +123,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 
 		// club (easy difficulty)
 		addEasy("kij z czaszką",1);
+		addEasy("kropacz",1);
 
 		// drink (easy difficulty)
 		addEasy("wielki eliksir",5);
@@ -208,6 +209,9 @@ public class WeeklyItemQuest extends AbstractQuest {
 		addMed("półtorak",1);
 		addMed("miecz lodowy",1);
 		addMed("czarny sztylet",1);
+
+		// tool (medium difficulty)
+		addMed("zwój czyszczący", 1);
 
 		// levels 151+
 		

@@ -52,10 +52,12 @@ public enum Category {
 	QUEST_ZAKOPANE_ITEMS,
 	/** gdansk jewellery quest */
 	QUEST_GDANSK_JEWELLERY,
-	/** mithrilbourgh kill enemy army quest */
-	QUEST_MITHRILBOURGH_ENEMY_ARMY,
 	/** kuznice monster quest */
 	QUEST_KUZNICE_MONSTER,
+	/** mithrilbourgh kill enemy army quest */
+	QUEST_MITHRILBOURGH_ENEMY_ARMY,
+	/** kill blordroughs quest */
+	QUEST_KILL_BLORDROUGHS,
 	/** pets weight **/
 	WEIGHT,
 	/** rebirths **/

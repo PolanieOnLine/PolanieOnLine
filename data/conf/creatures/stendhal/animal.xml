@@ -17,12 +17,48 @@
 		<level value="155"/>
 		<experience value="38830"/>
 		<respawn value="5400"/>
-		<corpse name="animal_2x2" width="2" height="2"/>
+		<corpse name="animal_2x2" harmless="bag_2x2" width="2" height="2"/>
 		<drops>
+			<item value="money" quantity="[30,150]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,6]" probability="75.0"/>
 			<item value="mocna trucizna" quantity="[1,2]" probability="90.0"/>
 			<item value="miecz orków" quantity="[1,1]" probability="0.3"/>
-			<item value="money" quantity="[30,150]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<abilities>
+			<susceptibility type="fire" value="0.2"/>
+			<susceptibility type="ice" value="1.5"/>
+		</abilities>
+		<ai>
+			<profile name="poisonous" params="15,śmiertelna trucizna"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="neo kraken">
+		<type class="stendhal/huge_animal" subclass="kraken_neo" tileid="huge_animal.png:0"/>
+		<description></description>
+		<attributes>
+			<atk value="992"/>
+			<def value="122"/>
+			<hp value="3000"/>
+			<speed value="1"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="180"/>
+		<experience value="57400"/>
+		<respawn value="18600"/>
+		<corpse name="animal_2x2" harmless="bag_2x2" width="2" height="2"/>
+		<drops>
+			<item value="money" quantity="[50,100]" probability="33.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="2.0"/>
+			<item value="zabójcza trucizna" quantity="[1,2]" probability="15.0"/>
+			<item value="magiczne spodnie płytowe" quantity="[1,1]" probability="0.75"/>
 		</drops>
 		<equips>
 		</equips>
@@ -755,19 +791,53 @@
 		</ai>
 	</creature>
 
-	<creature name="słoń z kłami">
-		<type class="stendhal/animal" subclass="elephant_bull" tileid="animal.png:12"/>
-		<description>Oto słoń z kłami. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
+	<creature name="słoń musth">
+		<type class="stendhal/animal" subclass="elephant_musth" tileid="animal.png:16"/>
+		<description>Oto słoń musth. Jest bardzo agresywny i nieprzewidywalny.</description>
 		<attributes>
-			<atk value="327"/>
-			<def value="100"/>
+			<atk value="218"/>
+			<def value="219"/>
 			<hp value="2250"/>
-			<speed value="0.6"/>
+			<speed value="0.8"/>
 			<size value="3,2"/>
 		</attributes>
 		<level value="86"/>
 		<experience value="7175"/>
 		<respawn value="3400"/>
+		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
+		<drops>
+			<item value="szynka" quantity="[4,10]" probability="75.0"/>
+			<item value="stek" quantity="[3,11]" probability="35.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="UUUUUUFFFZZZZ!!!"/>
+				<sound value="elephant-1" />
+				<sound value="elephant-2" />
+				<sound value="elephant-3" />
+				<sound value="elephant-rumble-1" />
+			</says>
+			<profile name="offensive"/>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="słoń z kłami">
+		<type class="stendhal/animal" subclass="elephant_bull" tileid="animal.png:12"/>
+		<description>Oto agresywny słoń z kłami. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
+		<attributes>
+			<atk value="150"/>
+			<def value="150"/>
+			<hp value="445"/>
+			<speed value="0.6"/>
+			<size value="3,2"/>
+		</attributes>
+		<level value="47"/>
+		<experience value="1550"/>
+		<respawn value="1680"/>
 		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
 		<drops>
 			<item value="mięso" quantity="[1,10]" probability="100.0"/>
@@ -805,6 +875,8 @@
 		<respawn value="17600"/>
 		<corpse name="animal_2x2" harmless="bag_2x2" width="5" height="3"/>
 		<drops>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="królewski hełm" quantity="[1,1]" probability="0.03"/>
 		</drops>
 		<equips>
 		</equips>
@@ -970,6 +1042,8 @@
 		<respawn value="12000"/>
 		<corpse name="winged_2x2" width="2" height="2"/>
 		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -1000,6 +1074,10 @@
 		<respawn value="12000"/>
 		<corpse name="winged_2x2" width="2" height="2"/>
 		<drops>
+			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
+			<item value="miecz dwuręczny" quantity="[1,1]" probability="0.1"/>
+			<item value="królewski płaszcz" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>

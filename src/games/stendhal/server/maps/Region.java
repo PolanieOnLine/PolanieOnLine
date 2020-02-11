@@ -21,6 +21,7 @@ public final class Region {
 	public static final String ADOS_SURROUNDS = "Okolice Ados";
 	public static final String AMAZON_ISLAND = "Wyspa Amazon";
 	public static final String ATHOR_ISLAND = "Wyspa Athor";
+	public static final String ATLANTIS = "Atlantyda";
 	public static final String DENIRAN = "Deniran";
 	public static final String SEMOS_CITY = "Miasto Semos";
 	public static final String SEMOS_SURROUNDS = "Okolice Semos";

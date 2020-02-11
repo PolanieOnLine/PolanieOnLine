@@ -38,6 +38,7 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
@@ -106,7 +107,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
 										raiser.say("Jesteś zainteresowany ulepszeniem złotej ciupagi? Mogę ją dla ciebie ulepszyć. Jesteś zainteresowany?");
 									} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
-										raiser.say("Już się Ciebie pytałem czy chcesz ulepszyć złotą ciupagę!");
+										raiser.say("Już się Ciebie pytałem czy chcesz #ulepszyć złotą ciupagę!");
 									} else if (player.isQuestCompleted(QUEST_SLOT)) {
 										final String[] waittokens = player.getQuest(QUEST_SLOT).split(";");
 										final long waitdelay = REQUIRED_WAIT_DAYS * MathHelper.MILLISECONDS_IN_ONE_DAY;
@@ -118,7 +119,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("przedmioty")) {
-										raiser.say("Nie masz co u mnie szukać, jeżeli nie pomożesz Wielkoludowi!");
+										raiser.say("Już rozmawialiśmy na ten temat... Masz mi przynieść #przedmioty do ulepszenia Twojej ciupagi.");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
@@ -141,7 +142,8 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 			});
 
 		npc.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES, null,
+			ConversationPhrases.YES_MESSAGES,
+			new QuestNotActiveCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING, null,
 			new ChatAction() {
 				@Override
@@ -154,7 +156,8 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 			});
 
 		npc.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES, null,
+			ConversationPhrases.NO_MESSAGES,
+			null,
 			ConversationStates.IDLE,
 			"Twoja strata.",
 			new SetQuestAction(QUEST_SLOT, "rejected"));
@@ -173,7 +176,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 				new QuestCompletedCondition(NAGRODA_WIELKOLUDA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, "Do jej ulepszenia są potrzebne przeróżne #przedmioty.",
-			new SetQuestAction(QUEST_SLOT, "przedmioty" ));
+			new SetQuestAction(QUEST_SLOT, "przedmioty"));
 
 		final List<ChatAction> ciupagaactions = new LinkedList<ChatAction>();
 		ciupagaactions.add(new DropItemAction("złota ciupaga",1));
@@ -191,7 +194,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("złoty róg",1),
 								 new PlayerHasItemWithHimCondition("polano",4),
 								 new PlayerHasItemWithHimCondition("money",120000)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 8 godzin, a ciupaga będzie gotowa. Przypomnij mi mówiąc #/nagroda/",
+				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 8 godzin, a ciupaga będzie gotowa. Przypomnij mi mówiąc #/nagroda/",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij"),

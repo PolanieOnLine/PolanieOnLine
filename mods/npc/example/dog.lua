@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                      Copyright (C) 2019 - Arianne                       *
+ *                       Copyright © 2020 - Arianne                        *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,10 +20,10 @@ logger:info("Loading Lua SilentNPC...")
 if game:setZone("0_semos_city") then
 	-- Create new NPC instance
 	local dog = npcHelper:createSilentNPC()
-	dog:put("menu", "Pet|Use")
+	dog:put("menu", "Pogłaskaj|Użyj")
 	dog:setName("Puppy");
 	dog:setPosition(23, 54);
-	dog:setDescription("You see a playful puppy.");
+	dog:setDescription("Widzisz zabawnego szczeniaczka.");
 	dog:setEntityClass("animal/puppy");
 	dog:setBaseSpeed(0.5);
 	dog:moveRandomly();

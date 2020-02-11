@@ -170,7 +170,6 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.QUEST_ADOS_ITEMS);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_SEMOS_MONSTER);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_KIRDNEH_ITEM);
-		getAndCheckAchievementsInCategory(player, Category.QUEST_MITHRILBOURGH_ENEMY_ARMY);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_ZAKOPANE_ITEMS);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_GDANSK_JEWELLERY);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_KUZNICE_MONSTER);
@@ -178,6 +177,8 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.OBTAIN);
 		getAndCheckAchievementsInCategory(player, Category.PRODUCTION);
 		getAndCheckAchievementsInCategory(player, Category.REBORN);
+		getAndCheckAchievementsInCategory(player, Category.QUEST_MITHRILBOURGH_ENEMY_ARMY);
+		getAndCheckAchievementsInCategory(player, Category.QUEST_KILL_BLORDROUGHS);
 	}
 
 	/**

@@ -1277,6 +1277,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 				<parameter name="class">skulldoor_w</parameter>
 				<parameter name="key">klucz minotaura</parameter>
 			</implementation>
+			<attribute name="move.continuous"/>
 		</portal>
 
 	</zone>

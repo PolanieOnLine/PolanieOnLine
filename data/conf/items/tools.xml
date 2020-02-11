@@ -231,4 +231,23 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="obrotowy nożyk">
+		<type class="tool" subclass="rotary_cutter" tileid="-1"/>
+		<description>Oto obrotowy nożyk. Może służyć do krojenia pizzy. Ale być może można go również zastosować do innych rzeczy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.FoodMill"/>
+		<attributes>
+			<menu value="Użyj|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 </items>
