@@ -441,6 +441,7 @@
 			<profile name="offensive"/>
 			<profile name="coward"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -471,6 +472,7 @@
 			<profile name="offensive"/>
 			<profile name="brave"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -502,6 +504,7 @@
 			<profile name="offensive"/>
 			<profile name="brave"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -527,6 +530,7 @@
 			<profile name="offensive"/>
 			<profile name="coward"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- END: owady -->
@@ -560,6 +564,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -590,6 +595,7 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -619,6 +625,7 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -649,6 +656,7 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- END: ptaki -->
@@ -683,6 +691,7 @@
 			<profile name="lifesteal" params="0.05"/>
 			<profile name="heal" params="10,25"/>
 			<profile name="attack weakest"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- END: ptaki wielkie -->

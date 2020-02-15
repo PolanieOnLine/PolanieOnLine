@@ -47,6 +47,8 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 
 	private String subclass;
 
+	private String shadow_style;
+
 	private String description;
 
 	private String text;
@@ -198,6 +200,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 		} else if (qName.equals("type")) {
 			clazz = attrs.getValue("class");
 			subclass = attrs.getValue("subclass");
+			shadow_style = attrs.getValue("shadow");
 
 			tileid = "../../tileset/logic/creature/" + attrs.getValue("tileid");
 		} else if (qName.equals("level")) {
@@ -376,6 +379,8 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			creature.setResistance(resistance);
 			creature.setVisibility(visibility);
 			creature.setEquipedItems(equipsItems);
+
+			creature.setShadowStyle(shadow_style);
 
 			creature.setBlood(bloodName);
 			bloodName = null;

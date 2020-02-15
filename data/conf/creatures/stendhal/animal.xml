@@ -236,6 +236,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -808,6 +809,7 @@
 		<drops>
 			<item value="szynka" quantity="[4,10]" probability="75.0"/>
 			<item value="stek" quantity="[3,11]" probability="35.0"/>
+			<item value="pierścień spokoju" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -957,6 +959,7 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -1010,6 +1013,7 @@
 		<respawn value="1220"/>
 		<corpse name="animal"/>
 		<drops>
+			<item value="pierścień spokoju" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>
@@ -1056,6 +1060,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	
@@ -1090,6 +1095,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 </creatures>

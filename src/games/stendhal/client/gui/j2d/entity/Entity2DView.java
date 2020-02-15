@@ -32,6 +32,7 @@ import games.stendhal.client.entity.EntityChangeListener;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.ImageEventProperty;
 import games.stendhal.client.entity.Inspector;
+import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.j2d.ImageEffect;
@@ -41,6 +42,7 @@ import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.AnimatedSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import marauroa.common.game.RPObject;
 
 /**
  * The 2D view of an entity.
@@ -134,6 +136,9 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	 */
 	private final Rectangle area = new Rectangle();
 
+	/** determines if sprite animation cycles while idle */
+	private boolean activeIdle = false;
+
 	@Override
 	public void initialize(final T entity) {
 		if (entity == null) {
@@ -158,6 +163,13 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		representationChanged = true;
 
 		entity.addChangeListener(updateListener);
+
+		if (entity instanceof RPEntity) {
+			final RPObject obj = ((RPEntity) entity).getRPObject();
+			if (obj.has("active_idle")) {
+				activeIdle = true;
+			}
+		}
 	}
 
 	//
@@ -675,7 +687,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		if (sprite instanceof AnimatedSprite) {
 			final AnimatedSprite asprite = (AnimatedSprite) sprite;
 
-			if (isAnimating()) {
+			if (isAnimating() || activeIdle) {
 				asprite.start();
 			} else {
 				asprite.stop();

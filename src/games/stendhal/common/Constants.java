@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2020 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,9 +23,10 @@ public final class Constants {
 	 * order (i.e. bag first).
 	 */
 	// TODO: let the slots decide that themselves
-	public static final String[] CARRYING_SLOTS = { "bag", "neck", "head", "cloak",
-			"lhand", "armor", "rhand", "finger", "pas", "legs", "keyring", "back", "belt",
-			"fingerb", "feet", "glove", "money" };
+	public static final String[] CARRYING_SLOTS = {
+			"bag", "money", "keyring", "back", "belt", "neck", "head",
+			"cloak", "lhand", "armor", "rhand", "finger", "fingerb",
+			"glove", "pas", "legs", "feet" };
 
 	/**
 	 * Modes that can be used for setting combat karma.

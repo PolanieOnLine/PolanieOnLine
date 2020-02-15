@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="duch">
-		<type class="stendhal/undead" subclass="ghost" tileid="undead_specter.png:0"/>
+		<type class="stendhal/undead" subclass="ghost" shadow="none" tileid="undead_specter.png:0"/>
 		<description>Widzisz ducha! Bój się.</description>
 		<attributes>
 			<atk value="171"/>
@@ -20,6 +20,7 @@
 		<corpse name="cloaked_white" harmless="cloaked_white" />
 		<drops>
 			<item value="money" quantity="[4,23]" probability="100.0"/>
+			<item value="pierścień spokoju" quantity="[1,1]" probability="0.02"/>
 		</drops>
 		<equips>
 		</equips>
@@ -72,7 +73,7 @@
 	</creature>
 
 	<creature name="czarna śmierć">
-		<type class="stendhal/undead" subclass="black_death" tileid="undead_specter.png:4"/>
+		<type class="stendhal/undead" subclass="black_death" shadow="none" tileid="undead_specter.png:4"/>
 		<description>Oto czarna śmierć. Swą kosą wytnie twą duszę i zaniesie ją za rzekę, gdzie pozostanie do nadejścia dnia sądu.</description>
 		<attributes>
 			<atk value="3451"/>
@@ -119,7 +120,7 @@
 	</creature>
 
 	<creature name="złota śmierć">
-		<type class="stendhal/undead" subclass="golden_death" tileid="undead_specter.png:5"/>
+		<type class="stendhal/undead" subclass="golden_death" shadow="none" tileid="undead_specter.png:5"/>
 		<description>Oto złota śmierć. Jest tu aby zabrać twą duszę i zapłacić nią za twoje winy.</description>
 		<attributes>
 			<atk value="3968"/>
@@ -214,6 +215,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[3,30]" probability="90.0"/>
+			<item value="pierścień spokoju" quantity="[1,1]" probability="0.3"/>
 		</drops>
 		<equips>
 		</equips>

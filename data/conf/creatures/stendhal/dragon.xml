@@ -170,6 +170,7 @@
 			<profile name="lifesteal" params="0.5"/>
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,,dual attack"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -347,6 +348,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,attack weakest,dual attack"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -390,6 +392,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -410,6 +413,7 @@
 		<drops>
 			<item value="kieł smoka" quantity="[1,1]" probability="7.5"/>
 			<item value="magiczne buty płytowe" quantity="[1,1]" probability="1.0"/>
+			<item value="pierścień spokoju" quantity="[1,1]" probability="2.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -427,6 +431,7 @@
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,attack weakest,dual attack"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- STOP: flying -->

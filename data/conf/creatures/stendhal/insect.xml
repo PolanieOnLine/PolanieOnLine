@@ -85,6 +85,9 @@
 		<experience value="9110"/>
 		<respawn value="3900"/>
 		<corpse name="carapace" harmless="carapace"/>
+		<drops>
+			<item value="pierścień spokoju" quantity="[1,1]" probability="0.75"/>
+		</drops>
 		<ai>
 			<profile name="brave"/>
 		    <profile name="offensive"/>
@@ -126,6 +129,7 @@
 			<profile name="offensive"/>
 			<profile name="archer"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- END: insect -->

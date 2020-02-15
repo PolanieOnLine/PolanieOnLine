@@ -8,10 +8,10 @@
 		<description>Oto pierścień leczniczy. Może cię ochronić przed zatruciem gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
+			<status_resist type="poisoned" value="0.25" slots="finger;fingerb;" />
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
-		<resistance type="poisoned" value="0.25" slots="finger;fingerb;" />
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -28,10 +28,10 @@
 		<description>Oto pierścień antyjadowy. Posiada dobre właściwości chroniące przed zatruciem gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
+			<status_resist type="poisoned" value="0.5" slots="finger;fingerb;" />
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
-		<resistance type="poisoned" value="0.5" slots="finger;fingerb;" />
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -49,10 +49,10 @@
 		<description>Oto pierścień antytoksynowy. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
+			<status_resist type="poisoned" value="0.75" slots="finger;fingerb;" />
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
-		<resistance type="poisoned" value="0.75" slots="finger;fingerb;" />
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -65,15 +65,35 @@
 	</item>
 	DISABLED -->
 
-	<item name="zaizolowany pierścień">
-		<type class="ring" subclass="insulated_ring" tileid="-1"/>
-		<description>Oto zaizolowany pierścień, który ochroni ciebie przed zaszokowaniem - wstrząsami. Musi być założony na palcu.</description>
+	<item name="pierścień spokoju">
+		<type class="ring" subclass="placid_ring" tileid="-1"/>
+		<description>Oto pierścień spokoju. Może zmniejszać skutki szoku podczas noszenia go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
+			<status_resist type="shocked" value="0.33" slots="finger;fingerb;" />
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
-		<resistance type="shocked" value="0.66" slots="finger;fingerb;"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
+	<item name="zaizolowany pierścień">
+		<type class="ring" subclass="insulated_ring" tileid="-1"/>
+		<description>Oto zaizolowany pierścień, który ochroni ciebie przed zszokowaniem - wstrząsami. Musi być założony na palcu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<attributes>
+			<status_resist type="shocked" value="0.66" slots="finger;fingerb;" />
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

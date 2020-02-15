@@ -27,6 +27,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -55,6 +56,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="attack weakest"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -86,6 +88,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="lifesteal" params="0.1"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -117,6 +120,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="lifesteal" params="0.1"/>
 			<profile name="attack weakest"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- END: niesmiertelne -->

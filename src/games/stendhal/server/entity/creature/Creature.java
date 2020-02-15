@@ -244,8 +244,18 @@ public class Creature extends NPC {
 			setVisibility(100);
 		}
 
+		if (this.aiProfiles.containsKey("active_idle")) {
+			put("active_idle", "");
+		}
+
 		for (RPSlot slot : copy.slots()) {
 			this.addSlot((RPSlot) slot.clone());
+		}
+
+		if (copy.has("no_shadow")) {
+			setShadowStyle(null);
+		} else if (copy.has("shadow_style")) {
+			setShadowStyle(copy.get("shadow_style"));
 		}
 
 		update();

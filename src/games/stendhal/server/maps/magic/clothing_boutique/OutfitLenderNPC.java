@@ -79,13 +79,13 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		final Pair<Outfit, Boolean> GOWN = new Pair<Outfit, Boolean>(new Outfit(null, null, 32, null, null, null, null), true);
 		final Pair<Outfit, Boolean> NOOB = new Pair<Outfit, Boolean>(new Outfit(null, null, 31, null, null, null, null), true);
 
-		// these outfits must replace the current outfit (what's null simply isn't there)
-		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(null, 999, null, null, null, null, null), false);
-		final Pair<Outfit, Boolean> HORSE = new Pair<Outfit, Boolean>(new Outfit(97, null, null, null, null, null, null), false);
-		final Pair<Outfit, Boolean> GIRL_HORSE = new Pair<Outfit, Boolean>(new Outfit(96, null, null, null, null, null, null), false);
-		final Pair<Outfit, Boolean> ALIEN = new Pair<Outfit, Boolean>(new Outfit(95, null, null, null, null, null, null), false);
-		final Pair<Outfit, Boolean> STATEK = new Pair<Outfit, Boolean>(new Outfit(50, null, null, null, null, null, null), false);
-		final Pair<Outfit, Boolean> DUZY_STATEK = new Pair<Outfit, Boolean>(new Outfit(51, null, null, null, null, null, null), false);
+		// these outfits must replace the current outfit (what's -1 simply isn't there)
+		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(-1, 999, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> HORSE = new Pair<Outfit, Boolean>(new Outfit(97, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> GIRL_HORSE = new Pair<Outfit, Boolean>(new Outfit(96, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> ALIEN = new Pair<Outfit, Boolean>(new Outfit(95, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> STATEK = new Pair<Outfit, Boolean>(new Outfit(50, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> DUZY_STATEK = new Pair<Outfit, Boolean>(new Outfit(51, -1, -1, -1, -1, null, null), false);
 
 		outfitTypes.put("kombinezon", JUMPSUIT);
 		outfitTypes.put("spodnie robocze", DUNGAREES);
@@ -125,6 +125,10 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 						final Pair<Outfit, Boolean> outfitPair = outfitTypes.get(outfitType);
 						final Outfit outfit = outfitPair.first();
 						final boolean type = outfitPair.second();
+
+						// remove temporary outfits to avoid visual conflicts
+						player.returnToOriginalOutfit();
+
 						if (type) {
 							player.setOutfit(outfit.putOver(player.getOutfit()), true);
 						} else {

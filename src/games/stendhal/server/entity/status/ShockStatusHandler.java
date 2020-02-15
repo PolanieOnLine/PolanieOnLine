@@ -12,6 +12,7 @@
 package games.stendhal.server.entity.status;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.Rand;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -20,6 +21,8 @@ import games.stendhal.server.entity.RPEntity;
  * handles ShockStatusHandler
  */
 public class ShockStatusHandler implements StatusHandler<ShockStatus> {
+
+	private StatusRemover remover;
 
 	/**
 	 * inflicts a status
@@ -31,28 +34,33 @@ public class ShockStatusHandler implements StatusHandler<ShockStatus> {
 	@Override
 	public void inflict(ShockStatus status, StatusList statusList, Entity attacker) {
 
+		final String resistName = "resist_shocked";
+
 		if (!statusList.hasStatus(status.getStatusType())) {
 			RPEntity entity = statusList.getEntity();
 			if (entity != null) {
 				if (attacker == null) {
-					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Jesteś w zszokowany.");
+					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Zostałeś zszokowany.");
 				} else {
 					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Doznałeś szoku przez " + attacker.getName() + ".");
-				}		
+				}
+
+				statusList.addInternal(status);
+				statusList.activateStatusAttribute("status_" + status.getName());
+
+				remover = new StatusRemover(statusList, status);
+
+				// lasts between 30 seconds & 5 minutes
+				int persistence = Rand.randUniform(30, 60 * 5);
+				// shock-resistance also alters duration
+				if (entity.has(resistName)) {
+					persistence = (int) Math.round(persistence * (1.0 - entity.getDouble(resistName)));
+				}
+
+				TurnNotifier.get().notifyInSeconds(persistence, remover);
+				TurnNotifier.get().notifyInTurns(0, new ShockStatusTurnListener(statusList));
 			}
 		}
-
-		int count = statusList.countStatusByType(status.getStatusType());
-		if (count <= 6) {
-			statusList.addInternal(status);
-		}
-
-		if (count == 0) {
-			statusList.activateStatusAttribute("status_" + status.getName());
-			TurnNotifier.get().notifyInSeconds(60, new StatusRemover(statusList, status));
-			TurnNotifier.get().notifyInTurns(0, new ShockStatusTurnListener(statusList));
-		}
-
 	}
 
 	/**
@@ -65,17 +73,18 @@ public class ShockStatusHandler implements StatusHandler<ShockStatus> {
 	public void remove(ShockStatus status, StatusList statusList) {
 		statusList.removeInternal(status);
 
-		RPEntity entity = statusList.getEntity();
+		final RPEntity entity = statusList.getEntity();
 		if (entity == null) {
 			return;
 		}
 
-		Status nextStatus = statusList.getFirstStatusByClass(ShockStatus.class);
-		if (nextStatus != null) {
-			TurnNotifier.get().notifyInSeconds(60, new StatusRemover(statusList, nextStatus));
-		} else {
-			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Już nie jesteś w szoku.");
-			entity.remove("status_" + status.getName());
+		entity.sendPrivateText(NotificationType.SCENE_SETTING, "Nie jesteś już dłużej zszokowany.");
+		entity.remove("status_" + status.getName());
+
+		// disable pending notifications
+		if (remover != null) {
+			TurnNotifier.get().dontNotify(remover);
+			remover = null;
 		}
 	}
 }

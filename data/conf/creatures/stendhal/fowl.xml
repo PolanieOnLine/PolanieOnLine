@@ -188,6 +188,7 @@
 			<profile name="animal"/>
 			<profile name="patrolling"/>
 			<profile name="coward"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 	<!-- END: fowl -->

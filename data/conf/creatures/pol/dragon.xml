@@ -45,6 +45,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -89,6 +90,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -134,6 +136,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -179,6 +182,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -290,6 +294,7 @@
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.5"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -419,6 +424,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="100,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 
@@ -462,6 +468,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="active_idle"/>
 		</ai>
 	</creature>
 

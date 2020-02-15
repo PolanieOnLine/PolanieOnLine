@@ -3578,12 +3578,13 @@ public abstract class RPEntity extends GuidedEntity {
 	 * 		String name of the shadow to use.
 	 */
 	public void setShadowStyle(final String st) {
-		if (st == null) {
+		if (st == null || st.equals("none")) {
 			remove("shadow_style");
 			put("no_shadow", "");
 			return;
 		}
 
 		put("shadow_style", st);
+		remove("no_shadow");
 	}
 }
