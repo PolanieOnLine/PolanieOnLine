@@ -2,8 +2,22 @@ Changelog
 ---------
 1.10
 *świat*
-- Dodano nowe potwory: (21)
+- Dodano nowe NPC:
+	- Zelan (Atlantyda)
+- Dodano nowe regiony/mapy:
+	- Atlantyda
+- Dodano nowe przedmioty: (8)
+	- pierścień spokoju
+	- imperialny pierścień
+	- sztabka platyny
+	- złoże platyny
+	- skórzana nić
+	- obrotowy nóżyk
+	- magiczne spodnie płytowe
+	- magiczne buty płytowe
+- Dodano nowe potwory: (23)
 	- słoń z rogami
+	- słoń musth
 	- mamut włochaty
 	- demon wody
 	- wodny skarabeusz
@@ -24,10 +38,7 @@ Changelog
 	- nietoperz olbrzymi
 	- nietoperz wampir olbrzymi
 	- niedźwiedź biały
-- Dodano nowe przedmioty: (3)
-	- imperialny pierścień
-	- sztabka platyny
-	- złoże platyny
+	- neo kraken
 - Dodano nowe osiągnięcia: (14)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
@@ -43,6 +54,19 @@ Changelog
 	- "Serenada Syren"
 	- "Imperialistyczny Sługus"
 	- "Imperialistyczny Żołnierz"
+- Dodano nowe zadania:
+	- "Rogi jednorożca dla Zelana"
+	
+*kod*
+- Dodano wsparcie języka Lua
+- Dodano wsparcie dla portali schodów w kafelkach z ciągłym ruchem
+- Cień wroga/stwora można ustawić za pomocą wartości „shadow” pod znacznikiem „type”
+
+*naprawiono błędy*
+- Naprawiono drzwi & drzwi zamknięte, które nie obsługują ciągłego ruchu
+- Naprawiono niemożność ukończenia zadania "Pułapki dla Klaasa", gdy aktywowano zadanie "Pierścień Antyjadowy"
+- Naprawiony niemożność wejścia do aptekarza jeśli zadanie "Pułapki dla Klaasa" zostało wznowione
+- Usunięto wiele wiadomości o tym, że nie jest już zszokowany
 
 
 1.09.5
