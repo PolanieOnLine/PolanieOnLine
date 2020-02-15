@@ -61,6 +61,7 @@ Changelog
 - Dodano wsparcie języka Lua
 - Dodano wsparcie dla portali schodów w kafelkach z ciągłym ruchem
 - Cień wroga/stwora można ustawić za pomocą wartości „shadow” pod znacznikiem „type”
+- Elementy z atrybutem „active_idle” będą cyklicznie odtwarzać animacje, nawet jeśli zostaną zatrzymane
 
 *naprawiono błędy*
 - Naprawiono drzwi & drzwi zamknięte, które nie obsługują ciągłego ruchu
