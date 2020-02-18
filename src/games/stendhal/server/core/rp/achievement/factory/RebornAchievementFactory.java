@@ -19,15 +19,15 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> achievements = new LinkedList<Achievement>();
-		achievements.add(createAchievement("quest.special.reborn.1", "Nowo narodzony", "Narodził się na nowo",
+		achievements.add(createAchievement("quest.special.reborn.1", "Nowo Narodzony", "Narodził się na nowo",
 			Achievement.EASY_BASE_SCORE, true, new QuestInStateCondition(QUEST_SLOT, "done")));
-		achievements.add(createAchievement("quest.special.reborn.2", "Nowy ja, nowa przygoda", "Narodził się na nowo po raz drugi",
+		achievements.add(createAchievement("quest.special.reborn.2", "Nowy Ja, Nowa Przygoda", "Narodził się na nowo po raz drugi",
 			Achievement.MEDIUM_BASE_SCORE, true, new QuestInStateCondition(QUEST_SLOT, "done;2")));
-		achievements.add(createAchievement("quest.special.reborn.3", "Przygodo... ruszam!", "Narodził się na nowo po raz trzeci",
+		achievements.add(createAchievement("quest.special.reborn.3", "Przygodo, Ruszam!", "Narodził się na nowo po raz trzeci",
 			Achievement.MEDIUM_BASE_SCORE, true, new QuestInStateCondition(QUEST_SLOT, "done;3")));
-		achievements.add(createAchievement("quest.special.reborn.4", "Powtórna przygoda", "Narodził się na nowo po raz czwarty",
+		achievements.add(createAchievement("quest.special.reborn.4", "Poczwórna Powtórka", "Narodził się na nowo po raz czwarty",
 			Achievement.HARD_BASE_SCORE, true, new QuestInStateCondition(QUEST_SLOT, "done;4")));
-		achievements.add(createAchievement("quest.special.reborn.5", "Tym razem historia się nie powtórzy", "Narodził się na nowo po raz ostatni",
+		achievements.add(createAchievement("quest.special.reborn.5", "Tym Razem Historia się Nie Powtórzy", "Narodził się na nowo po raz ostatni",
 			Achievement.LEGENDARY_BASE_SCORE, true, new QuestInStateCondition(QUEST_SLOT, "done;5")));
 
 		return achievements;

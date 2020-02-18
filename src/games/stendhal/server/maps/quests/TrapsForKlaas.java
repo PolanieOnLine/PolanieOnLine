@@ -67,7 +67,6 @@ import games.stendhal.server.maps.Region;
  * <li>1000 XP</li>
  * <li>5 greater antidote
  * <li>note to apothecary (if Antivenom Ring quest not started)
- * <li>Can sell rodent traps to Klaas</li>
  * <li>Karma: 10</li>
  * </ul>
  *
@@ -351,5 +350,12 @@ public class TrapsForKlaas extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return "Klaas";
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestCompletedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)).fire(player, null, null);
 	}
 }

@@ -39,9 +39,9 @@ public class MithrilbourghEnemyArmyAchievementFactory extends AbstractAchievemen
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 4)));
 		achievements.add(createAchievement("quest.special.kill_enemy_army.0025", "Major", "Ukończ zadanie 'Zabij Wrogą Armię' 25 razy",
 				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 24)));
-		achievements.add(createAchievement("quest.special.kill_enemy_army.0050", "Główny generał", "Ukończ zadanie 'Zabij Wrogą Armię' 50 razy",
+		achievements.add(createAchievement("quest.special.kill_enemy_army.0050", "Główny Generał", "Ukończ zadanie 'Zabij Wrogą Armię' 50 razy",
 				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 49)));
-		achievements.add(createAchievement("quest.special.kill_enemy_army.0100", "Marszałek polowy", "Ukończ zadanie 'Zabij Wrogą Armię' 100 razy",
+		achievements.add(createAchievement("quest.special.kill_enemy_army.0100", "Marszałek Polowy", "Ukończ zadanie 'Zabij Wrogą Armię' 100 razy",
 				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 99)));
 
 		return achievements;

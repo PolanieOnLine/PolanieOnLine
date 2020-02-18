@@ -8,7 +8,7 @@ Changelog
 	- Atlantyda
 - Dodano nowe przedmioty: (8)
 	- pierścień spokoju
-	- imperialny pierścień
+	- pierścień imperialny
 	- sztabka platyny
 	- złoże platyny
 	- skórzana nić
@@ -56,7 +56,7 @@ Changelog
 	- "Imperialistyczny Żołnierz"
 - Dodano nowe zadania:
 	- "Rogi jednorożca dla Zelana"
-	
+
 *kod*
 - Dodano wsparcie języka Lua
 - Dodano wsparcie dla portali schodów w kafelkach z ciągłym ruchem

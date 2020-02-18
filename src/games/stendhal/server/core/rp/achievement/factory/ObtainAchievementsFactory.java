@@ -35,7 +35,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		final List<Achievement> achievements = new LinkedList<Achievement>();
 
 		// Wishing well achievement
-		achievements.add(createAchievement("obtain.wish", "Niech spełni się życzenie", "Zdobył przedmiot ze studni życzeń",
+		achievements.add(createAchievement("obtain.wish", "Niech Spełni się Życzenie", "Zdobył przedmiot ze studni życzeń",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerGotNumberOfItemsFromWellCondition(0)));
 
@@ -55,17 +55,17 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(100, "polano")));
 
-		achievements.add(createAchievement("obtain.gornik", "Górnik z krwi i kości", "Wydobył 50 każdego rodzaju kamienia szlachetnego",
+		achievements.add(createAchievement("obtain.gornik", "Górnik z Krwi i Kości", "Wydobył 50 każdego rodzaju kamienia szlachetnego",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerMinedNumberOfItemsCondition(50, "bryłka złota", "bryłka mithrilu", "kryształ ametystu", "kryształ rubinu", "kryształ szafiru", "kryształ szmaragdu", "kryształ obsydianu")));
 
 		// ultimate collector quest achievement
-		achievements.add(createAchievement("quest.special.collector", "Największy kolekcjoner", "Ukończył zadanie największego kolekcjonera",
+		achievements.add(createAchievement("quest.special.collector", "Największy Kolekcjoner", "Ukończył zadanie największego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("ultimate_collector")));
 
 		// goralski kolekcjoner quest achievement
-		achievements.add(createAchievement("quest.special.goralcollector", "Góralski kolekcjoner", "Ukończył ostatnie zadanie u góralskiego kolekcjonera",
+		achievements.add(createAchievement("quest.special.goralcollector", "Góralski Kolekcjoner", "Ukończył ostatnie zadanie u góralskiego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
 

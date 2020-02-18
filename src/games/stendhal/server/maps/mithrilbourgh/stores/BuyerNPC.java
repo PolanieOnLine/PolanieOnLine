@@ -97,7 +97,7 @@ public class BuyerNPC implements ZoneConfigurator {
 
 		final Sign book2 = new Sign();
 		book2.setPosition(13, 4);
-		book2.setText(" -- Skupuję -- \n złoty hełm\t 3000\n hełm cieni\t 4000\n złoty hełm wikingów 5000\n hełm chaosu\t 6000\n magiczny hełm kolczy\t 8000\n czarny hełm\t 10000");
+		book2.setText(" -- Skupuję -- \n złoty hełm\t 3000\n hełm cieni\t 4000\n złoty hełm wikingów 5000\n hełm chaosu\t 6000\n magiczny hełm kolczy\t 8000\n hełm xenocyjski\t 8000\n czarny hełm\t 10000");
 		book2.setEntityClass("book_red");
 		book2.setResistance(10);
 		zone.add(book2);

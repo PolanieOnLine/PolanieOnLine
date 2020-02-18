@@ -646,7 +646,7 @@ public class Pizza extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Dostawca Pizzy",
+				"Gdański Dostawca Pizzy",
 				"*Mniam!* Wspaniale pachnie. Jest gorąca... Pospiesz się z dostawą!",
 				false);
 		buildCustomerDatabase();
@@ -667,5 +667,10 @@ public class Pizza extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return "Ernest";
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return true;
 	}
 }

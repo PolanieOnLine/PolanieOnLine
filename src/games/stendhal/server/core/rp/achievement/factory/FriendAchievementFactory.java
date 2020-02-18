@@ -43,7 +43,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 	    // TODO: add Pacifist achievement for not participating in pvp for 6 months or more (last_pvp_action_time)
 
 		// Befriend Susi and complete quests for all children
-		achievements.add(createAchievement("friend.quests.children", "Przyjaciel dzieci", "Ukończył zadania wszystkich dzieci",
+		achievements.add(createAchievement("friend.quests.children", "Przyjaciel Dzieci", "Ukończył zadania wszystkich dzieci",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						// Susi Quest is never set to done, therefore we check just if the quest has been started (condition "anyFriends" from FoundGirl.java)
@@ -75,7 +75,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 				)));
 
 		// quests about finding people
-		achievements.add(createAchievement("friend.quests.find", "Prywatny detektyw", "Znalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",
+		achievements.add(createAchievement("friend.quests.find", "Prywatny Detektyw", "Znalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Rat Children (Agnus)
@@ -97,7 +97,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						})));
 
 		// quests about finding dragons
-		achievements.add(createAchievement("friend.quests.dragons", "Przyjaciel smoków", "Znalazł wszystkie ukrywające się smoki",
+		achievements.add(createAchievement("friend.quests.dragons", "Przyjaciel Smoków", "Znalazł wszystkie ukrywające się smoki",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Meet Dragons
@@ -115,7 +115,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						})));
 
 		// earn over 250 karma
-		achievements.add(createAchievement("friend.karma.250", "Dobry samarytanin", "Zdobył 250 karmy",
+		achievements.add(createAchievement("friend.karma.250", "Dobry Samarytanin", "Zdobył 250 karmy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 			@Override
@@ -125,10 +125,10 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 		}));
 
 		// meet Santa Claus, Easter Bunny and Guslarz
-		achievements.add(createAchievement("friend.meet.seasonal", "Wciąż wierzy", "Spotkał Świętego Mikołaja, zajączka Wielkanocnego i Guślarza",
+		achievements.add(createAchievement("friend.meet.seasonal", "Wciąż Wierzy", "Spotkał Świętego Mikołaja, zajączka Wielkanocnego i Guślarza",
 												Achievement.EASY_BASE_SCORE, true, new AndCondition(new QuestWithPrefixCompletedCondition("meet_santa_"), new QuestWithPrefixCompletedCondition("meet_bunny_"), new QuestWithPrefixCompletedCondition("meet_guslarz_"))));
 
-		achievements.add(createAchievement("friend.pet.condition", "Mój domowy przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
+		achievements.add(createAchievement("friend.pet.condition", "Mój Domowy Przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
 				Achievement.EASY_BASE_SCORE, true, new PlayerHasPetOrSheepCondition()));
 
 		return achievements;

@@ -35,7 +35,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> itemAchievements = new LinkedList<Achievement>();
 
-		itemAchievements.add(createAchievement("item.money.100", "Pierwsze kieszonkowe", "Zdobył 100 monet na potworach", 
+		itemAchievements.add(createAchievement("item.money.100", "Pierwsze Kieszonkowe", "Zdobył 100 monet na potworach", 
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100, "money")));
 
@@ -43,15 +43,15 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000, "money")));
 
-		itemAchievements.add(createAchievement("item.money.100000", "Mała fortuna", "Zdobył 100,000 monet na potworach", 
+		itemAchievements.add(createAchievement("item.money.100000", "Mała Fortuna", "Zdobył 100,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100000, "money")));
 		
-		itemAchievements.add(createAchievement("item.money.1000000", "Już nie potrzebujesz więcej", "Zdobył 1,000,000 monet na potworach", 
+		itemAchievements.add(createAchievement("item.money.1000000", "Już Nie Potrzebujesz Więcej", "Zdobył 1,000,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000000, "money")));
 				
-		itemAchievements.add(createAchievement("item.money.10000000", "Masz ich aż za dużo:)", "Zdobył 10,000,000 monet na potworach", 
+		itemAchievements.add(createAchievement("item.money.10000000", "Masz ich Za Dużo:)", "Zdobył 10,000,000 monet na potworach", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000000, "money")));
 				
@@ -60,7 +60,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja karmazynowa", "karmazynowy hełm", "płaszcz karmazynowy", "spodnie karmazynowe", "buty karmazynowe",
 						"karmazynowa tarcza", "karmazynowe rękawice")));
 
-		itemAchievements.add(createAchievement("item.set.blue", "Czuję błękit", "Zdobył lazurowy zestaw",
+		itemAchievements.add(createAchievement("item.set.blue", "Czuję Błękit", "Zdobył lazurowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja lazurowa", "lazurowy hełm", "prążkowany płaszcz lazurowy", "spodnie lazurowe",
 						"buty lazurowe", "lazurowa tarcza", "lazurowe rękawice")));
@@ -70,27 +70,27 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja elficka", "elficki kapelusz", "płaszcz elficki", "spodnie elfickie",
 						"buty elfickie", "tarcza elficka", "miecz elficki", "elficki naszyjnik", "pas elficki")));
 
-		itemAchievements.add(createAchievement("item.set.shadow", "Mieszkaniec cienia", "Zdobył cały zestaw cieni", 
+		itemAchievements.add(createAchievement("item.set.shadow", "Mieszkaniec Cienia", "Zdobył cały zestaw cieni", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja cieni", "hełm cieni", "płaszcz cieni", "spodnie cieni",
 						"buty cieni", "tarcza cieni", "miecz cieni", "rękawice cieni")));
 
-		itemAchievements.add(createAchievement("item.set.chaos", "Zdobywca chaosu", "Zdobył cały zestaw chaosów", 
+		itemAchievements.add(createAchievement("item.set.chaos", "Zdobywca Chaosu", "Zdobył cały zestaw chaosów", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja chaosu", "hełm chaosu", "płaszcz chaosu", "spodnie chaosu",
 						"buty chaosu", "tarcza chaosu", "miecz chaosu", "topór chaosu", "młot chaosu")));
 
-		itemAchievements.add(createAchievement("item.set.golden", "Złote dziecko", "Zdobył cały złoty zestaw", 
+		itemAchievements.add(createAchievement("item.set.golden", "Złote Dziecko", "Zdobył cały złoty zestaw", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "złota zbroja", "złoty hełm", "złoty płaszcz", "złote spodnie",
 						"złote buty", "złota tarcza", "złota klinga", "złoty pyrlik", "złoty buzdygan", "złoty kiścień", "złote rękawice", "złoty pas")));
 
-		itemAchievements.add(createAchievement("item.set.black", "Przejdź na ciemną strone", "Zdobył cały czarny zestaw", 
+		itemAchievements.add(createAchievement("item.set.black", "Przejdź na Ciemną Stronę", "Zdobył cały czarny zestaw", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "czarna zbroja", "czarny hełm", "czarny płaszcz", "czarne spodnie",
 						"czarne buty", "czarna tarcza", "czarny miecz", "czarna halabarda", "czarny sztylet", "czarna kosa", "czarne rękawice", "czarny pas")));
 						
-		itemAchievements.add(createAchievement("item.set.mithril", "Przejdź na jasną strone", "Zdobył cały zestaw z mithrilu", 
+		itemAchievements.add(createAchievement("item.set.mithril", "Przejdź na Jasną Stronę", "Zdobył cały zestaw z mithrilu", 
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja z mithrilu", "hełm z mithrilu", "płaszcz z mithrilu", "spodnie z mithrilu",
 						"buty z mithrilu", "tarcza z mithrilu", "rękawice z mithrilu", "pas z mithrilu")));
@@ -100,12 +100,12 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja mainiocyjska", "hełm mainiocyjski", "płaszcz mainiocyjski", "spodnie mainiocyjskie",
 						"buty mainiocyjskie", "tarcza mainiocyjska")));
 
-		itemAchievements.add(createAchievement("item.set.xeno", "Trochę xenofobiczny?", "Zdobył cały zestaw xenocyjski",
+		itemAchievements.add(createAchievement("item.set.xeno", "Trochę Xenofobiczny?", "Zdobył cały zestaw xenocyjski",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja xenocyjska", "hełm xenocyjski", "płaszcz xenocyjski", "spodnie xenocyjskie",
 						"buty xenocyjskie", "tarcza xenocyjska", "miecz xenocyjski")));
 						
-		itemAchievements.add(createAchievement("item.set.goralskie", "Góralskie dziecko", "Zdobył góralski zestaw",
+		itemAchievements.add(createAchievement("item.set.goralskie", "Góralskie Dziecko", "Zdobył góralski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "cuha góralska", "góralski gorset", "góralski kapelusz", "portki bukowe",
 						"góralska spódnica", "góralska biała spódnica", "chusta góralska", "kierpce", "korale", "pas zbójecki", "ciupaga")));

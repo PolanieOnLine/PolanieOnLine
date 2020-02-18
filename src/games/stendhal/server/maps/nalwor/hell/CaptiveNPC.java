@@ -57,6 +57,7 @@ public class CaptiveNPC implements ZoneConfigurator {
 		tomi.setPosition(119, 13);
 		tomi.setBaseHP(100);
 		tomi.setHP(50);
+		tomi.setShadowStyle(null);
 		tomi.setDescription("Oto Tomi. Jest cały spocony i na pewno potrzebuje coś do ochłodzenia.");
 		zone.add(tomi);
 	}

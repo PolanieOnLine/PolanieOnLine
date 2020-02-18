@@ -285,6 +285,7 @@ public final class ShopList {
 		shops.add("buyelvish", "miecz elfów ciemności", 1200);
 		shops.add("buyelvish", "płaszcz elficki", 400);
 		shops.add("buyelvish", "zbroja elficka", 400);
+		shops.add("buyelvish", "elficki kapelusz", 150);
 
 		// magic items or 'relics' (witch in magic city)
 		shops.add("buymagic", "miecz demonów", 4000);

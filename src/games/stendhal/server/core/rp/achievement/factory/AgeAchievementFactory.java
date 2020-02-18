@@ -34,31 +34,31 @@ public class AgeAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> ageAchievements = new LinkedList<Achievement>();
-		ageAchievements.add(createAchievement("age.less.010", "Pierwsze godziny na świecie!", "Spędziłeś 10 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.010", "Pierwsze Dziesięć Godzin", "Spędziłeś 10 godzin w grze",
 				Achievement.EASY_BASE_SCORE, true,
 												new AgeGreaterThanCondition(599)));
-		ageAchievements.add(createAchievement("age.less.100", "Coraz starszy...", "Spędziłeś 100 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.100", "Młodzieniec", "Spędziłeś 100 godzin w grze",
 				Achievement.EASY_BASE_SCORE, true,
 												new AgeGreaterThanCondition(5999)));
-		ageAchievements.add(createAchievement("age.less.250", "To już tyle?", "Spędziłeś 250 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.250", "Tyle Czasu Spędzonego przy Ognisku", "Spędziłeś 250 godzin w grze",
 				Achievement.EASY_BASE_SCORE, true,
 												new AgeGreaterThanCondition(14999)));
-		ageAchievements.add(createAchievement("age.less.500", "Kiedy to mineło...", "Spędziłeś 500 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.500", "Kiedy to Mineło", "Spędziłeś 500 godzin w grze",
 				Achievement.MEDIUM_BASE_SCORE, true,
 												new AgeGreaterThanCondition(29999)));
-		ageAchievements.add(createAchievement("age.less.1000", "Tysiąc godzin", "Spędziłeś 1 000 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.1000", "Dorosłość", "Spędziłeś 1 000 godzin w grze",
 				Achievement.MEDIUM_BASE_SCORE, true,
 												new AgeGreaterThanCondition(59999)));
-		ageAchievements.add(createAchievement("age.less.2500", "Coo?!?", "Spędziłeś 2 500 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.2500", "Mały Staruszek", "Spędziłeś 2 500 godzin w grze",
 				Achievement.HARD_BASE_SCORE, true,
 												new AgeGreaterThanCondition(149999)));
-		ageAchievements.add(createAchievement("age.less.5000", "Który mamy rok?", "Spędziłeś 5 000 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.5000", "Złodziej Czasu", "Spędziłeś 5 000 godzin w grze",
 				Achievement.HARD_BASE_SCORE, true,
 												new AgeGreaterThanCondition(299999)));
-		ageAchievements.add(createAchievement("age.less.10000", "Czy już zostałem legendą?", "Spędziłeś 10 000 godzin w grze",
+		ageAchievements.add(createAchievement("age.less.10000", "Który to już Rok", "Spędziłeś 10 000 godzin w grze",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 												new AgeGreaterThanCondition(599999)));
-		ageAchievements.add(createAchievement("age.less.20000", "Prawdziwa legenda w grze!", "Spędziłeś ponad 20 000 godzin w grze!",
+		ageAchievements.add(createAchievement("age.less.20000", "Legenda w Grze", "Spędziłeś ponad 20 000 godzin w grze!",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 												new AgeGreaterThanCondition(1199999)));
 		return ageAchievements;

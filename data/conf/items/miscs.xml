@@ -410,6 +410,26 @@
 		</equipable>
 	</item>
 
+	<item name="futro">
+		<type class="misc" subclass="pelt" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="skórzana nić">
 		<type class="misc" subclass="leather_thread" tileid="-1"/>
 		<description>Oto pasmo wytrzymałej skórzanej nici.</description>

@@ -23,53 +23,53 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		Collection<Achievement> list = new LinkedList<Achievement>();
 		//All outside zone achievements
-		list.add(createAchievement("zone.outside.semos", "Młodszy odkrywca", "Odwiedził wszystkie obszary w regionie Semos",
+		list.add(createAchievement("zone.outside.semos", "Młodszy Odkrywca", "Odwiedził wszystkie obszary w regionie Semos",
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("semos", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.ados", "Odkrywca wielkich miast", "Odwiedził wszystkie obszary w regionie Ados",
+		list.add(createAchievement("zone.outside.ados", "Odkrywca Wielkich Miast", "Odwiedził wszystkie obszary w regionie Ados",
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("ados", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.fado", "Na południe", "Odwiedził wszystkie obszary w regionie Fado",
+		list.add(createAchievement("zone.outside.fado", "Na Południe", "Odwiedził wszystkie obszary w regionie Fado",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("fado", Boolean.TRUE, Boolean.TRUE)));
 		list.add(createAchievement("zone.outside.orril", "Harcerz", "Odwiedził wszystkie obszary w regionie Orril",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("orril", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.amazon", "Odkrywca dżungli", "Odwiedził wszystkie obszary w regionie Amazon",
+		list.add(createAchievement("zone.outside.amazon", "Odkrywca Dżungli", "Odwiedził wszystkie obszary w regionie Amazon",
 									Achievement.HARD_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("amazon", Boolean.TRUE, Boolean.TRUE)));
 		list.add(createAchievement("zone.outside.athor", "Turysta", "Odwiedził wszystkie obszary w regionie Athor",
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("athor", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.kikareukin", "Podniebna wieża", "Odwiedził wszystkie obszary w regionie Kikareukin",
+		list.add(createAchievement("zone.outside.kikareukin", "Podniebna Wieża", "Odwiedził wszystkie obszary w regionie Kikareukin",
 									Achievement.HARD_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("kikareukin", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.deniran", "Człowiek z zachodu", "Odwiedził wszystkie obszary w regionie Deniran",
+		list.add(createAchievement("zone.outside.deniran", "Człowiek z Zachodu", "Odwiedził wszystkie obszary w regionie Deniran",
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("deniran", true, true)));
 
-		list.add(createAchievement("zone.outside.krakow", "Królewskie miasto", "Odwiedził wszystkie obszary w regionie Kraków",
+		list.add(createAchievement("zone.outside.krakow", "Królewskie Miasto", "Odwiedził wszystkie obszary w regionie Kraków",
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("krakow", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.zakopane", "Zimowa kraina", "Odwiedził wszystkie obszary w regionie Zakopane",
+		list.add(createAchievement("zone.outside.zakopane", "Zimowa Kraina", "Odwiedził wszystkie obszary w regionie Zakopane",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("zakopane", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.gdansk", "Nadmorska kraina", "Odwiedził wszystkie obszary w regionie Gdańsk",
+		list.add(createAchievement("zone.outside.gdansk", "Nadmorska Kraina", "Odwiedził wszystkie obszary w regionie Gdańsk",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("gdansk", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.wieliczka", "Kraina soli", "Odwiedził wszystkie obszary w regionie Wieliczka",
+		list.add(createAchievement("zone.outside.wieliczka", "Kraina Soli", "Odwiedził wszystkie obszary w regionie Wieliczka",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("wieliczka", Boolean.TRUE, Boolean.TRUE)));
 		list.add(createAchievement("zone.outside.tatry", "Góral", "Odwiedził wszystkie obszary w regionie Tatry",
 									Achievement.HARD_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("tatry", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.desert", "Wszędzie piasek?!", "Odwiedził wszystkie obszary w regionie pustynnym",
+		list.add(createAchievement("zone.outside.desert", "Piasek jest Wszędzie", "Odwiedził wszystkie obszary w regionie pustynnym",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("desert", Boolean.TRUE, Boolean.TRUE)));
 		list.add(createAchievement("zone.outside.koscielisko", "Zwiedzacz", "Odwiedził wszystkie obszary w regionie Kościelisko",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("koscielisko", Boolean.TRUE, Boolean.TRUE)));
-		list.add(createAchievement("zone.outside.dragonland", "Smocza kraina", "Odwiedził wszystkie obszary smoczej krainy",
+		list.add(createAchievement("zone.outside.dragonland", "Smocza Kraina", "Odwiedził wszystkie obszary smoczej krainy",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesCondition("0_dragon_land_s", "0_dragon_land_n")));
 
@@ -82,11 +82,11 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 												"int_fado_bank", "int_magic_bank", "int_ados_bank", "int_deniran_bank_blue_roof", "int_zakopane_bank_0",
 												"int_krakow_bank_0")));
 
-		list.add(createAchievement("zone.special.afterlife", "Widziałem światło", "Poznał życie pozagrobowe",
+		list.add(createAchievement("zone.special.afterlife", "Widziałem Światło", "Poznał życie pozagrobowe",
 									Achievement.EASY_BASE_SCORE, true,
 									new PlayerVisitedZonesCondition("int_afterlife")));
 
-		list.add(createAchievement("zone.special.allvisited", "Widziałem już wszystko", "Odwiedził niebo, piekło, chmury oraz więzienie",
+		list.add(createAchievement("zone.special.allvisited", "Wszystko już Widziałem", "Odwiedził niebo, piekło, chmury oraz więzienie",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesCondition("int_afterlife", "hell", "int_koscielisko_jail", "7_kikareukin_clouds")));
 

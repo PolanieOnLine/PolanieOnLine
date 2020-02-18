@@ -1013,6 +1013,7 @@
 		<respawn value="1220"/>
 		<corpse name="animal"/>
 		<drops>
+			<item value="futro" quantity="[1,1]" probability="10.0"/>
 			<item value="pierścień spokoju" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>

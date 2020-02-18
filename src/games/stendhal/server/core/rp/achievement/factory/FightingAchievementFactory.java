@@ -65,17 +65,17 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> fightingAchievements = new LinkedList<Achievement>();
-		fightingAchievements.add(createAchievement("fight.general.rats", "Łowca szczurów", "Zabił 100 szczurów", Achievement.EASY_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.rats", "Łowca Szczurów", "Zabił 100 szczurów", Achievement.EASY_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition("szczur", 100)));
 		fightingAchievements.add(createAchievement("fight.general.exterminator", "Eksterminator", "Zabił po 10 szczurów z każdego rodzaju", Achievement.MEDIUM_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition(10, "szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur", "szczur olbrzymi", "człekoszczur", "człekoszczurzyca", "archiszczur")));
-		fightingAchievements.add(createAchievement("fight.general.deer", "Łowca jeleni", "Zabij 25 jeleni", Achievement.EASY_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.deer", "Łowca Jeleni", "Zabij 25 jeleni", Achievement.EASY_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition("jeleń", 25)));
-		fightingAchievements.add(createAchievement("fight.general.boars", "Łowca dzików", "Zabij 50 dzików", Achievement.EASY_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.boars", "Łowca Dzików", "Zabij 50 dzików", Achievement.EASY_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition("dzik", 50)));
-		fightingAchievements.add(createAchievement("fight.general.bears", "Łowca niedźwiedzi", "Zabij 25 niedźwiedzi grizli, 25 niedźwiedzi i 25 misi", Achievement.EASY_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.bears", "Łowca Niedźwiedzi", "Zabij 25 niedźwiedzi grizli, 25 niedźwiedzi i 25 misi", Achievement.EASY_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition(25, "niedźwiedź", "niedźwiedź grizli", "miś")));
-		fightingAchievements.add(createAchievement("fight.general.foxes", "Łowca lisic", "Zabij 20 lisic", Achievement.EASY_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.foxes", "Łowca Lisic", "Zabij 20 lisic", Achievement.EASY_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition("lisica", 20)));
 		fightingAchievements.add(createAchievement("fight.general.safari", "Safari", "Zabij 30 tygrysów, 30 lwów i 50 słoni", Achievement.EASY_BASE_SCORE, true,
 													new AndCondition(
@@ -87,17 +87,17 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 													new PlayerHasKilledNumberOfCreaturesCondition(10, "drzewiec", "drzewcowa", "uschły drzewiec")));
 		fightingAchievements.add(createAchievement("fight.special.rare", "Kłusownik", "Zabił każdego rzadkiego potwora", Achievement.HARD_BASE_SCORE, true,
 				new KilledRareCreatureCondition()));
-		fightingAchievements.add(createAchievement("fight.general.dragonsslayer", "Pogroma smoków", "Zabił conajmniej 1 smoka każdego rodzaju", Achievement.HARD_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.dragonsslayer", "Pogroma Smoków", "Zabił conajmniej 1 smoka każdego rodzaju", Achievement.HARD_BASE_SCORE, true,
 													new PlayerHasKilledNumberOfCreaturesCondition(1, "szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok", "czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny", "dwugłowy zielony smok", "dwugłowy czerwony smok", "dwugłowy niebieski smok", "dwugłowy czarny smok", "dwugłowy lodowy smok", "lodowy smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski")));
-		fightingAchievements.add(createAchievement("fight.general.angels", "Diabeł wcielony", "Zabił conajmniej 1 aniołka, anioła, archanioła i serafina", Achievement.HARD_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.angels", "Diabeł Wcielony", "Zabił conajmniej 1 aniołka, anioła, archanioła i serafina", Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(1, "aniołek", "anioł", "archanioł", "serafin")));
-		fightingAchievements.add(createAchievement("fight.general.darkangels", "Łowca mrocznych aniołów", "Zabił conajmniej 1 upadłego anioła, szkielet anioła, anioła ciemność, archanioła ciemności i azazela", Achievement.HARD_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.darkangels", "Łowca Mrocznych Aniołów", "Zabił conajmniej 1 upadłego anioła, szkielet anioła, anioła ciemność, archanioła ciemności i azazela", Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(1, "upadły anioł", "szkielet anioła", "anioł ciemności", "archanioł ciemności", "azazel")));
-		fightingAchievements.add(createAchievement("fight.general.deaths", "Władca śmierci", "Zabił conajmniej 1 śmierć, czarną śmierć, złotą śmierć, kostuchę, kostuchę różową, kostuchę wielką, kostuchę różową wielką i kostuchę złotą wielką", Achievement.HARD_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.general.deaths", "Władca Śmierci", "Zabił conajmniej 1 śmierć, czarną śmierć, złotą śmierć, kostuchę, kostuchę różową, kostuchę wielką, kostuchę różową wielką i kostuchę złotą wielką", Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(1, "śmierć", "czarna śmierć", "złota śmierć", "kostucha", "kostucha różowa", "kostucha wielka", "kostucha różowa wielka", "kostucha złota wielka")));
 		fightingAchievements.add(createAchievement("fight.special.all", "Legenda", "Zabił sam wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSoloAllCreaturesCondition()));
-		fightingAchievements.add(createAchievement("fight.special.allshared", "Wojownik drużyny", "Zabił z drużyną wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
+		fightingAchievements.add(createAchievement("fight.special.allshared", "Wojownik Drużyny", "Zabił z drużyną wszystkie potwory", Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSharedAllCreaturesCondition()));
 
 		fightingAchievements.add(createAchievement(

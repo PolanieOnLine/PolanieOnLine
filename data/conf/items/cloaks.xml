@@ -615,9 +615,9 @@
 		</equipable>
 	</item>
 
-	<item name="futro">
+	<item name="futrzany płaszcz">
 		<type class="cloak" subclass="futro" tileid="-1"/>
-		<description>Oto futro, które ogrzeje cię w zimne dni.</description>
+		<description>Oto futrzany płaszcz, który ogrzeje cię w zimne dni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="4"/>

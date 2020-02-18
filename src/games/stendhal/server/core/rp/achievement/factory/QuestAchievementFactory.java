@@ -61,13 +61,13 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.ADOS_CITY)));
 		
 		// complete nearly all the quests in the game?
-		questAchievements.add(createAchievement("quest.count.50", "Pierwsze zlecenia","Ukończyl conajmniej 50 zadań",
+		questAchievements.add(createAchievement("quest.count.50", "Pierwsze Zlecenia","Ukończyl conajmniej 50 zadań",
 				Achievement.EASY_BASE_SCORE, true, new QuestCountCompletedCondition(50)));
-		questAchievements.add(createAchievement("quest.count.100", "Duuuuuużo ukończonych zadań","Ukończyl conajmniej 100 zadań",
+		questAchievements.add(createAchievement("quest.count.100", "Duuuuuużo Ukończonych Zadań","Ukończyl conajmniej 100 zadań",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestCountCompletedCondition(100)));
-		questAchievements.add(createAchievement("quest.count.150", "Jeszcze więcej zadań?","Ukończyl conajmniej 150 zadań",
+		questAchievements.add(createAchievement("quest.count.150", "Jeszcze Więcej Zadań?","Ukończyl conajmniej 150 zadań",
 				Achievement.HARD_BASE_SCORE, true, new QuestCountCompletedCondition(150)));
-		questAchievements.add(createAchievement("quest.count.200", "Pogromca zadań","Ukończyl conajmniej 200 zadań",
+		questAchievements.add(createAchievement("quest.count.200", "Pogromca Zadań","Ukończyl conajmniej 200 zadań",
 				Achievement.LEGENDARY_BASE_SCORE, true, new QuestCountCompletedCondition(200)));
 
 		return questAchievements;

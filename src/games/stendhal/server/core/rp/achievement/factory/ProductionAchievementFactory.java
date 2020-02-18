@@ -55,7 +55,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 
 		// soups and koboldish torcibud are made using quest code so we add extra conditions for those
 		// at time of writing, the other drinks are fierywater, tea, pina colada, and mega potion (which we may remove)
-		achievements.add(createAchievement("production.class.drink", "Spragniony pracownik", "Zlecił wszystkie rodzaje napoi dostępne u kucharzy w Faiumoni",
+		achievements.add(createAchievement("production.class.drink", "Spragniony Pracownik", "Zlecił wszystkie rodzaje napoi dostępne u kucharzy w Faiumoni",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						new PlayerProducedNumberOfItemsCondition(1, drinks),

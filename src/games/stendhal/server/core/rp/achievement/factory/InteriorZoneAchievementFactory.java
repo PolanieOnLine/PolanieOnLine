@@ -26,10 +26,10 @@ public class InteriorZoneAchievementFactory extends AbstractAchievementFactory {
 		list.add(createAchievement("zone.interior.semos", "Domownik", "Odwiedził wszystkie pomieszczenia w regionie Semos",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("semos", Boolean.FALSE, Boolean.FALSE)));
-		list.add(createAchievement("zone.interior.nalwor", "Gość elfów", "Odwiedził wszystkie pomieszczenia w regionie Nalwor",
+		list.add(createAchievement("zone.interior.nalwor", "Gość Elfów", "Odwiedził wszystkie pomieszczenia w regionie Nalwor",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("nalwor", Boolean.FALSE, Boolean.FALSE)));
-		list.add(createAchievement("zone.interior.ados", "Gość centrum", "Odwiedził wszystkie pomieszczenia w regionie Ados",
+		list.add(createAchievement("zone.interior.ados", "Gość Centrum", "Odwiedził wszystkie pomieszczenia w regionie Ados",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("ados", Boolean.FALSE, Boolean.FALSE)));
 		list.add(createAchievement("zone.interior.wofolcity", "Miasto Kobold", "Odwiedził wszystkie pomieszczenia w regionie Wo'fol",
@@ -38,7 +38,7 @@ public class InteriorZoneAchievementFactory extends AbstractAchievementFactory {
 		list.add(createAchievement("zone.interior.magiccity", "Magiczne Miasto", "Odwiedził wszystkie pomieszczenia w podziemnym mieście Magic",
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("magic city", Boolean.FALSE, Boolean.FALSE)));
-		list.add(createAchievement("zone.interior.deniran", "Samotna kraina", "Odwiedził wszystkie pomieszczenia w regionie Deniran",
+		list.add(createAchievement("zone.interior.deniran", "Samotna Kraina", "Odwiedził wszystkie pomieszczenia w regionie Deniran",
 									Achievement.EASY_BASE_SCORE, false,
 									new PlayerVisitedZonesInRegionCondition("deniran", false, false)));
 

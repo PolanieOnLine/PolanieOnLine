@@ -38,7 +38,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> weightAchievements = new LinkedList<Achievement>();
-		weightAchievements.add(createAchievement("weight.sheep.100", "Wypasiona owca", "Wypasił owcę do 100 wagi",
+		weightAchievements.add(createAchievement("weight.sheep.100", "Wypasiona Owca", "Wypasił owcę do 100 wagi",
 				Achievement.EASY_BASE_SCORE, true, 
 					new ChatCondition() {
 						@Override
@@ -51,7 +51,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 							return weight <= 0;
 						}
 					}));
-		weightAchievements.add(createAchievement("weight.goat.100", "Wypasiona koza", "Wypasił kozę do 100 wagi",
+		weightAchievements.add(createAchievement("weight.goat.100", "Wypasiona Koza", "Wypasił kozę do 100 wagi",
 				Achievement.EASY_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
@@ -64,7 +64,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 							return weight <= 0;
 						}
 					}));
-		weightAchievements.add(createAchievement("weight.pet.100", "Duże zwierzątko", "Zwierzątko urosło do 100 wagi",
+		weightAchievements.add(createAchievement("weight.pet.100", "Duże Zwierzątko", "Zwierzątko urosło do 100 wagi",
 				Achievement.EASY_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
