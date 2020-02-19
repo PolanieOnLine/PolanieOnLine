@@ -11,6 +11,7 @@ Changelog
 	- pierścień imperialny
 	- sztabka platyny
 	- złoże platyny
+	- futro
 	- skórzana nić
 	- obrotowy nóżyk
 	- magiczne spodnie płytowe
@@ -56,18 +57,25 @@ Changelog
 	- "Imperialistyczny Żołnierz"
 - Dodano nowe zadania:
 	- "Rogi jednorożca dla Zelana"
+- Zmieniono nazwy przedmiotom:
+	- "elficki kapelusz" -> "kapelusz elficki"
+	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"
+- NPC Lupos skupuje kapelusz elficki
 
 *kod*
 - Dodano wsparcie języka Lua
 - Dodano wsparcie dla portali schodów w kafelkach z ciągłym ruchem
 - Cień wroga/stwora można ustawić za pomocą wartości „shadow” pod znacznikiem „type”
 - Elementy z atrybutem „active_idle” będą cyklicznie odtwarzać animacje, nawet jeśli zostaną zatrzymane
+- Można wykonać akcję „/removedetail”, aby ręcznie usunąć warstwę szczegółów z postaci
+- Minimapa rozpoznaje drzwi jako portal
 
 *naprawiono błędy*
 - Naprawiono drzwi & drzwi zamknięte, które nie obsługują ciągłego ruchu
 - Naprawiono niemożność ukończenia zadania "Pułapki dla Klaasa", gdy aktywowano zadanie "Pierścień Antyjadowy"
-- Naprawiony niemożność wejścia do aptekarza jeśli zadanie "Pułapki dla Klaasa" zostało wznowione
-- Usunięto wiele wiadomości o tym, że nie jest już zszokowany
+- Naprawiono niemożność wejścia do aptekarza jeśli zadanie "Pułapki dla Klaasa" zostało wznowione
+- Naprawiono animowanie się pierścieni pod nadaną klasą "ring"
+- Usunięto wiele wiadomości o tym, że nie jest się już zszokowanym
 
 
 1.09.5
