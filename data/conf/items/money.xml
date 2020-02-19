@@ -20,4 +20,68 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<!-- START: Nowe rodzaje monet -->
+	<!-- 
+	<item name="miedziaki">
+		<type class="monety" subclass="copper" tileid="-1"/>
+		<description>Oto miedziaki. Podstawowy środek płatniczy najniższych klas społecznych.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="money"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="talary">
+		<type class="monety" subclass="silver" tileid="-1"/>
+		<description>Oto srebrne talary. Podstawowy środek płatniczy średnich klas społecznych.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="100"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="money"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="dukaty">
+		<type class="monety" subclass="gold" tileid="-1"/>
+		<description>Oto złote dukaty. Środek płatniczy najwyżych klas społecznych.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="money"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+	-->
+	<!-- END: Nowe rodzaje monet -->
 </items>
