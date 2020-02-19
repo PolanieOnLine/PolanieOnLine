@@ -5,8 +5,8 @@
 	<!-- START: cyclops -->
 
 	<creature name="cyklop">
-		<type class="stendhal/giant" subclass="cyclops" tileid="giant.png:0"/>
-		<description>Widzisz cyklopa. On widzi cię nieco gorzej, bo ma jedno oko.</description>
+		<type class="stendhal/giant" subclass="cyclops" tileid="troll.png:3"/>
+		<description>Oto cyklop. Widzi cię on nieco gorzej, bo ma jedno oko.</description>
 		<attributes>
 			<atk value="125"/>
 			<def value="26"/>

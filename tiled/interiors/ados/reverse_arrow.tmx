@@ -1,53 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="21" height="21" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="ground_2.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/ground/ground_2.png" trans="ffffff"/>
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="21" height="21" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="1">
+ <tileset firstgid="1" name="ground_2.png" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/ground/ground_2.png" trans="ffffff" width="128" height="32"/>
  </tileset>
- <tileset firstgid="5" name="grey_skull.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/ground/indoor/grey_skull.png" trans="ff00ff"/>
+ <tileset firstgid="5" name="grey_skull.png" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/ground/indoor/grey_skull.png" trans="ff00ff" width="128" height="64"/>
  </tileset>
- <tileset firstgid="13" name="int_wall_pale.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_pale.png" trans="ff00ff"/>
+ <tileset firstgid="13" name="int_wall_pale.png" tilewidth="32" tileheight="32" tilecount="16" columns="2">
+  <image source="../../tileset/building/wall/int_wall_pale.png" trans="ff00ff" width="64" height="256"/>
  </tileset>
- <tileset firstgid="29" name="int_wall_purple.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/wall/int_wall_purple.png" trans="ff00ff"/>
+ <tileset firstgid="29" name="int_wall_purple.png" tilewidth="32" tileheight="32" tilecount="20" columns="2">
+  <image source="../../tileset/building/wall/int_wall_purple.png" trans="ff00ff" width="64" height="320"/>
  </tileset>
- <tileset firstgid="49" name="pale_red_ns.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/building/entrance/pale_red_ns.png" trans="ff00ff"/>
+ <tileset firstgid="49" name="pale_red_ns.png" tilewidth="32" tileheight="32" tilecount="36" columns="9">
+  <image source="../../tileset/building/entrance/pale_red_ns.png" trans="ff00ff" width="288" height="128"/>
  </tileset>
- <tileset firstgid="85" name="collision.png" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+ <tileset firstgid="85" name="collision.png" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <layer name="0_floor" width="21" height="21">
+ <layer id="1" name="0_floor" width="21" height="21">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNhYGBgGcVUx6xUwKNmjpo5auaomYPdzMGOAWi5AffkBgAA
+   H4sIAAAAAAAECmNhYGBgGcVUDwNWYJhSitHjhVLzQPpHzUSEwWh4UpZGR9PSaFpCTwODkQ8AaLkB9+QGAAA=
   </data>
  </layer>
- <layer name="1_terrain" width="21" height="21">
+ <layer id="2" name="1_terrain" width="21" height="21">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCoYnAAD4jkAx5AYAAA==
+   H4sIAAAAAAAECmNgGAWjITAaAqMhMBoCoyEwPEMAAPiOQDHkBgAA
   </data>
  </layer>
- <layer name="2_object" width="21" height="21">
+ <layer id="3" name="2_object" width="21" height="21">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGFpAAoj5cGBPIPYCYm88asSxmCkAxBpArIIFBwFxMBCH4JBXB2J+HGYqkelH
-xVEzR80cNXPUTCBWA2JlHNgIj5wqDjPFgJgXB7YCYmsgtsGjRpRMPw4kAAAlzTvQ5AYAAA==
+   H4sIAAAAAAAECmNgGFpAAuhcPhzYEyjuBcTeOORB+sSBGB0IAAU0gFgFCw4CigUDcQgWOZB6dSDmB2J0ADJTCV2QSL4iUN2omaiBNRqeqOFBLG80LWGG1FBKS2pA5ytjwSZAMVMgNsMiB1KvCsTYyhAxoDgvDmwFFLcGYhsc8iB9okA81AAAcK6hluQGAAA=
   </data>
  </layer>
- <layer name="objects" width="21" height="21">
+ <layer id="4" name="objects" width="21" height="21">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCoYnAAD4jkAx5AYAAA==
+   H4sIAAAAAAAECmNgGAWjITAaAqMhMBoCoyEwPEMAAPiOQDHkBgAA
   </data>
  </layer>
- <layer name="collision" width="21" height="21" opacity="0.29">
+ <layer id="5" name="collision" width="21" height="21" opacity="0.29">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAAtlYGAIHcU0w+SAUTNHzRw1c9RMYuyiVjk1nDEA4XWG0eQGAAA=
+   H4sIAAAAAAAECgtlYGAIHcU0CwNg0JIMCMUHyQYCNYyaiTsMRsOTtBAYTUv0TUu4whsUa7jkRsURYQMA4XWG0eQGAAA=
   </data>
  </layer>
- <layer name="protection" width="21" height="21" opacity="0.47">
+ <layer id="6" name="protection" width="21" height="21" opacity="0.47">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWjYBSMglEwCoYnAAD4jkAx5AYAAA==
+   H4sIAAAAAAAECmNgGAWjITAaAqMhMBoCoyEwPEMAAPiOQDHkBgAA
   </data>
  </layer>
 </map>

@@ -17,6 +17,7 @@ import static games.stendhal.common.constants.Actions.X;
 import static games.stendhal.common.constants.Actions.Y;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
+import games.stendhal.server.core.config.annotations.ServerModeUtil;
 //import games.stendhal.server.core.config.annotations.ServerModeUtil;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -33,6 +34,7 @@ import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
 import games.stendhal.server.entity.creature.RaidCreature;
 import games.stendhal.server.entity.creature.Sheep;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.block.Block;
 import games.stendhal.server.entity.mapstuff.portal.Gate;
 import games.stendhal.server.entity.player.Player;
@@ -157,15 +159,22 @@ public class SummonAction extends AdministrationAction {
 							 final Entity entityToBePlaced;
 							if (manager.isCreature(type)) {
 								entityToBePlaced = new RaidCreature((Creature) entity);
-								/*if (((Creature) entity).isRare() && !ServerModeUtil.isTestServer()) {
+								if (((Creature) entity).isRare() && !ServerModeUtil.isTestServer()) {
 									// Rare creatures should not be summoned even in raids
 									// Require parameter -Dstendhal.testserver=junk
-									error("Potwory oznaczone jako rare mogą być przywoływane.");
+									error("Rzadkie stworzenia nie mogą być wzywane.");
 									return;
-								}*/
+								}
 							} else {
 								entityToBePlaced = entity;
 							}
+
+							if (entityToBePlaced instanceof StackableItem) {
+								if (action.has("quantity")) {
+									((StackableItem) entityToBePlaced).setQuantity(action.getInt("quantity"));
+								}
+							}
+
 							StendhalRPAction.placeat(zone, entityToBePlaced, x, y);
 							new GameEvent(player.getName(), SUMMON, type).raise();
 							// We found what we are searching for.

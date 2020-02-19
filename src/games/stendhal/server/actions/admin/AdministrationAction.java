@@ -47,6 +47,7 @@ public abstract class AdministrationAction implements ActionListener {
 		GagAction.register();
 		GhostModeAction.register();
 		InspectAction.register();
+		InspectQuestAction.register();
 		InvisibleAction.register();
 		JailAction.register();
 		JailReportAction.register();

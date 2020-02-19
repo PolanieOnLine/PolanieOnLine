@@ -17,6 +17,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.CloneManager;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -31,6 +32,9 @@ import java.util.Map;
  */
 public class SeamstressNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
+
+	// clone to be used in twilight zone
+	private static SpeakerNPC clone;
 
 	/**
 	 * Configure a zone.
@@ -72,5 +76,18 @@ public class SeamstressNPC implements ZoneConfigurator {
 		seamstress.initHP(100);
 		seamstress.setDescription("Oto Ida, jest znaną szwaczką w przemyśle stoczniowym. Ale może też tobie pomóc.");
 		zone.add(seamstress);
+
+		// initialize clone to be placed in twilight zone
+		clone = CloneManager.getInstance().clone(seamstress, "twilight_ida");
+	}
+
+	/**
+	 * Retrieves the cloned instance.
+	 *
+	 * @return
+	 * 		SpeakerNPC
+	 */
+	public static SpeakerNPC getClone() {
+		return clone;
 	}
 }

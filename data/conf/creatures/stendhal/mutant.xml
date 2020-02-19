@@ -159,7 +159,7 @@
 		</ai>
 	</creature>
 
-	<creature name="trujący grzyb">
+	<creature name="trujący grzybek">
 		<type class="stendhal/mutant" subclass="poison_shroom_small" tileid="mutant.png:6"/>
 		<description></description>
 		<attributes>
@@ -174,7 +174,8 @@
 		<respawn value="1800"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="nakrapiane jajo" quantity="[1,1]" probability="1.0"/>
+			<item value="trucizna" quantity="[1,1]" probability="25.0"/>
+			<item value="nakrapiane jajo" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<ai>
 			<profile name="brave"/>

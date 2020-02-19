@@ -56,7 +56,7 @@ class DestroyAction extends AdministrationAction {
 		String name = "";
 		 
 		if (inspected.has(NAME)) {
-                      name = inspected.get(NAME);
+			name = inspected.get(NAME);
 		} 
 		
 		if (inspected.isContained()) {
@@ -87,9 +87,9 @@ class DestroyAction extends AdministrationAction {
 				if (slot instanceof Entity) {
 					((Entity) slot).notifyWorldAboutChanges();
 				}
-				player.sendPrivateText("Usunięto zawartość " + clazz + " " + name + " o ID " + objectID + " ze slota " + slotname);
+				player.sendPrivateText("Usunięto przedmiot #'" + name + "' o ID #" + objectID + " ze slota #" + slotname + ".");
 			} else {
-				player.sendPrivateText("Nie można było usunąć zawartości " + clazz + " " + inspected + " o ID " + objectID + " ze slota " + slotname);
+				player.sendPrivateText("Nie można było usunąć zawartości #'" + inspected + "' o ID #" + objectID + " ze slota #" + slotname + ".");
 
 				// re-enable effects of slot activated item in case removal failed
 				if (inspected instanceof SlotActivatedItem) {
@@ -145,7 +145,7 @@ class DestroyAction extends AdministrationAction {
 
 			new GameEvent(player.getName(), "removed",  name + " " + clazz, zone.getName(), Integer.toString(inspected.getX()), Integer.toString(inspected.getY())).raise();
 
-			player.sendPrivateText("Usunięto " + clazz + " " + name + " o ID " + action.get(TARGET));
+			player.sendPrivateText("Usunięto przedmiot #'" + name + "' o ID " + action.get(TARGET) + ".");
 		}
 	}
 }
