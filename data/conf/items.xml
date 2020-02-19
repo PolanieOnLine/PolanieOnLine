@@ -35,7 +35,6 @@
 	<group uri="items/tokens.xml"/>
 	<group uri="items/tools.xml"/>
 
-	<group uri="items/animationrings.xml"/>
 	<group uri="items/gloves.xml"/>
 	<group uri="items/magia.xml"/>
 	<group uri="items/necklaces.xml"/>
