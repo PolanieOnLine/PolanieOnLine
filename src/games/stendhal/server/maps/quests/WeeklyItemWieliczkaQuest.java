@@ -116,7 +116,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		items.put("zupa rybna",3);
 
 		// helmet
-		items.put("elficki kapelusz",1);
+		items.put("kapelusz elficki",1);
 		items.put("hełm nabijany ćwiekami",1);
 		items.put("hełm barbarzyńcy",1);
 		items.put("góralski kapelusz",1);

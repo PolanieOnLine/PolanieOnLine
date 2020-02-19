@@ -712,7 +712,7 @@
 			<item value="tarcza płytowa" quantity="[1,1]" probability="1.0"/>
 			<item value="spodnie elfickie" quantity="[1,1]" probability="0.05"/>
 			<item value="hełm elficki" quantity="[1,1]" probability="1.0" />
-			<item value="elficki kapelusz" quantity="[1,1]" probability="1.25" />
+			<item value="kapelusz elficki" quantity="[1,1]" probability="1.25" />
 			<item value="mały eliksir" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips>
@@ -866,7 +866,7 @@
 			<item value="katana" quantity="[1,1]" probability="5.0"/>
 			<item value="pałasz" quantity="[1,1]" probability="2.0"/>
 			<item value="hełm elficki" quantity="[1,1]" probability="2.0" />
-			<item value="elficki kapelusz" quantity="[1,1]" probability="2.5" />
+			<item value="kapelusz elficki" quantity="[1,1]" probability="2.5" />
 			<item value="różdżka" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,5]" probability="10.0"/>
 			<item value="mały eliksir" quantity="[1,2]" probability="30.5"/>
@@ -1020,7 +1020,7 @@
 			<item value="buty elfickie" quantity="[1,1]" probability="5.0"/>
 			<item value="spodnie elfickie" quantity="[1,1]" probability="5.0"/>
 			<item value="hełm elficki" quantity="[1,1]" probability="10.0" />
-			<item value="elficki kapelusz" quantity="[1,1]" probability="12" />
+			<item value="kapelusz elficki" quantity="[1,1]" probability="12" />
 			<item value="pas elficki" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia deszczu" quantity="[1,15]" probability="30.0"/>

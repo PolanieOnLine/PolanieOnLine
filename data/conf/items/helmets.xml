@@ -75,9 +75,9 @@
 		</equipable>
 	</item>
 
-	<item name="elficki kapelusz">
+	<item name="kapelusz elficki">
 		<type class="helmet" subclass="elvish_hat" tileid="-1"/>
-		<description>Oto elficki kapelusz. Elficki rzemieślnik zrobił z najsilniejszego liściastego materiału.</description>
+		<description>Oto kapelusz elficki. Elficki rzemieślnik zrobił z najsilniejszego liściastego materiału.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"></implementation>
 		<attributes>
 			<def value="3"/>
