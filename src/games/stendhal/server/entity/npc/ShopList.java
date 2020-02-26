@@ -41,6 +41,8 @@ public final class ShopList {
 		//AdenaNPC sprzedaje:
 		shops.add("adosfoodseller", "jabłko", 50);
 		shops.add("adosfoodseller", "marchew", 50);
+		shops.add("adosfoodseller", "oliwa z oliwek", 135);
+		shops.add("adosfoodseller", "ocet", 135);
 
 		//SiandraNPC (ados) kupuje:
 		shops.add("buyfood", "ser", 5);

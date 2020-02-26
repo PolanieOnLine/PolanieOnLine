@@ -19,9 +19,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.Direction;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.ExpressionMatcher;
+import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
@@ -173,6 +175,11 @@ public class SpeakerNPC extends PassiveNPC {
 	private boolean actingAlone=false;
 
 	/**
+	 * if set, determines direction entity will face while idle
+	 */
+	private Direction idleDirection = null;
+
+	/**
 	 * Creates a new SpeakerNPC.
 	 *
 	 * @param name
@@ -322,6 +329,26 @@ public class SpeakerNPC extends PassiveNPC {
 				setSpeed(getBaseSpeed());
 			}
 			setIdea(null);
+		}
+
+		// set facing direction
+		if (idleDirection != null && !hasPath() && engine.getCurrentState() == ConversationStates.IDLE) {
+			setDirection(idleDirection);
+		}
+	}
+
+	/**
+	 * Sets the direction the entity should face while idle (not moving
+	 * & not attending).
+	 *
+	 * @param dir
+	 * 		Direction to face.
+	 */
+	public void setIdleDirection(final Direction dir) {
+		idleDirection = dir;
+
+		if (idleDirection != null && stopped()) {
+			setDirection(idleDirection);
 		}
 	}
 
@@ -965,5 +992,46 @@ public class SpeakerNPC extends PassiveNPC {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Retrieves string reply to trigger word.
+	 *
+	 * @param trigger
+	 * 		Word or phrase that triggers reply.
+	 * @param state
+	 * 		The conversation state the NPC is in when trigger is activated.
+	 * @param expressionType
+	 * @return
+	 * 		String reply or <code>null</code>.
+	 */
+	public String getReply(final String trigger, ConversationStates state, String expressionType) {
+		// default to attending
+		if (state == null) {
+			state = ConversationStates.ATTENDING;
+		}
+		if (expressionType == null) {
+			expressionType = ExpressionType.UNKNOWN;
+		}
+
+		for (final Transition tr: getTransitions()) {
+			if (tr.matches(state, new Expression(trigger, expressionType))) {
+				return tr.getReply();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieves string reply to trigger word when NPC is in attending state.
+	 *
+	 * @param trigger
+	 * 		Word or phrase that triggers reply.
+	 * @return
+	 * 		String reply or <code>null</code>.
+	 */
+	public String getReply(final String trigger) {
+		return getReply(trigger, ConversationStates.ATTENDING, ExpressionType.UNKNOWN);
 	}
 }
