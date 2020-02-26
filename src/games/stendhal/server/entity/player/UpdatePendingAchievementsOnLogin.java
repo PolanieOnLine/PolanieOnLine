@@ -53,12 +53,19 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 		Player player = command.getPlayer();
 
 		updateElfPrincessAchievement(player, command.getDetails("quest.special.elf_princess.0025"));
+		updateKillBlordroughsAchievement(player, command.getDetails("quest.special.kill_blordroughs.5"));
 		updateItemLoots(player, command.getDetails("item.set.black"));
 		updateItemLoots(player, command.getDetails("item.set.chaos"));
 		updateItemLoots(player, command.getDetails("item.set.shadow"));
 		updateItemLoots(player, command.getDetails("item.set.golden"));
 		updateItemLoots(player, command.getDetails("item.set.red"));
 		updateItemLoots(player, command.getDetails("item.set.mainio"));
+		updateItemLoots(player, command.getDetails("item.set.elvish"));
+		updateItemLoots(player, command.getDetails("item.set.mithril"));
+		updateItemLoots(player, command.getDetails("item.set.xeno"));
+		updateItemLoots(player, command.getDetails("item.set.goralskie"));
+		updateItemLoots(player, command.getDetails("item.set.dragon"));
+		updateItemLoots(player, command.getDetails("item.set.wampirze"));
 
 		// Could also check for reached achievements here. This is also checked on login but the order may vary due to the async access?
 
@@ -101,6 +108,37 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 				player.setQuest(QUEST_SLOT, 1, "1");
 				// the count was also not stored, so we just store the count we had in the table
 				player.setQuest(QUEST_SLOT, 2, "" + missingcount);
+			}
+		}
+	}
+
+	private static void updateKillBlordroughsAchievement(final Player player, final Map<String, Integer> details) {
+
+		// nothing to update
+		if (details == null) {
+			return;
+		}
+
+		String QUEST_SLOT = "kill_blordroughs";
+
+		// if player didn't start this quest yet, do nothing (shouldn't be details in this case but check anyway)
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return;
+		}
+
+		// param (key) should be "" for this one, all we need to know is the count
+		int missingCount = details.get("");
+
+		if (missingCount > 0) {
+			String slot = player.getQuest(QUEST_SLOT);
+			if (slot.indexOf(";completed=") < 0) {
+				player.setQuest(QUEST_SLOT, slot + ";completed=" + missingCount); 
+			} else {
+				String slotValue = slot.substring(slot.lastIndexOf('=') + 1);
+				if (MathHelper.parseIntDefault(slotValue, 0) < missingCount) {
+					player.setQuest(QUEST_SLOT, slot.substring(0, slot.lastIndexOf('=') + 1) + missingCount);
+
+				}
 			}
 		}
 	}

@@ -27,8 +27,7 @@ if game:setZone(zoneName) then
 		{63, 66},
 		{75, 66},
 	}
-	npcHelper:setPath(zelan, nodes)
-	zelan:setPosition(nodes[1][1], nodes[1][2])
+	npcHelper:setPathAndPosition(zelan, nodes, true)
 
 	-- NPC dialog
 	zelan:addGreeting()
@@ -38,7 +37,7 @@ if game:setZone(zoneName) then
 	game:add(zelan)
 
 	-- quest
-	local quest = simpleQuest:create("unicorn_horn_for_Zelan", "Rogi jednorożca dla Zelana", "Zelan")
+	local quest = simpleQuest:create("unicorn_horns_for_zelan", "Rogi jednorożca dla Zelana", "Zelan")
 	quest:setDescription("Zelan potrzebuje twojej pomocy przy zbieraniu rogów jednorożca.")
 	quest:setRequestReply("Cześć! Potrzebuję rogów jednorożca, żeby zrobić sztylety."
 		.. " Jest to naprawdę niebezpieczne w lasach otaczających Atlantydę. Jeśli jesteś odważny,"
