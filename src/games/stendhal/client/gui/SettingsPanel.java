@@ -38,6 +38,7 @@ import games.stendhal.client.actions.SlashAction;
 import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
+import games.stendhal.common.constants.Actions;
 
 /**
  * The panel where you can adjust your settings.
@@ -212,6 +213,8 @@ class SettingsPanel extends JButton {
 		item = createMenuItem("Aleja Sław", "halloffame");
 		column.addComponent(item);
 		item = createMenuItem("Dziennik Zadań", "travellog");
+		column.addComponent(item);
+		item = createMenuItem("Bestiariusz", Actions.BESTIARY);
 		column.addComponent(item);
 	}
 

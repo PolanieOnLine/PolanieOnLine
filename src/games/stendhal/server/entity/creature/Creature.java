@@ -693,10 +693,11 @@ public class Creature extends NPC {
 		}
 
 		for (final Item item : createDroppedItems(SingletonRepository.getEntityManager())) {
-			corpse.add(item);
-			item.setFromCorpse(true);
-			if (corpse.isFull()) {
-				break;
+			if (!corpse.isFull()) {
+				corpse.add(item);
+				item.setFromCorpse(true);
+			} else {
+				LOGGER.warn("Cannot add item to full corpse: " + item.getName());
 			}
 		}
 	}
@@ -846,12 +847,26 @@ public class Creature extends NPC {
 					continue;
 				}
 
+				final int quantity;
 				if (dropped.min == dropped.max) {
-					list.add(item);
+					quantity = dropped.min;
 				} else {
+					quantity = Rand.randUniform(dropped.max, dropped.min);
+				}
+
+				if (item instanceof StackableItem) {
 					final StackableItem stackItem = (StackableItem) item;
-					stackItem.setQuantity(Rand.randUniform(dropped.max, dropped.min));
+					stackItem.setQuantity(quantity);
 					list.add(stackItem);
+				} else {
+					for (int count = 0; count < quantity; count++) {
+						if (count == 0) {
+							list.add(item);
+						} else {
+							// additional items must be new instances
+							list.add(new Item(item));
+						}
+					}
 				}
 			}
 		}

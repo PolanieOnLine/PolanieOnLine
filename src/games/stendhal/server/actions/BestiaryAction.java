@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                     Copyright © 2020 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,34 +9,25 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.client.gui.imageviewer;
+package games.stendhal.server.actions;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import static games.stendhal.common.constants.Actions.BESTIARY;
 
-import javax.swing.JComponent;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.BestiaryEvent;
+import marauroa.common.game.RPAction;
+import marauroa.common.game.RPEvent;
 
-/**
- * an abstract base class for all ViewPanels
- *
- * @author hendrik
- */
-public abstract class ViewPanel extends JComponent {
+public class BestiaryAction implements ActionListener {
 
-	private static final long serialVersionUID = 7442185832293104642L;
-
-	/**
-	 * creates a new ViewPanel
-	 */
-	public ViewPanel() {
-		setLayout(new BorderLayout());
-		setOpaque(true);
+	public static void register() {
+		CommandCenter.register(BESTIARY, new BestiaryAction());
 	}
 
-	/**
-	 * prepares the view
-	 *
-	 * @param maxSize of the panel
-	 */
-	public abstract void prepareView(Dimension maxSize);
+	@Override
+	public void onAction(final Player player, final RPAction action) {
+		final RPEvent event = new BestiaryEvent(player);
+		player.addEvent(event);
+		player.notifyWorldAboutChanges();
+	}
 }

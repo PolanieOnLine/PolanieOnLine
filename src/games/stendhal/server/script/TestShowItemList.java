@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.item.Item;
@@ -46,8 +47,15 @@ public class TestShowItemList extends ScriptImpl {
 			itemList.add(prepareItem("skórzana zbroja", -100));
 			itemList.add(prepareItem("miecz lodowy", -10000));
 		} else {
+			final String shopName = args.get(0);
 			ShopList shops = SingletonRepository.getShopList();
-			Map<String, Integer> items = shops.get(args.get(0));
+			Map<String, Integer> items = shops.get(shopName);
+
+			if (items == null) {
+				admin.sendPrivateText(NotificationType.ERROR, "Nie znaleziono sklepu \"" + shopName + "\"");
+				return;
+			}
+
 			for (Map.Entry<String, Integer> entry : items.entrySet()) {
 				itemList.add(prepareItem(entry.getKey(), Integer.valueOf(entry.getValue())));
 			}
