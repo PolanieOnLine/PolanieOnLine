@@ -689,15 +689,15 @@
 		</equipable>
 	</item>
 
-	<item name="królewski sztylet">
+	<item name="sztylet królewski">
 		<type class="sword" subclass="royal_dagger" tileid="-1"/>
-		<description>Oto rzadki i cenny królewski sztylet. Może kraść życie tym, którym go dźgasz.</description>
+		<description>Oto rzadki i cenny sztylet królewski. Może kraść życie tym, którym go dźgasz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="5"/>
 			<rate value="1"/>
 			<lifesteal value="0.1"/>
-			<min_level value="200"/>
+			<min_level value="250"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="1000000"/>
@@ -1059,7 +1059,7 @@
 		<attributes>
 			<atk value="1"/>
 			<rate value="1"/>
-			<uses value="250"/>
+			<uses value="550"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
