@@ -12,6 +12,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -25,14 +31,6 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import marauroa.common.Pair;
 
 public class DiceGambling extends AbstractQuest {
@@ -161,11 +159,6 @@ public class DiceGambling extends AbstractQuest {
 	@Override
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.SEMOS_CITY;
 	}
 
 	@Override
