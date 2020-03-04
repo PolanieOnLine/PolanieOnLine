@@ -17,7 +17,7 @@ local grocer = nil
 
 local function addNPC()
 	grocer = npcHelper:createSpeakerNPC("Jimbo")
-	grocer:setOutfit("dress=5,head=2,mask=1")
+	grocer:setOutfit("dress=5,head=6,mask=1")
 	grocer:setOutfitColor("skin", SkinColor.DARK)
 	grocer:setOutfitColor("dress", 0x8b4513) -- saddle brown
 	grocer:setOutfitColor("head", 0x228b22) -- forest green

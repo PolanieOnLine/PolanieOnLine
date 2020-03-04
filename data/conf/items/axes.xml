@@ -286,6 +286,50 @@
 		</equipable>
 	</item>
 
+	<item name="złota kosa">
+		<type class="axe" subclass="golden_scythe" tileid="-1"/>
+		<description>Oto złota kosa. Może na niej trochę zarobisz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="47"/>
+			<rate value="5"/>
+			<min_level value="240"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="68590"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="kosa z mithrilu">
+		<type class="axe" subclass="mithril_scythe" tileid="-1"/>
+		<description>Oto rzadka kosa wykonana z mithrilu. Mieni się jasnym blaskiem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="54"/>
+			<rate value="4"/>
+			<min_level value="330"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="68590"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="sierp">
 		<type class="axe" subclass="sickle" tileid="-1"/>
 		<description>Oto sierp, użyteczne narzędzie dla każdego farmera.</description>

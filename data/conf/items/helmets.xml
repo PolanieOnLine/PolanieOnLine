@@ -542,9 +542,9 @@
 		</equipable>
 	</item>
 
-	<item name="królewski hełm">
+	<item name="hełm monarchistyczny">
 		<type class="helmet" subclass="royal_helmet" tileid="-1"/>
-		<description>Oto królewski hełm.</description>
+		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="23"/>

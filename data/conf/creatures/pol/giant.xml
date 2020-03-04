@@ -455,6 +455,7 @@
 			<item value="hełm z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="sztabka złota" quantity="[1,9]" probability="1.0"/>
 			<item value="kieł złotej kostuchy" quantity="[1,1]" probability="0.5"/>
+			<item value="złota kosa" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>

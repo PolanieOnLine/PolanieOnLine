@@ -882,7 +882,7 @@
 		<drops>
 			<item value="money" quantity="[100,300]" probability="70.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="królewski hełm" quantity="[1,1]" probability="0.03"/>
+			<item value="hełm monarchistyczny" quantity="[1,1]" probability="0.03"/>
 		</drops>
 		<equips>
 		</equips>
@@ -1092,7 +1092,7 @@
 			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="miecz dwuręczny" quantity="[1,1]" probability="0.1"/>
-			<item value="królewski płaszcz" quantity="[1,1]" probability="0.1"/>
+			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>

@@ -252,9 +252,9 @@
 		</equipable>
 	</item>
 
-	<item name="królewska zbroja">
+	<item name="zbroja monarchistyczna">
 		<type class="armor" subclass="royal_armor" tileid="-1"/>
-		<description>Oto królewska zbroja. Odpowiednia dla króla.</description>
+		<description>Oto zbroja monarchistyczna. Odpowiednia dla króla.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>

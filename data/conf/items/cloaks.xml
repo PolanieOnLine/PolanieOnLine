@@ -493,9 +493,9 @@
 		</equipable>
 	</item>
 
-	<item name="królewski płaszcz">
+	<item name="płaszcz monarchistyczny">
 		<type class="cloak" subclass="royal_cloak" tileid="-1"/>
-		<description>Oto królewski płaszcz. Będzie cię chronić przed potężnymi wrogami.</description>
+		<description>Oto płaszcz monarchistyczny. Będzie cię chronić przed potężnymi wrogami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="24"/>

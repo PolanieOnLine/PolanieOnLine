@@ -539,6 +539,7 @@
 			<item value="złoty płaszcz" quantity="[1,1]" probability="1.0"/>
 			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.5"/>
 			<item value="złote rękawice" quantity="[1,1]" probability="0.25"/>
+			<item value="złota kosa" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
