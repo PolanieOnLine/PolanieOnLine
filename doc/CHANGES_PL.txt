@@ -4,43 +4,27 @@ Changelog
 *świat*
 - Dodano nowe NPC:
 	- Zelan (Atlantyda)
+	- Jimbo (Deniran)
+- Dodano nowe zadania:
+	- "Rogi jednorożca dla Zelana"
 - Dodano nowe regiony/mapy:
 	- Atlantyda
-- Dodano nowe przedmioty: (8)
-	- pierścień spokoju
-	- pierścień imperialny
-	- sztabka platyny
-	- złoże platyny
-	- futro
-	- skórzana nić
-	- obrotowy nóżyk
-	- magiczne spodnie płytowe
-	- magiczne buty płytowe
+- Dodano nowe przedmioty: (11)
+	- pierścień spokoju, pierścień imperialny
+	- sztabka platyny, złoże platyny
+	- futro, skórzana nić, obrotowy nóżyk
+	- magiczne spodnie płytowe, magiczne buty płytowe
+	- złota kosa, kosa z mithrilu
 - Dodano nowe potwory: (23)
-	- słoń z rogami
-	- słoń musth
-	- mamut włochaty
-	- demon wody
-	- wodny skarabeusz
-	- mały skarabeusz
-	- trujący grzyb
-	- gnom gigant
-	- panna gnom gigant
-	- centaur słoneczny
-	- centaur lodowy
-	- król centaurów
-	- jednorożec biały
-	- jednorożec czarny
-	- jednorożec złoty
-	- mały pegaz
-	- pegaz brązowy
-	- pegaz kościsty
-	- pegaz hebanowy
-	- nietoperz olbrzymi
-	- nietoperz wampir olbrzymi
-	- niedźwiedź biały
-	- neo kraken
-- Dodano nowe osiągnięcia: (14)
+	- słoń z rogami, słoń musth, mamut włochaty
+	- demon wody, wodny skarabeusz, mały skarabeusz
+	- trujący grzybek, gnom gigant, panna gnom gigant
+	- centaur słoneczny, centaur lodowy, król centaurów
+	- jednorożec biały, jednorożec czarny, jednorożec złoty
+	- mały pegaz, pegaz brązowy, pegaz kościsty, pegaz hebanowy
+	- nietoperz olbrzymi, nietoperz wampir olbrzymi
+	- niedźwiedź biały, neo kraken
+- Dodano nowe osiągnięcia: (15)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -55,15 +39,14 @@ Changelog
 	- "Serenada Syren"
 	- "Imperialistyczny Sługus"
 	- "Imperialistyczny Żołnierz"
-- Dodano nowe zadania:
-	- "Rogi jednorożca dla Zelana"
+	- "Królewsko Obdarowany"
 - Zmieniono nazwy przedmiotom:
 	- "elficki kapelusz" -> "kapelusz elficki"
 	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"
 - NPC Lupos skupuje kapelusz elficki
 
 *kod*
-- Dodano wsparcie języka Lua
+- Dodano wsparcie dla języka Lua
 - Dodano wsparcie dla portali schodów w kafelkach z ciągłym ruchem
 - Cień wroga/stwora można ustawić za pomocą wartości „shadow” pod znacznikiem „type”
 - Elementy z atrybutem „active_idle” będą cyklicznie odtwarzać animacje, nawet jeśli zostaną zatrzymane
