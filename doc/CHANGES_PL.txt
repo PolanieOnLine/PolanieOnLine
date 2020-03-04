@@ -1,6 +1,10 @@
 Changelog
 ---------
 1.10
+*klient*
+- Dodano nowe grafiki przedmiotów/potworów/npc/gui
+- Poprawiono kolory kosy oraz pordzewiałej kosy
+
 *świat*
 - Dodano nowe NPC:
 	- Zelan (Atlantyda)
@@ -9,6 +13,7 @@ Changelog
 	- "Rogi jednorożca dla Zelana"
 - Dodano nowe regiony/mapy:
 	- Atlantyda
+	- -5 oraz -6 poziom jaskiń Deniran
 - Dodano nowe przedmioty: (11)
 	- pierścień spokoju, pierścień imperialny
 	- sztabka platyny, złoże platyny
