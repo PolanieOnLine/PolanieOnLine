@@ -145,7 +145,7 @@ class DestroyAction extends AdministrationAction {
 
 			new GameEvent(player.getName(), "removed",  name + " " + clazz, zone.getName(), Integer.toString(inspected.getX()), Integer.toString(inspected.getY())).raise();
 
-			player.sendPrivateText("Usunięto przedmiot #'" + name + "' o ID " + action.get(TARGET) + ".");
+			player.sendPrivateText("Usunięto #'" + name + "' o ID " + action.get(TARGET) + ".");
 		}
 	}
 }
