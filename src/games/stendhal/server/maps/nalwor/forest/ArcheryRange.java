@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.ConversationParser;
@@ -32,6 +34,7 @@ import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.mapstuff.area.FlyOverArea;
 import games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -67,8 +70,13 @@ import games.stendhal.server.util.TimeUtil;
 /**
  * TODO: create JUnit test
  * FIXME: should bows wear & break even if hit not successful?
+ * FIXME: (client) no sound for training targets when hit
  */
 public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListener {
+
+	/** logger instance */
+	private static Logger logger = Logger.getLogger(ArcheryRange.class);
+
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "archery_range";
 
@@ -125,10 +133,11 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		archeryZone = zone;
 		archeryZoneID = zone.getName();
 
- 		buildNPC();
+		buildNPC();
 		initShop();
 		initTraining();
 		initEntrance();
+		initBlockers();
 		addToQuestSystem();
 	}
 
@@ -175,7 +184,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 						+ " to jej tutaj nie znajdziesz! Znajdź sobie innego bezmyślnego frajera.",
 				null);
 
-		// player wants to buy items but does not have licencja na zabijanie
+		// player wants to buy items but does not have assassins id
 		npc.add(ConversationStates.ANY,
 				ConversationPhrases.OFFER_MESSAGES,
 				new NotCondition(new PlayerHasItemWithHimCondition("licencja na zabijanie")),
@@ -190,7 +199,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		shop.put("długi łuk", 1200);
 		shop.put("łuk treningowy", 4500);
 
-		// override seller bahaviour so that player must have licencja na zabijanie
+		// override seller bahaviour so that player must have assassins id
 		final SellerBehaviour seller = new SellerBehaviour(shop) {
 			@Override
 			public ChatCondition getTransactionCondition() {
@@ -208,8 +217,8 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		blackboard = new ShopSign("sellarcheryrange", "Sklep łuczniczy dla zabójców", "Sprzedawane są tu łuki i strzały:", true) {
 			@Override
 			public boolean onUsed(final RPEntity user) {
-				// Chester is protective, even of his blackboard if player doesn't have licencja na zabijanie
 				if (user.isEquipped("licencja na zabijanie")) {
+				// Chester is protective, even of his blackboard if player doesn't have assassins ID
 					List<Item> itemList = generateItemList(shop);
 					ShowItemListEvent event = new ShowItemListEvent(this.title, this.caption, itemList);
 					user.addEvent(event);
@@ -279,7 +288,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				"Jesteś już zbyt wyszkolony, by tu trenować. A teraz wynoś się ty leniwcu i walcz z potworami!",
 				null);
 
-		// player does not have an licencja na zabijanie
+		// player does not have an assassins id
 		npc.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
@@ -361,6 +370,19 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		archeryZone.add(new ArcheryRangeConditionAndActionPortal());
 	}
 
+	private void initBlockers() {
+		final int[] xLocations = {
+				97, 99, 101, 103, 105, 107, 109, 111, 113, 115
+		};
+
+		for (final int x: xLocations) {
+			final FlyOverArea blocker = new FlyOverArea();
+			blocker.setPosition(x, 102);
+
+			archeryZone.add(blocker);
+		}
+	}
+
 	/**
 	 * Makes visible in inspect command.
 	 */
@@ -401,10 +423,11 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		} catch (NumberFormatException e) {
 			// couldn't get time remaining from quest state
 			SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
- 			e.printStackTrace();
+
+			e.printStackTrace();
 		}
 
- 		return null;
+		return null;
 	}
 
 	/**
@@ -482,10 +505,12 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	 */
 	private class Timer implements TurnListener {
 		private final WeakReference<Player> timedPlayer;
+
 		private Integer timeRemaining = 0;
 
 		protected Timer(final Player player) {
 			timedPlayer = new WeakReference<Player>(player);
+
 			try {
 				final String questState = timedPlayer.get().getQuest(QUEST_SLOT, 0);
 				if (questState != null && questState.equals(STATE_ACTIVE)) {
@@ -569,6 +594,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 			// remove any existing notifiers
 			SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
+
 			// create the new notifier
 			SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
 		}
@@ -662,12 +688,12 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				this.pusher = pusher;
 			}
 
- 			// check if entity is being pushed from the right
+			// check if entity is being pushed from the right
 			if (prevPos.x == getX() + 1) {
 				super.onUsed(pushed);
 			}
 
- 			// reset pushed status
+			// reset pushed status
 			wasPushed = false;
 			this.pusher = null;
 		}
