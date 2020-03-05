@@ -41,6 +41,7 @@
 
 		<!-- Archery Range -->
 		<configurator class-name="games.stendhal.server.maps.nalwor.forest.ArcheryRange"/>
+		<configurator class-name="games.stendhal.server.maps.nalwor.forest.DojoSellerNPC"/>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn">
 	      <parameter name="x">96</parameter>
@@ -48,6 +49,25 @@
 	      <parameter name="width">21</parameter>
 	      <parameter name="height">12</parameter>
 	    </configurator>
+
+		<!-- gate leading to path to dojo -->
+		<entity x="96" y="117">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
+				<parameter name="orientation">v</parameter>
+				<parameter name="image">palisade_gate</parameter>
+				<parameter name="autoclose">2</parameter>
+			</implementation>
+		</entity>
+
+		<!-- Dojo -->
+
+		<configurator class-name="games.stendhal.server.maps.nalwor.forest.Dojo" />
+
+		<!-- sign indicating direction to assassins' dojo -->
+		<entity x="97" y="116">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">🡄 Droga do Dojo Skrytobójców</attribute>
+		</entity>
 
 	    <entity x="97" y="102">
 	      <implementation class-name="games.stendhal.server.entity.mapstuff.area.FlyOverArea" />

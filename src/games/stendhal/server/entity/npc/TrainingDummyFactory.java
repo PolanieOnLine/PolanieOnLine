@@ -20,20 +20,20 @@ public class TrainingDummyFactory {
 	 * 		Entity class to use: 0) training dummy; 1) bullseye
 	 */
 	public static TrainingDummy create(final int type) {
-		TrainingDummy dummy;
+		final TrainingDummy dummy;
 
 		switch (type) {
 		case 0:
-			dummy = new TrainingDummy("other/training_dummy", "Oto manekin treningowy.");
+			dummy = new TrainingDummy();
+			dummy.setMeleeOnly(true);
 			break;
 		case 1:
-			dummy = new TrainingDummy("other/bullseye", "Oto tarcza strzelecka.");
+			dummy = new TrainingDummy("other/bullseye", "Oto treningowa tarcza strzelecka.");
 			break;
 		default:
 			dummy = null;
 			break;
 		}
-
 		return dummy;
 	}
 }

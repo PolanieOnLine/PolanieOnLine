@@ -65,7 +65,7 @@ public class DojoSellerNPC implements ZoneConfigurator {
 
 	private void initNPC() {
 		seller = new SpeakerNPC(sellerName);
-		seller.setEntityClass("samurainpc");
+		seller.setEntityClass("samurai2npc");
 		seller.setIdleDirection(Direction.LEFT);
 		seller.setPosition(37, 80);
 
@@ -74,7 +74,7 @@ public class DojoSellerNPC implements ZoneConfigurator {
 
 	private void initShop() {
 		final Map<String, Integer> pricesSell = new LinkedHashMap<String, Integer>() {{
-			put("training sword", swordPrice);
+			put("miecz treningowy", swordPrice);
 			put("shuriken", 80);
 			put("płonący shuriken", 105);
 		}};
@@ -116,17 +116,17 @@ public class DojoSellerNPC implements ZoneConfigurator {
 			}
 		};
 		shopSign.setEntityClass("blackboard");
-		shopSign.setPosition(37, 81);
+		shopSign.setPosition(36, 81);
 
 		dojoZone.add(shopSign);
 	}
 
 	/**
-	 * If players bring their worn training swords they can get them repaired for half the
+	 * If players bring their worn miecz treningowys they can get them repaired for half the
 	 * price of buying a new one.
 	 */
 	private void initRepairShop() {
-		final List<String> repairPhrases = Arrays.asList("repair", "fix");
+		final List<String> repairPhrases = Arrays.asList("repair", "fix", "naprawa", "naprawić", "naprawiam");
 
 		final ChatCondition needsRepairCondition = new ChatCondition() {
 			@Override
@@ -147,18 +147,23 @@ public class DojoSellerNPC implements ZoneConfigurator {
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final int usedSwords = getUsedSwordsCount(player);
 				final boolean multiple = usedSwords > 1;
+				final boolean multiple2 = usedSwords > 4;
 
-				final StringBuilder sb = new StringBuilder("You have " + Integer.toString(usedSwords) + " used training sword");
+				final StringBuilder sb = new StringBuilder("Masz " + Integer.toString(usedSwords));
 				if (multiple) {
-					sb.append("s");
-				}
-				sb.append(". I can repair ");
-				if (multiple) {
-					sb.append("them all");
+					sb.append("zużyte miecze treningowe");
+				} else if (multiple2) {
+					sb.append("zużytych mieczy treningowych");
 				} else {
-					sb.append("it");
+					sb.append("zużyty miecz treningowy");
 				}
-				sb.append(" for " + Integer.toString(getRepairPrice(usedSwords)) + " money. Would you like me to do so?");
+				sb.append(". Mogę naprawić ");
+				if (multiple) {
+					sb.append("je wszystkie");
+				} else {
+					sb.append("to");
+				}
+				sb.append(" za " + Integer.toString(getRepairPrice(usedSwords)) + " money. Chciałbyś, żebym to zrobił?");
 
 				npc.say(sb.toString());
 			}
@@ -170,7 +175,7 @@ public class DojoSellerNPC implements ZoneConfigurator {
 				final int swordsCount = getUsedSwordsCount(player);
 				player.drop("money", getRepairPrice(swordsCount));
 
-				for (final Item sword: player.getAllEquipped("training sword")) {
+				for (final Item sword: player.getAllEquipped("miecz treningowy")) {
 					final BreakableItem breakable = (BreakableItem) sword;
 					if (breakable.isUsed()) {
 						breakable.repair();
@@ -178,9 +183,9 @@ public class DojoSellerNPC implements ZoneConfigurator {
 				}
 
 				if (swordsCount > 1) {
-					npc.say("Done! Your training swords are as good as new.");
+					npc.say("Zrobione! Twoje miecze treningowe wyglądają jak nowe");
 				} else {
-					npc.say("Done! Your training sword is as good as new.");
+					npc.say("Zrobione! Twój miecz treningowy wygląda jak nowy.");
 				}
 			}
 		};
@@ -188,24 +193,24 @@ public class DojoSellerNPC implements ZoneConfigurator {
 
 		seller.add(ConversationStates.ATTENDING,
 				repairPhrases,
-				new NotCondition(new PlayerHasItemWithHimCondition("assassins id")),
+				new NotCondition(new PlayerHasItemWithHimCondition("licencja na zabijanie")),
 				ConversationStates.ATTENDING,
-				"Only members of the assassins guild can have their #'training swords' repaired.",
+				"Tylko członkowie gildii skrytobójców mogą naprawić swój #'miecz treningowy'.",
 				null);
 
 		seller.add(ConversationStates.ATTENDING,
 				repairPhrases,
 				new AndCondition(
-						new PlayerHasItemWithHimCondition("assassins id"),
+						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
 						new NotCondition(needsRepairCondition)),
 				ConversationStates.ATTENDING,
-				"You don't have any #'training swords' that need repaired.",
+				"Nie masz żadnego #'miecza treningowego', który potrzebuje naprawy.",
 				null);
 
 		seller.add(ConversationStates.ATTENDING,
 				repairPhrases,
 				new AndCondition(
-						new PlayerHasItemWithHimCondition("assassins id"),
+						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
 						needsRepairCondition),
 				ConversationStates.QUESTION_1,
 				null,
@@ -215,14 +220,14 @@ public class DojoSellerNPC implements ZoneConfigurator {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Okay. Let me know if you need anything else.",
+				"Okej. Daj mi znać jeśli będziesz czegoś jeszcze potrzebował.",
 				null);
 
 		seller.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
 				new NotCondition(needsRepairCondition),
 				ConversationStates.ATTENDING,
-				"Did you drop your sword?",
+				"Czyżbyś zgubił swój miecz?",
 				null);
 
 		seller.add(ConversationStates.QUESTION_1,
@@ -231,7 +236,7 @@ public class DojoSellerNPC implements ZoneConfigurator {
 						needsRepairCondition,
 						new NotCondition(canAffordRepairsCondition)),
 				ConversationStates.ATTENDING,
-				"I'm sorry, you don't have enough money.",
+				"Przepraszam, ale nie masz wystarczającą ilość money.",
 				null);
 
 		seller.add(ConversationStates.QUESTION_1,
@@ -247,17 +252,17 @@ public class DojoSellerNPC implements ZoneConfigurator {
 	private void initDialogue() {
 		seller.addGreeting("Jeśli szukasz specjalnego sprzętu treningowego, to trafiłeś we właściwe miejsce.");
 		seller.addGoodbye();
-		seller.addOffer("See my blackboard for what I sell. I can also #repair any used #'training swords' that you have.");
-		seller.addJob("I run the assassins' dojo shop where we sell equipment and do #repairs on #'training swords'.");
-		seller.addQuest("I don't have any task for you to do. I only #fix and sell equipment.");
-		seller.addHelp("If you want to train in the dojo, I recommend that you buy a #'training sword'.");
-		seller.addReply("training sword", "My training swords are light and easy to swing. And just because"
-				+ " they are made out of wood, doesn't mean that it won't hurt if you get whacked with one.");
+		seller.addOffer("Spójrz na moją tablicę, by sprawdzić co sprzedaję. Mogę również #naprawić tobie każdy zużyty #'miecz treningowy'.");
+		seller.addJob("Prowadzę sklep w dojo skrytobójców, gdzie sprzedaję sprzęt treningowy oraz #naprawiam każdy #'miecz treningowy'.");
+		seller.addQuest("Nie mam żadnego zadania dla ciebie do zrobienia. Mogę jedynie #naprawić i sprzedać sprzęt treningowy.");
+		seller.addHelp("Jeśli chcesz trenować w dojo, polecam zakupić #'miecz treningowy'.");
+		seller.addReply("miecz treningowy", "Moje miecze treningowe są lekkie oraz łatwe do machania nimi. I tylko dlatego,"
+				+ " że są wykonane z drewna, nie zaszkodzą ci, jeśli zostaniesz uderzony jednym.");
 	}
 
 	private int getUsedSwordsCount(final Player player) {
 		int count = 0;
-		for (final Item sword: player.getAllEquipped("training sword")) {
+		for (final Item sword: player.getAllEquipped("miecz treningowy")) {
 			if (((BreakableItem) sword).isUsed()) {
 				count++;
 			}

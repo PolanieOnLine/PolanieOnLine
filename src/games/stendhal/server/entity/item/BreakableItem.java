@@ -11,12 +11,26 @@
  ***************************************************************************/
 package games.stendhal.server.entity.item;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import games.stendhal.common.Rand;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * An item that wears & breaks.
  */
 public class BreakableItem extends Item {
+	private static final Map<String, Double> conditions = new LinkedHashMap<String, Double>() {{
+		put("Jest nieużywany", 1.0);
+		put("Jest lekko używany", 0.75);
+		put("Jest używany", 0.5);
+		put("Jest zużyty", 0.25);
+		put("Jest bardzo zużyty", 0.0);
+	}};
+
+	private boolean notified = false;
 
 	public BreakableItem(String name, String clazz, String subclass, Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
@@ -24,6 +38,29 @@ public class BreakableItem extends Item {
 
 	public BreakableItem(final BreakableItem item) {
 		super(item);
+	}
+
+	@Override
+	public String getDescription() {
+		return super.getDescription() + " " + getConditionName() + ".";
+	}
+
+	/**
+	 * Sets the item's state back to new.
+	 */
+	@Override
+	public void repair() {
+		put("uses", 0);
+	}
+
+	/**
+	 * Checks the used state of the item.
+	 *
+	 * @return
+	 * 		<code>true</code> if the item has deteriorated.
+	 */
+	public boolean isUsed() {
+		return getUses() > 0;
 	}
 
 	/**
@@ -34,6 +71,39 @@ public class BreakableItem extends Item {
 		put("uses", getUses() + 1);
 	}
 
+	@Override
+	public void deteriorate(final RPEntity user) {
+		deteriorate();
+
+		if (getCondition() <= 0) {
+			onWeakened(user);
+		}
+	}
+
+	private void onWeakened(final RPEntity user) {
+		if (!notified) {
+			if (user instanceof Player) {
+				((Player) user).sendPrivateText("Twój przedmiot " + getName() + " jest bliski zepsucia się.");
+				notified = true;
+			}
+		}
+	}
+
+	public String getConditionName() {
+		final Double condition = getCondition();
+		for (final String conditionName: conditions.keySet()) {
+			if (condition >= conditions.get(conditionName)) {
+				return conditionName;
+			}
+		}
+
+		return "Za chwilę się zepsuje";
+	}
+
+	private double getCondition() {
+		return 1 - (getUses() / (double) getDurability());
+	}
+
 	/**
 	 * Checks if the item has no uses remaining.
 	 *
@@ -41,11 +111,29 @@ public class BreakableItem extends Item {
 	 * 		<code>true</code> if uses are as much or more than base_uses.
 	 */
 	public boolean isBroken() {
-		return getUses() >= getBaseUses();
+		final double condition = getCondition();
+		if (condition >= 0) {
+			return false;
+		}
+
+		final int chanceOfBreak;
+		if (condition < -0.75) {
+			chanceOfBreak = 25;
+		} else if (condition < -0.5) {
+			chanceOfBreak = 10;
+		} else if (condition < -0.25) {
+			chanceOfBreak = 5;
+		} else if (condition < -0.15) {
+			chanceOfBreak = 2;
+		} else {
+			chanceOfBreak = 1;
+		}
+
+		return Rand.randUniform(1, 100) <= chanceOfBreak;
 	}
 
-	public int getBaseUses() {
-		return getInt("base_uses");
+	public int getDurability() {
+		return getInt("durability");
 	}
 
 	public int getUses() {

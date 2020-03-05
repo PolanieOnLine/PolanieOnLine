@@ -440,7 +440,7 @@
 		<attributes>
 			<atk value="18"/>
 			<rate value="4"/>
-			<uses value="1000"/>
+			<durability value="1000"/>
 		</attributes>
 		<weight value="0.5"/>
 		<value value="5716"/>

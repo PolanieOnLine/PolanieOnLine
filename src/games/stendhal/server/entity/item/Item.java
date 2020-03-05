@@ -240,8 +240,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute("autobind", Type.FLAG, (byte) (Definition.HIDDEN | Definition.VOLATILE));
 
 		// Number of uses for BreakableItem
+		entity.addAttribute("durability", Type.INT, Definition.VOLATILE);
 		entity.addAttribute("uses", Type.INT);
-		entity.addAttribute("base_uses", Type.INT);
 	}
 
 
@@ -379,6 +379,16 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		} else {
 			Logger.getLogger(getClass()).debug("The item"+ this.getName() +"did not deteriorate from "+this.getDeterioration()+".");
 		}
+	}
+
+	/**
+	 * Can be overridden to handle actions on user entity.
+	 *
+	 * @param user
+	 * 		Entity using the item.
+	 */
+	public void deteriorate(@SuppressWarnings("unused") final RPEntity user) {
+		deteriorate();
 	}
 
 	/**
@@ -787,12 +797,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			stats.append(get("min_level"));
 		}
 		if (has("life_support")) {
-			stats.append(" LIFE-SUPPORT: ");
+			stats.append(" PODTRZYMUJĄCE-ŻYCIE: ");
 			stats.append(get("life_support"));
-		}
-		if (has("uses")) {
-			stats.append(" ZUŻYCIE: ");
-			stats.append(get("uses"));
 		}
 		String statString = "";
 		if (stats.length() > 0) {

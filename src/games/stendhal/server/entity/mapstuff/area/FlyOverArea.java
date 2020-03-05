@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.mapstuff.area;
 
+import games.stendhal.server.entity.Entity;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -18,12 +19,17 @@ import marauroa.common.game.RPClass;
 /**
  * An entity that acts as an obstacle for "walking" entities.
  *
- * TODO: Implement with multi-level collision.
- * TODO: Allow entities with a "flying" attribute to pass.
  * FIXME: Players should not be able to set items in this area
  *        as is done with WalkBlocker.
  */
 public class FlyOverArea extends WalkBlocker {
+
+	public static void generateRPClass() {
+		final RPClass flyover = new RPClass("flyover");
+		flyover.isA("entity");
+		flyover.addAttribute("walk_blocker", Type.FLAG, Definition.VOLATILE);
+	}
+
 	/**
 	 * Create an area that can be "flown" over.
 	 */
@@ -32,16 +38,18 @@ public class FlyOverArea extends WalkBlocker {
 
 		setRPClass("flyover");
 		put("type", "flyover");
-		put("no_occupy_area", "");
+		put("walk_blocker", "");
 
-		// Count as collision for the client and pathfinder
-		setResistance(100);
+		setResistance(0);
+		setVisibility(0);
 	}
 
-	public static void generateRPClass() {
-		final RPClass flyover = new RPClass("flyover");
-		flyover.isA("area");
-		flyover.addAttribute("class", Type.STRING);
-		flyover.addAttribute("no_occupy_area", Type.FLAG, Definition.VOLATILE);
+	@Override
+	public boolean isObstacle(final Entity entity) {
+		if (entity.has("flying")) {
+			return false;
+		}
+
+		return true;
 	}
 }

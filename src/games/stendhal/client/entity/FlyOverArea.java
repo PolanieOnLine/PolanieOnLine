@@ -10,6 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.client.entity;
- public class FlyOverArea extends InvisibleEntity {
 
- }
+public class FlyOverArea extends InvisibleEntity {
+
+}

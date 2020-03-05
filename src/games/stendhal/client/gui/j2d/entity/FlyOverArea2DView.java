@@ -14,7 +14,7 @@ package games.stendhal.client.gui.j2d.entity;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 
- /**
+/**
  * The 2D view of a fly over area.
  */
 public class FlyOverArea2DView extends InvisibleEntity2DView<IEntity> {
@@ -29,7 +29,7 @@ public class FlyOverArea2DView extends InvisibleEntity2DView<IEntity> {
 		return 2999;
 	}
 
- 	/**
+	/**
 	 * Use normal cursor for these areas.
 	 */
 	@Override

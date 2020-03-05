@@ -321,8 +321,17 @@ public class StendhalRPAction {
 
 		final boolean beaten;
 		if (usesTrainingDummy) {
-			// training dummies can always be hit
-			beaten = true;
+			/* training dummies can always be hit except in cases of using a
+			 * ranged weapon against a melee-only dummy
+			 */
+			beaten = ((TrainingDummy) defender).canBeAttacked(player);
+
+			if (!beaten) {
+				player.sendPrivateText("Nie możesz tego atakować bronią zasięgową.");
+				player.stopAttack();
+
+				return false;
+			}
 		} else {
 			// Throw dices to determine if the attacker has missed the defender
 			beaten = player.canHit(defender);
@@ -413,7 +422,7 @@ public class StendhalRPAction {
 
 			//deteriorate weapons of attacker
 			for (Item weapon : weapons) {
-				weapon.deteriorate();
+				weapon.deteriorate(player);
 
 				if (weapon instanceof BreakableItem) {
 					final BreakableItem breakable = (BreakableItem) weapon;
@@ -427,7 +436,7 @@ public class StendhalRPAction {
 			List<Item> defenseItems = defender.getDefenseItems();
 			if(!defenseItems.isEmpty()) {
 				final Item equip = Rand.rand(defenseItems);
-				equip.deteriorate();
+				equip.deteriorate(player);
 
 				if (equip instanceof BreakableItem) {
 					final BreakableItem breakable = (BreakableItem) equip;
@@ -465,6 +474,7 @@ public class StendhalRPAction {
 
 					final String event = breakable.getName() + " się zepsuł";
 
+					new GameEvent(player.getName(), event, "Used " + Integer.toString(breakable.getUses()) + " times (durability: " + Integer.toString(breakable.getDurability()) + ")").raise();
 					player.sendPrivateText("Twój przedmiot " + event + "!");
 				} else {
 					logger.error("Could not remove BreakableItem \"" + breakable.getName() + "\" with ID " + breakable.getID().toString());
