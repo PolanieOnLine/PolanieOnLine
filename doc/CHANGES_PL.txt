@@ -46,7 +46,7 @@ Changelog
 	- "Imperialistyczny Żołnierz"
 	- "Królewsko Obdarowany"
 	- "Kołysząc się na Jabłkach"
-	- "Rybak Głębinowy"
+	- "Głębinowy Rybak"
 - Zmieniono nazwy przedmiotom:
 	- "elficki kapelusz" -> "kapelusz elficki"
 	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"
