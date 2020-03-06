@@ -139,7 +139,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		fightingAchievements.add(createAchievement(
-				ID_DEEPSEA, "Rybak Głębinowy", "Zabił 500 rekinów, krakenów oraz neo krakenów",
+				ID_DEEPSEA, "Głębinowy Rybak", "Zabił 500 rekinów, krakenów oraz neo krakenów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_DEEPSEA, ENEMIES_DEEPSEA)));
 
