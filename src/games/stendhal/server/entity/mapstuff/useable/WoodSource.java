@@ -152,7 +152,6 @@ public class WoodSource extends PlayerActivityEntity {
 
 			player.equipOrPutOnGround(item);
 			player.incHarvestedForItem(itemName, 1);
-		    SingletonRepository.getAchievementNotifier().onObtain(player);
 			player.sendPrivateText("Zdobyłeś drewno.");
 		} else {
 			player.sendPrivateText("Nie zdobyłeś drewna.");

@@ -169,7 +169,6 @@ public class SourceMithril extends PlayerActivityEntity {
 			if (item != null) {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
-				SingletonRepository.getAchievementNotifier().onObtain(player);
 				player.sendPrivateText("Wydobyłeś "
 						+ Grammar.a_noun(item.getTitle()) + ".");
 			} else {

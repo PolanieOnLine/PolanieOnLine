@@ -29,7 +29,7 @@ Changelog
 	- mały pegaz, pegaz brązowy, pegaz kościsty, pegaz hebanowy
 	- nietoperz olbrzymi, nietoperz wampir olbrzymi
 	- niedźwiedź biały, neo kraken
-- Dodano nowe osiągnięcia: (15)
+- Dodano nowe osiągnięcia: (17)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -45,6 +45,8 @@ Changelog
 	- "Imperialistyczny Sługus"
 	- "Imperialistyczny Żołnierz"
 	- "Królewsko Obdarowany"
+	- "Kołysząc się na Jabłkach"
+	- "Rybak Głębinowy"
 - Zmieniono nazwy przedmiotom:
 	- "elficki kapelusz" -> "kapelusz elficki"
 	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"

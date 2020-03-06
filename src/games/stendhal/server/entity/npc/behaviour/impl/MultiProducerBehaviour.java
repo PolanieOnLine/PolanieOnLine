@@ -411,7 +411,6 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 				player.addXP(numberOfProductItems);
 				player.notifyWorldAboutChanges();
 				player.incProducedCountForItem(productName, products.getQuantity());
-				SingletonRepository.getAchievementNotifier().onProduction(player);
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
 						+ Grammar.plnoun(numberOfProductItems, productName) 

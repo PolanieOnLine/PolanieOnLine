@@ -396,7 +396,6 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.addXP(numberOfProductItems);
 				player.notifyWorldAboutChanges();
 				player.incProducedCountForItem(getProductName(), products.getQuantity());
-				SingletonRepository.getAchievementNotifier().onProduction(player);
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
 						+ Grammar.plnoun(numberOfProductItems, getProductName()) 

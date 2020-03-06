@@ -166,7 +166,6 @@ public class WellSource extends PlayerActivityEntity {
 
 			player.equipOrPutOnGround(item);
 			player.incObtainedForItem(item.getName(), item.getQuantity());
-			SingletonRepository.getAchievementNotifier().onObtain(player);
 			player.sendPrivateText("Miałeś szczęście i znalazłeś "
 					+ Grammar.quantityplnoun(amount, itemName, "a")+ ".");
 		} else {

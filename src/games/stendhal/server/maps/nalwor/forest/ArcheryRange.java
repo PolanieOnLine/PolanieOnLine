@@ -32,11 +32,14 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.BreakableItem;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.area.FlyOverArea;
 import games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
+import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -106,6 +109,8 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	private static final String npcName = "Chester";
 	private SpeakerNPC npc;
 
+	private static final int bowPrice = 4500;
+
 	/** phrases used in conversations */
 	private static final List<String> TRAIN_PHRASES = Arrays.asList("train", "training", "trening", "trenuj", "trenowanie", "trenować");
 	private static final List<String> FEE_PHRASES = Arrays.asList("fee", "cost", "charge", "opłata", "opłatę", "koszt", "cena", "cenę");
@@ -135,6 +140,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 
 		buildNPC();
 		initShop();
+		initRepairShop();
 		initTraining();
 		initEntrance();
 		initBlockers();
@@ -146,8 +152,15 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 			@Override
 			protected void createDialog() {
 				addGreeting("To jest strzelnica zabójców. Lepiej uważaj na język, jeśli nie chcesz zostać zraniony.");
-				addJob("Zarządzam tą tutaj strzelnicą. Należy ona do zabójców, więc nie wtykaj swojego nosa tam, gdzie nie trzeba.");
 				addGoodbye("Możesz tutaj wrócić kiedy będziesz miał trochę gotówki. Uprzejmość nie jest walutą.");
+				addJob("Zarządzam tutaj strzelnicą. Należy do ona skrytobójców, więc nie idź i nie wtykaj nosa tam, gdzie nie trzeba.");
+				addQuest("Czy wyglądam na osobę, która potrzebuje jakiejkolwiek pomocy!? Jeśli nie jesteś tutaj, aby #'trenować', to lepiej uciekaj z mojego pola widzenia!");
+				addReply(Arrays.asList("łuk treningowy", "łuku treningowego"), "Łuki treningowe są słabe, ale łatwe w użyciu, więc możesz strzelać z nich znacznie szybciej niż"
+						+ " przy zwykłym łuku. Ale z powodu słabej jakości nie wytrzymują długo.");
+				addHelp("Znajdujesz się na strzelnicy skrytobójców. Mogę ci pozwolić #'trenować' swoje umiejętności"
+						+ " dystansowe za drobną #'opłatą'. Jeśli nie masz pełnego zasięgu, wypróbuj cele na końcu."
+						+ " Ninje je często wykorzystują. Zalecam używanie #'łuku treningowego'.");
+				addReply(FEE_PHRASES, "Koszt #trenowania na tej strzelnicy to " + Integer.toString(COST) + " money.");
 			}
 
 			@Override
@@ -162,7 +175,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 			}
 		};
 
-		npc.setDescription("Widzisz mężczyznę, który wydaje się być utalentowanym zabójcą.");
+		npc.setDescription("Oto mężczyzna, który wydaje się być utalentowanym zabójcą.");
 		npc.setPosition(120, 100);
 		npc.setEntityClass("rangernpc");
 		archeryZone.add(npc);
@@ -197,7 +210,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		shop.put("strzała", 4);
 		shop.put("drewniany łuk", 600);
 		shop.put("długi łuk", 1200);
-		shop.put("łuk treningowy", 4500);
+		shop.put("łuk treningowy", bowPrice);
 
 		// override seller bahaviour so that player must have assassins id
 		final SellerBehaviour seller = new SellerBehaviour(shop) {
@@ -234,14 +247,160 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		blackboard.setPosition(117, 101);
 		archeryZone.add(blackboard);
 	}
+	
+	/**
+	 * If players bring their worn training swords they can get them repaired for half the
+	 * price of buying a new one.
+	 */
+	private void initRepairShop() {
+		final Sign repairSign = new Sign();
+		repairSign.setEntityClass("notice");
+		repairSign.setPosition(118, 101);
+		repairSign.setText("Łuki treningowe #naprawiane tutaj za połowę ceny nowych.");
+		archeryZone.add(repairSign);
+
+		final List<String> repairPhrases = Arrays.asList("repair", "fix", "naprawa", "naprawić", "naprawiam", "naprawiane");
+
+		final ChatCondition needsRepairCondition = new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return getUsedBowsCount(player) > 0;
+			}
+		};
+
+		final ChatCondition canAffordRepairsCondition = new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return player.isEquipped("money", getRepairPrice(getUsedBowsCount(player)));
+			}
+		};
+
+		final ChatAction sayRepairPriceAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final int usedBows = getUsedBowsCount(player);
+				final boolean multiple = usedBows > 1;
+				final boolean multiple2 = usedBows > 4;
+
+				final StringBuilder sb = new StringBuilder("Masz " + Integer.toString(usedBows));
+				if (multiple) {
+					sb.append("zużyte łuki treningowe");
+				} else if (multiple2) {
+					sb.append("zużytych łuków treningowych");
+				} else {
+					sb.append("zużyty łuk treningowy");
+				}
+				sb.append(". Mogę naprawić ");
+				if (multiple) {
+					sb.append("je wszystkie");
+				} else {
+					sb.append("to");
+				}
+				sb.append(" za " + Integer.toString(getRepairPrice(usedBows)) + " money. Chciałbyś, żebym to zrobił?");
+
+				npc.say(sb.toString());
+			}
+		};
+
+		final ChatAction repairAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final int usedBows = getUsedBowsCount(player);
+				player.drop("money", getRepairPrice(usedBows));
+
+				for (final Item bow: player.getAllEquipped("łuk treningowy")) {
+					final BreakableItem breakable = (BreakableItem) bow;
+					if (breakable.isUsed()) {
+						breakable.repair();
+					}
+				}
+
+				if (usedBows > 1) {
+					npc.say("Zrobione! Twoje łuki treningowe wyglądają jak nowe.");
+				} else {
+					npc.say("Zrobione! Twój łuk treningowy wygląda jak nowy.");
+				}
+			}
+		};
+
+
+		npc.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new NotCondition(new PlayerHasItemWithHimCondition("licencja na zabijanie")),
+				ConversationStates.ATTENDING,
+				"Tylko członkowi gildii skrytobójców mogę naprawić #'łuk treningowy'.",
+				null);
+
+		npc.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new AndCondition(
+						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
+						new NotCondition(needsRepairCondition)),
+				ConversationStates.ATTENDING,
+				"Nie masz przy sobie żadnego #'łuku treningowego' do naprawienia.",
+				null);
+
+		npc.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new AndCondition(
+						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
+						needsRepairCondition),
+				ConversationStates.QUESTION_2,
+				null,
+				sayRepairPriceAction);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.NO_MESSAGES,
+				null,
+				ConversationStates.ATTENDING,
+				"W takim razie powodzenia. Pamiętaj, że gdy się całkowicie zepsują, nie będzie można ich naprawić.",
+				null);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new NotCondition(needsRepairCondition),
+				ConversationStates.ATTENDING,
+				"Zgubiłeś swój łuk?",
+				null);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						needsRepairCondition,
+						new NotCondition(canAffordRepairsCondition)),
+				ConversationStates.ATTENDING,
+				"Nie masz wystarczająco pieniędzy. Wynoś się stąd!",
+				null);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						needsRepairCondition,
+						canAffordRepairsCondition),
+				ConversationStates.ATTENDING,
+				null,
+				repairAction);
+	}
+
+	private int getUsedBowsCount(final Player player) {
+		int count = 0;
+		for (final Item bow: player.getAllEquipped("łuk treningowy")) {
+			if (((BreakableItem) bow).isUsed()) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	private int getRepairPrice(final int count) {
+		return count * (bowPrice / 2);
+	}
 
 	/**
 	 * Initializes conversation & actions for archery training.
 	 */
 	private void initTraining() {
-		npc.addQuest("Czy wyglądam na osobę, która potrzebuje jakiejkolwiek pomocy!? Jeśli nie jesteś tutaj, aby #'trenować', to lepiej uciekaj z mojego pola widzenia!");
-		npc.addHelp("To jest strzelnica zabójców. Mogę ci pozwolić tutaj #'trenować' twoje umiejętności dystansowe za drobną #'opłatą'.");
-		npc.addReply(FEE_PHRASES, "Koszt #trenowania na tej strzelnicy to " + Integer.toString(COST) + " money.");
 
 		// player has never trained before
 		npc.add(ConversationStates.ATTENDING,

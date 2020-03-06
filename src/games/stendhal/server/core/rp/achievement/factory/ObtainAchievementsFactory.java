@@ -80,11 +80,9 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				new PlayerHasHarvestedNumberOfItemsCondition(20, "arandula", "kekik", "mandragora", "sclaria")));
 
 		// loot or harvest apples
-		// XXX: it appears that looting action will not trigger check for Category.OBTAIN
-		//      inactive until fixed
 		achievements.add(createAchievement(
-				ID_APPLES, "Kołysząc się na Jabłkach", "Zebrał lub zrabował 1,000 jabłek",
-				Achievement.EASY_BASE_SCORE, false,
+				ID_APPLES, "Kołysząc się na Jabłkach", "Zebrał lub zdobył 1,000 jabłek",
+				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
 					public boolean fire(final Player player, final Sentence sentence, final Entity npc) {

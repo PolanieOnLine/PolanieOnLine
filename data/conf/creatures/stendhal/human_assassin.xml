@@ -237,7 +237,7 @@
 			<item value="zbroja cieni" quantity="[1,1]" probability="0.005"/>
 			<item value="czarne buty" quantity="[1,1]" probability="0.003"/>
 			<item value="katana" quantity="[1,1]" probability="2.0"/>
-			<item value="nihonto" quantity="[1,1]" probability="0.05"/>
+			<item value="nihonto" quantity="[1,1]" probability="0.1"/>
 			<item value="zbroja zabójcy" quantity="[1,1]" probability="0.1"/>
 			<item value="hełm zabójcy" quantity="[1,1]" probability="0.075"/>
 			<item value="spodnie zabójcy" quantity="[1,1]" probability="0.075"/>

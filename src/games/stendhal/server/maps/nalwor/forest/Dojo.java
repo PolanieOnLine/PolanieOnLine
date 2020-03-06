@@ -308,7 +308,7 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Good luck then.",
+				"Powodzenia.",
 				null);
 	}
 

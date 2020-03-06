@@ -150,7 +150,6 @@ public class CoalSource extends PlayerActivityEntity {
 			if (item != null) {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
-			    SingletonRepository.getAchievementNotifier().onObtain(player);
 				player.sendPrivateText("Znalazłeś "
 						+ Grammar.a_noun(item.getTitle()) + ".");
 			} else {
