@@ -157,7 +157,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				addQuest("Czy wyglądam na osobę, która potrzebuje jakiejkolwiek pomocy!? Jeśli nie jesteś tutaj, aby #'trenować', to lepiej uciekaj z mojego pola widzenia!");
 				addReply(Arrays.asList("łuk treningowy", "łuku treningowego"), "Łuki treningowe są słabe, ale łatwe w użyciu, więc możesz strzelać z nich znacznie szybciej niż"
 						+ " przy zwykłym łuku. Ale z powodu słabej jakości nie wytrzymują długo.");
-				addHelp("Znajdujesz się na strzelnicy skrytobójców. Mogę ci pozwolić #'trenować' swoje umiejętności"
+				addHelp("Znajdujesz się w strzelnicy skrytobójców. Mogę ci pozwolić #'trenować' swoje umiejętności"
 						+ " dystansowe za drobną #'opłatą'. Jeśli nie masz pełnego zasięgu, wypróbuj cele na końcu."
 						+ " Ninje je często wykorzystują. Zalecam używanie #'łuku treningowego'.");
 				addReply(FEE_PHRASES, "Koszt #trenowania na tej strzelnicy to " + Integer.toString(COST) + " money.");
@@ -256,7 +256,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		final Sign repairSign = new Sign();
 		repairSign.setEntityClass("notice");
 		repairSign.setPosition(118, 101);
-		repairSign.setText("Łuki treningowe #naprawiane tutaj za połowę ceny nowych.");
+		repairSign.setText("Łuki treningowe #naprawiane za połowę ceny nowych.");
 		archeryZone.add(repairSign);
 
 		final List<String> repairPhrases = Arrays.asList("repair", "fix", "naprawa", "naprawić", "naprawiam", "naprawiane");
