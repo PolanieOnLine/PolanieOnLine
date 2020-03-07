@@ -259,7 +259,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		repairSign.setText("Łuki treningowe #naprawiane za połowę ceny nowych.");
 		archeryZone.add(repairSign);
 
-		final List<String> repairPhrases = Arrays.asList("repair", "fix", "naprawa", "naprawić", "naprawiam", "naprawiane");
+		final List<String> repairPhrases = Arrays.asList("repair", "fix", "napraw", "naprawa", "naprawić", "naprawiam", "naprawiane");
 
 		final ChatCondition needsRepairCondition = new ChatCondition() {
 			@Override
