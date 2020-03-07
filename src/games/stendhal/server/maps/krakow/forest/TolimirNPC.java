@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.ConversationParser;
@@ -30,10 +32,14 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.BreakableItem;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.mapstuff.area.FlyOverArea;
 import games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
+import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -64,9 +70,15 @@ import games.stendhal.server.util.Area;
 import games.stendhal.server.util.TimeUtil;
 
 /**
+ * TODO: create JUnit test
  * FIXME: should bows wear & break even if hit not successful?
+ * FIXME: (client) no sound for training targets when hit
  */
 public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener {
+
+	/** logger instance */
+	private static Logger logger = Logger.getLogger(TolimirNPC.class);
+
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "strzelnica";
 
@@ -80,7 +92,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	private static final int TRAIN_TIME = 60 * MathHelper.SECONDS_IN_ONE_MINUTE;
 
 	/** time player must wait to train again */
-	private static final int COOLDOWN = 4 * MathHelper.MINUTES_IN_ONE_HOUR;
+	private static final int COOLDOWN = 2 * MathHelper.MINUTES_IN_ONE_HOUR;
 
 	/** max number of players allowed in training area at a time */
 	private static final int MAX_OCCUPANTS = 8;
@@ -95,6 +107,8 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	/** NPC that manages archery area */
 	private static final String npcName = "Tolimir";
 	private SpeakerNPC npc;
+
+	private static final int bowPrice = 4500;
 
 	/** phrases used in conversations */
 	private static final List<String> TRAIN_PHRASES = Arrays.asList("train", "training", "trening", "trenuj", "trenowanie", "trenować");
@@ -123,10 +137,12 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		archeryZone = zone;
 		archeryZoneID = zone.getName();
 
- 		buildNPC();
+		buildNPC();
 		initShop();
+		initRepairShop();
 		initTraining();
 		initEntrance();
+		initBlockers();
 		addToQuestSystem();
 	}
 
@@ -134,9 +150,15 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		npc = new SpeakerNPC(npcName) {
 			@Override
 			protected void createDialog() {
-				addGreeting();
+				addGreeting("Witaj w strzelnicy królestwa Polan! W czym mogę #pomóc?");
+				addGoodbye("Możesz wrócić kiedy będziesz miał trochę gotówki.");
 				addJob("Zarządzam tą tutaj strzelnicą. Należy ona do królestwa Polan, więc nie wtykaj swojego nosa tam, gdzie nie trzeba.");
-				addGoodbye("Możesz tutaj wrócić kiedy będziesz miał trochę gotówki. Uprzejmość nie jest walutą.");
+				addQuest("Jeśli chcesz komuś pomóc, to pójdź pomóż naszemu królowi!");
+				addReply(Arrays.asList("łuk treningowy", "łuku treningowego"), "Łuki treningowe są słabe, ale łatwe w użyciu, więc możesz strzelać z nich znacznie szybciej niż"
+						+ " przy zwykłym łuku. Ale z powodu słabej jakości nie wytrzymują długo.");
+				addHelp("Znajdujesz się w strzelnicy królestwa. Mogę ci pozwolić #'trenować' swoje umiejętności"
+						+ " dystansowe za drobną #'opłatą'. Zalecam używanie #'łuku treningowego'.");
+				addReply(FEE_PHRASES, "Koszt #trenowania u mnie to " + Integer.toString(COST) + " money.");
 			}
 
 			@Override
@@ -151,7 +173,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 			}
 		};
 
-		npc.setDescription("Widzisz mężczyznę, który wydaje się być utalentowanym strzelcem.");
+		npc.setDescription("Oto Tolimir, który wydaje się być utalentowanym strzelcem.");
 		npc.setPosition(77, 90);
 		npc.setEntityClass("rangernpc");
 		npc.setDirection(Direction.RIGHT);
@@ -178,7 +200,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		shop.put("strzała", 3);
 		shop.put("drewniany łuk", 500);
 		shop.put("długi łuk", 1200);
-		shop.put("łuk treningowy", 3000);
+		shop.put("łuk treningowy", bowPrice);
 
 		new SellerAdder().addSeller(npc, new SellerBehaviour(shop));
 
@@ -198,14 +220,148 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		blackboard.setPosition(78, 88);
 		archeryZone.add(blackboard);
 	}
+	
+	/**
+	 * If players bring their worn training swords they can get them repaired for half the
+	 * price of buying a new one.
+	 */
+	private void initRepairShop() {
+		final Sign repairSign = new Sign();
+		repairSign.setEntityClass("notice");
+		repairSign.setPosition(78, 89);
+		repairSign.setText("Łuki treningowe #naprawiane za połowę ceny nowych.");
+		archeryZone.add(repairSign);
+
+		final List<String> repairPhrases = Arrays.asList("repair", "fix", "napraw", "naprawa", "naprawić", "naprawiam", "naprawiane");
+
+		final ChatCondition needsRepairCondition = new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return getUsedBowsCount(player) > 0;
+			}
+		};
+
+		final ChatCondition canAffordRepairsCondition = new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return player.isEquipped("money", getRepairPrice(getUsedBowsCount(player)));
+			}
+		};
+
+		final ChatAction sayRepairPriceAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final int usedBows = getUsedBowsCount(player);
+				final boolean multiple = usedBows > 1;
+				final boolean multiple2 = usedBows > 4;
+
+				final StringBuilder sb = new StringBuilder("Masz " + Integer.toString(usedBows));
+				if (multiple) {
+					sb.append("zużyte łuki treningowe");
+				} else if (multiple2) {
+					sb.append("zużytych łuków treningowych");
+				} else {
+					sb.append("zużyty łuk treningowy");
+				}
+				sb.append(". Mogę naprawić ");
+				if (multiple) {
+					sb.append("je wszystkie");
+				} else {
+					sb.append("to");
+				}
+				sb.append(" za " + Integer.toString(getRepairPrice(usedBows)) + " money. Chciałbyś, żebym to zrobił?");
+
+				npc.say(sb.toString());
+			}
+		};
+
+		final ChatAction repairAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final int usedBows = getUsedBowsCount(player);
+				player.drop("money", getRepairPrice(usedBows));
+
+				for (final Item bow: player.getAllEquipped("łuk treningowy")) {
+					final BreakableItem breakable = (BreakableItem) bow;
+					if (breakable.isUsed()) {
+						breakable.repair();
+					}
+				}
+
+				if (usedBows > 1) {
+					npc.say("Zrobione! Twoje łuki treningowe wyglądają jak nowe.");
+				} else {
+					npc.say("Zrobione! Twój łuk treningowy wygląda jak nowy.");
+				}
+			}
+		};
+
+		npc.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new NotCondition(needsRepairCondition),
+				ConversationStates.ATTENDING,
+				"Nie masz przy sobie żadnego #'łuku treningowego' do naprawienia.",
+				null);
+
+		npc.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				needsRepairCondition,
+				ConversationStates.QUESTION_2,
+				null,
+				sayRepairPriceAction);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.NO_MESSAGES,
+				null,
+				ConversationStates.ATTENDING,
+				"W takim razie powodzenia. Pamiętaj, że gdy się całkowicie zepsują, nie będzie można ich naprawić.",
+				null);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new NotCondition(needsRepairCondition),
+				ConversationStates.ATTENDING,
+				"Zgubiłeś swój łuk?",
+				null);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						needsRepairCondition,
+						new NotCondition(canAffordRepairsCondition)),
+				ConversationStates.ATTENDING,
+				"Nie masz wystarczająco pieniędzy. Wynoś się stąd!",
+				null);
+
+		npc.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						needsRepairCondition,
+						canAffordRepairsCondition),
+				ConversationStates.ATTENDING,
+				null,
+				repairAction);
+	}
+
+	private int getUsedBowsCount(final Player player) {
+		int count = 0;
+		for (final Item bow: player.getAllEquipped("łuk treningowy")) {
+			if (((BreakableItem) bow).isUsed()) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	private int getRepairPrice(final int count) {
+		return count * (bowPrice / 2);
+	}
 
 	/**
 	 * Initializes conversation & actions for archery training.
 	 */
 	private void initTraining() {
-		npc.addQuest("Jeśli chcesz komuś pomóc, to pójdź pomóż naszemu królowi!");
-		npc.addHelp("To jest strzelnica królestwa Polan. Mogę ci pozwolić tutaj #'trenować' twoje umiejętności dystansowe za drobną #'opłatą'.");
-		npc.addReply(FEE_PHRASES, "Koszt #trenowania na tej strzelnicy to " + Integer.toString(COST) + " money.");
 
 		// player has never trained before
 		npc.add(ConversationStates.ATTENDING,
@@ -215,9 +371,8 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 						new PlayerStatLevelCondition("ratk", ComparisonOperator.LESS_THAN, RATK_LIMIT)),
 				ConversationStates.QUESTION_1,
 				null,
-				new SayTextAction("Czy chcesz abym"
-					+ " otworzył dla ciebie strzelnicę? Będzie cię to kosztować " + Integer.toString(COST)
-					+ " money."));
+				new SayTextAction("Czy chcesz abym otworzył dla ciebie strzelnicę?"
+					+ " Będzie cię to kosztować " + Integer.toString(COST) + " money."));
 
 		// player returns after cooldown period is up
 		npc.add(ConversationStates.ATTENDING,
@@ -227,7 +382,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 						new TimePassedCondition(QUEST_SLOT, 1, COOLDOWN),
 						new PlayerStatLevelCondition("ratk", ComparisonOperator.LESS_THAN, RATK_LIMIT)),
 				ConversationStates.QUESTION_1,
-				"To będzie cię kosztować " + Integer.toString(COST) + " money za trening. Więc, zgadzasz się na to?",
+				"To będzie cię kosztować " + Integer.toString(COST) + " money za trening. Zgadzasz się na to?",
 				null);
 
 		// player returns before cooldown period is up
@@ -319,6 +474,19 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		archeryZone.add(new ArcheryRangeConditionAndActionPortal());
 	}
 
+	private void initBlockers() {
+		final int[] xLocations = {
+				74, 76, 78, 80, 82, 84, 86, 88
+		};
+
+		for (final int x: xLocations) {
+			final FlyOverArea blocker = new FlyOverArea();
+			blocker.setPosition(x, 84);
+
+			archeryZone.add(blocker);
+		}
+	}
+
 	/**
 	 * Makes visible in inspect command.
 	 */
@@ -359,10 +527,11 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		} catch (NumberFormatException e) {
 			// couldn't get time remaining from quest state
 			SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
- 			e.printStackTrace();
+
+			e.printStackTrace();
 		}
 
- 		return null;
+		return null;
 	}
 
 	/**
@@ -440,10 +609,12 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	 */
 	private class Timer implements TurnListener {
 		private final WeakReference<Player> timedPlayer;
+
 		private Integer timeRemaining = 0;
 
 		protected Timer(final Player player) {
 			timedPlayer = new WeakReference<Player>(player);
+
 			try {
 				final String questState = timedPlayer.get().getQuest(QUEST_SLOT, 0);
 				if (questState != null && questState.equals(STATE_ACTIVE)) {
@@ -527,6 +698,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 			// remove any existing notifiers
 			SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
+
 			// create the new notifier
 			SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
 		}
@@ -620,12 +792,12 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 				this.pusher = pusher;
 			}
 
- 			// check if entity is being pushed from the right
+			// check if entity is being pushed from the right
 			if (prevPos.x == getX() + 1) {
 				super.onUsed(pushed);
 			}
 
- 			// reset pushed status
+			// reset pushed status
 			wasPushed = false;
 			this.pusher = null;
 		}
