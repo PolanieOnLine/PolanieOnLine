@@ -3,12 +3,15 @@ Changelog
 1.10
 *klient*
 - Dodano nowe grafiki przedmiotów/potworów/npc/gui
+- Dodano listę zabitych już potworów (w pojedynkę / w grupie)
 - Poprawiono kolory kosy oraz pordzewiałej kosy
 
 *świat*
 - Dodano nowe NPC:
 	- Zelan (Atlantyda)
 	- Jimbo (Deniran)
+	- Akutagawa (Nalwor forest - dojo)
+	- Omura Sumitada (Nalwor forest - dojo)
 - Dodano nowe zadania:
 	- "Rogi jednorożca dla Zelana"
 - Dodano nowe regiony/mapy:
@@ -19,7 +22,7 @@ Changelog
 	- sztabka platyny, złoże platyny
 	- futro, skórzana nić, obrotowy nóżyk
 	- magiczne spodnie płytowe, magiczne buty płytowe
-	- złota kosa, kosa z mithrilu
+	- złota kosa, kosa z mithrilu, miecz treningowy
 - Dodano nowe potwory: (23)
 	- słoń z rogami, słoń musth, mamut włochaty
 	- demon wody, wodny skarabeusz, mały skarabeusz
@@ -50,7 +53,11 @@ Changelog
 - Zmieniono nazwy przedmiotom:
 	- "elficki kapelusz" -> "kapelusz elficki"
 	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"
+- Dodano komunikat o osiągnięciu danego limitu zużyć broni
+- Dodano obok strzelnicy, w lesie Nalwor dojo, w którym można trenować umiejętność ataku
 - NPC Lupos skupuje kapelusz elficki
+- NPC Tolimir oraz Chester umożliwiają naprawienie łuku treningowego
+- Ilość zużyć łuku treningowego zmalała do 1,500
 
 *kod*
 - Dodano wsparcie dla języka Lua
@@ -59,6 +66,7 @@ Changelog
 - Elementy z atrybutem „active_idle” będą cyklicznie odtwarzać animacje, nawet jeśli zostaną zatrzymane
 - Można wykonać akcję „/removedetail”, aby ręcznie usunąć warstwę szczegółów z postaci
 - Minimapa rozpoznaje drzwi jako portal
+- Status niszczenia broni został zmodyfikowany do % szans na zniszczenie się przedmiotu po osiągnięciu limitu zużyć broni
 
 *naprawiono błędy*
 - Naprawiono drzwi & drzwi zamknięte, które nie obsługują ciągłego ruchu
