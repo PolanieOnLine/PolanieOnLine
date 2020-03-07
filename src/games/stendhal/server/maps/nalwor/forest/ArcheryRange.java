@@ -153,7 +153,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 			protected void createDialog() {
 				addGreeting("To jest strzelnica zabójców. Lepiej uważaj na język, jeśli nie chcesz zostać zraniony.");
 				addGoodbye("Możesz tutaj wrócić kiedy będziesz miał trochę gotówki. Uprzejmość nie jest walutą.");
-				addJob("Zarządzam tutaj strzelnicą. Należy do ona skrytobójców, więc nie idź i nie wtykaj nosa tam, gdzie nie trzeba.");
+				addJob("Zarządzam tutaj strzelnicą. Należy do ona skrytobójców, więc nie wtykaj swojego nosa tam, gdzie nie trzeba.");
 				addQuest("Czy wyglądam na osobę, która potrzebuje jakiejkolwiek pomocy!? Jeśli nie jesteś tutaj, aby #'trenować', to lepiej uciekaj z mojego pola widzenia!");
 				addReply(Arrays.asList("łuk treningowy", "łuku treningowego"), "Łuki treningowe są słabe, ale łatwe w użyciu, więc możesz strzelać z nich znacznie szybciej niż"
 						+ " przy zwykłym łuku. Ale z powodu słabej jakości nie wytrzymują długo.");
