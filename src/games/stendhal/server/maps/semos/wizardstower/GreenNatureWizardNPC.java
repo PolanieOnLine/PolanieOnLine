@@ -81,7 +81,7 @@ public class GreenNatureWizardNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in maps.quests.WizardSilvanusPlainQuest
 		};
 
-		silvanus.setDescription("Widzisz Silvanusa, najstarszego mędrca druidów.");
+		silvanus.setDescription("Oto Silvanus, najstarszy mędrca druidów.");
 		silvanus.setEntityClass("greenelfwizardnpc");
 		silvanus.setPosition(11, 4);
 		silvanus.initHP(100);

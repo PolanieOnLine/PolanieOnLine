@@ -80,7 +80,7 @@ public class BlackDeathWizardNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in maps.quests.WizardRavashackPlainQuest
 		};
 
-		ravashack.setDescription("Widzisz Ravashacka, wielkiego i mistycznego Nekromate.");
+		ravashack.setDescription("Oto Ravashack, wielki i mistyczy Nekromanta.");
 		ravashack.setEntityClass("largeblackwizardnpc");
 		ravashack.setPosition(5, 17);
 		ravashack.initHP(100);

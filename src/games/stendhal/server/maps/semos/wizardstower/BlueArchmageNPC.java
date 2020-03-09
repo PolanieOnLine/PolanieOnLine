@@ -92,7 +92,7 @@ public class BlueArchmageNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in maps.quests.ArchmageErastusQuest
 		};
 
-		erastus.setDescription("Widzisz Erastusa, wielkiego mistrza wszystkich rodzajów magii.");
+		erastus.setDescription("Oto Erastus, wielki mistrz wszystkich rodzajów magii.");
 		erastus.setEntityClass("blueoldwizardnpc");
 		erastus.setPosition(21, 36);
 		erastus.initHP(100);

@@ -88,7 +88,7 @@ public class OrientalAirWizardNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in maps.quests.WizardJaerPlainQuest
 		};
 
-		jaer.setDescription("Widzisz Jaera, mistrza iluzji.");
+		jaer.setDescription("Oto Jaer, mistrz iluzji.");
 		jaer.setEntityClass("orientalwizardnpc");
 		jaer.setPosition(40, 43);
 		jaer.initHP(100);

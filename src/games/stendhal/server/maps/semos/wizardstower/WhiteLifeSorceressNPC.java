@@ -83,7 +83,7 @@ public class WhiteLifeSorceressNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in maps.quests.WizardElanaPlainQuest
 		};
 
-		elana.setDescription("Widzisz Elanę, białą wróżkę życia.");
+		elana.setDescription("Oto Elana, biała wróżka życia.");
 		elana.setEntityClass("whitesorceressnpc");
 		elana.setPosition(40, 18);
 		elana.initHP(100);

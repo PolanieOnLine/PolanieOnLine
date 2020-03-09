@@ -46,7 +46,7 @@ public class FirstFloorCreatures implements ZoneConfigurator {
 
 		creature1.setName("demon ognia");
 
-		creature1.setDescription("Widzisz demona ognia. Jego ciało pokryte jest piekielnym ogniem.");
+		creature1.setDescription("Oto demon ognia. Jego ciało pokryte jest piekielnym ogniem.");
 
 		creature.setAIProfiles(new HashMap<String, String>());
 		creature1.setAIProfiles(new HashMap<String, String>());

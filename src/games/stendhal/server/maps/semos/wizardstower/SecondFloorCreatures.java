@@ -44,9 +44,9 @@ public class SecondFloorCreatures implements ZoneConfigurator {
 		final Creature creature2 = manager.getCreature("dżin");
 		final Creature creature3 = manager.getCreature("niewidoczny człowiek");
 
-		creature1.setName("cloudwalker");
-		creature2.setName("djinn windmaster");
-		creature3.setName("incorporeal man");
+		creature1.setName("podróżnik po chmurach");
+		creature2.setName("mistrz wiatru dżin");
+		creature3.setName("człowiek bezcielesny");
 
 		creature.setAIProfiles(new HashMap<String, String>());
 		creature1.setAIProfiles(new HashMap<String, String>());

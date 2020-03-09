@@ -46,7 +46,7 @@ public class RedDemonLordNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in maps.quests.WizardMalleusPlainQuest
 		};
 
-		demonlord.setDescription("Oto Xaruhwaiyz, władca demonów");
+		demonlord.setDescription("Oto Xaruhwaiyz, władca demonów.");
 		demonlord.setEntityClass("reddemonnpc");
 		demonlord.setPosition(15, 4);
 		demonlord.initHP(100);
