@@ -1043,7 +1043,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
-				<parameter name="enterMessage">Zekiel the guardian: "To jest szósta część testu i domena Elana."</parameter>
+				<parameter name="enterMessage">Zekiel Strażnik: "To jest szósta część testu i domena Elana."</parameter>
 			</implementation>
 		</entity>
 

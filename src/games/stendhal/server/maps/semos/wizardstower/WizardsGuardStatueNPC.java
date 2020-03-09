@@ -33,7 +33,7 @@ public class WizardsGuardStatueNPC implements ZoneConfigurator {
 	}
 
 	private void buildZekiel(final StendhalRPZone zone) {
-		final SpeakerNPC zekiel = new SpeakerNPC("Zekiel the guardian") {
+		final SpeakerNPC zekiel = new SpeakerNPC("Zekiel Strażnik") {
 
 			@Override
 			protected void createPath() {

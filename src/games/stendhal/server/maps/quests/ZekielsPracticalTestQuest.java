@@ -48,7 +48,7 @@ import games.stendhal.server.maps.Region;
  *
  * STEPS:
  * <ul>
- * <li> Zekiel the guardian asks you to bring him 6 beeswax and 2 iron to make magic candles with. </li>
+ * <li> Zekiel Strażnik asks you to bring him 6 beeswax and 2 iron to make magic candles with. </li>
  * <li> Bring the items to Zekiel. </li>
  * <li> You can start the practical test. </li>
  * <li> Zekiel informs you about the test and wizards. </li>
@@ -81,14 +81,14 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void prepareQuestOfferingStep() {
-		final SpeakerNPC npc = npcs.get("Zekiel the guardian");
+		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
 
 		// player asks about quest when he has not started it
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Na  początek potrzebujesz 6 magicznych świec. Dostarcz mi 6 plastrów #wosku #pszczelego oraz 2 sztabki #żelaza, " +
+				"Na początek potrzebujesz 6 magicznych świec. Dostarcz mi 6 plastrów #wosku #pszczelego oraz 2 sztabki #żelaza, " +
 				"a wyczaruję je na test praktyczny.",
 				new SetQuestAction(QUEST_SLOT,"start"));
 
@@ -144,7 +144,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void bringItemsStep() {
-		final SpeakerNPC npc = npcs.get("Zekiel the guardian");
+		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
 
 		// player returns with iron but no beeswax
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -205,7 +205,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void practicalTestStep() {
-		final SpeakerNPC npc = npcs.get("Zekiel the guardian");
+		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
 
 		// player returns after bringing the candles but hasn't tried to climb tower
 		npc.add(ConversationStates.IDLE,
@@ -274,7 +274,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 
 	private void finishQuestStep() {
 
-		// NOTE: this is a different NPC from Zekiel the guardian used above. This one 'finishes' the quest
+		// NOTE: this is a different NPC from Zekiel Strażnik used above. This one 'finishes' the quest
 		// and is in int_semos_wizards_tower_7, not the basement.
 		final SpeakerNPC npc = npcs.get("Zekiel");
 
@@ -293,8 +293,8 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 
 	private void questFinished() {
 
-		// this is the basement level normal Zekiel the guardian again
-		final SpeakerNPC npc = npcs.get("Zekiel the guardian");
+		// this is the basement level normal Zekiel Strażnik again
+		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
 
 		// player returns having completed the quest
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -378,7 +378,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Zekiel the guardian";
+		return "Zekiel Strażnik";
 	}
 
 	@Override
