@@ -171,6 +171,7 @@
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,,dual attack"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -349,6 +350,7 @@
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,attack weakest,dual attack"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -393,6 +395,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -435,6 +438,7 @@
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,attack weakest,dual attack"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 	<!-- STOP: flying -->

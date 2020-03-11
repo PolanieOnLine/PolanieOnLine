@@ -206,6 +206,12 @@
 		<equips>
 		</equips>
 		<ai>
+			<says>
+				<sound value="werewolf_growl-01"/>
+				<sound value="werewolf_growl-02"/>
+				<sound value="werewolf_snarl-01"/>
+				<sound value="werewolf_howl-01"/>
+			</says>
 			<profile name="poisonous" params="5,zabójcza trucizna"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>

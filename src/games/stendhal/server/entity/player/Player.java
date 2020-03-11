@@ -41,6 +41,7 @@ import games.stendhal.common.NotificationType;
 import games.stendhal.common.TradeState;
 import games.stendhal.common.Version;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.WordList;
@@ -2348,14 +2349,50 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	@Override
-	public void setLevel(int level) {
-		final int oldLevel = super.getLevel();
+	public void setLevel(final int level) {
+		final int oldLevel = getLevel();
 		super.setLevel(level);
 
 		// reward players on level up
 		if (oldLevel < level) {
 			AchievementNotifier.get().onLevelChange(this);
-			this.addEvent(new SoundEvent("tadaa-1", SoundLayer.USER_INTERFACE));
+			this.addEvent(new SoundEvent(SoundID.LEVEL_UP, SoundLayer.USER_INTERFACE));
+			this.notifyWorldAboutChanges();
+		}
+	}
+
+	@Override
+	protected void setDefInternal(final int def, final boolean notify) {
+		final int oldDef = getDef();
+		super.setDefInternal(def, notify);
+
+		if (oldDef < def) {
+			AchievementNotifier.get().onDefChange(this);
+			this.addEvent(new SoundEvent(SoundID.STAT_UP, SoundLayer.USER_INTERFACE));
+			this.notifyWorldAboutChanges();
+		}
+	}
+
+	@Override
+	protected void setAtkInternal(final int atk, final boolean notify) {
+		final int oldAtk = getAtk();
+		super.setAtkInternal(atk, notify);
+
+		if (oldAtk < atk) {
+			AchievementNotifier.get().onAtkChange(this);
+			this.addEvent(new SoundEvent(SoundID.STAT_UP, SoundLayer.USER_INTERFACE));
+			this.notifyWorldAboutChanges();
+		}
+	}
+
+	@Override
+	protected void setRatkInternal(final int ratk, final boolean notify) {
+		final int oldRatk = getRatk();
+		super.setRatkInternal(ratk, notify);
+
+		if (oldRatk < ratk) {
+			AchievementNotifier.get().onRatkChange(this);
+			this.addEvent(new SoundEvent(SoundID.STAT_UP, SoundLayer.USER_INTERFACE));
 			this.notifyWorldAboutChanges();
 		}
 	}

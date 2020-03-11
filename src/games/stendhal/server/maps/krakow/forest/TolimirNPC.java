@@ -126,7 +126,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	private static final String FULL_MESSAGE = "Strzelnica jest pełna. Wróć później.";
 
 	/** message when player tries to enter without paying */
-	private static final String NO_ACCESS_MESSAGE = "Hej %s! Nie możesz sobie biegać po mojej strzelnicy za darmo.";
+	private static final String NO_ACCESS_MESSAGE = "Hej %s! Nie możesz sobie biegać po strzelnicy królestwa Polan za darmo.";
 
 	/** position of gate that manages access to training area */
 	private static final Point GATE_POS = new Point(81, 88);
@@ -169,7 +169,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 			@Override
 			protected boolean isAllowed(final RPEntity user) {
 				// don't worry about players trying to leave
-				if (user.getDirectionToward(this) != Direction.LEFT) {
+				if (user.getDirectionToward(this) != Direction.UP) {
 					return true;
 				}
 
@@ -276,7 +276,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 			}
 		};
 		blackboard.setEntityClass("blackboard");
-		blackboard.setPosition(78, 88);
+		blackboard.setPosition(77, 88);
 		archeryZone.add(blackboard);
 	}
 	
@@ -287,7 +287,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	private void initRepairShop() {
 		final Sign repairSign = new Sign();
 		repairSign.setEntityClass("notice");
-		repairSign.setPosition(78, 89);
+		repairSign.setPosition(78, 88);
 		repairSign.setText("Łuki treningowe #naprawiane za połowę ceny nowych.");
 		archeryZone.add(repairSign);
 
@@ -597,7 +597,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	public void onLoggedIn(final Player player) {
 		// don't allow players to login within archery range area boundaries
 		if (isPlayerInArea(player, archeryZoneID, archeryArea) || (player.getX() == GATE_POS.x && player.getY() == GATE_POS.y)) {
-			player.teleport(archeryZoneID, 81, 90, null, null);
+			player.teleport(archeryZoneID, 81, 89, null, null);
 		}
 
 		final String sessionState = player.getQuest(QUEST_SLOT, 0);
@@ -637,7 +637,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 			npc.say("Twój trening właśnie się skończył " + player.getName() + ".");
 		}
 		if (isPlayerInArea(player, archeryZoneID, archeryArea)) {
-			player.teleport(archeryZoneID, 81, 90, null, null);
+			player.teleport(archeryZoneID, 81, 89, null, null);
 		}
 
 		player.setQuest(QUEST_SLOT, STATE_DONE + ";" + Long.toString(System.currentTimeMillis()));
@@ -811,7 +811,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 			for (final ChatCondition cond : rejections.keySet()) {
 				if (!cond.fire((Player) user, sentence, this)) {
 					setRejectedAction(new MultipleActions(
-							new TeleportAction(archeryZoneID, 81, 90, null),
+							new TeleportAction(archeryZoneID, 81, 89, null),
 							new SayTextAction(formatMessage(rejections.get(cond).get(msgIndex), msgTarget))));
 					return false;
 				}

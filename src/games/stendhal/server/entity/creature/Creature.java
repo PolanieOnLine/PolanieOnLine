@@ -247,6 +247,9 @@ public class Creature extends NPC {
 		if (this.aiProfiles.containsKey("active_idle")) {
 			put("active_idle", "");
 		}
+		if (this.aiProfiles.containsKey("flying")) {
+			put("flying", "");
+		}
 
 		for (RPSlot slot : copy.slots()) {
 			this.addSlot((RPSlot) slot.clone());

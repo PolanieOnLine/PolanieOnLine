@@ -4,6 +4,8 @@
 	<!-- Potworki z Stendhal -->
 	<group uri="creatures/stendhal/angel.xml" />
 	<group uri="creatures/stendhal/animal.xml" />
+	<group uri="creatures/stendhal/animal_fowl.xml" />
+	<group uri="creatures/stendhal/animal_aquatic.xml" />
 	<group uri="creatures/stendhal/beast.xml" />
 	<group uri="creatures/stendhal/chess.xml" />
     <group uri="creatures/stendhal/demon.xml" />
@@ -11,7 +13,6 @@
 	<group uri="creatures/stendhal/dwarf.xml" />
 	<group uri="creatures/stendhal/elemental.xml" />
 	<group uri="creatures/stendhal/elf.xml" />
-	<group uri="creatures/stendhal/fowl.xml" />
 	<group uri="creatures/stendhal/giant.xml" />
     <group uri="creatures/stendhal/gnome.xml" />
 	<group uri="creatures/stendhal/goblin.xml" />

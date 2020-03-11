@@ -99,7 +99,7 @@
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">up_in_the_sky</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="volume">90</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -119,7 +119,7 @@
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">up_in_the_sky</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="volume">90</parameter>
 			</implementation>
 		</entity>
 
@@ -141,7 +141,7 @@
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">up_in_the_sky</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="volume">90</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -156,7 +156,7 @@
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">up_in_the_sky</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="volume">90</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -171,7 +171,7 @@
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">up_in_the_sky</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="volume">90</parameter>
 			</implementation>
 		</entity>
 

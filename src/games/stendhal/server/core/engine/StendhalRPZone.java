@@ -60,6 +60,8 @@ import games.stendhal.server.entity.creature.OwczarekPodhalanski;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.mapstuff.area.WalkBlocker;
+import games.stendhal.server.entity.mapstuff.area.WalkBlockerFactory;
 import games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
@@ -701,6 +703,12 @@ public class StendhalRPZone extends MarauroaRPZone {
 				final TrainingDummy dummy = TrainingDummyFactory.create(type);
 				dummy.setPosition(x, y);
 				add(dummy);
+			} else if (clazz.contains("logic/area")) {
+				// TODO: configure WalkBlocker & FlyOverArea on "collision" map layer
+
+				final WalkBlocker blocker = WalkBlockerFactory.create(type);
+				blocker.setPosition(x, y);
+				add(blocker);
 			}
 		} catch (final RuntimeException e) {
 			logger.error("error creating entity " + type + " at (" + x + ","

@@ -46,6 +46,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -91,6 +92,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -137,6 +139,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -183,6 +186,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -295,6 +299,7 @@
 			<profile name="lifesteal" params="0.5"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -425,6 +430,7 @@
 			<profile name="heal" params="100,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -469,6 +475,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 

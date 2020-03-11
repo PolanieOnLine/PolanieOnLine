@@ -240,6 +240,9 @@ public class WeeklyItemQuest extends AbstractQuest {
 		// legs (hard difficulty)
 		addHard("spodnie xenocyjskie",1);
 
+		// misc (hard difficulty)
+		addHard("róg jednorożca", 5);
+
 		// shield (hard difficulty)
 		addHard("tarcza xenocyjska",1);
 

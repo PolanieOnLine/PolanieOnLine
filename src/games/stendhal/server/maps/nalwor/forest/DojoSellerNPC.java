@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -39,6 +40,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.SoundEvent;
 
 
 /**
@@ -183,10 +185,12 @@ public class DojoSellerNPC implements ZoneConfigurator {
 				}
 
 				if (swordsCount > 1) {
-					npc.say("Zrobione! Twoje miecze treningowe wyglądają jak nowe");
+					npc.say("Gotowe! Twoje miecze treningowe wyglądają jak nowe");
 				} else {
-					npc.say("Zrobione! Twój miecz treningowy wygląda jak nowy.");
+					npc.say("Gotowe! Twój miecz treningowy wygląda jak nowy.");
 				}
+
+				npc.addEvent(new SoundEvent("coins-01", SoundLayer.CREATURE_NOISE));
 			}
 		};
 

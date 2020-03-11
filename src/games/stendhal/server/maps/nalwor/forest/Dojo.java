@@ -69,7 +69,7 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 	private static final String QUEST_SLOT = "dojo";
 
 	/** cost to use dojo */
-	private static final int COST = 10000;
+	private static final int COST = 5000;
 
 	/** capped attack level */
 	private static final int ATK_LIMIT = 80;
@@ -78,7 +78,7 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 	private static final int TRAIN_TIME = 15 * MathHelper.SECONDS_IN_ONE_MINUTE;
 
 	/** time player must wait to train again */
-	private static final int COOLDOWN = 6 * MathHelper.MINUTES_IN_ONE_HOUR;
+	private static final int COOLDOWN = 15;
 
 	/** max number of players allowed in training area at a time */
 	private static final int MAX_OCCUPANTS = 16;
@@ -132,7 +132,17 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 		// players cannot teleport into dojo area
 		new NoTeleportIn().configureZone(dojoZone, dojoArea);
 
-		// prevents players who haven't paid from entering if gate is open
+		initEntrance();
+		initNPC();
+		initDialogue();
+		addToQuestSystem();
+	}
+
+	/**
+	 * Initializes portal & gate entities that manage access to the training area.
+	 */
+	private void initEntrance() {
+		// prevents players who haven't paid from entering if gate is open (must be added before gate)
 		dojoZone.add(new DojoConditionAndActionPortal());
 
 		// gate to enter
@@ -171,14 +181,9 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				return false;
 			}
 		};
-		//gate.setRefuseMessage("You must pay to enter the dojo.");
 		gate.setAutoCloseDelay(2);
 		gate.setPosition(GATE_POS.x, GATE_POS.y);
 		dojoZone.add(gate);
-
-		initNPC();
-		initDialogue();
-		addToQuestSystem();
 	}
 
 	private void initNPC() {
@@ -266,13 +271,12 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				null);
 
 		// player meets requirements but training area is full
-		Area area = new Area(SingletonRepository.getRPWorld().getZone(dojoZoneID), dojoArea);
 		samurai.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
 						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, ATK_LIMIT),
 						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
-						new AreaIsFullCondition(area, MAX_OCCUPANTS)),
+						dojoFullCondition),
 				ConversationStates.ATTENDING,
 				FULL_MESSAGE,
 				null);

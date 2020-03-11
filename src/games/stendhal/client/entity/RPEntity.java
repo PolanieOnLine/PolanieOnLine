@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1517,27 +1518,38 @@ public abstract class RPEntity extends AudibleEntity {
 			xp = newXp;
 		}
 
-		if (changes.has("level") && object.has("level")
-				&& (User.squaredDistanceTo(x, y) < HEARING_DISTANCE_SQ)) {
-			if (getGender().equals("F")) {
-				final String text = getTitle() + " osiągnęła poziom " + getLevel();
+		final Map<String, Integer> statTypes = new LinkedHashMap<>();
+		statTypes.put("level", getLevel());
+		statTypes.put("def", getDef());
+		statTypes.put("atk", getAtk());
+		statTypes.put("ratk", getRatk());
 
-					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(text,
-						NotificationType.SIGNIFICANT_POSITIVE));
-
-				ClientSingletonRepository.getUserInterface().addGameScreenText(
-						getX() + (getWidth() / 2.0), getY(),
-						text, NotificationType.SIGNIFICANT_POSITIVE, false);
-			} else {
-				final String text = getTitle() + " osiągnął poziom " + getLevel();
-
-				ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(text,
-						NotificationType.SIGNIFICANT_POSITIVE));
-
-				ClientSingletonRepository.getUserInterface().addGameScreenText(
-						getX() + (getWidth() / 2.0), getY(),
-						text, NotificationType.SIGNIFICANT_POSITIVE, false);
+		String statChange = null;
+		for (final String stype: statTypes.keySet()) {
+			if (changes.has(stype) && object.has(stype)) {
+				statChange = stype;
+				break;
 			}
+		}
+
+		if (statChange != null && (User.squaredDistanceTo(x, y) < HEARING_DISTANCE_SQ)) {
+			final StringBuilder sb = new StringBuilder(getTitle());
+			if (!statChange.equals("level")) {
+				sb.append(" " + statChange.toUpperCase());
+			}
+			if (getGender().equals("F")) {
+				sb.append(" osiągnęła poziom " + Integer.toString(statTypes.get(statChange)));
+			} else {
+				sb.append(" osiągnął poziom " + Integer.toString(statTypes.get(statChange)));
+			}
+
+			final String text = sb.toString();
+			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(text,
+					NotificationType.SIGNIFICANT_POSITIVE));
+
+			ClientSingletonRepository.getUserInterface().addGameScreenText(
+					getX() + (getWidth() / 2.0), getY(),
+					text, NotificationType.SIGNIFICANT_POSITIVE, false);
 		}
 	}
 

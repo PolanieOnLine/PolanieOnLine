@@ -47,7 +47,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 	// enemies required for Heavenly Wrath
 	public static final String[] ENEMIES_ANGELS = {
-			"anioł", "archanioł", "anioł ciemności", "archanioł ciemności", "upadły anioł"
+			"anioł", "archanioł", "anioł ciemności", "archanioł ciemności", "upadły anioł",
+			"aniołek"
 	};
 	public static final String ID_ANGELS = "fight.general.angels";
 	public static final int COUNT_ANGELS = 100;
@@ -68,6 +69,27 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	};
 	public static final String ID_DEEPSEA = "fight.general.deepsea";
 	public static final int COUNT_DEEPSEA = 500;
+
+	// enemies required for Zombie Apocalypse
+	public static final String[] ENEMIES_ZOMBIES = {
+			"zombi", "krwawy zombi", "bezgłowy potwór", "szczur zombie"
+	};
+	public static final String ID_ZOMBIES = "fight.general.zombies";
+	public static final int COUNT_ZOMBIES = 500;
+
+	// enemies required for Chicken Nuggets
+	public static final String[] ENEMIES_FOWL = {
+			"pisklak", "kogucik", "dodo", "kokoszka", "pingwin", "gołąb"
+	};
+	public static final String ID_FOWL = "fight.general.fowl";
+	public static final int COUNT_FOWL = 100;
+
+	// enemies required for Pachyderm Mayhem
+	public static final String[] ENEMIES_PACHYDERM = {
+			"słoń", "słoń z rogami", "słoń musth", "mamut włochaty"
+	};
+	public static final String ID_PACHYDERM = "fight.general.pachyderm";
+	public static final int COUNT_PACHYDERM = 100;
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -142,6 +164,30 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_DEEPSEA, "Głębinowy Rybak", "Zabił 500 rekinów, krakenów oraz neo krakenów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_DEEPSEA, ENEMIES_DEEPSEA)));
+
+		fightingAchievements.add(createAchievement(
+				ID_ZOMBIES, "Apokalipsa Zombi", "Zabił 500 różnych zombi",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String zombie: ENEMIES_ZOMBIES) {
+							kills += player.getSoloKill(zombie) + player.getSharedKill(zombie);
+						}
+						return kills >= COUNT_ZOMBIES;
+					}
+				}));
+
+		fightingAchievements.add(createAchievement(
+				ID_FOWL, "Nuggetsy z Kurczaka", "Zabił 100 każdego rodzaju ptactwa",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_FOWL, ENEMIES_FOWL)));
+
+		fightingAchievements.add(createAchievement(
+				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił 100 każdego rodzaju dużego ssaka",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(COUNT_PACHYDERM, ENEMIES_PACHYDERM)));
 
 		return fightingAchievements;
 	}

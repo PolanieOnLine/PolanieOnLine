@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -36,8 +37,8 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.BreakableItem;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.mapstuff.area.FlyOverArea;
 import games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal;
+import games.stendhal.server.entity.mapstuff.portal.Gate;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -66,6 +67,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ShowItemListEvent;
+import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.maps.quests.AbstractQuest;
 import games.stendhal.server.util.Area;
 import games.stendhal.server.util.TimeUtil;
@@ -84,7 +86,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	private static final String QUEST_SLOT = "archery_range";
 
 	/** cost to use archery range */
-	private static final int COST = 10000;
+	private static final int COST = 5000;
 
 	/** capped range attack level */
 	private static final int RATK_LIMIT = 80;
@@ -93,10 +95,13 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	private static final int TRAIN_TIME = 15 * MathHelper.SECONDS_IN_ONE_MINUTE;
 
 	/** time player must wait to train again */
-	private static final int COOLDOWN = 6 * MathHelper.MINUTES_IN_ONE_HOUR;
+	private static final int COOLDOWN = 15;
 
 	/** max number of players allowed in training area at a time */
 	private static final int MAX_OCCUPANTS = 10;
+
+	/** condition to check if training area is full */
+	AreaIsFullCondition rangeFullCondition;
 
 	/** zone info */
 	private StendhalRPZone archeryZone;
@@ -121,12 +126,15 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 
 	private static final String FULL_MESSAGE = "Strzelnica jest pełna. Wróć później.";
 
-	/** position of portal that manages access to training area */
-	private static final Point PORTAL_POS = new Point(116, 104);
+	/** position of gate that manages access to training area */
+	private static final Point GATE_POS = new Point(116, 104);
 
 	/** misc objects for JUnit test */
 	private static AbstractQuest quest;
 	private static ShopSign blackboard;
+
+	/** message when player tries to enter without paying */
+	private static final String NO_ACCESS_MESSAGE = "Hej %s! Nie możesz sobie biegać po mojej strzelnicy za darmo.";
 
 
 	@Override
@@ -138,16 +146,66 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		archeryZone = zone;
 		archeryZoneID = zone.getName();
 
-		buildNPC();
+		// initialize condition to check if training area is full
+		rangeFullCondition = new AreaIsFullCondition(new Area(archeryZone, archeryArea), MAX_OCCUPANTS);
+
+		initEntrance();
+		initNPC();
 		initShop();
 		initRepairShop();
 		initTraining();
-		initEntrance();
-		initBlockers();
 		addToQuestSystem();
 	}
 
-	private void buildNPC() {
+	/**
+	 * Initializes portal & gate entities that manage access to the training area.
+	 */
+	private void initEntrance() {
+		// prevents players who haven't paid from entering if gate is open (must be added before gate)
+		archeryZone.add(new ArcheryRangeConditionAndActionPortal());
+
+		// gate to enter
+		final Gate gate = new Gate("v", "palisade_gate", new QuestInStateCondition("archery_range", 0, STATE_ACTIVE)) {
+
+			@Override
+			protected boolean isAllowed(final RPEntity user) {
+				// don't worry about players trying to leave
+				if (user.getDirectionToward(this) != Direction.LEFT) {
+					return true;
+				}
+
+				// check if player has paid
+				if (!super.isAllowed(user)) {
+					npc.say(NO_ACCESS_MESSAGE.replace("%s", user.getName()));
+					return false;
+				}
+
+				// check if dojo is full
+				if (isFull()) {
+					npc.say(FULL_MESSAGE);
+					return false;
+				}
+
+				return true;
+			}
+
+			@Override
+			public boolean onUsed(final RPEntity user) {
+				if (this.nextTo(user)) {
+					if (isAllowed(user)) {
+						setOpen(!isOpen());
+						return true;
+					}
+				}
+				return false;
+			}
+		};
+		gate.setAutoCloseDelay(2);
+		gate.setPosition(GATE_POS.x, GATE_POS.y);
+		archeryZone.add(gate);
+	}
+
+	private void initNPC() {
 		npc = new SpeakerNPC(npcName) {
 			@Override
 			protected void createDialog() {
@@ -176,7 +234,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		};
 
 		npc.setDescription("Oto mężczyzna, który wydaje się być utalentowanym zabójcą.");
-		npc.setPosition(120, 100);
+		npc.setPosition(120, 99);
 		npc.setEntityClass("rangernpc");
 		archeryZone.add(npc);
 	}
@@ -208,6 +266,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 		// prices are higher than those of other shops
 		final Map<String, Integer> shop = new LinkedHashMap<>();
 		shop.put("strzała", 4);
+		shop.put("włócznia", 125);
 		shop.put("drewniany łuk", 600);
 		shop.put("długi łuk", 1200);
 		shop.put("łuk treningowy", bowPrice);
@@ -244,7 +303,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 			}
 		};
 		blackboard.setEntityClass("blackboard");
-		blackboard.setPosition(117, 101);
+		blackboard.setPosition(117, 100);
 		archeryZone.add(blackboard);
 	}
 	
@@ -255,7 +314,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	private void initRepairShop() {
 		final Sign repairSign = new Sign();
 		repairSign.setEntityClass("notice");
-		repairSign.setPosition(118, 101);
+		repairSign.setPosition(118, 100);
 		repairSign.setText("Łuki treningowe #naprawiane za połowę ceny nowych.");
 		archeryZone.add(repairSign);
 
@@ -316,10 +375,12 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				}
 
 				if (usedBows > 1) {
-					npc.say("Zrobione! Twoje łuki treningowe wyglądają jak nowe.");
+					npc.say("Gotowe! Twoje łuki treningowe wyglądają jak nowe.");
 				} else {
-					npc.say("Zrobione! Twój łuk treningowy wygląda jak nowy.");
+					npc.say("Gotowe! Twój łuk treningowy wygląda jak nowy.");
 				}
+
+				npc.addEvent(new SoundEvent("coins-01", SoundLayer.CREATURE_NOISE));
 			}
 		};
 
@@ -466,13 +527,12 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				null);
 
 		// player meets requirements but training area is full
-		Area area = new Area(SingletonRepository.getRPWorld().getZone(archeryZoneID), archeryArea);
 		npc.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
 						new PlayerStatLevelCondition("ratk", ComparisonOperator.LESS_THAN, RATK_LIMIT),
 						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
-						new AreaIsFullCondition(area, MAX_OCCUPANTS)),
+						rangeFullCondition),
 				ConversationStates.ATTENDING,
 				FULL_MESSAGE,
 				null);
@@ -520,26 +580,6 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, TRAIN_TIME, "Twój trening zakończy się za około"));
 		*/
-	}
-
-	/**
-	 * Initializes portal entity that manages access to the training area.
-	 */
-	private void initEntrance() {
-		archeryZone.add(new ArcheryRangeConditionAndActionPortal());
-	}
-
-	private void initBlockers() {
-		final int[] xLocations = {
-				97, 99, 101, 103, 105, 107, 109, 111, 113, 115
-		};
-
-		for (final int x: xLocations) {
-			final FlyOverArea blocker = new FlyOverArea();
-			blocker.setPosition(x, 102);
-
-			archeryZone.add(blocker);
-		}
 	}
 
 	/**
@@ -611,7 +651,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	@Override
 	public void onLoggedIn(final Player player) {
 		// don't allow players to login within archery range area boundaries
-		if (isPlayerInArea(player, archeryZoneID, archeryArea) || (player.getX() == PORTAL_POS.x && player.getY() == PORTAL_POS.y)) {
+		if (isPlayerInArea(player, archeryZoneID, archeryArea) || (player.getX() == GATE_POS.x && player.getY() == GATE_POS.y)) {
 			player.teleport(archeryZoneID, 118, 104, null, null);
 		}
 
@@ -632,6 +672,16 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	public void onLoggedOut(Player player) {
 		// disable timer/notifier
 		SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
+	}
+
+	/**
+	 * Checks if dojo is full.
+	 *
+	 * @return
+	 * 		<code>true</code> if max number of occupants are within training area bounds.
+	 */
+	private boolean isFull() {
+		return rangeFullCondition.fire(null, null, null);
 	}
 
 	/**
@@ -781,7 +831,8 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 			rejections = new LinkedHashMap<>();
 			rejections.put(
 					new QuestInStateCondition(QUEST_SLOT, 0, STATE_ACTIVE),
-					Arrays.asList("Hej %s! Nie możesz sobie biegać po mojej strzelnicy za darmo.",
+					Arrays.asList(
+							NO_ACCESS_MESSAGE,
 							pushMessage));
 			rejections.put(
 					new NotCondition(new AreaIsFullCondition(area, MAX_OCCUPANTS)),
@@ -789,7 +840,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 							FULL_MESSAGE,
 							pushMessage));
 
-			setPosition(PORTAL_POS.x, PORTAL_POS.y);
+			setPosition(GATE_POS.x, GATE_POS.y);
 			setIgnoreNoDestination(true);
 			setResistance(0);
 			setForceStop(true);
