@@ -3,7 +3,10 @@ Changelog
 1.10
 *klient*
 - Dodano nowe grafiki przedmiotów/potworów/npc/gui
+- Dodano grafikę otwieranej bramy na obydwóch strzelnicach (Nalwor & Kraków)
+- Dodano kilka nowych dźwięków dla stworzeń
 - Dodano listę zabitych już potworów (w pojedynkę / w grupie)
+- Dodano komunikat dźwiękowy o wbiciu wyższego poziomu umiejętności
 - Poprawiono kolory kosy oraz pordzewiałej kosy
 
 *świat*
@@ -32,7 +35,7 @@ Changelog
 	- mały pegaz, pegaz brązowy, pegaz kościsty, pegaz hebanowy
 	- nietoperz olbrzymi, nietoperz wampir olbrzymi
 	- niedźwiedź biały, neo kraken
-- Dodano nowe osiągnięcia: (17)
+- Dodano nowe osiągnięcia: (35)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -50,6 +53,10 @@ Changelog
 	- "Królewsko Obdarowany"
 	- "Kołysząc się na Jabłkach"
 	- "Głębinowy Rybak"
+	- "Apokalipsa Zombi"
+	- "Nuggetsy z Kurczaka"
+	- "Gruboskórny Zamęt"
+	- po 5 osiągnięć dla każdej statystyki (atk, obr i str)
 - Zmieniono nazwy przedmiotom:
 	- "elficki kapelusz" -> "kapelusz elficki"
 	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"
@@ -58,6 +65,9 @@ Changelog
 - NPC Lupos skupuje kapelusz elficki
 - NPC Tolimir oraz Chester umożliwiają naprawienie łuku treningowego
 - Ilość zużyć łuku treningowego zmalała do 1,500
+- Zmniejszono koszt trenowania na strzelnicy u Chestera (Nalwor forest) do 5,000
+- Zmniejszono czas oczekiwania na kolejny trening na obydwóch strzelnicach (Nalwor & Kraków)
+- Sporo mniejszych poprawiek na mapach obydwóch światów
 
 *kod*
 - Dodano wsparcie dla języka Lua
