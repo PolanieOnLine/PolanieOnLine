@@ -7,7 +7,8 @@ Changelog
 - Dodano kilka nowych dźwięków dla stworzeń
 - Dodano listę zabitych już potworów (w pojedynkę / w grupie)
 - Dodano komunikat dźwiękowy o wbiciu wyższego poziomu umiejętności
-- Poprawiono kolory kosy oraz pordzewiałej kosy
+- Poprawiono kolory kosy, pordzewiałej kosy, złotych ciupag (z wąsami!)
+- Rozjaśniono nieco sloty w ekwipunku
 
 *świat*
 - Dodano nowe NPC:
