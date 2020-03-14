@@ -1032,11 +1032,12 @@
 
 	<item name="excalibur">
 		<type class="sword" subclass="excalibur" tileid="-1"/>
-		<description>Oto legendarny złoty miecz excalibur. Miecz jest tak potężny, że potrafi przeciąć każdy żywioł natury bez jakiegokolwiek problemu.</description>
+		<description>Oto wszechmocny legendarny miecz excalibur. Miecz samego króla Artura, silny jak wszystko inne na ziemi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="99"/>
-			<rate value="6"/>
+			<atk value="111"/>
+      		<rate value="4"/>
+	  		<lifesteal value="0.3"/>
 			<min_level value="597"/>
 		</attributes>
 		<weight value="99.0"/>
@@ -1084,6 +1085,51 @@
 		</attributes>
 		<weight value="2.0"/>
 		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="miecz z mithrilu">
+		<type class="sword" subclass="mithril_sword" tileid="-1"/>
+		<description>Oto miecz z mithrilu. Światło jego najważniejszym atrybutem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="47"/>
+			<rate value="6"/>
+			<min_level value="170"/>
+		</attributes>
+		<weight value="9.0"/>
+		<value value="457142"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="sztylecik z mithrilu">
+		<type class="sword" subclass="mithril_dagger" tileid="-1"/>
+		<description>Oto sztylecik z mithrilu. Jeden z najszybszych broni wykonanych przez krasnoludów... Pochłania światło, które potrafi uzdrowić.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="8"/>
+			<rate value="1"/>
+			<lifesteal value="0.1"/>
+			<min_level value="350"/>
+		</attributes>
+		<weight value="9.0"/>
+		<value value="457142"/>
+		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

@@ -72,6 +72,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="czarny pas" quantity="[1,1]" probability="0.55"/>
 			<item value="buty z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.025"/>
 			<item value="strzała płonąca" quantity="[10,30]" probability="5.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="money" quantity="[5000,25000]" probability="100.0"/>
@@ -162,6 +163,7 @@
 			<item value="niezapisany zwój" quantity="[1,2]" probability="5.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
 			<item value="hełm libertyński" quantity="[1,1]" probability="0.1"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.0025"/>
 			<item value="balonik" quantity="[1,1]" probability="5.0"/>
 			<item value="bełt złoty" quantity="[1,30]" probability="100.0"/>
 		</drops>
@@ -206,6 +208,7 @@
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.1"/>
 			<item value="magiczny hełm kolczy" quantity="[1,1]" probability="1.0"/>
 			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.2"/>
 			<item value="pióro anioła" quantity="[1,1]" probability="100.0"/>
 		</drops>
 		<equips>
@@ -248,7 +251,8 @@
 			<item value="pióro archanioła" quantity="[1,1]" probability="100.0"/>
 			<item value="zupa" quantity="[1,3]" probability="30.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
-			<item value="pas z mithrilu" quantity="[1,1]" probability="0.45"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.4"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.1"/>
 			<item value="spodnie z mithrilu" quantity="[1,1]" probability="0.3"/>
 			<item value="strzała płonąca" quantity="[10,30]" probability="7.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.2"/>
