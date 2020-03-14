@@ -104,7 +104,7 @@
 			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
 			<item value="hełm cieni" quantity="[1,1]" probability="2.0"/>
 			<item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
-			<item value="tarcza monarchistyczna" quantity="[1,1]" probability="0.05"/>
+			<item value="tarcza monarchistyczna" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -262,8 +262,8 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.05"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
+			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -290,10 +290,10 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="pierścień skorupy żółwia" quantity="[1,1]" probability="0.5"/>
-			<item value="sztylet królewski" quantity="[1,1]" probability="0.05"/>
-			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.05"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
+			<item value="pierścień skorupy żółwia" quantity="[1,1]" probability="0.5"/>
+			<item value="sztylet królewski" quantity="[1,1]" probability="0.5"/>
+			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -320,9 +320,9 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="zbroja monarchistyczna" quantity="[1,1]" probability="0.05"/>
-			<item value="tarcza monarchistyczna" quantity="[1,1]" probability="0.05"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
+			<item value="zbroja monarchistyczna" quantity="[1,1]" probability="0.5"/>
+			<item value="tarcza monarchistyczna" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -412,8 +412,8 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="zbroja monarchistyczna" quantity="[1,1]" probability="0.05"/>
-			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.05"/>
+			<item value="zbroja monarchistyczna" quantity="[1,1]" probability="0.5"/>
+			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -440,8 +440,8 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="sztylet królewski" quantity="[1,1]" probability="0.05"/>
-			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.05"/>
+			<item value="sztylet królewski" quantity="[1,1]" probability="0.5"/>
+			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -468,8 +468,8 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="sztylet królewski" quantity="[1,1]" probability="0.05"/>
-			<item value="hełm monarchistyczny" quantity="[1,1]" probability="0.05"/>
+			<item value="sztylet królewski" quantity="[1,1]" probability="0.5"/>
+			<item value="hełm monarchistyczny" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -530,7 +530,7 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.05"/>
+			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<abilities>
 			<damage type="fire"/>
@@ -562,7 +562,7 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.05"/>
+			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<abilities>
 			<damage type="ice"/>
@@ -594,8 +594,8 @@
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.05"/>
-			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.05"/>
+			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
+			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<ai>
 			<profile name="brave"/>
