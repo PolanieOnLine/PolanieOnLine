@@ -22,13 +22,13 @@ Changelog
 - Dodano nowe regiony/mapy:
 	- Atlantyda
 	- -5 oraz -6 poziom jaskiń Deniran
-- Dodano nowe przedmioty: (12)
+- Dodano nowe przedmioty: (14)
 	- pierścień spokoju, pierścień imperialny
 	- sztabka platyny, złoże platyny
 	- futro, skórzana nić, obrotowy nóżyk
 	- magiczne spodnie płytowe, magiczne buty płytowe
 	- złota kosa, kosa z mithrilu, miecz treningowy
-	- buty krasnoludzkie
+	- buty krasnoludzkie, sztylecik z mithrilu, miecz z mithrilu
 - Dodano nowe potwory: (23)
 	- słoń z rogami, słoń musth, mamut włochaty
 	- demon wody, wodny skarabeusz, mały skarabeusz
