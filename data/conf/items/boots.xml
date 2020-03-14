@@ -29,10 +29,11 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>
-			<min_level value="80"/>
+			<min_level value="85"/>
 		</attributes>
 		<weight value="15.0"/>
 		<value value="23625"/>
+		<susceptibility type="fire" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -149,7 +150,6 @@
 		</attributes>
 		<weight value="19.0"/>
 		<value value="12096"/>
-		<susceptibility type="fire" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -429,6 +429,25 @@
 		</attributes>
 		<weight value="17.0"/>
 		<value value="3584"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="feet"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="buty krasnoludzkie">
+		<type class="boots" subclass="dwarvish_boots" tileid="-1"/>
+		<description>Oto buty krasnoludzkie. Nie jest to twój rozmiar stopy, czujesz się ciasno w nich.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="10"/>
+			<min_level value="25"/>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
