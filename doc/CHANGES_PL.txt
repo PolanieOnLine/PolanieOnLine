@@ -28,6 +28,7 @@ Changelog
 	- futro, skórzana nić, obrotowy nóżyk
 	- magiczne spodnie płytowe, magiczne buty płytowe
 	- złota kosa, kosa z mithrilu, miecz treningowy
+	- buty krasnoludzkie
 - Dodano nowe potwory: (23)
 	- słoń z rogami, słoń musth, mamut włochaty
 	- demon wody, wodny skarabeusz, mały skarabeusz
