@@ -153,7 +153,7 @@
 
 	<!-- START: giant -->
 
-	<creature name="gnom gigant">
+	<creature name="olbrzymi gnom">
 		<type class="stendhal/gnome" subclass="gnome_giant" tileid="gnome.png:4"/>
 		<description></description>
 		<attributes>
@@ -179,7 +179,7 @@
 		</ai>
 	</creature>
 
-	<creature name="panna gnom gigant">
+	<creature name="olbrzymia panna gnom">
 		<type class="stendhal/gnome" subclass="gnomess_giant" tileid="gnome.png:5"/>
 		<description></description>
 		<attributes>
