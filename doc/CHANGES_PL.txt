@@ -68,7 +68,9 @@ Changelog
 - Ilość zużyć łuku treningowego zmalała do 1,500
 - Zmniejszono koszt trenowania na strzelnicy u Chestera (Nalwor forest) do 5,000
 - Zmniejszono czas oczekiwania na kolejny trening na obydwóch strzelnicach (Nalwor & Kraków)
+- Zwiększono szansę na zdobycie przedmiotu "magiczny płaszcz" z Blordrougtów ~0.1%-0.5%
 - Sporo mniejszych poprawiek na mapach obydwóch światów
+- Poprawiono opisy armii Blordrougthów
 
 *kod*
 - Dodano wsparcie dla języka Lua
