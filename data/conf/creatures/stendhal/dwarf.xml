@@ -21,6 +21,7 @@
 		<drops>
 			<item value="money" quantity="[3,33]" probability="90.0"/>
 			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.025"/>
+			<item value="buty krasnoludzkie" quantity="[1,1]" probability="0.05"/>
 			<item value="topór obosieczny" quantity="[1,1]" probability="3.0"/>
 			<item value="złoty pyrlik" quantity="[1,1]" probability="1.5"/>
 		</drops>
@@ -200,6 +201,7 @@
 		<drops>
 			<item value="money" quantity="[3,27]" probability="90.0"/>
 			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.5"/>
+			<item value="buty krasnoludzkie" quantity="[1,1]" probability="1.0"/>
 			<item value="czarne spodnie" quantity="[1,1]" probability="0.0010"/>
 			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
 			<item value="złoty topór obosieczny" quantity="[1,1]" probability="0.01"/>
@@ -551,6 +553,7 @@
 			<item value="money" quantity="[20,52]" probability="100.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="1.5"/>
 			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.25"/>
+			<item value="buty krasnoludzkie" quantity="[1,1]" probability="0.5"/>
 			<item value="topór obosieczny" quantity="[1,1]" probability="5.0"/>
 			<item value="złoty pyrlik" quantity="[1,1]" probability="5.5"/>
 			<item value="buty kamienne" quantity="[1,1]" probability="0.5"/>
@@ -614,6 +617,7 @@
 		<drops>
 			<item value="money" quantity="[9,55]" probability="100.0"/>
 			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="1.0"/>
+			<item value="buty krasnoludzkie" quantity="[1,1]" probability="0.5"/>
 			<item value="tarcza jednorożca" quantity="[1,1]" probability="3.5"/>
 			<item value="berdysz" quantity="[1,1]" probability="2.0"/>
 			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
@@ -682,6 +686,7 @@
 		<drops>
 			<item value="money" quantity="[5,45]" probability="100.0"/>
 			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="2.0"/>
+			<item value="buty krasnoludzkie" quantity="[1,1]" probability="1.0"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="0.25"/>
 			<item value="złoty topór obosieczny" quantity="[1,1]" probability="0.5"/>
 			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="0.0050"/>
