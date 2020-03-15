@@ -28,7 +28,7 @@ public class ZlotaSkrzynia extends Box {
 
 	private static final String[] items = { "money", "money", "gigantyczny eliksir", "gigantyczny eliksir", "gigantyczny eliksir", "wielki eliksir", "wielki eliksir", "ciupaga", "ciupaga", "złote spodnie",  
 			"złota zbroja", "zbroja cieni", "tarcza płytowa", "sztylet mroku", "skórzane wzmocnione rękawice", "skóra złotego smoka", "skóra zielonego smoka", "skóra niebieskiego smoka", 
-			"skóra czerwonego smoka", "skóra czarnego smoka", "skóra arktycznego smoka", "rękawice cieni", "pas zbójecki", "miecz lodowy", "korale", "czarny sztylet", "czarny płaszcz", 
+			"skóra czerwonego smoka", "skóra czarnego smoka", "skóra arktycznego smoka", "rękawice cieni", "pas zbójnicki", "miecz lodowy", "korale", "czarny sztylet", "czarny płaszcz", 
 			"czarne spodnie", "czarne buty", "czarna zbroja" };
 
 	/**

@@ -116,7 +116,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement("item.set.goralskie", "Góralskie Dziecko", "Zdobył cały góralski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "cuha góralska", "góralski gorset", "góralski kapelusz", "portki bukowe",
-						"góralska spódnica", "góralska biała spódnica", "chusta góralska", "kierpce", "korale", "pas zbójecki",
+						"góralska spódnica", "góralska biała spódnica", "chusta góralska", "kierpce", "korale", "pas zbójnicki",
 						"ciupaga")));
 
 		itemAchievements.add(createAchievement("item.cloak.dragon", "Pogromca Smoka", "Zdobył wszyskie smocze płaszcze",

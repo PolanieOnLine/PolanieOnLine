@@ -206,12 +206,12 @@ public class GoralskiCollector2 extends AbstractQuest {
 									raiser.say("Dziękuję bardzo! Masz coś jeszcze dla mnie?");
 								} else {
 									final Item pas = SingletonRepository.getEntityManager().getItem(
-											"pas zbójecki");
+											"pas zbójnicki");
 									pas.setBoundTo(player.getName());
 									player.equipOrPutOnGround(pas);
 									player.addXP(75000);
 									player.addKarma(30);
-									raiser.say("W końcu moja kolekcja jest kompletna! Dziękuję bardzo. Spójrz tylko na ten #'pas zbójecki', czyż nie jest on piękny? Proszę weź go... przyda Ci się pewnie.");
+									raiser.say("W końcu moja kolekcja jest kompletna! Dziękuję bardzo. Spójrz tylko na ten #'pas zbójnicki', czyż nie jest on piękny? Proszę weź go... przyda Ci się pewnie.");
 									player.setQuest(QUEST_SLOT, "done");
 									player.notifyWorldAboutChanges();
 									raiser.setCurrentState(ConversationStates.ATTENDING);

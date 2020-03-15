@@ -76,7 +76,7 @@ public class WielkoludNPC implements ZoneConfigurator {
 				addJob("Poszukuję kogoś kto rozprawi się z tutejszymi #potworami.");
 				addReply("potworami", "Biega tu masa pokutników, a i lawiny kamienne nieraz przygniotły palce u mych stóp. Jeżeli chcesz mi pomóc to przyjmij moje #zadanie.");
 				addHelp("Skupuję różne przedmioty. Jeżeli masz coś to #zaoferuj mi to, poza tym mam dla ciebie małe #zadanie.");
-				addOffer("Skupuję: kierpce 100, chusta góralska 200, cuha góralska 2000, góralska spódnica 200, góralski gorset 300, góralski kapelusz 300, portki bukowe 300, polska tarcza lekka 500, polska tarcza drewniana 750, polska tarcza kolcza 1000, polska płytowa tarcza 2000, polska tarcza ciężka 2500, korale 2500, pas zbójecki 3000, ciupaga 4000, spinka 20000, złota ciupaga 25000 i szczerbiec 1000000.");
+				addOffer("Skupuję: kierpce 100, chusta góralska 200, cuha góralska 2000, góralska spódnica 200, góralski gorset 300, góralski kapelusz 300, portki bukowe 300, polska tarcza lekka 500, polska tarcza drewniana 750, polska tarcza kolcza 1000, polska płytowa tarcza 2000, polska tarcza ciężka 2500, korale 2500, pas zbójnicki 3000, ciupaga 4000, spinka 20000, złota ciupaga 25000 i szczerbiec 1000000.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrareitems")), false);
 				addGoodbye("Dowidzenia kolego.");
 			}

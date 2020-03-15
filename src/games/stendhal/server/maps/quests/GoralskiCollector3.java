@@ -42,7 +42,7 @@ import java.util.List;
 
 public class GoralskiCollector3 extends AbstractQuest {
 
-    private static final List<String> NEEDEDGORAL3 = Arrays.asList("korale", "pas zbójecki", "złota ciupaga z wąsem", "góralski gorset", "cuha góralska", "chusta góralska", "portki bukowe", "polska tarcza ciężka");
+    private static final List<String> NEEDEDGORAL3 = Arrays.asList("korale", "pas zbójnicki", "złota ciupaga z wąsem", "góralski gorset", "cuha góralska", "chusta góralska", "portki bukowe", "polska tarcza ciężka");
     private static final String OLD_QUEST = "goralski_kolekcjoner2";
     private static final String QUEST_SLOT = "goralski_kolekcjoner3";
 

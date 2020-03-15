@@ -96,7 +96,7 @@
 			<item value="krótki miecz" quantity="[1,1]" probability="4.0"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.02"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.25"/>
-			<item value="pas zbójecki" quantity="[1,1]" probability="0.3"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="0.3"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -131,7 +131,7 @@
 			<item value="złota zbroja" quantity="[1,1]" probability="0.0004"/>
 			<item value="spodnie nabijane ćwiekami" quantity="[1,1]" probability="1.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.35"/>
-			<item value="pas zbójecki" quantity="[1,1]" probability="0.5"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="0.5"/>
 			<item value="okoń" quantity="[1,1]" probability="5.0"/>
 			<item value="leszcz" quantity="[1,1]" probability="5.0"/>
 			<item value="karp" quantity="[1,1]" probability="0.5"/>
@@ -405,7 +405,7 @@
 		<drops>
 			<item value="money" quantity="[9,99]" probability="100.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.5"/>
-			<item value="pas zbójecki" quantity="[1,1]" probability="1.0"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="1.0"/>
 			<item value="polska płytowa tarcza" quantity="[1,1]" probability="4.5"/>
 			<item value="polska tarcza ciężka" quantity="[1,1]" probability="4.0"/>
 		</drops>
@@ -436,7 +436,7 @@
 			<item value="money" quantity="[9,99]" probability="100.0"/>
 			<item value="futro" quantity="[1,1]" probability="10.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.005"/>
-			<item value="pas zbójecki" quantity="[1,1]" probability="1.0"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="1.0"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.04"/>
 		</drops>
 		<equips/>
@@ -466,7 +466,7 @@
 			<item value="pióro herszta hordy zbójeckiej" quantity="[1,1]" probability="100.0"/>
 			<item value="money" quantity="[9,99]" probability="100.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="4.0"/>
-			<item value="pas zbójecki" quantity="[1,1]" probability="1.15"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="1.15"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.4"/>
 			<item value="polska płytowa tarcza" quantity="[1,1]" probability="2.2"/>
 		</drops>

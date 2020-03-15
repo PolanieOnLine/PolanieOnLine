@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="skórzany pas">
-		<type class="pas" subclass="zwykly_skorzany_pas" tileid="-1"/>
+		<type class="belts" subclass="leather_belt" tileid="-1"/>
 		<description>Oto zwykły skórzany pas. Skąd pochodzi ta skóra?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
@@ -21,7 +21,7 @@
 	</item>
 
 	<item name="wzmocniony skórzany pas">
-		<type class="pas" subclass="wzmocniony_skorzany_pas" tileid="-1"/>
+		<type class="belts" subclass="r_leather_belt" tileid="-1"/>
 		<description>Oto wzmocniony skórzany pas. Co za wytrzymały materiał!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
@@ -39,8 +39,8 @@
 	</item>
 
 	<item name="kolczany pas">
-		<type class="pas" subclass="kolczany_pas" tileid="-1"/>
-		<description>Oto kolczany pas.</description>
+		<type class="belts" subclass="chain_belt" tileid="-1"/>
+		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="4"/>
@@ -59,8 +59,8 @@
 	</item>
 
 	<item name="karmazynowy pas">
-		<type class="pas" subclass="karmazynowy_pas" tileid="-1"/>
-		<description>Oto karmazynowy pas. Jego klejnot daje ci większą ochornę.</description>
+		<type class="belts" subclass="red_belt" tileid="-1"/>
+		<description>Oto karmazynowy pas. Klejnot daje ci większą ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="5"/>
@@ -78,8 +78,8 @@
 	</item>
 
 	<item name="złoty kolczany pas">
-		<type class="pas" subclass="zloty_kolczany_pas" tileid="-1"/>
-		<description>Oto złoty kolczany pas.</description>
+		<type class="belts" subclass="golden_chain_belt" tileid="-1"/>
+		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
@@ -97,8 +97,8 @@
 	</item>
 
 	<item name="pas elficki">
-		<type class="pas" subclass="elficki_pas_z_rubinem" tileid="-1"/>
-		<description>Oto pas elficki z rubinem. Od tego rubinu czuć jakąś pradawną magie.</description>
+		<type class="belts" subclass="elvish_belt" tileid="-1"/>
+		<description>Oto pas elficki. Z jego rubinu czuć jakąś pradawną magię.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
@@ -115,9 +115,9 @@
 		</equipable>
 	</item>
 
-	<item name="pas zbójecki">
-		<type class="pas" subclass="pas_zbojecki" tileid="-1"/>
-		<description>Oto pas zbójecki. Idealny dla górala.</description>
+	<item name="pas zbójnicki">
+		<type class="belts" subclass="zbojnicki_belt" tileid="-1"/>
+		<description>Oto pas zbójnicki. Idealny dla górala.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
@@ -134,7 +134,7 @@
 	</item>
 
 	<item name="pas cieni">
-		<type class="pas" subclass="pas_cieni" tileid="-1"/>
+		<type class="belts" subclass="shadow_belt" tileid="-1"/>
 		<description>Oto pas cieni. Ciężko odróżnić co to jest... Półmrok go skrywa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
@@ -154,8 +154,8 @@
 	</item>
 
 	<item name="pas krasnoludzki">
-		<type class="pas" subclass="krasnoludzki_pas" tileid="-1"/>
-		<description>Oto pas krasnoludzki. Został wykonany z porządnego materiału.</description>
+		<type class="belts" subclass="dwarvish_belt" tileid="-1"/>
+		<description>Oto pas krasnoludzki. Wykonany został z porządnego materiału.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="9"/>
@@ -172,15 +172,14 @@
 	</item>
 
 	<item name="pas wampirzy">
-		<type class="pas" subclass="wampirzy_pas" tileid="-1"/>
-		<description>Oto pas wampirzy.</description>
+		<type class="belts" subclass="vampire_belt" tileid="-1"/>
+		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="10"/>
-		<susceptibility type="ice" value="0.91"/>
 		<susceptibility type="fire" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
@@ -192,8 +191,8 @@
 	</item>
 
 	<item name="pas olbrzymi">
-		<type class="pas" subclass="olbrzymi_pas" tileid="-1"/>
-		<description>Oto pas olbrzymi. Znane jest jedynie pochodzenie tego pasa - pochodzi ono od gigantów i same rozmiary tego pasa są ogromne.</description>
+		<type class="belts" subclass="giant_belt" tileid="-1"/>
+		<description>Oto pas olbrzymi. Znane jest jedynie pochodzenie tego pasa - pochodzi ono od gigantów i same jego rozmiary to udowadniają.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="11"/>
@@ -210,8 +209,8 @@
 	</item>
 
 	<item name="złoty pas">
-		<type class="pas" subclass="zloty_pas" tileid="-1"/>
-		<description>Oto złoty pas.</description>
+		<type class="belts" subclass="golden_belt" tileid="-1"/>
+		<description>Oto złoty pas. Wykonany z czystego złota.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="12"/>
@@ -230,8 +229,8 @@
 	</item>
 
 	<item name="czarny pas">
-		<type class="pas" subclass="czarny_pas" tileid="-1"/>
-		<description>Oto czarny pas.</description>
+		<type class="belts" subclass="black_belt" tileid="-1"/>
+		<description>Oto czarny pas. Czujesz jak jego mrok wzmacnia twą siłę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>
@@ -250,8 +249,8 @@
 	</item>
 
 	<item name="pas z mithrilu">
-		<type class="pas" subclass="pas_z_mithrilu" tileid="-1"/>
-		<description>Oto pas z mithrilu.</description>
+		<type class="belts" subclass="mithril_belt" tileid="-1"/>
+		<description>Oto pas z mithrilu. Może cię ochronić przed ciemnością.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="14"/>
