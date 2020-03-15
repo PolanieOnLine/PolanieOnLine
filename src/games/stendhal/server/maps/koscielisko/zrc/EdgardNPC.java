@@ -64,8 +64,8 @@ public class EdgardNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Widzisz jak latam, pewno sam byś tak chciał ?.");
-				addJob("Przenoszę wiadomości z dalekich pól bitew i rozkazy od  Samego Mistrza Zakonu Cieni.");
+				addGreeting("Widzisz jak latam, pewno sam byś tak chciał?");
+				addJob("Przenoszę wiadomości z dalekich pól bitew i rozkazy od Samego Mistrza Zakonu Cieni.");
 				addHelp("Latam tu i tam, nie potrzebuje od nikogo pomocy.");
 				addGoodbye("No to hej, ja lecę.");
 			}
