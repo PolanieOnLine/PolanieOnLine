@@ -39,7 +39,7 @@
 	<group uri="items/magia.xml"/>
 	<group uri="items/necklaces.xml"/>
 	<group uri="items/wand.xml"/>
-	<group uri="items/pas.xml"/>
+	<group uri="items/belts.xml"/>
 
 	<!-- DISABLED ITEMS
 	<group uri="items/capturetheflag.xml"/>
