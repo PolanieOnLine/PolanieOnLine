@@ -10,6 +10,9 @@ Changelog
 - Dodano nowe dźwięki dla potwora: "wilkołak"
 - Poprawiono kolory kosy, pordzewiałej kosy, złotych ciupag (z wąsami!)
 - Rozjaśniono nieco sloty w ekwipunku
+- Odświeżono grafiki przedmiotów:
+	- pas z mithrilu, czarny pas, czarny pierścień
+- Przetłumaczono na angielski pliki graficzne pasów
 
 *świat*
 - Dodano nowe NPC:
@@ -63,6 +66,7 @@ Changelog
 - Zmieniono nazwy przedmiotom:
 	- "elficki kapelusz" -> "kapelusz elficki"
 	- "futro" (jeden z płaszczy) -> "futrzany płaszcz"
+	- "pas zbójecki" -> "pas zbójnicki"
 - Dodano komunikat o osiągnięciu danego limitu zużyć broni
 - Dodano obok strzelnicy, w lesie Nalwor dojo, w którym można trenować umiejętność ataku
 - NPC Lupos skupuje kapelusz elficki
@@ -73,13 +77,14 @@ Changelog
 - Zwiększono szansę na zdobycie przedmiotu "magiczny płaszcz" z Blordrougtów ~0.1%-0.5%
 - Sporo mniejszych poprawiek na mapach obydwóch światów
 - Poprawiono opisy armii Blordrougthów
+- Poprawiono oraz dodano opisy dla niektórych pasów i innych przedmiotów
 
 *kod*
 - Dodano wsparcie dla języka Lua
 - Dodano wsparcie dla portali schodów w kafelkach z ciągłym ruchem
-- Cień wroga/stwora można ustawić za pomocą wartości „shadow” pod znacznikiem „type”
-- Elementy z atrybutem „active_idle” będą cyklicznie odtwarzać animacje, nawet jeśli zostaną zatrzymane
-- Można wykonać akcję „/removedetail”, aby ręcznie usunąć warstwę szczegółów z postaci
+- Cień wroga/stwora można ustawić za pomocą wartości "shadow" pod znacznikiem "type"
+- Elementy z atrybutem "active_idle" będą cyklicznie odtwarzać animacje, nawet jeśli zostaną zatrzymane
+- Można wykonać akcję "/removedetail", aby ręcznie usunąć warstwę szczegółów z postaci
 - Minimapa rozpoznaje drzwi jako portal
 - Status niszczenia broni został zmodyfikowany do % szans na zniszczenie się przedmiotu po osiągnięciu limitu zużyć broni
 
