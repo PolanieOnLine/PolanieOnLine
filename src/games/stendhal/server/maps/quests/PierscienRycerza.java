@@ -130,7 +130,7 @@ import games.stendhal.server.entity.player.Player;
 						new QuestNotStartedCondition(QUEST_SLOT),
 						new QuestCompletedCondition(MITHRILSHIELD_QUEST_SLOT)),
 					ConversationStates.ATTENDING, "Pierścień zdobędziesz przynosząc mi potrzebne #przedmioty.",
-					new SetQuestAction(QUEST_SLOT, "przedmioty" ));
+					new SetQuestAction(QUEST_SLOT, "przedmioty"));
 
 		final List<ChatAction> monetaactions = new LinkedList<ChatAction>();
 		monetaactions.add(new DropItemAction("żelazo",40));
@@ -154,7 +154,7 @@ import games.stendhal.server.entity.player.Player;
 			ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto twój pierścień rycerza.",
 		new MultipleActions(monetaactions));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie", "przedmioty"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie", "przedmioty", "przypomnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
 								 new NotCondition(
 								 new AndCondition(new PlayerHasItemWithHimCondition("żelazo",40),
