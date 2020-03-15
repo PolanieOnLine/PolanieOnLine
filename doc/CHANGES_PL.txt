@@ -88,6 +88,9 @@ Changelog
 - Minimapa rozpoznaje drzwi jako portal
 - Status niszczenia broni został zmodyfikowany do % szans na zniszczenie się przedmiotu po osiągnięciu limitu zużyć broni
 
+*baza danych*
+- Zaktualizowano bazę marauroa do wersji 3.9.8
+
 *naprawiono błędy*
 - Naprawiono drzwi & drzwi zamknięte, które nie obsługują ciągłego ruchu
 - Naprawiono niemożność ukończenia zadania "Pułapki dla Klaasa", gdy aktywowano zadanie "Pierścień Antyjadowy"
