@@ -1097,7 +1097,7 @@
 
 	<item name="miecz z mithrilu">
 		<type class="sword" subclass="mithril_sword" tileid="-1"/>
-		<description>Oto miecz z mithrilu. Światło jego najważniejszym atrybutem.</description>
+		<description>Oto miecz z mithrilu. Jakość jego najważniejszym atrybutem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="47"/>
@@ -1119,7 +1119,7 @@
 
 	<item name="sztylecik z mithrilu">
 		<type class="sword" subclass="mithril_dagger" tileid="-1"/>
-		<description>Oto sztylecik z mithrilu. Jeden z najszybszych broni wykonanych przez krasnoludów... Pochłania światło, które potrafi uzdrowić.</description>
+		<description>Oto sztylecik z mithrilu. Jeden z najszybszych broni wykonanych przez krasnoludów... Wykorzystuje światło do uzdrawiania właściciela broni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
