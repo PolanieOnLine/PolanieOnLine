@@ -180,12 +180,6 @@ public class StendhalPlayerDatabase {
 			transaction.execute("DROP TABLE itemid", null);
 		}
 
-		// 0.30: gender
-		if (!transaction.doesColumnExist("character_stats", "gender")) {
-			transaction.execute("ALTER TABLE character_stats ADD COLUMN (gender VARCHAR(2));", null);
-			transaction.execute("UPDATE character_stats SET gender = 'M' WHERE gender IS NULL;", null);
-		}
-
 		// 1.07: add zone column to character_stats
 		if (!transaction.doesColumnExist("character_stats", "zone")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (zone VARCHAR(50));", null);
@@ -209,6 +203,17 @@ public class StendhalPlayerDatabase {
 		// 1.34: renamed kill_blordroughs achievements
 		transaction.execute("UPDATE achievement SET identifier='quest.special.kill_blordroughs.0005' WHERE identifier='quest.special.kill_blordroughs.5'", null);
 		transaction.execute("UPDATE achievement SET identifier='quest.special.kill_blordroughs.0025' WHERE identifier='quest.special.kill_blordroughs.25'", null);
+		
+		// pol0.30: gender
+		if (!transaction.doesColumnExist("character_stats", "gender")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (gender VARCHAR(2));", null);
+			transaction.execute("UPDATE character_stats SET gender = 'M' WHERE gender IS NULL;", null);
+		}
+
+		// pol1.10: ratk stats
+		if (!transaction.doesColumnExist("character_stats", "ratk")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (ratk INTEGER);", null);
+		}
 
 		updateCharacterStatsOutfitToOutfitLayer(transaction);
 	}
