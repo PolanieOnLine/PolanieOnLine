@@ -214,6 +214,8 @@ public class StendhalPlayerDatabase {
 		if (!transaction.doesColumnExist("character_stats", "ratk")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (ratk INTEGER);", null);
 		}
+		transaction.execute("DELETE FROM achievement WHERE identifier in ("
+				+ "'fight.general.darkangels', 'fight.general.angels')", null);
 
 		updateCharacterStatsOutfitToOutfitLayer(transaction);
 	}
