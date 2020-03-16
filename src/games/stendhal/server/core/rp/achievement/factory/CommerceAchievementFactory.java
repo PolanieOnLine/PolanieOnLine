@@ -25,9 +25,8 @@ import games.stendhal.server.core.rp.achievement.condition.BoughtNumberOfConditi
  */
 public class CommerceAchievementFactory extends AbstractAchievementFactory {
 
-	public static final String[] ITEMS_HAPPY_HOUR = {"sok z chmielu", "napój z winogron"};
+	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
 	public static final String ID_HAPPY_HOUR = "buy.drink.alcohol";
-	public static final int COUNT_HAPPY_HOUR = 100;
 
 	@Override
 	protected Category getCategory() {
@@ -41,7 +40,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił 100 butelek soku z chmielu oraz 100 kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
-				new BoughtNumberOfCondition(COUNT_HAPPY_HOUR, ITEMS_HAPPY_HOUR)));
+				new BoughtNumberOfCondition(100, ITEMS_HAPPY_HOUR)));
 
 		return achievements;
 	}

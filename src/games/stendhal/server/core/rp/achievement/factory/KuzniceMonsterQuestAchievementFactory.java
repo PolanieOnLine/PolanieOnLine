@@ -21,28 +21,39 @@ import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition
 
 public class KuzniceMonsterQuestAchievementFactory extends AbstractAchievementFactory {
 
-	@Override
-	public Collection<Achievement> createAchievements() {
-		List<Achievement> questAchievements = new LinkedList<Achievement>();
-		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0010", "Pomocna dłoń", "Ukończył co dwudniowe zadanie na potwory 10 razy",
-												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 9)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0025", "Ochroniaż dzielnicy", "Ukończył co dwudniowe zadanie na potwory 25 razy",
-												Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 24)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0050", "Strażnik Kuźnic", "Ukończył co dwudniowe zadanie na potwory 50 razy",
-												Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 49)));
-		questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0100", "Bohater Kuźnic", "Ukończył co dwudniowe zadanie na potwory 100 razy",
-												Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 99)));
-		//questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0250", "Prawa ręka Sołtysa", "Ukończył codzienne zadanie na potwory 250 razy",
-		//										Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 249)));
-		//questAchievements.add(createAchievement("quest.special.daily_kuznice_kill_monster.0500", "Bohater Kuźnic", "Ukończył codzienne zadanie na potwory 500 razy",
-		//										Achievement.LEGENDARY_BASE_SCORE, true, new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 499)));
-
-		return questAchievements;
-	}
+	public static final String ID_HELPING_HAND = "quest.special.daily_kuznice_kill_monster.0010";
+	public static final String ID_DISTRICT_GUARD = "quest.special.daily_kuznice_kill_monster.0025";
+	public static final String ID_KUZNICE_GUARD = "quest.special.daily_kuznice_kill_monster.0050";
+	public static final String ID_RIGHT_HAND = "quest.special.daily_kuznice_kill_monster.0100";
 
 	@Override
 	protected Category getCategory() {
 		return Category.QUEST_KUZNICE_MONSTER;
 	}
 
+	@Override
+	public Collection<Achievement> createAchievements() {
+		List<Achievement> questAchievements = new LinkedList<Achievement>();
+		questAchievements.add(createAchievement(
+				ID_HELPING_HAND, "Pomocna Dłoń", "Ukończył co dwudniowe zadanie na potwory 10 razy",
+				Achievement.EASY_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 9)));
+
+		questAchievements.add(createAchievement(
+				ID_DISTRICT_GUARD, "Ochroniarz Dzielnicy", "Ukończył co dwudniowe zadanie na potwory 25 razy",
+				Achievement.EASY_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 24)));
+
+		questAchievements.add(createAchievement(
+				ID_KUZNICE_GUARD, "Strażnik Kuźnic", "Ukończył co dwudniowe zadanie na potwory 50 razy",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 49)));
+
+		questAchievements.add(createAchievement(
+				ID_RIGHT_HAND, "Prawa Ręka Sołtysa", "Ukończył co dwudniowe zadanie na potwory 100 razy",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 99)));
+
+		return questAchievements;
+	}
 }

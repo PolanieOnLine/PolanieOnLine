@@ -23,7 +23,6 @@ import games.stendhal.server.entity.player.Player;
 public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 
 	public static final String ID_APPLES = "obtain.apple";
-	public static final int COUNT_APPLES = 1000;
 
 	@Override
 	protected Category getCategory() {
@@ -89,7 +88,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 						final int harvested = player.getQuantityOfHarvestedItems("jabłko");
 						final int looted = player.getNumberOfLootsForItem("jabłko");
 
-						return harvested + looted >= COUNT_APPLES;
+						return harvested + looted >= 1000;
 					}
 				}));
 
