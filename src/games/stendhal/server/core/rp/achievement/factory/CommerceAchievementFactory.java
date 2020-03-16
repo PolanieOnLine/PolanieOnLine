@@ -82,12 +82,12 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_VANILLA_OR_CHOCOLATE, "Wanilia czy Czekolada", "Zakupił po 200 shake'ów waniliowych oraz czekoladowych",
+				ID_VANILLA_OR_CHOCOLATE, "Wanilia czy Czekolada", "Zakupił po 200 shake'ów waniliowych i czekoladowych",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(200, ITEMS_VANILLA_OR_CHOCOLATE)));
 
 		achievements.add(createAchievement(
-				ID_CHOCOLATE, "Czekoladowy Raj", "Zakupił 200 tabliczek czekolady oraz 50 lukrecji",
+				ID_CHOCOLATE, "Czekoladowy Raj", "Zakupił 200 tabliczek czekolady i 50 lukrecji",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
 						new BoughtNumberOfCondition(200, "tabliczka czekolady"),
