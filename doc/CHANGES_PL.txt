@@ -69,6 +69,8 @@ Changelog
 	- "Czekoladowy Raj"
 	- "Miłośnik Hotdogów"
 	- "Serowy Handlarz"
+	- "Zwierzęce Paznokietki"
+	- "Skórnik"
 	- po 5 osiągnięć dla każdej statystyki (atk, obr i str)
 - Usunięto takie osiągnięcia jak: (2)
 	- "Diabeł Wcielony"
