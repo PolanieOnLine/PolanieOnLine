@@ -19,7 +19,6 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.core.rp.achievement.condition.BoughtNumberOfCondition;
 
-
 /**
  * Factory for buying & selling items.
  */
@@ -38,7 +37,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		final List<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił 100 butelek soku z chmielu oraz 100 kieliszków napoju z winogron",
+				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(100, ITEMS_HAPPY_HOUR)));
 
