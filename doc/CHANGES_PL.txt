@@ -41,7 +41,7 @@ Changelog
 	- mały pegaz, pegaz brązowy, pegaz kościsty, pegaz hebanowy
 	- nietoperz olbrzymi, nietoperz wampir olbrzymi
 	- niedźwiedź biały, neo kraken, purpurowy smok
-- Dodano nowe osiągnięcia: (37)
+- Dodano nowe osiągnięcia: (42)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -64,6 +64,11 @@ Changelog
 	- "Gruboskórny Zamęt"
 	- "Serafiny mu Niestraszne"
 	- "Dedykowany Archeolog"
+	- "Zdrowie Najważniejsze"
+	- "Wanilia czy Czekolada"
+	- "Czekoladowy Raj"
+	- "Miłośnik Hotdogów"
+	- "Serowy Handlarz"
 	- po 5 osiągnięć dla każdej statystyki (atk, obr i str)
 - Usunięto takie osiągnięcia jak: (2)
 	- "Diabeł Wcielony"
