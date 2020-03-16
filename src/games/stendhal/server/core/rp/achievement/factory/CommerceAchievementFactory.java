@@ -15,17 +15,35 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.core.rp.achievement.condition.BoughtNumberOfCondition;
+import games.stendhal.server.core.rp.achievement.condition.SoldNumberOfCondition;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * Factory for buying & selling items.
  */
 public class CommerceAchievementFactory extends AbstractAchievementFactory {
 
-	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
 	public static final String ID_HAPPY_HOUR = "buy.drink.alcohol";
+	public static final String ID_HEALTH_IMPORTANT = "buy.drink.potions";
+	public static final String ID_VANILLA_OR_CHOCOLATE = "buy.drink.shakes";
+	public static final String ID_CHOCOLATE = "buy.food.chocolate";
+	public static final String ID_LOVE_HOTDOGS = "buy.food.hotdogs";
+
+	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
+
+	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
+	public static final String[] ITEMS_HEALTH_IMPORTANT = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir" };
+	public static final String[] ITEMS_VANILLA_OR_CHOCOLATE = { "shake waniliowy", "shake czekoladowy" };
+	public static final String[] ITEMS_LOVE_HOTDOGS = { "hotdog", "hotdog z serem" };
+
+	public static final String[] ITEMS_CHEESE_MERCHANT = { "ser" };
 
 	@Override
 	protected Category getCategory() {
@@ -40,6 +58,51 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(100, ITEMS_HAPPY_HOUR)));
+
+		achievements.add(createAchievement(
+				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił razem 500 różnych eliksirów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String potions: ITEMS_HEALTH_IMPORTANT) {
+							items += player.getQuantityOfBoughtItems(potions);
+						}
+						return items >= 500;
+					}
+				}));
+
+		achievements.add(createAchievement(
+				ID_VANILLA_OR_CHOCOLATE, "Wanilia czy Czekolada", "Zakupił po 200 shake'ów waniliowych oraz czekoladowych",
+				Achievement.EASY_BASE_SCORE, true,
+				new BoughtNumberOfCondition(200, ITEMS_VANILLA_OR_CHOCOLATE)));
+
+		achievements.add(createAchievement(
+				ID_CHOCOLATE, "Czekoladowy Raj", "Zakupił 200 tabliczek czekolady oraz 50 lukrecji",
+				Achievement.EASY_BASE_SCORE, true,
+				new AndCondition(
+						new BoughtNumberOfCondition(200, "tabliczka czekolady"),
+						new BoughtNumberOfCondition(50, "lukrecja"))));
+
+		achievements.add(createAchievement(
+				ID_LOVE_HOTDOGS, "Miłośnik Hotdogów", "Zakupił razem 500 różnych hotdogów",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String hotdogs: ITEMS_LOVE_HOTDOGS) {
+							items += player.getQuantityOfBoughtItems(hotdogs);
+						}
+						return items >= 500;
+					}
+				}));
+
+		achievements.add(createAchievement(
+				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
+				Achievement.EASY_BASE_SCORE, true,
+				new SoldNumberOfCondition(1000, ITEMS_CHEESE_MERCHANT)));
 
 		return achievements;
 	}
