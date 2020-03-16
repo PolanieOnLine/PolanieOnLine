@@ -37,6 +37,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_LOVE_HOTDOGS = "buy.food.hotdogs";
 
 	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
+	public static final String ID_NAILS = "sell.item.nails";
+	public static final String ID_SKINS = "sell.item.skins";
 
 	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
 	public static final String[] ITEMS_HEALTH_IMPORTANT = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir" };
@@ -44,6 +46,12 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ITEMS_LOVE_HOTDOGS = { "hotdog", "hotdog z serem" };
 
 	public static final String[] ITEMS_CHEESE_MERCHANT = { "ser" };
+	public static final String[] ITEMS_NAILS = { "pazury wilcze", "niedźwiedzie pazury", "pazury tygrysie" };
+	public static final String[] ITEMS_SKINS = {
+			"skóra arktycznego smoka", "skóra czarnego smoka", "skóra czerwonego smoka",
+			"skóra niebieskiego smoka", "skóra zielonego smoka", "skóra złotego smoka",
+			"skóra tygrysa", "skóra lwa", "skóra zwierzęca"
+	};
 
 	@Override
 	protected Category getCategory() {
@@ -103,6 +111,16 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new SoldNumberOfCondition(1000, ITEMS_CHEESE_MERCHANT)));
+
+		achievements.add(createAchievement(
+				ID_NAILS, "Zwierzęce Paznokietki", "Sprzedał po 100 różnych zwierzęcych pazurów",
+				Achievement.HARD_BASE_SCORE, true,
+				new SoldNumberOfCondition(100, ITEMS_NAILS)));
+
+		achievements.add(createAchievement(
+				ID_SKINS, "Skórnik", "Sprzedał po 50 różnych smoczych i zwierzęcych skór",
+				Achievement.HARD_BASE_SCORE, true,
+				new SoldNumberOfCondition(50, ITEMS_SKINS)));
 
 		return achievements;
 	}
