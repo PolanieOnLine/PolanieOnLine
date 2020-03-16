@@ -32,7 +32,7 @@ Changelog
 	- magiczne spodnie płytowe, magiczne buty płytowe
 	- złota kosa, kosa z mithrilu, miecz treningowy
 	- buty krasnoludzkie, sztylecik z mithrilu, miecz z mithrilu
-- Dodano nowe potwory: (23)
+- Dodano nowe potwory: (24)
 	- słoń z rogami, słoń musth, mamut włochaty
 	- demon wody, wodny skarabeusz, mały skarabeusz
 	- trujący grzybek, olbrzymi gnom, olbrzymia panna gnom
@@ -40,7 +40,7 @@ Changelog
 	- jednorożec biały, jednorożec czarny, jednorożec złoty
 	- mały pegaz, pegaz brązowy, pegaz kościsty, pegaz hebanowy
 	- nietoperz olbrzymi, nietoperz wampir olbrzymi
-	- niedźwiedź biały, neo kraken
+	- niedźwiedź biały, neo kraken, purpurowy smok
 - Dodano nowe osiągnięcia: (37)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
