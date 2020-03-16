@@ -399,7 +399,7 @@
 		</ai>
 	</creature>
 
-	<creature name="smok rysin">
+	<creature name="purpurowy smok">
 		<type class="stendhal/dragon" subclass="rysin_dragon" tileid="dragon.png:7"/>
 		<description></description>
 		<attributes>
