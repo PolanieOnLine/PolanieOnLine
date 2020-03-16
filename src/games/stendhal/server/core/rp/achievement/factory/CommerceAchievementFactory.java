@@ -101,7 +101,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
-				Achievement.EASY_BASE_SCORE, true,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new SoldNumberOfCondition(1000, ITEMS_CHEESE_MERCHANT)));
 
 		return achievements;
