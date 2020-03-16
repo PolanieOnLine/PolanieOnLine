@@ -67,7 +67,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok",
 			"czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny",
 			"dwugłowy zielony smok", "dwugłowy czerwony smok", "dwugłowy niebieski smok", "dwugłowy czarny smok",
-			"dwugłowy lodowy smok", "lodowy smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski"
+			"dwugłowy lodowy smok", "lodowy smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski",
+			"purpurowy smok"
 	};
 
 	public static final String[] ENEMIES_SERAFINS = {
@@ -142,7 +143,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition("dzik", 50)));
 
 		fightingAchievements.add(createAchievement(
-				ID_BEARS, "Łowca Niedźwiedzi", "Zabił 25 niedźwiedzi grizli, 25 niedźwiedzi i 25 misi",
+				ID_BEARS, "Łowca Niedźwiedzi", "Zabił po 25 niedźwiedzi grizli, niedźwiedzi i misi",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(25, "niedźwiedź", "niedźwiedź grizli", "miś")));
 
@@ -152,7 +153,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition("lisica", 20)));
 
 		fightingAchievements.add(createAchievement(
-				ID_SAFARI, "Safari", "Zabił 30 tygrysów, 30 lwów i 50 słoni",
+				ID_SAFARI, "Safari", "Zabił po 30 tygrysów, lwów i 50 słoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
 								new PlayerHasKilledNumberOfCreaturesCondition("tygrys", 30),
@@ -160,7 +161,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 								new PlayerHasKilledNumberOfCreaturesCondition("słoń", 50))));
 
 		fightingAchievements.add(createAchievement(
-				ID_ENTS, "Drwal", "Zabił 10 drzewców, 10 drzewcowych i 10 uschłych drzewców",
+				ID_ENTS, "Drwal", "Zabił po 10 drzewców, drzewcowych i uschłych drzewców",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, "drzewiec", "drzewcowa", "uschły drzewiec")));
 
@@ -194,22 +195,22 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		fightingAchievements.add(createAchievement(
-				ID_SERAFINS, "Serafiny mu Niestraszne", "Zabił conajmniej 10 serafinów i azazeli",
+				ID_SERAFINS, "Serafiny mu Niestraszne", "Zabił po 10 serafinów i azazeli",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_SERAFINS)));
 
 		fightingAchievements.add(createAchievement(
-				ID_DEATHS, "Władca Śmierci", "Zabił conajmniej 10 śmierci, czarnej śmierci, złotej śmierci, kostuch, kostuch różowych, kostuch wielkich, kostuch różowych wielkich i kostuch złotych wielkich w pojedynkę",
+				ID_DEATHS, "Władca Śmierci", "Zabił po 10 śmierci, czarnej śmierci, złotej śmierci, kostuch, kostuch różowych, kostuch wielkich, kostuch różowych wielkich i kostuch złotych wielkich w pojedynkę",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, KillType.SOLO, ENEMIES_DEATHS)));
 
 		fightingAchievements.add(createAchievement(
-				ID_GIANTS, "Dawid kontra Goliat", "Zabił conajmniej 20 każdego rodzaju olbrzyma w pojedynkę",
+				ID_GIANTS, "Dawid kontra Goliat", "Zabił po 20 olbrzymów każdego rodzaju w pojedynkę",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(20, KillType.SOLO, ENEMIES_GIANTS)));
 
 		fightingAchievements.add(createAchievement(
-				ID_ANGELS, "Niebiański Gniew", "Zabił conajmniej 100 każdego rodzaju anioła",
+				ID_ANGELS, "Niebiański Gniew", "Zabił po 100 aniołów każdego rodzaju",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_ANGELS)));
 
@@ -235,7 +236,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		fightingAchievements.add(createAchievement(
-				ID_DEEPSEA, "Głębinowy Rybak", "Zabił 500 rekinów, krakenów oraz neo krakenów",
+				ID_DEEPSEA, "Głębinowy Rybak", "Zabił po 500 rekinów, krakenów oraz neo krakenów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(500, ENEMIES_DEEPSEA)));
 
@@ -254,12 +255,12 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		fightingAchievements.add(createAchievement(
-				ID_FOWL, "Nuggetsy z Kurczaka", "Zabił 100 każdego rodzaju ptactwa",
+				ID_FOWL, "Nuggetsy z Kurczaka", "Zabił po 100 każdego rodzaju ptactwa",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_FOWL)));
 
 		fightingAchievements.add(createAchievement(
-				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił 100 każdego rodzaju dużego ssaka",
+				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z rogami, słoni musth oraz mamutów włochatych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_PACHYDERM)));
 
