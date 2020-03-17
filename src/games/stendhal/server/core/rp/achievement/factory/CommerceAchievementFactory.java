@@ -35,8 +35,10 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_VANILLA_OR_CHOCOLATE = "buy.drink.shakes";
 	public static final String ID_CHOCOLATE = "buy.food.chocolate";
 	public static final String ID_LOVE_HOTDOGS = "buy.food.hotdogs";
+	public static final String ID_SANDWICHES = "buy.food.sandwiches";
 
 	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
+	public static final String ID_FISHSHOP = "sell.food.fishshop";
 	public static final String ID_NAILS = "sell.item.nails";
 	public static final String ID_SKINS = "sell.item.skins";
 
@@ -44,8 +46,13 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ITEMS_HEALTH_IMPORTANT = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir" };
 	public static final String[] ITEMS_VANILLA_OR_CHOCOLATE = { "shake waniliowy", "shake czekoladowy" };
 	public static final String[] ITEMS_LOVE_HOTDOGS = { "hotdog", "hotdog z serem" };
+	public static final String[] ITEMS_SANDWICHES = { "kanapka", "kanapka z tuńczykiem" };
 
 	public static final String[] ITEMS_CHEESE_MERCHANT = { "ser" };
+	public static final String[] ITEMS_FISHSHOP = {
+			"okoń", "makrela", "płotka", "palia alpejska", "błazenek", "pokolec", "pstrąg",
+			"dorsz", "skrzydlica", "tuńczyk", "leszcz", "szczupak", "karp", "karp lustrzeń"
+	};
 	public static final String[] ITEMS_NAILS = { "pazury wilcze", "niedźwiedzie pazury", "pazury tygrysie" };
 	public static final String[] ITEMS_SKINS = {
 			"skóra arktycznego smoka", "skóra czarnego smoka", "skóra czerwonego smoka",
@@ -108,6 +115,20 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
+				ID_SANDWICHES, "Kanapkowicz", "Zakupił razem 1,000 różnych kanapek",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String sandwiches: ITEMS_SANDWICHES) {
+							items += player.getQuantityOfBoughtItems(sandwiches);
+						}
+						return items >= 1000;
+					}
+				}));
+
+		achievements.add(createAchievement(
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new SoldNumberOfCondition(1000, ITEMS_CHEESE_MERCHANT)));
@@ -121,6 +142,20 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				ID_SKINS, "Skórnik", "Sprzedał po 50 różnych smoczych i zwierzęcych skór",
 				Achievement.HARD_BASE_SCORE, true,
 				new SoldNumberOfCondition(50, ITEMS_SKINS)));
+
+		achievements.add(createAchievement(
+				ID_FISHSHOP, "Działalność Rybacka", "Sprzedał razem 1,000 różnych ryb",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String fishes: ITEMS_FISHSHOP) {
+							items += player.getQuantityOfSoldItems(fishes);
+						}
+						return items >= 1000;
+					}
+				}));
 
 		return achievements;
 	}
