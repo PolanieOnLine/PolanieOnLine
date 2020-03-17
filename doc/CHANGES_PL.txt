@@ -41,7 +41,7 @@ Changelog
 	- mały pegaz, pegaz brązowy, pegaz kościsty, pegaz hebanowy
 	- nietoperz olbrzymi, nietoperz wampir olbrzymi
 	- niedźwiedź biały, neo kraken, purpurowy smok
-- Dodano nowe osiągnięcia: (44)
+- Dodano nowe osiągnięcia: (46)
 	- "Gdzieś jest Szczęśliwa Godzina"
 	- "Dawid kontra Goliat"
 	- "Niebiański Gniew"
@@ -71,6 +71,8 @@ Changelog
 	- "Serowy Handlarz"
 	- "Zwierzęce Paznokietki"
 	- "Skórnik"
+	- "Kanapkowicz"
+	- "Działalność Rybacka"
 	- po 5 osiągnięć dla każdej statystyki (atk, obr i str)
 - Usunięto takie osiągnięcia jak: (2)
 	- "Diabeł Wcielony"
@@ -109,6 +111,7 @@ Changelog
 - Naprawiono niemożność wejścia do aptekarza jeśli zadanie "Pułapki dla Klaasa" zostało wznowione
 - Naprawiono animowanie się pierścieni pod nadaną klasą "ring"
 - Naprawiono reakcję Edgarda podczas trwania zadania na pierścień rycerza na słowo "przypomnij"
+- Naprawiono tablicę Joachima w Gdańsku, która nie pokazywała rzeczywistego sklepiku co można u niego sprzedawać
 - Usunięto wiele wiadomości o tym, że nie jest się już zszokowanym
 
 
