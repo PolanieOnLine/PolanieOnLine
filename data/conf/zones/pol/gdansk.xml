@@ -208,7 +208,7 @@
 		</entity>
 		<entity x="36" y="79">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
-				<parameter name="shop">buyfishes</parameter>
+				<parameter name="shop">skupryb</parameter>
 				<parameter name="title">Sklepik rybny</parameter>
 				<parameter name="seller">false</parameter>
 				<parameter name="caption">Możesz sprzedać te ryby Joachimowi.</parameter>
