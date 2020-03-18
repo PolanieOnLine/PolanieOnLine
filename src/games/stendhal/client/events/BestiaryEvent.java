@@ -15,7 +15,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -52,14 +51,13 @@ public class BestiaryEvent extends Event<RPEntity> {
 				public void prepareView(final Dimension maxSize) {
 					Dimension screenSize = GameScreen.get().getSize();
 					int maxPreferredWidth = screenSize.width - 180;
-					if (event.has("caption")) {
-						JLabel caption = new JLabel("<html><div width=" + (maxPreferredWidth
-								- 10) + ">" + event.get("caption") + "</div></html>");
-						caption.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
-						add(caption, BorderLayout.NORTH);
-					}
+					final String headerText = "\"???\" = niepoznane";
+					JLabel header = new JLabel("<html><div width=" + (maxPreferredWidth
+							- 10) + ">" + headerText + "</div></html>");
+					header.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
+					add(header, BorderLayout.NORTH);
 
-					JTable table = createTable();
+					final JTable table = createTable();
 					// Prevents selection
 					table.setEnabled(false);
 					table.setFillsViewportHeight(true);
@@ -104,12 +102,11 @@ public class BestiaryEvent extends Event<RPEntity> {
 				}
 
 				private JTable createTable() {
-					String[] columnNames = { "Nazwa stworzenia", "W pojedynkę", "W grupie" };
+					final String[] columnNames = { "Nazwa stworzenia", "W pojedynkę", "W grupie" };
 
 					final List<String> enemies = Arrays.asList(event.get("enemies").split(";"));
-					Collections.sort(enemies, String.CASE_INSENSITIVE_ORDER);
 
-					Object[][] data = new Object[enemies.size()][];
+					final Object[][] data = new Object[enemies.size()][];
 					int i = 0;
 					for (final String e: enemies) {
 						data[i] = createDataRow(e.split(","));
@@ -119,25 +116,17 @@ public class BestiaryEvent extends Event<RPEntity> {
 				}
 
 				private Object[] createDataRow(final String[] enemy) {
-					Object[] rval = new Object[4];
+					final Object[] rval = new Object[4];
 
-					final boolean solo = enemy[1].equals("true");
-					final boolean shared = enemy[2].equals("true");
-
+					rval[0] = enemy[0];
 					rval[1] = "";
 					rval[2] = "";
 
-					if (!solo && !shared) {
-						rval[0] = "???";
-					} else {
-						rval[0] = enemy[0];
-
-						if (solo) {
-							rval[1] = "✔";
-						}
-						if (shared) {
-							rval[2] = "✔";
-						}
+					if (enemy[1].equals("true")) {
+						rval[1] = "✔";
+					}
+					if (enemy[2].equals("true")) {
+						rval[2] = "✔";
 					}
 
 					return rval;
@@ -149,7 +138,7 @@ public class BestiaryEvent extends Event<RPEntity> {
 				 * @param table adjusted table
 				 */
 				private void adjustColumnWidths(JTable table) {
-					TableColumnModel model = table.getColumnModel();
+					final TableColumnModel model = table.getColumnModel();
 					for (int column = 0; column < table.getColumnCount(); column++) {
 						TableColumn tc = model.getColumn(column);
 						int width = tc.getWidth();

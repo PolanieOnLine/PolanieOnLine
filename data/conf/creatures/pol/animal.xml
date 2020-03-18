@@ -535,6 +535,7 @@
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 	<!-- END: owady -->

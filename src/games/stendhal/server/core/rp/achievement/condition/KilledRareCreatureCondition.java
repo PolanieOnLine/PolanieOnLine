@@ -30,9 +30,7 @@ public class KilledRareCreatureCondition implements ChatCondition {
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 		final Collection<Creature> creatures = SingletonRepository.getEntityManager().getCreatures();
 		for (Creature creature : creatures) {
-			// explicitly exclude the wolf as this was possible to summon with a summon scroll once
-			// and the twilight slime isn't what we mean by rare
-			if (creature.isRare() && !"wielki zły wilk".equals(creature.getName()) && !"glut z zaświatów".equals(creature.getName())) {
+			if (creature.isRare()) {
 				if (player.hasKilled(creature.getName())) {
 					return true;
 				}

@@ -2759,7 +2759,22 @@ public abstract class RPEntity extends GuidedEntity {
 	public String describe() {
 		String text = super.describe();
 		if (getLevel() > 0) {
-			text += " Poziom " + getLevel() + ".";
+			boolean showLevel = true;
+			if (this instanceof Creature) {
+				/**
+				 * Hide level information of chess pieces.
+				 *
+				 * Don't call "Creature.isAbnormal" method here since it also checks "rare" attribute.
+				 */
+				if (((Creature) this).getAIProfiles().containsKey("abnormal") &&
+						(this.getName().startsWith("chaos") || this.getName().startsWith("madaram"))) {
+					showLevel = false;
+				}
+			}
+
+			if (showLevel) {
+				text += " Poziom " + getLevel() + ".";
+			}
 		}
 
 		return text;

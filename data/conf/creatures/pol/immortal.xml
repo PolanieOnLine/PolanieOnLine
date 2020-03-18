@@ -28,6 +28,8 @@
 			<profile name="human"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -57,6 +59,8 @@
 			<profile name="human"/>
 			<profile name="attack weakest"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -89,6 +93,8 @@
 			<profile name="lifesteal" params="0.1"/>
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -121,6 +127,8 @@
 			<profile name="lifesteal" params="0.1"/>
 			<profile name="attack weakest"/>
 			<profile name="active_idle"/>
+			<profile name="flying"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 	<!-- END: niesmiertelne -->

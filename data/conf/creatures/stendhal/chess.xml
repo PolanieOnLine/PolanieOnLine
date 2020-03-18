@@ -32,6 +32,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -56,6 +57,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -80,6 +82,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -104,6 +107,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -128,6 +132,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -153,6 +158,7 @@
 		<ai>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -179,6 +185,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -203,6 +210,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -227,6 +235,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -251,6 +260,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -275,6 +285,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>
 
@@ -299,6 +310,7 @@
 		</equips>
 		<ai>
 			<profile name="human"/>
+			<profile name="abnormal"/>
 		</ai>
 	</creature>	
 </creatures>

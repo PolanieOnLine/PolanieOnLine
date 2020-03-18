@@ -40,6 +40,6 @@ public class ChaosRaid extends CreateRaid {
 
 	@Override
 	protected String getInfo() {
-		return "Niebezpieczny dla wojowników poni|ej poziomu 150";
+		return "Niebezpieczny dla wojowników poniżej poziomu 150.";
 	}
 }
