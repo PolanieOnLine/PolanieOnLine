@@ -92,8 +92,6 @@ Changelog
 - Zwiększono szansę na zdobycie przedmiotu "magiczny płaszcz" z Blordrougtów ~0.1%-0.5%, oraz "rękawice wampirze" z 0.04% na 0.075%
 - Zmieniono nieco statystyki prawie wszystkim rękawicom oraz dodano niektórym minimalny poziom użycia
 - Sporo mniejszych poprawiek na mapach obydwóch światów
-- Poprawiono opisy armii Blordrougthów
-- Poprawiono oraz dodano opisy dla niektórych pasów i innych przedmiotów
 
 *kod*
 - Dodano wsparcie dla języka Lua
@@ -116,6 +114,8 @@ Changelog
 - Naprawiono tablicę Joachima w Gdańsku, która nie pokazywała rzeczywistego sklepiku co można u niego sprzedawać
 - Nieśmiertelne potwory nie są już wymagane do zdobycia osiągnięcia "Legenda" oraz "Wojownik Drużyny"
 - Usunięto wiele wiadomości o tym, że nie jest się już zszokowanym
+- Poprawiono opisy armii Blordrougthów
+- Poprawiono oraz dodano opisy dla niektórych pasów i innych przedmiotów
 
 
 1.09.5
