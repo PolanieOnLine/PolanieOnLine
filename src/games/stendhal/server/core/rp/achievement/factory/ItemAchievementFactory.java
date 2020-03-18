@@ -74,7 +74,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement("item.set.elvish", "Zmora Nalwor", "Zdobył cały elficki zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja elficka", "kapelusz elficki", "płaszcz elficki", "spodnie elfickie",
-						"buty elfickie", "tarcza elficka", "miecz elficki", "elficki naszyjnik", "pas elficki")));
+						"buty elfickie", "tarcza elficka", "miecz elficki", "elficki naszyjnik", "pas elficki", "rękawice elfickie")));
 
 		itemAchievements.add(createAchievement("item.set.shadow", "Mieszkaniec Cienia", "Zdobył cały zestaw cieni",
 				Achievement.MEDIUM_BASE_SCORE, true,
