@@ -7,7 +7,6 @@
 		<description>Oto skórzane rękawice. Wielkie i nieporęczne, dają niewielką ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
 			<def value="1"/>
 		</attributes>
 		<weight value="10.0"/>
@@ -28,9 +27,11 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="2"/>
+			<min_level value="5"/>
 		</attributes>
 		<weight value="10.0"/>
 		<value value="171"/>
+		<susceptibility type="fire" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -46,6 +47,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="3"/>
+			<min_level value="10"/>
 		</attributes>
 		<weight value="10.0"/>
 		<value value="191"/>
@@ -58,18 +60,19 @@
 		</equipable>
 	</item>
 
-	<item name="rękawice płytowe">
-		<type class="glove" subclass="plate_gloves" tileid="-1"/>
-		<description>Oto rękawice płytowe. Są ciężkie, ale ręki nie stracisz.</description>
+	<item name="rękawice elfickie">
+		<type class="glove" subclass="elvish_gloves" tileid="-1"/>
+		<description>Oto rękawice elfickie. Wykonane z liści przez samych elfów, dzięki czemu są bardzo lekkie oraz posiadają magiczną aurę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="-2"/>
-			<def value="4"/>
+			<atk value="1"/>
+			<def value="3"/>
+			<min_level value="20"/>
 		</attributes>
-		<weight value="20.0"/>
-		<value value="515"/>
-		<susceptibility type="fire" value="0.91"/>
-		<susceptibility type="ice" value="0.91"/>
+		<weight value="10.0"/>
+		<value value="191"/>
+		<susceptibility type="earth" value="0.91"/>
+		<susceptibility type="fire" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -97,6 +100,72 @@
 		</equipable>
 	</item>
 
+	<item name="kamienne rękawice">
+		<type class="glove" subclass="stone_gloves" tileid="-1"/>
+		<description>Oto kamienne rękawice. Wykonane ze solidnych kamieni co powoduje, że są bardzo ciężkie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="4"/>
+			<min_level value="40"/>
+		</attributes>
+		<weight value="40.0"/>
+		<value value="515"/>
+		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="ice" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rękawice xenocyjskie">
+		<type class="glove" subclass="xeno_gloves" tileid="-1"/>
+		<description>Oto rękawice xenocyjskie. Są bardzo twarde przez co ograniczają zamachy mieczem...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<def value="4"/>
+			<min_level value="20"/>
+		</attributes>
+		<weight value="44.0"/>
+		<value value="1551"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rękawice płytowe">
+		<type class="glove" subclass="plate_gloves" tileid="-1"/>
+		<description>Oto rękawice płytowe. Są ciężkie, ale ręki nie stracisz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-2"/>
+			<def value="4"/>
+			<min_level value="25"/>
+		</attributes>
+		<weight value="20.0"/>
+		<value value="515"/>
+		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="ice" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="lazurowe rękawice">
 		<type class="glove" subclass="blue_gloves" tileid="-1"/>
 		<description>Oto lazurowe rękawice. Ich kolor może utrudniać walkę.</description>
@@ -115,13 +184,77 @@
 		</equipable>
 	</item>
 
+	<item name="rękawice chaosu">
+		<type class="glove" subclass="chaos_gloves" tileid="-1"/>
+		<description>Oto rękawice chaosu. Czujesz się bezpieczniej w nich oraz wyglądają olśniewająco.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="5"/>
+			<min_level value="45"/>
+		</attributes>
+		<weight value="33.0"/>
+		<value value="919"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rękawice wampirze">
+		<type class="glove" subclass="vampire_gloves" tileid="-1"/>
+		<description>Oto krwiste wampirze rękawice. Wykonane z żelaza z krwi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="5"/>
+			<lifesteal value="0.05"/>
+			<min_level value="100"/>
+		</attributes>
+		<weight value="33.0"/>
+		<value value="1111"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lodowe rękawice">
+		<type class="glove" subclass="ice_gloves" tileid="-1"/>
+		<description>Oto lodowe rękawice. Trochę w nich zimno, ale chronią przed ciosami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-3"/>
+			<def value="5"/>
+			<min_level value="35"/>
+		</attributes>
+		<weight value="22.0"/>
+		<value value="767"/>
+		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="fire" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="ogniste rękawice">
 		<type class="glove" subclass="fire_gloves" tileid="-1"/>
 		<description>Oto ogniste rękawice. Trochę w nich gorąco, ale dają poczucie bezpieczeństwa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="-3"/>
-			<def value="6"/>
+			<def value="5"/>
+			<min_level value="35"/>
 		</attributes>
 		<weight value="22.0"/>
 		<value value="717"/>
@@ -143,48 +276,10 @@
 		<attributes>
 			<atk value="1"/>
 			<def value="6"/>
+			<min_level value="55"/>
 		</attributes>
 		<weight value="22.0"/>
 		<value value="717"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="lodowe rękawice">
-		<type class="glove" subclass="ice_gloves" tileid="-1"/>
-		<description>Oto lodowe rękawice. Trochę w nich zimno, ale chronią przed ciosami.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="-3"/>
-			<def value="6"/>
-		</attributes>
-		<weight value="22.0"/>
-		<value value="767"/>
-		<susceptibility type="ice" value="0.91"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="złote rękawice">
-		<type class="glove" subclass="golden_gloves" tileid="-1"/>
-		<description>Oto złote rękawice. Wykonane z drogocennego metalu dają dobrą ochronę.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="2"/>
-			<def value="8"/>
-		</attributes>
-		<weight value="33.0"/>
-		<value value="919"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -214,55 +309,41 @@
 		</equipable>
 	</item>
 
+	<item name="złote rękawice">
+		<type class="glove" subclass="golden_gloves" tileid="-1"/>
+		<description>Oto złote rękawice. Wykonane z drogocennego metalu dają dobrą ochronę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-2"/>
+			<def value="8"/>
+			<min_level value="120"/>
+		</attributes>
+		<weight value="33.0"/>
+		<value value="919"/>
+		<susceptibility type="dark" value="1.11"/>
+		<susceptibility type="light" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="czarne rękawice">
 		<type class="glove" subclass="black_gloves" tileid="-1"/>
 		<description>Oto czarne rękawice. Nie wiesz z czego są zrobione, ale dają świetną ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="-2"/>
-			<def value="8"/>
+			<atk value="1"/>
+			<def value="9"/>
+			<min_level value="150"/>
 		</attributes>
 		<weight value="44.0"/>
 		<value value="1551"/>
 		<susceptibility type="dark" value="0.91"/>
 		<susceptibility type="light" value="1.11"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="rękawice xenocyjskie">
-		<type class="glove" subclass="xeno_gloves" tileid="-1"/>
-		<description>Oto rękawice xenocyjskie. Są one twarde i przez to ograniczają zamachy mieczem...</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="-1"/>
-			<def value="5"/>
-		</attributes>
-		<weight value="44.0"/>
-		<value value="1551"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="rękawice chaosu">
-		<type class="glove" subclass="chaos_gloves" tileid="-1"/>
-		<description>Oto rękawice chaosu. Czujesz się bezpieczniej w nich oraz wyglądają olśniewająco.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<def value="8"/>
-		</attributes>
-		<weight value="33.0"/>
-		<value value="919"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -278,57 +359,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="3"/>
-			<def value="9"/>
+			<def value="10"/>
+			<min_level value="250"/>
 		</attributes>
 		<weight value="11.0"/>
 		<value value="1551"/>
 		<susceptibility type="dark" value="1.11"/>
 		<susceptibility type="light" value="0.91"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="rękawice wampirze">
-		<type class="glove" subclass="vampire_gloves" tileid="-1"/>
-		<description>Oto wampirze rękawice. Co to?! Krew o właściwościach metalu?</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="1"/>
-			<def value="5"/>
-			<lifesteal value="0.05"/>
-			<min_level value="150"/>
-		</attributes>
-		<weight value="33.0"/>
-		<value value="1111"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="kamienne rękawice">
-		<type class="glove" subclass="stone_gloves" tileid="-1"/>
-		<description>Oto kamienne rękawice. Wykonane ze solidnych kamieni co powoduje, że są bardzo ciężkie.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="1"/>
-			<def value="4"/>
-			<min_level value="75"/>
-		</attributes>
-		<weight value="40.0"/>
-		<value value="515"/>
-		<susceptibility type="light" value="0.91"/>
-		<susceptibility type="dark" value="0.91"/>
-		<susceptibility type="fire" value="0.91"/>
-		<susceptibility type="ice" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
