@@ -210,9 +210,14 @@ public class StendhalPlayerDatabase {
 			transaction.execute("UPDATE character_stats SET gender = 'M' WHERE gender IS NULL;", null);
 		}
 
-		// pol1.10: ratk stats
+		// pol1.10: add ratk column, fix lenght of description column from zoneinfo table & delete unused achievements
 		if (!transaction.doesColumnExist("character_stats", "ratk")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (ratk INTEGER);", null);
+		}
+		if (transaction.doesColumnExist("zoneinfo", "description")) {
+			if (transaction.getColumnLength("zoneinfo", "description") < 128) {
+				transaction.execute("ALTER TABLE zoneinfo MODIFY (description VARCHAR(128));", null);
+			}
 		}
 		transaction.execute("DELETE FROM achievement WHERE identifier in ("
 				+ "'fight.general.darkangels', 'fight.general.angels')", null);

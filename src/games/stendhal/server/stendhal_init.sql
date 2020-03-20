@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS zoneinfo (
   width         INTEGER,
   accessable    INTEGER,
   readableName  VARCHAR(64),
-  description   VARCHAR(64),
+  description   VARCHAR(128),
   colorMethod   VARCHAR(64),
   color         VARCHAR(64),
   blendMethod   VARCHAR(64),
