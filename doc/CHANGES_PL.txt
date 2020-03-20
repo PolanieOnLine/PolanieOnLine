@@ -20,9 +20,12 @@ Changelog
 	- Jimbo (Deniran)
 	- Akutagawa (Nalwor forest - dojo)
 	- Omura Sumitada (Nalwor forest - dojo)
+	- Lovena (Deniran)
+	- Pierre (Deniran)
 - Dodano nowe zadania:
 	- "Rogi jednorożca dla Zelana"
 - Dodano nowe regiony/mapy:
+	- wnętrza budynków w Deniran
 	- Atlantyda
 	- -5 oraz -6 poziom jaskiń Deniran
 - Dodano nowe przedmioty: (16)
