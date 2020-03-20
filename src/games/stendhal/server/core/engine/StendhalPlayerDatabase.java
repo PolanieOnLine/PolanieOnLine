@@ -216,7 +216,7 @@ public class StendhalPlayerDatabase {
 		}
 		if (transaction.doesColumnExist("zoneinfo", "description")) {
 			if (transaction.getColumnLength("zoneinfo", "description") < 128) {
-				transaction.execute("ALTER TABLE zoneinfo MODIFY (description VARCHAR(128));", null);
+				transaction.execute("ALTER TABLE zoneinfo ALTER COLUMN (description VARCHAR(128));", null);
 			}
 		}
 		transaction.execute("DELETE FROM achievement WHERE identifier in ("
