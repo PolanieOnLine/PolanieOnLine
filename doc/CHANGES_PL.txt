@@ -4,6 +4,7 @@ Changelog
 *klient*
 - Dodano nowe grafiki przedmiotów/potworów/npc/gui
 - Dodano grafikę otwieranej bramy na obydwóch strzelnicach (Nalwor & Kraków)
+- Dodano parę nowych strojów do wypożyczenia
 - Dodano kilka nowych dźwięków dla stworzeń
 - Dodano listę zabitych już potworów (w pojedynkę / w grupie)
 - Dodano komunikat dźwiękowy o wbiciu wyższego poziomu umiejętności
