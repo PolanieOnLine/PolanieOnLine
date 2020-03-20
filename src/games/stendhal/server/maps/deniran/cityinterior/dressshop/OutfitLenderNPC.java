@@ -55,8 +55,8 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 
 	private enum OutfitType {
 		// set hair to -1 to not be drawn
-		//BEAR_BLUE("hat=993,hair=-1"), not ready for polanieonline
-		//BEAR_BROWN("hat=994,hair=-1"), not ready for polanieonline
+		BEAR_BLUE("hat=993,hair=-1"),
+		BEAR_BROWN("hat=994,hair=-1"),
 		SUPERSTENDHAL("dress=973,hat=992,hair=-1");
 
 		String outfit_str;
@@ -140,8 +140,8 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 
 	private void initShop(final StendhalRPZone zone) {
 		final List<DeniranOutfit> outfitList = new LinkedList<DeniranOutfit>() {{
-			//add(new DeniranOutfit("niebieski niedźwiadek", OutfitType.BEAR_BLUE, 2500)); not ready for polanieonline
-			//add(new DeniranOutfit("brązowy niedźwiadek", OutfitType.BEAR_BROWN, 2500)); not ready for polanieonline
+			add(new DeniranOutfit("niebieski niedźwiadek", OutfitType.BEAR_BLUE, 2500));
+			add(new DeniranOutfit("brązowy niedźwiadek", OutfitType.BEAR_BROWN, 2500));
 			add(new DeniranOutfit("super", OutfitType.SUPERSTENDHAL, 5000));
 		}};
 
@@ -205,7 +205,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 			@Override
 			protected String getReturnPhrase() {
 				return "Możesz nosić przez " +  TimeUtil.timeUntil(60 * endurance)
-				+ ". Jeśli będziesz chciał możesz poprosić o #zwrot go, zanim skończy się czas.";
+				+ ". Jeśli będziesz chciał możesz #zwrócić, zanim skończy się czas.";
 			};
 		}.addOutfitChanger(lender, behaviour, Arrays.asList("rent", "wypożycz", "wypożyczyć"), false, true);
 

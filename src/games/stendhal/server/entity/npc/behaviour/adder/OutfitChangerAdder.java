@@ -148,7 +148,7 @@ public class OutfitChangerAdder {
 				"Dobrze w czym mogę jeszcze pomóc?", null);
 
 		if (canReturn) {
-			engine.add(ConversationStates.ATTENDING, Arrays.asList("return", "zwróć", "zwrot"), null,
+			engine.add(ConversationStates.ATTENDING, Arrays.asList("return", "zwróć", "zwrot", "zwrócić"), null,
 					false, ConversationStates.ATTENDING,
 					null, new ChatAction() {
 						@Override
