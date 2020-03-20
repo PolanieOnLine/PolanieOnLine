@@ -340,14 +340,7 @@ public class SpriteStore {
 	private Sprite loadSprite(String ref) {
 		BufferedImage sourceImage = null;
 
-		WtWindowManager wManager = WtWindowManager.getInstance();
-		String tmode = wManager.getProperty("ui.transparency", "translucent");
-		if (ref.equals("tiled/tileset/light/shadows.png") && tmode.equals("bitmask")) {
-			ref = "tiled/tileset/light/shadows-opaque.png";
-		}
-
-		// No blood mode
-		boolean showBlood = wManager.getPropertyBoolean("gamescreen.blood", true);
+		boolean showBlood = WtWindowManager.getInstance().getPropertyBoolean("gamescreen.blood", true);
 		String safeRef = ref.split(".png")[0] + "-safe.png";
 		URL safeURL = DataLoader.getResource(safeRef);
 		if (!showBlood && (safeURL != null)) {
