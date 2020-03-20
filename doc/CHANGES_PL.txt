@@ -116,6 +116,7 @@ Changelog
 - Naprawiono reakcję Edgarda podczas trwania zadania na pierścień rycerza na słowo "przypomnij"
 - Naprawiono tablicę Joachima w Gdańsku, która nie pokazywała rzeczywistego sklepiku co można u niego sprzedawać
 - Naprawiono wypożyczalnię kostiumów w magicznym mieście
+- Naprawiono błędy lokalnego serwera, działającym na h2 (brak kolumny ratk oraz zbyt mała długość opisów obszarów(mapek) w bazie)
 - Nieśmiertelne potwory nie są już wymagane do zdobycia osiągnięcia "Legenda" oraz "Wojownik Drużyny"
 - Usunięto wiele wiadomości o tym, że nie jest się już zszokowanym
 - Poprawiono opisy armii Blordrougthów
