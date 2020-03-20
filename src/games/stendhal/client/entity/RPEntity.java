@@ -1534,13 +1534,17 @@ public abstract class RPEntity extends AudibleEntity {
 
 		if (statChange != null && (User.squaredDistanceTo(x, y) < HEARING_DISTANCE_SQ)) {
 			final StringBuilder sb = new StringBuilder(getTitle());
-			if (!statChange.equals("level")) {
-				sb.append(" " + statChange.toUpperCase());
-			}
 			if (getGender().equals("F")) {
-				sb.append(" osiągnęła poziom " + Integer.toString(statTypes.get(statChange)));
+				sb.append(" osiągnęła " + Integer.toString(statTypes.get(statChange)) + " poziom");
 			} else {
-				sb.append(" osiągnął poziom " + Integer.toString(statTypes.get(statChange)));
+				sb.append(" osiągnął " + Integer.toString(statTypes.get(statChange)) + " poziom");
+			}
+			if (!statChange.equals("level")) {
+				statChange = statChange.replace("def", "obrony");
+				statChange = statChange.replace("atk", "ataku");
+				statChange = statChange.replace("rataku", "strzelnictwa");
+
+				sb.append(" " + statChange);
 			}
 
 			final String text = sb.toString();
