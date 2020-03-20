@@ -96,8 +96,16 @@ public class OutfitStore {
 
 		ImageSprite sprite;
 
+		Sprite layer;
+
 		// Body layer
-		Sprite layer = getLayerSprite("body", layer_map.get("body"), color);
+		final int bodyIndex = layer_map.get("body");
+		if (bodyIndex < 0) {
+			layer = store.getEmptySprite(48 * 3, 64 * 4);
+		} else {
+			layer = getLayerSprite("body", layer_map.get("body"), color);
+		}
+
 		if (layer == null) {
 			throw new IllegalArgumentException(
 					"No body image found for outfit: " + layer_map.get("body"));
@@ -262,7 +270,12 @@ public class OutfitStore {
 	 */
 	private Sprite getOutfit(final String strcode, final OutfitColor color) {
 		// Use the normalized string for the reference
-		final String reference = buildReference(strcode, color.toString());
+		String colorString = "null";
+		if (color != null) {
+			colorString = color.toString();
+		}
+
+		final String reference = buildReference(strcode, colorString);
 		return getOutfit(strcode, color, reference);
 	}
 

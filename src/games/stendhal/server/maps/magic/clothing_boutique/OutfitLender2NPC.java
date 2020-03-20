@@ -11,30 +11,31 @@
  ***************************************************************************/
 package games.stendhal.server.maps.magic.clothing_boutique;
 
-import games.stendhal.common.Direction;
-import games.stendhal.common.constants.Occasion;
-import games.stendhal.common.grammar.ItemParserResult;
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.Outfit;
-import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.ExamineChatAction;
-import games.stendhal.server.entity.npc.behaviour.adder.OutfitChangerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
-import games.stendhal.server.entity.player.Player;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.Direction;
+import games.stendhal.common.constants.Occasion;
+import games.stendhal.common.grammar.ItemParserResult;
+import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.Outfit;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ConversationPhrases;
+import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.OutfitChangerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ShowOutfitListEvent;
 import marauroa.common.Pair;
 
 public class OutfitLender2NPC implements ZoneConfigurator {
@@ -46,6 +47,21 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 	private static final double N = 1;
 
 	private static HashMap<String, Pair<Outfit, Boolean>> outfitTypes = new HashMap<String, Pair<Outfit, Boolean>>();
+	private final static Map<String, Integer> priceList = new HashMap<String, Integer>();
+
+	// for the client to know which bases should not be hidden in the preview
+	private final static Map<String, String> hideBaseOverrides = new HashMap<String, String>() {{
+		put("piernikowy ludzik", "showbody");
+		put("czarny kot", "showbody");
+		put("biały kot", "showbody");
+		put("zielony szlam", "showbody");
+		put("czerwony szlam", "showbody");
+		put("fioletowy szlam", "showbody");
+		put("niebieski szlam", "showbody");
+		put("twarz goblina", "showhead");
+		put("twarz cosia", "showhead");
+	}};
+
 	/**
 	 * Configure a zone.
 	 *
@@ -62,9 +78,8 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		// these outfits must be put on over existing outfit
 		// (what's null doesn't change that part of the outfit)
 		// so true means we put on over
-		// FIXME: Use new outfit system
-		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 34, -1, -1, -1, null), true);
-		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 33, -1, -1, -1, null), true);
+		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 988, -1, -1, -1, null), true);
+		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 987, -1, -1, -1, null), true);
 		final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(null, null, null, null, null, null, 7), true);
 
 		// these outfits must replace the current outfit (what's null simply isn't there)
@@ -165,7 +180,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 						return false;
 					}
 				}
-				final Map<String, Integer> priceList = new HashMap<String, Integer>();
+
 				priceList.put("twarz goblina", (int) (N * 500));
 				priceList.put("twarz cosia", (int) (N * 500));
 				priceList.put("fioletowy szlam", (int) (N * 3000));
@@ -176,6 +191,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 				priceList.put("parasol", (int) (N * 300));
 				priceList.put("czarny kot", (int) (N * 4500));
 				priceList.put("biały kot", (int) (N * 4500));
+
 			    addGreeting("Witaj. Mam nadzieję, że podziwiasz ten wspaniały sklep.");
 				addQuest("Wygląda wspaniale!");
 				add(
@@ -190,7 +206,8 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 					+ " #'wypożycz czerwony szlam', #'wypożycz niebieski szlam',"
 					+ " #'wypożycz piernikowy ludzik',"
 					+ " #'wypożycz biały kot' lub #'wypożycz czarny kot'.",
-					new ExamineChatAction("outfits2.png", "Kostiumy", "Różne ceny"));
+					createPreviewAction());
+
 				addJob("Pracuję przy pomocy magii! Zapytaj o #ofertę.");
 				addHelp("Mogę rzucić zaklęcie, aby ubrać Ciebie w magiczne ubranie. Zdejmuje się po pewnym czasie. Mam nadzieję, że mogę coś #zaoferować. Jeżeli nie to Liliana może wypożyczyć jakieś stroje.");
 				addGoodbye("Dowidzenia!");
@@ -208,7 +225,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 
 		npc.setEntityClass("wizardwomannpc");
 		npc.initHP(100);
-		npc.setDescription("Widzisz Saskia. Pracuje w butiku Magic City.");
+		npc.setDescription("Oto Saskia. Pracuje w butiku w magicznym mieście.");
 
 		if (Occasion.MINETOWN) {
 			npc.clearPath();
@@ -220,5 +237,33 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		}
 
 		zone.add(npc);
+	}
+
+	private ChatAction createPreviewAction() {
+		return new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final StringBuilder outfitString = new StringBuilder();
+				final int outfitCount = outfitTypes.size();
+
+				int idx = 0;
+				for (final String outfitName: outfitTypes.keySet()) {
+					outfitString.append(outfitName + ";" + outfitTypes.get(outfitName).first().toString() + ";" + priceList.get(outfitName));
+					if (hideBaseOverrides.containsKey(outfitName)) {
+						outfitString.append(";" + hideBaseOverrides.get(outfitName));
+					} else {
+						outfitString.append(";"); // avoid index out of range exception
+					}
+
+					if (idx < outfitCount - 1) {
+						outfitString.append(":");
+					}
+					idx++;
+				}
+
+				player.addEvent(new ShowOutfitListEvent("Kostiumy", "Tutejsza wypożyczalnia kostiumów", outfitString.toString()));
+				player.notifyWorldAboutChanges();
+			}
+		};
 	}
 }

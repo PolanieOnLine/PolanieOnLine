@@ -94,6 +94,7 @@ import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.ProgressStatusEvent;
 import games.stendhal.server.events.ReachedAchievementEvent;
 import games.stendhal.server.events.ShowItemListEvent;
+import games.stendhal.server.events.ShowOutfitListEvent;
 import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.events.TextEvent;
 import games.stendhal.server.events.TradeStateChangeEvent;
@@ -399,6 +400,10 @@ public class RPClassGenerator {
 
 		if (!RPClass.hasRPClass(Events.BESTIARY)) {
 			BestiaryEvent.generateRPClass();
+		}
+
+		if (!RPClass.hasRPClass(Events.OUTFIT_LIST)) {
+			ShowOutfitListEvent.generateRPClass();
 		}
 
 		if (!RPClass.hasRPClass("action")) {
