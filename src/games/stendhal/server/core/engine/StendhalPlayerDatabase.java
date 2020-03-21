@@ -222,6 +222,11 @@ public class StendhalPlayerDatabase {
 		transaction.execute("DELETE FROM achievement WHERE identifier in ("
 				+ "'fight.general.darkangels', 'fight.general.angels')", null);
 
+		// pol1.10.1: add belts column
+		if (!transaction.doesColumnExist("character_stats", "pas")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (pas VARCHAR(32));", null);
+		}
+
 		updateCharacterStatsOutfitToOutfitLayer(transaction);
 	}
 
