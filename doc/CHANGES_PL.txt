@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.10.1
+*naprawiono błędy*
+- Naprawiono błąd w lokalnej bazie danych z kolumną odpowiedzialną za pasy w grze
+
+
 1.10
 *klient*
 - Dodano nowe grafiki przedmiotów/potworów/npc/gui
