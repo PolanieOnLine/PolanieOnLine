@@ -203,7 +203,7 @@ public class StendhalPlayerDatabase {
 		// 1.34: renamed kill_blordroughs achievements
 		transaction.execute("UPDATE achievement SET identifier='quest.special.kill_blordroughs.0005' WHERE identifier='quest.special.kill_blordroughs.5'", null);
 		transaction.execute("UPDATE achievement SET identifier='quest.special.kill_blordroughs.0025' WHERE identifier='quest.special.kill_blordroughs.25'", null);
-		
+
 		// pol0.30: gender
 		if (!transaction.doesColumnExist("character_stats", "gender")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (gender VARCHAR(2));", null);
@@ -224,7 +224,7 @@ public class StendhalPlayerDatabase {
 
 		// pol1.10.1: add belts column
 		if (!transaction.doesColumnExist("character_stats", "pas")) {
-			transaction.execute("ALTER TABLE character_stats ADD COLUMN (pas VARCHAR(32));", null);
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN pas VARCHAR(32) AFTER legs;", null);
 		}
 
 		updateCharacterStatsOutfitToOutfitLayer(transaction);
