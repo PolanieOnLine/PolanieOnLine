@@ -1,8 +1,12 @@
 Changelog
 ---------
 1.10.1
+*świat*
+- Poprawiono opisy NPC'tów
+
 *naprawiono błędy*
 - Naprawiono błąd w lokalnej bazie danych z kolumną odpowiedzialną za pasy w grze
+- Naprawiono pasy w samej grze
 
 
 1.10
