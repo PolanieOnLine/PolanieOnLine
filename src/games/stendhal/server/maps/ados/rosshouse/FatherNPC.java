@@ -79,7 +79,7 @@ public class FatherNPC implements ZoneConfigurator {
 		npc.setPosition(12, 7);
 		npc.setDirection(Direction.DOWN);
 		npc.initHP(100);
-		npc.setDescription("Widzisz Susi's tatę Mr. Ross. Uspokoił się trochę po ostatniej przygodzie córki.");
+		npc.setDescription("Oto tata Susi, Mr. Ross. Uspokoił się trochę po ostatniej przygodzie córki.");
 		zone.add(npc);
 	}
 

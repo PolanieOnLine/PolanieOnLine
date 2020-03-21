@@ -70,7 +70,7 @@ public class GarbiddleNPC implements ZoneConfigurator {
 		garbiddle.setEntityClass("gnomenpc");
 		garbiddle.setPosition(37, 112);
 		garbiddle.initHP(100);
-		garbiddle.setDescription("Widzisz Garbiddle, małą panią gnom. Czeka na klientów.");
+		garbiddle.setDescription("Oto Garbiddle, mała pani gnom. Czeka na klientów.");
 		zone.add(garbiddle);
 	}
 }

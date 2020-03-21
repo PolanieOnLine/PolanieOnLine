@@ -117,7 +117,7 @@ public class BakerNPC implements ZoneConfigurator {
 		baker.setDirection(Direction.DOWN);
 		baker.setPosition(15, 3);
 		baker.initHP(1000);
-		baker.setDescription("Widzisz Linzo. Jest lokalnym piekarzem w Fado, specjalizuje się w wypieku ciasta z ryb i porów.");
+		baker.setDescription("Oto Linzo. Jest lokalnym piekarzem w Fado, specjalizuje się w wypieku ciasta z ryb i porów.");
 		zone.add(baker);
 	}
 }

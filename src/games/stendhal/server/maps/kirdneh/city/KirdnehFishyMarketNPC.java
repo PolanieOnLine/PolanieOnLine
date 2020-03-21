@@ -79,7 +79,7 @@ public class KirdnehFishyMarketNPC implements ZoneConfigurator {
 		fishyguy.setEntityClass("sailor1npc");
 		fishyguy.setPosition(63, 89);
 		fishyguy.initHP(100);
-		fishyguy.setDescription("Widzisz Fishmonger. Śmierdzi rybami, które skupuje.");
+		fishyguy.setDescription("Oto Fishmonger. Śmierdzi rybami, które skupuje.");
 		zone.add(fishyguy);
 	}
 }

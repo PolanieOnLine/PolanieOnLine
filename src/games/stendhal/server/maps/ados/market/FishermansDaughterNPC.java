@@ -66,7 +66,7 @@ public class FishermansDaughterNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Widzisz Caroline. Wydaje się być miłą, choć zdecydowaną, panią, która stara się dotrzeć do wybranego celu.");
+		npc.setDescription("Oto Caroline. Wydaje się być miłą, choć zdecydowaną, panią, która stara się dotrzeć do wybranego celu.");
 		npc.setEntityClass("fishermansdaughternpc");
 		npc.setPosition(70, 78);
 		npc.setDirection(Direction.DOWN);

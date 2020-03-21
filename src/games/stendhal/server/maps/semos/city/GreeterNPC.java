@@ -34,7 +34,7 @@ public class GreeterNPC implements ZoneConfigurator {
 			Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Monogenes") {
 			@Override
@@ -48,13 +48,13 @@ public class GreeterNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.LEFT);
 			}
-			
-			
-			
+
+
+
 		};
 		npc.setPosition(27, 43);
 		npc.setEntityClass("oldmannpc");
-		npc.setDescription("Widzisz Monogenesa. Wygląda bardzo staro, możliwe, że ma dużą wiedzę...");
+		npc.setDescription("Oto Monogenes. Wygląda bardzo staro, możliwe, że ma dużą wiedzę...");
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
 	}

@@ -52,7 +52,7 @@ public class HoeingManNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGreeting("Co za spotkanie, drogi wędrowcze!");
-				addJob("Widzisz? Ciągle pozbywam się chwastów przy pomocy #motyki, lecz one odrastają za każdym razem...");
+				addJob("Oto? Ciągle pozbywam się chwastów przy pomocy #motyki, lecz one odrastają za każdym razem...");
 				addHelp("Nie spiesz się! Przejdź się po okolicy. Na północy znajduje się młyn, na wschodzie zaś - tereny rolnicze. Przyjemna i bogata wieś, gdzie można zacząć polowanie na jedzenie!");
 				addReply(Arrays.asList("hoe", "motyka"),
 	                    "Oh cóż nie ma nic specjalnego w mojej motyce... Jeżeli potrzebujesz dobrego narzędzia rolniczego jak #kosa to odwiedź kowala w pobliskim miaście Semos!");
@@ -63,7 +63,7 @@ public class HoeingManNPC implements ZoneConfigurator {
 		};
 		// Finalize Jingo Radish, the hoeing man near the Mill north of Semos
 		npc.setEntityClass("hoeingmannpc");
-		npc.setDescription("Widzisz człowieka z motyką, który zajęty jest odchwaszczaniem...");
+		npc.setDescription("Oto człowiek z motyką, który zajęty jest odchwaszczaniem...");
 		npc.setPosition(48,62);
 		npc.initHP(100);
 		zone.add(npc);

@@ -70,7 +70,7 @@ public class HolidayingWomanNPC implements ZoneConfigurator {
 		npc.setEntityClass("woman_016_npc");
 		npc.setPosition(47, 90);
 		npc.initHP(100);
-		npc.setDescription("Widzisz Alice Farmer. Spędza wakacje w Ados.");
+		npc.setDescription("Oto Alice Farmer. Spędza wakacje w Ados.");
 		zone.add(npc);
 	}
 }

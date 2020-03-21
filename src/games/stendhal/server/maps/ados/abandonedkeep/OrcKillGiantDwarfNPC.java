@@ -77,7 +77,7 @@ public class OrcKillGiantDwarfNPC implements ZoneConfigurator {
 		zogfangNPC.setEntityClass("orcbuyernpc");
 		zogfangNPC.setPosition(10, 107);
 		zogfangNPC.initHP(1000);
-		zogfangNPC.setDescription("Widzisz starego orka Zogfang. Czeka na odważnego wojownika, który zgładzi wszystkich krasnali na tym piętrze.");
+		zogfangNPC.setDescription("Oto stary ork Zogfang. Czeka na odważnego wojownika, który zgładzi wszystkich krasnali na tym piętrze.");
 		zone.add(zogfangNPC);
 	}
 }

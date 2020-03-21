@@ -59,7 +59,7 @@ public class SellerNPC implements ZoneConfigurator {
 		npc.setPosition(3, 5);
 		npc.setEntityClass("wizardwomannpc");
 		npc.setDirection(Direction.DOWN);
-		npc.setDescription("Widzisz Sarzine. Jest uzdrowicielką i wiele wie o twej karmie.");
+		npc.setDescription("Oto Sarzina. Jest uzdrowicielką i wiele wie o twej karmie.");
 		zone.add(npc);
 	}
 

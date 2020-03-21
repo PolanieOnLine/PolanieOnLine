@@ -660,7 +660,7 @@ public class MealForGroongo extends AbstractQuest {
                 decentMeal.setInfoString("Skromny posiłek dla Groongo");
                 decentMeal.setBoundTo(player.getName());
                 decentMeal.setDescription(
-                    "Widzisz pokryty kopułą skromny posiłek, który składa się z " +
+                    "Oto pokryty kopułą skromny posiłek, który składa się z " +
                     decentMealDescription);
                 if (player.equipToInventoryOnly(decentMeal)) {
                     player.setQuest(QUEST_SLOT, 0, "deliver_decentmeal");
@@ -1482,7 +1482,7 @@ public class MealForGroongo extends AbstractQuest {
                     money.setQuantity(amountOfMoneys);
                     sandwich.setQuantity(amountOfSandwiches);
                     sandwich.setBoundTo(player.getName());
-                    sandwich.setDescription("Widzisz eksperymentalną kanapkę przygotowaną przez szefa kuchni Stefana.");
+                    sandwich.setDescription("Oto eksperymentalna kanapka przygotowana przez szefa kuchni Stefana.");
                     sandwich.put("amount", player.getBaseHP()/2);
                     sandwich.put("frequency", 10);
                     sandwich.put("regen", 50);
@@ -1623,7 +1623,7 @@ public class MealForGroongo extends AbstractQuest {
             null,
             new MultipleActions(normalEndQuestActions)
         );
-        
+
         // player has lost meal
         npc_chef.add(ConversationStates.ATTENDING,
         	Arrays.asList("meal", "dessert"),

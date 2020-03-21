@@ -75,7 +75,7 @@ public class BarmanNPC implements ZoneConfigurator {
 		barman.setPosition(9, 5);
 		barman.setDirection(Direction.DOWN);
 		barman.initHP(100);
-		barman.setDescription("Widzisz Pedro, barmana. Może zmiksuję pezyszny koktajl dla ciebie.");
+		barman.setDescription("Oto Pedro, barman. Może zmiksuje przepyszny koktajl dla ciebie.");
 		zone.add(barman);
 	}
 }

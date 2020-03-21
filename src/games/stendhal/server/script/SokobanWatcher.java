@@ -31,7 +31,7 @@ public class SokobanWatcher extends ScriptImpl implements TurnListener {
 		Wall wall = new Wall(20, 1);
 		wall.setPosition(26, 107);
 		wall.setEntityClass("block/mine_cart_empty");
-		wall.setDescription("Widzisz ścianę.");
+		wall.setDescription("Oto ściana.");
 		zone.add(wall);
 	}
 

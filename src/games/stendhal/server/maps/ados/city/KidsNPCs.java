@@ -47,7 +47,7 @@ public class KidsNPCs implements ZoneConfigurator {
 	private void buildKids(final StendhalRPZone zone) {
 		final String[] names = { "Jens", "George", "Anna" };
 		final String[] classes = { "kid3npc", "kid4npc", "kid5npc" };
-		final String[] descriptions = {"Oto Jens. Wydaje się być nieco znudzony.", "Oto George, który uwielbia się bawić!", "Widzisz Annę. Jest uroczą dziewczynką, która szuka zabawek."};
+		final String[] descriptions = {"Oto Jens. Wydaje się być nieco znudzony.", "Oto George, który uwielbia się bawić!", "Oto Anna. Jest uroczą dziewczynką, która szuka zabawek."};
 		final Node[] start = new Node[] {new Node(45, 31), new Node(46, 34), new Node(46, 37)};
 		for (int i = 0; i < 3; i++) {
 			final SpeakerNPC npc = new SpeakerNPC(names[i]) {

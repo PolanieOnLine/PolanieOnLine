@@ -55,7 +55,7 @@ public class RatChildBoy2NPC implements ZoneConfigurator {
 			}
 		};
 
-		rat.setDescription("Widzisz dziecko człekoszczura.");
+		rat.setDescription("Oto dziecko człekoszczura.");
 		rat.setEntityClass("ratchildboy2npc");
 		rat.setPosition(97, 5);
 		rat.initHP(100);

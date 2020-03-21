@@ -74,7 +74,7 @@ public class GroomAssistantNPC implements ZoneConfigurator {
 		npc.setEntityClass("executivenpc");
 		npc.setPosition(20, 10);
 		npc.initHP(100);
-		npc.setDescription("Widzisz Timothy. Czeka na osoby, ktore wkrótce ożenią się.");
+		npc.setDescription("Oto Timothy. Czeka na osoby, ktore wkrótce ożenią się.");
 		zone.add(npc);
 	}
 }

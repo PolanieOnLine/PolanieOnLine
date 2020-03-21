@@ -71,7 +71,7 @@ public class FlowerSellerNPC implements ZoneConfigurator {
 		sellernpc.setEntityClass("woman_001_npc");
 		sellernpc.setPosition(64, 82);
 		sellernpc.initHP(100);
-			sellernpc.setDescription("Widzisz Fleur. Jej róże są dla młodych par.");
+			sellernpc.setDescription("Oto Fleur. Jej róże są dla młodych par.");
 		zone.add(sellernpc);
 	}
 }

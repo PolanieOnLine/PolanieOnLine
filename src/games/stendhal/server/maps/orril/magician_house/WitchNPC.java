@@ -116,7 +116,7 @@ public class WitchNPC implements ZoneConfigurator {
 		npc.setShadowStyle("floating");
 		npc.setPosition(24, 7);
 		npc.initHP(100);
-		npc.setDescription("Widzisz wiedźmę Jynath. Ona lata na miotle.");
+		npc.setDescription("Oto wiedźma zwana Jynath. Ona lata na miotle.");
 		npc.setSounds(Arrays.asList("witch-cackle-1"));
 		zone.add(npc);
 	}

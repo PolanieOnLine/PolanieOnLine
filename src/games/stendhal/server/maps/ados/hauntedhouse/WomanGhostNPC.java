@@ -73,7 +73,7 @@ public class WomanGhostNPC implements ZoneConfigurator {
 				// remaining behaviour defined in games.stendhal.server.maps.quests.FindGhosts
 			}
 		};
-		woman.setDescription("Widzisz ducha kobiety, która wygląda na zmartwionego.");
+		woman.setDescription("Oto duch kobiety, która wygląda na zmartwioną.");
 		woman.setResistance(0);
 
 		woman.setEntityClass("woman_011_npc");

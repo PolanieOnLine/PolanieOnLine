@@ -84,11 +84,11 @@ public class HealerNPC implements ZoneConfigurator {
 				addHealer(this, 1200);
 				addHelp("Daj mi pieniądze na #picie, a uleczę. Hik kaska.");
 				addQuest("Ba.");
-				addGoodbye("pffff dowidzenia");
+				addGoodbye("Pffff... Dowidzenia.");
 			}
 		};
 
-		npc.setDescription("Widzisz kobietę, która niegdyś uważana byłą za piękną, lecz teraz podupadła nieco, o czym świadczy jej strój...");
+		npc.setDescription("Oto kobieta, która niegdyś uważana byłą za piękną, lecz teraz podupadła nieco, o czym świadczy jej strój...");
 		npc.setEntityClass("womanonstoolnpc");
 		npc.setPosition(25, 9);
 		npc.setDirection(Direction.UP);

@@ -83,7 +83,7 @@ public class PrincessNPC implements ZoneConfigurator {
 		princessNPC.setEntityClass("princess2npc");
 		princessNPC.setPosition(19, 21);
 		princessNPC.initHP(100);
-		princessNPC.setDescription("Widzisz Princess Ylflia. Mimo, że jest księżniczką, wydaje się być bardzo przyjazną i pomocną.");
+		princessNPC.setDescription("Oto Princess Ylflia. Mimo, że jest księżniczką, wydaje się być bardzo przyjazną i pomocną.");
 		zone.add(princessNPC);
 	}
 }

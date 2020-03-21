@@ -49,7 +49,7 @@ public class VergerNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("vergernpc");
-		npc.setDescription("Widzisz Simona. Ma przymknięte oczy i cicho się modli, choć czasem możesz usłyszeć pojedyńcze słowa odmawianej modlitwy.");
+		npc.setDescription("Oto Simon. Ma przymknięte oczy i cicho się modli, choć czasem możesz usłyszeć pojedyńcze słowa odmawianej modlitwy.");
 		npc.setPosition(29, 14);
 		npc.setDirection(Direction.UP);
 		npc.initHP(100);

@@ -80,7 +80,7 @@ public class DealerNPC implements ZoneConfigurator {
 		dealerNPC.setEntityClass("drugsdealernpc");
 		dealerNPC.setPosition(4, 12);
 		dealerNPC.initHP(100);
-		dealerNPC.setDescription("Widzisz Pdiddi. Wydaje się, że jest myślami w innym świecie ...");
+		dealerNPC.setDescription("Oto Pdiddi. Wydaje się, że jest myślami w innym świecie ...");
 		zone.add(dealerNPC);
 	}
 }

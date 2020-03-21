@@ -71,7 +71,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 		npc.setPosition(67, 13);
 		npc.setEntityClass("orcbuyernpc");
 		zone.add(npc);
-		npc.setDescription("Widzisz śmierdzącego orka Tor'Kooma. Jego żołądek wydaje dziwne dźwięki");
+		npc.setDescription("Oto śmierdzący ork Tor'Kooma. Jego żołądek wydaje dziwne dźwięki");
 	}
 
 	private static final class SheepBuyerBehaviour extends BuyerBehaviour {

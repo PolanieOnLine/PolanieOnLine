@@ -123,7 +123,7 @@ public class HotelChefNPC implements ZoneConfigurator {
 
 		};
 
-		npc.setDescription("Widzisz Stefana, młodego szefa kuchni z hotelu w Fado.");
+		npc.setDescription("Oto Stefan, młody szef kuchni z hotelu w Fado.");
 		npc.setEntityClass("hotelchefnpc");
 		npc.setPosition(92, 9);
 		npc.setDirection(Direction.DOWN);

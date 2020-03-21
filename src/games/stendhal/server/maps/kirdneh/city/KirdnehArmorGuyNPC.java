@@ -77,7 +77,7 @@ public class KirdnehArmorGuyNPC implements ZoneConfigurator {
 		lawrence.setEntityClass("man_002_npc");
 		lawrence.setPosition(63, 95);
 		lawrence.initHP(100);
-		lawrence.setDescription("Widzisz Lawrence. Jego miejsce pracy jest na rynku.");
+		lawrence.setDescription("Oto Lawrence. Jego miejsce pracy jest na rynku.");
 		zone.add(lawrence);
 	}
 }

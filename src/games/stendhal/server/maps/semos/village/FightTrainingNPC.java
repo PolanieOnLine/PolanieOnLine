@@ -42,7 +42,7 @@ public class FightTrainingNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("jailedbarbariannpc");
-		npc.setDescription("Widzisz Rochar-Zith, stojącego tam nieruchomo, wpatrującego się w horyzont.");
+		npc.setDescription("Oto Rochar-Zith, stojący w tym miejscu nieruchomo, wpatrując się w horyzont.");
 		npc.setPosition(23, 30);
 		npc.initHP(100);
 		zone.add(npc);

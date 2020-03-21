@@ -50,7 +50,7 @@ public class PhotographerNPC implements LoadableContent {
 		npc1.setPosition(68, 119);
 		npc1.setEntityClass("photographernpc");
 		npc1.setDirection(Direction.DOWN);
-		npc1.setDescription("Widzisz Kirla. Potrafi stworzyć wyjątkowe pamiątkowe zdjęcia.");
+		npc1.setDescription("Oto Kirla. Potrafi stworzyć wyjątkowe pamiątkowe zdjęcia.");
 		npc1.initHP(100);
 		zone.add(npc1);
 	}

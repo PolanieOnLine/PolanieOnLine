@@ -69,7 +69,7 @@ public class FarmerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Widzisz pewnego farmera o imieniu Bruno, który zajmuje się uprawą zboża.");
+		npc.setDescription("Oto farmer, który zwie się Bruno. Zajmuje się uprawą zboża w królestwie.");
 		npc.setEntityClass("hoeingmannpc");
 		npc.setPosition(76, 23);
 		npc.initHP(100);

@@ -84,7 +84,7 @@ public class GreeterNPC implements ZoneConfigurator {
 		greeterNPC.setOutfit(2, 6, 1, null, 5, null, 0);
 		greeterNPC.setPosition(39, 29);
 		greeterNPC.initHP(1000);
-		greeterNPC.setDescription("Widzisz Xhiphin Zohos. Jest pomocnym obywatelem Fado.");
+		greeterNPC.setDescription("Oto Xhiphin Zohos. Jest pomocnym obywatelem Fado.");
 		zone.add(greeterNPC);
 	}
 }

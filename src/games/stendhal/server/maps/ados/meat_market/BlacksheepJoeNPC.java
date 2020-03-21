@@ -82,7 +82,7 @@ public class BlacksheepJoeNPC implements ZoneConfigurator {
 	blacksheepjoe.setEntityClass("blacksheepnpc");
 	blacksheepjoe.setPosition(13, 13);
 	blacksheepjoe.initHP(100);
-	blacksheepjoe.setDescription("Widzisz Blacksheep Joe. Jest znawcą kiełbasy z serem. Czy próbowałeś jej już?");
+	blacksheepjoe.setDescription("Oto Blacksheep Joe. Jest znawcą kiełbasy z serem. Czy próbowałeś jej już?");
 	zone.add(blacksheepjoe);
 
 	}

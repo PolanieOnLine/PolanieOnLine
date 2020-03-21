@@ -57,7 +57,7 @@ public class CampingGirlNPC implements ZoneConfigurator {
 		sally.setPosition(40, 61);
 		sally.setDirection(Direction.RIGHT);
 		sally.initHP(100);
-		sally.setDescription("Widzisz Sally. Ona jest córką Leandera, piekarza Semos a obecnie obozuję nad rzeką.");
+		sally.setDescription("Oto Sally. Jest córką Leandera, piekarza Semos a obecnie obozuję nad rzeką.");
 		zone.add(sally);
 	}
 }

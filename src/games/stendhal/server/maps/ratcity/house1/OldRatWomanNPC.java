@@ -61,7 +61,7 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 				// remaining behaviour defined in games.stendhal.server.maps.quests.FindRatChildren
 			}
 		};
-		woman.setDescription("Widzisz człekoszczurzyce matkę. Wygląda na zatroskaną.");
+		woman.setDescription("Oto matka człekoszczurzych dzieci. Wygląda na zatroskaną.");
 
 
 		woman.setEntityClass("oldratwomannpc");

@@ -60,7 +60,7 @@ public class HealerNPC implements ZoneConfigurator {
 		new SellerAdder().addSeller(npc, new SellerBehaviour(SingletonRepository.getShopList().get("healing")));
 		new HealerAdder().addHealer(npc, 0);
 		npc.setPosition(5, 46);
-		npc.setDescription("Widzisz przyjazną Carmen. Wygląda ona na kogoś, kogo możesz poprosić o pomoc.");
+		npc.setDescription("Oto przyjazna Carmen. Wygląda ona na kogoś, kogo możesz poprosić o pomoc.");
 		npc.setEntityClass("welcomernpc");
 		npc.setSounds(Arrays.asList("giggle-1", "giggle-2", "giggle-female-01", "giggle-female-02"));
 		zone.add(npc);
