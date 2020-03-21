@@ -92,7 +92,7 @@ public abstract class RPEntity extends GuidedEntity {
 	private static final float RING_DEF_MULTIPLIER = 1.0f;
 	private static final float NECKLACE_DEF_MULTIPLIER = 1.0f;
 	private static final float GLOVE_DEF_MULTIPLIER = 1.5f;
-	private static final float PAS_DEF_MULTIPLIER = 1.0f;
+	private static final float BELT_DEF_MULTIPLIER = 1.0f;
 
 	/**
 	 * To prevent players from gaining attack and defense experience by fighting
@@ -2696,31 +2696,19 @@ public abstract class RPEntity extends GuidedEntity {
 	}
 
 	public boolean hasRing() {
-		return isEquippedItemClass("finger", "ring")
-				|| isEquippedItemClass("finger", "animation_ring");
+		return isEquippedItemClass("finger", "ring");
 	}
 
 	public Item getRing() {
-		final Item item_ring = getEquippedItemClass("finger", "ring");
-		if(item_ring != null) {
-			return item_ring;
-		} else {
-			return getEquippedItemClass("finger", "animation_ring");
-		}
+		return getEquippedItemClass("finger", "ring");
 	}
 
 	public boolean hasRingB() {
-		return isEquippedItemClass("fingerb", "ring")
-				|| isEquippedItemClass("fingerb", "animation_ring");
+		return isEquippedItemClass("fingerb", "ring");
 	}
 
 	public Item getRingB() {
-		final Item item_ringb = getEquippedItemClass("fingerb", "ring");
-		if(item_ringb != null) {
-			return item_ringb;
-		} else {
-			return getEquippedItemClass("fingerb", "animation_ring");
-		}
+		return getEquippedItemClass("fingerb", "ring");
 	}
 
 	public boolean hasNecklace() {
@@ -2747,12 +2735,12 @@ public abstract class RPEntity extends GuidedEntity {
 		return getEquippedItemClass("money", "money");
 	}
 
-	public boolean hasPas() {
-		return isEquippedItemClass("pas", "pas");
+	public boolean hasBelt() {
+		return isEquippedItemClass("pas", "belts");
 	}
 
-	public Item getPas() {
-		return getEquippedItemClass("pas", "pas");
+	public Item getBelt() {
+		return getEquippedItemClass("pas", "belts");
 	}
 
 	@Override
@@ -2871,7 +2859,7 @@ public abstract class RPEntity extends GuidedEntity {
 		int necklace = 0;
 		int ring = 0;
 		int ringb = 0;
-		int pas = 0;
+		int belt = 0;
 
 		Item item;
 
@@ -2925,9 +2913,9 @@ public abstract class RPEntity extends GuidedEntity {
 			glove = (int) (item.getDefense() / getItemLevelModifier(item));
 		}
 
-		if (hasPas()) {
-			item = getPas();
-			pas = (int) (item.getDefense() / getItemLevelModifier(item));
+		if (hasBelt()) {
+			item = getBelt();
+			belt = (int) (item.getDefense() / getItemLevelModifier(item));
 		}
 
 		final List<Item> targetWeapons = getWeapons();
@@ -2940,7 +2928,7 @@ public abstract class RPEntity extends GuidedEntity {
 				+ HELMET_DEF_MULTIPLIER * helmet + NECKLACE_DEF_MULTIPLIER * necklace
 				+ LEG_DEF_MULTIPLIER * legs + BOOTS_DEF_MULTIPLIER * boots
 				+ RING_DEF_MULTIPLIER * ring + RING_DEF_MULTIPLIER * ringb
-				+ PAS_DEF_MULTIPLIER * pas + WEAPON_DEF_MULTIPLIER * weapon;
+				+ BELT_DEF_MULTIPLIER * belt + WEAPON_DEF_MULTIPLIER * weapon;
 	}
 
 	/**
@@ -2982,8 +2970,8 @@ public abstract class RPEntity extends GuidedEntity {
 		if (hasGloves()) {
 			items.add(getGloves());
 		}
-		if (hasPas()) {
-			items.add(getPas());
+		if (hasBelt()) {
+			items.add(getBelt());
 		}
 		return items;
 	}
