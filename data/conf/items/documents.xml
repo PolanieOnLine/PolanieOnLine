@@ -1,10 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
+	
+	<!-- START: SCHEMATY -->
+
+	<item name="schemat na pierścień z mithrilu">
+		<type class="documents" subclass="scheme_full_mithril_ring" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+
+	<!-- CZĘŚCI SCHEMATU NA PIERŚCIEŃ -->
+	<item name="pierwsza część schematu">
+		<type class="documents" subclass="scheme1_mithril_ring" tileid="-1"/>
+		<description>Oto pierwsza część schematu na pierścień z mithrilu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+
+	<item name="druga część schematu">
+		<type class="documents" subclass="scheme2_mithril_ring" tileid="-1"/>
+		<description>Oto druga część schematu na pierścień z mithrilu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+
+	<item name="trzecia część schematu">
+		<type class="documents" subclass="scheme3_mithril_ring" tileid="-1"/>
+		<description>Oto trzecia część schematu na pierścień z mithrilu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+
+	<item name="czwarta część schematu">
+		<type class="documents" subclass="scheme4_mithril_ring" tileid="-1"/>
+		<description>Oto czwarta część schematu na pierścień z mithrilu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+
+	<!-- END: SCHEMATY -->
 
 	<item name="karteczka">
 		<type class="documents" subclass="paper" tileid="-1"/>
-		<description>Oto karteczka.</description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 		</attributes>
@@ -20,7 +100,7 @@
 
 	<item name="kupon">
 		<type class="documents" subclass="coupon" tileid="-1"/>
-		<description>Oto kupon.</description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 		</attributes>
@@ -215,7 +295,7 @@
 	
 	<item name="wyniki badań">
     <type class="documents" subclass="paper" tileid="-1"/>
-		<description>Oto wyniki badań od Dr. Wojciecha. Trzeba je zanieść do drugiego weterynarza jakim jest Dr. Feelgood!</description>
+		<description>Oto wyniki badań od Dr. Wojciecha. Trzeba je zanieść drugiemu weterynarzowi jakim jest Dr. Feelgood!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 		</attributes>
