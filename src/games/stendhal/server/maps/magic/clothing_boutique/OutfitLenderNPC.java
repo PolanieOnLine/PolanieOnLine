@@ -84,6 +84,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 
 		final Pair<Outfit, Boolean> GOWN = new Pair<Outfit, Boolean>(new Outfit(null, 73, null, null, null, null, null), true);
 		final Pair<Outfit, Boolean> NOOB = new Pair<Outfit, Boolean>(new Outfit(null, 65, null, null, null, null, null), true);
+		final Pair<Outfit, Boolean> JESTER = new Pair<Outfit, Boolean>(new Outfit(null, 975, null, null, -1, 991, null), true);
 
 		// these outfits must replace the current outfit (what's -1 simply isn't there)
 		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(-1, 999, -1, -1, -1, -1, null), false);
@@ -99,6 +100,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		outfitTypes.put("suknia", GOWN);
 		outfitTypes.put("pomarańczowy", NOOB);
 		outfitTypes.put("strój królika", BUNNY);
+		outfitTypes.put("figlarz", JESTER);
 		outfitTypes.put("koń", HORSE);
 		outfitTypes.put("klacz", GIRL_HORSE);
 		outfitTypes.put("obcy", ALIEN);
@@ -190,6 +192,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 				priceList.put("suknia", (int) (N * 750));
 				priceList.put("pomarańczowy", (int) (N * 500));
 				priceList.put("strój królika", (int) (N * 800));
+				priceList.put("figlarz", (int) (N * 400));
 				priceList.put("koń", (int) (N * 1200));
 				priceList.put("klacz", (int) (N * 1200));
 				priceList.put("obcy", (int) (N * 1200));
@@ -197,13 +200,13 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 				priceList.put("duży statek", (int) (N * 5000));
 
 				addGreeting("Cześć! W czym mogę pomóc?");
-				addQuest("Nic nie mogę dla Ciebie znaleść.");
+				addQuest("Nic nie mogę dla Ciebie znaleźć.");
 				add(
 					ConversationStates.ATTENDING,
 					ConversationPhrases.OFFER_MESSAGES,
 					null,
 					ConversationStates.ATTENDING,
-					"Powiedz mi jeżeli chciałbyś #'wypożyczyć suknia', #'zielone ubranie', kostium #'obcy', kostium #'koń', #'klacz', #'kombinezon', #'spodnie robocze', #'strój królika', #'pomarańczowy', #'statek' lub kostium #'duży statek'.",
+					"Powiedz mi jeżeli chciałbyś #'wypożyczyć suknia', #'zielone ubranie', kostium #'obcy', kostium #'koń', #'klacz', #'figlarz', #'kombinezon', #'spodnie robocze', #'strój królika', #'pomarańczowy', #'statek' lub kostium #'duży statek'.",
 					createPreviewAction());
 
 				addJob(jobReply);
