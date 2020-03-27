@@ -286,6 +286,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
+			<profile name="attack weakest"/>
 		</ai>
 	</creature>
 </creatures>

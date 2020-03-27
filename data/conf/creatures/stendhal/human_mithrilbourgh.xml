@@ -227,7 +227,7 @@
 	</creature>
 
 	<creature name="czarodziej mithrilbourgh">
-		<type class="stendhal/human" subclass="soldier_wizard" tileid="human_soldier.png:8"/>
+		<type class="stendhal/human" subclass="mithril_wizard" tileid="human_soldier.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="634"/>
