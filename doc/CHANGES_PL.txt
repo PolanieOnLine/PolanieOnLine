@@ -1,5 +1,20 @@
 Changelog
 ---------
+1.11
+*klient*
+- Dodano nowy strój do wypożyczenia
+- Magiczny bilet zyskał nową grafikę
+
+*świat*
+- Dodano nowe osiągnięcia: (2)
+	- "Imperialistyczny Dominator"
+	- "Imperialistyczny Dyktator"
+- Mały pegaz od teraz ucieka podczas atakowania
+
+*naprawiono błędy*
+- Poprawiono ścieżkę prowadzącą do dojo w lesie Nalwor
+
+
 1.10.1
 *naprawiono błędy*
 - Naprawiono błąd w lokalnej bazie danych z kolumną odpowiedzialną za pasy w grze
