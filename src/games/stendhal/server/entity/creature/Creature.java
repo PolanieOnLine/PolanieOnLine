@@ -572,6 +572,8 @@ public class Creature extends NPC {
 	public final void setCorpse(final String name, final String harmless, final int width, final int height) {
 		corpseName = name;
 		harmlessCorpseName = harmless;
+		corpseWidth = width;
+		corpseHeight = height;
 		if (corpseName == null) {
 			LOGGER.error(getName() + " has null corpse name.");
 			/*
@@ -583,10 +585,12 @@ public class Creature extends NPC {
 		}
 		if (harmlessCorpseName == null) {
 			// Set default harmless corpse to "bag.png"
-			harmlessCorpseName = "bag";
+			if (corpseWidth > 1 && corpseHeight > 1) {
+				harmlessCorpseName = "bag_2x2";
+			} else {
+				harmlessCorpseName = "bag";
+			}
 		}
-		corpseWidth = width;
-		corpseHeight = height;
 	}
 
 	@Override

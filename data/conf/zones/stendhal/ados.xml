@@ -5917,10 +5917,6 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleś�
 				<parameter name="volume">120</parameter>
 			</implementation>
 		</entity>
-
-		<!-- Item protecting creatures -->
-		<configurator class-name="games.stendhal.server.maps.ados.snake_pit.KingCobraCreature" />
-
 	</zone>
 
 	<zone name="-3_ados_snake_pit_e2" level="-3" x="500704" y="499808" file="Level -3/ados/snake_pit_e2.tmx">

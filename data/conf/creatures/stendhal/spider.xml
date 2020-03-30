@@ -71,7 +71,7 @@
 		<level value="110"/>
 		<experience value="14400"/>
 		<respawn value="5400"/>
-		<corpse name="huge_animal" harmless="spiderweb_2x2" width="2" height="2"/>
+		<corpse name="huge_animal" harmless="spiderweb_2x2"/>
 		<drops>
 			<item value="duży eliksir" quantity="[1,4]" probability="70.0"/>
 			<item value="mocna trucizna" quantity="[1,2]" probability="80.0"/>

@@ -661,7 +661,7 @@
 		<level value="5"/>
 		<experience value="50"/>
 		<respawn value="1200"/>
-		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="mięso" quantity="[1,10]" probability="100.0"/>
 			<item value="szynka" quantity="[2,8]" probability="70.0"/>
@@ -696,7 +696,7 @@
 		<level value="86"/>
 		<experience value="7175"/>
 		<respawn value="3400"/>
-		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="szynka" quantity="[4,10]" probability="75.0"/>
 			<item value="stek" quantity="[3,11]" probability="35.0"/>
@@ -731,7 +731,7 @@
 		<level value="47"/>
 		<experience value="1550"/>
 		<respawn value="1680"/>
-		<corpse name="animal_2x2" harmless="bag_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="mięso" quantity="[1,10]" probability="100.0"/>
 			<item value="szynka" quantity="[2,8]" probability="70.0"/>
@@ -766,7 +766,7 @@
 		<level value="191"/>
 		<experience value="51000"/>
 		<respawn value="17600"/>
-		<corpse name="animal_2x2" harmless="bag_2x2" width="5" height="3"/>
+		<corpse name="animal_2x2" width="5" height="3"/>
 		<drops>
 			<item value="money" quantity="[100,300]" probability="70.0"/>
 			<item value="szynka" quantity="[5,15]" probability="5.0"/>
@@ -944,7 +944,7 @@
 		<level value="150"/>
 		<experience value="33501"/>
 		<respawn value="12000"/>
-		<corpse name="winged_2x2" width="2" height="2"/>
+		<corpse name="winged_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="szynka" quantity="[3,5]" probability="5.0"/>
@@ -979,7 +979,7 @@
 		<level value="154"/>
 		<experience value="37090"/>
 		<respawn value="12000"/>
-		<corpse name="winged_2x2" width="2" height="2"/>
+		<corpse name="winged_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="szynka" quantity="[5,8]" probability="5.0"/>

@@ -81,7 +81,7 @@
 		<respawn value="900"/>
 		<corpse name="small_winged" harmless="feathered" />
 		<drops>
-			<item value="szynka" quantity="[1,3]" probability="60.0"/>
+			<item value="udko" quantity="[1,3]" probability="60.0"/>
 			<item value="szpinak" quantity="[1,1]" probability="20.0"/>
 		</drops>
 		<equips>
@@ -142,7 +142,7 @@
 		<respawn value="900"/>
 		<corpse name="small_animal" harmless="feathered"/>
 		<drops>
-			<item value="mięso" quantity="[2,4]" probability="60.0"/>
+			<item value="udko" quantity="[2,4]" probability="60.0"/>
 			<item value="dorsz" quantity="[2,3]" probability="30.0"/>
 		</drops>
 		<equips>

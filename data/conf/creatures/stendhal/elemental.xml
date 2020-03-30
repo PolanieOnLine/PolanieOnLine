@@ -189,7 +189,7 @@
 		<level value="400"/>
 		<experience value="570000"/>
 		<respawn value="140000"/>
-		<corpse name="puddle_light_blue_2x2" width="2" height="2"/>
+		<corpse name="puddle_light_blue_2x2"/>
 		<drops>
 			<item value="money" quantity="[3000,16000]" probability="100.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,4]" probability="35.0"/>
@@ -266,7 +266,7 @@
 		<level value="160"/>
 		<experience value="42500"/>
 		<respawn value="13700"/>
-		<corpse name="giant_humanoid" width="2" height="2"/>
+		<corpse name="giant_humanoid"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
@@ -348,7 +348,7 @@
 		<level value="212"/>
 		<experience value="86999"/>
 		<respawn value="23000"/>
-		<corpse name="puddle_light_blue_2x2" harmless="puddle_light_blue_2x2" width="2" height="2"/>
+		<corpse name="puddle_light_blue_2x2" harmless="puddle_light_blue_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>

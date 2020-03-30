@@ -339,7 +339,7 @@
 		<level value="240"/>
 		<experience value="112386"/>
 		<respawn value="15700"/>
-		<corpse name="giant_humanoid" width="2" height="2"/>
+		<corpse name="giant_humanoid"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[2,6]" probability="40.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>

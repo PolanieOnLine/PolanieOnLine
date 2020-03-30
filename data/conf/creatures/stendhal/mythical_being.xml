@@ -54,7 +54,7 @@
 		<level value="215"/>
 		<experience value="90000"/>
 		<respawn value="28000"/>
-		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<corpse name="humanoid_2x2" />
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="szmaragd" quantity="[1,1]" probability="5.0"/>
@@ -96,7 +96,7 @@
 		<level value="215"/>
 		<experience value="90000"/>
 		<respawn value="28000"/>
-		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<corpse name="humanoid_2x2" />
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="ametyst" quantity="[1,1]" probability="5.0"/>
@@ -139,7 +139,7 @@
 		<level value="215"/>
 		<experience value="90000"/>
 		<respawn value="28000"/>
-		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<corpse name="humanoid_2x2" />
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="rubin" quantity="[1,1]" probability="5.0"/>
@@ -181,7 +181,7 @@
 		<level value="215"/>
 		<experience value="90000"/>
 		<respawn value="28000"/>
-		<corpse name="humanoid_2x2" harmless="bag_2x2" width="2" height="2" />
+		<corpse name="humanoid_2x2" />
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="szafir" quantity="[1,1]" probability="5.0"/>
@@ -258,7 +258,7 @@
 		<level value="250"/>
 		<experience value="125000"/>
 		<respawn value="36000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -286,7 +286,7 @@
 		<level value="275"/>
 		<experience value="150000"/>
 		<respawn value="40000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -316,7 +316,7 @@
 		<level value="300"/>
 		<experience value="175000"/>
 		<respawn value="44000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -407,7 +407,7 @@
 		<level value="280"/>
 		<experience value="151000"/>
 		<respawn value="50000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -435,7 +435,7 @@
 		<level value="285"/>
 		<experience value="158000"/>
 		<respawn value="52000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -463,7 +463,7 @@
 		<level value="290"/>
 		<experience value="162000"/>
 		<respawn value="54000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -525,7 +525,7 @@
 		<level value="201"/>
 		<experience value="53001"/>
 		<respawn value="14000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -557,7 +557,7 @@
 		<level value="206"/>
 		<experience value="55500"/>
 		<respawn value="15000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
@@ -589,7 +589,7 @@
 		<level value="219"/>
 		<experience value="64000"/>
 		<respawn value="16000"/>
-		<corpse name="animal_2x2" width="3" height="2"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>

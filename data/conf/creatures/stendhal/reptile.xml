@@ -80,7 +80,7 @@
 		<level value="96"/>
 		<experience value="9630"/>
 		<respawn value="3900"/>
-		<corpse name="snake_2x2" harmless="snake_2x2-safe" width="2" height="2" />
+		<corpse name="snake_2x2" harmless="snake_2x2-safe" />
 		<drops>
 			<item value="trucizna" quantity="[2,5]" probability="20.0"/>
 			<item value="zaizolowany pierścień" quantity="[1,1]" probability="0.08"/>
@@ -113,10 +113,11 @@
 		<level value="120"/>
 		<experience value="18850"/>
 		<respawn value="5400"/>
-		<corpse name="snake_3x2" harmless="snake_3x2-safe" width="3" height="2"/>
+		<corpse name="snake_3x2" harmless="snake_3x2-safe"/>
 		<drops>
 			<item value="zabójcza trucizna" quantity="[1,1]" probability="5.0"/>
 			<item value="magiczne spodnie płytowe" quantity="[1,1]" probability="0.25"/>
+			<item value="gruczoł jadowy" quantity="1" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -181,7 +182,7 @@
 		<level value="15"/>
 		<experience value="180"/>
 		<respawn value="1230"/>
-		<corpse name="huge_animal" width="2" height="2"/>
+		<corpse name="huge_animal"/>
 		<drops>
 			<item value="money" quantity="[3,12]" probability="100.0"/>
 			<item value="mięso" quantity="[3,7]" probability="80.0"/>

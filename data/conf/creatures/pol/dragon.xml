@@ -16,7 +16,7 @@
 		<level value="499"/>
 		<experience value="417171"/>
 		<respawn value="28888"/>
-		<corpse name="dragon_3x3x2" harmless="bag_2x2"/>
+		<corpse name="dragon_3x3x2"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,15]" probability="30.0"/>
 			<item value="money" quantity="[30,3000]" probability="90.0"/>
@@ -63,7 +63,7 @@
 		<level value="399"/>
 		<experience value="316161"/>
 		<respawn value="27777"/>
-		<corpse name="dragon_3x3x2" harmless="bag_2x2"/>
+		<corpse name="dragon_3x3x2"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,12]" probability="80.0"/>
 			<item value="money" quantity="[20,2000]" probability="100.0"/>
@@ -109,7 +109,7 @@
 		<level value="299"/>
 		<experience value="215151"/>
 		<respawn value="26666"/>
-		<corpse name="dragon_3x3x2" harmless="bag_2x2"/>
+		<corpse name="dragon_3x3x2"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,9]" probability="80.0"/>
 			<item value="money" quantity="[30,777]" probability="100.0"/>
@@ -156,7 +156,7 @@
 		<level value="199"/>
 		<experience value="114141"/>
 		<respawn value="25555"/>
-		<corpse name="dragon_3x3x2" harmless="bag_2x2"/>
+		<corpse name="dragon_3x3x2"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,7]" probability="60.0"/>
 			<item value="money" quantity="[30,555]" probability="100.0"/>
@@ -203,7 +203,7 @@
 		<level value="135"/>
 		<experience value="23746"/>
 		<respawn value="17300"/>
-		<corpse name="huge_animal" harmless="bag_2x2"/>
+		<corpse name="huge_animal"/>
 		<drops>
 			<item value="duży eliksir" quantity="[2,6]" probability="80.0"/>
 			<item value="money" quantity="[60,333]" probability="100.0"/>
@@ -244,7 +244,7 @@
 		<level value="135"/>
 		<experience value="17700"/>
 		<respawn value="17300"/>
-		<corpse name="huge_animal" harmless="bag_2x2"/>
+		<corpse name="huge_animal"/>
 		<drops>
 			<item value="bukłak z wodą" quantity="[2,4]" probability="80.0"/>
 			<item value="money" quantity="[60,160]" probability="100.0"/>
@@ -316,7 +316,7 @@
 		<level value="222"/>
 		<experience value="110000"/>
 		<respawn value="23456"/>
-		<corpse name="huger_animal" harmless="bag_2x2"/>
+		<corpse name="huger_animal"/>
 		<drops>
 			<item value="duży eliksir" quantity="[1,5]" probability="70.0"/>
 			<item value="money" quantity="[300,10000]" probability="100.0"/>
@@ -362,7 +362,7 @@
 		<level value="300"/>
 		<experience value="333333"/>
 		<respawn value="24000"/>
-		<corpse name="dragon_6x6" harmless="bag_2x2"/>
+		<corpse name="dragon_6x6"/>
 		<drops>
 			<item value="gigantyczny eliksir" quantity="[1,1]" probability="50.0"/>
 			<item value="money" quantity="[300,1000]" probability="100.0"/>
@@ -405,7 +405,7 @@
 		<level value="900"/>
 		<experience value="657822"/>
 		<respawn value="100000"/>
-		<corpse name="dragon_6x6" harmless="bag_2x2"/>
+		<corpse name="dragon_6x6"/>
 		<drops>
 			<item value="smocza krew" quantity="[1,1]" probability="100.0"/>
 			<item value="money" quantity="[800,8000]" probability="80.0"/>
@@ -448,7 +448,7 @@
 		<level value="1000"/>
 		<experience value="814387"/>
 		<respawn value="100000"/>
-		<corpse name="dragon_6x6" harmless="bag_2x2"/>
+		<corpse name="dragon_6x6"/>
 		<drops>
 			<item value="smocza krew" quantity="[1,1]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,1]" probability="50.0"/>
@@ -493,7 +493,7 @@
 		<level value="990"/>
 		<experience value="1271283"/>
 		<respawn value="8280000"/>
-		<corpse name="dragon_6x6" harmless="bag_2x2"/>
+		<corpse name="dragon_6x6"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,29]" probability="40.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,29]" probability="40.0"/>
