@@ -7,6 +7,9 @@ public class MithrilRingInfo {
 
 	private static final String RING = "złoty pierścień";
 
+	public static final String NPC = "Amileusz";
+	public static final String FIRST_SCHEME_NPC = "Mieczysław";
+
 	public String getQuestSlot() {
 		return QUEST_SLOT;
 	}

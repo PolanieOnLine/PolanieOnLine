@@ -38,6 +38,9 @@ public class TeleporterBehaviour implements TurnListener {
 	private final String zoneStartsWithLimiter;
 	private final String repeatedText;
 
+	// time spend on each map (if null, uses default value ~ 5 minutes)
+	private Integer tarryDuration = null;
+
 	/**
 	 * If set to <code>false</code>, NPC will not teleport if engaged in
 	 * conversation when turn reached for teleport.
@@ -163,6 +166,8 @@ public class TeleporterBehaviour implements TurnListener {
 	public void onTurnReached(final int currentTurn) {
 		if (speakerNPC.getEngine().getCurrentState() != ConversationStates.IDLE) {
 			if (!exitsConversation) {
+				// Schedule so we are notified again in 1 minute
+				SingletonRepository.getTurnNotifier().notifyInSeconds(60, this);
 				return;
 			}
 
@@ -213,8 +218,12 @@ public class TeleporterBehaviour implements TurnListener {
 			}
 		}
 
-		// Schedule so we are notified again in 5 minutes
-		SingletonRepository.getTurnNotifier().notifyInTurns(5 * 60 * 3, this);
+		if (tarryDuration == null) {
+			// Schedule so we are notified again in 5 minutes
+			SingletonRepository.getTurnNotifier().notifyInTurns(5 * 60 * 3, this);
+		} else {
+			SingletonRepository.getTurnNotifier().notifyInSeconds(tarryDuration, this);
+		}
 	}
 
 	/**
@@ -227,5 +236,16 @@ public class TeleporterBehaviour implements TurnListener {
 	 */
 	public void setExitsConversation(final boolean exits) {
 		exitsConversation = exits;
+	}
+
+	/**
+	 * Sets the amount of time (in seconds) the NPC will spend on a map before
+	 * teleporting.
+	 *
+	 * @param duration
+	 * 		Seconds the NPC will stay on map.
+	 */
+	public void setTarryDuration(final Integer duration) {
+		this.tarryDuration = duration;
 	}
 }

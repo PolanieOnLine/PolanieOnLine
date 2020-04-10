@@ -26,7 +26,11 @@ import org.luaj.vm2.lib.jse.JseBaseLib;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.lib.jse.LuajavaLib;
 
+import games.stendhal.common.grammar.Grammar;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.scripting.lua.ArraysHelper;
 import games.stendhal.server.core.scripting.lua.NPCHelper;
+import games.stendhal.server.core.scripting.lua.QuestHelper;
 import games.stendhal.server.entity.mapstuff.sign.Reader;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
@@ -100,8 +104,12 @@ public class ScriptInLua extends ScriptingSandbox {
 		globals.set("game", game);
 		globals.set("logger", CoerceJavaToLua.coerce(logger));
 		globals.set("npcHelper", CoerceJavaToLua.coerce(new NPCHelper()));
+		globals.set("questHelper", CoerceJavaToLua.coerce(QuestHelper.get()));
 		globals.set("simpleQuest", CoerceJavaToLua.coerce(SimpleQuestCreator.getInstance()));
 		globals.set("shops", CoerceJavaToLua.coerce(ShopList.get()));
+		globals.set("questSystem", CoerceJavaToLua.coerce(SingletonRepository.getStendhalQuestSystem()));
+		globals.set("arrays", CoerceJavaToLua.coerce(ArraysHelper.get()));
+		globals.set("grammar", CoerceJavaToLua.coerce(Grammar.get()));
 
 		// load built-in master script
 		final InputStream is = getClass().getResourceAsStream("lua/init.lua");
@@ -157,5 +165,55 @@ public class ScriptInLua extends ScriptingSandbox {
 		}
 
 		return new ShopSign(name, title, caption, seller);
+	}
+
+	/**
+	 * Exposes Java system properties to Lua.
+	 *
+	 * @param p
+	 * 		The property of which the value should be returned.
+	 * @return
+	 * 		Value of the property or <code>null</code> if not set.
+	 */
+	public String getProperty(final String p) {
+		if (p == null) {
+			return null;
+		}
+
+		return System.getProperty(p);
+	}
+
+	/**
+	 * Exposes Java system properties to Lua.
+	 *
+	 * @param p
+	 * 		The property string to check.
+	 * @return
+	 * 		<code>true</code> if the property is not <code>null</code>.
+	 */
+	public boolean propertyEnabled(final String p) {
+		if (p == null) {
+			return false;
+		}
+
+		return System.getProperty(p) != null;
+	}
+
+	/**
+	 * Exposes Java system properties to Lua.
+	 *
+	 * @param p
+	 * 		The property string to check.
+	 * @param v
+	 * 		The value to check the property against.
+	 * @return
+	 * 		<code>true</code> if the property value is equal to v.
+	 */
+	public boolean propertyEquals(final String p, final String v) {
+		if (p == null || v == null) {
+			return false;
+		}
+
+		return System.getProperty(p).equals(v);
 	}
 }

@@ -19,8 +19,8 @@
  <tileset firstgid="343" name="metal_and_stone" tilewidth="32" tileheight="32">
   <image source="../../tileset/item/statue/metal_and_stone.png"/>
  </tileset>
- <tileset firstgid="349" name="swordsman2" tilewidth="32" tileheight="32">
-  <image source="../../tileset/item/statue/swordsman2.png"/>
+ <tileset firstgid="349" name="swordsman" tilewidth="32" tileheight="32">
+  <image source="../../tileset/item/statue/swordsman.png"/>
  </tileset>
  <tileset firstgid="361" name="weapons_for_walls" tilewidth="32" tileheight="32">
   <image source="../../tileset/item/armor/weapons_for_walls.png"/>

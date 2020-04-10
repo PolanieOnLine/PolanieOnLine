@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui.settings;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
@@ -36,6 +38,7 @@ import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.stats.StatsPanelController;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.styled.StyledLookAndFeel;
@@ -190,6 +193,18 @@ class VisualSettings {
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
+
+		// controller for setting visibility of HP br
+		final JCheckBox showHPBarToggle = SettingsComponentFactory.createSettingsToggle(HP_BAR_PROPERTY,
+				true, "Pokaż pasek zdrowia", "Pokazuje pasek reprezentujący aktualne zdrowie.");
+		showHPBarToggle.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				StatsPanelController.get().toggleHPBar(e.getStateChange() == ItemEvent.SELECTED);
+			}
+		});
+		page.add(showHPBarToggle);
+
 		page.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
 
 		// Font stuff

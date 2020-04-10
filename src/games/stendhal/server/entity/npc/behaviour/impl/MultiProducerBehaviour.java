@@ -12,6 +12,17 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.impl;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.ExpressionType;
@@ -21,17 +32,6 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Iterator;
-
-import org.apache.log4j.Logger;
 
 /**
  * The behaviour of an NPC who is able to produce one or more things for a player,
@@ -410,7 +410,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 				// give some XP as a little bonus for industrious workers
 				player.addXP(numberOfProductItems);
 				player.notifyWorldAboutChanges();
-				player.incProducedCountForItem(productName, products.getQuantity());
+				player.incProducedForItem(productName, products.getQuantity());
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
 						+ Grammar.plnoun(numberOfProductItems, productName) 

@@ -77,7 +77,7 @@ public class PsychicNPC implements ZoneConfigurator {
 				ConversationPhrases.GOODBYE_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				null,
+				"Wiedziałam, że zaraz pójdziesz. Do zobaczenia.",
 				new PlaySoundAction("npc/goodbye_female-01"));
 
 		psychic.addJob("Jestem medium. Chciałbyś #poczytać?");

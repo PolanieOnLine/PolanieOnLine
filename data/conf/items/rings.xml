@@ -387,4 +387,26 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
+
+	<item name="wzmocniony pierścień imperialny">
+		<type class="ring" subclass="imperial_ring_enhanced" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="1"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<preview>5</preview>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
 </items>

@@ -49,9 +49,6 @@ public abstract class ActiveEntity extends Entity {
 
 	private int stepsTaken;
 
-	/** Allows entity to walk through collision areas */
-	private boolean ignoreCollision;
-
 	/**
 	 * Create an active entity.
 	 */
@@ -500,7 +497,7 @@ public abstract class ActiveEntity extends Entity {
 	 * @return ignoreCollision
 	 */
 	public boolean ignoresCollision() {
-		return ignoreCollision;
+		return has("ignore_collision");
 	}
 
 	/**
@@ -509,7 +506,6 @@ public abstract class ActiveEntity extends Entity {
 	 * @param ignore
 	 */
 	public void setIgnoresCollision(boolean ignore) {
-		ignoreCollision = ignore;
 		if (ignore) {
 			put("ignore_collision", "");
 		} else {
@@ -525,7 +521,7 @@ public abstract class ActiveEntity extends Entity {
 	 * @return
 	 */
 	public boolean canMoveTo(final int x, final int y) {
-		if (ignoreCollision) {
+		if (ignoresCollision()) {
 			return true;
 		}
 

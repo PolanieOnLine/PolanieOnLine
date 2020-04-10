@@ -43,16 +43,16 @@
   <image source="../../tileset/item/documents/note_board.png" width="64" height="128"/>
  </tileset>
  <tileset firstgid="174" name="doll" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../tileset/item/northpole/doll.png" width="32" height="32"/>
+  <image source="../../tileset/item/holiday/doll.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="175" name="duck" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../tileset/item/northpole/duck.png" width="32" height="32"/>
+  <image source="../../tileset/item/holiday/duck.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="176" name="pulltoy" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../tileset/item/northpole/pulltoy.png" width="32" height="32"/>
+  <image source="../../tileset/item/holiday/pulltoy.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="177" name="train" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../tileset/item/northpole/train.png" width="32" height="32"/>
+  <image source="../../tileset/item/holiday/train.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="178" name="table_wooden_brown" tilewidth="32" tileheight="32" tilecount="9" columns="3">
   <image source="../../tileset/furniture/table/table_wooden_brown.png" width="96" height="96"/>

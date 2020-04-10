@@ -514,6 +514,32 @@ public final class ShopList {
 		shops.add("cafe", "kanapka z tuńczykiem", 180);
 		shops.add("cafe", "jabłecznik", 250);
 
+		// atlantis potions shop prices are twice as much as magic city
+		for (final Entry<String, Integer> potion: shops.get("superhealing").entrySet()) {
+			shops.add("atlantispotions", potion.getKey(), potion.getValue() * 2);
+		}
+		shops.add("atlantispotions", "środek uspokajający", 800);
+		shops.add("atlantispotions", "niezapisany zwój", 4000);
+
+		shops.add("deniranpawnbuy", "pierścień z czaszką", 250);
+		shops.add("deniranpawnbuy", "pierścień zaręczynowy", 1000);
+		shops.add("deniranpawnbuy", "pierścień leczniczy", 2500);
+		shops.add("deniranpawnbuy", "pierścień spokoju", 2800);
+		//shops.add("deniranpawnbuy", "pierścień szmaragdowy", 9000); // should avoid selling bound rings
+		shops.add("deniranpawnbuy", "zaizolowany pierścień", 25000);
+		shops.add("deniranpawnbuy", "pierścień skorupy żółwia", 25000);
+		shops.add("deniranpawnbuy", "pierścień imperialny", 100000);
+
+		//shops.add("buyanimalmaterials", "wełna", 50); // is this item obtainable?
+		shops.add("buyanimalmaterials", "skórzana nić", 50);
+		shops.add("buyanimalmaterials", "truchło nietoperza", 100);
+		shops.add("buyanimalmaterials", "futro", 250);
+		shops.add("buyanimalmaterials", "truchło wampira", 700);
+		shops.add("buyanimalmaterials", "gruczoł przędzy", 1000);
+		shops.add("buyanimalmaterials", "róg jednorożca", 1500);
+		shops.add("buyanimalmaterials", "gruczoł jadowy", 2000);
+		shops.add("buyanimalmaterials", "mityczne jajo", 3000);
+
 		//bronek kupuje:
 		shops.add("buydragonitems", "pazury wilcze", 15);
 		shops.add("buydragonitems", "niedźwiedzie pazury", 18);

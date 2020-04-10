@@ -27,6 +27,17 @@ public class Grammar {
 
 	private static final Logger logger = Logger.getLogger(Grammar.class);
 
+	// static instance
+	private static Grammar instance;
+
+	public static Grammar get() {
+		if (instance == null) {
+			instance = new Grammar();
+		}
+
+		return instance;
+	}
+
 	/**
 	 * "it" or "them", depending on the quantity.
 	 *
@@ -1328,7 +1339,7 @@ public class Grammar {
 		if (word.length() > 2) {
 			char last = word.charAt(word.length()-1);
 
-			if (last == 'y' || last == 'w') {
+			if (last == 'y' || last == 'w' || last == 'x') {
 				// word finishes with a 'y' or a 'w'
 				return word + "ing";
 			} else if (isVowel(last)) {

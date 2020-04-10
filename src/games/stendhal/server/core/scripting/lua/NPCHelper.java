@@ -11,7 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.core.scripting.lua;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,15 +22,23 @@ import org.apache.log4j.Logger;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SilentNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.NotCondition;
 
 
 /**
@@ -39,6 +49,8 @@ public class NPCHelper {
 	// logger instance
 	private static final Logger logger = Logger.getLogger(NPCHelper.class);
 
+	private static final EntityManager eManager = SingletonRepository.getEntityManager();
+
 	/**
 	 * Creates a new SpeakerNPC instance.
 	 *
@@ -48,11 +60,91 @@ public class NPCHelper {
 	 * 		New SpeakerNPC instance.
 	 */
 	public SpeakerNPC createSpeakerNPC(final String name) {
-		return new SpeakerNPC(name);
+		return new SpeakerNPC(name) {
+			/**
+			 * Additional method to support transitions using Lua tables.
+			 *
+			 * @param states
+			 * 		The conversation state(s) the entity should be in to trigger response.
+			 * 		Can be ConversationStates enum value or LuaTable of ConversationStates.
+			 * @param triggers
+			 * 		String or LuaTable of strings to trigger response.
+			 * @param conditions
+			 * 		ChatCondition instance or LuaTable of ChatCondition instances.
+			 * @param nextState
+			 * 		Conversation state to set entity to after response.
+			 * @param reply
+			 * 		The NPC's response or <code>null</code>
+			 * @param actions
+			 * 		ChatAction instance or LuaTable of ChatAction instances.
+			 */
+			@SuppressWarnings({ "unused", "unchecked" })
+			public void add(final Object states, final Object triggers, final Object conditions,
+					final ConversationStates nextState, final String reply, final Object actions) {
+
+				ConversationStates[] listenStates = null;
+				List<String> listenTriggers = null;
+				ChatCondition listenConditions = null;
+				ChatAction listenActions = null;
+
+				if (states != null) {
+					if (states instanceof ConversationStates) {
+						listenStates = Arrays.asList((ConversationStates) states).toArray(new ConversationStates[] {});
+					} else {
+						final List<ConversationStates> tmp = new LinkedList<>();
+						final LuaTable table = (LuaTable) states;
+						for (final LuaValue idx: table.keys()) {
+							final ConversationStates state = (ConversationStates) table.get(idx).touserdata(ConversationStates.class);
+
+							if (state == null) {
+								logger.error("Invalid ConversationStates data");
+								continue;
+							}
+
+							tmp.add(state);
+						}
+
+						listenStates = tmp.toArray(new ConversationStates[] {});
+					}
+				}
+
+				if (triggers != null) {
+					listenTriggers = new ArrayList<>();
+					if (triggers instanceof String) {
+						listenTriggers.add((String) triggers);
+					} else if (triggers instanceof List) {
+						listenTriggers.addAll((List<String>) triggers);
+					} else {
+						final LuaTable table = (LuaTable) triggers;
+						for (final LuaValue idx: table.keys()) {
+							listenTriggers.add(table.get(idx).tojstring());
+						}
+					}
+				}
+
+				if (conditions != null) {
+					if (conditions instanceof ChatCondition) {
+						listenConditions = (ChatCondition) conditions;
+					} else {
+						listenConditions = newAndCondition((LuaTable) conditions);
+					}
+				}
+
+				if (actions != null) {
+					if (actions instanceof ChatAction) {
+						listenActions = (ChatAction) actions;
+					} else {
+						listenActions = newMultipleActions((LuaTable) actions);
+					}
+				}
+
+				add(listenStates, listenTriggers, listenConditions, nextState, reply, listenActions);
+			}
+		};
 	}
 
 	/**
-	 * Created a new SilentNPC instance.
+	 * Creates a new SilentNPC instance.
 	 *
 	 * @return
 	 * 		New SilentNPC instance.
@@ -141,15 +233,18 @@ public class NPCHelper {
 	/*
 	public ChatAction newAction(String className, final Object... params) {
 		className = "games.stendhal.server.entity.npc.action." + className;
+
 		try {
 			if (params.length == 0) {
 				try {
 					final Constructor<?> constructor = Class.forName(className).getConstructor();
+
 					return (ChatAction) constructor.newInstance();
 				} catch (InvocationTargetException e2) {
 				}
 			} else {
 				final Constructor<?>[] constructors = Class.forName(className).getConstructors();
+
 				for (final Constructor<?> con: constructors) {
 					try {
 						return (ChatAction) con.newInstance(new Object[] { params });
@@ -170,6 +265,7 @@ public class NPCHelper {
 		} catch (SecurityException e1) {
 			logger.error(e1, e1);
 		}
+
 		return null;
 	}
 	*/
@@ -193,6 +289,7 @@ public class NPCHelper {
 	/*
 	public ChatCondition newCondition(String className, final Object... params) {
 		className = "games.stendhal.server.entity.npc.condition." + className;
+
 		try {
 			final Constructor<?>[] constructors = Class.forName(className).getConstructors();
 			for (final Constructor<?> con: constructors) {
@@ -210,6 +307,7 @@ public class NPCHelper {
 		} catch (IllegalArgumentException e1) {
 			logger.error(e1, e1);
 		}
+
 		return null;
 	}
 	*/
@@ -221,46 +319,50 @@ public class NPCHelper {
 	 * 		If set to "buyer", will add buyer behavior, otherwise will be "seller".
 	 * @param npc
 	 * 		The SpeakerNPC to add the behavior to.
-	 * @param items
-	 * 		List of items & their prices.
-	 * @param offer
+	 * @param prices
+	 * 		List of items & their prices (can be instance of either Map<String, Int> or LuaTable).
+	 * @param addOffer
 	 * 		If <code>true</code>, will add default replies for "offer" (default: <code>true</code>).
 	 */
-	public void addMerchant(final String merchantType, final SpeakerNPC npc, final LuaTable items, Boolean offer) {
+	@SuppressWarnings("unchecked")
+	public void addMerchant(final String merchantType, final SpeakerNPC npc, final Object prices, Boolean addOffer) {
 		// default is to add an "offer" response
-		if (offer == null) {
-			offer = true;
+		if (addOffer == null) {
+			addOffer = true;
 		}
 
-		final Map<String, Integer> priceList = new HashMap<String, Integer>();
-		// Lua indexing begins with "1"
-		for (int idx = 1; idx <= items.length(); idx++) {
-			final LuaValue item = items.get(idx);
-			if (!item.istable()) {
-				logger.error("Value is not a LuaTable");
-				return;
-			}
+		Map<String, Integer> priceList = null;
+		if (prices instanceof LuaTable) {
+			priceList = new LinkedHashMap<>();
+			final LuaTable priceTable = (LuaTable) prices;
+			for (final LuaValue key: priceTable.keys()) {
+				String itemName = key.tojstring();
+				final int itemPrice = priceTable.get(key).toint();
 
-			final LuaValue itemName = ((LuaTable) item).get(1);
-			final LuaValue itemPrice = ((LuaTable) item).get(2);
+				// special handling of underscore characters in item names
+				if (itemName.contains("_")) {
+					// check if item is real item
+					if (!eManager.isItem(itemName)) {
+						itemName = itemName.replace("_", " ");
+					}
+				}
 
-			if (!itemName.isstring()) {
-				logger.error("Item name must be a string");
-				return;
+				priceList.put(itemName, itemPrice);
 			}
-			if (!itemPrice.isinttype()) {
-				logger.error("Item price must be an integer");
-				return;
-			}
+		} else if (prices instanceof Map<?, ?>) {
+			priceList = (LinkedHashMap<String, Integer>) prices;
+		}
 
-			priceList.put(itemName.tojstring(), itemPrice.toint());
+		if (priceList == null) {
+			logger.error("Invalid price list type: must by LuaTable or Map<String, Integer>");
+			return;
 		}
 
 		//final MerchantBehaviour behaviour;
 		if (merchantType != null && merchantType.equals("buyer")) {
-			new BuyerAdder().addBuyer(npc, new BuyerBehaviour(priceList), offer);
+			new BuyerAdder().addBuyer(npc, new BuyerBehaviour(priceList), addOffer);
 		} else {
-			new SellerAdder().addSeller(npc, new SellerBehaviour(priceList), offer);
+			new SellerAdder().addSeller(npc, new SellerBehaviour(priceList), addOffer);
 		}
 	}
 
@@ -269,13 +371,13 @@ public class NPCHelper {
 	 *
 	 * @param npc
 	 * 		The SpeakerNPC to add the behavior to.
-	 * @param items
-	 * 		List of items & their prices.
-	 * @param offer
+	 * @param prices
+	 * 		List of items & their prices (can be instance of either Map<String, Int> or LuaTable).
+	 * @param addOffer
 	 * 		If <code>true</code>, will add default replies for "offer" (default: <code>true</code>).
 	 */
-	public void addSeller(final SpeakerNPC npc, final LuaTable items, final boolean offer) {
-		addMerchant("seller", npc, items, offer);
+	public void addSeller(final SpeakerNPC npc, final Object prices, final boolean addOffer) {
+		addMerchant("seller", npc, prices, addOffer);
 	}
 
 	/**
@@ -283,12 +385,89 @@ public class NPCHelper {
 	 *
 	 * @param npc
 	 * 		The SpeakerNPC to add the behavior to.
-	 * @param items
-	 * 		List of items & their prices.
-	 * @param offer
+	 * @param prices
+	 * 		List of items & their prices (can be instance of either Map<String, Int> or LuaTable).
+	 * @param addOffer
 	 * 		If <code>true</code>, will add default replies for "offer" (default: <code>true</code>).
 	 */
-	public void addBuyer(final SpeakerNPC npc, final LuaTable items, final boolean offer) {
-		addMerchant("buyer", npc, items, offer);
+	public void addBuyer(final SpeakerNPC npc, final Object prices, final boolean addOffer) {
+		addMerchant("buyer", npc, prices, addOffer);
+	}
+
+	/**
+	 * Helper method for creating a NotCondition instance.
+	 *
+	 * @param condition
+	 * 		Condition to be checked.
+	 * @return
+	 * 		New NotCondition instance.
+	 */
+	public NotCondition newNotCondition(final ChatCondition condition) {
+		return new NotCondition(condition);
+	}
+
+	/**
+	 * Helper method for creating a NotCondition instance.
+	 *
+	 * @param lv
+	 * 		Condition to be checked inside a LuaValue instance or list of
+	 * 		conditions inside a LuaTable.
+	 * @return
+	 * 		New NotCondition instance.
+	 */
+	public NotCondition newNotCondition(final LuaValue lv) {
+		if (lv.istable()) {
+			return newNotCondition(newAndCondition(lv.checktable()));
+		}
+
+		return newNotCondition((ChatCondition) lv.touserdata(ChatCondition.class));
+	}
+
+	/**
+	 * Helper method to create a AndCondition instance.
+	 *
+	 * @param conditionList
+	 * 		LuaTable containing a list of ChatCondition instances.
+	 * @return
+	 * 		New AndCondition instance.
+	 */
+	public AndCondition newAndCondition(final LuaTable conditionList) {
+		final List<ChatCondition> conditions = new LinkedList<>();
+		for (final LuaValue idx: conditionList.keys()) {
+			final LuaValue value = conditionList.get(idx);
+			if (value.istable()) {
+				conditions.add(newAndCondition(value.checktable()));
+			} else if (value.isuserdata(ChatCondition.class)) {
+				conditions.add((ChatCondition) value.touserdata(ChatCondition.class));
+			} else {
+				logger.warn("Invalid data type. Must be ChatCondition.");
+			}
+		}
+
+		return new AndCondition(conditions.toArray(new ChatCondition[] {}));
+	}
+
+	/**
+	 * Helper method for creating a MultipleActions instance.
+	 *
+	 * @param actionList
+	 * 		LuaTable containing list of ChatAction instances.
+	 * @return
+	 * 		New MultipleActions instance.
+	 */
+	public MultipleActions newMultipleActions(final LuaTable actionList) {
+		final List<ChatAction> actions = new LinkedList<>();
+		for (final LuaValue idx: actionList.keys()) {
+			final LuaValue value = actionList.get(idx);
+			if (value.istable()) {
+				actions.add(newMultipleActions(value.checktable()));
+			} else if (value.isuserdata(ChatAction.class)) {
+				actions.add((ChatAction) value.touserdata(ChatAction.class));
+			} else {
+				logger.warn("Invalid data type. Must be ChatAction or LuaTable.");
+			}
+		}
+
+		return new MultipleActions(actions.toArray(new ChatAction[] {}));
 	}
 }
