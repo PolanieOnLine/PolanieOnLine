@@ -205,9 +205,9 @@ public class BestiaryEvent extends RPEvent {
 			}
 
 			if (rare) {
-				name += " (rare)";
+				name += " (rzadki)";
 			} else if (abnormal) {
-				name += " (abnormal)";
+				name += " (anormalny)";
 			}
 
 			sb.append(name + "," + solo.toString() + "," + shared.toString());
