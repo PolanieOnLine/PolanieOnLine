@@ -3,16 +3,33 @@ Changelog
 1.11
 *klient*
 - Dodano nowy strój do wypożyczenia
+- Dodano pasek zdrowia w lewym panelu
+- Dodano nową opcję w ustawieniach (możliwość włączenia/wyłączenia paska zdrowia w lewym panelu)
 - Magiczny bilet zyskał nową grafikę
 
 *świat*
+- Dodano nowych NPC:
+	- Harley (Lombard w Deniran)
+	- Sawyer (Lombard w Deniran)
+	- Raven (Sklep z bronią w Deniran)
 - Dodano nowe osiągnięcia: (2)
 	- "Imperialistyczny Dominator"
 	- "Imperialistyczny Dyktator"
+- Dodano nowy przedmiot: "wzmocniony pierścień imperialny"
+- Dodano wiele nowych map/pomieszczeń
 - Mały pegaz od teraz ucieka podczas atakowania
+
+*kod*
+- Wykonano nową klasę dla pierścienia szmaragdowego w celu optymalizacji klasy Ring
+oraz samej animacji pierścieni
+- Optymalizacja wsparcia dla języku Lua
 
 *naprawiono błędy*
 - Poprawiono ścieżkę prowadzącą do dojo w lesie Nalwor
+- Poprawiono niektóre mapy
+- Poprawiono nieco listę w bestiariuszu (rzadkie stworzenia są na samym końcu)
+- Naprawiono sprzedawców nasion
+- Naprawiono zadanie "Zabij Wrogą Armię": wszyscy nowi Blordrougth są naliczani
 
 
 1.10.1
