@@ -130,7 +130,12 @@ import marauroa.common.Pair;
 		enemys.put("blordrough",
 				Arrays.asList("blordrough kwatermistrz",
 							  "uzbrojony lider",
-							  "superczłowiek"));
+							  "superczłowiek",
+							  "żołnierz blordrough",
+							  "elitarny żołnierz",
+							  "piechota blordrough",
+							  "kapitan blordrough",
+							  "generał blordrough"));
 		enemys.put("mroczne elfy",
 				Arrays.asList("elf mikrus",
 							  "elf ciemności łucznik",
@@ -144,7 +149,7 @@ import marauroa.common.Pair;
 							  "elf ciemności czarnoksiężnik",
 							  "elf ciemności admirał",
 							  "elf ciemności mistrz",
-						"elf ciemności matrona"));
+							  "elf ciemności matrona"));
 		enemys.put("chaosy",
 				Arrays.asList("żołnierz chaosu",
 							  "wojownik chaosu",
