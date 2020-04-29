@@ -230,13 +230,13 @@ public enum NotificationType {
 	// these are tied to the ones in client.KTextEdit.gui.initStylesForTextPane
 	// so should we tie them together somehow?
 	// also the definitions are crazy.
-	
+
 	/** normal is bold */
 	public static final String NORMALSTYLE = "normal";
 	/** regular is not bold */
 	public static final String REGULAR = "regular";
 	// fwiw, "bold" is blue, italic, bigger than normal, bold and blue.
-	
+
 	/**
 	 * The mapping mnemonic.
 	 */
@@ -271,7 +271,7 @@ public enum NotificationType {
 	 * @return The appropriate color.
 	 */
 	public Color getColor() {
-					return COLOR_NORMAL;
+		return COLOR_NORMAL;
 	}
 
 	/**
@@ -286,7 +286,7 @@ public enum NotificationType {
 	/**
 	 * Get notification type for server messages that the client can show
 	 * without problems. Call this instead of using SERVER directly.
-	 * 
+	 *
 	 * @param clientVersion version of the client
 	 * @return appropriate type
 	 */

@@ -81,5 +81,4 @@ public class UpdatePlayerEntities {
         updatePlayerEntities.initRPClasses();
 		updatePlayerEntities.doUpdate();
     }
-
 }

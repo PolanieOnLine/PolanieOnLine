@@ -42,7 +42,6 @@ class ScreenController implements PositionChangeListener {
 	private static final int TUTORIAL_CENTER_TILE_HEIGHT = 8;
 
 	private final GameScreen screen;
-
 	private TextBoxFactory textBoxFactory;
 
 	/**

@@ -756,7 +756,7 @@ public abstract class RPEntity extends AudibleEntity {
 		// Resolution must be set before isDefending may return true.
 		resolution = Resolution.BLOCKED;
 		combatIconTime = System.currentTimeMillis();
-	    playSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "block");
+	    playRandomSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "block");
 	}
 
 	/**
@@ -789,6 +789,9 @@ public abstract class RPEntity extends AudibleEntity {
 						NotificationType.NEGATIVE));
 			}
 		}
+
+		// play a sound to indicate successful hit
+		playRandomSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "attack");
 	}
 
 	/**
@@ -1146,8 +1149,7 @@ public abstract class RPEntity extends AudibleEntity {
 			"swingaxe-1", "slap-1");
 
 		addSounds(SoundLayer.FIGHTING_NOISE.groupName, "block",
-		        "clang-metallic-1");
-
+				"clang-metallic-1",	"clang-dull-1");
 	}
 
 	/**

@@ -220,7 +220,7 @@ final public class WordList {
 					!normalized.equals("is")) {
 					String plural = Grammar.plural(key);
 
-						if ((plural.indexOf(' ') == -1)
+					if ((plural.indexOf(' ') == -1)
 							&& !plural.equals(entry.getPlurSing())) {
 						// retry with normalized in case it differs from key
 						plural = Grammar.plural(normalized);

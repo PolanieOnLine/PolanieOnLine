@@ -64,7 +64,7 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	protected Sprite getAnimationSprite() {
 		final SpriteStore store = SpriteStore.get();
 		ZoneInfo info = ZoneInfo.get();
-		
+
 		Sprite sprite;
 
 		try {

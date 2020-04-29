@@ -78,6 +78,7 @@ public final class Actions {
 	//inspect
 	public static final String INSPECT = "inspect";
 	public static final String INSPECTQUEST = "inspectquest";
+	public static final String INSPECTKILL = "inspectkill";
 
 	//teleport
 	public static final String ZONE = "zone";
@@ -169,6 +170,7 @@ public final class Actions {
 
 	public static final String ALTER = "alter";
 	public static final String UNSET = "unset";
+	public static final String ALTERKILL = "alterkill";
 
 	// for listing e.g. ignore list
 	public static final String LIST = "list";
