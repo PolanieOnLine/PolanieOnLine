@@ -242,10 +242,13 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				null,
 				new MultipleActions(
 						new NPCEmoteAction(samuraiName + " sprawdza twoją licencję na zabijanie.", false),
-						new SayTextAction("Hmmm, Nigdy wcześniej nie widziałem ciebie tutaj."
-								+ "Ale masz odpowiednie referencje. Chcesz, żebym"
-								+ " otworzył dla ciebie dojo? Opłata wynosi " + Integer.toString(COST)
-								+ " money.")));
+						new ChatAction() {
+							@Override
+							public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+								samurai.say("Hmmm, nie widziałem cię tutaj wcześniej, ale masz odpowiednie kwalifikacje. Czy chcesz, abym"
+										+ " otworzył dojo? Opłata wynosi " + dojoArea.calculateFee(player.getAtk()) + " money.");
+							}
+						}));
 
 		// player returns after cooldown period is up
 		samurai.add(ConversationStates.ATTENDING,
