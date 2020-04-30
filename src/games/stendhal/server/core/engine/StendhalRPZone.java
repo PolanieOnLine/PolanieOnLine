@@ -167,7 +167,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 
 	/** User representable name of the zone. */
 	private final String readableName;
-	
+
 	/** Facing directions for portals. */
 	private final int UP_FN = 8;
 	private final int UP_FE = 9;
@@ -885,25 +885,6 @@ public class StendhalRPZone extends MarauroaRPZone {
 		return collisionMap.collides(x, y, w, h);
 	}
 
-	/**
-	 * Checks if a position can be occupied by an entity.
-	 *
-	 * @param x
-	 * 		Horizontal coordinate of position to check.
-	 * @param y
-	 * 		Vertical coordinate of position to check.
-	 * @return
-	 * 		<code>true</code> if the position can be occupied.
-	 */
-	public boolean isAreaOccupiable(final int x, final int y) {
-		for (final Entity entity: getEntitiesAt(x, y)) {
-			if (entity.has("no_occupy_area")) {
-				return false;
-			}
-		}
- 		return true;
-	}
-
 	@Override
 	public synchronized void add(final RPObject object) {
 		add(object, true);
@@ -1487,7 +1468,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 			}
 		}
 	}
-	
+
 	public void notifyBeforeMovement(final ActiveEntity entity, final int oldX, final int oldY,
 			final int newX, final int newY) {
 		Rectangle2D neArea;

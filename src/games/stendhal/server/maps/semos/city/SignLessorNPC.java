@@ -12,6 +12,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
+import java.util.Arrays;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.GameEvent;
@@ -19,6 +29,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.mapstuff.office.RentedSign;
 import games.stendhal.server.entity.mapstuff.office.RentedSignList;
@@ -39,16 +50,6 @@ import games.stendhal.server.entity.npc.condition.PlayerHasStorableEntityConditi
 import games.stendhal.server.entity.npc.condition.TextHasParameterCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.StringUtils;
-
-import java.util.Arrays;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * A merchant (original name: Gordon) who rents signs to players.
@@ -209,6 +210,7 @@ public class SignLessorNPC implements ZoneConfigurator {
 
 		};
 		npc.setPosition(20, 50);
+		npc.setCollisionAction(CollisionAction.STOP);
 		npc.setEntityClass("signguynpc");
 		zone.add(npc);
 		npc.setDescription("Oto Gordon. Umieszcza wiadomości na tabliczkach.");

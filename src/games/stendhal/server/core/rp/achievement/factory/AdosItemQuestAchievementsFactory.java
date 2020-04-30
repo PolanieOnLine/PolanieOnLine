@@ -29,7 +29,7 @@ public class AdosItemQuestAchievementsFactory extends AbstractAchievementFactory
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> achievements = new LinkedList<Achievement>();
-		//daily item quest achievements
+
 		achievements.add(createAchievement(
 				ID_SUPPORTER, "Pomocnik Ados", "Ukończył codzienne zadanie na przedmiot 10 razy",
 				Achievement.EASY_BASE_SCORE, true,

@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import marauroa.common.game.IRPZone;
-
 import games.stendhal.common.Direction;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -27,7 +25,7 @@ import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
-
+import marauroa.common.game.IRPZone;
 /**
  * Script to make all players stronger and immune to poison before randomly distributing them
  * over all zones of the running server

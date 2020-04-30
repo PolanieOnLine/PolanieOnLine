@@ -11,15 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.actions;
 
-import games.stendhal.common.NotificationType;
-import games.stendhal.server.entity.player.Player;
-
 import java.util.Collections;
 import java.util.List;
 
-import marauroa.common.game.RPAction;
-
 import org.apache.log4j.Logger;
+
+import games.stendhal.common.NotificationType;
+import games.stendhal.server.entity.player.Player;
+import marauroa.common.game.RPAction;
 
 /**
  * Default action if the client sends something the server does not understand.
@@ -29,18 +28,18 @@ import org.apache.log4j.Logger;
 class UnknownAction implements ActionListener {
 	private static Logger logger = Logger.getLogger(UnknownAction.class);
 	private final List<String> suggestions;
-	
+
 	/**
 	 * Create an UnknownAction with no suggestions for commands.
 	 */
 	UnknownAction() {
 		suggestions = null;
 	}
-	
+
 	/**
 	 * Create an UnknownAction with suggestions for possibly intended commands.
-	 * 
-	 * @param suggestions 
+	 *
+	 * @param suggestions
 	 */
 	UnknownAction(List<String> suggestions) {
 		Collections.sort(suggestions);

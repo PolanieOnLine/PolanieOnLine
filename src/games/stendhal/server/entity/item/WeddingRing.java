@@ -182,7 +182,7 @@ public class WeddingRing extends Item {
 		if (secondsNeeded > 0) {
 			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. Myślałeś, że będzie gotowy w ciągu " 
 					+ TimeUtil.approxTimeUntil(secondsNeeded) + ".");
-			
+
 			return false;
 		}
 
@@ -250,7 +250,7 @@ public class WeddingRing extends Item {
 		}
 
 		if (oldRing != null) {
-			// The player is cheating with multiple rings. Explode the 
+			// The player is cheating with multiple rings. Explode the
 			// old ring, and use up the energy of this one
 			destroyRing(container, oldRing, slot);
 			storeLastUsed();

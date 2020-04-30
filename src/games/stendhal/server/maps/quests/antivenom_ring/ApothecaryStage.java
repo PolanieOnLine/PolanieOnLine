@@ -170,8 +170,8 @@ public class ApothecaryStage extends AVRStage {
 	private void addGatheringItemsDialogue() {
 		final ChatCondition gatheringStateCondition = new AndCondition(
 				new QuestActiveCondition(questName),
-				new NotCondition(new QuestInStateCondition(questName, QUEST_STATE_NAME)),
-				new NotCondition(new QuestInStateCondition(questName, RingMakerStage.QUEST_STATE_NAME)),
+				new NotCondition(new QuestInStateCondition(questName, 0, QUEST_STATE_NAME)),
+				new NotCondition(new QuestInStateCondition(questName, 0, RingMakerStage.QUEST_STATE_NAME)),
 				new NotCondition(new QuestInStateCondition(questName, 0, "ringmaker")));
 
 		// Player asks for quest after it is started
@@ -343,7 +343,7 @@ public class ApothecaryStage extends AVRStage {
 			ConversationPhrases.YES_MESSAGES,
 			missingAntivenom,
 			ConversationStates.ATTENDING,
-			null,
+			"Okay, I need you to bring me ",
 			new MultipleActions(
 				new SetQuestAction(questName, MIX_ITEMS),
 				new SayRequiredItemsFromCollectionAction(questName,

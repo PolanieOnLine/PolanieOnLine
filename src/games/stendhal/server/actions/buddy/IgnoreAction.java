@@ -15,13 +15,13 @@ import static games.stendhal.common.constants.Actions.DURATION;
 import static games.stendhal.common.constants.Actions.LIST;
 import static games.stendhal.common.constants.Actions.REASON;
 import static games.stendhal.common.constants.Actions.TARGET;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.server.actions.ActionListener;
-import games.stendhal.server.entity.player.Player;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
+import games.stendhal.server.actions.ActionListener;
+import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -36,7 +36,7 @@ class IgnoreAction implements ActionListener {
 		if (action.has(LIST)) {
 			// if we don't test this then getSlot and it was empty does something bad to client.
 			if (player.getSlot("!ignore").size() > 0) {
-				// clone the !ignore slot to avoid a ConcurrentModificationException 
+				// clone the !ignore slot to avoid a ConcurrentModificationException
 				// as the check in getIgnore modifies !ignore
 				final RPSlot ignoreSlot = (RPSlot) player.getSlot("!ignore").clone();
 				final RPObject ignorelist = ignoreSlot.iterator().next();
@@ -55,7 +55,7 @@ class IgnoreAction implements ActionListener {
 						// reason could be null if time expired
 						if (checkIgnore != null) {
 							String reason;
-							if (checkIgnore.length() == 0) { 
+							if (checkIgnore.length() == 0) {
 								reason = "";
 							} else {
 								reason = " za " + checkIgnore;

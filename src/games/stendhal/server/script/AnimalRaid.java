@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * @author kymara
- * 
+ *
  * Not safe for players below level 5
  */
 public class AnimalRaid extends CreateRaid {

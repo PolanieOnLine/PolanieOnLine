@@ -153,8 +153,8 @@ public class ProducerAdder {
 							npc.say("Jeszcze nie wyokanełeś ostatniego zlecenia.");
 						} else {
 							npc.say("Wciąż nie skończyłem twojego ostatniego zlecenia. Wróć za "
-	                                + behaviour.getApproximateRemainingTime(player)
-	                                + "!");
+									+ behaviour.getApproximateRemainingTime(player)
+									+ "!");
 						}
 					}
 				});

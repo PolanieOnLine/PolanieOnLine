@@ -26,8 +26,8 @@ public class MasterKey extends HouseKey {
 
 	public MasterKey(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
-		
 		setInfoString("każdego domku wojowników;0;");
+
 	}
 
 	// Open any door that can be opened with HouseKeys

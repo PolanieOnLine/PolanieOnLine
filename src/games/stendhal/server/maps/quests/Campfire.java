@@ -45,12 +45,12 @@ import games.stendhal.server.maps.Region;
 
 /**
  * QUEST: Campfire
- * 
+ *
  * PARTICIPANTS:
  * <ul>
- * <li> Sally, a young scout girl sitting next to a campfire near Or'ril River</li>
+ * <li> Sally, a scout sitting next to a campfire near Or'ril</li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Sally asks you for wood for her campfire</li>
@@ -58,15 +58,15 @@ import games.stendhal.server.maps.Region;
  * <li> You give the wood to Sally.</li>
  * <li> Sally gives you 10 meat or ham in return.<li>
  * </ul>
- * 
+ *
  * REWARD:
- * <ul> 
+ * <ul>
  * <li> 10 meat or ham</li>
  * <li> 50 XP</li>
  * <li> Karma: 10</li>
  * </ul>
- * 
- * REPETITIONS: 
+ *
+ * REPETITIONS:
  * <ul>
  * <li> Unlimited, but 60 minutes of waiting are required between repetitions</li>
  * </ul>
@@ -74,7 +74,7 @@ import games.stendhal.server.maps.Region;
 public class Campfire extends AbstractQuest {
 
 	private static final int REQUIRED_WOOD = 10;
-	
+
 	private static final int REQUIRED_MINUTES = 60;
 
 	private static final String QUEST_SLOT = "campfire";
@@ -83,7 +83,7 @@ public class Campfire extends AbstractQuest {
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public boolean isCompleted(final Player player) {
 		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
@@ -143,7 +143,7 @@ public class Campfire extends AbstractQuest {
 			null);
 
 		// first chat of player with sally
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotStartedCondition(QUEST_SLOT)),
@@ -151,7 +151,7 @@ public class Campfire extends AbstractQuest {
 			null);
 
 		// player who is rejected or 'done' but waiting to start again, returns
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotInStateCondition(QUEST_SLOT, "start"),
@@ -159,10 +159,10 @@ public class Campfire extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Witaj ponownie!", 
 			null);
-		
+
 		// if they ask for quest while on it, remind them
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
 			"Już mi obiecałeś, że przyniesiesz drewno! Dziesięć kawałków, pamiętasz?",
@@ -175,7 +175,7 @@ public class Campfire extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED, 
 				"Potrzebuję więcej drewna, aby podtrzymać ognisko. Nie mogę pójść po nie i zostawić ogniska bez opieki! Czy mógłbyś pójść do lasu i zdobyć trochę dla mnie? Potrzebuję dziesięciu kawałków.",
 				null);
-		
+
 		// player returns - enough time has passed
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -241,19 +241,19 @@ public class Campfire extends AbstractQuest {
 				player.notifyWorldAboutChanges();
 			}
 		});
-		
+
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES, 
 			new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD),
+			ConversationPhrases.YES_MESSAGES,
 			ConversationStates.ATTENDING, null,
 			new MultipleActions(reward));
 
-		//player said the polano was for her but has dropped it from his bag or hands
+		//player said the wood was for her but has dropped it from his bag or hands
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES, 
 			new NotCondition(new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD)),
-			ConversationStates.ATTENDING, 
 			"Hej! Gdzie położyłeś drewno?",
+			ConversationPhrases.YES_MESSAGES,
+			ConversationStates.ATTENDING,
 			null);
 
 		// player had wood but said it is not for sally
@@ -280,7 +280,7 @@ public class Campfire extends AbstractQuest {
 	public String getName() {
 		return "Campfire";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 0;
@@ -290,7 +290,7 @@ public class Campfire extends AbstractQuest {
 	public String getNPCName() {
 		return "Sally";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ORRIL;

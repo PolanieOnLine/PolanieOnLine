@@ -89,7 +89,7 @@ public class BalloonForBobby extends AbstractQuest {
 	// Load the different outfits into the list
 	public void prepareBalloonList() {
 		for (int i = 0; i < 4; i++) {
-			balloonList[i] = new Outfit("detail=" + (i+1));
+			balloonList[i] = new Outfit(null, null, null, null, null, null, i+1);
 		}
 	}
 
@@ -175,6 +175,7 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				Arrays.asList("balloon", "balonik"),
 				new AndCondition(
+						new QuestStartedCondition(QUEST_SLOT),
 						new NotCondition(
 								new SystemPropertyCondition("stendhal.minetown")),
 						new OrCondition(
@@ -190,6 +191,7 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				Arrays.asList("balloon", "balonik"),
 				new AndCondition(
+						new QuestStartedCondition(QUEST_SLOT),
 						new NotCondition(
 								new SystemPropertyCondition("stendhal.minetown")),
 						new NotCondition(
@@ -230,7 +232,6 @@ public class BalloonForBobby extends AbstractQuest {
 						new NPCEmoteAction("dąsy.", false))
 				);
 
-
 		// Rewards to give to the player if he gives Bobby the balloon
 		// NOTE: Also changes the players outfit to get rid of the balloon
 		List<ChatAction> reward = new LinkedList<ChatAction>();
@@ -240,8 +241,8 @@ public class BalloonForBobby extends AbstractQuest {
 		reward.add(new ChangePlayerOutfitAndPreserveTempAction(balloonList[3], false));
 		reward.add(new IncreaseXPAction(200));
 		reward.add(new IncreaseKarmaAction(50));
-		reward.add(new SetQuestAction(QUEST_SLOT,0,"done"));
-		reward.add(new IncrementQuestAction(QUEST_SLOT,1,1));
+		reward.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
+		reward.add(new IncrementQuestAction(QUEST_SLOT, 1, 1));
 
 		// The player has a balloon and gives it to Bobby
 		npc.add(
@@ -261,7 +262,8 @@ public class BalloonForBobby extends AbstractQuest {
 			final List<String> questInfo = Arrays.asList(player.getQuest(QUEST_SLOT).split(";"));
 			final String questState = questInfo.get(0);
 			int completedCount = 0;
- 			if (questInfo.size() > 1) {
+
+			if (questInfo.size() > 1) {
 				completedCount = Integer.parseInt(questInfo.get(1));
 			}
  			if (questState.equals("rejected")) {
@@ -278,7 +280,8 @@ public class BalloonForBobby extends AbstractQuest {
  				res.add("Znalazłem i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + NPCName + ".");
 			}
 		}
- 		return res;
+
+		return res;
 	}
 
 	@Override

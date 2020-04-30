@@ -12,6 +12,7 @@
 package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.TARGET;
+
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.mapstuff.office.ArrestWarrant;
@@ -31,10 +32,10 @@ public class JailReportAction extends AdministrationAction {
 	protected void perform(final Player player, final RPAction action) {
 		final Jail jail = SingletonRepository.getJail();
 		final String playerName = action.get(TARGET);
-		
+
 		if (playerName != null) {
 			final ArrestWarrant warrant = jail.getWarrant(playerName);
-			
+
 			if (warrant != null) {
 					player.sendPrivateText( warrant.getCriminal() + " został aresztowany "
 							+ String.format("%tF", warrant.getTimestamp()) + " "
@@ -48,7 +49,7 @@ public class JailReportAction extends AdministrationAction {
 		} else {
 			player.sendPrivateText(jail.listJailed());
 		}
-		
+
 		player.notifyWorldAboutChanges();
 	}
 

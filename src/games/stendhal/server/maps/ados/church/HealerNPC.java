@@ -29,7 +29,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
- * The healer (original name: Valo). He makes mega potions. 
+ * The healer (original name: Valo). He makes mega potions.
  */
 
 public class HealerNPC implements ZoneConfigurator {
@@ -45,7 +45,7 @@ public class HealerNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createPath() {
-				final List<Node> nodes = new LinkedList<Node>(); 
+				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(26, 5));
 				nodes.add(new Node(29, 5));
 				nodes.add(new Node(29, 3));
@@ -78,8 +78,8 @@ public class HealerNPC implements ZoneConfigurator {
 				// Valo makes mega potions if you bring giant heart and money
 				// (uses sorted TreeMap instead of HashMap)
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("money", 400);
 				requiredResources.put("serce olbrzyma", 1);
+				requiredResources.put("money", 20);
 				final ProducerBehaviour behaviour = new ProducerBehaviour("valo_concoct_potion",
 						Arrays.asList("concoct", "sporządź"), "wielki eliksir", requiredResources, 2 * 60);
 

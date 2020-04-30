@@ -17,6 +17,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -69,8 +70,9 @@ public class DwarfBuyerGuyNPC implements ZoneConfigurator  {
 			}};
 
 			npc.setPosition(25, 32);
+			npc.setCollisionAction(CollisionAction.STOP);
 			npc.setEntityClass("olddwarfnpc");
 			npc.setDescription("Oto Ritati Dragontracker, który skupuje graty i drobiazgi.");
 			zone.add(npc);
-			   	}
+	}
 }

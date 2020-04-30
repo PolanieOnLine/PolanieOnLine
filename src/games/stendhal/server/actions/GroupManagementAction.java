@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.server.actions;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.actions.admin.AdministrationAction;
 import games.stendhal.server.core.engine.GameEvent;
@@ -21,8 +23,6 @@ import games.stendhal.server.entity.player.GagManager;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.GroupChangeEvent;
 import marauroa.common.game.RPAction;
-
-import org.apache.log4j.Logger;
 
 /**
  * handles the management of player groups.
@@ -41,7 +41,7 @@ public class GroupManagementAction implements ActionListener {
 
 	/**
 	 * processes the requested action.
-	 * 
+	 *
 	 * @param player the caller of the action
 	 * @param action the action to be performed
 	 */
@@ -324,7 +324,7 @@ public class GroupManagementAction implements ActionListener {
 			player.sendPrivateText(NotificationType.ERROR, targetPlayer + " nie jest członkiem twojej grupy.");
 			return;
 		}
-		
+
 		// tell the members of the kick and remove the target player
 		group.sendGroupMessage("Group", targetPlayer + " został wyrzucony przez " + player.getName());
 		group.removeMember(targetPlayer);
@@ -332,7 +332,7 @@ public class GroupManagementAction implements ActionListener {
 
 	/**
 	 * sends an error messages on invalid an actions
-	 * 
+	 *
 	 * @param player Player who executed the action
 	 * @param action name of action
 	 * @param params parameters for the action

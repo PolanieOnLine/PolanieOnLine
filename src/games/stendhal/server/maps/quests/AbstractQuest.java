@@ -90,6 +90,7 @@ public abstract class AbstractQuest implements IQuest {
 		return 0;
 	}
 
+	@Override
 	public List<String> getFormattedHistory(final Player player) {
 		return getHistory(player);
 	}

@@ -90,7 +90,7 @@ public class ShopSign extends Sign implements UseListener {
 		return generateItemList(shops.get(shopName));
 	}
 
- 	/**
+	/**
 	 * Generates the item list for this shop.
 	 *
 	 * @param items
@@ -102,6 +102,7 @@ public class ShopSign extends Sign implements UseListener {
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			itemList.add(prepareItem(entry.getKey(), entry.getValue()));
 		}
+
 		return itemList;
 	}
 

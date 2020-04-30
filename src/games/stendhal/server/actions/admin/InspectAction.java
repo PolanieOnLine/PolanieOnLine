@@ -86,7 +86,8 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nPD:     " + inspected.getXP());
 			st.append("\nPoziom:  " + inspected.getLevel());
 			st.append("\nKarma:  " + inspected.getKarma());
-			//st.append("\nMana:  " + inspected.getMana() + " / " + inspected.getBaseMana());
+			st.append("\nMana:  " + inspected.getMana() + " / "
+					+ inspected.getBaseMana());
 
 			if (inspected.has("outfit_ext")) {
 				st.append("\nUbiór: ");

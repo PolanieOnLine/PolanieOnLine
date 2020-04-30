@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,7 +34,7 @@ public class ListRaids extends ScriptImpl {
 
 	@Override
 	public void execute(final Player admin, final List<String> args) {
-		StringBuilder textToSend = new StringBuilder("Znane skrypty Rajdów:\n");
+		StringBuilder textToSend = new StringBuilder("Known RaidScripts:\n");
 		try {
 			ArrayList<Class<?>> dir = getClasses("games.stendhal.server.script");
 			Collections.sort(dir, new Comparator<Class<?>>() {
@@ -67,16 +67,15 @@ public class ListRaids extends ScriptImpl {
 	 * @throws ClassNotFoundException if getting the class loader or reading the
 	 * 	script resources fail
 	 */
-	private static ArrayList<Class<?>> getClasses(final String pckgname) throws ClassNotFoundException {
+	private static ArrayList<Class<?>> getClasses(final String packageName) throws ClassNotFoundException {
 		final ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 		try {
 			ClassLoader classLoader = ListRaids.class.getClassLoader();
-			String packageName = "games.stendhal.server.script";
 			ImmutableSet<ClassInfo> infos = ClassPath.from(classLoader).getTopLevelClasses(packageName);
 			for (ClassInfo info : infos) {
 				classes.add(info.load());
-		}
-		return classes;
+			}
+			return classes;
 		} catch (IOException e) {
 			throw new ClassNotFoundException("failed to list classes");
 		}

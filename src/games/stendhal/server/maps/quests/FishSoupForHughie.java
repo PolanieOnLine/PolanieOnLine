@@ -269,7 +269,7 @@ public class FishSoupForHughie extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Fish Soup For Hughie";
+		return "Fish Soup for Hughie";
 	}
 
 	@Override

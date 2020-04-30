@@ -86,7 +86,7 @@ public class SummonPetScroll extends Scroll {
 			logger.info("Too many npcs to summon another creature");
 			return false;
 		}
-		
+
 		if (player.hasPet()) {
 			player.sendPrivateText("Magia nie jest aż tak silna, aby przywołać więcej niż jedno zwierzątko.");
 			return false;
@@ -96,6 +96,8 @@ public class SummonPetScroll extends Scroll {
 		if (type == null) {
 			// default to cat, if no other type is specified
 			type = "cat";
+		} else {
+			type = type.replaceAll("_", " ");
 		}
 
 		// create it
@@ -137,7 +139,7 @@ public class SummonPetScroll extends Scroll {
 		//revert to blank
 		final Item blankPetScroll = SingletonRepository.getEntityManager().getItem(
 				"pusty zwój przywołania zwierzątka");
-		
+
 		player.equipOrPutOnGround(blankPetScroll);
 		player.sendPrivateText("Przywołałeś zwierzątko z powrotem do tej płaszczyzny. Słaby dym utrzymuje się na tej stronie.");
 

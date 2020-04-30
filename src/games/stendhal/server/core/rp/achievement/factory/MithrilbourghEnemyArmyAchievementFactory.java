@@ -46,5 +46,4 @@ public class MithrilbourghEnemyArmyAchievementFactory extends AbstractAchievemen
 
 		return achievements;
 	}
-
 }

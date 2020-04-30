@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2019 - Arianne                          *
+ *                   (C) Copyright 2018 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -59,10 +59,8 @@ public abstract class DressedEntity extends RPEntity {
 			sb.append("body=" + code % 100);
 			sb.append(",dress=" + code / 100 % 100);
 			sb.append(",head=" + (int) (code / Math.pow(100, 2) % 100));
-			sb.append(",mask=" + (int) (code / Math.pow(100, 3) % 100));
-			sb.append(",hair=" + (int) (code / Math.pow(100, 4) % 100));
-			sb.append(",hat=" + (int) (code / Math.pow(100, 5) % 100));
-			sb.append(",detail=" + (int) (code / Math.pow(100, 6) % 100));
+			sb.append(",hair=" + (int) (code / Math.pow(100, 3) % 100));
+			sb.append(",detail=" + (int) (code / Math.pow(100, 4) % 100));
 
 			// "outfit_ext" actually manages the entity's outfit
 			super.put("outfit_ext", sb.toString());
@@ -95,6 +93,7 @@ public abstract class DressedEntity extends RPEntity {
 		} else if (has("outfit_org")) {
 			return new Outfit(Integer.toString(getInt("outfit_org")));
 		}
+
 		return null;
 	}
 
@@ -143,6 +142,7 @@ public abstract class DressedEntity extends RPEntity {
 			if (has("outfit") && !has("outfit_org")) {
 				put("outfit_org", get("outfit"));
 			}
+
 			if (has("outfit_ext") || has("outfit")) {
 				// remember the old color selections.
 				for (String part : RECOLORABLE_OUTFIT_PARTS) {
@@ -166,6 +166,7 @@ public abstract class DressedEntity extends RPEntity {
 			if (has("outfit_org")) {
 				remove("outfit_org");
 			}
+
 			if (has("outfit_ext_orig") || has("outfit_org")) {
 				// clear colors
 				for (String part : RECOLORABLE_OUTFIT_PARTS) {
@@ -254,6 +255,7 @@ public abstract class DressedEntity extends RPEntity {
 
 	// Hack to preserve detail layer
 	public void setOutfitWithDetail(final Outfit outfit, final boolean temporary) {
+		// preserve detail layer
 		int oldDetailCode = getOutfit().getLayer("detail");
 		int newDetailCode = outfit.getLayer("detail");
 		if (oldDetailCode > 0 && newDetailCode == 0) {

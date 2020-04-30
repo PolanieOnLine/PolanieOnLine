@@ -36,7 +36,7 @@ public class TradeAction implements ActionListener {
 
 	/**
 	 * processes the requested action.
-	 * 
+	 *
 	 * @param player the caller of the action
 	 * @param action the action to be performed
 	 */

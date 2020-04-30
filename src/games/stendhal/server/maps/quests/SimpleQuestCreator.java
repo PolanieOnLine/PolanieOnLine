@@ -16,10 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
@@ -42,7 +43,25 @@ import games.stendhal.server.entity.player.Player;
 
 public class SimpleQuestCreator {
 
+	private static final Logger logger = Logger.getLogger(SimpleQuestCreator.class);
+
 	private static SimpleQuestCreator instance;
+
+	public static final String ID_REQUEST = "request";
+	public static final String ID_ACCEPT = "accept";
+	public static final String ID_REJECT = "reject";
+	public static final String ID_REWARD = "reward";
+	public static final String ID_VERBOSE_REWARD_PREFIX = "verbose_reward_prefix";
+	public static final String ID_ALREADY_ACTIVE = "already_active";
+	public static final String ID_MISSING = "missing";
+	public static final String ID_NO_REPEAT = "no_repeat";
+	public static final String ID_COOLDOWN_PREFIX = "cooldown_prefix"; // prefix for SayTimeRemainingAction when player cannot repeat quest yet
+
+	public static final String ID_XP = "xp";
+	public static final String ID_DEF = "def";
+	public static final String ID_ATK = "atk";
+	public static final String ID_RATK = "ratk";
+
 
 	public static SimpleQuestCreator getInstance() {
 		if (instance == null) {
@@ -69,19 +88,32 @@ public class SimpleQuestCreator {
 		private String itemToCollect;
 		private int quantityToCollect = 1;
 
-		private Map<String, String> replies = new HashMap<String, String>() {{
-			// default replies
-			put("request", "Pomożesz mi?");
-			put("reject", "Okej. Być może innym razem.");
-			put("reward", "Dziękuję.");
+		/**
+		 * usable replies are:
+		 * 		request, accept, reject, reward, already_active, missing,
+		 * 		no_repeat, verbose_reward_prefix, cooldown_prefix
+		 */
+		private final Map<String, String> replies = new HashMap<String, String>() {{
+			put(ID_REQUEST, "Pomożesz mi?");
+			put(ID_REJECT, "Okej. Być może innym razem.");
+			put(ID_REWARD, "Dziękuję.");
+			put(ID_VERBOSE_REWARD_PREFIX, "W nagrodę otrzymasz ode mnie");
+			put(ID_NO_REPEAT, "Dziękuję, ale nie potrzebuję więcej pomocy.");
+			put(ID_COOLDOWN_PREFIX, "Jeśli chcesz ponownie mi pomóc, to proszę wróć za");
 		}};
 
-		private int xpReward = 0;
 		private double karmaReward = 0;
 		private double karmaAcceptReward = 0;
 		private double karmaRejectReward = 0;
+
+		// list of items to be rewarded to player upon completion
 		private final Map<String, Integer> itemReward = new HashMap<String, Integer>();
-		//private final Map<String, Integer> statReward = new HashMap<String, Integer>();
+
+		// usable stat rewards are: xp, def, atk, ratk
+		private final Map<String, Integer> statReward = new HashMap<String, Integer>();
+
+		// if <code>true</code>, NPC will tell player what items were given as a reward
+		private boolean verboseReward = true;
 
 		private String region;
 
@@ -118,7 +150,7 @@ public class SimpleQuestCreator {
 		}
 
 		public void setXPReward(final int xp) {
-			xpReward = xp;
+			statReward.put(ID_XP, xp);
 		}
 
 		public void setKarmaReward(final double karma) {
@@ -137,43 +169,53 @@ public class SimpleQuestCreator {
 			itemReward.put(itemName, quantity);
 		}
 
+		public void addStatReward(final String id, final int amount) {
+			statReward.put(id, amount);
+		}
+
 		@SuppressWarnings("unused")
 		public void addItemReward(final String itemName) {
 			addItemReward(itemName, 1);
 		}
 
-		public void setReply(final String rType, final String reply) {
-			replies.put(rType, reply);
+		public void setVerboseReward(final boolean verbose) {
+			verboseReward = verbose;
 		}
 
-		private String getReply(final String rType) {
-			String reply = replies.get(rType);
+		public void setReply(final String id, final String reply) {
+			if (id == null) {
+				logger.warn("Reply ID cannot by null");
+				return;
+			}
+			if (reply == null) {
+				logger.warn("Reply cannot be null");
+				return;
+			}
 
-			if (rType.equals("accept")) {
-				if (reply == null) {
-					reply = "Potrzebuję Twojej pomocy, by zdobyć " + Integer.toString(quantityToCollect) + " " + itemToCollect + ".";
-				} else {
-					reply = reply + " Potrzebuję Twojej pomocy, by zdobyć " + Integer.toString(quantityToCollect) + " " + itemToCollect + ".";
+			replies.put(id, reply);
+		}
+
+		/**
+		 * Retrieves some predefined responses.
+		 *
+		 * @param id
+		 * @return
+		 */
+		private String getReply(final String id) {
+			String reply = replies.get(id);
+
+			if (reply == null) {
+				if (id.equals(ID_ACCEPT)) {
+					reply = "Potrzebuję Twojej pomocy, by zdobyć " + Integer.toString(quantityToCollect) + " " + Grammar.plnoun(quantityToCollect, itemToCollect) + ".";
+				} else if (id.equals(ID_ALREADY_ACTIVE)) {
+					reply = "Musisz zdobyć " + Integer.toString(quantityToCollect) + " " + Grammar.plnoun(quantityToCollect, itemToCollect)
+					+ ". Już #skończyłeś?";
+				} else if (id.equals(ID_MISSING)) {
+					reply = "Musisz przynieść dla mnie " + Integer.toString(quantityToCollect) + " " + Grammar.plnoun(quantityToCollect, itemToCollect) + ".";
 				}
 			}
 
 			return reply;
-		}
-
-		public void setRequestReply(final String reply) {
-			setReply("request", reply);
-		}
-
-		public void setAcceptReply(final String reply) {
-			setReply("accept", reply);
-		}
-
-		public void setRejectReply(final String reply) {
-			setReply("reject", reply);
-		}
-
-		public void setRewardReply(final String reply) {
-			setReply("reward", reply);
 		}
 
 		public void setRegion(final String regionName) {
@@ -253,12 +295,12 @@ public class SimpleQuestCreator {
 					player.drop(itemToCollect, quantityToCollect);
 
 					final StringBuilder sb = new StringBuilder();
-					sb.append(getReply("reward"));
+					sb.append(getReply(ID_REWARD));
 
 					final int rewardCount = itemReward.size();
 
-					if (rewardCount > 0) {
-						sb.append(" W nagrodę otrzymasz ode mnie ");
+					if (verboseReward && rewardCount > 0) {
+						sb.append(" " + getReply(ID_VERBOSE_REWARD_PREFIX).trim() + " ");
 
 						int idx = 0;
 						for (final String itemName: itemReward.keySet()) {
@@ -287,7 +329,24 @@ public class SimpleQuestCreator {
 					npc.say(sb.toString());
 
 					// reward player
-					player.addXP(xpReward);
+					final Integer xpReward = statReward.get(ID_XP);
+					final Integer defReward = statReward.get(ID_DEF);
+					final Integer atkReward = statReward.get(ID_ATK);
+					final Integer ratkReward = statReward.get(ID_RATK);
+
+					if (xpReward != null) {
+						player.addXP(xpReward);
+					}
+					if (defReward != null) {
+						player.addDefXP(defReward);
+					}
+					if (atkReward != null) {
+						player.addAtkXP(atkReward);
+					}
+					if (ratkReward != null) {
+						player.addRatkXP(ratkReward);
+					}
+
 					player.addKarma(karmaReward);
 
 					for (final String itemName: itemReward.keySet()) {
@@ -309,13 +368,6 @@ public class SimpleQuestCreator {
 			};
 		}
 
-		/**
-		 * This must be called in order for the quest to be added to game.
-		 */
-		public void register() {
-			StendhalQuestSystem.get().loadQuest(this);
-		}
-
 		@Override
 		public void addToWorld() {
 			fillQuestInfo(name, description, isRepeatable());
@@ -323,11 +375,12 @@ public class SimpleQuestCreator {
 			final ChatCondition canStartCondition = new ChatCondition() {
 				@Override
 				public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-					if (player.getQuest(QUEST_SLOT) == null) {
+					final String questState = player.getQuest(QUEST_SLOT, 0);
+					if (questState == null || questState.equals("rejected")) {
 						return true;
 					}
 
-					if (isRepeatable() && player.getQuest(QUEST_SLOT, 0).equals("done")) {
+					if (isRepeatable() && questState.equals("done")) {
 						return new TimePassedCondition(QUEST_SLOT, 1, repeatDelay).fire(player, sentence, npc);
 					}
 
@@ -347,7 +400,7 @@ public class SimpleQuestCreator {
 				ConversationPhrases.QUEST_MESSAGES,
 				canStartCondition,
 				ConversationStates.QUEST_OFFERED,
-				getReply("request"),
+				getReply(ID_REQUEST),
 				null);
 
 			npc.add(ConversationStates.ATTENDING,
@@ -357,7 +410,7 @@ public class SimpleQuestCreator {
 					new QuestInStateCondition(QUEST_SLOT, 0, "done")),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, repeatDelay, "Jeżeli chcesz ponownie mi pomóc to przyjdź za "));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, repeatDelay, getReply(ID_COOLDOWN_PREFIX)));
 
 			npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -365,28 +418,28 @@ public class SimpleQuestCreator {
 					new NotCondition(questRepeatableCondition),
 					new QuestInStateCondition(QUEST_SLOT, 0, "done")),
 				ConversationStates.ATTENDING,
-				"Dzięki, ale nie potrzebuję więcej już pomocy.",
+				getReply(ID_NO_REPEAT),
 				null);
 
 			npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Znowu? Musisz zdobyć dla mnie " + Integer.toString(quantityToCollect) + " " + itemToCollect + ".",
+				getReply(ID_ALREADY_ACTIVE),
 				null);
 
 			npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				getReply("accept"),
+				getReply(ID_ACCEPT),
 				startAction());
 
 			npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				getReply("reject"),
+				getReply(ID_REJECT),
 				rejectAction());
 
 			npc.add(ConversationStates.ATTENDING,
@@ -404,7 +457,7 @@ public class SimpleQuestCreator {
 					new QuestActiveCondition(QUEST_SLOT),
 					new NotCondition(new PlayerHasItemWithHimCondition(itemToCollect, quantityToCollect))),
 				ConversationStates.ATTENDING,
-				"Gdzie to masz? Miałeś przynieść dla mnie " + Integer.toString(quantityToCollect) + " " + itemToCollect + ".",
+				getReply(ID_MISSING),
 				null);
 		}
 
@@ -476,8 +529,10 @@ public class SimpleQuestCreator {
 
 			final String[] questState = player.getQuest(QUEST_SLOT).split(";");
 
-			if (questState[0].equals("start")) {
-				res.add(getNPCName() + " poprosił mnie, abym zdobył " + Integer.toString(quantityToCollect) + " " + itemToCollect + ".");
+			if (questState[0].equals("rejected")) {
+				res.add("Nie chcę pomagać " + getNPCName() + "...");
+			} else if (questState[0].equals("start")) {
+				res.add(getNPCName() + " chce, abym zdobył " + Integer.toString(quantityToCollect) + " " + Grammar.plnoun(quantityToCollect, itemToCollect) + ".");
 				if (player.isEquipped(itemToCollect, quantityToCollect)) {
 					res.add("Zdobyłem już to, o co mnie poproszono dla " + getNPCName() + ".");
 				} else {

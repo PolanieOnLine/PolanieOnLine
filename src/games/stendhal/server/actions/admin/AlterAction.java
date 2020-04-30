@@ -23,6 +23,7 @@ import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TITLE;
 import static games.stendhal.common.constants.Actions.UNSET;
 import static games.stendhal.common.constants.Actions.VALUE;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
@@ -82,7 +83,7 @@ public class AlterAction extends AdministrationAction {
 				final String value = action.get(VALUE);
 				final String mode = action.get(MODE);
 
-				if ((mode.length() > 0) && !mode.equalsIgnoreCase(ADD) 
+				if ((mode.length() > 0) && !mode.equalsIgnoreCase(ADD)
 						&& !mode.equalsIgnoreCase(SUB) && !mode.equalsIgnoreCase(SET) && !mode.equalsIgnoreCase(UNSET)) {
 					player.sendPrivateText("Użyj jednego z trybów 'add', 'sub', 'set' lub 'unset'.");
 					return;
@@ -142,26 +143,26 @@ public class AlterAction extends AdministrationAction {
 					}
 
 					switch (type.getType()) {
-					case BYTE:
-						if ((numberValue > Byte.MAX_VALUE)
-								|| (numberValue < Byte.MIN_VALUE)) {
-							return;
-						}
-						break;
-					case SHORT:
-						if ((numberValue > Short.MAX_VALUE)
-								|| (numberValue < Short.MIN_VALUE)) {
-							return;
-						}
-						break;
-					case INT:
-						/*
-						 * as numberValue is currently of type integer, this is
-						 * pointless: if ((numberValue > Integer.MAX_VALUE) ||
-						 * (numberValue < Integer.MIN_VALUE)) { return; }
-						 */
-						break;
-					default:
+						case BYTE:
+							if ((numberValue > Byte.MAX_VALUE)
+									|| (numberValue < Byte.MIN_VALUE)) {
+								return;
+							}
+							break;
+						case SHORT:
+							if ((numberValue > Short.MAX_VALUE)
+									|| (numberValue < Short.MIN_VALUE)) {
+								return;
+							}
+							break;
+						case INT:
+							/*
+							 * as numberValue is currently of type integer, this is
+							 * pointless: if ((numberValue > Integer.MAX_VALUE) ||
+							 * (numberValue < Integer.MIN_VALUE)) { return; }
+							 */
+							break;
+						default:
 							// we switch over an enum
 							break;
 					}

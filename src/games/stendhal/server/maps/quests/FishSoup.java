@@ -12,6 +12,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -35,12 +40,6 @@ import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import marauroa.common.game.IRPZone;
 
 /**
@@ -325,7 +324,7 @@ public class FishSoup extends AbstractQuest {
 				null,
 				new ChatAction() {
 			    @Override
-			    public void fire(final Player player, final Sentence sentence,
+				public void fire(final Player player, final Sentence sentence,
 					   final EventRaiser npc) {
 			    	checkForAllIngredients(player, npc);
 			}

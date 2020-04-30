@@ -50,7 +50,7 @@ import games.stendhal.server.maps.Region;
 
 
 /**
- * QUEST: Find Jefs mum
+ * QUEST: Find Jefs Mother
  *
  * PARTICIPANTS:
  * <ul>

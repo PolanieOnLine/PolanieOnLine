@@ -1,7 +1,11 @@
 /**
- * 
+ *
  */
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -30,39 +34,35 @@ import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * In this quest the player can help Eheneumniranin by bringing
  * two carts with straw up to the barn near Karl.
- * 
+ *
  * (proof of concept for pushable blocks)
- * 
+ *
  * @author madmetzger
- * 
- * 
+ *
+ *
  * QUEST: Help with the Harvest
- * 
+ *
  * PARTICIPANTS:
  * <ul>
  * <li> Eheneumniranin (the half-elf on Ados farm) </li>
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Eheneumniranin asks you to push some carts full of straw to Karl's barn </li>
- * <li> Push 2 carts to the designated spots in front of the barn </li> 
+ * <li> Push 2 carts to the designated spots in front of the barn </li>
  * </ul>
- * 
+ *
  * REWARD:
  * <ul>
  * <li> 500 XP </li>
  * <li> some karma (5 + (2 | -2)) </li>
  * <li> between 10 and 20 <item>grain</item> </li>
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li>None</li>
@@ -103,7 +103,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 	public String getName() {
 		return "Pomoc w żniwach";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 5;
@@ -118,7 +118,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 
 	private void configureNPC() {
 		SpeakerNPC npc = npcs.get("Eheneumniranin");
-		
+
 		/*
 		 * Add a reply on the trigger phrase "quest"
 		 */
@@ -128,7 +128,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED,
 				"Jesteś tutaj, aby pomóc mi trochę w moich żniwach?",
 				null);
-		
+
 		/*
 		 * Player is interested in helping, so explain the quest.
 		 */
@@ -153,7 +153,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				"Już myślałem, że trochę mi pomożesz, ale dobrze. Dowidzenia.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -2.0));
 
-		
+
 		/*
 		 * Player has not yet put the carts to the right spots
 		 */
@@ -163,7 +163,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Jeszcze nie dostarczyłeś obu wózków z sianem do stodoły leżącej na północ stąd.",
 				null);
-		
+
 		/*
 		 * Player asks for a quest although he has it already open
 		 */
@@ -173,7 +173,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Już cię prosiłem o dostarczenie dwóch wózków z sianem do stodoły Karla. Daj znąć jeśli już to #zrobiłeś.",
 				null);
-		
+
 		/*
 		 * Player has put both carts at the right spots
 		 */
@@ -192,35 +192,35 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"#Jenny możesz znaleść w pobliżu młyna Semos. Zmieli dla ciebie zboże na #mąkę o ile przyniesiesz jej kilak kłosów.",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("flour", "mąka", "mąkę"),
 				createFinishedCondition(),
 				ConversationStates.ATTENDING,
 				"#Jenny zmieli zboże, które dałem ci jako nagrodę na mąkę, którą możesz użyć na #chleb?",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("bread", "chleb"),
 				createFinishedCondition(),
 				ConversationStates.ATTENDING,
 				"#Erna jescze nie upiekła dla ciebie? Naprawdę warto ponieważ #Leander może użyć chleba do zrobienia #kanapek dla ciebie.",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("sandwich", "kanapka", "kanapek", "kanapki"),
 				createFinishedCondition(),
 				ConversationStates.ATTENDING,
 				"Jeszcze nie próbowałeś #kanapek zrobionych przez #Leander? Są smaczne.",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("leander", "leandera"),
 				createFinishedCondition(),
 				ConversationStates.ATTENDING,
 				"Leander prowadzi piekarnię w mieście Semos i może zrobić dla ciebie #kanapki o ile przyniesiesz mu składniki. Dlaczego nie złożysz mu wizyty?",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("erna"),
 				createFinishedCondition(),
@@ -240,68 +240,68 @@ public class HelpWithTheHarvest extends AbstractQuest {
 	 */
 	private void placeCartsAndTargets() {
 		StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("0_ados_forest_w2");
-		
+
 		ChatCondition c = constructHayCartsNotYetCompletedCondition();
-		
 		String cartDescription = "Oto wózek ze zbożem. Czy możesz go popchać do stodoły Karla?";
-		
+
+
 		Block cartOne = new Block(true, "hay_cart");
 		cartOne.setPosition(87, 100);
 		cartOne.setDescription(cartDescription);
 		Block cartTwo = new Block(true, "hay_cart");
 		cartTwo.setPosition(79, 106);
 		cartTwo.setDescription(cartDescription);
-		
+
         ChatAction a = new MultipleActions(new IncrementQuestAction(QUEST_SLOT, 1, -1), new ResetBlockChatAction(cartOne), new ResetBlockChatAction(cartTwo));
 
 		zone.add(cartOne);
 		zone.add(cartTwo);
-		
+
 		BlockTarget targetOne = new BlockTarget();
 		targetOne.setPosition(64, 75);
 		targetOne.setDescription("Oto wyraźny punkt na ziemi. Wcześniej coś ciężkiego tutaj stało.");
 		targetOne.setCondition(c);
 		targetOne.setAction(a);
-		
+
 		BlockTarget targetTwo = new BlockTarget();
 		targetTwo.setPosition(65, 75);
 		targetTwo.setDescription("Oto wyraźny punkt na ziemi. Wcześniej coś ciężkiego tutaj stało.");
 		targetTwo.setAction(a);
 		targetTwo.setCondition(c);
-		
+
 		zone.add(targetOne);
 		zone.add(targetTwo);
 	}
 
 	/**
 	 * Create condition determining if straw carts have not been moved completely to the barn
-	 * 
+	 *
 	 * @return the condition
 	 */
 	private ChatCondition constructHayCartsNotYetCompletedCondition() {
 		ChatCondition c = new AndCondition(
-								new QuestStartedCondition(QUEST_SLOT), 
-								new QuestInStateCondition(QUEST_SLOT, 0, "start"), 
+								new QuestStartedCondition(QUEST_SLOT),
+								new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 								new QuestStateGreaterThanCondition(QUEST_SLOT, 1, 0));
 		return c;
 	}
-	
+
 	/**
 	 * Create condition determining when straw carts were move to the barn
-	 * 
+	 *
 	 * @return the condition
 	 */
 	private ChatCondition createTaskFinishedCondition() {
 		ChatCondition c = new AndCondition(
-				new QuestStartedCondition(QUEST_SLOT), 
-				new QuestInStateCondition(QUEST_SLOT, 0, "start"), 
+				new QuestStartedCondition(QUEST_SLOT),
+				new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 				new QuestInStateCondition(QUEST_SLOT, 1, "0"));
 		return c;
 	}
-	
+
 	/**
 	 * Create the reward action
-	 * 
+	 *
 	 * @return the action for rewarding finished quest
 	 */
 	private ChatAction createReward() {
@@ -309,12 +309,12 @@ public class HelpWithTheHarvest extends AbstractQuest {
 					new IncreaseKarmaAction(5),
 					new IncreaseXPAction(500),
 					new EquipRandomAmountOfItemAction("zboże", 10, 20),
-					new SetQuestAction(QUEST_SLOT, "done"));	
+					new SetQuestAction(QUEST_SLOT, "done"));
 	}
-	
+
 	/**
 	 * Create the condition determining if quest is finished
-	 * 
+	 *
 	 * @return the condition
 	 */
 	private ChatCondition createFinishedCondition() {

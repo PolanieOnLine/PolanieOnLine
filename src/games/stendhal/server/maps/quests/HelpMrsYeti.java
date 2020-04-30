@@ -12,6 +12,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -39,13 +46,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /**
  * QUEST: Mrs. Yeti Needs Help
@@ -350,7 +350,7 @@ import org.apache.log4j.Logger;
 		getReward();
 	}
 
-  @Override
+	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
 			if (!player.hasQuest(QUEST_SLOT)) {
@@ -416,7 +416,7 @@ import org.apache.log4j.Logger;
 		return "HelpMrsYeti";
 	}
 
-		@Override
+	@Override
 	public int getMinLevel() {
 		return 60;
 	}

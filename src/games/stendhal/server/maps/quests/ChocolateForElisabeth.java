@@ -12,6 +12,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -45,11 +50,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Quest to buy chocolate for a little girl called Elisabeth.
  * Ask her mother Carey for a quest and she will ask you to get some chocolate for her daughter.
@@ -78,7 +78,7 @@ import java.util.List;
  * <ul>
  * <li>a random flower</li>
  * <li>500 XP</li>
- * <li>10 karma</li>
+ * <li>12 karma total (2 + 10)</li>
  * </ul>
  *
  * REPETITIONS:
@@ -213,7 +213,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 				null,
 				ConversationStates.ATTENDING,
 				"Dziękuję!",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 10.0));
+				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 2.0));
 
 		// Player says no, they've lost karma
 		npc.add(ConversationStates.QUEST_OFFERED,

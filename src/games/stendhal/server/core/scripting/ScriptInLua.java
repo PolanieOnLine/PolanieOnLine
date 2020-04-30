@@ -15,10 +15,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaFunction;
+import org.luaj.vm2.LuaInteger;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.PackageLib;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -27,16 +31,17 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.lib.jse.LuajavaLib;
 
 import games.stendhal.common.grammar.Grammar;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.scripting.lua.ArraysHelper;
-import games.stendhal.server.core.scripting.lua.NPCHelper;
-import games.stendhal.server.core.scripting.lua.QuestHelper;
-import games.stendhal.server.entity.mapstuff.sign.Reader;
-import games.stendhal.server.entity.mapstuff.sign.ShopSign;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
-import games.stendhal.server.entity.npc.ShopList;
+import games.stendhal.server.core.scripting.lua.LuaActionHelper;
+import games.stendhal.server.core.scripting.lua.LuaArrayHelper;
+import games.stendhal.server.core.scripting.lua.LuaConditionHelper;
+import games.stendhal.server.core.scripting.lua.LuaEntityHelper;
+import games.stendhal.server.core.scripting.lua.LuaMerchantHelper;
+import games.stendhal.server.core.scripting.lua.LuaPropertiesHelper;
+import games.stendhal.server.core.scripting.lua.LuaQuestHelper;
+import games.stendhal.server.core.scripting.lua.LuaStringHelper;
+import games.stendhal.server.core.scripting.lua.LuaTableHelper;
+import games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.quests.SimpleQuestCreator;
 
 /**
  * Manages scripts written in Lua.
@@ -47,9 +52,8 @@ public class ScriptInLua extends ScriptingSandbox {
 
 	private static ScriptInLua instance;
 	private static Globals globals;
-	private static LuaValue game;
 
-	private final String luaScript;
+	private static String luaScript;
 
 
 	public ScriptInLua() {
@@ -81,11 +85,47 @@ public class ScriptInLua extends ScriptingSandbox {
 	 * 			The arguments the admin specified or <code>null</code> on server start.
 	 */
 	@Override
-	public boolean load(Player player, List<String> args) {
-		LuaValue chunk = globals.loadfile(luaScript);
-		chunk.call();
+	public boolean load(final Player player, final List<String> args) {
+		if (luaScript == null) {
+			logger.error("Attempted to load null Lua script");
+			return false;
+		}
 
-		return true;
+		final LuaFunction chunk = (LuaFunction) globals.loadfile(luaScript);
+		final LuaValue lresult = chunk.call();
+
+		boolean result = true;
+		if (lresult.isint()) {
+			result = lresult.toint() == 0;
+		} else if (lresult.isboolean()) {
+			result = lresult.toboolean();
+		}
+
+		if (!result) {
+			logger.warn("Lua script return non-zero or \"false\": " + luaScript);
+		}
+
+		// reset member back to null state after loaded
+		luaScript = null;
+
+		return result;
+	}
+
+	/**
+	 * For manually loading an external Lua script.
+	 *
+	 * @param filename
+	 * 		Relative path to script (usually in "data/script").
+	 * @param player
+	 * 		The admin who loads the script.
+	 * @param args
+	 * 		The arguments the admin specified.
+	 * @return
+	 * 		<code>true</code> if loading succeeded.
+	 */
+	public boolean load(final String filename, final Player player, final List<String> args) {
+		luaScript = filename;
+		return load(player, args);
 	}
 
 	/**
@@ -100,120 +140,168 @@ public class ScriptInLua extends ScriptingSandbox {
 		globals.load(new PackageLib());
 		globals.load(new LuajavaLib());
 
-		game = CoerceJavaToLua.coerce(getInstance());
-		globals.set("game", game);
-		globals.set("logger", CoerceJavaToLua.coerce(logger));
-		globals.set("npcHelper", CoerceJavaToLua.coerce(new NPCHelper()));
-		globals.set("questHelper", CoerceJavaToLua.coerce(QuestHelper.get()));
-		globals.set("simpleQuest", CoerceJavaToLua.coerce(SimpleQuestCreator.getInstance()));
-		globals.set("shops", CoerceJavaToLua.coerce(ShopList.get()));
-		globals.set("questSystem", CoerceJavaToLua.coerce(SingletonRepository.getStendhalQuestSystem()));
-		globals.set("arrays", CoerceJavaToLua.coerce(ArraysHelper.get()));
+		globals.set("game", CoerceJavaToLua.coerce(getInstance()));
+		globals.set("logger", CoerceJavaToLua.coerce(LuaLogger.get()));
+		globals.set("entities", CoerceJavaToLua.coerce(LuaEntityHelper.get()));
+		globals.set("properties", CoerceJavaToLua.coerce(LuaPropertiesHelper.get()));
+		globals.set("quests", CoerceJavaToLua.coerce(LuaQuestHelper.get()));
+		globals.set("actions", CoerceJavaToLua.coerce(LuaActionHelper.get()));
+		globals.set("conditions", CoerceJavaToLua.coerce(LuaConditionHelper.get()));
+		globals.set("merchants", CoerceJavaToLua.coerce(LuaMerchantHelper.get()));
+		globals.set("arrays", CoerceJavaToLua.coerce(LuaArrayHelper.get()));
 		globals.set("grammar", CoerceJavaToLua.coerce(Grammar.get()));
+
+		// initialize supplemental string & table functions
+		LuaStringHelper.get().init((LuaTable) globals.get("string"));
+		LuaTableHelper.get().init((LuaTable) globals.get("table"));
+
+		// override dofile function to use relative paths
+		// FIXME: this only works at script initialization because it depends on "luaScript" variable
+		final LuaFunction dofileOrig = globals.get("dofile").checkfunction();
+		globals.set("dofile", new LuaFunction() {
+			@Override
+			public LuaValue call(final LuaValue lv) {
+				if (luaScript == null) {
+					return dofileOrig.call(lv);
+				}
+
+				return dofileOrig.call(Paths.get(Paths.get(luaScript).getParent().toString(), lv.checkjstring()).toString());
+			}
+		});
 
 		// load built-in master script
 		final InputStream is = getClass().getResourceAsStream("lua/init.lua");
 		if (is != null) {
 			try {
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-				globals.load(reader, "init.lua").call();
+				final LuaValue result = globals.load(reader, "init.lua").call();
 				reader.close();
+
+				if (!result.toboolean()) {
+					logger.warn("Loading Lua master script failed: " + getClass().getPackage().getName() + ".lua/init.lua");
+				} else {
+					logger.info("Lua master script loaded: " + getClass().getPackage().getName() + ".lua/init.lua");
+				}
 			} catch (final IOException e) {
 				logger.error(e, e);
 			}
 		} else {
-			logger.warn("Could not load Lua master script");
+			logger.warn("Could not retrieve Lua master script as resource: " + getClass().getPackage().getName() + ".lua/init.lua");
 		}
+	}
+
+
+	/**
+	 * Sets the background music for the current zone.
+	 *
+	 * @param filename
+	 * 		File basename excluding .ogg extension.
+	 * @param args
+	 * 		Lua table of key=value integer values. Valid keys are `volume`,
+	 * 		`x`, `y`, & `radius`.
+	 */
+	public void setMusic(final String filename, final LuaTable args) {
+		// default values
+		int volume = 100;
+		int x = 1;
+		int y = 1;
+		int radius = 10000;
+
+		for (final LuaValue lkey: args.keys()) {
+			final String key = lkey.tojstring();
+			final LuaInteger lvalue = (LuaInteger) args.get(lkey);
+
+			if (!lvalue.isnil()) {
+				if (key.equals("volume")) {
+					volume = lvalue.toint();
+				} else if (key.equals("x")) {
+					x = lvalue.toint();
+				} else if (key.equals("y")) {
+					y = lvalue.toint();
+				} else if (key.equals("radius")) {
+					radius = lvalue.toint();
+				} else {
+					logger.warn("Unknown table key in game:setMusic: " + key);
+				}
+			}
+		}
+
+		final BackgroundMusicSource musicSource = new BackgroundMusicSource(filename, radius, volume);
+		musicSource.setPosition(x, y);
+		add(musicSource);
 	}
 
 	/**
-	 * Creates a new Sign entity.
+	 * Sets the background music for the current zone.
 	 *
-	 * @return
-	 * 		Sign object.
+	 * @param filename
+	 * 		File basename excluding .ogg extension.
 	 */
-	public Sign createSign() {
-		return createSign(true);
+	public void setMusic(final String filename) {
+		setMusic(filename, new LuaTable());
 	}
 
-	public Sign createSign(final boolean visible) {
-		if (visible) {
-			return new Sign();
-		}
-
-		return new Reader();
-	}
 
 	/**
-	 * Creates a new ShopSign entity.
-	 *
-	 * @param name
-	 * 		The shop name.
-	 * @param title
-	 * 		The sign title.
-	 * @param caption
-	 * 		The caption above the table.
-	 * @param seller
-	 * 		<code>true</code>, if this sign is for items sold by an NPC (defaults to <code>true</code> if <code>null</code>).
-	 * @return
-	 * 		New ShopSign instance.
+	 * Handles logging from Lua.
 	 */
-	public ShopSign createShopSign(final String name, final String title, final String caption, Boolean seller) {
-		// default to seller
-		if (seller == null) {
-			seller = true;
+	public static class LuaLogger {
+
+		private static LuaLogger instance;
+
+
+		/**
+		 * Retrieves the static instance.
+		 *
+		 * @return
+		 * 		Static LuaLogger instance.
+		 */
+		public static LuaLogger get() {
+			if (instance == null) {
+				instance = new LuaLogger();
+			}
+
+			return instance;
 		}
 
-		return new ShopSign(name, title, caption, seller);
-	}
+		public void info(String message) {
+			message = message.trim();
 
-	/**
-	 * Exposes Java system properties to Lua.
-	 *
-	 * @param p
-	 * 		The property of which the value should be returned.
-	 * @return
-	 * 		Value of the property or <code>null</code> if not set.
-	 */
-	public String getProperty(final String p) {
-		if (p == null) {
-			return null;
+			if (luaScript == null) {
+				message = "(unknown source) " + message;
+			} else {
+				message = "(" + luaScript + ") " + message;
+			}
+
+			logger.info(message);
 		}
 
-		return System.getProperty(p);
-	}
+		public void warn(String message) {
+			message = message.trim();
 
-	/**
-	 * Exposes Java system properties to Lua.
-	 *
-	 * @param p
-	 * 		The property string to check.
-	 * @return
-	 * 		<code>true</code> if the property is not <code>null</code>.
-	 */
-	public boolean propertyEnabled(final String p) {
-		if (p == null) {
-			return false;
+			if (luaScript == null) {
+				message = "(unknown source) " + message;
+			} else {
+				message = "(" + luaScript + ") " + message;
+			}
+
+			logger.warn(message);
 		}
 
-		return System.getProperty(p) != null;
-	}
+		public void error(String message) {
+			message = message.trim();
 
-	/**
-	 * Exposes Java system properties to Lua.
-	 *
-	 * @param p
-	 * 		The property string to check.
-	 * @param v
-	 * 		The value to check the property against.
-	 * @return
-	 * 		<code>true</code> if the property value is equal to v.
-	 */
-	public boolean propertyEquals(final String p, final String v) {
-		if (p == null || v == null) {
-			return false;
+			if (luaScript == null) {
+				message = "(unknown source) " + message;
+			} else {
+				message = "(" + luaScript + ") " + message;
+			}
+
+			logger.error(message);
 		}
 
-		return System.getProperty(p).equals(v);
+		public void error(final Object obj, final Throwable throwable) {
+			logger.error(obj, throwable);
+		}
 	}
 }

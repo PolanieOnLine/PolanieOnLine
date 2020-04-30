@@ -61,6 +61,7 @@ public abstract class AbstractAchievementFactory {
 		//add new created factories here
 		list.add(new AdosItemQuestAchievementsFactory());
 		list.add(new AgeAchievementFactory());
+		list.add(new DeathmatchAchievementFactory());
 		list.add(new ExperienceAchievementFactory());
 		list.add(new ExperienceDEFAchievementFactory());
 		list.add(new ExperienceATKAchievementFactory());
@@ -86,5 +87,4 @@ public abstract class AbstractAchievementFactory {
 		list.add(new RebornAchievementFactory());
 		return list;
 	}
-
 }

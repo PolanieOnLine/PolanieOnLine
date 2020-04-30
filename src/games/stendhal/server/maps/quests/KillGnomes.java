@@ -12,6 +12,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -32,13 +38,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import marauroa.common.Pair;
 
 /**
@@ -48,7 +47,7 @@ import marauroa.common.Pair;
  * <ul>
  * <li> Jenny, by the mill in Semos Plains
  * </ul>
- * 
+ *
  * STEPS:
  * <ul>
  * <li> Gnomes have been stealing carrots so Jenny asks you to kill some.
@@ -61,7 +60,7 @@ import marauroa.common.Pair;
  * <li> 1000 XP
  * <li> No karma (deliberately. Killing gnomes is mean!)
  * </ul>
- * 
+ *
  * REPETITIONS:
  * <ul>
  * <li> after 7 days.
@@ -72,17 +71,17 @@ public class KillGnomes extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "kill_gnomes";
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
- 
+
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Jenny");
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
 				"Gnomy kradną marchewki z naszej farmy na północ od Semos. "
@@ -90,7 +89,7 @@ public class KillGnomes extends AbstractQuest {
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 						 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)),
 				ConversationStates.QUEST_OFFERED,
@@ -98,7 +97,7 @@ public class KillGnomes extends AbstractQuest {
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
+				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 						 new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES))),
 				ConversationStates.ATTENDING,
@@ -113,7 +112,7 @@ public class KillGnomes extends AbstractQuest {
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new SetQuestAction(QUEST_SLOT, "start"));
 		actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
-		
+
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -121,8 +120,8 @@ public class KillGnomes extends AbstractQuest {
 				"Doskonale. Obozowisko gnomów znajdziesz na północny-zachód od Semos. Upewnij się, że ubiłeś kilku liderów, conajmniej jednego zwiadowcę i jednego kawalerzystę.",
 				new MultipleActions(actions));
 
-		npc.add(ConversationStates.QUEST_OFFERED, 
-				ConversationPhrases.NO_MESSAGES, 
+		npc.add(ConversationStates.QUEST_OFFERED,
+				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				"Masz rację. Chyba to zbyt okropne, aby wybijać gnomy, które kradną marchewki. "
@@ -144,28 +143,28 @@ public class KillGnomes extends AbstractQuest {
 		actions.add(new IncreaseXPAction(1000));
 		actions.add(new SetQuestAction(QUEST_SLOT, "killed;1"));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		
+
 		LinkedList<String> triggers = new LinkedList<String>();
 		triggers.addAll(ConversationPhrases.FINISH_MESSAGES);
-		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);		
-		npc.add(ConversationStates.ATTENDING, 
+		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);
+		npc.add(ConversationStates.ATTENDING,
 				triggers,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new KilledForQuestCondition(QUEST_SLOT, 1)),
-				ConversationStates.ATTENDING, 
 				"Widzę, że zabiłeś gnomy. Mam nadzieje, że przez jakiś czas nie będą się zbliżać do marchwi! "
 				+ "Proszę weź te mikstury w dowód uznania.",
+				ConversationStates.ATTENDING,
 				new MultipleActions(actions));
 
-		npc.add(ConversationStates.ATTENDING, 
+		npc.add(ConversationStates.ATTENDING,
 				triggers,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.ATTENDING, 
 				"Musisz nauczyć te zuchwałe gnomy lekcji zabijając kilku dla przykładu! "
 				+ "Upewnij się, że dostałeś kilku liderów, co najmniej jednego zwiadowcę i jednego kawalerzystę.",
+				ConversationStates.ATTENDING,
 				null);
 	}
 
@@ -179,7 +178,7 @@ public class KillGnomes extends AbstractQuest {
 		step_2();
 		step_3();
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
@@ -201,18 +200,18 @@ public class KillGnomes extends AbstractQuest {
 	public String getName() {
 		return "KillGnomes";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 10;
 	}
-	
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 				 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)).fire(player,null, null);
 	}
-	
+
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
@@ -222,10 +221,10 @@ public class KillGnomes extends AbstractQuest {
 	public String getNPCName() {
 		return "Jenny";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_SURROUNDS;
 	}
-	
+
 }

@@ -111,8 +111,7 @@ public class DisplaceAction implements ActionListener {
 				&& !entityCollides(player, zone, x, y, entity)
 				&& (isGamblingZoneAndIsDice(entity, player) || pathToDest(player, zone, x, y, entity))
 				&& (isPlayingBilliardAndIsBall(entity, player) || pathToDest(player, zone, x, y, entity))
-				&& !isNotOwnCorpseAndTooFar(entity, player, x, y)
-				&& (isTargetOccupiable(player, zone, x, y) || pathToDest(player, zone, x, y, entity));
+				&& !isNotOwnCorpseAndTooFar(entity, player, x, y);
 	}
 
 	/**
@@ -194,7 +193,7 @@ public class DisplaceAction implements ActionListener {
 	 * @return true, iff allowed
 	 */
 	private boolean entityCollides(final Player player, final StendhalRPZone zone, final int x, final int y, final PassiveEntity entity) {
-		boolean res = zone.simpleCollides(entity, x, y, entity.getWidth(), entity.getHeight()) || !zone.isAreaOccupiable(x, y);
+		boolean res = zone.simpleCollides(entity, x, y, entity.getWidth(), entity.getHeight());
 		if (res) {
 			player.sendPrivateText("Nie ma tam miejsca.");
 		}
@@ -212,8 +211,9 @@ public class DisplaceAction implements ActionListener {
 	 * @return true, iff allowed
 	 */
 	private boolean pathToDest(final Player player, final StendhalRPZone zone, final int x, final int y, final PassiveEntity entity) {
-		final List<Node> path = Path.searchPath(entity, zone, player.getX(), player.getY(), new Rectangle(x, y, 1, 1), 64 /* maxDestination * maxDestination */, false);
-
+		final List<Node> path = Path.searchPath(entity, zone,
+				player.getX(), player.getY(), new Rectangle(x, y, 1, 1),
+				64 /* maxDestination * maxDestination */, false);
 		if (path.isEmpty()) {
 			player.sendPrivateText("Nie ma łatwiejszego przejścia do tego miejsca.");
 		}
@@ -312,26 +312,4 @@ public class DisplaceAction implements ActionListener {
 		return newItem;
 	}
 
-	/**
-	 * Checks if an area can be occupied by an entity.
-	 *
-	 * @param player
-	 * 		Player that is dropping the item.
-	 * @param zone
-	 * 		Zone where item is dropped.
-	 * @param x
-	 * 		Horizontal coordinate of target position.
-	 * @param y
-	 * 		Vertical coordinate of target position.
-	 * @return
-	 * 		<code>true</code> if the area can be occupied.
-	 */
-	public static boolean isTargetOccupiable(final Player player, final StendhalRPZone zone, final int x, final int y) {
-		if (!zone.isAreaOccupiable(x, y)) {
-			player.sendPrivateText("Nie ma tam miejsca.");
-			return false;
-		}
-
-		return true;
-	}
 }

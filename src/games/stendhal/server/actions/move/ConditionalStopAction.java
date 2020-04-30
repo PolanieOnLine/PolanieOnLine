@@ -20,10 +20,9 @@ import marauroa.common.game.RPAction;
 
 /**
  * Action that stops player movement when certain conditions are met.
- * 
+ *
  * @author AntumDeluge
  */
-
 public class ConditionalStopAction implements ActionListener {
 	/**
 	 * Registers conditional stop action.
@@ -31,7 +30,7 @@ public class ConditionalStopAction implements ActionListener {
 	public static void register() {
 		CommandCenter.register(COND_STOP, new ConditionalStopAction());
 	}
-	
+
 	@Override
 	public void onAction(Player player, RPAction action) {
 		// Auto-walk is checked by player.stop().

@@ -21,23 +21,22 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-//import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
 
 /**
  * Provides a Hoeing Man, hoeing farm ground north of Semos,
  * near Jenny's Mill
  *
  * @author omero
- *
  */
 public class HoeingManNPC implements ZoneConfigurator {
 
+	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
-			final SpeakerNPC npc = new SpeakerNPC("Jingo Radish") {
+		final SpeakerNPC npc = new SpeakerNPC("Jingo Radish") {
 
 			@Override
 			protected void createPath() {
@@ -61,6 +60,7 @@ public class HoeingManNPC implements ZoneConfigurator {
 				addGoodbye("Żegnaj! Może Twoja droga będzie wolna od chwastów.");
 			}
 		};
+
 		// Finalize Jingo Radish, the hoeing man near the Mill north of Semos
 		npc.setEntityClass("hoeingmannpc");
 		npc.setDescription("Oto człowiek z motyką, który zajęty jest odchwaszczaniem...");

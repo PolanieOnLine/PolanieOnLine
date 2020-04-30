@@ -1,6 +1,8 @@
 
 package games.stendhal.server.maps.quests.houses;
 
+import java.util.Arrays;
+
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.JokerExprMatcher;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -11,8 +13,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TextHasNumberCondition;
-
-import java.util.Arrays;
 
 final class KirdnehHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in kirdneh. */
@@ -25,54 +25,54 @@ final class KirdnehHouseSeller extends HouseSellerNPCBase {
 	}
 
 	private void init() {
-		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy. 
-		// For definiteness we will check these conditions in a set order. 
+		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy.
+		// For definiteness we will check these conditions in a set order.
 		// So then the NPC doesn't have to choose which reason to reject the player for (appears as a WARN from engine if he has to choose)
-		
+
 		// player is not old enough
-		add(ConversationStates.ATTENDING, 
 				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
+		add(ConversationStates.ATTENDING,
 				 new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
-				 ConversationStates.ATTENDING, 
 				 "Koszt nowego domu w Kirdneh wynosi "
+				 ConversationStates.ATTENDING,
 						 + getCost()
 				 + " money, ale obawiam się, że nie mogę Ci jeszcze zaufać w kwestii kupna domu. Wróć gdy spędzisz tutaj ponad " 
 				 + Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzinę" + " w Faiumoni.",
 				 null);
-		
+
 		// player is old enough and hasn't got a house but has not done required quest
-		add(ConversationStates.ATTENDING, 
 				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
-								  new QuestNotCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT), 
+		add(ConversationStates.ATTENDING,
+				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+								  new QuestNotCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT),
 									 new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT)),
-				 ConversationStates.ATTENDING, 
 				 "Koszt nowego domu w Kirdneh wynosi "
+				 ConversationStates.ATTENDING,
 				 + getCost()
 				 + " money, ale moja główna zasada nie pozwala na sprzedaż domu bez ustalenia #reputacji potencjalnego kupca. ",
 				 null);
-		
+
 		// player is eligible to buy a house
-		add(ConversationStates.ATTENDING, 
 				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT), 
-								  new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
+		add(ConversationStates.ATTENDING,
+				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
+								  new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
 								  new QuestCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT)),
-					ConversationStates.QUEST_OFFERED, 
 				 "Koszt nowego domu w Kirdneh wynosi "
+					ConversationStates.QUEST_OFFERED,
 				 + getCost()
 				 + " Prócz tego musisz zapłacić podatek od nieruchomości w wysokości " + HouseTax.BASE_TAX
 				 + " money, miesięcznie. Jeżeli masz jakiś dom na oku to podaj mi jego numer. Sprawdzę czy jest wolny. "
 				 + "Domy w Kirdneh są numerowane od "
 				 + getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
 				 null);
-		
+
 		// handle house numbers 26 to 49
 		addMatching(ConversationStates.QUEST_OFFERED,
 				// match for all numbers as trigger expression
 				ExpressionType.NUMERAL, new JokerExprMatcher(),
 				new TextHasNumberCondition(getLowestHouseNumber(), getHighestHouseNumber()),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new BuyHouseChatAction(getCost(), QUEST_SLOT));
 
@@ -84,7 +84,7 @@ final class KirdnehHouseSeller extends HouseSellerNPCBase {
 		setEntityClass("man_004_npc");
 		setPosition(31, 4);
 		initHP(100);
-		
+
 	}
 
 	@Override

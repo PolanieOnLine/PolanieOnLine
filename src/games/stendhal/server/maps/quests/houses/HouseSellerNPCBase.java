@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.houses;
 
+import java.util.Arrays;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -20,8 +22,6 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
 
 /**
  * Base class for dialogue shared by all houseseller NPCs.

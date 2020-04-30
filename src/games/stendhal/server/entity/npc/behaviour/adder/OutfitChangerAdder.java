@@ -102,7 +102,7 @@ public class OutfitChangerAdder {
 					public void fireRequestOK(final ItemParserResult res, Player player, Sentence sentence, EventRaiser raiser) {
 						// find out what the player wants to wear
 
-							// We ignore any amounts.
+						// We ignore any amounts.
 						res.setAmount(1);
 
 						final int price = outfitBehaviour.getUnitPrice(res.getChosenItemName()) * res.getAmount();
@@ -165,7 +165,7 @@ public class OutfitChangerAdder {
 					});
 		}
 	}
-	
+
 	protected String getReturnPhrase() {
 		return "Dziękuję i nie zapomnij powiedzieć #zwrot, gdy nie będziesz już potrzebował!";
 	}

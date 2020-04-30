@@ -12,6 +12,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -44,16 +54,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
-import org.apache.log4j.Logger;
-
 /**
  * QUEST: Daily Monster Kill Quest.
  * <p>
@@ -75,8 +75,11 @@ import org.apache.log4j.Logger;
 
 public class DailyMonsterQuest extends AbstractQuest {
 
+	private static DailyMonsterQuest instance;
+
 	private static final String QUEST_SLOT = "daily";
-	private final SpeakerNPC npc = npcs.get("Mayor Sakhs");
+	private SpeakerNPC npc;
+	private final String npcName = "Mayor Sakhs";
 	private static Logger logger = Logger.getLogger("DailyMonsterQuest");
 
 	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
@@ -85,6 +88,21 @@ public class DailyMonsterQuest extends AbstractQuest {
 
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
+
+
+	/**
+	 * Get the static instance.
+	 *
+	 * @return
+	 * 		DailyMonsterQuest
+	 */
+	public static DailyMonsterQuest getInstance() {
+		if (instance == null) {
+			instance = new DailyMonsterQuest();
+		}
+
+		return instance;
+	}
 
 	private static void refreshCreaturesList(final String excludedCreature) {
 		final Collection<Creature> creatures = SingletonRepository.getEntityManager().getCreatures();
@@ -489,6 +507,8 @@ public class DailyMonsterQuest extends AbstractQuest {
 
 	@Override
 	public void addToWorld() {
+		npc = npcs.get(npcName);
+
 		fillQuestInfo(
 				"Dzienne Zadanie na Potwora",
 				"Mayor Sakhs potrzebuje wojowników do utrzymania bezpieczeństwa w mieście Semos.",
@@ -522,6 +542,6 @@ public class DailyMonsterQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Mayor Sakhs";
+		return npcName;
 	}
 }

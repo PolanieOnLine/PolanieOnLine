@@ -27,6 +27,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.CollisionAction;
 
 /**
  * The blacksmith's young assistant (original name: Hackim Easso).
@@ -66,7 +67,7 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 				setPath(new FixedPath(nodes, true));
 			}
 
-	@Override
+			@Override
 			public void createDialog() {
 
 				// A little trick to make NPC remember if it has met
@@ -74,7 +75,7 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 		        // NPC_name quest doesn't exist anywhere else neither is
 		        // used for any other purpose
 				add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
+						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(getName()),
 								new QuestNotStartedCondition("meet_hackim")),
 						ConversationStates.ATTENDING,
@@ -91,6 +92,7 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 
 		};
 		npc.setPosition(5, 2);
+		npc.setCollisionAction(CollisionAction.REVERSE); // prevent trapping players
 		npc.setEntityClass("naughtyteennpc");
 		npc.setDescription("Oto Hackim Easso, pomocnik kowala.");
 		zone.add(npc);

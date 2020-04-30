@@ -12,6 +12,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -30,9 +33,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * QUEST: Get tomi his Ice.
@@ -89,7 +89,7 @@ public class HelpTomi extends AbstractQuest {
 			res.add("Tomi prosił o \"miecz lodowy\" i wzioł ten, który przyniosłem!");
 			// provided quest isn't in 'old version' we should be able to check how many times it was done
 			if (!"done".equals(questState)) {
-                final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
+				final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
 				if (repetitions>1) {
 					res.add("Dałem " + repetitions + " mieczy lodowych Tomiemu dotychczas.");
 				}

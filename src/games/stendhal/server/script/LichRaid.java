@@ -1,5 +1,6 @@
+/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,22 +25,22 @@ public class LichRaid extends CreateRaid {
 	@Override
 	protected Map<String, Integer> createArmy() {
 		final Map<String, Integer> attackArmy = new HashMap<String, Integer>();
-		attackArmy.put("szkielecik", 5);
-		attackArmy.put("szkielet waleczny", 3);
-		attackArmy.put("szkielet starszy", 4);
-		attackArmy.put("demoniczny szkielet", 3);
-		attackArmy.put("szkielet smoka", 3);
-		attackArmy.put("upadły wojownik", 5);
-		attackArmy.put("upadły kapłan", 3);
-		attackArmy.put("upadły wysoki kapłan", 2);
-		attackArmy.put("licho", 8);
-		attackArmy.put("martwe licho", 3);
-		attackArmy.put("wysokie licho", 3);
+		attackArmy.put("tiny skelly", 5);
+		attackArmy.put("warrior skeleton", 3);
+		attackArmy.put("elder skeleton", 4);
+		attackArmy.put("demon skeleton", 3);
+		attackArmy.put("bone dragon", 3);
+		attackArmy.put("fallen warrior", 5);
+		attackArmy.put("fallen priest", 3);
+		attackArmy.put("fallen high priest", 2);
+		attackArmy.put("lich", 8);
+		attackArmy.put("dead lich", 3);
+		attackArmy.put("high lich", 3);
 
 		return attackArmy;
 	}
 	@Override
 	protected String getInfo() {
-		return "Niebezpieczny dla wojowników poniżej poziomu 80.";
+		return "Not safe for players below level 80.";
 	}
 }

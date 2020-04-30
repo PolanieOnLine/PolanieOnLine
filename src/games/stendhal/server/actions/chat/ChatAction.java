@@ -36,7 +36,7 @@ public class ChatAction {
 		CommandCenter.register(EMOTE, new EmoteAction());
 		CommandCenter.register(GROUP_MESSAGE, new GroupMessageAction());
         CommandCenter.register(REPORT_ERROR, new ReportErrorAction());
-		CommandCenter.register(SUPPORT, new AskForSupportAction());
+        CommandCenter.register(SUPPORT, new AskForSupportAction());
 		CommandCenter.register(TELL, new TellAction());
 	}
 }

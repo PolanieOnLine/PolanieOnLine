@@ -66,17 +66,7 @@ import games.stendhal.server.util.TimeUtil;
 import marauroa.common.Pair;
 
 /**
- * NOTE: quest slot templates for testing
- * ---------------------------
- * fetch_dessert;inprogress;paella;udko=2,pomidor=3,czosnek=3,pstrąg=1,okoń=1,cebula=2,;gulab;mąka=2,ekstrakt litworowy=2,miód pitny=2,cukier=4,;1337207220454
- * deliver_decentmeal;inprogress;paella;czosnek=2,udko=3,okoń=1,osełka masła=2,cebula=1,pomidor=4,pstrąg=1;macedonia;jabłko=3,gruszka=4,arbuz=2,banan=6;1566438628928
- * done;incomplete;paella;czosnek=2,udko=3,okoń=1,osełka masła=2,cebula=1,pomidor=4,pstrąg=1;macedonia;jabłko=3,gruszka=4,arbuz=2,banan=6;1566439102692;1
- * done;complete;paella;czosnek=2,udko=3,okoń=1,osełka masła=2,cebula=1,pomidor=4,pstrąg=1;macedonia;jabłko=3,gruszka=4,arbuz=2,banan=6;1566439102692;1
- * ---------------------------
- */
-
-/**
- * QUEST: Meal for Groongo, The Troublesome Customer
+ * QUEST: Meal for Groongo
  * <p>
  * PARTICIPANTS:
  * <ul>
@@ -86,7 +76,7 @@ import marauroa.common.Pair;
  *
  * STEPS:
  * <ul>
- *  <li> Groongo is hungry, asks the player to bring him a decent meal,
+ *  <li> Groongo Rahnnt is hungry, asks the player to bring him a decent meal,
  *  <li> The player talks to Stefan and he will tell him what ingredients he's missing,
  *  <li> The player goes fetching the ingredients for the main dish,
  *  <li> The player brings Stefan the ingredients he needs,
@@ -97,15 +87,15 @@ import marauroa.common.Pair;
  *  <li> The player goes fetching the ingredients for the dessert and brings them to Stefan,
  *  <li> Stefan tells the player how much time (10-15mins) he requires to prepare Groongo's decent meal,
  *  <li> After enough time has elapsed, the player gets the decent meal from Stefan,
- *  <li> The player may deliver the decent meal to Grongo
- *  <li> Groongo is finaly happy and gives the player a reward of some kind, hints player to say 'thanks' to Stefan
- *  <li> The player then has a limited time to get a better reward
+ *  <li> The player has to deliver the decent meal to Grongo
+ *  <li> Groongo is finally happy and gives the player a reward of some kind, hints player to say 'thanks' to Stefan
+ *  <li> The player has a limited time to get a better reward by talking to Stefan and say 'thanks'
  * </ul>
  *
  * REWARD:
  * <ul>
- * <li> A 'normal' reward from Groongo,
- * <li> A 'better' reward from Stefan (possibly)
+ * <li> A 'normal' reward from Groongo, plus some karma
+ * <li> A 'better' reward from Stefan, plus some karma
  * </ul>
  *
  * REPETITIONS:
@@ -118,12 +108,17 @@ import marauroa.common.Pair;
 
 public class MealForGroongo extends AbstractQuest {
     private static Logger logger = Logger.getLogger(MealForGroongo.class);
+
     /**
-     * QUEST_SLOT will be used to hold the different states of the quest.
-     * Each sub slot will only always serve one purpose as stated below.
+     * QUEST_SLOT = "meal_for_groongo"
+     * Detais about the QUEST_SLOT = "meal_for_groongo"
+     *
+     * QUEST_SLOT = "meal_for_groongo" will hold all progress made in the quest.
+     * QUEST_SLOT = "meal_for_groongo" will use several sub slots, to hold different states of the quest
+     * QUEST_SLOT = "meal_for_groongo" sub slot will only always serve one and only one purpose.
      *
      * QUEST_SLOT sub slot 0
-     * used to hold the main states, which can be:
+     * used to hold the main states of the quest, which can be:
      * - rejected, the player has refused to undertake the quest
      * - fetch_maindish, the player is collecting ingredients for main dish
      * - check_dessert, the player needs to ask Groongo which dessert he wants along main dish
@@ -179,21 +174,71 @@ public class MealForGroongo extends AbstractQuest {
      * QUEST_SLOT sub slot 7
      * - counts how many times a decent meal has been delivered
      */
+
+    /**
+     * NOTES: for testing/understanding
+     * QUEST_SLOT = "meal_for_groongo"
+     *
+     * to reset QUEST_SLOT = "meal_for_groongo" with a <null> value to revert to a 'sane' status
+     * 	use /alterquest <playername> meal_for_groongo <null>
+     *
+     * to test ingrediends availability,
+     *  use /summonat <playername> bag <qty> <item>
+     *
+     * Useful templates with /alterquest,
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * subslot0           |subslot1   |subslot2  |subslot3                                            |subslot4 |subslot5                               |subslot6      |subslot7  |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * quest              |quest      |          |                                                    |         |                                       |timestamp     |count     |
+     * phase              |phase      |          |                                                    |         |                                       |              |          |
+     *                    |status     |          |maindish ingredients                                |         |dessert ingredients                    |              |          |
+     *                    |           |          |                                                    |         |                                       |              |          |
+     *                    |           |          |                                                    |         |                                       |              |          |
+     *                    |           |main dish |                                                    |         |                                       |              |          |
+     *                    |           |dessert   |                                                    |dessert  |                                       |              |          |
+     *                    |           |short nme |                                                    |short nme|                                       |              |          |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+                          |           |          |                                                    |         |                                       |              |          |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * fetch_maindish;    |inprogress;|ciorba;   |garlic=3,                                           |
+     *                    !           |          |pinto beans=1,onion=3,vinegar=1,meat=1,milk=2,      |
+     *                    !           |          |carrot=1,;                                          |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * fetch_dessert;     |inprogress;|macedonia;|chicken=2,                                          |         |
+     *                    |           |          |tomato=3,garlic=3,trout=1,perch=1,                  |         |
+     *                    |           |          |onion=2,;                                           |gulab;   |flour=2,fierywater=2,honey=2,sugar=4,; |1337207220454 | 0        |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * deliver_decentmeal;|inprogress;|paella;   |chicken=2,                                          |         |
+     *                    |           |          |tomato=3,garlic=3,trout=1,perch=1,                  |         |
+     *                    |           |          |onion=2,;                                           |gulab;   |flour=2,fierywater=2,honey=2,sugar=4,; |1337207289602 | 0        |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * done;              |incomplete;|paella;   |chicken=2,tomato=3,garlic=3,trout=1,perch=1,        |         |
+     *                    |           |          |onion=2,;                                           |gulab;   |flour=2,fierywater=2,honey=2,sugar=4,; |1337207484330;| 1        |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     * done;              |complete;  |paella;   |chicken=2,tomato=3,garlic=3,trout=1,perch=1,        |         |
+     *                    |           |          |onion=2,;                                           |gulab;   |flour=2,fierywater=2,honey=2,sugar=4,; |1337207484330;| 1        |
+     * ------------------ +-----------+----------+----------------------------------------------------+---------+---------------------------------------+--------------+----------+
+     */
+
+    // regexp for required ingredient adjustments:
+    // :%s@\("meat",.*Integer>\)(\([0-9]*,[0-9]*\))\(.*$\)@\1(10,20)\3@g
+    //
+
+    //MealForGroongo (meal_for_groongo):
+
+
     public static final String QUEST_SLOT = "meal_for_groongo";
 
     //How long it takes Chef Stefan to prepare a decent meal (main dish and dessert)
     //private static final int MEALREADY_DELAY = 30;
-    //FIXME omero: for testing only
     private static final int MEALREADY_DELAY = 2;
 
     //How much time the player has to get a better reward
     //private static final int BRINGTHANKS_DELAY = 1;
-    //FIXME omero: for testing only
     private static final int BRINGTHANKS_DELAY = 10;
 
     //Every when the quest can be repeated
     //private static final int REPEATQUEST_DELAY = 1 * MathHelper.MINUTES_IN_ONE_DAY;
-    // FIXME omero: for testing only
     private static final int REPEATQUEST_DELAY = 10;
 
     // how much XP is given as the reward
@@ -237,7 +282,6 @@ public class MealForGroongo extends AbstractQuest {
         stageCollectIngredientsForDessert();
         stageWaitForMeal();
         stageDeliverMeal();
-
     }
 
     @Override
@@ -248,8 +292,9 @@ public class MealForGroongo extends AbstractQuest {
         if (!player.hasQuest(QUEST_SLOT)) {
             return res;
         }
+
         final String questState = player.getQuest(QUEST_SLOT, 0);
-        logger.warn("Quest state: <" + player.getQuest(QUEST_SLOT) + ">");
+        //logger.warn("Quest state: <" + player.getQuest(QUEST_SLOT) + ">");
 
         res.add("Spotkałem Groongo Rahnnt w restauracji hotelu w Fado.");
 
@@ -359,7 +404,6 @@ public class MealForGroongo extends AbstractQuest {
 
     @Override
     public int getMinLevel() {
-        // TODO omero: minlevel needs to be adjusted
         return 30;
     }
 
@@ -398,8 +442,8 @@ public class MealForGroongo extends AbstractQuest {
     // used by both Groongo and Stefan to build sentences
     // avoids requiring player to type long and complicated fancy main dish names
     private String getRequiredMainDishFancyName(final String requiredMainDish) {
-        final Map<String, String> requiredMainDishFancyName = new HashMap<String, String>();
 
+        final Map<String, String> requiredMainDishFancyName = new HashMap<String, String>();
         requiredMainDishFancyName.put("paella", "paella de pescado");
         requiredMainDishFancyName.put("ciorba", "ciorba de burta cu smantena");
         requiredMainDishFancyName.put("lasagne", "lasagne alla bolognese");
@@ -417,7 +461,7 @@ public class MealForGroongo extends AbstractQuest {
     private String getRequiredDessertFancyName(final String requiredDessert) {
         final Map<String, String> requiredDessertFancyName = new HashMap<String, String>();
 
-        requiredDessertFancyName.put("brigadeiro", "brigadeiro a la amparo");
+        requiredDessertFancyName.put("brigadeiro", "brigadeiro de amparo");
         requiredDessertFancyName.put("macedonia", "macedonia di frutta");
         requiredDessertFancyName.put("vatrushka", "old-fashioned vatrushka with cottage cheese");
         requiredDessertFancyName.put("cake", "classic carrot cake with fluffy cream cheese frosting");
@@ -436,11 +480,10 @@ public class MealForGroongo extends AbstractQuest {
      * @param requiredMainDish
      * @return A string composed of comma separated key=value token pairs.
      */
+
+    // All ingredients should trigger a reply from Stefan, the chef in Fado's Hotel Restaurant:
     private String getRequiredIngredientsForMainDish(final String requiredMainDish) {
-
-        // All not-yet-existing ingredients commented out for testing purposes
-        // All ingredients are temporary for developing purposes, subject to change
-
+        //Ingredients for preparing main dish for the troublesome customer
         final HashMap<String, Pair<Integer, Integer>> requiredIngredients_paella = new HashMap<String, Pair<Integer, Integer>>();
         requiredIngredients_paella.put("cebula", new Pair<Integer, Integer>(3,9));
         requiredIngredients_paella.put("czosnek", new Pair<Integer, Integer>(3,6));
@@ -529,11 +572,12 @@ public class MealForGroongo extends AbstractQuest {
         String ingredients = "";
         final HashMap<String, Pair<Integer, Integer>>  requiredIngredients = requiredIngredientsForMainDish.get(requiredMainDish);
         for (final Map.Entry<String, Pair<Integer, Integer>> entry : requiredIngredients.entrySet()) {
-            ////logger.warn(" ingredient <" + entry.getKey() + "> quantities <" + entry.getValue() + ">");
+            //logger.warn(" ingredient <" + entry.getKey() + "> quantities <" + entry.getValue() + ">");
             ingredients = ingredients + entry.getKey() + "=" + Rand.randUniform(entry.getValue().first(), entry.getValue().second()) + ",";
         }
 
-        ////logger.warn(" ingredients <" + ingredients + ">");
+        //logger.warn(" ingredients <" + ingredients + ">");
+
         // strip the last comma from the returned string
         return ingredients.substring(0, ingredients.length()-1);
     }
@@ -546,9 +590,6 @@ public class MealForGroongo extends AbstractQuest {
      * @return A string composed of semicolon separated key=value token pairs.
      */
     private String getRequiredIngredientsForDessert(final String requiredDessert) {
-        // All ingredients are temporary for developing purposes, subject to change
-        // All not-yet-existing ingredients commented out for testing purposes
-
         final HashMap<String, Pair<Integer, Integer>> requiredIngredients_brigadeiro = new HashMap<String, Pair<Integer, Integer>>();
         requiredIngredients_brigadeiro.put("mleko", new Pair<Integer, Integer>(1,5));
         requiredIngredients_brigadeiro.put("cukier", new Pair<Integer, Integer>(2,4));
@@ -612,18 +653,19 @@ public class MealForGroongo extends AbstractQuest {
         String ingredients = "";
         final HashMap<String, Pair<Integer, Integer>>  requiredIngredients = requiredIngredientsForDessert.get(requiredDessert);
         for (final Map.Entry<String, Pair<Integer, Integer>> entry : requiredIngredients.entrySet()) {
-            ////logger.warn(" ingredient <" + entry.getKey() + "> quantities <" + entry.getValue() + ">");
+            //logger.warn(" ingredient <" + entry.getKey() + "> quantities <" + entry.getValue() + ">");
             ingredients = ingredients + entry.getKey() + "=" + Rand.randUniform(entry.getValue().first(), entry.getValue().second()) + ",";
         }
 
-        ////logger.warn(" ingredients <" + ingredients + ">");
+        //logger.warn(" ingredients <" + ingredients + ">");
+
         // strip the last comma from the returned string
         return ingredients.substring(0, ingredients.length()-1);
 
     }
 
     // Stefan uses this to advance the quest:
-    // - after the player has gathered all of required ingredients for the main dish
+    // - after the player has gathered all of the required ingredients for the main dish
     // - after the player has asked Groongo which dessert he'd like along the main dish
     // - after the player has gathered all of required ingredients for the dessert
     class advanceQuestInProgressAction implements ChatAction {
@@ -676,6 +718,7 @@ public class MealForGroongo extends AbstractQuest {
                     );
                 }
             }
+
             //logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
         }
     }
@@ -701,7 +744,8 @@ public class MealForGroongo extends AbstractQuest {
                 attempts++;
             }
 
-            ////logger.warn("Attempts for new main dish <" + attempts + ">");
+            //logger.warn("Attempts for new main dish <" + attempts + ">");
+
             player.setQuest(QUEST_SLOT, 0, "fetch_maindish");
             player.setQuest(QUEST_SLOT, 1, "inprogress");
             player.setQuest(QUEST_SLOT, 2, requiredMainDish);
@@ -712,6 +756,7 @@ public class MealForGroongo extends AbstractQuest {
                     getRequiredMainDishFancyName(requiredMainDish) +
                     ". Teraz idź i poproś szefa kuchni Stefana o przygotowanie dla mnie #" + requiredMainDish + ", jeśli możesz..."
             );
+
             //logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
         }
     }
@@ -739,6 +784,7 @@ public class MealForGroongo extends AbstractQuest {
             }
 
             //logger.warn("Attempts for new dessert <" + attempts + ">");
+
             player.setQuest(QUEST_SLOT, 0, "tell_dessert");
             player.setQuest(QUEST_SLOT, 4, requiredDessert);
             player.setQuest(QUEST_SLOT, 5, requiredIngredientsForDessert);
@@ -750,6 +796,7 @@ public class MealForGroongo extends AbstractQuest {
                     ". Teraz idź i poproś szefa kuchni Stefana o przygotowanie dla mnie " + requiredDessert +
                     ", na deser!"
             );
+
             //logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
         }
     }
@@ -788,6 +835,7 @@ public class MealForGroongo extends AbstractQuest {
             SpeakerNPC.say(
                     "Bah! Nadal czekam na " + meal + ". To właśnie nazywam porządnym posiłkiem! " + question
             );
+
             //logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
         }
     }
@@ -807,6 +855,7 @@ public class MealForGroongo extends AbstractQuest {
                     Grammar.enumerateCollection(missingIngredients.toStringList()) + "..." +
                     "Czy przyniesiesz je wszystkie razem?"
             );
+
             //logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
         }
     }
@@ -826,6 +875,7 @@ public class MealForGroongo extends AbstractQuest {
                     Grammar.enumerateCollection(missingIngredients.toStringListWithHash()) +
                     ". Czy przyniesiesz je wszystkie razem?"
             );
+
             //logger.warn("Quest state <" + player.getQuest(QUEST_SLOT) + ">");
         }
     }
@@ -1007,6 +1057,7 @@ public class MealForGroongo extends AbstractQuest {
                 null
             );
         }
+
         // Player accepts the quest,
         // quest is started
         npc.add(ConversationStates.QUEST_OFFERED,

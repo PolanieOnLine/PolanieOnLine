@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.deniran.cityinterior.psychicparlor;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -26,6 +27,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -58,7 +60,13 @@ public class PsychicNPC implements ZoneConfigurator {
 	}
 
 	private void initNPC(final StendhalRPZone zone) {
-		psychic = new SpeakerNPC("Lovena");
+		psychic = new SpeakerNPC("Lovena") {
+			@Override
+			protected void onGoodbye(final RPEntity attending) {
+				say("Wróć ponownie " + attending.getName() + ".");
+				addEvent(new SoundEvent("npc/goodbye_female-01", SoundLayer.CREATURE_NOISE));
+			}
+		};
 		psychic.setEntityClass("wizardwomannpc");
 
 		psychic.setPosition(26, 11);
@@ -225,9 +233,11 @@ public class PsychicNPC implements ZoneConfigurator {
 		};
 
 		/**
+
+		// player is not carrying a bestiary
 		psychic.add(ConversationStates.ATTENDING,
-				Arrays.asList("read", "reading", "czytanie", "poczytać", "przeczytać", "czytać"),
 				new NotCondition(new PlayerHasItemWithHimCondition("bestiariusz")),
+				readPhrases,
 				ConversationStates.ATTENDING,
 				"Nie mogę odczytać twojej przeszłości, chyba że masz nagranie # wrogów, z którymi się spotkałeś.",
 				null);
@@ -236,7 +246,7 @@ public class PsychicNPC implements ZoneConfigurator {
 		psychic.add(ConversationStates.ATTENDING,
 				Arrays.asList("read", "reading", "odczytać", "czytać", "czytanie", "poczytać", "przeczytać"),
 				//new PlayerHasItemWithHimCondition("bestiariusz"),
-				null,
+				ConversationStates.ATTENDING,
 				ConversationStates.QUESTION_1,
 				"Widzę, że nosisz bestiariusz. O którym wrogu chciałbyś uzyskać informacje?",
 				null);
@@ -289,6 +299,11 @@ public class PsychicNPC implements ZoneConfigurator {
 
 	}
 
+	 * creature levels.
+	 *
+	 * @param player
+	 * 		The player requesting the reading.
+	 */
 	private void calculateFee(final Player player) {
 		currentFee = player.getLevel() * 10 + requestedEnemy.getLevel() * 15;
 	}

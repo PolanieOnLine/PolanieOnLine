@@ -3,6 +3,8 @@
  */
 package games.stendhal.server.maps.quests.houses;
 
+import java.util.Arrays;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.JokerExprMatcher;
@@ -14,8 +16,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TextHasNumberCondition;
-
-import java.util.Arrays;
 
 final class AthorHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in athor. */

@@ -11,16 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.actions.equip;
 
-import java.awt.Rectangle;
-import java.util.List;
-
-import games.stendhal.common.EquipActionConsts;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
@@ -46,10 +38,6 @@ public class DropAction extends EquipmentAction {
 			return;
 		}
 
-		if (!mayDrop(player, action, source.getEntity())) {
-			return;
-		}
-
 		final Entity entity = source.getEntity();
 		final String itemName = source.getEntityName();
 
@@ -70,35 +58,4 @@ public class DropAction extends EquipmentAction {
 		}
 	}
 
-	/**
-	 * Checks if an item may be dropped from player's bag.
-	 *
-	 * @param player
-	 * @param action
-	 * @param entity
-	 * @return
-	 */
-	private boolean mayDrop(final Player player, final RPAction action, final Entity entity) {
-		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(action.get("zoneid"));
-		if (action.has(EquipActionConsts.GROUND_X) && action.has(EquipActionConsts.GROUND_Y)) {
-			final int x = action.getInt(EquipActionConsts.GROUND_X);
-			final int y = action.getInt(EquipActionConsts.GROUND_Y);
-			final List<Node> path = Path.searchPath(entity, zone, player.getX(), player.getY(), new Rectangle(x, y, 1, 1), 64, false);
-
-			boolean blockerInPath = false;
-			for (final Node node: path) {
-				final int pathX = node.getX();
-				final int pathY = node.getY();
-			 	blockerInPath = !zone.isAreaOccupiable(pathX, pathY);
-			 	if (blockerInPath) {
-					break;
-				}
-			}
-			if (blockerInPath) {
-				player.sendPrivateText("Nie ma łatwiejszego przejścia do tego miejsca.");
-			}
-			return !blockerInPath;
-		}
-		return false;
-	}
 }

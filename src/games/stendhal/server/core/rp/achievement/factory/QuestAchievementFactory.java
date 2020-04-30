@@ -43,15 +43,7 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 		// Maze
 		questAchievements.add(createAchievement("quest.special.maze", "Kierunkowskaz", "Ukończył labirynt", 
 				Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("maze", 2, 0)));
-		questAchievements.add(createAchievement("quest.deathmatch", "Bohater Deathmatcha", "Zdobył 100,000 punktów na deathmatchu",
-				Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("deathmatch_score", 0, 100000)));
 
-		// Ados Deathmatch
-		// disabled. Currently the wrong index is being checked (it would be index 6) 
-		// and as per bug report https://sourceforge.net/tracker/?func=detail&aid=3148365&group_id=1111&atid=101111 the count is not saved anyway
-		//questAchievements.add(createAchievement("quest.special.dm.025", "Gladiator", "Walczył na 25 Deathmatchach",
-		//		Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("deathmatch", 1, 24)));
-		
 		// have completed all quests in Semos City?
 		questAchievements.add(createAchievement("quest.special.semos", "Przyjaciel Semos", "Ukończył wszystkie zadania w mieście Semos",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.SEMOS_CITY)));

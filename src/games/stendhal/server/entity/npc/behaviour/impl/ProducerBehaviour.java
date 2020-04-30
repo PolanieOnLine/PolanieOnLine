@@ -32,7 +32,7 @@ import games.stendhal.server.util.TimeUtil;
  * The behaviour of an NPC who is able to produce something for a player if the
  * player brings the required resources. Production takes time, depending on the
  * amount of ordered products.
- * 
+ *
  * @author daniel
  */
 public class ProducerBehaviour extends TransactionBehaviour {
@@ -40,7 +40,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	/**
 	 * To store the current status of a production order, each ProducerBehaviour
 	 * needs to have an exclusive quest slot.
-	 * 
+	 *
 	 * This slot can have three states:
 	 * <ul>
 	 * <li>unset: if the player has never asked the NPC to produce anything.</li>
@@ -50,7 +50,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * player will get, product is the name of the ordered product, and time is
 	 * the time when the order was given, in milliseconds since the epoch.</li>
 	 * </ul>
-	 * 
+	 *
 	 * Note: The product name is stored although each ProductBehaviour only
 	 * allows one type of product at the moment. We store it to make the system
 	 * extensible.
@@ -88,7 +88,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	/**
 	 * Creates a new ProducerBehaviour.
-	 * 
+	 *
 	 * @param questSlot
 	 *            the slot that is used to store the status
 	 * @param productionActivity
@@ -113,7 +113,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	/**
 	 * Creates a new ProducerBehaviour.
-	 * 
+	 *
 	 * @param questSlot
 	 *            the slot that is used to store the status
 	 * @param productionActivity
@@ -146,7 +146,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		this.productBound = productBound;
 
 		// add the activity word as verb to the word list in case it is still missing there
-		//WordList.getInstance().registerVerb(productionActivity);
+		WordList.getInstance().registerVerb(productionActivity);
 
 		for (final String itemName : requiredResourcesPerItem.keySet()) {
 			WordList.getInstance().registerName(itemName, ExpressionType.OBJECT);
@@ -166,7 +166,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	}
 
 //	protected String getProductUnit() {
-//		return productUnit;
+//	return productUnit;
 //	}
 
 	/**
@@ -184,7 +184,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	/**
 	 * Determine whether the produced item should be player bound.
-	 * 
+	 *
 	 * @return <code>true</code> if the product should be bound.
 	 */
 	public boolean isProductBound() {
@@ -196,7 +196,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * the resources that are required to produce <i>amount</i> units of the
 	 * product, with hashes before the resource names in order to highlight
 	 * them, e.g. "4 #wood, 2 #iron, and 6 #leather".
-	 * 
+	 *
 	 * @param amount
 	 *            The amount of products that were requested
 	 * @return A string describing the required resources woth hashes
@@ -215,7 +215,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * Gets a nicely formulated string that describes the amounts and names of
 	 * the resources that are required to produce <i>amount</i> units of the
 	 * product
-	 * 
+	 *
 	 * @param amount
 	 *            The amount of products that were requested
 	 * @return A string describing the required resources.
@@ -229,11 +229,11 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		}
 		return Grammar.enumerateCollection(requiredResources);
 	}
-	
+
 	/**
 	 * Create a text representing a saying of approximate time until
 	 * the order being produced is ready
-	 * 
+	 *
 	 * @param player
 	 * @return A string describing the remaining time.
 	 */
@@ -253,7 +253,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	/**
 	 * Is the order ready for this player?
-	 * 
+	 *
 	 * @param player
 	 * @return true if the order is ready.
 	 */
@@ -266,10 +266,10 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		final long timeNow = new Date().getTime();
 		return timeNow - orderTime >= getProductionTime(numberOfProductItems) * 1000L;
 	}
-	
+
 	/**
 	 * Checks how many items are being produced on this particular order
-	 * 
+	 *
 	 * @param player
 	 * @return number of items
 	 */
@@ -279,10 +279,10 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 		return Integer.parseInt(order[0]);
 	}
-	
+
 	/**
 	 * Checks how many items the NPC can offer to produce based on what the player is carrying
-	 * 
+	 *
 	 * @param player
 	 * @return maximum number of items
 	 */
@@ -302,7 +302,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * Tries to take all the resources required to produce <i>amount</i> units
 	 * of the product from the player. If this is possible, asks the user if the
 	 * order should be initiated.
-	 * 
+	 *
 	 * @param res
 	 * @param npc
 	 * @param player
@@ -329,7 +329,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	/**
 	 * Tries to take all the resources required to produce the agreed amount of
 	 * the product from the player. If this is possible, initiates an order.
-	 * 
+	 *
 	 * @param npc
 	 *            the involved NPC
 	 * @param player
@@ -362,7 +362,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * product. It checks if the NPC is already done with the order. If that is
 	 * the case, the player is given the product. Otherwise, the NPC asks the
 	 * player to come back later.
-	 * 
+	 *
 	 * @param npc
 	 *            The producing NPC
 	 * @param player
@@ -398,8 +398,8 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.incProducedForItem(getProductName(), products.getQuantity());
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
-						+ Grammar.plnoun(numberOfProductItems, getProductName()) 
 						+ ". Wróć, gdy będziesz miał wolne miejsce.");
+						+ Grammar.plnoun(numberOfProductItems, getProductName())
 			}
 		}
 	}

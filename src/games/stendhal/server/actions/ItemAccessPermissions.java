@@ -27,7 +27,7 @@ public class ItemAccessPermissions {
 	/**
 	 * Check if a player may access the location of a contained  item. Note that
 	 * access rights to the item itself is <em>not</em> checked.
-	 * 
+	 *
 	 * @param player
 	 * @param entity
 	 * @return <code>true</code> if the player may access items in the location
@@ -66,16 +66,16 @@ public class ItemAccessPermissions {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Make sure nobody uses items bound to someone else. This also notifies
 	 * the player trying to use the item, if it is not allowed.
-	 * 
-	 * @param player 
-	 * @param object 
+	 *
+	 * @param player
+	 * @param object
 	 * @return true if item is bound false otherwise
 	 */
 	static boolean isItemBoundToOtherPlayer(final Player player, final RPObject object) {
@@ -94,7 +94,7 @@ public class ItemAccessPermissions {
 
 	/**
 	 * Get the slot containing an entity.
-	 * 
+	 *
 	 * @param entity
 	 * @return containing slot
 	 */

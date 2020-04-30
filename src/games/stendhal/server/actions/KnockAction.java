@@ -12,6 +12,7 @@
 package games.stendhal.server.actions;
 
 import static games.stendhal.common.constants.Actions.KNOCK;
+
 import games.stendhal.server.actions.validator.ActionData;
 import games.stendhal.server.actions.validator.ActionValidation;
 import games.stendhal.server.actions.validator.ExtractEntityValidator;
@@ -73,7 +74,7 @@ public class KnockAction implements ActionListener {
 
 		// get the destination zone of the portal - that is where to shout to
 		final StendhalRPZone zone =  SingletonRepository.getRPWorld().getZone(houseportal.getDestinationZone());
-		if (zone != null) { 
+		if (zone != null) {
 			for (Player houseplayer : zone.getPlayers()) {
 				houseplayer.sendPrivateText(message);
 			}
