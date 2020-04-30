@@ -441,7 +441,6 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 
 		/* FIXME: How to get updated remaining time?
 		// player asks how much time is left in training session
-		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("time", "czas"),
 		ranger.add(ConversationStates.ATTENDING,
 				new QuestInStateCondition(QUEST_SLOT, 0, STATE_ACTIVE),
