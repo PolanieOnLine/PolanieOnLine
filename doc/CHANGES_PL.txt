@@ -1,5 +1,15 @@
 Changelog
 ---------
+1.12
+*serwer*
+- Dodano 2 nowe skrypyty dla administratorów (alterkill & inspectkill)
+- Zwiększono limit tworzenia postaci na jednym koncie POL z 4 do 16
+
+*naprawiono błędy*
+- Naprawiono pozycję NPC Caroline
+- Naprawiono dymki z tekstem (od czasu do czasu dymek był zbyt mały)
+
+
 1.11
 *klient*
 - Dodano nowy strój do wypożyczenia
