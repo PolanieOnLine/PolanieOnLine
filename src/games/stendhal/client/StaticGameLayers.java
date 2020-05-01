@@ -182,9 +182,7 @@ public class StaticGameLayers {
 	}
 
 	/**
-	 *
 	 * @return the CollisionDetection Layer for the current map
-	 *
 	 */
 	public CollisionDetection getCollisionDetection() {
 		if (currentZone != null) {
@@ -194,13 +192,21 @@ public class StaticGameLayers {
 	}
 
 	/**
-	 *
 	 * @return the ProtectionDetection Layer for the current map
-	 *
 	 */
 	public CollisionDetection getProtectionDetection() {
 		if (currentZone != null) {
 			return currentZone.getProtection();
+		}
+		return null;
+	}
+
+	/**
+	 * @return the SecretDetection Layer for the current map
+	 */
+	public CollisionDetection getSecretDetection() {
+		if (currentZone != null) {
+			return currentZone.getSecret();
 		}
 		return null;
 	}
