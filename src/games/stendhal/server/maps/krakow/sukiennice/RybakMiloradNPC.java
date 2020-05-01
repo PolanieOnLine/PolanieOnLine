@@ -53,7 +53,7 @@ public class RybakMiloradNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Uprzejmie witam wielmożność.");
 				addHelp("Skupuję ryby. W książce przede mną są ceny i rodzaje ryb, które kupuję.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyryby")), false);
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrybak")), false);
 				addOffer("Kupię ryby, oferta moja jest w książce.");
 				addGoodbye("Dowidzenia. Miłego dnia życzę.");
 			}

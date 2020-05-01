@@ -1349,6 +1349,18 @@ Południe: Zakopane
 			</implementation>
 		</entity>
 
+		<entity x="27" y="5">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">food&amp;drinks</parameter>
+				<parameter name="title">Menu Tawerny Kraków</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Możesz kupić te rzeczy pytając Idris.</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
 		<entity x="4" y="22">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">buymerchand</parameter>

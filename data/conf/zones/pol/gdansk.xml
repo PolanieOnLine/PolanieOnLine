@@ -797,10 +797,10 @@
 
 		<entity x="13" y="6">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
-				<parameter name="shop">rosa</parameter>
-				<parameter name="title">Sklep Rosy</parameter>
+				<parameter name="shop">food&amp;drinks</parameter>
+				<parameter name="title">Menu Podmorskiej Tawerny</parameter>
 				<parameter name="seller">true</parameter>
-				<parameter name="caption">Rosa sprzedaje jedzenie i napoje.</parameter>
+				<parameter name="caption">Możesz kupić te rzeczy pytając Rosy.</parameter>
 			</implementation>
 
 			<attribute name="class">blackboard</attribute>
