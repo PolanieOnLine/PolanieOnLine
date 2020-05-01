@@ -70,7 +70,7 @@ public class RzeznikNPC implements ZoneConfigurator {
 		// Add a book with the shop offers
 		final Sign book = new Sign();
 		book.setPosition(24, 43);
-		book.setText(" -- Skup mięsa -- \n udko\t 12\n mięso\t 15\n szynka\t 25\n stek\t 30");
+		book.setText(" -- Skup mięsa -- \n udko\t 12\n mięso\t 15\n szynka\t 25\n stek\t 35");
 		book.setEntityClass("book_blue");
 		book.setResistance(10);
 		zone.add(book);
