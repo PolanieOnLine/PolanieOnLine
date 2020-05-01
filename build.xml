@@ -306,6 +306,7 @@
 				<include name="spells.xml" />
 				<include name="spells/*.xml" />
 				<include name="woodcutter_test.xml"/>
+				<include name="shops.xml" />
 			</fileset>
 		</copy>
 		<copy todir="${build_server_xmlconf}/data/languages">
@@ -1192,6 +1193,12 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 				<filename name="zones.xml"/>
 				<filename name="items.xml"/>
 				<filename name="creatures.xml"/>
+			</fileset>
+		</schemavalidate>
+		<schemavalidate>
+			<schema namespace="stendhal" file="${config_dir}/shops.xsd"/>
+			<fileset dir="${config_dir}">
+				<filename name="shops.xml"/>
 			</fileset>
 		</schemavalidate>
 	</target>
