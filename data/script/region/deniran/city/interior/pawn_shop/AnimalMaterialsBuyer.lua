@@ -19,28 +19,28 @@ local shopName = "buyanimalmaterials"
 
 
 local function initNPC()
-	buyer = npcHelper:createSpeakerNPC(buyerName)
-	buyer:setOutfit("body=0,head=0,hair=11,dress=53")
+	buyer = entities:createSpeakerNPC(buyerName)
+	buyer:setOutfit("body=0,head=8,hair=11,dress=53")
 	buyer:setPosition(17, 21)
 	buyer:setDirection(Direction.UP)
 	buyer:setDescription("Oto " .. buyerName .. ". Jest zatrudniony w lombardzie.")
 
 	-- dialogue
-	buyer:addGreeting()
-	buyer:addGoodbye()
-	buyer:addOffer("Sprawdź na tablicy listę przedmiotów, które kupuję.")
-	buyer:addHelp("Skupuję materiały pochodzenia zwierzęcego, a mój szef tam skupuje wszelkiego rodzaju pierścionki.")
-	buyer:addQuest("Nie, dziękuję. Nie potrzebuję pomocy.")
-	buyer:addJob("Pracuję tutaj w lombardzie, by spróbować zaoszczędzić na własny dom. Jeśli będę miał dom, to na pewno znajdę dziewczynę.")
+  buyer:addGreeting()
+  buyer:addGoodbye()
+  buyer:addOffer("Sprawdź na tablicy listę przedmiotów, które skupuję.")
+  buyer:addHelp("Skupuję materiały pochodzenia zwierzęcego, a mój szef tam kupuje wszelkiego rodzaju pierścionki.")
+  buyer:addQuest("Nie, dziękuję. Nie potrzebuję pomocy.")
+  buyer:addJob("Pracuję tutaj w lombardzie, by spróbować zaoszczędzić na własny dom. Jeśli będę miał dom, to na pewno znajdę dziewczynę.")
 
 	game:add(buyer)
 end
 
 local function initShop()
-	npcHelper:addBuyer(buyer, shops:get(shopName), false)
+	merchants:addBuyer(buyer, merchants.shops:get(shopName), false)
 
 	-- shop sign
-	local sign = game:createShopSign(shopName, "Handel Materiałami Zwierzęcymi", buyerName .. " skupuje następujące przedmioty", false)
+	local sign = entities:createShopSign(shopName, "Handel Materiałami Zwierzęcymi", buyerName .. " skupuje następujące przedmioty", false)
 	sign:setEntityClass("blackboard")
 	sign:setPosition(19, 20)
 

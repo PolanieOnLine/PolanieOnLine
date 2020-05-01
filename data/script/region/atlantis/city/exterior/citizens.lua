@@ -52,7 +52,8 @@ if game:setZone(zoneName) then
 		{
 			pos = {x=61, y=79},
 			name = "bee",
-			class = "../monsters/insect/killer_bee",
+			--class = "../monsters/insect/killer_bee", -- this only works in Eclipse
+			class = "animal/bee",
 			dir = Direction.LEFT,
 			resistance = 0,
 			desc = "You see a bee gathering nectar from the flowers.",
@@ -62,10 +63,10 @@ if game:setZone(zoneName) then
 	}
 
 	for _, detail in pairs(details) do
-		local npc = npcHelper:createSilentNPC()
+		local npc = entities:createSilentNPC()
 
 		if detail.path ~= nil then
-			npcHelper:setPathAndPosition(npc, detail.path, true)
+			npc:setPathAndPosition(detail.path, true)
 			npc:retracePath() -- make entities walk the path backwards when reaching end
 		else
 			npc:setPosition(detail.pos.x, detail.pos.y)
