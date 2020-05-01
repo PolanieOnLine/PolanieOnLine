@@ -335,37 +335,6 @@
 		</ai>
 	</creature>
 
-	<creature name="demon wody">
-		<type class="stendhal/elemental" subclass="water_demon" tileid="elemental.png:7"/>
-		<description></description>
-		<attributes>
-			<atk value="735"/>
-			<def value="155"/>
-			<hp value="4120"/>
-			<speed value="1.0"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="212"/>
-		<experience value="86999"/>
-		<respawn value="23000"/>
-		<corpse name="puddle_light_blue_2x2" harmless="puddle_light_blue_2x2"/>
-		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="mocne antidotum" quantity="[1,2]" probability="20.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<susceptibility type="water" value="1.3"/>
-		</abilities>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
 	<!-- END: water -->
 
 	<!-- START: wood -->
