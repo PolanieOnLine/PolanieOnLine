@@ -101,9 +101,9 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 				return;
 			}
 		}
-		
-				+ " na pytanie: " + reply;
 
+		final String message = "Administrator " + sender + " odpowiedział " + Grammar.suffix_s(action.get(TARGET))
+				+ " na pytanie: " + reply;
 
 		new GameEvent(sender, SUPPORTANSWER, action.get(TARGET), reply).raise();
 		if (supported != null) {
@@ -141,15 +141,15 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 		final Player admin = SingletonRepository.getRuleProcessor().getPlayer(sender);
 
 		if(!characterExists) {
-					admin.sendPrivateText(NotificationType.ERROR, "Wojownik " + target + " nie został znaleziony.");
-		final String message = sender + " odpowiedział " + Grammar.suffix_s(target)
-		+ " na pytanie przy pomocy postmana: " + supportmessage;
 			if (admin != null) {
 				// incase admin logged out while waiting we want to avoid NPE
+				admin.sendPrivateText(NotificationType.ERROR, "Wojownik " + target + " nie został znaleziony.");
 			}
 			return;
 		}
 
+		final String message = sender + " odpowiedział " + Grammar.suffix_s(target)
+		+ " na pytanie przy pomocy postmana: " + supportmessage;
 
 		SingletonRepository.getRuleProcessor().sendMessageToSupporters(message);
 	}

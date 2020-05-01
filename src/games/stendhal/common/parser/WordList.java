@@ -337,6 +337,33 @@ final public class WordList {
 		return tempword;
 	}
 
+	public static String trimWord(final List<String> word) {
+		String tempword = word.get(0).toLowerCase();
+
+		// Currently we only need to trim "'" characters.
+		while (tempword.length() > 0) {
+			final char c = tempword.charAt(0);
+
+			if (c == '\'') {
+				tempword = tempword.substring(1);
+			} else {
+				break;
+			}
+		}
+
+		while (tempword.length() > 0) {
+			final char c = tempword.charAt(tempword.length() - 1);
+
+			if (c == '\'') {
+				tempword = tempword.substring(0, tempword.length() - 1);
+			} else {
+				break;
+			}
+		}
+
+		return tempword;
+	}
+
 	/**
 	 * Find an entry for a given word.
 	 *
@@ -703,6 +730,24 @@ final public class WordList {
 	 * @param verb
 	 */
 	public void registerVerb(final String verb) {
+		final String key = trimWord(verb);
+		final WordEntry entry = words.get(key);
+
+		if ((entry == null) || (entry.getType() == null)
+				|| entry.getType().isEmpty()) {
+			final WordEntry newEntry = new WordEntry();
+
+			newEntry.setNormalized(key);
+			newEntry.setType(new ExpressionType(VERB_DYNAMIC));
+
+			words.put(key, newEntry);
+//		} else if (!checkNameCompatibleLastType(entry, ExpressionType.VERB)) {
+//	 		logger.warn("verb name already registered with incompatible expression type: " +
+//			entry.getNormalizedWithTypeString());
+		}
+	}
+
+	public void registerVerb(final List<String> verb) {
 		final String key = trimWord(verb);
 		final WordEntry entry = words.get(key);
 

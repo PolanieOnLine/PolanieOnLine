@@ -1,6 +1,14 @@
-/**
- * 
- */
+/***************************************************************************
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests.houses;
 
 import games.stendhal.common.parser.ExpressionType;
@@ -35,76 +43,73 @@ final class ZakopaneHouseSeller extends HouseSellerNPCBase {
 	}
 
 	private void init() {
-		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy. 
-		// For definiteness we will check these conditions in a set order. 
-		// So then the NPC doesn't have to choose which reason to reject the player for (appears as a WARN from engine if he has to choose)
+		final List<String> costPhrases = Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena");
 
 		// player is not old enough
 		add(ConversationStates.ATTENDING, 
-				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-				 new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
-				 ConversationStates.ATTENDING,
-				 "Cena za nowy dom w Zakopanym to "
-				 + getCost()
-				 + " money. Ale obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
-				 + Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin w Zakopanym.",
-					null);
-
+			costPhrases,
+			new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
+			ConversationStates.ATTENDING,
+			"Cena za nowy dom w Zakopanym to "
+			+ getCost()
+			+ " money. Ale obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
+			+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin w Zakopanym.",
+			null);
 
 		// player doesn't have a house and is old enough but has not done required quests
 		add(ConversationStates.ATTENDING, 
-				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
-								  new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-								  new NotCondition(
-													  new AndCondition(
-																	   new QuestCompletedCondition(ZakopaneHouseSeller.WOJTEK_QUEST_SLOT),
-																	   new QuestCompletedCondition(ZakopaneHouseSeller.JADZKA_QUEST_SLOT),
-																	   new QuestCompletedCondition(ZakopaneHouseSeller.ADAS_QUEST_SLOT),
-																	   new QuestCompletedCondition(ZakopaneHouseSeller.FRYDERYK_QUEST_SLOT),
-																	   new QuestCompletedCondition(ZakopaneHouseSeller.BERCIK_QUEST_SLOT),
-																	   new QuestCompletedCondition(ZakopaneHouseSeller.ANDRZEJ_QUEST_SLOT)))),
-				 ConversationStates.ATTENDING, 
-				 "Koszt nowego domu w Zakopanym wynosi "
-				 + getCost()
-				 + " money. Ale obawiam się, że nie mogę sprzedać Tobie domu, jeszcze trzeba udowodnić #obywatelstwo.",
-				 null);
-
-		// player is eligible to buy a house
-		add(ConversationStates.ATTENDING, 
-					Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-									new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
+			costPhrases,
+			new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
+					new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
+					new NotCondition(
+							new AndCondition(
 									new QuestCompletedCondition(ZakopaneHouseSeller.WOJTEK_QUEST_SLOT),
 									new QuestCompletedCondition(ZakopaneHouseSeller.JADZKA_QUEST_SLOT),
 									new QuestCompletedCondition(ZakopaneHouseSeller.ADAS_QUEST_SLOT),
 									new QuestCompletedCondition(ZakopaneHouseSeller.FRYDERYK_QUEST_SLOT),
 									new QuestCompletedCondition(ZakopaneHouseSeller.BERCIK_QUEST_SLOT),
-									new QuestCompletedCondition(ZakopaneHouseSeller.ANDRZEJ_QUEST_SLOT)),
-				 ConversationStates.QUEST_OFFERED,
-				 "Nowy dom w Zakopanym kosztuje "
-				 + getCost()
-				 + " money. Ponadto trzeba zapłacić podatek " + HouseTax.BASE_TAX
-				 + " money, co miesiąc. Jeśli masz jakiś dom na oku powiedz jego numer, sprawdzę czy jest wolny. "
-				 + "Domy w Zakopanym mają numery od "
-				 + getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
-				 null);
+									new QuestCompletedCondition(ZakopaneHouseSeller.ANDRZEJ_QUEST_SLOT)))),
+			ConversationStates.ATTENDING, 
+			"Koszt nowego domu w Zakopanym wynosi "
+			+ getCost()
+			+ " money. Ale obawiam się, że nie mogę sprzedać Tobie domu, jeszcze trzeba udowodnić #obywatelstwo.",
+			null);
+
+		// player is eligible to buy a house
+		add(ConversationStates.ATTENDING, 
+			costPhrases,
+			new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
+					new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
+					new QuestCompletedCondition(ZakopaneHouseSeller.WOJTEK_QUEST_SLOT),
+					new QuestCompletedCondition(ZakopaneHouseSeller.JADZKA_QUEST_SLOT),
+					new QuestCompletedCondition(ZakopaneHouseSeller.ADAS_QUEST_SLOT),
+					new QuestCompletedCondition(ZakopaneHouseSeller.FRYDERYK_QUEST_SLOT),
+					new QuestCompletedCondition(ZakopaneHouseSeller.BERCIK_QUEST_SLOT),
+					new QuestCompletedCondition(ZakopaneHouseSeller.ANDRZEJ_QUEST_SLOT)),
+			ConversationStates.QUEST_OFFERED,
+			"Nowy dom w Zakopanym kosztuje "
+			+ getCost()
+			+ " money. Ponadto trzeba zapłacić podatek " + HouseTax.BASE_TAX
+			+ " money, co miesiąc. Jeśli masz jakiś dom na oku powiedz jego numer, sprawdzę czy jest wolny. "
+			+ "Domy w Zakopanym mają numery od "
+			+ getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
+			null);
 
 		// handle house numbers 201 to 215
 		addMatching(ConversationStates.QUEST_OFFERED,
-				 // match for all numbers as trigger expression
-				ExpressionType.NUMERAL, new JokerExprMatcher(),
-				new TextHasNumberCondition(getLowestHouseNumber(), getHighestHouseNumber()),
-				ConversationStates.ATTENDING, 
-				null,
-				new BuyHouseChatAction(getCost(), QUEST_SLOT));
+			// match for all numbers as trigger expression
+			ExpressionType.NUMERAL, new JokerExprMatcher(),
+			new TextHasNumberCondition(getLowestHouseNumber(), getHighestHouseNumber()),
+			ConversationStates.ATTENDING, 
+			null,
+			new BuyHouseChatAction(getCost(), QUEST_SLOT));
 
 		addJob("Jestem agentem nieruchomości, po prostu sprzedaję domy w Zakopanym. Zapytaj o #cenę jeżeli jesteś zainteresowany. Nasz katalog domów znajduje sie na  (tu adres strony internetowej).");
 		addReply(Arrays.asList("citizen", "obywatelstwo"), "Przeprowadzam nieformalną ankietę wśród mieszkańców.\n"
-		+"A mówię o moim przyjacielu kowalu Andrzeju,\n"
-		+"małym chłopcu Adasiu, panu Fryderyku,\n"
-		+"naszym burmistrzu Wojtku i pani Jadzi, która pracuje w szpitalu.\n"
-		+"Wspólnie wydadzą wiarygodną opinie.");
+			+ "A mówię o moim przyjacielu kowalu Andrzeju,\n"
+			+ "małym chłopcu Adasiu, panu Fryderyku,\n"
+			+ "naszym burmistrzu Wojtku i pani Jadzi, która pracuje w szpitalu.\n"
+			+ "Wspólnie wydadzą wiarygodną opinie.");
 
 		setDescription("To piewca ciepła domowego. Zapytaj czy ma dla ciebie ofertę.");
 		setEntityClass("estateagent2npc");

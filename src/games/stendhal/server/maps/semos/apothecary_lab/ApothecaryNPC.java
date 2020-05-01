@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.apothecary_lab;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;

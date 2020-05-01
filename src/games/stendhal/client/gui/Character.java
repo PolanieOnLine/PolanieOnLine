@@ -12,8 +12,10 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -30,6 +32,7 @@ import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
+import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
@@ -54,6 +57,8 @@ Inspectable {
 	/** ItemPanels searchable by the respective slot name. */
 	private final Map<String, ItemPanel> slotPanels = new HashMap<String, ItemPanel>();
 	private User player;
+
+	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
 	private JComponent specialSlots;
 
@@ -297,5 +302,15 @@ Inspectable {
 		for (ItemPanel panel : slotPanels.values()) {
 			panel.setInspector(inspector);
 		}
+	}
+
+	/**
+	 * Retrieves all the listeners for this panel.
+	 *
+	 * @return
+	 * 		<code>List<FeatureChangeListener></code>
+	 */
+	public List<FeatureChangeListener> getFeatureChangeListeners() {
+		return featureChangeListeners;
 	}
 }

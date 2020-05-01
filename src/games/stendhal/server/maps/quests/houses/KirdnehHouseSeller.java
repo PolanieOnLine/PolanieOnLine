@@ -1,7 +1,18 @@
-
+/***************************************************************************
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests.houses;
 
 import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.JokerExprMatcher;
@@ -25,47 +36,49 @@ final class KirdnehHouseSeller extends HouseSellerNPCBase {
 	}
 
 	private void init() {
+		final List<String> costPhrases = Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena");
+
 		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy.
 		// For definiteness we will check these conditions in a set order.
 		// So then the NPC doesn't have to choose which reason to reject the player for (appears as a WARN from engine if he has to choose)
 
 		// player is not old enough
-				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
 		add(ConversationStates.ATTENDING,
-				 new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
-				 "Koszt nowego domu w Kirdneh wynosi "
-				 ConversationStates.ATTENDING,
-						 + getCost()
-				 + " money, ale obawiam się, że nie mogę Ci jeszcze zaufać w kwestii kupna domu. Wróć gdy spędzisz tutaj ponad " 
-				 + Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzinę" + " w Faiumoni.",
-				 null);
+			costPhrases,
+			new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
+			ConversationStates.ATTENDING,
+			"Koszt nowego domu w Kirdneh wynosi "
+			+ getCost()
+			+ " money, ale obawiam się, że nie mogę Ci jeszcze zaufać w kwestii kupna domu. Wróć gdy spędzisz tutaj ponad " 
+			+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzinę" + " w Faiumoni.",
+			null);
 
 		// player is old enough and hasn't got a house but has not done required quest
-				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
 		add(ConversationStates.ATTENDING,
-				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
-								  new QuestNotCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT),
-									 new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT)),
-				 "Koszt nowego domu w Kirdneh wynosi "
-				 ConversationStates.ATTENDING,
-				 + getCost()
-				 + " money, ale moja główna zasada nie pozwala na sprzedaż domu bez ustalenia #reputacji potencjalnego kupca. ",
-				 null);
+			costPhrases,
+			new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+					new QuestNotCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT),
+					new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT)),
+			ConversationStates.ATTENDING,
+			"Koszt nowego domu w Kirdneh wynosi "
+			+ getCost()
+			+ " money, ale moja główna zasada nie pozwala na sprzedaż domu bez ustalenia #reputacji potencjalnego kupca. ",
+			null);
 
 		// player is eligible to buy a house
-				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
 		add(ConversationStates.ATTENDING,
-				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-								  new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
-								  new QuestCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT)),
-				 "Koszt nowego domu w Kirdneh wynosi "
-					ConversationStates.QUEST_OFFERED,
-				 + getCost()
-				 + " Prócz tego musisz zapłacić podatek od nieruchomości w wysokości " + HouseTax.BASE_TAX
-				 + " money, miesięcznie. Jeżeli masz jakiś dom na oku to podaj mi jego numer. Sprawdzę czy jest wolny. "
-				 + "Domy w Kirdneh są numerowane od "
-				 + getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
-				 null);
+			costPhrases,
+			new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
+					new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+					new QuestCompletedCondition(KirdnehHouseSeller.KIRDNEH_QUEST_SLOT)),
+			ConversationStates.QUEST_OFFERED,
+			"Koszt nowego domu w Kirdneh wynosi "
+			+ getCost()
+			+ " Prócz tego musisz zapłacić podatek od nieruchomości w wysokości " + HouseTax.BASE_TAX
+			+ " money, miesięcznie. Jeżeli masz jakiś dom na oku to podaj mi jego numer. Sprawdzę czy jest wolny. "
+			+ "Domy w Kirdneh są numerowane od "
+			+ getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
+			null);
 
 		// handle house numbers 26 to 49
 		addMatching(ConversationStates.QUEST_OFFERED,

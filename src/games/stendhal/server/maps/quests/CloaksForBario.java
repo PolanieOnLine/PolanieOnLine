@@ -100,8 +100,8 @@ public class CloaksForBario extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
-				"Nigdy nie zamierzam wyjść na górę, ponieważ ukradłem beczkę piwa należącą do krasnali. Tutaj jest strasznie zimno... Pomożesz mi?",
 				ConversationStates.QUEST_OFFERED,
+				"Nigdy nie zamierzam wyjść na górę, ponieważ ukradłem beczkę piwa należącą do krasnali. Tutaj jest strasznie zimno... Pomożesz mi?",
 				null);
 
 		// player should already be getting cloaks
@@ -172,8 +172,8 @@ public class CloaksForBario extends AbstractQuest {
 		// player says he has a blue elf cloak with him but he needs to bring more than one still
 		// could also have used GreaterThanCondition for Quest State but this is okay, note we can only get to question 1 if we were active
 		npc.add(ConversationStates.QUESTION_1,
-				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
 				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
 				ConversationStates.QUESTION_1, null,
 				new MultipleActions(
 						new DropItemAction("lazurowy płaszcz elficki"),
@@ -201,17 +201,17 @@ public class CloaksForBario extends AbstractQuest {
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(25));
 		npc.add(ConversationStates.QUESTION_1,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
 				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
 				ConversationStates.ATTENDING,
 				"Dziękuję bardzo! Mam teraz odpowiednio dużo płaszczy, aby przetrwać zimę. Weź tę złotą tarcze jako nagrodę.",
 				new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUESTION_1,
-				new NotCondition(new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
-				"Naprawdę? Nie widzę żadnego...", 
 				ConversationPhrases.YES_MESSAGES,
+				new NotCondition(new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
 				ConversationStates.ATTENDING,
+				"Naprawdę? Nie widzę żadnego...", 
 				null);
 	}
 

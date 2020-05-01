@@ -398,8 +398,8 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.incProducedForItem(getProductName(), products.getQuantity());
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
-						+ ". Wróć, gdy będziesz miał wolne miejsce.");
 						+ Grammar.plnoun(numberOfProductItems, getProductName())
+						+ ". Wróć, gdy będziesz miał wolne miejsce.");
 			}
 		}
 	}

@@ -413,8 +413,8 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 				player.incProducedForItem(productName, products.getQuantity());
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
-						+ ". Wróć, gdy będziesz miał wolne miejsce.");
 						+ Grammar.plnoun(numberOfProductItems, productName)
+						+ ". Wróć, gdy będziesz miał wolne miejsce.");
 			}
 		}
 	}

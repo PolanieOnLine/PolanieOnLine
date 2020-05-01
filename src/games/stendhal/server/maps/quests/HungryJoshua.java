@@ -204,16 +204,16 @@ public class HungryJoshua extends AbstractQuest {
 		reward.add(new InflictStatusOnNPCAction("kanapka"));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			new PlayerHasItemWithHimCondition("kanapka", FOOD_AMOUNT),
 			ConversationPhrases.YES_MESSAGES,
+			new PlayerHasItemWithHimCondition("kanapka", FOOD_AMOUNT),
 			ConversationStates.ATTENDING,
 			"Dziękuję! Proszę daj znać Xoderosowi, że ze mną jest wszystko w porządku. Powiedz moje imię Joshua, a będzie wiedział, że ja Ciebie przysłałem. Prawdopodobnie da ci coś w zamian.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
+			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("kanapka", FOOD_AMOUNT)),
 			ConversationStates.ATTENDING, "Hej! Gdzie położyłeś te kanapki?", null);
-			ConversationPhrases.YES_MESSAGES,
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES, null,

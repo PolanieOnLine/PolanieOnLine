@@ -46,10 +46,10 @@ class AlterQuestAction extends AdministrationAction {
 			target.setQuest(questName, newQuestState);
 
 			// notify admin and altered player
+			target.sendPrivateText(NotificationType.SUPPORT,
 					"Administrator " + player.getTitle()
 					+ " zmienił stan twojego zadania '" + questName
 					+ "' z '" + oldQuestState + "' na '" + newQuestState
-			target.sendPrivateText(NotificationType.SUPPORT,
 					+ "'");
 			player.sendPrivateText("Zmieniono stan zadania '" + questName
 					+ "' z '" + oldQuestState + "' na '" + newQuestState

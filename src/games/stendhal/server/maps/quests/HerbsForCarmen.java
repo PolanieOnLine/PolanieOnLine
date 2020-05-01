@@ -71,7 +71,6 @@ import games.stendhal.server.util.ItemCollection;
  * </ul>
  */
 public class HerbsForCarmen extends AbstractQuest {
-
 	public static final String QUEST_SLOT = "herbs_for_carmen";
 
 	/**
@@ -102,20 +101,20 @@ public class HerbsForCarmen extends AbstractQuest {
 	private void prepareRequestingStep() {
 		final SpeakerNPC npc = npcs.get("Carmen");
 
-		npc.add(ConversationStates.ATTENDING, 
-				ConversationPhrases.QUEST_MESSAGES,
+		npc.add(ConversationStates.ATTENDING,
+			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(
 					new LevelGreaterThanCondition(2),
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new NotCondition(new QuestInStateCondition(QUEST_SLOT,"rejected"))),
-			"Hej ty! Tak, do ciebie mówię! Znasz mnie?", null);
 			ConversationStates.QUESTION_1,
+			"Hej ty! Tak, do ciebie mówię! Znasz mnie?", null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT,"rejected"),
-			"Hej, chcesz mi jakoś pomóc?", null);
 			ConversationStates.QUEST_OFFERED,
+			"Hej, chcesz mi jakoś pomóc?", null);
 
 		npc.add(
 			ConversationStates.QUESTION_1,
@@ -210,8 +209,8 @@ public class HerbsForCarmen extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
-			null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz to?"));		
-			ConversationStates.QUESTION_2,
+				ConversationStates.QUESTION_2,
+				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz to?"));		
 
 		/* player says he has a required item with him (says yes) */
 		npc.add(ConversationStates.QUESTION_2,
@@ -273,8 +272,8 @@ public class HerbsForCarmen extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				null,
+				ConversationStates.ATTENDING,
 			    "Nic nie potrzebuję teraz, dziękuję.",
-			    ConversationStates.ATTENDING,
 			    null);
 	}
 
