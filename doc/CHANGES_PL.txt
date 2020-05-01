@@ -1,11 +1,22 @@
 Changelog
 ---------
 1.12
+*świat*
+- Dodano nowe osiągnięcia: (3)
+	- "Pomocnik w Deathmatchu"
+	- "Kompan w Deathmatchu"
+	- "Eskortnik w Deathmatchu"
+- Ceny w większości sklepów u NPC zostały poprawione
+
 *serwer*
 - Dodano 2 nowe skrypyty dla administratorów (alterkill & inspectkill)
+- Przeniesiono konfigurowanie sklepów z pliku JAVA do XML (w data/conf)
 - Zwiększono limit tworzenia postaci na jednym koncie POL z 4 do 16
 
 *naprawiono błędy*
+- Poprawiono wyglądy nowych NPC dodanych w wersji 1.11
+- Naprawiono brakujących nowych NPC z wersji 1.11
+- Naprawiono sklep u NPC Klaasa
 - Naprawiono pozycję NPC Caroline
 - Naprawiono dymki z tekstem (od czasu do czasu dymek był zbyt mały)
 
