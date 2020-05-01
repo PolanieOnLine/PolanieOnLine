@@ -53,7 +53,7 @@ end
 
 local function addSign()
 	if grocer ~= nil then
-		local sellSign = game:createShopSign("denirangrocerysell", "Sklep " .. grocer:getName() .. " (sprzedaje)", "Możesz te przedmioty kupić.")
+		local sellSign = entities:createShopSign("denirangrocerysell", "Sklep " .. grocer:getName() .. " (sprzedaje)", "Możesz te przedmioty kupić.")
 		sellSign:setEntityClass("blackboard")
 		sellSign:setPosition(23, 23)
 

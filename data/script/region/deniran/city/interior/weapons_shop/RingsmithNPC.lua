@@ -153,7 +153,7 @@ if game:setZone(zone) then
 		},
 		ConversationStates.ATTENDING,
 		nil,
-		actions:create("SayTimeRemainingAction", {questSlot, waitTime, "Twój pierścień nie jest jeszcze gotowy. Proszę, wróć za"))
+		actions:create("SayTimeRemainingAction", {questSlot, waitTime, "Twój pierścień nie jest jeszcze gotowy. Proszę, wróć za"}))
 
 	ringsmith:add(ConversationStates.ATTENDING,
 		forgePhrases,
