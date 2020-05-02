@@ -1,12 +1,23 @@
 Changelog
 ---------
 1.12
+*klient*
+- Dodano nowe grafiki przedmiotów (kusz)
+- Zmieniono wygląd lekkiej oraz zwykłej kuszy
+
 *świat*
+- Dodano nowe przedmioty: (3)
+	- automatyczna kusza (800 punktów wytrzymałości)
+	- automatyczna kusza A (1400 punktów wytrzymałości)
+	- automatyczna kusza A+ (3600 punktów wytrzymałości)
 - Dodano nowe osiągnięcia: (3)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
 	- "Eskortnik w Deathmatchu"
 - Ceny w większości sklepów u NPC zostały poprawione
+- Zmniejszono szansę na zdobycie sztylecika z mithrilu
+- Wzmocniono: miecz z mithrilu, lodową kuszę, kuszę łowcy, kuszę
+- Osłabiono: lekką kuszę
 
 *serwer*
 - Dodano 2 nowe skrypyty dla administratorów (alterkill & inspectkill)
