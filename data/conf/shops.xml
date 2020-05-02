@@ -18,6 +18,16 @@
 		DISABLED ITEMS -->
 	</shop>
 
+	<!-- Siandra kupuje: -->
+	<shop name="buyfood" type="buys">
+		<item name="ser" price="5" />
+		<item name="mięso" price="10" />
+		<item name="szpinak" price="15" />
+		<item name="szynka" price="20" />
+		<item name="mąka" price="25" />
+		<item name="borowik" price="30" />
+	</shop>
+
 	<!-- Adena sprzedaje: -->
 	<shop name="adosfoodseller" type="sells">
 		<item name="jabłko" price="50" />
@@ -1046,7 +1056,7 @@
 		<item name="lekka kusza" price="15000" />
 	</shop>
 	<!-- Harrison kupuje: -->
-	<shop name="buygold" type="buys">
+	<shop name="kupujetohar" type="buys">
 		<item name="złota kolczuga" price="62" />
 		<item name="spodnie lazurowe" price="425" />
 		<item name="tarcza piaskowa" price="148" />
