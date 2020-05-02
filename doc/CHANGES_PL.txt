@@ -2,7 +2,7 @@ Changelog
 ---------
 1.12
 *klient*
-- Dodano nowe grafiki przedmiotów (kusz)
+- Dodano nowe pliki graficzne (przedmiotów/gui/npc/potworów)
 - Zmieniono wygląd lekkiej oraz zwykłej kuszy
 
 *świat*
