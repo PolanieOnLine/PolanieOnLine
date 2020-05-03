@@ -46,11 +46,7 @@ public class Grammar {
 	 * @return Either "it" or "them" as appropriate
 	 */
 	public static String itthem(final int quantity) {
-		if (quantity == 1) {
-			return "to";
-		} else {
-			return "je";
-		}
+		return "";
 	}
 
 	/**
@@ -89,11 +85,7 @@ public class Grammar {
 	 * @return Either "it" or "they" as appropriate
 	 */
 	public static String itthey(final int quantity) {
-		if (quantity == 1) {
-			return "to";
-		} else {
-			return "oni";
-		}
+		return "";
 	}
 
 	/**
@@ -115,11 +107,7 @@ public class Grammar {
 	 * @return Either "is" or "are" as appropriate
 	 */
 	public static String isare(final int quantity) {
-		if (quantity == 1) {
-			return "jest";
-		} else {
-			return "są";
-		}
+		return "";
 	}
 
 	/**
@@ -141,11 +129,7 @@ public class Grammar {
 	 * @return Either "has" or "have" as appropriate
 	 */
 	public static String hashave(final int quantity) {
-		if (quantity == 1) {
-			return "ma";
-		} else {
-			return "mają";
-		}
+		return "";
 	}
 
 	/**
@@ -167,11 +151,7 @@ public class Grammar {
 	 * @return Either "that" or "those" as appropriate
 	 */
 	public static String thatthose(final int quantity) {
-		if (quantity == 1) {
-			return "ten";
-		} else {
-			return "te";
-		}
+		return "";
 	}
 
 	/**
@@ -221,11 +201,7 @@ public class Grammar {
 	 * @return noun with article
 	 */
 	public static String article_noun(final String noun, final boolean definite) {
-		if (definite) {
-			return noun;
-		} else {
-			return a_noun(noun);
-		}
+		return "" + noun;
 	}
 
 	/**
@@ -321,7 +297,7 @@ public class Grammar {
 
 	/**
 	 * Prefix a noun with an expression like "piece of".
-	 *
+	 * 
 	 * @param noun
 	 * @return noun with prefix
 	 */
@@ -396,7 +372,6 @@ public class Grammar {
 			// loop until all prefix strings are removed
 			do {
 				changed = false;
-
 				if (extractor.extractNounSingular()) {
 					changed = true;
 				}
@@ -571,7 +546,7 @@ public class Grammar {
 			return enoun.substring(0, enoun.length() - 1) + "ces" + postfix;
 		} else if (enoun.endsWith("sis")) {
 			return enoun.substring(0, enoun.length() - 2) + "es" + postfix;
-		} else if (enoun.endsWith("erinys")) {
+		} else if (enoun.endsWith("erinys")) { 
 			return enoun.substring(0, enoun.length() - 1) + "es" + postfix;
 		} else if (enoun.endsWith("mumak")) {
 			return enoun + "il" + postfix;
@@ -579,10 +554,6 @@ public class Grammar {
 			return enoun.substring(0, enoun.length() - 1) + postfix;
 		} else if (enoun.endsWith("porcini") || enoun.endsWith("porcino")) {
 			return enoun.substring(0, enoun.length() - 1) + "i" + postfix;
-		} else if (enoun.endsWith("łuk treningowy")) {
-			return enoun.substring(0, enoun.length() - 11) + "i treningowe" + postfix;
-		} else if (enoun.endsWith("miecz treningowy")) {
-			return enoun.substring(0, enoun.length() - 11) + "e treningowe" + postfix;
 
 			// If the word is already in plural form, return it unchanged.
 		} else if (!singular(enoun).equals(enoun)) {
@@ -606,7 +577,7 @@ public class Grammar {
 	/**
 	 * Returns the plural form of the given noun if not already given in plural
 	 * form. Method to prevent collision of items and creatures.
-	 *
+	 * 
 	 * @param noun
 	 *            The noun to examine
 	 * @return An appropriate plural form
@@ -798,7 +769,7 @@ public class Grammar {
 		} else if ((enoun.length() > 3) && enoun.endsWith("ice")
 				&& ("mMlL".indexOf(enoun.charAt(enoun.length() - 4)) > -1)) {
 			return enoun.substring(0, enoun.length() - 3) + "ouse" + postfix;
-		} else if (enoun.endsWith("eese")
+		} else if (enoun.endsWith("eese") 
 				&& !enoun.endsWith("cabeese") && !enoun.endsWith("cheese")) {
 			return enoun.substring(0, enoun.length() - 4) + "oose" + postfix;
 		} else if (enoun.endsWith("eeth")) {
@@ -882,11 +853,11 @@ public class Grammar {
 			return plural(noun);
 		}
 	}
-
+	
 	/**
 	 * Returns either the plural or singular form of the given noun, depending
 	 * on the quantity. Method to prevent collision of items and creatures.
-	 *
+	 * 
 	 * @param quantity
 	 *            The quantity to examine
 	 * @param noun
@@ -901,7 +872,7 @@ public class Grammar {
 				return "chickens";
 			}
 		}
-
+		
 		return plnoun(quantity, noun);
 	}
 
@@ -994,7 +965,7 @@ public class Grammar {
 	 * Returns either the plural or singular form of the given noun, depending on
 	 * the quantity; also prefixes the quantity and prints the noun with a
 	 * specifier prefix.
-	 *
+	 * 
 	 * @param quantity The quantity to examine
 	 * @param noun The noun to examine
 	 * @param marker The character use for the markup. '#' or '§'
@@ -1080,7 +1051,7 @@ public class Grammar {
 
 	/**
 	 * first, second, third, ...
-	 *
+	 * 
 	 * @param n
 	 *            a number
 	 * @return first, second, third, ...
@@ -1108,7 +1079,7 @@ public class Grammar {
 
 	/**
 	 * Get ordinal suffix string corresponding to an integer.
-	 *
+	 * 
 	 * @param n integer whose ordinal's suffix is wanted
 	 * @return ordinal suffix
 	 */
@@ -1130,10 +1101,10 @@ public class Grammar {
 
 	/**
 	 * Helper function to nicely formulate an enumeration of a collection.
-	 * <p>
+	 * <p> 
 	 * For example, for a collection containing the 3 elements x, y, z, returns the
 	 * string "x, y, and z".
-	 *
+	 * 
 	 * @param collection
 	 *            The collection whose elements should be enumerated
 	 * @return A nice String representation of the collection
@@ -1166,12 +1137,12 @@ public class Grammar {
 	}
 
 	/**
-	 * Helper function to nicely formulate an enumeration of a collection,
+	 * Helper function to nicely formulate an enumeration of a collection, 
 	 * with hashes to colour the words.
-	 * <p>
+	 * <p> 
 	 * For example, for a collection containing the 3 elements x, y, z, returns the
 	 * string "#x, #y, and #z".
-	 *
+	 * 
 	 * @param collection
 	 *            The collection whose elements should be enumerated
 	 * @return A nice String representation of the collection with hashes
@@ -1180,12 +1151,12 @@ public class Grammar {
 		if (collection == null) {
 			return "";
 		}
-
+		
 		final List<String> result = new ArrayList<String>(collection.size());
 		for (String entry : collection) {
 			result.add("#" + entry);
 		}
-
+		
 		return enumerateCollection(result);
 	}
 
@@ -1209,7 +1180,7 @@ public class Grammar {
 
 	/**
 	 * Converts numbers into their textual representation.
-	 *
+	 * 
 	 * @param n
 	 *            a number
 	 * @return one, two, three, ...
@@ -1249,7 +1220,7 @@ public class Grammar {
 
 	/**
 	 * Interprets number texts.
-	 *
+	 * 
 	 * @param text
 	 *            a number
 	 * @return one, two, three, ...
@@ -1369,7 +1340,7 @@ public class Grammar {
 			char last = word.charAt(word.length()-1);
 
 			if (last == 'y' || last == 'w' || last == 'x') {
-				// word finishes with a 'y', 'w', or an 'x'
+				// word finishes with a 'y' or a 'w'
 				return word + "ing";
 			} else if (isVowel(last)) {
 				// word finishes with a vowel
@@ -1394,13 +1365,11 @@ public class Grammar {
 	 */
 	public static boolean isDerivedAdjective(final String word) {
 		if (word.length() > 4) {
-			if (word.endsWith("al") || word.endsWith("ic")) {
+			if (word.endsWith("al") || word.endsWith("ic"))
 				return true;
-			}
 
-			if (word.endsWith("ed")) {
+			if (word.endsWith("ed"))
 				return true;
-			}
 		}
 
 		return false;
@@ -1408,7 +1377,7 @@ public class Grammar {
 
 	/**
 	 * Normalize the given derived adjective, or return null if not applicable.
-	 *
+	 * 
 	 * @param word
 	 * @return normalized string
 	 */
