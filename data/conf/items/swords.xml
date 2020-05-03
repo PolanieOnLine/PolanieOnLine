@@ -1101,8 +1101,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="47"/>
-			<rate value="5"/>
-			<min_level value="185"/>
+			<rate value="6"/>
+			<min_level value="170"/>
 		</attributes>
 		<weight value="9.0"/>
 		<value value="457142"/>
