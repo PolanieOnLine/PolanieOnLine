@@ -178,7 +178,7 @@ class KTextEdit extends JComponent {
 
 		textPane.addMouseListener(new TextPaneMouseListener());
 
-		initStylesForTextPane(textPane, textPane.getFont().getSize());
+		initStylesForTextPane(textPane, textPane.getFont().getSize() - 1);
 		setLayout(new BorderLayout());
 
 		JScrollPane scrollPane = new JScrollPane(textPane) {

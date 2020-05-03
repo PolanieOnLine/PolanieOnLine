@@ -39,8 +39,6 @@ public class UserContext implements RPObjectChangeListener {
 	 */
 	private static final Logger logger = Logger.getLogger(UserContext.class);
 
-	private static UserContext instance;
-
 	/**
 	 * The currently enabled features.
 	 */
@@ -84,21 +82,11 @@ public class UserContext implements RPObjectChangeListener {
 		sheepID = 0;
 		goatID = 0;
 		features = new HashMap<String, String>();
-
-		instance = this;
 	}
 
 	//
 	// UserContext
 	//
-
-	public static UserContext get() {
-		if (instance == null) {
-			instance = new UserContext();
-		}
-
-		return instance;
-	}
 
 	/**
 	 * Add a feature change listener.
@@ -424,12 +412,5 @@ public class UserContext implements RPObjectChangeListener {
 
 	public void setName(final String username) {
 		name = username;
-	}
-
-	/**
-	 * Checks if the player has a feature.
-	 */
-	public boolean hasFeature(final String name) {
-		return features.get(name) != null;
 	}
 }

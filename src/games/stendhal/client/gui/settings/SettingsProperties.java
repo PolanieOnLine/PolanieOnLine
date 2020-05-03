@@ -13,6 +13,7 @@ package games.stendhal.client.gui.settings;
 
 /**
  * Public properties for UI settings.
+ *
  */
 public class SettingsProperties {
 	/** Property used for double-tap direction to initiate auto-walk. */

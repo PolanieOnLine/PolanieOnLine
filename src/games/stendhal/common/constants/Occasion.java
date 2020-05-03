@@ -10,8 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.common.constants;
-
-/**
+ /**
  * Constants for occasions such as Christmas & Mine Town Weeks.
  */
 public class Occasion {

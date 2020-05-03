@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
@@ -47,11 +46,6 @@ import marauroa.common.game.RPObject;
 /** * NOTE: AWFUL CODE FOLLOWS. YOU ARE NOT SUPPOSED TO READ THIS ;P ** */
 
 public class BalanceRPGame {
-
-	// suggested stats output at end of run
-	private static final List<String> suggestions = new LinkedList<>();
-
-
 	/**
 	 * A Simple (dumb) optimizer to adjust creature stats.
 	 */
@@ -204,12 +198,10 @@ public class BalanceRPGame {
 
 			equip(player, level);
 
-			System.out.println("\nPlayer(" + level + ") vs "
+			System.out.println("Player(" + level + ") vs "
 					+ creature.getCreatureName());
 
 			durationThreshold = DEFAULT_DURATION_THRESHOLD;
-
-			Integer proposedXPValue = null;
 
 			boolean balanced = false;
 			int tries = 0;
@@ -219,7 +211,7 @@ public class BalanceRPGame {
 				final int meanTurns = results.first();
 				final int meanLeftHP = results.second();
 
-				proposedXPValue = (int) ((2 * creature.getLevel() + 1) * (meanTurns / 2.0));
+				final int proposedXPValue = (int) ((2 * creature.getLevel() + 1) * (meanTurns / 2.0));
 				creature.setLevel(creature.getLevel(), proposedXPValue);
 
 				System.out.println("Target ATK: "
@@ -265,17 +257,16 @@ public class BalanceRPGame {
 				changed = true;
 			}
 
-			System.out.println(creature.getCreatureName() + " done!");
-
+			System.out.print("BALANCED: ");
 			final StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append(creature.getCreatureName());
-			stringBuilder.append(" (level ");
+			stringBuilder.append("(");
 			stringBuilder.append(creature.getLevel());
-			stringBuilder.append("):");
+			stringBuilder.append(")\t");
 			if (changed) {
-				stringBuilder.append(" *\t");
+				stringBuilder.append("*\t");
 			} else {
-				stringBuilder.append("  \t");
+				stringBuilder.append(" \t");
 			}
 			stringBuilder.append("ATK: ");
 			stringBuilder.append(target.getAtk());
@@ -283,25 +274,8 @@ public class BalanceRPGame {
 			stringBuilder.append(target.getDef());
 			stringBuilder.append("\t\tHP: ");
 			stringBuilder.append(target.getBaseHP());
-
-			if (System.getProperty("showxp") != null && proposedXPValue != null) {
-				stringBuilder.append("\t\tXP: " + proposedXPValue);
-			}
-
-			suggestions.add(stringBuilder.toString());
+			System.out.println(stringBuilder.toString());
 		}
-
-		if (suggestions.isEmpty()) {
-			System.out.println("\nNo suggestions available\n");
-		} else {
-			System.out.println("\nSuggested values:");
-			for (final String s: suggestions) {
-				System.out.println("\t" + s);
-			}
-			System.out.println();
-		}
-
-		// FIXME: why does balancer not exit automatically?
 	}
 
 	private static Pair<Integer, Integer> combat(final Player player, final Creature target) {

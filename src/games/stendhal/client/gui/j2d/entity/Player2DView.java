@@ -164,6 +164,7 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 				sb.append(",hair=" + hair);
 				sb.append(",detail=" + detail);
 
+
 				outfit = store.getAdjustedOutfit(sb.toString(), color, info.getZoneColor(), info.getColorMethod());
 			} else {
 				outfit = store.getAdjustedOutfit(strcode, color, info.getZoneColor(), info.getColorMethod());

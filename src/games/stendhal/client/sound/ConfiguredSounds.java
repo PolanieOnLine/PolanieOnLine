@@ -24,7 +24,6 @@ public class ConfiguredSounds {
 		put(SoundID.STAT_UP, "player/stat_up-01");
 		put(SoundID.ACHIEVEMENT, "yay-1");
 		put(SoundID.COMMERCE, "coins-1");
-		put(SoundID.HEAL, "heal-01");
 	}};
 
 	public static String get(final SoundID id) {

@@ -12,8 +12,6 @@
 package games.stendhal.client.actions;
 
 import static games.stendhal.common.constants.Actions.BESTIARY;
-import static games.stendhal.common.constants.Actions.ALTERKILL;
-import static games.stendhal.common.constants.Actions.INSPECTKILL;
 import static games.stendhal.common.constants.Actions.INSPECTQUEST;
 import static games.stendhal.common.constants.Actions.REMOVEDETAIL;
 import static games.stendhal.common.constants.General.COMBAT_KARMA;
@@ -46,7 +44,6 @@ public class SlashActionRepository {
 		actions.put("adminnote", new AdminNoteAction());
 		actions.put("alter", new AlterAction());
 		actions.put("altercreature", new AlterCreatureAction());
-		actions.put(ALTERKILL, new AlterKillAction());
 		actions.put("alterquest", new AlterQuestAction());
 		actions.put("answer", new AnswerAction());
 		actions.put("atlas", new AtlasBrowserLaunchCommand());
@@ -75,7 +72,6 @@ public class SlashActionRepository {
 
 		actions.put("ignore", new IgnoreAction());
 		actions.put("inspect", new InspectAction());
-		actions.put(INSPECTKILL, new InspectKillAction());
 		actions.put(INSPECTQUEST, new InspectQuestAction());
 		actions.put("invisible", new InvisibleAction());
 

@@ -204,7 +204,6 @@ public final class StatsPanelController {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				// FIXME: this seems to be run twice at level up
 				panel.setHP(text);
 				if (maxhpvalue > 0) {
 					panel.setHPBar(maxhpvalue, hp);
@@ -556,7 +555,7 @@ public final class StatsPanelController {
 				});
 				return;
 			}
-
+			
 			Object value = event.getNewValue();
 	        final StatusID ID = StatusID.getStatusID(event.getPropertyName());
 	        final boolean enabled = value != null;

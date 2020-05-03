@@ -13,6 +13,7 @@
 package games.stendhal.client.entity;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.constants.SoundLayer;
 import marauroa.common.game.RPObject;
 
 /** A Player entity. */
@@ -141,6 +142,12 @@ public class Player extends RPEntity {
 		if (!User.isIgnoring(this.getName())) {
 			super.onTalk(text);
 		}
+	}
+
+	@Override
+	public void onDamaged(Entity attacker, int damage) {
+		super.onDamaged(attacker, damage);
+		playRandomSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "attack");
 	}
 
 	//

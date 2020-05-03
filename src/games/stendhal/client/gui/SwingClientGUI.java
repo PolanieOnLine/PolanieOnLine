@@ -23,7 +23,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyListener;
@@ -73,7 +72,6 @@ import games.stendhal.client.gui.stats.StatsPanelController;
 import games.stendhal.client.gui.styled.StyledTabbedPaneUI;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
-import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
@@ -109,7 +107,6 @@ class SwingClientGUI implements J2DClientGUI {
 	private SlotWindow inventory;
 	/** the Key ring panel. */
 	private KeyRing keyring;
-	//private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
 	private int paintCounter;
@@ -246,24 +243,10 @@ class SwingClientGUI implements J2DClientGUI {
 		containerPanel.addRepaintable(keyring);
 		userContext.addFeatureChangeListener(keyring);
 
-		/*
-		portfolio = new Portfolio();
-		portfolio.setAcceptedTypes(EntityMap.getClass("item", null, null));
-		containerPanel.addRepaintable(portfolio);
-		userContext.addFeatureChangeListener(portfolio);
-		*/
-
 		spells = new Spells();
 		spells.setAcceptedTypes(EntityMap.getClass("spell", null, null));
 		containerPanel.addRepaintable(spells);
 		userContext.addFeatureChangeListener(spells);
-
-		for (final FeatureChangeListener listener: character.getFeatureChangeListeners()) {
-			userContext.addFeatureChangeListener(listener);
-		}
-		for (final ComponentListener listener: character.getComponentListeners()) {
-			containerPanel.addComponentListener(listener);
-		}
 
 		return containerPanel;
 	}
@@ -430,7 +413,6 @@ class SwingClientGUI implements J2DClientGUI {
 		 * revealed by feature change
 		 */
 		keyring.setVisible(false);
-		//portfolio.setVisible(false);
 		spells.setVisible(false);
 	}
 
