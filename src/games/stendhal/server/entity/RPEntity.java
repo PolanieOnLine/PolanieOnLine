@@ -2789,6 +2789,7 @@ public abstract class RPEntity extends GuidedEntity {
 		int ring = 0;
 		int ringb = 0;
 		int shield = 0;
+		int belt = 0;
 
 		final List<Item> weapons = getWeapons();
 		for (final Item weaponItem : weapons) {
@@ -2803,9 +2804,11 @@ public abstract class RPEntity extends GuidedEntity {
 			ringb += getRingB().getAttack();
 		} if (hasShield()) {
 			shield += getShield().getAttack();
+		} if (hasBelt()) {
+			belt += getBelt().getAttack();
 		}
 
-		return weapon + glove + ring + ringb + shield;
+		return weapon + glove + ring + ringb + shield + belt;
 	}
 
 	/**
