@@ -52,7 +52,7 @@ public class ScubaNPC implements ZoneConfigurator  {
 				addGoodbye("Żegnaj...");
 				addHelp("Hm może chcesz wyruszyć po przygody?");
 				addOffer("Licencjonowanym nurkom mogę sprzedać #zbroję #akwalungową.");
-				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("get_diving_license", "Nie mogę sprzedać każdemu #'zbroi akwalungowej'!", shops.get("sellscubastuff")), false);
+				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("get_diving_license", "Nie mogę sprzedać każdemu #zbroi #akwalungowej!", shops.get("sellScubaStuff")), false);
 				addJob("Jestem pomocnikiem na tym statku.");
 				
 				//scuba gear phrases
