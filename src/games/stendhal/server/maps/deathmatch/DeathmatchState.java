@@ -27,7 +27,7 @@ public class DeathmatchState {
 
 	private long date;
 
-	private int points;
+        private int points;
 
 	protected DeathmatchState() {
 		// hide constructor
