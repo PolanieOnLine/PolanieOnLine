@@ -188,7 +188,7 @@
 
 	<item name="automatyczna kusza">
 		<type class="ranged" subclass="auto_crossbow" tileid="-1" />
-		<description>Oto ta automatyczna kusza pozwala na szybki ogień. Lecz jej słaba jakość wykonania sprawia iż ​​czujesz, jakby mogła złamać się w twych rękach.</description>
+		<description>Oto ta automatyczna kusza pozwala na szybki ogień. Lecz jej słaba jakość wykonania sprawia jakby mogła złamać się w twych rękach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
 		<attributes>
 			<ratk value="0"/>
