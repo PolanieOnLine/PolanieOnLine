@@ -215,8 +215,7 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		player.update();
-		Entity entity = SingletonRepository.getEntityManager().getItem(
-				"skórzana zbroja");
+		Entity entity = SingletonRepository.getEntityManager().getItem("skórzana zbroja");
 		RPSlot slot = player.getSlot("armor");
 		slot.add(entity);
 
