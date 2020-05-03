@@ -119,7 +119,7 @@ public class PochorowaneKonie extends AbstractQuest {
 		if (questState.equals("stajenny")) {
 			return res;
 		}
-		res.add("Stajenny się ucieszył! Otrzymałem od niego skórzany pas w nagrodę za pomoc.");
+		res.add("Stajenny się ucieszył! Otrzymałem od niego pas skórzany w nagrodę za pomoc.");
 		if (questState.equals("done")) {
 			return res;
 		}
@@ -466,10 +466,10 @@ public class PochorowaneKonie extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "stajenny")),
 				ConversationStates.IDLE, 
-				"Ufff... Świetnie to słyszeć! Dziękuję Ci za pomoc oraz weterynarzowi! Proszę, oto skórzany pas, możliwe, że kiedyś Ci się przyda!", 
+				"Ufff... Świetnie to słyszeć! Dziękuję Ci za pomoc oraz weterynarzowi! Proszę, oto pas skórzany, możliwe, że kiedyś Ci się przyda!", 
 				new MultipleActions(
 						new IncreaseXPAction(10000),
-						new EquipItemAction("skórzany pas", 1, true),
+						new EquipItemAction("pas skórzany", 1, true),
 						new SetQuestAction(QUEST_SLOT, "done")));
 	}
 

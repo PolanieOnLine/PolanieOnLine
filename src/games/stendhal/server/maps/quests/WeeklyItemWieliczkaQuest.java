@@ -172,7 +172,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		
 		// belt
 		items.put("złoty pas",1);
-		items.put("wzmocniony skórzany pas",1);
+		items.put("wzmocniony pas skórzany",1);
 		items.put("pas wampirzy",1);
 		items.put("karmazynowy pas",1);
 		items.put("pas krasnoludzki",1);

@@ -378,7 +378,7 @@
 			<item value="money" quantity="[1,3]" probability="100.0"/>
 			<item value="buteleczka wody" quantity="[1,2]" probability="20.0"/>
 			<item value="kosa" quantity="[1,1]" probability="1.0"/>
-			<item value="skórzany pas" quantity="[1,1]" probability="1.25"/>
+			<item value="pas skórzany" quantity="[1,1]" probability="1.25"/>
 			<item value="rzepa" quantity="[1,1]" probability="1.0"/>
 			<item value="rzodkiewka" quantity="[1,2]" probability="15.0"/>
 			<item value="ziemniaki" quantity="[1,5]" probability="20.5"/>
@@ -414,7 +414,7 @@
 		<drops>
 			<item value="money" quantity="[7,48]" probability="99.0"/>
 			<item value="kij" quantity="[1,1]" probability="1.0"/>
-			<item value="skórzany pas" quantity="[1,1]" probability="0.4"/>
+			<item value="pas skórzany" quantity="[1,1]" probability="0.4"/>
 			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
 			<item value="mięta" quantity="[1,1]" probability="10.0"/>
 			<item value="buteleczka wody" quantity="[1,3]" probability="15.0"/>
@@ -451,7 +451,7 @@
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="siekierka" quantity="[1,1]" probability="20.0"/>
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
-			<item value="wzmocniony skórzany pas" quantity="[1,1]" probability="1.0"/>
+			<item value="wzmocniony pas skórzany" quantity="[1,1]" probability="1.0"/>
 			<item value="dwojaki" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips/>

@@ -2,9 +2,9 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
-	<item name="skórzany pas">
+	<item name="pas skórzany">
 		<type class="belts" subclass="leather_belt" tileid="-1"/>
-		<description>Oto zwykły skórzany pas. Skąd pochodzi ta skóra?</description>
+		<description>Oto zwykły pas skórzany. Skąd pochodzi ta skóra?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
@@ -20,9 +20,9 @@
 		</equipable>
 	</item>
 
-	<item name="wzmocniony skórzany pas">
+	<item name="wzmocniony pas skórzany">
 		<type class="belts" subclass="r_leather_belt" tileid="-1"/>
-		<description>Oto wzmocniony skórzany pas. Co za wytrzymały materiał!</description>
+		<description>Oto wzmocniony pas skórzany. Co za wytrzymały materiał!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="3"/>

@@ -22,7 +22,7 @@
 			<item value="skórzane spodnie" quantity="[1,1]" probability="10.0"/>
 			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
 			<item value="skórzany kirys" quantity="[1,1]" probability="2.0"/>
-			<item value="skórzany pas" quantity="[1,1]" probability="4.5"/>
+			<item value="pas skórzany" quantity="[1,1]" probability="4.5"/>
 			<item value="toporek" quantity="[1,1]" probability="1.3"/>
 			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
 			<item value="puklerz" quantity="[1,1]" probability="0.5"/>
