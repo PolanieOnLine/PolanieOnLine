@@ -12,6 +12,8 @@
 package games.stendhal.server.maps.nalwor.forest;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -20,17 +22,15 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.constants.SoundID;
-import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.config.zone.NoTeleportIn;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.core.events.TurnListener;
-import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal;
 import games.stendhal.server.entity.mapstuff.portal.Gate;
@@ -40,19 +40,26 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.NPCEmoteAction;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
+import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.TeleportAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.AreaIsFullCondition;
+import games.stendhal.server.entity.npc.condition.ComparisonOperator;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerStatLevelCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.events.SoundEvent;
+import games.stendhal.server.maps.quests.AbstractQuest;
+import games.stendhal.server.maps.quests.IQuest;
+import games.stendhal.server.util.Area;
 import games.stendhal.server.util.TimeUtil;
 
 
@@ -61,14 +68,23 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "dojo";
 
+	/** cost to use dojo */
+	private static final int COST = 5000;
+
+	/** capped attack level */
+	private static final int ATK_LIMIT = 80;
+
 	/** time (in seconds) allowed for training session */
-	private static final int TRAIN_TIME = 20 * MathHelper.SECONDS_IN_ONE_MINUTE;
+	private static final int TRAIN_TIME = 15 * MathHelper.SECONDS_IN_ONE_MINUTE;
 
 	/** time player must wait to train again */
-	private static final int COOLDOWN = 5;
+	private static final int COOLDOWN = 15;
+
+	/** max number of players allowed in training area at a time */
+	private static final int MAX_OCCUPANTS = 16;
 
 	/** condition to check if training area is full */
-	private ChatCondition dojoFullCondition;
+	AreaIsFullCondition dojoFullCondition;
 
 	/** quest states */
 	private static final String STATE_ACTIVE = "training";
@@ -84,15 +100,15 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 	private String dojoZoneID;
 
 	/** dojo area */
-	private static TrainingArea dojoArea;
+	private final Rectangle dojoArea = new Rectangle(5, 52, 35, 20);
 
 	/** NPC that manages dojo area */
 	private static final String samuraiName = "Omura Sumitada";
 	private SpeakerNPC samurai;
 
 	/** phrases used in conversations */
+	private static final List<String> TRAIN_PHRASES = Arrays.asList("train", "training", "szkolić", "szkolenie", "przeszkolić", "trening", "trenować", "trenuj", "trenowanie");
 	private static final List<String> FEE_PHRASES = Arrays.asList("fee", "cost", "charge", "opłata", "opłatę", "koszt", "cena", "cenę");
-	private static final List<String> TRAIN_PHRASES = Arrays.asList("train", "training", "szkolić", "szkolenie", "przeszkolić", "trening", "trenować", "trenuj", "trenowanie", "potrenować");
 
 	/** message when dojo is full */
 	private static final String FULL_MESSAGE = "Dojo jest pełne. Proszę wróć później.";
@@ -109,21 +125,17 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 
 		dojoZone = zone;
 		dojoZoneID = zone.getName();
-		dojoArea = new TrainingArea(zone, 5, 52, 35, 20);
-		dojoArea.setCapacity(16);
-		dojoArea.setGate(GATE_POS.x, GATE_POS.y);
 
 		// initialize condition to check if dojo is full
-		dojoFullCondition = new ChatCondition() {
-			@Override
-			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-				return dojoArea.isFull();
-			}
-		};
+		dojoFullCondition = new AreaIsFullCondition(new Area(dojoZone, dojoArea), MAX_OCCUPANTS);
+
+		// players cannot teleport into dojo area
+		new NoTeleportIn().configureZone(dojoZone, dojoArea);
 
 		initEntrance();
 		initNPC();
 		initDialogue();
+		addToQuestSystem();
 	}
 
 	/**
@@ -150,7 +162,7 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				}
 
 				// check if dojo is full
-				if (dojoArea.isFull()) {
+				if (isFull()) {
 					samurai.say(FULL_MESSAGE);
 					return false;
 				}
@@ -189,55 +201,19 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 	private void initDialogue() {
 		samurai.addGreeting("Witaj w dojo skrytobójców.");
 		samurai.addGoodbye();
+		samurai.addJob("Zarządzam tym dojo. Zapytaj mnie, czy chcesz się #szkolić.");
 		samurai.addOffer("Mogę zaoferować sesję #szkoleniową za odpowiednią #opłatą.");
 		samurai.addQuest("Nie potrzebuję żadnej pomocy, ale mogę pozwolić ci #przeszkolić się za #opłatę, jeśli zostałeś zatwierdzony przez kwaterę główną zabójców.");
 		samurai.addHelp("To jest dojo skrytobójców. Mogę ci pozwolić #przeszkolić się tutaj za #opłatę, jeśli masz dobre relację z kwaterą główną.");
-		samurai.addJob("Zarządzam tym dojo. Jeśli chcesz #potrenować, to się mnie o to spytaj.");
-
-		samurai.add(ConversationStates.ATTENDING,
-				FEE_PHRASES,
-				null,
-				ConversationStates.ATTENDING,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						samurai.say("Opłata za #trening dla twoich umiejętności wynosi " + dojoArea.calculateFee(player.getAtk()) + " money.");
-					}
-				});
-
-		final ChatCondition meetsLevelCapCondition = new ChatCondition() {
-			@Override
-			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-				return dojoArea.meetsLevelCap(player, player.getAtk());
-			}
-		};
-
-		final ChatCondition canAffordFeeCondition = new ChatCondition() {
-			@Override
-			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-				return player.isEquipped("money", dojoArea.calculateFee(player.getAtk()));
-			}
-		};
-
-		final ChatAction startTrainingAction = new ChatAction() {
-			@Override
-			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				player.drop("money", dojoArea.calculateFee(player.getAtk()));
-				samurai.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
-				player.setQuest(QUEST_SLOT, STATE_ACTIVE + ";" + Integer.toString(TRAIN_TIME));
-			}
-		};
-
+		samurai.addReply(FEE_PHRASES, "Opłata za #trening wynosi " + Integer.toString(COST) + " money.");
 
 		// player has never trained before
 		samurai.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
 						new QuestNotStartedCondition(QUEST_SLOT),
-						new NotCondition(meetsLevelCapCondition),
-						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
-						new NotCondition(dojoFullCondition)),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, ATK_LIMIT),
+						new PlayerHasItemWithHimCondition("licencja na zabijanie")),
 				ConversationStates.QUESTION_1,
 				null,
 				new MultipleActions(
@@ -253,40 +229,34 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_DONE),
 						new TimePassedCondition(QUEST_SLOT, 1, COOLDOWN),
-						new NotCondition(meetsLevelCapCondition),
-						new PlayerHasItemWithHimCondition("licencja na zabijanie")),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, ATK_LIMIT)),
 				ConversationStates.QUESTION_1,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						samurai.say("Na twój poziom umiejętności, koszt wynosi " + dojoArea.calculateFee(player.getAtk()) + " money za trening w dojo. Czy jesteś pewny, by wejść?");
-					}
-				});
+				"Koszt wynosi " + Integer.toString(COST) + " money za trening w dojo. Czy jesteś pewny, by wejść?",
+				null);
 
 		// player returns before cooldown period is up
 		samurai.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, COOLDOWN)),
-						new NotCondition(meetsLevelCapCondition)),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, ATK_LIMIT)),
 				ConversationStates.ATTENDING,
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, COOLDOWN, "Nie możesz jeszcze trenować. Proszę wróć za"));
 
-		// player's ATK level is too high
+		// player's RATK level is too high
 		samurai.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
-				meetsLevelCapCondition,
+				new PlayerStatLevelCondition("atk", ComparisonOperator.GREATER_OR_EQUALS, ATK_LIMIT),
 				ConversationStates.ATTENDING,
-				"Na twój aktualny poziom doświadczenia, twoja siła ataku jest zbyt duża, by tutaj trenować w tym momencie.",
+				"Masz zbyt duże umiejętności, aby trenować tutaj.",
 				null);
 
 		// player does not have an assassins id
 		samurai.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
-						new NotCondition(meetsLevelCapCondition),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, ATK_LIMIT),
 						new NotCondition(new PlayerHasItemWithHimCondition("licencja na zabijanie"))),
 				ConversationStates.ATTENDING,
 				"Nie możesz tu trenować bez pozwolenia z kwatery głównej zabójców.",
@@ -304,9 +274,8 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 		samurai.add(ConversationStates.ATTENDING,
 				TRAIN_PHRASES,
 				new AndCondition(
-						new NotCondition(meetsLevelCapCondition),
+						new PlayerStatLevelCondition("atk", ComparisonOperator.LESS_THAN, ATK_LIMIT),
 						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
-						new NotCondition(new QuestInStateCondition(QUEST_SLOT, 0, STATE_ACTIVE)),
 						dojoFullCondition),
 				ConversationStates.ATTENDING,
 				FULL_MESSAGE,
@@ -322,17 +291,18 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 		 */
 		samurai.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
-				canAffordFeeCondition,
+				new PlayerHasItemWithHimCondition("money", COST),
 				ConversationStates.IDLE,
 				"Możesz trenować do " + Integer.toString(TRAIN_TIME / MathHelper.SECONDS_IN_ONE_MINUTE) + " minut. Wykorzystaj więc dobrze swój czas.",
 				new MultipleActions(
-						startTrainingAction,
+						new DropItemAction("money", COST),
+						new SetQuestAction(QUEST_SLOT, STATE_ACTIVE + ";" + Integer.toString(TRAIN_TIME)),
 						new DojoTimerAction()));
 
 		// player does not have enough money to begin training
 		samurai.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
-				new NotCondition(canAffordFeeCondition),
+				new NotCondition(new PlayerHasItemWithHimCondition("money", COST)),
 				ConversationStates.ATTENDING,
 				"Nie masz nawet dość dużo money na #opłatę.",
 				null);
@@ -344,6 +314,35 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 				ConversationStates.ATTENDING,
 				"Powodzenia.",
 				null);
+	}
+
+	/**
+	 * Makes visible in inspect command.
+	 */
+	private void addToQuestSystem() {
+		final IQuest quest = new AbstractQuest() {
+
+			@Override
+			public List<String> getHistory(final Player player) {
+				return null;
+			}
+
+			@Override
+			public String getSlotName() {
+				return QUEST_SLOT;
+			}
+
+			@Override
+			public void addToWorld() {
+			}
+
+			@Override
+			public String getName() {
+				return "Dojo";
+			}
+		};
+
+		SingletonRepository.getStendhalQuestSystem().loadQuest(quest);
 	}
 
 	/**
@@ -371,17 +370,33 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 		if (player.get("zoneid").equals(dojoZoneID)) {
 			samurai.say("Twój czas na trening się skończył, " + player.getName() + ".");
 		}
-		if (dojoArea.contains(player)) {
+		if (isPlayerInArea(player, dojoZoneID, dojoArea)) {
 			player.teleport(dojoZoneID, END_POS.x, END_POS.y, null, null);
 		}
 
 		player.setQuest(QUEST_SLOT, STATE_DONE + ";" + Long.toString(System.currentTimeMillis()));
 	}
 
+	/**
+	 * Checks if entity is within bounds of an area.
+	 *
+	 * @param area
+	 * 		Area dimensions to check.
+	 * @return
+	 * 		<code>true</code> if entity is within area.
+	 */
+	public boolean isPlayerInArea(final Player player, final String zoneid, final Rectangle2D area) {
+		// TODO: Use standard collision check, which can handle entities larger than 1x1
+		if (!player.get("zoneid").equals(zoneid)) {
+			return false;
+		}
+		return area.contains(player.getInt("x"), player.getInt("y"));
+	}
+
 	@Override
 	public void onLoggedIn(final Player player) {
-		// don't allow players to login within dojo area boundaries
-		if (dojoArea.contains(player)) {
+		// don't allow players to login within archery range area boundaries
+		if (isPlayerInArea(player, dojoZoneID, dojoArea) || (player.getX() == GATE_POS.x && player.getY() == GATE_POS.y)) {
 			player.teleport(dojoZoneID, END_POS.x, END_POS.y, null, null);
 		}
 
@@ -399,6 +414,16 @@ public class Dojo implements ZoneConfigurator,LoginListener,LogoutListener {
 	public void onLoggedOut(final Player player) {
 		// disable timer/notifier
 		SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
+	}
+
+	/**
+	 * Checks if dojo is full.
+	 *
+	 * @return
+	 * 		<code>true</code> if max number of occupants are within training area bounds.
+	 */
+	private boolean isFull() {
+		return dojoFullCondition.fire(null, null, null);
 	}
 
 
