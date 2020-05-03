@@ -57,16 +57,16 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 		);
 
 		final Map<String, Integer> pricesBuy = new HashMap<String, Integer>() {{
-			put("mandragora", 300);
-			//put("kokuda", 5000);
+			put("mandragora", 1500);
+			put("kokuda", 5000);
 			put("muchomor", 60);
 			put("trucizna", 40);
 			put("mocna trucizna", 60);
 			put("bardzo mocna trucizna", 500);
 			put("śmiertelna trucizna", 1000);
-			put("zabójcza trucizna", 1200);
+			put("zabójcza poison", 2000);
 			put("środek uspokajający", 200);
-			put("gruczoł jadowy", 800);
+			put("gruczoł jadowy", 2000);
 		}};
 
 		final Map<String, Integer> pricesSell = new HashMap<String, Integer>() {{
