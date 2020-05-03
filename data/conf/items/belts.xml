@@ -9,8 +9,6 @@
 		<attributes>
 			<def value="1"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -25,10 +23,8 @@
 		<description>Oto wzmocniony pas skórzany. Co za wytrzymały materiał!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="3"/>
+			<def value="2"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="3"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -43,12 +39,27 @@
 		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<atk value="1"/>
+			<def value="2"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="4"/>
-		<susceptibility type="ice" value="1.11"/>
-		<susceptibility type="fire" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="lodowy pas">
+		<type class="belts" subclass="ice_belt" tileid="-1"/>
+		<description>Oto lodowy pas. Wykonany z prawdziwego lodu, wzmacniany magią. Sztywniejesz od tego mrozu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<def value="3"/>
+		</attributes>
+		<susceptibility type="ice" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -63,10 +74,8 @@
 		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="4"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="5"/>
 		<susceptibility type="fire" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
@@ -79,14 +88,12 @@
 
 	<item name="złoty pas kolczy">
 		<type class="belts" subclass="golden_chain_belt" tileid="-1"/>
-		<description></description>
+		<description>Oto złoty pas kolczy. Wykonany bardzo starannie z drogocennego szlachetnego metalu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="6"/>
+			<atk value="1"/>
+			<def value="5"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="6"/>
-		<susceptibility type="light" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -101,10 +108,8 @@
 		<description>Oto pas elficki. Z jego rubinu czuć jakąś pradawną magię.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="6"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="7"/>
 		<susceptibility type="earth" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
@@ -120,10 +125,8 @@
 		<description>Oto pas zbójnicki. Idealny dla górala.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="8"/>
+			<def value="7"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="8"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -140,8 +143,6 @@
 		<attributes>
 			<def value="8"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="8"/>
 		<susceptibility type="dark" value="0.91"/>
 		<susceptibility type="light" value="1.11"/>
 		<equipable>
@@ -160,8 +161,6 @@
 		<attributes>
 			<def value="9"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -176,11 +175,27 @@
 		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<def value="9"/>
+		</attributes>
+		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="złoty pas">
+		<type class="belts" subclass="golden_belt" tileid="-1"/>
+		<description>Oto złoty pas. Wykonany z czystego złota.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
 			<def value="10"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="10"/>
-		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="dark" value="1.11"/>
+		<susceptibility type="light" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -197,28 +212,6 @@
 		<attributes>
 			<def value="11"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="11"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="pas"/>
-		</equipable>
-	</item>
-
-	<item name="złoty pas">
-		<type class="belts" subclass="golden_belt" tileid="-1"/>
-		<description>Oto złoty pas. Wykonany z czystego złota.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<def value="12"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="12"/>
-		<susceptibility type="dark" value="1.11"/>
-		<susceptibility type="light" value="0.91"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -233,10 +226,9 @@
 		<description>Oto czarny pas. Czujesz jak jego mrok wzmacnia twą siłę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="13"/>
+			<atk value="1"/>
+			<def value="12"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="13"/>
 		<susceptibility type="dark" value="0.91"/>
 		<susceptibility type="light" value="1.11"/>
 		<equipable>
@@ -253,10 +245,9 @@
 		<description>Oto pas z mithrilu. Może cię ochronić przed ciemnością.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="1"/>
 			<def value="14"/>
 		</attributes>
-		<weight value="1.0"/>
-		<value value="14"/>
 		<susceptibility type="dark" value="1.11"/>
 		<susceptibility type="light" value="0.91"/>
 		<equipable>
