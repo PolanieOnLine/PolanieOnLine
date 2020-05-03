@@ -2,6 +2,8 @@
 <creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
+	<!-- START: demon -->
+
 	<creature name="mściciel">
 		<type class="stendhal/hybrid" subclass="violet_avenger" tileid="hybrid.png:8"/>
 		<description></description>
@@ -205,6 +207,10 @@
 		</ai>
 	</creature>
 
+	<!-- END: demon -->
+
+	<!-- START: imp -->
+
 	<creature name="czart">
 		<type class="stendhal/demon" subclass="imp" tileid="demon.png:0"/>
 		<description>Oto czart. Może i wygląda na milutkiego, ale nie zapominaj, że to jeden ze sługusów diabła!</description>
@@ -270,66 +276,6 @@
 		</ai>
 	</creature>
 
-	<creature name="demon wody">
-		<type class="stendhal/demon" subclass="water_demon" tileid="demon.png:5"/>
-		<description></description>
-		<attributes>
-			<atk value="735"/>
-			<def value="155"/>
-			<hp value="4120"/>
-			<speed value="1.0"/>
-			<size value="2,2"/>
-		</attributes>
-		<level value="212"/>
-		<experience value="86999"/>
-		<respawn value="23000"/>
-		<corpse name="puddle_light_blue_2x2" harmless="puddle_light_blue_2x2"/>
-		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="mocne antidotum" quantity="[1,2]" probability="20.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<susceptibility type="water" value="1.3"/>
-		</abilities>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
+	<!-- END: imp -->
 
-<!-- disabled
-	<creature name="demon ognia">
-		<type class="stendhal/demon" subclass="fire_demon" tileid="demon.png:6"/>
-		<description></description>
-		<attributes>
-			<atk value="874"/>
-			<def value="232"/>
-			<hp value="3600"/>
-			<speed value="1.0"/>
-			<size value="2,2"/>
-		</attributes>
-		<level value="310"/>
-		<experience value="190000"/>
-		<respawn value="48000"/>
-		<corpse name="humanoid"/>
-		<drops>
-		</drops>
-		<equips>
-		</equips>
-		<abilities>
-			<susceptibility type="water" value="1.5"/>
-			<susceptibility type="fire" value="0.5"/>
-		</abilities>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="patrolling"/>
-			<profile name="attack weakest"/>
-		</ai>
-	</creature>
--->
 </creatures>

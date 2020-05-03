@@ -52,8 +52,6 @@ class GMHelpAction implements SlashAction {
 				"\t\tUmożliwia aktualizację powodu zamknięcia wybranego #wojownika.",
 				"- /inspect <wojownik>",
 				"\t\tPokazuje kompletne informacje o #wojowniku.",
-				"- /inspectkill <wojownik> <stworzenie>",
-				"\t\tPokazuje ilość zabójstw #potwora u #wojownika.",
 				"- /inspectquest <wojownik> <nazwa_zadania>",
 				"\t\tPokazuje stan zadania #wojownika.",
 				"- /script <nazwaskryptu>",
