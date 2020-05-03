@@ -13,21 +13,35 @@ package games.stendhal.server.maps.nalwor.forest;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.constants.SoundID;
+import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.BreakableItem;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.ConversationPhrases;
+import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.ShopList;
+import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-import games.stendhal.server.maps.nalwor.forest.AssassinRepairerAdder.AssassinRepairer;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.SoundEvent;
 
 
 /**
@@ -38,13 +52,9 @@ public class DojoSellerNPC implements ZoneConfigurator {
 	private static StendhalRPZone dojoZone;
 
 	private final String sellerName = "Akutagawa";
-	private AssassinRepairer seller;
+	private SpeakerNPC seller;
 
-	private AssassinRepairerAdder repairerAdder;
-
-	private static final Map<String, Integer> repairableSellPrices = new LinkedHashMap<String, Integer>() {{
-		put("miecz treningowy", 2100);
-	}};
+	private static final int swordPrice = 5600;
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
@@ -57,9 +67,7 @@ public class DojoSellerNPC implements ZoneConfigurator {
 	}
 
 	private void initNPC() {
-		repairerAdder = new AssassinRepairerAdder();
-
-		seller = repairerAdder.new AssassinRepairer(sellerName);
+		seller = new SpeakerNPC(sellerName);
 		seller.setEntityClass("samurai2npc");
 		seller.setIdleDirection(Direction.LEFT);
 		seller.setPosition(37, 80);
@@ -67,24 +75,12 @@ public class DojoSellerNPC implements ZoneConfigurator {
 		dojoZone.add(seller);
 	}
 
-	private void initDialogue() {
-		seller.addGreeting("Jeśli szukasz sprzętu treningowego, trafiłeś we właściwe miejsce.");
-		seller.addGoodbye();
-		seller.addOffer("Spójrz na moją tablicę, by sprawdzić co sprzedaję. Mogę również #naprawić wszystkie używane #'miecze treningowe', które aktualnie masz.");
-		seller.addJob("Prowadzę sklep w dojo dla skrytobójców, w którym sprzedaję sprzęt i #naprawiam #'miecze treningowe'.");
-		seller.addQuest("Nie mam dla ciebie żadnego zadania. Tylko #naprawiam i sprzedaję sprzęt.");
-		seller.addHelp("Jeśli chcesz trenować w dojo, polecam zakupić #'miecz treningowy'.");
-		seller.addReply(Arrays.asList("training sword", "miecz treningowy", "miecza treningowego"), "Moje miecze treningowe są lekkie oraz łatwe do machania nimi. Dlatego,"
-				+ " że zostały one wykonane z drewna, nie zaszkodzą ci gdy zostaniesz uderzony nim.");
-	}
-
 	private void initShop() {
-		final Map<String, Integer> pricesSell = new LinkedHashMap<>();
-		for (final String itemName: repairableSellPrices.keySet()) {
-			pricesSell.put(itemName, repairableSellPrices.get(itemName));
-		}
-		pricesSell.put("shuriken", 80);
-		pricesSell.put("płonący shuriken", 105);
+		final Map<String, Integer> pricesSell = new LinkedHashMap<String, Integer>() {{
+			put("miecz treningowy", swordPrice);
+			put("shuriken", 80);
+			put("płonący shuriken", 105);
+		}};
 
 		final ShopList shops = ShopList.get();
 		for (final String itemName: pricesSell.keySet()) {
@@ -129,15 +125,158 @@ public class DojoSellerNPC implements ZoneConfigurator {
 	}
 
 	/**
-	 * If players bring their worn training swords they can get them repaired for half the
+	 * If players bring their worn miecz treningowys they can get them repaired for half the
 	 * price of buying a new one.
 	 */
 	private void initRepairShop() {
-		final Map<String, Integer> repairPrices = new LinkedHashMap<>();
-		for (final String itemName: repairableSellPrices.keySet()) {
-			repairPrices.put(itemName, repairableSellPrices.get(itemName) / 2);
+		final List<String> repairPhrases = Arrays.asList("repair", "fix", "naprawa", "naprawić", "naprawiam");
+
+		final ChatCondition needsRepairCondition = new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return getUsedSwordsCount(player) > 0;
+			}
+		};
+
+		final ChatCondition canAffordRepairsCondition = new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return player.isEquipped("money", getRepairPrice(getUsedSwordsCount(player)));
+			}
+		};
+
+		final ChatAction sayRepairPriceAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final int usedSwords = getUsedSwordsCount(player);
+				final boolean multiple = usedSwords > 1;
+				final boolean multiple2 = usedSwords > 4;
+
+				final StringBuilder sb = new StringBuilder("Masz " + Integer.toString(usedSwords));
+				if (multiple) {
+					sb.append("zużyte miecze treningowe");
+				} else if (multiple2) {
+					sb.append("zużytych mieczy treningowych");
+				} else {
+					sb.append("zużyty miecz treningowy");
+				}
+				sb.append(". Mogę naprawić ");
+				if (multiple) {
+					sb.append("je wszystkie");
+				} else {
+					sb.append("to");
+				}
+				sb.append(" za " + Integer.toString(getRepairPrice(usedSwords)) + " money. Chciałbyś, żebym to zrobił?");
+
+				npc.say(sb.toString());
+			}
+		};
+
+		final ChatAction repairAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final int swordsCount = getUsedSwordsCount(player);
+				player.drop("money", getRepairPrice(swordsCount));
+
+				for (final Item sword: player.getAllEquipped("miecz treningowy")) {
+					final BreakableItem breakable = (BreakableItem) sword;
+					if (breakable.isUsed()) {
+						breakable.repair();
+					}
+				}
+
+				if (swordsCount > 1) {
+					npc.say("Gotowe! Twoje miecze treningowe wyglądają jak nowe");
+				} else {
+					npc.say("Gotowe! Twój miecz treningowy wygląda jak nowy.");
+				}
+
+				npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+			}
+		};
+
+
+		seller.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new NotCondition(new PlayerHasItemWithHimCondition("licencja na zabijanie")),
+				ConversationStates.ATTENDING,
+				"Tylko członkowie gildii skrytobójców mogą naprawić swój #'miecz treningowy'.",
+				null);
+
+		seller.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new AndCondition(
+						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
+						new NotCondition(needsRepairCondition)),
+				ConversationStates.ATTENDING,
+				"Nie masz żadnego #'miecza treningowego', który potrzebuje naprawy.",
+				null);
+
+		seller.add(ConversationStates.ATTENDING,
+				repairPhrases,
+				new AndCondition(
+						new PlayerHasItemWithHimCondition("licencja na zabijanie"),
+						needsRepairCondition),
+				ConversationStates.QUESTION_1,
+				null,
+				sayRepairPriceAction);
+
+		seller.add(ConversationStates.QUESTION_1,
+				ConversationPhrases.NO_MESSAGES,
+				null,
+				ConversationStates.ATTENDING,
+				"Okej. Daj mi znać jeśli będziesz czegoś jeszcze potrzebował.",
+				null);
+
+		seller.add(ConversationStates.QUESTION_1,
+				ConversationPhrases.YES_MESSAGES,
+				new NotCondition(needsRepairCondition),
+				ConversationStates.ATTENDING,
+				"Czyżbyś zgubił swój miecz?",
+				null);
+
+		seller.add(ConversationStates.QUESTION_1,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						needsRepairCondition,
+						new NotCondition(canAffordRepairsCondition)),
+				ConversationStates.ATTENDING,
+				"Przepraszam, ale nie masz wystarczającą ilość money.",
+				null);
+
+		seller.add(ConversationStates.QUESTION_1,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						needsRepairCondition,
+						canAffordRepairsCondition),
+				ConversationStates.ATTENDING,
+				null,
+				repairAction);
+	}
+
+	private void initDialogue() {
+		seller.addGreeting("Jeśli szukasz specjalnego sprzętu treningowego, to trafiłeś we właściwe miejsce.");
+		seller.addGoodbye();
+		seller.addOffer("Spójrz na moją tablicę, by sprawdzić co sprzedaję. Mogę również #naprawić tobie każdy zużyty #'miecz treningowy'.");
+		seller.addJob("Prowadzę sklep w dojo skrytobójców, gdzie sprzedaję sprzęt treningowy oraz #naprawiam każdy #'miecz treningowy'.");
+		seller.addQuest("Nie mam żadnego zadania dla ciebie do zrobienia. Mogę jedynie #naprawić i sprzedać sprzęt treningowy.");
+		seller.addHelp("Jeśli chcesz trenować w dojo, polecam zakupić #'miecz treningowy'.");
+		seller.addReply("miecz treningowy", "Moje miecze treningowe są lekkie oraz łatwe do machania nimi. I tylko dlatego,"
+				+ " że są wykonane z drewna, nie zaszkodzą ci, jeśli zostaniesz uderzony jednym.");
+	}
+
+	private int getUsedSwordsCount(final Player player) {
+		int count = 0;
+		for (final Item sword: player.getAllEquipped("miecz treningowy")) {
+			if (((BreakableItem) sword).isUsed()) {
+				count++;
+			}
 		}
 
-		repairerAdder.add(seller, repairPrices);
+		return count;
+	}
+
+	private int getRepairPrice(final int count) {
+		return count * (swordPrice / 2);
 	}
 }
