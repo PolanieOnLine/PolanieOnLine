@@ -211,7 +211,6 @@ public class PsychicNPC implements ZoneConfigurator {
 				new NPCEmoteAction("kładzie rękę na bestiariuszu i wpatruje się w kryształową kulę.", false).fire(null, null, raiser);
 				psychic.setCurrentState(ConversationStates.BUSY);
 				new PlaySoundAction("npc/mm_hmm_female-01").fire(null, null, raiser);
-				psychic.setDirection(Direction.LEFT); // face crystal ball
 
 				// create a pause before the NPC replies
 				TurnNotifier.get().notifyInSeconds(6, new TurnListener() {
@@ -234,7 +233,6 @@ public class PsychicNPC implements ZoneConfigurator {
 		};
 
 		/**
-		final List<String> readPhrases = Arrays.asList("read", "reading", "odczytać", "czytać", "czytanie", "poczytać", "przeczytać");
 
 		// player is not carrying a bestiary
 		psychic.add(ConversationStates.ATTENDING,
@@ -298,10 +296,9 @@ public class PsychicNPC implements ZoneConfigurator {
 				null,
 				null,
 				sayKillsAction);
+
 	}
 
-	/**
-	 * Calculates the fee for receiving a reading based on player & requested
 	 * creature levels.
 	 *
 	 * @param player
