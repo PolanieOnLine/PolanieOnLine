@@ -303,6 +303,8 @@ public class SolveRiddles extends AbstractQuest {
 				"Musisz rozwiązać zagadki, aby opuścić najgorętszy obszar w Faiumoni.",
 				false);
 		setRiddle("Grim Reaper");
+		// Reaper clone in the pit
+		setRiddle("Grim\u00A0Reaper");
 	}
 
 	@Override
