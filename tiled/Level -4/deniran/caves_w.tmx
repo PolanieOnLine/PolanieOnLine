@@ -54,8 +54,8 @@
  <tileset firstgid="341" name="naga" tilewidth="32" tileheight="32" tilecount="4" columns="4">
   <image source="../../tileset/logic/creature/naga.png" width="128" height="32"/>
  </tileset>
- <tileset firstgid="345" name="demon" tilewidth="32" tileheight="32" tilecount="7" columns="7">
-  <image source="../../tileset/logic/creature/demon.png" width="224" height="32"/>
+ <tileset firstgid="345" name="elemental" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/creature/elemental.png" width="256" height="64"/>
  </tileset>
  <layer name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -84,7 +84,7 @@
  </layer>
  <layer name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3csRGDMAwFULJZSJZIxf5jcBxdLgUBGYT13gAuKIQRXxoGAAAAAIC6Xo+Yc6agcwAAqOPpDgkAAHRCjxyASt7ee6npu0J+UVkdoK6POgIAwB9G98dwenAAACu9SoDj5E+BDGQCAbgb/78AAFbmUwCI4Dsb2pM9hr7J0QEAbKevTYTWd3D9MgAAAAAAzN8DAGeTqQAAAGBhVzVQkdoHcE92bQDANvKIAMAv9tsAGZyVX7abG2hN/wUAAIBvZve5imzlMZ4fAAB7ZZhTlY+A/mWoNT1TR6+lpwoAMWZ0jWQEAAABAA==
+   H4sIAAAAAAAAA+3cwRGCQAwFUOxMtAfHo/1XwTjcHA/oZiFs3itgDxxCCD87TQAAAAAAdd0uMee8gs4BAKCOqx4SACCFh74MmpmRA1DJ3XsvNXNXyC8qqwPU9VRHAAD4wax/DGcGBwCwMqsEaCd/CmQgEwjA2fj/BQCwsp8CQATf2dCf7DGMTY4OAGA7c20i9O7BzcsAAAAAALB/DwDsTaYCAACAN3dVAxWpfQDn5K4NANhGHhEA+Mb9NkAGe+WX3c0N9Gb+AgAAwCe7+xxFtrKN5wcAwL8y7KnKR8D4MtSakamjxzJTBYAYC48CCFoAAAEA
   </data>
  </layer>
  <layer name="collision" width="128" height="128" visible="0" opacity="0.51">
