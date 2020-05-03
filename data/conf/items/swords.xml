@@ -222,7 +222,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="58"/>
-			<rate value="6"/>
+			<rate value="10"/>
 			<lifesteal value="0.3"/>
 			<min_level value="300"/>
 		</attributes>
