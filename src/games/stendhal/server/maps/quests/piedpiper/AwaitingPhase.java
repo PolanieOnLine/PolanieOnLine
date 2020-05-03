@@ -12,20 +12,20 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.piedpiper;
 
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.GoToPosition;
+import games.stendhal.server.core.pathfinder.RPZonePath;
+import games.stendhal.server.core.pathfinder.MultiZonesFixedPath;
+import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.interaction.NPCChatting;
+import games.stendhal.server.entity.npc.interaction.NPCFollowing;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observer;
-
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.GoToPosition;
-import games.stendhal.server.core.pathfinder.MultiZonesFixedPath;
-import games.stendhal.server.core.pathfinder.RPZonePath;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.interaction.NPCChatting;
-import games.stendhal.server.entity.npc.interaction.NPCFollowing;
 
 /**
  * Implementation of Pied Piper's initial actions (coming, chatting, going to work place)
@@ -118,14 +118,14 @@ public class AwaitingPhase extends TPPQuest {
 		/**
 		 * constructor
 	 * @param timings - a pair of time parameters for phase timeouts
-	 */
+		 */
 	public AwaitingPhase(final Map<String, Integer> timings) {
 		super(timings);
 		minPhaseChangeTime = timings.get(AWAITING_TIME_MIN);
 		maxPhaseChangeTime = timings.get(AWAITING_TIME_MAX);
 		addConversations();
-		fillConversations();
-	}
+			fillConversations();
+		}
 
 
 	/**
@@ -134,7 +134,7 @@ public class AwaitingPhase extends TPPQuest {
 	@Override
 	public void prepare() {
 		createPiedPiper();
-	}
+			}
 
 
 	/**
@@ -146,7 +146,7 @@ public class AwaitingPhase extends TPPQuest {
 		fullpathin = PathsBuildHelper.getAdosIncomingPath();
 		fullpathout = PathsBuildHelper.getAdosTownHallBackwardPath();
 		leadNPC();
-	}
+		}
 
 
 	/**
@@ -170,7 +170,7 @@ public class AwaitingPhase extends TPPQuest {
 						new NPCFollowing(mainNPC, piedpiper,
 							new NPCChatting(piedpiper, mainNPC, conversations, explainations,
 								new GoToPosition(piedpiper, PathsBuildHelper.getAdosTownHallMiddlePoint(),
-									new MultiZonesFixedPath(piedpiper, fullpathout,
+								new MultiZonesFixedPath(piedpiper, fullpathout,
 										new PhaseSwitcher(this))))));
 		o.update(null, null);
 	}
@@ -244,4 +244,5 @@ public class AwaitingPhase extends TPPQuest {
 	public TPP_Phase getPhase() {
 		return TPP_Phase.TPP_AWAITING;
 	}
+
 }

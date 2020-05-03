@@ -13,7 +13,6 @@ package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TELEPORTTO;
-
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;

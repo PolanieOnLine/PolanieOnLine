@@ -87,3 +87,5 @@ public final class NPCChatting implements Observer, TurnListener {
 		TurnNotifier.get().notifyInSeconds(8, this);
 	}
 }
+
+

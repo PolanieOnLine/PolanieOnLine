@@ -140,7 +140,6 @@ public abstract class RPEntity extends GuidedEntity {
 	private final List<Entity> attackSources;
 	/** the enemy that is currently attacked by this entity. */
 	private RPEntity attackTarget;
-
 	/**
 	 * Maps each attacker to the sum of hitpoint loss it has caused to this
 	 * RPEntity.
@@ -596,7 +595,7 @@ public abstract class RPEntity extends GuidedEntity {
 			karmaMode = this.get(COMBAT_KARMA);
 		}
 
-		useKarma = false;
+ 		useKarma = false;
 		if (karmaMode == null || karmaMode.equals(KARMA_SETTINGS.get(1))) {
 			if (!(effectiveAttackerLevel - levelDifferenceToNotNeedKarmaAttacking > effectiveDefenderLevel)) {
 				useKarma = true;
@@ -605,7 +604,7 @@ public abstract class RPEntity extends GuidedEntity {
 			useKarma = true;
 		}
 
-		// using karma here increases damage to enemy
+ 		// using karma here increases damage to enemy
 		if (useKarma) {
 			attack += attack * useKarma(0.1);
 		}
@@ -783,16 +782,6 @@ public abstract class RPEntity extends GuidedEntity {
 		}
 	}
 
-	/**
-	 * Adjust entity's ATK XP by specified amount.
-	 *
-	 * @param xp
-	 * 		Amount to add.
-	 */
-	public void addAtkXP(final int xp) {
-		setAtkXP(getAtkXP() + xp);
-	}
-
 	public int getAtkXP() {
 		return atk_xp;
 	}
@@ -849,16 +838,6 @@ public abstract class RPEntity extends GuidedEntity {
 			setDefInternal(this.def + levels, notify);
 			new GameEvent(getName(), "def", Integer.toString(this.def)).raise();
 		}
-	}
-
-	/**
-	 * Adjust entity's DEF XP by specified amount.
-	 *
-	 * @param xp
-	 * 		Amount to add.
-	 */
-	public void addDefXP(final int xp) {
-		setDefXP(getDefXP() + xp);
 	}
 
 	public int getDefXP() {
@@ -953,16 +932,6 @@ public abstract class RPEntity extends GuidedEntity {
 			setRatkInternal(this.ratk + levels, notify);
 			new GameEvent(getName(), "ratk", Integer.toString(this.ratk)).raise();
 		}
-	}
-
-	/**
-	 * Adjust entity's RATK XP by specified amount.
-	 *
-	 * @param xp
-	 * 		Amount to add.
-	 */
-	public void addRatkXP(final int xp) {
-		setRatkXP(getRatkXP() + xp);
 	}
 
 	/**
@@ -1120,6 +1089,42 @@ public abstract class RPEntity extends GuidedEntity {
 	public void addBaseMana(final int newBaseMana) {
 		base_mana += newBaseMana;
 		put("base_mana", base_mana);
+	}
+
+	public void addatk_xp(final int newatk_xp) {
+		if (Integer.MAX_VALUE - this.atk_xp <= newatk_xp) {
+			return;
+		}
+		if (newatk_xp == 0) {
+			return;
+		}
+
+		// Increment atk_xp points. author: Szygolek
+		// Based on code already written by STH creators.
+		this.atk_xp += newatk_xp;
+		put ("atk_xp", atk_xp);
+		String[] params = { Integer.toString(newatk_xp) };
+
+		new GameEvent(getName(), "added atk_xp", params).raise();
+		new GameEvent(getName(), "atk_xp", String.valueOf(atk_xp)).raise();
+	}
+
+	public void adddef_xp(final int newdef_xp) {
+		if (Integer.MAX_VALUE - this.def_xp <= newdef_xp) {
+			return;
+		}
+		if (newdef_xp == 0) {
+			return;
+		}
+
+		// Increment def xp points. author: Szygolek
+		// Based on code already written by STH creators
+		this.def_xp += newdef_xp;
+		put ("def_xp", def_xp);
+		String[] params = { Integer.toString(newdef_xp) };
+
+		new GameEvent(getName(), "added def_xp", params).raise();
+		new GameEvent(getName(), "def_xp", String.valueOf(def_xp)).raise();
 	}
 
 	public void setLVCap(final int newLVCap) {
@@ -2149,6 +2154,10 @@ public abstract class RPEntity extends GuidedEntity {
 	 * @return true iff dropping the desired amount was successful.
 	 */
 	public boolean drop(final String name, final int amount) {
+		// first of all we check that this RPEntity has enough of the
+		// specified item. We need to do this to ensure an atomic transaction
+		// semantic later on because the required amount may be distributed
+		// to several stacks.
 		return drop(nameMatches(name), amount);
 	}
 
@@ -2215,6 +2224,42 @@ public abstract class RPEntity extends GuidedEntity {
 	}
 
 	/**
+	 * Removes a specific amount of an item with matching info string from
+	 * the RPEntity. The item can either be stackable or non-stackable.
+	 * The units can be distributed over different slots. If the RPEntity
+	 * doesn't have enough units of the item, doesn't remove anything.
+	 *
+	 * @param name
+	 * 		Name of item to remove.
+	 * @param infostring
+	 * 		Required item info string to match.
+	 * @param amount
+	 * 		Number of items to remove from entity.
+	 * @return
+	 * 		<code>true</code> if dropping the item(s) was successful.
+	 */
+	public boolean dropWithInfostring(final String name, final String infostring, final int amount) {
+		return drop(item -> (name.equals(item.getName()) && infostring.equals(item.getInfoString())), amount);
+	}
+
+ 	/**
+	 * Removes a single item with matching info string from the RPEntity.
+	 * The item can either be stackable or non-stackable. The units can
+	 * be distributed over different slots. If the RPEntity doesn't have
+	 * enough units of the item, doesn't remove anything.
+	 *
+	 * @param name
+	 * 		Name of item to remove.
+	 * @param infostring
+	 * 		Required item info string to match.
+	 * @return
+	 * 		<code>true</code> if dropping the item(s) was successful.
+	 */
+	public boolean dropWithInfostring(final String name, final String infostring) {
+		return dropWithInfostring(name, infostring, 1);
+	}
+
+	/**
 	 * Removes one unit of an item from the RPEntity. The item can either be
 	 * stackable or non-stackable. If the RPEntity doesn't have enough the item,
 	 * doesn't remove anything.
@@ -2238,42 +2283,6 @@ public abstract class RPEntity extends GuidedEntity {
 	 */
 	public boolean drop(final Item item) {
 		return drop(it -> item == it, 1);
-	}
-
-	/**
-	 * Removes a specific amount of an item with matching info string from
-	 * the RPEntity. The item can either be stackable or non-stackable.
-	 * The units can be distributed over different slots. If the RPEntity
-	 * doesn't have enough units of the item, doesn't remove anything.
-	 *
-	 * @param name
-	 * 		Name of item to remove.
-	 * @param infostring
-	 * 		Required item info string to match.
-	 * @param amount
-	 * 		Number of items to remove from entity.
-	 * @return
-	 * 		<code>true</code> if dropping the item(s) was successful.
-	 */
-	public boolean dropWithInfostring(final String name, final String infostring, final int amount) {
-		return drop(item -> (name.equals(item.getName()) && infostring.equals(item.getInfoString())), amount);
-	}
-
-	/**
-	 * Removes a single item with matching info string from the RPEntity.
-	 * The item can either be stackable or non-stackable. The units can
-	 * be distributed over different slots. If the RPEntity doesn't have
-	 * enough units of the item, doesn't remove anything.
-	 *
-	 * @param name
-	 * 		Name of item to remove.
-	 * @param infostring
-	 * 		Required item info string to match.
-	 * @return
-	 * 		<code>true</code> if dropping the item(s) was successful.
-	 */
-	public boolean dropWithInfostring(final String name, final String infostring) {
-		return dropWithInfostring(name, infostring, 1);
 	}
 
 	/**
@@ -2319,7 +2328,7 @@ public abstract class RPEntity extends GuidedEntity {
 		return getAllEquippedWithInfostring(name, infostring).size() >= amount;
 	}
 
-	/**
+ 	/**
 	 * Checks if entity carry a number of items with specified info string.
 	 *
 	 * @param name
@@ -2780,26 +2789,15 @@ public abstract class RPEntity extends GuidedEntity {
 		// does nothing in this implementation.
 	}
 
-	/**
-	 * Retrieves total ATK value of held weapons.
-	 */
 	public float getItemAtk() {
 		int weapon = 0;
 		int glove = 0;
 		int ring = 0;
 		int ringb = 0;
 		int shield = 0;
-
 		final List<Item> weapons = getWeapons();
 		for (final Item weaponItem : weapons) {
 			weapon += weaponItem.getAttack();
-		}
-
-		// calculate ammo when not using RATK stat
-		if (weapons.size() > 0) {
-			if (getWeapons().get(0).isOfClass("ranged")) {
-				weapon += getAmmoAtk();
-			}
 		}
 
 		if (hasGloves()) {
@@ -2826,31 +2824,24 @@ public abstract class RPEntity extends GuidedEntity {
 			final Item held = getWeapons().get(0);
 			ratk += held.getRangedAttack();
 
+			StackableItem ammunitionItem = null;
+			StackableItem magiaItem = null;
 			if (held.isOfClass("ranged")) {
-				ratk += getAmmoAtk();
+				ammunitionItem = getAmmunition();
+
+				if (ammunitionItem != null) {
+					ratk += ammunitionItem.getRangedAttack();
+				}
 			} else if (held.isOfClass("wand")) {
-				ratk += getAmmoAtk();
+				magiaItem = getMagia();
+
+				if (magiaItem != null) {
+					ratk += magiaItem.getRangedAttack();
+				}
 			}
 		}
 
 		return ratk;
-	}
-
-	/**
-	 * Retrieves ATK or RATK (depending on testing.combat system property) value of equipped ammunition.
-	 */
-	private float getAmmoAtk() {
-		float ammo = 0;
-		float magicammo = 0;
-
-		final StackableItem ammoItem = getAmmunition();
-		final StackableItem magiaItem = getMagia();
-		if (ammoItem != null && magiaItem != null) {
-			ammo = ammoItem.getRangedAttack();
-			magicammo = magiaItem.getRangedAttack();
-		}
-
-		return ammo, magicammo;
 	}
 
 	public float getItemDef() {
@@ -3162,7 +3153,6 @@ public abstract class RPEntity extends GuidedEntity {
 			final double karmaEffect = roll * karmaMultiplier * 2.0;
 			roll -= (int) karmaEffect;
 		}
-
 		int risk = calculateRiskForCanHit(roll, defenderDEF, attackerATK);
 
 		if (logger.isDebugEnabled() || Testing.DEBUG) {
@@ -3261,13 +3251,13 @@ public abstract class RPEntity extends GuidedEntity {
 			&& (((getDamageType() == getRangedDamageType()) || squaredDistance(defender) > 0));
 
 		Nature nature;
-		final float itemAtk;
+		float itemAtk;
 		if (isRanged) {
 			nature = getRangedDamageType();
 			itemAtk = getItemRatk();
 		} else {
 			nature = getDamageType();
-			itemAtk = getItemAtk();
+			itemAtk = getItemRatk();
 		}
 
 		// Try to inflict a status effect

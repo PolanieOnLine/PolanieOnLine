@@ -33,7 +33,7 @@ public enum DaylightPhase {
 	DAY ("day"),
 
 	/** the sun is setting */
-	SUNSET (0xc0a080, "sunset"),
+	SUNSET (0xc0a080, "unset"),
 
 	/** early night */
 	DUSK (0x774590, "night");

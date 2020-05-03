@@ -41,6 +41,8 @@ public final class CollectRequestedItemsAction implements ChatAction {
 	private final ChatAction toExecuteOnCompletion;
 	private final String questSlot;
 	private final ConversationStates stateAfterCompletion;
+	private final Integer index;
+	private final boolean commaString;
 
 	/**
 	 * create a new CollectRequestedItemsAction
@@ -52,13 +54,58 @@ public final class CollectRequestedItemsAction implements ChatAction {
 	 * @param completionAction action to execute after the complete list was brought
 	 * @param stateAfterCompletion state to change to after completion
 	 */
-	public CollectRequestedItemsAction(String itemName, String quest, String questionForMore, String alreadyBrought, ChatAction completionAction, ConversationStates stateAfterCompletion) {
+	public CollectRequestedItemsAction(final String itemName, final String quest, final String questionForMore, final String alreadyBrought,
+			final ChatAction completionAction, final ConversationStates stateAfterCompletion) {
 		this.itemName = checkNotNull(itemName);
 		this.questSlot = checkNotNull(quest);
+		this.index = null;
 		this.questionForMore = checkNotNull(questionForMore);
 		this.alreadyBrought = checkNotNull(alreadyBrought);
 		this.toExecuteOnCompletion = checkNotNull(completionAction);
 		this.stateAfterCompletion = checkNotNull(stateAfterCompletion);
+		this.commaString = false;
+	}
+
+	public CollectRequestedItemsAction(final String itemName, final String quest, final int index, final String questionForMore,
+			final String alreadyBrought, final ChatAction completionAction, final ConversationStates stateAfterCompletion) {
+		this.itemName = checkNotNull(itemName);
+		this.questSlot = checkNotNull(quest);
+		this.index = checkNotNull(index);
+		this.questionForMore = checkNotNull(questionForMore);
+		this.alreadyBrought = checkNotNull(alreadyBrought);
+		this.toExecuteOnCompletion = checkNotNull(completionAction);
+		this.stateAfterCompletion = checkNotNull(stateAfterCompletion);
+		this.commaString = false;
+	}
+
+	/*
+	 * Hack to get items from quest state index using comma-separated string.
+	 */
+	public CollectRequestedItemsAction(final String itemName, final String quest, final boolean commaString, final String questionForMore,
+			final String alreadyBrought, final ChatAction completionAction, final ConversationStates stateAfterCompletion) {
+		this.itemName = checkNotNull(itemName);
+		this.questSlot = checkNotNull(quest);
+		this.index = null;
+		this.questionForMore = checkNotNull(questionForMore);
+		this.alreadyBrought = checkNotNull(alreadyBrought);
+		this.toExecuteOnCompletion = checkNotNull(completionAction);
+		this.stateAfterCompletion = checkNotNull(stateAfterCompletion);
+		this.commaString = commaString;
+	}
+
+	/*
+	 * Hack to get items from quest state index using comma-separated string.
+	 */
+	public CollectRequestedItemsAction(final String itemName, final String quest, final boolean commaString, final int index, final String questionForMore,
+			String alreadyBrought, final ChatAction completionAction, final ConversationStates stateAfterCompletion) {
+		this.itemName = checkNotNull(itemName);
+		this.questSlot = checkNotNull(quest);
+		this.index = index;
+		this.questionForMore = checkNotNull(questionForMore);
+		this.alreadyBrought = checkNotNull(alreadyBrought);
+		this.toExecuteOnCompletion = checkNotNull(completionAction);
+		this.stateAfterCompletion = checkNotNull(stateAfterCompletion);
+		this.commaString = commaString;
 	}
 
 	@Override
@@ -98,7 +145,12 @@ public final class CollectRequestedItemsAction implements ChatAction {
 		// parse the quest state into a list of still missing items
 		final ItemCollection itemsTodo = new ItemCollection();
 
-		itemsTodo.addFromQuestStateString(player.getQuest(questSlot));
+		// FIXME: Hack to get items from quest state index using comma-separated string.
+		if (!commaString) {
+			itemsTodo.addFromQuestStateString(player.getQuest(questSlot));
+		} else {
+			itemsTodo.addFromString(player.getQuest(questSlot, index));
+		}
 
 		if (player.drop(itemName, itemCount)) {
 			if (itemsTodo.removeItem(itemName, itemCount)) {
@@ -133,7 +185,11 @@ public final class CollectRequestedItemsAction implements ChatAction {
 
 		 // update the quest state if some items are handed over
 		if (result) {
-			player.setQuest(questSlot, itemsTodo.toStringForQuestState());
+			if (index == null ) {
+				player.setQuest(questSlot, itemsTodo.toStringForQuestState(commaString));
+			} else {
+				player.setQuest(questSlot, index, itemsTodo.toStringForQuestState(commaString));
+			}
 		}
 
 		return result;
@@ -148,7 +204,11 @@ public final class CollectRequestedItemsAction implements ChatAction {
 	ItemCollection getMissingItems(final Player player) {
 		final ItemCollection missingItems = new ItemCollection();
 
-		missingItems.addFromQuestStateString(player.getQuest(questSlot));
+		if (index == null) {
+			missingItems.addFromQuestStateString(player.getQuest(questSlot), 0, commaString);
+		} else {
+			missingItems.addFromQuestStateString(player.getQuest(questSlot), index, commaString);
+		}
 
 		return missingItems;
 	}
@@ -181,5 +241,4 @@ public final class CollectRequestedItemsAction implements ChatAction {
 	public String toString() {
 		return "CollectRequestedItemsAction < state on completion: "+stateAfterCompletion.toString()+", execute on completion: "+toExecuteOnCompletion.toString()+">";
 	}
-
 }

@@ -65,7 +65,7 @@ public abstract class UpdateConverter {
 			"elder duergar", "black duergar", "elder giant",
 			"chaos sorcerer"
 	);
-
+	
 	private static final HashMap<String, String> ZONE_MAPPING = new HashMap<>();
 	static {
 		ZONE_MAPPING.put("0_deniran_n_w2", "0_deniran_forest_n2_w");
@@ -105,9 +105,11 @@ public abstract class UpdateConverter {
 		ZONE_MAPPING.put("-1_deniran_caves_wall", "-1_deniran_caves_e2");
 		ZONE_MAPPING.put("-1_deniran_caves_wall_s", "-1_deniran_caves_s_e2");
 		ZONE_MAPPING.put("-2_deniran_lost_caves_nw2", "-2_deniran_lost_caves_n2_w");
+		ZONE_MAPPING.put("-2_deniran_lost_caves_nw", "-2_deniran_lost_caves_n2");
 		ZONE_MAPPING.put("-2_deniran_caves_w", "-2_deniran_caves_w");
 		ZONE_MAPPING.put("-2_deniran_caves_sw", "-2_deniran_caves_sw");
-		ZONE_MAPPING.put("-2_deniran_lost_caves", "-2_deniran_lost_caves_n");
+		ZONE_MAPPING.put("-2_deniran_lost_caves_n2", "-2_deniran_lost_caves_n2");
+		ZONE_MAPPING.put("-2_deniran_lost_caves_n", "-2_deniran_lost_caves");
 		ZONE_MAPPING.put("-2_deniran_caves_deniran", "-2_deniran_caves");
 		ZONE_MAPPING.put("-2_deniran_caves_s", "-2_deniran_caves_s");
 		ZONE_MAPPING.put("-2_deniran_lost_caves_ne2", "-2_deniran_lost_caves_n2_e");
@@ -278,7 +280,6 @@ public abstract class UpdateConverter {
     	// Port from 0.44 to 0.50: cloak, bank
     	// Port from 0.57 to 0.58: bank_ados, bank_fado
     	// Port from 0.58 to ?: bank_nalwor, keyring, finger
-    	// Port from 1.29 to 1.30: bank_deniran
     	for (final String slotName : slotsNormal) {
     		if (!object.hasSlot(slotName)) {
     			object.addSlot(new PlayerSlot(slotName));
@@ -376,16 +377,11 @@ public abstract class UpdateConverter {
 		}
 		object.remove("buddies", "db_id");
 
-		//port to 0.86 & 1.32: port keymap to feature map, karma_indicator as feature
+		//port to 0.86: port keymap to feature map, karma_indicator as feature
 		if (object.hasSlot("!features")) {
 			if (KeyedSlotUtil.getKeyedSlot(object, "!features", "keyring") != null) {
 				object.put("features", "keyring", "");
 			}
-			/*
-			if (KeyedSlotUtil.getKeyedSlot(object, "!features", "portfolio") != null) {
-				object.put("features", "portfolio", "");
-			}
-			*/
 			object.removeSlot("!features");
 		}
 		if (KeyedSlotUtil.getKeyedSlot(object, "!quests", "learn_karma") != null) {

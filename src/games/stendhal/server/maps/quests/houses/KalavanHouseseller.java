@@ -12,10 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.houses;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.JokerExprMatcher;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -29,6 +25,10 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TextHasNumberCondition;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 final class KalavanHouseseller extends HouseSellerNPCBase {
 	/** Cost to buy house in kalavan. */
 	private static final int COST_KALAVAN = 100000;
@@ -40,43 +40,43 @@ final class KalavanHouseseller extends HouseSellerNPCBase {
 	}
 
 	private void init() {
-		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy.
-		// For definiteness we will check these conditions in a set order.
+		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy. 
+		// For definiteness we will check these conditions in a set order. 
 		// So then the NPC doesn't have to choose which reason to reject the player for (appears as a WARN from engine if he has to choose)
 
 		// player has not done required quest, hasn't got a house at all
+add(ConversationStates.ATTENDING, 
 		Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-add(ConversationStates.ATTENDING,
 		new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT), new QuestNotCompletedCondition(KalavanHouseseller.PRINCESS_QUEST_SLOT)),
+		ConversationStates.ATTENDING, 
 			"Jak już wiesz koszt nowego domu wynosi "
-		ConversationStates.ATTENDING,
 		+ getCost()
 		+ " money. Ale obawiam się, że nie mogę Ci sprzedać domu dopóki twoje obywatelstwo nie zostanie nadane przez Króla, którego znajdziesz "
 		+ " w zamku Kalavan na północ stąd. Spróbuj najpierw porozmawiać z jego córką, ona jest ... przyjazna.",
 			null);
 
-// player is not old enough but they have doen princess quest
+// player is not old enough but they have doen princess quest 
 // (don't need to check if they have a house, they can't as they're not old enough)
+add(ConversationStates.ATTENDING, 
 		Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-add(ConversationStates.ATTENDING,
 		new AndCondition(
 							 new QuestCompletedCondition(KalavanHouseseller.PRINCESS_QUEST_SLOT),
 							 new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE))),
+		ConversationStates.ATTENDING, 
 		"Koszt nowego domu wynosi "
-		ConversationStates.ATTENDING,
 		+ getCost()
 		+ "money. Ale obawiam się, że nie mogę Ci jeszcze zaufać w kwestii kupna domu. Wróć gdy spędzisz tutaj ponad " 
 		+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " hours on Faiumoni.",
 		null);
 
 // player is eligible to buy a house
+		add(ConversationStates.ATTENDING, 
 		Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-		add(ConversationStates.ATTENDING,
-		new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-						 new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+		new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT), 
+						 new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
 							 new QuestCompletedCondition(KalavanHouseseller.PRINCESS_QUEST_SLOT)),
+		ConversationStates.QUEST_OFFERED, 
 		"Jak już wiesz koszt nowego domu wynosi "
-		ConversationStates.QUEST_OFFERED,
 		+ getCost()
 		+ " money. Prócz tego musisz zapłacić podatek od nieruchomości w wysokości " + HouseTax.BASE_TAX
 		+ " money, miesięcznie. Możesz mnie się zapytać, który dom jest #dostępny, a jeżeli masz już jakiś na oku to podaj mi jego numer.",
@@ -100,7 +100,7 @@ setDescription("Oto mężczyzna wyglądający na bystrą osobę.");
 setEntityClass("estateagentnpc");
 setPosition(55, 94);
 initHP(100);
-
+		
 	}
 
 	@Override

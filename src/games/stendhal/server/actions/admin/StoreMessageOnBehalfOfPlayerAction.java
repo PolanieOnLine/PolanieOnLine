@@ -13,7 +13,6 @@ package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TEXT;
-
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -34,7 +33,7 @@ import marauroa.server.db.command.ResultHandle;
 public class StoreMessageOnBehalfOfPlayerAction extends AdministrationAction implements TurnListener  {
 
 	private ResultHandle handle = new ResultHandle();
-
+	
 	public static void register() {
 		CommandCenter.register("storemessageonbehalfofplayer", new StoreMessageOnBehalfOfPlayerAction(), 999);
 	}
@@ -43,24 +42,24 @@ public class StoreMessageOnBehalfOfPlayerAction extends AdministrationAction imp
 	public void perform(final Player player, final RPAction action) {
 
 		if (action.has("source") && action.has(TARGET) && action.has(TEXT)) {
-
+			
 			String message = action.get(TEXT);
-
+			
 			DBCommand command = new StoreMessageCommand(action.get("source"), action.get(TARGET), message, "P");
 			DBCommandQueue.get().enqueueAndAwaitResult(command, handle);
 			TurnNotifier.get().notifyInTurns(0, new TurnListenerDecorator(this));
 		}
 	}
-
+	
 	/**
 	 * Completes handling the store message action
-	 *
+	 * 
 	 * @param currentTurn ignored
 	 */
 	@Override
 	public void onTurnReached(int currentTurn) {
 		StoreMessageCommand checkcommand = DBCommandQueue.get().getOneResult(StoreMessageCommand.class, handle);
-
+		
 		if (checkcommand == null) {
 			TurnNotifier.get().notifyInTurns(0, new TurnListenerDecorator(this));
 			return;
@@ -69,7 +68,7 @@ public class StoreMessageOnBehalfOfPlayerAction extends AdministrationAction imp
 		boolean characterExists = checkcommand.targetCharacterExists();
 		String source = checkcommand.getSource();
 		String target = checkcommand.getTarget();
-
+		
 		final Player sourceplayer = SingletonRepository.getRuleProcessor().getPlayer(source);
 		if (sourceplayer == null) {
 			return;
@@ -86,8 +85,8 @@ public class StoreMessageOnBehalfOfPlayerAction extends AdministrationAction imp
 		}
 
 		sourceplayer.sendPrivateText("postman powiedział tobie: Wiadomość została zaakceptowana do dostarczenia");
-
+		
 		return;
-	}
-
+	} 
+		
 }

@@ -12,7 +12,6 @@
 package games.stendhal.server.actions.buddy;
 
 import static games.stendhal.common.constants.Actions.REASON;
-
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.entity.player.GagManager;
 import games.stendhal.server.entity.player.Jail;
@@ -28,7 +27,7 @@ public class GrumpyAction implements ActionListener {
 
 	/**
 	 * Handle a Grumpy action.
-	 *
+	 * 
 	 * @param player
 	 *            The player.
 	 * @param action

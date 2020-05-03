@@ -12,14 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.Direction;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -50,6 +42,14 @@ import games.stendhal.server.maps.deathmatch.DoneAction;
 import games.stendhal.server.maps.deathmatch.LeaveAction;
 import games.stendhal.server.maps.deathmatch.StartAction;
 import games.stendhal.server.util.Area;
+
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * Creates the Ados Deathmatch Game.
@@ -205,7 +205,7 @@ public class AdosDeathmatch extends AbstractQuest {
 				// reward the player
 				add(ConversationStates.ATTENDING, Arrays.asList("victory",
 						"done", "yay", "zwycięstwo", "zrobione"), null, ConversationStates.ATTENDING,
-						null, new DoneAction(deathmatchInfo));
+						null, new DoneAction());
 
 				// 'leave' command will send the victorious player home
 				add(ConversationStates.ATTENDING, Arrays
@@ -278,7 +278,7 @@ public class AdosDeathmatch extends AbstractQuest {
 				 ConversationStates.QUESTION_1, null,
 				 new ChatAction() {
 					 @Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+					 public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 						 final List<Player> dmplayers = arena.getPlayers();
 						 final List<String> dmplayernames = new LinkedList<String>();
 						 for (Player dmplayer : dmplayers) {

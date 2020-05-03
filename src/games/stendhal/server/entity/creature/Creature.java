@@ -296,39 +296,33 @@ public class Creature extends NPC {
 	 * clearDropItemList first!
 	 *
 	 * @param clazz
-	 * 		The creature's class, e.g. "golem".
+	 *            The creature's class, e.g. "golem"
 	 * @param subclass
-	 * 		The creature's subclass, e.g. "wooden_golem".
+	 *            The creature's subclass, e.g. "wooden_golem"
 	 * @param name
-	 * 		Typically the same as clazz, except for NPCs.
+	 *            Typically the same as clazz, except for NPCs
 	 * @param hp
-	 * 		The creature's maximum health points.
-	 * @param atk
-	 * 		The creature's attack strength.
-	 * @param ratk
-	 * 		The creature's ranged attack strength.
-	 * @param def
-	 * 		The creature's attack strength.
+	 *            The creature's maximum health points
+	 * @param attack
+	 *            The creature's attack strength
+	 * @param defense
+	 *            The creature's attack strength
 	 * @param level
-	 * 		The creature's level.
+	 *            The creature's level
 	 * @param xp
-	 * 		The creature's experience.
+	 *            The creature's experience
 	 * @param width
-	 * 		The creature's width, in squares.
+	 *            The creature's width, in squares
 	 * @param height
-	 * 		The creature's height, in squares.
+	 *            The creature's height, in squares
 	 * @param baseSpeed
-	 * 		The normal speed at which the creature moves.
+	 * @param visibility 
+	 * @param resistance 
 	 * @param dropItems
-	 * 		List of items that the creature drops on death.
 	 * @param aiProfiles
-	 * 		Creature's behaviours.
-	 * @param noises.
-	 * 		Sound effects used by the client when player is near creature.
-	 * @param respawnTime
-	 * 		How often creature respawns, in turns.
+	 * @param noises
+	 * @param respawnTime in turns
 	 * @param description
-	 * 		String description displayed when player examines creature.
 	 */
 	public Creature(final String clazz, final String subclass, final String name, final int hp,
 			final int atk, final int ratk, final int def, final int level, final int xp, final int width, final int height,
@@ -944,10 +938,10 @@ public class Creature extends NPC {
 				if (strategy.hasValidTarget(this)) {
 					this.setBusy();
 					// this event duration usually is only one turn
-					this.makeNoiseChance(50, "target");
+					this.makeNoiseChance(100, "target");
 				} else {
 				 	this.setIdle();
-					this.makeNoiseChance(100, "idle");
+					this.makeNoiseChance(120, "idle");
 				}
 			}
 			maybeMakeSound();

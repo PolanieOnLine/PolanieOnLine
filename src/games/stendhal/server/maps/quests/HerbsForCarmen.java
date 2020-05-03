@@ -12,11 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -43,28 +38,33 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.ItemCollection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 /**
  * QUEST: Herbs For Carmen
- *
+ * 
  * PARTICIPANTS:
  * <ul>
  * <li>Carmen (the healer in Semos)</li>
  * </ul>
- *
+ * 
  * STEPS:
  * <ul>
  * <li>Carmen introduces herself and asks for some items to help her heal people.</li>
  * <li>You collect the items.</li>
  * <li>Carmen sees yours items, asks for them then thanks you.</li>
  * </ul>
- *
+ * 
  * REWARD:
  * <ul>
  * <li>500 XP</li>
  * <li>2 antidote</li>
  * <li>Karma: 15</li>
  * </ul>
- *
+ * 
  * REPETITIONS:
  * <ul>
  * <li>None</li>
@@ -108,14 +108,14 @@ public class HerbsForCarmen extends AbstractQuest {
 					new LevelGreaterThanCondition(2),
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new NotCondition(new QuestInStateCondition(QUEST_SLOT,"rejected"))),
+			ConversationStates.QUESTION_1, 
 			"Hej ty! Tak, do ciebie mówię! Znasz mnie?", null);
-			ConversationStates.QUESTION_1,
 
-		npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING, 
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT,"rejected"),
+			ConversationStates.QUEST_OFFERED, 
 			"Hej, chcesz mi jakoś pomóc?", null);
-			ConversationStates.QUEST_OFFERED,
 
 		npc.add(
 			ConversationStates.QUESTION_1,
@@ -194,7 +194,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 	private void prepareBringingStep() {
 		final SpeakerNPC npc = npcs.get("Carmen");
-
+	
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
@@ -207,11 +207,11 @@ public class HerbsForCarmen extends AbstractQuest {
 				ConversationStates.QUESTION_2, null,
 				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz coś ze sobą?"));
 
-		npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING, 
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_2, 
 			null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz to?"));		
-			ConversationStates.QUESTION_2,
 
 		/* player says he has a required item with him (says yes) */
 		npc.add(ConversationStates.QUESTION_2,
@@ -269,15 +269,15 @@ public class HerbsForCarmen extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Ok, i daj mi znać jeśli mogę #pomóc w czymkolwiek innym.", null);
 
-		/* says quest and quest can't be started nor is active*/
-		npc.add(ConversationStates.ATTENDING,
+    /* says quest and quest can't be started nor is active*/
+		npc.add(ConversationStates.ATTENDING, 
 				ConversationPhrases.QUEST_MESSAGES,
 				null,
+			    ConversationStates.ATTENDING, 
 			    "Nic nie potrzebuję teraz, dziękuję.",
-			    ConversationStates.ATTENDING,
 			    null);
 	}
-
+	
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -299,15 +299,15 @@ public class HerbsForCarmen extends AbstractQuest {
 	}
 
 	public String getTitle() {
+		
 		return "Zioła dla Carmen";
-
 	}
-
+	
 	@Override
 	public int getMinLevel() {
 		return 3;
 	}
-
+	
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;

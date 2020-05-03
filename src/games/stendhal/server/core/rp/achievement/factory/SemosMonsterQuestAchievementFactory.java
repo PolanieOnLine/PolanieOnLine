@@ -40,7 +40,7 @@ public class SemosMonsterQuestAchievementFactory extends AbstractAchievementFact
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> questAchievements = new LinkedList<Achievement>();
-
+		//daily monster quest achievements
 		questAchievements.add(createAchievement(
 				ID_PROTECTOR, "Ochroniaż Semos", "Ukończył codzienne zadanie na potwory 10 razy",
 				Achievement.EASY_BASE_SCORE, true,

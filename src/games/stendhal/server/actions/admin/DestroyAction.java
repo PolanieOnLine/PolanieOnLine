@@ -51,14 +51,14 @@ class DestroyAction extends AdministrationAction {
 			player.sendPrivateText(text);
 			return;
 		}
-
+		
 		String clazz = inspected.getRPClass().getName();
 		String name = "";
-
+		 
 		if (inspected.has(NAME)) {
 			name = inspected.get(NAME);
-		}
-
+		} 
+		
 		if (inspected.isContained()) {
 			RPObject slot = inspected.getContainer();
 
@@ -121,7 +121,7 @@ class DestroyAction extends AdministrationAction {
 				if (inspected instanceof Creature) {
 					// *destroyed creatures should not drop items
 					((Creature) inspected).clearDropItemList();
-				}
+				} 
 				((RPEntity) inspected).onDead(player);
 			} else if ((inspected instanceof Item) || (inspected instanceof FlowerGrower) || (inspected instanceof Blood) || (inspected instanceof Corpse)) {
 				// items should be added to itemlog as well, to help tracing problems

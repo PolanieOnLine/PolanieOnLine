@@ -337,6 +337,13 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
+	 * Retrieves default attack rate for items.
+	 */
+	public static int getDefaultAttackRate() {
+		return DEFAULT_ATTACK_RATE;
+	}
+
+	/**
 	 * Returns turn delay for this item's attack.
 	 *
 	 * @param meleeDistance
@@ -349,15 +356,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (meleeDistance && has("range")) {
 			return DEFAULT_ATTACK_RATE;
 		}
-
-		return getAttackRate();
-	}
-
-	/**
-	 * Retrieves default attack rate for items.
-	 */
-	public static int getDefaultAttackRate() {
-		return DEFAULT_ATTACK_RATE;
+ 		return getAttackRate();
 	}
 
 	/**
@@ -769,12 +768,6 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (has("ratk")) {
 			stats.append(" STR: ");
 			stats.append(get("ratk"));
-			// Show only special types
-			if (getDamageType() != Nature.CUT) {
-				stats.append(" [");
-				stats.append(getDamageType());
-				stats.append("]");
-			}
 		}
 		if (has("rate")) {
 			stats.append(" WAGA: ");

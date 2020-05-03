@@ -12,23 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.log4j.Logger;
-import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
-
 import games.stendhal.common.Direction;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
@@ -47,24 +30,41 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.log4j.Logger;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
  * QUEST: Quest to solve a riddle to leave hell
  * <p>
- *
+ * 
  * PARTICIPANTS: <ul><li>Grim Reaper</ul>
- *
- *
- * STEPS: <ul><li> Reaper sets you a riddle
+ * 
+ * 
+ * STEPS: <ul><li> Reaper sets you a riddle 
  * <li> Player tries to answer
- * <li> Reaper compares answer to configuration file on server
+ * <li> Reaper compares answer to configuration file on server 
  * </ul>
- *
- *
+ * 
+ * 
  * REWARD: <ul><li>100 XP - Leaving hell</ul>
- *
+ * 
  * REPETITIONS: <ul><li>Any time you wish to leave hell, but if you ask for a riddle when you didn't solve the previous
  *  one yet, nor asked the other NPC to let you leave with karma loss, then you have to solve same one still</ul>
- *
+ * 
  * @author kymara
  */
 
@@ -88,7 +88,7 @@ public class SolveRiddles extends AbstractQuest {
 
 		/**
 		 * Check if an answer matches the riddle.
-		 *
+		 * 
 		 * @param riddle The riddle to be answered
 		 * @param sentence The answer given by the player
 		 * @return <code>true</code> iff the answer is correct
@@ -115,7 +115,7 @@ public class SolveRiddles extends AbstractQuest {
 
 		/**
 		 * Get a random riddle.
-		 *
+		 * 
 		 * @return A random ridde
 		 */
 		String getRiddle() {
@@ -225,9 +225,9 @@ public class SolveRiddles extends AbstractQuest {
 		return QUEST_SLOT;
 	}
 
-	private void setRiddle(String npcName) {
-		final SpeakerNPC reaper = npcs.get(npcName);
-
+	private void setRiddle() {
+		final SpeakerNPC reaper = npcs.get("Grim Reaper");
+		
 		// player has no unsolved riddle active
 		reaper.add(ConversationStates.ATTENDING,
 				Arrays.asList("leave", "opuść", "wyjdź", "opuścić"), 
@@ -243,7 +243,7 @@ public class SolveRiddles extends AbstractQuest {
 						player.setQuest(QUEST_SLOT, riddle);
 					}
 				});
-
+		
 		// player already was set a riddle he couldn't solve
 		reaper.add(ConversationStates.ATTENDING,
 				Arrays.asList("leave", "opuść", "wyjdź", "opuścić"), 
@@ -257,15 +257,15 @@ public class SolveRiddles extends AbstractQuest {
 					npc.say("Musisz rozwiązać zadanie, które dostałeś wcześniej: " + riddle);
 				}
 		});
-
+		
 		reaper.add(ConversationStates.QUESTION_1, "", null,
 			ConversationStates.QUESTION_1, null,
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final String riddle = player.getQuest(QUEST_SLOT);
-					final String triggerText = sentence.getTriggerExpression().getNormalized();
-
+          final String triggerText = sentence.getTriggerExpression().getNormalized();
+          
 					if (riddles.matches(riddle, sentence)) {
 						final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_afterlife");
 						player.teleport(zone, 31, 23, Direction.UP, player);
@@ -302,9 +302,7 @@ public class SolveRiddles extends AbstractQuest {
 				"Rozwiąż Zagadki",
 				"Musisz rozwiązać zagadki, aby opuścić najgorętszy obszar w Faiumoni.",
 				false);
-		setRiddle("Grim Reaper");
-		// Reaper clone in the pit
-		setRiddle("Grim\u00A0Reaper");
+		setRiddle();
 	}
 
 	@Override
@@ -312,7 +310,7 @@ public class SolveRiddles extends AbstractQuest {
 		return "SolveRiddles";
 	}
 
-	// there is a minimum level requirement to get into hell - this quest is in hell
+		// there is a minimum level requirement to get into hell - this quest is in hell
 	@Override
 	public int getMinLevel() {
 		return 200;
@@ -322,7 +320,7 @@ public class SolveRiddles extends AbstractQuest {
 	public boolean isVisibleOnQuestStatus() {
 		return false;
 	}
-
+	
 	@Override
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
@@ -332,7 +330,7 @@ public class SolveRiddles extends AbstractQuest {
 	public String getNPCName() {
 		return "Grim Reaper";
 	}
-
+	
 	@Override
 	public String getRegion() {
 		return Region.HELL;

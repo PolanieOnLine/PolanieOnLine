@@ -14,7 +14,6 @@ package games.stendhal.server.actions.admin;
 import static games.stendhal.common.constants.Actions.ALTERCREATURE;
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TEXT;
-
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
@@ -85,7 +84,7 @@ class AlterCreatureAction extends AdministrationAction {
 	/**
 	 * A helper for parsing integer values used for stats that can actually only
 	 * fit a short. Sends an error message to the player if needed.
-	 *
+	 * 
 	 * @param s string to be parsed
 	 * @param def default value
 	 * @param desc name of the stat

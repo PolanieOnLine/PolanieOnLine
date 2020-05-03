@@ -163,10 +163,6 @@ public class PlayerTransformer implements Transformer {
 				final PlayerSlot newSlot;
 				if (slotName.equals("keyring")) {
 					newSlot = new PlayerKeyringSlot(slotName);
-				/*
-				} else if (slotName.equals("portfolio")) {
-					newSlot = new PlayerPortfolioSlot(slotName);
-				*/
 				} else if (slotName.equals("trade")) {
 					newSlot = new PlayerTradeSlot(slotName);
 				} else {

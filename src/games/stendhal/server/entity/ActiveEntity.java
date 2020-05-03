@@ -49,8 +49,6 @@ public abstract class ActiveEntity extends Entity {
 
 	private int stepsTaken;
 
-	/** Allows entity to walk through collision areas */
-
 	/**
 	 * Create an active entity.
 	 */

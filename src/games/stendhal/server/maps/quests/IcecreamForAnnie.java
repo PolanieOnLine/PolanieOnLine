@@ -12,10 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -44,6 +40,10 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Quest to buy ice cream for a little girl.
@@ -328,7 +328,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 		return "IcecreamForAnnie";
 	}
 
-	// Getting to Kalavan is not too feasible till this level
+		// Getting to Kalavan is not too feasible till this level
 	@Override
 	public int getMinLevel() {
 		return 10;

@@ -15,10 +15,10 @@ import static games.stendhal.common.constants.Actions.CREATURE;
 import static games.stendhal.common.constants.Actions.SUMMON;
 import static games.stendhal.common.constants.Actions.X;
 import static games.stendhal.common.constants.Actions.Y;
-
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.config.annotations.ServerModeUtil;
+//import games.stendhal.server.core.config.annotations.ServerModeUtil;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -26,12 +26,12 @@ import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.BabyDragon;
+import games.stendhal.server.entity.creature.PurpleDragon;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
-import games.stendhal.server.entity.creature.PurpleDragon;
 import games.stendhal.server.entity.creature.RaidCreature;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.item.StackableItem;
@@ -61,22 +61,22 @@ public class SummonAction extends AdministrationAction {
 			this.player = player;
 		}
 
-		boolean isSearching() {
-			return searching;
-		}
+        boolean isSearching() {
+	        return searching;
+        }
 
 		abstract void found(String type, Entity entity);
 		abstract void error(String message);
 
 		/**
 		 * Create the named entity (creature, pet or sheep) of type 'type'.
-		 *
+		 * 
 		 * @param type
 		 */
 		private void createEntity(final String type) {
-			final Entity entity = manager.getEntity(type);
+		    final Entity entity = manager.getEntity(type);
 
-			if (entity != null) {
+		    if (entity != null) {
 				found(type, entity);
 			} else if ("cat".equals(type)) {
 				if (player.hasPet()) {
@@ -151,12 +151,12 @@ public class SummonAction extends AdministrationAction {
 				final StendhalRPZone zone = player.getZone();
 				final int x = action.getInt(X);
 				final int y = action.getInt(Y);
-
+				
 				if (!zone.collides(player, x, y)) {
 					final EntityFactory factory = new EntityFactory(player) {
 						@Override
 						void found(final String type, final Entity entity) {
-							final Entity entityToBePlaced;
+							 final Entity entityToBePlaced;
 							if (manager.isCreature(type)) {
 								entityToBePlaced = new RaidCreature((Creature) entity);
 								if (((Creature) entity).isRare() && !ServerModeUtil.isTestServer()) {
@@ -192,23 +192,23 @@ public class SummonAction extends AdministrationAction {
 
 					final String typeName = action.get(CREATURE);
 					String type = typeName;
-
+					
 					factory.createEntity(type);
 
 					if (factory.isSearching()) {
-						// see it the name was in plural
+    					// see it the name was in plural
 						type = Grammar.singular(typeName);
 						factory.createEntity(type);
 
 						if (factory.isSearching()) {
-							// see it the name was in singular but the registered type is in plural
+	    					// see it the name was in singular but the registered type is in plural
 							type = Grammar.plural(typeName);
 							factory.createEntity(type);
 
 							// Did we still not find any matching class?
 							if (factory.isSearching()) {
+	    						logger.info("onSummon: Entity \"" + typeName + "\" not found.");
 	    						factory.error("onSummon: Nie znaleziono \"" + typeName + "\".");
-								logger.info("onSummon: Entity \"" + typeName + "\" not found.");
 							}
 						}
 					}

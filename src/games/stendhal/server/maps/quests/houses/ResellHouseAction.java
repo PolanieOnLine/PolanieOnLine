@@ -3,8 +3,6 @@
  */
 package games.stendhal.server.maps.quests.houses;
 
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -12,6 +10,8 @@ import games.stendhal.server.entity.mapstuff.portal.HousePortal;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
+
+import org.apache.log4j.Logger;
 
 final class ResellHouseAction implements ChatAction {
 
@@ -40,10 +40,24 @@ final class ResellHouseAction implements ChatAction {
 
 		try {
 
+			int housecost = 100000;
 			final int id = Integer.parseInt(claimedHouse);
 			final HousePortal portal = HouseUtilities.getHousePortal(id);
 
-			final int refund = (cost * depreciationPercentage) / 100 - houseTax.getTaxDebt(portal);
+			if (id > 0 && id < 26) {
+				housecost = 100000;
+			} else if (id > 25 && id < 50) {
+				housecost = 120000;
+			} else if(id > 49 && id < 78) {
+				housecost = 120000;
+			} else if (id > 100 && id < 109) {
+				housecost = 100000;
+			} else if (id > 200 && id < 216) {
+				housecost = 500000;
+			} else {
+				housecost = 100000;
+			}
+			final int refund = (housecost * depreciationPercentage) / 100 - houseTax.getTaxDebt(portal);
 
 			final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
 			money.setQuantity(refund);

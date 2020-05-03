@@ -12,15 +12,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.guardhouse;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -29,12 +24,16 @@ import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.maps.quests.BeerForHayunn;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -86,8 +85,8 @@ public class RetiredAdventurerNPC implements ZoneConfigurator {
 				addHelp("Jak już mówiłem, byłem kiedyś poszukiwaczem przygód, a teraz jestem nauczycielem. Chcesz bym nauczył Cię co sam potrafię?");
 				addJob("Moją pracą jest ochrona ludzi w Semos przed potworami, które mogą uciec z podziemi! Od kiedy młodzi ludzie wyruszyli na południe, aby walczyć ze złymi legionami Blordroughtów, potwory stały się pewniejsze i zaczęły wychodzić na powierzchnię. Semos oczekuje pomocy właśnie od ludzi takich jak ty. Idź do burmistrza i zapytaj o zadanie, z pewnością ma jakieś dla Ciebie.");
 				addGoodbye();
-				// further behaviour is defined in quests.
-			}
+		// further behaviour is defined in quests.
+	}
 
 			@Override
 			protected void createPath() {
@@ -102,11 +101,12 @@ public class RetiredAdventurerNPC implements ZoneConfigurator {
 
 		};
 		npc.setPosition(4, 9);
-		npc.setCollisionAction(CollisionAction.STOP);
 		npc.setEntityClass("oldheronpc");
 		npc.setDescription("Oto Hayunn Naratha. Poniżej jego siwych włosów, a brudną zbroją widzisz świecące oczy i twarde mięśnie.");
 		npc.setBaseHP(100);
 		npc.setHP(85);
 		zone.add(npc);
 	}
+
+
 }

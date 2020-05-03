@@ -13,15 +13,15 @@
 package games.stendhal.server.actions;
 import static games.stendhal.common.constants.Actions.SENTENCE;
 import static games.stendhal.common.constants.Actions.VALUE;
-
-import java.io.UnsupportedEncodingException;
-
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.player.Player;
+
+import java.io.UnsupportedEncodingException;
+
 import marauroa.common.game.RPAction;
+
+import org.apache.log4j.Logger;
 
 /**
  * sets a sentences that is displayed on the character page of the website.

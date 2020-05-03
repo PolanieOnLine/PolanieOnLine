@@ -78,7 +78,12 @@ public class StendhalItemDAO {
 	 */
 	public  void itemLogWriteEntry(final DBTransaction transaction, final RPObject item, final RPEntity player, final String event, final String param1, final String param2, final String param3, final String param4) throws SQLException {
 		int itemid = item.getInt(StendhalItemDAO.ATTR_ITEM_LOGID);
-		itemLogWriteEntry(transaction, itemid, player, event, param1, param2, param3, param4);
+		final String uses = getAttribute(item, "uses");
+ 		if (uses != null) {
+			itemLogWriteEntry(transaction, itemid, player, event, param1, param2, param3, param4, uses);
+		} else {
+			itemLogWriteEntry(transaction, itemid, player, event, param1, param2, param3, param4);
+		}
 	}
 
 	/**
@@ -110,6 +115,40 @@ public class StendhalItemDAO {
 			+ StringChecker.trimAndEscapeSQLString(param4, 64) + "');";
 
 		transaction.execute(query, null);
+	}
+
+	/**
+	 * writes a log entry
+	 *
+	 * @param transaction DBTransaction
+	 * @param itemid itemid of item
+	 * @param player player object
+	 * @param event  name of event
+	 * @param param1 param 1
+	 * @param param2 param 2
+	 * @param param3 param 3
+	 * @param param4 param 4
+	 * @param param5 param 5
+	 * @throws SQLException in case of an database error
+	 */
+	public void itemLogWriteEntry(final DBTransaction transaction, final int itemid, final RPEntity player, final String event,
+			final String param1, final String param2, final String param3, final String param4, final String param5) throws SQLException {
+		String playerName = null;
+		if (player != null) {
+			playerName = player.getName();
+		}
+		final String query = "INSERT INTO itemlog (itemid, source, event, "
+			+ "param1, param2, param3, param4, param5) VALUES ("
+			+ itemid + ", '"
+			+ StringChecker.trimAndEscapeSQLString(playerName, 64) + "', '"
+			+ StringChecker.trimAndEscapeSQLString(event, 64) + "', '"
+			+ StringChecker.trimAndEscapeSQLString(param1, 64) + "', '"
+			+ StringChecker.trimAndEscapeSQLString(param2, 64) + "', '"
+			+ StringChecker.trimAndEscapeSQLString(param3, 64) + "', '"
+			+ StringChecker.trimAndEscapeSQLString(param4, 64) + "', '"
+			+ StringChecker.trimAndEscapeSQLString(param5, 64) + "');";
+
+ 		transaction.execute(query, null);
 	}
 
 	/**

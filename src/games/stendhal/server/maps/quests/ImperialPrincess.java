@@ -13,10 +13,6 @@
 package games.stendhal.server.maps.quests;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -37,6 +33,10 @@ import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * QUEST: Imperial princess
@@ -110,7 +110,7 @@ public class ImperialPrincess extends AbstractQuest {
 			res.add("King Cozart nadał mi obywatelstwo Kalavan.");
 		}
 		return res;
-	}
+		}
 
 	private void step_1() {
 
@@ -324,7 +324,7 @@ public class ImperialPrincess extends AbstractQuest {
 		return "ImperialPrincess";
 	}
 
-	@Override
+		@Override
 	public int getMinLevel() {
 		return 50;
 	}

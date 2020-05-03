@@ -24,7 +24,6 @@ import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
 import games.stendhal.server.core.config.ItemGroupsXMLLoader;
-import games.stendhal.server.core.config.ShopsXMLLoader;
 import games.stendhal.server.core.config.SpellGroupsXMLLoader;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Entity;
@@ -75,8 +74,6 @@ public class DefaultEntityManager implements EntityManager {
 		buildItemTables();
 		buildCreatureTables();
 		buildSpellTables();
-
-		ShopsXMLLoader.get().init();
 	}
 
 	/**
@@ -185,18 +182,6 @@ public class DefaultEntityManager implements EntityManager {
 		idToClass.put(id, clazz);
 
 		return true;
-	}
-
-	/**
-	 * For manually populating the creature list.
-	 *
-	 * Useful for tests.
-	 */
-	@Override
-	public void populateCreatureList() {
-		for (final DefaultCreature cr: getDefaultCreatures()) {
-			createdCreature.put(cr.getCreatureName(), cr.getCreature());
-		}
 	}
 
 	@Override

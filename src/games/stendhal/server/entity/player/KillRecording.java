@@ -96,7 +96,7 @@ class KillRecording {
 	public void setSharedKill(final String name) {
 		setKill(name, "shared");
 	}
-
+	
 	/**
 	 * Changes kill count to specified value.
 	 *
@@ -108,8 +108,8 @@ class KillRecording {
 		final String key = mode + "." + name;
 		player.setKeyedSlot(KILL_SLOT_NAME, key, Integer.toString(count));
 	}
-
-	/**
+	
+ 	/**
 	 * Changes solo kill count to specified value.
 	 *
 	 * @param name name of killed entity
@@ -118,8 +118,8 @@ class KillRecording {
 	public void setSoloKillCount(final String name, final int count) {
 		setKillCount(name, "solo", count);
 	}
-
-	/**
+	
+ 	/**
 	 * Changes shared kill count to specified value.
 	 *
 	 * @param name of killed entity

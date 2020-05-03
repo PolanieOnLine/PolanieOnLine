@@ -35,7 +35,7 @@ import games.stendhal.server.util.TimeUtil;
 
 /**
  * The behaviour of an NPC who is able to produce one or more things for a player,
- * given that the player brings the necessary resources.
+ * given that the player brings the necessary resources. 
  * Production takes time, depending on the amount of the product requested.
  *
  * @author omero
@@ -99,7 +99,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 
     /**
      * Creates a new MultiProducerBehaviour.
-     *
+     * 
      * @param questSlot
      *            The slot that is used to store the status of the production.
      * @param productionActivity
@@ -108,8 +108,8 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 	 *            The set of items that the NPC is able to produce.
      *            All must be valid items names.
      * @param requiredResourcesPerProduct
-     *            The mapping which maps the name of each product to
-     *            the mapping of resources required for producing that product, stated as <item, quantity>
+     *            The mapping which maps the name of each product to 
+     *            the mapping of resources required for producing that product, stated as <item, quantity> 
      * @param productionTimesPerProduct
      *            The mapping of the name of a product to
      *            the amount of time required to produce it
@@ -137,7 +137,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 
 		// add the activity word as verb to the word list in case it is still missing there
         logger.debug("Registering VERB [" + productionActivity + "] in the word list");
-		WordList.getInstance().registerVerb(productionActivity);
+		//WordList.getInstance().registerVerb(productionActivity);
 
         // iterate through each of the required resource items and add them as a object to the word list
         String requiredResourceName;
@@ -176,7 +176,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 
     /**
      * Return how much time is required to make the requested amount of products
-     *
+     * 
      * @param productName
      * @param amount
      * @return amount of time to produce amount of product
@@ -198,7 +198,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
     /**
      * Create a text representing a saying of approximate time until
      * the order being produced is ready
-     *
+     * 
      * @param player
      * @return A string describing the remaining time.
      */
@@ -218,7 +218,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 
     /**
      * Is the order ready for this player?
-     *
+     * 
      * @param player
      * @return true if the order is ready.
      */
@@ -229,12 +229,12 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
         final String productName = order[1];
         final long orderTime = Long.parseLong(order[2]);
         final long timeNow = new Date().getTime();
-        return timeNow - orderTime >= getProductionTime(productName, numberOfProductItems) * 1000L;
+        return timeNow - orderTime >= getProductionTime(productName, numberOfProductItems) * 1000L; 
     }
 
     /**
      * Checks how many items are being produced for this particular order
-     *
+     * 
      * @param player
      * @return number of items
      */
@@ -250,7 +250,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
      * the resources that are required to produce <i>amount</i> units of the
      * choosen product, with hashes prepended to the resource names in order to
      * highlight them, e.g. "4 #wood, 2 #iron, and 6 #leather".
-     *
+     * 
      * @param productName
      *            The requested product name
 	 * @param amount
@@ -290,7 +290,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
     /**
      * At the time the order is made,
      * Checks how many items the NPC can offer to produce based on what the player is carrying
-     *
+     * 
      * @param productName
      *            The requested product name
      * @param player
@@ -312,7 +312,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 	 * Tries to take all the resources required to produce <i>amount</i> units
 	 * of the product from the player. If this is possible, asks the user if the
 	 * order should be initiated.
-     *
+     * 
 	 * @param res
      * @param npc
      * @param player
@@ -335,7 +335,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 					+ " do tej pracy, która zajmie mi "
                     + TimeUtil.approxTimeUntil(getProductionTime(productName, amount))
                     + ". Czy masz to co potrzebuję?");
-
+                   
             return true;
         }
     }
@@ -344,7 +344,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
      * At the time the order is made,
      * tries to take all the resources required to produce the agreed amount of
      * the chosen product from the player. If this is possible, initiates an order.
-     *
+     * 
      * @param npc
      *            the involved NPC
      * @param player
@@ -380,7 +380,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
      * check that the NPC is done with the order.
      * If that is the case, the player is given the product,
      * otherwise the NPC tells to the player to come back later.
-	 *
+	 * 
 	 * @param npc
 	 *            The producing NPC
 	 * @param player
@@ -403,9 +403,9 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 				products.setBoundTo(player.getName());
 			}
 
+			if (player.equipToInventoryOnly(products)) {					
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj "
 					+ Grammar.quantityplnoun(numberOfProductItems, productName, "") + ".");
-			if (player.equipToInventoryOnly(products)) {
 				player.setQuest(questSlot, "done");
 				// give some XP as a little bonus for industrious workers
 				player.addXP(numberOfProductItems);
@@ -413,8 +413,8 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 				player.incProducedForItem(productName, products.getQuantity());
 			} else {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąść "
+						+ Grammar.plnoun(numberOfProductItems, productName) 
 						+ ". Wróć, gdy będziesz miał wolne miejsce.");
-						+ Grammar.plnoun(numberOfProductItems, productName)
 			}
 		}
 	}

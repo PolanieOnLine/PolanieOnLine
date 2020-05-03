@@ -1,3 +1,4 @@
+/* $Id$ */
 /***************************************************************************
  *                      (C) Copyright 2003 - Marauroa                      *
  ***************************************************************************
@@ -346,14 +347,16 @@ public class StendhalRPAction {
 		 * player has recently received damage from the target. ATK experience
 		 * increases even if attack is blocked.
 		 */
-		// disabled attack xp for attacking NPC's
-		if (!(defender instanceof SpeakerNPC) && player.getsFightXpFrom(defender)) {
-			if (Testing.COMBAT && isRanged) {
-				player.incRatkXP();
-				// don't allow player to receive double experience from successful hits
-				addRatkXP = false;
-			} else {
-				player.incAtkXP();
+		if (!Testing.COMBAT) {
+			// disabled attack xp for attacking NPC's
+			if (!(defender instanceof SpeakerNPC)
+					&& player.getsFightXpFrom(defender)) {
+				if (isRanged) {
+					player.incRatkXP();
+					addRatkXP = false;
+				} else {
+					player.incAtkXP();
+				}
 			}
 		}
 
@@ -366,9 +369,10 @@ public class StendhalRPAction {
 				defender.incDefXP();
 			}
 
+			// FIXME: some of this can be skipped when using a training dummy
 			final List<Item> weapons = player.getWeapons();
+			float itemAtk;
 			if (isRanged) {
-			final float itemAtk;
 				itemAtk = player.getItemRatk();
 			} else {
 				itemAtk = player.getItemAtk();
@@ -391,6 +395,25 @@ public class StendhalRPAction {
 						+ defender.getID() + ": Damage: " + damage);
 
 				result = true;
+				/* TODO: Remove condition for alternate attack training method
+				 *       when implemented in game.
+				 * TODO: Remove condition for ranged attack stat when
+				 *       implemented in game.
+				 */
+				if (Testing.COMBAT) {
+					/* Alternate ATK XP training method raises player's ATK or
+					 * RATK experience only when player has successfully hit
+					 * the target regardless of whether player has recently
+					 * taken damage.
+					 */
+					if (!(defender instanceof SpeakerNPC)) {
+						if (isRanged) {
+							player.incRatkXP();
+						} else {
+							player.incAtkXP();
+						}
+					}
+				}
 			} else {
 				// The attack was too weak, it was blocked
 				logger.debug("attack from " + player.getID() + " to "
@@ -413,7 +436,7 @@ public class StendhalRPAction {
 			List<Item> defenseItems = defender.getDefenseItems();
 			if(!defenseItems.isEmpty()) {
 				final Item equip = Rand.rand(defenseItems);
-				equip.deteriorate(defender);
+				equip.deteriorate(player);
 
 				if (equip instanceof BreakableItem) {
 					final BreakableItem breakable = (BreakableItem) equip;

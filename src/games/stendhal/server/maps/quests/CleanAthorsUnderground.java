@@ -12,13 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -30,7 +23,6 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -42,6 +34,14 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import marauroa.common.Pair;
 
 /**
@@ -56,16 +56,16 @@ import marauroa.common.Pair;
  * <li> John on Athor island asks players to kill some creatures of the dungeon for him, cause he can't explore it otherwise
  * <li> Kill them for him and go back to the NPC to get your reward
  * </ul>
- *
+ * 
  *
  * REWARD:<ul>
  * <li> 80000 XP
  * <li> 10 greater potion
- * <li> Karma: 11 total (10 + 1)
+ * <li> some karma
  * </ul>
  *
  * REPETITIONS: <ul><li>once in a week</ul>
- *
+ * 
  * @author Vanessa Julius, idea by anoyyou
 
  */
@@ -74,19 +74,19 @@ public class CleanAthorsUnderground extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "clean_athors_underground";
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
-
-
+	
+	
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
-
+		
 	}
-
+	
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("John");
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
 				"Moja żona Jane i ja jesteśmy na wakacjach na wyspie Athor. #Niestety nie możemy zwiedzić całej wyspy ponieważ okropne #potwory uniemożliwiają nam to za każdym razem. Możesz nam pomóc zabijając parę z nich, aby uprzyjemnić nam wakacje?",
@@ -99,7 +99,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED,
 				"Tak niestety. Chcieliśmy spedzić wspaniale czas, ale jedyne co zrobiliśmy to spędziliśmy czas na plaży.",
 				null);
-
+		
 		npc.add(
 				ConversationStates.QUEST_OFFERED,
 				Arrays.asList("creatures", "potwory", "potworów"),
@@ -107,24 +107,24 @@ public class CleanAthorsUnderground extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED,
 				"Chcemy zwiedzić pierwszą część podziemi, która wygląda na bardzo interesującą, ale te okropne coś tam rzucają się na nas, nawet mumie!",
 				null);
-
+		
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)), new QuestStateStartsWithCondition(QUEST_SLOT, "killed")),
 				ConversationStates.ATTENDING,
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, WEEK_IN_MINUTES, "Te #potwory nie wrócą szybko i dzięki temu możemy zobaczyć wspaniałe miejsca. Wróć za"));
-
-
+		
+		
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.QUEST_MESSAGES, 
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 						 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)),
 				ConversationStates.QUEST_OFFERED,
 				"Te #potwory wróciły od tamtego czasu, gdy nam pomogłeś. Możesz znów nam pomóc?",
 				null);
 
-
+	
 
 		final Map<String, Pair<Integer, Integer>> toKill = new TreeMap<String, Pair<Integer, Integer>>();
 		toKill.put("mumia", new Pair<Integer, Integer>(0,1));
@@ -143,7 +143,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 		actions.add(new SetQuestAction(QUEST_SLOT, "start"));
 		actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
 
-
+		
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -151,8 +151,8 @@ public class CleanAthorsUnderground extends AbstractQuest {
 				"Cudownie! Nie możemy się doczekać na twój powrót. Zabij po jednym z tych potworów w podziemiach wyspy Athor. Założe się, że dostaniesz je wszystkie!",
 				new MultipleActions(actions));
 
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES,
+		npc.add(ConversationStates.QUEST_OFFERED, 
+				ConversationPhrases.NO_MESSAGES, 
 				null,
 				ConversationStates.ATTENDING,
 				"Oh nie ważne. W takim razie pójdziemy dalej się opalać. Nie dlatego, że jesteśmy zmęczeni tym...",
@@ -173,28 +173,30 @@ public class CleanAthorsUnderground extends AbstractQuest {
 		actions.add(new IncreaseXPAction(80000));
 		actions.add(new SetQuestAction(QUEST_SLOT, "killed;1"));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		actions.add(new IncreaseKarmaAction(10.0));
+		actions.add(new IncreaseKarmaAction(100.0));
 
-
+		
 		LinkedList<String> triggers = new LinkedList<String>();
 		triggers.addAll(ConversationPhrases.FINISH_MESSAGES);
-		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);
-		npc.add(ConversationStates.ATTENDING,
+		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);		
+		npc.add(ConversationStates.ATTENDING, 
 				triggers,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new KilledForQuestCondition(QUEST_SLOT, 1)),
+				ConversationStates.ATTENDING, 
 				"Wspaniale! Jak widzę zabiłeś te okropne potwory! Mam nadzieję, że nie wrócą zbyt szybko, bo nie będziemy mieli szansy na zwiedzenie paru miejsc."  + " Proszę weż te duże eliksiry jako nagrodę za twoją pomoc.",
 				new MultipleActions(actions));
 
-		npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING, 
 				triggers,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
+				ConversationStates.ATTENDING, 
 				"Proszę uwolnij te wspaniałe miejsca od tych okropnych potworów!",
 				null);
-
+		
 	}
 
 	@Override
@@ -207,7 +209,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 		step_2();
 		step_3();
 	}
-
+	
 	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
@@ -230,13 +232,13 @@ public class CleanAthorsUnderground extends AbstractQuest {
 		return "CleanAthorsUnderground";
 
 	}
-
+	
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 				 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)).fire(player,null, null);
 	}
-
+	
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);

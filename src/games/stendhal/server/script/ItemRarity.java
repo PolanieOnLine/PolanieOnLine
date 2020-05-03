@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2018 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -95,7 +94,7 @@ public class ItemRarity extends ScriptImpl {
 	 * @param admin recipient
 	 */
 	private void sendResults(Player admin) {
-		admin.sendPrivateText("Przedmiot\tRzadkość");
+		admin.sendPrivateText("Przedmiot\tCzęstotliwość");
 		List<Entry<String, Double>> items = new ArrayList<Entry<String, Double>>(rarity.entrySet());
 
 		java.util.Collections.sort(items, new EntryComparator());

@@ -453,7 +453,7 @@ public class SpeakerNPC extends PassiveNPC {
 		notifyWorldAboutChanges();
 	}
 
-	public void endConversation() {
+	protected void endConversation() {
 		if (goodbyeMessage != null) {
 			say(goodbyeMessage);
 		}

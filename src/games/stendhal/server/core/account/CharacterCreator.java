@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,8 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.core.account;
 
-import org.apache.log4j.Logger;
-
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.CharacterResult;
@@ -23,6 +20,8 @@ import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.CharacterDAO;
 import marauroa.server.game.db.DAORegister;
+
+import org.apache.log4j.Logger;
 
 /**
  * Creates a new character as requested by a client.
@@ -37,7 +36,7 @@ public class CharacterCreator {
 
 	/**
 	 * create a CharacterCreator.
-	 *
+	 * 
 	 * @param username
 	 *            name of the user
 	 * @param character
@@ -68,7 +67,7 @@ public class CharacterCreator {
 
 	/**
 	 * tries to create this character.
-	 *
+	 * 
 	 * @return CharacterResult
 	 */
 	public CharacterResult create() {
@@ -106,5 +105,5 @@ public class CharacterCreator {
 			return new CharacterResult(Result.FAILED_EXCEPTION, character, template);
 		}
 	}
-
+	
 }

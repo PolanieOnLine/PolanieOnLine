@@ -11,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.actions.admin;
 
-import org.apache.log4j.Logger;
-
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
+
+import org.apache.log4j.Logger;
 
 public class AdminNoteAction extends AdministrationAction {
 	@Override
@@ -32,7 +32,7 @@ public class AdminNoteAction extends AdministrationAction {
 			String adminnote = action.get("karteczka");
 
 			Logger.getLogger(AdminNoteAction.class).info(sender + " has added an adminnote to " + target + " saying: " + adminnote);
-			new GameEvent(sender, "adminnote",  target, adminnote).raise();
+			new GameEvent(sender, "adminnote",  target, adminnote).raise();				
 			SingletonRepository.getRuleProcessor().sendMessageToSupporters("JailKeeper",
 					sender + " dodał adminnote " + target
 					+ " mówiącą: " + adminnote);

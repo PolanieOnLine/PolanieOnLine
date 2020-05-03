@@ -22,7 +22,7 @@ import games.stendhal.server.entity.player.Player;
 /**
  * Class representing an item owned by an entity.
  */
-public abstract class OwnedItem extends Item {
+public class OwnedItem extends Item {
 
 	// slots to which item cannot be equipped if it has an owner
 	private List<String> ownedBlacklistSlots = Arrays.asList("trade");
@@ -34,7 +34,7 @@ public abstract class OwnedItem extends Item {
 		super(name, clazz, subclass, attributes);
 	}
 
-	public OwnedItem(final OwnedItem item) {
+	public OwnedItem(Item item) {
 		super(item);
 	}
 
@@ -68,7 +68,9 @@ public abstract class OwnedItem extends Item {
 	 * @param name
 	 * 		Owner's name.
 	 */
-	public abstract void setOwner(final String name);
+	public void setOwner(final String name) {
+		put("owner", name);
+	}
 
 	/**
 	 * Override to retrieve owner name.
@@ -76,7 +78,9 @@ public abstract class OwnedItem extends Item {
 	 * @return
 	 * 		Name of owner or <code>null</code> if not owned.
 	 */
-	public abstract String getOwner();
+	public String getOwner() {
+		return get("owner");
+	}
 
 	/**
 	 * Override to check if item has owner.
@@ -85,7 +89,7 @@ public abstract class OwnedItem extends Item {
 	 * 		<code>true</code> if owned.
 	 */
 	public boolean hasOwner() {
-		return getOwner() != null;
+		return has("owner");
 	}
 
 	/**

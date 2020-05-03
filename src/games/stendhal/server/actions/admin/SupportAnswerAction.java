@@ -14,10 +14,6 @@ package games.stendhal.server.actions.admin;
 import static games.stendhal.common.constants.Actions.SUPPORTANSWER;
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TEXT;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.grammar.Grammar;
@@ -30,6 +26,10 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnListenerDecorator;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import marauroa.common.Pair;
 import marauroa.common.game.RPAction;
 import marauroa.server.db.command.DBCommand;
@@ -40,34 +40,34 @@ import marauroa.server.db.command.ResultHandle;
  * answers a support question
  */
 public class SupportAnswerAction extends AdministrationAction implements TurnListener  {
-
+	
 	private static final Map<String, String> messageTemplates = new SupportMessageTemplatesFactory().getTemplates();
 
 	/**
 	 * Keeps track of the anonymised admin names and when they were last used
 	 */
 	private final Map<String, Pair<String, Long>> adminNames = new HashMap<String, Pair<String, Long>> ();
-
+	
 	/**
 	 * Amount of time after which an admin name 'anonymiser' will be replaced
 	 */
-	private static final int DELAY = 3 * MathHelper.SECONDS_IN_ONE_HOUR;
-
-	/**
-	 * increments as new names are added to the admin list.
-	 * not really bothered as it grows, and that we aren't re-using numbers,
+	private static final int DELAY = 3 * MathHelper.SECONDS_IN_ONE_HOUR; 
+	
+	/** 
+	 * increments as new names are added to the admin list. 
+	 * not really bothered as it grows, and that we aren't re-using numbers, 
 	 * just easier than checking the list to see what the next number should be
-	 *
+	 * 
 	 */
 	private int nameCounter = 0;
-
+	
 	/**
 	 * the admin who sent the message (needed as a class variable for postman messages)
 	 */
 	private String sender;
-
+		
 	private final ResultHandle handle = new ResultHandle();
-
+	
 	public static void register() {
 		CommandCenter.register(SUPPORTANSWER, new SupportAnswerAction(), 1);
 	}
@@ -90,7 +90,7 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 		// test for use of standard response shortcut, and replace the reply message if so
 		// if you alter these please update client/actions/GMHelpAction (or put the string replies in a common file if you like)
 		final Player supported = SingletonRepository.getRuleProcessor().getPlayer(action.get(TARGET));
-
+			
 		if (reply.startsWith("$")) {
 			if (messageTemplates.containsKey(reply)) {
 				reply = messageTemplates.get(reply);
@@ -99,11 +99,11 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 				player.sendPrivateText(reply + " jest nieznanym skrótem. Sprawdź #/gmhelp #'support', aby uzyskać listę.");
 				// send no support answer message if the shortcut wasn't understood
 				return;
-			}
+			}				
 		}
 		
+		final String message = "Administrator " + sender + " odpowiedział " + Grammar.suffix_s(action.get(TARGET))
 				+ " na pytanie: " + reply;
-
 
 		new GameEvent(sender, SUPPORTANSWER, action.get(TARGET), reply).raise();
 		if (supported != null) {
@@ -111,7 +111,7 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 			supported.sendPrivateText(NotificationType.SUPPORT, "Administrator " + getAnonymisedAdminName(sender) + " powiedział Tobie: " + reply + " \nJeżeli chcesz odpowiedzieć to użyj /support.");
 			supported.notifyWorldAboutChanges();
 			SingletonRepository.getRuleProcessor().sendMessageToSupporters(message);
-
+			
 		} else {
 			// that player is not logged in. Do they exist at all or are they just offline? Try sending a message with postman.
 			DBCommand command = new StoreMessageCommand(getAnonymisedAdminName(sender), action.get(TARGET), "W odpowiedzi na twoje pytanie:\n" + reply + " \nJeżeli chcesz odpowiedzieć użyj /support.", "S");
@@ -122,13 +122,13 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 
 	/**
 	 * Completes handling the supportanswer action.
-	 *
+	 * 
 	 * @param currentTurn ignored
 	 */
 	@Override
 	public void onTurnReached(int currentTurn) {
 		StoreMessageCommand checkcommand = DBCommandQueue.get().getOneResult(StoreMessageCommand.class, handle);
-
+		
 		if (checkcommand == null) {
 			TurnNotifier.get().notifyInTurns(0, new TurnListenerDecorator(this));
 			return;
@@ -137,28 +137,28 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 		boolean characterExists = checkcommand.targetCharacterExists();
 		String target = checkcommand.getTarget();
 		String supportmessage = checkcommand.getMessage();
-
+		
 		final Player admin = SingletonRepository.getRuleProcessor().getPlayer(sender);
-
+		
 		if(!characterExists) {
+				if (admin != null) {
+					// incase admin logged out while waiting we want to avoid NPE
 					admin.sendPrivateText(NotificationType.ERROR, "Wojownik " + target + " nie został znaleziony.");
+				}
+				return;
+		} 
+		
 		final String message = sender + " odpowiedział " + Grammar.suffix_s(target)
 		+ " na pytanie przy pomocy postmana: " + supportmessage;
-			if (admin != null) {
-				// incase admin logged out while waiting we want to avoid NPE
-			}
-			return;
-		}
-
-
+		
 		SingletonRepository.getRuleProcessor().sendMessageToSupporters(message);
 	}
-
+	
 
 	/**
-	 * Gets anonymised admin name from map and updates timestamp,
+	 * Gets anonymised admin name from map and updates timestamp, 
 	 * or sets new anonymised name if some time has passed since last use of supportanswer
-	 *
+	 * 
 	 * @param adminName adminstrator name
 	 * @return anonymized name for the adminstarator
 	 */
@@ -167,7 +167,7 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 		// is the name already listed?
 		if(adminNames.containsKey(adminName)) {
 			Long lastTime = adminNames.get(adminName).second();
-			// time has passed, use a new name in place of the last anonymised name
+			// time has passed, use a new name in place of the last anonymised name 
 			if ((System.currentTimeMillis() - lastTime) > (DELAY * 1000L)) {
 				nameCounter++;
 				anonymisedAdminName = "admin"+nameCounter;

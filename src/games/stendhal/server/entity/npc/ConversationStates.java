@@ -127,10 +127,10 @@ public enum ConversationStates {
 
 	/** Multi-purpose states for multiple questions. */
 	QUESTION_1,
+
 	QUESTION_2,
+
 	QUESTION_3,
-	QUESTION_4,
-	QUESTION_5,
 
 	/** Special scenarios where player may need to reset quest slot to a previous state
 	 * due to lost item or other problem.

@@ -158,6 +158,7 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.REBORN);
 	}
 
+
 	public void onDefChange(final Player player) {
 		getAndCheckAchievementsInCategory(player, Category.EXPERIENCE_DEF);
 	}
@@ -198,15 +199,6 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.REBORN);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_MITHRILBOURGH_ENEMY_ARMY);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_KILL_BLORDROUGHS);
-	}
-
-	/**
-	 * check all achievements for a player that are related to deathmatch
-	 *
-	 * @param player
-	 */
-	public void onFinishDeathmatch(final Player player) {
-		getAndCheckAchievementsInCategory(player, Category.DEATHMATCH);
 	}
 
 	/**

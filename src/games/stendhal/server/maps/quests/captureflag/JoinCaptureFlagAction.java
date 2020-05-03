@@ -17,6 +17,8 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.player.Player;
 
+import games.stendhal.server.maps.quests.captureflag.ProvideArrowsAction;
+
 /**
  * lets the player join a CTF game
  *
@@ -32,7 +34,7 @@ public class JoinCaptureFlagAction implements ChatAction {
 		player.setUseListener("Tag", new CaptureFlagUseListener(player));
 
 		// only if player does not have bow already
-		new EquipItemAction("ctf bow").fire(player,  sentence, npc);
+		new EquipItemAction("łuk zf").fire(player,  sentence, npc);
 
 		new ProvideArrowsAction().fire(player, sentence, npc);
 	}

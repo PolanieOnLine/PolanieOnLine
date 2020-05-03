@@ -41,9 +41,9 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
  * - cobra venom
  * - +5 karma
  */
-public class ZoologistStage extends AVRStage {
-	private final SpeakerNPC zoologist;
-	private final String subquestName;
+ public class ZoologistStage extends AVRStage {
+ 	private final SpeakerNPC zoologist;
+ 	private final String subquestName;
 
 	private static final int EXTRACT_TIME = 20;
 

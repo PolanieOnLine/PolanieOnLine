@@ -116,7 +116,7 @@ public class PurpleDragon extends Pet {
 	List<String> getFoodNames() {
 		return Arrays.asList("szynka", "pizza", "mięso");
 	}
-
+	
 	@Override
 	public String describe() {
 		String text = "Oto " + ItemTools.itemNameToDisplayName(get("type")) + "; it looks like it weighs about " + weight + " and is level " + getLevel() + ". Def XP: " +  getDefXP() + "";

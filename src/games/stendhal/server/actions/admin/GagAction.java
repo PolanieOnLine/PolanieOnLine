@@ -15,7 +15,6 @@ import static games.stendhal.common.constants.Actions.GAG;
 import static games.stendhal.common.constants.Actions.MINUTES;
 import static games.stendhal.common.constants.Actions.REASON;
 import static games.stendhal.common.constants.Actions.TARGET;
-
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;

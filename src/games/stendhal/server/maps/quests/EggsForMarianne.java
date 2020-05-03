@@ -54,14 +54,14 @@ import games.stendhal.server.maps.Region;
  * STEPS:
  * <ul>
  * <li> Marianne asks you for eggs for her pancakes</li>
- * <li> You collect a dozen of eggs from chickens</li>
- * <li> You give a dozen of eggs to Marianne.</li>
- * <li> Marianne gives you some flowers in return.<li>
+ * <li> You collect 12 eggs from chickens</li>
+ * <li> You give the eggs to Marianne.</li>
+ * <li> Marianne gives you some seeds in return.<li>
  * </ul>
  *
  * REWARD:
  * <ul>
- * <li> some pansy or daisies</li>
+ * <li> pansy or daisy seeds</li>
  * <li> 100 XP</li>
  * <li> Karma: 50</li>
  * </ul>
@@ -73,10 +73,8 @@ import games.stendhal.server.maps.Region;
  */
 public class EggsForMarianne extends AbstractQuest {
 
-	//a dozen of eggs
 	private static final int REQUIRED_EGGS = 12;
 
-	//60 minutes before quest can be repeated
 	private static final int REQUIRED_MINUTES = 60;
 
 	private static final String QUEST_SLOT = "eggs_for_marianne";
@@ -125,7 +123,7 @@ public class EggsForMarianne extends AbstractQuest {
 		}
 		return res;
 	}
-
+	
 	private void prepareRequestingStep() {
 		final SpeakerNPC npc = npcs.get("Marianne");
 

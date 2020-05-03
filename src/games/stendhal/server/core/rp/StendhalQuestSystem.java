@@ -35,10 +35,7 @@ public class StendhalQuestSystem {
 	private static final Logger logger = Logger.getLogger(StendhalQuestSystem.class);
 
 	private final static List<IQuest> quests = new LinkedList<IQuest>();
-
 	private final static List<IQuest> cached = new ArrayList<>();
-	private static boolean cacheLoaded = false;
-
 
 	private StendhalQuestSystem() {
 		// hide constructor, this is a Singleton
@@ -67,8 +64,7 @@ public class StendhalQuestSystem {
 	 * Initializes the QuestSystem.
 	 */
 	public void init() {
-		//deactivated AdMemoriaInPortfolio
-		//loadQuest(new AdMemoriaInPortfolio());
+//		loadQuest(new AdMemoriaInPortfolio());
 		loadQuest(new AdosDeathmatch());
 		loadQuest(new AmazonPrincess());
 		loadQuest(new AntivenomRing());
@@ -112,6 +108,8 @@ public class StendhalQuestSystem {
 		loadQuest(new HelpMrsYeti());
 		loadQuest(new HelpWithTheHarvest());
 		loadQuest(new HerbsForCarmen());
+		/* Disabled, incomplete
+		loadQuest(new HerbsForJynath()); */
 		loadQuest(new HouseBuying());
 		loadQuest(new HungryJoshua());
 		loadQuest(new IcecreamForAnnie());
@@ -333,17 +331,6 @@ public class StendhalQuestSystem {
 	 * 		Quest to be cached.
 	 */
 	public void cacheQuest(final IQuest quest) {
-		// don't cache quests if server has already been initialized
-		if (cacheLoaded) {
-			loadQuest(quest);
-			return;
-		}
-
-		if (quest == null) {
-			logger.error("Attempted to cache null quest");
-			return;
-		}
-
 		if (cached.contains(quest)) {
 			logger.warn("Quest previously cached: " + quest.getName());
 			return;
@@ -362,7 +349,6 @@ public class StendhalQuestSystem {
 
 		// empty cache
 		cached.clear();
-		cacheLoaded = true;
 	}
 
 	/**
@@ -608,7 +594,6 @@ public class StendhalQuestSystem {
 				return quest;
 			}
 		}
-
 		return null;
 	}
 
@@ -626,7 +611,6 @@ public class StendhalQuestSystem {
 				return quest;
 			}
 		}
-
 		return null;
 	}
 

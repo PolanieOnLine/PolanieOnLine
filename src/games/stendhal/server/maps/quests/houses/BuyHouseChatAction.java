@@ -1,6 +1,8 @@
 
 package games.stendhal.server.maps.quests.houses;
 
+import marauroa.common.game.SlotIsFullException;
+
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
@@ -14,7 +16,6 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
-import marauroa.common.game.SlotIsFullException;
 
 final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 

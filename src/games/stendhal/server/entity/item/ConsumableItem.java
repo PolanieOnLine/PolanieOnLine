@@ -177,7 +177,7 @@ public class ConsumableItem extends StackableItem implements Comparable<Consumab
 				- (float) getRegen() / (float) getFrecuency();
 		return (int) Math.signum(result);
 	}
-
+	
 	/*
 	 * Sub-classes that use immunizations should override this.
 	 */

@@ -16,7 +16,6 @@ import static games.stendhal.common.constants.Actions.GRUMPY;
 import static games.stendhal.common.constants.Actions.IGNORE;
 import static games.stendhal.common.constants.Actions.REMOVEBUDDY;
 import static games.stendhal.common.constants.Actions.UNIGNORE;
-
 import games.stendhal.server.actions.CommandCenter;
 
 /**

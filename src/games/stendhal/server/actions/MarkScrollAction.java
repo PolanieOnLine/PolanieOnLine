@@ -1,7 +1,6 @@
 package games.stendhal.server.actions;
 
 import static games.stendhal.common.constants.Actions.TARGET;
-
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
@@ -28,7 +27,7 @@ public class MarkScrollAction implements ActionListener {
 
 				Item scroll = SingletonRepository.getEntityManager().getItem("zwój zapisany");				
 				scroll.setInfoString(infostring);
-
+				
 				// add a description if the player wanted one
 				if (action.has(TARGET)) {
 					String description = action.get(TARGET) + " " + action.get("args");
@@ -46,3 +45,5 @@ public class MarkScrollAction implements ActionListener {
 	} 
 
 }
+
+

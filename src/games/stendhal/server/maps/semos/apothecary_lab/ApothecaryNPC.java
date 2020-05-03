@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2019 - Stendhal                          *
+ *                   (C) Copyright 2019 - Stendhal                         *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,15 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.apothecary_lab;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author AntumDeluge
@@ -41,7 +42,7 @@ public class ApothecaryNPC implements ZoneConfigurator {
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jameson") {
 
-			@Override
+	        @Override
 			protected void createPath() {
 				List<Node> nodes=new LinkedList<Node>();
 				nodes.add(new Node(7,9));
@@ -57,7 +58,7 @@ public class ApothecaryNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 
-			@Override
+	        @Override
 			protected void createDialog() {
 				addGreeting("Cześć i witaj w moim laboratorium.");
 				addJob("Kiedyś byłem #aptekarzem, ale teraz jestem na emeryturze.");

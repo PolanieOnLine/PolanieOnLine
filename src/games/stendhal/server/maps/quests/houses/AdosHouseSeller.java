@@ -1,11 +1,7 @@
 /**
- *
+ * 
  */
 package games.stendhal.server.maps.quests.houses;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.JokerExprMatcher;
@@ -18,6 +14,10 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TextHasNumberCondition;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 final class AdosHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in ados. */
@@ -35,13 +35,13 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 	}
 
 	private void init() {
-		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy.
-		// For definiteness we will check these conditions in a set order.
+		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy. 
+		// For definiteness we will check these conditions in a set order. 
 		// So then the NPC doesn't have to choose which reason to reject the player for (appears as a WARN from engine if he has to choose)
-
+		
 		// player is not old enough
+		add(ConversationStates.ATTENDING, 
 				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-		add(ConversationStates.ATTENDING,
 				 new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
 				 ConversationStates.ATTENDING,
 				 "Cena za nowy dom w Ados to "
@@ -49,12 +49,12 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 				 + " money. Ale obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
 				 + Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin w Faiumoni.",
 					null);
-
-
+		
+		
 		// player doesn't have a house and is old enough but has not done required quests
+		add(ConversationStates.ATTENDING, 
 				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-		add(ConversationStates.ATTENDING,
-				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
 								  new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
 								  new NotCondition(
 													  new AndCondition(
@@ -64,38 +64,38 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 																	   new QuestCompletedCondition(AdosHouseSeller.FISHROD_QUEST_SLOT),
 																	   new QuestCompletedCondition(AdosHouseSeller.GHOSTS_QUEST_SLOT),
 																	   new QuestCompletedCondition(AdosHouseSeller.ZARA_QUEST_SLOT)))),
+				 ConversationStates.ATTENDING, 
 				 "Koszt nowego domu w Ados wynosi "
-				 ConversationStates.ATTENDING,
 				 + getCost()
 				 + " money. Ale obawiam się, że nie mogę sprzedać Tobie domu, jeszcze trzeba udowodnić #obywatelstwo.",
 				 null);
-
+		
 		// player is eligible to buy a house
+		add(ConversationStates.ATTENDING, 
 					Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
-		add(ConversationStates.ATTENDING,
-				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-								  new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT), 
+								  new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE), 
 								  new QuestCompletedCondition(AdosHouseSeller.DAILY_ITEM_QUEST_SLOT),
 								  new QuestCompletedCondition(AdosHouseSeller.ANNA_QUEST_SLOT),
 								  new QuestCompletedCondition(AdosHouseSeller.KEYRING_QUEST_SLOT),
 								  new QuestCompletedCondition(AdosHouseSeller.FISHROD_QUEST_SLOT),
 								  new QuestCompletedCondition(AdosHouseSeller.GHOSTS_QUEST_SLOT),
 								  new QuestCompletedCondition(AdosHouseSeller.ZARA_QUEST_SLOT)),
+				 ConversationStates.QUEST_OFFERED, 
 				 "Nowy dom w Ados kosztuje "
-				 ConversationStates.QUEST_OFFERED,
 				 + getCost()
 				 + " money. Ponadto trzeba zapłacić podatek " + HouseTax.BASE_TAX
 				 + " money, co miesiąc. Jeśli masz jakiś dom na oku powiedz jego numer, sprawdzę czy jest wolny. "
 				 + "Domy w Ados mają numery od "
 				 + getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
 				 null);
-
+		
 		// handle house numbers getLowestHouseNumber() - getHighestHouseNumber()
 		addMatching(ConversationStates.QUEST_OFFERED,
 				 // match for all numbers as trigger expression
 				ExpressionType.NUMERAL, new JokerExprMatcher(),
 				new TextHasNumberCondition(getLowestHouseNumber(), getHighestHouseNumber()),
-				ConversationStates.ATTENDING,
+				ConversationStates.ATTENDING, 
 				null,
 				new BuyHouseChatAction(getCost(), QUEST_SLOT));
 		
@@ -106,7 +106,7 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 		setEntityClass("estateagent2npc");
 		setPosition(37, 13);
 		initHP(100);
-
+		
 	}
 
 	@Override

@@ -24,8 +24,8 @@ import games.stendhal.server.entity.RPEntity;
 import marauroa.common.game.RPObject;
 
 public class FoodMill extends Item {
-
-	/** the logger instance. */
+	
+	/** the logger instance */
 	private static final Logger logger = Logger.getLogger(RPEntity.class);
 
 	/** The item to be processed */
@@ -34,7 +34,7 @@ public class FoodMill extends Item {
 	private String container;
 	/** The resulting processed item */
 	private String output;
-	/** Items that do not require a "container". */
+	/** Items that do not require a "container" */
 	private final List<String> containerNotRequired = new ArrayList<String>() {{
 		add("zwój czyszczący");
 		add("obrotowy nożyk");
@@ -76,13 +76,13 @@ public class FoodMill extends Item {
 	public boolean onUsed(final RPEntity user) {
     	final String tool = getName();
     	final boolean containerRequired = !containerNotRequired.contains(tool);
-
+    	
     	/* Items/Tools not listed in "containerNotRequired" must have a "container" defined. */
     	if (containerRequired && container == null) {
     		logger.error("Input \"" + input + "\" requires a container, but container value is null.");
     		return false;
     	}
-
+    	
     	/* is the mill equipped at all? */
     	if (!isContained()) {
     		user.sendPrivateText("Powinieneś mieć " + tool + ", aby móc go użyć.");
@@ -130,12 +130,12 @@ public class FoodMill extends Item {
 		} else {
 			user.drop((Item) first);
 		}
-
+    	
     	if (containerRequired) {
     		user.drop(container);
     	}
+    	
     	if ("obrotowy nożyk".equals(tool)) {
-
     		final StackableItem stackable = (StackableItem) item;
     		stackable.setQuantity(5);
 

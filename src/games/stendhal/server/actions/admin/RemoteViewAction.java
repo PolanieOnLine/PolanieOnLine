@@ -19,10 +19,10 @@ import games.stendhal.server.events.ViewChangeEvent;
 import marauroa.common.game.RPAction;
 
  /**
-  * Sends an remote view event
-  *
-  * @author hendrik
-  */
+ * Sends an remote view event
+ * 
+ * @author hendrik
+ */
  public class RemoteViewAction extends AdministrationAction {
 
 	public static void register() {

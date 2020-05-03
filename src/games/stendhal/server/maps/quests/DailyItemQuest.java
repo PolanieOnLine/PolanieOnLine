@@ -12,12 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -48,6 +42,12 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * QUEST: Daily Item Fetch Quest.
  * <p>
@@ -62,7 +62,7 @@ import games.stendhal.server.maps.Region;
  * another instead
  * <p>
  * REWARD:
- * <li> xp
+ * <li> xp 
  * <li> 10 Karma
  * <p>
  * REPETITIONS:
@@ -70,36 +70,19 @@ import games.stendhal.server.maps.Region;
  */
 public class DailyItemQuest extends AbstractQuest {
 
-	private static DailyItemQuest instance;
-
 	private static final String QUEST_SLOT = "daily_item";
-
+	
 	/** How long until the player can give up and start another quest */
-	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
-
+	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK; 
+	
 	/** How often the quest may be repeated */
-	private static final int delay = MathHelper.MINUTES_IN_ONE_DAY;
-
+	private static final int delay = MathHelper.MINUTES_IN_ONE_DAY; 
+	
 	/**
 	 * All items which are possible/easy enough to find. If you want to do
 	 * it better, go ahead. *
 	 */
 	private static Map<String,Integer> items;
-
-
-	/**
-	 * Get the static instance.
-	 *
-	 * @return
-	 * 		DailyItemQuest
-	 */
-	public static DailyItemQuest getInstance() {
-		if (instance == null) {
-			instance = new DailyItemQuest();
-		}
-
-		return instance;
-	}
 
 	private static void buildItemsMap() {
 		items = new HashMap<String, Integer>();
@@ -354,6 +337,9 @@ public class DailyItemQuest extends AbstractQuest {
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT,1, delay, "Możesz dostać tylko jedno zadanie dziennie. Proszę wróć za"));
 
+		
+		
+		
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new OrCondition(new QuestNotStartedCondition(QUEST_SLOT),
 								new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
@@ -487,9 +473,9 @@ public class DailyItemQuest extends AbstractQuest {
 				"Dzienne Zadanie na Przedmiot",
 				"Mayor Chalmers potrzebuje zapasów dla miasta Ados.",
 				true);
-
+		
 		buildItemsMap();
-
+		
 		getQuest();
 		completeQuest();
 		abortQuest();
@@ -504,13 +490,13 @@ public class DailyItemQuest extends AbstractQuest {
 	public int getMinLevel() {
 		return 0;
 	}
-
+	
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
-
+	
 	@Override
 	public String getRegion() {
 		return Region.ADOS_CITY;

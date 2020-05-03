@@ -16,7 +16,6 @@ import java.util.Map.Entry;
 
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.deathmatch.DeathmatchInfo;
 import games.stendhal.server.maps.deathmatch.DeathmatchState;
 
 /**
@@ -33,23 +32,14 @@ public class DeathMatchCreature extends Creature {
 	// save only the name to enable GC of the player object
 	private String playerName;
 
-	private final DeathmatchInfo deathmatchInfo;
-
-
-	public DeathMatchCreature(final DeathmatchInfo deathmatchInfo) {
-		this.deathmatchInfo = deathmatchInfo;
-	}
-
 	/**
 	 * DeathCreature.
 	 *
 	 * @param copy
 	 *            creature to wrap
 	 */
-	public DeathMatchCreature(final Creature copy, final DeathmatchInfo deathmatchInfo) {
+	public DeathMatchCreature(final Creature copy) {
 		super(copy);
-
-		this.deathmatchInfo = deathmatchInfo;
 	}
 
 	/**
@@ -64,7 +54,7 @@ public class DeathMatchCreature extends Creature {
 
 	@Override
 	public Creature getNewInstance() {
-		return new DeathMatchCreature(this, deathmatchInfo);
+		return new DeathMatchCreature(this);
 	}
 
 	@Override
@@ -80,17 +70,13 @@ public class DeathMatchCreature extends Creature {
 				continue;
 			}
 
-			final String killerName = killer.getName();
-
 			// set the DM points score only for the player who started the DM
-			if (killerName.equals(playerName)) {
+			if (killer.getName().equals(playerName)) {
 				points = (int) (killer.getLevel()
 					* ((float) damageDone / (float) totalDamageReceived));
 				final DeathmatchState deathmatchState = DeathmatchState.createFromQuestString(killer.getQuest("deathmatch"));
 				deathmatchState.addPoints(points);
 				killer.setQuest("deathmatch", deathmatchState.toQuestString());
-			} else {
-				deathmatchInfo.addAidedKill(killerName);
 			}
 
 			// For some quests etc., it is required that the player kills a

@@ -24,7 +24,7 @@ class AlterQuestAction extends AdministrationAction {
 
 	@Override
 	protected void perform(final Player player, final RPAction action) {
-
+		
 
 		// find player
 		final StendhalRPRuleProcessor rules = SingletonRepository.getRuleProcessor();
@@ -40,16 +40,16 @@ class AlterQuestAction extends AdministrationAction {
 
 			// new state (or null to remove the quest)
 			final String newQuestState = action.get("state");
-
+			
 
 			// set the quest
 			target.setQuest(questName, newQuestState);
 
 			// notify admin and altered player
+			target.sendPrivateText(NotificationType.SUPPORT, 
 					"Administrator " + player.getTitle()
 					+ " zmienił stan twojego zadania '" + questName
 					+ "' z '" + oldQuestState + "' na '" + newQuestState
-			target.sendPrivateText(NotificationType.SUPPORT,
 					+ "'");
 			player.sendPrivateText("Zmieniono stan zadania '" + questName
 					+ "' z '" + oldQuestState + "' na '" + newQuestState

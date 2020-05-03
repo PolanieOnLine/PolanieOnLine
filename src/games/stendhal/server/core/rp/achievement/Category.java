@@ -64,10 +64,9 @@ public enum Category {
 	QUEST_MITHRILBOURGH_ENEMY_ARMY,
 	/** kill blordroughs quest */
 	QUEST_KILL_BLORDROUGHS,
-	/** deathmatch related */
-	DEATHMATCH,
 	/** pets weight **/
 	WEIGHT,
 	/** rebirths **/
 	REBORN;
+
 }

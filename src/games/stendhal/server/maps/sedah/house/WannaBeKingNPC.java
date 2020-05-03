@@ -12,15 +12,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.sedah.house;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Builds the NPC who wants to be the king of Kalavan.
@@ -37,7 +37,7 @@ public class WannaBeKingNPC implements ZoneConfigurator {
 	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildNPC(zone);
+		buildNPC(zone, attributes);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class WannaBeKingNPC implements ZoneConfigurator {
 	 * @param zone
 	 * @param attributes
 	 */
-	private void buildNPC(final StendhalRPZone zone) {
+	private void buildNPC(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final SpeakerNPC npc = new SpeakerNPC("Ivan Abe") {
 			@Override
 			protected void createPath() {

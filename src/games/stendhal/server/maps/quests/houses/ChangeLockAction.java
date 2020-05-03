@@ -3,8 +3,6 @@
  */
 package games.stendhal.server.maps.quests.houses;
 
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.HouseKey;
@@ -14,6 +12,8 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
+
+import org.apache.log4j.Logger;
 
 final class ChangeLockAction extends HouseChatAction implements ChatAction {
 	private static final Logger logger = Logger.getLogger(ChangeLockAction.class);

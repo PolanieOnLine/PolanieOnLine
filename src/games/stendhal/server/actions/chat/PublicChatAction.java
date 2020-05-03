@@ -12,7 +12,6 @@
 package games.stendhal.server.actions.chat;
 
 import static games.stendhal.common.constants.Actions.TEXT;
-
 import games.stendhal.common.Rand;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.actions.validator.StandardActionValidations;
@@ -47,7 +46,7 @@ public class PublicChatAction implements ActionListener {
 
 	/**
 	 * Apply random mutating effects to the text for slurry drunken speech.
-	 *
+	 * 
 	 * @param text original text
 	 * @param amount amount of modifications
 	 * @return modified text.
@@ -77,10 +76,10 @@ public class PublicChatAction implements ActionListener {
 		b.append(" *hicks*");
 		return b.toString();
 	}
-
+	
 	/**
 	 * Swap two adjacent letters at a random position.
-	 *
+	 * 
 	 * @param text original text
 	 */
 	private void swapLetters(StringBuilder text) {
@@ -99,10 +98,10 @@ public class PublicChatAction implements ActionListener {
 		text.insert(chrIndex + Character.charCount(text.codePointAt(chrIndex)),
 				new StringBuilder().appendCodePoint(chr));
 	}
-
+	
 	/**
 	 * Remove random letter from a StringBuilder, if it has at least length 2.
-	 *
+	 * 
 	 * @param text original text
 	 */
 	private void removeLetter(StringBuilder text) {
@@ -118,10 +117,10 @@ public class PublicChatAction implements ActionListener {
 			text.deleteCharAt(chrIndex);
 		}
 	}
-
+	
 	/**
 	 * Duplicate a random letter in a StringBuilder.
-	 *
+	 * 
 	 * @param text original text
 	 */
 	private void duplicateLetter(StringBuilder text) {

@@ -55,10 +55,8 @@ class SourceObject extends MoveableObject {
 		}
 
 		// source item must be there
-		if (!action.has(EquipActionConsts.SOURCE_PATH)
-				&& !action.has(EquipActionConsts.BASE_ITEM)
-				&& !action.has(EquipActionConsts.SOURCE_NAME)) {
-			logger.warn("action does not have a base item, path nor name. action: " + action);
+		if (!action.has(EquipActionConsts.SOURCE_PATH) && !action.has(EquipActionConsts.BASE_ITEM)) {
+			logger.warn("action does not have a base item. action: " + action);
 
 			return invalidSource;
 		}
@@ -167,10 +165,7 @@ class SourceObject extends MoveableObject {
 	private static SourceObject createSource(RPAction action, final Player player) {
 		List<String> path = action.getList(EquipActionConsts.SOURCE_PATH);
 		Entity entity = EntityHelper.getEntityFromPath(player, path);
-		if (entity == null) {
-			entity = EntityHelper.getEntityByName(player, action.get(EquipActionConsts.SOURCE_NAME));
-		}
-		if (entity == null || !(entity instanceof Item)) {
+		if (!(entity instanceof Item)) {
 			return invalidSource;
 		}
 		Item item = (Item) entity;

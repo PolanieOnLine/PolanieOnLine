@@ -11,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.actions.admin;
 
+import games.stendhal.common.NotificationType;
+import games.stendhal.server.actions.CommandCenter;
+import games.stendhal.server.core.engine.GameEvent;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.player.Player;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -18,11 +24,6 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.NotificationType;
-import games.stendhal.server.actions.CommandCenter;
-import games.stendhal.server.core.engine.GameEvent;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 import marauroa.server.game.container.PlayerEntry;
 import marauroa.server.game.container.PlayerEntryContainer;
@@ -46,14 +47,14 @@ public class BanAction extends AdministrationAction {
 				reason = action.get("reason");
 			}
 			int hours = 1;
-
+			
 			try {
 				hours = Integer.parseInt(action.get("hours"));
 			} catch (final NumberFormatException e) {
 				player.sendPrivateText(NotificationType.ERROR, "Przy blokowaniu używaj liczb w godzinach lub -1 godzin, aby całkowicie zablokować. Dla krótszego czasu niż 1 godzina używaj /jail.");
 				return; 
 			}
-
+			
 			String sender = player.getName();
 			if (action.has("sender") && (player.getName().equals("postman"))) {
 				sender = action.get("sender");
@@ -85,7 +86,7 @@ public class BanAction extends AdministrationAction {
 				// logging
 				logger.info(sender + " has banned  account " + username + " (character: " + bannedName + ") until " + expireStr + " for: " + reason);
 				new GameEvent(sender, "ban",  bannedName, expireStr, reason).raise();
-
+				
 				SingletonRepository.getRuleProcessor().sendMessageToSupporters("JailKeeper",
 						sender + " zablokował konto " + username + " (postać: " + bannedName + ") na " + expireStr
 						+ ". Powód: " + reason + ".");
@@ -109,7 +110,7 @@ public class BanAction extends AdministrationAction {
 			final Player player = SingletonRepository.getRuleProcessor().getPlayer(character);
 			if (player != null) {
 				SingletonRepository.getRuleProcessor().getRPManager().disconnectPlayer(player);
-			}
+	}
 		}
 	}
 

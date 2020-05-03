@@ -12,13 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -56,15 +49,22 @@ import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 /**
  * QUEST: The Obsidian Knife.
- *
+ * 
  * PARTICIPANTS:
  * <ul>
  * <li>Alrak, a dwarf who abandoned the mountain dwarves to live in Kobold City</li>
  * <li>Ceryl, the librarian in Semos</li>
  * </ul>
- *
+ * 
  * STEPS:
  * <ul>
  * <li>Alrak is hungry and asks for 100 pieces of ham, cheese or meat</li>
@@ -76,34 +76,34 @@ import games.stendhal.server.maps.Region;
  * <li>Get obsidian for the blade and a fish for the fish bone handle</li>
  * <li>Alrak makes the knife for you</li>
  * </ul>
- *
+ * 
  * REWARD:
  * <ul>
  * <li>Obsidian Knife</li>
  * <li>11500 XP</li>
  * <li> lots of karma (total 85 + (5 | -5))
  * </ul>
- *
+ * 
  * REPETITIONS:
  * <ul>
  * <li>None</li>
  * </ul>
  */
 public class ObsidianKnife extends AbstractQuest {
-
-	// Please note, if you want to code a quest where you're asked to collect a number of some randomly picked item, like alrak asks you to initially,
+	
+	// Please note, if you want to code a quest where you're asked to collect a number of some randomly picked item, like alrak asks you to initially, 
 	// please use StartRecordingRandomItemCollectionAction, SayRequiredItemAction, PlayerHasRecordedItemWithHimCondition and DropRecordedItemAction
     // This quest was written before they were available and you should not use it as a template.
-
+	
 	private static final int MINUTES_IN_DAYS = 24 * 60;
 
 	private static final int REQUIRED_FOOD = 100;
-
-	// Required level to move from the finished reading stage to
+	
+	// Required level to move from the finished reading stage to 
 	// the offering knife stage
 	private static final int REQUIRED_LEVEL = 50;
+	
 	private static final List<String> FOOD_LIST = Arrays.asList("szynka", "mięso", "ser");
-
 
 	private static final int REQUIRED_DAYS = 3;
 
@@ -116,12 +116,12 @@ public class ObsidianKnife extends AbstractQuest {
 	private static final String NAME = "Alrak";
 
 	private static Logger logger = Logger.getLogger(ObsidianKnife.class);
-
+	
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-
+	
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -133,10 +133,10 @@ public class ObsidianKnife extends AbstractQuest {
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomóc Alrakowi.");
 			return res;
+		} 
 		res.add("Alrak poprosił mnie o przyniesienie trochę jedzenia.");
 		if (player.isQuestInState(QUEST_SLOT, "szynka", "mięso", "ser")) {
 			res.add("Muszę przynieść " + Grammar.quantityplnoun(REQUIRED_FOOD, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
-		}
 			return res;
 		}
 		res.add("Przyniosłem Alrakowi jedzenie.");
@@ -189,40 +189,40 @@ public class ObsidianKnife extends AbstractQuest {
 		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
 		return debug;
 	}
-
+	
 	private void prepareQuestOfferingStep() {
 		final SpeakerNPC npc = npcs.get("Alrak");
 
-
+		
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
+				ConversationStates.QUEST_ITEM_QUESTION, 
 				"Wiesz, że tutaj trudno jest dostać jedzenie. Nie mam żadnych #zapasów na następny rok.",
-				ConversationStates.QUEST_ITEM_QUESTION,
 				null);
-
+		
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestCompletedCondition(QUEST_SLOT),
+				ConversationStates.ATTENDING, 
 				"Jestem znowu zajęty pracą! Wyrabiam rzeczy dla Wrvila. Dziękuję za zainteresowanie.",
-				ConversationStates.ATTENDING,
 				null);
-
+		
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestInStateCondition(QUEST_SLOT, "food_brought"),
+				ConversationStates.QUEST_ITEM_BROUGHT, 
 				"Już tak bardzo nie martwie się o jedzenie. Teraz się nudzę. Jest pewna #książka, którą lubię czytać.",
-				ConversationStates.QUEST_ITEM_BROUGHT,
 				null);
-
+		
 		// any other state than above
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.QUEST_MESSAGES, 
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT), new QuestNotInStateCondition(QUEST_SLOT, "food_brought")),
+				ConversationStates.ATTENDING, 
 				"Już się Ciebie pytałem czy czegoś byś dla mnie nie zrobił.",
-				ConversationStates.ATTENDING,
 				null);
-
+						
 
 		/*
 		 * Player agrees to collect the food asked for. his quest slot gets set
@@ -255,10 +255,10 @@ public class ObsidianKnife extends AbstractQuest {
 
 		// Player asks what supplies he needs, and a random choice of what he
 		// wants is made.
+		npc.add(ConversationStates.QUEST_ITEM_QUESTION, 
 				Arrays.asList("supplies", "zapasów"), 
-		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
 				null,
-				ConversationStates.QUEST_OFFERED,
+				ConversationStates.QUEST_OFFERED, 
 				null,
 				new ChatAction() {
 					@Override
@@ -285,11 +285,11 @@ public class ObsidianKnife extends AbstractQuest {
 							npc.say("Wspaniale! Przyniosłeś " + itemName + "!");
 						}
 					} });
-			reward.add(new IncreaseXPAction(1000));
-			reward.add(new IncreaseKarmaAction(35.0));
-			reward.add(new SetQuestAction(QUEST_SLOT, "food_brought"));
+		reward.add(new IncreaseXPAction(1000));
+		reward.add(new IncreaseKarmaAction(35.0));
+		reward.add(new SetQuestAction(QUEST_SLOT, "food_brought"));
 
-			npc.add(ConversationStates.ATTENDING,
+			npc.add(ConversationStates.ATTENDING, 
 				itemName,
 				new ChatCondition() {
 					@Override
@@ -298,8 +298,8 @@ public class ObsidianKnife extends AbstractQuest {
 								&& player.getQuest(QUEST_SLOT).equals(itemName)
 								&& player.isEquipped(itemName, REQUIRED_FOOD);
 					}
-				},
-				ConversationStates.ATTENDING,
+				}, 
+				ConversationStates.ATTENDING, 
 				null,
 				new MultipleActions(reward));
 		}
@@ -323,11 +323,11 @@ public class ObsidianKnife extends AbstractQuest {
 				null);
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-				ConversationPhrases.YES_MESSAGES,
+				ConversationPhrases.YES_MESSAGES, 
 				null,
+				ConversationStates.ATTENDING, 
 				"Dziękuję. Zapytaj w bibliotece o 'książkę o kamieniach'.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "seeking_book", 10.0));
-				ConversationStates.ATTENDING,
 	}
 
 	private void getBookStep() {
@@ -339,7 +339,7 @@ public class ObsidianKnife extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Obecnie #'książka o kamieniach' jest dość popularna ...",
 				null);
-
+		
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("książkę o kamieniach", "książka o kamieniach"),
 				new QuestInStateCondition(QUEST_SLOT, "seeking_book"),
@@ -347,12 +347,12 @@ public class ObsidianKnife extends AbstractQuest {
 				"Masz szczęście! Ognir przyniósł ją w tamtym tygodniu. Dla kogo ma być?",
 				null);
 
-		npc.add(ConversationStates.QUESTION_1,
-				NAME,
+		npc.add(ConversationStates.QUESTION_1, 
+				NAME, 
 				null,
+				ConversationStates.ATTENDING, 
 				"Ach górski ork! On uwielbia książki o kamieniach.",
 				new MultipleActions(new EquipItemAction("księga lazurowa", 1, true), 
-				ConversationStates.ATTENDING,
 				new SetQuestAction(QUEST_SLOT, "got_book")));
 
 		// allow to say goodbye while Ceryl is listening for the dwarf's name
@@ -362,7 +362,7 @@ public class ObsidianKnife extends AbstractQuest {
 				"Dowidzenia.", null);
 
 		// player says something which isn't the dwarf's name.
-		npc.add(ConversationStates.QUESTION_1,
+		npc.add(ConversationStates.QUESTION_1, 
 				"",
 				new NotCondition(new TriggerInListCondition(NAME.toLowerCase())),
 				ConversationStates.QUESTION_1,
@@ -374,10 +374,10 @@ public class ObsidianKnife extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Alrak");
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new QuestInStateCondition(QUEST_SLOT, "got_book"), 
 						new PlayerHasItemWithHimCondition("księga lazurowa")),
+				ConversationStates.IDLE, 
 				"Wspaniale! Sądzę, że będę ją czytał przez jakiś czas. Dowidzenia!",
-						new QuestInStateCondition(QUEST_SLOT, "got_book"),
-				ConversationStates.IDLE,
 				new MultipleActions(
 						new DropItemAction("księga lazurowa"),
 						new IncreaseXPAction(500),
@@ -396,24 +396,24 @@ public class ObsidianKnife extends AbstractQuest {
 
 	private void offerKnifeStep() {
 		final SpeakerNPC npc = npcs.get("Alrak");
-		npc.add(ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "reading;"),
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_DAYS * MINUTES_IN_DAYS))),
+				ConversationStates.IDLE, 
+				null, 
 				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_DAYS * MINUTES_IN_DAYS, "Nie skończyłem czytać książki. Może skończę ją za "));
-				ConversationStates.IDLE,
-				null,
-
-		npc.add(ConversationStates.IDLE,
+		
+		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "reading;"),
 						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_DAYS * MINUTES_IN_DAYS)),
+				ConversationStates.QUEST_2_OFFERED, 
 				"Przeczytałem! Była naprawdę interesująca. Nauczyłem się jak robić specjalny #nóż z kamieniem #obsydianu.", 
-				ConversationStates.QUEST_2_OFFERED,
 				new SetQuestAction(QUEST_SLOT, "book_read"));
-
+						
 
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				"obsydianu",
@@ -430,34 +430,34 @@ public class ObsidianKnife extends AbstractQuest {
 						+ FISH
 						+ ", z jego ości zrobię rękojeść.",
 				new SetQuestAction(QUEST_SLOT, "knife_offered"));
-
+		
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				Arrays.asList("obsydian", "obsydianowy saks", "nóż"),
 				new NotCondition(new LevelGreaterThanCondition(REQUIRED_LEVEL)),
 				ConversationStates.ATTENDING,
 				"Cóż nie sądzę, abyś był gotowy na tak groźną broń. Wrócisz, gdy osiągniesz " + Integer.toString(REQUIRED_LEVEL) + " poziom?",
 				null);
-
-		npc.add(ConversationStates.IDLE,
+		
+		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "book_read")),
 				ConversationStates.QUEST_2_OFFERED,
 				"Cześć! Może powinieneś przyjść ponownie i zapytać się o #nóż ... ",
 				null);
-
+		        
 		// player says hi to NPC when equipped with the fish and the gem and
-		// he's killed a black dragon
-		npc.add(ConversationStates.IDLE,
+		// he's killed a czarny smok
+		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT, "knife_offered"), 
 						new KilledCondition("czarny smok"),
 						new PlayerHasItemWithHimCondition("obsydian"),
+						new PlayerHasItemWithHimCondition(FISH)), 
+				ConversationStates.IDLE, 
 				"Znalazłeś kamień na ostrze oraz rybie ości na rękojeść! Zacznę pracę od razu. Wróć za "
 				+ REQUIRED_MINUTES + " minutę" + ".",
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "knife_offered"),
-						new PlayerHasItemWithHimCondition(FISH)),
-				ConversationStates.IDLE,
 				new MultipleActions(
 				new DropItemAction("obsydian"),
 				new DropItemAction(FISH),
@@ -465,13 +465,13 @@ public class ObsidianKnife extends AbstractQuest {
 				new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
 
 		// player says hi to NPC when equipped with the fish and the gem and
-		// he's not killed a black dragon
+		// he's not killed a czarny smok
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT, "knife_offered"), 
 						new NotCondition(new KilledCondition("czarny smok")),
 						new PlayerHasItemWithHimCondition("obsydian"),
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "knife_offered"),
 						new PlayerHasItemWithHimCondition(FISH)),
 				ConversationStates.ATTENDING,
 				"Chyba mnie nie zrozumiałeś? Powiedziałem, abyś zgładził czarnego smoka dla obsydiana, a nie kupił! Skąd mam wiedzieć, że nie jest to fałszywy kamień? Nie robię specjalnego noża dla kogoś kto boi się stanąć twarzą w twarz ze smokiem.",
@@ -481,7 +481,7 @@ public class ObsidianKnife extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, "knife_offered"),
+						new QuestInStateCondition(QUEST_SLOT, "knife_offered"), 
 						new NotCondition(
 								new AndCondition(
 										new PlayerHasItemWithHimCondition("obsydian"),
@@ -492,28 +492,28 @@ public class ObsidianKnife extends AbstractQuest {
 					+ "a i obsydian z zabitego przez Ciebie czarnego smoka. W międzyczasie jeżeli potrzebujesz #pomocy to powiedz słowo.",
 				null);
 
-		npc.add(ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),
+				ConversationStates.IDLE, 
+				null, 
 				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jeszcze nie skończyłem noża. Proszę wróć za "));
-				ConversationStates.IDLE,
-				null,
-
+		
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new IncreaseXPAction(10000));
 		reward.add(new IncreaseKarmaAction(40));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new EquipItemAction("obsydianowy saks", 1, true));
-
-		npc.add(ConversationStates.IDLE,
+		
+		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
+				ConversationStates.IDLE, 
 				"Nóż jest gotowy! Wiesz, że była to przyjemność. Chyba znowu zacznę wyrabiać go masowo. Dziękuję!",
-				ConversationStates.IDLE,
 				new MultipleActions(reward));
 	}
 
@@ -535,7 +535,7 @@ public class ObsidianKnife extends AbstractQuest {
 	public String getName() {
 		return "ObsidianKnife";
 	}
-
+	
 	@Override
 	public int getMinLevel() {
 		return REQUIRED_LEVEL;
@@ -545,10 +545,10 @@ public class ObsidianKnife extends AbstractQuest {
 	public String getNPCName() {
 		return "Alrak";
 	}
-
+	
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_MINES;
 	}
-
+	
 }

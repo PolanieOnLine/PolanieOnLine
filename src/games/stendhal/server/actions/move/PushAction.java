@@ -74,8 +74,8 @@ public class PushAction implements ActionListener {
 
 			final Point prevPos = new Point(pushed.getX(), pushed.getY());
 
-			final int x = prevPos.x + dir.getdx();
-			final int y = prevPos.y + dir.getdy();
+			final int x = pushed.getX() + dir.getdx();
+			final int y = pushed.getY() + dir.getdy();
 
 			final StendhalRPZone zone = pusher.getZone();
 			if (!zone.collides(pushed, x, y)) {
