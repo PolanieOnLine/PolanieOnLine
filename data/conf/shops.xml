@@ -365,7 +365,7 @@
 		<item name="karmazynowy hełm" price="200" />
 		<item name="spodnie karmazynowe" price="200" />
 		<item name="pas karmazynowy" price="200" />
-		<item name="karmazynowe rękawice" price="250" />
+		<item name="rękawice karmazynowe" price="250" />
 		<item name="karmazynowa tarcza" price="750" />
 	</shop>
 
@@ -804,7 +804,7 @@
 		<item name="skórzane rękawice" price="32" />
 		<item name="skórzane wzmocnione rękawice" price="54" />
 		<item name="skórzane twarde rękawice" price="90" />
-		<item name="karmazynowe rękawice" price="230" />
+		<item name="rękawice karmazynowe" price="230" />
 		<item name="lazurowe rękawice" price="540" />
 		<item name="rękawice xenocyjskie" price="600" />
 		<item name="ogniste rękawice" price="800" />
@@ -1062,7 +1062,7 @@
 		<item name="tarcza piaskowa" price="148" />
 		<item name="kusza" price="374" />
 		<item name="kusza łowcy" price="760" />
-		<item name="karmazynowe rękawice" price="182" />
+		<item name="rękawice karmazynowe" price="182" />
 		<item name="lazurowe rękawice" price="535" />
 		<item name="ogniste rękawice" price="788" />
 		<item name="ciupaga" price="2000" />

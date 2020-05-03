@@ -181,7 +181,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		items.put("pas zbójnicki",1);
 		
 		// glove
-		items.put("karmazynowe rękawice",1);
+		items.put("rękawice karmazynowe",1);
 		items.put("lazurowe rękawice",1);
 		items.put("lodowe rękawice",1);
 		items.put("ogniste rękawice",1);

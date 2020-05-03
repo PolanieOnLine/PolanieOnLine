@@ -82,9 +82,9 @@
 		</equipable>
 	</item>
 
-	<item name="karmazynowe rękawice">
+	<item name="rękawice karmazynowe">
 		<type class="glove" subclass="red_gloves" tileid="-1"/>
-		<description>Oto karmazynowe rękawice. Nie będzie widać na nich twej krwi.</description>
+		<description>Oto rękawice karmazynowe. Nie będzie widać na nich twej krwi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="4"/>

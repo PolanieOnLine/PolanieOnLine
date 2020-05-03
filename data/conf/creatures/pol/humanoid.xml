@@ -677,7 +677,7 @@
 			<item value="magia płomieni" quantity="[44,222]" probability="30.0"/>
 			<item value="bełt płonący" quantity="[1,14]" probability="70.0"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.1"/>
-			<item value="karmazynowe rękawice" quantity="[1,1]" probability="0.01"/>
+			<item value="rękawice karmazynowe" quantity="[1,1]" probability="0.01"/>
 		</drops>
 		<equips/>
 		<ai>
