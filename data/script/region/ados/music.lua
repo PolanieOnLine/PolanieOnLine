@@ -22,7 +22,7 @@ local zones = {
 
 for _, zone in pairs(zones) do
 	if game:setZone(zone) then
-		game:setMusic("market_day", {volume=60})
+		setZoneMusic("market_day", 60)
 	else
 		logger:warn("Could not set zone " .. zone .. " to create BackGroundMusicSource")
 	end
@@ -32,7 +32,7 @@ end
 -- music is only on part of these maps
 for _, zone in pairs({"0_ados_wall", "0_ados_wall_n"}) do
 	if game:setZone(zone) then
-		game:setMusic("market_day", {volume=60, x=127, y=64, radius=96})
+		setZoneMusic("market_day", 60, 127, 64, 96)
 	else
 		logger:warn("Could not set zone " .. zone .. " to create BackGroundMusicSource")
 	end
@@ -40,14 +40,14 @@ end
 
 local zone = "0_ados_wall_n2"
 if game:setZone(zone) then
-	game:setMusic("market_day", {volume=60, x=127, y=127, radius=96})
+	setZoneMusic("market_day", 60, 127, 127, 96)
 else
 	logger:warn("Could not set zone " .. zone .. " to create BackGroundMusicSource")
 end
 
 local zone = "0_ados_wall_s"
 if game:setZone(zone) then
-	game:setMusic("market_day", {volume=60, x=127, y=0, radius=96})
+	setZoneMusic("market_day", 60, 127, 0, 96)
 else
 	logger:warn("Could not set zone " .. zone .. " to create BackGroundMusicSource")
 end

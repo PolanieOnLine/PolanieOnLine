@@ -20,12 +20,10 @@ logger:info("Loading Lua SpeakerNPC...")
 if game:setZone("0_semos_city") then
 
 	-- Use helper object to create a new NPC
-	local npc = entities:createSpeakerNPC("Lua")
+	local npc = npcHelper:createSpeakerNPC("Lua")
 	npc:setEntityClass("littlegirlnpc")
 	npc:setPosition(10, 55)
 	npc:setBaseSpeed(0.1)
-	npc:setCollisionAction(CollisionAction.STOP)
-
 	local nodes = {
 		{10, 55},
 		{11, 55},
@@ -34,47 +32,34 @@ if game:setZone("0_semos_city") then
 	}
 
 	-- Use helper object to create NPC path
-	npc:setPath(nodes, true)
+	npcHelper:setPath(npc, nodes)
 
 	-- Dialogue
-	npc:addJob("Właściwie jestem bezrobotna.")
+	npc:addJob("Właściwie jestem bezrobotny.")
+	npc:add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES, nil, ConversationStates.ATTENDING, "Jest mi smutno, bo nie mam pracy.", nil)
 	npc:addGoodbye();
+	npc:setCollisionAction(CollisionAction.STOP)
 
 	-- Some custom replies using conditions & actions
 	npc:add(
-		ConversationStates.IDLE,
-		ConversationPhrases.GREETING_MESSAGES,
-		nil,
-		ConversationStates.ATTENDING,
-		"Jest mi smutno, bo nie mam pracy.",
-		nil
-	)
-	npc:add(
 		ConversationStates.ATTENDING,
 		"Lua",
-		conditions:create("PlayerNextToCondition"),
+		newCondition("PlayerNextToCondition"),
 		ConversationStates.ATTENDING,
 		"Czy mógłbyś się trochę cofnąć? Czuję twój oddech.",
-		actions:create("NPCEmoteAction", {"coughs", false})
+		newAction("NPCEmoteAction", "coughs", false)
 	)
 	npc:add(
 		ConversationStates.ATTENDING,
 		"Lua",
-		conditions:notCondition(conditions:create("PlayerNextToCondition")),
+		newCondition("NotCondition", newCondition("PlayerNextToCondition")),
 		ConversationStates.ATTENDING,
 		"To moje imię, nie nadużywaj go!",
-		actions:create("NPCEmoteAction", {"giggles", false})
+		newAction("NPCEmoteAction", "giggles", false)
 	)
 
-	-- Set up a sign for Lua
-	local sign = entities:createSign()
-	sign:setEntityClass("signpost")
-	sign:setPosition(12, 55)
-	sign:setText("Poznaj Lua'e!")
-
-	-- Add the entities to the world
+	-- Add the NPC to the world
 	game:add(npc)
-	game:add(sign)
 
 	logger:info("Lua SpeakerNPC loaded!")
 else

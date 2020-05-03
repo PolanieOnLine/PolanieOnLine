@@ -16,7 +16,7 @@
 local grocer = nil
 
 local function addNPC()
-	grocer = entities:createSpeakerNPC("Jimbo")
+	grocer = npcHelper:createSpeakerNPC("Jimbo")
 	grocer:setOutfit("dress=5,head=6,mask=1")
 	grocer:setOutfitColor("skin", SkinColor.DARK)
 	grocer:setOutfitColor("dress", 0x8b4513) -- saddle brown
@@ -27,33 +27,28 @@ local function addNPC()
 
 	grocer:addGreeting()
 	grocer:addGoodbye()
-  grocer:addJob("Niedawno otwarłem sklep z różnymi produktami w mieście Deniran.")
+	grocer:addJob("Niedawno otwarłem sklep z różnymi produktami w mieście Deniran.")
 	grocer:addOffer("Proszę spójrz na tablicę, by sprawdzić przedmioty jakie mam na sprzedaż oraz ich cenę.")
 	grocer:addHelp(grocer:getReply("offer"))
 	grocer:addQuest("Wybacz, ale nie potrzebuję niczego w czym mógłbyś mi pomóc na tę chwilę.")
 
 	local sellPrices = {
-    {"oliwa z oliwek", 135},
-    {"ocet", 135},
+		{"oliwa z oliwek", 135},
+		{"ocet", 135},
 	}
-	-- FIXME: not working for Lua table as argument
-	--merchants:addSeller(grocer, sellPrices, false)
-
-	local shopName = "denirangrocerysell"
+	npcHelper:addSeller(grocer, sellPrices, false)
 
 	-- add to shop list
 	for _, item in pairs(sellPrices) do
-		merchants.shops:add(shopName, item[1], item[2])
+		shops:add("denirangrocerysell", item[1], item[2])
 	end
-
-	merchants:addSeller(grocer, merchants.shops:get(shopName), false)
 
 	game:add(grocer)
 end
 
 local function addSign()
 	if grocer ~= nil then
-		local sellSign = game:createShopSign("denirangrocerysell", "Sklep " .. grocer:getName() .. " (sprzedaje)", "Możesz te przedmioty kupić.")
+		local sellSign = game:createShopSign("denirangrocerysell", "Sklep " .. grocer:getName() .. " (sprzedaje)", "Możesz kupić te rzeczy.")
 		sellSign:setEntityClass("blackboard")
 		sellSign:setPosition(23, 23)
 

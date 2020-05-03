@@ -30,7 +30,7 @@ local zones = {
 
 for _, z in pairs(zones) do
 	if game:setZone(z) then
-		game:setMusic("night_town", {volume=85})
+		setZoneMusic("night_town", 85)
 	else
 		logger:warn("Could not set zone " .. z .. " to create BackGroundMusicSource")
 	end
@@ -52,7 +52,7 @@ local zones = {
 
 for _, z in pairs(zones) do
 	if game:setZone(z) then
-		game:setMusic("spooky_forest", {volume=85})
+		setZoneMusic("spooky_forest", 85)
 	else
 		logger:warn("Could not set zone " .. z .. " to create BackGroundMusicSource")
 	end
@@ -86,7 +86,7 @@ for _, z in pairs(zones) do
 		local zone = level .. "_" .. z
 
 		if game:setZone(zone) then
-			game:setMusic("casket", {volume=85})
+			setZoneMusic("casket", 85)
 		else
 			logger:warn("Could not set zone " .. zone .. " to create BackGroundMusicSource")
 		end

@@ -18,8 +18,8 @@ local broker = nil
 local shopName = "deniranpawnbuy"
 
 local function initNPC()
-	broker = entities:createSpeakerNPC(brokerName)
-	broker:setOutfit("body=0,head=8,hair=14,dress=5,hat=6")
+	broker = npcHelper:createSpeakerNPC(brokerName)
+	broker:setOutfit("body=0,head=0,hair=14,dress=5,hat=11")
 	broker:setOutfitColor("body", SkinColor.DARK)
 	broker:setPosition(18, 5)
 	broker:setIdleDirection(Direction.LEFT)
@@ -37,10 +37,10 @@ local function initNPC()
 end
 
 local function initShop()
-	merchants:addBuyer(broker, merchants.shops:get(shopName), false)
+	npcHelper:addBuyer(broker, shops:get(shopName), false)
 
 	-- shop sign
-	local sign = entities:createShopSign(shopName, "Lombard w Deniran", brokerName .. " skupuje następujące przedmioty", false)
+	local sign = game:createShopSign(shopName, "Lombard w Deniran", brokerName .. " skupuje następujące przedmioty", false)
 	sign:setEntityClass("blackboard")
 	sign:setPosition(18, 8)
 

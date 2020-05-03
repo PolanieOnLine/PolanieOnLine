@@ -20,34 +20,28 @@ local questSlot = "raven_forge_ring"
 local waitTime = MathHelper.MINUTES_IN_ONE_HOUR * 6
 local ring = "wzmocniony pierścień imperialny"
 
-local fee = 260000
-
 local requirements = {
 	{"pierścień imperialny", 1},
 	{"pierścień skorupy żółwia", 1},
 	{"róg jednorożca", 25},
-	{"money", fee}, -- fee needs to be the last item in this list
+	{"money", 260000},
 }
 
-local function getItemListString(includeFee)
-	sb = string.builder()
+local function sayBringMessage(npc)
+	sb = newStringBuilder()
 
-	local reqCount = #requirements
-	if not includeFee then
-		reqCount = reqCount - 1
-	end
-
-	for idx = 1, reqCount do
+	reqCount = #requirements
+	for idx, item in ipairs(requirements) do
 		if idx > 1 then
 			sb:append(", ")
 
 			if idx == reqCount then
-				sb:append("and ")
+				sb:append("oraz ")
 			end
 		end
 
-		local itemName = requirements[idx][1]
-		local quant = requirements[idx][2]
+		local itemName = item[1]
+		local quant = item[2]
 		itemName = grammar:plnoun(quant, itemName)
 		if itemName ~= "money" then
 			itemName = "#'" .. itemName .. "'"
@@ -56,12 +50,18 @@ local function getItemListString(includeFee)
 		sb:append(tostring(quant) .. " " .. itemName)
 	end
 
-	return sb:toString()
+	if npc == nil then
+		return sb:toString()
+	else
+		sb:insert(0, "Przynieś mi ")
+		sb:append(" i będę mógł zrobnić dla ciebie coś specjalnego.")
+		ringsmith:say(sb:toString())
+	end
 end
 
 if game:setZone(zone) then
-	ringsmith = entities:createSpeakerNPC("Raven")
-	ringsmith:setOutfit("body=5,head=16,dress=52,hair=15")
+	ringsmith = npcHelper:createSpeakerNPC("Raven")
+	ringsmith:setOutfit("body=1,head=0,dress=52,hair=13")
 	ringsmith:setOutfitColor("hair", Color.RED)
 
 	-- path
@@ -71,57 +71,57 @@ if game:setZone(zone) then
 		{31, 6},
 		{24, 6},
 	}
-	ringsmith:setPathAndPosition(nodes, true)
+	npcHelper:setPathAndPosition(ringsmith, nodes, true)
 
 	-- dialogue
 	ringsmith:addGreeting()
 	ringsmith:addGoodbye()
 	ringsmith:addQuest("Nie mam dla ciebie zadania w tym momencie.")
 	ringsmith:addJob("Mogę dla ciebie #wzmocnić specjalny przedmiot.")
-	local helpReply = "Mogę #wzmocnić użyteczny #pierścień jeśli przyniesiesz parę materiałów."
-	ringsmith:addHelp(helpReply)
-	ringsmith:addOffer(helpReply)
 
 	local hasItemsCondition = {}
 	local startAction = {
-		actions:create("SetQuestToTimeStampAction", {questSlot}),
-		actions:create("SayTimeRemainingAction", {questSlot, waitTime, "Okej, Biorę się za pracę. Proszę wróć za ",
-			"Przypomnij mi mówiąc #pierścień."}),
-		actions:create("PlaySoundAction", {"coins-01"}),
+		newAction("SetQuestToTimeStampAction", questSlot),
+		newAction("SayTimeRemainingAction", questSlot, waitTime, "Okej, Biorę się za pracę. Proszę wróć za ",
+			"Przypomnij mi mówiąc #pierścień."),
+		newAction("PlaySoundAction", "coins-01"),
 	}
 
 	for _, item in ipairs(requirements) do
-		table.insert(hasItemsCondition, conditions:create("PlayerHasItemWithHimCondition", {item[1], item[2]}))
-		table.insert(startAction, actions:create("DropItemAction", {item[1], item[2]}))
+		table.insert(hasItemsCondition, newCondition("PlayerHasItemWithHimCondition", item[1], item[2]))
+		table.insert(startAction, newAction("DropItemAction", item[1], item[2]))
 	end
 
 	local rewardAction = {
-		actions:create("EquipItemAction", {ring}),
-		actions:clearQuest(questSlot),
-		actions:create("IncreaseItemExchangeAction", {"produce", ring})
+		newAction("EquipItemAction", ring),
+		newAction("SetQuestAction", questSlot, nil),
+		-- FIXME: need to call player.incProducedCountForItem
 	}
 
 	local forgePhrases = {"forge", "ring", "wzmocnienie", "wzmocnić", "pierścień"}
+	-- FIXME: concatenating multiple tables at once doesn't work
+	--table.concat(forgePhrases, ConversationPhrases.HELP_MESSAGES, ConversationPhrases.OFFER_MESSAGES)
+	table.concat(forgePhrases, ConversationPhrases.HELP_MESSAGES)
+	table.concat(forgePhrases, ConversationPhrases.OFFER_MESSAGES)
 
 	ringsmith:add(ConversationStates.ATTENDING,
 		forgePhrases,
 		{
-			conditions:create("QuestNotActiveCondition", {questSlot}),
-			conditions:notCondition(hasItemsCondition),
+			newCondition("QuestNotActiveCondition", questSlot),
+			newNotCondition(hasItemsCondition),
 		},
 		ConversationStates.ATTENDING,
-		"Jeśli przynieś mi " .. getItemListString(true) .. " to będę mógła zrobić dla ciebie coś specjalnego.",
+		"Przynieś mi " .. sayBringMessage() .. " to będę mógł zrobić dla ciebie coś specjalnego.",
 		nil)
 
 	ringsmith:add(ConversationStates.ATTENDING,
 		forgePhrases,
 		{
-			conditions:create("QuestNotActiveCondition", {questSlot}),
+			newCondition("QuestNotActiveCondition", questSlot),
 			hasItemsCondition,
 		},
 		ConversationStates.QUESTION_1,
-		"Widzę, że już masz " .. getItemListString(false) .. ". Chcesz abym wzmocniła dla ciebie specjalny pierścień?" ..
-			" Koszt będzie wynosić " .. tostring(fee) .. " money.",
+		"Będę mógł dla ciebie wykonać specjalny przedmiot za " .. sayBringMessage() .. ". Chcesz, abym zaczął?",
 		nil)
 
 	ringsmith:add(ConversationStates.QUESTION_1,
@@ -133,7 +133,7 @@ if game:setZone(zone) then
 
 	ringsmith:add(ConversationStates.QUESTION_1,
 		ConversationPhrases.YES_MESSAGES,
-		conditions:notCondition(hasItemsCondition),
+		newNotCondition(hasItemsCondition),
 		ConversationStates.ATTENDING,
 		"Chyba coś zgubiłeś po drodze.",
 		nil)
@@ -148,18 +148,18 @@ if game:setZone(zone) then
 	ringsmith:add(ConversationStates.ATTENDING,
 		forgePhrases,
 		{
-			conditions:create("QuestActiveCondition", {questSlot}),
-			conditions:notCondition(conditions:create("TimePassedCondition", {questSlot, waitTime})),
+			newCondition("QuestActiveCondition", questSlot),
+			newNotCondition("TimePassedCondition", questSlot, waitTime),
 		},
 		ConversationStates.ATTENDING,
 		nil,
-		actions:create("SayTimeRemainingAction", {questSlot, waitTime, "Twój pierścień nie jest jeszcze gotowy. Proszę, wróć za"))
+		newAction("SayTimeRemainingAction", questSlot, waitTime, "Twój pierścień nie jest jeszcze gotowy. Proszę, wróć za"))
 
 	ringsmith:add(ConversationStates.ATTENDING,
 		forgePhrases,
 		{
-			conditions:create("QuestActiveCondition", {questSlot}),
-			conditions:create("TimePassedCondition", {questSlot, waitTime}),
+			newCondition("QuestActiveCondition", questSlot),
+			newCondition("TimePassedCondition", questSlot, waitTime),
 		},
 		ConversationStates.ATTENDING,
 		"Oto twój nowy " .. ring .. ".",
