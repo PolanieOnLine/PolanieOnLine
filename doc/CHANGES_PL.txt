@@ -321,7 +321,7 @@ Wersja poprawiająca działanie systemu limitów u burmistrzów następująco:
 - Dokonano kolejnych zmian w wyglądach postaci
 - Odświeżono kolory pióra azazela oraz archanioła ciemności
 - Zmieniono wygląd pasów takich jak:
-	* karmazynowy pas,
+	* pas karmazynowy,
 	* pas elficki,
 	* pas krasnoludzki,
 	* pas wampirzy oraz

@@ -64,7 +64,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement("item.set.red", "Niebezpieczna Amazonia", "Zdobył cały karmazynowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja karmazynowa", "karmazynowy hełm", "płaszcz karmazynowy",
-						"spodnie karmazynowe", "buty karmazynowe", "karmazynowa tarcza", "karmazynowe rękawice", "karmazynowy pas")));
+						"spodnie karmazynowe", "buty karmazynowe", "karmazynowa tarcza", "karmazynowe rękawice", "pas karmazynowy")));
 
 		itemAchievements.add(createAchievement("item.set.blue", "Czuję Błękit", "Zdobył cały lazurowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,

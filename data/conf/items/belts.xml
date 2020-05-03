@@ -58,9 +58,9 @@
 		</equipable>
 	</item>
 
-	<item name="karmazynowy pas">
+	<item name="pas karmazynowy">
 		<type class="belts" subclass="red_belt" tileid="-1"/>
-		<description>Oto karmazynowy pas. Klejnot daje ci większą ochronę.</description>
+		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="5"/>
