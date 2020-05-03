@@ -62,34 +62,14 @@
 		</equipable>
 	</item>
 
-	<item name="lekka kusza">
-		<type class="ranged" subclass="light_crossbow" tileid="-1"/>
-		<description>Oto lekka kusza. Połączenie lekkości z solidnym wykonaniem tejże broni daje świetne rezultaty w ataku.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<ratk value="17"/>
-			<range value="3"/>
-			<min_level value="80"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="17280"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="rhand"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
 	<item name="kusza">
 		<type class="ranged" subclass="crossbow" tileid="-1"/>
 		<description>Oto kusza. Atak jest duży, ale słabsza celność. Co wolisz?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<ratk value="21"/>
-			<range value="4"/>
-			<min_level value="150"/>
+			<ratk value="17"/>
+			<range value="3"/>
+			<min_level value="80"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="49130"/>
@@ -107,33 +87,12 @@
 		<description>Oto kusza łowcy. Musisz zdecydować się czy duży atak jest warty krótszego zasięgu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<ratk value="23"/>
-			<range value="5"/>
+			<ratk value="21"/>
+			<range value="4"/>
 			<min_level value="150"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="92610"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="rhand"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="lodowa kusza">
-		<type class="ranged" subclass="ice_crossbow" tileid="-1"/>
-		<description>Oto lodowa kusza. Bełty wystrzelone z tej broni otrzymują siłę lodu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<ratk value="30"/>
-			<range value="5"/>
-			<min_level value="175"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="17280"/>
-		<damage type="ice"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -164,9 +123,50 @@
 		</equipable>
 	</item>
 
+	<item name="lodowa kusza">
+		<type class="ranged" subclass="ice_crossbow" tileid="-1"/>
+		<description>Oto lodowa kusza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="23"/>
+			<range value="5"/>
+			<min_level value="150"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="17280"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="lekka kusza">
+		<type class="ranged" subclass="light_crossbow" tileid="-1"/>
+		<description>Oto lekka kusza.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<ratk value="30"/>
+			<range value="5"/>
+			<min_level value="175"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="17280"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="łuk treningowy">
 	    <type class="ranged" subclass="training_bow" tileid="-1" />
-	    <description>Oto łuk treningowy. Lekki i łatwy w użyciu, lecz jego bardzo słabe wykonanie sprawia, że czujesz jak łamie się w twoich rękach.</description>
+	    <description>Oto ten łuk treningowy jest lekki i łatwy w użyciu, lecz jego bardzo słabe wykonanie sprawia, że czujesz jak się łamie w twych rękach.</description>
 	    <implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
 	    <attributes>
 	      <ratk value="0"/>
@@ -185,64 +185,4 @@
 	      <slot name="trade"/>
 	    </equipable>
   	</item>
-
-	<item name="automatyczna kusza">
-		<type class="ranged" subclass="auto_crossbow" tileid="-1" />
-		<description>Oto ta automatyczna kusza pozwala na szybki ogień. Lecz jej słaba jakość wykonania sprawia iż ​​czujesz, jakby mogła złamać się w twych rękach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
-		<attributes>
-			<ratk value="0"/>
-			<range value="3"/>
-			<rate value="1"/>
-			<durability value="800"/>
-		</attributes>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="automatyczna kusza A">
-		<type class="ranged" subclass="auto_crossbow_a" tileid="-1" />
-		<description>Oto ta automatyczna kusza klasy A, pozwala na szybki ogień. Jest dość wytrzymała, ale nie jest przeznaczona do regularnej walki.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
-		<attributes>
-			<ratk value="0"/>
-			<range value="3"/>
-			<rate value="1"/>
-			<durability value="1400"/>
-		</attributes>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="automatyczna kusza A+">
-		<type class="ranged" subclass="auto_crossbow_aa" tileid="-1" />
-		<description>Oto ta automatyczna kusza klasy A+, pozwala na szybki ogień. Wykonana jest z wysokiej jakości materiałów.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
-		<attributes>
-			<ratk value="0"/>
-			<range value="3"/>
-			<rate value="1"/>
-			<durability value="3600"/>
-		</attributes>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
 </items>
