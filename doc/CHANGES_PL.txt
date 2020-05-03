@@ -3,7 +3,8 @@ Changelog
 1.12
 *klient*
 - Dodano nowe pliki graficzne (przedmiotów/gui/npc/potworów)
-- Zmieniono wygląd lekkiej oraz zwykłej kuszy, pasa kolczego oraz złotego pasa kolczego
+- Zmieniono wygląd lekkiej oraz zwykłej kuszy, pasa kolczego oraz złotego pasa kolczego,
+pasa skórzanego oraz wzmocnionego pasa skórzanego
 
 *świat*
 - Dodano nowe przedmioty: (4)
