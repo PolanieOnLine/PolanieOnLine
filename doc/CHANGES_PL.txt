@@ -6,10 +6,11 @@ Changelog
 - Zmieniono wygląd lekkiej oraz zwykłej kuszy, pasa kolczego oraz złotego pasa kolczego
 
 *świat*
-- Dodano nowe przedmioty: (3)
+- Dodano nowe przedmioty: (4)
 	- automatyczna kusza (800 punktów wytrzymałości)
 	- automatyczna kusza A (1400 punktów wytrzymałości)
 	- automatyczna kusza A+ (3600 punktów wytrzymałości)
+	- lodowy pas
 - Dodano nowe osiągnięcia: (3)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
@@ -19,6 +20,7 @@ Changelog
 - Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy, kuszę
 - Osłabiono: lekką kuszę
 - Poprawiono nazwy niektórym przedmiotom
+- Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom)
 
 *serwer*
 - Dodano 2 nowe skrypyty dla administratorów (alterkill & inspectkill)
