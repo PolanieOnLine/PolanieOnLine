@@ -30,6 +30,7 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
+import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -73,6 +74,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 
 	private static final String QUEST_SLOT = "clean_athors_underground";
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
+
 
 	@Override
 	public String getSlotName() {
@@ -122,6 +124,8 @@ public class CleanAthorsUnderground extends AbstractQuest {
 				"Te #potwory wróciły od tamtego czasu, gdy nam pomogłeś. Możesz znów nam pomóc?",
 				null);
 
+
+
 		final Map<String, Pair<Integer, Integer>> toKill = new TreeMap<String, Pair<Integer, Integer>>();
 		toKill.put("mumia", new Pair<Integer, Integer>(0,1));
 		toKill.put("mumia królewska", new Pair<Integer, Integer>(0,1));
@@ -138,6 +142,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new SetQuestAction(QUEST_SLOT, "start"));
 		actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
+
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
@@ -159,7 +164,9 @@ public class CleanAthorsUnderground extends AbstractQuest {
 	}
 
 	private void step_3() {
+
 		final SpeakerNPC npc = npcs.get("John");
+
 
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 	    actions.add(new EquipItemAction("wielki eliksir", 20));
@@ -167,6 +174,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 		actions.add(new SetQuestAction(QUEST_SLOT, "killed;1"));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 		actions.add(new IncreaseKarmaAction(10.0));
+
 
 		LinkedList<String> triggers = new LinkedList<String>();
 		triggers.addAll(ConversationPhrases.FINISH_MESSAGES);
@@ -176,7 +184,6 @@ public class CleanAthorsUnderground extends AbstractQuest {
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new KilledForQuestCondition(QUEST_SLOT, 1)),
-				ConversationStates.ATTENDING,
 				"Wspaniale! Jak widzę zabiłeś te okropne potwory! Mam nadzieję, że nie wrócą zbyt szybko, bo nie będziemy mieli szansy na zwiedzenie paru miejsc."  + " Proszę weż te duże eliksiry jako nagrodę za twoją pomoc.",
 				new MultipleActions(actions));
 
@@ -185,9 +192,9 @@ public class CleanAthorsUnderground extends AbstractQuest {
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.ATTENDING,
 				"Proszę uwolnij te wspaniałe miejsca od tych okropnych potworów!",
 				null);
+
 	}
 
 	@Override
@@ -217,9 +224,11 @@ public class CleanAthorsUnderground extends AbstractQuest {
 			return res;
 	}
 
+
 	@Override
 	public String getName() {
 		return "CleanAthorsUnderground";
+
 	}
 
 	@Override

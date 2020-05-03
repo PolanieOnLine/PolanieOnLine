@@ -233,20 +233,22 @@ public class PsychicNPC implements ZoneConfigurator {
 			}
 		};
 
-		final List<String> readPhrases = Arrays.asList("read", "reading", "odczytać", "czytać", "czytanie", "poczytać", "przeczytać");
 		/**
+		final List<String> readPhrases = Arrays.asList("read", "reading", "odczytać", "czytać", "czytanie", "poczytać", "przeczytać");
+
 		// player is not carrying a bestiary
 		psychic.add(ConversationStates.ATTENDING,
-				readPhrases,
 				new NotCondition(new PlayerHasItemWithHimCondition("bestiariusz")),
+				readPhrases,
 				ConversationStates.ATTENDING,
 				"Nie mogę odczytać twojej przeszłości, chyba że masz nagranie # wrogów, z którymi się spotkałeś.",
 				null);
 		*/
 
 		psychic.add(ConversationStates.ATTENDING,
-				readPhrases,
+				Arrays.asList("read", "reading", "odczytać", "czytać", "czytanie", "poczytać", "przeczytać"),
 				//new PlayerHasItemWithHimCondition("bestiariusz"),
+				ConversationStates.ATTENDING,
 				ConversationStates.QUESTION_1,
 				"Widzę, że nosisz bestiariusz. O którym wrogu chciałbyś uzyskać informacje?",
 				null);

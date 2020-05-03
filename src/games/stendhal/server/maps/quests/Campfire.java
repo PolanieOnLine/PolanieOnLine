@@ -243,17 +243,17 @@ public class Campfire extends AbstractQuest {
 		});
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES,
 			new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD),
+			ConversationPhrases.YES_MESSAGES,
 			ConversationStates.ATTENDING, null,
 			new MultipleActions(reward));
 
 		//player said the wood was for her but has dropped it from his bag or hands
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD)),
-			ConversationStates.ATTENDING,
 			"Hej! Gdzie położyłeś drewno?",
+			ConversationPhrases.YES_MESSAGES,
+			ConversationStates.ATTENDING,
 			null);
 
 		// player had wood but said it is not for sally

@@ -77,8 +77,8 @@ public class HatForMonogenes extends AbstractQuest {
 			return res;
 		}
 		res.add("Muszę znaleźć jakiś skórzany kapelusz, który trzymałby ciepło.");
-		if (player.isQuestInState(QUEST_SLOT, "start")
 				&& player.isEquipped("skórzany hełm")
+		if (player.isQuestInState(QUEST_SLOT, "start")
 				|| player.isQuestCompleted(QUEST_SLOT)) {
 			res.add("Znalazłem kapelusz.");
 		}
@@ -94,8 +94,8 @@ public class HatForMonogenes extends AbstractQuest {
 		monogenes.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED,
 			"Czy mógłbyś przynieść mi #kapelusz do zakrycia mojej łysinki? Brrrrr! Dni w Semos robią się coraz chłodniejsze...",
+			ConversationStates.QUEST_OFFERED,
 			null);
 
 		monogenes.add(ConversationStates.ATTENDING,

@@ -2795,6 +2795,13 @@ public abstract class RPEntity extends GuidedEntity {
 			weapon += weaponItem.getAttack();
 		}
 
+		// calculate ammo when not using RATK stat
+		if (weapons.size() > 0) {
+			if (getWeapons().get(0).isOfClass("ranged")) {
+				weapon += getAmmoAtk();
+			}
+		}
+
 		if (hasGloves()) {
 			glove += getGloves().getAttack();
 		} if (hasRing()) {
@@ -2822,7 +2829,7 @@ public abstract class RPEntity extends GuidedEntity {
 			if (held.isOfClass("ranged")) {
 				ratk += getAmmoAtk();
 			} else if (held.isOfClass("wand")) {
-				ratk += getMagicAmmoAtk();
+				ratk += getAmmoAtk();
 			}
 		}
 
@@ -2834,24 +2841,16 @@ public abstract class RPEntity extends GuidedEntity {
 	 */
 	private float getAmmoAtk() {
 		float ammo = 0;
-
-		final StackableItem ammoItem = getAmmunition();
-		if (ammoItem != null) {
-			ammo = ammoItem.getRangedAttack();
-		}
-
-		return ammo;
-	}
-
-	private float getMagicAmmoAtk() {
 		float magicammo = 0;
 
+		final StackableItem ammoItem = getAmmunition();
 		final StackableItem magiaItem = getMagia();
-		if (magiaItem != null) {
+		if (ammoItem != null && magiaItem != null) {
+			ammo = ammoItem.getRangedAttack();
 			magicammo = magiaItem.getRangedAttack();
 		}
 
-		return magicammo;
+		return ammo, magicammo;
 	}
 
 	public float getItemDef() {

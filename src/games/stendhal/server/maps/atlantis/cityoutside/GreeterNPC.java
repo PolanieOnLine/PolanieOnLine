@@ -74,7 +74,7 @@ public class GreeterNPC implements ZoneConfigurator {
 	}};
 
 	private static Map<String, String> creatureReplies = new HashMap<String, String>() {{
-		put("małych pegazów",
+		put(Arrays.asList("mały pegaz", "małych pegazów"),
 				"Biedne stworzonka. Cudzoziemcy przybywają tutaj, aby je kłusować za specjalne upuszczane pierścienie. " +
 				"Ich populacja zmalała w ostatnich latach.");
 		put("pegaz kościsty",

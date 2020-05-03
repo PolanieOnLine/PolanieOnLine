@@ -106,11 +106,11 @@ public class GuessKills extends AbstractQuest {
 		}
 	}
 
+				"Gra w zgadywanie",
+				"Crearid gra w grę, w której musisz zgadnąć ile potworów zabiłeś.",
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Gra w zgadywanie",
-				"Crearid gra w grę, w której musisz zgadnąć ile potworów zabiłeś.",
 				true);
 		prepareQuestStep();
 	}
@@ -234,17 +234,23 @@ public class GuessKills extends AbstractQuest {
 				npc.say("Zobaczmy... zostało tobie " + Grammar.quantityplnounCreature(guesses, "prób") + 
 						"... i jeśli dobrze pamiętam to zapytałem się ciebie..." +
 						" ile " + Grammar.pluralCreature(CREATURE) + " zabiłeś?");
+        final String[] triggers = {"game", "games", "play", "play game", "play games", "gra", "gry", "zagraj w grę", "zagraj w gry"};
+                "Nie skończyliśmy ostatniej gry czy chcesz ją kontynuować?",
+                "Cóż przegrałeś. Co mogę dla ciebie zrobić?",
+                "Lubię się rozerwać, ale nie wwyglądasz na takiego co jest gotowy." +
+                " Wróć, gdy zdobędziesz trochę doświadczenia w walce z potworami.",
+                "Teraz trochę się nudzę. Czy chciałbyś zagrać ze mną?",
+                new SayTimeRemainingAction(QUEST_SLOT, 1, INTERVAL_BETWEEN_TRIES, "Nie żle się bawiłem. Dziękuję. Wróć za powiedzmy"));
+
 			}
 		};
 
-        final String[] triggers = {"game", "games", "play", "play game", "play games", "gra", "gry", "zagraj w grę", "zagraj w gry"};
 
 		//if quest not finished and came back
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList(triggers),
 				new AndCondition(questNotDone, requirement),
 				ConversationStates.QUEST_STARTED,
-				"Nie skończyliśmy ostatniej gry czy chcesz ją kontynuować?",
 				null);
 
 		//if quest not finished and player wants to continue
@@ -274,7 +280,6 @@ public class GuessKills extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Cóż przegrałeś. Co mogę dla ciebie zrobić?",
 				null);
 
 		//if player has not killed enough creatures don't give quest
@@ -282,8 +287,6 @@ public class GuessKills extends AbstractQuest {
 				Arrays.asList(triggers),
 				new NotCondition(requirement),
 				ConversationStates.ATTENDING,
-				"Lubię się rozerwać, ale nie wwyglądasz na takiego co jest gotowy."
-				+ " Wróć, gdy zdobędziesz trochę doświadczenia w walce z potworami.",
 				null);
 
 		//ask if player would like to take quest if player has killed enough creatures
@@ -291,7 +294,6 @@ public class GuessKills extends AbstractQuest {
 				Arrays.asList(triggers),
 				new AndCondition(requirement, enoughTimePassed, new NotCondition(questNotDone)),
 				ConversationStates.QUEST_OFFERED,
-				"Teraz trochę się nudzę. Czy chciałbyś zagrać ze mną?",
 				null);
 
 		//tell player to come back later if one week has not passed
@@ -300,7 +302,6 @@ public class GuessKills extends AbstractQuest {
 				new AndCondition(requirement, new NotCondition(enoughTimePassed), new NotCondition(questNotDone)),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, INTERVAL_BETWEEN_TRIES, "Nie żle się bawiłem. Dziękuję. Wróć za powiedzmy"));
 
 		//ask quest question if quest accepted, also gets the creature type to ask about
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -326,12 +327,23 @@ public class GuessKills extends AbstractQuest {
 	                },
 	                new SetQuestAction(QUEST_SLOT, 0, "1")));
 
+                "Eh nie ma z tobą zabawy.",
+                "Jak to możliwe, że to może być odpowiedź? Powiedz mi liczbę.",
+                "Czy to możliwe? Podaj prawidłową odpowiedź.",
+                "Nigdy nie słyszałem o takiej liczbie określającej zabójstwo. Podaj mi odpowiedź.",
+                "Dowidzenia. Wróć, gdy będziesz chciał kontynuować.",
+                "Zdumiewające! To dokładna liczba! Jesteś szczęściarzem lub naprawdę zwracasz na to uwagę.",
+                "Łał było blikso. Dobra robota!",
+                "Nie to nie jest prawidłowa odpowiedź. Spróbuj ponownie.",
+                "Znów źle. Masz jeszcze jedną próbę.",
+                        	npc.say("Niestety jest to nieprawidłowa. Poprawna odpowiedź jest w tym regionie "
+                        	+ " i " + Math.round(exactNumber + Math.max(exactNumber * 0.2, 10) - exactNumber * 0.1 * Rand.rand())
+                        	+ ". Wysiliłeś się.");
 		//if quest rejected
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Eh nie ma z tobą zabawy.",
 				null);
 
 		//if invalid answer
@@ -339,21 +351,18 @@ public class GuessKills extends AbstractQuest {
 				"",
 				wrongAndNotBye,
 				ConversationStates.QUESTION_1,
-				"Jak to możliwe, że to może być odpowiedź? Powiedz mi liczbę.",
 				null);
 
 		npc.add(ConversationStates.QUESTION_2,
 				"",
 				wrongAndNotBye,
 				ConversationStates.QUESTION_2,
-				"Czy to możliwe? Podaj prawidłową odpowiedź.",
 				null);
 
 		npc.add(ConversationStates.QUESTION_3,
 				"",
 				wrongAndNotBye,
 				ConversationStates.QUESTION_3,
-				"Nigdy nie słyszałem o takiej liczbie określającej zabójstwo. Podaj mi odpowiedź.",
 				null);
 
 		//if goodbye while guessing
@@ -361,7 +370,6 @@ public class GuessKills extends AbstractQuest {
 				ConversationPhrases.GOODBYE_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Dowidzenia. Wróć, gdy będziesz chciał kontynuować.",
 				null);
 
 		//if exact answer
@@ -369,7 +377,6 @@ public class GuessKills extends AbstractQuest {
 				"",
 				new AndCondition(isNumber, exact, new NotCondition(close)),
 				ConversationStates.ATTENDING,
-				"Zdumiewające! To dokładna liczba! Jesteś szczęściarzem lub naprawdę zwracasz na to uwagę.",
 				new MultipleActions(
 					new SetQuestAction(QUEST_SLOT, 0, "done"),
 					new SetQuestToTimeStampAction(QUEST_SLOT, 1),
@@ -380,7 +387,6 @@ public class GuessKills extends AbstractQuest {
 				"",
 				new AndCondition(isNumber, close, new NotCondition(exact)),
 				ConversationStates.ATTENDING,
-				"Łał było blikso. Dobra robota!",
 				new MultipleActions(
 					new SetQuestAction(QUEST_SLOT, 0, "done"),
 					new SetQuestToTimeStampAction(QUEST_SLOT, 1),
@@ -391,14 +397,12 @@ public class GuessKills extends AbstractQuest {
 				"",
 				new AndCondition(isNumber, new NotCondition(close), new NotCondition(exact)),
 				ConversationStates.QUESTION_2,
-				"Nie to nie jest prawidłowa odpowiedź. Spróbuj ponownie.",
 				new SetQuestAction(QUEST_SLOT, 0, "2"));
 
 		npc.add(ConversationStates.QUESTION_2,
 				"",
 				new AndCondition(isNumber, new NotCondition(close), new NotCondition(exact)),
 				ConversationStates.QUESTION_3,
-				"Znów źle. Masz jeszcze jedną próbę.",
 				new SetQuestAction(QUEST_SLOT, 0, "3"));
 
 		npc.add(ConversationStates.QUESTION_3,
@@ -411,10 +415,7 @@ public class GuessKills extends AbstractQuest {
 						@Override
 						public void fire(Player player, Sentence sentence, EventRaiser npc) {
 							int exactNumber = player.getSoloKill(CREATURE) + player.getSharedKill(CREATURE);
-							npc.say("Niestety jest to nieprawidłowa. Poprawna odpowiedź jest w tym regionie "
-								+ (int) Math.max(Math.floor(exactNumber - Math.max(exactNumber * 0.2, 10) + exactNumber * 0.1 * Rand.rand()), 0)
-		                        + " i " + Math.round(exactNumber + Math.max(exactNumber * 0.2, 10) - exactNumber * 0.1 * Rand.rand())
-		                        + ". Wysiliłeś się.");
+							+ (int) Math.max(Math.floor(exactNumber - Math.max(exactNumber * 0.2, 10) + exactNumber * 0.1 * Rand.rand()), 0)
 						}
 					},
 					new SetQuestAction(QUEST_SLOT, 0, "done"),

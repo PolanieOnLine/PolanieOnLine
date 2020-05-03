@@ -1,14 +1,6 @@
-/***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/**
+ *
+ */
 package games.stendhal.server.maps.quests.houses;
 
 import java.util.Arrays;
@@ -43,62 +35,60 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 	}
 
 	private void init() {
-		final List<String> costPhrases = Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena");
-
 		// Other than the condition that you must not already own a house, there are a number of conditions a player must satisfy.
 		// For definiteness we will check these conditions in a set order.
 		// So then the NPC doesn't have to choose which reason to reject the player for (appears as a WARN from engine if he has to choose)
 
 		// player is not old enough
+				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
 		add(ConversationStates.ATTENDING,
-				costPhrases,
-				new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
-				ConversationStates.ATTENDING,
-				"Cena za nowy dom w Ados to "
-				+ getCost()
-				+ " money. Ale obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
-				+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin w Faiumoni.",
-				null);
+				 new NotCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE)),
+				 ConversationStates.ATTENDING,
+				 "Cena za nowy dom w Ados to "
+				 + getCost()
+				 + " money. Ale obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
+				 + Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin w Faiumoni.",
+					null);
 
 
 		// player doesn't have a house and is old enough but has not done required quests
+				 Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
 		add(ConversationStates.ATTENDING,
-				costPhrases,
-				new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
-						new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-						new NotCondition(
-								new AndCondition(
-										new QuestCompletedCondition(AdosHouseSeller.DAILY_ITEM_QUEST_SLOT),
-										new QuestCompletedCondition(AdosHouseSeller.ANNA_QUEST_SLOT),
-										new QuestCompletedCondition(AdosHouseSeller.KEYRING_QUEST_SLOT),
-										new QuestCompletedCondition(AdosHouseSeller.FISHROD_QUEST_SLOT),
-										new QuestCompletedCondition(AdosHouseSeller.GHOSTS_QUEST_SLOT),
-										new QuestCompletedCondition(AdosHouseSeller.ZARA_QUEST_SLOT)))),
-				ConversationStates.ATTENDING,
-				"Koszt nowego domu w Ados wynosi "
-				+ getCost()
-				+ " money. Ale obawiam się, że nie mogę sprzedać Tobie domu, jeszcze trzeba udowodnić #obywatelstwo.",
-				null);
+				 new AndCondition(new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+								  new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
+								  new NotCondition(
+													  new AndCondition(
+																	   new QuestCompletedCondition(AdosHouseSeller.DAILY_ITEM_QUEST_SLOT),
+																	   new QuestCompletedCondition(AdosHouseSeller.ANNA_QUEST_SLOT),
+																	   new QuestCompletedCondition(AdosHouseSeller.KEYRING_QUEST_SLOT),
+																	   new QuestCompletedCondition(AdosHouseSeller.FISHROD_QUEST_SLOT),
+																	   new QuestCompletedCondition(AdosHouseSeller.GHOSTS_QUEST_SLOT),
+																	   new QuestCompletedCondition(AdosHouseSeller.ZARA_QUEST_SLOT)))),
+				 "Koszt nowego domu w Ados wynosi "
+				 ConversationStates.ATTENDING,
+				 + getCost()
+				 + " money. Ale obawiam się, że nie mogę sprzedać Tobie domu, jeszcze trzeba udowodnić #obywatelstwo.",
+				 null);
 
 		// player is eligible to buy a house
+					Arrays.asList("cost", "house", "buy", "purchase", "koszt", "dom", "kupić", "cenę", "cena"),
 		add(ConversationStates.ATTENDING,
-				costPhrases,
-				new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
-						new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
-						new QuestCompletedCondition(AdosHouseSeller.DAILY_ITEM_QUEST_SLOT),
-						new QuestCompletedCondition(AdosHouseSeller.ANNA_QUEST_SLOT),
-						new QuestCompletedCondition(AdosHouseSeller.KEYRING_QUEST_SLOT),
-						new QuestCompletedCondition(AdosHouseSeller.FISHROD_QUEST_SLOT),
-						new QuestCompletedCondition(AdosHouseSeller.GHOSTS_QUEST_SLOT),
-						new QuestCompletedCondition(AdosHouseSeller.ZARA_QUEST_SLOT)),
-				ConversationStates.QUEST_OFFERED,
-				"Nowy dom w Ados kosztuje "
-				+ getCost()
-				+ " money. Ponadto trzeba zapłacić podatek " + HouseTax.BASE_TAX
-				+ " money, co miesiąc. Jeśli masz jakiś dom na oku powiedz jego numer, sprawdzę czy jest wolny. "
-				+ "Domy w Ados mają numery od "
-				+ getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
-				null);
+				 new AndCondition(new QuestNotStartedCondition(HouseSellerNPCBase.QUEST_SLOT),
+								  new AgeGreaterThanCondition(HouseSellerNPCBase.REQUIRED_AGE),
+								  new QuestCompletedCondition(AdosHouseSeller.DAILY_ITEM_QUEST_SLOT),
+								  new QuestCompletedCondition(AdosHouseSeller.ANNA_QUEST_SLOT),
+								  new QuestCompletedCondition(AdosHouseSeller.KEYRING_QUEST_SLOT),
+								  new QuestCompletedCondition(AdosHouseSeller.FISHROD_QUEST_SLOT),
+								  new QuestCompletedCondition(AdosHouseSeller.GHOSTS_QUEST_SLOT),
+								  new QuestCompletedCondition(AdosHouseSeller.ZARA_QUEST_SLOT)),
+				 "Nowy dom w Ados kosztuje "
+				 ConversationStates.QUEST_OFFERED,
+				 + getCost()
+				 + " money. Ponadto trzeba zapłacić podatek " + HouseTax.BASE_TAX
+				 + " money, co miesiąc. Jeśli masz jakiś dom na oku powiedz jego numer, sprawdzę czy jest wolny. "
+				 + "Domy w Ados mają numery od "
+				 + getLowestHouseNumber() + " do " + getHighestHouseNumber() + ".",
+				 null);
 
 		// handle house numbers getLowestHouseNumber() - getHighestHouseNumber()
 		addMatching(ConversationStates.QUEST_OFFERED,

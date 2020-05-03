@@ -31,6 +31,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
@@ -43,6 +44,7 @@ import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.NPCEmoteAction;
@@ -446,6 +448,8 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, TRAIN_TIME, "Twój trening zakończy się za około"));
 		*/
+	}
+
 	}
 
 	/**

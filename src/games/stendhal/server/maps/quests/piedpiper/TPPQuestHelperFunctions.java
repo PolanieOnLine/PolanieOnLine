@@ -73,12 +73,12 @@ public class TPPQuestHelperFunctions implements ITPPQuestConstants {
 		piedpiper.setResistance(0);
 		piedpiper.setVisibility(100);
 		piedpiper.setAllowToActAlone(true);
+							"cześć", 
 		piedpiper.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new GreetingMatchesNameCondition(piedpiper.getName()), true,
-				ConversationStates.IDLE,
-				"cześć",
-				null);
+							ConversationPhrases.GREETING_MESSAGES,
+							new GreetingMatchesNameCondition(piedpiper.getName()), true,
+							ConversationStates.IDLE,
+							null);
 		piedpiper.addEmotionReply("hugs", "smile to");
 	}
 

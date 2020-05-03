@@ -68,6 +68,7 @@ import marauroa.common.Pair;
  */
 
 public class KillGnomes extends AbstractQuest {
+
 	private static final String QUEST_SLOT = "kill_gnomes";
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
 
@@ -151,9 +152,9 @@ public class KillGnomes extends AbstractQuest {
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new KilledForQuestCondition(QUEST_SLOT, 1)),
-				ConversationStates.ATTENDING,
 				"Widzę, że zabiłeś gnomy. Mam nadzieje, że przez jakiś czas nie będą się zbliżać do marchwi! "
 				+ "Proszę weź te mikstury w dowód uznania.",
+				ConversationStates.ATTENDING,
 				new MultipleActions(actions));
 
 		npc.add(ConversationStates.ATTENDING,
@@ -161,9 +162,9 @@ public class KillGnomes extends AbstractQuest {
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.ATTENDING,
 				"Musisz nauczyć te zuchwałe gnomy lekcji zabijając kilku dla przykładu! "
 				+ "Upewnij się, że dostałeś kilku liderów, co najmniej jednego zwiadowcę i jednego kawalerzystę.",
+				ConversationStates.ATTENDING,
 				null);
 	}
 
