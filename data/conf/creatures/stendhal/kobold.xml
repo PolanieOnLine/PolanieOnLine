@@ -69,7 +69,7 @@
 			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
 			<item value="skórzany hełm" quantity="[1,1]" probability="1.0"/>
 			<item value="drewniana tarcza" quantity="[1,1]" probability="1.3"/>
-			<item value="kolczany pas" quantity="[1,1]" probability="2.5"/>
+			<item value="pas kolczy" quantity="[1,1]" probability="2.5"/>
 			<item value="mieczyk" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips>
@@ -111,7 +111,7 @@
 			<item value="buty skórzane" quantity="[1,1]" probability="0.5"/>
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
 			<item value="drewniany łuk" quantity="[1,1]" probability="0.5"/>
-			<item value="złoty kolczany pas" quantity="[1,1]" probability="0.75"/>
+			<item value="złoty pas kolczy" quantity="[1,1]" probability="0.75"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała" quantity="10000" />
@@ -158,7 +158,7 @@
 			<item value="buty nabijane ćwiekami" quantity="[1,1]" probability="0.5"/>
 			<item value="skórzany hełm" quantity="[1,1]" probability="1.5"/>
 			<item value="krótki miecz" quantity="[1,1]" probability="1.0"/>
-			<item value="złoty kolczany pas" quantity="[1,1]" probability="1.25"/>
+			<item value="złoty pas kolczy" quantity="[1,1]" probability="1.25"/>
 			<item value="butelka wody" quantity="[1,2]" probability="40.0"/>
 		</drops>
 		<equips>
@@ -202,7 +202,7 @@
 			<item value="buteleczka wody" quantity="[1,2]" probability="1.5"/>
 			<item value="hełm kolczy" quantity="[1,1]" probability="3.0"/>
 			<item value="tarcza płytowa" quantity="[1,1]" probability="0.5"/>
-			<item value="kolczany pas" quantity="[1,1]" probability="3.25"/>
+			<item value="pas kolczy" quantity="[1,1]" probability="3.25"/>
 			<item value="butelka wody" quantity="[1,3]" probability="33.5"/>
 		</drops>
 		<equips>

@@ -124,7 +124,7 @@
 		<item name="kolczuga" price="29" />
 		<item name="hełm kolczy" price="25" />
 		<item name="spodnie kolcze" price="27" />
-		<item name="kolczany pas" price="14" />
+		<item name="pas kolczy" price="14" />
 	</shop>
 
 	<!-- Hagnurk sprzedaje: -->
@@ -209,7 +209,7 @@
 		<item name="kolczuga wzmocniona" price="32" />
 		<item name="złota kolczuga" price="52" />
 		<item name="zbroja płytowa" price="62" />
-		<item name="złoty kolczany pas" price="27" />
+		<item name="złoty pas kolczy" price="27" />
 		<item name="tarcza płytowa" price="40" />
 		<item name="lwia tarcza" price="50" />
 		<item name="spodnie lazurowe" price="500" />
@@ -1005,8 +1005,8 @@
 	<shop name="buyarmorywieliczka" type="buys">
 		<item name="lazurowy hełm" price="1000" />
 		<item name="lazurowa tarcza" price="1200" />
-		<item name="kolczany pas" price="21" />
-		<item name="złoty kolczany pas" price="32" />
+		<item name="pas kolczy" price="21" />
+		<item name="złoty pas kolczy" price="32" />
 		<item name="pas cieni" price="3300" />
 		<item name="lodowy płaszcz" price="25000" />
 		<item name="lodowe spodnie" price="21000" />
