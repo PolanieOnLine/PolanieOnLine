@@ -134,7 +134,6 @@ public abstract class UpdateConverter {
 		ZONE_MAPPING.put("-3_lost_caves_wall_n", "-3_deniran_lost_caves_n_e2");
 		ZONE_MAPPING.put("-3_deniran_caves_wall", "-3_deniran_caves_e2");
 		ZONE_MAPPING.put("-3_deniran_caves_wall_s", "-3_deniran_caves_s_e2");
-
 	}
 
 	/**
@@ -174,7 +173,6 @@ public abstract class UpdateConverter {
 				new Pair<Integer, List<String>>(1, Arrays.asList(
 					"Sergej Elos")));
 	}
-
 
 	/**
 	 * Update old item names to the current naming.
@@ -728,7 +726,4 @@ public abstract class UpdateConverter {
 			player.removeQuest(oldName);
 		}
 	}
-
-
-
 }
