@@ -22,7 +22,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
 			<item value="wielki eliksir" quantity="[2,5]" probability="80.0"/>
 			<item value="zbroja karmazynowa" quantity="[1,1]" probability="20.0"/>
-			<item value="karmazynowa tarcza" quantity="[1,1]" probability="10.0"/>
+			<item value="tarcza karmazynowa" quantity="[1,1]" probability="10.0"/>
 			<item value="kropacz" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>

@@ -746,7 +746,7 @@
 		<drops>
 			<item value="money" quantity="[7,53]" probability="100.0"/>
 			<item value="magia płomieni" quantity="[11,99]" probability="20.0"/>
-			<item value="karmazynowa tarcza" quantity="[1,1]" probability="0.5"/>
+			<item value="tarcza karmazynowa" quantity="[1,1]" probability="0.5"/>
 			<item value="karmazynowy hełm" quantity="[1,1]" probability="0.005"/>
 			<item value="piekielny sztylet" quantity="[1,1]" probability="0.0001"/>
 		</drops>

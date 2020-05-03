@@ -88,7 +88,7 @@
 		<drops>
 			<item value="money" quantity="[15,40]" probability="100.0"/>
 			<item value="zbroja karmazynowa" quantity="[1,1]" probability="2.0"/>
-			<item value="karmazynowa tarcza" quantity="[1,1]" probability="5.5"/>
+			<item value="tarcza karmazynowa" quantity="[1,1]" probability="5.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -114,7 +114,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[1,30]" probability="100.0"/>
-			<item value="karmazynowa tarcza" quantity="[1,1]" probability="1.0"/>
+			<item value="tarcza karmazynowa" quantity="[1,1]" probability="1.0"/>
 			<item value="spodnie karmazynowe" quantity="[1,1]" probability="2.5"/>
 			<item value="pas karmazynowy" quantity="[1,1]" probability="0.25"/>
 			<item value="kanapka" quantity="[1,1]" probability="5.5"/>
