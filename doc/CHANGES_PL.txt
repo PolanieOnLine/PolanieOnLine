@@ -16,7 +16,7 @@ Changelog
 	- "Eskortnik w Deathmatchu"
 - Ceny w większości sklepów u NPC zostały poprawione
 - Zmniejszono szansę na zdobycie sztylecika z mithrilu
-- Wzmocniono: miecz z mithrilu, lodową kuszę, kuszę łowcy, kuszę
+- Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy, kuszę
 - Osłabiono: lekką kuszę
 
 *serwer*
