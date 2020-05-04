@@ -4,7 +4,7 @@ Changelog
 *klient*
 - Dodano nowe pliki graficzne (przedmiotów/gui/npc/potworów)
 - Zmieniono wygląd lekkiej oraz zwykłej kuszy, pasa kolczego oraz złotego pasa kolczego,
-pasa skórzanego oraz wzmocnionego pasa skórzanego
+pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 
 *świat*
 - Dodano nowe przedmioty: (4)
@@ -18,10 +18,11 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego
 	- "Eskortnik w Deathmatchu"
 - Ceny w większości sklepów u NPC zostały poprawione
 - Zmniejszono szansę na zdobycie sztylecika z mithrilu
-- Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy, kuszę
+- Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy, kuszę, pierścienie klasowe
 - Osłabiono: lekką kuszę
 - Poprawiono nazwy niektórym przedmiotom
 - Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom)
+- Zniesiono minimalny poziom wszystkim złotym ciupagom oraz pierścieniom klasowym
 
 *serwer*
 - Dodano 2 nowe skrypyty dla administratorów (alterkill & inspectkill)
@@ -29,6 +30,7 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego
 - Zwiększono limit tworzenia postaci na jednym koncie POL z 4 do 16
 
 *naprawiono błędy*
+- Poprawiono niektóre mapy
 - Poprawiono wyglądy nowych NPC dodanych w wersji 1.11
 - Naprawiono brakujących nowych NPC z wersji 1.11
 - Naprawiono sklep u NPC Klaasa
