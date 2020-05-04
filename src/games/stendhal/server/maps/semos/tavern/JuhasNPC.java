@@ -134,7 +134,7 @@ public class JuhasNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						"Bilet turystyczny zabiera na pustynie w pobliżu piramid. Udając się tam zaopatrz się w wodę, a także pamiętaj o upalnych dniach i zimnych nocach oraz niebezpiecznych burzach piaskowych!", null);
 
-				addGoodbye("Dowidzenia i udanej podróży.");
+				addGoodbye("Do widzenia i udanej podróży.");
 			}
 			
 			@Override

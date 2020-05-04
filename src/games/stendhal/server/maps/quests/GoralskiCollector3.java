@@ -129,7 +129,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
-						entity.say("Wspaniale, ale się cieszę! Dowidzenia!");
+						entity.say("Wspaniale, ale się cieszę! Do widzenia!");
 						player.setQuest(QUEST_SLOT, "");
 						player.addKarma(5.0);
 					}

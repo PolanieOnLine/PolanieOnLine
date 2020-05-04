@@ -56,7 +56,7 @@ public class MerchandNPC implements ZoneConfigurator {
 				// sprzedaz: chain legs - 100; studded boots - 120; leather scale armor - 150; chain boots - 180; unicorn shield - 200; skull shield - 225; scimitar - 250; viking helmet - 300
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("buymerchand")), false);
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("sellmerchand")), false);
-				addGoodbye("Dowidzenia. Mam nadzieję, że się jeszcze spotkamy!");
+				addGoodbye("Do widzenia. Mam nadzieję, że się jeszcze spotkamy!");
 			}
 			@Override
 			protected void onGoodbye(RPEntity player) {

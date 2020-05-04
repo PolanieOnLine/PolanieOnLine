@@ -47,7 +47,7 @@ public class DistilleryCustomerNPC implements ZoneConfigurator {
 				addHelp("Nie sądzę, abym mógł ci pomóc. Mam tu mały #drink w pięknej destylarni #Uncle #Dag. Może chciałbyś się przyłączyć? Moglibyśmy #porozmawiać o interesujących rzeczach.");
 				addJob("Pracowałem jako górnik w #kopalni węgla na półnoć od #Semos #City. Gdy zamknięto ją to przeniosłem się do Ados City z moją #rodziną próbując znaleść nową pracę.");
 				addOffer("Mogę zaoferować ci #'drink', a wszystkie moje drobniaki już się rozszeszły.");
-				addGoodbye("Dowidzenia! Trzymaj się!");
+				addGoodbye("Do widzenia! Trzymaj się!");
 				addReply(ConversationPhrases.QUEST_MESSAGES,
 						"Aktualnie nic. Dziękuję.");
 				addReply(Arrays.asList("talk", "porozmawiać"), "Nie znam najnowszych #plotek, a chcesz poznać jakieś? Lub jesteś zainteresowany moją byłą #pracą?");

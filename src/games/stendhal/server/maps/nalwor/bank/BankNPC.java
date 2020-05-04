@@ -62,7 +62,7 @@ public class BankNPC implements ZoneConfigurator {
 				addGreeting("Pozdrawiam. Jeżeli potrzebujesz #pomocy to pytaj.");
 				addJob("Pracuję tutaj w banku.");
 				addHelp("Pokój ma dwie skrzynie należące do tego banku i dwie skrzynie należące do banku w Semos.");
-				addGoodbye("Dowidzenia młodzieńcze.");
+				addGoodbye("Do widzenia młodzieńcze.");
 				//remaining behaviour defined in Take Gold for Grafindle quest
 			}
 		};
@@ -100,7 +100,7 @@ public class BankNPC implements ZoneConfigurator {
 				addOffer("Mogę Ci #pomóc.");
 				addJob("Pomagam klientom banku: elfom, a nawet ludziom.");
 				addQuest("Niczego nie potrzebuję. Dziękuję.");
-				addGoodbye("Dowidzenia. Dziękuje za twój czas.");
+				addGoodbye("Do widzenia. Dziękuje za twój czas.");
 			}
 		};
 

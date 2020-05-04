@@ -47,12 +47,12 @@ public class EmeraldNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Dzień dobry.");
+				addGreeting();
 				addReply("mistrz",
 						"Mistrz?? Tak, tak znam mistrza. Co potrzeba?");
 				addReply("szmaragd",
 						"Aaaa... mam obrobić emerald crystal. A może by tak ładnie poprosić #☺ coś w rodzaju #'oszlifuj szmaragd'.");    
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 180);
 				requiredResources.put("kryształ szmaragdu", 1);

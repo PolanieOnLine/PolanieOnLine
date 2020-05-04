@@ -65,7 +65,7 @@ public class FlowerNPC implements ZoneConfigurator {
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
 				offerings.put("róża", 55);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
-				addGoodbye("Dowidzenia i zapraszam ponownie!");
+				addGoodbye("Do widzenia i zapraszam ponownie!");
 			}
 		};
 

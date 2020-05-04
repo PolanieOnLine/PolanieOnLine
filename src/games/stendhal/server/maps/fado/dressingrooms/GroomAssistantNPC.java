@@ -62,7 +62,7 @@ public class GroomAssistantNPC implements ZoneConfigurator {
 				addHelp("Powiedz mi #ubierz jeżeli chciałbyś założyć #garnitur ( #suit ) na swój ślub.");
 				addReply(Arrays.asList("garnitur", "suit"), "Jeżeli chcesz dobrze wyglądać musisz założyć #garnitur na swój ślub. Powiedz tylko #ubierz. Kosztuje to 50 monet.");
 				addQuest("Raczej powinieneś myśleć o swoim ślubie.");
-				addGoodbye("Dowidzenia. Mam nadzieje, że poszczęści Ci się w życiu.");
+				addGoodbye("Do widzenia. Mam nadzieje, że poszczęści Ci się w życiu.");
 
 				final Map<String, Integer> priceList = new HashMap<String, Integer>();
 				priceList.put("suit", 50);

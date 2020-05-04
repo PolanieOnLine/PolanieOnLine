@@ -73,7 +73,7 @@ public class DealerNPC implements ZoneConfigurator {
 				addHelp("Jeśli mam być z Tobą szczery koleś to wiedz, że nie pomogę Ci z tym zbytnio, lepiej odejdź do miasta szukając odpowiedzi.");
 				addQuest("Nie mam nic dla Ciebie, kolego.");
 				addOffer("Ha! Tabliczka na drzwiach jest przykrywką! To nie jest hotel. Jeżeli chcesz się napić to wracaj do miasta.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

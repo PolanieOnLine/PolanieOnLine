@@ -210,7 +210,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 
 				addJob("Pracuję przy pomocy magii! Zapytaj o #ofertę.");
 				addHelp("Mogę rzucić zaklęcie, aby ubrać Ciebie w magiczne ubranie. Zdejmuje się po pewnym czasie. Mam nadzieję, że mogę coś #zaoferować. Jeżeli nie to Liliana może wypożyczyć jakieś stroje.");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 				final OutfitChangerBehaviour behaviour = new SpecialOutfitChangerBehaviour(priceList, endurance, "Twoje magiczne ubranie zostało zdjęte.");
 				new OutfitChangerAdder().addOutfitChanger(this, behaviour, Arrays.asList("hire", "wypożyczę"), false, false);
 			}

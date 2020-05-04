@@ -248,7 +248,7 @@ public class ObsidianKnife extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Nie wiem jak przetrwam następny rok. Dowidzenia okrutna duszo.",
+				"Nie wiem jak przetrwam następny rok. Do widzenia okrutna duszo.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		// Player asks what supplies he needs, and a random choice of what he
@@ -318,7 +318,7 @@ public class ObsidianKnife extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Szkoda. Chciałbym się więcej nauczyć o cennych kamieniach. Cześć, dowidzenia.",
+				"Szkoda. Chciałbym się więcej nauczyć o cennych kamieniach. Cześć, do widzenia.",
 				null);
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
@@ -358,7 +358,7 @@ public class ObsidianKnife extends AbstractQuest {
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.GOODBYE_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Dowidzenia.", null);
+				"Do widzenia.", null);
 
 		// player says something which isn't the dwarf's name.
 		npc.add(ConversationStates.QUESTION_1,
@@ -376,7 +376,7 @@ public class ObsidianKnife extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "got_book"),
 						new PlayerHasItemWithHimCondition("księga lazurowa")),
 				ConversationStates.IDLE,
-				"Wspaniale! Sądzę, że będę ją czytał przez jakiś czas. Dowidzenia!",
+				"Wspaniale! Sądzę, że będę ją czytał przez jakiś czas. Do widzenia!",
 				new MultipleActions(
 						new DropItemAction("księga lazurowa"),
 						new IncreaseXPAction(500),
@@ -386,7 +386,7 @@ public class ObsidianKnife extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new OrCondition(new QuestInStateCondition(QUEST_SLOT,"seeking_book"), new QuestInStateCondition(QUEST_SLOT, "got_book")), 
+						new OrCondition(new QuestInStateCondition(QUEST_SLOT,"seeking_book"), new QuestInStateCondition(QUEST_SLOT, "got_book")),
 						new NotCondition(new PlayerHasItemWithHimCondition("księga lazurowa"))),
 				ConversationStates.ATTENDING,
 				"Witaj ponownie. Mam nadzieję, że nie zapomniałeś o książce. Potrzebuję jej.",
@@ -410,7 +410,7 @@ public class ObsidianKnife extends AbstractQuest {
 						new QuestStateStartsWithCondition(QUEST_SLOT, "reading;"),
 						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_DAYS * MINUTES_IN_DAYS)),
 				ConversationStates.QUEST_2_OFFERED,
-				"Przeczytałem! Była naprawdę interesująca. Nauczyłem się jak robić specjalny #nóż z kamieniem #obsydianu.", 
+				"Przeczytałem! Była naprawdę interesująca. Nauczyłem się jak robić specjalny #nóż z kamieniem #obsydianu.",
 				new SetQuestAction(QUEST_SLOT, "book_read"));
 
 		npc.add(ConversationStates.QUEST_2_OFFERED,

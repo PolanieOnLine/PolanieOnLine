@@ -90,7 +90,7 @@ public class FishermanNPC implements ZoneConfigurator {
 				addJob("Jestem rybakiem, a także wyrabiam #olejek z tranu dorsza. Olejek jest niesamowicie potrzebny, aby maszyny chodziły płynnie.");
 				addHelp("W dzisiejszych czasach możesz przeczytać drogowskazy, książki i inne rzeczy w Faiumoni.");
 				addOffer("Mogę zrobić dla Ciebie trochę olejku jeżeli potrzebujesz.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 				addReply(Arrays.asList("oil", "olejek"),"Poproś mnie o wykonanie #olejku o ile masz dorsza ze sobą. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
 				addReply(Arrays.asList("can of oil", "olejku"),"Do jednej puszki potrzebne są dwa dorsze. Zrobię dla Ciebie o ile potrzebujesz. Powiedz tylko #zrób. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
 

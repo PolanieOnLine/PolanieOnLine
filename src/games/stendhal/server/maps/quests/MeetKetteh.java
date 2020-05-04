@@ -40,13 +40,13 @@ import games.stendhal.server.maps.Region;
 
 /**
  * QUEST: Speak with Ketteh
- * 
- * PARTICIPANTS: - Ketteh Wehoh, a woman 
- * 
+ *
+ * PARTICIPANTS: - Ketteh Wehoh, a woman
+ *
  * STEPS: - Talk to Ketteh to activate the quest and keep speaking with Ketteh.
- * 
+ *
  * REWARD: - No XP - No money
- * 
+ *
  * REPETITIONS: - As much as wanted.
  */
 public class MeetKetteh extends AbstractQuest {
@@ -58,10 +58,10 @@ public class MeetKetteh extends AbstractQuest {
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Ketteh Wehoh");
-		
+
 		// force Ketteh to notice naked players that she has already warned
 		// but leave a 5 minute (or GRACE_PERIOD) gap if she only just warned them
 		npc.addInitChatMessage(
@@ -73,7 +73,7 @@ public class MeetKetteh extends AbstractQuest {
 										new TimePassedCondition(QUEST_SLOT,1,GRACE_PERIOD)),
 						        new QuestInStateCondition(QUEST_SLOT,"seen"),
 						        new QuestInStateCondition(QUEST_SLOT,"learnt_manners"),
-						        // done was an old state that was used when naked but then clothed, 
+						        // done was an old state that was used when naked but then clothed,
 						        // but they should do learnt_manners too
 						        new QuestInStateCondition(QUEST_SLOT,"done"))),
 				new ChatAction() {
@@ -85,79 +85,79 @@ public class MeetKetteh extends AbstractQuest {
 
 		// player is naked but may not have been warned recently, warn them and stamp the quest slot
 		// this can be initiated by the npc as above
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new NakedCondition(),
-						new QuestNotInStateCondition(QUEST_SLOT, 0,"seen_naked")), 
+						new QuestNotInStateCondition(QUEST_SLOT, 0,"seen_naked")),
 				ConversationStates.ATTENDING,
 				"Kim jesteś? Aiii!!! Jesteś nagi! Szybko nciśnij prawy przycisk na sobie i wybierz USTAW WYGLĄD! Jeżeli tego nie zrobisz to zawołam straże.",
 				new MultipleActions(
-						new SetQuestAction(QUEST_SLOT,0, "seen_naked"), 
+						new SetQuestAction(QUEST_SLOT,0, "seen_naked"),
 						new SetQuestToTimeStampAction(QUEST_SLOT,1)));
 
 		// player is naked and has been warned,
 		// they started another conversation or the init chat message prompted this interaction as above
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new NakedCondition(),
-						new QuestInStateCondition(QUEST_SLOT, 0, "seen_naked")), 
+						new QuestInStateCondition(QUEST_SLOT, 0, "seen_naked")),
 				ConversationStates.ATTENDING,
 				// this message doesn't get seen by the player himself as he gets sent to jail, but it would explain to bystanders why he is gone
 				"Łee WCIĄŻ nie założyłeś na siebie ubrań. Idź do więzienia!",
 				// Jail the player
 				new MultipleActions(
-						new SetQuestAction(QUEST_SLOT,0, "seen_naked"), 
-						new SetQuestToTimeStampAction(QUEST_SLOT,1), 
+						new SetQuestAction(QUEST_SLOT,0, "seen_naked"),
+						new SetQuestToTimeStampAction(QUEST_SLOT,1),
 						new JailAction(JAIL_TIME,"Ketteh Wehoh aresztowała Ciebie za chodzenie nago w ratuszu pomimo ostrzeżeń")));
-		
+
 		// player was previously seen naked but is now clothed
 		// continue the quest to learn manners
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new NotCondition(new NakedCondition()), 
+						new NotCondition(new NakedCondition()),
 						new QuestInStateCondition(QUEST_SLOT, 0,"seen_naked")),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(
 						new SayTextAction("Witaj ponownie [name]. Tak się cieszę, że masz na sobie jakieś ubrania. Teraz możemy kontynuować lekcję o #manierach. Czy wiesz, że jak ktoś coś powie na niebiesko to grzecznie jest to powtórzyć? Powtórz za mną: #maniery."),
 						new SetQuestAction(QUEST_SLOT, "seen")));
 
 		// normal situation: player is clothed and meets Ketteh for the first time.
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new NotCondition(new NakedCondition()), 
+						new NotCondition(new NakedCondition()),
 						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(
 						new SayTextAction("Witaj [name] miło cię poznać. Mamy coś wspólnego - dobre maniery . Czy wiedziałeś, że jeżeli ktoś powie słowo na #niebiesko to grzecznie będzie powtórzyć je danej osobie. Powtarzaj za mną: #maniery."),
 						new SetQuestAction(QUEST_SLOT, "seen")));
-		
+
 		// player has finished the quest by learning manners or was marked as done in an old state
 		// also, they are still clothed
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new NotCondition(new NakedCondition()), 
+						new NotCondition(new NakedCondition()),
 						new OrCondition(new QuestInStateCondition(QUEST_SLOT, "learnt_manners"),new QuestInStateCondition(QUEST_SLOT, "done"))),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new SayTextAction("Witaj ponownie [name]."));
-		
+
 		// player had started the quest but didn't finish it and are still clothed
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new NotCondition(new NakedCondition()), 
+						new NotCondition(new NakedCondition()),
 						new QuestInStateCondition(QUEST_SLOT, "seen")),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				null,
 				new SayTextAction("Witaj ponownie [name]. Mam nadzieję, że jesteś tutaj, aby kontynuować lekcję o #manierach."));
-		
+
 		// player refuses to put clothes on (or just says No while naked)
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.NO_MESSAGES, new NakedCondition(),
 				ConversationStates.IDLE,
@@ -165,27 +165,27 @@ public class MeetKetteh extends AbstractQuest {
 				null);
 
 		// only allow quest completed if not naked
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("manners", "manier", "maniery", "manierach"), 
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("manners", "manier", "maniery", "manierach"),
 				new NotCondition(new NakedCondition()),
-				ConversationStates.ATTENDING, 
-				"Jeżeli zdarzy Ci się porozmawiać z jakimś innym mieszkańcem to zawsze powinieneś zacząć rozmowę od powiedzenia \"cześć\". Ludzie tutaj są całkiem przewidywalni i zawsze lubią rozmawiać na temat \"praca\". Odpowiedzą jeżeli zapytasz o \"pomoc\" i jeżeli chcesz wykonać \"zadanie\" dla nich to powiedz to im. Jeżeli wyglądają jak handlarze to możesz ich zapytać jaka jest ich \"oferta\". Aby zakończyć rozmowę powiedz \"dowidzenia\".",
+				ConversationStates.ATTENDING,
+				"Jeżeli zdarzy Ci się porozmawiać z jakimś innym mieszkańcem to zawsze powinieneś zacząć rozmowę od powiedzenia \"cześć\". Ludzie tutaj są całkiem przewidywalni i zawsze lubią rozmawiać na temat \"praca\". Odpowiedzą jeżeli zapytasz o \"pomoc\" i jeżeli chcesz wykonać \"zadanie\" dla nich to powiedz to im. Jeżeli wyglądają jak handlarze to możesz ich zapytać jaka jest ich \"oferta\". Aby zakończyć rozmowę powiedz \"do widzenia\".",
 				new SetQuestAction(QUEST_SLOT, "learnt_manners"));
-		
+
 		// not prompted to say this any more when naked, but just in case we don't want them to have an empty reply
-		npc.add(ConversationStates.ATTENDING, "manners", 
+		npc.add(ConversationStates.ATTENDING, "manners",
 				new NakedCondition(),
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Dobre maniery zaczynają się od założenia ubrań na siebie! Możesz dostać zaawansowaną lekcję, gdy będziesz w pełni ubrany.",
 				null);
-		
+
 		// this is just because the blue highlighting was used as a demonstration
-		npc.add(ConversationStates.ATTENDING, "blue", 
+		npc.add(ConversationStates.ATTENDING, "blue",
 				null,
-				ConversationStates.ATTENDING, 
+				ConversationStates.ATTENDING,
 				"Och nie jesteś zbyt mądry!",
 				null);
 	}
-	
+
 
 
 	@Override

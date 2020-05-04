@@ -74,7 +74,7 @@ public class BuyerNPC implements ZoneConfigurator {
 				addQuest("O, dziękuję, ale niczego już nie potrzebuję.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrare3")), false);
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellarrows")), false);
-				addGoodbye("Dowidzenia kolego.");
+				addGoodbye("Do widzenia kolego.");
 			}
 		};
 

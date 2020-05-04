@@ -59,7 +59,7 @@ public class HolidayingBoyNPC implements ZoneConfigurator {
 				addOffer("Ooooch, widziałeś te piękne koty od Feliny? Mam nadzieję, " +
 						"że rodzice mi kupią jednego. Byłby to fajny prezent z wakacji ☺ ");
 				addJob("Hey!! Jestem młodym chłopcem!");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 				}
 		};
 

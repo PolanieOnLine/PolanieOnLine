@@ -233,7 +233,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 								new QuestNotCompletedCondition(MITHRILSHIELD_QUEST_QUEST_SLOT),
 								new QuestNotCompletedCondition(ZAGADKI_QUEST_SLOT))),
 						ConversationStates.IDLE,
-						"Nie mogę cię przepuścić do władcy smoków dopóki nie posiądziesz złotej ciupagi z wąsem, mithril shieldu. Zrób tagże zadanie u Brzezdoma. Dowidzenia!",
+						"Nie mogę cię przepuścić do władcy smoków dopóki nie posiądziesz złotej ciupagi z wąsem, mithril shieldu. Zrób tagże zadanie u Brzezdoma. Do widzenia!",
 						null);
 
 				add(ConversationStates.ATTENDING,
@@ -326,7 +326,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				addOffer("Mogę cię wpuścić do komnaty, z której dostaniesz się do władcy smoków, ale uważaj czasami można tam spotkać serafina.");
 				addHelp("Pomogę ci się dostać do władcy smoków. Będziesz musiał zapłacić #opłatę za ten przywilej. Nie robię tego za darmo. Powiedz #opłata #10000 jeżeli zdecydujesz się.");
 				addQuest("Możesz korzystać z moich usług jeżeli spełniłeś pewne warunki.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

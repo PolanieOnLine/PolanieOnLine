@@ -70,7 +70,7 @@ public class BogusNPC implements ZoneConfigurator {
 				addQuest("O, dziękuję, ale niczego już nie potrzebuję.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyskin")), false);
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellskin")));
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

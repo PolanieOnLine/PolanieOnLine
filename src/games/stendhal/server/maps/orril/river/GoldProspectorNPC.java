@@ -70,7 +70,7 @@ public class GoldProspectorNPC implements ZoneConfigurator {
 				        ConversationStates.ATTENDING,
 				        "Nie posiadam misy do płukania złota, ale możesz się zapytać kowala czy nie sprzedałby Tobie jednej.", null);
 
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 			@Override

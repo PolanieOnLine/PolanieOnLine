@@ -73,7 +73,7 @@ public class WoodCutterNPC implements ZoneConfigurator {
 				addOffer("Moje topory powinny być przytępione i szybkie. Sprawdź moją tabliczkę, którą postawiłem na zewnątrz domu, aby zobaczyć jakie topory skupuję.");
 				addQuest("Co powiedziałeś? Niczego nie potrzebuję. Może Sally po drugiej stronie rzeki potrzebuje twojej pomocy.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyaxe")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

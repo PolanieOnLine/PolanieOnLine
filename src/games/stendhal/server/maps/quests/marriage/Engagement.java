@@ -124,7 +124,7 @@ class Engagement {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Co za szkoda! Dowidzenia!",
+				"Co za szkoda! Do widzenia!",
 				null);
 
 		nun.add(ConversationStates.QUESTION_2,
@@ -144,7 +144,7 @@ class Engagement {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Co za szkoda! Dowidzenia!",
+				"Co za szkoda! Do widzenia!",
 				null);
 	}
 

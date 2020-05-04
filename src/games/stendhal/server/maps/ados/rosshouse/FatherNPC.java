@@ -53,7 +53,7 @@ public class FatherNPC implements ZoneConfigurator {
 			    addHelp("Jeżeli potrzebujesz pomocy w znalezieniu jakiegoś budynku w Ados to strażnik Julius da Tobie mapę. Znajdziesz go przy wejściu do miasta.");
 			    addOffer("Nie mam nic do zaoferowania, ale w Ados są dwa miejsca, gdzie możesz się posilić - tawerna i bar.");
 			    addQuest("Pod koniec października wybieramy się na #Mine #Town #Revival #Weeks");
-			    addGoodbye("Dowidzenia. Miło było Cię poznać.");
+			    addGoodbye("Do widzenia. Miło było Cię poznać.");
 
 				// Revival Weeks
 				add(

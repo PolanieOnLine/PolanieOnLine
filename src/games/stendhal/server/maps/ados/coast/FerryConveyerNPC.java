@@ -61,8 +61,8 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 
 			@Override
 			public void createDialog() {
-		addGoodbye("Dowidzenia!");
 		addGreeting("Witam zajmuję się usługami transportowymi do #Athor #island przy pomocy #promu! W czym mogę Ci #pomóc?");
+		addGoodbye();
 		addHelp("Możesz wejść na #prom za "
 				+ AthorFerry.PRICE
 				+ " złota tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom. Powiedz #wejdź, aby dostać się na prom.");

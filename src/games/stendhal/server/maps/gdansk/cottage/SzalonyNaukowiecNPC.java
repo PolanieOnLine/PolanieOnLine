@@ -57,7 +57,7 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 				addOffer("Mogę sporządzić dla Ciebie #'duży smoczy eliksir'. Do tego będę potrzebował 3 razy #'krew smoka' oraz bardzo dużo pieniędzy! *HIHIHI* Powiedz tylko #sporządź.");
 				addReply("duży smoczy eliksir", "Jest to bardzo i to bardzo silny eliksir.*HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 duży smoczy eliksir'.");
 				addHelp("Jeżeli chcesz być mądry tak jak ja to powinieneś odwiedzić bibliotekę. Tam jest sporo pomocy naukowych.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 
 				// (uses sorted TreeMap instead of HashMap)
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();

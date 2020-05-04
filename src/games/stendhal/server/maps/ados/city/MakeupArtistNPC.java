@@ -72,7 +72,7 @@ public class MakeupArtistNPC implements ZoneConfigurator {
 				        Arrays.asList("dress", "ubranie"),
 				        "Czytałam historię o goblinach, które noszą koszule jako zbroję! Jeżeli boisz się goblinów tak jak ja to możesz gdzieś kupić koszule. ");
 				//addReply("offer", "Normally I sell masks. But I ran out of clothes and cannot by new ones until the cloth seller gets back from his search.");
-				addGoodbye("Dowidzenia, zajrzyj jeszcze.");
+				addGoodbye("Do widzenia, zajrzyj jeszcze.");
 
 				final Map<String, Integer> priceList = new HashMap<String, Integer>();
 				priceList.put("mask", 20);

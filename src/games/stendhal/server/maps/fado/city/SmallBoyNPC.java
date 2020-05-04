@@ -54,7 +54,7 @@ public class SmallBoyNPC implements ZoneConfigurator {
 				addReply("balonik", "Pewnego dnia będę miał tyle baloników, że będę mógł odlecieć daleko!");
 				addReply(Arrays.asList("xkcd", "tables", "sql", "student", "drop", "table"), 
 				        "Oh tak moje prawdziwe imię to Robert'); DROP TABLE students;--, ale możesz mnie nazywać Bobby.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 
 			@Override

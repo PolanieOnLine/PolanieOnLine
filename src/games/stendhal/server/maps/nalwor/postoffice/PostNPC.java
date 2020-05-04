@@ -74,7 +74,7 @@ public class PostNPC implements ZoneConfigurator {
 				addJob("Pracuję na poczcie. Jesteś tutaj nowy i nie budzisz jeszcze zaufania.");
 				addHelp("Nie mam tej #pracy od dawna ... wróć za jakiś czas może dam Ci coś interesującego do zrobienia.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("nalworscrolls")));
-				addGoodbye("Dowidzenia. Miło było Cię poznać!");
+				addGoodbye("Do widzenia. Miło było Cię poznać!");
 			}
 		};
 

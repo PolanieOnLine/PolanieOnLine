@@ -93,7 +93,7 @@ public class AdminHelpNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						null,
 						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.ADOS_CITY));
-				addGoodbye("Dowidzenia, pamiętaj, aby dbać o siebie. Pij mleko.");
+				addGoodbye("Do widzenia, pamiętaj, aby dbać o siebie. Pij mleko.");
 	}
 
 			@Override

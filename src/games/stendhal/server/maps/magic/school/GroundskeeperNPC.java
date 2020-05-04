@@ -71,7 +71,7 @@ public class GroundskeeperNPC implements ZoneConfigurator {
 				addReply(ConversationPhrases.YES_MESSAGES, "Dobrze, dobrze. Mam nadzieję, że cieszysz się dniem.");
 				addJob("Moją pracą jest sprzątanie szkoły i naprawa zepsutych rzeczy! Mam dużo pracy!");
 				addHelp("Nie mogę Tobie pomóc. Jestem zajęty przez cały dzień, ale ty mógłbyś mi pomóc w małym #zadaniu!");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

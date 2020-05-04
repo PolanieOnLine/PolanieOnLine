@@ -44,7 +44,7 @@ public class FlowerSellerNPC implements ZoneConfigurator {
 	                @Override
 			protected void createDialog() {
 			    addJob("Jestem wędrowną kwiaciarką z dalekiego Grodu Kraka.");
-			    addGoodbye("Wszystko zaczyna się od róż ... dowidzenia ...");
+			    addGoodbye("Wszystko zaczyna się od róż... Do widzenia...");
 			    // the rest is in the ElfPrincess quest
 			}
 		};

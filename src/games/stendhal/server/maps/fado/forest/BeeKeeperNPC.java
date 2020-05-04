@@ -83,7 +83,7 @@ public class BeeKeeperNPC implements ZoneConfigurator {
 				offerings.put("wosk pszczeli", 80);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addOffer("Sprzedaję słodki miód i wosk pszczeli, który zbieram osobiście.");
-				addGoodbye("Dowidzenia, bądź ostrożny i uważaj na ule!");
+				addGoodbye("Do widzenia, bądź ostrożny i uważaj na ule!");
 			}
 		};
 

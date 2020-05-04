@@ -918,7 +918,7 @@ public class SpeakerNPC extends PassiveNPC {
 	}
 
 	public void addGoodbye() {
-		addGoodbye("Dowidzenia.");
+		addGoodbye("Do widzenia.");
 	}
 
 	public void addGoodbye(final String text) {

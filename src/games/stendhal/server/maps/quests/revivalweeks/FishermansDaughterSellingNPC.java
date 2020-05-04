@@ -49,7 +49,7 @@ public class FishermansDaughterSellingNPC implements LoadableContent {
 				addReply("susi", "Oh jest kochanym dzieckiem! Spotkałam ją tutaj. Jest taka szczęśliwa, że może świętować ze wszystkimi!");
 				addOffer("Sprzedaję przekąski i napoje podczas Mine Town Weeks. Zobacz na listę.");
 				addQuest("Słyszałam, że #Susi lubi poznawać nowych przyjaciół. Jest w domku. Lub możesz zapytać Fidorea o małe bieganie.");
-				addGoodbye("Dowidzenia mam nadzieje, że będziesz się dobrze bawił!");
+				addGoodbye("Do widzenia mam nadzieje, że będziesz się dobrze bawił!");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellrevivalweeks")), false);
 			}
 

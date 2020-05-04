@@ -66,7 +66,7 @@ public class FlowerGrowerNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
     			addGreeting("Cześć.");
-    			addGoodbye("Dowidzenia!");
+    			addGoodbye("Do widzenia!");
     			//addHelp("Hmmm, I don't think there is anything I can help with.");
     			addJob("Opiekuję się kwiatami w naszym mieście.");
     			addOffer("Nie mam nic do zaoferowania.");

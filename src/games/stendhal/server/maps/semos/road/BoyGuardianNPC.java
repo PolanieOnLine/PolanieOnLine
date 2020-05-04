@@ -105,7 +105,7 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 				addReply("Carmen", "Jest znaną uzdrowicielką w mieście Semos. Może widziałeś ją przy drodze do wioski :)");
 				addReply("Margaret", "Pracuje w tawernie, ale nie chodzę tam bez moich rodziców...");
 				addQuest("Jestem na misji :) Mam oko na złe potwory, złych typków i ostrzegam ludzi, aby im #pomóc! Ale nic nie mam dla ciebie...");
-				addGoodbye("Ciii nie mów zbyt głośno! Dowidzenia i trzymaj się!");
+				addGoodbye("Ciii nie mów zbyt głośno! Do widzenia i trzymaj się!");
 			}
 
 			@Override

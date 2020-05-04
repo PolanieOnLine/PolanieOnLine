@@ -74,7 +74,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 				        ConversationStates.ATTENDING,
 				        "Mąż zatrudnił do pomocy Lorda Wampirów! Lady stała się jego panną młodą, a jej służące stały się upiorami. Katakumby na północ od Semos są teraz zabójczym miejscem.",
 				        null);
-				addGoodbye("Dowidzenia. Założę się, że dziś będziesz miał problemy z zaśnięciem.");
+				addGoodbye("Do widzenia. Założę się, że dziś będziesz miał problemy z zaśnięciem.");
 				addReply(Arrays.asList("bobbin", "szpulka"),"Szpulki? SZPULKI?! Czy myślisz, że jestem kobietą?! Pfff idź znajdź jakiegoś innego kowala. Nie zajmuję się produkcją szpulek.");
 
 			} //remaining behaviour defined in maps.quests.VampireSword and  maps.quests.MithrilCloak

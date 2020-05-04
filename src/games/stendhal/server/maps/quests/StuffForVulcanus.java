@@ -191,7 +191,7 @@ public class StuffForVulcanus extends AbstractQuest {
 						return;
 					}
 
-					raiser.say("Skończyłem wykuwanie nieśmiertelnika. Zasługujesz na niego. Teraz pozwolisz, że udam się na długi odpoczynek. Dowidzenia!");
+					raiser.say("Skończyłem wykuwanie nieśmiertelnika. Zasługujesz na niego. Teraz pozwolisz, że udam się na długi odpoczynek. Do widzenia!");
 					player.addXP(15000);
 					player.addKarma(25);
 					final Item magicSword = SingletonRepository.getEntityManager().getItem("miecz nieśmiertelnych");

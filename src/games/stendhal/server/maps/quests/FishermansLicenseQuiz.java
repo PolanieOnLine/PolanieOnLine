@@ -247,7 +247,7 @@ public class FishermansLicenseQuiz extends AbstractQuest {
 				});
 
 		fisherman.add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
-				ConversationStates.IDLE, "Dowidzenia.", new ChatAction() {
+				ConversationStates.IDLE, "Do widzenia.", new ChatAction() {
 
 		    // this should be put into a custom ChatAction for this quest when the quest is refactored
 			@Override

@@ -89,10 +89,10 @@ public class KidsNPC implements ZoneConfigurator {
 						        ConversationPhrases.GREETING_MESSAGES,
 					        new GreetingMatchesNameCondition(getName()), true,
 						        ConversationStates.IDLE,
-						        "Mamusia powiedziała, że nie powinniśmy rozmawiać z nieznajomymi! Dowidzenia.",
+						        "Mamusia powiedziała, że nie powinniśmy rozmawiać z nieznajomymi! Do widzenia.",
 						        null);
 					}
-					addGoodbye("Dowidzenia, dowidzenia!");
+					addGoodbye("Do widzenia, do widzenia!");
 				}
 			};
 

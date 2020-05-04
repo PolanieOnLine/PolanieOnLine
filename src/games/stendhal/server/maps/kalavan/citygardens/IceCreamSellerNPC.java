@@ -85,7 +85,7 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 				final Map<String, Integer> offers = new HashMap<String, Integer>();
 				offers.put("lody", 30);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offers));
-				addGoodbye("Dowidzenia. Ciesz się dniem!");
+				addGoodbye("Do widzenia. Ciesz się dniem!");
 
 			}
 

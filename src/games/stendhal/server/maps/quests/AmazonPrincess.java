@@ -122,7 +122,7 @@ npc.add(ConversationStates.ATTENDING,
 		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Oh nie ważne. Dowidzenia.",
+				"Oh nie ważne. Do widzenia.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 

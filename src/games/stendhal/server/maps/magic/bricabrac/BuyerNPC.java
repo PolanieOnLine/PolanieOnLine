@@ -104,7 +104,7 @@ public class BuyerNPC implements ZoneConfigurator {
 				addQuest("Nie mam żadnych życzeń.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buymagic")), false);
 				addOffer("W dużej książce znajduje się cennik reliktów i magicznych przedmiotów, które chciałabym kupić.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

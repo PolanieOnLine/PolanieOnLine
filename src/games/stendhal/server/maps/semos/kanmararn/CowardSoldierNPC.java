@@ -54,7 +54,7 @@ public class CowardSoldierNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Ciii! Cicho bo ściągniesz więcej #krasnali.");
 				addJob("Jestem żołnierzem.");
-				addGoodbye("Dowidzenia i uważaj na wszystkie te krasnale!");
+				addGoodbye("Do widzenia i uważaj na wszystkie te krasnale!");
 				addHelp("Potrzebuję pomocy. Zostałem oddzielony od #grupy. Teraz jestem sam.");
 				addReply(Arrays.asList("dwarf", "dwarves", "krasnali", "krasnale"),
 					"Są wszędzie! Ich #królestwo musi być w pobliżu.");

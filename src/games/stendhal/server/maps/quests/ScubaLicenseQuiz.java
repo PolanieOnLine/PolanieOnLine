@@ -197,7 +197,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 						player.setQuest(QUEST_SLOT, "done");
 						player.notifyWorldAboutChanges();
 					} else if (ConversationPhrases.GOODBYE_MESSAGES.contains(sentence.getTriggerExpression().getNormalized())) {
-						npc.say("Dowidzenia - do zobaczenia następnym razem!");
+						npc.say("Do widzenia - do zobaczenia następnym razem!");
 						npc.setCurrentState(ConversationStates.IDLE);
 					} else {
 						npc.setCurrentState(ConversationStates.ATTENDING);

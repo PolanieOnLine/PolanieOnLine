@@ -308,7 +308,7 @@ public class Debuggera extends ScriptImpl {
 				"greetings", "hola", "cześć", "witaj", "witam",
 				"hej", "dzień dobry", "dobry wieczór"), null, ConversationStates.IDLE,
 				"Moja mama powiedziała, że nie powinnam rozmawiać z obcymi.", null);
-		npc.behave("bye", "Dowidzenia.");
+		npc.behave("bye", "Do widzenia.");
 
 		// Greating and admins may enable or disable her
 		npc.add(ConversationStates.IDLE, Arrays.asList("hi", "hello",

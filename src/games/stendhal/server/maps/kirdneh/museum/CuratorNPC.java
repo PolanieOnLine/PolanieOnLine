@@ -66,7 +66,7 @@ public class CuratorNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("exhibits", "eksponaty", "eksponatów"),"Być może będziesz mieć dryg do wyszukiwania przedmiotów i chciałbyś zrobić #zadanie dla mnie.");
 				// remaining behaviour defined in games.stendhal.server.maps.quests.WeeklyItemQuest
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("kirdnehscrolls")));
-				addGoodbye("Dowidzenia. Miło się z tobą rozmawiało.");
+				addGoodbye("Do widzenia. Miło się z tobą rozmawiało.");
 			}
 
 			@Override

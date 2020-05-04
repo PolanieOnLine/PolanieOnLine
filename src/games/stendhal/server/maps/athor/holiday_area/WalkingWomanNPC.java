@@ -128,7 +128,7 @@ public class WalkingWomanNPC implements ZoneConfigurator  {
 				addQuest("Nie mam dla Ciebie zajęcia");
 				addJob("Chodzę sobie wzdłuż wybrzeża!");
 				addHelp("Nie mogę Ci pomóc...Jestem tylko dziewczyną...");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 		};

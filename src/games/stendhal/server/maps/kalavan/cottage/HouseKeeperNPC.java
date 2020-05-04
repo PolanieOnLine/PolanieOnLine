@@ -63,7 +63,7 @@ public class HouseKeeperNPC implements ZoneConfigurator {
 				addHelp("Zawsze mi brakuje, ale znajdę jakąś piękną filiżankę #herbaty.");
 				addOffer("Zaparzę Tobie filiżankę #herbaty o ile chcesz. Powiedz tylko #zaparz.");
 				addQuest("Mam ból głowy i małą Annie, która za każdym razem jak schodzi to hałasuje. Może mógłbyś dać jej jakieś zajęcie? ... tak, aby się uciszyła ...");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("mleko", 1);

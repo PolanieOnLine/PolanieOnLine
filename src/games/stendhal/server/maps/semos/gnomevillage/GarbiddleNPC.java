@@ -62,7 +62,7 @@ public class GarbiddleNPC implements ZoneConfigurator {
 				addHelp("Skupuję kilka rzeczy. Poczytaj znak, aby dowiedzieć się czego potrzebujemy.");
 				addOffer("Poczytaj znak, aby dowiedzieć się czego potrzebujemy.");
 				addQuest("Dziękuję za pytanie, ale czuję się dobrze.");
-				addGoodbye("Dowidzenia. Cieszę się, że odwiedziłeś nas.");
+				addGoodbye("Do widzenia. Cieszę się, że odwiedziłeś nas.");
  				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buy4gnomes")), false);
 			}
 		};

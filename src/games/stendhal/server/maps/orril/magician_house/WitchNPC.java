@@ -108,7 +108,7 @@ public class WitchNPC implements ZoneConfigurator {
 				        ConversationStates.ATTENDING,
 				        "Zwoje przywołania służą do przywoływania zwierząt. Doświadczeni magowie będą mogli przywoływać silniejsze potwory niż inni. Oczywiście te zwoje mogą być niebezpieczne jeżeli będą nadużywane.",
 				        null);
-				addGoodbye("Dowidzenia - ostrożnie nie dotykaj tej kuli. Prowadzi do bardzo niebezpiecznego miejsca!");
+				addGoodbye("Do widzenia - ostrożnie nie dotykaj tej kuli. Prowadzi do bardzo niebezpiecznego miejsca!");
 			}
 		};
 

@@ -53,7 +53,7 @@ public class KowalJacekNPC implements ZoneConfigurator {
 				addJob("Jak widzisz kowala życie nie jest łatwe, masę roboty mam.");
 				addHelp("Ja ci? Chyba raczej ty mi.");
 				addOffer("Nie mam nic do zaoferowania!");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

@@ -66,7 +66,7 @@ public class KacperNPC implements ZoneConfigurator {
 				addOffer("Skupuję śnieżka 5, kamienie 6, bryła lodu 8.");
 				addQuest("Poszukaj kamieni, brył lodu, śnieżek a dobrze cię wynagrodzę.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buykacper")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

@@ -63,7 +63,7 @@ public class PrincessNPC implements ZoneConfigurator {
 				addJob("Jestem księżniczką. Co mogę zrobić?");
 				addHelp("Stanowcza osoba mogłaby zrobić dla mnie #zadanie.");
 				addOffer("Nie handluję. Moi rodzice mogliby to uważać za poniżające.");
-				addGoodbye("Dowidzenia nieznajomy.");
+				addGoodbye("Do widzenia nieznajomy.");
 			}
 		};
 

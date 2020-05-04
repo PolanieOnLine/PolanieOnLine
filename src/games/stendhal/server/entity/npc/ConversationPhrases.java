@@ -64,7 +64,7 @@ public class ConversationPhrases {
 			"nothing", "none", "no", "nie", "nic");
 
 	public static final List<String> GOODBYE_MESSAGES = Arrays.asList("bye", "goodbye",
-			"farewell", "cya", "adios", "dowidzenia", "żegnaj", "zegnaj", "bywaj",
+			"farewell", "cya", "adios", "do widzenia", "żegnaj", "zegnaj", "bywaj",
 			"nara", "tymczasem", "dobranoc", "na razie", "do jutra");
 
 	public static final List<String> PURCHASE_MESSAGES = Arrays.asList("buy", "purchase", "kup",

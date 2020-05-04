@@ -97,7 +97,7 @@ public class MeetMonogenes extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"I jak chcesz wiedzieć co się dzieje? Czytając Semos Tribune? Hah! Dowidzenia.",
+			"I jak chcesz wiedzieć co się dzieje? Czytając Semos Tribune? Hah! Do widzenia.",
 			null);
 		
 		final List<String> yesnotriggers = new ArrayList<String>();

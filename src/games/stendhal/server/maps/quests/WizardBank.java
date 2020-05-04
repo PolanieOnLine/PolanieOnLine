@@ -229,7 +229,7 @@ public class WizardBank extends AbstractQuest implements LoginListener {
 									new QuestNotCompletedCondition(GRAFINDLE_QUEST_SLOT),
 									new QuestNotCompletedCondition(ZARA_QUEST_SLOT))),
 						ConversationStates.IDLE,
-						"Nie możesz skorzystać z tego banku jeżeli nie masz prawa do korzystania ze skrzynki w Nalwor i jeżeli nie zdobyłeś zaufania u młodej kobiety. Dowidzenia!",
+						"Nie możesz skorzystać z tego banku jeżeli nie masz prawa do korzystania ze skrzynki w Nalwor i jeżeli nie zdobyłeś zaufania u młodej kobiety. Do widzenia!",
 						null);
 
 				add(ConversationStates.ATTENDING,
@@ -333,7 +333,7 @@ public class WizardBank extends AbstractQuest implements LoginListener {
 
 				addQuest("Możesz korzystać z banku tylko jeżeli masz prawo do używania skrzyni w Nalwor i wtedy gdy zapracowałeś na zaufanie młodej kobiety.");
 
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

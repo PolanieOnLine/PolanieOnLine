@@ -274,7 +274,7 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 									new QuestNotCompletedCondition(MITHRIL_CLOAK_QUEST_SLOT),
 									new QuestNotCompletedCondition(MITHRIL_SHIELD_QUEST_SLOT))),
 						ConversationStates.IDLE,
-						"Nie możesz wejść do krainy smoków, ponieważ nie poradzisz sobie. Nie ukończyłeś zadań, które przygotują cię na to co cię tam czeka. Wróć, gdy wykonasz zadania zlecone przez Josephine, Idę, Baldemara i Krasnoluda. Dowidzenia!",
+						"Nie możesz wejść do krainy smoków, ponieważ nie poradzisz sobie. Nie ukończyłeś zadań, które przygotują cię na to co cię tam czeka. Wróć, gdy wykonasz zadania zlecone przez Josephine, Idę, Baldemara i Krasnoluda. Do widzenia!",
 						null);
 
 				add(ConversationStates.ATTENDING,

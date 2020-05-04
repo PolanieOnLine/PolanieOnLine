@@ -47,12 +47,12 @@ public class SapphireNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Dzień dobry.");
+				addGreeting();
 				addReply("mistrz",
 						"Mistrz już mi mówił. Mam obrobić kryształ #szafiru.");
 				addReply("szafiru",
 						"Zrobię to bez problemu. Proszę powiedzieć tylko #'oszlifuj szafir'.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 380);
 				requiredResources.put("kryształ szafiru", 1);

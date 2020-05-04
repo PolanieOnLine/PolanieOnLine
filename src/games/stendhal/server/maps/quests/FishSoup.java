@@ -338,7 +338,7 @@ public class FishSoup extends AbstractQuest {
 
 		// allow to say goodbye while Florence is listening for food names
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.GOODBYE_MESSAGES, null,
-				ConversationStates.IDLE, "Dowidzenia.", null);
+				ConversationStates.IDLE, "Do widzenia.", null);
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.NO_MESSAGES,
 			new AndCondition(new QuestStartedCondition(QUEST_SLOT), new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "done"))),

@@ -94,7 +94,7 @@ public class MeetBunny extends AbstractQuest {
 					new AndCondition(new GreetingMatchesNameCondition(super.getName()),
 							new QuestNotCompletedCondition(QUEST_SLOT)),
 					ConversationStates.IDLE,
-					"Szczęśliwej Wielkanocy! Mam wielkanocny koszyczek dla Ciebie. Dowidzenia!",
+					"Szczęśliwej Wielkanocy! Mam wielkanocny koszyczek dla Ciebie. Do widzenia!",
 					new MultipleActions(reward));
 			}
 		};

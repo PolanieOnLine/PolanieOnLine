@@ -59,7 +59,7 @@ public class BronekNPC implements ZoneConfigurator {
 				addOffer("Na tablicy masz napisane jakie przedmioty skupuję.");
 				addQuest("O, dziękuję, ale niczego już nie potrzebuję.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buydragonitems")), false);
-				addGoodbye("Dowidzenia kolego.");
+				addGoodbye("Do widzenia kolego.");
 			}
 		};
 

@@ -70,7 +70,7 @@ public class PrincessNPC implements ZoneConfigurator {
 				addJob("Praca? Myślisz, że księżniczka taka jak ja potrzebuje pracy? Ha!");
 				addHelp("Strzeż się moich sióstr na wyspie. One nie lubią obcych.");
 				addOffer("Nie mam nic do zaoferowania.");
-				addGoodbye("Dowidzenia i strzeż się barbarzyńców.");
+				addGoodbye("Do widzenia i strzeż się barbarzyńców.");
 			}
 		};
 

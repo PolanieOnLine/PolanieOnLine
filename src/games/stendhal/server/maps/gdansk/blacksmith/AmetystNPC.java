@@ -64,7 +64,7 @@ public class AmetystNPC implements ZoneConfigurator {
 				addOffer("Mam obrobić dla Ciebie kryształ #ametystu?");
 				addReply("ametyst",
 						"Zrobię to bez problemu. Proszę powiedzieć tylko #'oszlifuj ametyst'.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 200);
 				requiredResources.put("kryształ ametystu", 1);

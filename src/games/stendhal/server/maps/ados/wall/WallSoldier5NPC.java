@@ -64,7 +64,7 @@ public class WallSoldier5NPC implements ZoneConfigurator {
 				addJob("Strzeżenie murów miasta wiąże się z wielką odpowiedzialnością.");
 				addHelp("Strażnik Julius, znajdujący się przy głównym wejściu, pomaga nowicjuszom.");
 				addQuest("Przepraszam, ale nie mam dla Ciebie żadnego zadania.");
-				addGoodbye("Dowidzenia, obywatelu.");
+				addGoodbye("Do widzenia, obywatelu.");
 			}
 		};
 

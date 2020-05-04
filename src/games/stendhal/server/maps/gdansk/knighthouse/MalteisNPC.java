@@ -52,7 +52,7 @@ public class MalteisNPC implements ZoneConfigurator {
 				addOffer("Nie mam nic do zaoferowania.");
 				//addOffer("Nie mam nic do zaoferowania, lecz możesz mi w czymś #pomóc.");
 				//addHelp("My, rycerze potrzebujemy pomocy w pewnej sprawie. Jeżeli chcesz się dowiedzieć więcej powiedz mi #zadanie.");
-				addGoodbye("Dowidzenia. Niech światłość Ci sprzyja.");
+				addGoodbye("Do widzenia. Niech światłość Ci sprzyja.");
 			}
 		};
 

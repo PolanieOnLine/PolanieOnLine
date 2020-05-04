@@ -150,12 +150,12 @@ public class WeaponsCollector extends AbstractQuest implements
 	@Override
 	public String respondToQuestAcception() {
 		return "Jeżeli pomożesz mi w skompletowaniu mojej kolekcji to dam Tobie "
-				+ "coś bardzo interesującego i użytecznego na wymianę. Dowidzenia";
+				+ "coś bardzo interesującego i użytecznego na wymianę. Do widzenia";
 	}
 
 	@Override
 	public String respondToQuestRefusal() {
-		return "Cóż. Może ktoś inny mi pomoże. Dowidzenia";
+		return "Cóż. Może ktoś inny mi pomoże. Do widzenia";
 	}
 
 	@Override

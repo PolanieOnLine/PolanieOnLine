@@ -60,7 +60,7 @@ public class ArcheryDealerNPC implements ZoneConfigurator  {
 				addHelp("Nie mogę zaoferować Tobie pomocy. Przykro mi.");
 				addOffer("Spójrz na tablicę i sprawdź ceny.");
 				addQuest("Nie mam dla Ciebie zadania.");
-				addGoodbye("Bądź szczęśliwy. Dowidzenia.");
+				addGoodbye("Bądź szczęśliwy. Do widzenia.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyarcherstuff")), false);
 			}};
 			npc.setPosition(10, 5);

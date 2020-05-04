@@ -58,7 +58,7 @@ public class NunNPC implements ZoneConfigurator {
 				addGreeting("Witaj w tym świętym miejscu.");
 				addHelp("Nie wiem czego potrzebujesz drogie dziecko.");
 				addJob("Jestem zakonnicą. To jest moje życie, a nie praca.");
-				addGoodbye("Dowidzenia. Niech pokój będzie z tobą.");
+				addGoodbye("Do widzenia. Niech pokój będzie z tobą.");
 			}
 
 			/*

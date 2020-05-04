@@ -164,7 +164,7 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 						+ " Jeżeli chcesz, abym #zaoferowała trochę napojów to daj znać!");
 				addJob("Hau! Oferuję napój z winogron, sok z chmielu i mój specjał #'nalewka litworowa' lub #'mocna nalewka litworowa'.");
 				addHelp("Hau... Jeżeli jesteś spragniony to mogę #zaoferować trochę napojów. Jeżeli nie zauważałeś to jest pub!");
-				addGoodbye("Hau... DOwidzenia i powodzenia!");
+				addGoodbye("Hau... Do widzenia i powodzenia!");
 
 				addReply(Arrays.asList("wine","beer","napój z winogron","sok z chmielu"),
 						"Hau! Ugasi twoje pragnienie za kilka monet...");

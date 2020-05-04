@@ -47,7 +47,7 @@ public class HusbandNPC implements ZoneConfigurator  {
 				addGreeting("Cześć!");
 				addJob("Jestem woźnicą, ale na tej wyspie nie ma powozów!");
 				addHelp("Nie próbuj rozmawiać z moją żoną, jest bardzo nieśmiała.");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 		};

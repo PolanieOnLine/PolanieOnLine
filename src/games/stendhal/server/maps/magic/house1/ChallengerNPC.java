@@ -139,7 +139,7 @@ public class ChallengerNPC implements ZoneConfigurator  {
 				addOffer("Aby zostać teleportowanym na #wyspę i walczyć przeciwko " + NUMBER_OF_CREATURES + " wytrenowanym przeze mnie potworami dobranym do Twojego poziomu musisz podjąć #wyzwanie.");
 				addReply(Arrays.asList("island", "wyspę", "wyspie"), "Mogę przywołać magiczną wyspę tylko dla Ciebie. Będzie potrzymywana przez twoje siły życiowe. Jeśli opuścisz ją tu musisz szybko wrócić na nią, bo inaczej "
 						+ "zniknie. Nie powinieneś próbować uciekać lub wracać więcej niż jeden raz. Jeżeli chcesz się tam dostać to po prostu zapłać #opłatę.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 				// fee depends on the level
 				// but there is a min level to play
 				add(ConversationStates.ANY,

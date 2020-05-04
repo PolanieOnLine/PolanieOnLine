@@ -67,7 +67,7 @@ public class RybakNPC implements ZoneConfigurator {
 				addOffer("Kupię okoń 8, makrela 8, płotka 7, palia alpejska 7, błazenek 10, pokolec 9, pstrąg 9, dorsz 5.");
 				addQuest("Nie mogę nic złowić a do domu nie wrócę z pustymi rękoma, #pomóż mi.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrybak")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

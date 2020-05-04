@@ -53,7 +53,7 @@ public class MithrilForgerNPC implements ZoneConfigurator {
 				addGreeting("Pozdrawiam.");
 				addJob("Wykuwam mithril. Mam na myśli za pomocą magii. Joshua udostępnił mi trochę miejsca do pracy pomimo tego, że jestem inny od innych w Ados.");
 				addHelp("Jeżeli przyszedłeś tutaj po sztabki złota to musisz porozmawiać z Joshua. Odlewam rzadki i drogocenny #mithril w sztabkach. Powiedz tylko #odlej.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 
 				// Pedinghaus makes mithril if you bring him mithril nugget and wood
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();

@@ -78,7 +78,7 @@ public class MedicineForTad extends AbstractQuest {
 	static final String ILISA_TALK_EXPLAIN_MEDICINE = "Oto lekarstwo, na które czeka #Tad.";
 
 	static final String KETTEH_TALK_BYE_INTRODUCES_TAD = "Żegnaj. Spotkałeś Tada w hostelu? Jeżeli będziesz miał okazję to proszę zaglądnij do niego. Słyszałam, że nie czuje się najlepiej. Hostel możesz znaleść w wiosce Semos obok Nishiya.";
-	static final String KETTEH_TALK_BYE_REMINDS_OF_TAD = "Dowidzenia. Nie zapomnij sprawdzić Tada. Mam nadzieje, że czuję się lepiej.";
+	static final String KETTEH_TALK_BYE_REMINDS_OF_TAD = "Do widzenia. Nie zapomnij sprawdzić Tada. Mam nadzieje, że czuję się lepiej.";
 
 	static final String TAD_TALK_GOT_FLASK = "Dobrze, że masz flaszę!";
 	static final String TAD_TALK_REWARD_MONEY = "Tutaj masz pieniądze na pokrycie twoich wydatków.";

@@ -40,7 +40,7 @@ public class DadNPC implements LoadableContent {
 				addReply("susi", "Moja córka Susi jest podekscytowana Mine Town Revival Weeks, ale martwię się, że znów coś może pójść źle i dlatego musi poczekać dopóki nie skończę mojej pracy.");
 				addOffer("Nie mam nic dla Ciebie. Muszę odprowadzić #Susi do domu w Ados, gdy festyn się skończy.");
 				addQuest("Idź do mojej córki #Susi. Ona uwielbia poznawać nowych ludzi.");
-				addGoodbye("Dowidzenia. Miło było Cię spotkać.");
+				addGoodbye("Do widzenia. Miło było Cię spotkać.");
 			}
 		};
 

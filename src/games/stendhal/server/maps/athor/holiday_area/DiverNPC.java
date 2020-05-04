@@ -50,7 +50,7 @@ public class DiverNPC implements ZoneConfigurator  {
 				        ConversationStates.ATTENDING, "Nie dziękuję. Nie potrzebuję pomocy!", null);
 				addJob("Jestem kierowcą, ale nie widzę teraz rybki!");
 				addHelp("Lubię kąpielówki, które można dostać z przebieralni na plaży.");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 		};

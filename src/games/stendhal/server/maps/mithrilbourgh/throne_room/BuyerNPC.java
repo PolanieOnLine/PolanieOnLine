@@ -63,7 +63,7 @@ public class BuyerNPC implements ZoneConfigurator {
 				addHelp("Moja armia musi mieć najlepsze przedmioty. #Zaoferuj mi jakiś rzadki #mainiocyjski ekwipunek. Słyszałem historie i dobrze zapłacę.");
 				//addQuest("Teraz wojsko Mithrilbourghtów i Ja nie potrzebujemy twoich usług.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buymainio")), true);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 
 	  	@Override

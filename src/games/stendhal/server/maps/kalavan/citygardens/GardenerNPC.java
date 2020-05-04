@@ -216,7 +216,7 @@ public class GardenerNPC implements ZoneConfigurator {
 				        "Piękny [daylightphase]. Nieprawdaż?");
 				addQuest("Kocham filiżankę #herbaty. Przy uprawianiu ogrodu zawsze chce się pić. Jeżeli przyniesiesz mi też #sandwich to wymienię ją za magiczny zwój. Powiedz tylko #wymień.");
 				addReply(Arrays.asList("tea", "cup of tea", "herbata", "herbaty", "filiżanka herbaty"), "Starsza Granny Graham może zaparzyć filiżankę herbaty. Ona jest tam w tej dużej chacie.");
-				addGoodbye("Dowidzenia. Podziwiaj resztę ogrodów.");
+				addGoodbye("Do widzenia. Podziwiaj resztę ogrodów.");
 			}
 		};
 

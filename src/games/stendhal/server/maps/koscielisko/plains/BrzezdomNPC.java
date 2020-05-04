@@ -64,7 +64,7 @@ public class BrzezdomNPC implements ZoneConfigurator {
 				addJob("Błąkam się po górach lasach, zwiedzam, podpatruję, wszystko w mym notesie zapisuję.");
 				addHelp("Stawiam pytania, oczekuję odpowiedzi. Mam dla ciebie małe zadanie.");
 				addOffer("Nie mam nic do zaoferowania!");
-				addGoodbye("Dowidzenia, czytaj legendy.");
+				addGoodbye("Do widzenia, czytaj legendy.");
 			}
 		};
 

@@ -85,7 +85,7 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyamazoncloaks")), false);
 				addOffer("Nie lubię tego mówić, ale spójrz na tamtą tablicę, aby poznać moje ceny i to co ja skupuję.");
 				addQuest("Niczego nie potrzebuję. Dziękuję.");
-				addGoodbye("Dowidzenia. NIENAWIDZISZ tego miejsca? ;) Powiedź hej gigantycznej amazonce jak już jesteś tutaj.");
+				addGoodbye("Do widzenia. NIENAWIDZISZ tego miejsca? ;) Powiedź hej gigantycznej amazonce jak już jesteś tutaj.");
 
 			}
 		};

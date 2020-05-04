@@ -77,7 +77,7 @@ public class GreeterNPC implements ZoneConfigurator {
 				addJob("Witam wszystkich nowo przybyłych do Fado. Mogę #zaoferować zwój jeżeli chciałbyś kiedyś tu wrócić.");
 				addHelp("Możesz pójść do oberży, w której kupisz jedzenie i picie. Możesz także odwiedzać ludzi w domach lub odwiedzić kowala lub miejski hotel.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("fadoscrolls")));
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

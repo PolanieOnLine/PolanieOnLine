@@ -114,7 +114,7 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
                                                         new PlayerIsAGoodBoyCondition(),
                                                         new NotCondition(new NakedCondition())),
 					ConversationStates.IDLE,
-					"Wesołych Świąt! Mam prezent i czapkę dla Ciebie. Dowidzenia i pamiętaj, aby być grzecznym jeżeli chcesz dostąc prezent w przyszłym roku!",
+					"Wesołych Świąt! Mam prezent i czapkę dla Ciebie. Do widzenia i pamiętaj, aby być grzecznym jeżeli chcesz dostąc prezent w przyszłym roku!",
 					new MultipleActions(reward));
 
 				add(ConversationStates.IDLE,

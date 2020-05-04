@@ -70,7 +70,7 @@ public class GreeterNPC implements ZoneConfigurator {
 				        "Przepraszam, ale hotel wciąż jest remontowany i nie można zarezerwować sobie pokoju. Możesz #pozwiedzać resztę hotelu.");
 				addReply(Arrays.asList("pozwiedzać", "explore"), "Obawiam się, że nie ma zbyt wiele do zwiedzania. Hotel wciąż nie jest wykończony.");
 				//addSeller(new SellerBehaviour(shops.get("food&drinks")));
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

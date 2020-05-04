@@ -217,7 +217,7 @@ public class ZlotyAmulet extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "kowal"),
 						new NotCondition(new PlayerHasItemWithHimCondition("bryłka złota",20))),
 				ConversationStates.IDLE,
-				"Jak mam wziąść się do pracy, jeżeli nie posiadasz przy osobie odpowiedniej ilości bryłek złota?! Dowidzenia.",
+				"Jak mam wziąść się do pracy, jeżeli nie posiadasz przy osobie odpowiedniej ilości bryłek złota?! Do widzenia.",
 				null);
 		
 		npc.add(ConversationStates.IDLE, 

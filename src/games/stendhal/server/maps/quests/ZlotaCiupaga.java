@@ -213,7 +213,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 					return;
 				}
 
-				raiser.say("Warto było czekać. A oto złota ciupaga. Dowidzenia!");
+				raiser.say("Warto było czekać. A oto złota ciupaga. Do widzenia!");
 				player.addXP(15000);
 				player.addKarma(25);
 				final Item zlotaCiupaga = SingletonRepository.getEntityManager().getItem("złota ciupaga");

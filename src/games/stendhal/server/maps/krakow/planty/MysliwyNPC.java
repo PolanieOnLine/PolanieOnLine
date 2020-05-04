@@ -78,7 +78,7 @@ public class MysliwyNPC implements ZoneConfigurator {
 				addOffer("Skupuję kieł wilczy 10, kieł niedźwiedzi 15, dziób ptaka 30, ząb potwora 200, kieł smoka 500, kieł złotej kostuchy 1000.");
 				addQuest("Nie teraz, jestem zajęty. Właśnie znalazłem trop.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyzeby")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

@@ -72,7 +72,7 @@ public class JailedBarbNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("straży", "guard"),"Hm powiedziałem. Nic Ci nie powiem!");
 				addHelp("Zabij tyle Amazonek ile tylko możesz. Próbują mnie wpędzić w obłęd z tymi głupimi kwiatkami.");
 				addOffer("Nie mam nic do zaoferowania!");
-				addGoodbye("Dowidzenia i zetnij trochę tych wstrętnych kwiatków!");
+				addGoodbye("Do widzenia i zetnij trochę tych wstrętnych kwiatków!");
 			}
 		};
 

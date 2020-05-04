@@ -214,7 +214,7 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT), new QuestNotInStateCondition(QUEST_SLOT, "reward")),
 				ConversationStates.IDLE,
-				"Dowidzenia. Wróć gdy zdobędziesz to czego potrzebuję!", null);
+				"Do widzenia. Wróć gdy zdobędziesz to czego potrzebuję!", null);
 
 
 		/* player says reward */

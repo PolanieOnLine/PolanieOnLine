@@ -57,7 +57,7 @@ public class DwarfGuardNPC implements ZoneConfigurator {
 				addJob("Byłem strażnikiem w więzieniu. Dopóki... cóż pewnie znasz resztę.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buychaos")), true);
 
-				addGoodbye("Dowidzenia ... bądź ostrożny ...");
+				addGoodbye("Do widzenia ... bądź ostrożny ...");
 			}
 			// remaining behaviour is defined in maps.quests.JailedDwarf.
 		};

@@ -52,7 +52,7 @@ public class eFuRNPC implements ZoneConfigurator {
 				addGreeting("Witaj! dzielny wojowniku.");
 				addJob("Pilnuję koboltów w tych podziemiach.");
 				addHelp("Mi pomóc? Dziękuję nie trzeba ale mogę tobie anulować #zadanie na jeden z pierścieni lub itemy z mithrilu.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

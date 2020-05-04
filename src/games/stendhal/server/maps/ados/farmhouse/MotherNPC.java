@@ -58,7 +58,7 @@ public class MotherNPC implements ZoneConfigurator {
 				addGreeting("Witaj. Przykro mi, ale nie mam za dużo czasu, gdy mój synek choruje...");
 				addJob("Mój brat opiekuje się tą farmą. Ja tylko opiekuję się tutaj synem.");
 				addHelp("Philomena sprzeda Ci mleko i masło.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 		npc.setEntityClass("woman_006_npc");

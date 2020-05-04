@@ -61,7 +61,7 @@ public class BlacksheepHarryNPC implements ZoneConfigurator {
 			addHelp("Wyrabiam tylko prasowanego tuńczyka. Moi braci robią próweczki i kiełbasę serową.");
 			addOffer("Daj mi jakąś makrele, a zrobię dla Ciebie prasowanego tuńczyka. Powiedz tylko #zrób.");
 			addQuest("Nie sądzę, abym powinien prosić Ciebie o pomoc.");
-			addGoodbye("Dowidzenia. Poleć nas swoim znajomym.");
+			addGoodbye("Do widzenia. Poleć nas swoim znajomym.");
 
 			// Blacksheep Harry makes you some tuna if you bring him a mackerel and a perch
 			// (uses sorted TreeMap instead of HashMap)

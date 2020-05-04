@@ -56,7 +56,7 @@ public class SilverNPC implements ZoneConfigurator {
 					+ "No i najzdolniejszy z całej czwórki Krzesim, zdolności swe poświęcił kryształom szafiru.\n"
 					+ "Jeżeli chcesz obrobić któryś z tych kamieni to podejdź i powiedz #mistrz, a czeladnicy będą wiedzieć, że ja ciebie wysłałem.");
 				addHelp ("Jakiego typu pomocy oczekujesz? Jeżeli chcesz się czegoś dowiedzieć czym się zajmuję to powiedz #praca, a chętnie opowiem.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("polano", 2);

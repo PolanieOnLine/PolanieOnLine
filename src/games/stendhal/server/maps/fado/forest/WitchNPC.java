@@ -63,7 +63,7 @@ public class WitchNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("soup", "zupę"), "Florence Boullabaisse i Mother Helena są wspaniałymi kucharkami. Spotkasz je na rynku w Ados i w tawernie w Fado.");
 				addHelp("Aldrin sprzedaje miód, który pewnie chciałbyś zjeść z chlebem.");
 				addOffer("Przykro mi, ale nie mogę ci nic sprzedać.");
-				addGoodbye("Dowidzenia i trzymaj się!");
+				addGoodbye("Do widzenia i trzymaj się!");
 			}
 		};
 

@@ -61,7 +61,7 @@ public class GuardNPC implements ZoneConfigurator {
 				addJob("Strzegę tego mostu i sprawdzam zablokowaną drogę.");
 				addHelp("Droga do Fado będzie zablokowana do momentu, aż miasto nie będzie bezpieczne.");
 				addQuest("Chciałbym robić coś ciekawszego.");
-				addGoodbye("Dowidzenia i wracaj szybko. Nudzę się tutaj.");
+				addGoodbye("Do widzenia i wracaj szybko. Nudzę się tutaj.");
 			}
 		};
 

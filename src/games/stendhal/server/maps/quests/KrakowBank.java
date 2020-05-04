@@ -218,7 +218,7 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 								new QuestNotCompletedCondition(GRAFINDLE_QUEST_SLOT), 
 								new QuestNotCompletedCondition(ZARA_QUEST_SLOT))),
 						ConversationStates.IDLE,
-						"Nie możesz skorzystać ze skrytek jakie znajdują się na piętrze tego banku jeżeli nie masz prawa do korzystania ze skrzynki w Nalwor i u Zary w Ados. Dowidzenia!",
+						"Nie możesz skorzystać ze skrytek jakie znajdują się na piętrze tego banku jeżeli nie masz prawa do korzystania ze skrzynki w Nalwor i u Zary w Ados. Do widzenia!",
 						null);
 
 				add(ConversationStates.ATTENDING,
@@ -320,7 +320,7 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 
 				addQuest("Możesz korzystać z banku tylko jeżeli masz prawo do używania skrzyni w Nalwor.");
 
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

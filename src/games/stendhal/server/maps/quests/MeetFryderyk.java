@@ -106,7 +106,7 @@ public class MeetFryderyk extends AbstractQuest {
 			null,
 			ConversationStates.IDLE,
 			"I jak chcesz wiedzieć co się dzieje? Czytając Zakopane Tribune Tutki? Hah!" +
-			" Zważaj także uwagę na znaki to może coś sie z nich dowiesz się(Małe drewniane tabliczki)... Dowidzenia!",
+			" Zważaj także uwagę na znaki to może coś sie z nich dowiesz się(Małe drewniane tabliczki)... Do widzenia!",
 			null);
 
 		final List<String> yesnotriggers = new ArrayList<String>();

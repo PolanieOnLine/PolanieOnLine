@@ -170,7 +170,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 						final List<String> missing = missingGoral(player, false);
 						raiser.say("Powiadom mnie jeśli coś znajdziesz "
 								+ Grammar.itthem(missing.size())
-								+ ". Dowidzenia.");
+								+ ". Do widzenia.");
 					}
 				});
 

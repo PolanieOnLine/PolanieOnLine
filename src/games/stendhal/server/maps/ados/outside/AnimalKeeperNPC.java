@@ -127,7 +127,7 @@ public class AnimalKeeperNPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING, "Jeżeli spotkasz spotkasz porzucone zwierzątko to proszę przyprowadź je do mnie.",
 					null);
 
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 				
 			}
 			// remaining behaviour is defined in maps.quests.ZooFood.

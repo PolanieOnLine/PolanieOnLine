@@ -73,7 +73,7 @@ public class BarMaidNPC implements ZoneConfigurator {
 				addJob("Jestem kelnerką. Ze względu na ciężkie czasy nie mamy wystarczająco dużo jedzenia aby nakarmić naszych klientów. Czy możesz nam coś #zaoferować? Cokolwiek?");
 				addHelp("Byłabym wdzięczna gdybyś mógł coś #zaoferować aby uzupełnić nasze zapasy: mięso, szynka lub ser.");
 				addQuest("#Zaoferowano nam już dość jedzenia, dziękuję za pomoc.");
- 				addGoodbye("Dowidzenia, dowidzenia!");
+ 				addGoodbye("Do widzenia, do widzenia!");
  				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyfood")), true);
 			}
 		};

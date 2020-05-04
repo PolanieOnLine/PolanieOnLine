@@ -68,7 +68,7 @@ public class BuyerNPC implements ZoneConfigurator {
 				addOffer("Spójrz na tablicę na ścianie, aby zobaczyć co kupuję.");
 				addQuest("Myślisz, że mógłbym zaufać człowiekowi w ważnej sprawie? Mylisz się!");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("elfbuyrare")), false);
-				addGoodbye("Dowidzenia. Bądź ostrożny i za bardzo nie denerwuj innych elfów.");
+				addGoodbye("Do widzenia. Bądź ostrożny i za bardzo nie denerwuj innych elfów.");
 			}
 		};
 

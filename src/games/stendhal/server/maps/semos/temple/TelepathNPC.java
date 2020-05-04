@@ -149,7 +149,7 @@ public class TelepathNPC implements ZoneConfigurator {
 								player.rehabilitate();
 							} });
 				// player said no they are not really sorry
-				add(ConversationStates.QUESTION_2, ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE, "Myślałam, że nie! Dowidzenia!", null);
+				add(ConversationStates.QUESTION_2, ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE, "Myślałam, że nie! Do widzenia!", null);
 				addJob("Potrafię użyć całą moc ludzkiego umysłu. Zrobiłam wielkie postępy w telepatii i telekinezie. Jednakże nadal nie mogę przewidywać przyszłości. Nie jestem pewna czy będziemy w stanie zniszczyć mroczne legiony Blordroughów...");
 				addQuest("Na razie nie potrzebuję pomocy od nikogo i... Hej! Nie próbujesz czasem czytać w moich myślach? Zawsze przed zrobieniem czegoś takiego powinieneś zapytać o pozwolenie!");
 				addGoodbye();

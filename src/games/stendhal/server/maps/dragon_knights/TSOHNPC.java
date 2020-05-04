@@ -58,7 +58,7 @@ public class TSOHNPC extends SpeakerNPCFactory {
 
 		npc.addHelp("Mogę ci opowiedzieć o TSOH, a jeżeli chcesz wiedzieć jeszcze więcej to zajrzyj na stronę naszego klanu http://www.thesolidersofhonor.pl.tl/.");
 		npc.addJob("Pracuje dla elitarnego klanu The Soldiers Of Honor. Zajmuje się promocją mojego klanu.");
-		npc.addGoodbye("Dowidzenia. Zawsze będziesz mile widziany i pomyśl nad wstąpieniem do naszego klanu.");
+		npc.addGoodbye("Do widzenia. Zawsze będziesz mile widziany i pomyśl nad wstąpieniem do naszego klanu.");
 		// further behaviour is defined in quests.
 	}
 }

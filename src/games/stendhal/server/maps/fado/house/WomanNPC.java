@@ -68,7 +68,7 @@ public class WomanNPC implements ZoneConfigurator {
 				//addGreeting();
 				addJob("Gdybym mogła to projektowałabym sukienki!");
 				addHelp("Możesz otrzymać pomoc od Xhiphin Zohos. Zazwyczaj siedzi w sąsiednim domku. *hi hi hi* Ciekawa jestem dlaczego!");
-				addGoodbye("Dowidzenia, dowidzenia!");
+				addGoodbye("Do widzenia, do widzenia!");
 			}
 		};
 

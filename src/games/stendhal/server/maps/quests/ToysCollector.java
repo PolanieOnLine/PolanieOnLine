@@ -95,7 +95,7 @@ public class ToysCollector extends AbstractQuest implements
 				ConversationPhrases.NO_MESSAGES,
 				new QuestNotCompletedCondition(QUEST_SLOT),
 				ConversationStates.IDLE,
-				"Powinieneś odejść nim wpadnę w tarapaty za rozmowę z tobą. Dowidzenia.",
+				"Powinieneś odejść nim wpadnę w tarapaty za rozmowę z tobą. Do widzenia.",
 				null);
 	}
 

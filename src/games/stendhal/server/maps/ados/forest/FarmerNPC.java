@@ -86,7 +86,7 @@ public class FarmerNPC implements ZoneConfigurator {
                 final Map<String, Integer> offerings = new HashMap<String, Integer>();
                 offerings.put("pusty worek", 10);
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
-				addGoodbye("Dowidzenia, dowidzenia. Bądź ostrożny.");
+				addGoodbye("Do widzenia, do widzenia. Bądź ostrożny.");
 			}
 		};
 

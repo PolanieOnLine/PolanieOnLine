@@ -158,7 +158,7 @@ public class FishermansLicenseCollector extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					final List<String> missing = missingFish(player, false);
 					raiser.say("Daj mi znać, gdy znajdziesz "
-							+ Grammar.itthem(missing.size()) + ". Dowidzenia.");
+							+ Grammar.itthem(missing.size()) + ". Do widzenia.");
 				}
 			});
 

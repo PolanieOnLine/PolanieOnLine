@@ -144,13 +144,13 @@ public class MeetZynn extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, "bye",
 			new LevelLessThanCondition(15),
 			ConversationStates.IDLE,
-			"Dowidzenia. Hej jeżeli zamierzasz isć do biblioteki to nie zapominaj, aby zachowywać się tam cicho. Ludzie mogą tam coś czytać!",
+			"Do widzenia. Hej jeżeli zamierzasz isć do biblioteki to nie zapominaj, aby zachowywać się tam cicho. Ludzie mogą tam coś czytać!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING, "bye",
 			new LevelGreaterThanCondition(14),
 			ConversationStates.IDLE,
-			"Dowidzenia. Hej powinieneś się zastanowić nad zdobyciem karty bibliotecznej.",
+			"Do widzenia. Hej powinieneś się zastanowić nad zdobyciem karty bibliotecznej.",
 			null);
 	}
 

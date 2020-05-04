@@ -361,7 +361,7 @@ public class GuessKills extends AbstractQuest {
 				ConversationPhrases.GOODBYE_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Dowidzenia. Wróć, gdy będziesz chciał kontynuować.",
+				"Do widzenia. Wróć, gdy będziesz chciał kontynuować.",
 				null);
 
 		//if exact answer

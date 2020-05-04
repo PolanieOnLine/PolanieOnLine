@@ -47,10 +47,10 @@ public class ObsidianNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog(){
-				addGreeting("Dzień dobry.");
+				addGreeting();
 				addReply("mistrz",
 						"A wysłał Wielmożność do mnie w sprawie obsydianu. Obrobię go wystarczy, że powiecie #'oszlifuj obsydian'.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 980);
 				requiredResources.put("kryształ obsydianu", 1);

@@ -65,7 +65,7 @@ public class ZakonnikNPC implements ZoneConfigurator {
 				addGreeting("Witaj na terenie zakonu cienia.");
 				addJob("Nie ja nic nie mam dziś dla ciebie.");
 				addHelp("Pomocy? też nie potrzebuje.");
-				addGoodbye("Dowidzenia kolego.");
+				addGoodbye("Do widzenia kolego.");
 			}
 		};
 

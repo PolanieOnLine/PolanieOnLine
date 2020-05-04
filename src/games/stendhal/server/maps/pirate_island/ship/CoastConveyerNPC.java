@@ -59,7 +59,7 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 
 			@Override
 			public void createDialog() {
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 				addGreeting("Ahoj, Przyjacielu! W czym mogę #pomóc?");
 				addHelp("Tak, możesz zejść mówiąc #zejdź, ale wtedy kiedy zacumujemy na przystani. Zapytaj mnie o #status jeżeli nie masz pojęcia gdzie jesteśmy.");
 				addJob("Zabieram kamratów, którzy chcą zejść na ląd.");

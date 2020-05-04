@@ -69,7 +69,7 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						seller.say("Dowidzenia. Przyjdź ponownie kiedyś.");
+						seller.say("Do widzenia. Przyjdź ponownie kiedyś.");
 						seller.addEvent(new SoundEvent("npc/goodbye_female-01", SoundLayer.CREATURE_NOISE));
 						seller.notifyWorldAboutChanges();
 					}

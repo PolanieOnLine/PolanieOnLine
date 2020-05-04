@@ -128,7 +128,7 @@ public class MakeRings {
 						if (timeRemaining > 0L) {
 							npc.say("Jeszcze nie zrobiłem obrączki ślubnej. Wróć za "
 									+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-									+ ". Dowidzenia.");
+									+ ". Do widzenia.");
 							return;
 						}
 						/*The ring is ready now. It was either forging ready for a wedding or
@@ -172,7 +172,7 @@ public class MakeRings {
 							player.drop("money", REQUIRED_MONEY);
 							npc.say("Dobrze wróć za "
 									+ REQUIRED_MINUTES
-									+ " minutę" + ", a będzie gotowa. Dowidzenia.");
+									+ " minutę" + ", a będzie gotowa. Do widzenia.");
 							if (player.isQuestCompleted(marriage.getQuestSlot())) {
 								player.setQuest(marriage.getQuestSlot(), "forgingagain;"	+ System.currentTimeMillis());
 							} else {

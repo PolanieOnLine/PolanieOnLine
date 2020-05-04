@@ -66,11 +66,11 @@ public class JesterNPC implements ZoneConfigurator {
 				addJob("Jestem nadwornym błaznem. Nie mogę przestać! W mojej umowie o pracę nie ma stania i rozmawiania.");
 				addHelp("Ciii... Mógłbym Ci opowiedzieć coś o przestępcach..., gdy Król wyjechał to oni przejęli zamek. Siedzę teraz cicho. Ciii...");
 				add(ConversationStates.ATTENDING, Arrays.asList("offer", "oferta"), null, ConversationStates.IDLE,
-				        "Niczego nie potrzebuję! Muszę żonglować! Dowidzenia!", null);
+				        "Niczego nie potrzebuję! Muszę żonglować! Do widzenia!", null);
 				add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, null,
 				        ConversationStates.IDLE,
-				        "Niczego nie potrzebuję! Muszę żonglować! Dowidzenia!", null);
-				addGoodbye("Dowidzenia!");
+				        "Niczego nie potrzebuję! Muszę żonglować! Do widzenia!", null);
+				addGoodbye("Do widzenia!");
 			}
 		};
 		npc.setDescription("Oto Huckle Rohn, nadworny błazen.");

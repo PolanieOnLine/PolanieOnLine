@@ -141,7 +141,7 @@ public class VampireSword extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Zapomnij o tym. Musisz mieć lepszy miecz od tego, który chcę ci wykuć? Dowidzenia.",
+			"Zapomnij o tym. Musisz mieć lepszy miecz od tego, który chcę ci wykuć? Do widzenia.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.addReply(Arrays.asList("catacombs", "katakumb", "katakumbach"), "Katakumby na północ od Semos występowały już w starodawnych #legendach.");
@@ -153,7 +153,7 @@ public class VampireSword extends AbstractQuest {
 
 		final SpeakerNPC npc = npcs.get("Markovich");
 
-		npc.addGoodbye("*kaszlnięcie* ... dowidzenia ... *kaszlnięcie*");
+		npc.addGoodbye("*kaszlnięcie* ... Do widzenia ... *kaszlnięcie*");
 		npc.addReply(
 			Arrays.asList("blood", "truchło wampira", "truchło nietoperza", "krew"),
 			"Potrzebuję krwi. Mogę ją wziąć tylko z wnętrzności żywych lub martwych. Wymieszam krew dla Ciebie i napełnię twoją #czarę jeżeli pozwolisz mi się trochę napić. Powiedz #napełnij jak się zdecydujesz. Boję się potężnego #lorda.");
@@ -225,7 +225,7 @@ public class VampireSword extends AbstractQuest {
 					new NotCondition(new PlayerHasItemWithHimCondition("czara"))),
 			ConversationStates.IDLE,
 			"Zgubiłeś drogę? Katakumby są na północ od Semos." +
-			" Nie wracaj tutaj bez napełnionej czary! Dowidzenia! ",
+			" Nie wracaj tutaj bez napełnionej czary! Do widzenia! ",
 			null);
 
 		// Player has a goblet (somehow) but did not kill a vampire lord
@@ -251,7 +251,7 @@ public class VampireSword extends AbstractQuest {
 		// Player lost the empty goblet, wants another
 		npc.add(ConversationStates.QUESTION_1,
 			ConversationPhrases.YES_MESSAGES, null,
-			ConversationStates.IDLE, "Ty głupcze ..... Następnym razem bądź bardziej ostrożny. Dowidzenia!",
+			ConversationStates.IDLE, "Ty głupcze ..... Następnym razem bądź bardziej ostrożny. Do widzenia!",
 			new EquipItemAction("pusta czara"));
 
 		// Player doesn't have the empty goblet but claims they don't need another.
@@ -260,7 +260,7 @@ public class VampireSword extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Dlaczego tutaj wróciłeś? Idź zgładzić jakiegoś wampira! Dowidzenia!",
+			"Dlaczego tutaj wróciłeś? Idź zgładzić jakiegoś wampira! Do widzenia!",
 			null);
 
 		// Returned too early; still forging
@@ -283,7 +283,7 @@ public class VampireSword extends AbstractQuest {
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
 			ConversationStates.IDLE,
-			"Skończyłem wykuwanie Wampirzego Miecza. Zasłużyłeś na niego. Teraz wracam do pracy, dowidzenia!",
+			"Skończyłem wykuwanie Wampirzego Miecza. Zasłużyłeś na niego. Teraz wracam do pracy, Do widzenia!",
 			new MultipleActions(reward));
 
 		npc.add(
@@ -301,7 +301,7 @@ public class VampireSword extends AbstractQuest {
 			"żelazo",
 			null,
 			ConversationStates.IDLE,
-			"Zbierz rudę żelaza, a ja przetopię ją! Dowidzenia!",
+			"Zbierz rudę żelaza, a ja przetopię ją! Do widzenia!",
 			null);
 	}
 

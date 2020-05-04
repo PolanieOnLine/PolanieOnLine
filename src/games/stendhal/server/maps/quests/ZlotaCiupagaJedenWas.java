@@ -236,7 +236,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Warto było czekać. A oto złota ciupaga z wąsem. Dowidzenia!");
+					raiser.say("Warto było czekać. A oto złota ciupaga z wąsem. Do widzenia!");
 					player.addXP(250000);
 					player.addKarma(100);
 					final Item zlotaCiupagaZWasem = SingletonRepository.getEntityManager().getItem("złota ciupaga z wąsem");

@@ -298,7 +298,7 @@ public class BringListOfItemsQuestLogic {
 		// allow to say goodbye while listening for items
     protected void sayByeWhileInQuestion1() {
 	concreteQuest.getNPC().add(ConversationStates.QUESTION_1, ConversationPhrases.GOODBYE_MESSAGES, null,
-		ConversationStates.IDLE, "Dowidzenia.", null);
+		ConversationStates.IDLE, "Do widzenia.", null);
     }
 
     /**

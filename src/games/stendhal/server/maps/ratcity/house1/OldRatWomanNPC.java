@@ -57,7 +57,7 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 				addGreeting("Witaj.");
 				addJob("Nie zostawiaj moich dzieci na pastwę losu. Popatrz za nimi co jakiś czas.");
 				addHelp("Nie mogę Ci w niczym pomóc.");
-				addGoodbye("Dowidzenia");
+				addGoodbye("Do widzenia");
 				// remaining behaviour defined in games.stendhal.server.maps.quests.FindRatChildren
 			}
 		};

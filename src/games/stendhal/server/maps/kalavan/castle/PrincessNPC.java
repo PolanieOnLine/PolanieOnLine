@@ -76,7 +76,7 @@ public class PrincessNPC implements ZoneConfigurator {
 				addJob("Jestem księżniczką tego królestwa. Aby zostać obywatelem tego królestwa porozmawiaj w mieście z Barrett Holmesem. Może sprzeda Ci dom. Zanim pójdziesz mógłbyś mi wyświadczyć przysługę ( #favour )...");
 				addHelp("Uważaj na szalonych naukowców. Mój ojciec uwolnił ich, aby wykonali pewną pracę w podziemiach i obawiam się, że pewne rzeczy, wymknęły się im spod kontroli...");
 				addOffer("Przepraszam, ale nie mam Ci nic do zaoferowania. Mógłbyś mi wyświadczyć pewną przysługę ( #favour ), chociaż...");
-				addGoodbye("Dowidzenia i powodzenia.");
+				addGoodbye("Do widzenia i powodzenia.");
 			}
 		};
 

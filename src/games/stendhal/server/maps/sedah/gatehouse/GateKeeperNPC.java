@@ -132,7 +132,7 @@ public class GateKeeperNPC implements ZoneConfigurator {
 						}
 				});
 
-				addGoodbye("Dowidzenia. Nie mów, że Cię nie ostrzegałem!");
+				addGoodbye("Do widzenia. Nie mów, że Cię nie ostrzegałem!");
 			}
 		};
 

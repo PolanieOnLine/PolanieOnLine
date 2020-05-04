@@ -64,7 +64,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			@Override
 			public void createDialog() {
 
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 				addGreeting("Witam w Athor #ferry service! W czym mogę #pomóc?");
 				addHelp("Możesz #wejść na prom tylko za "
 						+ AthorFerry.PRICE

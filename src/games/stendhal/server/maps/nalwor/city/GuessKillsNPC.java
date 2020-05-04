@@ -95,7 +95,7 @@ public class GuessKillsNPC implements ZoneConfigurator {
 
                 //play and games reply is in the quest class: GuessKills
 
-                addGoodbye("Dowidzenia słonko.");
+                addGoodbye("Do widzenia słonko.");
             }
         };
 

@@ -80,7 +80,7 @@ public class GazdzinaMaryskaNPC implements ZoneConfigurator {
 				addJob("Mam masę roboty w domu: pranie, gotowanie.");
 				addHelp("A w czym ja ci mogę pomóc?");
 				addOffer("Nie mam nic do zaoferowania, ale spytaj mego męża bacę Zbyszka");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 			}
 		};
 

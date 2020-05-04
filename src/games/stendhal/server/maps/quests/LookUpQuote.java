@@ -190,7 +190,7 @@ public class LookUpQuote extends AbstractQuest {
 						player.setQuest(QUEST_SLOT, "done");
 						player.notifyWorldAboutChanges();
 					} else if (ConversationPhrases.GOODBYE_MESSAGES.contains(sentence.getTriggerExpression().getNormalized())) {
-						npc.say("Dowidzenia - do następnego razu!");
+						npc.say("Do widzenia - do następnego razu!");
 						npc.setCurrentState(ConversationStates.IDLE);
 					} else {
 						npc.say("Sądzę, że się pomyliłeś. Wróć, gdy będziesz dobrze znał powiedzenie.");

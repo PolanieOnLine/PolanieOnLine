@@ -62,7 +62,7 @@ public class ManWithHatNPC implements ZoneConfigurator {
 				addHelp("Gdy mieszkałem z moją ukochaną żoną to sporo podróżowaliśmy. Kochaliśmy plażę na Athor Island! *Westchnienie* Te wspomnienia sprawiają, że robię się smutny...Proszę zostam mnie teraz samego...");
 				addJob("Przestałem pracować, gdy moja żona odeszła.");
 				addOffer("Nie mam nic do zaoferowania.");
-				addGoodbye("Dowidzenia i dziękuję za rozmowę.");
+				addGoodbye("Do widzenia i dziękuję za rozmowę.");
 
 			}
 		};

@@ -66,7 +66,7 @@ public class PriestessNPC implements ZoneConfigurator {
 			    addJob("Jako kapłanka mogę #zaoferować Ci mikstury.");
 				addHelp("Moja siostra Salva ma dar uzdrawiania. Wyszła na spacer koło akweduktu. Powinieneś ją znaleźć o ile jej potrzebujesz.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("superhealing")), true);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

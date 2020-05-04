@@ -48,7 +48,7 @@ final class ChangeLockAction extends HouseChatAction implements ChatAction {
 					// if the player doesn't have the space for the key, change the locks anyway as a security measure, but don't charge.
 					raiser.say("Zamki zostały zmienione dla "
 							   + doorId + ", ale nie masz miejsca na nowy klucz. Jesteś nieprzygotowany. "
-							   + "Jeżeli chcesz możesz pózniej przyjść, a wtedy zaoferuję Tobie kupno zapasowego klucza. Dowidzenia.");
+							   + "Jeżeli chcesz możesz pózniej przyjść, a wtedy zaoferuję Tobie kupno zapasowego klucza. Do widzenia.");
 					raiser.setCurrentState(ConversationStates.IDLE);
 				}
 			} catch (final NumberFormatException e) {

@@ -74,7 +74,7 @@ public class WeaponryTraderNPC implements ZoneConfigurator {
 				addQuest("Nie mam dla Ciebie zadań.");
 				addJob("Jestem handlarzem broni. Wolę sam pracować.");
 				//addReply("offer", "Look at the blackboard to see my offers.");
-				addGoodbye("Dowidzenia. Wracaj szybko.");
+				addGoodbye("Do widzenia. Wracaj szybko.");
 
 				final Map<String, Integer> pricelist =
 					SingletonRepository.getShopList().get("buyadosarmors");

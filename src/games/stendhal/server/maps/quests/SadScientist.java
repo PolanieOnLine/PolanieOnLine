@@ -375,7 +375,7 @@ public class SadScientist extends AbstractQuest {
 		npc.add(ConversationStates.INFORMATION_1, ConversationPhrases.NO_MESSAGES,
 				condition,
 				ConversationStates.IDLE,
-				"Pa! Dowidzenia!",
+				"Pa! Do widzenia!",
 				null);
 	}
 
@@ -438,7 +438,7 @@ public class SadScientist extends AbstractQuest {
 							new MultipleActions(
 									new SetQuestAction(QUEST_SLOT,"legs"),
 									new SayTextAction("Ale jestem roztrzepany. Bezgraniczna miłość do mej żony Very kiedyś mnie zgubi. Potrzebuję jakieś spodnie aby te klejnoty do czegoś przymocować. " +
-											"Proszę zdobądź spodnie cieni. Dowidzenia.")), ConversationStates.IDLE
+											"Proszę zdobądź spodnie cieni. Do widzenia.")), ConversationStates.IDLE
 							));
 		}
 	}

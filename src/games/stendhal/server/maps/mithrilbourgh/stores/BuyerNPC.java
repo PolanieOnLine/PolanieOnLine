@@ -78,7 +78,7 @@ public class BuyerNPC implements ZoneConfigurator {
 				addQuest("Wojsko Mithrilbourghtów nie potrzebuje twoich usług.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("boots&helm")), false);
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellarrows")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 		npc.setDescription("Oto Diehelm Brui, Kwatermistrz.");

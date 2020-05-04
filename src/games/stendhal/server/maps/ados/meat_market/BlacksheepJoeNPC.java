@@ -60,7 +60,7 @@ public class BlacksheepJoeNPC implements ZoneConfigurator {
 			addHelp("Wyrabiam tylko kiełbasę serową. Moi braci robią paróweczki i prasowanego  tuńczyka.");
 			addOffer("Zobacz tablicę z tyłu, aby dowiedzieć się czego potrzebuję do zrobienia kiełbasy serowej. Powiedz #zrób jak się zdecydujesz.");
 			addQuest("Nie potrzebuję teraz pomocy. Dziękuję.");
-			addGoodbye("Dowidzenia. Poleć nas swoim znajomym.");
+			addGoodbye("Do widzenia. Poleć nas swoim znajomym.");
 
 			// Blacksheep Joe creates you some cheese sausages
 			// (uses sorted TreeMap instead of HashMap)

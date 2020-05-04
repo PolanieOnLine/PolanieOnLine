@@ -59,7 +59,7 @@ public class ChengNPC implements ZoneConfigurator {
 				addOffer("Zaglądnij do księgi tam znajdziesz moją ofertę.");
 				addQuest("Hm... opowiedz mi o waszych zwyczajach (regulaminie PolanieOnLine).");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buycheng")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

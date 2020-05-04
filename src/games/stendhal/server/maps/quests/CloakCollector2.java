@@ -155,7 +155,7 @@ public class CloakCollector2 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
-						entity.say("Wspaniale! Jestem teraz szczęśliwa! Dowidzenia!");
+						entity.say("Wspaniale! Jestem teraz szczęśliwa! Do widzenia!");
 						player.setQuest(QUEST_SLOT, "");
 						player.addKarma(5.0);
 					}

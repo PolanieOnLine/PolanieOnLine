@@ -271,7 +271,7 @@ public class SheepGrowing extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT,"start"),
 						new NotCondition(playerHasFullWeightSheep)),
 				ConversationStates.IDLE,
-				"Witaj. Powinieneś mieć owcę od Nishiyi dla mnie! Ale chcę najedzoną. Wróć, gdy będziesz miał taką. Dowidzenia!",
+				"Witaj. Powinieneś mieć owcę od Nishiyi dla mnie! Ale chcę najedzoną. Wróć, gdy będziesz miał taką. Do widzenia!",
 				null);
 		
 		// Player answers yes - Sheep is given to Sato

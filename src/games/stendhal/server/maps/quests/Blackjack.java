@@ -309,7 +309,7 @@ public class Blackjack extends AbstractQuest {
 						"blackjack",
 						"Blackjack jest prostą grą w karty. Zasady gry są na tablicy na ścianie.");
 				addHelp("Uważaj by gra nie zajęła cię za bardzo, bo możesz przegapić prom! Słuchaj ogłoszeń.");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 			@Override

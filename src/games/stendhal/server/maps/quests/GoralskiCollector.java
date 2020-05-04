@@ -167,7 +167,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 	@Override
 	public String respondToQuestRefusal() {
 		// player.addKarma(-5.0);
-		return "Och ... nie jesteś zbyt miły. Dowidzenia.";
+		return "Och ... nie jesteś zbyt miły. Do widzenia.";
 	}
 
 	@Override

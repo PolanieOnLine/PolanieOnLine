@@ -65,7 +65,7 @@ public class TaxmanNPC implements ZoneConfigurator {
 				addHelp("Domyślam się, że zastanawiasz się co ten chaos tutaj robi. Cóż, każda księga, którą widzisz dotyczy różnych sklepów lub handlarzy. Zapisuje w niej jaki podatek musi zapłacić właściciel sklepu. Nie wsadzaj nosa do nich to jest prywatny interes!");
 				addOffer("Ja? Handluję? Musiałeś się pomylić! Jestem poborcą podatkowym. Moim zadaniem jest kontrolowanie handlarzy w tym kraju. Dlatego mam tyle otwartych ksiąg. Muszę wiedzieć co dany sprzedawca robi.");
 				addQuest("Zapytaj piętro wyżej Mayor Chalmersa o potrzeby Ados.");
-				addGoodbye("Dowidzenia - i nie myśl nawet o próbie zaglądnięcia w księgi!");
+				addGoodbye("Do widzenia - i nie myśl nawet o próbie zaglądnięcia w księgi!");
 			}
 		};
 		npc.setDescription("Oto siejący postrach, bezwzględny Poborca Podatkowy.");

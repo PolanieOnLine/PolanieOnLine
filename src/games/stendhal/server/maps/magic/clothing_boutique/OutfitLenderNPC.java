@@ -212,7 +212,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 				addJob(jobReply);
 				// addJob("Normalnie pracuję w butiku. Używamy magii, aby ubierać naszych klientów w fantastyczne stroje. Jestem tutaj ze względu na Mine Town Revival Weeks, gdzie #oferujemy nasze stroje po korzystnych cenach!");
 				addHelp("Nasze wynajęte kostiumy zdejmują się po pewnym czasie, ale zawsze możesz wrócić po następne!");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 				final OutfitChangerBehaviour behaviour = new SpecialOutfitChangerBehaviour(priceList, endurance, "Twoje magiczne ubranie zostało już zdjęte.");
 				new OutfitChangerAdder().addOutfitChanger(this, behaviour,  Arrays.asList("hire", "wypożycz"), false, false);
 			}

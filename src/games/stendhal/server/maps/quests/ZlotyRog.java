@@ -201,7 +201,7 @@ public class ZlotyRog extends AbstractQuest {
 						return;
 					}
 
-					raiser.say("A oto i złoty róg. Dowidzenia!");
+					raiser.say("A oto i złoty róg. Do widzenia!");
 					player.addXP(20000);
 					player.addKarma(100);
 					final Item zlotyRog = SingletonRepository.getEntityManager().getItem("złoty róg");

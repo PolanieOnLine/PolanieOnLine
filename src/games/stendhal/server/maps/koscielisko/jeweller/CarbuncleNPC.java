@@ -47,10 +47,10 @@ public class CarbuncleNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Dzień dobry.");
+				addGreeting();
 				addReply("mistrz",
 						"Mistrz przysłał Wielmożność do mnie w sprawie rubinu? Obrobię go, wystarczy powiedzieć #'oszlifuj rubin'.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye();
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 580);
 				requiredResources.put("kryształ rubinu", 1);

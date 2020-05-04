@@ -175,7 +175,7 @@ public class TeleporterBehaviour implements TurnListener {
 				return;
 			}
 
-			speakerNPC.say("Dowidzenia.");
+			speakerNPC.say("Do widzenia.");
 			speakerNPC.setCurrentState(ConversationStates.IDLE);
 		}
 		// remove NPC from old zone

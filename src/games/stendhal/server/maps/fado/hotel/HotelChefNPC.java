@@ -69,7 +69,7 @@ public class HotelChefNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("cook", "kucharzem"), "Bycie kucharzem jest wspaniałe! Kocham wszystkie rodzaje jedzenia i przypraw i uwielbiam eksperymentować z różnymi potrawami! Sprawia mi to wielką przyjemność.");
 				addOffer("Kuchnia jest teraz zamknięta ale wkrótce znów będę mógł ją otworzyć. Muszę pomyśleć nad rozwiązaniem mojego #problemu...");
 				addReply(Arrays.asList("problem", "problemu"), "Pracuję w tej hotelowej kuchni sam, całymi dniami! To strasznie męczące.");
-				addGoodbye("Dowidzenia! Miłego pobytu w Fado!");
+				addGoodbye("Do widzenia! Miłego pobytu w Fado!");
 
 				addReply(Arrays.asList("chicken", "egg", "milk", "butter", "udko", "jajo", "mleko", "osełka masła"),
 	                    "Łatwe... Zawsze sprawdzam obszary rolnicze w pobliżu Semos...");

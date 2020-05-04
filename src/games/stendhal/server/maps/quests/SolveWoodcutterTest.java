@@ -48,21 +48,21 @@ import games.stendhal.server.entity.player.Player;
 /**
  * QUEST: Quest to solve a test on woodcutter
  * <p>
- * 
+ *
  * PARTICIPANTS: <ul><li>Drwal</ul>
- * 
- * 
- * STEPS: <ul><li> Drwal sets you a test 
+ *
+ *
+ * STEPS: <ul><li> Drwal sets you a test
  * <li> Player tries to answer
- * <li> Drwal compares answers to configuration file on server 
+ * <li> Drwal compares answers to configuration file on server
  * </ul>
- * 
- * 
+ *
+ *
  * REWARD: <ul><li>2000 XP <li> siekierka </ul>
- * 
+ *
  * REPETITIONS: <ul><li>Test you can repeat until you pass him. When you leave during test you lost some karma.
  *   If you say something to break test Drwal takes you less karma then if you leave test without word.</ul>
- * 
+ *
  * @author edi18028 based on kymara's quest
  */
 
@@ -88,7 +88,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 
 		/**
 		 * Check if an answer mathces the riddle.
-		 * 
+		 *
 		 * @param riddle The riddle to be answered
 		 * @param answer The answer given by the player
 		 * @return <code>true</code> iff the answer is correct
@@ -107,7 +107,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 
 		/**
 		 * Get a random riddle.
-		 * 
+		 *
 		 * @return A random ridde
 		 */
 		String getQuestion() {
@@ -276,12 +276,12 @@ public class SolveWoodcutterTest extends AbstractQuest {
 						player.setQuest(KARMA_QUEST_SLOT, "test1");
 						player.setQuest(TEST_QUEST_SLOT, "1");
 						npc.say("Teraz kolejne pytanie. Jesteś gotowy?");
-					} else if (triggerText.equals("bye") || triggerText.equals("dowidzenia")
+					} else if (triggerText.equals("bye") || triggerText.equals("do widzenia")
 							|| triggerText.equals("no") || triggerText.equals("nie")) {
 						player.setQuest(KARMA_QUEST_SLOT, "test3");
 						player.setQuest(QUEST_SLOT, "rejected");
 						player.addKarma(-10.0);
-						npc.say("Łatwo się poddałeś. Dowidzenia.");
+						npc.say("Łatwo się poddałeś. Do widzenia.");
 						npc.setCurrentState(ConversationStates.IDLE);
 					} else {
 						player.setQuest(KARMA_QUEST_SLOT, "test1");
@@ -320,7 +320,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 			ConversationPhrases.GOODBYE_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Szkoda. Powodzenia następnym razem. Dowidzenia.",
+			"Szkoda. Powodzenia następnym razem. Do widzenia.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		woodcutter.add(ConversationStates.QUESTION_2,
@@ -340,12 +340,12 @@ public class SolveWoodcutterTest extends AbstractQuest {
 						player.setQuest(KARMA_QUEST_SLOT, "test2");
 						player.setQuest(TEST_QUEST_SLOT, doneText + ";1");
 						npc.say("Ostatnie już pytanie. Jesteś gotowy?");
-					} else if (triggerText.equals("bye") || triggerText.equals("dowidzenia")
+					} else if (triggerText.equals("bye") || triggerText.equals("do widzenia")
 							|| triggerText.equals("no") || triggerText.equals("nie")) {
 						player.setQuest(KARMA_QUEST_SLOT, "test3");
 						player.setQuest(QUEST_SLOT, "rejected");
 						player.addKarma(-10.0);
-						npc.say("Poddałeś się w połowie drogi. Dowidzenia.");
+						npc.say("Poddałeś się w połowie drogi. Do widzenia.");
 						npc.setCurrentState(ConversationStates.IDLE);
 					} else {
 						player.setQuest(KARMA_QUEST_SLOT, "test2");
@@ -384,7 +384,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 			ConversationPhrases.GOODBYE_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Szkoda. Powodzenia następnym razem. Dowidzenia.",
+			"Szkoda. Powodzenia następnym razem. Do widzenia.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		woodcutter.add(ConversationStates.QUESTION_3,
@@ -419,12 +419,12 @@ public class SolveWoodcutterTest extends AbstractQuest {
 							player.setQuest(QUEST_SLOT, "start");
 							npc.setCurrentState(ConversationStates.IDLE);
 						}
-					} else if (triggerText.equals("bye") || triggerText.equals("dowidzenia")
+					} else if (triggerText.equals("bye") || triggerText.equals("do widzenia")
 							|| triggerText.equals("no") || triggerText.equals("nie")) {
 						player.setQuest(KARMA_QUEST_SLOT, "test3");
 						player.setQuest(QUEST_SLOT, "rejected");
 						player.addKarma(-10.0);
-						npc.say("Co za szkoda poddałeś się przy ostatnim pytaniu. Dowidzenia.");
+						npc.say("Co za szkoda poddałeś się przy ostatnim pytaniu. Do widzenia.");
 						npc.setCurrentState(ConversationStates.IDLE);
 					} else {
 						player.setQuest(KARMA_QUEST_SLOT, "test3");

@@ -297,7 +297,7 @@ public class ImperialPrincess extends AbstractQuest {
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "recommended")),
 			ConversationStates.IDLE,
-			"Pozdrawiam! Moja cudowna córka poprosiła mnie o przyznanie Tobie obywatelstwa miasta Kalavan. Rozpatrywanie zostało zakończone. Teraz wybacz mi, że wrócę do mojego posiłku. Dowidzenia.",
+			"Pozdrawiam! Moja cudowna córka poprosiła mnie o przyznanie Tobie obywatelstwa miasta Kalavan. Rozpatrywanie zostało zakończone. Teraz wybacz mi, że wrócę do mojego posiłku. Do widzenia.",
 			new MultipleActions(new IncreaseXPAction(500), new SetQuestAction(QUEST_SLOT, "done")));
 
 		/** If you aren't in the condition to speak to him (not completed quest, or already spoke) the King will dismiss you */

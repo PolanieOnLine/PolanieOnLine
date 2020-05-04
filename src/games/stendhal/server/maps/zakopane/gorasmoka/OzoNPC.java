@@ -67,7 +67,7 @@ public class OzoNPC implements ZoneConfigurator {
 				addHelp("Jeśli mam być z Tobą szczery koleś to wiedz, że nie pomogę Ci z tym zbytnio, lepiej odejdź do miasta szukając odpowiedzi.");
 				addQuest("Zadanie? u mnie?..ha ha... .");
 				addOffer("Hm, mam coś co może cię zainteresować, #'magiczny bilet'.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

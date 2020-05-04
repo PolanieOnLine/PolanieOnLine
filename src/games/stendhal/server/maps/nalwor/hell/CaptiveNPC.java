@@ -48,7 +48,7 @@ public class CaptiveNPC implements ZoneConfigurator {
 				addJob("pomóż mi");
 				addHelp("gdzie jest mój miecz lodowy?");
 				addOffer("proszę miecz lodowy");
-				addGoodbye("dowidzenia");
+				addGoodbye("Do widzenia");
 			}
 		};
 

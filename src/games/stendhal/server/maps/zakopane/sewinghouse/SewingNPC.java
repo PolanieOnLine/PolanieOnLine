@@ -57,7 +57,7 @@ public class SewingNPC implements ZoneConfigurator {
 				addHelp("Obecnie nie potrzebuje pomocy.");
 				//addHelp("Yhm... Zapytaj mnie o #'zadanie'...");
 				addOffer("Moja znajoma, która znajduje się piętro niżej skupuje stare rękawice oraz skóry.");
-				addGoodbye("Dowidzenia i dziękuję za wstąpienie.");
+				addGoodbye("Do widzenia i dziękuję za wstąpienie.");
 			}
 		};
 

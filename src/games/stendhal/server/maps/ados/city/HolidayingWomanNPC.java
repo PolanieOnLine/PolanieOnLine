@@ -62,7 +62,7 @@ public class HolidayingWomanNPC implements ZoneConfigurator {
 				addOffer("Jestem #ekspertką od spraw żywności, po tych wszystkich podróżach wakacyjnych!");
 				addQuest("Niestety, nie mam żadnego zadania dla Ciebie.");
 				addJob("Hahaha! Jestem tutaj na urlopie i po prostu wyszłam na spacer.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 
 				}
 		};

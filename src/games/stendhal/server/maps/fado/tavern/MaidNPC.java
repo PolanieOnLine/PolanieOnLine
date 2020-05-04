@@ -87,7 +87,7 @@ public class MaidNPC implements ZoneConfigurator {
 				offers.put("kanapka", 150);
 
 				new SellerAdder().addSeller(this, new SellerBehaviour(offers));
-				addGoodbye("Dowidzenia. Wszyscy, ty i klienci sprawiacie, że praca jest ciężka ...");
+				addGoodbye("Do widzenia. Wszyscy, ty i klienci sprawiacie, że praca jest ciężka ...");
 			}
 		};
 

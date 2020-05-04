@@ -82,7 +82,7 @@ public class BarmanNPC implements ZoneConfigurator {
 				offerings.put("ser", 20);
 				offerings.put("tarta", 160);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

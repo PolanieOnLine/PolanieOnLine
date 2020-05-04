@@ -44,7 +44,7 @@ public class WifeNPC implements ZoneConfigurator  {
 			@Override
 			public void createDialog() {
 				addGreeting("Cześć!");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 		};

@@ -60,7 +60,7 @@ public class VergerNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("married", "wziąć", "ślub", "poślubionych"), "Jeżeli chcesz być zaręczony to porozmawiaj z Sister Benedicta. Ona da znać księdzu o twoich planach.");
 				addReply(ConversationPhrases.YES_MESSAGES, "Gratulacje!");
 				addReply(ConversationPhrases.NO_MESSAGES, "Co za szkoda. Mam nadzieję, że kiedyś znajdziesz partnera.");
-				addGoodbye("Dowidzenia i idź bezpiecznie.");
+				addGoodbye("Do widzenia i idź bezpiecznie.");
 			}
 		};
 

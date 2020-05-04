@@ -67,7 +67,7 @@ public class CraftsmanNPC implements ZoneConfigurator {
 				addJob("Jestem rzemieślnikiem. Pewnego dnia, mam nadzieję, uda mi się wytworzyć taki przedmiot jaki robią zielone elfy.");
 				addHelp("Mój przyjaciel Orchiwald jest największym gadułą. Mógłby z tobą rozmawiać godzinami o albino elfach i jak tutaj się dostaliśmy.");
 				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("elvish_armor", "I'm not able to buy anything from you right now.", shops.get("buyelvish")), false);
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

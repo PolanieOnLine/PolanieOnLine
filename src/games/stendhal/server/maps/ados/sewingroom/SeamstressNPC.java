@@ -67,7 +67,7 @@ public class SeamstressNPC implements ZoneConfigurator {
 				addHelp("Jeżeli chcesz się dostać promem na wyspę Athor to wyjdź z miasta i kieruj się na południe, a tam znajdziesz przystań.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buycloaks")), false);
 				addOffer("Skupuję płaszcze, ponieważ nie mamy materiałów na żagle. Za lepszy materiał płacę więcej. W moim notatniku na stole znajduje się cennik.");
-				addGoodbye("Dowidzenia i dziękuję za wstąpienie.");
+				addGoodbye("Do widzenia i dziękuję za wstąpienie.");
 			}
 		};
 

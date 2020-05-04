@@ -55,7 +55,7 @@ public class Bileter extends ScriptImpl {
 		npc.behave("help",
 				"Mogę  zaoferować ( #offer ) bilet na mecz.");
 		npc.behave("bye",
-				"Dowidzenia. Podziwiaj mecz.");
+				"Do widzenia. Podziwiaj mecz.");
 		try {
 			npc.behave("sell", SingletonRepository.getShopList().get("mecz"));
 		} catch (NoSuchMethodException e) {

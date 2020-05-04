@@ -150,7 +150,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Już myślałem, że trochę mi pomożesz, ale dobrze. Dowidzenia.",
+				"Już myślałem, że trochę mi pomożesz, ale dobrze. Do widzenia.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -2.0));
 
 

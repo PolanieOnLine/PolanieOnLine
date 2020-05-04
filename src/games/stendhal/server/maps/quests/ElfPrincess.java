@@ -229,7 +229,7 @@ public class ElfPrincess extends AbstractQuest {
 		    					 new QuestNotInStateCondition(QUEST_SLOT, 0, "start"),
 		    					 new NotCondition(lostFlowerCondition)),
 		    	ConversationStates.IDLE,
-		    	"Dziś nie mam nic dla Ciebie, przykro mi. Wyruszam teraz w dalszą drogę. Dowidzenia.",
+		    	"Dziś nie mam nic dla Ciebie, przykro mi. Wyruszam teraz w dalszą drogę. Do widzenia.",
 			    null);
 	}
 

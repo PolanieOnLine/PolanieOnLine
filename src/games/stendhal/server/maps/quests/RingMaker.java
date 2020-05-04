@@ -169,7 +169,7 @@ public class RingMaker extends AbstractQuest {
 				ConversationStates.IDLE,
 				"Dobrze to wszystko czego potrzebuję do naprawienia pierścienia. Wróć za "
 						+ REQUIRED_MINUTES
-						+ " minutę" + ", a będzie gotowy. Dowidzenia.",
+						+ " minutę" + ", a będzie gotowy. Do widzenia.",
 				new MultipleActions(
 						new DropItemAction("sztabka złota", REQUIRED_GOLD),
 						new DropItemAction("szmaragd", REQUIRED_GEM),

@@ -106,7 +106,7 @@ public class Maria extends ScriptImpl {
 			"Znajduje się z lewej strony świątyni.");
 		npc.behave("help",
 				"Możesz otrzymać #ofertę napojów lub zrobić przerwę na poznanie nowych ludzi!");
-		npc.behave("bye", "Dowidzenia, dowidzenia!");
+		npc.behave("bye", "Do widzenia, do widzenia!");
 		try {
 			npc.behave("sell", SingletonRepository.getShopList().get(shop));
 		} catch (final NoSuchMethodException e) {

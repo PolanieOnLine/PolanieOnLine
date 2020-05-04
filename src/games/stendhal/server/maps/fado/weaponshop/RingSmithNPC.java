@@ -83,7 +83,7 @@ public class RingSmithNPC implements ZoneConfigurator {
 				addQuest("Cóż mógłbyś rozważyć możliwość wzięcia ślubu jako zadania! Zapytaj mnie o kupno pierścionka zaręczynowego #'buy pierścień zaręczynowy' jeżeli potrzebujesz.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellrings")), false);
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyprecious")), false);
-				addGoodbye("Dowidzenia przyjacielu.");
+				addGoodbye("Do widzenia przyjacielu.");
 			}
 		};
 

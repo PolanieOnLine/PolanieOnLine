@@ -47,7 +47,7 @@ public class SwimmerNPC implements ZoneConfigurator  {
 				addQuest("Nie mam zadań dla Ciebie. Jestem zajęty.");
 				addJob("Jestem pływakiem!");
 				addHelp("Spróbuj trampoliny! Zabaw się!");
-				addGoodbye("Dowidzenia!");
+				addGoodbye("Do widzenia!");
 			}
 
 		};

@@ -44,7 +44,7 @@ public class KrawiecNPC implements ZoneConfigurator {
 				addJob("Jestem z zawodu krawcem.");
 				addHelp("Nie potrzebuję pomocy.");
 				addOffer("Nie mam nic Tobie do zaoferowania.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

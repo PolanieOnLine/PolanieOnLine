@@ -84,7 +84,7 @@ public class HealerNPC implements ZoneConfigurator {
 				addHealer(this, 1200);
 				addHelp("Daj mi pieniądze na #picie, a uleczę. Hik kaska.");
 				addQuest("Ba.");
-				addGoodbye("Pffff... Dowidzenia.");
+				addGoodbye("Pffff... Do widzenia.");
 			}
 		};
 

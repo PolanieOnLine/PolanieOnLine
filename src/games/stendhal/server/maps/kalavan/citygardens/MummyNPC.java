@@ -57,7 +57,7 @@ public class MummyNPC implements ZoneConfigurator {
 				addQuest("Nic, dziękuję.");
 				addJob("Jestem matką.");
 				addHelp("Pomogę jeżeli będę mogła, ale muszę pilnować swojej córki.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 
 			@Override

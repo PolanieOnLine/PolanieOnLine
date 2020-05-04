@@ -81,7 +81,7 @@ public class GreeterNPC implements ZoneConfigurator {
 					}
 				});
 				addQuest("Hojna oferta, ale niczego nie potrzebuję dziękuję.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 			}
 		};
 

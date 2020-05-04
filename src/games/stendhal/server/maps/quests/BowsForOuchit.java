@@ -104,7 +104,7 @@ public class BowsForOuchit extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.IDLE,
-				"Ehhh... dowidzenia.",
+				"Ehhh... Do widzenia.",
 				null);
 
 		/*

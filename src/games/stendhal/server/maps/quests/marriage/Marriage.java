@@ -107,7 +107,7 @@ class Marriage {
 					ConversationPhrases.NO_MESSAGES,
 					null,
 					ConversationStates.IDLE,
-					"Co za szkoda! Dowidzenia!",
+					"Co za szkoda! Do widzenia!",
 					null);
 
 		priest.add(ConversationStates.QUESTION_2,
@@ -128,7 +128,7 @@ class Marriage {
 					ConversationPhrases.NO_MESSAGES,
 					null,
 					ConversationStates.IDLE,
-					"Co za szkoda! Dowidzenia!",
+					"Co za szkoda! Do widzenia!",
 					null);
 
 		// What he responds to marry if you haven't fulfilled all objectives

@@ -63,7 +63,7 @@ public class KibicNPC implements ZoneConfigurator {
 				addJob("Jestem kibicem. Wspieram najlepszą drużynę PolanieOnLine.");
 				addHelp("W przyszłości na stadionie będzie można kupić coś do jedzenia lub picia. Na razie trzeba przynieść własny prowiant.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("mecz")));
-				addGoodbye("Dowidzenia i wpadaj często na mecze. Nasza drużyna potrzebuje prawdziwych kibiców, a nie pseudokibiców.");
+				addGoodbye("Do widzenia i wpadaj często na mecze. Nasza drużyna potrzebuje prawdziwych kibiców, a nie pseudokibiców.");
 			}
 		};
 

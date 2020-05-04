@@ -132,7 +132,7 @@ public class AdventureNPC implements ZoneConfigurator  {
 				addOffer("Aby zostać teleportowanym do #jaskini i walczyć przeciwko " + NUMBER_OF_CREATURES + " strasznych potworów dobranym do Twojego poziomu musisz podjąć #wyzwanie.");
 				addReply(Arrays.asList("cave", "jakinię", "jaskinia", "jaskini"), "W jaskini znajdują się odpowiednio dobrane potwory do Twojego aktualnego poziomu."
 						+ "Nie powinieneś próbować uciekać lub wracać więcej niż jeden raz. Jeżeli chcesz się tam dostać to po prostu zapłać #opłatę.");
-				addGoodbye("Dowidzenia.");
+				addGoodbye("Do widzenia.");
 				// fee depends on the level
 				// but there is a min level to play
 				add(ConversationStates.ANY,

@@ -396,7 +396,7 @@ public class PochorowaneKonie extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Już tak było blisko do wyleczenia koni stajennego... Cóż.. Dowidzenia.",
+				"Już tak było blisko do wyleczenia koni stajennego... Cóż.. Do widzenia.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -35.0));
 	}
 	
