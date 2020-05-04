@@ -318,7 +318,13 @@ public class StatusResistantItem extends SlotActivatedItem {
 				if (statusType.substring(nameLength - 2).equals("ed")) {
 					statusType = statusType.substring(0, nameLength - 2);
 				}
-				res.append("Odporny na ");
+
+				if (statusType.equals("poison")) {
+					statusType = "truciznę";
+				} if (statusType.equals("shock")) {
+					statusType = "wstrząs";
+				}
+
 				res.append(statusType);
 				res.append(": ");
 				res.append(Math.round(100 * entry.getValue()));
@@ -327,7 +333,7 @@ public class StatusResistantItem extends SlotActivatedItem {
 		}
 
 		if (res.length() > 0) {
-			description = description + " Parametry (" + res.toString().trim() + ").";
+			description = description + " Odporność na (" + res.toString().trim() + ").";
 		}
 
 		return description;
