@@ -9,6 +9,7 @@
 		<attributes>
 			<def value="1"/>
 		</attributes>
+		<susceptibility type="fire" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -25,6 +26,7 @@
 		<attributes>
 			<def value="2"/>
 		</attributes>
+		<susceptibility type="fire" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -60,23 +62,7 @@
 			<def value="3"/>
 		</attributes>
 		<susceptibility type="ice" value="0.91"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="pas"/>
-		</equipable>
-	</item>
-
-	<item name="pas karmazynowy">
-		<type class="belts" subclass="red_belt" tileid="-1"/>
-		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<def value="4"/>
-		</attributes>
-		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="water" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -92,8 +78,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
-			<def value="5"/>
+			<def value="4"/>
 		</attributes>
+		<susceptibility type="light" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -102,6 +89,42 @@
 			<slot name="pas"/>
 		</equipable>
 	</item>
+
+	<item name="pas karmazynowy">
+		<type class="belts" subclass="red_belt" tileid="-1"/>
+		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="5"/>
+		</attributes>
+		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas barbarzyńcy">
+		<type class="belts" subclass="barbarian_belt" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="5"/>
+		</attributes>
+		<susceptibility type="fire" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+	
 
 	<item name="pas elficki">
 		<type class="belts" subclass="elvish_belt" tileid="-1"/>
@@ -120,13 +143,15 @@
 		</equipable>
 	</item>
 
-	<item name="pas zbójnicki">
-		<type class="belts" subclass="zbojnicki_belt" tileid="-1"/>
-		<description>Oto pas zbójnicki. Idealny dla górala.</description>
+	<item name="pas cieni">
+		<type class="belts" subclass="shadow_belt" tileid="-1"/>
+		<description>Oto pas cieni. Ciężko odróżnić co to jest... Półmrok go skrywa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
 		</attributes>
+		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="light" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -136,15 +161,34 @@
 		</equipable>
 	</item>
 
-	<item name="pas cieni">
-		<type class="belts" subclass="shadow_belt" tileid="-1"/>
-		<description>Oto pas cieni. Ciężko odróżnić co to jest... Półmrok go skrywa.</description>
+	<item name="pas kamienny">
+		<type class="belts" subclass="stone_belt" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="7"/>
+		</attributes>
+		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas zbójnicki">
+		<type class="belts" subclass="zbojnicki_belt" tileid="-1"/>
+		<description>Oto pas zbójnicki. Idealny dla górala.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
 		</attributes>
-		<susceptibility type="dark" value="0.91"/>
-		<susceptibility type="light" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
