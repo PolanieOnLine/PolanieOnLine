@@ -293,7 +293,7 @@
 		<attributes>
 			<atk value="47"/>
 			<rate value="5"/>
-			<min_level value="240"/>
+			<min_level value="215"/>
 		</attributes>
 		<weight value="10.0"/>
 		<value value="68590"/>
