@@ -1100,9 +1100,9 @@
 		<description>Oto miecz z mithrilu. Jakość jego najważniejszym atrybutem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="47"/>
+			<atk value="51"/>
 			<rate value="5"/>
-			<min_level value="185"/>
+			<min_level value="220"/>
 		</attributes>
 		<weight value="9.0"/>
 		<value value="457142"/>
