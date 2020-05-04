@@ -10,8 +10,6 @@
 		<attributes>
 			<status_resist type="poisoned" value="0.25" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -30,8 +28,6 @@
 		<attributes>
 			<status_resist type="poisoned" value="0.5" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -51,8 +47,6 @@
 		<attributes>
 			<status_resist type="poisoned" value="0.75" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -72,8 +66,6 @@
 		<attributes>
 			<status_resist type="shocked" value="0.33" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -92,8 +84,6 @@
 		<attributes>
 			<status_resist type="shocked" value="0.66" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -112,8 +102,6 @@
 		<implementation class-name="games.stendhal.server.entity.item.WeddingRing"/>
 		<attributes>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -131,8 +119,6 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -153,8 +139,6 @@
 			<persistent value="1"/>
 			<undroppableondeath value="1"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="100000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -169,16 +153,15 @@
 	<!-- START: Pierścienie klasowe -->
 	<item name="pierścień magnata">
 		<type class="ring" subclass="tsoh_ring" tileid="-1"/>
-		<description>Oto pierścień magnata.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="4"/>
 			<def value="4"/>
-			<min_level value="500"/>
 			<undroppableondeath value="1"/>
+			<status_resist type="poisoned" value="0.33" slots="finger;fingerb;" />
+			<status_resist type="shocked" value="0.33" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -191,16 +174,15 @@
 
 	<item name="pierścień barona">
 		<type class="ring" subclass="edragons_clan_ring" tileid="-1"/>
-		<description>Oto pierścień barona.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="3"/>
 			<def value="3"/>
-			<min_level value="350"/>
 			<undroppableondeath value="1"/>
+			<status_resist type="poisoned" value="0.2" slots="finger;fingerb;" />
+			<status_resist type="shocked" value="0.1" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -213,16 +195,14 @@
 
 	<item name="pierścień rycerza">
 		<type class="ring" subclass="zrc_ring" tileid="-1"/>
-		<description>Oto pierścień rycerza.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="2"/>
 			<def value="2"/>
-			<min_level value="250"/>
 			<undroppableondeath value="1"/>
+			<status_resist type="poisoned" value="0.1" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -235,16 +215,14 @@
 
 	<item name="pierścień mieszczanina">
 		<type class="ring" subclass="zion_ring" tileid="-1"/>
-		<description>Oto pierścień mieszczanina.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="1"/>
 			<def value="1"/>
-			<min_level value="150"/>
 			<undroppableondeath value="1"/>
+			<status_resist type="poisoned" value="0.05" slots="finger;fingerb;" />
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -264,8 +242,6 @@
 			<atk value="1"/>
 			<def value="2"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<susceptibility type="dark" value="0.83"/>
 		<susceptibility type="light" value="1.11"/>
 		<equipable>
@@ -287,8 +263,6 @@
 			<atk value="2"/>
 			<def value="1"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<susceptibility type="dark" value="1.11"/>
 		<susceptibility type="light" value="0.83"/>
 		<equipable>
@@ -310,8 +284,6 @@
 			<atk value="2"/>
 			<def value="3"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<susceptibility type="dark" value="0.83"/>
 		<susceptibility type="light" value="1.11"/>
 		<equipable>
@@ -333,8 +305,6 @@
 			<atk value="3"/>
 			<def value="2"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<susceptibility type="dark" value="1.11"/>
 		<susceptibility type="light" value="0.83"/>
 		<equipable>
@@ -355,8 +325,6 @@
 		<attributes>
 			<def value="1"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -375,8 +343,6 @@
 		<attributes>
 			<atk value="1"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -396,8 +362,6 @@
 			<atk value="1"/>
 			<def value="1"/>
 		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
 		<preview>5</preview>
 		<equipable>
 			<slot name="ground"/>
