@@ -41,7 +41,6 @@
 		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
 			<def value="2"/>
 		</attributes>
 		<equipable>
@@ -77,7 +76,6 @@
 		<description>Oto złoty pas kolczy. Wykonany bardzo starannie z drogocennego szlachetnego metalu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
 			<def value="4"/>
 		</attributes>
 		<susceptibility type="light" value="0.98"/>
