@@ -130,7 +130,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 
 		archeryZone = zone;
 		archeryZoneID = zone.getName();
-		archeryArea = new TrainingArea(archeryZone, 97, 97, 19, 10);
+		//archeryArea = new TrainingArea(archeryZoneID, archeryZone, 97, 97, 19, 10, ranger, new Point(118, 104), GATE_POS, Direction.RIGHT);
 		archeryArea.setCapacity(10);
 
 		// initialize condition to check if training area is full
@@ -199,7 +199,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	private void initNPC() {
 		repairerAdder = new AssassinRepairerAdder();
 
-		ranger = repairerAdder.new AssassinRepairer(npcName) {
+		ranger = repairerAdder.new AssassinRepairer(npcName, repairableSellPrices) {
 			@Override
 			public void say(final String text) {
 				// don't turn toward player
@@ -488,9 +488,9 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	@Override
 	public void onLoggedIn(final Player player) {
 		// don't allow players to login within archery range area boundaries
-		if (archeryArea.contains(player) || (player.getX() == GATE_POS.x && player.getY() == GATE_POS.y)) {
-			player.teleport(archeryZoneID, 118, 104, null, null);
-		}
+		//if (archeryArea.contains(player) || (player.getX() == GATE_POS.x && player.getY() == GATE_POS.y)) {
+		//	player.teleport(archeryZoneID, 118, 104, null, null);
+		//}
 
 		final String sessionState = player.getQuest(QUEST_SLOT, 0);
 		if (sessionState != null && sessionState.equals(STATE_ACTIVE)) {

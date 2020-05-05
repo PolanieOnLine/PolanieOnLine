@@ -27,10 +27,7 @@ import games.stendhal.server.entity.npc.condition.PlayerLootedNumberOfItemsCondi
 public class ItemAchievementFactory extends AbstractAchievementFactory {
 
 	public static final String ID_ROYAL = "item.set.royal";
-	public static final String[] ITEMS_ROYAL = {
-			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny", "spodnie monarchistyczne",
-			"buty monarchistyczne", "tarcza monarchistyczna"
-	};
+	public static final String ID_MAGIC = "item.set.magic";
 
 	@Override
 	protected Category getCategory() {
@@ -139,9 +136,14 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 
 		itemAchievements.add(createAchievement(ID_ROYAL, "Królewsko Obdarowany", "Zdobył cały monarchistyczny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(1, ITEMS_ROYAL)));
+				new PlayerLootedNumberOfItemsCondition(1, "zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny", "spodnie monarchistyczne",
+						"buty monarchistyczne", "tarcza monarchistyczna")));
+
+		itemAchievements.add(createAchievement(ID_MAGIC, "Magiczne Zaopatrzenie", "Zdobył cały magiczny zestaw",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1, "magiczna zbroja płytowa", "magiczny hełm kolczy", "magiczny płaszcz",
+						"magiczne spodnie płytowe", "magiczne buty płytowe", "magiczna tarcza płytowa")));
 
 		return itemAchievements;
 	}
-
 }

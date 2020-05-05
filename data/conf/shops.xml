@@ -663,6 +663,35 @@
 		<item name="mityczne jajo" price="2500" />
 	</shop>
 
+	<!-- Król Edward sprzedaje: -->
+	<shop name="denirankingsell" type="sells">
+		<item name="zwój deniran" price="800" />
+	</shop>
+
+	<!-- Wanda sprzedaje: -->
+	<shop name="deniranpotionssell" type="sells">
+		<item name="mały eliksir" price="150" />
+		<item name="eliksir" price="300" />
+		<item name="duży eliksir" price="600" />
+		<item name="wielki eliksir" price="1650" />
+		<item name="antidotum" price="100" />
+		<item name="mocne antidotum" price="150" />
+		<item name="środek uspokajający" price="400" />
+	</shop>
+	<!-- Wanda kupuje: -->
+	<shop name="deniranpotionsbuy" type="buys">
+		<item name="mandragora" price="300" />
+		<!--<item name="kokuda" price="5000" />-->
+		<item name="muchomor" price="60" />
+		<item name="trucizna" price="40" />
+		<item name="mocna trucizna" price="60" />
+		<item name="bardzo mocna trucizna" price="500" />
+		<item name="śmiertelna trucizna" price="1000" />
+		<item name="zabójcza trucizna" price="1200" />
+		<item name="środek uspokajający" price="200" />
+		<item name="gruczoł jadowy" price="800" />
+	</shop>
+
 	<!--
 		Kraina Prasłowiańska
 	-->

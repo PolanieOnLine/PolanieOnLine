@@ -12,13 +12,12 @@
 package games.stendhal.server.maps.deniran.cityinterior.potionsshop;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
@@ -56,40 +55,12 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 				new Node(9, 5)
 		);
 
-		final Map<String, Integer> pricesBuy = new HashMap<String, Integer>() {{
-			put("mandragora", 300);
-			//put("kokuda", 5000);
-			put("muchomor", 60);
-			put("trucizna", 40);
-			put("mocna trucizna", 60);
-			put("bardzo mocna trucizna", 500);
-			put("śmiertelna trucizna", 1000);
-			put("zabójcza trucizna", 1200);
-			put("środek uspokajający", 200);
-			put("gruczoł jadowy", 800);
-		}};
-
-		final Map<String, Integer> pricesSell = new HashMap<String, Integer>() {{
-			put("mały eliksir", 150);
-			put("eliksir", 300);
-			put("duży eliksir", 600);
-			put("wielki eliksir", 1650);
-			put("antidotum", 100);
-			put("mocne antidotum", 150);
-			put("środek uspokajający", 400);
-		}};
+		final ShopList shops = SingletonRepository.getShopList();
+		final Map<String, Integer> pricesBuy = shops.get("deniranpotionsbuy");
+		final Map<String, Integer> pricesSell = shops.get("deniranpotionssell");
 
 		new BuyerAdder().addBuyer(npc, new BuyerBehaviour(pricesBuy));
 		new SellerAdder().addSeller(npc, new SellerBehaviour(pricesSell));
-
-		// add Wanda's shop to the general shop list
-		final ShopList shops = ShopList.get();
-		for (final String key: pricesBuy.keySet()) {
-			shops.add("deniranpotionsbuy", key, pricesBuy.get(key));
-		}
-		for (final String key: pricesSell.keySet()) {
-			shops.add("deniranpotionssell", key, pricesSell.get(key));
-		}
 
 		npc.addGreeting("Witamy w sklepie z miksturami w mieście Deniran.");
 		npc.addJob("Zarządzam tym sklepem z miksturami. Zapytaj mnie o moje #ceny.");

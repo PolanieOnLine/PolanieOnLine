@@ -17,7 +17,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class KingNPC implements ZoneConfigurator {
 
@@ -27,12 +30,12 @@ public class KingNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("King Edward of Deniran") {
+		final SpeakerNPC npc = new SpeakerNPC("Król Edward") {
 			@Override
 			public void createDialog() {
 				addGreeting("Witaj w zamku Deniran.");
 				addJob("Jesteśmy królestwem!");
-				addOffer("W tej chwili nie mam dla ciebie nic. Ale... Krążyły pogłoski o przekleństwach, które kopały jaskinie pod miastem. Prawdopodobnie będę potrzebować twojej pomocy w przyszłości.");
+				addQuest("W tej chwili nie mam dla ciebie nic. Lecz... Krążą pogłoski o przekleństwach, które kopały jaskinie pod miastem. Prawdopodobnie będę potrzebować twojej pomocy w przyszłości.");
 				addGoodbye("Żegnaj, nieznajomy!");
 			}
 
@@ -46,6 +49,11 @@ public class KingNPC implements ZoneConfigurator {
 		npc.setDescription("Oto król Deniran, Edward.");
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
+		
+		buildShops(npc);
 	}
 
+	private void buildShops(final SpeakerNPC npc) {
+		new SellerAdder().addSeller(npc, new SellerBehaviour(ShopList.get().get("denirankingsell")));
+	}
 }

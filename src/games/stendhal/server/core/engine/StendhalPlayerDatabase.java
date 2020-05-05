@@ -204,6 +204,12 @@ public class StendhalPlayerDatabase {
 		transaction.execute("UPDATE achievement SET identifier='quest.special.kill_blordroughs.0005' WHERE identifier='quest.special.kill_blordroughs.5'", null);
 		transaction.execute("UPDATE achievement SET identifier='quest.special.kill_blordroughs.0025' WHERE identifier='quest.special.kill_blordroughs.25'", null);
 
+		// 1.35: 
+		if (!transaction.doesColumnExist("achievement", "reached")) {
+			transaction.execute("ALTER TABLE achievement ADD COLUMN (reached INTEGER);", null);
+			transaction.execute("UPDATE achievement SET reached = 0 WHERE reached IS NULL;", null);
+		}
+
 		// pol0.30: gender
 		if (!transaction.doesColumnExist("character_stats", "gender")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (gender VARCHAR(2));", null);
