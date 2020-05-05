@@ -18,10 +18,11 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 	- pas chaosu
 	- pas mainiocyjski
 	- pas xenocyjski
-- Dodano nowe osiągnięcia: (3)
+- Dodano nowe osiągnięcia: (4)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
 	- "Eskortnik w Deathmatchu"
+	- "Magiczne Zaopatrzenie"
 - Ceny w większości sklepów u NPC zostały poprawione
 - Zmniejszono szansę na zdobycie sztylecika z mithrilu
 - Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy, kuszę, pierścienie klasowe
