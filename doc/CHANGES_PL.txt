@@ -7,13 +7,17 @@ Changelog
 pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 
 *świat*
-- Dodano nowe przedmioty: (6)
+- Dodano nowe przedmioty: (10)
 	- automatyczna kusza (800 punktów wytrzymałości)
 	- automatyczna kusza A (1400 punktów wytrzymałości)
 	- automatyczna kusza A+ (3600 punktów wytrzymałości)
 	- lodowy pas
 	- pas barbarzyńcy
 	- pas kamienny
+	- pas lazurowy
+	- pas chaosu
+	- pas mainiocyjski
+	- pas xenocyjski
 - Dodano nowe osiągnięcia: (3)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
