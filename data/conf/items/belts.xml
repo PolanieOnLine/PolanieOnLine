@@ -93,9 +93,25 @@
 		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="4"/>
 		</attributes>
 		<susceptibility type="fire" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas lazurowy">
+		<type class="belts" subclass="blue_belt" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="5"/>
+		</attributes>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -132,6 +148,22 @@
 			<def value="6"/>
 		</attributes>
 		<susceptibility type="earth" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas zbójnicki">
+		<type class="belts" subclass="zbojnicki_belt" tileid="-1"/>
+		<description>Oto pas zbójnicki. Idealny dla górala.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="6"/>
+		</attributes>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -180,9 +212,9 @@
 		</equipable>
 	</item>
 
-	<item name="pas zbójnicki">
-		<type class="belts" subclass="zbojnicki_belt" tileid="-1"/>
-		<description>Oto pas zbójnicki. Idealny dla górala.</description>
+	<item name="pas chaosu">
+		<type class="belts" subclass="chaos_belt" tileid="-1"/>
+		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
@@ -252,7 +284,39 @@
 		<description>Oto pas olbrzymi. Znane jest jedynie pochodzenie tego pasa - pochodzi ono od gigantów i same jego rozmiary to udowadniają.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<def value="10"/>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas mainiocyjski">
+		<type class="belts" subclass="mainio_belt" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
 			<def value="11"/>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas xenocyjski">
+		<type class="belts" subclass="xeno_belt" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="12"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -269,7 +333,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
-			<def value="12"/>
+			<def value="13"/>
 		</attributes>
 		<susceptibility type="dark" value="0.91"/>
 		<susceptibility type="light" value="1.11"/>
