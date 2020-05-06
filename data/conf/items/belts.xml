@@ -60,8 +60,30 @@
 			<atk value="-1"/>
 			<def value="3"/>
 		</attributes>
-		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="fire" value="1.1"/>
+		<susceptibility type="ice" value="0.83"/>
 		<susceptibility type="water" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="ognisty pas">
+		<type class="belts" subclass="fire_belt" tileid="-1"/>
+		<description>Oto ognisty pas. Wykonany z żywego płomienia. Gdy go nosisz jest trochę gorąco, ale za to chroni przed mrozami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<def value="4"/>
+		</attributes>
+		<susceptibility type="fire" value="0.83"/>
+		<susceptibility type="ice" value="1.1"/>
+		<susceptibility type="earth" value="0.95"/>
+		<susceptibility type="water" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
