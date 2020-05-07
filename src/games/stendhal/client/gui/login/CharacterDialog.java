@@ -78,7 +78,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 	 * Maximum number of characters / account. A soft limit since this
 	 * is client side.
 	 */
-	private static final int MAX_CHARACTERS = 16;
+	private static final int MAX_CHARACTERS = 8;
 
 
 	/** Area containing buttons for each character */
