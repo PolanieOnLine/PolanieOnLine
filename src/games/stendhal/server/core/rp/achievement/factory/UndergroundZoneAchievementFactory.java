@@ -25,7 +25,7 @@ public class UndergroundZoneAchievementFactory extends AbstractAchievementFactor
 		list.add(createAchievement("zone.underground.semos", "Kanarek", "Odwiedził wszystkie podziemne obszary w regionie Semos", 
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("semos", Boolean.TRUE, Boolean.FALSE)));
-		list.add(createAchievement("zone.underground.nalwor", "Nie Boi się Piękła", "Odwiedził wszystkie podziemne obszary w regionie Nalwor", 
+		list.add(createAchievement("zone.underground.nalwor", "Nie Boi się Piekła", "Odwiedził wszystkie podziemne obszary w regionie Nalwor", 
 									Achievement.MEDIUM_BASE_SCORE, true,
 									new PlayerVisitedZonesInRegionCondition("nalwor", Boolean.TRUE, Boolean.FALSE)));
 		list.add(createAchievement("zone.underground.athor", "Wielbiciel Labiryntów", "Odwiedził wszystkie podziemne obszary w regionie Athor", 
