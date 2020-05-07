@@ -66,6 +66,17 @@ public abstract class UpdateConverter {
 			"chaos sorcerer"
 	);
 
+	private static final List<String> STARE_NAZWY_POL_1_12 = Arrays.asList(
+			"kolczany pas", "złoty kolczany pas", "skórzany pas", "wzmocniony skórzany pas",
+			"karmazynowy pas", "karmazynowe rękawice", "karmazynowa tarcza",
+			"karmazynowy hełm"
+	);
+	private static final List<String> NOWE_NAZWY_POL_1_12 = Arrays.asList(
+			"pas kolczy", "złoty pas kolczy", "pas skórzany", "wzmocniony pas skórzany",
+			"pas karmazynowy", "rękawice karmazynowe", "tarcza karmazynowa",
+			"hełm karmazynowy"
+	);
+
 	private static final HashMap<String, String> ZONE_MAPPING = new HashMap<>();
 	static {
 		ZONE_MAPPING.put("0_deniran_n_w2", "0_deniran_forest_n2_w");
@@ -182,21 +193,26 @@ public abstract class UpdateConverter {
 	 */
 	public static String updateItemName(String name) {
 		if (name != null) {
-    		// handle renamed items
-    		int idx = ITEM_NAMES_OLD.indexOf(name);
-    		if (idx != -1) {
-    			name = ITEM_NAMES_NEW.get(idx);
-    		}
+			// handle renamed items
+			int idx = ITEM_NAMES_OLD.indexOf(name);
+			if (idx != -1) {
+				name = ITEM_NAMES_NEW.get(idx);
+			}
 
-    		// Remove underscore characters from old database item names - ConversationParser
-    		// is now capable to work with space separated item names.
-    		name = ItemTools.itemNameToDisplayName(name);
+			// Remove underscore characters from old database item names - ConversationParser
+			// is now capable to work with space separated item names.
+			name = ItemTools.itemNameToDisplayName(name);
 
-    		// rename some additional items to fix grammar in release 0.66
-    		idx = ITEM_NAMES_OLD_0_66.indexOf(name);
-    		if (idx != -1) {
-    			name = ITEM_NAMES_NEW_0_66.get(idx);
-    		}
+			// rename some additional items to fix grammar in release 0.66
+			idx = ITEM_NAMES_OLD_0_66.indexOf(name);
+			if (idx != -1) {
+				name = ITEM_NAMES_NEW_0_66.get(idx);
+			}
+
+			idx = STARE_NAZWY_POL_1_12.indexOf(name);
+			if (idx != -1) {
+				name = NOWE_NAZWY_POL_1_12.get(idx);
+			}
 		}
 
 		return name;
@@ -244,133 +260,133 @@ public abstract class UpdateConverter {
 	}
 
 	/**
-     * Updates a player RPObject from an old version of Stendhal.
-     *
-     * @param object
-     *            RPObject representing a player
-     */
-    public static void updatePlayerRPObject(final RPObject object) {
-    	final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
-    			"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
-    			"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_gdansk", "spells",
-    			"keyring", "money", "trade" };
+	 * Updates a player RPObject from an old version of Stendhal.
+	 *
+	 * @param object
+	 *			RPObject representing a player
+	 */
+	public static void updatePlayerRPObject(final RPObject object) {
+		final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
+				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
+				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_gdansk", "spells",
+				"keyring", "money", "trade" };
 
-    	final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
-    			"!visited", "skills", "!tutorial"};
+		final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
+				"!visited", "skills", "!tutorial"};
 
-    	// Port from 0.03 to 0.10
-    	if (!object.has("base_hp")) {
-    		object.put("base_hp", "100");
-    		object.put("hp", "100");
-    	}
+		// Port from 0.03 to 0.10
+		if (!object.has("base_hp")) {
+			object.put("base_hp", "100");
+			object.put("hp", "100");
+		}
 
-    	// Port from 0.13 to 0.20
-    	final Outfit tempOutfit = new Outfit();
-    	if (!object.has("outfit")) {
-    		object.put("outfit", tempOutfit.getCode());
-    	}
+		// Port from 0.13 to 0.20
+		final Outfit tempOutfit = new Outfit();
+		if (!object.has("outfit")) {
+			object.put("outfit", tempOutfit.getCode());
+		}
 
-    	// create slots if they do not exist yet:
+		// create slots if they do not exist yet:
 
-    	// Port from 0.20 to 0.30: bag, rhand, lhand, armor, head, legs, feet
-    	// Port from 0.44 to 0.50: cloak, bank
-    	// Port from 0.57 to 0.58: bank_ados, bank_fado
-    	// Port from 0.58 to ?: bank_nalwor, keyring, finger
-    	// Port from 1.29 to 1.30: bank_deniran
-    	for (final String slotName : slotsNormal) {
-    		if (!object.hasSlot(slotName)) {
-    			object.addSlot(new PlayerSlot(slotName));
-    		}
-    	}
+		// Port from 0.20 to 0.30: bag, rhand, lhand, armor, head, legs, feet
+		// Port from 0.44 to 0.50: cloak, bank
+		// Port from 0.57 to 0.58: bank_ados, bank_fado
+		// Port from 0.58 to ?: bank_nalwor, keyring, finger
+		// Port from 1.29 to 1.30: bank_deniran
+		for (final String slotName : slotsNormal) {
+			if (!object.hasSlot(slotName)) {
+				object.addSlot(new PlayerSlot(slotName));
+			}
+		}
 
-    	// Port from 0.44 to 0.50: !buddy
-    	// Port from 0.56 to 0.56.1: !ignore
-    	// Port from 0.57 to 0.58: skills
-    	for (final String slotName : slotsSpecial) {
-    		if (!object.hasSlot(slotName)) {
-    			object.addSlot(new KeyedSlot(slotName));
-    		}
-    		final RPSlot slot = object.getSlot(slotName);
-    		if (slot.size() == 0) {
-    			final RPObject singleObject = new RPObject();
-    			slot.add(singleObject);
-    		}
-    	}
+		// Port from 0.44 to 0.50: !buddy
+		// Port from 0.56 to 0.56.1: !ignore
+		// Port from 0.57 to 0.58: skills
+		for (final String slotName : slotsSpecial) {
+			if (!object.hasSlot(slotName)) {
+				object.addSlot(new KeyedSlot(slotName));
+			}
+			final RPSlot slot = object.getSlot(slotName);
+			if (slot.size() == 0) {
+				final RPObject singleObject = new RPObject();
+				slot.add(singleObject);
+			}
+		}
 
-    	// Port from 0.30 to 0.35
-    	if (!object.has("atk_xp")) {
-    		object.put("atk_xp", "0");
-    		object.put("def_xp", "0");
-    	}
+		// Port from 0.30 to 0.35
+		if (!object.has("atk_xp")) {
+			object.put("atk_xp", "0");
+			object.put("def_xp", "0");
+		}
 
-    	if (object.has("devel")) {
-    		object.remove("devel");
-    	}
+		if (object.has("devel")) {
+			object.remove("devel");
+		}
 
-    	// From 0.44 to 0.50
-    	if (!object.has("release")) {
-    		object.put("release", "0.00");
-    		object.put("atk", "10");
-    		object.put("def", "10");
-    	}
+		// From 0.44 to 0.50
+		if (!object.has("release")) {
+			object.put("release", "0.00");
+			object.put("atk", "10");
+			object.put("def", "10");
+		}
 
-    	if (!object.has("ratk_xp")) {
+		if (!object.has("ratk_xp")) {
 			object.put("ratk_xp", "0");
 		}
 
-    	if (!object.has("age")) {
-    		object.put("age", "0");
-    	}
+		if (!object.has("age")) {
+			object.put("age", "0");
+		}
 
-    	if (!object.has("karma")) {
-    		// A little beginner's luck
-    		object.put("karma", 10);
-    	}
-    	if (!object.has("mana")) {
-    		object.put("mana", 0);
-    	}
-    	if (!object.has("base_mana")) {
-    		object.put("base_mana", 0);
-    	}
+		if (!object.has("karma")) {
+			// A little beginner's luck
+			object.put("karma", 10);
+		}
+		if (!object.has("mana")) {
+			object.put("mana", 0);
+		}
+		if (!object.has("base_mana")) {
+			object.put("base_mana", 0);
+		}
 
-    	// Renamed to skills
-    	if (object.has("!skills")) {
-    		object.remove("!skills");
-    	}
+		// Renamed to skills
+		if (object.has("!skills")) {
+			object.remove("!skills");
+		}
 
-    	if (!object.has("height")) {
-    		object.put("height", 2);
-    	}
-    	if (!object.has("width")) {
-    		object.put("width", 1);
-    	}
+		if (!object.has("height")) {
+			object.put("height", 2);
+		}
+		if (!object.has("width")) {
+			object.put("width", 1);
+		}
 
-    	// port to 0.66
-    	transformKillSlot(object);
+		// port to 0.66
+		transformKillSlot(object);
 
-    	// port to 0.81 because of a bug in 0.80 which allowed 0 hp by double killing on logout during dying
-    	if (object.getInt("hp") <= 0) {
-    		logger.warn("Setting hp to 1 for player " + object);
-    		object.put("hp", 1);
-    	}
+		// port to 0.81 because of a bug in 0.80 which allowed 0 hp by double killing on logout during dying
+		if (object.getInt("hp") <= 0) {
+			logger.warn("Setting hp to 1 for player " + object);
+			object.put("hp", 1);
+		}
 
-    	// port to 0.85 added buddy list as map - copy buddies to map
-    	if (object.hasSlot("!buddy")) {
-    		for (RPObject buddy : object.getSlot("!buddy")) {
-    			for (final String buddyname : buddy) {
-    				if (buddyname.startsWith("_")) {
-    					boolean online = false;
-    					if (buddy.get(buddyname).equals("1")) {
-    						online = true;
-    					}
-    					//strip out the _ in the beginning
-    					object.put("buddies", buddyname.substring(1), online);
-    				}
-    			}
-    			buddy.remove("_db_id");
-    		}
-    		// remove buddy slot for 0.87
-    		object.removeSlot("!buddy");
+		// port to 0.85 added buddy list as map - copy buddies to map
+		if (object.hasSlot("!buddy")) {
+			for (RPObject buddy : object.getSlot("!buddy")) {
+				for (final String buddyname : buddy) {
+					if (buddyname.startsWith("_")) {
+						boolean online = false;
+						if (buddy.get(buddyname).equals("1")) {
+							online = true;
+						}
+						//strip out the _ in the beginning
+						object.put("buddies", buddyname.substring(1), online);
+					}
+				}
+				buddy.remove("_db_id");
+			}
+			// remove buddy slot for 0.87
+			object.removeSlot("!buddy");
 		}
 		object.remove("buddies", "db_id");
 
@@ -419,27 +435,27 @@ public abstract class UpdateConverter {
 		final RPObject kills = KeyedSlotUtil.getKeyedSlotObject(object, "!kills");
 
 		if (kills != null) {
-    		final RPObject newKills = new RPObject();
-    		for (final String attr : kills) {
-    			// skip "id" entries
-    			if (!attr.equals("id")) {
-        			String newAttr = attr;
-        			String value = kills.get(attr);
+			final RPObject newKills = new RPObject();
+			for (final String attr : kills) {
+				// skip "id" entries
+				if (!attr.equals("id")) {
+					String newAttr = attr;
+					String value = kills.get(attr);
 
-        			// Is it stored using the old recording system without an dot?
-        			if (attr.indexOf('.') < 0) {
-        				newAttr = updateItemName(newAttr);
-        				newAttr = value + "." + newAttr;
-        				value = "1";
-        			}
+					// Is it stored using the old recording system without an dot?
+					if (attr.indexOf('.') < 0) {
+						newAttr = updateItemName(newAttr);
+						newAttr = value + "." + newAttr;
+						value = "1";
+					}
 
-        			newKills.put(newAttr, value);
-    			}
-    		}
+					newKills.put(newAttr, value);
+				}
+			}
 
-    		final RPSlot slot = object.getSlot("!kills");
-    		slot.remove(kills.getID());
-    		slot.add(newKills);
+			final RPSlot slot = object.getSlot("!kills");
+			slot.remove(kills.getID());
+			slot.add(newKills);
 		}
 	}
 
@@ -447,21 +463,21 @@ public abstract class UpdateConverter {
 		final RPObject visited = KeyedSlotUtil.getKeyedSlotObject(object, "!visited");
 
 		if (visited != null) {
-    		final RPObject newVisited = new RPObject();
-    		for (final String attr : visited) {
-    			if (!attr.equals("id")) {
-        			String value = visited.get(attr);
-        			String newName = ZONE_MAPPING.get(attr);
-        			if (newName == null) {
-        				newName = attr;
-        			}
-        			newVisited.put(newName, value);
-    			}
-    		}
+			final RPObject newVisited = new RPObject();
+			for (final String attr : visited) {
+				if (!attr.equals("id")) {
+					String value = visited.get(attr);
+					String newName = ZONE_MAPPING.get(attr);
+					if (newName == null) {
+						newName = attr;
+					}
+					newVisited.put(newName, value);
+				}
+			}
 
-    		final RPSlot slot = object.getSlot("!visited");
-    		slot.remove(visited.getID());
-    		slot.add(newVisited);
+			final RPSlot slot = object.getSlot("!visited");
+			slot.remove(visited.getID());
+			slot.add(newVisited);
 		}
 	}
 
@@ -700,25 +716,25 @@ public abstract class UpdateConverter {
 
 				if ((oldParts.length == 3) && (newParts.length == 3)) {
 					try {
-        				final int oldAmount = Integer.parseInt(oldParts[0]);
-        				int newAmount = Integer.parseInt(newParts[0]);
-        				final String oldItem = oldParts[1];
-        				final String newItem = newParts[1];
-        				final long oldTime = Long.parseLong(oldParts[2]);
-        				long newTime = Long.parseLong(newParts[2]);
+						final int oldAmount = Integer.parseInt(oldParts[0]);
+						int newAmount = Integer.parseInt(newParts[0]);
+						final String oldItem = oldParts[1];
+						final String newItem = newParts[1];
+						final long oldTime = Long.parseLong(oldParts[2]);
+						long newTime = Long.parseLong(newParts[2]);
 
-        				if (oldItem.equals(newItem)) {
-        					newAmount += oldAmount;
+						if (oldItem.equals(newItem)) {
+							newAmount += oldAmount;
 
-        					if (oldTime < newTime) {
-        						newTime = oldTime;
-        					}
+							if (oldTime < newTime) {
+								newTime = oldTime;
+							}
 
-        					questState = Integer.toString(newAmount) + ';' + newItem + ';' + Long.toString(newTime);
-        				}
-        			} catch (final NumberFormatException e) {
-        				e.printStackTrace();
-        			}
+							questState = Integer.toString(newAmount) + ';' + newItem + ';' + Long.toString(newTime);
+						}
+					} catch (final NumberFormatException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 
