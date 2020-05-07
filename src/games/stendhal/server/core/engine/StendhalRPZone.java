@@ -1374,7 +1374,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 		if (!suffix.isEmpty()) {
 			sb.append(" " + String.join("", suffix).toUpperCase());
 		}
-		sb.append(", level " + level);
+		sb.append(", poziom " + level);
 
 		return sb.toString();
 	}
