@@ -756,7 +756,7 @@
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.02"/>
 			<item value="lwia tarcza" quantity="[1,1]" probability="0.5"/>
 			<item value="bułat" quantity="[1,1]" probability="1.0"/>
-			<item value="pas elficki" quantity="[1,1]" probability="0.2"/>
+			<item value="pas elficki" quantity="[1,1]" probability="0.1"/>
 			<item value="mały eliksir" quantity="[1,1]" probability="17.5"/>
 		</drops>
 		<equips>
@@ -837,7 +837,7 @@
 			<item value="rękawice elfickie" quantity="[1,1]" probability="1.0"/>
 			<item value="katana" quantity="[1,1]" probability="1.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.1"/>
-			<item value="pas elficki" quantity="[1,1]" probability="0.25"/>
+			<item value="pas elficki" quantity="[1,1]" probability="1.0"/>
 			<item value="mały eliksir" quantity="[1,1]" probability="26.5"/>
 		</drops>
 		<equips>
@@ -917,7 +917,7 @@
 			<item value="złoty hełm" quantity="[1,1]" probability="0.35"/>
 			<item value="wzmocniona lwia tarcza" quantity="[1,1]" probability="2.0"/>
 			<item value="miecz dwuręczny" quantity="[1,1]" probability="1.0"/>
-			<item value="pas elficki" quantity="[1,1]" probability="1.25"/>
+			<item value="pas elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="mały eliksir" quantity="[1,2]" probability="35.0"/>
 		</drops>
 		<equips>
@@ -1031,7 +1031,7 @@
 			<item value="hełm elficki" quantity="[1,1]" probability="10.0" />
 			<item value="kapelusz elficki" quantity="[1,1]" probability="12" />
 			<item value="pas elficki" quantity="[1,1]" probability="1.0"/>
-			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
+			<item value="różdżka" quantity="[1,1]" probability="0.5"/>
 			<item value="magia deszczu" quantity="[1,15]" probability="30.0"/>
 		</drops>
 		<equips>
@@ -1070,7 +1070,7 @@
 			<item value="miecz lodowy" quantity="[1,1]" probability="0.0080"/>
 			<item value="pałasz" quantity="[1,1]" probability="5.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="5.0"/>
-			<item value="pas elficki" quantity="[1,1]" probability="2.15"/>
+			<item value="pas elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="bukłak z wodą" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips>

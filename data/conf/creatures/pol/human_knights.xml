@@ -134,7 +134,7 @@
 			<item value="czarne buty" quantity="[1,1]" probability="0.003"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.0025"/>
 			<item value="czarny sztylet" quantity="[1,1]" probability="0.0025"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.04"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.005"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -259,7 +259,7 @@
 			<item value="czarne buty" quantity="[1,1]" probability="0.003"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.0025"/>
 			<item value="czarny sztylet" quantity="[1,1]" probability="0.0025"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.005"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.002"/>
 		</drops>
 		<equips/>
 		<ai>

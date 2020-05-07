@@ -965,7 +965,7 @@
 			<item value="magia mroku" quantity="[1,66]" probability="60.0"/>
 			<item value="sztabka mithrilu" quantity="[1,1]" probability="2.0"/>
 			<item value="czarne buty" quantity="[1,1]" probability="0.2"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.0005"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.001"/>
 			<item value="czarna tarcza" quantity="[1,1]" probability="0.04"/>
 			<item value="czarny pierścień" quantity="[1,1]" probability="0.005"/>
 		</drops>

@@ -24,6 +24,7 @@
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="2.0"/>
 			<item value="spodnie nabijane klejnotami" quantity="[1,1]" probability="2.5"/>
 			<item value="czarny płaszcz" quantity="[1,1]" probability="2.5"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.3"/>
 			<item value="hełm libertyński" quantity="[1,1]" probability="1.0"/>
 			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="2.0"/>
 			<item value="pióro mrocznego anioła" quantity="[1,1]" probability="100.0"/>
@@ -70,7 +71,7 @@
 			<item value="pióro archanioła ciemności" quantity="[1,1]" probability="80.0"/>
 			<item value="zupa" quantity="[2,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.55"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.2"/>
 			<item value="buty z mithrilu" quantity="[1,1]" probability="1.0"/>
 			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.25"/>
 			<item value="strzała płonąca" quantity="[10,30]" probability="5.0"/>
@@ -121,7 +122,7 @@
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
 			<item value="money" quantity="[200,1000]" probability="100.0"/>
 			<item value="czarna zbroja" quantity="[1,1]" probability="0.02"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.35"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.1"/>
 			<item value="młot wulkanów" quantity="[1,1]" probability="0.01"/>
 			<item value="pióro upadłego anioła" quantity="[1,1]" probability="100.0"/>
 			<item value="czarny płaszcz" quantity="[1,1]" probability="1.0"/>
@@ -207,6 +208,7 @@
 			<item value="money" quantity="[300,3000]" probability="100.0"/>
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.1"/>
 			<item value="magiczny hełm kolczy" quantity="[1,1]" probability="1.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.1"/>
 			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="1.0"/>
 			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.2"/>
 			<item value="pióro anioła" quantity="[1,1]" probability="100.0"/>

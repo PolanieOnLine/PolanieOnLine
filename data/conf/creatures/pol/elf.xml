@@ -173,8 +173,8 @@
 		<drops>
 			<item value="money" quantity="[29,59]" probability="25.0"/>
 			<item value="miecz elficki" quantity="[1,1]" probability="0.5"/>
-			<item value="skórzane rękawice" quantity="[1,1]" probability="2.5"/>
 			<item value="rękawice elfickie" quantity="[1,1]" probability="1.0"/>
+			<item value="pas elficki" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -238,7 +238,7 @@
 			<item value="money" quantity="[29,59]" probability="25.0"/>
 			<item value="bukłak z wodą" quantity="[1,1]" probability="45.0"/>
 			<item value="skórzane twarde rękawice" quantity="[1,1]" probability="2.5"/>
-			<item value="pas elficki" quantity="[1,1]" probability="0.4"/>
+			<item value="pas elficki" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<abilities>

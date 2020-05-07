@@ -230,7 +230,7 @@
 		<drops>
 			<item value="money" quantity="[5,53]" probability="100.0"/>
 			<item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
-			<item value="pas cieni" quantity="[1,1]" probability="0.7"/>
+			<item value="pas cieni" quantity="[1,1]" probability="0.5"/>
 			<item value="tarta" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips>
@@ -260,7 +260,7 @@
 		<drops>
 			<item value="money" quantity="[5,53]" probability="100.0"/>
 			<item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
-			<item value="pas cieni" quantity="[1,1]" probability="0.75"/>
+			<item value="pas cieni" quantity="[1,1]" probability="0.7"/>
 			<item value="tarta" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips>
@@ -321,7 +321,7 @@
 		<drops>
 			<item value="money" quantity="[5,53]" probability="100.0"/>
 			<item value="tarcza cieni" quantity="[1,1]" probability="2.0"/>
-			<item value="pas cieni" quantity="[1,1]" probability="1.25"/>
+			<item value="pas cieni" quantity="[1,1]" probability="1.0"/>
 			<item value="płaszcz cieni" quantity="[1,1]" probability="1.25"/>
 			<item value="spodnie cieni" quantity="[1,1]" probability="2.0"/>
 		</drops>

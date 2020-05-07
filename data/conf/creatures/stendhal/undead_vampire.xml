@@ -23,6 +23,7 @@
 			<item value="eliksir" quantity="[1,2]" probability="30.0"/>
 			<item value="mocne antidotum" quantity="[1,2]" probability="50.0"/>
 			<item value="buty wampirze" quantity="[1,1]" probability="1.0"/>
+			<item value="pas wampirzy" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -57,6 +58,7 @@
 			<item value="płaszcz wampirzy" quantity="[1,1]" probability="0.05"/>
 			<item value="zbroja wampirza" quantity="[1,1]" probability="0.75"/>
 			<item value="buty wampirze" quantity="[1,1]" probability="2.0"/>
+			<item value="pas wampirzy" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -90,7 +92,7 @@
 			<item value="płaszcz wampirzy" quantity="[1,1]" probability="1.0"/>
 			<item value="rękawice wampirze" quantity="[1,1]" probability="0.075"/>
 			<item value="spodnie wampirze" quantity="[1,1]" probability="0.6"/>
-			<item value="pas wampirzy" quantity="[1,1]" probability="0.4"/>
+			<item value="pas wampirzy" quantity="[1,1]" probability="1.5"/>
 			<item value="krwiopijca" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>

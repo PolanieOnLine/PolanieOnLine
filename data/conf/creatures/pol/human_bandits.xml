@@ -25,7 +25,7 @@
 			<item value="góralski kapelusz" quantity="[1,1]" probability="0.002"/>
 			<item value="sztylecik" quantity="[1,1]" probability="5.0"/>
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.0"/>
-			<item value="wzmocniony pas skórzany" quantity="[1,1]" probability="2.0"/>
+			<item value="wzmocniony pas skórzany" quantity="[1,1]" probability="2.5"/>
 		</drops>
 		<equips/>
 		<ai>

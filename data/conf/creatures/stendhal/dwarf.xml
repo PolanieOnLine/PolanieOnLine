@@ -139,6 +139,7 @@
 			<item value="money" quantity="[3,27]" probability="90.0"/>
 			<item value="złote buty" quantity="[1,1]" probability="0.9"/>
 			<item value="topór obosieczny" quantity="[1,1]" probability="3.0"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="1.0"/>
 			<item value="topór Durina" quantity="[1,1]" probability="0.0010"/>
 		</drops>
 		<equips>
@@ -202,6 +203,7 @@
 			<item value="money" quantity="[3,27]" probability="90.0"/>
 			<item value="zbroja krasnoludzka" quantity="[1,1]" probability="0.5"/>
 			<item value="buty krasnoludzkie" quantity="[1,1]" probability="1.0"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="1.5"/>
 			<item value="czarne spodnie" quantity="[1,1]" probability="0.0010"/>
 			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
 			<item value="złoty topór obosieczny" quantity="[1,1]" probability="0.01"/>
@@ -239,6 +241,7 @@
 			<item value="czarna zbroja" quantity="[1,1]" probability="0.0001"/>
 			<item value="złoty hełm wikingów" quantity="[1,1]" probability="0.5"/>
 			<item value="spodnie krasnoludzkie" quantity="[1,1]" probability="1.0" />
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -275,7 +278,7 @@
 			<item value="topór" quantity="[1,1]" probability="3.0"/>
 			<item value="piernacz" quantity="[1,1]" probability="0.5"/>
 			<item value="buty żelazne" quantity="[1,1]" probability="0.5"/>
-			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.05"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>
@@ -310,7 +313,7 @@
 			<item value="złoty buzdygan" quantity="[1,1]" probability="0.5"/>
 			<item value="buty żelazne" quantity="[1,1]" probability="1.0"/>
 			<item value="hełm wikingów" quantity="[1,1]" probability="3.0"/>
-			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.25"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips>
 		</equips>
@@ -346,7 +349,7 @@
 			<item value="płaszcz krasnoludzki" quantity="[1,1]" probability="0.5"/>
 			<item value="lwia tarcza" quantity="[1,1]" probability="3.5"/>
 			<item value="halabarda" quantity="[1,1]" probability="0.5"/>
-			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.2"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -379,7 +382,7 @@
 			<item value="berdysz" quantity="[1,1]" probability="0.05"/>
 			<item value="złote buty" quantity="[1,1]" probability="0.1"/>
 			<item value="złoty pyrlik" quantity="[1,1]" probability="3.0"/>
-			<item value="pas krasnoludzki" quantity="[1,1]" probability="1.0"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -415,7 +418,7 @@
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.5"/>
 			<item value="butelka wody" quantity="[1,2]" probability="1.5"/>
 			<item value="tarcza królewska" quantity="[1,1]" probability="4.5"/>
-			<item value="pas krasnoludzki" quantity="[1,1]" probability="1.2"/>
+			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.75"/>
 		</drops>
 		<equips>
 		</equips>

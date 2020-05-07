@@ -280,7 +280,7 @@
 			<item value="lodowa zbroja" quantity="[1,1]" probability="0.1"/>
 			<item value="buty chaosu" quantity="[1,1]" probability="2.0"/>
 			<item value="płaszcz cieni" quantity="[1,1]" probability="1.0"/>
-			<item value="pas cieni" quantity="[1,1]" probability="1.0"/>
+			<item value="pas cieni" quantity="[1,1]" probability="1.5"/>
 			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
 			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.2"/>
 			<item value="miecz lodowy" quantity="[1,1]" probability="0.1"/>
