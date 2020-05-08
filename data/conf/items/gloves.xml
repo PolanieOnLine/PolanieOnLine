@@ -336,8 +336,8 @@
 		<description>Oto czarne rękawice. Nie wiesz z czego są zrobione, ale dają świetną ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
-			<def value="9"/>
+			<atk value="2"/>
+			<def value="11"/>
 			<min_level value="150"/>
 		</attributes>
 		<weight value="44.0"/>
@@ -359,13 +359,30 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="3"/>
-			<def value="10"/>
+			<def value="14"/>
 			<min_level value="250"/>
 		</attributes>
 		<weight value="11.0"/>
 		<value value="1551"/>
 		<susceptibility type="dark" value="1.11"/>
 		<susceptibility type="light" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+	
+	<item name="rękawice zabójcy">
+		<type class="glove" subclass="killer_gloves" tileid="-1"/>
+		<description>Oto rękawice zabójcy. Widać na nich nieco plamy krwi... Jesteś w stanie je założyć?</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="16"/>
+		</attributes>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
