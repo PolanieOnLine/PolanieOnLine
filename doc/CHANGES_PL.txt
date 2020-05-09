@@ -11,34 +11,29 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 	- Anastazja (szwalnia w Zakopane)
 - Dodano nowe zadanie: (1)
 	- "Kolekcjoner Rękawic" - Anastazja
-- Dodano nowe przedmioty: (14)
+- Dodano nowe przedmioty: (15)
 	- automatyczna kusza (800 punktów wytrzymałości)
 	- automatyczna kusza A (1400 punktów wytrzymałości)
 	- automatyczna kusza A+ (3600 punktów wytrzymałości)
-	- lodowy pas
-	- ognisty pas
-	- pas barbarzyńcy
-	- pas kamienny
-	- pas lazurowy
-	- pas chaosu
-	- pas mainiocyjski
-	- pas xenocyjski
-	- pas zabójcy
-	- rękawice zabójcy
-	- rękawice szmaragdowe
+	- lodowy pas, ognisty pas, pas barbarzyńcy,
+		pas kamienny, pas lazurowy, pas chaosu,
+		pas mainiocyjski, pas xenocyjski, pas zabójcy
+	- rękawice zabójcy, rękawice szmaragdowe
+	- amulecik z mithrilu
 - Dodano nowe osiągnięcia: (4)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
 	- "Eskortnik w Deathmatchu"
 	- "Magiczne Zaopatrzenie"
+- Dodano dodatkową nagrodę za 4 i 5 odrodzenie u Yereny
 - Ceny w większości sklepów u NPC zostały poprawione
 - Zmniejszono szansę na zdobycie sztylecika z mithrilu
 - Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy,
 	kuszę, pierścienie klasowe
 - Osłabiono: lekką kuszę
 - Poprawiono nazwy niektórym przedmiotom
-- Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom),
-	jak i niektórych rękawic
+- Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom)
+	oraz niektóre rękawice i naszyjniki
 - Zniesiono minimalny poziom wszystkim złotym ciupagom oraz pierścieniom klasowym
 
 *serwer*
