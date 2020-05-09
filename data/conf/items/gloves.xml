@@ -124,26 +124,6 @@
 		</equipable>
 	</item>
 
-	<item name="rękawice xenocyjskie">
-		<type class="glove" subclass="xeno_gloves" tileid="-1"/>
-		<description>Oto rękawice xenocyjskie. Są bardzo twarde przez co ograniczają zamachy mieczem...</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="-1"/>
-			<def value="4"/>
-			<min_level value="20"/>
-		</attributes>
-		<weight value="44.0"/>
-		<value value="1551"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
 	<item name="rękawice płytowe">
 		<type class="glove" subclass="plate_gloves" tileid="-1"/>
 		<description>Oto rękawice płytowe. Są ciężkie, ale ręki nie stracisz.</description>
@@ -269,6 +249,22 @@
 		</equipable>
 	</item>
 
+	<item name="rękawice szmaragdowe">
+		<type class="glove" subclass="green_gloves" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="6"/>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="rękawice mainiocyjskie">
 		<type class="glove" subclass="mainio_gloves" tileid="-1"/>
 		<description>Oto rękawice mainiocyjska. Są bardzo wytrzymałe, dzięki temu świetnie sprawują się w walce.</description>
@@ -309,14 +305,34 @@
 		</equipable>
 	</item>
 
+	<item name="rękawice xenocyjskie">
+		<type class="glove" subclass="xeno_gloves" tileid="-1"/>
+		<description>Oto rękawice xenocyjskie. Ograniczają nieco zamachy mieczem, ale za to doskonale chronią...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<def value="8"/>
+			<min_level value="100"/>
+		</attributes>
+		<weight value="44.0"/>
+		<value value="1551"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="złote rękawice">
 		<type class="glove" subclass="golden_gloves" tileid="-1"/>
 		<description>Oto złote rękawice. Wykonane z drogocennego metalu dają dobrą ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="-2"/>
-			<def value="8"/>
-			<min_level value="120"/>
+			<def value="9"/>
+			<min_level value="110"/>
 		</attributes>
 		<weight value="33.0"/>
 		<value value="919"/>
