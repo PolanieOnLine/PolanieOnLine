@@ -11,7 +11,7 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 	- Anastazja (szwalnia w Zakopane)
 - Dodano nowe zadanie: (1)
 	- "Kolekcjoner Rękawic" - Anastazja
-- Dodano nowe przedmioty: (15)
+- Dodano nowe przedmioty: (16)
 	- automatyczna kusza (800 punktów wytrzymałości)
 	- automatyczna kusza A (1400 punktów wytrzymałości)
 	- automatyczna kusza A+ (3600 punktów wytrzymałości)
@@ -20,6 +20,7 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 		pas mainiocyjski, pas xenocyjski, pas zabójcy
 	- rękawice zabójcy, rękawice szmaragdowe
 	- amulecik z mithrilu
+	- ogniste spodnie
 - Dodano nowe osiągnięcia: (4)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
