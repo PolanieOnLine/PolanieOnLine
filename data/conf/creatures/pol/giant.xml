@@ -181,7 +181,7 @@
 		<drops>
 			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
 			<item value="money" quantity="[30,200]" probability="100.0"/>
-			<item value="lazurowe rękawice" quantity="[1,1]" probability="2.5"/>
+			<item value="rękawice lazurowe" quantity="[1,1]" probability="2.5"/>
 			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.225"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="2.5"/>
 			<item value="magia deszczu" quantity="[3,11]" probability="17.5"/>

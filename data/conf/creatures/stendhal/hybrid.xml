@@ -93,7 +93,7 @@
 		<drops>
 			<item value="money" quantity="[5,30]" probability="100.0"/>
 			<item value="pstrąg" quantity="[1,1]" probability="10.0"/>
-			<item value="lazurowa tarcza" quantity="[1,1]" probability="2.0"/>
+			<item value="tarcza lazurowa" quantity="[1,1]" probability="2.0"/>
 			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="2.0"/>
 			<item value="spodnie lazurowe" quantity="[1,1]" probability="1.5"/>
 		</drops>

@@ -278,7 +278,7 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("polano",10);
 
 		// shield
-		items.put("lazurowa tarcza",1);
+		items.put("tarcza lazurowa",1);
 		items.put("puklerz",1);
 		items.put("tarcza królewska",1);
 		items.put("wzmocniona lwia tarcza",1);

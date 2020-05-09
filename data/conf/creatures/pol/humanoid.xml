@@ -300,7 +300,7 @@
 		<drops>
 			<item value="money" quantity="[5,20]" probability="100.0"/>
 			<item value="zbroja światła" quantity="[1,1]" probability="0.005"/>
-			<item value="lazurowe rękawice" quantity="[1,1]" probability="0.0025"/>
+			<item value="rękawice lazurowe" quantity="[1,1]" probability="0.0025"/>
 			<item value="płaszcz elficki" quantity="[1,1]" probability="0.5"/>
 			<item value="półtorak" quantity="[1,1]" probability="0.005"/>
 		</drops>
@@ -642,7 +642,7 @@
 			<item value="ognista tarcza" quantity="[1,1]" probability="5.0"/>
 			<item value="magia deszczu" quantity="[22,88]" probability="20.0"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.05"/>
-			<item value="lazurowe rękawice" quantity="[1,1]" probability="0.01"/>
+			<item value="rękawice lazurowe" quantity="[1,1]" probability="0.01"/>
 		</drops>
 		<equips/>
 		<ai>

@@ -66,7 +66,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement("item.set.blue", "Czuję Błękit", "Zdobył cały lazurowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "zbroja lazurowa", "lazurowy hełm", "prążkowany płaszcz lazurowy",
-						"spodnie lazurowe", "buty lazurowe", "lazurowa tarcza", "lazurowe rękawice")));
+						"spodnie lazurowe", "buty lazurowe", "tarcza lazurowa", "rękawice lazurowe")));
 
 		itemAchievements.add(createAchievement("item.set.elvish", "Zmora Nalwor", "Zdobył cały elficki zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,

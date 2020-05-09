@@ -24,9 +24,9 @@
 		</equipable>
 	</item>
 
-	<item name="lazurowa tarcza">
+	<item name="tarcza lazurowa">
 		<type class="shield" subclass="blue_shield" tileid="-1"/>
-		<description>Oto lazurowa tarcza. Czujesz jakby jej nie było, ale broni bardzo dobrze.</description>
+		<description>Oto tarcza lazurowa. Czujesz jakby jej nie było, ale broni bardzo dobrze.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="30"/>

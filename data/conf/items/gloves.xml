@@ -166,9 +166,9 @@
 		</equipable>
 	</item>
 
-	<item name="lazurowe rękawice">
+	<item name="rękawice lazurowe">
 		<type class="glove" subclass="blue_gloves" tileid="-1"/>
-		<description>Oto lazurowe rękawice. Ich kolor może utrudniać walkę.</description>
+		<description>Oto rękawice lazurowe. Ich kolor może utrudniać walkę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="5"/>

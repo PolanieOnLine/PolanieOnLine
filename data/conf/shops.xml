@@ -134,8 +134,8 @@
 		<item name="prążkowany płaszcz lazurowy" price="7000" />
 		<item name="lazurowy hełm" price="8000" />
 		<item name="spodnie lazurowe" price="8000" />
-		<item name="lazurowe rękawice" price="7000" />
-		<item name="lazurowa tarcza" price="22000" />
+		<item name="rękawice lazurowe" price="7000" />
+		<item name="tarcza lazurowa" price="22000" />
 		<item name="sztylet mordercy" price="14000" />
 	</shop>
 
@@ -573,8 +573,8 @@
 		<item name="prążkowany płaszcz lazurowy" price="500" />
 		<item name="zbroja lazurowa" price="13000" />
 		<item name="spodnie lazurowe" price="400" />
-		<item name="lazurowe rękawice" price="750" />
-		<item name="lazurowa tarcza" price="900" />
+		<item name="rękawice lazurowe" price="750" />
+		<item name="tarcza lazurowa" price="900" />
 	</shop>
 
 	<!-- Klaas kupuje: -->
@@ -834,7 +834,7 @@
 		<item name="skórzane wzmocnione rękawice" price="54" />
 		<item name="skórzane twarde rękawice" price="90" />
 		<item name="rękawice karmazynowe" price="230" />
-		<item name="lazurowe rękawice" price="540" />
+		<item name="rękawice lazurowe" price="540" />
 		<item name="rękawice xenocyjskie" price="600" />
 		<item name="ogniste rękawice" price="800" />
 		<item name="lodowe rękawice" price="1100" />
@@ -1033,7 +1033,7 @@
 	<!-- Kilian kupuje: -->
 	<shop name="buyarmorywieliczka" type="buys">
 		<item name="lazurowy hełm" price="1000" />
-		<item name="lazurowa tarcza" price="1200" />
+		<item name="tarcza lazurowa" price="1200" />
 		<item name="pas kolczy" price="21" />
 		<item name="złoty pas kolczy" price="32" />
 		<item name="pas cieni" price="3300" />
@@ -1092,7 +1092,7 @@
 		<item name="kusza" price="374" />
 		<item name="kusza łowcy" price="760" />
 		<item name="rękawice karmazynowe" price="182" />
-		<item name="lazurowe rękawice" price="535" />
+		<item name="rękawice lazurowe" price="535" />
 		<item name="ogniste rękawice" price="788" />
 		<item name="ciupaga" price="2000" />
 		<item name="magiczny topór obosieczny" price="7300" />

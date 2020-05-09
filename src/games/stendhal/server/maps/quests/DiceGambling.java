@@ -116,7 +116,7 @@ public class DiceGambling extends AbstractQuest {
 
 	private Map <Integer, Pair<String, String>> initPrices() {
 		Map<Integer, Pair<String, String>> map = new HashMap<Integer, Pair<String, String>>();
-		map.put(3, new Pair<String, String>("lazurowa tarcza",
+		map.put(3, new Pair<String, String>("tarcza lazurowa",
 				"Facet, jesteś jednym wielkim pechowcem! Tak mi przykro! Weź tą tarczę lazurową."));
 		map.put(7, new Pair<String, String>("sok z chmielu",
 				"Oto nagroda pocieszenia, sok z chmielu."));
