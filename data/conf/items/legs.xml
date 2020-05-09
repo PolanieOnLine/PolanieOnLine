@@ -520,7 +520,7 @@
 		<description>Oto ogniste spodnie. Strasznie w nich gorąco.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="14"/>
+			<def value="13"/>
 			<min_level value="55"/>
 		</attributes>
 		<susceptibility type="fire" value="0.91"/>
