@@ -9,8 +9,6 @@
 		<attributes>
 			<def value="1"/>
 		</attributes>
-		<weight value="10.0"/>
-		<value value="151"/>
 		<susceptibility type="fire" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
@@ -27,10 +25,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="2"/>
-			<min_level value="5"/>
 		</attributes>
-		<weight value="10.0"/>
-		<value value="171"/>
 		<susceptibility type="fire" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
@@ -47,10 +42,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="3"/>
-			<min_level value="10"/>
 		</attributes>
-		<weight value="10.0"/>
-		<value value="191"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -69,8 +61,6 @@
 			<def value="3"/>
 			<min_level value="20"/>
 		</attributes>
-		<weight value="10.0"/>
-		<value value="191"/>
 		<susceptibility type="earth" value="0.91"/>
 		<susceptibility type="fire" value="1.11"/>
 		<equipable>
@@ -89,8 +79,6 @@
 		<attributes>
 			<def value="4"/>
 		</attributes>
-		<weight value="22.0"/>
-		<value value="616"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -109,12 +97,10 @@
 			<def value="4"/>
 			<min_level value="40"/>
 		</attributes>
-		<weight value="40.0"/>
-		<value value="515"/>
-		<susceptibility type="light" value="0.91"/>
-		<susceptibility type="dark" value="0.91"/>
-		<susceptibility type="fire" value="0.91"/>
-		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -133,8 +119,6 @@
 			<def value="4"/>
 			<min_level value="25"/>
 		</attributes>
-		<weight value="20.0"/>
-		<value value="515"/>
 		<susceptibility type="fire" value="0.91"/>
 		<susceptibility type="ice" value="0.91"/>
 		<equipable>
@@ -153,28 +137,6 @@
 		<attributes>
 			<def value="5"/>
 		</attributes>
-		<weight value="22.0"/>
-		<value value="616"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="glove"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
-	<item name="rękawice chaosu">
-		<type class="glove" subclass="chaos_gloves" tileid="-1"/>
-		<description>Oto rękawice chaosu. Czujesz się bezpieczniej w nich oraz wyglądają olśniewająco.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<atk value="1"/>
-			<def value="5"/>
-			<min_level value="45"/>
-		</attributes>
-		<weight value="33.0"/>
-		<value value="919"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -194,8 +156,6 @@
 			<lifesteal value="0.05"/>
 			<min_level value="100"/>
 		</attributes>
-		<weight value="33.0"/>
-		<value value="1111"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -214,8 +174,6 @@
 			<def value="5"/>
 			<min_level value="35"/>
 		</attributes>
-		<weight value="22.0"/>
-		<value value="767"/>
 		<susceptibility type="ice" value="0.91"/>
 		<susceptibility type="fire" value="1.11"/>
 		<equipable>
@@ -236,8 +194,6 @@
 			<def value="5"/>
 			<min_level value="35"/>
 		</attributes>
-		<weight value="22.0"/>
-		<value value="717"/>
 		<susceptibility type="fire" value="0.91"/>
 		<susceptibility type="ice" value="1.11"/>
 		<equipable>
@@ -274,8 +230,6 @@
 			<def value="6"/>
 			<min_level value="55"/>
 		</attributes>
-		<weight value="22.0"/>
-		<value value="717"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -292,10 +246,24 @@
 		<attributes>
 			<def value="7"/>
 		</attributes>
-		<weight value="33.0"/>
-		<value value="1221"/>
-		<susceptibility type="dark" value="0.91"/>
+		<susceptibility type="dark" value="0.95"/>
 		<susceptibility type="light" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="rękawice chaosu">
+		<type class="glove" subclass="chaos_gloves" tileid="-1"/>
+		<description>Oto rękawice chaosu. Czujesz się bezpieczniej w nich oraz wyglądają olśniewająco.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="8"/>
+		</attributes>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -314,8 +282,6 @@
 			<def value="8"/>
 			<min_level value="100"/>
 		</attributes>
-		<weight value="44.0"/>
-		<value value="1551"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -334,10 +300,8 @@
 			<def value="9"/>
 			<min_level value="110"/>
 		</attributes>
-		<weight value="33.0"/>
-		<value value="919"/>
 		<susceptibility type="dark" value="1.11"/>
-		<susceptibility type="light" value="0.91"/>
+		<susceptibility type="light" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -356,8 +320,6 @@
 			<def value="11"/>
 			<min_level value="150"/>
 		</attributes>
-		<weight value="44.0"/>
-		<value value="1551"/>
 		<susceptibility type="dark" value="0.91"/>
 		<susceptibility type="light" value="1.11"/>
 		<equipable>
@@ -378,8 +340,6 @@
 			<def value="14"/>
 			<min_level value="250"/>
 		</attributes>
-		<weight value="11.0"/>
-		<value value="1551"/>
 		<susceptibility type="dark" value="1.11"/>
 		<susceptibility type="light" value="0.91"/>
 		<equipable>
