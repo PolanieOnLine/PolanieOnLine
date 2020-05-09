@@ -1030,18 +1030,15 @@
 		</equipable>
 	</item>
 
-	<item name="excalibur">
+	<item name="ekskalibur">
 		<type class="sword" subclass="excalibur" tileid="-1"/>
-		<description>Oto wszechmocny legendarny miecz excalibur. Miecz samego króla Artura, silny jak wszystko inne na ziemi.</description>
+		<description>Oto wszechpotężny legendarny miecz ekskalibur. Miecz samego króla Artura, silny jak wszystko inne na ziemi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="111"/>
       		<rate value="4"/>
 	  		<lifesteal value="0.3"/>
-			<min_level value="597"/>
 		</attributes>
-		<weight value="99.0"/>
-		<value value="4571428"/>
 		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
