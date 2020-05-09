@@ -166,7 +166,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 
 	@Override
 	public String welcomeDuringActiveQuest() {
-		return "Cześć! Przyniosłeś ze sobą jakieś #płaszcze )?";
+		return "Cześć! Przyniosłeś ze sobą jakieś #płaszcze?";
 	}
 
 	@Override
@@ -203,16 +203,16 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "cloak", "a")
+		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "płaszczy", "płaszcz")
 				+ ". To jest " + Grammar.enumerateCollection(missingItems)
-				+ ". Przyniosłeś mi jakiś?";
+				+ ". Dasz radę przynieść mi jakiś?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "cloak", "a")
+		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "płaszczy", "płaszcz")
 				+ ". To jest " + Grammar.enumerateCollection(missingItems)
-				+ ". Przyniosłeś mi jakiś?";
+				+ ". Przyniosłeś jakiś?";
 	}
 
 	@Override
