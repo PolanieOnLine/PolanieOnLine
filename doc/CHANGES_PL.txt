@@ -33,11 +33,12 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 	- "Magiczne Zaopatrzenie"
 - Ceny w większości sklepów u NPC zostały poprawione
 - Zmniejszono szansę na zdobycie sztylecika z mithrilu
-- Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy, kuszę,
-	pierścienie klasowe, rękawice z mithrilu, czarne rękawice, złote rękawice, rękawice xenocyjskie
+- Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy,
+	kuszę, pierścienie klasowe
 - Osłabiono: lekką kuszę
 - Poprawiono nazwy niektórym przedmiotom
-- Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom)
+- Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom),
+	jak i niektórych rękawic
 - Zniesiono minimalny poziom wszystkim złotym ciupagom oraz pierścieniom klasowym
 
 *serwer*
