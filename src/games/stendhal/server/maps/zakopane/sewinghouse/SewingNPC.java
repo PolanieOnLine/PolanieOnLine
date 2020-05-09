@@ -11,14 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.sewinghouse;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
@@ -41,16 +38,6 @@ public class SewingNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Falisława") {
 
 			@Override
-			protected void createPath() {
-				final List<Node> nodes = new LinkedList<Node>();
-				nodes.add(new Node(7, 8));
-				nodes.add(new Node(7, 15));
-				nodes.add(new Node(12, 15));
-				nodes.add(new Node(12, 8));
-				setPath(new FixedPath(nodes, true));
-			}
-
-			@Override
 			protected void createDialog() {
 				addGreeting();
 				addJob("Jestem szwaczką. Produkuję rękawice dla wojowników.");
@@ -61,10 +48,11 @@ public class SewingNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("woman_004_npc");
-		npc.setPosition(7, 8);
-		npc.initHP(100);
 		npc.setDescription("Oto Falisława. Szwaczka, która szyje rękawice dla wojowników.");
+		npc.setEntityClass("woman_004_npc");
+		npc.setPosition(10, 4);
+		npc.setDirection(Direction.DOWN);
+		npc.initHP(100);
 		zone.add(npc);
 	}
 }
