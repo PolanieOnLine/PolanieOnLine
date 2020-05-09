@@ -193,7 +193,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 	@Override
 	public String respondToQuestRefusal() {
 		// player.addKarma(-5.0);
-		return "Och ... nie jesteś zbyt miły. Do widzenia.";
+		return "Och... nie jesteś zbyt miły. Do widzenia.";
 	}
 
 	@Override
