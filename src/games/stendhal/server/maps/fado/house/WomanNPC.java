@@ -72,7 +72,7 @@ public class WomanNPC implements ZoneConfigurator {
 			}
 		};
 
-		woman.setDescription("Oto modnie ubrana młoda kobieta. Wygląda trochę na flirciarę.");
+		woman.setDescription("Oto Josephine, modnie ubrana młoda kobieta. Wygląda trochę na flirciarę.");
 		woman.setEntityClass("youngwomannpc");
 		woman.setPosition(3, 4);
 		woman.initHP(100);
