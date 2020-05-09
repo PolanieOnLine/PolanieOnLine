@@ -514,4 +514,23 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+	<item name="ogniste spodnie">
+		<type class="legs" subclass="fire_legs" tileid="-1"/>
+		<description>Oto ogniste spodnie. Strasznie w nich gorąco.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="14"/>
+			<min_level value="55"/>
+		</attributes>
+		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="ice" value="1.11"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="legs"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>
