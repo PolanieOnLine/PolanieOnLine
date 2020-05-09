@@ -1,6 +1,5 @@
-/* $Id: BronekNPC.java,v 1.7 2012/09/21 02:28:01 Legolas Exp $ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2020 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,16 +17,16 @@ import java.util.Map;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
- * Builds an NPC to buy previously un bought armor.
+ * v 1.8 2020/05/09 06:41:20
  *
- * @author kymara
+ * @author Legolas
+ * 		@edit by ZEKKEQ
  */
 public class BronekNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
@@ -47,11 +46,6 @@ public class BronekNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Bronek") {
 
 			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
-			@Override
 			protected void createDialog() {
 				addGreeting("Witaj wędrowcze.");
 				addJob("Skupuję smocze pazury.");
@@ -68,14 +62,5 @@ public class BronekNPC implements ZoneConfigurator {
 		npc.setPosition(16, 18);
 		npc.initHP(100);
 		zone.add(npc);
-
-		final Sign tablica = new Sign();
-		tablica.setPosition(16, 15);
-		tablica.setText(" -- Możesz sprzedać te rzeczy Bronkowi -- \n pazury wilcze\t 5\n pazury niedźwiedzie\t 8\n pazury tygrysie\t 100\n pazur zielonego smoka\t 5000\n"+
-						" pazur niebieskiego smoka\t 5000\n pazur czerwonego smoka\t 5000\n pazur czarnego smoka\t 10000\n pazur złotego smoka\t 15000");
-		tablica.setEntityClass("blackboard");
-		tablica.setResistance(10);
-		zone.add(tablica);
-
 	}
 }
