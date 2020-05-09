@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -69,6 +71,8 @@ public class RebornQuest extends AbstractQuest {
 	private final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 	private final String NAGRODA = "Została zagięta Twoja teraźniejszość przez potężnego smoka czasu, #'Yereny'... abyś mógł przeżyć przygodę jeszcze raz... Podążaj nową ścieżką, którą sobie obierzesz...";
 	private final String UKOŃCZONE = "Wybacz... lecz nie czuję się za dobrze, aby ponownie użyć swej mocy...";
+	
+	private final String DODATKOWA_NAGRODA = NAGRODA + " Otrzymałeś również pamiątkę po swoich wcześniejszych podróżach!";
 
 	@Override
 	public List<String> getHistory(Player player) {
@@ -326,7 +330,7 @@ public class RebornQuest extends AbstractQuest {
 				null,
 				new MultipleActions(
 					new TeleportAction(HOME, 11, 4, Direction.DOWN),
-					new SendPrivateMessageAction(NAGRODA),
+					new SendPrivateMessageAction(DODATKOWA_NAGRODA),
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -336,7 +340,11 @@ public class RebornQuest extends AbstractQuest {
 								player.setLevel(LEVEL_TO_RESET);
 								player.setHP(player.getHP() - 3000);
 								player.setBaseHP(player.getBaseHP() - 3000);
-	
+
+								final Item naszyjnik = SingletonRepository.getEntityManager().getItem("amulecik z mithrilu");
+								naszyjnik.setBoundTo(player.getName());
+								player.equipOrPutOnGround(naszyjnik);
+
 								// Ustaw zadanie na zakończone
 								player.setQuest(QUEST_SLOT, "done;4");
 							}
@@ -365,7 +373,7 @@ public class RebornQuest extends AbstractQuest {
 				null,
 				new MultipleActions(
 					new TeleportAction(HOME, 11, 4, Direction.DOWN),
-					new SendPrivateMessageAction(NAGRODA),
+					new SendPrivateMessageAction(DODATKOWA_NAGRODA),
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -375,7 +383,11 @@ public class RebornQuest extends AbstractQuest {
 								player.setLevel(LEVEL_TO_RESET);
 								player.setHP(player.getHP() - 3000);
 								player.setBaseHP(player.getBaseHP() - 3000);
-	
+
+								final Item excalibur = SingletonRepository.getEntityManager().getItem("ekskalibur");
+								excalibur.setBoundTo(player.getName());
+								player.equipOrPutOnGround(excalibur);
+
 								// Ustaw zadanie na zakończone
 								player.setQuest(QUEST_SLOT, "done;5");
 							}
