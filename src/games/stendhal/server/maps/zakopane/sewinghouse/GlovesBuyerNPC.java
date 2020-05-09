@@ -46,8 +46,8 @@ public class GlovesBuyerNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj w szwalni rękawic! W czym mogę #pomóc.");
 				addHelp("Możesz sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
-				//addHelp("Moja znajoma, która szyje rękawice, znajduje się piętro wyżej. Zapytaj ją, może będzie potrzebować pomocy. "
-				//+ "Możesz również sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
+				addHelp("Jedna z moich znajomych znajdujących się piętro wyżej, jest kolekcjonerką. Zapytaj, a może będzie potrzebować pomocy. "
+						+ "Możesz również sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
 				addJob("Zajmuję się skupem starych rękawic oraz skór zwierząt.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buygloves")), false);
 				addOffer("Spójrz na książkę, by zaznajomić się z cenami skupu.");
@@ -55,11 +55,11 @@ public class GlovesBuyerNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Ludwina. Zajmuje się skupem rękawic.");
 		npc.setEntityClass("woman_002_npc");
 		npc.setPosition(8, 3);
 		npc.setDirection(Direction.DOWN);
 		npc.initHP(100);
-		npc.setDescription("Oto Ludwina. Zajmuje się skupem rękawic.");
 		zone.add(npc);
 	}
 }
