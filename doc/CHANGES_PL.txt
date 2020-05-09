@@ -7,6 +7,10 @@ Changelog
 pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 
 *świat*
+- Dodano nowe NPC: (1)
+	- Anastazja (szwalnia w Zakopane)
+- Dodano nowe zadanie: (1)
+	- "Kolekcjoner Rękawic" - Anastazja
 - Dodano nowe przedmioty: (14)
 	- automatyczna kusza (800 punktów wytrzymałości)
 	- automatyczna kusza A (1400 punktów wytrzymałości)
