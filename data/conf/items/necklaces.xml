@@ -65,7 +65,7 @@
 		<description>Oto lodowy amulet. Czujesz ogromny chłód na karku.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="6"/>
+			<def value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1234"/>
@@ -85,7 +85,7 @@
 		<description>Oto ognisty amulet. Wydaje dziwne dźwięki ognistego żarzenia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="6"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1234"/>
@@ -131,6 +131,23 @@
 		<value value="1234"/>
 		<susceptibility type="light" value="0.91"/>
 		<susceptibility type="dark" value="0.91"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="neck"/>
+		</equipable>
+	</item>
+	
+	<item name="amulecik z mithrilu">
+		<type class="necklace" subclass="mithril_amulet" tileid="-1"/>
+		<description>Oto amulecik z mithrilu. Ciekawe, w której rzeczywistości został wykonany...</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="14"/>
+		</attributes>
+		<susceptibility type="light" value="0.83"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
