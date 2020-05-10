@@ -103,7 +103,8 @@
 			<item value="buty mainiocyjskie" quantity="[1,1]" probability="2.5"/>
 			<item value="tarcza mainiocyjska" quantity="[1,1]" probability="2.5"/>
 			<item value="zbroja mainiocyjska" quantity="[1,1]" probability="1.0"/>
-			<item value="rękawice mainiocyjskie" quantity="[1,1]" probability="0.75"/>
+			<item value="rękawice mainiocyjskie" quantity="[1,1]" probability="1.0"/>
+			<item value="pas mainiocyjski" quantity="[1,1]" probability="1.5"/>
 		</drops>
 		<equips>
 		</equips>

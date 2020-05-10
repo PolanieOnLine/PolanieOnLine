@@ -272,7 +272,7 @@
 			<item value="zbroja chaosu" quantity="[1,1]" probability="0.01"/>
 			<item value="pas cieni" quantity="[1,1]" probability="0.1"/>
 			<item value="buty cieni" quantity="[1,1]" probability="0.1"/>
-			<item value="czarny płaszcz" quantity="[1,1]" probability="0.0050"/>
+			<item value="czarny płaszcz" quantity="[1,1]" probability="0.005"/>
 			<item value="sztylet mroku" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>

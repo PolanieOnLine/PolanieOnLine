@@ -54,7 +54,8 @@
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="2.0"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="5.0"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="1.0"/>
-			<item value="kamienne rękawice" quantity="[1,1]" probability="2.5"/>
+			<item value="kamienne rękawice" quantity="[1,1]" probability="1.0"/>
+			<item value="pas kamienny" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -90,7 +91,7 @@
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.5"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="1.0"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="0.1"/>
-			<item value="kamienne rękawice" quantity="[1,1]" probability="0.5"/>
+			<item value="kamienne rękawice" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -154,7 +155,8 @@
 			<item value="kamienna tarcza" quantity="[1,1]" probability="5.0"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="9.0"/>
 			<item value="spodnie kamienne" quantity="[1,1]" probability="1.0"/>
-			<item value="kamienne rękawice" quantity="[1,1]" probability="2.5"/>
+			<item value="kamienne rękawice" quantity="[1,1]" probability="2.0"/>
+			<item value="pas kamienny" quantity="[1,1]" probability="3.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -221,6 +223,7 @@
 			<item value="miecz ognisty" quantity="[1,1]" probability="0.8"/>
 			<item value="ognista tarcza" quantity="[1,1]" probability="0.9"/>
 			<item value="ogniste rękawice" quantity="[1,1]" probability="0.0025"/>
+			<item value="ognisty pas" quantity="[1,1]" probability="0.2"/>
 			<item value="ognisty amulet" quantity="[1,1]" probability="0.5"/>
 			<item value="magia płomieni" quantity="[30,200]" probability="40.0"/>
 		</drops>
@@ -261,6 +264,7 @@
 			<item value="miecz lodowy" quantity="[1,1]" probability="5.0"/>
 			<item value="lodowa tarcza" quantity="[1,1]" probability="1.0"/>
 			<item value="lodowe rękawice" quantity="[1,1]" probability="0.025"/>
+			<item value="lodowy pas" quantity="[1,1]" probability="0.2"/>
 			<item value="lodowy amulet" quantity="[1,1]" probability="0.3"/>
 			<item value="magia deszczu" quantity="[30,200]" probability="40.0"/>
 		</drops>
@@ -301,6 +305,7 @@
 			<item value="ogniste rękawice" quantity="[1,1]" probability="0.0005"/>
 			<item value="ognisty amulet" quantity="[1,1]" probability="0.01"/>
 			<item value="ognista tarcza" quantity="[1,1]" probability="1.0"/>
+			<item value="ognista zbroja" quantity="[1,1]" probability="0.2"/>
 			<item value="miecz ognisty" quantity="[1,1]" probability="10.0"/>
 			<item value="rubin" quantity="[1,1]" probability="0.0001"/>
 		</drops>
@@ -349,9 +354,10 @@
 			<item value="hełm lodowy" quantity="[1,1]" probability="0.25"/>
 			<item value="lodowe rękawice" quantity="[1,1]" probability="0.075"/>
 			<item value="lodowa kusza" quantity="[1,1]" probability="0.85"/>
-			<item value="lodowe spodnie" quantity="[1,1]" probability="1.15"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="1.2"/>
 			<item value="lodowy płaszcz" quantity="[1,1]" probability="1.5"/>
 			<item value="lodowy amulet" quantity="[1,1]" probability="0.5"/>
+			<item value="lodowy pas" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>
 		</equips>

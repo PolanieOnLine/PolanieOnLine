@@ -376,6 +376,7 @@
 			<item value="duży eliksir" quantity="[1,2]" probability="80.0"/>
 			<item value="tarcza mainiocyjska" quantity="[1,1]" probability="1.5"/>
 			<item value="spodnie mainiocyjskie" quantity="[1,1]" probability="0.5"/>
+			<item value="pas mainiocyjski" quantity="[1,1]" probability="0.5"/>
 			<item value="nakrapiane jajo" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips>
