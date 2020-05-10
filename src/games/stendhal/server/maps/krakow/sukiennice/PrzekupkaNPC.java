@@ -18,7 +18,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -43,12 +42,6 @@ public class PrzekupkaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Przekupka") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -66,12 +59,5 @@ public class PrzekupkaNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(100);
 		zone.add(npc);
-
-		final Sign book = new Sign();
-		book.setPosition(24, 10);
-		book.setText(" -- Kupię -- \n marchew\t\t 2\n sałata\t\t 2\n pieczarka\t\t 4\n pomidor\t\t 5\n kapusta\t\t 6\n opieńka miodowa\t 6\n borowik\t\t 6\n szpinak\t\t 6\n brokuł\t\t 7\n por\t\t 7\n kalafior\t\t 8\n cebula\t\t 8\n cukinia\t\t 10");
-		book.setEntityClass("book_blue");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

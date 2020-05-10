@@ -18,7 +18,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -43,12 +42,6 @@ public class RzeznikNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Rzeźnik") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -60,19 +53,11 @@ public class RzeznikNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Rzeźnik jakiś taki gburowaty.");
+		npc.setDescription("Oto Rzeźnik, jakiś taki gburowaty.");
 		npc.setEntityClass("jailedbarbariannpc");
 		npc.setPosition(26, 43);
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(100);
 		zone.add(npc);
-
-		// Add a book with the shop offers
-		final Sign book = new Sign();
-		book.setPosition(24, 43);
-		book.setText(" -- Skup mięsa -- \n udko\t 12\n mięso\t 15\n szynka\t 25\n stek\t 35");
-		book.setEntityClass("book_blue");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

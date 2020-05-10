@@ -17,7 +17,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -42,12 +41,6 @@ public class WaldekNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Waldek") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -59,19 +52,11 @@ public class WaldekNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Waldek");
+		npc.setDescription("Oto Waldek.");
 		npc.setEntityClass("man_007_npc");
 		npc.setPosition(26, 17);
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(100);
 		zone.add(npc);
-
-		// Add a book with the shop offers
-		final Sign book = new Sign();
-		book.setPosition(24, 15);
-		book.setText(" -- Skup -- \n wisienka\t\t 8\n jabłko\t\t 5\n jabłko niezgody\t 15\n poziomka\t\t 5\n truskawka\t\t 8\n gruszka\t\t 6\n kokos\t\t 7\n ananas\t\t 8");
-		book.setEntityClass("book_red");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

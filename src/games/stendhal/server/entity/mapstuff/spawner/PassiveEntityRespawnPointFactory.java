@@ -144,7 +144,7 @@ public class PassiveEntityRespawnPointFactory {
 		case 1:
 			passiveEntityrespawnPoint = new VegetableGrower("pomidor", "tomato");
 			passiveEntityrespawnPoint
-					.setDescription("Oto roślina pomidor.");
+					.setDescription("Oto miejsce, gdzie rośnie pomidor.");
 			break;
 		case 2:
 			passiveEntityrespawnPoint = new PassiveEntityRespawnPoint("ananas", 1200);
@@ -152,7 +152,7 @@ public class PassiveEntityRespawnPointFactory {
 		case 3:
 			passiveEntityrespawnPoint = new VegetableGrower("arbuz", "watermelon");
 			passiveEntityrespawnPoint
-					.setDescription("Oto arbuz.");
+					.setDescription("Oto miejsce, gdzie rośnie arbuz.");
 			break;
 		case 4:
 			passiveEntityrespawnPoint = new PassiveEntityRespawnPoint("banan", 1000);
@@ -162,7 +162,7 @@ public class PassiveEntityRespawnPointFactory {
 		case 5:
 			passiveEntityrespawnPoint = new VegetableGrower("winogrona", "grapes");
 			passiveEntityrespawnPoint
-					.setDescription("Oto winogrona.");
+					.setDescription("Oto miejsce, gdzie rosną winogrona.");
 			break;
 		case 6:
 			passiveEntityrespawnPoint = new PassiveEntityRespawnPoint("gruszka", 500);
@@ -222,6 +222,7 @@ public class PassiveEntityRespawnPointFactory {
 			break;
 		case 1:
 			passiveEntityrespawnPoint = new VegetableGrower("marchew", "carrot");
+			passiveEntityrespawnPoint.put("menu", "Podnieś|Użyj");
 			break;
 		case 2:
 			passiveEntityrespawnPoint = new VegetableGrower("sałata", "salad");
@@ -319,6 +320,7 @@ public class PassiveEntityRespawnPointFactory {
 		switch (type) {
 		case 0:
 			passiveEntityrespawnPoint = new VegetableGrower("polano", "wood");
+			passiveEntityrespawnPoint.put("menu", "Podnieś|Użyj");
 			passiveEntityrespawnPoint.setDescription("Widzisz w ziemi odcisk na kształt polana.");
 			break;
 		case 1:
@@ -403,7 +405,7 @@ public class PassiveEntityRespawnPointFactory {
 		PassiveEntityRespawnPoint passiveEntityrespawnPoint;
 		switch (type) {
 		case 0:
-			passiveEntityrespawnPoint = new GrainField("zboże", "grain", Arrays.asList("kosa", "pordzewiała kosa", "kosa czarna"));
+			passiveEntityrespawnPoint = new GrainField("zboże", "grain", Arrays.asList("kosa", "pordzewiała kosa", "kosa czarna", "złota kosa", "kosa z mithrilu"));
 			break;
 
 		case 1:

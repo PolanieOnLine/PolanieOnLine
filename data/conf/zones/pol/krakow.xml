@@ -1512,6 +1512,73 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.RybakMiloradNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.RzeznikNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.ZielarkaNPC"/>
+
+		<!-- książki z ofertami -->
+		<entity x="24" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">sellwarzywairek</parameter>
+				<parameter name="title">Sklep Irka (sprzedaż)</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Możesz kupić te rzeczy od Irka.</parameter>
+			</implementation>
+			<attribute name="class">book_red</attribute>
+		</entity>
+
+		<entity x="24" y="10">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buywarzywa</parameter>
+				<parameter name="title">Sklep Przekupki (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Przekupce.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+		<entity x="24" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyowoce</parameter>
+				<parameter name="title">Sklep Waldka (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Waldkowi.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+		<entity x="24" y="32">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buycheng</parameter>
+				<parameter name="title">Sklep Chenga (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Chengowi.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+		<entity x="24" y="38">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyrybak</parameter>
+				<parameter name="title">Sklep Rybaka (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Rybakowi.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+		<entity x="24" y="43">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buymieso</parameter>
+				<parameter name="title">Sklep Rzeźnika (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Rzeźnikowi.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+		<entity x="16" y="42">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyziola</parameter>
+				<parameter name="title">Sklep Zielarki (skup)</parameter>
+				<parameter name="seller">false</parameter>
+				<parameter name="caption">Możesz sprzedać te rzeczy Zielarce.</parameter>
+			</implementation>
+			<attribute name="class">book_blue</attribute>
+		</entity>
+
 		<!-- tables -->
 		<entity x="6" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>

@@ -983,7 +983,7 @@
 		<item name="okoń" price="8" />
 		<item name="pokolec" price="9" />
 		<item name="pstrąg" price="9" />
-		<item name="błazanek" price="10" />
+		<item name="błazenek" price="10" />
 	</shop>
 
 	<!-- Kacper kupuje: -->
@@ -1006,7 +1006,7 @@
 		<item name="wisienka" price="8" />
 		<item name="jabłko" price="5" />
 		<item name="jabłko niezgody" price="15" />
-		<item name="poziomka" price="5" />
+		<!-- <item name="poziomka" price="5" /> NIE MA TAKIEGO PRZEDMIOTU -->
 		<item name="truskawka" price="8" />
 		<item name="gruszka" price="6" />
 		<item name="kokos" price="7" />

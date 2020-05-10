@@ -17,7 +17,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -42,12 +41,6 @@ public class ZielarkaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Zielarka") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -59,19 +52,11 @@ public class ZielarkaNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Zielarka. Wie wszystko o ziołach.");
+		npc.setDescription("Oto Zielarka, która wie wszystko o ziołach.");
 		npc.setEntityClass("confectionerapplepienpc");
 		npc.setPosition(15, 44);
 		npc.setDirection(Direction.UP);
 		npc.initHP(100);
 		zone.add(npc);
-
-		// Add a book with the shop offers
-		final Sign book = new Sign();
-		book.setPosition(16, 42);
-		book.setText(" -- Skup ziół -- \n arandula\t 12\n kekik\t 28\n sclaria\t 28\n kokuda\t 250");
-		book.setEntityClass("book_red");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

@@ -17,7 +17,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
@@ -42,12 +41,6 @@ public class IrekNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Irek") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -66,13 +59,5 @@ public class IrekNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(100);
 		zone.add(npc);
-
-		// Add a book with the shop offers
-		final Sign book = new Sign();
-		book.setPosition(24, 4);
-		book.setText(" -- Sprzedam -- \n marchew\t 5\n sałata\t 10\n pomidor\t 20\n kapusta\t 25\n cukinia\t 30\n borowik\t 35");
-		book.setEntityClass("book_red");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

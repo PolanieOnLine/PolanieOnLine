@@ -119,9 +119,9 @@
 	</item>
 	
 	<!-- START: SPECIAL APPLES
-	<item name="fioletowe jabłko">
+	<item name="jabłko szczęścia">
 		<type class="food/apple_special" subclass="apple_purple" tileid="-1"/>
-		<description>Oto fioletowe jabłko. Jest pełen wspomnień.</description>
+		<description>Oto jabłko szczęścia. Jest pełen wspomnień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="4" />
@@ -142,32 +142,9 @@
 		</equipable>
 	</item>
 	
-	<item name="jabłko fiołkowe">
+	<item name="jabłko miłości">
 		<type class="food/apple_special" subclass="apple_mauve" tileid="-1"/>
-		<description>Oto jabłko fiołkowe. Jest pełen wspomnień.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<attributes>
-			<amount value="4" />
-			<frequency value="10" />
-			<quantity value="1" />
-			<regen value="1" />
-			<menu value="Zjedz|Użyj"/>
-		</attributes>
-		<weight value="1.0" />
-		<value value="1" />
-		<equipable>
-			<slot name="ground" />
-			<slot name="content" />
-			<slot name="lhand" />
-			<slot name="rhand" />
-			<slot name="bag" />
-			<slot name="trade" />
-		</equipable>
-	</item>
-
-	<item name="jabłko niezgody">
-		<type class="food/apple_special" subclass="apple_black" tileid="-1"/>
-		<description>Oto jabłko niezgody. Jest zapewne podarkiem od Johnnnny'ego. To człowiek co ma czarne przedmioty.</description>
+		<description>Oto jabłko miłości. Jest pełen wspomnień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="4" />
@@ -188,6 +165,29 @@
 		</equipable>
 	</item>
 	 END: SPECIAL APPLES -->
+
+	<item name="jabłko niezgody">
+		<type class="food" subclass="apple_black" tileid="-1"/>
+		<description>Oto jabłko niezgody. Jest zapewne podarkiem od Johnnnny'ego. To człowiek co ma czarne przedmioty.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="4" />
+			<frequency value="10" />
+			<quantity value="1" />
+			<regen value="1" />
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0" />
+		<value value="1" />
+		<equipable>
+			<slot name="ground" />
+			<slot name="content" />
+			<slot name="lhand" />
+			<slot name="rhand" />
+			<slot name="bag" />
+			<slot name="trade" />
+		</equipable>
+	</item>
 
 	<item name="banan">
 		<type class="food" subclass="banana" tileid="-1"/>

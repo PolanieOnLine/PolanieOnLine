@@ -95,7 +95,7 @@ public class CollectEnemyData extends AbstractQuest {
 	private TeleporterBehaviour teleporterBehaviour;
 
 	public static final String[] zonesWhitelist = {
-			"0_semos_mountain_n2_w", "0_semos_mountain_n2_w2", "0_deniran_forest_n2_e",
+			"0_semos_mountain_n2_w", "0_ados_mountain_n2_w2", "0_deniran_forest_n2_e",
 			"-7_deniran_atlantis_mtn_n_e2", "0_orril_mountain_n_w2"
 	};
 
@@ -171,7 +171,10 @@ public class CollectEnemyData extends AbstractQuest {
 
 		teleporterBehaviour.setTarryDuration(MathHelper.SECONDS_IN_ONE_MINUTE * 15); // spends 15 minutes on a map
 		teleporterBehaviour.setExitsConversation(false);
-		teleporterBehaviour.onTurnReached(0); // initialize NPC on random map
+		teleporterBehaviour.setTeleportWarning("Muszę wkrótcę odejść.");
+
+		// initialize Rengard with a zone so JUnit test does not fail
+		SingletonRepository.getRPWorld().getZone(zonesWhitelist[0]).add(npc);
 	}
 
 	private void initQuest() {

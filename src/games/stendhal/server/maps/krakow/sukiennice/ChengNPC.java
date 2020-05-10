@@ -18,7 +18,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
@@ -45,12 +44,6 @@ public class ChengNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Cheng") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj tubylcze.");
@@ -63,18 +56,11 @@ public class ChengNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Cheng kupiec z Chin.");
+		npc.setDescription("Oto Cheng, kupiec z Chin.");
 		npc.setEntityClass("npcwikary");
 		npc.setPosition(26, 30);
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(100);
 		zone.add(npc);
-
-		final Sign book = new Sign();
-		book.setPosition(24, 32);
-		book.setText(" -- Skup -- \n bursztyn\t\t 20\n wielka perła\t 1500\n bryłka mithrilu\t 10\n korale\t\t 10000");
-		book.setEntityClass("book_red");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

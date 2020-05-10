@@ -95,7 +95,7 @@ public class VegetableGrower extends GrowingPassiveEntityRespawnPoint implements
 		String text;
 		switch (getRipeness()) {
 		case 0:
-			text = "Oto miejsce, gdzie można znaleść " + Grammar.a_noun(vegetableName) + ".";
+			text = "Oto miejsce, gdzie można znaleźć " + Grammar.a_noun(vegetableName) + ".";
 			break;
 		case 1:
 			text = "Oto zebrane " + Grammar.a_noun(vegetableName) + ".";

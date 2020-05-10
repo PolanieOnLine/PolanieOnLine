@@ -47,8 +47,8 @@ public class Dojo implements ZoneConfigurator {
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "dojo";
 
-	/** time (in seconds) allowed for training session */
-	private static final int TRAIN_TIME = 20 * MathHelper.SECONDS_IN_ONE_MINUTE;
+	/** time (in minutes) allowed for training session */
+	private static final int BASE_TRAIN_TIME = 20;
 
 	/** time player must wait to train again */
 	private static final int COOLDOWN = 5;
@@ -147,10 +147,11 @@ public class Dojo implements ZoneConfigurator {
 		final ChatAction startTrainingAction = new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+				final int trainTime = calculateTrainTime(player);
+				samurai.say("Możesz trenować do " + trainTime + " minut. Wykorzystaj więc dobrze swój czas.");
 				player.drop("money", dojoArea.calculateFee(player.getAtk()));
 				samurai.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
-				//player.setQuest(QUEST_SLOT, STATE_ACTIVE + ";" + Integer.toString(TRAIN_TIME));
-				dojoArea.startSession(player, TRAIN_TIME);
+				dojoArea.startSession(player, trainTime * MathHelper.SECONDS_IN_ONE_MINUTE);
 			}
 		};
 
@@ -252,7 +253,7 @@ public class Dojo implements ZoneConfigurator {
 				ConversationPhrases.YES_MESSAGES,
 				canAffordFeeCondition,
 				ConversationStates.IDLE,
-				"Możesz trenować do " + Integer.toString(TRAIN_TIME / MathHelper.SECONDS_IN_ONE_MINUTE) + " minut. Wykorzystaj więc dobrze swój czas.",
+				null,
 				startTrainingAction);
 
 		// player does not have enough money to begin training
@@ -270,5 +271,18 @@ public class Dojo implements ZoneConfigurator {
 				ConversationStates.ATTENDING,
 				"Powodzenia.",
 				null);
+	}
+
+	/**
+	 * Calculates the amount of time player can spend in dojo.
+	 */
+	private int calculateTrainTime(final Player player) {
+		int trainTime = BASE_TRAIN_TIME;
+
+		if (player.getLevel() >= 60) {
+			trainTime = trainTime + 4;
+		}
+
+		return trainTime;
 	}
 }
