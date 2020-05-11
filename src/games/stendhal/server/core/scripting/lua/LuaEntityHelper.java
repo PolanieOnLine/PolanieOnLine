@@ -45,12 +45,10 @@ import games.stendhal.server.entity.npc.SilentNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
-
 /**
  * Exposes some entity classes & functions to Lua.
  */
 public class LuaEntityHelper {
-
 	private static LuaLogger logger = LuaLogger.get();
 
 	public static final EntityManager manager = SingletonRepository.getEntityManager();
@@ -59,7 +57,6 @@ public class LuaEntityHelper {
 	private static final LuaActionHelper actionHelper = LuaActionHelper.get();
 
 	private static LuaEntityHelper instance;
-
 
 	/**
 	 * Retrieves the static instance.
@@ -134,13 +131,27 @@ public class LuaEntityHelper {
 	/**
 	 * Retrieves an existing SpeakerNPC.
 	 *
+	 * FIXME: cannot cast to LuaSpeakerNPC, so specialized methods will not work
+	 * 			with entities retrieved from this method that are not instances
+	 * 			of LuaSpeakerNPC.
+	 *
 	 * @param name
 	 * 		Name of NPC.
 	 * @return
 	 * 		SpeakerNPC instance or <code>null</code>.
 	 */
-	public LuaSpeakerNPC getNPC(final String name) {
-		return (LuaSpeakerNPC) SingletonRepository.getNPCList().get(name);
+	public SpeakerNPC getNPC(final String name) {
+		final SpeakerNPC npc = SingletonRepository.getNPCList().get(name);
+
+		if (npc == null) {
+			logger.warn("NPC \"" + name + "\" not found");
+			return null;
+		}
+		if (!(npc instanceof LuaSpeakerNPC)) {
+			logger.warn("Lua call to entities:getNPC did not return LuaSpeakerNPC instance, specialized methods will fail with NPC \"" + npc.getName() + "\"");
+		}
+
+		return npc;
 	}
 
 	/**
@@ -502,7 +513,6 @@ public class LuaEntityHelper {
 	}
 
 	private class LuaSilentNPC extends SilentNPC implements LuaGuidedEntity {
-
 		@Override
 		public void setPath(LuaTable table, Boolean loop) {
 			LuaEntityHelper.setEntityPath(this, table, loop);
@@ -512,6 +522,5 @@ public class LuaEntityHelper {
 		public void setPathAndPosition(LuaTable table, Boolean loop) {
 			LuaEntityHelper.setEntityPathAndPosition(this, table, loop);
 		}
-
 	}
 }
