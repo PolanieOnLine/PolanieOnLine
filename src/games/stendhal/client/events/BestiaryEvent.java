@@ -139,10 +139,12 @@ public class BestiaryEvent extends Event<RPEntity> {
 
 					final String name = enemy[0];
 
-					if (isRare(name)) {
-						hasRare = true;
-					} else if (isAbnormal(name)) {
-						hasAbnormal = true;
+					if (!isImmortal(name)) {
+						if (isRare(name)) {
+							hasRare = true;
+						} else if (isAbnormal(name)) {
+							hasAbnormal = true;
+						}
 					}
 
 					rval[0] = name;
@@ -225,5 +227,17 @@ public class BestiaryEvent extends Event<RPEntity> {
 	 */
 	private boolean isAbnormal(final String enemyName) {
 		return enemyName.endsWith("(abnormal)");
+	}
+
+	/**
+	 * Checks name for "abnormal" identifier.
+	 *
+	 * @param enemyName
+	 * 		String to check.
+	 * @return
+	 * 		<code>true</code> if enemyName ends with "(abnormal)".
+	 */
+	private boolean isImmortal(final String enemyName) {
+		return enemyName.endsWith("(immortal)");
 	}
 }

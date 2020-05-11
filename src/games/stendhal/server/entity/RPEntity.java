@@ -2742,7 +2742,8 @@ public abstract class RPEntity extends GuidedEntity {
 				 *
 				 * Don't call "Creature.isAbnormal" method here since it also checks "rare" attribute.
 				 */
-				if (((Creature) this).getAIProfiles().containsKey("abnormal") &&
+				if ((((Creature) this).getAIProfiles().containsKey("abnormal")
+						|| ((Creature) this).getAIProfiles().containsKey("immortal")) &&
 						(this.getName().startsWith("chaos") || this.getName().startsWith("madaram"))) {
 					showLevel = false;
 				}

@@ -29,7 +29,7 @@
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
-			<profile name="abnormal"/>
+			<profile name="immortal"/>
 		</ai>
 	</creature>
 
@@ -60,7 +60,7 @@
 			<profile name="attack weakest"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
-			<profile name="abnormal"/>
+			<profile name="immortal"/>
 		</ai>
 	</creature>
 
@@ -94,7 +94,7 @@
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
-			<profile name="abnormal"/>
+			<profile name="immortal"/>
 		</ai>
 	</creature>
 
@@ -128,7 +128,7 @@
 			<profile name="attack weakest"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
-			<profile name="abnormal"/>
+			<profile name="immortal"/>
 		</ai>
 	</creature>
 	<!-- END: niesmiertelne -->

@@ -134,14 +134,16 @@ public class BestiaryEvent extends RPEvent {
 				}
 			}
 
-			// place rare & abnormal enemies in separate lists
+			// place rare & abnormal enemies in separate lists if entity is not immortal
 			for (final Creature e: em.getCreatures()) {
-				if (e.isRare()) {
-					rareEnemies.add(e);
-				} else if (e.isAbnormal()) {
-					abnormalEnemies.add(e);
-				} else {
-					standardEnemies.add(e);
+				if (!e.isImmortal()) {
+					if (e.isRare()) {
+						rareEnemies.add(e);
+					} else if (e.isAbnormal()) {
+						abnormalEnemies.add(e);
+					} else {
+						standardEnemies.add(e);
+					}
 				}
 			}
 

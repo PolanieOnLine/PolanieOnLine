@@ -821,7 +821,7 @@ public class Creature extends NPC {
 	}
 
 	/**
-	 * Check if the creature has a rare profile, and thus should not appear in DeathMatch,
+	 * Check if the creature has a "rare" profile, and thus should not appear in DeathMatch,
 	 * or the daily quest.
 	 *
 	 * @return true if the creature is rare, false otherwise
@@ -837,7 +837,17 @@ public class Creature extends NPC {
 	 * 		<code>true</code> if creature is abnormal or rare.
 	 */
 	public boolean isAbnormal() {
-		return getAIProfiles().containsKey("abnormal") || isRare();
+		return getAIProfiles().containsKey("abnormal") || isRare() || isImmortal();
+	}
+
+	/**
+	 * Checks if the creature has "immortal" profile.
+	 *
+	 * @return
+	 * 		<code>true</code> if creature is immortal, false otherwise.
+	 */
+	public boolean isImmortal() {
+		return getAIProfiles().containsKey("immortal");
 	}
 
 	public void equip(final List<EquipItem> items) {

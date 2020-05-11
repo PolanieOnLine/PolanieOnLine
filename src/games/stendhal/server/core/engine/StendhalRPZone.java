@@ -568,7 +568,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 		int levelSum = 1;
 		for (CreatureRespawnPoint spawner : respawnPoints) {
 			Creature creature = spawner.getPrototypeCreature();
-			// Rare & abnormal creatures should not count.
+			// Rare & abnormal & immortal creatures should not count.
 			if (creature.isAbnormal()) {
 				continue;
 			}
