@@ -3,8 +3,9 @@ Changelog
 1.12
 *klient*
 - Dodano nowe pliki graficzne (przedmiotów/gui/npc/potworów)
-- Zmieniono wygląd lekkiej oraz zwykłej kuszy, pasa kolczego oraz złotego pasa kolczego,
-pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
+- Zmieniono wygląd: lekkiej oraz zwykłej kuszy, pasa kolczego, złotego pasa kolczego,
+pasa skórzanego, wzmocnionego pasa skórzanego, pasa olbrzymiego, lodowego amuletu, ognistego amuletu,
+pomidora, opieńka miodowego, polana
 
 *świat*
 - Dodano nowe NPC: (1)
@@ -28,6 +29,7 @@ pasa skórzanego oraz wzmocnionego pasa skórzanego, pasa olbrzymiego
 	- "Magiczne Zaopatrzenie"
 - Dodano dodatkową nagrodę za 4 i 5 odrodzenie u Yereny
 - Dodano graficzny przegląd ofert w Sukiennicy
+- Dodano możliwość zdobycia jabłek z potwora "drzewcowa" [2-8]
 - Ceny w większości sklepów NPC zostały poprawione
 - Zmniejszono szansę na zdobycie sztylecika z mithrilu
 - Wzmocniono: miecz z mithrilu, ognisty miecz demonów, lodową kuszę, kuszę łowcy,
