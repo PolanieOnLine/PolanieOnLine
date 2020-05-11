@@ -57,7 +57,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ITEMS_SKINS = {
 			"skóra arktycznego smoka", "skóra czarnego smoka", "skóra czerwonego smoka",
 			"skóra niebieskiego smoka", "skóra zielonego smoka", "skóra złotego smoka",
-			"skóra tygrysa", "skóra lwa", "skóra zwierzęca"
+			"skóra tygrysa", "skóra lwa", "skóra białego tygrysa", "skóra zwierzęca"
 	};
 
 	@Override
