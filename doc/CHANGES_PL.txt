@@ -50,6 +50,10 @@ pomidora, opieńka miodowego, polana
 - Przeniesiono konfigurowanie sklepów z pliku JAVA do XML (w data/conf)
 - Zwiększono limit tworzenia postaci na jednym koncie POL z 4 do 8
 
+*kod*
+- Dodano nowy profil dla stworów nazwany "immortal"; potwory z tym profilem są ignorowane w bestiariuszu
+	jak i w zabójstwach oraz nie pokazuje aktualnego poziomu w opisie stwora.
+
 *naprawiono błędy*
 - Poprawiono niektóre mapy
 - Poprawiono wyglądy nowych NPC dodanych w wersji 1.11
