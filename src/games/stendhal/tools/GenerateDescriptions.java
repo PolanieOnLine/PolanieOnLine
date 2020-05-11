@@ -63,7 +63,7 @@ public class GenerateDescriptions {
 	private static String describe(String desc, String name) {
 		if (desc == null || desc.trim().isEmpty()) {
 			// The default description
-			desc = "You see " + Grammar.a_noun(name) + ".";
+			desc = "Oto " + Grammar.a_noun(name) + ".";
 		}
 		return desc + "=" + desc;
 	}
