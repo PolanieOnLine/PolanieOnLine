@@ -632,7 +632,7 @@
 			<item value="mięso" quantity="[2,6]" probability="60.0"/>
 			<item value="szynka" quantity="[1,2]" probability="30.0"/>
 			<item value="stek" quantity="[1,1]" probability="30.0"/>
-			<item value="skóra lwa" quantity="[1,1]" probability="1.0"/>
+			<item value="skóra lwa" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -804,7 +804,7 @@
 			<item value="mięso" quantity="[1,6]" probability="60.0"/>
 			<item value="szynka" quantity="[1,2]" probability="30.0"/>
 			<item value="stek" quantity="[1,1]" probability="90.0"/>
-			<item value="skóra tygrysa" quantity="[1,1]" probability="1.0"/>
+			<item value="skóra tygrysa" quantity="[1,1]" probability="5.0"/>
 			<item value="kieł tygrysi" quantity="[1,1]" probability="1.0"/>
 			<item value="pazury tygrysie" quantity="[1,1]" probability="1.0"/>
 		</drops>

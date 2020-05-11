@@ -278,7 +278,7 @@
 			<item value="stek" quantity="[1,9]" probability="90.0"/>
 			<item value="kieł tygrysi" quantity="[1,1]" probability="15.0"/>
 			<item value="pazury tygrysie" quantity="[1,1]" probability="25.0"/>
-			<item value="skóra białego tygrysa" quantity="[1,1]" probability="2.0"/>
+			<item value="skóra białego tygrysa" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
