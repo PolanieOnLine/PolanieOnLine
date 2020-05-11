@@ -39,7 +39,6 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_HELPER_50 = "deathmatch.helper.0050";
 	public static final String ID_HELPER_100 = "deathmatch.helper.0100";
 
-
 	@Override
 	protected Category getCategory() {
 		return Category.DEATHMATCH;
