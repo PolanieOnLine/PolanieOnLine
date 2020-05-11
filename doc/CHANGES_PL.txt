@@ -22,11 +22,15 @@ pomidora, opieńka miodowego, polana
 	- rękawice zabójcy, rękawice szmaragdowe
 	- ogniste spodnie, ognista zbroja
 	- amulecik z mithrilu
-- Dodano nowe osiągnięcia: (4)
+- Dodano nowe osiągnięcia: (8)
 	- "Pomocnik w Deathmatchu"
 	- "Kompan w Deathmatchu"
 	- "Eskortnik w Deathmatchu"
 	- "Magiczne Zaopatrzenie"
+	- "Magiczny Zaklinacz"
+	- "Głodomor"
+	- "Producent Eliksirów"
+	- "Spokojny Sen"
 - Dodano dodatkową nagrodę za 4 i 5 odrodzenie u Yereny
 - Dodano graficzny przegląd ofert w Sukiennicy
 - Dodano możliwość zdobycia jabłek z potwora "drzewcowa" [2-8]
