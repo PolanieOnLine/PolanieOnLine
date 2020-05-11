@@ -43,7 +43,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		// this includes a lot of foods! at time of writing, this is at least:
 		// pie, cheese sausage, sausage, fish pie, apple pie, cherry pie, crepes suzette, sandwich, bread, pizza
 		// grilled steak is made using quest code and not production code so we add an extra condition, and it doesn't adhere to standard completion guidelines
-		achievements.add(createAchievement("production.class.food", "Smakosz", "Zlecił wszystkie rodzaje potraw dostępne u kucharzy w Faiumoni",
+		achievements.add(createAchievement("production.class.food", "Smakosz", "Zlecił wszystkie rodzaje potraw dostępne u kucharzy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						new PlayerProducedNumberOfItemsCondition(1, foods),
@@ -55,7 +55,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 
 		// soups and koboldish torcibud are made using quest code so we add extra conditions for those
 		// at time of writing, the other drinks are fierywater, tea, pina colada, and mega potion (which we may remove)
-		achievements.add(createAchievement("production.class.drink", "Spragniony Pracownik", "Zlecił wszystkie rodzaje napoi dostępne u kucharzy w Faiumoni",
+		achievements.add(createAchievement("production.class.drink", "Spragniony Pracownik", "Zlecił wszystkie rodzaje napoi dostępne u kucharzy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						new PlayerProducedNumberOfItemsCondition(1, drinks),
@@ -74,7 +74,15 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement("production.flour.1000", "Asystent Jenny", "Zrobił 1000 mąk",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(1000, "mąka")));
-		
+
+		achievements.add(createAchievement("production.potions.500", "Producent Eliksirów", "Wyprodukował 500 wielkich eliksirów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerProducedNumberOfItemsCondition(500, "wielki eliksir")));
+
+		achievements.add(createAchievement("production.sandwiches.100", "Głodomor", "Wyprodukował 100 zwykłych kanapek",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerProducedNumberOfItemsCondition(100, "kanapka")));
+
 		return achievements;
 	}
 

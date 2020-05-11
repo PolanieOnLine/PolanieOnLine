@@ -37,6 +37,7 @@ import games.stendhal.server.entity.player.Player;
 public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 	public static final String ID_CHILD_FRIEND = "friend.quests.children";
+	public static final String ID_BAD_DREAMS = "friend.quest.dreams";
 	public static final String ID_PRIVATE_DETECTIVE = "friend.quests.find";
 	public static final String ID_DRAGONS = "friend.quests.dragons";
 	public static final String ID_GOOD_SAMARITAN = "friend.karma.250";
@@ -86,6 +87,11 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 								new QuestNotInStateCondition("eggs_for_marianne", "start")
 						)
 				)));
+
+		achievements.add(createAchievement(
+				ID_BAD_DREAMS, "Spokojny Sen", "Pomógł pozbyć się złych koszmarów małej dziewczynki Alicji",
+				Achievement.LEGENDARY_BASE_SCORE, true,
+				new QuestCompletedCondition("kill_dragons")));
 
 		// quests about finding people
 		achievements.add(createAchievement(

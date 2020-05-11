@@ -28,6 +28,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 
 	public static final String ID_ROYAL = "item.set.royal";
 	public static final String ID_MAGIC = "item.set.magic";
+	public static final String ID_WANDS = "item.set.wands";
 
 	@Override
 	protected Category getCategory() {
@@ -143,6 +144,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "magiczna zbroja płytowa", "magiczny hełm kolczy", "magiczny płaszcz",
 						"magiczne spodnie płytowe", "magiczne buty płytowe", "magiczna tarcza płytowa")));
+
+		itemAchievements.add(createAchievement(ID_WANDS, "Magiczny Zaklinacz", "Zdobył wszystkie różdżki",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1, "różdżka", "trójząb Trzygłowa", "różdżka Strzyboga",
+						"różdżka Wołosa", "różdżka Swaroga", "różdżka Peruna")));
 
 		return itemAchievements;
 	}
