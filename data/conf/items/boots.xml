@@ -33,7 +33,7 @@
 		</attributes>
 		<weight value="15.0"/>
 		<value value="23625"/>
-		<susceptibility type="fire" value="0.91"/>
+		<susceptibility type="fire" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -53,7 +53,7 @@
 		</attributes>
 		<weight value="9.0"/>
 		<value value="1812"/>
-		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="ice" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -330,8 +330,8 @@
 		</attributes>
 		<weight value="10.0"/>
 		<value value="1512"/>
-		<susceptibility type="fire" value="0.91"/>
-		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="fire" value="0.98"/>
+		<susceptibility type="ice" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -351,10 +351,10 @@
 		</attributes>
 		<weight value="17.0"/>
 		<value value="7000"/>
-		<susceptibility type="light" value="0.91"/>
-		<susceptibility type="dark" value="0.91"/>
-		<susceptibility type="fire" value="0.91"/>
-		<susceptibility type="ice" value="0.91"/>
+		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -448,6 +448,25 @@
 		</attributes>
 		<weight value="10.0"/>
 		<value value="1000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="feet"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="ogniste buty">
+		<type class="boots" subclass="fire_boots" tileid="-1"/>
+		<description>Oto ogniste buty. W nich stopy nigdy nie zamarzną.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="7"/>
+			<min_level value="10"/>
+		</attributes>
+		<susceptibility type="fire" value="0.83"/>
+		<susceptibility type="ice" value="1.11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
