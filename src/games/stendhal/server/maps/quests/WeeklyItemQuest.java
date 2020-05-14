@@ -83,7 +83,6 @@ import games.stendhal.server.maps.Region;
  * <ul><li> once a week</ul>
  */
 public class WeeklyItemQuest extends AbstractQuest {
-
 	/** the logger instance */
 	private static final Logger logger = Logger.getLogger(WeeklyItemQuest.class);
 

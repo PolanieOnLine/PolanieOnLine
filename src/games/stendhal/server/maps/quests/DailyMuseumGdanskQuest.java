@@ -12,6 +12,12 @@
 //Na podstawie taska DailyItemQuest.
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -19,18 +25,18 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropRecordedItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseAtkXPDependentOnLevelAction;
+import games.stendhal.server.entity.npc.action.IncreaseDefXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseRatkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPDependentOnLevelAction;
-import games.stendhal.server.entity.npc.action.IncreaseDefXPDependentOnLevelAction;
-import games.stendhal.server.entity.npc.action.IncreaseAtkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayRequiredItemAction;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.StartRecordingRandomItemCollectionAction;
-import games.stendhal.server.entity.npc.action.SayRequiredItemAction;
-import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
@@ -43,15 +49,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-
 public class DailyMuseumGdanskQuest extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "daily_museum_gdansk_quest";
 
 	/** How long until the player can give up and start another quest */
