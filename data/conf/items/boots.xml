@@ -478,7 +478,7 @@
 
 	<item name="lodowe buty">
 		<type class="boots" subclass="ice_boots" tileid="-1"/>
-		<description>Oto lodowe buty. Gdy masz je na sobie to nie czujesz swoich palcy u stóp.</description>
+		<description>Oto lodowe buty. Nie czujesz swoich palcy u stóp gdy masz je założone.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
