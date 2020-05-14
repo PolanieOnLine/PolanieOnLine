@@ -206,7 +206,7 @@ public class Creature extends NPC {
 		this.statusAttackers = copy.statusAttackers;
 		this.noises = copy.noises;
 
-		if(Occasion.MOREXP) {
+		if(Occasion.MOREXP || Occasion.SECOND_WORLD) {
 			this.respawnTime = (int) ((copy.respawnTime)*0.8);
 		} else {
 			this.respawnTime = copy.respawnTime;
@@ -221,7 +221,7 @@ public class Creature extends NPC {
 		setAtk(copy.getAtk());
 		setRatk(copy.getRatk());
 		setDef(copy.getDef());
-		if(Occasion.MOREXP) {
+		if(Occasion.MOREXP || Occasion.SECOND_WORLD) {
 			setXP((int)(copy.getXP()*1.5));
 		} else {
 			setXP(copy.getXP());

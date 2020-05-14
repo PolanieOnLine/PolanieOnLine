@@ -12,6 +12,7 @@
 package games.stendhal.server.entity.npc.action;
 
 import games.stendhal.common.Level;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
@@ -45,12 +46,14 @@ public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 		final int start = Level.getXP(player.getLevel());
 		final int next = Level.getXP(player.getLevel() + 1);
-		if (player.getDef() < 140) {
-			int reward = (int) ((next - start) / (def_xpDiff) / 20);
-			player.setDefXP(reward + player.getDefXP());
-		} else {
-			int reward = (int) ((next - start) / (def_xpDiff) / 60);
-			player.setDefXP(reward + player.getDefXP());
+		if(!Occasion.SECOND_WORLD) {
+			if (player.getDef() < 140) {
+				int reward = (int) ((next - start) / (def_xpDiff) / 20);
+				player.setDefXP(reward + player.getDefXP());
+			} else {
+				int reward = (int) ((next - start) / (def_xpDiff) / 60);
+				player.setDefXP(reward + player.getDefXP());
+			}
 		}
 		player.notifyWorldAboutChanges();
 	}

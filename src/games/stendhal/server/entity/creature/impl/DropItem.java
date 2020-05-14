@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.creature.impl;
 
+import games.stendhal.common.constants.Occasion;
+
 public class DropItem {
 
 	public String name;
@@ -24,14 +26,22 @@ public class DropItem {
 
 	public DropItem(final String name, final double probability, final int min, final int max) {
 		this.name = name;
-		this.probability = probability;
+		if(Occasion.SECOND_WORLD) {
+			this.probability = probability + 0.5;
+		} else {
+			this.probability = probability;
+		}
 		this.min = min;
 		this.max = max;
 	}
 
 	public DropItem(final String name, final double probability, final int amount) {
 		this.name = name;
-		this.probability = probability;
+		if(Occasion.SECOND_WORLD) {
+			this.probability = probability + 0.5;
+		} else {
+			this.probability = probability;
+		}
 		this.min = amount;
 		this.max = amount;
 	}
