@@ -242,8 +242,8 @@
 			<atk value="1"/>
 			<def value="2"/>
 		</attributes>
-		<susceptibility type="dark" value="0.83"/>
-		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="dark" value="0.8"/>
+		<susceptibility type="light" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -263,8 +263,8 @@
 			<atk value="2"/>
 			<def value="1"/>
 		</attributes>
-		<susceptibility type="dark" value="1.11"/>
-		<susceptibility type="light" value="0.83"/>
+		<susceptibility type="dark" value="1.1"/>
+		<susceptibility type="light" value="0.8"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -284,8 +284,8 @@
 			<atk value="2"/>
 			<def value="3"/>
 		</attributes>
-		<susceptibility type="dark" value="0.83"/>
-		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="dark" value="0.8"/>
+		<susceptibility type="light" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -305,8 +305,8 @@
 			<atk value="3"/>
 			<def value="2"/>
 		</attributes>
-		<susceptibility type="dark" value="1.11"/>
-		<susceptibility type="light" value="0.83"/>
+		<susceptibility type="dark" value="1.1"/>
+		<susceptibility type="light" value="0.8"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

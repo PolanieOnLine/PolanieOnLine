@@ -29,7 +29,7 @@
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1234"/>
-		<susceptibility type="light" value="1.11"/>
+		<susceptibility type="light" value="1.1"/>
 		<susceptibility type="dark" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
@@ -49,7 +49,7 @@
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1234"/>
-		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="fire" value="1.1"/>
 		<susceptibility type="earth" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
@@ -69,7 +69,7 @@
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1234"/>
-		<susceptibility type="fire" value="1.11"/>
+		<susceptibility type="fire" value="1.1"/>
 		<susceptibility type="ice" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
@@ -90,7 +90,7 @@
 		<weight value="1.0"/>
 		<value value="1234"/>
 		<susceptibility type="fire" value="0.95"/>
-		<susceptibility type="ice" value="1.11"/>
+		<susceptibility type="ice" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -147,8 +147,8 @@
 		<attributes>
 			<def value="14"/>
 		</attributes>
-		<susceptibility type="light" value="0.83"/>
-		<susceptibility type="dark" value="1.34"/>
+		<susceptibility type="light" value="0.8"/>
+		<susceptibility type="dark" value="1.35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
