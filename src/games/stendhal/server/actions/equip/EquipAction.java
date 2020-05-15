@@ -87,6 +87,19 @@ public class EquipAction extends EquipmentAction {
 			return;
 		}
 
+		// List of slots which require minimum level to use
+		if (Slots.CARRYING.getNames().contains(dest.slot)
+				&& !"bag".equals(dest.slot)) {
+			logger.debug("Checking required level for items");
+			// check required level for item in character's window
+			int minUse = ((Item) entity).getMinUse();
+			if (minUse > player.getLevel()) {
+				player.sendPrivateText("Nie jesteś jeszcze wystarczająco doświadczony, aby używać "
+						+ itemName + ". Wymagany jest " + minUse + " poziom.");
+				return;
+			}
+		}
+
 		logger.debug("Equip action agreed");
 
 		// looks good

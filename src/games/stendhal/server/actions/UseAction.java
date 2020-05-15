@@ -119,8 +119,9 @@ public class UseAction implements ActionListener {
 	}
 
 	private boolean canUse(final Player player, final RPObject object) {
-		return !isInJailZone(player, object)
-				&& !isItemBoundToOtherPlayer(player, object);
+		return !isInJailZone(player, object) 
+			&& !isItemBoundToOtherPlayer(player, object)
+			&& !isItemMinUse(player, object);
 	}
 
 	private boolean isInJailZone(final Player player, final RPObject object) {
@@ -150,9 +151,31 @@ public class UseAction implements ActionListener {
 						+ item.getName()
 						+ " jest specjalną nagrodą dla " + item.getBoundTo()
 						+ ". Nie zasługujesz na nią.");
+
 				return true;
 			}
 		}
+
+		return false;
+	}
+
+	/**
+	 * Make sure nobody with low level can uses items.
+	 * @param player
+	 * @param object
+	 * @return true if player have min use level up false otherwise
+	 */
+	protected boolean isItemMinUse(final Player player, final RPObject object) {
+		if (object instanceof Item) {
+			final Item item = (Item) object;
+			if (item.has("min_use") && player.getLevel() < item.getMinLevel()) {
+				player.sendPrivateText("Nie jesteś jeszcze wystarczająco doświadczony, aby używać "
+					+ item.getName() + ". Wymagany jest " + item.getMinUse() + " poziom.");
+
+				return true;
+			}
+		}
+
 		return false;
 	}
 

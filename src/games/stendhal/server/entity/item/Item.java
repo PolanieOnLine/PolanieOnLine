@@ -193,6 +193,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// Some items (Stackable) have maximum quantity
 		entity.addAttribute("max_quantity", Type.INT, Definition.HIDDEN);
 
+		// Some items have minimum use level values
+		entity.addAttribute("min_use", Type.INT, Definition.HIDDEN);
+
 		// Some items have minimum level to prevent spoiling
 		// the fun for new players
 		entity.addAttribute("min_level", Type.INT, Definition.HIDDEN);
@@ -802,8 +805,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			}
 		}
 
+		if (has("min_use")) {
+			stats.append(" MIN-UŻYCIE: ");
+			stats.append(get("min_use"));
+		}
 		if (has("min_level")) {
-			stats.append(" MIN-LEVEL: ");
+			stats.append(" MIN-POZIOM: ");
 			stats.append(get("min_level"));
 		}
 		if (has("life_support")) {
@@ -918,6 +925,18 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 	}
 
+	/**
+	 * gets the min min_use
+	 *
+	 * @return minUse
+	 */
+	public int getMinUse() {
+		if (super.has("min_use")) {
+			return super.getInt("min_use");
+		} else {
+			return 0;
+		}
+	}
 
 	/**
 	 * opportunity to affect the player when equipped
