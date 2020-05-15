@@ -8,6 +8,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>
+			<min_level value="25"/>
 		</attributes>
 		<weight value="5.0"/>
 		<value value="40824"/>
