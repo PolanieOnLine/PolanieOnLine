@@ -27,7 +27,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="26"/>
-			<min_level value="160"/>
+			<min_use value="100" condition="server.secondworld"/>
+			<min_level value="200"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="86000"/>
@@ -46,12 +47,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="28"/>
-			<min_level value="200"/>
+			<min_use value="150" condition="server.secondworld"/>
+			<min_level value="250"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="123032"/>
 		<susceptibility type="dark" value="0.9"/>
-		<susceptibility type="light" value="1.1"/>
+		<susceptibility type="light" value="1.2"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -164,8 +166,8 @@
 		</attributes>
 		<weight value="15.0"/>
 		<value value="19208"/>
-		<susceptibility type="fire" value="1.1"/>
-		<susceptibility type="earth" value="0.9"/>
+		<susceptibility type="fire" value="1.2"/>
+		<susceptibility type="earth" value="0.8"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -241,8 +243,8 @@
 		</attributes>
 		<weight value="35.0"/>
 		<value value="48013"/>
-		<susceptibility type="ice" value="0.61"/>
-		<susceptibility type="fire" value="1.4"/>
+		<susceptibility type="ice" value="0.7"/>
+		<susceptibility type="fire" value="1.5"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -262,8 +264,8 @@
 		</attributes>
 		<weight value="35.0"/>
 		<value value="48013"/>
-		<susceptibility type="fire" value="0.61"/>
-		<susceptibility type="ice" value="1.4"/>
+		<susceptibility type="fire" value="0.7"/>
+		<susceptibility type="ice" value="1.5"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -279,7 +281,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>
-			<min_level value="250"/>
+			<min_level value="210"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="3584"/>
@@ -376,7 +378,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="24"/>
-		<min_level value="150"/>
+			<min_use value="75" condition="server.secondworld"/>
+			<min_level value="150"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="96768"/>
@@ -418,6 +421,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="30"/>
+			<min_level value="300"/>
 		</attributes>
 		<weight value="42.0"/>
 		<value value="323032"/>
@@ -559,7 +563,7 @@
 		</attributes>
 		<weight value="40.0"/>
 		<value value="34391"/>
-		<susceptibility type="light" value="1.35"/>
+		<susceptibility type="light" value="1.4"/>
 		<susceptibility type="dark" value="0.8"/>
 		<equipable>
 			<slot name="ground"/>
@@ -581,9 +585,7 @@
 		<weight value="35.0"/>
 		<value value="40824"/>
 		<susceptibility type="light" value="0.95"/>
-		<susceptibility type="dark" value="0.95"/>
 		<susceptibility type="fire" value="0.95"/>
-		<susceptibility type="ice" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -717,8 +719,7 @@
 		<weight value="45.0"/>
 		<value value="86000"/>
 		<susceptibility type="light" value="0.9"/>
-		<susceptibility type="fire" value="1.1"/>
-		<susceptibility type="ice" value="0.9"/>
+		<susceptibility type="dark" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -734,7 +735,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>
-			<min_level value="145"/>
+			<min_level value="155"/>
 		</attributes>
 		<weight value="45.0"/>
 		<value value="123032"/>
