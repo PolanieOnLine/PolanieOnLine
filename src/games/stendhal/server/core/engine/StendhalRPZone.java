@@ -938,19 +938,6 @@ public class StendhalRPZone extends MarauroaRPZone {
 			if (player != null) {
 				// let item decide what to do when it's thrown by a player
 				item.onPutOnGround(player);
-			} else if (item.getName().equals("figura fioletowa") || item.getName().equals("figura zielona")
-				|| item.getName().equals("damka fioletowa") || item.getName().equals("damka zielona")
-				|| item.getName().equals("pionek czerwony") || item.getName().equals("pionek niebieski")
-				|| item.getName().equals("pionek zielony") || item.getName().equals("pionek żółty")
-				|| item.getName().equals("kostka") || item.getName().equals("kółko")
-				|| item.getName().equals("krzyżyk") || item.getName().equals("biały pionek")
-				|| item.getName().equals("biała wieża") || item.getName().equals("biały skoczek")
-				|| item.getName().equals("biały goniec") || item.getName().equals("biały hetman")
-				|| item.getName().equals("biały król") || item.getName().equals("czarny pionek")
-				|| item.getName().equals("czarna wieża") || item.getName().equals("czarny skoczek")
-				|| item.getName().equals("czarny goniec") || item.getName().equals("czarny hetman")
-				|| item.getName().equals("czarny król")) {
-				// item shouldn't expire
 			} else {
 				// otherwise follow expire
 				item.onPutOnGround(expire);
