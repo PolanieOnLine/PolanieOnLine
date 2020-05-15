@@ -41,7 +41,7 @@ pomidora, opieńka miodowego, polana
 - Osłabiono: lekką kuszę
 - Poprawiono nazwy niektórym przedmiotom
 - Zbalansowano statystyki wszystkich pasów (oraz dodano atak niektórym pasom)
-	oraz niektóre rękawice i naszyjniki
+	oraz niektóre rękawice, naszyjniki, spodnie, zbroje i płaszcze
 - Zniesiono minimalny poziom wszystkim złotym ciupagom oraz pierścieniom klasowym
 - Zwiększono szansę na zdobycie zwierzęcych skór [lwa, tygrysa oraz białego tygrysa] z 1% do 5%
 
@@ -53,6 +53,7 @@ pomidora, opieńka miodowego, polana
 *kod*
 - Dodano nowy profil dla stworów nazwany "immortal"; potwory z tym profilem są ignorowane w bestiariuszu
 	jak i w zabójstwach oraz nie pokazuje aktualnego poziomu w opisie stwora.
+- Wyrównano części dziesiętne w konfiguratorach przedmiotów zachowując odpowiedni opis
 
 *naprawiono błędy*
 - Poprawiono niektóre mapy
