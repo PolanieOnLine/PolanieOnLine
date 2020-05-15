@@ -69,12 +69,14 @@ public abstract class UpdateConverter {
 	private static final List<String> STARE_NAZWY_POL_1_12 = Arrays.asList(
 			"kolczany pas", "złoty kolczany pas", "skórzany pas", "wzmocniony skórzany pas",
 			"karmazynowy pas", "karmazynowe rękawice", "karmazynowa tarcza",
-			"karmazynowy hełm", "lazurowe rękawice", "lazurowa tarcza"
+			"karmazynowy hełm", "lazurowe rękawice", "lazurowa tarcza",
+			"płaszcz truskull", "płaszcz lutinów"
 	);
 	private static final List<String> NOWE_NAZWY_POL_1_12 = Arrays.asList(
 			"pas kolczy", "złoty pas kolczy", "pas skórzany", "wzmocniony pas skórzany",
 			"pas karmazynowy", "rękawice karmazynowe", "tarcza karmazynowa",
-			"hełm karmazynowy", "rękawice lazurowe", "tarcza lazurowa"
+			"hełm karmazynowy", "rękawice lazurowe", "tarcza lazurowa",
+			"peleryna truskull", "peleryna lutinów"
 	);
 
 	private static final HashMap<String, String> ZONE_MAPPING = new HashMap<>();
