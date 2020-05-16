@@ -48,8 +48,6 @@ public class Achievement {
 
 	private final ChatCondition condition;
 
-
-
 	/**
 	 * create a new achievement
 	 *
