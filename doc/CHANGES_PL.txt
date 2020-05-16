@@ -6,12 +6,15 @@ Changelog
 - Zmieniono wygląd: lekkiej oraz zwykłej kuszy, pasa kolczego, złotego pasa kolczego,
 pasa skórzanego, wzmocnionego pasa skórzanego, pasa olbrzymiego, lodowego amuletu, ognistego amuletu,
 pomidora, opieńka miodowego, polana
-
+ 
 *świat*
-- Dodano nowe NPC: (1)
+- Dodano nowe NPC: (2)
 	- Anastazja (szwalnia w Zakopane)
-- Dodano nowe zadanie: (1)
+	- Eltefia (domek w Warszawie)
+- Dodano nowe zadanie: (2)
 	- "Kolekcjoner Rękawic" - Anastazja
+	- "Kolekcjoner Pasów" - Eltefia
+- Dodano nowe pomieszczenie w Warszawie
 - Dodano nowe przedmioty: (19)
 	- automatyczna kusza (800 punktów wytrzymałości)
 	- automatyczna kusza A (1400 punktów wytrzymałości)
@@ -31,7 +34,7 @@ pomidora, opieńka miodowego, polana
 	- "Głodomor"
 	- "Producent Eliksirów"
 	- "Spokojny Sen"
-- Dodano dodatkową nagrodę za 4 i 5 odrodzenie u Yereny
+- Dodano dodatkową nagrodę za 4 oraz 5 odrodzenie u Yereny
 - Dodano graficzny przegląd ofert w Sukiennicy
 - Dodano możliwość zdobycia jabłek z potwora "drzewcowa" [2-8]
 - Ceny w większości sklepów NPC zostały poprawione
