@@ -221,8 +221,10 @@ public class Creature extends NPC {
 		setAtk(copy.getAtk());
 		setRatk(copy.getRatk());
 		setDef(copy.getDef());
-		if(Occasion.MOREXP || Occasion.SECOND_WORLD) {
+		if(Occasion.MOREXP) {
 			setXP((int)(copy.getXP()*1.5));
+		} else if(Occasion.SECOND_WORLD) {
+			setXP((int)(copy.getXP()*1.75));
 		} else {
 			setXP(copy.getXP());
 		}

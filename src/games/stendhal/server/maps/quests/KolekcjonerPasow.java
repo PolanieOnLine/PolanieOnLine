@@ -29,14 +29,15 @@ import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
 import java.util.Arrays;
 import java.util.List;
 
-public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItemsQuest {
+public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQuest {
 
-	private static final List<String> NEEDED_GLOVES = Arrays.asList("skórzane rękawice",
-			"skórzane wzmocnione rękawice", "skórzane twarde rękawice", "rękawice elfickie", "rękawice karmazynowe",
-			"rękawice lazurowe", "rękawice szmaragdowe", "lodowe rękawice", "ogniste rękawice", "rękawice chaosu",
-			"rękawice cieni", "rękawice mainiocyjskie", "rękawice xenocyjskie");
+	private static final List<String> NEEDED_BELTS = Arrays.asList("pas skórzany",
+			"wzmocniony pas skórzany", "pas kolczy", "lodowy pas", "ognisty pas", "złoty pas kolczy",
+			"pas karmazynowy", "pas lazurowy", "pas barbarzyńcy", "pas elficki", "pas zbójnicki",
+			"pas cieni", "pas kamienny", "pas chaosu", "pas krasnoludzki", "złoty pas", "pas olbrzymi",
+			"pas mainiocyjski", "pas xenocyjski");
 
-	private static final String QUEST_SLOT = "gloves_collector";
+	private static final String QUEST_SLOT = "belts_collector";
 
 	private BringListOfItemsQuestLogic bringItems;
 
@@ -56,16 +57,16 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 		step_1();
 		setupAbstractQuest();
 		fillQuestInfo(
-				"Rękawice dla Kolekcjonera",
-				"Anastazja szuka rękawic w wielu kolorach.",
+				"Pasy dla Kolekcjonera",
+				"Eltefia szuka pasy w wielu kolorach.",
 				false);
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Anastazja");
+		final SpeakerNPC npc = npcs.get("Eltefia");
 
 		// player asks about an individual cloak before accepting the quest
-		for(final String itemName : NEEDED_GLOVES) {
+		for(final String itemName : NEEDED_BELTS) {
 			npc.add(ConversationStates.QUEST_OFFERED, itemName, null,
 				ConversationStates.QUEST_OFFERED, null,
 				new ChatAction() {
@@ -73,7 +74,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę innych rękawic?");
+							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę innych pasów?");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
@@ -105,12 +106,12 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public SpeakerNPC getNPC() {
-		return npcs.get("Anastazja");
+		return npcs.get("Eltefia");
 	}
 
 	@Override
 	public List<String> getNeededItems() {
-		return NEEDED_GLOVES;
+		return NEEDED_BELTS;
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public List<String> getTriggerPhraseToEnumerateMissingItems() {
-		return Arrays.asList("gloves", "rękawice");
+		return Arrays.asList("belts", "pasy", "pas", "pasów");
 	}
 
 	@Override
@@ -135,22 +136,22 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String welcomeBeforeStartingQuest() {
-		return "Hej nieznajomy! Nie chciałbys coś mi przynieść? Miałabym dla ciebie wyzywające #zadanie na skompletowanie dla mnie rękawic!";
+		return "Hej nieznajomy! Nie chciałbys coś mi przynieść? Miałabym dla ciebie wyzywające #zadanie na skompletowanie dla mnie pasów!";
 	}
 
 	@Override
 	public String welcomeDuringActiveQuest() {
-		return "Cześć! Zebrałeś już dla mnie jakieś #rękawice?";
+		return "Cześć! Zebrałeś już dla mnie jakieś #pasy?";
 	}
 
 	@Override
 	public String welcomeAfterQuestIsCompleted() {
-		return "Witaj ponownie! Rękawice wciąż prezentują się wspaniale. Dziękuję!";
+		return "Witaj ponownie! Pasy wciąż prezentują się wspaniale. Dziękuję!";
 	}
 
 	@Override
 	public String respondToQuest() {
-		return "Mam obsesję na punkcie #rękawic! Chciałabym je wszystkie skolekcjonować!";
+		return "Mam obsesję na punkcie #pasów! Chciałabym je wszystkie skolekcjonować!";
 	}
 
 	@Override
@@ -160,7 +161,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String respondToQuestAfterItHasAlreadyBeenCompleted() {
-		return "Cześć! Rękawice prezentują się wspaniale. Dziękuję!";
+		return "Cześć! Pasy prezentują się wspaniale. Dziękuję!";
 	}
 
 	@Override
@@ -170,20 +171,20 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String askForItemsAfterPlayerSaidHeHasItems() {
-		return "Ekstra! Jakie #rękawice przyniosłeś?";
+		return "Ekstra! Jakie #pasy przyniosłeś?";
 	}
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "rękawic", "rękawice")
-				+ ". To są " + Grammar.enumerateCollection(missingItems)
-				+ ". Dasz radę przynieść któreś z nich?";
+		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "pasów", "pas")
+				+ ". To jest " + Grammar.enumerateCollection(missingItems)
+				+ ". Dasz radę przynieść któryś z nich?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "rękawic", "rękawice")
-				+ ". To są " + Grammar.enumerateCollection(missingItems)
+		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "pasów", "pas")
+				+ ". To jest " + Grammar.enumerateCollection(missingItems)
 				+ ". Masz już przy sobie jakiś?";
 	}
 
@@ -194,7 +195,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String respondToLastItemBrought() {
-		return "Och, wszystkie wyglądają tak pięknie, dziękuję. Przyjmij ten specjalny prezent ode mnie oraz siostry!";
+		return "Och, wszystkie wyglądają tak pięknie, dziękuję. Przyjmij ten specjalny prezent ode mnie!";
 	}
 
 	@Override
@@ -219,31 +220,31 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public void rewardPlayer(final Player player) {
-		final Item killer_belt = SingletonRepository.getEntityManager().getItem("pas zabójcy");
-		killer_belt.setBoundTo(player.getName());
-		player.equipOrPutOnGround(killer_belt);
-		player.addKarma(30.0);
-		player.addXP(100000);
+		final Item killer_gloves = SingletonRepository.getEntityManager().getItem("rękawice zabójcy");
+		killer_gloves.setBoundTo(player.getName());
+		player.equipOrPutOnGround(killer_gloves);
+		player.addKarma(40.0);
+		player.addXP(150000);
 	}
 
 	@Override
 	public String getName() {
-		return "KolekcjonerRekawic";
+		return "KolekcjonerPasow";
 	}
 
 	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.
 	@Override
 	public int getMinLevel() {
-		return 55;
+		return 70;
 	}
 
 	@Override
 	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
+		return Region.WARSZAWA;
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Anastazja";
+		return "Eltefia";
 	}
 }

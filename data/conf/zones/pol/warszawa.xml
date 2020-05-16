@@ -43,6 +43,10 @@
 			</implementation>
 		</entity>
 
+		<portal x="118" y="90" ref="entrance">
+			<destination zone="int_warszawa_eltefia_house" ref="exit"/>
+		</portal>
+
 		<portal x="40" y="40" ref="warszawa_restart_life">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
@@ -161,6 +165,15 @@
 	</zone>
 
 	<!-- interiors -->
+
+	<!-- Eltefia House -->
+	<zone name="int_warszawa_eltefia_house" file="interiors/warszawa/collector_house.tmx">
+		<configurator class-name="games.stendhal.server.maps.warszawa.house.CollectorNPC"/>
+
+		<portal x="8" y="18" ref="exit">
+			<destination zone="0_warszawa_nw" ref="entrance"/>
+		</portal>
+	</zone>
 
 	<!-- Level -1 -->
 

@@ -44,6 +44,7 @@ public final class Region {
 	public static final String GDANSK_CITY = "Miasto Gdańsk";
 	public static final String TATRY_MOUNTAIN = "Pasmo górskie Tatry";
 	public static final String WIELICZKA = "Wieliczka";
+	public static final String WARSZAWA = "Warszawa";
 
 	private Region() {
 		// hide constructor

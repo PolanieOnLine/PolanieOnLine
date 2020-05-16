@@ -271,9 +271,12 @@ public class StendhalQuestSystem {
 		 *         INNE  	 	 *
 		\**	                    **/
 		loadQuest(new BiletTurystyczny());
-		//loadQuest(new DragonsGuard());
 		loadQuest(new MeetGuslarz());
 		loadQuest(new WhereDragon());
+		loadQuest(new KolekcjonerPasow());
+		if (Occasion.SECOND_WORLD) {
+			loadQuest(new DragonsGuard());
+		}
 
 		if (Occasion.CHRISTMAS) {
 			loadQuest(new GoodiesForRudolph());
