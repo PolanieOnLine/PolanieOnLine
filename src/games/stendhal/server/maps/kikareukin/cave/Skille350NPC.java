@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -88,11 +89,16 @@ public class Skille350NPC implements ZoneConfigurator {
 
 					player.setAtkXP(750000 + player.getAtkXP());
 					player.setDefXP(1750000 + player.getDefXP());
-					player.setRatkXP(750000 + player.getRatkXP());
+					if (!Occasion.SECOND_WORLD) {
+						player.setRatkXP(750000 + player.getRatkXP());
+					}
 					player.addXP(350000);
 
 					player.incAtkXP();
 					player.incDefXP();
+					if (!Occasion.SECOND_WORLD) {
+						player.incRatkXP();
+					}
 				}
 
 				if (!player.hasQuest("FestrisFirstChat")) {

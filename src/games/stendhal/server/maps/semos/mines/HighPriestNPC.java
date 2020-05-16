@@ -13,6 +13,7 @@
 package games.stendhal.server.maps.semos.mines;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -84,11 +85,16 @@ public class HighPriestNPC implements ZoneConfigurator {
 
 					player.setAtkXP(1000000 + player.getAtkXP());
 					player.setDefXP(10000000 + player.getDefXP());
-					player.setRatkXP(500000 + player.getRatkXP());
+					if (!Occasion.SECOND_WORLD) {
+						player.setRatkXP(500000 + player.getRatkXP());
+					}
 					player.addXP(100000);
 
 					player.incAtkXP();
 					player.incDefXP();
+					if (!Occasion.SECOND_WORLD) {
+						player.incRatkXP();
+					}
 				}
 
 				if (!player.hasQuest("AenihataFirstChat")) {

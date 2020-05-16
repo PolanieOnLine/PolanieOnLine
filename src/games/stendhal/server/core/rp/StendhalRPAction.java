@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.DataProvider;
@@ -338,6 +339,9 @@ public class StendhalRPAction {
 
 		// For checking if RATK XP should be incremented on successful hit
 		boolean addRatkXP = isRanged;
+		if (Occasion.SECOND_WORLD) {
+			addRatkXP = false;
+		}
 
 		/* TODO: Remove if alternate attack training method implemented in
 		 *       game.
