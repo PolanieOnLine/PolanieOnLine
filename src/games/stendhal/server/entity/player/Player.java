@@ -41,6 +41,7 @@ import games.stendhal.common.NotificationType;
 import games.stendhal.common.TradeState;
 import games.stendhal.common.Version;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
@@ -182,8 +183,13 @@ public class Player extends DressedEntity implements UseListener {
 		player.put("atk_xp", 0);
 		player.put("def", 10);
 		player.put("def_xp", 0);
-		player.put("ratk", 10);
-		player.put("ratk_xp", 0);
+		if (Occasion.SECOND_WORLD) {
+			player.put("ratk", 0);
+			player.put("ratk_xp", 0);
+		} else {
+			player.put("ratk", 10);
+			player.put("ratk_xp", 0);
+		}
 		player.put("level", 0);
 		player.setXP(0);
 
