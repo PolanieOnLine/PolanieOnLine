@@ -7,9 +7,9 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_czarny" tileid="pol_smoki.png:0"/>
 		<description/>
 		<attributes>
-			<atk value="2820"/>
-			<def value="85"/>
-			<hp value="5500"/>
+			<atk value="3666"/>
+			<def value="110"/>
+			<hp value="6600"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -54,9 +54,9 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_lodowy" tileid="pol_smoki.png:10"/>
 		<description/>
 		<attributes>
-			<atk value="2470"/>
-			<def value="65"/>
-			<hp value="5000"/>
+			<atk value="3211"/>
+			<def value="84"/>
+			<hp value="6000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -101,9 +101,9 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_czerwony" tileid="pol_smoki.png:1"/>
 		<description/>
 		<attributes>
-			<atk value="2270"/>
-			<def value="55"/>
-			<hp value="4500"/>
+			<atk value="2951"/>
+			<def value="71"/>
+			<hp value="5400"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -151,9 +151,9 @@
 		<type class="pol/smoki" subclass="smok_dwuglowy_zielony" tileid="pol_smoki.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="1670"/>
-			<def value="45"/>
-			<hp value="4000"/>
+			<atk value="2171"/>
+			<def value="58"/>
+			<hp value="4800"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -165,7 +165,7 @@
 			<item value="wielki eliksir" quantity="[1,7]" probability="60.0"/>
 			<item value="money" quantity="[30,555]" probability="100.0"/>
 			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="12.5"/>
-			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="10.0"/>
+			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="7.5"/>
 			<item value="rękawice szmaragdowe" quantity="[1,1]" probability="2.5"/>
 			<item value="złote rękawice" quantity="[1,1]" probability="0.05"/>
 			<item value="pazur zielonego smoka" quantity="[1,1]" probability="0.05"/>
@@ -199,9 +199,9 @@
 		<type class="pol/smoki" subclass="smok_lodowy" tileid="pol_smoki.png:11"/>
 		<description/>
 		<attributes>
-			<atk value="511"/>
-			<def value="46"/>
-			<hp value="1800"/>
+			<atk value="613"/>
+			<def value="60"/>
+			<hp value="2160"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -241,9 +241,9 @@
 		<type class="pol/smoki" subclass="smok_pustynny" tileid="pol_smoki.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="420"/>
-			<def value="35"/>
-			<hp value="1200"/>
+			<atk value="546"/>
+			<def value="45"/>
+			<hp value="1440"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -277,9 +277,9 @@
 		<type class="pol/smoki" subclass="smok_zgnily_szkielet" tileid="pol_smoki.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="375"/>
-			<def value="37"/>
-			<hp value="567"/>
+			<atk value="487"/>
+			<def value="48"/>
+			<hp value="680"/>
 			<speed value="0.9"/>
 			<size value="3,3"/>
 		</attributes>
@@ -313,9 +313,9 @@
 		<type class="pol/smoki" subclass="smok_arktyczny" tileid="pol_smoki.png:5"/>
 		<description/>
 		<attributes>
-			<atk value="2815"/>
-			<def value="43"/>
-			<hp value="3300"/>
+			<atk value="3659"/>
+			<def value="77"/>
+			<hp value="3960"/>
 			<speed value="1.0"/>
 			<size value="6,5"/>
 		</attributes>
@@ -327,7 +327,7 @@
 			<item value="duży eliksir" quantity="[1,5]" probability="70.0"/>
 			<item value="money" quantity="[300,10000]" probability="100.0"/>
 			<item value="obsydian" quantity="[1,1]" probability="0.0001"/>
-			<item value="biały balonik" quantity="[1,1]" probability="11.1"/>
+			<item value="biały balonik" quantity="[1,1]" probability="7.0"/>
 			<item value="miecz lodowy" quantity="[1,1]" probability="1.0"/>
 			<item value="lodowa zbroja" quantity="[1,1]" probability="0.005"/>
 			<item value="sztabka mithrilu" quantity="[1,1]" probability="0.001"/>
@@ -359,9 +359,9 @@
 		<type class="pol/smoki" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
 		<description>Oto czarny smok. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
-			<atk value="3227"/>
-			<def value="127"/>
-			<hp value="3300"/>
+			<atk value="4195"/>
+			<def value="165"/>
+			<hp value="3960"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
 		</attributes>
@@ -401,9 +401,9 @@
 		<type class="pol/smoki" subclass="latajacy_czarny_smok" tileid="pol_smoki.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="2999"/>
+			<atk value="3300"/>
 			<def value="777"/>
-			<hp value="1100"/>
+			<hp value="1300"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
 			<resistance value="1"/>
@@ -419,7 +419,7 @@
 			<item value="czarna zbroja" quantity="[1,1]" probability="5.0"/>
 			<item value="czarna tarcza" quantity="[1,1]" probability="4.5"/>
 			<item value="czarne spodnie" quantity="[1,1]" probability="7.5"/>
-			<item value="pazur czarnego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="pazur czarnego smoka" quantity="[1,1]" probability="1.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="10.5"/>
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="10.0"/>
 		</drops>
@@ -444,9 +444,9 @@
 		<type class="pol/smoki" subclass="latajacy_zloty_smok" tileid="pol_smoki.png:8"/>
 		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
 		<attributes>
-			<atk value="3837"/>
+			<atk value="4000"/>
 			<def value="999"/>
-			<hp value="1100"/>
+			<hp value="1300"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 			<resistance value="1"/>
@@ -463,7 +463,7 @@
 			<item value="diament" quantity="[1,1]" probability="1.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="0.5"/>
 			<item value="bełt złoty" quantity="[1,11]" probability="75.0"/>
-			<item value="pazur złotego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="pazur złotego smoka" quantity="[1,1]" probability="1.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="5.5"/>
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="50.0"/>
 		</drops>
@@ -498,12 +498,12 @@
 		</attributes>
 		<level value="990"/>
 		<experience value="1271283"/>
-		<respawn value="8280000"/>
+		<respawn value="2880000"/>
 		<corpse name="dragon_6x6"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,29]" probability="40.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,29]" probability="40.0"/>
-			<item value="szczerbiec" quantity="[1,1]" probability="0.01"/>
+			<item value="szczerbiec" quantity="[1,1]" probability="0.1"/>
 			<item value="money" quantity="[11,49999]" probability="100.0"/>
 			<item value="pazur zielonego smoka" quantity="[1,1]" probability="10.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="15.5"/>

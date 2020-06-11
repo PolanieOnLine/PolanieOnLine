@@ -452,8 +452,8 @@
 		<type class="pol/zjawy" subclass="zai_kostucha" tileid="pol_zjawy.png:7"/>
 		<description/>
 		<attributes>
-			<atk value="708"/>
-			<def value="69"/>
+			<atk value="849"/>
+			<def value="82"/>
 			<hp value="3818"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -486,8 +486,8 @@
 		<type class="pol/zjawy" subclass="zai_kostucha_rozowa" tileid="pol_zjawy.png:8"/>
 		<description/>
 		<attributes>
-			<atk value="808"/>
-			<def value="74"/>
+			<atk value="969"/>
+			<def value="88"/>
 			<hp value="3318"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -521,9 +521,9 @@
 		<type class="pol/zjawy" subclass="zai_kostucha_zlota" tileid="pol_zjawy.png:10"/>
 		<description/>
 		<attributes>
-			<atk value="908"/>
-			<def value="79"/>
-			<hp value="2818"/>
+			<atk value="1089"/>
+			<def value="94"/>
+			<hp value="3518"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 			<resistance value="100"/>
@@ -979,7 +979,7 @@
 		<drops>
 			<item value="money" quantity="[9,329]" probability="100.0"/>
 			<item value="kryształ szafiru" quantity="[1,1]" probability="11.0"/>
-			<item value="złota klinga" quantity="[1,1]" probability="0.05"/>
+			<item value="złota klinga" quantity="[1,1]" probability="0.025"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
 			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,7]" probability="17.0"/>

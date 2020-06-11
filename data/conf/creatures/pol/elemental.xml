@@ -226,7 +226,7 @@
 			<item value="ognisty pas" quantity="[1,1]" probability="0.2"/>
 			<item value="ognisty amulet" quantity="[1,1]" probability="0.5"/>
 			<item value="ogniste buty" quantity="[1,1]" probability="0.5"/>
-			<item value="magia płomieni" quantity="[30,200]" probability="40.0"/>
+			<item value="magia płomieni" quantity="[30,100]" probability="40.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -268,7 +268,7 @@
 			<item value="lodowy pas" quantity="[1,1]" probability="0.2"/>
 			<item value="lodowy amulet" quantity="[1,1]" probability="0.3"/>
 			<item value="lodowe buty" quantity="[1,1]" probability="0.5"/>
-			<item value="magia deszczu" quantity="[30,200]" probability="40.0"/>
+			<item value="magia deszczu" quantity="[30,100]" probability="40.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -303,7 +303,7 @@
 		<respawn value="1999"/>
 		<corpse name="other"/>
 		<drops>
-			<item value="magia płomieni" quantity="[1,77]" probability="70.0"/>
+			<item value="magia płomieni" quantity="[1,54]" probability="70.0"/>
 			<item value="ogniste rękawice" quantity="[1,1]" probability="0.0005"/>
 			<item value="ognisty amulet" quantity="[1,1]" probability="0.01"/>
 			<item value="ognista tarcza" quantity="[1,1]" probability="1.0"/>
