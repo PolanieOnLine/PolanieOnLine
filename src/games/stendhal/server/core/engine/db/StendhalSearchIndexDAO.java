@@ -102,6 +102,7 @@ public class StendhalSearchIndexDAO {
 			writeEntry(stmt, entry);
 		}
 		stmt.executeBatch();
+		stmt.close();
 	}
 
 	/**
@@ -120,5 +121,4 @@ public class StendhalSearchIndexDAO {
 		deleteObsoleteEntries(transaction, toDelete);
 		addNewEntries(transaction, toAdd);
 	}
-
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Queue;
 
 import marauroa.common.game.RPObject;
+import marauroa.server.db.command.DBCommandPriority;
 import marauroa.server.db.command.DBCommandQueue;
 
 import org.apache.log4j.Logger;
@@ -554,7 +554,7 @@ public class MazeGenerator {
 		// Give at least one xp for persistent but hopelessly slow players
 		points = Math.max(points, 1);
 
-		DBCommandQueue.get().enqueue(new WriteHallOfFamePointsCommand(player.getName(), "M", points, true));
+		DBCommandQueue.get().enqueue(new WriteHallOfFamePointsCommand(player.getName(), "M", points, true), DBCommandPriority.LOW);
 		new SetQuestAction("maze", 0, "done").fire(player, null, null);
 		new IncrementQuestAction("maze", 2, 1).fire(player, null, null);
 		player.sendPrivateText("Wyjście z labiryntu zajęło Tobie " + TimeUtil.timeUntil((int) (timediff / 1000), true)

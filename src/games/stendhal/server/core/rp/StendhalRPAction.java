@@ -101,6 +101,11 @@ public class StendhalRPAction {
 			return;
 		}
 
+		// if we are already attacking the target, do nothing
+		if (player.getAttackTarget() == victim) {
+			return;
+		}
+
 		// Disable attacking NPCS that are created as not attackable.
 		if (!victim.isAttackable()) {
 			if ((victim instanceof SpeakerNPC)) {
