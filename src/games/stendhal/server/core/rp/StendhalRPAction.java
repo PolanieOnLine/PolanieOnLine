@@ -374,6 +374,8 @@ public class StendhalRPAction {
 			final float itemAtk;
 			if (isRanged) {
 				itemAtk = player.getItemRatk();
+			} else if (Occasion.SECOND_WORLD && isRanged) {
+				itemAtk = player.getItemAtk();
 			} else {
 				itemAtk = player.getItemAtk();
 			}
@@ -384,6 +386,8 @@ public class StendhalRPAction {
 				if (addRatkXP && !(defender instanceof SpeakerNPC)) {
 					// Range attack XP is incremented for successful hits regardless of whether player has recently been hit
 					player.incRatkXP();
+				} else if (Occasion.SECOND_WORLD) {
+					player.incAtkXP();
 				}
 
 				// limit damage to target HP
