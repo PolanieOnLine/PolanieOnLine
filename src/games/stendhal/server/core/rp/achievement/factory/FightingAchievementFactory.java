@@ -116,7 +116,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 	// enemies required for Pachyderm Mayhem
 	public static final String[] ENEMIES_PACHYDERM = {
-			"słoń", "słoń z rogami", "słoń musth", "mamut włochaty"
+			"słoń", "słoń z kłami", "słoń musth", "mamut włochaty"
 	};
 
 	@Override
@@ -260,7 +260,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_FOWL)));
 
 		fightingAchievements.add(createAchievement(
-				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z rogami, słoni musth oraz mamutów włochatych",
+				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z kłami, słoni musth oraz mamutów włochatych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_PACHYDERM)));
 
