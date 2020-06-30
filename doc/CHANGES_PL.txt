@@ -1,5 +1,14 @@
 Changelog
 ---------
+1.13
+*marauroa*
+- optymalizacja silnika
+
+*naprawiono błędy*
+- Potencjalnie naprawiono strzelanie na s2
+- Naprawiono naliczanie punktów ATK za strzelanie z łuku na s2
+
+
 1.12
 *klient*
 - Dodano nowe pliki graficzne (przedmiotów/gui/npc/potworów)
