@@ -2,11 +2,13 @@ Changelog
 ---------
 1.13
 *marauroa*
-- optymalizacja silnika
+- Ogólna optymalizacja silnika gry
+- Poprawiono łączność oraz przesyłanie danych do bazy danych (optymalizacja)
 
 *naprawiono błędy*
-- Potencjalnie naprawiono strzelanie na s2
-- Naprawiono naliczanie punktów ATK za strzelanie z łuku na s2
+- Potencjalnie naprawiono strzelanie na serwerze s2
+- Naprawiono naliczanie punktów ATK za strzelanie z łuku na serwerze s2
+- Naprawiono osiągnięcie 'Gruboskórny Zamęt'
 
 
 1.12
