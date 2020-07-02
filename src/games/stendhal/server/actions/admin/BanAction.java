@@ -75,7 +75,7 @@ public class BanAction extends AdministrationAction {
 				// look up username
 				String username = DAORegister.get().get(CharacterDAO.class).getAccountName(bannedName);
 				if (username == null) {
-					player.sendPrivateText(NotificationType.ERROR, "No such character");
+					player.sendPrivateText(NotificationType.ERROR, "Nie ma takiego wojownika");
 					return;
 				}
 				DBCommandQueue.get().enqueue(new BanAccountCommand(username, reason, expire));
