@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2020 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,19 +14,15 @@ package games.stendhal.server.entity.creature.impl;
 import games.stendhal.common.constants.Occasion;
 
 public class DropItem {
-
 	public String name;
-
 	public double probability;
-
 	public int min;
-
 	public int max;
 
 	public DropItem(final String name, final double probability, final int min, final int max) {
 		this.name = name;
 		if(Occasion.SECOND_WORLD) {
-			this.probability = probability + 0.5;
+			this.probability = probability * 1.05;
 		} else {
 			this.probability = probability;
 		}
@@ -38,7 +33,7 @@ public class DropItem {
 	public DropItem(final String name, final double probability, final int amount) {
 		this.name = name;
 		if(Occasion.SECOND_WORLD) {
-			this.probability = probability + 0.5;
+			this.probability = probability * 1.05;
 		} else {
 			this.probability = probability;
 		}
