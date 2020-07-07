@@ -61,9 +61,9 @@ public class CuratorNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witam w Muzeum Kirdneh.");
-				addJob("Jestem kuratorem tego muzeum. Oznacza to, że ja organizuję wystawy i szukam nowych #eksponatów.");
+				addJob("Jestem kuratorką tego muzeum. Oznacza to, że ja organizuję wystawy i szukam nowych #eksponatów.");
 				addHelp("To miejsce jest na rzadkie artefakty i specjalne #eksponaty.");
-				addReply(Arrays.asList("exhibits", "eksponaty", "eksponatów"),"Być może będziesz mieć dryg do wyszukiwania przedmiotów i chciałbyś zrobić #zadanie dla mnie.");
+				addReply(Arrays.asList("exhibits", "eksponaty", "eksponatów"),"Być może będziesz mieć dryg do wyszukiwania rzadkich przedmiotów i chciałbyś zrobić #zadanie dla mnie.");
 				// remaining behaviour defined in games.stendhal.server.maps.quests.WeeklyItemQuest
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("kirdnehscrolls")));
 				addGoodbye("Do widzenia. Miło się z tobą rozmawiało.");
@@ -79,7 +79,7 @@ public class CuratorNPC implements ZoneConfigurator {
 		npc.setPosition(2, 38);
 		npc.setDirection(Direction.RIGHT);
 		npc.initHP(100);
-		npc.setDescription("Oto Hazel, kustosz muzeum Kirdneh.");
+		npc.setDescription("Oto Hazel, kustoszka muzeum Kirdneh.");
 		zone.add(npc);
 	}
 }
