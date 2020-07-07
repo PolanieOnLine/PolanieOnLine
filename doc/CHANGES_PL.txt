@@ -1,6 +1,10 @@
 Changelog
 ---------
 1.13
+*świat*
+- Zmieniono tekstowy opis sklepu Jagny na graficzny
+- Poprawnio niektóre mapy
+
 *marauroa*
 - Ogólna optymalizacja silnika gry
 - Poprawiono łączność oraz przesyłanie danych do bazy danych (optymalizacja)
