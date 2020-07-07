@@ -19,7 +19,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
@@ -67,13 +66,5 @@ public class JagnaNPC implements ZoneConfigurator {
 		jagna.initHP(100);
 		jagna.setSounds(Arrays.asList("hiccup-1", "hiccup-2", "hiccup-3"));
 		zone.add(jagna);
-
-		final Sign book = new Sign();
-		book.setPosition(28, 1);
-		book.setText(" -- Jagna sprzedaje -- \n sok z chmielu\t 8\n napój z winogron\t 10\n napój z oliwką\t 50\n shake waniliowy\t 100\n shake czekoladowy\t 100\n mięso\t\t 20\n szynka\t\t 30\n hotdog\t\t 120\n"+
-					" hotdog z serem\t 140\n kanapka z tuńczykiem\t 110\n kanapka\t\t 110\n tabliczka czekolady\t 80\n lukrecja\t\t 80");
-		book.setEntityClass("blackboard");
-		book.setResistance(10);
-		zone.add(book);
 	}
 }

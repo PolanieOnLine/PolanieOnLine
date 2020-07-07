@@ -2085,6 +2085,16 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 	<!-- Tavern -->
 	<zone name="int_zakopane_tavern" file="interiors/zakopane/tavern.tmx">
 		<configurator class-name="games.stendhal.server.maps.zakopane.tavern.JagnaNPC"/>
+		<entity x="28" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">urodziny</parameter>
+				<parameter name="title">Oferta Karczmy w Zakopanem</parameter>
+				<parameter name="seller">true</parameter>
+				<parameter name="caption">Możesz kupić to jedzenie u Jagny.</parameter>
+			</implementation>
+			<attribute name="class">blackboard</attribute>
+		</entity>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
