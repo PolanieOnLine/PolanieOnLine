@@ -1793,8 +1793,9 @@ public class StendhalRPZone extends MarauroaRPZone {
 		zoneNameMappings.put("0_athor_ship_w2", "na promie Athor");
 		zoneNameMappings.put("-1_athor_ship_w2", "na promie Athor");
 		zoneNameMappings.put("-2_athor_ship_w2", "na promie Athor");
-		zoneNameMappings.put("hell", "w Piekle");
 		zoneNameMappings.put("int_polish_ship", "na promie Kraków");
+		zoneNameMappings.put("hell", "w Piekle");
+		zoneNameMappings.put("malleus_plain", "na równinie Malleus");
 	}
 
 	/**
