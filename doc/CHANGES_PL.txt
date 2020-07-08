@@ -1,8 +1,12 @@
 Changelog
 ---------
 1.13.1
+*świat*
+- krasnal biegnie szybciej
+- krasnal starszy biegnie wolniej
+
 *naprawiono błędy*
-- Naprawiono zadawanie obrażeń z broni zasięgowej
+- Naprawiono zadawanie obrażeń z broni zasięgowej (s2)
 
 
 1.13
