@@ -47,39 +47,40 @@ public class WhereAction implements ActionListener {
 	public void onAction(final Player player, final RPAction action) {
 		if (action.has(TARGET)) {
 			final String whoName = action.get(TARGET);
-
 			final StendhalRPRuleProcessor rules = SingletonRepository.getRuleProcessor();
 
-			new GameEvent(player.getName(), WHERE, whoName).raise();
+			if (whoName != "") {
+				new GameEvent(player.getName(), WHERE, whoName).raise();
 
-			final Player who = rules.getPlayer(whoName);
-			final DomesticAnimal animal = player.searchAnimal(whoName, false);
+				final Player who = rules.getPlayer(whoName);
+				final DomesticAnimal animal = player.searchAnimal(whoName, false);
 
-			if (who != null) {
-				if (who.isGhost() && !who.equals(player)) {
-					player.sendPrivateText("Nie znaleziono wojownika lub zwierzątka zwanego \"" + whoName + "\" lub nie jest teraz zalogowany.");
-				} else {
-					final StendhalRPZone zone = who.getZone();
-
-					if (zone != null) {
-						if (who.equals(player)) {
-							player.sendPrivateText("Jesteś w " + zone.getName()
-								+ " na (" + who.getX() + "," + who.getY() + ")");
-						} else {
-							player.sendPrivateText(who.getTitle() + " jest w " + zone.getName()
-								+ " na (" + who.getX() + "," + who.getY() + ")");
+				if (who != null) {
+					if (who.isGhost() && !who.equals(player)) {
+						player.sendPrivateText("Nie znaleziono wojownika lub zwierzątka zwanego \"" + whoName + "\" lub nie jest teraz zalogowany.");
+					} else {
+						final StendhalRPZone zone = who.getZone();
+						if (zone != null) {
+							if (who.equals(player)) {
+								player.sendPrivateText("Jesteś w " + zone.getName()
+										+ " na (" + who.getX() + "," + who.getY() + ")");
+							} else {
+								player.sendPrivateText(who.getTitle() + " jest w " + zone.getName()
+										+ " na (" + who.getX() + "," + who.getY() + ")");
+							}
 						}
 					}
 				}
-			}
-
-			if (animal != null) {
-				player.sendPrivateText("Twój " + ItemTools.itemNameToDisplayName(animal.get("type"))
+				if (animal != null) {
+					player.sendPrivateText("Twój " + ItemTools.itemNameToDisplayName(animal.get("type"))
 							+ " jest na (" + animal.getX() + "," + animal.getY() + ")");
-			}
+				}
 
-			if ((who == null) && (animal == null)) {
-				player.sendPrivateText("Nie ma wojownika lub zwierzątka zwanego \"" + whoName + "\" lub nie jest teraz zalogowany.");
+				if ((who == null) && (animal == null)) {
+					player.sendPrivateText("Nie ma wojownika lub zwierzątka zwanego \"" + whoName + "\" lub nie jest teraz zalogowany.");
+				}
+			} else {
+				player.sendPrivateText("Nie podałeś imienia gracza ani zwierzaka.");
 			}
 
 			player.notifyWorldAboutChanges();
