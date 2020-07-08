@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.13.1
+*naprawiono błędy*
+- Naprawiono zadawanie obrażeń z broni zasięgowej
+
+
 1.13
 *świat*
 - Zmieniono tekstowy opis sklepu Jagny na graficzny
