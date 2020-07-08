@@ -111,10 +111,11 @@ public class EmotionCrystals extends AbstractQuest {
 				if (!gatheredCrystals.contains(color + " kryształ emocji")) {
 					gatheredCrystals.add(color + " kryształ emocji");
 				}
-			} if (!gatheredCrystals.contains(color + " kryształ emocji")) {
+			} else {
 				hasAllCrystals = false;
 			}
 		}
+
 		if (!gatheredCrystals.isEmpty()) {
 			String tell = "Znalazłem następujące kryształy: ";
 			tell += Grammar.enumerateCollection(gatheredCrystals);
