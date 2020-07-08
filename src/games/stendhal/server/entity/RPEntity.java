@@ -37,6 +37,7 @@ import games.stendhal.common.Level;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
@@ -550,8 +551,13 @@ public abstract class RPEntity extends GuidedEntity {
 		 */
 		final int atkStrength, sourceAtk;
 		if (isRanged) {
-			atkStrength = this.getRatk();
-			sourceAtk = this.getCappedRatk();
+			if (Occasion.SECOND_WORLD) {
+				atkStrength = this.getAtk();
+				sourceAtk = this.getCappedAtk();
+			} else {
+				atkStrength = this.getRatk();
+				sourceAtk = this.getCappedRatk();
+			}
 		} else {
 			atkStrength = this.getAtk();
 			sourceAtk = this.getCappedAtk();
@@ -3270,7 +3276,11 @@ public abstract class RPEntity extends GuidedEntity {
 		final float itemAtk;
 		if (isRanged) {
 			nature = getRangedDamageType();
-			itemAtk = getItemRatk();
+			if (Occasion.SECOND_WORLD) {
+				itemAtk = getItemAtk();
+			} else {
+				itemAtk = getItemRatk();
+			}
 		} else {
 			nature = getDamageType();
 			itemAtk = getItemAtk();
