@@ -378,9 +378,11 @@ public class StendhalRPAction {
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
 			if (isRanged) {
-				itemAtk = player.getItemRatk();
-			} else if (Occasion.SECOND_WORLD && isRanged) {
-				itemAtk = player.getItemAtk();
+				if (Occasion.SECOND_WORLD) {
+					itemAtk = player.getItemAtk();
+				} else {
+					itemAtk = player.getItemRatk();
+				}
 			} else {
 				itemAtk = player.getItemAtk();
 			}
