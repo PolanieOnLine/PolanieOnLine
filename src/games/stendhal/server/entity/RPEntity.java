@@ -3594,7 +3594,7 @@ public abstract class RPEntity extends GuidedEntity {
 	 * @return a predicate for matching the name
 	 */
 	private Predicate<Item> nameMatches(String name) {
-		return it -> name.equals(it.getName());
+		return it -> name.equalsIgnoreCase(it.getName());
 	}
 
 	/**
