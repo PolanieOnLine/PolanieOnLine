@@ -1,5 +1,12 @@
 Changelog
 ---------
+1.14
+*świat*
+- Dodano nowe mapy: (2)
+	- 0_krakow_wisla_e2
+	- 0_krakow_wawel_e2
+
+
 1.13.1
 *świat*
 - krasnal biegnie szybciej
