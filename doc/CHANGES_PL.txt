@@ -5,6 +5,7 @@ Changelog
 - Dodano nowe mapy: (2)
 	- 0_krakow_wisla_e2
 	- 0_krakow_wawel_e2
+- Poprawiono niektóre mapy wizualnie w taki sposób, aby pasowały do nowych map
 
 
 1.13.1
