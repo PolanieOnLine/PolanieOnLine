@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2020 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,6 +16,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -57,13 +57,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 		final SpeakerNPC npc = new SpeakerNPC("Jessica") {
 
 			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
-			@Override
 			public void createDialog() {
-
 				addGoodbye("Do widzenia!");
 				addGreeting("Witam w Athor #ferry service! W czym mogę #pomóc?");
 				addHelp("Możesz #wejść na prom tylko za "
@@ -81,8 +75,8 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 					}
 				});
 
-		add(ConversationStates.ATTENDING, Arrays.asList("board", "wejść", "wejdź"), null,
-				ConversationStates.ATTENDING, null, new ChatAction() {
+				add(ConversationStates.ATTENDING, Arrays.asList("board", "wejść", "wejdź"), null,
+						ConversationStates.ATTENDING, null, new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 
@@ -116,12 +110,14 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 						ConversationPhrases.NO_MESSAGES, null,
 						ConversationStates.ATTENDING,
 						"Nie wiesz co tracisz, szczurze lądowy!", null);
+			}
 
+			@Override
+			protected void onGoodbye(final RPEntity player) {
+				setDirection(Direction.LEFT);
 			}};
 
 			new AthorFerry.FerryListener() {
-
-
 				@Override
 				public void onNewFerryState(final Status status) {
 					ferrystate = status;
@@ -144,5 +140,4 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			npc.setDirection(Direction.LEFT);
 			zone.add(npc);
 	}
-
 }
