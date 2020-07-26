@@ -405,6 +405,21 @@
 		</entity>
 	</zone>
 
+	<!-- krakow_wawel_e2 -->
+	<zone name="0_krakow_wawel_e2" level="0" x="513696" y="18048" file="Level 0/krakow/wawel_e2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">65</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
 	<!-- krakow_wisla_w -->
 	<zone name="0_krakow_wisla_w" level="0" x="513312" y="18176" file="Level 0/krakow/wisla_w.tmx">
 		<configurator class-name="games.stendhal.server.maps.krakow.planty.ThomasNPC"/>
@@ -412,6 +427,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-krolewskie-miasto1</parameter>
@@ -430,6 +446,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-krolewskie-miasto1</parameter>
@@ -507,6 +524,7 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-krolewskie-miasto1</parameter>
@@ -532,6 +550,21 @@
 		<portal x="105" y="9" ref="saddler_entrance">
 			<destination zone="int_krakow_saddler_house" ref="saddler_exit"/>
 		</portal>
+	</zone>
+
+	<!-- krakow_wisla_e2 -->
+	<zone name="0_krakow_wisla_e2" level="0" x="513696" y="18176" file="Level 0/krakow/wisla_e2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- krakow_wisla_sw -->
