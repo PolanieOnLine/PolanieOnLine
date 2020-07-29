@@ -75,7 +75,7 @@
 		</attributes>
 	</zone>
 
-	<zone name="0_dragon_knights_wieliczka" level="0" x="513824" y="18560" file="Level 0/dragon_knights/wieliczka.tmx">
+	<zone name="0_dragon_knights_forest" level="0" x="513824" y="18560" file="Level 0/dragon_knights/forest.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
