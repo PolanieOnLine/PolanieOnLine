@@ -7,18 +7,20 @@
 
 	<!-- Ground level -->
 
-	<!-- warszawa_nw -->
-	<zone name="0_warszawa_nw" level="0" x="513312" y="17408" file="Level 0/warszawa/nw.tmx">
+	<!-- warszawa_w (nw - old) -->
+	<zone name="0_warszawa_w" level="0" x="513312" y="17408" file="Level 0/warszawa/w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="125" y="30">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">water-2</parameter>
@@ -51,21 +53,38 @@
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 	</zone>
-
-	<!-- warszawa_ne -->
-	<zone name="0_warszawa_ne" level="0" x="513440" y="17408" file="Level 0/warszawa/ne.tmx">
+	
+	<!-- warszawa_n -->
+	<zone name="0_warszawa_n" level="0" x="513440" y="17280" file="Level 0/warszawa/n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
-		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerNPC"/>
-		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerGdanskNPC"/>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+	</zone>
+
+	<!-- warszawa_c (ne - old) -->
+	<zone name="0_warszawa_c" level="0" x="513440" y="17408" file="Level 0/warszawa/c.tmx">
+		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerGdanskNPC"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
@@ -128,18 +147,20 @@
 		</entity>
 	</zone>
 
-	<!-- warszawa_se -->
-	<zone name="0_warszawa_se" level="0" x="513440" y="17536" file="Level 0/warszawa/se.tmx">
+	<!-- warszawa_s (se - old) -->
+	<zone name="0_warszawa_s" level="0" x="513440" y="17536" file="Level 0/warszawa/s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>

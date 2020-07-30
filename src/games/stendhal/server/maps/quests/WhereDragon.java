@@ -214,7 +214,7 @@ public class WhereDragon extends AbstractQuest {
 		npc = new DragonNPC("Adamantis", 73, 40);
 		zone.add(npc);
 
-		zone = world.getZone("0_warszawa_nw");
+		zone = world.getZone("0_warszawa_w");
 		npc = new DragonNPC("Cruorordis", 15, 65);
 		zone.add(npc);
 
