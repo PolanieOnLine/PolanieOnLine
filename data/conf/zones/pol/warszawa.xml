@@ -53,6 +53,21 @@
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 	</zone>
+
+	<!-- warszawa_ne -->
+	<zone name="0_warszawa_ne" level="0" x="513568" y="17280" file="Level 0/warszawa/ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
 	
 	<!-- warszawa_n -->
 	<zone name="0_warszawa_n" level="0" x="513440" y="17280" file="Level 0/warszawa/n.tmx">
@@ -112,6 +127,21 @@
 				<parameter name="sound">water-2</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- warszawa_e -->
+	<zone name="0_warszawa_e" level="0" x="513568" y="17536" file="Level 0/warszawa/e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -192,7 +222,7 @@
 		<configurator class-name="games.stendhal.server.maps.warszawa.house.CollectorNPC"/>
 
 		<portal x="8" y="18" ref="exit">
-			<destination zone="0_warszawa_nw" ref="entrance"/>
+			<destination zone="0_warszawa_w" ref="entrance"/>
 		</portal>
 	</zone>
 

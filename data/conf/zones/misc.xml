@@ -72,9 +72,9 @@
 			</implementation>
 		</portal>
 		<portal x="52" y="19" ref="afterlife_warszawa_exit">
-			<destination zone="0_warszawa_nw" ref="warszawa_restart_life"/>
+			<destination zone="0_warszawa_w" ref="warszawa_restart_life"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
-				<parameter name="quest">0_warszawa_nw</parameter>
+				<parameter name="quest">0_warszawa_w</parameter>
 				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
 			</implementation>
 		</portal>

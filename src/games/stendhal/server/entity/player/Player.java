@@ -1991,7 +1991,7 @@ public class Player extends DressedEntity implements UseListener {
 			|| (zoneName.equals("0_kalavan_city")) || (zoneName.equals("0_kirdneh_city"))
 			|| (zoneName.equals("0_nalwor_city")) || (zoneName.equals("0_semos_city"))
 			|| (zoneName.equals("0_zakopane_s")) || (zoneName.equals("0_krakow_wawel_w"))
-			|| (zoneName.equals("0_warszawa_nw")) || (zoneName.equals("0_wieliczka_c"))
+			|| (zoneName.equals("0_warszawa_w")) || (zoneName.equals("0_wieliczka_c"))
 			|| (zoneName.equals("0_gdansk_city_n"))) {
 			if(getQuest(zoneName) == null) {
 				setQuest(zoneName,"done");
