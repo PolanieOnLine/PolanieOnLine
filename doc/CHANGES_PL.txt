@@ -2,12 +2,31 @@ Changelog
 ---------
 1.14
 *świat*
-- Dodano nowe mapy: (2)
+- Dodano nowe mapy: (14)
 	- 0_krakow_wisla_e2
 	- 0_krakow_wawel_e2
-- Przerobiono mapy: (1)
+	- 0_warszawa_n
+	- 0_warszawa_ne
+	- 0_warszawa_e
+	- 0_warszawa_se
+	- 0_gdansk_outside
+	- 0_gdansk_coast_w
+	- 0_gdansk_coast_e
+	- 0_gdansk_forest_e2
+	- 0_gdansk_forest_e3
+	- 0_gdansk_forest_w2 (tylko las)
+	- 0_gdansk_forest_s_w2 (tylko las)
+	- 0_gdansk_forest_s2_w2 (tylko las)
+- Przerobiono mapy: (6)
 	- 0_dragon_land_n
+	- 0_dragon_knights
+	- 0_dragon_knights_s
+	- 0_dragon_knights_forest
+	- 0_dragon_knights_forest_w
+	- 0_dragon_knights_forest_s
+	- 0_dragon_knights_forest_sw
 - Poprawiono mapy wizualnie w taki sposób, aby pasowały do nowych map
+- Poprawiono nazwy kierunków map Warszawy
 
 
 1.13.1
