@@ -6,6 +6,20 @@
 	-->
 
 	<!-- Ground level -->
+	
+	<!-- gdansk_outside -->
+	<zone name="0_gdansk_outside" level="0" x="512928" y="17024" file="Level 0/gdansk/outside.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
 
 	<!-- gdansk_nw -->
 	<zone name="0_gdansk_city_nw" level="0" x="513056" y="17024" file="Level 0/gdansk/city_nw.tmx">
@@ -226,6 +240,46 @@
 		</portal>
 	</zone>
 
+	<!-- gdansk_coast_w -->
+	<zone name="0_gdansk_coast_w" level="0" x="513440" y="17024" file="Level 0/gdansk/coast_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+	
+	<!-- gdansk_coast_e -->
+	<zone name="0_gdansk_coast_e" level="0" x="513568" y="17024" file="Level 0/gdansk/coast_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- START: NIEDOSTĘPNE -->
+	<!-- gdansk_forest_w2 -->
+	<zone name="0_gdansk_forest_w2" level="0" x="512928" y="17152" file="Level 0/gdansk/forest_w2.tmx">
+	</zone>
+	<!-- gdansk_forest_s_w2 -->
+	<zone name="0_gdansk_forest_s_w2" level="0" x="512928" y="17280" file="Level 0/gdansk/forest_s_w2.tmx">
+	</zone>
+	<!-- gdansk_forest_s2_w2 -->
+	<zone name="0_gdansk_forest_s2_w2" level="0" x="512928" y="17408" file="Level 0/gdansk/forest_s2_w2.tmx">
+	</zone>
+	<!-- END: NIEDOSTĘPNE -->
+
 	<!-- gdansk_forest_w -->
 	<zone name="0_gdansk_forest_w" level="0" x="513056" y="17152" file="Level 0/gdansk/forest_w.tmx">
 		<attributes>
@@ -273,6 +327,34 @@
 
 	<!-- gdansk_forest_e -->
 	<zone name="0_gdansk_forest_e" level="0" x="513312" y="17152" file="Level 0/gdansk/forest_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- gdansk_forest_e2 -->
+	<zone name="0_gdansk_forest_e2" level="0" x="513440" y="17152" file="Level 0/gdansk/forest_e2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-nadmorska-kraina1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- gdansk_forest_e3 -->
+	<zone name="0_gdansk_forest_e3" level="0" x="513568" y="17152" file="Level 0/gdansk/forest_e3.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>

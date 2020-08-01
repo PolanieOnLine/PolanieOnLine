@@ -132,7 +132,22 @@
 	</zone>
 
 	<!-- warszawa_e -->
-	<zone name="0_warszawa_e" level="0" x="513568" y="17536" file="Level 0/warszawa/e.tmx">
+	<zone name="0_warszawa_e" level="0" x="513568" y="17408" file="Level 0/warszawa/e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-littlemeadow1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- warszawa_se -->
+	<zone name="0_warszawa_se" level="0" x="513568" y="17536" file="Level 0/warszawa/se.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
