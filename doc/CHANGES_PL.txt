@@ -2,7 +2,7 @@ Changelog
 ---------
 1.14
 *świat*
-- Dodano nowe mapy: (17)
+- Dodano nowe mapy: (19)
 	- 0_krakow_swamp
 	- 0_krakow_swamp_nw
 	- 0_krakow_swamp_ne
@@ -20,6 +20,8 @@ Changelog
 	- 0_gdansk_forest_w2 (mapa niedostępna - las)
 	- 0_gdansk_forest_s_w2 (mapa niedostępna - las)
 	- 0_gdansk_forest_s2_w2 (mapa niedostępna - las)
+	- 0_gdansk_forest_s3_w
+	- 0_gdansk_forest_s3_w2
 - Przerobiono mapy: (8)
 	- 0_gdansk_road_n
 	- 0_gdansk_road_s
