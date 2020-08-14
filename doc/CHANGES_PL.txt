@@ -20,7 +20,9 @@ Changelog
 	- 0_gdansk_forest_w2 (mapa niedostępna - las)
 	- 0_gdansk_forest_s_w2 (mapa niedostępna - las)
 	- 0_gdansk_forest_s2_w2 (mapa niedostępna - las)
-- Przerobiono mapy: (6)
+- Przerobiono mapy: (8)
+	- 0_gdansk_road_n
+	- 0_gdansk_road_s
 	- 0_dragon_land_n
 	- 0_dragon_knights
 	- 0_dragon_knights_s
