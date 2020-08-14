@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.14
+*klient*
+- Dodano nowe grafiki chatek
+
 *świat*
 - Dodano nowe mapy: (19)
 	- 0_krakow_swamp
