@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="33" columns="3">
   <image source="../../tileset/ground/ground.png" width="96" height="352"/>
  </tileset>
@@ -26,6 +26,12 @@
  </tileset>
  <tileset firstgid="205" name="tree_buk" tilewidth="32" tileheight="32" tilecount="12" columns="3">
   <image source="../../tileset/pol/natura/drzewa/tree_buk.png" width="96" height="128"/>
+ </tileset>
+ <tileset firstgid="217" name="animal" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
+ </tileset>
+ <tileset firstgid="249" name="pol_zjawy" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/creature/pol_zjawy.png" width="256" height="64"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="zlib">
@@ -54,7 +60,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eAHt0IEAAAAAgKD9qRcphAoDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMFADAA8AAQ==
+   eAHt3UsOgjAQAFCI97+g7jyGSqLbQkIglmmbee6qTWf6hjT8nSYfAgQIECBAgECcwD0ulEgECHQg8Oggh15TWHpN7M+8rPMlII/SQ+ugwHywn24ECAwnYN9ouJJJeEfA9ryD46emAp+m0QVvJWBNaiUvLoFjAtbmY0499Hr2kIQcCBBIJxB1Hv2dTtaECYwtMLtWMnYBZU+AAAECBAgUAq+i1V/D8VJ/NZERAQLXCEStd1Hnu65RMioBAgQIECCwFnBf0lpEmwABAgQIEMgiYD8oS6XNs5aAe3BrSRqHQCngWYTSI6plTYuSFocAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIErhaIes/A1fMwPgECBAgQIECAAAECBLIJeMYpW8XNlwABAgQIECBAgMA01X7HRO3x1IgAAQIECBDYCtz81+AWxTcECBAgQIAAAQIECBBILrAEzN9zAgHIQhAgQIAAAQIEGgq43t8QX2gCPwHHXDYDAgQIECBAgAABAgQIECCQT8D5gHw1bzVj75FoJS8uAQIEzgnUuF5n/+Kcud4ECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQGBkgS9v/B+G
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.21">

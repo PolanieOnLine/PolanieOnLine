@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="33" columns="3">
   <image source="../../tileset/ground/ground.png" width="96" height="352"/>
  </tileset>
@@ -20,6 +20,12 @@
  </tileset>
  <tileset firstgid="149" name="tree_buk_big" tilewidth="32" tileheight="32" tilecount="42" columns="6">
   <image source="../../tileset/pol/natura/drzewa/tree_buk_big.png" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="191" name="animal" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
+ </tileset>
+ <tileset firstgid="223" name="pol_pokutniki" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/logic/creature/pol_pokutniki.png" width="160" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="zlib">
@@ -48,7 +54,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eAHt0IEAAAAAgKD9qRcphAoDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMFADAA8AAQ==
+   eAHt2ltugzAQBdDsf1XTNXQFUTZSVaollB8nKfgxc/IDEQbPPeYl4HbzI0CAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBGYJxKyO9TtM4GtYTzoiQIAAAQIEdhZwz7Dz6KmdAIFsAs7J2UZUnh0E4q/IV46/1nbVXKvXt6qbuggQqCPwyrm+joakBAgQIHCGQJyxEdsgQIAAAQIECBAgQGCKQEzpVacECLwj8P1O43+2jcP6uzxLPtZ8KN8sge0FRh7722MJQIBAV2CX63o3iAYECJQRaOetNi0TXFACxQQc48UGvBPX/tABspgAAQIECBAgsKlAbFr3qLJnvQ96jAqoHwIECBAgQIAAAQIECBAgQIBAR8B7wg6QxQQIECBAgACBBALu+RIMYieCMe4AWUxgoMCs7xBaxGgzpgQIECBAgAABAgQIECBAgACB5AKzn8Mk5xWPAAECBAgQIECAAAECBAgQIECAQBqBSJNEEAIECNQWeP5m/vl/bR3pfwUCAwECqQUidTrhCBAgcK2A76yu9a2y9av3o6gCKScBAgQIfCRw/2gtK60mEKsVpB4CBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAwMkCP+HzHto=
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.19">

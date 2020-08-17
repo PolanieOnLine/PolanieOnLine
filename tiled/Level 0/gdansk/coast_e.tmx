@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="sandy_rocks" tilewidth="32" tileheight="32" tilecount="15" columns="3">
   <image source="../../tileset/ground/rock/sandy_rocks.png" width="96" height="160"/>
  </tileset>
@@ -45,6 +45,12 @@
  <tileset firstgid="378" name="../../tileset/item/corpse/huge_animal.png" tilewidth="32" tileheight="32" tilecount="16" columns="2">
   <image source="../../tileset/item/corpse/huge_animal.png" trans="ffffff" width="64" height="256"/>
  </tileset>
+ <tileset firstgid="394" name="animal" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
+ </tileset>
+ <tileset firstgid="426" name="golem" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/logic/creature/golem.png" width="128" height="32"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="zlib">
    eAHtm81u2zAQBnPpA7Topc37v2csBIKJDSUtKXJ/qDkIFiWK3P1m4AR28vnx8fHJQQY48DgH/sP8Ucw33vLgvX+9n3+S8dkY/rn5n7HV3IN/Lv4api1z4G/Pv4XP7LkW/Gf0YFF36x4z+py9ZmuPZ/Nn18r6P39/v5vJGc+ze3f35fnxLHsy3Rj3PMcz5IYDOIADOIADOIADOIADOIADOIADOIADOIADOIADOIADOIADOIADOIADxw78e30XO/Mg++PsrbOZybllbeu+V9uvJeuIc1fjcbefiIxm1nQ3r2zPz8wy49rZ+GnqzcjBq2ZNnpHneOW2yr6R2craVsk8Uh8y4wjjSPl41vLr9XnA7MODt2emkfaezVaz/kj+kbKNVIuGg9ecO/wjZexVixe3Uftq+Htla7XvqCwzrrPxt8rZcp+MLDxqtmSi3csjh6fuqWUyet5T847W92iutfWi9Uw9788VarxGXCPjd8aRs4B1Dk6zHOrlP6se1rX1UcMfJrZMLPPe+VvuyV42Pv1+fbZTHuRuk7tlziXfnnPLWtmr378etppnYNLPZER2GkYz54zoYfU1Zubvvfbq7Lb+vDOOvP8q/CNnHLm2jPwj55mttsj8s2WZsd4o/DNmt0LNHvxXyG2VHmbyXyWjlfvo5b9yJk/qreT/pL7plc9FcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHcAAHMjrw5/X/sduRsXZqvs9t548D97PM6GPJfz/P2Ac19/m7M5ev5NmXZ7bcJHc5ztYP9bZ5K3kfjcm1LdcseR3x1lxv7VGz5jandV3m92emZRJhHpz7OR9lF4Frbw1HPXFd70lv9pGeg7eet8wqEse7tcjeGF97cTfziM/D/Zr7nlFEfiNr2vvkte7EyKwjrwX/Z/Mv3cSFtwtlLk87x4Pv7/6fxr3W71NdqGXBtff74+pewLr/PXAFN+Dfz7/MLqsLZQ+c33chmwcwv8+8lmEWD2q1c22MExkcgPUY1mc5RvbgrG7ujXMjqgMwHsdYk2U0DzQ1M2esI5EcgO1Ytto8ozigrZd54z2J4ABcx3NtydTbgZZamTvPFS8PYDqPaWu2Hg601sj8ub5YOwDPdp7WjGbuB/9v/n9f/3eoPawym8l9X9uqlwj7nPGNUF+thp3TrNfanqtcq/H27m0Wx951vfMYub/kPXJtuVZv3tGek31lGsssR9Qu11x9PCIzyzUkD83e8hnG779v1uTnPUfyuqpHzmf85i2zuMrS835Z61Ud5VzOj3nLbK5y9bhf1rjvX17jXM/3Kqs93wivZa1bPeV4O69dk3MY/8ztLBNv7mVtNb61a+UznLfxlnl58Jc1yDHM7zGVeZ6Nrfif1cA9O94y65n85V6M/TgfZf8FgCmcSw==
@@ -72,7 +78,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eAHt0IEAAAAAgKD9qRcphAoDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMFADAA8AAQ==
+   eAHt28sOgjAQBVD8/6XRnzD+ozsSUha8hLn0uNIGdHquTKrVYXAjQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgkCHwfmTUqUoCdxF4uebuEqV5BAu4DoPDUzoBAgQIECBAgACBUAHfwYUGp2wCBAgQIEBgFPja3xgt3CFAgAABAgQIECCwVeDq3yt8rOu3Ruc8AgQIlBDQx+djsA8371J99Op1UXWftfXpD2vFHE+gD4ElvcH+Tx/vBbMk0LtA+tpzST/vPePU+cs2NTl1EyBAIEfAZ75zsnragz0H2qsQIDAR0HsmHM2DvT57z28KMkCAAAECiwX04MVUDiRAgEBpAf28dDyKI0CAQCOgbzckBggQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBIIEjvo/7VHPE0RXtlRZlI1GYX8U+AHilBDc
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.2">
