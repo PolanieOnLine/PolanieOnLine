@@ -98,6 +98,21 @@
 		</entity>
 	</zone>
 
+	<!-- krakow_w2 -->
+	<zone name="0_krakow_w2" level="0" x="513184" y="17792" file="Level 0/krakow/w2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-krolewskie-miasto1</parameter>
+				<parameter name="volume">80</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
 	<!-- krakow_rynek -->
 	<zone name="0_krakow_rynek" level="0" x="513440" y="17792" file="Level 0/krakow/rynek.tmx">
 		<!-- PET -->
@@ -691,6 +706,31 @@ Południe: Zakopane
 		<!--<portal x="57" y="13" ref="krakow_tunnel_1_entrance">
 			<destination zone="-2_dragon_cave" ref="tunnel_krakow_1_exit"/>
 		</portal>-->
+	</zone>
+	
+	<!-- swamp -->
+	<!-- krakow_swamp_ne -->
+	<zone name="0_krakow_swamp_ne" level="0" x='513056' y="17664" file="Level 0/krakow/swamp_ne.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<!-- krakow_swamp_nw -->
+	<zone name="0_krakow_swamp_nw" level="0" x='512928' y="17664" file="Level 0/krakow/swamp_nw.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<!-- krakow_swamp -->
+	<zone name="0_krakow_swamp" level="0" x='512928' y="17792" file="Level 0/krakow/swamp.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
 	</zone>
 
 	<!-- interiors -->

@@ -427,6 +427,22 @@
 		</entity>
 	</zone>
 
+	<!-- gdansk_forest_s3_w -->
+	<zone name="0_gdansk_forest_s3_w" level="0" x="513056" y="17536" file="Level 0/gdansk/forest_s3_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+	
+	<!-- gdansk_forest_s3_w2 -->
+	<zone name="0_gdansk_forest_s3_w2" level="0" x="512928" y="17536" file="Level 0/gdansk/forest_s3_w2.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
 	<!-- gdansk_road_n -->
 	<zone name="0_gdansk_road_n" level="0" x="513184" y="17408" file="Level 0/gdansk/road_n.tmx">
 		<attributes>
