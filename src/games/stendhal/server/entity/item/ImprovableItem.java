@@ -2,6 +2,11 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
+/**
+ * Items are improvable.
+ * 
+ * @author KarajuSs
+ */
 public class ImprovableItem extends Item {
 
 	public ImprovableItem(String name, String clazz, String subclass, Map<String, String> attributes) {
@@ -11,18 +16,37 @@ public class ImprovableItem extends Item {
 		super(item);
 	}
 
+	/**
+	 * Change item description for upgraded one.
+	 */
 	@Override
 	public String getDescription() {
 		return super.getDescription() + " " + getImproveNumber() + ".";
 	}
 
+	/**
+	 * Checks the improvable state of the item.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the item has a possibility to be upgraded.
+	 */
 	public boolean isUpgradeable() {
 		return getMaxImproves() > 0;
 	}
 
+	/**
+	 * Sets the item improve up.
+	 */
 	public void upgrade() {
 		put("improve", maxImproves());
 	}
+
+	/**
+	 * Checks max of possibility improves for item.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the item has been max improved.
+	 */
 	private int maxImproves() {
 		if (getImprove() == getMaxImproves()) {
 			return getMaxImproves();
@@ -30,6 +54,9 @@ public class ImprovableItem extends Item {
 		return getImprove() + 1;
 	}
 
+	/**
+	 * Increasing attack from item.
+	 */
 	@Override
 	public int getAttack() {
 		if (has("atk")) {
@@ -37,6 +64,9 @@ public class ImprovableItem extends Item {
 		}
 		return 0;
 	}
+	/**
+	 * Increasing defense from item.
+	 */
 	@Override
 	public int getDefense() {
 		if (has("def")) {
@@ -44,6 +74,9 @@ public class ImprovableItem extends Item {
 		}
 		return 0;
 	}
+	/**
+	 * Increasing range attack from item.
+	 */
 	@Override
 	public int getRangedAttack() {
 		if (has("ratk")) {
