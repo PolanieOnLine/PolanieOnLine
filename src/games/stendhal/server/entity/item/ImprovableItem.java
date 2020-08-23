@@ -38,7 +38,7 @@ public class ImprovableItem extends Item {
 	 * Sets the item improve up.
 	 */
 	public void upgrade() {
-		put("improve", maxImproves());
+		put("improve", setImproves());
 	}
 
 	/**
@@ -47,15 +47,22 @@ public class ImprovableItem extends Item {
 	 * @return
 	 * 		<code>true</code> if the item has been max improved.
 	 */
-	private int maxImproves() {
-		if (getImprove() == getMaxImproves()) {
+	private int setImproves() {
+		if (isMaxImproved()) {
 			return getMaxImproves();
 		}
 		return getImprove() + 1;
 	}
 
+	private boolean isMaxImproved() {
+		if (getImprove() == getMaxImproves()) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
-	 * Increasing attack from item.
+	 * Increasing attack of item.
 	 */
 	@Override
 	public int getAttack() {
@@ -65,7 +72,7 @@ public class ImprovableItem extends Item {
 		return 0;
 	}
 	/**
-	 * Increasing defense from item.
+	 * Increasing defense of item.
 	 */
 	@Override
 	public int getDefense() {
@@ -75,12 +82,25 @@ public class ImprovableItem extends Item {
 		return 0;
 	}
 	/**
-	 * Increasing range attack from item.
+	 * Increasing range attack of item.
 	 */
 	@Override
 	public int getRangedAttack() {
 		if (has("ratk")) {
 			return super.getRangedAttack() + getImprove();
+		}
+		return 0;
+	}
+	/**
+	 * Decreasing rate attack of item when item has been max improved.
+	 */
+	@Override
+	public int getAttackRate() {
+		if (has("rate")) {
+			if (isMaxImproved()) {
+				return super.getAttackRate() - 1;
+			}
+			return super.getAttackRate();
 		}
 		return 0;
 	}
