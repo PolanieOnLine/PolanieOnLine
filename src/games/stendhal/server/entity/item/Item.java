@@ -329,6 +329,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		return 0;
 	}
 
+	public int getRange() {
+		if (has("range")) {
+			return getInt("range");
+		}
+
+		return 0;
+	}
+
 	/**
 	 * Returns each how many turns this item can attack.
 	 *
@@ -780,7 +788,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 		if (has("range")) {
 			stats.append(" ZASIĘG: ");
-			stats.append(get("range"));
+			stats.append(getRange());
 		}
 		if (has("lifesteal")) {
 			stats.append(" LIFESTEAL: ");

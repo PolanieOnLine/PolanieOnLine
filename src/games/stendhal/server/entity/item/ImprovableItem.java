@@ -62,7 +62,7 @@ public class ImprovableItem extends Item {
 	}
 
 	/**
-	 * Increasing attack of item.
+	 * Increasing the attack of item.
 	 */
 	@Override
 	public int getAttack() {
@@ -72,7 +72,7 @@ public class ImprovableItem extends Item {
 		return 0;
 	}
 	/**
-	 * Increasing defense of item.
+	 * Increasing the defense of item.
 	 */
 	@Override
 	public int getDefense() {
@@ -82,7 +82,7 @@ public class ImprovableItem extends Item {
 		return 0;
 	}
 	/**
-	 * Increasing range attack of item.
+	 * Increasing the range attack of item.
 	 */
 	@Override
 	public int getRangedAttack() {
@@ -92,7 +92,7 @@ public class ImprovableItem extends Item {
 		return 0;
 	}
 	/**
-	 * Decreasing rate attack of item when item has been max improved.
+	 * Decreasing the rate attack of item when item has been max improved.
 	 */
 	@Override
 	public int getAttackRate() {
@@ -101,6 +101,19 @@ public class ImprovableItem extends Item {
 				return super.getAttackRate() - 1;
 			}
 			return super.getAttackRate();
+		}
+		return Item.getDefaultAttackRate();
+	}
+	/**
+	 * Increasing the range of bows and wands when item has been max improved.
+	 */
+	@Override
+	public int getRange() {
+		if (has("range")) {
+			if (isMaxImproved()) {
+				return super.getRange() + 1;
+			}
+			return super.getRange();
 		}
 		return 0;
 	}
