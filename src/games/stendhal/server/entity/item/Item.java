@@ -246,6 +246,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute("durability", Type.INT, Definition.VOLATILE);
 		entity.addAttribute("uses", Type.INT);
 
+		entity.addAttribute("max_improves", Type.INT, Definition.VOLATILE);
+		entity.addAttribute("improve", Type.INT);
+
 		// player that owns the item
 		entity.addAttribute("owner", Type.STRING, Definition.HIDDEN);
 	}
@@ -745,7 +748,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		if (has("atk")) {
 			stats.append("ATK: ");
-			stats.append(get("atk"));
+			stats.append(getAttack());
 			// Show only special types
 			if (getDamageType() != Nature.CUT) {
 				stats.append(" [");
@@ -755,11 +758,11 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 		if (has("def")) {
 			stats.append(" OBR: ");
-			stats.append(get("def"));
+			stats.append(getDefense());
 		}
 		if (has("ratk")) {
 			stats.append(" STR: ");
-			stats.append(get("ratk"));
+			stats.append(getRangedAttack());
 			// Show only special types
 			if (getDamageType() != Nature.CUT) {
 				stats.append(" [");
