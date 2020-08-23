@@ -174,6 +174,9 @@ public final class ItemsXMLLoader extends DefaultHandler {
 				} else if (qName.equals("durability")) {
 					attributes.put(qName, attrs.getValue("value"));
 					attributes.put("uses", "0");
+				} else if (qName.equals("max_improves")) {
+					attributes.put(qName, attrs.getValue("value"));
+					attributes.put("improve", "0");
 				} else {
 					attributes.put(qName, attrs.getValue("value"));
 				}
