@@ -150,7 +150,7 @@ public class ProducerAdder {
 						if (behaviour.isOrderReady(player)) {
 							// This can happen if the player had the bag full
 							// when coming to talk to the NPC.
-							npc.say("Jeszcze nie wyokanełeś ostatniego zlecenia.");
+							npc.say("Jeszcze nie wykonałeś ostatniego zlecenia.");
 						} else {
 							npc.say("Wciąż nie skończyłem twojego ostatniego zlecenia. Wróć za "
 									+ behaviour.getApproximateRemainingTime(player)
