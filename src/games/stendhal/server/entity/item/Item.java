@@ -386,6 +386,19 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		return DEFAULT_DETERIORATION;
 	}
 
+	public int getImproves() {
+		if(has("improve")) {
+			return getInt("improve");
+		}
+		return 0;
+	}
+	public int getMaxImproves() {
+		if(has("max_improves")) {
+			return getInt("max_improves");
+		}
+		return 0;
+	}
+
 	/**
 	 * Propose increase the degree of deterioration. If degree increases is decided by random
 	 */
