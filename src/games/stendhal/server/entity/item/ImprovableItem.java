@@ -54,7 +54,7 @@ public class ImprovableItem extends Item {
 		return getImprove() + 1;
 	}
 
-	private boolean isMaxImproved() {
+	public boolean isMaxImproved() {
 		if (getImprove() == getMaxImproves()) {
 			return true;
 		}
