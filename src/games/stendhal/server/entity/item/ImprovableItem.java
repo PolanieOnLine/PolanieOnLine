@@ -54,11 +54,18 @@ public class ImprovableItem extends Item {
 		return getImprove() + 1;
 	}
 
-	public boolean isMaxImproved() {
+	private boolean isMaxImproved() {
 		if (getImprove() == getMaxImproves()) {
 			return true;
 		}
 		return false;
+	}
+
+	public final ImprovableItem getItem() {
+		if (getSlot("content").size() == 0) {
+			return null;
+		}
+		return (ImprovableItem) getSlot("item").iterator().next();
 	}
 
 	/**

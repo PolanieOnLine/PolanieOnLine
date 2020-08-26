@@ -1,0 +1,72 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2020 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+package games.stendhal.server.maps.zakopane.city;
+
+import java.util.Map;
+
+import games.stendhal.common.Direction;
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.maps.zakopane.city.ImproverAdder.ImproverNPC;
+
+public class Improver implements ZoneConfigurator {
+	private static final String npcName = "Kowal Inpraf";
+
+	private StendhalRPZone zone;
+
+	private ImproverNPC improver;
+	private ImproverAdder improverAdder;
+
+	/**
+	 * Configure a zone.
+	 *
+	 * @param	zone		The zone to be configured.
+	 * @param	attributes	Configuration attributes.
+	 */
+	@Override
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
+		this.zone = zone;
+
+		initNPC();
+		initImprove();
+	}
+
+	private void initNPC() {
+		improverAdder = new ImproverAdder();
+
+		improver = improverAdder.new ImproverNPC(npcName) {
+			@Override
+			public void say(final String text) {
+				// don't turn toward player
+				say(text, false);
+			}
+		};
+
+		improver.setDescription("Oto Kowal Inpraf. Potrafi udoskonalać różne wyposażenie.");
+		improver.setEntityClass("rangernpc");
+		improver.setIdleDirection(Direction.DOWN);
+
+		improver.addGreeting();
+		improver.addGoodbye();
+
+		improver.addJob("Udoskonalam jakość wyposażenia, dzięki czemu jest wytrzymalsze!");
+		improver.addQuest("Nie mam zadania dla Ciebie.");
+		improver.addHelp("Nie potrzebuję pomocy, lecz możesz poprosić mnie o ulepszenie swojego wyposażenia.");
+
+		improver.setPosition(120, 99);
+		zone.add(improver);
+	}
+
+	private void initImprove() {
+		improverAdder.add(improver);
+	}
+}

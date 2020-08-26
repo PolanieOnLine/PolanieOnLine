@@ -2,7 +2,6 @@ package games.stendhal.server.maps.zakopane.city;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -31,6 +30,7 @@ public class ImproverAdder {
 	private static final List<String> phrases = Arrays.asList("improve", "upgrade", "ulepsz", "ulepszyć", "udoskonalić");
 
 	private ImprovableItem item;
+	private Player player;
 
 	private String currentImproveItem = null;
 	private Integer currentImproveCount = null;
@@ -89,10 +89,7 @@ public class ImproverAdder {
 	}
 
 	private void setImproveItem(final String itemName) {
-		if (item.isUpgradeable()) {
-			currentImproveItem = itemName;
-			return;
-		}
+		currentImproveItem = itemName;
 	}
 
 	private void setImproveCount(final Player player) {
@@ -107,25 +104,19 @@ public class ImproverAdder {
 	}
 
 	private void calculateImproveFee() {
-		currentImproveFee = item.getImprove() * (item.getAttack() + item.getDefense() * 750);
+		currentImproveFee = 10000;
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				final int improvables = improver.getNumberOfImprovables();
 
 				String request = sentence.getTrimmedText();
 				if (phrases.contains(request.toLowerCase())) {
-					if (improvables > 1) {
-						improver.say("Powiedz mi tylko co chcesz udoskonalić.");
-						improver.setCurrentState(ConversationStates.ATTENDING);
-						return;
-					}
-
-					// player does not need to specify item name if improver only repairs one item
-					request = request + " " + improver.getFirstRepairable();
+					improver.say("Powiedz mi tylko co chcesz udoskonalić.");
+					improver.setCurrentState(ConversationStates.ATTENDING);
+					return;
 				}
 
 				for (final String rWord: phrases) {
@@ -137,17 +128,6 @@ public class ImproverAdder {
 
 				setImproveItem(request);
 				setImproveCount(player);
-				
-				if (item.isMaxImproved()) {
-					String itemIsMaxedReply = null;
-					if (itemIsMaxedReply == null) {
-						itemIsMaxedReply = "Ten przedmiot #'" + Grammar.plural(currentImproveItem) + "' został już maksymalnie ulepszony.";
-					}
-
-					improver.say(itemIsMaxedReply);
-					improver.setCurrentState(ConversationStates.ATTENDING);
-					return;
-				}
 
 				if (currentImproveCount == null) {
 					String cannotImproveReply = null;
@@ -242,39 +222,14 @@ public class ImproverAdder {
 	}
 
 	public class ImproverNPC extends SpeakerNPC {
-		private final Map<String, Integer> improveList;
-
-		public ImproverNPC(String name, final Map<String, Integer> improveList) {
+		public ImproverNPC(String name) {
 			super(name);
-
-			this.improveList = improveList;
 		}
 
 		@Override
 		public void onGoodbye(final RPEntity attending) {
 			// reset item name, count, & fee to null
 			reset();
-		}
-
-		/**
-		 * Retrieves number of item types that can be repaired by this NPC.
-		 *
-		 * @return
-		 * 		Number of repairable item types.
-		 */
-		public int getNumberOfImprovables() {
-			return improveList.size();
-		}
-
-		/**
-		 * Retrieves the first item name from repair list.
-		 *
-		 * @return
-		 * 		First item.
-		 */
-		@SuppressWarnings("unchecked")
-		public String getFirstRepairable() {
-			return improveList.keySet().toArray(new String[] {})[0];
 		}
 	}
 }
