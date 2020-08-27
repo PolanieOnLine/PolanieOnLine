@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.ImprovableItem;
@@ -29,17 +29,16 @@ public class ImproverAdder {
 
 	private static final List<String> phrases = Arrays.asList("improve", "upgrade", "ulepsz", "ulepszyć", "udoskonalić");
 
-	private ImprovableItem item;
-	private Player player;
-
 	private String currentImproveItem = null;
-	private Integer currentImproveCount = null;
 	private Integer currentImproveFee = null;
+
+	private boolean foundMoreThanOne = false;
 
 	private void reset() {
 		currentImproveItem = null;
-		currentImproveCount = null;
 		currentImproveFee = null;
+
+		foundMoreThanOne = false;
 	}
 
 	public void add(final ImproverNPC improver) {
@@ -92,19 +91,9 @@ public class ImproverAdder {
 		currentImproveItem = itemName;
 	}
 
-	private void setImproveCount(final Player player) {
-		int count = 0;
-		for (final Item item: player.getAllEquipped(currentImproveItem)) {
-			if (((ImprovableItem) item).isUpgradeable()) {
-				count++;
-			}
-		}
-
-		currentImproveCount = count;
-	}
-
 	private void calculateImproveFee() {
-		currentImproveFee = 10000;
+		final ImprovableItem item = (ImprovableItem) SingletonRepository.getEntityManager().getItem(currentImproveItem);
+		currentImproveFee = ((item.getAttack() + item.getDefense()) * 1000);
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
@@ -127,39 +116,32 @@ public class ImproverAdder {
 				}
 
 				setImproveItem(request);
-				setImproveCount(player);
 
-				if (currentImproveCount == null) {
-					String cannotImproveReply = null;
-					if (cannotImproveReply == null) {
-						cannotImproveReply = "Nie jestem w stanie udoskonalić #'" + Grammar.plural(currentImproveItem) + "'.";
+				List<Item> equipped = player.getAllEquipped(currentImproveItem);
+				if(!equipped.isEmpty()) {
+					if(equipped.size() > 1) {
+						foundMoreThanOne = true;
 					}
 
-					improver.say(cannotImproveReply);
-					improver.setCurrentState(ConversationStates.ATTENDING);
-					return;
-				} else if (currentImproveCount < 1) {
-					String notCarryingReply = null;
-					if (notCarryingReply == null) {
-						notCarryingReply = "Nie posiadasz ani jednego przedmiotu #'" + Grammar.plural(currentImproveItem) + "', który jest możliwy do udoskonalenia.";
+					Item toImprove = equipped.iterator().next();
+					for(Item i : equipped) {
+						if(i.getImproves() > toImprove.getImproves()) {
+							toImprove = i;
+						}
 					}
-
-					improver.say(notCarryingReply);
-					improver.setCurrentState(ConversationStates.ATTENDING);
-					return;
+					if(toImprove.getMaxImproves() > 0 && !toImprove.isMaxImproved()) {
+						calculateImproveFee();
+						if(foundMoreThanOne) {
+							improver.say("Nosisz więcej takich przedmiotów jak #'"+currentImproveItem+"' ze sobą. W takim razie udoskonalę ten z najwyższym już ulepszonym poziomem. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
+						} else {
+							improver.say("Udoskonalę #'"+currentImproveItem+"'. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
+						}
+					} else {
+						improver.say("Wybacz. Przedmiot ten jest niemożliwy do udoskonalenia. Poproś o ulepszenie jakiegoś innego przedmiotu.");
+						improver.setCurrentState(ConversationStates.ATTENDING);
+						return;
+					}
 				}
-
-				calculateImproveFee();
-
-				String sayCountReply = null;
-				if (sayCountReply == null) {
-					final StringBuilder sb = new StringBuilder("Mogę ulepszyć to #'" + currentImproveItem);
-					sb.append("' za " + Integer.toString(currentImproveFee) + " money. Chcesz, abym to zrobił?");
-
-					sayCountReply = sb.toString();
-				}
-
-				improver.say(sayCountReply);
 			}
 		};
 	}
@@ -216,7 +198,7 @@ public class ImproverAdder {
 		return new ChatCondition() {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, Entity improver) {
-				return currentImproveCount != null && currentImproveCount > 0;
+				return foundMoreThanOne = true;
 			}
 		};
 	}
