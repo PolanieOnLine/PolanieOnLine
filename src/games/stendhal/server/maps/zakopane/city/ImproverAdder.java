@@ -91,9 +91,52 @@ public class ImproverAdder {
 		currentImproveItem = itemName;
 	}
 
+	private void setImprove(final Player player, final ImproverNPC improver) {
+		List<Item> equipped = player.getAllEquipped(currentImproveItem);
+		if (!equipped.isEmpty()) {
+			if(equipped.size() > 1) {
+				foundMoreThanOne = true;
+			}
+
+			Item toImprove = equipped.iterator().next();
+			for (Item i : equipped) {
+				if (i.getImproves() > toImprove.getImproves()) {
+					if (toImprove.isMaxImproved()) {
+						toImprove = i;
+					}
+				}
+			}
+
+			if (toImprove.getMaxImproves() > 0) {
+				calculateImproveFee();
+				if (!toImprove.isMaxImproved()) {
+					if (foundMoreThanOne) {
+						improver.say("Nosisz więcej takich przedmiotów jak #'"+currentImproveItem+"' ze sobą. W takim razie udoskonalę ten z najwyższym już ulepszonym poziomem. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
+					} else {
+						improver.say("Udoskonalę #'"+currentImproveItem+"'. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
+					}
+				} else {
+					improver.say("Przedmiot #'"+currentImproveItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
+					improver.setCurrentState(ConversationStates.ATTENDING);
+					return;
+				}
+			} else {
+				improver.say("Wybacz. Przedmiot ten jest niemożliwy do udoskonalenia. Poproś o ulepszenie jakiegoś innego przedmiotu.");
+				improver.setCurrentState(ConversationStates.ATTENDING);
+				return;
+			}
+		}
+	}
+
 	private void calculateImproveFee() {
-		final ImprovableItem item = (ImprovableItem) SingletonRepository.getEntityManager().getItem(currentImproveItem);
-		currentImproveFee = ((item.getAttack() + item.getDefense()) * 1000);
+		final Item item = SingletonRepository.getEntityManager().getItem(currentImproveItem);
+
+		int improves = item.getImproves();
+		if (improves == 0) {
+			improves = 1;
+		}
+
+		currentImproveFee = improves * ((item.getAttack() + item.getDefense()) * 1000);
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
@@ -116,32 +159,7 @@ public class ImproverAdder {
 				}
 
 				setImproveItem(request);
-
-				List<Item> equipped = player.getAllEquipped(currentImproveItem);
-				if(!equipped.isEmpty()) {
-					if(equipped.size() > 1) {
-						foundMoreThanOne = true;
-					}
-
-					Item toImprove = equipped.iterator().next();
-					for(Item i : equipped) {
-						if(i.getImproves() > toImprove.getImproves()) {
-							toImprove = i;
-						}
-					}
-					if(toImprove.getMaxImproves() > 0 && !toImprove.isMaxImproved()) {
-						calculateImproveFee();
-						if(foundMoreThanOne) {
-							improver.say("Nosisz więcej takich przedmiotów jak #'"+currentImproveItem+"' ze sobą. W takim razie udoskonalę ten z najwyższym już ulepszonym poziomem. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
-						} else {
-							improver.say("Udoskonalę #'"+currentImproveItem+"'. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
-						}
-					} else {
-						improver.say("Wybacz. Przedmiot ten jest niemożliwy do udoskonalenia. Poproś o ulepszenie jakiegoś innego przedmiotu.");
-						improver.setCurrentState(ConversationStates.ATTENDING);
-						return;
-					}
-				}
+				setImprove(player, improver);
 			}
 		};
 	}
