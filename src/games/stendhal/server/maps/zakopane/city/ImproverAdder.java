@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.ImprovableItem;
@@ -100,25 +99,28 @@ public class ImproverAdder {
 
 			Item toImprove = equipped.iterator().next();
 			for (Item i : equipped) {
-				if (i.getImproves() > toImprove.getImproves()) {
-					if (toImprove.isMaxImproved()) {
+				if (!i.isMaxImproved()) {
+					if (i.getImproves() > toImprove.getImproves()) {
 						toImprove = i;
-					}
-				}
-			}
-
-			if (toImprove.getMaxImproves() > 0) {
-				calculateImproveFee();
-				if (!toImprove.isMaxImproved()) {
-					if (foundMoreThanOne) {
-						improver.say("Nosisz więcej takich przedmiotów jak #'"+currentImproveItem+"' ze sobą. W takim razie udoskonalę ten z najwyższym już ulepszonym poziomem. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
-					} else {
-						improver.say("Udoskonalę #'"+currentImproveItem+"'. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"'. Chcesz, abym udoskonalił to?");
 					}
 				} else {
 					improver.say("Przedmiot #'"+currentImproveItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
 					improver.setCurrentState(ConversationStates.ATTENDING);
 					return;
+				}
+			}
+
+			if (toImprove.getMaxImproves() > 0) {
+				int improves = toImprove.getImproves();
+				if (improves == 0) {
+					improves = 1;
+				}
+				currentImproveFee = improves * ((toImprove.getAttack() + toImprove.getDefense()) * 1000);
+
+				if (foundMoreThanOne) {
+					improver.say("Nosisz więcej takich przedmiotów jak #'"+currentImproveItem+"' ze sobą. W takim razie udoskonalę ten z najwyższym już ulepszonym poziomem. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
+				} else {
+					improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
 				}
 			} else {
 				improver.say("Wybacz. Przedmiot ten jest niemożliwy do udoskonalenia. Poproś o ulepszenie jakiegoś innego przedmiotu.");
@@ -126,17 +128,6 @@ public class ImproverAdder {
 				return;
 			}
 		}
-	}
-
-	private void calculateImproveFee() {
-		final Item item = SingletonRepository.getEntityManager().getItem(currentImproveItem);
-
-		int improves = item.getImproves();
-		if (improves == 0) {
-			improves = 1;
-		}
-
-		currentImproveFee = improves * ((item.getAttack() + item.getDefense()) * 1000);
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
