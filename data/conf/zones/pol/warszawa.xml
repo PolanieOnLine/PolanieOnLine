@@ -144,6 +144,10 @@
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+
+		<portal x="24" y="66" ref="smith_entrance">
+			<destination zone="int_warszawa_blacksmith" ref="smith_exit"/>
+		</portal>
 	</zone>
 
 	<!-- warszawa_se -->
@@ -238,6 +242,39 @@
 
 		<portal x="8" y="18" ref="exit">
 			<destination zone="0_warszawa_w" ref="entrance"/>
+		</portal>
+	</zone>
+	
+	<!-- Blacksmith -->
+	<zone name="int_warszawa_blacksmith" file="interiors/warszawa/blacksmith.tmx">
+		<configurator class-name="games.stendhal.server.maps.warszawa.blacksmith.Improver"/>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="3" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="3" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="9" y="14" ref="smith_exit">
+			<destination zone="0_warszawa_e" ref="smith_entrance"/>
 		</portal>
 	</zone>
 

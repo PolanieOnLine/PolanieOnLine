@@ -1,4 +1,4 @@
-package games.stendhal.server.maps.zakopane.city;
+package games.stendhal.server.maps.warszawa.blacksmith;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +27,7 @@ import games.stendhal.server.events.SoundEvent;
 public class ImproverAdder {
 	private static final Logger logger = Logger.getLogger(ImproverAdder.class);
 
-	private static final List<String> improvePhrases = Arrays.asList("improve", "upgrade", "ulepsz", "ulepszyć", "udoskonalić");
+	private static final List<String> improvePhrases = Arrays.asList("improve", "upgrade", "ulepsz", "udoskonalić");
 	private static final List<String> checkPhrases = Arrays.asList("check", "see", "how much", "sprawdź", "zobacz", "ile");
 
 	private String currentImproveItem = null;

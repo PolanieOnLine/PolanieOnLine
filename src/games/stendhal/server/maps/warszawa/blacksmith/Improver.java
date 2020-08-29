@@ -9,14 +9,14 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.zakopane.city;
+package games.stendhal.server.maps.warszawa.blacksmith;
 
 import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.maps.zakopane.city.ImproverAdder.ImproverNPC;
+import games.stendhal.server.maps.warszawa.blacksmith.ImproverAdder.ImproverNPC;
 
 public class Improver implements ZoneConfigurator {
 	private static final String npcName = "Kowal Inpraf";
@@ -52,17 +52,21 @@ public class Improver implements ZoneConfigurator {
 		};
 
 		improver.setDescription("Oto Kowal Inpraf. Potrafi udoskonalać różne wyposażenie.");
-		improver.setEntityClass("rangernpc");
+		improver.setEntityClass("blacksmithnpc");
 		improver.setIdleDirection(Direction.DOWN);
 
 		improver.addGreeting();
 		improver.addGoodbye();
 
 		improver.addJob("Udoskonalam jakość wyposażenia, dzięki czemu jest wytrzymalsze!");
-		improver.addQuest("Nie mam zadania dla Ciebie.");
+		improver.addOffer("Jeśli chcesz #sprawdzić ile jestem w stanie #ulepszyć dany przedmiot, no to się zapytaj!");
+		improver.addQuest("Nie mam zadania dla Ciebie, ale mogę #ulepszyć wyposażenie.");
 		improver.addHelp("Nie potrzebuję pomocy, lecz możesz poprosić mnie o ulepszenie swojego wyposażenia.");
 
-		improver.setPosition(120, 99);
+		improver.addReply("sprawdzić", "Spytaj się mnie #sprawdź <#'nazwa przedmiotu'>, aby dowiedzieć się ile maksymalnie byłbym w stanie go #ulepszyć!");
+		improver.addReply("ulepszyć", "Powiedz mi #ulepsz <#'nazwa przedmiotu'>, abym wiedział jaki przedmiot chcesz udoskonalić!");
+
+		improver.setPosition(10, 4);
 		zone.add(improver);
 	}
 
