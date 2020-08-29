@@ -25,7 +25,7 @@ public class ImprovableItem extends Item {
 	}
 
 	/**
-	 * Checks the improvable state of the item.
+	 * Checks the improvable state of item.
 	 * 
 	 * @return
 	 * 		<code>true</code> if the item has a possibility to be upgraded.
@@ -35,7 +35,7 @@ public class ImprovableItem extends Item {
 	}
 
 	/**
-	 * Sets the item improve up.
+	 * Sets the item to increase up.
 	 */
 	public void upgrade() {
 		put("improve", setImproves());
