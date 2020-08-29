@@ -61,13 +61,6 @@ public class ImprovableItem extends Item {
 		return false;
 	}
 
-	public final ImprovableItem getItem() {
-		if (getSlot("content").size() == 0) {
-			return null;
-		}
-		return (ImprovableItem) getSlot("item").iterator().next();
-	}
-
 	/**
 	 * Increasing the attack of item.
 	 */
@@ -104,7 +97,7 @@ public class ImprovableItem extends Item {
 	@Override
 	public int getAttackRate() {
 		if (has("rate")) {
-			if (isMaxImproved()) {
+			if (isMaxImproved() && super.getAttackRate() > 2) {
 				return super.getAttackRate() - 1;
 			}
 			return super.getAttackRate();
