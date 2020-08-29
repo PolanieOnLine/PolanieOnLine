@@ -5,6 +5,7 @@ Changelog
 - Dodano nowe grafiki chatek
 
 *świat*
+- Dodano nowego NPC: Kowal Inpraf
 - Dodano nowe mapy: (19)
 	- 0_krakow_swamp
 	- 0_krakow_swamp_nw
@@ -25,6 +26,7 @@ Changelog
 	- 0_gdansk_forest_s2_w2 (mapa niedostępna - las)
 	- 0_gdansk_forest_s3_w
 	- 0_gdansk_forest_s3_w2
+	- int_warszawa_blacksmith
 - Przerobiono mapy: (8)
 	- 0_gdansk_road_n
 	- 0_gdansk_road_s
@@ -37,6 +39,12 @@ Changelog
 	- 0_dragon_knights_forest_sw
 - Poprawiono mapy wizualnie w taki sposób, aby pasowały do nowych map
 - Poprawiono nazwy kierunków map Warszawy
+
+*kod*
+- Zaimplementowano nową funkcję, która umożliwia udoskonalić przedmiot opisany jako ImprovableItem
+- Dodano do konfiguratora przedmiotów nowy atrybut: max_improves (maksymalny "poziom" udoskonalenia)
+
+Lista przedmiotów podlegających udoskonaleniu: <link>
 
 
 1.13.1
