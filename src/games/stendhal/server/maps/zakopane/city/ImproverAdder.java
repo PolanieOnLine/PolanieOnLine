@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -129,6 +130,11 @@ public class ImproverAdder {
 
 			if (toImprove.getMaxImproves() > 0) {
 				if (hasItemToImprove()) {
+					for (Item i : equipped) {
+						if (i.getImproves() < toImprove.getImproves()) {
+								toImprove = i;
+						}
+					}
 					int improves = toImprove.getImproves();
 					if (improves == 0) {
 						improves = 1;
@@ -174,6 +180,12 @@ public class ImproverAdder {
 
 				setImproveItem(request);
 				setImprove(player, improver);
+
+				if (currentToImproveCount == null) {
+					improver.say("Nie jestem w stanie ulepszyć #'" + Grammar.plural(currentImproveItem) + "'.");
+					improver.setCurrentState(ConversationStates.ATTENDING);
+					return;
+				}
 			}
 		};
 	}
