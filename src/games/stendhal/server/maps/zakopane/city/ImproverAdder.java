@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.ImprovableItem;
@@ -27,7 +27,8 @@ import games.stendhal.server.events.SoundEvent;
 public class ImproverAdder {
 	private static final Logger logger = Logger.getLogger(ImproverAdder.class);
 
-	private static final List<String> phrases = Arrays.asList("improve", "upgrade", "ulepsz", "ulepszyć", "udoskonalić");
+	private static final List<String> improvePhrases = Arrays.asList("improve", "upgrade", "ulepsz", "ulepszyć", "udoskonalić");
+	private static final List<String> checkPhrases = Arrays.asList("check", "see", "how much", "sprawdź", "zobacz", "ile");
 
 	private String currentImproveItem = null;
 	private Integer currentToImproveCount = null;
@@ -45,13 +46,20 @@ public class ImproverAdder {
 
 	public void add(final ImproverNPC improver) {
 		improver.add(ConversationStates.ATTENDING,
-				phrases,
+				improvePhrases,
 				null,
-				ConversationStates.QUESTION_2,
+				ConversationStates.QUESTION_1,
 				null,
 				requestImproveAction(improver));
 
-		improver.add(ConversationStates.QUESTION_2,
+		improver.add(ConversationStates.ATTENDING,
+				checkPhrases,
+				null,
+				ConversationStates.ATTENDING,
+				null,
+				requestCheckImproveAction(improver));
+
+		improver.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
@@ -59,7 +67,7 @@ public class ImproverAdder {
 				null);
 
 		// player dropped item before accepting
-		improver.add(ConversationStates.QUESTION_2,
+		improver.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
 				new NotCondition(needsImproveCondition()),
 				ConversationStates.ATTENDING,
@@ -67,21 +75,21 @@ public class ImproverAdder {
 				null);
 
 		// this should not happen
-		improver.add(ConversationStates.QUESTION_2,
+		improver.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
 				feeNotSetCondition(),
 				ConversationStates.ATTENDING,
 				"Wygląda na to, że nie mogę przetworzyć transakcji. Przepraszam.",
 				null);
 
-		improver.add(ConversationStates.QUESTION_2,
+		improver.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(new NotCondition(canAffordCondition())),
 				ConversationStates.ATTENDING,
 				"Nie masz dość pieniędzy.",
 				null);
 
-		improver.add(ConversationStates.QUESTION_2,
+		improver.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(canAffordCondition()),
 				ConversationStates.ATTENDING,
@@ -165,13 +173,13 @@ public class ImproverAdder {
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 
 				String request = sentence.getTrimmedText();
-				if (phrases.contains(request.toLowerCase())) {
+				if (improvePhrases.contains(request.toLowerCase())) {
 					improver.say("Powiedz mi tylko co chcesz udoskonalić.");
 					improver.setCurrentState(ConversationStates.ATTENDING);
 					return;
 				}
 
-				for (final String rWord: phrases) {
+				for (final String rWord: improvePhrases) {
 					if (request.startsWith(rWord)) {
 						request = request.substring(rWord.length() + 1);
 						break;
@@ -182,10 +190,54 @@ public class ImproverAdder {
 				setImprove(player, improver);
 
 				if (currentToImproveCount == null) {
-					improver.say("Nie jestem w stanie ulepszyć #'" + Grammar.plural(currentImproveItem) + "'.");
+					improver.say("Nie jestem w stanie ulepszyć #'" + currentImproveItem + "'.");
 					improver.setCurrentState(ConversationStates.ATTENDING);
 					return;
 				}
+			}
+		};
+	}
+
+	private void checkImproves(final ImproverNPC improver) {
+		Item item = SingletonRepository.getEntityManager().getItem(currentImproveItem);
+		if (item == null) {
+			improver.say("Pierwsze słyszę o takim wyposażeniu #'" + currentImproveItem + "'. Poproś o jakiś inny przedmiot do sprawdzenia.");
+			return;
+		}
+
+		if (item.has("max_improves")) {
+			String times = " razy";
+			if (item.getMaxImproves() == 1) {
+				times = " raz";
+			}
+			String improves = "#'" + Integer.toString(item.getMaxImproves()) + "'" + times;
+
+			improver.say("Przedmiot ten maksymalnie mogę ulepszyć " + improves + ". Jeśli chciałbyś go udoskonalić to powiedz mi #ulepsz.");
+		} else {
+			improver.say("Wyposażenia takiego jak #'" + currentImproveItem + "' nie jestem w stanie ulepszyć.");
+		}
+	}
+
+	private ChatAction requestCheckImproveAction(final ImproverNPC improver) {
+		return new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+
+				String request = sentence.getTrimmedText();
+				if (checkPhrases.contains(request.toLowerCase())) {
+					improver.say("Powiedz mi tylko co chcesz sprawdzić.");
+					return;
+				}
+
+				for (final String rWord: checkPhrases) {
+					if (request.startsWith(rWord)) {
+						request = request.substring(rWord.length() + 1);
+						break;
+					}
+				}
+
+				setImproveItem(request);
+				checkImproves(improver);
 			}
 		};
 	}
