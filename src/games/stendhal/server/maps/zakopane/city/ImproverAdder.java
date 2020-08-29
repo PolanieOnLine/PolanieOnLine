@@ -29,12 +29,14 @@ public class ImproverAdder {
 	private static final List<String> phrases = Arrays.asList("improve", "upgrade", "ulepsz", "ulepszyć", "udoskonalić");
 
 	private String currentImproveItem = null;
+	private Integer currentToImproveCount = null;
 	private Integer currentImproveFee = null;
 
 	private boolean foundMoreThanOne = false;
 
 	private void reset() {
 		currentImproveItem = null;
+		currentToImproveCount = null;
 		currentImproveFee = null;
 
 		foundMoreThanOne = false;
@@ -90,6 +92,25 @@ public class ImproverAdder {
 		currentImproveItem = itemName;
 	}
 
+	private void countImproveItems(final Player player) {
+		List<Item> equipped = player.getAllEquipped(currentImproveItem);
+
+		int count = 0;
+		for (Item i : equipped) {
+			if (!((ImprovableItem) i).isMaxImproved()) {
+				count++;
+			}
+		}
+		currentToImproveCount = count;
+	}
+	
+	private boolean hasItemToImprove() {
+		if (currentToImproveCount > 0) {
+			return true;
+		}
+		return false;
+	}
+
 	private void setImprove(final Player player, final ImproverNPC improver) {
 		List<Item> equipped = player.getAllEquipped(currentImproveItem);
 		if (!equipped.isEmpty()) {
@@ -99,28 +120,30 @@ public class ImproverAdder {
 
 			Item toImprove = equipped.iterator().next();
 			for (Item i : equipped) {
-				if (!i.isMaxImproved()) {
-					if (i.getImproves() > toImprove.getImproves()) {
+				if (i.getImproves() > toImprove.getImproves()) {
 						toImprove = i;
+				}
+			}
+
+			countImproveItems(player);
+
+			if (toImprove.getMaxImproves() > 0) {
+				if (hasItemToImprove()) {
+					int improves = toImprove.getImproves();
+					if (improves == 0) {
+						improves = 1;
+					}
+					currentImproveFee = improves * ((toImprove.getAttack() + toImprove.getDefense()) * 1000);
+
+					if (foundMoreThanOne) {
+						improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
+					} else {
+						improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
 					}
 				} else {
 					improver.say("Przedmiot #'"+currentImproveItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
 					improver.setCurrentState(ConversationStates.ATTENDING);
 					return;
-				}
-			}
-
-			if (toImprove.getMaxImproves() > 0) {
-				int improves = toImprove.getImproves();
-				if (improves == 0) {
-					improves = 1;
-				}
-				currentImproveFee = improves * ((toImprove.getAttack() + toImprove.getDefense()) * 1000);
-
-				if (foundMoreThanOne) {
-					improver.say("Nosisz więcej takich przedmiotów jak #'"+currentImproveItem+"' ze sobą. W takim razie udoskonalę ten z najwyższym już ulepszonym poziomem. Koszt wynosi #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
-				} else {
-					improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
 				}
 			} else {
 				improver.say("Wybacz. Przedmiot ten jest niemożliwy do udoskonalenia. Poproś o ulepszenie jakiegoś innego przedmiotu.");
