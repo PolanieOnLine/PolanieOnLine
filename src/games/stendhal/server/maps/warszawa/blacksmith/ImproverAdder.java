@@ -151,7 +151,7 @@ public class ImproverAdder {
 					int atk = toImprove.getAttack();
 					int def = toImprove.getDefense();
 					int rate = toImprove.getAttackRate();
-					currentImproveFee = (improves + 1) * (((atk * 2) + def) / (rate / 2) * 5000);
+					currentImproveFee = (improves + 1) * (((atk * 2) + def) / (rate / 2) * 2500);
 
 					if (foundMoreThanOne) {
 						improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
