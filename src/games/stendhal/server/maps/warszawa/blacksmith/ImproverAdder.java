@@ -139,8 +139,11 @@ public class ImproverAdder {
 			if (toImprove.getMaxImproves() > 0) {
 				if (hasItemToImprove()) {
 					for (Item i : equipped) {
-						if (i.getImproves() < toImprove.getImproves()) {
-								toImprove = i;
+						if (toImprove.isMaxImproved()
+								&& (i.getImproves() < toImprove.getImproves())) {
+							toImprove = i;
+						} else if (i.getImproves() > toImprove.getImproves()) {
+							toImprove = i;
 						}
 					}
 					int improves = toImprove.getImproves();
@@ -148,7 +151,7 @@ public class ImproverAdder {
 					int atk = toImprove.getAttack();
 					int def = toImprove.getDefense();
 					int rate = toImprove.getAttackRate();
-					currentImproveFee = (improves + 1) * (((atk * 2) + def) / (rate / 2) * 10000);
+					currentImproveFee = (improves + 1) * (((atk * 2) + def) / (rate / 2) * 5000);
 
 					if (foundMoreThanOne) {
 						improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
@@ -249,21 +252,24 @@ public class ImproverAdder {
 			public void fire(final Player player, final Sentence sentence, final EventRaiser repairer) {
 				player.drop("money", currentImproveFee);
 
-				for (final Item item: player.getAllEquipped(currentImproveItem)) {
-					final ImprovableItem improvable = (ImprovableItem) item;
-					if (improvable.isUpgradeable()) {
-						improvable.upgrade();
+				List<Item> equipped = player.getAllEquipped(currentImproveItem);
+				Item toImprove = player.getFirstEquipped(currentImproveItem);
+
+				for (Item i : equipped) {
+					if (toImprove.isMaxImproved()
+							&& (i.getImproves() < toImprove.getImproves())) {
+						toImprove = i;
+					} else if (i.getImproves() > toImprove.getImproves()) {
+						toImprove = i;
 					}
 				}
 
-				String doneReply = null;
-				if (doneReply == null) {
-					doneReply = "Zrobione! Twój przedmiot #'" + currentImproveItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!";
+				if (hasItemToImprove()) {
+					((ImprovableItem) toImprove).upgrade();
 				}
 
-				repairer.say(doneReply);
+				repairer.say("Zrobione! Twój przedmiot #'" + currentImproveItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
 				repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
-
 			}
 		};
 	}
