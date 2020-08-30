@@ -616,6 +616,11 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 	}
 
 	@Override
+	public AccountResult createAccountWithToken(String username, String tokenType, String token) {
+		return null;
+	}
+
+	@Override
 	public CharacterResult createCharacter(final String username, final String character, final RPObject template) {
 		final CharacterCreator creator = new CharacterCreator(username, character, template);
 		return creator.create();
