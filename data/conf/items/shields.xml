@@ -210,7 +210,7 @@
 	</item>
 
 	<item name="magiczna tarcza płytowa">
-		<type class="shield" subclass="lion_clan_shield" tileid="-1"/>
+		<type class="shield" subclass="magic_plate_shield" tileid="-1"/>
 		<description>Oto magiczna tarcza płytowa. Ma magiczną jakość i jest piękna.</description>
 		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
 		<attributes>
