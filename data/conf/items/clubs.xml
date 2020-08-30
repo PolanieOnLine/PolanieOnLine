@@ -27,11 +27,12 @@
 	<item name="maczuga">
 		<type class="club" subclass="club" tileid="-1"/>
 		<description>Oto maczuga. Pomachaj nią, może coś przypadkiem zatłuczesz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
 		<attributes>
 			<atk value="6"/>
 			<rate value="4"/>
 			<undroppableondeath value="1"/>
+			<max_improves value="2"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="2700"/>
@@ -277,13 +278,14 @@
 	<item name="kij z czaszką">
 		<type class="club" subclass="skull_staff" tileid="-1"/>
 		<description>Oto rzadko spotykany kij z czaszką. Jest mistyczny, ale włada się nim jak każdym innym kijem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
 		<attributes>
 			<atk value="22"/>
 			<def value="2"/>
 			<rate value="7"/>
 			<lifesteal value="0.05"/>
 			<min_level value="8"/>
+			<max_improves value="1"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="76057"/>
@@ -343,11 +345,12 @@
 	<item name="młot wulkanów">
 		<type class="club" subclass="vulcano_hammer" tileid="-1"/>
 		<description>Oto młot wulkanów. Ludzie mówią, że to broń bogów, ale jest wolna jak ślimak.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
 		<attributes>
 			<atk value="48"/>
 			<rate value="9"/>
 			<min_level value="90"/>
+			<max_improves value="6"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="614400"/>
