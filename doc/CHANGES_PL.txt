@@ -3,6 +3,7 @@ Changelog
 1.14
 *klient*
 - Dodano nowe grafiki chatek
+- Dodano nową grafikę przedmiotu: "magiczna tarcza płytowa"
 
 *świat*
 - Dodano nowego NPC: Kowal Inpraf
