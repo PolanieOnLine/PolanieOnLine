@@ -45,7 +45,7 @@ Changelog
 - Zaimplementowano nową funkcję, która umożliwia udoskonalić przedmiot opisany jako ImprovableItem
 - Dodano do konfiguratora przedmiotów nowy atrybut: max_improves (maksymalny "poziom" udoskonalenia)
 
-Lista przedmiotów podlegających udoskonaleniu: <link>
+Lista przedmiotów podlegających udoskonaleniu: https://docs.google.com/spreadsheets/d/1k6V4fTStLuGRat0TON4MJfGfeUqMvTE__G1EmU08KYs
 
 
 1.13.1
