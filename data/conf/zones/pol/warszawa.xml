@@ -145,7 +145,7 @@
 			</implementation>
 		</entity>
 
-		<portal x="24" y="66" ref="smith_entrance">
+		<portal x="42" y="66" ref="smith_entrance">
 			<destination zone="int_warszawa_blacksmith" ref="smith_exit"/>
 		</portal>
 	</zone>
