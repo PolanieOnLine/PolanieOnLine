@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.15
+*naprawiono błędy*
+- Naprawiono pozycję teleportu do kuźni w Warszawie
+
+
 1.14
 *klient*
 - Dodano nowe grafiki chatek
