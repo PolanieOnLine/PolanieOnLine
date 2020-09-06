@@ -78,21 +78,18 @@ public class ImproverAdder {
 		}
 	}
 
-	private static Map<String,Integer> items;
-	private void buildItemsMap() {
+	private final Map<String,Integer> items = new HashMap<String, Integer>() {{
 		// load the default value
 		defaultNeededValue();
 
-		// items to upgrade
-		items = new HashMap<String, Integer>();
-		items.put("sztabka złota", currentGold);
-		items.put("sztabka mithrilu", currentMithril);
-		items.put("ametyst", currentAmethyst);
-		items.put("rubin", currentRuby);
-		items.put("szafir", currentSapphire);
-		items.put("polano", currentWood);
-		items.put("piórko", currentFeather);
-	}
+		put("sztabka złota", currentGold);
+		put("sztabka mithrilu", currentMithril);
+		put("ametyst", currentAmethyst);
+		put("rubin", currentRuby);
+		put("szafir", currentSapphire);
+		put("polano", currentWood);
+		put("piórko", currentFeather);
+	}};
 
 	public void add(final ImproverNPC improver) {
 		improver.add(ConversationStates.ATTENDING,
