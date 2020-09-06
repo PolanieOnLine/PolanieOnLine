@@ -1,7 +1,9 @@
 package games.stendhal.server.maps.warszawa.blacksmith;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -42,6 +44,54 @@ public class ImproverAdder {
 		currentImproveFee = null;
 
 		foundMoreThanOne = false;
+	}
+
+	private Integer currentGold = null;
+	private Integer currentMithril = null;
+	private Integer currentAmethyst = null;
+	private Integer currentRuby = null;
+	private Integer currentSapphire = null;
+	private Integer currentWood = null;
+	private Integer currentFeather = null;
+
+	private void defaultNeededValue() {
+		if (currentGold == null) {
+			currentGold = 10;
+		}
+		if (currentMithril == null) {
+			currentMithril = 4;
+		}
+		if (currentAmethyst == null) {
+			currentAmethyst = 7;
+		}
+		if (currentRuby == null) {
+			currentRuby = 12;
+		}
+		if (currentSapphire == null) {
+			currentSapphire = 9;
+		}
+		if (currentWood == null) {
+			currentWood = 25;
+		}
+		if (currentFeather == null) {
+			currentFeather = 15;
+		}
+	}
+
+	private static Map<String,Integer> items;
+	private void buildItemsMap() {
+		// load the default value
+		defaultNeededValue();
+
+		// items to upgrade
+		items = new HashMap<String, Integer>();
+		items.put("sztabka złota", currentGold);
+		items.put("sztabka mithrilu", currentMithril);
+		items.put("ametyst", currentAmethyst);
+		items.put("rubin", currentRuby);
+		items.put("szafir", currentSapphire);
+		items.put("polano", currentWood);
+		items.put("piórko", currentFeather);
 	}
 
 	public void add(final ImproverNPC improver) {
