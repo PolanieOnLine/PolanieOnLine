@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2018 - Marauroa                      *
+ *                   (C) Copyright 2018-2020 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,6 +14,7 @@ package games.stendhal.server.entity.mapstuff.spawner;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
@@ -102,5 +103,10 @@ public class GoatFood extends PassiveEntityRespawnPoint {
 	@Override
 	public void setStartState() {
 		setToFullGrowth();
+	}
+
+	@Override
+	public void onItemPickedUp(Player player) {
+		// do nothing, players cannot pick up sheep food
 	}
 }
