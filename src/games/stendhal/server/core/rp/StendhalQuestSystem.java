@@ -289,6 +289,9 @@ public class StendhalQuestSystem {
 			loadQuest(new MineTownRevivalWeeks());
 			loadQuest(new DynieDlaKatii());
 		}
+		if (Occasion.MINETOWN_CONSTRUCTION) {
+			loadQuest(new MineTownRevivalWeeksConstruction());
+		}
 
 		TurnNotifier.get().notifyInTurns(10, new DumpGameInformationForWebsite());
 	}

@@ -50,7 +50,7 @@ create table if not exists halloffame
   (
   id integer auto_increment not null,
   charname varchar(32) not null,
-  fametype char(1) not null,
+  fametype char(10) not null,
   points integer not null,
 
   primary key(id)
@@ -62,7 +62,7 @@ create table if not exists halloffame_archive_recent
   (
   id integer auto_increment not null,
   charname varchar(32) not null,
-  fametype char(1) not null,
+  fametype char(10) not null,
   rank integer not null,
   points integer not null,
   day date not null,
@@ -76,7 +76,7 @@ create table if not exists halloffame_archive_alltimes
   (
   id integer auto_increment not null,
   charname varchar(32) not null,
-  fametype char(1) not null,
+  fametype char(10) not null,
   rank integer not null,
   points integer not null,
   day date not null,
@@ -283,7 +283,7 @@ create table if not exists trade
   quantity  integer,
   price     integer,
   stats     varchar(255),
-  timedate timestamp default CURRENT_TIMESTAMP,
+  timedate  timestamp default CURRENT_TIMESTAMP,
   primary key(id)
   );
 CREATE INDEX IF NOT EXISTS i_trade_timedate ON trade(timedate);
@@ -301,3 +301,17 @@ CREATE TABLE IF NOT EXISTS searchindex
 
 CREATE INDEX IF NOT EXISTS i_searchindex_searchterm ON searchindex(searchterm);
 CREATE INDEX IF NOT EXISTS i_searchindex_entitytype_entityname ON searchindex(entitytype, entityname);
+
+
+CREATE TABLE IF NOT EXISTS group_quest
+  (
+  id          INTEGER auto_increment NOT NULL,
+  questname   VARCHAR(64),
+  charname    VARCHAR(32),
+  itemname    VARCHAR(32),
+  quantity    INTEGER,
+  day         DATE NOT NULL,
+  PRIMARY KEY(id)
+  );
+
+CREATE INDEX IF NOT EXISTS i_group_quest_questname ON group_quest(questname);

@@ -1139,6 +1139,21 @@ public class Grammar {
 	 * @return A nice String representation of the collection
 	 */
 	public static String enumerateCollection(final Collection<String> collection) {
+		return enumerateCollection(collection, "oraz");
+	}
+
+	/**
+	 * Helper function to nicely formulate an enumeration of a collection.
+	 * <p>
+	 * For example, for a collection containing the 3 elements x, y, z, returns the
+	 * string "x, y, and z".
+	 *
+	 * @param collection
+	 *            The collection whose elements should be enumerated
+	 * @param conjunction "and" or "or"
+	 * @return A nice String representation of the collection
+	 */
+	public static String enumerateCollection(final Collection<String> collection, String conjunction) {
 		if (collection == null) {
 			return "";
 		}
@@ -1150,14 +1165,14 @@ public class Grammar {
 		} else if (elements.length == 1) {
 			ret = quoteHash(elements[0]);
 		} else if (elements.length == 2) {
-			ret = quoteHash(elements[0]) + " i " + quoteHash(elements[1]);
+			ret = quoteHash(elements[0]) + " " + conjunction + " " + quoteHash(elements[1]);
 		} else {
 			final StringBuilder sb = new StringBuilder();
 
 			for(int i = 0; i < elements.length - 1; i++) {
 				sb.append(quoteHash(elements[i]) + ", ");
 			}
-			sb.append("i " + quoteHash(elements[elements.length - 1]));
+			sb.append(conjunction + " " + quoteHash(elements[elements.length - 1]));
 
 			ret = sb.toString();
 		}
@@ -1242,6 +1257,38 @@ public class Grammar {
 			return "jedenasta";
 		case 12:
 			return "dwunasta";
+		default:
+			return Integer.toString(n);
+		}
+	}
+	public static String numberString2(final int n) {
+		switch (n) {
+		case 0:
+			return "zero";
+		case 1:
+			return "jeden";
+		case 2:
+			return "dwa";
+		case 3:
+			return "trzy";
+		case 4:
+			return "cztery";
+		case 5:
+			return "pięć";
+		case 6:
+			return "sześć";
+		case 7:
+			return "siedem";
+		case 8:
+			return "osiem";
+		case 9:
+			return "dziewięć";
+		case 10:
+			return "dziesięć";
+		case 11:
+			return "jedenaście";
+		case 12:
+			return "dwanaście";
 		default:
 			return Integer.toString(n);
 		}

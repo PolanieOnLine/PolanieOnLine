@@ -110,6 +110,24 @@
 		</equipable>
 	</item>
 
+	<item name="latarenka">
+		<type class="tool" subclass="lamp" tileid="-1"/>
+		<description>Oto latarenka.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="zaczarowane nożyczki">
 		<type class="tool" subclass="magical_scissors" tileid="-1"/>
 		<description>Oto zaczarowane nożyczki. Tylko pomyśl co nimi możesz uciąć!</description>

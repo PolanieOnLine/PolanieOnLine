@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.events.TeleportListener;
@@ -44,6 +46,7 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.SystemPropertyCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.QuestUtils;
 
 /**
  * A kind of paper chase.
@@ -51,16 +54,14 @@ import games.stendhal.server.maps.Region;
  * @author hendrik
  */
 public class PaperChase extends AbstractQuest implements TeleportListener {
+	private static final Logger logger = Logger.getLogger(PaperChase.class);
 	private static final String QUEST_SLOT = "paper_chase_20[year]";
-	private static final String FAME_TYPE = QUEST_SLOT.substring(QUEST_SLOT.length() - 1);
 
 	private static final int TELEPORT_PENALTY_IN_MINUTES = 10;
 
-	private static final List<String> NPC_IDLE = Arrays.asList("Tad", "Haunchy Meatoch", "Pdiddi", "Ketteh Wehoh");
+	private static final List<String> NPC_IDLE = Arrays.asList();
 
-	private List<String> points = Arrays.asList("Nishiya", "Marcus", "Eheneumniranin", "Balduin", "Rachel", "Fritz",
-												"Alice Farmer", "Elisabeth", "Sue", "Old Mother Helena", "Hazel",
-												"Captain Brownbeard", "Jane", "Seremela", "Phalk", "Fidorea");
+	private List<String> points = Arrays.asList("Fiete", "Marcellus", "Marianne", "Ermenegilda", "Pierre", "Julia", "Christina", "Fidorea");
 
 	private Map<String, String> texts = new HashMap<String, String>();
 
@@ -69,41 +70,29 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 	private LoadSignFromHallOfFameAction loadSignFromHallOfFame;
 
 	private void setupGreetings() {
-		// Each greeting is said by the previous NPC to point to the NPC in the key.
-		greetings.put("Marcus", "Moje owce wiedziały, że jesteś w drodze do mnie. ");
-		greetings.put("Eheneumniranin", "Dawno temu ktoś mnie tu odwiedził. Fajnie, że mnie znalazłeś. ");
-		greetings.put("Balduin", "Ach, znalazłeś mnie podczas zbierania snopków zboża moim sierpem. Wspaniale! ");
-		greetings.put("Rachel", "Wietrznie tutaj? Mam nadziej, że ostatnia wskazówka jak mnie znaleść nie była zbyt łatwa. ");
-		greetings.put("Fritz", "Och, kocham klientów banku Ados! Oni są tacy słodcy! ");
-		greetings.put("Alice Farmer", "Pachnie tu rybą, prawda? To jest duch oceanu! ");
-		greetings.put("Elisabeth", "Fantastyczne wakacje do tej pory... i tyle do odkrycia! ");
-		greetings.put("Sue", "Uwielbiam czekoladę! Znalazłeś mnie, może następnym razem przyniesiesz mi tabliczkę czekolady. ");
-		greetings.put("Old Mother Helena", "Wszystkie te kwiaty wokół dają mi ciepłe uczucie. Mam nadzieję, że ci się podobają, dziękuję za odwiedzenie mnie! ");
-		greetings.put("Hazel", "Och, cześć, tak miło, że mnie tu znalazłeś. Przyjdź i dołącz do mnie wkrótce, by pozwolić mi ugotować dla ciebie niezłą zupę. ");
-		greetings.put("Captain Brownbeard", "Muzeum to naprawdę piękne miejsce do pracy. Cudownie, że mnie tu znalazłeś. ");
-		greetings.put("Jane", "Yaaarrrr! Moja łódź zabierze cię nad morze, morze!  *śpiewanie* ");
-		greetings.put("Seremela", "Na plaży jest gorąco, mam nadzieję, że użyłeś kremu do opalania. ");
-		greetings.put("Phalk", "Piękne kwiaty w tym mieście! Niestety, te elfy nie doceniają ich zbytnio. ");
-		greetings.put("Fidorea", "Młody wojowniku, zrobiłeś wspaniałe rzeczy w swojej podróży! Teraz wróć, aby zakończyć. Musisz być spragniony! ");
+		greetings.put("Fiete", "Ładnie! W końcu dotarłeś! Ptaki powiedziały mi wieki temu.");
+		greetings.put("Marcellus", "Dzięki za odwiedzenie mnie na moim stanowisku.");
+		greetings.put("Marianne", "Oh cześć. Miło cię poznać. Chciałabym poprosić o jajka od tych przerażających kurczaków.");
+		greetings.put("Ermenegilda", "Och, nie bój się. Mogę cię #uleczyć, jeśli chcesz.");
+		greetings.put("Pierre", "Zastanów się, czy chcesz kontynuować podróż w uroczym stroju niedźwiedzia.");
+		greetings.put("Julia", "Jeśli zechcesz to odpocznij sobie od podróży i ciesz się jedną lub dwiema książkami.");
+		greetings.put("Christina", "Naprawdę żałowałam, że nie udało mi się zapewnić jedzenia dla podróżnika takiego jak ty.");
 	}
 
 	private void setupTexts() {
-		texts.put("Marcus", "Następna osoba, którą powinieneś znaleźć, zajmuje się złodziejami i innymi przestępcami. "
-				  + "Pracuje w forcie niedaleko Semos.");
-		texts.put("Eheneumniranin", "Następnie musisz znaleźć półelfiego elfa na farmie Ados. Zawsze jest zajęty zbieraniem zboża.");
-		texts.put("Balduin", "Następna osoba na twoje drodze siedzi na szczycie wietrznej góry.");
-		texts.put("Rachel", "Następna dama, która pracuje w banku, może opowiedzieć ci o swojej pracy.");
-		texts.put("Fritz", "Proszę, znajdź starego rybaka w Ados, który może opowiedzieć ci wspaniałe historie o rybach. Ma też córkę Caroline.");
-		texts.put("Alice Farmer", "Następną osobą, której musisz szukać, są wakacje na Ados wraz z całą rodziną. Ona także wie wszystko o jedzeniu i napojach.");
-		texts.put("Elisabeth", "Teraz musisz znaleźć młodą dziewczynę, która bawi się na placu zabaw w Kirdneh i uwielbia czekoladę.");
-		texts.put("Sue", "Proszę, znajdź miłego ogrodnika, który jest właścicielem szklarni z pomidorami w pobliżu Kalavanu.");
-		texts.put("Old Mother Helena", "Teraz idź i spróbuj znaleść miłą starszą pani, która jest bardzo sławna ze względu na swoje zupy, które są pożywne i smaczne.");
-		texts.put("Hazel", "Znam naprawdę miłą kobietę, która może ci pomóc. Pracuje w muzeum i uwielbia swoją pracę.");
-		texts.put("Captain Brownbeard", "Teraz musisz podróżować promem i porozmawiać ze starą solą, która zaprowadzi cię do następnej osoby, z którą się spotkasz.");
-		texts.put("Jane", "Harrr yarrr kolejna dama lubi opalać się razem z mężem na plaży Athor.");
-		texts.put("Seremela", "Nie tak dawno temu, następną osobę, którą musisz znaleźć, otworzyła piękny sklep z kwiatami. Widziałem wokół siebie wiele długonogich stworzeń, ukrytych w mieście leżącym w lesie.");
-		texts.put("Phalk", "Następną osobą, którą musisz znaleźć, jest stary wojownik, który pilnuje kopalń, na północ do Samos.");
-		texts.put("Fidorea", "Ostatnia osobą z którą musisz porozmawiać to ta, która to wszystko zaczęła.");
+		texts.put("Fiete", "Następna osoba, którą powinieneś znaleźć, jest odpowiedzialna za usługi portowe na południe od Deniran.");
+		texts.put("Marcellus", "Następna osoba pilnuje mostu na wschód stąd.");
+		texts.put("Marianne", "Następną osobą, którą powinieneś znaleźć, jest mała dziewczynka, która boi się kurczaczka.");
+		texts.put("Ermenegilda", "Widzę, że spieszysz się na spotkanie z następną osobą na liście: ze straszną starą panią na rynku. Spokojnie, jest miła i uleczy potrzebujących.");
+		texts.put("Pierre", "Następna osoba to znany kostiumolog.");
+		texts.put("Julia", "Jestem pewien, że następna osoba uwielbia to. Jest bibliotekarką, ale całkiem uroczą.");
+		texts.put("Christina", "Jeśli książka nie daje ci nieco odpoczynku, być może jakiś chleb. Piekarnia będzie następnym przystankiem w Twojej podróży.");
+		texts.put("Fidorea", "Ostatnia osoba, z którą powinieneś porozmawiać, to ta, która to wszystko zaczęła. I jestem pewien, że dostaniesz tam dużo jedzenia.");
+	}
+
+	private String getFameType() {
+		String questSlot = QuestUtils.evaluateQuestSlotName(QUEST_SLOT);
+		return questSlot.substring(questSlot.length() - 1);
 	}
 
 	/**
@@ -138,7 +127,7 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 			}
 
 			// send player to the next NPC and record it in quest state
-			raiser.say(greetings.get(next) + texts.get(next) + " Powodzenia!");
+			raiser.say(greetings.get(state) + " " + texts.get(next) + " Powodzenia!");
 			player.setQuest(QUEST_SLOT, 0, next);
 			player.addXP((idx + 1) * 10);
 		}
@@ -160,6 +149,9 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 	private void addTaskToNPC(final int idx) {
 		final String state = points.get(idx);
 		final SpeakerNPC npc = npcs.get(state);
+		if (npc == null) {
+			logger.error("NPC " + state + " missing for paper chase");
+		}
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("paper", "chase", "paperchase"), new SystemPropertyCondition("stendhal.minetown"),
 				ConversationStates.ATTENDING, null, new PaperChasePoint(idx));
 		if (NPC_IDLE.contains(state)) {
@@ -170,7 +162,7 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 
 
 	private void createHallOfFameSign() {
-		loadSignFromHallOfFame = new LoadSignFromHallOfFameAction(null, "Ci, którzy podróżowali po świecie w imieniu Fidorei:\n", FAME_TYPE, 2000, true);
+		loadSignFromHallOfFame = new LoadSignFromHallOfFameAction(null, "Ci, którzy podróżowali po świecie w imieniu Fidorei:\n", getFameType(), 2000, true);
 		loadSignFromHallOfFame.fire(null, null, null);
 	}
 
@@ -212,7 +204,7 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 			Arrays.asList("paper", "chase"),
 			new SystemPropertyCondition("stendhal.minetown"),
 			ConversationStates.ATTENDING,
-			"Musisz zapytać się każdej osoby po drodze o #paper #chase. Na początku musisz pójść do Semos Village, tam znajdziesz sprzedawcę owiec. "
+			"Musisz zapytać się każdej osoby po drodze o #paper #chase. Twoja podróż rozpoczyna się na południe od Deniran w porcie. Osoba, której szukasz, jest odpowiedzialna za usługi portowe. "
 			+ "Ostrzegam: możesz się teleportować podczas podróży, ale każdy teleport będzie kosztował dodatkowe " + TELEPORT_PENALTY_IN_MINUTES + " minut w punktacji.",
 			startAction);
 
@@ -239,7 +231,7 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 			new IncreaseXPAction(400),
 			new SetQuestAction(QUEST_SLOT, 0, "done"),
 			new EquipItemAction("niezapisany zwój", 5),
-			new SetHallOfFameToAgeDiffAction(QUEST_SLOT, 1, FAME_TYPE),
+			new SetHallOfFameToAgeDiffAction(QUEST_SLOT, 1, getFameType()),
 			loadSignFromHallOfFame);
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("paper", "chase"),
