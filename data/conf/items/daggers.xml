@@ -220,9 +220,9 @@
 		</equipable>
 	</item>
 
-	<item name="miecz dusz">
+	<item name="sztylet dusz">
 		<type class="dagger" subclass="soul_dagger" tileid="-1"/>
-		<description>Oto miecz dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
+		<description>Oto sztylet dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
 		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
 		<attributes>
 			<atk value="7"/>
