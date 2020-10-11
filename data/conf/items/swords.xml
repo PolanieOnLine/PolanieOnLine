@@ -1153,4 +1153,27 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="miecz mainiocyjski">
+		<type class="sword" subclass="mainio_sword" tileid="-1"/>
+		<description>Oto miecz mainiocyjski.</description>
+		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<attributes>
+			<atk value="42"/>
+			<rate value="6"/>
+			<min_level value="165"/>
+			<max_improves value="2"/>
+		</attributes>
+		<weight value="9.0"/>
+		<value value="457142"/>
+		<damage type="light"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 </items>
