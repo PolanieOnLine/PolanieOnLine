@@ -3,13 +3,17 @@ Changelog
 1.15
 *świat*
 - Dodano grupowe zadanie na budowę corocznego festiwalu Mine Town Revival Weeks
-- Dodano nowy przedmiot: latarenka
+- Dodano nowe przedmioty: miecz mainiocyjski, latarenka
 
 *chat*
 - Wprowadzono zamiany na naszym Discordzie: https://discord.gg/xtDnVna
 
+*kod*
+- Przeniesiono konfiguratory sztyletów do osobnego pliku XML (daggers.xml)
+
 *naprawiono błędy*
 - Poprawiono niektóre mapy
+- Poprawiono nazwę przedmiotu z "miecz dusz" na "sztylet dusz"
 - Naprawiono osiągnięcie "Kołysząc się na Jabłkach"
 - Naprawiono pozycję teleportu do kuźni w Warszawie
 - Naprawiono osiągniecie za odwiedzenie wszystkich map nadmorskiej krainy, z założenia niedostępne mapy już nie zaliczają się do tej puli map do odwiedzenia
