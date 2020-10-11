@@ -270,13 +270,13 @@
 
 	<!-- START: NIEDOSTĘPNE -->
 	<!-- gdansk_forest_w2 -->
-	<zone name="0_gdansk_forest_w2" level="0" x="512928" y="17152" file="Level 0/gdansk/forest_w2.tmx">
+	<zone name="0_gdansk_forest_w2" level="0" x="512928" y="17152" file="Level 0/gdansk/forest_w2.tmx" accessible="false">
 	</zone>
 	<!-- gdansk_forest_s_w2 -->
-	<zone name="0_gdansk_forest_s_w2" level="0" x="512928" y="17280" file="Level 0/gdansk/forest_s_w2.tmx">
+	<zone name="0_gdansk_forest_s_w2" level="0" x="512928" y="17280" file="Level 0/gdansk/forest_s_w2.tmx" accessible="false">
 	</zone>
 	<!-- gdansk_forest_s2_w2 -->
-	<zone name="0_gdansk_forest_s2_w2" level="0" x="512928" y="17408" file="Level 0/gdansk/forest_s2_w2.tmx">
+	<zone name="0_gdansk_forest_s2_w2" level="0" x="512928" y="17408" file="Level 0/gdansk/forest_s2_w2.tmx" accessible="false">
 	</zone>
 	<!-- END: NIEDOSTĘPNE -->
 
