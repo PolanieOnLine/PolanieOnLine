@@ -9,11 +9,14 @@
 
 	<!-- START: Lasy -->
 	<!-- dolina_koscieliska_las_nw -->
-	<zone name="0_tatry_dolina_koscieliska_las_nw" level="0" x="512928" y="18816" file="Level 0/tatry/dolina_koscieliska_las_nw.tmx" accessible="false"></zone>
+	<zone name="0_tatry_dolina_koscieliska_las_nw" level="0" x="512928" y="18816" file="Level 0/tatry/dolina_koscieliska_las_nw.tmx" accessible="false">
+	</zone>
 	<!-- dolina_koscieliska_las_w -->
-	<zone name="0_tatry_dolina_koscieliska_las_w" level="0" x="512928" y="18944" file="Level 0/tatry/dolina_koscieliska_las_w.tmx" accessible="false"></zone>
+	<zone name="0_tatry_dolina_koscieliska_las_w" level="0" x="512928" y="18944" file="Level 0/tatry/dolina_koscieliska_las_w.tmx" accessible="false">
+	</zone>
 	<!-- dolina_koscieliska_las_sw -->
-	<zone name="0_tatry_dolina_koscieliska_las_sw" level="0" x="512928" y="19072" file="Level 0/tatry/dolina_koscieliska_las_sw.tmx" accessible="false"></zone>
+	<zone name="0_tatry_dolina_koscieliska_las_sw" level="0" x="512928" y="19072" file="Level 0/tatry/dolina_koscieliska_las_sw.tmx" accessible="false">
+	</zone>
 	<!-- KONIEC: lasu -->
 
 	<!-- Y: 18816 -->
