@@ -19,6 +19,7 @@ import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.RingOfInvisibility;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.EntityHelper;
 import marauroa.common.game.RPAction;
@@ -52,6 +53,10 @@ public class AttackAction implements ActionListener {
 					action.get(TARGET), player);
 
 			if (entity instanceof RPEntity) {
+				if (RingOfInvisibility.isInvisible(player)) {
+					RingOfInvisibility.removeInvisibility(player);
+				}
+
 				StendhalRPAction.startAttack(player, (RPEntity) entity);
 			}
 		}

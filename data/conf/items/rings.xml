@@ -2,6 +2,26 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<!-- START: Invisibility Ring -->
+	<item name="pierścień niewidzialności">
+		<type class="ring" subclass="invisibility_ring" tileid="-1"/>
+		<description>Oto pierścień niewidzialności. Dobrze użyty potrafi ukryć cię przed agresywnymi stworami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.RingOfInvisibility"/>
+		<attributes>
+			<undroppableondeath value="1"/>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+	<!-- END: Invisibility Ring -->
+
 	<!-- START: Status Protection -->
 	<item name="pierścień leczniczy">
 		<type class="ring" subclass="medicinal_ring" tileid="-1"/>
