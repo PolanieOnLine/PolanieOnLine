@@ -339,17 +339,20 @@ class SourceObject extends MoveableObject {
 			return false;
 		}
 
-		if (!(dest.getContentSlotName() == null)
-				&& item.getName().equals("czterolistna koniczyna")) {
-			Stackable<?> newStack = (StackableItem) removeFromWorld();
-			if (newStack.getQuantity() > 1) {
-				newStack.setQuantity(newStack.getQuantity());
-			} else {
-				newStack.setQuantity(1);
-			}
-			dest.addToWorld((Entity) newStack, player);
+		//Stackable lucky charm item
+		String destObject = dest.getContentSlotName();
+		boolean isLuckyCharm = item.getName().equals("czterolistna koniczyna");
 
-			return true;
+		if (destObject != null) {
+			if (isLuckyCharm) {
+				StackableItem luckycharm = (StackableItem) removeFromWorld();
+				luckycharm.setQuantity(luckycharm.getQuantity());
+				dest.addToWorld((Entity) luckycharm, player);
+
+				return true;
+			}
+			logger.warn("tried to stack lucky charm item into slot: " + item.getClass() + "; stack rejected");
+			return false;
 		}
 
 		final String[] srcInfo = getLogInfo();
