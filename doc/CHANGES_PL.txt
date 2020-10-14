@@ -3,13 +3,14 @@ Changelog
 1.15
 *świat*
 - Dodano grupowe zadanie na budowę corocznego festiwalu Mine Town Revival Weeks
-- Dodano nowe przedmioty: miecz mainiocyjski, latarenka
+- Dodano nowe przedmioty: miecz mainiocyjski, pierścień niewidzialności, latarenka
 
 *chat*
 - Wprowadzono zamiany na naszym Discordzie: https://discord.gg/xtDnVna
 
 *kod*
 - Przeniesiono konfiguratory sztyletów do osobnego pliku XML (daggers.xml)
+- Zoptymalizowano kod
 
 *naprawiono błędy*
 - Poprawiono niektóre mapy
