@@ -166,7 +166,7 @@ public class ElfPrincess extends AbstractQuest {
                                  new TimePassedCondition(QUEST_SLOT, 1, DELAY),
 								 new NotCondition(new PlayerCanEquipItemCondition("orchidea"))),
 				ConversationStates.IDLE,
-				"Szkoda, że nie masz miejsca, aby wziąść ode mnie te piękny kwiat. Wróć, gdy będziesz mógł wziąść ten cenny kwiat bez uszkadzania płatków.",
+				"Szkoda, że nie masz miejsca, aby wziąć ode mnie te piękny kwiat. Wróć, gdy będziesz mógł wziąć ten cenny kwiat bez uszkadzania płatków.",
 				null);
 
         // don't give the flower if one was given within the last 5 minutes
@@ -302,7 +302,7 @@ public class ElfPrincess extends AbstractQuest {
 			res.add("Znalzłem Różę Kwiaciarkę i mam kwiatek, który muszę doręczyć Princess Tywysoga.");
 		}
         if (isRepeatable(player)) {
-            res.add("Wziąłem kwiatek do Księżniczki, a ona dała mi sztabki złota. Jeżeli chcę jej znowu sprawić radość to mogę znowu wziąść kolejne zadanie.");
+            res.add("Wziąłem kwiatek do Księżniczki, a ona dała mi sztabki złota. Jeżeli chcę jej znowu sprawić radość to mogę znowu wziąć kolejne zadanie.");
         }
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {

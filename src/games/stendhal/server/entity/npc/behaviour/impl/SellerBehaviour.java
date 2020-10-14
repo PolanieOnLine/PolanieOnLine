@@ -101,7 +101,7 @@ public class SellerBehaviour extends MerchantBehaviour {
 				player.incBoughtForItem(chosenItemName, amount);
 				return true;
 			} else {
-				seller.say("Przepraszam, ale nie możesz wziąść "
+				seller.say("Przepraszam, ale nie możesz wziąć "
 						+ Grammar.plnoun(amount, chosenItemName) + ".");
 				return false;
 			}

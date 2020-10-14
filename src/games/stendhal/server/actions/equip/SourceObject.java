@@ -320,7 +320,7 @@ class SourceObject extends MoveableObject {
 
 		if (!((EquipListener) item).canBeEquippedIn(targetSlot)) {
 			// give some feedback
-			player.sendPrivateText("Nie możesz wziąść " + item.getTitle() + " do " + targetSlot + ".");
+			player.sendPrivateText("Nie możesz wziąć " + item.getTitle() + " do " + targetSlot + ".");
 			logger.warn("tried to equip an entity into disallowed slot: " + item.getClass() + "; equip rejected");
 			return false;
 		}
@@ -463,7 +463,7 @@ class SourceObject extends MoveableObject {
 			// Allow players always pick up their own items
 			if (!player.getName().equals(sourceItem.getBoundTo())) {
 				if (otherPlayer.getArea().intersects(sourceItem.getArea())) {
-					player.sendPrivateText("Nie możesz wziąść przedmiotów, które są pod innymi wojownikami");
+					player.sendPrivateText("Nie możesz wziąć przedmiotów, które są pod innymi wojownikami");
 					return true;
 				}
 			}

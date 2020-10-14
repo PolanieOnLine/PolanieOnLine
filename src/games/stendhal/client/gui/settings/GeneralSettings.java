@@ -89,7 +89,7 @@ class GeneralSettings {
 
 		// raising corpses
 		JCheckBox autoRaiseToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_AUTORAISECORPSE, true,
-				"Auto sprawdzanie zwłok", "Automatycznie otwiera okno zwłok potwora, z którego możesz wziąść swój łup");
+				"Auto sprawdzanie zwłok", "Automatycznie otwiera okno zwłok potwora, z którego możesz wziąć swój łup");
 		page.add(autoRaiseToggle);
 		autoRaiseToggle.addItemListener(new ItemListener() {
 			@Override

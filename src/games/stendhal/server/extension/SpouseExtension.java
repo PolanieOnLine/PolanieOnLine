@@ -121,7 +121,7 @@ public class SpouseExtension extends StendhalServerExtension implements
 
 		if (canMarry) {
 			if (name1.equals(name2)) {
-				text += "Wojownik nie może wziąść ślubu ze sobą!";
+				text += "Wojownik nie może wziąć ślubu ze sobą!";
 				canMarry = false;
 			}
 		}

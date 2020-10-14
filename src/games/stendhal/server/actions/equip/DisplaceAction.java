@@ -152,7 +152,7 @@ public class DisplaceAction implements ActionListener {
 				return false;
 			}
 			if (otherPlayer.getArea().intersects(entity.getArea())) {
-				player.sendPrivateText("Nie możesz wziąść przedmiotów, które należą do innych wojowników.");
+				player.sendPrivateText("Nie możesz wziąć przedmiotów, które należą do innych wojowników.");
 				return true;
 			}
 		}
