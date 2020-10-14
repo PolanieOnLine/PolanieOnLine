@@ -79,6 +79,7 @@
 			<item value="magia mroku" quantity="[11,99]" probability="90.0"/>
 			<item value="różdżka Peruna" quantity="[1,1]" probability="1.0"/>
 			<item value="czarny pierścień" quantity="[1,1]" probability="0.2"/>
+			<item value="pierścień niewidzialności" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia mroku" quantity="10000"/>
