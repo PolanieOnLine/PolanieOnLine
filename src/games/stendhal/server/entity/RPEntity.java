@@ -2493,7 +2493,7 @@ public abstract class RPEntity extends GuidedEntity {
 	 *         left hand.
 	 */
 	public Item getWeapon() {
-		final String[] weaponsClasses = {"club", "sword", "axe", "ranged", "missile", "wand", "magia"};
+		final String[] weaponsClasses = {"club", "sword", "dagger", "axe", "ranged", "missile", "wand", "magia"};
 
 		for (final String weaponClass : weaponsClasses) {
 			final String[] slots = { "lhand", "rhand" };
