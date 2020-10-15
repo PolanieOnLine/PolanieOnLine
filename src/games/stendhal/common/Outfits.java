@@ -28,7 +28,7 @@ public class Outfits {
 	 */
 
 	/** number of player selectable heads */
-	public static final int HEAD_OUTFITS = 19;
+	public static final int HEAD_OUTFITS = 2;
 
 	/** number of player selectable dresses */
 	public static final int CLOTHES_OUTFITS = 91;
@@ -37,28 +37,47 @@ public class Outfits {
 	public static final int HAIR_OUTFITS = 46;
 
 	/** number of player selectable body shapes */
-	public static final int BODY_OUTFITS = 33;
+	public static final int BODY_OUTFITS = 2;
+	private static final List<Integer> DRESS_COMPATIBLE_BODIES = Arrays.asList(980, 981); // populate with any other bodies that a dress layer can be worn over
 
 	/** number of player selectable hats */
 	public static final int HAT_OUTFITS = 23;
+
+	/** number of player selectable eyes */
+	public static final int EYES_OUTFITS = 18;
+
+	/** number of player selectable mouths */
+	public static final int MOUTH_OUTFITS = 1;
 
 	/** number of player selectable masks */
 	public static final int MASK_OUTFITS = 15;
 
 	// hair should not be drawn with hat indexes in this list
 	public static final List<Integer> HATS_NO_HAIR = Arrays.asList(3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 996, 997);
-	// dress should not be drawn with silme body indexes in this list
-	public static final List<Integer> SLIMEBODY_NO_DRESS = Arrays.asList(13, 14, 15, 16, 17);
-	// some outfit layers should not be drawn with cavalery dress indexes in this list
-	public static final List<Integer> BODY_WITHOUT_OTHER_LAYERS = Arrays.asList(18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 50, 51);
+	// some outfit layers should not be drawn with ship dress indexes in this list
+	public static final List<Integer> SHIPS_NO_LAYERS = Arrays.asList(950, 951);
 
 	// layers used for building outfits
 	public static final List<String> LAYER_NAMES = Arrays.asList(
-					"body", "dress", "head", "mask",
+					"body", "dress", "head", "mouth", "eyes", "mask",
 					"hair", "hat", "detail");
 	public static final int LAYERS_COUNT = LAYER_NAMES.size();
 
 	// layers that can be re-colored
 	public static final List<String> RECOLORABLE_OUTFIT_PARTS = Arrays.asList(
-					"detail", "dress", "hair", "body", "head", "mask", "hat");
+					"detail", "dress", "hair", "body", "head", "eyes", "mask", "hat");
+
+	/**
+	 * Checks if a dress layer can be worn over an outfit index.
+	 *
+	 * @param body
+	 * 		Body index.
+	 * @return
+	 * 		<code>true</code> if body is <code>null</code>, or if body is within the range
+	 * 		of player-selectable indexes, or if the index has been explicitly listed in the
+	 * 		dress compatible list.
+	 */
+	public static boolean isDressCompatibleBody(final Integer body) {
+		return body == null || (body >= 0 && body < BODY_OUTFITS) || DRESS_COMPATIBLE_BODIES.contains(body);
+	}
 }

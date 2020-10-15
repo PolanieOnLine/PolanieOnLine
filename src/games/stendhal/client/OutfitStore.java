@@ -13,8 +13,7 @@
 package games.stendhal.client;
 
 import static games.stendhal.common.Outfits.HATS_NO_HAIR;
-import static games.stendhal.common.Outfits.BODY_WITHOUT_OTHER_LAYERS;
-import static games.stendhal.common.Outfits.SLIMEBODY_NO_DRESS;
+import static games.stendhal.common.Outfits.SHIPS_NO_LAYERS;
 import static games.stendhal.common.Outfits.LAYER_NAMES;
 import static games.stendhal.common.Outfits.RECOLORABLE_OUTFIT_PARTS;
 
@@ -44,7 +43,7 @@ public class OutfitStore {
 	private static final String OUTFITS = "data/sprites/outfit";
 
 	// these layers should return an empty sprite for index "0"
-	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mask", "hair", "hat", "detail");
+	final List<String> emptyForZeroIndex = Arrays.asList("dress", "mouth", "mask", "hair", "hat", "detail");
 
 	/**
 	 * The singleton.
@@ -119,19 +118,17 @@ public class OutfitStore {
 			if (lname.equals("hair") && HATS_NO_HAIR.contains(layer_map.get("hat"))) {
 				continue;
 			}
-			// dress is no drawn with silme body
-			if (lname.equals("dress") && SLIMEBODY_NO_DRESS.contains(layer_map.get("body"))) {
-				continue;
-			}
 
-			// other outfit layers isn't drawn with cavalery body
-			final boolean body_without_layers = BODY_WITHOUT_OTHER_LAYERS.contains(layer_map.get("body"));
-			if ((lname.equals("dress") && body_without_layers)
-					|| (lname.equals("head") && body_without_layers)
-					|| (lname.equals("hair") && body_without_layers)
-					|| (lname.equals("mask") && body_without_layers)
-					|| (lname.equals("hat") && body_without_layers)
-					|| (lname.equals("detail") && body_without_layers)) {
+			// other outfit layers isn't drawn with ship body
+			final boolean ship_without_layers = SHIPS_NO_LAYERS.contains(layer_map.get("body"));
+			if ((lname.equals("dress") && ship_without_layers)
+					|| (lname.equals("head") && ship_without_layers)
+					|| (lname.equals("mouth") && ship_without_layers)
+					|| (lname.equals("eyes") && ship_without_layers)
+					|| (lname.equals("hair") && ship_without_layers)
+					|| (lname.equals("mask") && ship_without_layers)
+					|| (lname.equals("hat") && ship_without_layers)
+					|| (lname.equals("detail") && ship_without_layers)) {
 				continue;
 			}
 
@@ -252,7 +249,7 @@ public class OutfitStore {
 	 */
 	public Sprite getFailsafeOutfit() {
 		try {
-			final String failsafe_str = "body=0,dress=0,head=0,mask=0,hair=0,hat=0,detail=0";
+			final String failsafe_str = "body=0,dress=0,head=0,mouth=0,eyes=0,mask=0,hair=0,hat=0,detail=0";
 			return getOutfit(failsafe_str, OutfitColor.PLAIN);
 		} catch (RuntimeException e) {
 			logger.warn("Cannot build failsafe outfit. Trying to use standard failsafe sprite.", e);
@@ -340,7 +337,7 @@ public class OutfitStore {
 
 	/*
 	@Deprecated
-	private String buildReference(final int code, final int mask, final int hat,
+	private String buildReference(final int code, final int mouth, final int eyes, final int mask, final int hat,
 			final String colorCode) {
 		return "OUTFIT:" + code + "@" + colorCode;
 	}

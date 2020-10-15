@@ -30,6 +30,8 @@ public class OutfitAction implements ActionListener {
 
 	public static void register() {
 		CommandCenter.register(OUTFIT, new OutfitAction());
+		// backward compatibility
+		CommandCenter.register("outfit", new OutfitAction());
 	}
 
 	/**
@@ -57,21 +59,20 @@ public class OutfitAction implements ActionListener {
 					player.remove(COLOR_MAP, "hair");
 				}
 
+				// Players may change eyes color
+				color = action.get("eyes");
+				if (color != null) {
+					player.put(COLOR_MAP, "eyes", color);
+				} else {
+					player.remove(COLOR_MAP, "eyes");
+				}
+
 				// Players may change dress color
 				color = action.get("dress");
 				if (color != null) {
 					player.put(COLOR_MAP, "dress", color);
 				} else {
 					player.remove(COLOR_MAP, "dress");
-				}
-
-				// Server changes us gender if we set definite body
-				if ((player.getOutfit().getLayer("body") > 4 && player.getOutfit().getLayer("body") < 11)
-						|| player.getOutfit().getLayer("body") == 20 || player.getOutfit().getLayer("body") > 21 && player.getOutfit().getLayer("body") < 27
-						|| player.getOutfit().getLayer("body") == 29 || player.getOutfit().getLayer("body") == 30) {
-					player.setGender("F");
-				} else {
-					player.setGender("M");
 				}
 
 				// Players may change skin color
@@ -81,6 +82,13 @@ public class OutfitAction implements ActionListener {
 					player.put(COLOR_MAP, "skin", color);
 				} else {
 					player.remove(COLOR_MAP, "skin");
+				}
+
+				// Server changes us gender if we set definite body
+				if (player.getOutfit().getLayer("body") == 1) {
+					player.setGender("F");
+				} else {
+					player.setGender("M");
 				}
 			}
 		}

@@ -1600,10 +1600,6 @@ public abstract class RPEntity extends AudibleEntity {
 			}
 			if (changes.has("outfit")) {
 				outfit = OUTFIT_UNSET;
-				/*
-				outfitMask = OUTFIT_UNSET;
-				outfitHat = OUTFIT_UNSET;
-				*/
 			}
 
 			fireChange(PROP_OUTFIT);

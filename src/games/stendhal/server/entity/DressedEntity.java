@@ -185,6 +185,8 @@ public abstract class DressedEntity extends RPEntity {
 		sb.append("body=" + newOutfit.getLayer("body") + ",");
 		sb.append("dress=" + newOutfit.getLayer("dress") + ",");
 		sb.append("head=" + newOutfit.getLayer("head") + ",");
+		sb.append("mouth=" + newOutfit.getLayer("mouth") + ",");
+		sb.append("eyes=" + newOutfit.getLayer("eyes") + ",");
 		sb.append("mask=" + newOutfit.getLayer("mask") + ",");
 		sb.append("hair=" + newOutfit.getLayer("hair") + ",");
 		sb.append("hat=" + newOutfit.getLayer("hat") + ",");
@@ -201,7 +203,7 @@ public abstract class DressedEntity extends RPEntity {
 	 * calling this.
 	 *
 	 * Currently supported layers should be in this order:
-	 * 		body, dress, head, mask, hair, hat, detail
+	 * 		body, dress, head, mouth, eyes, mask, hair, hat, detail
 	 *
 	 * @param layers
 	 *            Integer indexes of each outfit layer or null.
@@ -216,8 +218,8 @@ public abstract class DressedEntity extends RPEntity {
 	 * outfit change includes any colors, they should be changed <b>after</b>
 	 * calling this.
 	 *
-	 * Currently supported layers should be in this order:W
-	 * 		body, dress, head, mask, hair, hat, detail
+	 * Currently supported layers should be in this order:
+	 * 		body, dress, head, mouth, eyes, mask, hair, hat, detail
 	 *
 	 * @param temporary
 	 *            If true, the original outfit will be stored so that it can be
