@@ -147,7 +147,6 @@ public class KanmararnSoldiers extends AbstractQuest {
 			if (!item.getName().equals(itemName)) {
 				return false;
 			}
-
 			if (!item.getDescription().equals(description)) {
 				return false;
 			}
@@ -354,8 +353,10 @@ public class KanmararnSoldiers extends AbstractQuest {
 		zone.add(tom);
 
 		// Add a refiller to automatically fill the corpse of unlucky Tom
-		final CorpseRefiller tomRefiller = new CorpseRefiller(tom, "skórzane spodnie",
-				"Oto podarte skórzane spodnie zalane krwią");
+		final CorpseRefiller tomRefiller = new CorpseRefiller(
+				tom,
+				"skórzane spodnie",
+				"Oto podarte skórzane spodnie zalane krwią.");
 		tomRefiller.start();
 
 		// Now we create the corpse of the third NPC
@@ -367,7 +368,9 @@ public class KanmararnSoldiers extends AbstractQuest {
 		// Add our new Ex-NPC to the game world
 		zone.add(charles);
 		// Add a refiller to automatically fill the corpse of unlucky Charles
-		final CorpseRefiller charlesRefiller = new CorpseRefiller(charles, "karteczka",
+		final CorpseRefiller charlesRefiller = new CorpseRefiller(
+				charles,
+				"karteczka",
 				"Czytasz: \"Czek na  250 money. (podpisano) McPegleg\"");
 		charlesRefiller.start();
 
