@@ -1,6 +1,11 @@
 Changelog
 ---------
 1.15
+*klient*
+- Zaimplementowano kolejne dwie nowe warstwy personalizacji swojego awatara w grze (oczy & usta)
+- Zmniejszono ilość głów oraz ciał do wyboru w personalizacji bohatera
+- Poprawiono graficznie głowy i ciała
+
 *świat*
 - Dodano grupowe zadanie na budowę corocznego festiwalu Mine Town Revival Weeks
 - Dodano nowe przedmioty: miecz mainiocyjski, pierścień niewidzialności, latarenka
@@ -18,6 +23,7 @@ Changelog
 - Naprawiono osiągnięcie "Kołysząc się na Jabłkach"
 - Naprawiono pozycję teleportu do kuźni w Warszawie
 - Naprawiono osiągniecie za odwiedzenie wszystkich map nadmorskiej krainy, z założenia niedostępne mapy już nie zaliczają się do tej puli map do odwiedzenia
+- Naprawiono błąd, który bez końca wypełniał zwłoki Tom'a w zadaniu na poszukiwanie towarzyszy w Kanmararn
 
 
 1.14
