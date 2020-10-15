@@ -154,7 +154,7 @@ public class ShowOutfitListEvent extends Event<Entity> {
 					}
 
 					// overwrite base layers so they are hidden
-					for (final String hideLayer: Arrays.asList("body", "head")) {
+					for (final String hideLayer: Arrays.asList("body", "head", "eyes")) {
 						if (!hideOverrides.contains("show" + hideLayer)) {
 							tmpValues.put(hideLayer, "-1");
 						}
