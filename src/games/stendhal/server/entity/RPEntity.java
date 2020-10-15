@@ -487,7 +487,7 @@ public abstract class RPEntity extends GuidedEntity {
 
 			final String QUEST_SLOT = "reset_level";
 
-			final int value = 250;
+			final int value = 300;
 			final int def_value = (value / 2);
 
 			if (player.isQuestInState(QUEST_SLOT, "done")) {
