@@ -78,24 +78,24 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		// these outfits must be put on over existing outfit
 		// (what's null doesn't change that part of the outfit)
 		// so true means we put on over
-		final Pair<Outfit, Boolean> JUMPSUIT = new Pair<Outfit, Boolean>(new Outfit(null, 68, null, null, null, null, null), true);
-		final Pair<Outfit, Boolean> DUNGAREES = new Pair<Outfit, Boolean>(new Outfit(null, 69, null, null, null, null, null), true);
-		final Pair<Outfit, Boolean> GREEN_DRESS = new Pair<Outfit, Boolean>(new Outfit(null, 63, null, null, null, null, null), true);
+		final Pair<Outfit, Boolean> JUMPSUIT = new Pair<Outfit, Boolean>(new Outfit(null, 68, null, null, null, null, null, null, null), true);
+		final Pair<Outfit, Boolean> DUNGAREES = new Pair<Outfit, Boolean>(new Outfit(null, 69, null, null, null, null, null, null, null), true);
+		final Pair<Outfit, Boolean> GREEN_DRESS = new Pair<Outfit, Boolean>(new Outfit(null, 63, null, null, null, null, null, null, null), true);
 
-		final Pair<Outfit, Boolean> GOWN = new Pair<Outfit, Boolean>(new Outfit(null, 73, null, null, null, null, null), true);
-		final Pair<Outfit, Boolean> NOOB = new Pair<Outfit, Boolean>(new Outfit(null, 65, null, null, null, null, null), true);
-		final Pair<Outfit, Boolean> JESTER = new Pair<Outfit, Boolean>(new Outfit(null, 975, null, null, -1, 991, null), true);
+		final Pair<Outfit, Boolean> GOWN = new Pair<Outfit, Boolean>(new Outfit(null, 73, null, null, null, null, null, null, null), true);
+		final Pair<Outfit, Boolean> NOOB = new Pair<Outfit, Boolean>(new Outfit(null, 65, null, null, null, null, null, null, null), true);
+		final Pair<Outfit, Boolean> JESTER = new Pair<Outfit, Boolean>(new Outfit(null, 975, null, null, null, null, -1, 991, null), true);
 
 		// these outfits must replace the current outfit (what's -1 simply isn't there)
-		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(-1, 999, -1, -1, -1, -1, null), false);
-		final Pair<Outfit, Boolean> HORSE = new Pair<Outfit, Boolean>(new Outfit(97, -1, -1, -1, -1, -1, null), false);
-		final Pair<Outfit, Boolean> GIRL_HORSE = new Pair<Outfit, Boolean>(new Outfit(96, -1, -1, -1, -1, -1, null), false);
-		final Pair<Outfit, Boolean> ALIEN = new Pair<Outfit, Boolean>(new Outfit(95, -1, -1, -1, -1, -1, null), false);
-		final Pair<Outfit, Boolean> STATEK = new Pair<Outfit, Boolean>(new Outfit(50, -1, -1, -1, -1, -1, null), false);
-		final Pair<Outfit, Boolean> DUZY_STATEK = new Pair<Outfit, Boolean>(new Outfit(51, -1, -1, -1, -1, null, null), false);
+		final Pair<Outfit, Boolean> BUNNY = new Pair<Outfit, Boolean>(new Outfit(998, 999, -1, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> HORSE = new Pair<Outfit, Boolean>(new Outfit(997, -1, -1, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> GIRL_HORSE = new Pair<Outfit, Boolean>(new Outfit(996, -1, -1, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> ALIEN = new Pair<Outfit, Boolean>(new Outfit(995, -1, -1, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> STATEK = new Pair<Outfit, Boolean>(new Outfit(950, -1, -1, -1, -1, -1, -1, -1, null), false);
+		final Pair<Outfit, Boolean> DUZY_STATEK = new Pair<Outfit, Boolean>(new Outfit(951, -1, -1, -1, -1, -1, -1, null, null), false);
 
 		outfitTypes.put("kombinezon", JUMPSUIT);
-		outfitTypes.put("spodnie robocze", DUNGAREES);
+		outfitTypes.put("ogrodniczki", DUNGAREES);
 		outfitTypes.put("zielone ubranie", GREEN_DRESS);
 		outfitTypes.put("suknia", GOWN);
 		outfitTypes.put("pomarańczowy", NOOB);
@@ -187,7 +187,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 				}
 
 				priceList.put("kombinezon", (int) (N * 500));
-				priceList.put("spodnie robocze", (int) (N * 500));
+				priceList.put("ogrodniczki", (int) (N * 500));
 				priceList.put("zielone ubranie", (int) (N * 500));
 				priceList.put("suknia", (int) (N * 750));
 				priceList.put("pomarańczowy", (int) (N * 500));
@@ -206,7 +206,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 					ConversationPhrases.OFFER_MESSAGES,
 					null,
 					ConversationStates.ATTENDING,
-					"Powiedz mi jeżeli chciałbyś #'wypożyczyć suknia', #'zielone ubranie', kostium #'obcy', kostium #'koń', #'klacz', #'figlarz', #'kombinezon', #'spodnie robocze', #'strój królika', #'pomarańczowy', #'statek' lub kostium #'duży statek'.",
+					"Powiedz mi jeżeli chciałbyś #'wypożyczyć suknia', #'zielone ubranie', kostium #'obcy', kostium #'koń', #'klacz', #'figlarz', #'kombinezon', #'ogrodniczki', #'strój królika', #'pomarańczowy', #'statek' lub kostium #'duży statek'.",
 					createPreviewAction());
 
 				addJob(jobReply);
