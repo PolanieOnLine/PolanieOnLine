@@ -19,6 +19,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="dziub ptaka" quantity="[1,1]" probability="0.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -232,6 +233,7 @@
 			<item value="mocna trucizna" quantity="[1,2]" probability="5.0"/>
 			<item value="buty mainiocyjskie" quantity="[1,1]" probability="0.005"/>
 			<item value="nakrapiane jajo" quantity="[1,1]" probability="0.05"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -266,6 +268,7 @@
 			<item value="mocna trucizna" quantity="[1,2]" probability="5.0"/>
 			<item value="tarcza mainiocyjska" quantity="[1,1]" probability="0.005"/>
 			<item value="jajo wielkanocne" quantity="[1,1]" probability="0.05"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>

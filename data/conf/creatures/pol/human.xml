@@ -21,6 +21,7 @@
 			<item value="money" quantity="[29,59]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia ziemi" quantity="[1,10]" probability="20.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -54,6 +55,7 @@
 			<item value="money" quantity="[29,59]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia ziemi" quantity="[1,10]" probability="20.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -87,6 +89,7 @@
 			<item value="money" quantity="[29,59]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia ziemi" quantity="[1,10]" probability="20.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -383,6 +386,7 @@
 			<item value="rzodkiewka" quantity="[1,2]" probability="15.0"/>
 			<item value="ziemniaki" quantity="[1,5]" probability="20.5"/>
 			<item value="karp lustrzeń" quantity="[1,1]" probability="0.05"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -418,6 +422,7 @@
 			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
 			<item value="mięta" quantity="[1,1]" probability="10.0"/>
 			<item value="buteleczka wody" quantity="[1,3]" probability="15.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -453,6 +458,7 @@
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
 			<item value="wzmocniony pas skórzany" quantity="[1,1]" probability="1.0"/>
 			<item value="dwojaki" quantity="[1,1]" probability="0.05"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>

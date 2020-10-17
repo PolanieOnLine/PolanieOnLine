@@ -50,6 +50,7 @@
 			<item value="ser" quantity="[1,1]" probability="50.0"/>
 			<item value="money" quantity="[1,3]" probability="70.0"/>
 			<item value="maczuga" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -83,6 +84,7 @@
 		<drops>
 			<item value="money" quantity="[1,6]" probability="90.0"/>
 			<item value="duży ser" quantity="[1,2]" probability="40.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -150,6 +152,7 @@
 			<item value="money" quantity="[3,10]" probability="100.0"/>
 			<item value="ser" quantity="[2,5]" probability="50.0"/>
 			<item value="śmiertelna trucizna" quantity="[1,1]" probability="8.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -182,6 +185,7 @@
 		<drops>
 			<item value="money" quantity="[5,10]" probability="100.0"/>
 			<item value="duży ser" quantity="[1,3]" probability="50.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

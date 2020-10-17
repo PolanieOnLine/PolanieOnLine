@@ -20,6 +20,7 @@
 		<drops>
 			<item value="mięso" quantity="[1,2]" probability="50.0"/>
 			<item value="dorsz" quantity="[1,1]" probability="20.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -84,6 +85,7 @@
 			<item value="mięso" quantity="[1,2]" probability="50.0"/>
 			<item value="szynka" quantity="[1,1]" probability="30.0"/>
 			<item value="szczupak" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -175,6 +177,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,5]" probability="80.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -203,6 +206,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,4]" probability="60.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -227,6 +231,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,11]" probability="80.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -310,6 +315,7 @@
 		<corpse name="corpse"/>
 		<drops>
 			<item value="oscypek" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -559,6 +565,7 @@
 		<drops>
 			<item value="udko" quantity="[1,1]" probability="80.0"/>
 			<item value="piórko" quantity="[1,1]" probability="90.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -654,6 +661,7 @@
 		<drops>
 			<item value="udko" quantity="[1,1]" probability="80.0"/>
 			<item value="spinka" quantity="[1,1]" probability="0.0001"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>

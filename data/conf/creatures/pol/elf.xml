@@ -19,6 +19,7 @@
 		<corpse name="human"/>
 		<drops>
 			<item value="pluszowy miś" quantity="[1,1]" probability="1.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -50,6 +51,7 @@
 			<item value="money" quantity="[1,159]" probability="19.0"/>
 			<item value="sukno" quantity="[1,1]" probability="1.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.1"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -80,6 +82,7 @@
 		<drops>
 			<item value="money" quantity="[29,59]" probability="25.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.025"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -111,6 +114,7 @@
 			<item value="money" quantity="[29,39]" probability="20.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.5"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.125"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -207,6 +211,7 @@
 			<item value="różdżka" quantity="[1,1]" probability="5.0"/>
 			<item value="magia ziemi" quantity="[1,15]" probability="30.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -239,6 +244,7 @@
 			<item value="bukłak z wodą" quantity="[1,1]" probability="45.0"/>
 			<item value="skórzane twarde rękawice" quantity="[1,1]" probability="2.5"/>
 			<item value="pas elficki" quantity="[1,1]" probability="0.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -302,6 +308,7 @@
 			<item value="money" quantity="[99,189]" probability="5.0"/>
 			<item value="magia ziemi" quantity="[1,99]" probability="80.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="1.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -332,6 +339,7 @@
 		<drops>
 			<item value="money" quantity="[99,299]" probability="10.0"/>
 			<item value="magia ziemi" quantity="[1,15]" probability="100.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
