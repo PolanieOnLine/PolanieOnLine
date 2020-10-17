@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.revivalweeks;
 
+import static games.stendhal.server.maps.ados.rosshouse.FatherNPC.MRROSS_OUTFIT;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -44,7 +46,7 @@ public class DadNPC implements LoadableContent {
 			}
 		};
 
-		npc2.setOutfit(1, 34, 6, null, 27, null, 0);
+		npc2.setOutfit(MRROSS_OUTFIT);
 		npc2.setPosition(21, 10);
 		npc2.setDirection(Direction.LEFT);
 		npc2.initHP(100);

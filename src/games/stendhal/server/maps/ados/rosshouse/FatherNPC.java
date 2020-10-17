@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * <p>Creates a normal version of Mr. Ross in the ross house.
  */
 public class FatherNPC implements ZoneConfigurator {
+	public final static String MRROSS_OUTFIT = "body=0,dress=34,head=0,eyes=0,hair=27";
 
 	/**
 	 * Configure a zone.
@@ -75,7 +76,7 @@ public class FatherNPC implements ZoneConfigurator {
 
 		};
 
-		npc.setOutfit(1, 34, 6, null, 27, null, 0);
+		npc.setOutfit(MRROSS_OUTFIT);
 		npc.setPosition(12, 7);
 		npc.setDirection(Direction.DOWN);
 		npc.initHP(100);

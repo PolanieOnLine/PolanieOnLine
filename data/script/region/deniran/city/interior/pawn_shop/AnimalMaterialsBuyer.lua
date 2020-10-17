@@ -20,7 +20,7 @@ local shopName = "buyanimalmaterials"
 
 local function initNPC()
 	buyer = entities:createSpeakerNPC(buyerName)
-	buyer:setOutfit("body=0,head=8,hair=11,dress=53")
+	buyer:setOutfit("body=0,head=0,eyes=0,hair=11,dress=53")
 	buyer:setPosition(17, 21)
 	buyer:setDirection(Direction.UP)
 	buyer:setDescription("Oto " .. buyerName .. ". Jest zatrudniony w lombardzie.")

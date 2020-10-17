@@ -1037,13 +1037,13 @@
 	</zone>
 
 	<zone name="int_deniran_weapons_shop" file="interiors/deniran/weapons_shop.tmx">
-		<portal x="24" y="18" ref="entrance">
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.weaponsshop.WeaponDealerNPC" />
+
+		<portal x="17" y="18" ref="entrance">
 			<destination zone="0_deniran_city_w" ref="deniran_weapons_shop_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
-		<!-- NPCs -->
-		<configurator class-name="games.stendhal.server.maps.deniran.cityinterior.weaponsshop.WeaponDealerNPC" />
 	</zone>
 
 	<zone name="int_deniran_bank_blue_roof" file="interiors/deniran/bank_blue_roof.tmx">

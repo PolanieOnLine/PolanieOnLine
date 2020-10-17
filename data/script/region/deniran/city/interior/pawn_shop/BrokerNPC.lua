@@ -19,8 +19,9 @@ local shopName = "deniranpawnbuy"
 
 local function initNPC()
 	broker = entities:createSpeakerNPC(brokerName)
-	broker:setOutfit("body=0,head=8,hair=14,dress=5,hat=6")
+	broker:setOutfit("body=0,head=0,eyes=5,hair=14,dress=5,hat=6")
 	broker:setOutfitColor("body", SkinColor.DARK)
+	broker:setOutfitColor("eyes", 0x0000ff)
 	broker:setPosition(18, 5)
 	broker:setIdleDirection(Direction.LEFT)
 	broker:setDescription("Oto " .. brokerName ..". Jest właścicielem oraz prowadzi lombard.")

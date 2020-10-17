@@ -111,7 +111,7 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 
 		};
 
-		npc.setOutfit("body=3,dress=33,head=4,mask=0,hair=27,hat=1");
+		npc.setOutfit("body=0,dress=33,head=0,mouth=0,eyes=18,mask=0,hair=27,hat=1");
 		npc.setPosition(70, 118);
 		npc.setDirection(Direction.RIGHT);
 		npc.initHP(100);

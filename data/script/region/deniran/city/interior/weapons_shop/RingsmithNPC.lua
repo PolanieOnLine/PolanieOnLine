@@ -61,7 +61,8 @@ end
 
 if game:setZone(zone) then
 	ringsmith = entities:createSpeakerNPC("Raven")
-	ringsmith:setOutfit("body=5,head=16,dress=52,hair=15")
+	ringsmith:setOutfit("body=1,head=0,eyes=2,dress=52,hair=15")
+	ringsmith:setOutfitColor("eyes", 0x1f6521)
 	ringsmith:setOutfitColor("hair", Color.RED)
 
 	-- path

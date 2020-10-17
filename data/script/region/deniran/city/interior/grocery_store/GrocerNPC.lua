@@ -17,10 +17,10 @@ local grocer = nil
 
 local function addNPC()
 	grocer = entities:createSpeakerNPC("Jimbo")
-	grocer:setOutfit("dress=5,head=6,mask=1")
+	grocer:setOutfit("dress=5,mouth=1,eyes=0,mask=1")
 	grocer:setOutfitColor("skin", SkinColor.DARK)
 	grocer:setOutfitColor("dress", 0x8b4513) -- saddle brown
-	grocer:setOutfitColor("head", 0x228b22) -- forest green
+	grocer:setOutfitColor("eyes", 0x228b22) -- forest green
 	grocer:setOutfitColor("mask", 0xffffff) -- white (doesn't work with glasses because they are fully black)
 	grocer:setPosition(25, 24)
 	grocer:setIdleDirection(Direction.UP)
