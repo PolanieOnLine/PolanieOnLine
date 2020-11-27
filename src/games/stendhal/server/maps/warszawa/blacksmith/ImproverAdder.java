@@ -26,6 +26,9 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 
+/**
+ * @author KarajuSs
+ */
 public class ImproverAdder {
 	private static final Logger logger = Logger.getLogger(ImproverAdder.class);
 
@@ -79,7 +82,7 @@ public class ImproverAdder {
 	}
 
 	private final Map<String,Integer> items = new HashMap<String, Integer>() {{
-		// load the default value
+		// load the default value's
 		defaultNeededValue();
 
 		put("sztabka złota", currentGold);

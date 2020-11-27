@@ -18,6 +18,9 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.maps.warszawa.blacksmith.ImproverAdder.ImproverNPC;
 
+/**
+ * @author KarajuSs
+ */
 public class Improver implements ZoneConfigurator {
 	private static final String npcName = "Kowal Inpraf";
 
