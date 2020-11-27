@@ -49,6 +49,7 @@ public class ImproverAdder {
 		foundMoreThanOne = false;
 	}
 
+	//START: UNUSED YET
 	private Integer currentGold = null;
 	private Integer currentMithril = null;
 	private Integer currentAmethyst = null;
@@ -93,6 +94,7 @@ public class ImproverAdder {
 		put("polano", currentWood);
 		put("piórko", currentFeather);
 	}};
+	//END: UNUSED YET
 
 	public void add(final ImproverNPC improver) {
 		improver.add(ConversationStates.ATTENDING,
