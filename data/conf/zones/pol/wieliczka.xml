@@ -98,11 +98,11 @@
 
 	<!-- wieliczka_c -->
 	<zone name="0_wieliczka_c" level="0" x="514080" y="18560" file="Level 0/wieliczka/c.tmx">
-		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArmoryMarket"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.city.FishMarket"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.city.FlowerMarket"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArthurNPC"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.city.HerbertNPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.city.ArmoryMarket"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.city.FishMarket"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.city.FlowerMarket"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.city.ArthurNPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.city.HerbertNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -246,8 +246,8 @@
 
 	<!-- interiors -->
 	<zone name="int_wieliczka_blacksmith" file="interiors/wieliczka/blacksmith.tmx">
-		<configurator class-name="games.stendhal.server.maps.wieliczka.blacksmith.KowalWincentyNPC"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.blacksmith.MithrilNPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.blacksmith.KowalWincentyNPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.blacksmith.MithrilNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -283,7 +283,7 @@
 	</zone>
 
 	<zone name="int_wieliczka_scientist_house" file="interiors/wieliczka/scientist_house.tmx">
-		<configurator class-name="games.stendhal.server.maps.wieliczka.scientisthouse.NaukowiecNPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.scientisthouse.NaukowiecNPC"/>
 
 		<portal x="12" y="13" ref="sh_exit">
 			<destination zone="0_wieliczka_c" ref="sh_entrance"/>
@@ -291,7 +291,7 @@
 	</zone>
 
 	<zone name="int_wieliczka_townhall" file="interiors/wieliczka/townhall.tmx">
-		<configurator class-name="games.stendhal.server.maps.wieliczka.townhall.ZbigniewNPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.townhall.ZbigniewNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -476,7 +476,7 @@ Aktualne ceny u Zbigniewa:
 			<parameter name="color_method">dark</parameter>
 		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.mines.Skille550NPC"/>
+		<configurator class-name="games.pol.server.maps.wieliczka.mines.Skille550NPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-dj_zai-darkbells</parameter>

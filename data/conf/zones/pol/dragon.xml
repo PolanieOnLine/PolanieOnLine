@@ -257,9 +257,9 @@
 	<zone name="-1_dragon_cave" level="-1" x="513824" y="18150" file="Level -1/dragon/cave.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
-		<configurator class-name="games.stendhal.server.maps.dragon.cave.eFuRNPC"/>
-		<configurator class-name="games.stendhal.server.maps.dragon.cave.JolandaNPC"/>
-		<configurator class-name="games.stendhal.server.maps.dragon.cave.Dragon"/>
+		<configurator class-name="games.pol.server.maps.dragon.cave.eFuRNPC"/>
+		<configurator class-name="games.pol.server.maps.dragon.cave.JolandaNPC"/>
+		<configurator class-name="games.pol.server.maps.dragon.cave.Dragon"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>

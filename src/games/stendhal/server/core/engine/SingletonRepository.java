@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine;
 
+import games.pol.server.maps.gdansk.ship.GdanskFerry;
+import games.pol.server.maps.krakow.ship.KrakowFerry;
+import games.pol.server.maps.pirate_island.ship.PirateFerry;
 import games.stendhal.server.core.events.LoginNotifier;
 import games.stendhal.server.core.events.LogoutNotifier;
 import games.stendhal.server.core.events.TurnNotifier;
@@ -30,9 +32,6 @@ import games.stendhal.server.entity.player.GagManager;
 import games.stendhal.server.entity.player.Jail;
 import games.stendhal.server.entity.slot.BankAccessorManager;
 import games.stendhal.server.maps.athor.ship.AthorFerry;
-import games.stendhal.server.maps.krakow.ship.KrakowFerry;
-import games.stendhal.server.maps.pirate_island.ship.PirateFerry;
-import games.stendhal.server.maps.gdansk.ship.GdanskFerry;
 import marauroa.server.db.TransactionPool;
 
 

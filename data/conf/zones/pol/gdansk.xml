@@ -23,10 +23,10 @@
 
 	<!-- gdansk_nw -->
 	<zone name="0_gdansk_city_nw" level="0" x="513056" y="17024" file="Level 0/gdansk/city_nw.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska1NPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska2NPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska3NPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.MieszkaniecGdanska1NPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.MieszkaniecGdanska2NPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.MieszkaniecGdanska3NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -87,8 +87,8 @@
 
 	<!-- gdansk_n -->
 	<zone name="0_gdansk_city_n" level="0" x="513184" y="17024" file="Level 0/gdansk/city_n.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.ship.FerryConveyerPirateIslandNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.MieszkaniecGdanska4NPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.ship.FerryConveyerPirateIslandNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.MieszkaniecGdanska4NPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -184,11 +184,11 @@
 
 	<!-- gdansk_city_ne -->
 	<zone name="0_gdansk_city_ne" level="0" x="513312" y="17024" file="Level 0/gdansk/city_ne.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.ArmoryNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.FishyNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.GroceryNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.PotionNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.market.FlowerNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.market.ArmoryNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.market.FishyNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.market.GroceryNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.market.PotionNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.market.FlowerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -311,7 +311,7 @@
 
 	<!-- gdansk_forest -->
 	<zone name="0_gdansk_forest" level="0" x="513184" y="17152" file="Level 0/gdansk/forest.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.city.SheepSellerNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.city.SheepSellerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -473,8 +473,8 @@
 
 	<!-- Ship -->
 	<zone name="int_gdansk_ship" file="interiors/gdansk/gdansk_ship.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.ship.CoastConveyerNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.ship.CaptainNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.ship.CoastConveyerNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.ship.CaptainNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -576,7 +576,7 @@
 
 	<!-- Knight room Malteis -->
 	<zone name="int_gdansk_knight_room" file="interiors/gdansk/knight_room.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.knighthouse.MalteisNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.knighthouse.MalteisNPC"/>
 
 		<portal x="11" y="18" ref="kr_exit">
 			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
@@ -725,7 +725,7 @@
 
 	<!-- Museum 0 -->
 	<zone name="int_gdansk_museum_0" file="interiors/gdansk/int_museum_0.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.museum.MieczysławNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.museum.MieczysławNPC"/>
 
 		<portal x="23" y="26" ref="museum_1_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_1"/>
@@ -757,8 +757,8 @@
 
 	<!-- Goldsmith -->
 	<zone name="int_gdansk_goldsmith" file="interiors/gdansk/goldsmith.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.ItemsOnTable" />
-		<configurator class-name="games.stendhal.server.maps.gdansk.goldsmith.zlotnikNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.goldsmith.ItemsOnTable" />
+		<configurator class-name="games.pol.server.maps.gdansk.goldsmith.zlotnikNPC"/>
 		
 		<entity x="15" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -803,8 +803,8 @@
 
 	<!-- Blacksmith -->
 	<zone name="int_gdansk_blacksmith" file="interiors/gdansk/blacksmith.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.blacksmith.AmetystNPC" />
-		<configurator class-name="games.stendhal.server.maps.gdansk.blacksmith.BlackSmithNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.blacksmith.AmetystNPC" />
+		<configurator class-name="games.pol.server.maps.gdansk.blacksmith.BlackSmithNPC"/>
 
 		<entity x="1" y="1">
 			<implementation
@@ -882,7 +882,7 @@
 
 	<!-- Tavern 0 -->
 	<zone name="int_gdansk_tavern_0" file="interiors/gdansk/tavern_0.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.tavern.RosaNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.tavern.RosaNPC"/>
 		<entity x="1" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -930,8 +930,8 @@
 
 	<!-- Tavern 1 -->
 	<zone name="int_gdansk_tavern_1" file="interiors/gdansk/tavern_1.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.tavern.HandlarzBroniaNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.tavern.MarisNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.tavern.HandlarzBroniaNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.tavern.MarisNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">kettle-1, bottle-2, trash-1, trash-21, trash-3, metal-can-1, drain-water-11, dishbreak-1, dishbreak-2, dishes-1, dishes-21, creaky-door-1, creaky-door-2, ice-cubes-1, glass-break-1, window-close-1</parameter>
@@ -1048,7 +1048,7 @@
 
 	<!-- Cottage 0 -->
 	<zone name="int_gdansk_cottage_0" file="interiors/gdansk/cottage_0.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.cottage.AligernNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.cottage.AligernNPC"/>
 
 		<portal x="30" y="6" ref="cottage_key_entrance">
 			<destination zone="int_gdansk_cottage_0" ref="cottage_key_exit"/>
@@ -1117,7 +1117,7 @@
 
 	<!-- Cottage -1 -->
 	<zone name="int_gdansk_cottage_-1" file="interiors/gdansk/cottage_-1.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.cottage.SzalonyNaukowiecNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.cottage.SzalonyNaukowiecNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -1248,7 +1248,7 @@
 
 	<!-- Cavehut -->
 	<zone name="int_gdansk_cavehut" file="interiors/gdansk/cavehut.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.cavehut.WitchNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.cavehut.WitchNPC"/>
 
 		<portal x="12" y="8" ref="orb_left">
 			<destination zone="-3_gdansk_underground_forest" ref="orb_destination" />
@@ -1285,9 +1285,9 @@
 
 	<!-- Bakery -->
 	<zone name="int_gdansk_bakery" file="interiors/gdansk/bakery.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.bakery.ItemsOnTable"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.bakery.ChefNPC"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.bakery.ShopAssistantNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.bakery.ItemsOnTable"/>
+		<configurator class-name="games.pol.server.maps.gdansk.bakery.ChefNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.bakery.ShopAssistantNPC"/>
 
 		<entity x="16" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -1330,7 +1330,7 @@
 	<!-- Adventure house -->
 	<zone name="int_gdansk_adventure_house" file="interiors/gdansk/adventure_house.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.maps.gdansk.adventure_house.AdventureNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.adventure_house.AdventureNPC"/>
 
 		<portal x="1" y="4" ref="5">
 			<destination zone="int_adventure_cave" ref="6"/>
@@ -1394,7 +1394,7 @@
 	
 	<!-- Meat market -->
 	<zone name="int_gdansk_meat_market" file="interiors/gdansk/meat_market.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.market.meatNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.market.meatNPC"/>
 
 		<entity x="10" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -1414,7 +1414,7 @@
 	
 	<!-- Vegetable market -->
 	<zone name="int_gdansk_vegetable_market" file="interiors/gdansk/veg_market.tmx">
-		<configurator class-name="games.stendhal.server.maps.gdansk.market.vegNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.market.vegNPC"/>
 
 		<entity x="10" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
