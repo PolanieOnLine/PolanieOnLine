@@ -16,22 +16,11 @@ public class ImprovableItem extends Item {
 		super(item);
 	}
 
-	/**
-	 * Change item description for upgraded one.
-	 */
-	@Override
-	public String getDescription() {
-		return super.getDescription() + " " + getImproveNumber() + ".";
+	public int getImprove() {
+		return getInt("improve");
 	}
-
-	/**
-	 * Checks the improvable state of item.
-	 * 
-	 * @return
-	 * 		<code>true</code> if the item has a possibility to be upgraded.
-	 */
-	public boolean isUpgradeable() {
-		return getMaxImproves() > 0;
+	public int getMaxImproves() {
+		return getInt("max_improves");
 	}
 
 	/**
@@ -39,26 +28,6 @@ public class ImprovableItem extends Item {
 	 */
 	public void upgrade() {
 		put("improve", setImproves());
-	}
-
-	/**
-	 * Checks max of possibility improves for item.
-	 * 
-	 * @return
-	 * 		<code>true</code> if the item has been max improved.
-	 */
-	private int setImproves() {
-		if (isMaxImproved()) {
-			return getMaxImproves();
-		}
-		return getImprove() + 1;
-	}
-
-	public boolean isMaxImproved() {
-		if (getImprove() == getMaxImproves()) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -118,16 +87,56 @@ public class ImprovableItem extends Item {
 		return 0;
 	}
 
+	/**
+	 * Checks the improvable state of item.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the item has a possibility to be upgraded.
+	 */
+	public boolean isUpgradeable() {
+		return has("max_improves") && getMaxImproves() > 0;
+	}
+
+	/**
+	 * Checks max of possibility improves for item.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the item has been max improved.
+	 */
+	private int setImproves() {
+		// fix it if value of 'max_improves' has been changed and it is lower than before
+		// FIXME: należy przenieść ten kod
+		if (getImprove() > getMaxImproves()) {
+			return getMaxImproves();
+		}
+
+		if (isMaxImproved()) {
+			return getMaxImproves();
+		}
+		return getImprove() + 1;
+	}
+
+	public boolean isMaxImproved() {
+		if (getImprove() == getMaxImproves()) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @return description
+	 */
 	private String getImproveNumber() {
 		final String improve = String.valueOf(getImprove());
 
 		return "Ulepszenie +" + improve;
 	}
 
-	public int getMaxImproves() {
-		return getInt("max_improves");
-	}
-	public int getImprove() {
-		return getInt("improve");
+	/**
+	 * Change item description for upgraded one.
+	 */
+	@Override
+	public String getDescription() {
+		return super.getDescription() + " " + getImproveNumber() + ".";
 	}
 }

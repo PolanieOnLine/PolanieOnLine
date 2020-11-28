@@ -69,7 +69,7 @@
 	<item name="pogromca">
 		<type class="sword" subclass="buster" tileid="-1"/>
 		<description>Oto pogromca z niszczycielskim, przedłużonym ostrzem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="21"/>
 			<rate value="5"/>
@@ -134,7 +134,7 @@
 	<item name="sztylet mroku">
 		<type class="sword" subclass="dark_dagger" tileid="-1"/>
 		<description>Oto sztylet mroku. Jest zaprojektowany tak, aby zadawać nim szybkie ciosy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="8"/>
 			<rate value="2"/>
@@ -157,7 +157,7 @@
 	<item name="ognisty miecz demonów">
 		<type class="sword" subclass="demon_fire_sword" tileid="-1"/>
 		<description>Oto ognisty miecz demonów. Został wykradziony z najgłębszych czeluści tego świata.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="58"/>
 			<rate value="6"/>
@@ -291,7 +291,7 @@
 	<item name="półtorak">
 		<type class="sword" subclass="great_sword" tileid="-1"/>
 		<description>Oto półtorak. Ten rzadki, wielki miecz można dzierżyć w jednej lub obu rękach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="60"/>
 			<rate value="15"/>
@@ -440,7 +440,7 @@
 	<item name="nihonto">
 		<type class="sword" subclass="nihonto" tileid="-1"/>
 		<description>Oto prawdziwy samurajski miecz nihonto z bardzo ostrym zakończeniem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="20"/>
 			<rate value="4"/>
@@ -462,7 +462,7 @@
 	<item name="klinga orków">
 		<type class="sword" subclass="orc_sword" tileid="-1"/>
 		<description>Oto klinga orków, jest ciężka i ma zabójczy wygląd.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="24"/>
 			<rate value="10"/>
@@ -483,7 +483,7 @@
 	<item name="miecz orków">
 		<type class="sword" subclass="orcish_sword" tileid="-1"/>
 		<description>Oto miecz orków. Ten miecz orków jest niezdarnie wykuty i niezmiernie ciężki.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="38"/>
 			<rate value="9"/>
@@ -588,7 +588,7 @@
 	<item name="krwiopijca">
 		<type class="sword" subclass="vampire_sword" tileid="-1"/>
 		<description>Oto osławiona krwiopijca, miecz który zabiera życie tym, których atakujesz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="22"/>
 			<rate value="5"/>
@@ -675,7 +675,7 @@
 	<item name="szczerbiec">
 		<type class="sword" subclass="polish_szczerbiec" tileid="-1"/>
 		<description>Oto szczerbiec. Miecz królów polskich.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="70"/>
 			<def value="6"/>
@@ -718,7 +718,7 @@
 	<item name="miecz cieni">
 		<type class="sword" subclass="shadow_sword" tileid="-1"/>
 		<description>Oto miecz cieni. Nawet gdy nosisz go w słońcu, półmrok skrywa jego ostrze.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="39"/>
 			<rate value="7"/>
@@ -741,7 +741,7 @@
 	<item name="chopesz">
 		<type class="sword" subclass="ancient_egyptian_khopesh" tileid="-1"/>
 		<description>Oto chopesz. To niezwykłe ostrze pochodzi z kraju dziwnych piramid.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="35"/>
 			<rate value="6"/>
@@ -762,7 +762,7 @@
 	<item name="ekskalibur">
 		<type class="sword" subclass="excalibur" tileid="-1"/>
 		<description>Oto wszechpotężny legendarny miecz ekskalibur. Miecz samego króla Artura, silny jak wszystko inne na ziemi.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="111"/>
       		<rate value="4"/>
@@ -804,7 +804,7 @@
 	<item name="miecz z mithrilu">
 		<type class="sword" subclass="mithril_sword" tileid="-1"/>
 		<description>Oto miecz z mithrilu. Jakość jego najważniejszym atrybutem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="51"/>
 			<rate value="5"/>
@@ -827,7 +827,7 @@
 	<item name="miecz mainiocyjski">
 		<type class="sword" subclass="mainio_sword" tileid="-1"/>
 		<description>Oto miecz mainiocyjski.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="42"/>
 			<rate value="6"/>

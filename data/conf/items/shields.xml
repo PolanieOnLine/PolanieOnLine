@@ -5,7 +5,7 @@
 	<item name="czarna tarcza">
 		<type class="shield" subclass="black_shield" tileid="-1"/>
 		<description>Oto czarna tarcza. Jej ciemność na pewno cię obroni.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="42"/>
 			<min_level value="200"/>
@@ -50,7 +50,7 @@
 	<item name="puklerz">
 		<type class="shield" subclass="buckler" tileid="-1"/>
 		<description>Puklerz to najprostsza tarcza. Może ochronić cię przed mieczami i maczugami, ale na silniejszą broń lepiej jej nie wystawiać.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="6"/>
 			<max_improves value="3"/>
@@ -212,7 +212,7 @@
 	<item name="magiczna tarcza płytowa">
 		<type class="shield" subclass="magic_plate_shield" tileid="-1"/>
 		<description>Oto magiczna tarcza płytowa. Ma magiczną jakość i jest piękna.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="40"/>
 			<min_level value="100"/>
@@ -257,7 +257,7 @@
 	<item name="tarcza z mithrilu">
 		<type class="shield" subclass="mithril_shield" tileid="-1"/>
 		<description>Oto tarcza z mithrilu. Możesz być pewny, że będzie dla ciebie dobrą ochroną.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="45"/>
 			<min_level value="250"/>
@@ -319,7 +319,7 @@
 	<item name="tarcza monarchistyczna">
 		<type class="shield" subclass="royal_shield" tileid="-1"/>
 		<description>Oto tarcza monarchistyczna. Otacza ją magiczna moc.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="41"/>
 			<min_level value="250"/>
@@ -344,7 +344,7 @@
 	<item name="tarcza cieni">
 		<type class="shield" subclass="shadow_shield" tileid="-1"/>
 		<description>Oto tarcza cieni. Wygląda na to że absorbuje światło.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="36"/>
 			<min_level value="50"/>
@@ -429,7 +429,7 @@
 	<item name="drewniana tarcza">
 		<type class="shield" subclass="wooden_shield" tileid="-1"/>
 		<description>Drewniana tarcza zrobiona jest z drogiego i ciężkiego drewna, ale wciąż może cię chronić.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="10"/>
 			<max_improves value="3"/>
@@ -552,7 +552,7 @@
 	<item name="ognista tarcza">
 		<type class="shield" subclass="fire_shield" tileid="-1"/>
 		<description>Oto ognista tarcza. Niech jej płomień ogarnie twoich wrogów.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<def value="19"/>
 			<min_level value="30"/>
@@ -655,7 +655,7 @@
 	<item name="kamienna tarcza">
 		<type class="shield" subclass="stone_shield" tileid="-1"/>
 		<description>Oto ciężka, kamienna tarcza. Stępi niemal każdy miecz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.ImprovableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
 		<attributes>
 			<atk value="2"/>
 			<def value="25"/>
