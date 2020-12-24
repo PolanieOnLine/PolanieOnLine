@@ -84,8 +84,7 @@ public class OutfitAction implements ActionListener {
 					player.remove(COLOR_MAP, "skin");
 				}
 
-				// Server changes us gender if we set definite body
-				if (player.getOutfit().getLayer("body") == 1) {
+				if (player.getOutfit().isFemale()) {
 					player.setGender("F");
 				} else {
 					player.setGender("M");

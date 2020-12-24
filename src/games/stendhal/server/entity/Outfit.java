@@ -456,6 +456,10 @@ public class Outfit {
 		return Outfits.isDressCompatibleBody(layers.get("body"));
 	}
 
+	public boolean isFemale() {
+		return Outfits.isFemaleBody(layers.get("body"));
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		boolean ret = false;

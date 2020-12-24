@@ -28,7 +28,7 @@ public class Outfits {
 	 */
 
 	/** number of player selectable heads */
-	public static final int HEAD_OUTFITS = 2;
+	public static final int HEAD_OUTFITS = 4;
 
 	/** number of player selectable dresses */
 	public static final int CLOTHES_OUTFITS = 91;
@@ -37,8 +37,9 @@ public class Outfits {
 	public static final int HAIR_OUTFITS = 46;
 
 	/** number of player selectable body shapes */
-	public static final int BODY_OUTFITS = 3;
+	public static final int BODY_OUTFITS = 6;
 	private static final List<Integer> DRESS_COMPATIBLE_BODIES = Arrays.asList(980, 981); // populate with any other bodies that a dress layer can be worn over
+	private static final List<Integer> FEMALE_BODIES = Arrays.asList(1, 2, 4, 5, 994, 996);
 
 	/** number of player selectable hats */
 	public static final int HAT_OUTFITS = 23;
@@ -79,5 +80,9 @@ public class Outfits {
 	 */
 	public static boolean isDressCompatibleBody(final Integer body) {
 		return body == null || (body >= 0 && body < BODY_OUTFITS) || DRESS_COMPATIBLE_BODIES.contains(body);
+	}
+
+	public static boolean isFemaleBody(final Integer body) {
+		return FEMALE_BODIES.contains(body);
 	}
 }
