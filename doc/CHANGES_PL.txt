@@ -1,5 +1,14 @@
 Changelog
 ---------
+1.16
+*klient*
+- Dodano na prośbę graczy starsze ciała
+
+*kod*
+- Rozdzielono pliki źródłowe NPC między stendhal'em, a POL'em
+- Usprawniono aktualizowanie danej płci postaci
+
+
 1.15
 *klient*
 - Zaimplementowano kolejne dwie nowe warstwy personalizacji swojego awatara w grze (oczy & usta)
