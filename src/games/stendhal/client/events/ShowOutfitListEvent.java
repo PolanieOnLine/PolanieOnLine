@@ -44,18 +44,15 @@ import games.stendhal.client.gui.imageviewer.ViewPanel;
 import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 
-
 public class ShowOutfitListEvent extends Event<Entity> {
-
 	private static final Logger logger = Logger.getLogger(ShowOutfitListEvent.class);
 
 	private static final int PAD = 5;
 
-
 	@Override
 	public void execute() {
 		if (!event.has("outfits")) {
-			logger.warn("Could not create bestiary: Event does not have \"enemies\" attribute");
+			logger.warn("Could not create outfits: Event does not have \"outfits\" attribute");
 			return;
 		}
 
