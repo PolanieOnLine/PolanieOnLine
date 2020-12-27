@@ -71,15 +71,15 @@ class AchievementsLogEvent extends Event<RPEntity> {
 				table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
 				TableColumn col = table.getColumnModel().getColumn(0);
-				col.setCellRenderer(new SpriteCellRenderer());
-
-				col = table.getColumnModel().getColumn(1);
-				col.setCellRenderer(new DescriptionCellRenderer());
-
-				col = table.getColumnModel().getColumn(2);
 				DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 				r.setHorizontalAlignment(SwingConstants.CENTER);
 				col.setCellRenderer(r);
+
+				col = table.getColumnModel().getColumn(1);
+				col.setCellRenderer(new SpriteCellRenderer());
+
+				col = table.getColumnModel().getColumn(2);
+				col.setCellRenderer(new DescriptionCellRenderer());
 
 				HeaderRenderer hr = new HeaderRenderer();
 				Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
@@ -107,7 +107,7 @@ class AchievementsLogEvent extends Event<RPEntity> {
 			}
 
 			private JTable createTable() {
-				final String[] columnNames = { "Podgląd", "Opis", "Zdobyto" };
+				final String[] columnNames = { "#", "Podgląd", "Opis" };
 
 				final List<String> achievements = Arrays.asList(event.get("achievements").split(";"));
 
@@ -123,15 +123,15 @@ class AchievementsLogEvent extends Event<RPEntity> {
 
 			private Object[] createDataRow(final String[] achievements) {
 				final Object[] rval = new Object[3];
-				final String title = achievements[1];
-				final String desc = achievements[2];
+				final String title = achievements[0];
+				final String desc = achievements[1];
 
-				rval[0] = title;
-				rval[1] = title + desc;
-				rval[2] = "";
+				rval[0] = "";
+				rval[1] = title;
+				rval[2] = desc;
 
-				if (achievements[3].equals("true")) {
-					rval[2] = "✔";
+				if (achievements[2].equals("true")) {
+					rval[0] = "✔";
 				}
 
 				return rval;

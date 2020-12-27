@@ -48,6 +48,8 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.REACHED_ACHIEVEMENT, Definition.PRIVATE);
 		player.addRPEvent(Events.BESTIARY, Definition.PRIVATE);
 
+		player.addRPEvent(Events.ACHIEVEMENTS_LOG, Definition.PRIVATE);
+
 		player.addAttribute("dead", Type.FLAG, Definition.PRIVATE);
 
 		player.addAttribute("away", Type.LONG_STRING, Definition.VOLATILE);

@@ -214,6 +214,8 @@ class SettingsPanel extends JButton {
 		column.addComponent(item);
 		item = createMenuItem("Dziennik Zadań", "travellog");
 		column.addComponent(item);
+		item = createMenuItem("Dziennik Osiągnięć", Actions.ACHIEVEMENTSLOG);
+		column.addComponent(item);
 		item = createMenuItem("Bestiariusz", Actions.BESTIARY);
 		column.addComponent(item);
 	}

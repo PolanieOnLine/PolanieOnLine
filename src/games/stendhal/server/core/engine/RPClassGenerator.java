@@ -78,6 +78,7 @@ import games.stendhal.server.entity.spell.Spell;
 import games.stendhal.server.entity.trade.Earning;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
+import games.stendhal.server.events.AchievementsLogEvent;
 import games.stendhal.server.events.AttackEvent;
 import games.stendhal.server.events.BestiaryEvent;
 import games.stendhal.server.events.BuddyLoginEvent;
@@ -404,6 +405,10 @@ public class RPClassGenerator {
 
 		if (!RPClass.hasRPClass(Events.OUTFIT_LIST)) {
 			ShowOutfitListEvent.generateRPClass();
+		}
+
+		if (!RPClass.hasRPClass(Events.ACHIEVEMENTS_LOG)) {
+			AchievementsLogEvent.generateRPClass();
 		}
 
 		if (!RPClass.hasRPClass("action")) {
