@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.client.actions;
 
-import static games.stendhal.common.constants.Actions.BESTIARY;
 import static games.stendhal.common.constants.Actions.ALTERKILL;
 import static games.stendhal.common.constants.Actions.INSPECTKILL;
 import static games.stendhal.common.constants.Actions.INSPECTQUEST;
@@ -21,6 +20,8 @@ import static games.stendhal.common.constants.General.COMBAT_KARMA;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Set;
+
+import games.stendhal.common.constants.Actions;
 
 /**
  * Manages Slash Action Objects.
@@ -92,7 +93,8 @@ public class SlashActionRepository {
 		actions.put("p", groupMessage);
 		actions.put("profile", new ProfileAction());
 		actions.put("travellog", new TravelLogAction());
-		actions.put(BESTIARY, new BestiaryAction());
+		actions.put(Actions.ACHIEVEMENTSLOG, new AchievementsLogAction());
+		actions.put(Actions.BESTIARY, new BestiaryAction());
 
 		actions.put("quit", new QuitAction());
 
