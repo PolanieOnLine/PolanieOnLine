@@ -14,14 +14,22 @@ package games.stendhal.client.events;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.client.GameScreen;
 import games.stendhal.client.entity.RPEntity;
@@ -29,18 +37,23 @@ import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.imageviewer.ImageViewWindow;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
 import games.stendhal.client.gui.imageviewer.ViewPanel;
+import games.stendhal.client.sprite.Sprite;
 
 /**
  * @author KarajuSs
  */
 class AchievementsLogEvent extends Event<RPEntity> {
+	private static final Logger logger = Logger.getLogger(AchievementsLogEvent.class);
+
 	private static final int PAD = 5;
 
-	/**
-	 * executes the event
-	 */
 	@Override
 	public void execute() {
+		if (!event.has("achievements")) {
+			logger.warn("Could not create achievements: Event does not have \"achievements\" attribute");
+			return;
+		}
+
 		new ImageViewWindow("Dziennik osiągnięć", createViewPanel());
 	}
 
@@ -56,16 +69,16 @@ class AchievementsLogEvent extends Event<RPEntity> {
 				table.setEnabled(false);
 				table.setFillsViewportHeight(true);
 				table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
 				TableColumn col = table.getColumnModel().getColumn(0);
-				col.setCellRenderer(new DefaultTableCellRenderer());
-
-				DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-				r.setHorizontalAlignment(SwingConstants.CENTER);
-
-				col = table.getColumnModel().getColumn(1);
 				col.setCellRenderer(new SpriteCellRenderer());
 
+				col = table.getColumnModel().getColumn(1);
+				col.setCellRenderer(new DescriptionCellRenderer());
+
 				col = table.getColumnModel().getColumn(2);
+				DefaultTableCellRenderer r = new DefaultTableCellRenderer();
+				r.setHorizontalAlignment(SwingConstants.CENTER);
 				col.setCellRenderer(r);
 
 				HeaderRenderer hr = new HeaderRenderer();
@@ -94,26 +107,108 @@ class AchievementsLogEvent extends Event<RPEntity> {
 			}
 
 			private JTable createTable() {
-				final String[] columnNames = { "Nazwa", "Podgląd", "Cena" };
+				final String[] columnNames = { "Podgląd", "Opis", "Zdobyto" };
 
-				return null;
+				final List<String> achievements = Arrays.asList(event.get("achievements").split(";"));
+
+				final Object[][] data = new Object[achievements.size()][];
+				int i = 0;
+				for (final String a: achievements) {
+					data[i] = createDataRow(a.split(","));
+					i++;
+				}
+
+				return new JTable(data, columnNames);
+			}
+
+			private Object[] createDataRow(final String[] achievements) {
+				final Object[] rval = new Object[3];
+				final String title = achievements[1];
+				final String desc = achievements[2];
+
+				rval[0] = title;
+				rval[1] = title + desc;
+				rval[2] = "";
+
+				if (achievements[3].equals("true")) {
+					rval[2] = "✔";
+				}
+
+				return rval;
 			}
 
 			private void adjustColumnWidths(JTable table) {
-				//nothing
+				TableColumnModel model = table.getColumnModel();
+				for (int column = 0; column < table.getColumnCount(); column++) {
+					TableColumn tc = model.getColumn(column);
+					int width = tc.getWidth();
+					for (int row = 0; row < table.getRowCount(); row++) {
+						Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
+						width = Math.max(width, comp.getPreferredSize().width);
+					}
+
+					tc.setPreferredWidth(width);
+				}
 			}
 			private void adjustRowHeights(JTable table) {
-				//nothing
+				for (int row = 0; row < table.getRowCount(); row++) {
+					int rowHeight = table.getRowHeight();
+
+					for (int column = 0; column < table.getColumnCount(); column++) {
+						Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
+						rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
+					}
+
+					table.setRowHeight(row, rowHeight);
+				}
 			}
 		};
 	}
 
-	private static class SpriteCellRenderer extends JComponent implements TableCellRenderer {
+	private static class DescriptionCellRenderer extends DefaultTableCellRenderer {
+		private final Border border = BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD);
+
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-				int row, int column) {
-			// TODO Auto-generated method stub
-			return null;
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			super.getTableCellRendererComponent(table, value, isSelected,
+					hasFocus, row, column);
+			setBorder(border);
+			return this;
+		}
+	}
+
+	private static class SpriteCellRenderer extends JComponent implements TableCellRenderer {
+		private Sprite sprite;
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object color,
+				boolean isSelected, boolean hasFocus, int row, int col) {
+			Object obj = table.getValueAt(row, col);
+			if (obj instanceof Sprite) {
+				sprite = (Sprite) obj;
+			} else {
+				sprite = null;
+			}
+			return this;
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			Dimension d = new Dimension();
+			if (sprite != null) {
+				d.width = sprite.getWidth() + 2 * PAD;
+				d.height = sprite.getHeight() + 2 * PAD;
+			}
+			return d;
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			if (sprite != null) {
+				sprite.draw(g, (getWidth() - sprite.getWidth()) / 2, (getHeight() - sprite.getHeight()) / 2);
+			}
 		}
 	}
 }
