@@ -17,8 +17,10 @@ import games.stendhal.server.events.AchievementsLogEvent;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 
+/**
+ * @author KarajuSs
+ */
 public class AchievementsLogAction implements ActionListener {
-
 	public static void register() {
 		CommandCenter.register(Actions.ACHIEVEMENTSLOG, new AchievementsLogAction());
 	}

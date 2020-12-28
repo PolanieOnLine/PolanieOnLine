@@ -12,6 +12,7 @@
 package games.stendhal.client.events;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -38,6 +39,7 @@ import games.stendhal.client.gui.imageviewer.ImageViewWindow;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
 import games.stendhal.client.gui.imageviewer.ViewPanel;
 import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.sprite.SpriteStore;
 
 /**
  * @author KarajuSs
@@ -107,14 +109,14 @@ class AchievementsLogEvent extends Event<RPEntity> {
 			}
 
 			private JTable createTable() {
-				final String[] columnNames = { "#", "Podgląd", "Opis" };
+				final String[] columnNames = { "#", "Ikona", "Opis" };
 
 				final List<String> achievements = Arrays.asList(event.get("achievements").split(";"));
 
 				final Object[][] data = new Object[achievements.size()][];
 				int i = 0;
 				for (final String a: achievements) {
-					data[i] = createDataRow(a.split(","));
+					data[i] = createDataRow(a.split(":"));
 					i++;
 				}
 
@@ -123,14 +125,18 @@ class AchievementsLogEvent extends Event<RPEntity> {
 
 			private Object[] createDataRow(final String[] achievements) {
 				final Object[] rval = new Object[3];
-				final String title = achievements[0];
-				final String desc = achievements[1];
+
+				final String category = achievements[0];
+				final String title = achievements[1];
+				final String desc = achievements[2];
+
+				final Boolean fulfilled = achievements[3].equals("true");
 
 				rval[0] = "";
-				rval[1] = title;
-				rval[2] = desc;
+				rval[1] = getAchievementImage(category, fulfilled);
+				rval[2] = getAchievementDesc(title, desc);
 
-				if (achievements[2].equals("true")) {
+				if (fulfilled) {
 					rval[0] = "✔";
 				}
 
@@ -210,5 +216,27 @@ class AchievementsLogEvent extends Event<RPEntity> {
 				sprite.draw(g, (getWidth() - sprite.getWidth()) / 2, (getHeight() - sprite.getHeight()) / 2);
 			}
 		}
+	}
+
+	private String getAchievementDesc(String title, String desc) {
+		String description = "<html><span style=\"font-weight: bold;\">" + title + "</span><br/>"
+				+ "<span style=\"font-weight: normal; font-style: italic;\">" + desc + ".</span></html>";
+
+		return description;
+	}
+
+	private Sprite getAchievementImage(String category, boolean fulfilled) {
+		String imagePath = "/data/sprites/achievements/" + category + ".png";
+
+		Sprite sprite = SpriteStore.get().getColoredSprite(imagePath, Color.LIGHT_GRAY);
+		if (fulfilled) {
+			sprite = SpriteStore.get().getSprite(imagePath);
+		}
+
+		if (sprite.getWidth() > sprite.getHeight()) {
+			sprite = SpriteStore.get().getAnimatedSprite(sprite, 100);
+		}
+
+		return sprite;
 	}
 }
