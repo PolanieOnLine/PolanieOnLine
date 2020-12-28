@@ -10,6 +10,9 @@ Changelog
 - Rozdzielono pliki źródłowe NPC między stendhal'em, a POL'em
 - Usprawniono aktualizowanie danej płci postaci
 
+*naprawiono błędy*
+- Naprawiono "pierścień niewidzialności" dla administratorów gry
+
 
 1.15
 *klient*
