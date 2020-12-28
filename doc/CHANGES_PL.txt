@@ -3,6 +3,8 @@ Changelog
 1.16
 *klient*
 - Dodano na prośbę graczy starsze ciała
+- Dodano 'Dziennik osiągnięć', który wyświetla pełną listę osiągnięć w grze do zdobycia
+- Pokolorowano ikonę osiągnięć związanych z czasem
 
 *kod*
 - Rozdzielono pliki źródłowe NPC między stendhal'em, a POL'em
