@@ -16,7 +16,6 @@ import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.SyntaxException;
-import marauroa.server.db.command.ResultHandle;
 
 /**
  * @author KarajuSs
@@ -26,7 +25,6 @@ public class AchievementsLogEvent extends RPEvent {
 	private static final Logger logger = Logger.getLogger(AchievementsLogEvent.class);
 
 	private final List<Achievement> achievementsArray = new ArrayList<>();;
-	private ResultHandle handle = new ResultHandle();
 
 	/**
 	 * Creates the rpclass.
