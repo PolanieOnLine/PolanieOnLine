@@ -35,9 +35,9 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 		// Elf Princess quest achievement
 		questAchievements.add(createAchievement("quest.special.elf_princess.0025", "Kasanowa Faiumoni", "Ukończył zadanie u księżniczki elfów 25 razy", 
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("elf_princess", 2, 24)));
-		
+
 		// Kill Monks quest achievement
-		questAchievements.add(createAchievement("quest.special.kill_monks.0025", "Heretyk", "Ukończ zadanie 'Zabij Mnichów' 25 razy",
+		questAchievements.add(createAchievement("quest.special.kill_monks.0025", "Heretyk", "Ukończył zadanie 'Zabij Mnichów' 25 razy",
 				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_monks", 2, 24)));
 
 		// Maze
@@ -47,19 +47,19 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 		// have completed all quests in Semos City?
 		questAchievements.add(createAchievement("quest.special.semos", "Przyjaciel Semos", "Ukończył wszystkie zadania w mieście Semos",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.SEMOS_CITY)));
-		
+
 		// have completed all quests in Ados City?
 		questAchievements.add(createAchievement("quest.special.ados", "Przyjaciel Ados", "Ukończył wszystkie zadania w mieście Ados",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.ADOS_CITY)));
-		
+
 		// complete nearly all the quests in the game?
-		questAchievements.add(createAchievement("quest.count.50", "Pierwsze Zlecenia","Ukończyl conajmniej 50 zadań",
+		questAchievements.add(createAchievement("quest.count.050", "Pierwsze Zlecenia","Ukończył conajmniej 50 zadań",
 				Achievement.EASY_BASE_SCORE, true, new QuestCountCompletedCondition(50)));
-		questAchievements.add(createAchievement("quest.count.100", "Duuuuuużo Ukończonych Zadań","Ukończyl conajmniej 100 zadań",
+		questAchievements.add(createAchievement("quest.count.100", "Duuuuuużo Ukończonych Zadań","Ukończył conajmniej 100 zadań",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestCountCompletedCondition(100)));
-		questAchievements.add(createAchievement("quest.count.150", "Jeszcze Więcej Zadań?","Ukończyl conajmniej 150 zadań",
+		questAchievements.add(createAchievement("quest.count.150", "Jeszcze Więcej Zadań","Ukończył conajmniej 150 zadań",
 				Achievement.HARD_BASE_SCORE, true, new QuestCountCompletedCondition(150)));
-		questAchievements.add(createAchievement("quest.count.200", "Pogromca Zadań","Ukończyl conajmniej 200 zadań",
+		questAchievements.add(createAchievement("quest.count.200", "Pogromca Zadań","Ukończył conajmniej 200 zadań",
 				Achievement.LEGENDARY_BASE_SCORE, true, new QuestCountCompletedCondition(200)));
 
 		return questAchievements;
@@ -69,5 +69,4 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 	protected Category getCategory() {
 		return Category.QUEST;
 	}
-
 }

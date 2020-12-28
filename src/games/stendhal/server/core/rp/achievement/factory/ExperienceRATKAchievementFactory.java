@@ -33,19 +33,19 @@ public class ExperienceRATKAchievementFactory extends AbstractAchievementFactory
 
 		String level = "25";
 		achievements.add(createAchievement(
-				"ratk.level." + level, "Początkujący Dystansowiec", "Osiągnął " + level + " poziom STR",
+				"ratk.level.0" + level, "Początkujący Dystansowiec", "Osiągnął " + level + " poziom STR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "50";
 		achievements.add(createAchievement(
-				"ratk.level." + level, "Strzelec", "Osiągnął " + level + " poziom STR",
+				"ratk.level.0" + level, "Strzelec", "Osiągnął " + level + " poziom STR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "75";
 		achievements.add(createAchievement(
-				"ratk.level." + level, "Zaawansowany Strzelec", "Osiągnął " + level + " poziom STR",
+				"ratk.level.0" + level, "Zaawansowany Strzelec", "Osiągnął " + level + " poziom STR",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 

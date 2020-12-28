@@ -33,19 +33,19 @@ public class ExperienceATKAchievementFactory extends AbstractAchievementFactory 
 
 		String level = "25";
 		achievements.add(createAchievement(
-				"atk.level." + level, "Początkujący Napastnik", "Osiągnął " + level + " poziom ATK",
+				"atk.level.0" + level, "Początkujący Napastnik", "Osiągnął " + level + " poziom ATK",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "50";
 		achievements.add(createAchievement(
-				"atk.level." + level, "Napastnik", "Osiągnął " + level + " poziom ATK",
+				"atk.level.0" + level, "Napastnik", "Osiągnął " + level + " poziom ATK",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "75";
 		achievements.add(createAchievement(
-				"atk.level." + level, "Zaawansowany Napastnik", "Osiągnął " + level + " poziom ATK",
+				"atk.level.0" + level, "Zaawansowany Napastnik", "Osiągnął " + level + " poziom ATK",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 

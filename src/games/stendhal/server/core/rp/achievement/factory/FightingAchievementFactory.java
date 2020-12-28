@@ -200,7 +200,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_SERAFINS)));
 
 		fightingAchievements.add(createAchievement(
-				ID_DEATHS, "Władca Śmierci", "Zabił po 10 śmierci, czarnej śmierci, złotej śmierci, kostuch, kostuch różowych, kostuch wielkich, kostuch różowych wielkich i kostuch złotych wielkich w pojedynkę",
+				ID_DEATHS, "Władca Śmierci", "Zabił po 10 śmierci oraz kostuch każdego rodzaju w pojedynkę",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, KillType.SOLO, ENEMIES_DEATHS)));
 

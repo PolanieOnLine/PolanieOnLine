@@ -33,19 +33,19 @@ public class ExperienceDEFAchievementFactory extends AbstractAchievementFactory 
 
 		String level = "25";
 		achievements.add(createAchievement(
-				"def.level." + level, "Początkujący Obrońca", "Osiągnął " + level + " poziom OBR",
+				"def.level.0" + level, "Początkujący Obrońca", "Osiągnął " + level + " poziom OBR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "50";
 		achievements.add(createAchievement(
-				"def.level." + level, "Obrońca", "Osiągnął " + level + " poziom OBR",
+				"def.level.0" + level, "Obrońca", "Osiągnął " + level + " poziom OBR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "75";
 		achievements.add(createAchievement(
-				"def.level." + level, "Zaawansowany Obrońca", "Osiągnął " + level + " poziom OBR",
+				"def.level.0" + level, "Zaawansowany Obrońca", "Osiągnął " + level + " poziom OBR",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 

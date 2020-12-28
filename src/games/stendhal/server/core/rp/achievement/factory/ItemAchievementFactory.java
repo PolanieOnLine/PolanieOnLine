@@ -39,23 +39,23 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> itemAchievements = new LinkedList<Achievement>();
 
-		itemAchievements.add(createAchievement("item.money.100", "Pierwsze Kieszonkowe", "Zdobył 100 monet na potworach",
+		itemAchievements.add(createAchievement("item.money.00000100", "Pierwsze Kieszonkowe", "Zdobył 100 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100, "money")));
 
-		itemAchievements.add(createAchievement("item.money.10000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
+		itemAchievements.add(createAchievement("item.money.00010000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000, "money")));
 
-		itemAchievements.add(createAchievement("item.money.100000", "Mała Fortuna", "Zdobył 100,000 monet na potworach",
+		itemAchievements.add(createAchievement("item.money.00100000", "Mała Fortuna", "Zdobył 100,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100000, "money")));
 
-		itemAchievements.add(createAchievement("item.money.1000000", "Już Nie Potrzebujesz Więcej", "Zdobył 1,000,000 monet na potworach",
+		itemAchievements.add(createAchievement("item.money.01000000", "Już Nie Potrzebujesz Więcej", "Zdobył 1,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000000, "money")));
 
-		itemAchievements.add(createAchievement("item.money.10000000", "Masz ich Za Dużo:)", "Zdobył 10,000,000 monet na potworach",
+		itemAchievements.add(createAchievement("item.money.10000000", "Wielka Kąpiel w Złocie", "Zdobył 10,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000000, "money")));
 
