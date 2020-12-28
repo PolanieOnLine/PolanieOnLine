@@ -51,7 +51,7 @@ public class RingOfInvisibility extends Item {
 		return player.isInvisibleToCreatures();
 	}
 
-	public static void setInvisibility(final Player player) {
+	private void setInvisibility(final Player player) {
 		player.sendPrivateText("Pierścień niewidzialności zaczął działać! Używaj tego mądrze!");
 
 		player.stopAttack();
