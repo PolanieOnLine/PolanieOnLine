@@ -16,6 +16,7 @@ import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.SyntaxException;
+import marauroa.server.db.command.ResultHandle;
 
 /**
  * @author KarajuSs
@@ -25,6 +26,7 @@ public class AchievementsLogEvent extends RPEvent {
 	private static final Logger logger = Logger.getLogger(AchievementsLogEvent.class);
 
 	private final List<Achievement> achievementsArray = new ArrayList<>();;
+	private ResultHandle handle = new ResultHandle();
 
 	/**
 	 * Creates the rpclass.
@@ -41,20 +43,26 @@ public class AchievementsLogEvent extends RPEvent {
 	public AchievementsLogEvent(final Player player) {
 		super(Events.ACHIEVEMENTS_LOG);
 
-		final StringBuilder formatted = new StringBuilder();
-
 		AchievementNotifier achievements = AchievementNotifier.get();
 		for (final Achievement a: achievements.getAchievements()) {
 			achievementsArray.add(a);
 		}
 
+		final StringBuilder formatted = new StringBuilder();
+		SortArray(achievementsArray);
+		formatted.append(getFormattedString(player, achievementsArray));
+
+		put("achievements", formatted.toString());
+	}
+
+	private void SortArray(List<Achievement> array) {
 		final Comparator<Achievement> sorter_id = new Comparator<Achievement>() {
 			@Override
 			public int compare(final Achievement a1, final Achievement a2) {
 				return (a1.getIdentifier().toLowerCase().compareTo(a2.getIdentifier().toLowerCase()));
 			}
 		};
-		Collections.sort(achievementsArray, sorter_id);
+		Collections.sort(array, sorter_id);
 
 		final Comparator<Achievement> sorter_cat = new Comparator<Achievement>() {
 			@Override
@@ -62,11 +70,7 @@ public class AchievementsLogEvent extends RPEvent {
 				return (a1.getCategory().toString().toLowerCase().compareTo(a2.getCategory().toString().toLowerCase()));
 			}
 		};
-		Collections.sort(achievementsArray, sorter_cat);
-
-		formatted.append(getFormattedString(player, achievementsArray));
-
-		put("achievements", formatted.toString());
+		Collections.sort(array, sorter_cat);
 	}
 
 	private String getFormattedString(final Player player, final List<Achievement> achievements) {
@@ -79,12 +83,8 @@ public class AchievementsLogEvent extends RPEvent {
 				continue;
 			}
 
-			Boolean did = false;
-			if (a.isFulfilled(player)) {
-				did = true;
-			}
-
-			sb.append(a.getCategory() + ":" + a.getTitle() + ":" + a.getDescription() + ":" + did.toString());
+			Boolean reached = player.hasReachedAchievement(a.getIdentifier());
+			sb.append(a.getCategory() + ":" + a.getTitle() + ":" + a.getDescription() + ":" + reached.toString());
 
 			if (idx != achievementCount - 1) {
 				sb.append(";");
