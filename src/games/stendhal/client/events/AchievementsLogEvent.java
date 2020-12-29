@@ -59,6 +59,7 @@ class AchievementsLogEvent extends Event<RPEntity> {
 		new ImageViewWindow("Dziennik osiągnięć", createViewPanel());
 	}
 
+	@SuppressWarnings("serial")
 	private ViewPanel createViewPanel() {
 		return new ViewPanel() {
 			@Override
@@ -130,13 +131,13 @@ class AchievementsLogEvent extends Event<RPEntity> {
 				final String title = achievements[1];
 				final String desc = achievements[2];
 
-				final Boolean fulfilled = achievements[3].equals("true");
+				final Boolean reached = achievements[3].equals("true");
 
 				rval[0] = "";
-				rval[1] = getAchievementImage(category, fulfilled);
+				rval[1] = getAchievementImage(category, reached);
 				rval[2] = getAchievementDesc(title, desc);
 
-				if (fulfilled) {
+				if (reached) {
 					rval[0] = "✔";
 				}
 
@@ -171,6 +172,7 @@ class AchievementsLogEvent extends Event<RPEntity> {
 		};
 	}
 
+	@SuppressWarnings("serial")
 	private static class DescriptionCellRenderer extends DefaultTableCellRenderer {
 		private final Border border = BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD);
 
@@ -185,6 +187,7 @@ class AchievementsLogEvent extends Event<RPEntity> {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private static class SpriteCellRenderer extends JComponent implements TableCellRenderer {
 		private Sprite sprite;
 
