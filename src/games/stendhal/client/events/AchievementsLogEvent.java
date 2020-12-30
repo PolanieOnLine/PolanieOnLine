@@ -228,12 +228,14 @@ class AchievementsLogEvent extends Event<RPEntity> {
 		return description;
 	}
 
-	private Sprite getAchievementImage(String category, boolean fulfilled) {
+	private Sprite getAchievementImage(String category, boolean reached) {
 		String imagePath = "/data/sprites/achievements/" + category + ".png";
 
-		Sprite sprite = SpriteStore.get().getColoredSprite(imagePath, Color.LIGHT_GRAY);
-		if (fulfilled) {
+		Sprite sprite;
+		if (reached) {
 			sprite = SpriteStore.get().getSprite(imagePath);
+		} else {
+			sprite = SpriteStore.get().getColoredSprite(imagePath, Color.LIGHT_GRAY);
 		}
 
 		if (sprite.getWidth() > sprite.getHeight()) {
