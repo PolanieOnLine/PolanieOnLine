@@ -51,18 +51,26 @@ public class RingOfInvisibility extends Item {
 		return player.isInvisibleToCreatures();
 	}
 
-	private void setInvisibility(final Player player) {
-		player.sendPrivateText("Pierścień niewidzialności zaczął działać! Używaj tego mądrze!");
+	public static void setVisible(Player player, boolean setVisible) {
+		String on = "Założyłeś pierścień na palec! Używaj go mądrze!";
+		String off = "Zdjąłeś pierścień z palca i stałeś się widoczny!";
+		if (player.getGender() == "F") {
+			on = "Założyłaś pierścień na palec! Używaj go mądrze!";
+			off = "Zdjęłaś pierścień z palca i stałaś się widoczna!";
+		}
 
-		player.stopAttack();
-		player.setInvisible(true);
-		player.setVisibility(50);
-	}
-	public static void removeInvisibility(final Player player) {
-		player.sendPrivateText("Niewidzialność przestała działać!");
+		if (setVisible == true) {
+			player.sendPrivateText(on);
 
-		player.setInvisible(false);
-	  	player.setVisibility(100);
+			player.stopAttack();
+			player.setInvisible(setVisible);
+			player.setVisibility(50);
+		} else {
+			player.sendPrivateText(off);
+
+			player.setInvisible(setVisible);
+		  	player.setVisibility(100);
+		}
 	}
 
 	/**
@@ -79,11 +87,11 @@ public class RingOfInvisibility extends Item {
 
 	private boolean makeInvisible(final Player player) {
 		if (isInvisible(player)) {
-			removeInvisibility(player);
+			setVisible(player, false);
 
 		  	return true;
 		} else {
-			setInvisibility(player);
+			setVisible(player, true);
 
 			return true;
 		}

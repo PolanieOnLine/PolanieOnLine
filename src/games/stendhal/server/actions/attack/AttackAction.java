@@ -58,7 +58,7 @@ public class AttackAction implements ActionListener {
 						StendhalRPAction.startAttack(player, (RPEntity) entity);
 						return;
 					}
-					RingOfInvisibility.removeInvisibility(player);
+					RingOfInvisibility.setVisible(player, false);
 				}
 
 				StendhalRPAction.startAttack(player, (RPEntity) entity);
