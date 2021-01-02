@@ -11,7 +11,7 @@ Changelog
 - Usprawniono aktualizowanie danej płci postaci
 
 *naprawiono błędy*
-- Naprawiono "pierścień niewidzialności" dla administratorów gry
+- Naprawiono funkcję "pierścienia niewidzialności"
 
 
 1.15
