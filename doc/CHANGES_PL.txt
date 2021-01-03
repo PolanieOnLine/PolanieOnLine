@@ -6,6 +6,9 @@ Changelog
 - Dodano 'Dziennik osiągnięć', który wyświetla pełną listę osiągnięć w grze do zdobycia
 - Pokolorowano ikonę osiągnięć związanych z czasem
 
+*świat*
+- Zbalansowano statystyki stwora "słoń musth"
+
 *kod*
 - Rozdzielono pliki źródłowe NPC między stendhal'em, a POL'em
 - Usprawniono aktualizowanie danej płci postaci
