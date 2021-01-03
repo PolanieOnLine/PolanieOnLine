@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                      (C) Copyright 2020 - Stendhal                      *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.client.gui.achievementlog;
 
 import java.awt.Color;
@@ -29,6 +40,9 @@ import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
+/**
+ * @author KarajuSs
+ */
 class AchievementLog {
 	/** The enclosing window. */
 	private JDialog window;

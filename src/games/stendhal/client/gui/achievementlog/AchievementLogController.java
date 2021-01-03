@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                      (C) Copyright 2020 - Stendhal                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +20,9 @@ import javax.swing.SwingUtilities;
 import games.stendhal.client.entity.User;
 import games.stendhal.common.grammar.Grammar;
 
+/**
+ * @author KarajuSs
+ */
 public class AchievementLogController {
 	/** Controller instance */
 	private static AchievementLogController instance;
