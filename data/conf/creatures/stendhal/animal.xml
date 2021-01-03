@@ -687,8 +687,8 @@
 		<type class="stendhal/animal" subclass="elephant_musth" tileid="animal.png:16"/>
 		<description>Oto słoń musth. Jest bardzo agresywny i nieprzewidywalny.</description>
 		<attributes>
-			<atk value="218"/>
-			<def value="219"/>
+			<atk value="248"/>
+			<def value="86"/>
 			<hp value="2250"/>
 			<speed value="0.8"/>
 			<size value="3,2"/>
