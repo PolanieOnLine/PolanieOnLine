@@ -31,7 +31,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import games.stendhal.client.GameScreen;
 import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.j2DClient;
@@ -44,6 +43,8 @@ import games.stendhal.client.sprite.SpriteStore;
  * @author KarajuSs
  */
 class AchievementLog {
+	private static final int TABLE_WIDTH = 720;
+	private static final int TABLE_HEIGHT = 500;
 	/** The enclosing window. */
 	private JDialog window;
 	private JComponent page;
@@ -100,13 +101,10 @@ class AchievementLog {
 	}
 
 	private JComponent getViewPort() {
-		Dimension screenSize = GameScreen.get().getSize();
-		final int maxPreferredWidth = screenSize.width - 80;
-
 		HeaderRenderer hr = new HeaderRenderer();
 		ScrolledViewport viewPort = new ScrolledViewport(getTable());
-		viewPort.getComponent().setPreferredSize(new Dimension(maxPreferredWidth,
-				Math.min(screenSize.height - 100, getTable().getPreferredSize().height
+		viewPort.getComponent().setPreferredSize(new Dimension(TABLE_WIDTH,
+				Math.min(TABLE_HEIGHT, getTable().getPreferredSize().height
 						+ hr.getPreferredSize().height + 4 * PAD)));
 		viewPort.getComponent().setBackground(getTable().getBackground());
 
