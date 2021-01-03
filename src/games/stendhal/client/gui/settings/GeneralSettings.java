@@ -79,11 +79,7 @@ class GeneralSettings {
 		clickModeToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-				String tmp = enabled ? "włączony" : "wyłączony";
-				String msg = "Tryb podwójnego klikania został " + tmp
-						+ ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				getState(e, "Tryb podwójnego klikania zostało ");
 			}
 		});
 
@@ -94,11 +90,7 @@ class GeneralSettings {
 		autoRaiseToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Automatyczne sprawdzanie zwłok zostało " + tmp
-						+ ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				getState(e, "Automatyczne sprawdzanie zwłok zostało ");
 			}
 		});
 
@@ -109,10 +101,7 @@ class GeneralSettings {
 		showHealingToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Wiadomości o leczeniu zostały " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				getState(e, "Wiadomości o leczeniu zostały ");
 			}
 		});
 
@@ -123,10 +112,7 @@ class GeneralSettings {
 		showPoisonToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Wiadomości o zatruciu zostały " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				getState(e, "Wiadomości o zatruciu zostały ");
 			}
 		});
 
@@ -137,10 +123,7 @@ class GeneralSettings {
 		doubleTapAutowalkToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
-				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Automatyczne chodzenie zostało " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				getState(e, "Automatyczne chodzenie zostało ");
 			}
 		});
 		
@@ -214,6 +197,13 @@ class GeneralSettings {
 	 */
 	JComponent getComponent() {
 		return page;
+	}
+
+	private void getState(ItemEvent e, String text) {
+		boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+		String tmp = enabled ? "włączone" : "wyłączone";
+		String msg = text + tmp + ".";
+		ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 	}
 
 	/**
