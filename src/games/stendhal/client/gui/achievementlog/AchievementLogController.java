@@ -18,7 +18,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import games.stendhal.client.entity.User;
-import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.common.grammar.Grammar;
 
 public class AchievementLogController {
@@ -91,7 +90,6 @@ public class AchievementLogController {
 	 */
 	private void showWindow() {
 		Window window = getAchievementLog().getWindow();
-		WindowUtils.restoreSize(window);
 		window.setVisible(true);
 	}
 }

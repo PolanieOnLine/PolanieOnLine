@@ -2,12 +2,17 @@ package games.stendhal.client.gui.achievementlog;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -15,21 +20,41 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import games.stendhal.client.GameScreen;
+import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
+import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
 class AchievementLog {
 	/** The enclosing window. */
 	private JDialog window;
+	private JComponent page;
 
 	public static final int PAD = 5;
 
 	AchievementLog(String name) {
 		window = new JDialog(j2DClient.get().getMainFrame(), name);
+		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		window.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, PAD));
+		window.setResizable(false);
 
+		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
+		window.add(page);
+
+		page.add(getViewPort());
+		page.add(getButtons());
+
+		WindowUtils.closeOnEscape(window);
+		WindowUtils.watchFontSize(window);
+		WindowUtils.trackLocation(window, "achievement_log", false);
+		window.pack();
+	}
+
+	private JComponent getTable() {
 		final JTable table = createTable();
 
 		table.setEnabled(false);
@@ -57,14 +82,36 @@ class AchievementLog {
 		adjustColumnWidths(table);
 		adjustRowHeights(table);
 
-		JScrollPane scrollPane = new JScrollPane(table);
+		return table;
+	}
 
-		WindowUtils.closeOnEscape(window);
-		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		window.add(scrollPane);
-		window.pack();
-		WindowUtils.watchFontSize(window);
-		WindowUtils.trackLocation(window, "achievement_log", true);
+	private JComponent getViewPort() {
+		Dimension screenSize = GameScreen.get().getSize();
+		final int maxPreferredWidth = screenSize.width - 80;
+
+		HeaderRenderer hr = new HeaderRenderer();
+		ScrolledViewport viewPort = new ScrolledViewport(getTable());
+		viewPort.getComponent().setPreferredSize(new Dimension(maxPreferredWidth,
+				Math.min(screenSize.height - 100, getTable().getPreferredSize().height
+						+ hr.getPreferredSize().height + 4 * PAD)));
+		viewPort.getComponent().setBackground(getTable().getBackground());
+
+		return viewPort.getComponent();
+	}
+
+	private JButton getButtons() {
+		JButton closeButton = new JButton("Zamknij");
+		closeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		closeButton.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD),
+				closeButton.getBorder()));
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				window.dispose();
+			}
+		});
+
+		return closeButton;
 	}
 
 	private JTable createTable() {
