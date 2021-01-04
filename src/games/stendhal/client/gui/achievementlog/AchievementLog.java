@@ -25,6 +25,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -61,6 +62,7 @@ class AchievementLog {
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
 		window.add(page);
 
+		page.add(getHeaderText());
 		page.add(getAchievementTable());
 		page.add(getButtons());
 
@@ -99,6 +101,21 @@ class AchievementLog {
 		adjustRowHeights(table);
 
 		return table;
+	}
+
+	private JComponent getHeaderText() {
+		final StringBuilder headerText = new StringBuilder();
+		List<String> achievementList = AchievementLogController.get().getList();
+		final int achievementCount = achievementList.size();
+
+		JLabel header = new JLabel();
+		header.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
+		headerText.append("Liczba aktywnych osiągnięć: " + achievementCount);
+
+		header.setText("<html><div width=" + (TABLE_WIDTH
+				- 10) + ">" + headerText.toString() + "</div></html>");
+
+		return header;
 	}
 
 	private JComponent getAchievementTable() {
@@ -152,7 +169,7 @@ class AchievementLog {
 		final String title = achievements[1];
 		final String desc = achievements[2];
 
-		final Boolean reached = achievements[3].equals("true");
+		boolean reached = achievements[3].equals("true");
 
 		rval[0] = "";
 		rval[1] = getAchievementImage(category, reached);
