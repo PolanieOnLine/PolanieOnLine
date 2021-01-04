@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -111,19 +112,23 @@ class AchievementLog {
 		return viewPort.getComponent();
 	}
 
-	private JButton getButtons() {
+	private JComponent getButtons() {
+		JComponent buttonBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		buttonBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		buttonBox.setBorder(BorderFactory.createEmptyBorder(SBoxLayout.COMMON_PADDING,
+				0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING));
+
 		JButton closeButton = new JButton("Zamknij");
-		closeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		closeButton.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD),
-				closeButton.getBorder()));
+		closeButton.setMnemonic(KeyEvent.VK_C);
 		closeButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				window.dispose();
 			}
 		});
+		buttonBox.add(closeButton);
 
-		return closeButton;
+		return buttonBox;
 	}
 
 	private JTable createTable() {
