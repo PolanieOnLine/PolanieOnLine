@@ -61,7 +61,7 @@ class AchievementLog {
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
 		window.add(page);
 
-		page.add(getViewPort());
+		page.add(getAchievementTable());
 		page.add(getButtons());
 
 		WindowUtils.closeOnEscape(window);
@@ -101,7 +101,7 @@ class AchievementLog {
 		return table;
 	}
 
-	private JComponent getViewPort() {
+	private JComponent getAchievementTable() {
 		HeaderRenderer hr = new HeaderRenderer();
 		ScrolledViewport viewPort = new ScrolledViewport(getTable());
 		viewPort.getComponent().setPreferredSize(new Dimension(TABLE_WIDTH,
