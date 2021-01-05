@@ -32,7 +32,7 @@ public class AchievementLogController {
 	 */
 	private AchievementLog achievementLog;
 
-	private List<String> alist;
+	private List<String> aList;
 
 	/**
 	 * Get the book controller instance.
@@ -53,14 +53,14 @@ public class AchievementLogController {
 	}
 
 	private List<String> setList(List<String> list) {
-		if (alist == null) {
-			alist = list;
+		if (aList == null) {
+			aList = list;
 		}
-		return alist;
+		return aList;
 	}
 
 	public List<String> getList() {
-		return alist;
+		return aList;
 	}
 
 	public void showAchievementList(final List<String> list) {
