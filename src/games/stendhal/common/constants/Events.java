@@ -63,5 +63,5 @@ public final class Events {
 
 	public static final String OUTFIT_LIST = "show_outfit_list";
 
-	public static final String ACHIEVEMENTS_LOG = Actions.ACHIEVEMENTSLOG;
+	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
 }

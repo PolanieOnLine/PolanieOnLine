@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                      (C) Copyright 2020 - Stendhal                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,32 +9,27 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.client.actions;
+package games.stendhal.client.events;
 
-import games.stendhal.client.ClientSingletonRepository;
-import games.stendhal.common.constants.Actions;
-import marauroa.common.game.RPAction;
+import java.util.Arrays;
+
+import org.apache.log4j.Logger;
+
+import games.stendhal.client.entity.RPEntity;
+import games.stendhal.client.gui.achievementlog.AchievementLogController;
 
 /**
  * @author KarajuSs
  */
-public class AchievementsLogAction implements SlashAction {
-	@Override
-	public boolean execute(final String[] params, final String remainder) {
-		final RPAction action = new RPAction();
-		action.put("type", Actions.ACHIEVEMENTSLOG);
-		ClientSingletonRepository.getClientFramework().send(action);
-
-		return true;
-	}
+public class AchievementLogEvent extends Event<RPEntity> {
+	private static final Logger logger = Logger.getLogger(AchievementLogEvent.class);
 
 	@Override
-	public int getMaximumParameters() {
-		return 0;
-	}
-
-	@Override
-	public int getMinimumParameters() {
-		return 0;
+	public void execute() {
+		try {
+			AchievementLogController.get().showAchievementList(Arrays.asList(event.get("achievements").split(";")));
+		} catch (RuntimeException e) {
+			logger.error("Failed to process progress status. Event: " + event, e);
+		}
 	}
 }

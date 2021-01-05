@@ -202,7 +202,7 @@ public final class Actions {
 
 	public final static String BESTIARY = "bestiary";
 
-	public static final String ACHIEVEMENTSLOG = "achievements_log";
+	public static final String ACHIEVEMENTLOG = "achievementlog";
 
 	private Actions() {
 		// hide constructor

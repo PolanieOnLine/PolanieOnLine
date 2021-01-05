@@ -31,9 +31,9 @@ import marauroa.common.game.SyntaxException;
 /**
  * @author KarajuSs
  */
-public class AchievementsLogEvent extends RPEvent {
+public class AchievementLogEvent extends RPEvent {
 	/** The logger instance. */
-	private static final Logger logger = Logger.getLogger(AchievementsLogEvent.class);
+	private static final Logger logger = Logger.getLogger(AchievementLogEvent.class);
 
 	private final List<Achievement> achievementsArray = new ArrayList<>();;
 
@@ -42,15 +42,15 @@ public class AchievementsLogEvent extends RPEvent {
 	 */
 	public static void generateRPClass() {
 		try {
-			final RPClass rpclass = new RPClass(Events.ACHIEVEMENTS_LOG);
+			final RPClass rpclass = new RPClass(Events.ACHIEVEMENT_LOG);
 			rpclass.addAttribute("achievements", Type.VERY_LONG_STRING, Definition.PRIVATE);
 		} catch (final SyntaxException e) {
 			logger.error("cannot generateRPClass", e);
 		}
 	}
 
-	public AchievementsLogEvent(final Player player) {
-		super(Events.ACHIEVEMENTS_LOG);
+	public AchievementLogEvent(final Player player) {
+		super(Events.ACHIEVEMENT_LOG);
 
 		AchievementNotifier achievements = AchievementNotifier.get();
 		for (final Achievement a: achievements.getAchievements()) {

@@ -93,7 +93,7 @@ public class CommandCenter {
 
 	private static void registerActions() {
 		AdministrationAction.registerActions();
-		AchievementsLogAction.register();
+		AchievementLogAction.register();
 		AttackAction.register();
 		AwayAction.register();
 		BanAction.register();

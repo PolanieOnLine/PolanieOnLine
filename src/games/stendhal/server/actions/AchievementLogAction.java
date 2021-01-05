@@ -13,21 +13,21 @@ package games.stendhal.server.actions;
 
 import games.stendhal.common.constants.Actions;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.events.AchievementsLogEvent;
+import games.stendhal.server.events.AchievementLogEvent;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 
 /**
  * @author KarajuSs
  */
-public class AchievementsLogAction implements ActionListener {
+public class AchievementLogAction implements ActionListener {
 	public static void register() {
-		CommandCenter.register(Actions.ACHIEVEMENTSLOG, new AchievementsLogAction());
+		CommandCenter.register(Actions.ACHIEVEMENTLOG, new AchievementLogAction());
 	}
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-		final RPEvent event = new AchievementsLogEvent(player);
+		final RPEvent event = new AchievementLogEvent(player);
 		player.addEvent(event);
 		player.notifyWorldAboutChanges();
 	}

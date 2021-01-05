@@ -80,8 +80,8 @@ class EventFactory {
 			event = new ReachedAchievementEvent();
 		} else if (name.equals(Events.BESTIARY)) {
 			event = new BestiaryEvent();
-		} else if (name.equals(Events.ACHIEVEMENTS_LOG)) {
-			event = new AchievementsLogEvent();
+		} else if (name.equals(Events.ACHIEVEMENT_LOG)) {
+			event = new AchievementLogEvent();
 		}
 
 		if (event != null) {

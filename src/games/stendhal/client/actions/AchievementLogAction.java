@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2020 - Stendhal                      *
+ *                     Copyright © 2020 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,27 +9,32 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.client.events;
+package games.stendhal.client.actions;
 
-import java.util.Arrays;
-
-import org.apache.log4j.Logger;
-
-import games.stendhal.client.entity.RPEntity;
-import games.stendhal.client.gui.achievementlog.AchievementLogController;
+import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.common.constants.Actions;
+import marauroa.common.game.RPAction;
 
 /**
  * @author KarajuSs
  */
-public class AchievementsLogEvent extends Event<RPEntity> {
-	private static final Logger logger = Logger.getLogger(AchievementsLogEvent.class);
+public class AchievementLogAction implements SlashAction {
+	@Override
+	public boolean execute(final String[] params, final String remainder) {
+		final RPAction action = new RPAction();
+		action.put("type", Actions.ACHIEVEMENTLOG);
+		ClientSingletonRepository.getClientFramework().send(action);
+
+		return true;
+	}
 
 	@Override
-	public void execute() {
-		try {
-			AchievementLogController.get().showAchievementList(Arrays.asList(event.get("achievements").split(";")));
-		} catch (RuntimeException e) {
-			logger.error("Failed to process progress status. Event: " + event, e);
-		}
+	public int getMaximumParameters() {
+		return 0;
+	}
+
+	@Override
+	public int getMinimumParameters() {
+		return 0;
 	}
 }
