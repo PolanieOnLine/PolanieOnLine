@@ -1,5 +1,6 @@
 *.jar
 *.zip
+*.exe
 AUTHORS
 BUGS
 COPYING

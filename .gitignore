@@ -50,5 +50,6 @@ build_server_xmlconf
 /map.map
 /buildtools/launch4j/polanieonline-starter.exe
 /src/games/stendhal/client/update/*.csr
-
-AntDist.cmd
+*.cmd
+updatesigner.bat
+update.properties
