@@ -1,5 +1,10 @@
 Changelog
 ---------
+*************************************************************************
+*  UWAGA! WERSJA TA POSIADA BARDZO WAŻNE PLIKI ZWIĄZANE Z AUTOMATYCZNĄ  *
+*     ATKUALIZACJĄ KLIENTA! ZALECAMY ICH POBRANIE I ZAINSTALOWANIE!     *
+*    BYĆ MOŻE W NASTĘPNEJ WERSJI ZOSTANIE TA FUNKCJA W PEŁNI DODANA!    *
+*************************************************************************
 1.16
 *klient*
 - Dodano na prośbę graczy starsze ciała
