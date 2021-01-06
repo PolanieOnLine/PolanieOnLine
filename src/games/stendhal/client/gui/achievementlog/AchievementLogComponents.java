@@ -18,8 +18,6 @@ import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRend
 import games.stendhal.client.gui.layout.SBoxLayout;
 
 public class AchievementLogComponents {
-	private AchievementLog achievementLog;
-
 	JComponent getHeaderText(int width, int pad) {
 		final StringBuilder headerText = new StringBuilder();
 		List<String> achievementList = AchievementLogController.get().getList();
