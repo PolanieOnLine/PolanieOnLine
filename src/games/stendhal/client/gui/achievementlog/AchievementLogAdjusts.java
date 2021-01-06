@@ -6,7 +6,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-public class AchievementLogTableAdjusts {
+public class AchievementLogAdjusts {
 	void columnWidths(JTable table) {
 		TableColumnModel model = table.getColumnModel();
 		for (int column = 0; column < table.getColumnCount(); column++) {

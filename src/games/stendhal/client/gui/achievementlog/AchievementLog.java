@@ -88,7 +88,7 @@ class AchievementLog {
 			c.setHeaderRenderer(hr);
 		}
 
-		AchievementLogTableAdjusts adjust = new AchievementLogTableAdjusts();
+		AchievementLogAdjusts adjust = new AchievementLogAdjusts();
 		adjust.columnWidths(table);
 		adjust.rowHeights(table);
 
