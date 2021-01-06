@@ -12,28 +12,18 @@
 package games.stendhal.client.gui.achievementlog;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
-import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
@@ -62,9 +52,10 @@ class AchievementLog {
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
 		window.add(page);
 
-		page.add(getHeaderText());
-		page.add(getAchievementTable());
-		page.add(getButtons());
+		AchievementLogComponents component = new AchievementLogComponents();
+		page.add(component.getHeaderText(TABLE_WIDTH, PAD));
+		page.add(component.getViewTable(getTable(), TABLE_WIDTH, TABLE_HEIGHT, PAD));
+		page.add(component.getButtons(window));
 
 		WindowUtils.closeOnEscape(window);
 		WindowUtils.watchFontSize(window);
@@ -97,55 +88,11 @@ class AchievementLog {
 			c.setHeaderRenderer(hr);
 		}
 
-		adjustColumnWidths(table);
-		adjustRowHeights(table);
+		AchievementLogTableAdjusts adjust = new AchievementLogTableAdjusts();
+		adjust.columnWidths(table);
+		adjust.rowHeights(table);
 
 		return table;
-	}
-
-	private JComponent getHeaderText() {
-		final StringBuilder headerText = new StringBuilder();
-		List<String> achievementList = AchievementLogController.get().getList();
-		final int achievementCount = achievementList.size();
-
-		JLabel header = new JLabel();
-		header.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
-		headerText.append("Liczba aktywnych osiągnięć: " + achievementCount);
-
-		header.setText("<html><div width=" + (TABLE_WIDTH
-				- 10) + ">" + headerText.toString() + "</div></html>");
-
-		return header;
-	}
-
-	private JComponent getAchievementTable() {
-		HeaderRenderer hr = new HeaderRenderer();
-		ScrolledViewport viewPort = new ScrolledViewport(getTable());
-		viewPort.getComponent().setPreferredSize(new Dimension(TABLE_WIDTH,
-				Math.min(TABLE_HEIGHT, getTable().getPreferredSize().height
-						+ hr.getPreferredSize().height + 4 * PAD)));
-		viewPort.getComponent().setBackground(getTable().getBackground());
-
-		return viewPort.getComponent();
-	}
-
-	private JComponent getButtons() {
-		JComponent buttonBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		buttonBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		buttonBox.setBorder(BorderFactory.createEmptyBorder(SBoxLayout.COMMON_PADDING,
-				0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING));
-
-		JButton closeButton = new JButton("Zamknij");
-		closeButton.setMnemonic(KeyEvent.VK_C);
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				window.dispose();
-			}
-		});
-		buttonBox.add(closeButton);
-
-		return buttonBox;
 	}
 
 	private JTable createTable() {
@@ -180,32 +127,6 @@ class AchievementLog {
 		}
 
 		return rval;
-	}
-
-	private void adjustColumnWidths(JTable table) {
-		TableColumnModel model = table.getColumnModel();
-		for (int column = 0; column < table.getColumnCount(); column++) {
-			TableColumn tc = model.getColumn(column);
-			int width = tc.getWidth();
-			for (int row = 0; row < table.getRowCount(); row++) {
-				Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
-				width = Math.max(width, comp.getPreferredSize().width);
-			}
-
-			tc.setPreferredWidth(width);
-		}
-	}
-	private void adjustRowHeights(JTable table) {
-		for (int row = 0; row < table.getRowCount(); row++) {
-			int rowHeight = table.getRowHeight();
-
-			for (int column = 0; column < table.getColumnCount(); column++) {
-				Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
-				rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
-			}
-
-			table.setRowHeight(row, rowHeight);
-		}
 	}
 
 	private String getAchievementDesc(String title, String desc) {
