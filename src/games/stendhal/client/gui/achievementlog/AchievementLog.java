@@ -137,7 +137,7 @@ class AchievementLog {
 	}
 
 	private Sprite getAchievementImage(String category, boolean reached) {
-		String imagePath = "/data/sprites/achievements/" + category + ".png";
+		String imagePath = "/data/sprites/achievements/" + category.toLowerCase() + ".png";
 
 		Sprite sprite;
 		if (reached) {
