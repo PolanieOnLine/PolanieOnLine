@@ -331,4 +331,27 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="sztylet mroku">
+		<type class="dagger" subclass="dark_dagger" tileid="-1"/>
+		<description>Oto sztylet mroku. Jest zaprojektowany tak, aby zadawać nim szybkie ciosy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<attributes>
+			<atk value="8"/>
+			<rate value="2"/>
+			<min_level value="60"/>
+			<max_improves value="3"/>
+		</attributes>
+		<weight value="0.2"/>
+		<value value="12800"/>
+		<damage type="dark"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
 </items>
