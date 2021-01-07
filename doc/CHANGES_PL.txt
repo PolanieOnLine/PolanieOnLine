@@ -1,5 +1,11 @@
 Changelog
 ---------
+1.16.1
+*naprawiono błędy*
+- Naprawiono wyświetlanie się ikon osiągnięć w dzienniku
+- Naprawiono wyświetlanie się obrazka przedmiotu "sztylet mroku"
+
+
 *************************************************************************
 *  UWAGA! WERSJA TA POSIADA BARDZO WAŻNE PLIKI ZWIĄZANE Z AUTOMATYCZNĄ  *
 *     AKTUALIZACJĄ KLIENTA! ZALECAMY ICH POBRANIE I ZAINSTALOWANIE!     *
