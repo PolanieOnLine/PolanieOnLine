@@ -1,4 +1,4 @@
-package games.pol.server.maps.warszawa.blacksmith;
+package games.stendhal.server.entity.npc.behaviour.adder;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,16 +34,16 @@ public class ImproverAdder {
 	private static final List<String> improvePhrases = Arrays.asList("improve", "upgrade", "ulepsz", "udoskonalić");
 	private static final List<String> checkPhrases = Arrays.asList("check", "see", "how much", "sprawdź", "zobacz", "ile");
 
-	private String currentImproveItem = null;
-	private Integer currentToImproveCount = null;
-	private Integer currentImproveFee = null;
+	private String currentUpgradingItem = null;
+	private Integer currentToUpgradeCount = null;
+	private Integer currentUpgradeFee = null;
 
 	private boolean foundMoreThanOne = false;
 
 	private void reset() {
-		currentImproveItem = null;
-		currentToImproveCount = null;
-		currentImproveFee = null;
+		currentUpgradingItem = null;
+		currentToUpgradeCount = null;
+		currentUpgradeFee = null;
 
 		foundMoreThanOne = false;
 	}
@@ -149,11 +149,11 @@ public class ImproverAdder {
 	}
 
 	private void setImproveItem(final String itemName) {
-		currentImproveItem = itemName;
+		currentUpgradingItem = itemName;
 	}
 
 	private void countImproveItems(final Player player) {
-		List<Item> equipped = player.getAllEquipped(currentImproveItem);
+		List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
 
 		int count = 0;
 		for (Item i : equipped) {
@@ -161,18 +161,18 @@ public class ImproverAdder {
 				count++;
 			}
 		}
-		currentToImproveCount = count;
+		currentToUpgradeCount = count;
 	}
 	
 	private boolean hasItemToImprove() {
-		if (currentToImproveCount > 0) {
+		if (currentToUpgradeCount > 0) {
 			return true;
 		}
 		return false;
 	}
 
 	private void setImprove(final Player player, final ImproverNPC improver) {
-		List<Item> equipped = player.getAllEquipped(currentImproveItem);
+		List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
 		if (!equipped.isEmpty()) {
 			if(equipped.size() > 1) {
 				foundMoreThanOne = true;
@@ -201,15 +201,15 @@ public class ImproverAdder {
 
 					int atk = toImprove.getAttack();
 					int def = toImprove.getDefense();
-					currentImproveFee = (improves + 1) * ((atk + def) * 2500);
+					currentUpgradeFee = (improves + 1) * ((atk + def) * 2500);
 
 					if (foundMoreThanOne) {
-						improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
+						improver.say("Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?");
 					} else {
-						improver.say("Wzmocnię #'"+currentImproveItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentImproveFee)+"' money. Chcesz, abym udoskonalił to?");
+						improver.say("Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?");
 					}
 				} else {
-					improver.say("Przedmiot #'"+currentImproveItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
+					improver.say("Przedmiot #'"+currentUpgradingItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
 					improver.setCurrentState(ConversationStates.ATTENDING);
 					return;
 				}
@@ -243,8 +243,8 @@ public class ImproverAdder {
 				setImproveItem(request);
 				setImprove(player, improver);
 
-				if (currentToImproveCount == null) {
-					improver.say("Nie jestem w stanie ulepszyć #'" + currentImproveItem + "'.");
+				if (currentToUpgradeCount == null) {
+					improver.say("Nie jestem w stanie ulepszyć #'" + currentUpgradingItem + "'.");
 					improver.setCurrentState(ConversationStates.ATTENDING);
 					return;
 				}
@@ -253,9 +253,9 @@ public class ImproverAdder {
 	}
 
 	private void checkImproves(final ImproverNPC improver) {
-		Item item = SingletonRepository.getEntityManager().getItem(currentImproveItem);
+		Item item = SingletonRepository.getEntityManager().getItem(currentUpgradingItem);
 		if (item == null) {
-			improver.say("Pierwsze słyszę o takim wyposażeniu #'" + currentImproveItem + "'. Poproś o jakiś inny przedmiot do sprawdzenia.");
+			improver.say("Pierwsze słyszę o takim wyposażeniu #'" + currentUpgradingItem + "'. Poproś o jakiś inny przedmiot do sprawdzenia.");
 			return;
 		}
 
@@ -268,7 +268,7 @@ public class ImproverAdder {
 
 			improver.say("Przedmiot ten maksymalnie mogę ulepszyć " + improves + ". Jeśli chciałbyś go udoskonalić to powiedz mi #ulepsz.");
 		} else {
-			improver.say("Wyposażenia takiego jak #'" + currentImproveItem + "' nie jestem w stanie ulepszyć.");
+			improver.say("Wyposażenia takiego jak #'" + currentUpgradingItem + "' nie jestem w stanie ulepszyć.");
 		}
 	}
 
@@ -300,10 +300,10 @@ public class ImproverAdder {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser repairer) {
-				player.drop("money", currentImproveFee);
+				player.drop("money", currentUpgradeFee);
 
-				List<Item> equipped = player.getAllEquipped(currentImproveItem);
-				Item toImprove = player.getFirstEquipped(currentImproveItem);
+				List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
+				Item toImprove = player.getFirstEquipped(currentUpgradingItem);
 
 				for (Item i : equipped) {
 					if (toImprove.isMaxImproved()
@@ -318,7 +318,7 @@ public class ImproverAdder {
 					toImprove.upgradeItem();
 				}
 
-				repairer.say("Zrobione! Twój przedmiot #'" + currentImproveItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
+				repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
 				repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 			}
 		};
@@ -328,7 +328,7 @@ public class ImproverAdder {
 		return new ChatCondition() {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, final Entity improver) {
-				if (currentImproveFee == null) {
+				if (currentUpgradeFee == null) {
 					logger.error("Cannot create transaction, improve fee not set");
 					return true;
 				}
@@ -342,7 +342,7 @@ public class ImproverAdder {
 		return new ChatCondition() {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, final Entity improver) {
-				return player.isEquipped("money", currentImproveFee);
+				return player.isEquipped("money", currentUpgradeFee);
 			}
 		};
 	}

@@ -13,10 +13,11 @@ package games.pol.server.maps.warszawa.blacksmith;
 
 import java.util.Map;
 
-import games.pol.server.maps.warszawa.blacksmith.ImproverAdder.ImproverNPC;
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.behaviour.adder.ImproverAdder;
+import games.stendhal.server.entity.npc.behaviour.adder.ImproverAdder.ImproverNPC;
 
 /**
  * @author KarajuSs
