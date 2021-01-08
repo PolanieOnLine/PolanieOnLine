@@ -3,6 +3,7 @@ Changelog
 1.17
 *świat*
 - Zmieniono imię NPC od ulepszeń "Kowal Inpraf" na "Kowal Tworzymir"
+- Poprawniono opis przedmiotu drewnianej tarczy
 
 *kod*
 - Usprawniono dodawanie nowych przedmiotów możliwych do ulepszenia
