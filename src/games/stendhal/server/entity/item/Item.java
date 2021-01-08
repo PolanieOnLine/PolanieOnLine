@@ -1103,7 +1103,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	private String getImproveDescription() {
 		final String improve = String.valueOf(getImprove());
 
-		return "Ulepszenie +" + improve;
+		return "Ulepszenie +" + improve + ".";
 	}
 
 	/**
