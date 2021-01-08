@@ -26,7 +26,7 @@ import javax.swing.table.TableColumn;
 
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.j2DClient;
-import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
+import games.stendhal.client.gui.achievementlog.AchievementLogRenderers.HeaderRenderer;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
@@ -40,6 +40,8 @@ class AchievementLog {
 	/** The enclosing window. */
 	private JDialog window;
 	private JComponent page;
+
+	private AchievementLogRenderers renderer = AchievementLogRenderers.get();
 
 	public static final int PAD = 5;
 
@@ -76,10 +78,10 @@ class AchievementLog {
 		col.setCellRenderer(r);
 
 		col = table.getColumnModel().getColumn(1);
-		col.setCellRenderer(new SpriteCellRenderer());
+		col.setCellRenderer(renderer.new SpriteCellRenderer());
 
 		col = table.getColumnModel().getColumn(2);
-		col.setCellRenderer(new DescriptionCellRenderer());
+		col.setCellRenderer(renderer.new DescriptionCellRenderer());
 
 		HeaderRenderer hr = new HeaderRenderer();
 		Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
