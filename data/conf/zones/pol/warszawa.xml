@@ -247,7 +247,7 @@
 	
 	<!-- Blacksmith -->
 	<zone name="int_warszawa_blacksmith" file="interiors/warszawa/blacksmith.tmx">
-		<configurator class-name="games.pol.server.maps.warszawa.blacksmith.Improver"/>
+		<configurator class-name="games.pol.server.maps.warszawa.blacksmith.BlacksmithNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">

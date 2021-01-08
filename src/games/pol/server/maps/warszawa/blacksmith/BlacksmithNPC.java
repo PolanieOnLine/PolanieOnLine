@@ -22,8 +22,8 @@ import games.stendhal.server.entity.npc.behaviour.adder.ImproverAdder.ImproverNP
 /**
  * @author KarajuSs
  */
-public class Improver implements ZoneConfigurator {
-	private static final String npcName = "Kowal Inpraf";
+public class BlacksmithNPC implements ZoneConfigurator {
+	private static final String npcName = "Kowal Tworzymir";
 
 	private StendhalRPZone zone;
 
@@ -55,7 +55,7 @@ public class Improver implements ZoneConfigurator {
 			}
 		};
 
-		improver.setDescription("Oto Kowal Inpraf. Potrafi udoskonalać różne wyposażenie.");
+		improver.setDescription("Oto " + npcName + ". Potrafi udoskonalać różne wyposażenie.");
 		improver.setEntityClass("blacksmithnpc");
 		improver.setIdleDirection(Direction.DOWN);
 
