@@ -1040,7 +1040,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return
 	 * 		<code>true</code> if has "improve".
 	 */
-	boolean hasImprove() {
+	private boolean hasImprove() {
 		return has("improve");
 	}
 
@@ -1050,7 +1050,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return
 	 * 		<code>true</code> if has "max_improves".
 	 */
-	boolean hasMaxImproves() {
+	private boolean hasMaxImproves() {
 		return has("max_improves");
 	}
 
