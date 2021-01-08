@@ -1024,8 +1024,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Checks the improvable state of item.
-	 * 
+	 * Checks the item if can be upgraded.
+	 *
 	 * @return
 	 * 		<code>true</code> if the item has a possibility to be upgraded.
 	 */
@@ -1033,19 +1033,44 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		return (hasMaxImproves() && getMaxImproves() > 0)
 				&& (getMaxImproves() > getImprove());
 	}
+
+	/**
+	 * Checks the item if has "improve" attribute.
+	 *
+	 * @return
+	 * 		<code>true</code> if has "improve".
+	 */
 	boolean hasImprove() {
 		return has("improve");
 	}
+
+	/**
+	 * Checks the item if has "max_improves" attribute.
+	 *
+	 * @return
+	 * 		<code>true</code> if has "max_improves".
+	 */
 	boolean hasMaxImproves() {
 		return has("max_improves");
 	}
 
+	/**
+	 * Gets the "improve" value
+	 *
+	 * @return improve
+	 */
 	public int getImprove() {
 		if(hasImprove()) {
 			return getInt("improve");
 		}
 		return 0;
 	}
+
+	/**
+	 * Gets the "max_improves" value
+	 *
+	 * @return max_improves
+	 */
 	public int getMaxImproves() {
 		if(hasMaxImproves()) {
 			return getInt("max_improves");
@@ -1054,8 +1079,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Checks if the item has been max improved.
-	 * 
+	 * Checks the item if has been max improved.
+	 *
 	 * @return
 	 * 		<code>true</code> if item cannot be improve any more.
 	 */
@@ -1071,7 +1096,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * @return description
+	 * Gets description about how many times the item has been upgraded.
+	 *
+	 * @return improve description
 	 */
 	private String getImproveDescription() {
 		final String improve = String.valueOf(getImprove());
@@ -1080,7 +1107,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Put to "improve" new value from improveUp()
+	 * Increase "improve" value of the item.
 	 */
 	public void upgradeItem() {
 		put("improve", improveUp());
