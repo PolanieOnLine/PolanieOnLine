@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.17
+*świat*
+- Zmieniono imię NPC od ulepszeń "Kowal Inpraf" na "Kowal Tworzymir"
+
 *kod*
 - Usprawniono dodawanie nowych przedmiotów możliwych do ulepszenia
 
