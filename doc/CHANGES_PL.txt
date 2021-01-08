@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.17
+*kod*
+- Usprawniono dodawanie nowych przedmiotów możliwych do ulepszenia
+
+
 1.16.1
 *naprawiono błędy*
 - Naprawiono wyświetlanie się ikon osiągnięć w dzienniku
