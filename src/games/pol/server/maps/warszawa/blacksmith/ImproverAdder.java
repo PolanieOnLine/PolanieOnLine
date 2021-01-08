@@ -13,7 +13,6 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.item.ImprovableItem;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -158,7 +157,7 @@ public class ImproverAdder {
 
 		int count = 0;
 		for (Item i : equipped) {
-			if (!((ImprovableItem) i).isMaxImproved()) {
+			if (!i.isMaxImproved()) {
 				count++;
 			}
 		}
@@ -181,7 +180,7 @@ public class ImproverAdder {
 
 			Item toImprove = equipped.iterator().next();
 			for (Item i : equipped) {
-				if (i.getImproves() > toImprove.getImproves()) {
+				if (i.getImprove() > toImprove.getImprove()) {
 						toImprove = i;
 				}
 			}
@@ -192,13 +191,13 @@ public class ImproverAdder {
 				if (hasItemToImprove()) {
 					for (Item i : equipped) {
 						if (toImprove.isMaxImproved()
-								&& (i.getImproves() < toImprove.getImproves())) {
+								&& (i.getImprove() < toImprove.getImprove())) {
 							toImprove = i;
-						} else if (i.getImproves() > toImprove.getImproves()) {
+						} else if (i.getImprove() > toImprove.getImprove()) {
 							toImprove = i;
 						}
 					}
-					int improves = toImprove.getImproves();
+					int improves = toImprove.getImprove();
 
 					int atk = toImprove.getAttack();
 					int def = toImprove.getDefense();
@@ -308,15 +307,15 @@ public class ImproverAdder {
 
 				for (Item i : equipped) {
 					if (toImprove.isMaxImproved()
-							&& (i.getImproves() < toImprove.getImproves())) {
+							&& (i.getImprove() < toImprove.getImprove())) {
 						toImprove = i;
-					} else if (i.getImproves() > toImprove.getImproves()) {
+					} else if (i.getImprove() > toImprove.getImprove()) {
 						toImprove = i;
 					}
 				}
 
 				if (hasItemToImprove()) {
-					((ImprovableItem) toImprove).upgrade();
+					toImprove.upgradeItem();
 				}
 
 				repairer.say("Zrobione! Twój przedmiot #'" + currentImproveItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");

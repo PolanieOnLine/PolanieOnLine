@@ -5,7 +5,7 @@
 	<item name="zbroja barbarzyńcy">
 		<type class="armor" subclass="barbarian_armor" tileid="-1"/>
 		<description>Oto zbroja barbarzyńcy. Jest brudna i cuchnie, ale obroni cię przed niejednym ciosem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="15"/>
 			<min_level value="35"/>
@@ -45,7 +45,7 @@
 	<item name="czarna zbroja">
 		<type class="armor" subclass="black_armor" tileid="-1"/>
 		<description>Oto czarna zbroja. Czy jej posiadanie wpędza cię w zły humor?</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="28"/>
 			<min_use value="150" condition="server.secondworld"/>
@@ -124,7 +124,7 @@
 	<item name="koszula">
 		<type class="armor" subclass="dress" tileid="-1"/>
 		<description>Oto koszula. Jej lniane włókna pomagają tamować krew rannych wojowników.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
 			<max_improves value="1"/>
@@ -162,7 +162,7 @@
 	<item name="zbroja elficka">
 		<type class="armor" subclass="elvish_armor" tileid="-1"/>
 		<description>Oto zbroja elficka. Zrobiona ze splecionych liści jest lekka ale zadziwiająco wytrzymała.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="14"/>
 			<min_level value="30"/>
@@ -184,7 +184,7 @@
 	<item name="kolczuga wzmocniona">
 		<type class="armor" subclass="enhanced_chainmail" tileid="-1"/>
 		<description>Oto kolczuga wzmocniona. Ogniwa są ciasne więc mało co się przez nie przebije.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
 			<max_improves value="2"/>
@@ -222,7 +222,7 @@
 	<item name="złota kolczuga">
 		<type class="armor" subclass="golden_chainmail" tileid="-1"/>
 		<description>Oto złota kolczuga. Wykonano ją z ogniw drogocennego metalu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="9"/>
 			<min_level value="5"/>
@@ -325,7 +325,7 @@
 	<item name="skórzana zbroja">
 		<type class="armor" subclass="leather_armor" tileid="-1"/>
 		<description>Oto skórzana zbroja. Zapewnia tylko minimalną ochronę.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="3"/>
 			<undroppableondeath value="1" />
@@ -382,7 +382,7 @@
 	<item name="magiczna zbroja płytowa">
 		<type class="armor" subclass="magic_plate_armor" tileid="-1"/>
 		<description>Oto magiczna zbroja płytowa. Ktoś rzucił na nią czar i ma niezwykłe właściwości.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="24"/>
 			<min_use value="75" condition="server.secondworld"/>
@@ -426,7 +426,7 @@
 	<item name="zbroja z mithrilu">
 		<type class="armor" subclass="mithril_armor" tileid="-1"/>
 		<description>Oto zbroja z mithrilu. To prawdziwa ręcznie robiona zbroja, poprostu niewiarygodna.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="30"/>
 			<min_level value="300"/>
@@ -586,7 +586,7 @@
 	<item name="kamienna zbroja">
 		<type class="armor" subclass="stone_armor" tileid="-1"/>
 		<description>Oto kamienna zbroja. Miecze pękają gdy tylko w nią uderzą.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="18"/>
 			<min_level value="60"/>
@@ -721,7 +721,7 @@
 	<item name="zbroja światła">
 		<type class="armor" subclass="light_armor" tileid="-1"/>
 		<description>Oto zbroja światła. Jest lekka więc nie utrudnia walki.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="23"/>
 			<min_level value="135"/>

@@ -90,7 +90,7 @@
 	<item name="złota klinga">
 		<type class="dagger" subclass="golden_blade" tileid="-1"/>
 		<description>Oto złota klinga. Śmierć zadana przez nią jest szybka i bezbolesna.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="5"/>
 			<rate value="1"/>
@@ -223,7 +223,7 @@
 	<item name="sztylet dusz">
 		<type class="dagger" subclass="soul_dagger" tileid="-1"/>
 		<description>Oto sztylet dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="7"/>
 			<rate value="2"/>
@@ -290,7 +290,7 @@
 	<item name="nóż z kości">
 		<type class="dagger" subclass="boneknife" tileid="-1"/>
 		<description/>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="3"/>
 			<rate value="3"/>
@@ -311,7 +311,7 @@
 	<item name="sztylecik z mithrilu">
 		<type class="dagger" subclass="mithril_dagger" tileid="-1"/>
 		<description>Oto sztylecik z mithrilu. Jeden z najszybszych broni wykonanych przez krasnoludów... Wykorzystuje światło do uzdrawiania właściciela broni.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
 			<rate value="1"/>
@@ -335,7 +335,7 @@
 	<item name="sztylet mroku">
 		<type class="dagger" subclass="dark_dagger" tileid="-1"/>
 		<description>Oto sztylet mroku. Jest zaprojektowany tak, aby zadawać nim szybkie ciosy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
 			<rate value="2"/>

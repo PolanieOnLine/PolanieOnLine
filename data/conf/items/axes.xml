@@ -68,7 +68,7 @@
 	<item name="czarna halabarda">
 		<type class="axe" subclass="black_halberd" tileid="-1"/>
 		<description>Oto czarna halabarda. Jest ogromnie ciężka, ale mimo powolnych ruchów potrafisz zadawać nią mocne ciosy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="57"/>
 			<def value="5"/>
@@ -137,7 +137,7 @@
 	<item name="topór Durina">
 		<type class="axe" subclass="durin_axe" tileid="-1"/>
 		<description>Oto topór Durina, jest to wielka nagroda od krasnali.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="47"/>
 			<def value="3"/>
@@ -291,7 +291,7 @@
 	<item name="złota kosa">
 		<type class="axe" subclass="golden_scythe" tileid="-1"/>
 		<description>Oto złota kosa. Może na niej trochę zarobisz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="47"/>
 			<rate value="5"/>
@@ -314,7 +314,7 @@
 	<item name="kosa z mithrilu">
 		<type class="axe" subclass="mithril_scythe" tileid="-1"/>
 		<description>Oto rzadka kosa wykonana z mithrilu. Mieni się jasnym blaskiem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="54"/>
 			<rate value="4"/>
@@ -526,7 +526,7 @@
 	<item name="złota ciupaga z trzema wąsami">
 		<type class="axe" subclass="zlota_ciupaga3" tileid="-1"/>
 		<description>Oto prawdziwa złota góralska ciupaga z trzema wąsami! Trzy wąsy na jednej złotej ciupadze to rzadkość! Tą broń otacza jakaś magiczna aura.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="24"/>
 			<def value="4"/>

@@ -294,6 +294,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getAttack() {
 		if (has("atk") && getDeterioration() <= MAX_DETERIORATION) {
+			if (hasMaxImproves()) {
+				return getInt("atk") + getImprove();
+			}
 			return getInt("atk");
 		}
 
@@ -308,6 +311,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getDefense() {
 		if (has("def") && getDeterioration() <= MAX_DETERIORATION) {
+			if (hasMaxImproves()) {
+				return getInt("def") + getImprove();
+			}
 			return getInt("def");
 		}
 
@@ -323,6 +329,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getRangedAttack() {
 		if (has("ratk") && getDeterioration() <= MAX_DETERIORATION) {
+			if (hasMaxImproves()) {
+				return getInt("ratk") + getImprove();
+			}
 			return getInt("ratk");
 		}
 
@@ -331,6 +340,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	public int getRange() {
 		if (has("range")) {
+			if (hasMaxImproves() && isMaxImproved()) {
+				return getInt("range") + 1;
+			}
 			return getInt("range");
 		}
 
@@ -344,6 +356,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getAttackRate() {
 		if (has("rate")) {
+			if ((hasMaxImproves() && isMaxImproved()) && getInt("rate") > 2) {
+				return getInt("rate") - 1;
+			}
 			return getInt("rate");
 		}
 
@@ -384,25 +399,6 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			return getInt("deterioration");
 		}
 		return DEFAULT_DETERIORATION;
-	}
-
-	public int getImproves() {
-		if(has("improve")) {
-			return getInt("improve");
-		}
-		return 0;
-	}
-	public int getMaxImproves() {
-		if(has("max_improves")) {
-			return getInt("max_improves");
-		}
-		return 0;
-	}
-	public boolean isMaxImproved() {
-		if (getImproves() == getMaxImproves()) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -527,7 +523,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return The player name, or <code>null</code>.
 	 */
 	public String getBoundTo() {
-			return get("bound");
+		return get("bound");
 	}
 
 	/**
@@ -770,6 +766,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (hasDescription()) {
 			text = getDescription();
 		}
+		if (hasMaxImproves()) {
+			text = text + " " + getImproveDescription();
+		}
 		// Highlight the item name
 		text = text.replace(getTitle(), "§'" + getTitle() + "'");
 
@@ -1004,5 +1003,86 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 
 		return false;
+	}
+
+	/**
+	 * Improve the item.
+	 * 
+	 * @return
+	 * 		<code>true</code> if item is not max improved.
+	 */
+	private int improveUp() {
+		int improve = getImprove();
+		if (isMaxImproved()) {
+			return improve = getMaxImproves();
+		}
+		if (isUpgradeable()) {
+			improve++;
+		}
+
+		return improve;
+	}
+
+	/**
+	 * Checks the improvable state of item.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the item has a possibility to be upgraded.
+	 */
+	public boolean isUpgradeable() {
+		return (hasMaxImproves() && getMaxImproves() > 0)
+				&& (getMaxImproves() > getImprove());
+	}
+	boolean hasImprove() {
+		return has("improve");
+	}
+	boolean hasMaxImproves() {
+		return has("max_improves");
+	}
+
+	public int getImprove() {
+		if(hasImprove()) {
+			return getInt("improve");
+		}
+		return 0;
+	}
+	public int getMaxImproves() {
+		if(hasMaxImproves()) {
+			return getInt("max_improves");
+		}
+		return 0;
+	}
+
+	/**
+	 * Checks if the item has been max improved.
+	 * 
+	 * @return
+	 * 		<code>true</code> if item cannot be improve any more.
+	 */
+	public boolean isMaxImproved() {
+		if (!hasMaxImproves()) {
+			return false;
+		}
+
+		if (getImprove() == getMaxImproves()) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @return description
+	 */
+	private String getImproveDescription() {
+		final String improve = String.valueOf(getImprove());
+
+		return "Ulepszenie +" + improve;
+	}
+
+	/**
+	 * Put to "improve" new value from improveUp()
+	 */
+	public void upgradeItem() {
+		put("improve", improveUp());
 	}
 }

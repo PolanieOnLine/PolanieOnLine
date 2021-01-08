@@ -5,7 +5,7 @@
 	<item name="czarne buty">
 		<type class="boots" subclass="black_boots" tileid="-1"/>
 		<description>W te czarne buty nie możesz wcisnąć całej nogi. Może przyniosą tobie niefart?</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="15"/>
 			<min_level value="100"/>
@@ -67,7 +67,7 @@
 	<item name="buty kolcze">
 		<type class="boots" subclass="chain_boots" tileid="-1"/>
 		<description>Oto buty kolcze, troche zardzewiałe ale wciąż silne.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="4"/>
 			<max_improves value="2"/>
@@ -145,7 +145,7 @@
 	<item name="buty z zielonego potwora">
 		<type class="boots" subclass="green_dragon_boots" tileid="-1"/>
 		<description>Oto buty z zielonego potwora. Są glutowate w środku i zalatują śledziami, fujjjj.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="12"/>
 			<min_level value="70"/>
@@ -165,7 +165,7 @@
 	<item name="buty zabójcy">
 		<type class="boots" subclass="killer_boots" tileid="-1"/>
 		<description>Oto buty zabójcy. Jesteś na tyle odważny, aby je nosić?</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="22"/>
 			<max_improves value="8"/>
@@ -184,7 +184,7 @@
 	<item name="buty skórzane">
 		<type class="boots" subclass="leather_boots" tileid="-1"/>
 		<description>Oto buty skórzane, które ogrzewają ci stopy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
 			<max_improves value="2"/>
@@ -203,7 +203,7 @@
 	<item name="magiczne buty płytowe">
 		<type class="boots" subclass="magic_plate_boots" tileid="-1"/>
 		<description></description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="14"/>
 			<min_level value="90"/>
@@ -246,7 +246,7 @@
 	<item name="buty z mithrilu">
 		<type class="boots" subclass="mithril_boots" tileid="-1"/>
 		<description>Oto para mieniących się butów z mithrilu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="18"/>
 			<min_level value="150"/>
@@ -309,7 +309,7 @@
 	<item name="buty cieni">
 		<type class="boots" subclass="shadow_boots" tileid="-1"/>
 		<description>Oto buty cieni. Nie możesz pojąć z czego są zrobione.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="9"/>
 			<min_level value="25"/>
@@ -431,7 +431,7 @@
 	<item name="kierpce">
 		<type class="boots" subclass="goralskie_kierpce" tileid="-1"/>
 		<description>Oto kierpce. Skóra trochę skrzypi i wróg może cię wcześniej usłyszeć.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Improve"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
 			<max_improves value="1"/>
