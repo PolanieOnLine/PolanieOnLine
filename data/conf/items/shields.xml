@@ -428,7 +428,7 @@
 
 	<item name="drewniana tarcza">
 		<type class="shield" subclass="wooden_shield" tileid="-1"/>
-		<description>Drewniana tarcza zrobiona jest z drogiego i ciężkiego drewna, ale wciąż może cię chronić.</description>
+		<description>Oto drewniana tarcza zrobiona jest z drogiego i ciężkiego drewna, ale wciąż może cię chronić.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>
