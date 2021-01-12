@@ -135,7 +135,7 @@ public class ProducerAdder {
         /* Player does not agree to the proposed production deal */
 		engine.add(ConversationStates.PRODUCTION_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null,
-				false, ConversationStates.ATTENDING, "Dobrze nie ma problemu.", null);
+				false, ConversationStates.ATTENDING, "Dobrze, nie ma problemu.", null);
 
         /* Player says the production trigger word but the NPC is already producing items for that player */
 		engine.add(
