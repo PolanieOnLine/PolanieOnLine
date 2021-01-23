@@ -37,7 +37,7 @@ class StatsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -353271026575752035L;
 
-	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, xpLabel, levelLabel, moneyLabel;
+	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, moneyLabel;
 	private final HPIndicator hpBar;
 	private final StatusIconPanel statusIcons;
 	private final KarmaIndicator karmaIndicator;
@@ -78,6 +78,9 @@ class StatsPanel extends JPanel {
 
 		ratkLabel = new StatLabel();
 		add(ratkLabel, SLayout.EXPAND_X);
+
+		miningLabel = new StatLabel();
+		add(miningLabel, SLayout.EXPAND_X);
 
 		xpLabel = new StatLabel();
 		add(xpLabel, SLayout.EXPAND_X);
@@ -145,6 +148,15 @@ class StatsPanel extends JPanel {
 	 */
 	void setRatk(String ratk) {
 		ratkLabel.setText(ratk);
+	}
+
+	/**
+	 * Set the mining description string
+	 *
+	 * @param miningLevel
+	 */
+	void setMining(String mining) {
+		miningLabel.setText(mining);
 	}
 
 	/**

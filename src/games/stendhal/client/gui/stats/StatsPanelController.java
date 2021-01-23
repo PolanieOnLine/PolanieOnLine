@@ -68,6 +68,9 @@ public final class StatsPanelController {
 	private int ratkxp;
 	private int weaponRatk;
 
+	private int mining;
+	private int miningxp;
+
 	private int mana;
 	private int baseMana;
 
@@ -122,6 +125,10 @@ public final class StatsPanelController {
 		listener = new RATKChangeListener();
 		addPropertyChangeListenerWithModifiedSupport(pcs, "ratk", listener);
 		pcs.addPropertyChangeListener("ratk_xp", listener);
+
+		listener = new MININGChangeListener();
+		addPropertyChangeListenerWithModifiedSupport(pcs, "mining", listener);
+		pcs.addPropertyChangeListener("mining_xp", listener);
 
 		listener = new XPChangeListener();
 		pcs.addPropertyChangeListener("xp", listener);
@@ -254,6 +261,21 @@ public final class StatsPanelController {
 			@Override
 			public void run() {
 				panel.setRatk(text);
+			}
+		});
+	}
+
+	/**
+	 * Called when mining xp has changed.
+	*/
+	private void updateMining() {
+		final long next = Level.getXP(mining - 9) - miningxp;
+
+		final String text = "Górnictwo:" + SPC + mining + SPC + "(" + next + ")";
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panel.setMining(text);
 			}
 		});
 	}
@@ -421,6 +443,25 @@ public final class StatsPanelController {
 				ratk = Integer.parseInt((String) event.getNewValue());
 			}
 			updateRatk();
+		}
+	}
+
+	/**
+	 * Listener for mining and mining_xp changes.
+	 */
+	private class MININGChangeListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(final PropertyChangeEvent event) {
+			if (event == null) {
+				return;
+			}
+
+			if ("mining_xp".equals(event.getPropertyName())) {
+				miningxp = Integer.parseInt((String) event.getNewValue());
+			} else if ("mining".equals(event.getPropertyName())) {
+				mining =  Integer.parseInt((String) event.getNewValue());
+			}
+			updateMining();
 		}
 	}
 

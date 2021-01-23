@@ -54,6 +54,8 @@ public class RPEntityRPClass {
 		entity.addAttribute("ratk_xp", Type.INT, Definition.PRIVATE);
 		entity.addAttribute("ratk_item", Type.INT,
 				(byte) (Definition.PRIVATE | Definition.VOLATILE));
+		entity.addAttribute("mining", Type.SHORT, Definition.PRIVATE);
+		entity.addAttribute("mining_xp", Type.INT, Definition.PRIVATE);
 
 		entity.addAttribute("risk", Type.BYTE, Definition.VOLATILE); // obsolete, do not use
 		entity.addAttribute("damage", Type.INT, Definition.VOLATILE); // obsolete, do not use

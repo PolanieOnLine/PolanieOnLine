@@ -122,12 +122,12 @@ public class StendhalWebsiteDAO {
 	 */
 	protected int updateCharStats(final DBTransaction transaction, final Player player, Timestamp timestamp) throws SQLException {
 		final String query = "UPDATE character_stats SET "
-			+ " admin=[admin], sentence='[sentence]', age=[age], level=[level],"
+			+ " admin=[admin], sentence='[sentence]', age=[age], gender='[gender]', level=[level],"
 			+ " outfit=[outfit], outfit_colors='[outfit_colors]', outfit_layers='[outfit_layers]', xp=[xp], money='[money]',"
-			+ " married='[married]', atk='[atk]', def='[def]', hp='[hp]', karma='[karma]',"
-			+ " head='[head]', armor='[armor]', lhand='[lhand]', rhand='[rhand]',"
+			+ " married='[married]', atk='[atk]', def='[def]', ratk='[ratk]', mining='[mining]', hp='[hp]', karma='[karma]',"
+			+ " neck='[neck]', head='[head]', armor='[armor]', lhand='[lhand]', rhand='[rhand]', pas='[pas]',"
 			+ " legs='[legs]', feet='[feet]', cloak='[cloak]', lastseen='[lastseen]',"
-			+ " finger='[finger]', zone='[zone]'"
+			+ " glove='[glove]', finger='[finger]', fingerb='[fingerb]', zone='[zone]'"
 			+ " WHERE name='[name]'";
 
 		Map<String, Object> params = getParamsFromPlayer(player);
@@ -148,6 +148,7 @@ public class StendhalWebsiteDAO {
 		params.put("admin", player.getAdminLevel());
 		params.put("sentence", player.getSentence());
 		params.put("age", player.getAge());
+		params.put("gender", player.getGender());
 		params.put("level", player.getLevel());
 		params.put("outfit", player.getOutfit().getCode());
 		params.put("outfit_colors", getOutfitColors(player));
@@ -157,16 +158,22 @@ public class StendhalWebsiteDAO {
 		params.put("married", extractSpouseOrNull(player));
 		params.put("atk", player.getAtk());
 		params.put("def", player.getDef());
+		params.put("ratk", player.getRatk());
+		params.put("mining", player.getMining());
 		params.put("hp", player.getHP());
 		params.put("karma", (int) player.getKarma());
+		params.put("neck", extractName(player.getNecklace()));
 		params.put("head", extractName(player.getHelmet()));
 		params.put("armor", extractName(player.getArmor()));
 		params.put("lhand", extractHandName(player, "lhand"));
 		params.put("rhand", extractHandName(player, "rhand"));
+		params.put("pas", extractName(player.getBelt()));
 		params.put("legs", extractName(player.getLegs()));
 		params.put("feet", extractName(player.getBoots()));
 		params.put("cloak", extractName(player.getCloak()));
+		params.put("glove", extractName(player.getGloves()));
 		params.put("finger", extractHandName(player, "finger"));
+		params.put("fingerb", extractName(player.getRingB()));
 		params.put("name", player.getName());
 		String zoneName = "";
 		StendhalRPZone zone = player.getZone();
@@ -187,14 +194,14 @@ public class StendhalWebsiteDAO {
 	 */
 	protected void insertIntoCharStats(final DBTransaction transaction, final Player player, Timestamp timestamp) throws SQLException {
 		final String query = "INSERT INTO character_stats"
-			+ " (name, admin, sentence, age, level,"
-			+ " outfit, outfit_colors, outfit_layers, xp, money, married, atk, def, hp,"
-			+ " karma, head, armor, lhand, rhand,"
-			+ " legs, feet, cloak, finger, zone, lastseen)"
-			+ " VALUES ('[name]', '[admin]', '[sentence]', '[age]', '[level]',"
+			+ " (name, admin, sentence, age, gender, level,"
+			+ " outfit, outfit_colors, outfit_layers, xp, money, married, atk, def, ratk, mining, hp,"
+			+ " karma, neck, head, armor, lhand, rhand, pas,"
+			+ " legs, feet, cloak, glove, finger, fingerb, zone, lastseen)"
+			+ " VALUES ('[name]', '[admin]', '[sentence]', '[age]', '[gender]', '[level]',"
 			+ " '[outfit]', '[outfit_colors]', '[outfit_layers]', '[xp]', '[money]', '[married]',"
-			+ " '[atk]', '[atk]', '[hp]', '[karma]', '[head]', '[armor]',"
-			+ " '[lhand]', '[rhand]', '[legs]', '[feet]', '[cloak]', '[finger]',"
+			+ " '[atk]', '[def]', '[ratk]', '[mining]', '[hp]', '[karma]', '[neck]', '[head]', '[armor]',"
+			+ " '[lhand]', '[rhand]', '[pas]', '[legs]', '[feet]', '[cloak]', '[glove]', '[finger]', '[fingerb]',"
 			+ " '[zone]', '[lastseen]')";
 		Map<String, Object> params = getParamsFromPlayer(player);
 		params.put("lastseen", timestamp);

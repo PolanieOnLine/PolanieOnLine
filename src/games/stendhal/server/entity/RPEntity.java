@@ -114,6 +114,8 @@ public abstract class RPEntity extends GuidedEntity {
 	private int def_xp;
 	protected int ratk;
 	private int ratk_xp;
+	protected int mining;
+	private int mining_xp;
 	private int base_hp;
 	private int hp;
 	protected int lv_cap;
@@ -409,6 +411,11 @@ public abstract class RPEntity extends GuidedEntity {
 		if (has("ratk_xp")) {
 			ratk_xp = getInt("ratk_xp");
 			setRatkXPInternal(ratk_xp, false);
+		}
+
+		if (has("mining_xp")) {
+			mining_xp = getInt("mining_xp");
+			setMiningXpInternal(mining_xp, false);
 		}
 
 		if (has("base_hp")) {
@@ -991,6 +998,50 @@ public abstract class RPEntity extends GuidedEntity {
 
 /* ### --- END RANGED --- ### */
 
+	public void setMining(final int mining) {
+		setMiningInternal(mining, true);
+	}
+
+	private void setMiningInternal(final int mining, boolean notify) {
+		this.mining = mining;
+		put("mining", mining); // visible mining
+		if(notify) {
+			this.updateModifiedAttributes();
+		}
+	}
+
+	public int getMining() {
+		return this.mining;
+	}
+
+	public int getCappedMining() {
+		return this.mining;
+	}
+
+	public void setMiningXP(final int miningXP) {
+		setMiningXpInternal(miningXP, true);
+	}
+
+	private void setMiningXpInternal(final int miningXP, boolean notify) {
+		this.mining_xp = miningXP;
+		put("mining_xp", mining_xp);
+
+		// Handle level changes
+		final long newLevel = Level.getLevel(mining_xp);
+		final long levels = newLevel - (this.mining - 10);
+		if (levels != 0) {
+			setMiningInternal((int) (this.mining + levels), notify);
+			new GameEvent(getName(), "mining", Integer.toString(this.mining)).raise();
+		}
+	}
+
+	public int getMiningXP() {
+		return mining_xp;
+	}
+
+	public void incMiningXP(final int amount) {
+		setMiningXP(mining_xp + amount);
+	}
 
 	/**
 	 * Set the base and current HP.

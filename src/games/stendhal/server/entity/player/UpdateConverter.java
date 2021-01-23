@@ -427,6 +427,11 @@ public abstract class UpdateConverter {
 
 		// port to 1.31: zone zones
 		transformVisitedSlot(object);
+
+		if(!object.has("mining")){
+			object.put("mining", "1");
+    		object.put("mining_xp", "0");
+    	}
 	}
 
 	/**

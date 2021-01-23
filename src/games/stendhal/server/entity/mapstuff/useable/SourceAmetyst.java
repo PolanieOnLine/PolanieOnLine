@@ -12,11 +12,18 @@
 package games.stendhal.server.entity.mapstuff.useable;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ImageEffectEvent;
+import games.stendhal.server.events.SoundEvent;
 import marauroa.common.game.RPClass;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -36,11 +43,13 @@ import org.apache.log4j.Logger;
 public class SourceAmetyst extends PlayerActivityEntity {
 	private static final Logger logger = Logger.getLogger(SourceAmetyst.class);
 
+	private final String startSound = "pickaxe_01";
+	private final int SOUND_RADIUS = 20;
+
 	/**
 	 * The equipment needed.
 	 */
-	private static final String NEEDED_EQUIPMENT_1 = "kilof";
-	private static final String NEEDED_EQUIPMENT_2 = "lina";
+	private static final List<String> NEEDED_PICKS = Arrays.asList("kilof");
 
 	/**
 	 * The chance that prospecting is successful.
@@ -64,7 +73,7 @@ public class SourceAmetyst extends PlayerActivityEntity {
 	 */
 	@Override
 	public String getName() {
-		return("surowców");
+		return("ametyst");
 	}
 
 	/**
@@ -104,9 +113,8 @@ public class SourceAmetyst extends PlayerActivityEntity {
 		double probability = FINDING_PROBABILITY;
 
 		final String skill = player.getSkill("mining");
-
 		if (skill != null) {
-			probability = Math.max(probability, Double.parseDouble(skill));
+			probability = probability * (player.getMining()/5);
 		}
 
 		return probability + player.useKarma(0.02);
@@ -133,8 +141,10 @@ public class SourceAmetyst extends PlayerActivityEntity {
 	 */
 	@Override
 	protected boolean isPrepared(final Player player) {
-		if (player.isEquipped(NEEDED_EQUIPMENT_1) && player.isEquipped(NEEDED_EQUIPMENT_2)) {
-			return true;
+		for (final String itemName : NEEDED_PICKS) {
+			if (player.isEquipped(itemName)) {
+				return true;
+			}
 		}
 
 		player.sendPrivateText("Potrzebujesz kilofa i liny do wydobywania kamieni.");
@@ -162,18 +172,35 @@ public class SourceAmetyst extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onFinished(final Player player, final boolean successful) {
+		final String skill = player.getSkill("mining");
 		if (successful) {
 			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
+			int amount = 1;
 
 			if (item != null) {
+				for (final String pickName : NEEDED_PICKS) {
+					if (pickName == "kilof") {
+						if (player.isEquipped(pickName)) {
+							amount = Rand.throwCoin();
+							((StackableItem) item).setQuantity(amount);
+						}
+					}
+				}
+
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
-				player.sendPrivateText("Wydobyłeś "
-						+ Grammar.a_noun(item.getTitle()) + ".");
+				if (skill != null) {
+					player.incMiningXP(250);
+				}
+
+				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
 			} else {
 				logger.error("could not find item: " + itemName);
 			}
 		} else {
+			if (skill != null) {
+				player.incMiningXP(25);
+			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}
 	}
@@ -186,6 +213,10 @@ public class SourceAmetyst extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
+		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
 		player.sendPrivateText("Rozpocząłeś wydobywanie ametystu.");
+		notifyWorldAboutChanges();
+        addEvent(new ImageEffectEvent("mining", true));
+        notifyWorldAboutChanges();
 	}
 }
