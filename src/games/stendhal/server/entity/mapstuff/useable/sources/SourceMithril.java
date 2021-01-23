@@ -53,7 +53,7 @@ public class SourceMithril extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a mithril source.
 	 */
 	public SourceMithril() {
 		this("bryłka mithrilu");
@@ -68,7 +68,7 @@ public class SourceMithril extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a mithril source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

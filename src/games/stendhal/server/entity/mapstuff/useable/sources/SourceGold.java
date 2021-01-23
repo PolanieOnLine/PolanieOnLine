@@ -43,7 +43,7 @@ public class SourceGold extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a gold source.
 	 */
 	public SourceGold() {
 		this("bryłka złota");
@@ -58,7 +58,7 @@ public class SourceGold extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a gold source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

@@ -53,7 +53,7 @@ public class SourceSapphire extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a sapphire source.
 	 */
 	public SourceSapphire() {
 		this("kryształ szafiru");
@@ -68,7 +68,7 @@ public class SourceSapphire extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a sapphire source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

@@ -53,7 +53,7 @@ public class SourceObsidian extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a obsidian source.
 	 */
 	public SourceObsidian() {
 		this("kryształ obsydianu");
@@ -68,7 +68,7 @@ public class SourceObsidian extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a obsidian source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

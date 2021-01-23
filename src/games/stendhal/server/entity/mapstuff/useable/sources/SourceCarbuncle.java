@@ -26,14 +26,14 @@ import games.stendhal.server.events.SoundEvent;
 import marauroa.common.game.RPClass;
 
 /**
- * A mithril source is a spot where a player can prospect for mithril. He
+ * A carbuncle source is a spot where a player can prospect for carbuncle. He
  * needs a kilof and lina, time, and luck.
  *
  * Prospecting takes 7-11 seconds; during this time, the player keep standing
- * next to the mithril source. In fact, the player only has to be there when the
- * prospecting action has finished. Therefore, make sure that two mithril sources
+ * next to the carbuncle source. In fact, the player only has to be there when the
+ * prospecting action has finished. Therefore, make sure that two carbuncle sources
  * are always at least 5 sec of walking away from each other, so that the player
- * can't prospect for mithril at several sites simultaneously.
+ * can't prospect for carbuncle at several sites simultaneously.
  *
  * @author daniel
  * @changes artur, KarajuSs
@@ -53,7 +53,7 @@ public class SourceCarbuncle extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a carbuncle source.
 	 */
 	public SourceCarbuncle() {
 		this("kryształ rubinu");
@@ -68,7 +68,7 @@ public class SourceCarbuncle extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a carbuncle source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

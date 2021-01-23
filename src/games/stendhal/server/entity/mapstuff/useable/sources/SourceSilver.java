@@ -53,7 +53,7 @@ public class SourceSilver extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a silver source.
 	 */
 	public SourceSilver() {
 		this("ruda srebra");
@@ -68,7 +68,7 @@ public class SourceSilver extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a silver source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

@@ -53,7 +53,7 @@ public class SourceEmerald extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a emerald source.
 	 */
 	public SourceEmerald() {
 		this("kryształ szmaragdu");
@@ -68,7 +68,7 @@ public class SourceEmerald extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a emerald source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.

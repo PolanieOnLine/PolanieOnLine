@@ -53,7 +53,7 @@ public class SourceSulfur extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a ametyst source.
+	 * Create a sulfur source.
 	 */
 	public SourceSulfur() {
 		this("siarka");
@@ -68,7 +68,7 @@ public class SourceSulfur extends SourceEntity {
 	}
 
 	/**
-	 * Create a ametyst source.
+	 * Create a sulfur source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.
