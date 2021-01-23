@@ -15,7 +15,8 @@ public class SourceEntity extends PlayerActivityEntity {
 	/**
 	 * The equipment needed.
 	 */
-	public static final List<String> NEEDED_PICKS = Arrays.asList("kilof");
+	public static final List<String> NEEDED_PICKS = Arrays.asList("zardzewiały kilof", "kilof",
+			"kilof stalowy", "kilof stalowy", "kilof obsydianowy");
 
 	/**
 	 * Calculates the probability that the given player finds stone. This is
