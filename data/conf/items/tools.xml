@@ -164,6 +164,25 @@
 		</equipable>
 	</item>
 
+	<!-- START: Nowe kilofy -->
+	<item name="zardzewiały kilof">
+		<type class="tool" subclass="pick_old" tileid="-1"/>
+		<description>Oto zardzewiały kilof. Na niewiele już się przyda.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="kilof">
 		<type class="tool" subclass="pick" tileid="-1"/>
 		<description>Oto kilof. Dzięki niemu wykopiesz drogocenne kamienie i surowce.</description>
@@ -181,6 +200,61 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="kilof stalowy">
+		<type class="tool" subclass="pick_steel" tileid="-1"/>
+		<description>Oto kilof stalowy. Dzięki specjalnym wzmocnieniom jesteś w stanie wykopać nieco twardsze kamienie szlachetne.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="kilof złoty">
+		<type class="tool" subclass="pick_gold" tileid="-1"/>
+		<description>Oto kilof złoty. Wytrzymałość stali, a wygląd pięknego lśniącego złota.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="kilof obsydianowy">
+		<type class="tool" subclass="pick_obsidian" tileid="-1"/>
+		<description>Oto kilof obsydianowy. Najwytrzymalszy kilof jaki został wykonany.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="10.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+	<!-- END: Nowe kilofy -->
 
 	<item name="łopata">
 		<type class="tool" subclass="shovel" tileid="-1"/>
