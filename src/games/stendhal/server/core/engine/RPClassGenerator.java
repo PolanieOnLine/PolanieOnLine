@@ -55,18 +55,6 @@ import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.SheepFood;
 import games.stendhal.server.entity.mapstuff.useable.FishSource;
 import games.stendhal.server.entity.mapstuff.useable.GoldSource;
-import games.stendhal.server.entity.mapstuff.useable.SourceAmetyst;
-import games.stendhal.server.entity.mapstuff.useable.SourceCarbuncle;
-import games.stendhal.server.entity.mapstuff.useable.SourceCopper;
-import games.stendhal.server.entity.mapstuff.useable.SourceEmerald;
-import games.stendhal.server.entity.mapstuff.useable.SourceGold;
-import games.stendhal.server.entity.mapstuff.useable.SourceIron;
-import games.stendhal.server.entity.mapstuff.useable.SourceMithril;
-import games.stendhal.server.entity.mapstuff.useable.SourceObsidian;
-import games.stendhal.server.entity.mapstuff.useable.SourceSalt;
-import games.stendhal.server.entity.mapstuff.useable.SourceSapphire;
-import games.stendhal.server.entity.mapstuff.useable.SourceSilver;
-import games.stendhal.server.entity.mapstuff.useable.SourceSulfur;
 import games.stendhal.server.entity.mapstuff.useable.UseableEntity;
 import games.stendhal.server.entity.mapstuff.useable.WaterSpringSource;
 import games.stendhal.server.entity.mapstuff.useable.WellSource;
@@ -176,42 +164,6 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass("weather_entity")) {
 			WeatherEntity.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_ametyst")) {
-			SourceAmetyst.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_carbuncle")) {
-			SourceCarbuncle.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_emerald")) {
-			SourceEmerald.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_gold")) {
-			SourceGold.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_copper")) {
-			SourceCopper.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_iron")) {
-			SourceIron.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_mithril")) {
-			SourceMithril.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_obsidian")) {
-			SourceObsidian.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_salt")) {
-			SourceSalt.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_sapphire")) {
-			SourceSapphire.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_silver")) {
-			SourceSilver.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("source_sulfur")) {
-			SourceSulfur.generateRPClass();
 		}
 		if (!RPClass.hasRPClass("wood_source")) {
 			WoodSource.generateRPClass();

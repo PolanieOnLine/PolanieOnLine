@@ -23,7 +23,6 @@ import games.stendhal.server.entity.mapstuff.useable.SourceEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ImageEffectEvent;
 import games.stendhal.server.events.SoundEvent;
-import marauroa.common.game.RPClass;
 
 /**
  * A obsidian source is a spot where a player can prospect for obsidian. He
@@ -75,15 +74,13 @@ public class SourceObsidian extends SourceEntity {
 	 */
 	public SourceObsidian(final String itemName) {
 		this.itemName = itemName;
+
+		setRPClass("useable_entity");
+		put("type", "useable_entity");
 		put("class", "source");
 		put("name", sourceClass);
 		setMenu("Wydobądź|Użyj");
 		setDescription("Wszystko wskazuje na to, że tutaj coś jest.");
-	}
-
-	public static void generateRPClass() {
-		final RPClass rpclass = new RPClass(sourceClass);
-		rpclass.isA("entity");
 	}
 
 	/**

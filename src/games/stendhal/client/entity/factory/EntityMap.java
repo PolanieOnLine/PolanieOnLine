@@ -112,17 +112,6 @@ public final class EntityMap {
 		register("gold_source", null, null, StatefulEntity.class);
 		register("fish_source", null, null, StatefulEntity.class);
 		register("well_source", null, null, StatefulEntity.class);
-		register("source_ametyst", null, null, StatefulEntity.class);
-		register("source_carbuncle", null, null, StatefulEntity.class);
-		register("source_emerald", null, null, StatefulEntity.class);
-		register("source_gold", null, null, StatefulEntity.class);
-		register("source_iron", null, null, StatefulEntity.class);
-		register("source_mithril", null, null, StatefulEntity.class);
-		register("source_obsidian", null, null, StatefulEntity.class);
-		register("source_salt", null, null, StatefulEntity.class);
-		register("source_sapphire", null, null, StatefulEntity.class);
-		register("source_silver", null, null, StatefulEntity.class);
-		register("source_sulfur", null, null, StatefulEntity.class);
 		register("wood_source", null, null, StatefulEntity.class);
 		// deprecated end
 

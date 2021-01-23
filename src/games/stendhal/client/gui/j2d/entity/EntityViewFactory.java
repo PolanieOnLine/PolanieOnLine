@@ -140,17 +140,6 @@ public class EntityViewFactory {
 
 		register("fire", null, null, UseableEntity2DView.class);
 		register("fish_source", null, null, UseableEntity2DView.class);
-		register("source_ametyst", null, null, UseableEntity2DView.class);
-		register("source_carbuncle", null, null, UseableEntity2DView.class);
-		register("source_emerald", null, null, UseableEntity2DView.class);
-		register("source_gold", null, null, UseableEntity2DView.class);
-		register("source_iron", null, null, UseableEntity2DView.class);
-		register("source_mithril", null, null, UseableEntity2DView.class);
-		register("source_obsidian", null, null, UseableEntity2DView.class);
-		register("source_salt", null, null, UseableEntity2DView.class);
-		register("source_sapphire", null, null, UseableEntity2DView.class);
-		register("source_silver", null, null, UseableEntity2DView.class);
-		register("source_sulfur", null, null, UseableEntity2DView.class);
 		register("wood_source", null, null, UseableEntity2DView.class);
 
 		register("game_board", null, null, GameBoard2DView.class);
