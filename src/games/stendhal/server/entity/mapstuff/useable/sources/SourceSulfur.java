@@ -116,7 +116,7 @@ public class SourceSulfur extends SourceEntity {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
 				if (skill != null) {
-					player.incMiningXP(250);
+					player.incMiningXP(50);
 				}
 
 				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
@@ -125,7 +125,7 @@ public class SourceSulfur extends SourceEntity {
 			}
 		} else {
 			if (skill != null) {
-				player.incMiningXP(25);
+				player.incMiningXP(5);
 			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}

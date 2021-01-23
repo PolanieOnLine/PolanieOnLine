@@ -116,7 +116,7 @@ public class SourceEmerald extends SourceEntity {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
 				if (skill != null) {
-					player.incMiningXP(200);
+					player.incMiningXP(280);
 				}
 
 				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
@@ -125,7 +125,7 @@ public class SourceEmerald extends SourceEntity {
 			}
 		} else {
 			if (skill != null) {
-				player.incMiningXP(20);
+				player.incMiningXP(28);
 			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}

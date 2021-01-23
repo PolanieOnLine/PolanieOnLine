@@ -116,7 +116,7 @@ public class SourceCarbuncle extends SourceEntity {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
 				if (skill != null) {
-					player.incMiningXP(280);
+					player.incMiningXP(630);
 				}
 
 				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
@@ -125,7 +125,7 @@ public class SourceCarbuncle extends SourceEntity {
 			}
 		} else {
 			if (skill != null) {
-				player.incMiningXP(28);
+				player.incMiningXP(63);
 			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}

@@ -106,7 +106,7 @@ public class SourceCopper extends SourceEntity {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
 				if (skill != null) {
-					player.incMiningXP(200);
+					player.incMiningXP(180);
 				}
 
 				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
@@ -115,7 +115,7 @@ public class SourceCopper extends SourceEntity {
 			}
 		} else {
 			if (skill != null) {
-				player.incMiningXP(20);
+				player.incMiningXP(18);
 			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}

@@ -106,7 +106,7 @@ public class SourceGold extends SourceEntity {
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
 				if (skill != null) {
-					player.incMiningXP(200);
+					player.incMiningXP(500);
 				}
 
 				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
@@ -115,7 +115,7 @@ public class SourceGold extends SourceEntity {
 			}
 		} else {
 			if (skill != null) {
-				player.incMiningXP(20);
+				player.incMiningXP(50);
 			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}
