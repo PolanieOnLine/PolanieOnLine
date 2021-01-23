@@ -192,11 +192,9 @@ public class CoalSource extends PlayerActivityEntity {
 	 * @author hendrik
 	 */
 	private class Refiller implements TurnListener {
-
 		@Override
 		public void onTurnReached(int currentTurn) {
 			setState(Rand.randUniform(1, 3));
 		}
-
 	}
 }
