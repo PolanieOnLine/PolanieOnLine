@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,16 +9,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.entity.mapstuff.useable;
+package games.stendhal.server.entity.mapstuff.useable.sources;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.mapstuff.useable.SourceEntity;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ImageEffectEvent;
+import games.stendhal.server.events.SoundEvent;
 import marauroa.common.game.RPClass;
-
-import org.apache.log4j.Logger;
 
 /**
  * A iron source is a spot where a player can prospect for iron. He
@@ -31,21 +36,16 @@ import org.apache.log4j.Logger;
  * can't prospect for iron at several sites simultaneously.
  *
  * @author daniel
- * @changes artur
+ * @changes artur, KarajuSs
  */
-public class SourceIron extends PlayerActivityEntity {
+public class SourceIron extends SourceEntity {
 	private static final Logger logger = Logger.getLogger(SourceIron.class);
 
-	/**
-	 * The equipment needed.
-	 */
-	private static final String NEEDED_EQUIPMENT_1 = "kilof";
-	private static final String NEEDED_EQUIPMENT_2 = "lina";
+	private final static String sourceClass = "source_iron";
 
-	/**
-	 * The chance that prospecting is successful.
-	 */
-	private static final double FINDING_PROBABILITY = 0.02;
+	private final String startSound = "pickaxe_01";
+	private final String successSound = "rocks-1";
+	private final int SOUND_RADIUS = 20;
 
 	/**
 	 * The name of the item to be found.
@@ -53,7 +53,7 @@ public class SourceIron extends PlayerActivityEntity {
 	private final String itemName;
 
 	/**
-	 * Create a iron source.
+	 * Create a ametyst source.
 	 */
 	public SourceIron() {
 		this("ruda żelaza");
@@ -68,7 +68,7 @@ public class SourceIron extends PlayerActivityEntity {
 	}
 
 	/**
-	 * Create a iron source.
+	 * Create a ametyst source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.
@@ -76,81 +76,14 @@ public class SourceIron extends PlayerActivityEntity {
 	public SourceIron(final String itemName) {
 		this.itemName = itemName;
 		put("class", "source");
-		put("name", "source_iron");
+		put("name", sourceClass);
 		setMenu("Wydobądź|Użyj");
 		setDescription("Wszystko wskazuje na to, że tutaj coś jest.");
-		setResistance(100);
 	}
-
-	//
-	// SourceIron
-	//
 
 	public static void generateRPClass() {
-		final RPClass rpclass = new RPClass("source_iron");
+		final RPClass rpclass = new RPClass(sourceClass);
 		rpclass.isA("entity");
-	}
-
-	/**
-	 * Calculates the probability that the given player finds stone. This is
-	 * based on the player's mining skills, however even players with no skills
-	 * at all have a 5% probability of success.
-	 *
-	 * @param player
-	 *            The player,
-	 *
-	 * @return The probability of success.
-	 */
-	private double getSuccessProbability(final Player player) {
-		double probability = FINDING_PROBABILITY;
-
-		final String skill = player.getSkill("mining");
-
-		if (skill != null) {
-			probability = Math.max(probability, Double.parseDouble(skill));
-		}
-
-		return probability + player.useKarma(0.02);
-	}
-
-	//
-	// PlayerActivityEntity
-	//
-
-	/**
-	 * Get the time it takes to perform this activity.
-	 *
-	 * @return The time to perform the activity (in seconds).
-	 */
-	@Override
-	protected int getDuration() {
-		return 8 + Rand.rand(4);
-	}
-
-	/**
-	 * Decides if the activity can be done.
-	 *
-	 * @return <code>true</code> if successful.
-	 */
-	@Override
-	protected boolean isPrepared(final Player player) {
-		if (player.isEquipped(NEEDED_EQUIPMENT_1) && player.isEquipped(NEEDED_EQUIPMENT_2)) {
-			return true;
-		}
-
-		player.sendPrivateText("Potrzebujesz kilofa i liny do wydobywania rudy żelaza.");
-		return false;
-	}
-
-	/**
-	 * Decides if the activity was successful.
-	 *
-	 * @return <code>true</code> if successful.
-	 */
-	@Override
-	protected boolean isSuccessful(final Player player) {
-		final int random = Rand.roll1D100();
-		return (random <= (getSuccessProbability(player) * 100));
 	}
 
 	/**
@@ -163,18 +96,37 @@ public class SourceIron extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onFinished(final Player player, final boolean successful) {
-		if (successful) {
-			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
+		final String skill = player.getSkill("mining");
 
+		if (successful) {
+			addEvent(new SoundEvent(successSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
+	        notifyWorldAboutChanges();
+
+			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 			if (item != null) {
+				for (final String pickName : SourceEntity.NEEDED_PICKS) {
+					if (pickName == "kilof") {
+						if (player.isEquipped(pickName)) {
+							int amount = Rand.throwCoin();
+							((StackableItem) item).setQuantity(amount);
+						}
+					}
+				}
+
 				player.equipOrPutOnGround(item);
 				player.incMinedForItem(item.getName(), item.getQuantity());
-				player.sendPrivateText("Wydobyłeś "
-						+ Grammar.a_noun(item.getTitle()) + ".");
+				if (skill != null) {
+					player.incMiningXP(250);
+				}
+
+				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
 			} else {
 				logger.error("could not find item: " + itemName);
 			}
 		} else {
+			if (skill != null) {
+				player.incMiningXP(25);
+			}
 			player.sendPrivateText("Nic nie wydobyłeś.");
 		}
 	}
@@ -187,6 +139,10 @@ public class SourceIron extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
+		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
 		player.sendPrivateText("Rozpocząłeś wydobywanie rudy żelaza.");
+		notifyWorldAboutChanges();
+		addEvent(new ImageEffectEvent("mining", true));
+		notifyWorldAboutChanges();
 	}
 }

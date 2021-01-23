@@ -358,37 +358,37 @@ Aktualne ceny u Zbigniewa:
 			</implementation>
 		</entity>
 		<entity x="16" y="6">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="29" y="6">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="12" y="122">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="35" y="124">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="96" y="123">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="76" y="58">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="87" y="58">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="96" y="58">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="63" y="123">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="49" y="121">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="88" y="119">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 
 		<portal x="100" y="43" ref="secret_1_entrance">
@@ -455,19 +455,19 @@ Aktualne ceny u Zbigniewa:
 		</entity>
 
 		<entity x="3" y="111">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="5" y="109">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="5" y="118">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="36" y="39">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="43" y="75">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 	</zone>
 
@@ -494,31 +494,31 @@ Aktualne ceny u Zbigniewa:
 		</entity>
 
 		<entity x="120" y="37">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="74" y="45">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="36" y="45">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="32" y="40">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="69" y="52">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="27" y="16">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="120" y="31">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="115" y="33">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="121" y="13">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 	</zone>
 
@@ -684,16 +684,16 @@ Aktualne ceny u Zbigniewa:
 			<attribute name="name">Lecznicza solanka</attribute>
 		</entity>
 		<entity x="11" y="35">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="20" y="43">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="9" y="44">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 		<entity x="21" y="41">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSalt"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt"/>
 		</entity>
 	</zone>
 

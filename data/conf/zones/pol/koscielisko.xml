@@ -458,58 +458,58 @@ kopalnia węgla!
 		</entity>
 
 		<entity x="20" y="3">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceCopper"/>
 		</entity>
 		<entity x="34" y="40">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceCopper"/>
 		</entity>
 		<entity x="61" y="17">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceCopper"/>
 		</entity>
 		<entity x="40" y="2">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceCopper"/>
 		</entity>
 		<entity x="56" y="12">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCopper"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceCopper"/>
 		</entity>
 		<entity x="4" y="49">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceAmetyst"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceAmetyst"/>
 		</entity>
 		<entity x="25" y="5">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceCarbuncle"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceCarbuncle"/>
 		</entity>
 		<entity x="54" y="4">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceEmerald"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceEmerald"/>
 		</entity>
 		<entity x="60" y="4">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceEmerald"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceEmerald"/>
 		</entity>
 		<entity x="42" y="24">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceGold"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceGold"/>
 		</entity>
 		<entity x="47" y="59">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceIron"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceIron"/>
 		</entity>
 		<entity x="39" y="7">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceIron"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceIron"/>
 		</entity>
 		<entity x="54" y="58">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceMithril"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceMithril"/>
 		</entity>
 		<entity x="61" y="37">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceObsidian"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceObsidian"/>
 		</entity>
 		<entity x="6" y="60">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSapphire"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSapphire"/>
 		</entity>
 		<entity x="60" y="58">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSilver"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSilver"/>
 		</entity>
 		<entity x="14" y="53">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 		<entity x="28" y="7">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.SourceSulfur"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur"/>
 		</entity>
 
 		<portal x="0" y="25" ref="do_tunelu">
