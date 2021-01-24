@@ -102,7 +102,7 @@ public class SourceMithril extends SourceEntity {
 			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 			if (item != null) {
 				for (final String pickName : SourceEntity.NEEDED_PICKS) {
-					if (pickName == "kilof") {
+					if (pickName == "kilof obsydianowy") {
 						if (player.isEquipped(pickName)) {
 							int amount = Rand.throwCoin();
 							((StackableItem) item).setQuantity(amount);

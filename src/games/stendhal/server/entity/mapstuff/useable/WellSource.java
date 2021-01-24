@@ -88,7 +88,7 @@ public class WellSource extends PlayerActivityEntity {
 	 * @return The time to perform the activity (in seconds).
 	 */
 	@Override
-	protected int getDuration() {
+	protected int getDuration(Player player) {
 		return DURATION + Rand.rand(5);
 	}
 

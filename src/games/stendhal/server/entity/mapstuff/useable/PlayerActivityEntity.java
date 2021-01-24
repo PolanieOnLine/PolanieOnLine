@@ -65,7 +65,7 @@ public abstract class PlayerActivityEntity extends UseableEntity {
 	 *
 	 * @return The time to perform the activity (in seconds).
 	 */
-	protected abstract int getDuration();
+	protected abstract int getDuration(final Player player);
 
 	/**
 	 * Decides if the activity can be done.
@@ -161,7 +161,7 @@ public abstract class PlayerActivityEntity extends UseableEntity {
 				player.faceToward(this);
 				onStarted(player);
 
-				SingletonRepository.getTurnNotifier().notifyInSeconds(getDuration(), activity);
+				SingletonRepository.getTurnNotifier().notifyInSeconds(getDuration(player), activity);
 			}
 		}
 

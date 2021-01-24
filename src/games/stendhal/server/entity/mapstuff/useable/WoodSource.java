@@ -106,7 +106,7 @@ public class WoodSource extends PlayerActivityEntity {
 	 * @return The time to perform the activity (in seconds).
 	 */
 	@Override
-	protected int getDuration() {
+	protected int getDuration(Player player) {
 		return 5 + Rand.rand(4);
 	}
 

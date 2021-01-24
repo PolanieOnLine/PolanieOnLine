@@ -104,7 +104,7 @@ public class GoldSource extends PlayerActivityEntity {
 	 * @return The time to perform the activity (in seconds).
 	 */
 	@Override
-	protected int getDuration() {
+	protected int getDuration(Player player) {
 		return 7 + Rand.rand(4);
 	}
 

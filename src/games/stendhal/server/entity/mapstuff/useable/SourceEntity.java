@@ -40,8 +40,21 @@ public class SourceEntity extends PlayerActivityEntity {
 	}
 
 	@Override
-	protected int getDuration() {
-		return 8 + Rand.rand(4);
+	protected int getDuration(final Player player) {
+		for (final String itemName : NEEDED_PICKS) {
+			if (player.isEquipped(itemName)) {
+				if (itemName == "kilof") {
+					return 20 + Rand.rand(4);
+				} else if (itemName == "kilof stalowy") {
+					return 16 + Rand.rand(4);
+				} else if (itemName == "kilof złoty") {
+					return 12 + Rand.rand(4);
+				} else if (itemName == "kilof obsydianowy") {
+					return 6 + Rand.rand(4);
+				}
+			}
+		}
+		return 30 + Rand.rand(4);
 	}
 
 	@Override
