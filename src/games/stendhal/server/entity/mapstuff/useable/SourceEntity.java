@@ -1,8 +1,5 @@
 package games.stendhal.server.entity.mapstuff.useable;
 
-import java.util.Arrays;
-import java.util.List;
-
 import games.stendhal.common.Rand;
 import games.stendhal.server.entity.player.Player;
 
@@ -15,8 +12,8 @@ public class SourceEntity extends PlayerActivityEntity {
 	/**
 	 * The equipment needed.
 	 */
-	public static final List<String> NEEDED_PICKS = Arrays.asList("zardzewiały kilof", "kilof",
-			"kilof stalowy", "kilof stalowy", "kilof obsydianowy");
+	public static final String[] NEEDED_PICKS = { "zardzewiały kilof", "kilof",
+			"kilof stalowy", "kilof złoty", "kilof obsydianowy" };
 
 	/**
 	 * Calculates the probability that the given player finds stone. This is
@@ -41,19 +38,16 @@ public class SourceEntity extends PlayerActivityEntity {
 
 	@Override
 	protected int getDuration(final Player player) {
-		for (final String itemName : NEEDED_PICKS) {
-			if (player.isEquipped(itemName)) {
-				if (itemName == "kilof") {
-					return 20 + Rand.rand(4);
-				} else if (itemName == "kilof stalowy") {
-					return 16 + Rand.rand(4);
-				} else if (itemName == "kilof złoty") {
-					return 12 + Rand.rand(4);
-				} else if (itemName == "kilof obsydianowy") {
-					return 6 + Rand.rand(4);
-				}
-			}
+		if (player.isEquipped(NEEDED_PICKS[4])) {
+			return 6 + Rand.rand(4);
+		} else if (player.isEquipped(NEEDED_PICKS[3])) {
+			return 12 + Rand.rand(4);
+		} else if (player.isEquipped(NEEDED_PICKS[2])) {
+			return 16 + Rand.rand(4);
+		} else if (player.isEquipped(NEEDED_PICKS[1])) {
+			return 20 + Rand.rand(4);
 		}
+
 		return 30 + Rand.rand(4);
 	}
 

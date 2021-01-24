@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.mapstuff.useable.sources;
 
+import java.util.stream.Stream;
+
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
@@ -83,6 +85,18 @@ public class SourceEmerald extends SourceEntity {
 		setDescription("Wszystko wskazuje na to, że tutaj coś jest.");
 	}
 
+	@Override
+	protected boolean isPrepared(Player player) {
+		for (final String itemName : NEEDED_PICKS) {
+			if (itemName != NEEDED_PICKS[0] && player.isEquipped(itemName)) {
+				return true;
+			}
+		}
+
+		player.sendPrivateText("Potrzebujesz kilofa do wydobywania kamieni.");
+		return false;
+	}
+
 	/**
 	 * Called when the activity has finished.
 	 *
@@ -101,13 +115,10 @@ public class SourceEmerald extends SourceEntity {
 
 			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 			if (item != null) {
-				for (final String pickName : SourceEntity.NEEDED_PICKS) {
-					if (pickName == "kilof obsydianowy") {
-						if (player.isEquipped(pickName)) {
-							int amount = Rand.throwCoin();
-							((StackableItem) item).setQuantity(amount);
-						}
-					}
+				String lastItem = Stream.of(NEEDED_PICKS).reduce((first,last) -> last).get();
+				if (player.isEquipped(lastItem)) {
+					int amount = Rand.throwCoin();
+					((StackableItem) item).setQuantity(amount);
 				}
 
 				player.equipOrPutOnGround(item);
