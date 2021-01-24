@@ -923,6 +923,7 @@
 			<item value="money" quantity="[222,1111]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[1,3]" probability="40.0"/>
 			<item value="strzała z mithrilu" quantity="[2,21]" probability="8.0"/>
+			<item value="lekka kusza" quantity="[1,1]" probability="2.0"/>
 			<item value="bryłka mithrilu" quantity="[1,6]" probability="5.0"/>
 			<item value="peleryna truskull" quantity="[1,1]" probability="1.0"/>
 			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.0001"/>
