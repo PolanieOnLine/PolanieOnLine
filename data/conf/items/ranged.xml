@@ -159,6 +159,7 @@
 			<ratk value="28" condition="!server.secondworld"/>
 			<range value="4"/>
 			<min_level value="300"/>
+			<max_improves value="5"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="142610"/>
