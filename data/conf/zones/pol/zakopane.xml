@@ -1550,6 +1550,13 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</portal>
 	</zone>
 
+	<!-- Mine hut -->
+	<zone name="int_zakopane_mines_hut" file="interiors/zakopane/hut.tmx">
+		<portal x="5" y="10" ref="hut_exit">
+			<destination zone="-3_zakopane_mines" ref="hut_entrance"/>
+		</portal>
+	</zone>
+
 	<!-- Houses -->
 	<zone name="int_zakopane_seller_house" file="interiors/zakopane/house_200.tmx">
 		<configurator class-name="games.pol.server.maps.zakopane.house.AlicjaNPC"/>
@@ -2350,6 +2357,7 @@ Aktualne ceny u Gazdy Wojtka:
 
 	<!-- zakopane_e -->
 	<zone name="-3_zakopane_mines" level="-2" x="513440" y="18560" file="Level -3/zakopane/mines.tmx">
+		<configurator class-name="games.pol.server.maps.zakopane.cave.GornikNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<attributes>
@@ -2480,6 +2488,10 @@ Aktualne ceny u Gazdy Wojtka:
 				<parameter name="key">lina</parameter>
 				<parameter name="rejected">Potrzebujesz liny żeby wyjść.</parameter>
 			</implementation>
+		</portal>
+
+		<portal x="23" y="67" ref="hut_entrance">
+			<destination zone="int_zakopane_mines_hut" ref="hut_exit"/>
 		</portal>
 	</zone>
 
