@@ -2,11 +2,13 @@ Changelog
 ---------
 1.17
 *klient*
+- Dodano grafikę nowego NPC
 - Dodano 6 nowych grafik przedmiotów
 - Dodano 4 nowe dźwięki uderzeń kilofa
 - Dodano animację kilofa uderzającego o surowiec
 
 *świat*
+- Dodano nowego NPC
 - Dodano 4 nowe przedmioty
 - Dodano możliwość ulepszenia łuku z mithrilu
 - Dodano możliwość zdobycia lekkiej kuszy z potworów
