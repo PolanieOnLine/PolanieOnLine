@@ -84,7 +84,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ENEMIES_GIANTS = {
 			"olbrzym", "olbrzym starszy", "amazonka olbrzymia", "olbrzym mistrz", "czarny olbrzym",
 			"imperialny generał gigant", "kasarkutominubat", "kobold olbrzymi", "gigantyczny krasnal",
-			"supeczłowiek olbrzym", "lodowy olbrzym", "lodowy starszy olbrzym", "Dhohr Nuggetcutter",
+			"superczłowiek olbrzym", "lodowy olbrzym", "lodowy starszy olbrzym", "Dhohr Nuggetcutter",
 			"Lord Durin"
 	};
 
