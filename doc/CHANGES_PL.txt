@@ -22,6 +22,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono błąd z wysyłaniem informacji o statystykach postaci gracza do bazy danych
+- Naprawiono osiągnięcie "Dawid kontra Goliat"
 
 
 1.16.1
