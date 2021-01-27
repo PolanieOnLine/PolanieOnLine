@@ -147,7 +147,7 @@ public class SourceMithril extends SourceEntity {
 	@Override
 	protected void onStarted(final Player player) {
 		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
-		player.sendPrivateText("Rozpocząłeś wydobywanie mithrilu.");
+		player.sendPrivateText("Rozpocząłeś wydobywanie surowca.");
 		notifyWorldAboutChanges();
 		addEvent(new ImageEffectEvent("mining", true));
 		notifyWorldAboutChanges();

@@ -136,7 +136,7 @@ public class SourceIron extends SourceEntity {
 	@Override
 	protected void onStarted(final Player player) {
 		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
-		player.sendPrivateText("Rozpocząłeś wydobywanie rudy żelaza.");
+		player.sendPrivateText("Rozpocząłeś wydobywanie rudy surowca.");
 		notifyWorldAboutChanges();
 		addEvent(new ImageEffectEvent("mining", true));
 		notifyWorldAboutChanges();
