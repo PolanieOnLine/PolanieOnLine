@@ -3,7 +3,8 @@ Changelog
 1.17
 *klient*
 - Dodano grafikę nowego NPC
-- Dodano 6 nowych grafik przedmiotów
+- Dodano 9 nowych grafik przedmiotów
+- Dodano 3 nowe grafiki surowców (rud)
 - Dodano 4 nowe dźwięki uderzeń kilofa
 - Dodano animację kilofa uderzającego o surowiec
 - Poprawiono kolory grafiki polana
