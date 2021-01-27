@@ -149,7 +149,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("money",2000000),
 								 new PlayerHasItemWithHimCondition("polano",50),
 								 new PlayerHasItemWithHimCondition("pióro azazela",1)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 24 godzin, a złota ciupaga z trzema wąsami będzie gotowa. Przypomnij mi mówiąc #/nagroda/.",
+				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 24 godzin, a złota ciupaga z trzema wąsami będzie gotowa. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
@@ -161,7 +161,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("money",2000000),
 												  new PlayerHasItemWithHimCondition("polano",50),
 												  new PlayerHasItemWithHimCondition("pióro azazela",1)))),
-				ConversationStates.ATTENDING, "Do jej udoskonalenia potrzebuję:\n"
+				ConversationStates.IDLE, "Do jej udoskonalenia potrzebuję:\n"
 								+"#'1 pazur arktycznego smoka'\n"
 								+"#'1 złota ciupaga z dwoma wąsami'\n"
 								+"#'200 sztabek złota'\n"

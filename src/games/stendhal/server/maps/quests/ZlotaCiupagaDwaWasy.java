@@ -146,7 +146,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("money",1200000),
 								 new PlayerHasItemWithHimCondition("polano",10),
 								 new PlayerHasItemWithHimCondition("pióro serafina",2)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 12 godzin, a złota ciupaga z dwoma wąsami będzie gotowa. Przypomnij mi mówiąc #/nagroda/.",
+				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 12 godzin, a złota ciupaga z dwoma wąsami będzie gotowa. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przypomnij", "Władca Smoków", "władca", "smok"),
@@ -159,7 +159,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("money",1200000),
 												  new PlayerHasItemWithHimCondition("polano",10),
 												  new PlayerHasItemWithHimCondition("pióro serafina",2)))),
-				ConversationStates.ATTENDING, "Tak wiem Władca Smoków mówił mi o tobie. Zajmuję się udoskonalaniem złotej ciupagi.\n"
+				ConversationStates.IDLE, "Tak wiem Władca Smoków mówił mi o tobie. Zajmuję się udoskonalaniem złotej ciupagi.\n"
 									+"Do jej udoskonalenia potrzebuję:\n"
 									+"#'1 pazur zielonego smoka'\n"
 									+"#'1 pazur czerwonego smoka'\n"

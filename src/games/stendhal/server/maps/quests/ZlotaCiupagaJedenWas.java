@@ -194,7 +194,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("złoty róg",1),
 								 new PlayerHasItemWithHimCondition("polano",4),
 								 new PlayerHasItemWithHimCondition("money",120000)),
-				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 8 godzin, a ciupaga będzie gotowa. Przypomnij mi mówiąc #/nagroda/",
+				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 8 godzin, a ciupaga będzie gotowa. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij"),
@@ -205,7 +205,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("złoty róg",1),
 												  new PlayerHasItemWithHimCondition("polano",4),
 												  new PlayerHasItemWithHimCondition("money",120000)))),
-				ConversationStates.ATTENDING, "Potrzebuję:\n"
+				ConversationStates.IDLE, "Potrzebuję:\n"
 									+"#'1 złotą ciupagę'\n"
 									+"#'70 sztabek złota'\n"
 									+"#'1 złoty róg'\n"

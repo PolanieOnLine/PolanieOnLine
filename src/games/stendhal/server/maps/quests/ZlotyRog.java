@@ -143,7 +143,7 @@ public class ZlotyRog extends AbstractQuest {
 		ciupagaactions.add(new DropItemAction("pióro serafina",2));
 		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "make;" + System.currentTimeMillis()));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("rzeczy", "przedmioty", "róg", "przypomnij"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("rzeczy", "przedmioty", "róg", "przypomnij", "zadanie", "task"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 								 new PlayerHasItemWithHimCondition("piórko",100),
 								 new PlayerHasItemWithHimCondition("pióro anioła",20),
@@ -152,10 +152,10 @@ public class ZlotyRog extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("pióro upadłego anioła",20),
 								 new PlayerHasItemWithHimCondition("pióro archanioła ciemności",7),
 								 new PlayerHasItemWithHimCondition("pióro serafina",2)),
-				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za godzinę a złoty róg będzie gotowy. Przypomnij mi mówiąc: #/nagroda/.",
+				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za godzinę a złoty róg będzie gotowy. Przypomnij mi mówiąc: #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "rzeczy"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "rzeczy", "zadanie", "task"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 								 new NotCondition(
 								 new AndCondition(new PlayerHasItemWithHimCondition("piórko",100),
@@ -174,20 +174,18 @@ public class ZlotyRog extends AbstractQuest {
 									+"#'7 piór archanioła ciemności'\n"
 									+"#'2 pióra serafina'\n"
 									+"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #przypomnij. Dziękuję!", null);
-
 	}
 
 	private void step_3() {
 		final SpeakerNPC npc = npcs.get("Bartłomiej");
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("nagroda"),
+			Arrays.asList("nagroda", "zadanie", "task"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-			new QuestStateStartsWithCondition(QUEST_SLOT, "make;")),
+				new QuestStateStartsWithCondition(QUEST_SLOT, "make;")),
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 
 					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
