@@ -547,7 +547,7 @@ public class ProsbyXylony extends AbstractQuest {
 							toKill.put("zielony smok", new Pair<Integer, Integer>(1,0));
 							toKill.put("dwugłowy czerwony smok", new Pair<Integer, Integer>(1,0));
 							toKill.put("dwugłowy czarny smok", new Pair<Integer, Integer>(1,0));
-							toKill.put("smok dwugłowy niebieski", new Pair<Integer, Integer>(1,0));
+							toKill.put("dwugłowy niebieski smok", new Pair<Integer, Integer>(1,0));
 							toKill.put("złoty smok", new Pair<Integer, Integer>(1,0));
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 							actions.add(new SetQuestAction(QUEST_SLOT, 0, "ostatnie"));
@@ -560,7 +560,7 @@ public class ProsbyXylony extends AbstractQuest {
 				"Wspaniale! Abym mogła ukończyć swój amulet musisz zabić:\n"
 				+ "#'dwugłowy czarny smok',\n"
 				+ "#'dwugłowy czerwony smok',\n"
-				+ "#'smok dwugłowy niebieski',\n"
+				+ "#'dwugłowy niebieski smok',\n"
 				+ "#'czerwony smok',\n"
 				+ "#'zielony smok' oraz #'złoty smok'.\n"
 				+ " Oczywiście samo zabicie nic nie da, musisz przynieść mi conajmniej 10 skór każdego rodzaju.",
@@ -771,8 +771,8 @@ public class ProsbyXylony extends AbstractQuest {
 			return res;
 		}
 		res.add("Xylona dała mi swoje ostatnie zadanie. Mam zabić resztę smoków, o które prosi oraz przynieść mi ich skóry. "
-		+ "Dokładnie mam zabić: dwugłowy czarny smok, dwugłowy czerwony smok, smok dwugłowy niebieski, czerwony smok, zielony smok oraz złoty smok."
-		+ "Mam przynieść: 10 skór czarnego smoka, 10 skór czerwonego smoka, 10 skór niebieskiego smoka, 10 skór zielonego smoka, 10 skó złotego smoka.");
+		+ "Dokładnie mam zabić: dwugłowy czarny smok, dwugłowy czerwony smok, dwugłowy niebieski smok, czerwony smok, zielony smok oraz złoty smok."
+		+ "Mam przynieść: 10 skór czarnego, czerwonego, niebieskiego, zielonego oraz złotego smoka.");
 		if ("ostatnie".equals(questState)) {
 			return res;
 		}
