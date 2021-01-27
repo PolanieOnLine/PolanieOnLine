@@ -346,7 +346,7 @@ public class HelpKrasnolud extends AbstractQuest {
 			if ("helmet".equals(questState)) {
 				return res;
 			}
-			res.add("Zaniosłem hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego oraz 60 czarnego i 10 złotego smoka.");
+			res.add("Zaniosłem hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
 			if ("armor".equals(questState)) {
 				return res;
 			}
