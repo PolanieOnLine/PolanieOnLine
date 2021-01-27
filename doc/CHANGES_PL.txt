@@ -21,8 +21,11 @@ Changelog
 - Usunięto przestarzały kod RPClass rozdzielony na każdy surowiec
 
 *naprawiono błędy*
-- Naprawiono błąd z wysyłaniem informacji o statystykach postaci gracza do bazy danych
+- Poprawiono opis zadania "Pomoc Krasnoludowi" w dzienniku zadań
+- Naprawiono czas oczekiwania na złoty róg
+- Naprawiono zadanie "Prośby Xylony"
 - Naprawiono osiągnięcie "Dawid kontra Goliat"
+- Naprawiono błąd z wysyłaniem informacji o statystykach postaci gracza do bazy danych
 
 
 1.16.1
