@@ -6,6 +6,7 @@ Changelog
 - Dodano 6 nowych grafik przedmiotów
 - Dodano 4 nowe dźwięki uderzeń kilofa
 - Dodano animację kilofa uderzającego o surowiec
+- Poprawiono kolory grafiki polana
 
 *świat*
 - Dodano nowego NPC
