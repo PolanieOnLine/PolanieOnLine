@@ -242,9 +242,29 @@
 		</equipable>
 	</item>
 
-	<item name="złoże platyny">
+	<item name="ruda platyny">
 		<type class="resource" subclass="platinum_ore" tileid="-1"/>
-		<description>Oto złoże platyny. Połyskuje srebrno-białym kolorem.</description>
+		<description>Oto ruda platyny. Połyskuje srebrno-białym kolorem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="ruda cieni">
+		<type class="resource" subclass="shadow_ore" tileid="-1"/>
+		<description>Oto ruda cieni. Niczym nie połyskuje.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -264,7 +284,7 @@
 
 	<item name="żelazo">
 		<type class="resource" subclass="iron" tileid="-1"/>
-		<description>Oto żelazo.</description>
+		<description>Oto żelazo. Jeden z najczęściej wykorzystywanych surowców przez kowali.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -345,6 +365,26 @@
 	<item name="sztabka platyny">
 		<type class="resource" subclass="platinum_bar" tileid="-1"/>
 		<description>Oto sztabka platyny. Można zrobić z niej doskonały pancerz.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sztabka cieni">
+		<type class="resource" subclass="shadow_bar" tileid="-1"/>
+		<description>Oto sztabka cieni. Posiada specyficzne właściwości, potrafi powstrzymywać światło.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
