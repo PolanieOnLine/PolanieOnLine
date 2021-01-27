@@ -152,7 +152,7 @@ public class ZlotyRog extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("pióro upadłego anioła",20),
 								 new PlayerHasItemWithHimCondition("pióro archanioła ciemności",7),
 								 new PlayerHasItemWithHimCondition("pióro serafina",2)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za godzinę a złoty róg będzie gotowy. Przypomnij mi mówiąc: #/nagroda/.",
+				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za godzinę a złoty róg będzie gotowy. Przypomnij mi mówiąc: #/nagroda/.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "rzeczy"),
@@ -165,7 +165,7 @@ public class ZlotyRog extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("pióro upadłego anioła",20),
 												  new PlayerHasItemWithHimCondition("pióro archanioła ciemności",7),
 												  new PlayerHasItemWithHimCondition("pióro serafina",2)))),
-				ConversationStates.ATTENDING, "Potrzebuję:\n"
+				ConversationStates.IDLE, "Potrzebuję:\n"
 									+"#'100 piórek gołębich'\n"
 									+"#'20 piór anioła'\n"
 									+"#'10 piór archanioła'\n"
