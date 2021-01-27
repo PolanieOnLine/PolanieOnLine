@@ -142,6 +142,26 @@
 		</equipable>
 	</item>
 
+	<item name="kryształ diamentu">
+		<type class="jewellery" subclass="diamond_crystal" tileid="-1"/>
+		<description>Oto kryształ diamentu, cenny nieoszlifowany klejnot.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="kryształ ametystu">
 		<type class="jewellery" subclass="ametyst_crystal" tileid="-1"/>
 		<description>Oto kryształ ametystu, cenny nieoszlifowany klejnot.</description>
