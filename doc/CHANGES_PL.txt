@@ -24,6 +24,7 @@ Changelog
 
 *naprawiono błędy*
 - Poprawiono opis zadania "Pomoc Krasnoludowi" w dzienniku zadań
+- Poprawiono kolizję na mapie: -1_koscielisko_kopalnie
 - Naprawiono czas oczekiwania na złoty róg
 - Naprawiono zadanie "Prośby Xylony"
 - Naprawiono osiągnięcie "Dawid kontra Goliat"
