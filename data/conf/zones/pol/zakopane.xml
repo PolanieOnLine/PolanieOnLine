@@ -1552,6 +1552,8 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Mine hut -->
 	<zone name="int_zakopane_mines_hut" file="interiors/zakopane/hut.tmx">
+		<configurator class-name="games.pol.server.maps.zakopane.cave.hut.ItemsOnTable"/>
+
 		<portal x="5" y="10" ref="hut_exit">
 			<destination zone="-3_zakopane_mines" ref="hut_entrance"/>
 		</portal>
