@@ -12,6 +12,11 @@ Changelog
 *świat*
 - Dodano nowego NPC
 - Dodano 4 nowe przedmioty
+- Dodano 4 nowe osiągnięcia:
+	- "Kolekcjoner Płaszczy",
+	- "Kolekcjoner Pasów",
+	- "Kolekcjoner Rękawic",
+	- "Oszałamiający Płaszcz"
 - Dodano możliwość ulepszenia łuku z mithrilu
 - Dodano możliwość zdobycia lekkiej kuszy z potworów
 - Wprowadzono nową statystykę dla graczy: górnictwo
