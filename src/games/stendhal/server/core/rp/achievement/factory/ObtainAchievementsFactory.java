@@ -68,6 +68,22 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
 
+		achievements.add(createAchievement("quest.special.cloakscollector", "Kolekcjoner Płaszczy", "Ukończył ostatnie zadanie u kolekcjonerki płaszczy",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestCompletedCondition("cloaks_collector_2")));
+
+		achievements.add(createAchievement("quest.special.beltscollector", "Kolekcjoner Pasów", "Ukończył zadanie u kolekcjonerki pasów",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestCompletedCondition("belts_collector")));
+
+		achievements.add(createAchievement("quest.special.glovescollector", "Kolekcjoner Rękawic", "Ukończył zadanie u kolekcjonerki rękawic",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestCompletedCondition("gloves_collector")));
+
+		achievements.add(createAchievement("quest.special.mithrilcloak", "Oszałamiający Płaszcz", "Ukończył zadanie na płaszcz z mithrilu",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestCompletedCondition("mithril_cloak")));
+
 		// flower harvest
 		achievements.add(createAchievement("obtain.harvest.flower", "Zielony Kciuk", "Zebrał 20 każdego rodzaju uprawianego kwiatu",
 				Achievement.EASY_BASE_SCORE, true,
