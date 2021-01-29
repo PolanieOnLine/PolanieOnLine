@@ -254,9 +254,9 @@
 		</equipable>
 	</item>
 
-	<item name="rod of the gm">
+	<item name="rózga GM">
 		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>
-		<description>Oto rod of the GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
+		<description>Oto rózga GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="100"/>

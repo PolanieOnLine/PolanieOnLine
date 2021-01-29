@@ -69,7 +69,7 @@ public class TPPTestHelper implements ITPPQuestConstants {
 		 */
 		player = PlayerTestHelper.createPlayer("player");
 		PlayerTestHelper.registerPlayer(player);
-		PlayerTestHelper.equipWithItem(player, "rod of the gm");
+		PlayerTestHelper.equipWithItem(player, "rózga GM");
 		player.setAdminLevel(1000);
 		player.setAtkXP(100000000);
 		player.setDefXP(100000000);

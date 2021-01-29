@@ -47,7 +47,7 @@ public class AdminMaker extends ScriptImpl {
 	private static Logger logger = Logger.getLogger(AdminMaker.class);
 	private static final String TELE_QUEST_SLOT = "AdminMakerTele";
 
-	private final List<String> itemsSingle = Arrays.asList("rod of the gm",
+	private final List<String> itemsSingle = Arrays.asList("rózga GM",
 			"złota tarcza", "złota zbroja", "złoty płaszcz",
 			"złoty hełm", "złote spodnie", "złote buty",
 			"kusza łowcy");

@@ -58,7 +58,7 @@ public class PlayerTransformer implements Transformer {
 	private static final List<String> ITEMS_TO_UNBIND = Arrays.asList("zwój zapisany");
 
 	/** these items should be deleted for non admins */
-	private static final List<String> ITEMS_FOR_ADMINS = Arrays.asList("rod of the gm", "klucz GM");
+	private static final List<String> ITEMS_FOR_ADMINS = Arrays.asList("rózga GM", "klucz GM");
 
 	public Player create(final RPObject object) {
 
