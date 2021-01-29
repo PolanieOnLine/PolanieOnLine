@@ -54,6 +54,9 @@
  <tileset firstgid="409" name="latarnia_blaszczysko" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png" width="160" height="160"/>
  </tileset>
+ <tileset firstgid="434" name="sources" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/item/sources.png" width="256" height="64"/>
+ </tileset>
  <layer id="1" name="0_floor" width="64" height="64">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACuWYS3LDMAxD062P68u0x+100WlGY0skCIBKuuDOEvnAn5Lz8XicT3YMdv4D+/r4s5H/3bV4Zl9pkL0nY6u7KjxZm9XAnQ7vxB/RYNRBzR/VgcWP1IKDf6UBm/8M1MFB8I8yKDX4vU/dC9X4FfzjncoaYPIr2KMadNWvag6r+ZkzTJ37jAZudqY5+Hdhv/K54l9pgOa/K8/sGkD4d2KP1CiD/67+2IyVPrs7x+J35FjRZ6o38KtYR+532pFu/h12ZRc/Y44xY2C9/6rsTg2y/Iy4IuxVX8hbxf1fSPSNivpQ8lfiWp1XvGtY/KgGlbiQXKJ+svwKFgZHJTdM/si31RnImJ2qOYD2e5W9Op9Yu6C6L1B21CfSCwo2Z94rddDBr2QffezG72Bn8bNjc7Er+KsxOtmj/Nm9psj/6vtO/qu4mRpEv92J3zkvUZ/R/Vd5ozn4r97qWWPwd2lw93ulyo3wM3ohey7CgBrCwGKPnt+Jv1r7yO53sHfP/9l9O/A75t7dncr6j/TAbL46NFDzHwue1Y5Ra/BJMrQGIntWqQGLf6ZDpQfQ/RH91sG/6gFGH6Bn2PxoDcw0QNijZxX8FQ2QXn4VfrYGjJnh5mdpwNoZKn61Bqx9qeR31MGoRfZsJ79qJu7Ev7sGDv5MH7g1cPE750HUfny6+TP9wOI8J746+LMzIWLob/Mu/ogGDuvk30GHb1X0K2QAQAAA
@@ -81,7 +84,7 @@
  </layer>
  <layer id="6" name="objects" width="64" height="64">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3ZUQ6DIAwAUL3/lrjtwvsli3w4kVp47wCApNAWlwVgbs+1/ZiPC8bMND+U/onHtxjmpMh7MGruvXk/wWfJWaal6HgGyOIO+TdDT/pKsEbq7hDnQH9XvOMyp23CdyPmUKtx3Z91I+yN2phovXObfh6AEWq47PS2RNMHkdmRt0k57zw5ix6i4qy8T8T6PvuSx2/Oa13vleNH/SeM/D/ZW5azl2WdR436XTCzL+nbEiMAQAAA
+   H4sIAAAAAAAACu3b2w7CIAyA4fn+M/HwKJ6iU5/NGy9woYnVQWn5v0tjGIFSCtNhANp1Wln3QMdbf6O6CfMgfb4uMG/ju827UUyMxGJzDoo5OQabv1/icRdsDFCfZR60enbuuXvjtWSxlqnH4rKOZ8AjcmKfWqilPZxJtw76CFkLcY5lnZlTfKHEPS76tOnw3gh9kGpc8qcswthQG8Na7b2N8/ynB+OBhnAfjVoi1HDecbaFNc5ByLk4iQvN3SR73v/Ys5DS/I5bwyrO0nxCrOcxLn7M97yl6720fav3hJbvJ2vTrr2n8P1r4TGrmSNK/j9omrVN7gPieQH4fk6kAEAAAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="64" height="64" opacity="0.4">
