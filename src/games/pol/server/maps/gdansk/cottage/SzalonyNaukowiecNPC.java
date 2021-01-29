@@ -18,6 +18,7 @@ import java.util.TreeMap;
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
@@ -50,23 +51,31 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 			public void createDialog() {
 				addJob("Jestem naukowcem i pracuję nad bardzo #'mocnym eliksirem', który uleczy nawet umarłych. Jeszcze nie mam pojęcia jak go nazwać!");
 				addReply(Arrays.asList("mocny eliksir", "mocnym eliksirem", "eliksirem"),
-				"Taki eliksir potrafiłby uleczyć nawet umarłych. *HIHIHIHI*");
+						"Taki eliksir potrafiłby uleczyć nawet umarłych. *HIHIHIHI*");
 				addReply("królikiem doświadczalnym",
-		        "Tak... *HIHIHI*.. królikiem... Jak moja receptura się sprawdzi możesz doznać bardzo mocnego ożywienia, dodatkowej siły.");
+						"Tak... *HIHIHI*.. królikiem... Jak moja #receptura się sprawdzi możesz doznać bardzo mocnego ożywienia, dodatkowej siły.");
+				addReply("receptura",
+						"Moja TAJNA receptura na #'duży smoczy eliksir'. *HIHIHIHI*");
 				addOffer("Mogę sporządzić dla Ciebie #'duży smoczy eliksir'. Do tego będę potrzebował 3 razy #'krew smoka' oraz bardzo dużo pieniędzy! *HIHIHI* Powiedz tylko #sporządź.");
-				addReply("duży smoczy eliksir", "Jest to bardzo i to bardzo silny eliksir.*HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 duży smoczy eliksir'.");
+				addReply("duży smoczy eliksir",
+						"Jest to bardzo i to bardzo silny eliksir. *HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 duży smoczy eliksir'.");
 				addHelp("Jeżeli chcesz być mądry tak jak ja to powinieneś odwiedzić bibliotekę. Tam jest sporo pomocy naukowych.");
 				addGoodbye("Do widzenia.");
 
 				// (uses sorted TreeMap instead of HashMap)
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 1200);
-				requiredResources.put("krew smoka", 3);
+				requiredResources.put("smocza krew", 3);
 				final ProducerBehaviour behaviour = new ProducerBehaviour("aron_concoct_potion",
 						Arrays.asList("concoct", "sporządź"), "duży smoczy eliksir", requiredResources, 2 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
 				"Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?");
+			}
+
+			@Override
+			protected void onGoodbye(RPEntity player) {
+				setDirection(Direction.UP);
 			}
 		};
 
