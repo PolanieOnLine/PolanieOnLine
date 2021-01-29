@@ -198,7 +198,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 								new QuestCompletedCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						null,
-						new SayTextAction("Witaj  [name] w miejscu, z którego można dostać się do władcy smoków. Czy chcesz tam dostać się?"));
+						new SayTextAction("Witaj [name] w miejscu, z którego można dostać się do władcy smoków. Czy chcesz tam dostać się?"));
 
 				// never started quest
 				add(ConversationStates.IDLE,
@@ -210,7 +210,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 								new QuestNotStartedCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						null,
-						new SayTextAction("Witaj  [name] w miejscu, z którego można dostać się do władcy smoków."));
+						new SayTextAction("Witaj [name] w miejscu, z którego można dostać się do władcy smoków."));
 
 				// currently in bank
 				add(ConversationStates.IDLE,
@@ -222,7 +222,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 								new QuestActiveCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						null,
-						new SayTextAction("Witaj  [name] w miejscu, z którego można dostać się do władcy smoków.. Możesz wyjść wcześniej. Jeżeli chcesz to powiedz tylko #wyjście.."));
+						new SayTextAction("Witaj [name] w miejscu, z którego można dostać się do władcy smoków.. Możesz wyjść wcześniej. Jeżeli chcesz to powiedz tylko #wyjście.."));
 
 				// hasn't got access to all banks yet
 				add(ConversationStates.IDLE,
@@ -258,7 +258,7 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 								new PlayerHasItemWithHimCondition("money", COST),
 								new QuestNotActiveCondition(QUEST_SLOT)),
 								ConversationStates.ATTENDING,
-								"Uważaj tam na serafina!!!  Czasami pojawia się niespodziewanie.",
+								"Uważaj tam na serafina!!! Czasami pojawia się niespodziewanie.",
 								new MultipleActions(
 										new DropItemAction("money", COST),
 										new TeleportAction(ZONE_NAME, 14, 8, Direction.DOWN),
