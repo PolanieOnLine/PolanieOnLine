@@ -83,6 +83,8 @@ public class SourceIron extends SourceEntity {
 		put("name", sourceClass);
 		setMenu("Wydobądź|Użyj");
 		setDescription("Wszystko wskazuje na to, że tutaj coś jest.");
+
+		setResistance(100);
 	}
 
 	/**
@@ -136,7 +138,7 @@ public class SourceIron extends SourceEntity {
 	@Override
 	protected void onStarted(final Player player) {
 		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
-		player.sendPrivateText("Rozpocząłeś wydobywanie rudy surowca.");
+		player.sendPrivateText("Rozpocząłeś wydobywanie surowca.");
 		notifyWorldAboutChanges();
 		addEvent(new ImageEffectEvent("mining", true));
 		notifyWorldAboutChanges();

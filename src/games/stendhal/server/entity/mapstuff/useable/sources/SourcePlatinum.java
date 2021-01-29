@@ -73,6 +73,8 @@ public class SourcePlatinum extends SourceEntity {
 		put("name", sourceClass);
 		setMenu("Wydobądź|Użyj");
 		setDescription("Wszystko wskazuje na to, że tutaj coś jest.");
+
+		setResistance(100);
 	}
 
 	@Override

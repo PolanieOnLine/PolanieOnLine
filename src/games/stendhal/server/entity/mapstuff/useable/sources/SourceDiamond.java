@@ -44,7 +44,7 @@ public class SourceDiamond extends SourceEntity {
 	private final String itemName;
 
 	/**
-	 * Create a mithril source.
+	 * Create a diamond source.
 	 */
 	public SourceDiamond() {
 		this("kryształ diamentu");
@@ -59,7 +59,7 @@ public class SourceDiamond extends SourceEntity {
 	}
 
 	/**
-	 * Create a mithril source.
+	 * Create a diamond source.
 	 *
 	 * @param itemName
 	 *            The name of the item to be prospected.
@@ -73,6 +73,8 @@ public class SourceDiamond extends SourceEntity {
 		put("name", sourceClass);
 		setMenu("Wydobądź|Użyj");
 		setDescription("Wszystko wskazuje na to, że tutaj coś jest.");
+
+		setResistance(100);
 	}
 
 	@Override
