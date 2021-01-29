@@ -55,7 +55,7 @@ public abstract class PlayerActivityEntity extends UseableEntity {
 				onFinished(player, isSuccessful(player));
 			}
 		} else {
-			player.sendPrivateText("Jesteś zbyt daleko od "+this.getName()+ " spróbuj podejść bliżej.");
+			player.sendPrivateText("Jesteś zbyt daleko od "+this.getName()+ ", spróbuj podejść bliżej.");
 			onFinished(player, false);
 		}
 	}
