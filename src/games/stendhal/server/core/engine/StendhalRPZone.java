@@ -69,6 +69,23 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPointFactory;
 import games.stendhal.server.entity.mapstuff.spawner.SheepFood;
+import games.stendhal.server.entity.mapstuff.useable.SourceEntity;
+import games.stendhal.server.entity.mapstuff.useable.UseableEntity;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceAmetyst;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceCarbuncle;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceCopper;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceDiamond;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceEmerald;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceGold;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceIron;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceMithril;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceObsidian;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourcePlatinum;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceSalt;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceSapphire;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceShadow;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceSilver;
+import games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur;
 import games.stendhal.server.entity.mapstuff.spawner.GoatFood;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -664,6 +681,8 @@ public class StendhalRPZone extends MarauroaRPZone {
 							break;
 					}
 				}
+			} else if (clazz.contains("sources.png")) {
+				createSourceAt(type, x, y);
 			} else if (clazz.contains("sheep.png")) {
 				final Sheep sheep = new Sheep();
 				sheep.setPosition(x, y);
@@ -713,10 +732,65 @@ public class StendhalRPZone extends MarauroaRPZone {
 		}
 	}
 
-	/*
+	protected void createSourceAt(final int type, final int x, final int y) {
+		UseableEntity source;
+		source = new SourceEntity();
+		switch (type) {
+			case 0:
+				source = new SourceSalt();
+				break;
+			case 1:
+				source = new SourceSulfur();
+				break;
+			case 2:
+				source = new SourceIron();
+				break;
+			case 3:
+				source = new SourceCopper();
+				break;
+			case 4:
+				source = new SourceGold();
+				break;
+			case 5:
+				source = new SourceAmetyst();
+				break;
+			case 6:
+				source = new SourceShadow();
+				break;
+			case 7:
+				source = new SourceSilver();
+				break;
+			case 8:
+				source = new SourceEmerald();
+				break;
+			case 9:
+				source = new SourceSapphire();
+				break;
+			case 10:
+				source = new SourceCarbuncle();
+				break;
+			case 11:
+				source = new SourceObsidian();
+				break;
+			case 12:
+				source = new SourceMithril();
+				break;
+			case 13:
+				source = new SourcePlatinum();
+				break;
+			case 14:
+				source = new SourceDiamond();
+				break;
+			default:
+				break;
+		}
+
+		source.setPosition(x, y);
+		add(source);
+	}
+
+	/**
 	 * Create a portal between levels.
-	 *
-	 *
 	 */
 	protected void createLevelPortalAt(final int type, final int x, final int y) {
 		if (logger.isDebugEnabled()) {
