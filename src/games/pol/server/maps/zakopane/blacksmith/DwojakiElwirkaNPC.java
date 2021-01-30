@@ -43,7 +43,6 @@ public class DwojakiElwirkaNPC implements ZoneConfigurator  {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Elwirka") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -85,10 +84,12 @@ public class DwojakiElwirkaNPC implements ZoneConfigurator  {
 				new ProducerAdder().addProducer(this, behaviour,
 						"Witojcie! Co was tu sprowadza? Pewnie moje legendarne #dwojaki.");
 
-			}};
-			npc.setPosition(2, 13);
-			npc.setEntityClass("confectionerapplepienpc");
-			npc.setDescription("To Elwirka, która umie przygotować pyszne potrawy z gruli i lubi winogrona.");
-			zone.add(npc);
+			}
+		};
+
+		npc.setPosition(2, 13);
+		npc.setEntityClass("confectionerapplepienpc");
+		npc.setDescription("Oto Elwirka, która umie przygotować pyszne potrawy z gruli i lubi winogrona.");
+		zone.add(npc);
 	}
 }
