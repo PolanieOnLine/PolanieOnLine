@@ -39,8 +39,8 @@ public class GornikNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("");
-				addHelp("");
+				addJob("Aktualnie zajmuję się wykopaliskami. Jeśli masz ochotę #pomóc, możesz podnieść mój stary kilof, który leży w chatce na stole.");
+				addHelp("Być może będę potrzebował pomocy od takiego rycerza w pewnym #zadaniu.");
 				addGoodbye();
 			}
 
