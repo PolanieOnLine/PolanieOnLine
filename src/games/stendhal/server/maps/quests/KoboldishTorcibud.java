@@ -125,7 +125,7 @@ public class KoboldishTorcibud extends AbstractQuest {
     @Override
     public void addToWorld() {
         fillQuestInfo(
-            "Koboldish Torcibud",
+            "Koboldzie Nalewki",
             "Wrviliza potrzebuje składników do przygotowania jej sławnej Nalewki Litworowej.",
             true);
         phase_1();
