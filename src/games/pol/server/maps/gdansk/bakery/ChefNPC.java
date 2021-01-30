@@ -99,7 +99,7 @@ public class ChefNPC implements ZoneConfigurator  {
 				requiredResources.put("szynka", 1);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"leander_make_sandwiches", Arrays.asList("make", "zrób"), "kanapka",
+						"ernest_make_sandwiches", Arrays.asList("make", "zrób"), "kanapka",
 						requiredResources, 3 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
