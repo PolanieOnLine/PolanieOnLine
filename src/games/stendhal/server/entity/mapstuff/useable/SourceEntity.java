@@ -11,6 +11,11 @@ public class SourceEntity extends PlayerActivityEntity {
 
 	/**
 	 * The equipment needed.
+	 * [0] - zardzewiały kilof,
+	 * [1] - kilof,
+	 * [2] - kilof stalowy,
+	 * [3] - kilof złoty,
+	 * [4] - kilof obsydianowy.
 	 */
 	public static final String[] NEEDED_PICKS = { "zardzewiały kilof", "kilof",
 			"kilof stalowy", "kilof złoty", "kilof obsydianowy" };
