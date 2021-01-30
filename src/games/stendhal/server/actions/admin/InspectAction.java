@@ -83,6 +83,8 @@ public class InspectAction extends AdministrationAction {
 					+ inspected.getDefXP() + ")");
 			st.append("\nSTR:    " + inspected.getRatk() + "("
 					+ inspected.getRatkXP() + ")");
+			st.append("\nGórnictwo:    " + inspected.getMining() + "("
+					+ inspected.getMiningXP() + ")");
 			st.append("\nPD:     " + inspected.getXP());
 			st.append("\nPoziom:  " + inspected.getLevel());
 			st.append("\nKarma:  " + inspected.getKarma());
