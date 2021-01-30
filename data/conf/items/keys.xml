@@ -191,8 +191,8 @@
 	</item>
 	
 	<item name="kluczyk Aligerna">
-		<type class="key" subclass="gold" tileid="-1"/>
-		<description>Oto złoty kluczyk Aligerna. Otwiera drzwi do piwnicy w jego chatce.</description>
+		<type class="key" subclass="black" tileid="-1"/>
+		<description>Oto kluczyk Aligerna. Otwiera drzwi do piwnicy w jego chatce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.GateKey"/>
 		<attributes/>
 		<weight value="1.0"/>
@@ -360,7 +360,7 @@
 	</item>
 
 	<item name="klucz do bram Zakonu">
-		<type class="key" subclass="gold" tileid="-1"/>
+		<type class="key" subclass="filigree" tileid="-1"/>
 		<description>Oto klucz do bram Zakonu Rycerzy Cienia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
