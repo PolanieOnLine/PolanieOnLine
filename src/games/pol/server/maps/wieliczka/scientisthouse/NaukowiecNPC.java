@@ -62,7 +62,7 @@ public class NaukowiecNPC implements ZoneConfigurator {
 				// (uses sorted TreeMap instead of HashMap)
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 800);
-				requiredResources.put("krew smoka", 1);
+				requiredResources.put("smocza krew", 1);
 				final ProducerBehaviour behaviour = new ProducerBehaviour("agrypin_concoct_potion",
 						Arrays.asList("concoct", "sporządź"), "smoczy eliksir", requiredResources, 1 * 60);
 
