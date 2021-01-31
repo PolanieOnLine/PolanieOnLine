@@ -110,21 +110,20 @@ public class ItemParser {
 	 * @param npcAction
 	 * @return error message
 	 */
-	public String getErrormessage(final ItemParserResult res, final List<String> userAction, final String npcAction) {
+	public String getErrormessage(final ItemParserResult res, final List<String> userAction, String npcAction) {
 		String chosenItemName = res.getChosenItemName();
 		Set<String> mayBeItems = res.getMayBeItems();
-		String npcActionPL = "";
 
 		if (npcAction.equals("produce")) {
-			npcActionPL = "produkuję";
+			npcAction = "produkuję";
 		} else if (npcAction.equals("buy")) {
-			npcActionPL = "skupuję";
+			npcAction = "skupuję";
 		} else if (npcAction.equals("sell")) {
-			npcActionPL = "sprzedaję";
+			npcAction = "sprzedaję";
 		} else if (npcAction.equals("repair")) {
-			npcActionPL = "naprawiam";
+			npcAction = "naprawiam";
 		} else if (npcAction.equals("heal")) {
-			npcActionPL = "leczę";
+			npcAction = "leczę";
 		}
 
 		if (chosenItemName == null) {
@@ -137,7 +136,7 @@ public class ItemParser {
 			return "Powiedz mi jaki rodzaj "
 					+ chosenItemName + " chcesz użyć.";
 		} else {
-			return "Nie " + npcActionPL + " "
+			return "Nie " + npcAction + " "
 					+ Grammar.plural(chosenItemName) + ".";
 		}
 	}
