@@ -14,8 +14,7 @@ package games.stendhal.common.grammar;
 /**
  * PrefixProcessor is used to process prefix texts in a text string.
  */
-public class PrefixExtractor
-{
+public class PrefixExtractor {
 	private transient String txt;
 
 	public PrefixExtractor(final String text) {
@@ -71,23 +70,6 @@ public class PrefixExtractor
 		boolean changed = false;
 
 		for(String prefix : PrefixManager.s_instance.getPluralPrefixes()) {
-			changed |= removePrefix(prefix);
-		}
-
-		return changed;
-	}
-
-	/**
-	 * Extracts noun from a string, that may be prefixed with a plural expression
-	 * like "piece of", ...
-	 * The result is stored in txt.
-	 * 
-	 * @return true on any change of txt
-	 */
-	public boolean extractNounPlural2() {
-		boolean changed = false;
-
-		for(String prefix : PrefixManager.s_instance.getPlural2Prefixes()) {
 			changed |= removePrefix(prefix);
 		}
 

@@ -22,33 +22,28 @@ import java.util.Map;
  * Manage the rules for building full forms from words
  * by prefixing with word phrases like "piece of".
  */
-final class PrefixManager
-{
+final class PrefixManager {
 	/**
 	 * Entry for registering singular/plural prefixes for a keyword.
 	 */
 	private static class PrefixEntry {
 		public final String keyword;
 		public final String prefixPlural;
-		public final String prefixPlural2;
 		public final String prefixSingular;
 
-		public PrefixEntry(final String keyword, final String prefixSingular, final String prefixPlural, final String prefixPlural2) {
+		public PrefixEntry(final String keyword, final String prefixSingular, final String prefixPlural) {
 			this.keyword = keyword;
 			this.prefixSingular = prefixSingular;
 			this.prefixPlural = prefixPlural;
-			this.prefixPlural2 = prefixPlural2;
 		}
 	}
-
 
 	public static PrefixManager s_instance = new PrefixManager();
 
 	private Collection<String> pluralPrefixes = new HashSet<String>();
 
-	private Collection<String> plural2Prefixes = new HashSet<String>();
-
 	private Collection<PrefixEntry> prefixEndList = new ArrayList<PrefixEntry>();
+	private Collection<PrefixEntry> prefixStartList = new ArrayList<PrefixEntry>();
 
 
 	private Map<String, PrefixEntry> prefixMap = new HashMap<String, PrefixEntry>();
@@ -59,55 +54,20 @@ final class PrefixManager
 	 * Initialise the map of nouns and prefix expressions.
 	 */
 	public PrefixManager() {
-		register("piece of ", "pieces of ", "pieces of ", "meat");
-		register("piece of ", "pieces of ", "pieces of ", "ham");
-		register("piece of ", "pieces of ", "pieces of ", "cheese");
-		register("piece of ", "pieces of ", "pieces of ", "wood");
-		register("piece of ", "pieces of ", "pieces of ", "paper");
-		register("piece of ", "pieces of ", "pieces of ", "iron");
-		register("piece of ", "pieces of ", "pieces of ", "chicken");
-		register("piece of ", "pieces of ", "pieces of ", "coal");
-		register("piece of ", "pieces of ", "pieces of ", "beeswax");
+		/**
+		 * NOTE
+		 * register, registerEnd, registerPrefix
+		 */
+		register("", "", "");
 
-		register("sack of ", "sacks of ", "sacks of ", "flour");
-		register("sack of ", "sacks of ", "sacks of ", "sugar");
+		registerStart("", "", "");
 
-		register("sheaf of ", "sheaves of ", "sheaves of ", "grain");
-		register("loaf of ", "loaves of ", "loaves of ", "bread");
-		register("stick of ", "sticks of ", "sticks of ", "butter");
-		register("bulb of ", "bulbs of ", "bulbs of ", "garlic");
-		register("jar of ", "jars of ", "jars of ", "honey");
-		register("glass of ", "glasses of ", "glasses of ", "wine");
-		register("cup of ", "cups of ", "cups of ", "tea");
-		register("sprig of ", "sprigs of ", "sprigs of ", "arandula");
-		register("root of ", "roots of ", "roots of ", "mandragora");
-		register("bunch of ", "bunches of ", "bunches of ", "daisies");
-		register("bunch of ", "bunches of ", "bunches of ", "grapes");
-		register("can of ", "cans of ", "cans of ", "oil");
-
-		register("bottle of ", "bottles of ", "bottles of ", "beer");
-		register("bottle of ", "bottles of ", "bottles of ", "water");
-		register("bottle of ", "bottles of ", "bottles of ", "fierywater");
-		register("bottle of ", "bottles of ", "bottles of ", "milk");
-		register("bottle of ", "bottles of ", "bottles of ", "woda święcona");
-
-		registerEnd("bottle of ", "bottles of ", "bottles of ", "potion");
-		registerEnd("bottle of ", "bottles of ", "bottles of ", "poison");
-		registerEnd("bottle of ", "bottles of ", "bottles of ", "antidote");
-		registerEnd("nugget of ", "nuggets of ", "nuggets of ", " ore");
-
-		registerEnd("pair of ", "pairs of ", "pairs of ", " legs");
-		registerEnd("pair of ", "pairs of ", "pairs of ", " boots");
-
-		registerEnd("spool of ", "spools of ", "spools of ", " thread");
-
-		registerPrefix("suit of ", "suits of ", "suits of "); // "armor"
+		registerEnd("", "", "");
 	}
-
 
 	/**
 	 * Prefix one of the registered nouns with an expression like "piece of".
-	 * 
+	 *
 	 * @param str noun to process
 	 * @param lowString lowercase version of str
 	 * @return noun with prefix
@@ -122,7 +82,14 @@ final class PrefixManager
 		} else {
 			for(PrefixEntry entry : prefixEndList) {
 				if (str.endsWith(entry.keyword)) {
-					ret = Grammar.addPrefixIfNotAlreadyThere(ret, entry.prefixSingular, entry.prefixPlural, entry.prefixPlural2);
+					ret = Grammar.addPrefixIfNotAlreadyThere(ret, entry.prefixSingular, entry.prefixPlural);
+					break;
+				}
+			}
+
+			for (PrefixEntry entry : prefixStartList) {
+				if (str.startsWith(entry.keyword)) {
+					ret = Grammar.addPrefixIfNotAlreadyThere(ret, entry.prefixSingular, entry.prefixPlural);
 					break;
 				}
 			}
@@ -131,12 +98,6 @@ final class PrefixManager
 		return ret;
 	}
 
-	/**
-	 * @return collection of all registered plural2 prefixes.
-	 */
-	public Collection<String> getPlural2Prefixes() {
-		return plural2Prefixes;
-	}
 	/**
 	 * @return collection of all registered plural prefixes.
 	 */
@@ -155,39 +116,39 @@ final class PrefixManager
 	 * for example "piece of paper".
 	 * @param prefixSingular
 	 * @param prefixPlural
-	 * @param prefixPlural2
 	 * @param noun
 	 */
-	private void register(final String prefixSingular, final String prefixPlural, final String prefixPlural2, final String noun) {
-		prefixMap.put(noun, new PrefixEntry(noun, prefixSingular, prefixPlural, prefixPlural2));
+	private void register(final String prefixSingular, final String prefixPlural, final String noun) {
+		prefixMap.put(noun, new PrefixEntry(noun, prefixSingular, prefixPlural));
 
-		registerPrefix(prefixSingular, prefixPlural, prefixPlural2);
+		registerPrefix(prefixSingular, prefixPlural);
 	}
 	/**
 	 * Define the singular and plural prefix strings for an item name to be matched at the end,
 	 * for example "bottle of ... potion".
 	 * @param prefixSingular
 	 * @param prefixPlural
-	 * @param prefixPlural2
 	 * @param endString
 	 */
-	private void registerEnd(final String prefixSingular, final String prefixPlural, final String prefixPlural2, final String endString) {
-		prefixEndList.add(new PrefixEntry(endString, prefixSingular, prefixPlural, prefixPlural2));
+	private void registerEnd(final String prefixSingular, final String prefixPlural, final String endString) {
+		prefixEndList.add(new PrefixEntry(endString, prefixSingular, prefixPlural));
 
-		registerPrefix(prefixSingular, prefixPlural, prefixPlural2);
+		registerPrefix(prefixSingular, prefixPlural);
 	}
+	private void registerStart(final String prefixSingular, final String prefixPlural, final String startString) {
+		prefixStartList.add(new PrefixEntry(startString, prefixSingular, prefixPlural));
 
+		registerPrefix(prefixSingular, prefixPlural);
+	}
 
 	/**
 	 * Register a pair of singular and plural prefix strings to be removed
 	 * when parsing item names, for example "suits of leather armor".
 	 * @param prefixSingular
 	 * @param prefixPlural
-	 * @param prefixPlural2
 	 */
-	private void registerPrefix(final String prefixSingular, final String prefixPlural, final String prefixPlural2) {
+	private void registerPrefix(final String prefixSingular, final String prefixPlural) {
 		singularPrefixes.add(prefixSingular);
 		pluralPrefixes.add(prefixPlural);
-		plural2Prefixes.add(prefixPlural2);
 	}
 }
