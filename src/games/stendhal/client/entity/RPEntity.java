@@ -410,7 +410,7 @@ public abstract class RPEntity extends AudibleEntity {
 	public Iterator<TextIndicator> getTextIndicators() {
 		return textIndicators.iterator();
 	}
-	
+
 	public String getGender() {
 		return gender;
 	}
