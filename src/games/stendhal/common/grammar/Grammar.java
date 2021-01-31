@@ -1490,4 +1490,22 @@ public class Grammar {
 		}
 		return enumerateCollection(pluralCollection);
 	}
+
+	public static String genderVerb(String gender, final String word) {
+		if (gender.equals("F")) {
+			if (word.equals("mógł")) {
+				return "mogła";
+			}
+
+			if (word.endsWith("eś")) {
+				return word.substring(0, word.length() - 2) + "aś";
+			}
+			if (word.endsWith("ósł")) {
+				return word.substring(0, word.length() - 3) + "osła";
+			}
+
+			return word + "a";
+		}
+		return word;
+	}
 }

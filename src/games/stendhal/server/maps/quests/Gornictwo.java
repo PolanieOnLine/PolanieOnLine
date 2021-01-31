@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -88,7 +89,7 @@ public class Gornictwo extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
 			ConversationStates.ATTENDING,
-			"W takim razie podnieś mój stary już kilof, może na niewiele się nada, lecz jeszcze tobie posłuży. Jak już będziesz miał ze sobą kilof to postaraj się wydobyć dla mnie 2 rudy siarki.",
+			"W takim razie podnieś mój stary już kilof, może na niewiele się nada, lecz jeszcze tobie posłuży oraz postaraj się wydobyć dla mnie 2 rudy siarki.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(
@@ -113,7 +114,7 @@ public class Gornictwo extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isEquipped("siarka", 2)) {
 						if (player.isQuestCompleted(MINES_EXAM)) {
-							raiser.say("Super! Dziękuję za rudy siarki! Teraz poprosiłbym abyś wykopał dla mnie 5 rud żelaza.");
+							raiser.say("Super! Dziękuję za rudy siarki! Teraz poprosiłbym abyś " + Grammar.genderVerb(player.getGender(), "wykopał") + " dla mnie 5 rud żelaza.");
 							player.drop("siarka", 2);
 							player.incMiningXP(1000);
 							player.addXP(500);
@@ -127,7 +128,7 @@ public class Gornictwo extends AbstractQuest {
 							player.setQuest(QUEST_SLOT, "exam");
 						}
 					} else {
-						raiser.say("Nie próbuj mnie oszukiwać... Wiem, że nie wykopałeś jeszcze tego surowca.");
+						raiser.say("Nie próbuj mnie oszukiwać... Wiem, że nie " + Grammar.genderVerb(player.getGender(), "wykopałeś") + " jeszcze tego surowca.");
 					}
 				}
 			});
@@ -136,7 +137,7 @@ public class Gornictwo extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			Arrays.asList("Bercikiem", "Bercik"), null,
 			ConversationStates.ATTENDING,
-			"Powinieneś odnaleźć go na południowym kościelisku, zamiekszuje w pewnym domku obok mostka.", null);
+			"Odnajdziesz go na południowym kościelisku, zamiekszuje w pewnym domku obok mostka.", null);
 	}
 
 	private void stepPassedExam() {
@@ -153,7 +154,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isQuestCompleted(MINES_EXAM)) {
-						raiser.say("Moje gratulacje zdania egzaminu! Teraz poprosiłbym abyś wykopał dla mnie 5 rud żelaza.");
+						raiser.say("Moje gratulacje zdania egzaminu! Teraz poprosiłbym abyś " + Grammar.genderVerb(player.getGender(), "wykopał") + " dla mnie 5 rud żelaza.");
 						player.incMiningXP(1000);
 						player.setQuest(QUEST_SLOT, "dig_iron");
 					} else {
@@ -242,7 +243,7 @@ public class Gornictwo extends AbstractQuest {
 						return;
 					}
 
-					raiser.say("A oto twój nowy kilof! Teraz będziesz mógł wykopać dla mnie 7 bryłek złota. Złoże złota znajdziejsz niedaleko przejścia na poziom wyżej kopalni.");
+					raiser.say("A oto twój nowy kilof! Teraz będziesz " + Grammar.genderVerb(player.getGender(), "mógł") + " wykopać dla mnie 7 bryłek złota. Złoże złota znajdziejsz niedaleko przejścia na poziom wyżej kopalni.");
 					player.addXP(500);
 					player.addKarma(10);
 					final Item item = SingletonRepository.getEntityManager().getItem("kilof stalowy");
@@ -294,7 +295,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("kryształ szmaragdu", 7) && player.isEquipped("kryształ szafiru", 7) && player.isEquipped("kryształ rubinu", 7)) {
-						raiser.say("Ooo... super! Teraz proszę cię o wydobycia zupełnie nowego surowca! Są pogłoski iż gdzieś w tej kopalni znajduje się ruda cieni! Chcę, abyś przyniósł mi 12 rud tego surowca.");
+						raiser.say("Ooo... super! Teraz proszę cię o wydobycia zupełnie nowego surowca! Są pogłoski iż gdzieś w tej kopalni znajduje się ruda cieni! Chcę, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi 12 rud tego surowca.");
 						player.drop("kryształ szmaragdu", 7);
 						player.drop("kryształ szafiru", 7);
 						player.drop("kryształ rubinu", 7);
@@ -322,7 +323,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("ruda cieni", 12)) {
-						raiser.say("Ależ ten surowiec ma dziwne właściwości! Dziękuję, nie sądziłem, że to była prawda! Następnie chciałbym się prosić o wykopanie 10 rud srebra. Przynieś jeszcze 7 polan oraz kilof stalowy, a wtedy wykonam dla ciebie jeszcze mocniejszy kilof, dzięki niemu będziesz jeszcze szybciej kopał.");
+						raiser.say("Ależ ten surowiec ma dziwne właściwości! Dziękuję, nie sądziłem, że to była prawda! Następnie chciałbym się prosić o wykopanie 10 rud srebra. Przynieś jeszcze 7 polan oraz kilof stalowy, a wtedy wykonam dla ciebie jeszcze mocniejszy kilof, dzięki niemu będziesz jeszcze szybciej " + Grammar.genderVerb(player.getGender(), "kopał") + ".");
 						player.drop("ruda cieni", 12);
 						player.incMiningXP(5000);
 						player.addXP(2200);
@@ -472,7 +473,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(2500);
 						player.setQuest(QUEST_SLOT, "dig_mithril");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie rudy platyny...");
+						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek mithrilu oraz kryształów diamentu...");
 					}
 				}
 			});
@@ -492,7 +493,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("bryłka mithrilu", 20) && player.isEquipped("kryształ diamentu", 10) && player.isEquipped("kilof złoty")) {
-						raiser.say("Prześliczne surowce! W nagrodę otrzymasz mój własny kilof wykonany z obsydianu przez co pozwolę sobie zabrać twój kilof złoty w ramach nowego. Cudownie się nim wykopuje surowce! Będziesz chciał go przetestować prawda? Wykop w takim razie dla mnie po 30 bryłek złota, mithrilu, kryształów obsydianu, ametystu oraz diamentu nowym kilofem!");
+						raiser.say("Prześliczne surowce! W nagrodę otrzymasz mój własny kilof wykonany z obsydianu przez co pozwolę sobie zabrać twój kilof złoty w ramach nowego. Cudownie się nim wykopuje surowce! Będziesz " + Grammar.genderVerb(player.getGender(), "chciał") + " go przetestować, prawda? Wykop w takim razie dla mnie po 30 bryłek złota, mithrilu, kryształów obsydianu, ametystu oraz diamentu nowym kilofem!");
 						player.drop("bryłka mithrilu", 20);
 						player.drop("kryształ diamentu", 10);
 						player.drop("kilof złoty", 1);
