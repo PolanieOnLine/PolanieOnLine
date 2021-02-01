@@ -83,7 +83,7 @@ public class StuffForBaldemar extends AbstractQuest {
 
 	public StuffForBaldemar() {
 		itemCollector.require().item("sztabka mithrilu").pieces(20)
-				.bySaying("Nie mogę #wykuć bez brakujących %s. Po wszystkim będzie TO tarcza z mithrilu.");
+				.bySaying("Nie mogę #wykuć bez brakujących %s. Po wszystkim będzie to tarcza z mithrilu.");
 		itemCollector.require().item("obsydian")
 				.bySaying("Potrzebuję kilku kamieni, aby zmiażdżyć je na proszek i wymieszać z mithrilem. Wciąż potrzebuję %s.");
 		itemCollector.require().item("diament")
