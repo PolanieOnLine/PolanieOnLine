@@ -303,7 +303,7 @@ public class ZlotyRog extends AbstractQuest {
 			return res;
 		}
 		res.add("Dostarczyłem potrzebne przedmioty! Bartłomiej zaniósł je dla brata.");
-		if (questState.startsWith("forging")) {
+		if (questState.startsWith("make")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
 				res.add("Złoty róg chyba jest już gotowy. Hasło: róg.");
 			} else {
