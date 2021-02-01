@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.pol.server.maps.zakopane.cave;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -47,9 +46,7 @@ public class GornikNPC implements ZoneConfigurator {
 				addReply("wykopaliskami",
 						"Próbuję uzyskać informacje o właściwościach wszystkich surowców jakie można wydobyć mym #kilofem.");
 				addReply("kilofem",
-						"Kilof jest potrzebny, by wykopać rudę surowca ze złoża. Chcesz usłyszeć o #'różnych kilofach'?");
-				addReply(Arrays.asList("różnych", "różne", "kilofach", "kilofy"),
-						"Ja bynajmniej znam tylko #'zardzewiały kilof', #'kilof', #'kilof stalowy', #'kilof złoty' oraz #'kilof obsydianowy'.");
+						"Kilof jest potrzebny, by wykopać rudę surowca ze złoża. Ja bynajmniej znam tylko #'zardzewiały kilof', #'kilof', #'kilof stalowy', #'kilof złoty' oraz #'kilof obsydianowy'.");
 
 				addReply("zardzewiały kilof",
 						"Zardzewiały kilof jest najsłabszym kilofem, cały zardzewiały, trzon spruchniały. Nim trzeba sporo się napocić, aby cokolwiek wykopać oraz trzeba napomnieć iż nie wykopiesz każdego minerału tym kilofem. Średnio potrzeba 30 sekund na wydobycie surowca.");
