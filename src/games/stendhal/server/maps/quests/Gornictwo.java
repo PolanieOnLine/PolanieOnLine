@@ -1,5 +1,6 @@
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
+import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.TimeUtil;
@@ -49,7 +51,7 @@ public class Gornictwo extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 			"Górnictwo",
-			"Górnik odnaleziony w kopalni pod Zakopcem potrzebuje pomocy w wykopaliskach.",
+			"Górnik odnaleziony w kopalni pod Zakopcem potrzebuje pomocy w uzupełnieniu informacji o minerałach.",
 			false);
 		step1();
 		stepDigSulfur();
@@ -77,7 +79,7 @@ public class Gornictwo extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING, 
-			"Dzięki tobie mam już wszystkie opisane surowce w swojej książce!", null);
+			"Dzięki Tobie mam już wszystkie opisane minerały w swojej książce!", null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -89,7 +91,7 @@ public class Gornictwo extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
 			ConversationStates.ATTENDING,
-			"W takim razie podnieś mój stary już kilof, może na niewiele się nada, lecz jeszcze tobie posłuży oraz postaraj się wydobyć dla mnie 2 rudy siarki.",
+			"W takim razie podnieś mój stary już kilof, może na niewiele się nada, lecz jeszcze Tobie posłuży oraz postaraj się wydobyć dla mnie 2 rudy siarki.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(
@@ -545,8 +547,74 @@ public class Gornictwo extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(Player player) {
-		// TODO Auto-generated method stub
-		return null;
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem z Górnikiem w kopalni pod Zakopcem.");
+
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę brudzić swych rąk w kopalniach.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Postanowiłem pomóc Górnikowi uzupełnić informacje w swojej książce o minerałach.");
+		}
+
+		if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
+			res.add("Jako pierwszy minerał poprosił mnie o wydobycie 2 rudy siarki.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "exam")) {
+			res.add("Muszę zdać egzamin na górnika, aby dalej pomagać w zdobywaniu informacji o surowcach.");
+		}
+
+		if (questState.startsWith("pick_forging") || questState.startsWith("pickgold_forging")) {
+			if (new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES).fire(player, null, null)) {
+				res.add("Prawdopodobnie Górnik ukończył odlewanie nowego kilofa dla mnie.");
+			} else {
+				res.add("Górnik kazał poczekać 10 minut na nowy kilof.");
+			}
+		}
+
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_iron")) {
+			res.add("Muszę wykopać 5 rud żelaza.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_copper")) {
+			res.add("Muszę wykopać 3 rud miedzi oraz przynieść 5 sztuk drewna.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_gold")) {
+			res.add("Muszę wykopać 7 bryłek złota.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_jewelry")) {
+			res.add("Muszę wykopać po 7 kryształów szmaragdu, szafiru oraz rubinu.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_shadow")) {
+			res.add("Muszę wykopać 12 rud cieni.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_silver")) {
+			res.add("Muszę wykopać 10 rud srebra oraz przynieść 7 sztuk drewna.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_ametyst")) {
+			res.add("Muszę wykopać 7 kryształów ametystu.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_obsidian")) {
+			res.add("Muszę wykopać 14 kryształów obsydianu.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_platinum")) {
+			res.add("Muszę wykopać 10 rud platyny.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_mithril")) {
+			res.add("Muszę wykopać 20 bryłek mithrilu oraz 10 kryształów diamentu.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_last")) {
+			res.add("Muszę wykopać po 30 bryłek złota, mithrilu, kryształów obsydianu, ametystu oraz diamentu.");
+		}
+
+		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
+			res.add("Wykopałem oraz przyniosłem wszystko o co poprosił mnie Górnik. W nagrodę otrzymałem kilof obsydianowy.");
+		}
+
+		return res;
 	}
 
 	@Override
