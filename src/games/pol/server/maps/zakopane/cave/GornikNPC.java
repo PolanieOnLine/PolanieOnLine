@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.pol.server.maps.zakopane.cave;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -39,9 +40,27 @@ public class GornikNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Aktualnie zajmuję się wykopaliskami. Jeśli masz ochotę #pomóc, możesz podnieść mój stary kilof, który leży w chatce na stole.");
+				addJob("Aktualnie zajmuję się #wykopaliskami. Jeśli masz ochotę #pomóc, możesz podnieść mój stary kilof, który leży w chatce na stole.");
 				addHelp("Być może będę potrzebował pomocy od takiego rycerza w pewnym #zadaniu.");
 				addGoodbye();
+
+				addReply("wykopaliskami",
+						"Próbuję uzyskać informacje o właściwościach wszystkich surowców jakie można wydobyć mym #kilofem.");
+				addReply("kilofem",
+						"Kilof jest potrzebny, by wykopać rudę surowca ze złoża. Chcesz usłyszeć o #'różnych kilofach'?");
+				addReply(Arrays.asList("różnych", "różne", "kilofach", "kilofy"),
+						"Ja bynajmniej znam tylko #'zardzewiały kilof', #'kilof', #'kilof stalowy', #'kilof złoty' oraz #'kilof obsydianowy'.");
+
+				addReply("zardzewiały kilof",
+						"Zardzewiały kilof jest najsłabszym kilofem, cały zardzewiały, trzon spruchniały. Nim trzeba sporo się napocić, aby cokolwiek wykopać oraz trzeba napomnieć iż nie wykopiesz każdego minerału tym kilofem. Średnio potrzeba 30 sekund na wydobycie surowca.");
+				addReply("kilof",
+						"Zwyczajny kilof, większość surowców da się nim wykopać. Niestety, lecz drewniany trzon nie pozwala na mocne zamachnięcie się przez co czas trwania wydobywania średnio wynosi 20 sekund.");
+				addReply("kilof stalowy",
+						"Zwykły kilof z wzmocnionym trzonem ze stali, który pozwala na wydobywanie z większości złóż. Średnio potrzeba 16 sekund na wydobycie.");
+				addReply("kilof złoty",
+						"Kilof stalowy, lecz ostrze wykonane ze złota, przez co wygląda obłędnie oraz pozwala na wydobywanie z nieco trwadszych złóż. Średnio potrzeba 12 sekund na wydobycie.");
+				addReply("kilof obsydianowy",
+						"Najdoskonalszy kilof jaki kiedykolwiek widziałem na swe oczy. Otrze wykonane z obsydianu przez co jest najwytrzymalsze, ostrze jest tak ostre, że istnieje szansa na wydobycie podwójnej ilości surowca ze złoża. Tym kilofem można wykopać każdy minerał jaki istnieje, a średni czas wydobywania wynosi 6 sekund.");
 			}
 
 			@Override
