@@ -3,20 +3,23 @@ Changelog
 1.17
 *klient*
 - Dodano grafikę nowego NPC
-- Dodano 9 nowych grafik przedmiotów
+- Dodano 10 nowych grafik przedmiotów
 - Dodano 3 nowe grafiki surowców (rud)
 - Dodano 4 nowe dźwięki uderzeń kilofa
 - Dodano animację kilofa uderzającego o surowiec
 - Poprawiono kolory grafiki polana
+- Zmieniono wygląd "klucza do bram zamku ZRC" oraz "kluczyka Aligerna"
 
 *świat*
 - Dodano nowego NPC
-- Dodano 4 nowe przedmioty
-- Dodano 4 nowe osiągnięcia:
+- Dodano 7 nowe przedmioty
+- Dodano 6 nowe osiągnięcia:
 	- "Kolekcjoner Płaszczy",
 	- "Kolekcjoner Pasów",
 	- "Kolekcjoner Rękawic",
-	- "Oszałamiający Płaszcz"
+	- "Oszałamiający Płaszcz",
+	- "Najtwarsza Tarcza",
+	- "Kopalnia Niestraszna"
 - Dodano możliwość ulepszenia łuku z mithrilu
 - Dodano możliwość zdobycia lekkiej kuszy z potworów
 - Wprowadzono nową statystykę dla graczy: górnictwo
@@ -28,7 +31,7 @@ Changelog
 - Usunięto przestarzały kod RPClass rozdzielony na każdy surowiec
 
 *naprawiono błędy*
-- Poprawiono opis zadania "Pomoc Krasnoludowi" w dzienniku zadań
+- Poprawiono opis zadania "Pomoc Krasnoludowi" oraz "Złoty Róg" w dzienniku zadań
 - Poprawiono opis przedmiotu drewnianej tarczy
 - Poprawiono kolizję na mapie: -1_koscielisko_kopalnie
 - Poprawiono dialogi u Arona
