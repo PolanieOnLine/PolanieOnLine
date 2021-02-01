@@ -56,7 +56,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement("obtain.gornik", "Górnik z Krwi i Kości", "Wydobył 50 każdego rodzaju kamienia szlachetnego",
 				Achievement.HARD_BASE_SCORE, true,
-				new PlayerMinedNumberOfItemsCondition(50, "bryłka złota", "bryłka mithrilu", "kryształ ametystu", "kryształ rubinu", "kryształ szafiru", "kryształ szmaragdu", "kryształ obsydianu")));
+				new PlayerMinedNumberOfItemsCondition(50, "bryłka złota", "bryłka mithrilu", "kryształ ametystu", "kryształ rubinu", "kryształ szafiru", "kryształ szmaragdu", "kryształ obsydianu", "kryształ diamentu")));
 
 		// ultimate collector quest achievement
 		achievements.add(createAchievement("quest.special.collector", "Największy Kolekcjoner", "Ukończył zadanie największego kolekcjonera",
@@ -83,6 +83,14 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement("quest.special.mithrilcloak", "Oszałamiający Płaszcz", "Ukończył zadanie na płaszcz z mithrilu",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestCompletedCondition("mithril_cloak")));
+
+		achievements.add(createAchievement("quest.special.mithrilshield", "Najtwardsza Tarcza", "Ukończył zadanie na tarczę z mithrilu",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestCompletedCondition("mithrilshield_quest")));
+
+		achievements.add(createAchievement("quest.special.gornictwo", "Kopalnia Niestraszna", "Ukończył zadanie na górnictwo",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestCompletedCondition("gornictwo")));
 
 		// flower harvest
 		achievements.add(createAchievement("obtain.harvest.flower", "Zielony Kciuk", "Zebrał 20 każdego rodzaju uprawianego kwiatu",
