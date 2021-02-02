@@ -83,15 +83,4 @@ public class SourceShadow extends SourceEntity {
 	protected void onFinished(final Player player, final boolean successful) {
 		setMiningXP(player, successful, itemName, 780);
 	}
-
-	/**
-	 * Called when the activity has started.
-	 *
-	 * @param player
-	 *            The player starting the activity.
-	 */
-	@Override
-	protected void onStarted(final Player player) {
-		sendMessage(player, "Rozpocząłeś wydobywanie surowca.");
-	}
 }

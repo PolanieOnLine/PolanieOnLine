@@ -178,6 +178,6 @@ public class SourceEntity extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
-		// Do nothing
+		sendMessage(player, "Rozpocząłeś wydobywanie surowca.");
 	}
 }
