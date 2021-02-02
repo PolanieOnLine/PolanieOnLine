@@ -28,10 +28,10 @@ import games.stendhal.client.entity.EntityChangeListener;
 import games.stendhal.client.entity.FlyOverArea;
 import games.stendhal.client.entity.HousePortal;
 import games.stendhal.client.entity.IEntity;
-import games.stendhal.client.entity.NPC;
 import games.stendhal.client.entity.Player;
 import games.stendhal.client.entity.Portal;
 import games.stendhal.client.entity.RPEntity;
+import games.stendhal.client.entity.StatefulEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.WalkBlocker;
 import games.stendhal.client.entity.Wall;
@@ -106,8 +106,8 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 
 		if (entity instanceof Player) {
 			object = new PlayerMapObject(entity);
-		} else if (entity instanceof NPC) {
-			object = new NPCMapObject(entity);
+		} else if (entity instanceof RPEntity) {
+			object = new RPEntityMapObject(entity);
 		} else if (entity instanceof Portal) {
 			final Portal portal = (Portal) entity;
 
@@ -126,11 +126,9 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 			// Only own pets and sheep are drawn but this is checked in the map object so the user status is always up to date
 			object = new DomesticAnimalMapObject((DomesticAnimal) entity);
 		} else if (supermanMode && User.isAdmin()) {
-			if (entity instanceof RPEntity) {
-				object = new RPEntityMapObject(entity);
-			} else {
-				object = new MovingMapObject(entity);
-			}
+			object = new MovingMapObject(entity);
+		} else if (entity instanceof StatefulEntity) {
+			object = new SourceMapObject(entity);
 		}
 
 		if (object != null) {
