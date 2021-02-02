@@ -81,15 +81,15 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				new QuestCompletedCondition("gloves_collector")));
 
 		achievements.add(createAchievement("quest.special.mithrilcloak", "Oszałamiający Płaszcz", "Ukończył zadanie na płaszcz z mithrilu",
-				Achievement.HARD_BASE_SCORE, true,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestCompletedCondition("mithril_cloak")));
 
 		achievements.add(createAchievement("quest.special.mithrilshield", "Najtwardsza Tarcza", "Ukończył zadanie na tarczę z mithrilu",
-				Achievement.HARD_BASE_SCORE, true,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestCompletedCondition("mithrilshield_quest")));
 
 		achievements.add(createAchievement("quest.special.gornictwo", "Kopalnia Niestraszna", "Ukończył zadanie na górnictwo",
-				Achievement.HARD_BASE_SCORE, true,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestCompletedCondition("gornictwo")));
 
 		// flower harvest
