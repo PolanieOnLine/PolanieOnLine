@@ -1,13 +1,30 @@
 package games.stendhal.server.entity.mapstuff.useable;
 
+import java.util.stream.Stream;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.common.grammar.Grammar;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ImageEffectEvent;
+import games.stendhal.server.events.SoundEvent;
 
 public class SourceEntity extends PlayerActivityEntity {
+	private static final Logger logger = Logger.getLogger(SourceEntity.class);
+
 	/**
 	 * The chance that prospecting is successful.
 	 */
 	private static final double FINDING_PROBABILITY = 0.02;
+
+	private final String startSound = "pickaxe_01";
+	private final String successSound = "rocks-1";
+	private final int SOUND_RADIUS = 20;
 
 	/**
 	 * The equipment needed.
@@ -79,12 +96,53 @@ public class SourceEntity extends PlayerActivityEntity {
 		return (random <= (getSuccessProbability(player) * 100));
 	}
 
+	public void setMiningXP(final Player player, final boolean successful, final String itemName, final int xp) {
+		final String skill = player.getSkill("mining");
+
+		if (successful) {
+			addEvent(new SoundEvent(successSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
+	        notifyWorldAboutChanges();
+
+			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
+			if (item != null) {
+				String lastItem = Stream.of(NEEDED_PICKS).reduce((first,last) -> last).get();
+				if (player.isEquipped(lastItem)) {
+					int amount = Rand.throwCoin();
+					((StackableItem) item).setQuantity(amount);
+				}
+
+				player.equipOrPutOnGround(item);
+				player.incMinedForItem(item.getName(), item.getQuantity());
+				if (skill != null) {
+					player.incMiningXP(xp);
+				}
+
+				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
+			} else {
+				logger.error("could not find item: " + itemName);
+			}
+		} else {
+			if (skill != null) {
+				player.incMiningXP((xp) / 10);
+			}
+			player.sendPrivateText("Nic nie wydobyłeś.");
+		}
+	}
+
+	public void sendMessange(final Player player, final String mes) {
+		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
+		player.sendPrivateText(mes);
+		notifyWorldAboutChanges();
+		addEvent(new ImageEffectEvent("mining", true));
+		notifyWorldAboutChanges();
+	}
+
 	@Override
 	protected void onFinished(final Player player, final boolean successful) {
 		// Do nothing
 	}
 	@Override
-	protected void onStarted(Player player) {
+	protected void onStarted(final Player player) {
 		// Do nothing
 	}
 }
