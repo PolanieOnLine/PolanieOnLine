@@ -11,20 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.mapstuff.useable.sources;
 
-import java.util.stream.Stream;
-
-import org.apache.log4j.Logger;
-
-import games.stendhal.common.Rand;
-import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.useable.SourceEntity;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.events.ImageEffectEvent;
-import games.stendhal.server.events.SoundEvent;
 
 /**
  * A mithril source is a spot where a player can prospect for mithril. He
@@ -40,13 +28,7 @@ import games.stendhal.server.events.SoundEvent;
  * @changes artur, KarajuSs
  */
 public class SourceMithril extends SourceEntity {
-	private static final Logger logger = Logger.getLogger(SourceMithril.class);
-	
 	private final static String sourceClass = "source_mithril";
-
-	private final String startSound = "pickaxe_01";
-	private final String successSound = "rocks-1";
-	private final int SOUND_RADIUS = 20;
 
 	/**
 	 * The name of the item to be found.
@@ -88,7 +70,7 @@ public class SourceMithril extends SourceEntity {
 	}
 
 	@Override
-	protected boolean isPrepared(Player player) {
+	protected boolean isPrepared(final Player player) {
 		if (player.isEquipped(NEEDED_PICKS[3])
 			|| player.isEquipped(NEEDED_PICKS[4])) { 
 			return true;
@@ -108,36 +90,7 @@ public class SourceMithril extends SourceEntity {
 	 */
 	@Override
 	protected void onFinished(final Player player, final boolean successful) {
-		final String skill = player.getSkill("mining");
-
-		if (successful) {
-			addEvent(new SoundEvent(successSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
-	        notifyWorldAboutChanges();
-
-			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
-			if (item != null) {
-				String lastItem = Stream.of(NEEDED_PICKS).reduce((first,last) -> last).get();
-				if (player.isEquipped(lastItem)) {
-					int amount = Rand.throwCoin();
-					((StackableItem) item).setQuantity(amount);
-				}
-
-				player.equipOrPutOnGround(item);
-				player.incMinedForItem(item.getName(), item.getQuantity());
-				if (skill != null) {
-					player.incMiningXP(1500);
-				}
-
-				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
-			} else {
-				logger.error("could not find item: " + itemName);
-			}
-		} else {
-			if (skill != null) {
-				player.incMiningXP(150);
-			}
-			player.sendPrivateText("Nic nie wydobyłeś.");
-		}
+		setMiningXP(player, successful, itemName, 1500);
 	}
 
 	/**
@@ -148,10 +101,6 @@ public class SourceMithril extends SourceEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
-		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
-		player.sendPrivateText("Rozpocząłeś wydobywanie surowca.");
-		notifyWorldAboutChanges();
-		addEvent(new ImageEffectEvent("mining", true));
-		notifyWorldAboutChanges();
+		sendMessage(player, "Rozpocząłeś wydobywanie surowca.");
 	}
 }

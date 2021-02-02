@@ -70,7 +70,7 @@ public class SourceAmetyst extends SourceEntity {
 	}
 
 	@Override
-	protected boolean isPrepared(Player player) {
+	protected boolean isPrepared(final Player player) {
 		for (final String itemName : NEEDED_PICKS) {
 			if (itemName != NEEDED_PICKS[0] && player.isEquipped(itemName)) {
 				return true;
@@ -102,6 +102,6 @@ public class SourceAmetyst extends SourceEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
-		sendMessange(player, "Rozpocząłeś wydobywanie surowca.");
+		sendMessage(player, "Rozpocząłeś wydobywanie surowca.");
 	}
 }

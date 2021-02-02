@@ -74,7 +74,7 @@ public class SourceEntity extends PlayerActivityEntity {
 	}
 
 	@Override
-	protected boolean isPrepared(Player player) {
+	protected boolean isPrepared(final Player player) {
 		for (final String itemName : NEEDED_PICKS) {
 			if (player.isEquipped(itemName)) {
 				return true;
@@ -96,6 +96,18 @@ public class SourceEntity extends PlayerActivityEntity {
 		return (random <= (getSuccessProbability(player) * 100));
 	}
 
+	/**
+	 * Called when the activity has finished.
+	 *
+	 * @param player
+	 *            The player that did the activity.
+	 * @param successful
+	 *            If the activity was successful.
+	 * @param itemName
+	 *            The name of the item to be prospected.
+	 * @param xp
+	 *            The xp how much we will get.
+	 */
 	public void setMiningXP(final Player player, final boolean successful, final String itemName, final int xp) {
 		final String skill = player.getSkill("mining");
 
@@ -129,7 +141,15 @@ public class SourceEntity extends PlayerActivityEntity {
 		}
 	}
 
-	public void sendMessange(final Player player, final String mes) {
+	/**
+	 * Called when the activity has started.
+	 *
+	 * @param player
+	 *            The player starting the activity.
+	 * @param mes
+	 *            The message what player will get after activity.
+	 */
+	public void sendMessage(final Player player, final String mes) {
 		addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
 		player.sendPrivateText(mes);
 		notifyWorldAboutChanges();
@@ -137,10 +157,25 @@ public class SourceEntity extends PlayerActivityEntity {
 		notifyWorldAboutChanges();
 	}
 
+	/**
+	 * Called when the activity has finished.
+	 *
+	 * @param player
+	 *            The player that did the activity.
+	 * @param successful
+	 *            If the activity was successful.
+	 */
 	@Override
 	protected void onFinished(final Player player, final boolean successful) {
 		// Do nothing
 	}
+
+	/**
+	 * Called when the activity has started.
+	 *
+	 * @param player
+	 *            The player starting the activity.
+	 */
 	@Override
 	protected void onStarted(final Player player) {
 		// Do nothing
