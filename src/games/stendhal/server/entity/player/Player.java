@@ -1558,58 +1558,58 @@ public class Player extends DressedEntity implements UseListener {
 		final int hours = age / 60;
 		final int minutes = age % 60;
 		final String time = hours + " godzinę" + " i " + minutes + " " + "minutę";
-		final String textparobek = "Oto parobek " + getTitle() + ".\n" + getTitle()
+		final String textparobek = "Oto parobek " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textchlop = "Oto chłop " + getTitle() + ".\n" + getTitle()
+		final String textchlop = "Oto chłop " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textkmiec = "Oto kmieć " + getTitle() + ".\n" + getTitle()
+		final String textkmiec = "Oto kmieć " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textmieszczanin = "Oto mieszczanin " + getTitle() + ".\n" + getTitle()
+		final String textmieszczanin = "Oto mieszczanin " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textszlachcic = "Oto szlachcic " + getTitle() + ".\n" + getTitle()
+		final String textszlachcic = "Oto szlachcic " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textrycerz = "Oto rycerz " + getTitle() + ".\n" + getTitle()
+		final String textrycerz = "Oto rycerz " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textbaronet = "Oto baronet " + getTitle() + ".\n" + getTitle()
+		final String textbaronet = "Oto baronet " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textbaron = "Oto baron " + getTitle() + ".\n" + getTitle()
+		final String textbaron = "Oto baron " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textwicehrabia = "Oto wicehrabia " + getTitle() + ".\n" + getTitle()
+		final String textwicehrabia = "Oto wicehrabia " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String texthrabia = "Oto hrabia " + getTitle() + ".\n" + getTitle()
+		final String texthrabia = "Oto hrabia " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textmagnat = "Oto magnat " + getTitle() + ".\n" + getTitle()
+		final String textmagnat = "Oto magnat " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textksiaze = "Oto książe " + getTitle() + ".\n" + getTitle()
+		final String textksiaze = "Oto książe " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
 		// Rangi administratorów
-		final String texttutor = "Oto #Tutor " + getTitle() + ".\n" + getTitle()
+		final String texttutor = "Oto #Tutor " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textgamemaster = "Oto #GameMaster " + getTitle() + ".\n" + getTitle()
+		final String textgamemaster = "Oto #GameMaster " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textgameadministrator = "Oto #GameAdministrator " + getTitle() + ".\n" + getTitle()
+		final String textgameadministrator = "Oto #GameAdministrator " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
-		final String textgamesupervisor = "Oto #GameSupervisor " + getTitle() + ".\n" + getTitle()
+		final String textgamesupervisor = "Oto #GameSupervisor " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
 
 		final StringBuilder sb = new StringBuilder();
-		if (getAdminLevel() == 0) {
+		if (getAdminLevel() == 0 || name == "postman") {
 			if (getLevel() < 50) {
 				sb.append(textparobek);
 			} else if ((getLevel() >= 50) && (getLevel() < 100)) {
@@ -1635,24 +1635,26 @@ public class Player extends DressedEntity implements UseListener {
 			} else if ((getLevel() >= 550) && (getLevel() < 598)) {
 				sb.append(textksiaze);
 			}
-		} else if ((getAdminLevel() >= 1) && (getAdminLevel() < 7)) {
-			sb.append(texttutor);
-		} else if ((getAdminLevel() >= 7) && (getAdminLevel() < 1000)) {
-			sb.append(textgamemaster);
-		} else if ((getAdminLevel() >= 1000) && (getAdminLevel() < 5000)) {
-			sb.append(textgameadministrator);
-		} else if ((getAdminLevel() == 5000)) {
-			sb.append(textgamesupervisor);
+		} else { 
+			if ((getAdminLevel() >= 1) && (getAdminLevel() < 7)) {
+				sb.append(texttutor);
+			} else if ((getAdminLevel() >= 7) && (getAdminLevel() < 1000)) {
+				sb.append(textgamemaster);
+			} else if ((getAdminLevel() >= 1000) && (getAdminLevel() < 5000)) {
+				sb.append(textgameadministrator);
+			} else if ((getAdminLevel() == 5000)) {
+				sb.append(textgamesupervisor);
+			}
 		}
 
 		final String awayMessage = getAwayMessage();
 		if (awayMessage != null) {
-			sb.append("\n" + getTitle() + " nie ma go teraz, ale zostawił wiadomość: ");
+			sb.append("\n" + name + " nie ma go teraz, ale zostawił wiadomość: ");
 			sb.append(awayMessage);
 		}
 		final String grumpyMessage = getGrumpyMessage();
 		if (grumpyMessage != null) {
-			sb.append("\n" + getTitle() + " ukrywa się i zostawił wiadomość: ");
+			sb.append("\n" + name + " ukrywa się i zostawił wiadomość: ");
 			sb.append(grumpyMessage);
 		}
 
