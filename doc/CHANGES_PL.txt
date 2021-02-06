@@ -30,6 +30,7 @@ Changelog
 - Dodano możliwość zdobycia lekkiej kuszy z potworów
 - Wprowadzono nową statystykę dla graczy: górnictwo
 - Zmieniono imię NPC od ulepszeń "Kowal Inpraf" na "Kowal Tworzymir"
+- Mistrz Drogosz nie tylko odleje sztabkę srebra, ale również oszlifuje dla nas kryształ diamentu
 
 *kod*
 - Dodano wsparcie dla źródeł surowców na mapach TMX
