@@ -173,7 +173,8 @@
 	<target name = "postman">
 		<mkdir dir="${buildroot}/buildbot"/>
 		<javac srcdir="${src}" destdir="${buildroot}/buildbot" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
-			<include name="games/stendhal/bot/postman/*.java"/>
+			<include name="net/sf/arianne/postman/*.java"/>
+			<include name="net/sf/arianne/postman/**/*.java"/>
 			<include name="games/stendhal/bot/package-info.java"/>
 			<include name="games/stendhal/bot/shouter/*.java"/>
 			<include name="games/stendhal/bot/core/*.java"/>
@@ -187,20 +188,24 @@
 				<pathelement path="${marauroa_jar}"/>
 				<pathelement path="${log4j_jar}"/>
 				<pathelement path="${junit_jar}"/>
-				<pathelement path="libs/pircbot.jar"/>
+				<pathelement path="libs/postman/pircbotx-2.0.1.jar"/>
+				<pathelement path="libs/postman/commons-lang3-3.2.1.jar"/>
+				<pathelement path="libs/postman/jwbf-2.0-SNAPSHOT.jar"/>
+				<pathelement path="libs/guava.jar"/>
 			</classpath>
 
 		</javac>
 		<jar jarfile="${buildroot}/buildbot/postman.jar">
 			<fileset dir="${buildroot}/buildbot">
-				<include name="games/stendhal/bot/postman/*"/>
+				<include name="net/sf/arianne/postman/*"/>
+				<include name="net/sf/arianne/postman/**/*"/>
 
 				<include name="games/stendhal/bot/core/*"/>
 
 				<include name="games/stendhal/bot/shouter/*"/>
 			</fileset>
 			<manifest>
-				<attribute name="Main-Class" value="games.stendhal.bot.postman.PostmanMain"/>
+				<attribute name="Main-Class" value="net.sf.arianne.postman.PostmanMain"/>
 			</manifest>
 		</jar>
 		<!-- ende build bot -->
