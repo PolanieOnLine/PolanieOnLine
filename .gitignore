@@ -52,7 +52,7 @@ build_server_xmlconf
 /src/games/stendhal/client/update/*.csr
 *.cmd
 updatesigner.bat
-update.properties
+update-1.16.properties
 /src/net
 /libs/postman
 /build-archive
