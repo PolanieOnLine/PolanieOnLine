@@ -56,7 +56,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj!");
 				addJob("Jestem tutejszym kowalem.");
-				addHelp("Produkuję bełty do kuszy, a mój znajomy zajmuje się produkcją strzał z mithrilu");
+				addHelp("Produkuję bełty do kuszy, a mój znajomy zajmuje się produkcją strzał z mithrilu.");
 				addOffer("Mogę wyprodukować Tobie bełty do kuszy, powiedz tylko #'zrób bełt'. Będę potrzebował 2 #polano oraz #żelazo.");
 				addGoodbye();
 				addReply(Arrays.asList("polano", "drewno"),"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści");
