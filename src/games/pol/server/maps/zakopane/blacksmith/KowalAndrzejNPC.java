@@ -61,7 +61,7 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj!");
 				addJob("Witaj. Jestem tutejszym kowalem. Jako specjalne #zadanie mogę zrobić dla Ciebie #złotą #ciupagę lub odlać żelazo.");
-				addHelp("Odlewam iron oraz w ramach specjalnego zadania wykonuje #złotą #ciupagę.");
+				addHelp("Odlewam żelazo oraz w ramach specjalnego zadania wykonuje #złotą #ciupagę.");
 				addOffer("Mogę odlać żelazo, jeżeli przyniesiesz mi #rudę #żelaza i #polano. Powiedz tylko #odlej. Mogę także w ramach specjalnego #zadania wykonać #złotą #ciupagę o ile przyniesiesz mi #ciupagę, #sztabki #złota, #polana i trochę #money oraz pod warunkiem, że udowodnisz swoją odwagę! W tym celu udaj się do Gazdy Jędrzeja i poproś o #misyjkę #dla #prawdziwego #rycerza! Tylko kiedy je wykonasz, a on da mi znać to zrobię dla Ciebie #złotą #ciupagę.");
 				addGoodbye("Do widzenia.");
 				addReply(Arrays.asList("złota ciupaga", "złotą ciupagę"),"Podejmę się #zadania wykonania złotej ciupagi o ile posiadasz #ciupagę, #polana, #sztabki #złota i #money. Jestem trochę zapracowany i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
