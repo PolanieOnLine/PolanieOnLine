@@ -41,7 +41,7 @@ public class ShowOfferItemsChatAction implements ChatAction {
 		RPSlot offersSlot = market.getSlot(Market.OFFERS_SLOT_NAME);
 		List<Offer> offers = getOffers(offersSlot);
 		if (offers.isEmpty()) {
-			npc.say("Przykro mi, ale obecnie brak ofert:");
+			npc.say("Przykro mi, ale obecnie brak ofert.");
 		} else {
 			String text = buildItemListText(buildItemList(offers));
 			npc.say(text);
