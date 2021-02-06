@@ -17,13 +17,13 @@ Changelog
 	- Kowal Markusław,
 	- Zygfryd,
 	- Radzimir
-- Dodano 7 nowe przedmioty
-- Dodano 6 nowe osiągnięcia:
+- Dodano 7 nowych przedmiotów
+- Dodano 6 nowych osiągnięć:
 	- "Kolekcjoner Płaszczy",
 	- "Kolekcjoner Pasów",
 	- "Kolekcjoner Rękawic",
 	- "Oszałamiający Płaszcz",
-	- "Najtwarsza Tarcza",
+	- "Najtwardsza Tarcza",
 	- "Kopalnia Niestraszna"
 - Dodano nowe pomieszczenie w kuźnicach: int_tatry_kuznice_blacksmith
 - Dodano możliwość ulepszenia łuku z mithrilu
