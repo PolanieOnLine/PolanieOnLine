@@ -59,7 +59,6 @@ public class MinerNPC implements ZoneConfigurator {
 				addGreeting("Witaj! Co cię do mnie sprowadza?");
 				addJob("Jestem sztygarem. Ludzie przychodzą tutaj, aby zdać #egzamin górniczy.");
 				addHelp("Jeżeli będziesz szukać pod ziemią to znajdziesz kilka dobrych kopalni.");
-
 			}
 		};
 
