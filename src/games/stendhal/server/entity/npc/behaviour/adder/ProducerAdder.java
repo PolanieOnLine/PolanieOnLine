@@ -14,6 +14,7 @@ package games.stendhal.server.entity.npc.behaviour.adder;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -150,7 +151,7 @@ public class ProducerAdder {
 						if (behaviour.isOrderReady(player)) {
 							// This can happen if the player had the bag full
 							// when coming to talk to the NPC.
-							npc.say("Jeszcze nie wykonałeś ostatniego zlecenia.");
+							npc.say("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "wykonałeś") + " ostatniego zlecenia.");
 						} else {
 							npc.say("Wciąż nie skończyłem twojego ostatniego zlecenia. Wróć za "
 									+ behaviour.getApproximateRemainingTime(player)

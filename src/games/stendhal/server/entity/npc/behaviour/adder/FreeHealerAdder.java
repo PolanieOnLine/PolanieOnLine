@@ -13,6 +13,7 @@
 package games.stendhal.server.entity.npc.behaviour.adder;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -111,7 +112,7 @@ public class FreeHealerAdder {
 								// (low atk, low def AND low level)
 								raiser.say("Przepraszam, ale Twoje ręce splamionę są krwią niewinnych. Nie mogę Ciebie uleczyć.");
 							} else {
-								raiser.say("Zostałeś uleczony. W czym jeszcze mogę pomóc?");
+								raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
 								healerBehaviour.heal(player);
 							}
 						}
@@ -132,7 +133,7 @@ public class FreeHealerAdder {
 						if (player.drop("money",
 								cost)) {
 							healerBehaviour.heal(player);
-							raiser.say("Zostałeś uleczony. W czym jeszcze mogę pomóc?");
+							raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
 						} else {
 							raiser.say("Przepraszam, ale nie możesz sobie na to pozwolić.");
 						}

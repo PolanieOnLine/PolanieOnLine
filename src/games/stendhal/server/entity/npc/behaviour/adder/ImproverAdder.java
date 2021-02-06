@@ -266,7 +266,7 @@ public class ImproverAdder {
 			}
 			String improves = "#'" + Integer.toString(item.getMaxImproves()) + "'" + times;
 
-			improver.say("Przedmiot ten maksymalnie mogę ulepszyć " + improves + ". Jeśli chciałbyś go udoskonalić to powiedz mi #ulepsz.");
+			improver.say("Przedmiot ten maksymalnie mogę ulepszyć " + improves + ". Jeśli chcesz go udoskonalić to powiedz mi #ulepsz.");
 		} else {
 			improver.say("Wyposażenia takiego jak #'" + currentUpgradingItem + "' nie jestem w stanie ulepszyć.");
 		}

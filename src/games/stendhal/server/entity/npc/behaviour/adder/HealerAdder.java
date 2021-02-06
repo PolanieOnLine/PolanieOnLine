@@ -15,6 +15,7 @@ package games.stendhal.server.entity.npc.behaviour.adder;
 import java.util.Arrays;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -91,7 +92,7 @@ public class HealerAdder {
 					raiser.setCurrentState(ConversationStates.HEAL_OFFERED); // success
 				} else {
 					if ((player.getAtk() > 35) || (player.getDef() > 35)) {
-						raiser.say("Przepraszam, ale nie mogę Cię uleczyć ponieważ jesteś zbyt potężny jak na moje możliwości");
+						raiser.say("Przepraszam, ale nie mogę Cię uleczyć ponieważ jesteś zbyt " + Grammar.genderVerb(player.getGender(), "potężny") + " jak na moje możliwości");
 					} else if ((!player.isNew()
 							&& (player.getLastPVPActionTime() > System
 									.currentTimeMillis()
@@ -102,7 +103,7 @@ public class HealerAdder {
 						// (low atk, low def AND low level)
 						raiser.say("Przepraszam, ale posiadasz złą aurę i teraz nie mogę Ciebie uleczyć.");
 					} else {
-						raiser.say("Zostałeś uleczony. W czym jeszcze mogę pomóc?");
+						raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
 						healerBehaviour.heal(player);
 					}
 				}
@@ -118,7 +119,7 @@ public class HealerAdder {
 				}
 				if (player.drop("money", cost)) {
 					healerBehaviour.heal(player);
-					raiser.say("Zostałeś uleczony. W czym jeszcze mogę pomóc?");
+					raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
 				} else {
 					raiser.say("Przepraszam, ale nie możesz sobie na to pozwolić.");
 				}

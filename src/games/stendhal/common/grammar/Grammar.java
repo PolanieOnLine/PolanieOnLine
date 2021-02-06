@@ -1497,6 +1497,15 @@ public class Grammar {
 			if (word.endsWith("ósł")) {
 				return word.substring(0, word.length() - 3) + "osła";
 			}
+			if (word.endsWith("ego")) {
+				return word.substring(0, word.length() - 3) + "ą";
+			}
+			if (word.endsWith("y")) {
+				return word.substring(0, word.length() - 1) + "a";
+			}
+			if (word.endsWith("łbyś")) {
+				return word.substring(0, word.length() - 4) + "łabyś";
+			}
 
 			return word + "a";
 		}

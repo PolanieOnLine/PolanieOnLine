@@ -92,7 +92,7 @@ public class BuyerAdder {
 					public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.isBadBoy()) {
 							// don't buy from player killers at all
-							raiser.say("Przepraszam, ale nie mogę ci zaufać. Wyglądasz na zbyt niebezpiecznego do handlowania. Odejdź proszę.");
+							raiser.say("Przepraszam, ale nie mogę ci zaufać. Wyglądasz na zbyt " + Grammar.genderVerb(player.getGender(), "niebezpiecznego") + " do handlowania. Odejdź proszę.");
 							raiser.setCurrentState(ConversationStates.IDLE);
 							return;
 						}
