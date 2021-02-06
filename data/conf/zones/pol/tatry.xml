@@ -192,8 +192,8 @@
 			<destination zone="int_tatry_kuznice_hostel" ref="hostel_exit"/>
 		</portal>
 
-		<portal x="89" y="49" ref="train_entrance">
-			<destination zone="int_tatry_kuznice_trainstation" ref="train_exit"/>
+		<portal x="89" y="49" ref="bs_entrance">
+			<destination zone="int_tatry_kuznice_blacksmith" ref="bs_exit"/>
 			<attribute name="face">left</attribute>
 		</portal>
 
@@ -490,11 +490,27 @@
 	</zone>
 
 	<!-- trainstation  -->
-	<zone name="int_tatry_kuznice_trainstation" file="interiors/tatry/trainstation.tmx">
+	<zone name="int_tatry_kuznice_blacksmith" file="interiors/tatry/blacksmith.tmx">
 		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-goralskie</parameter>
-				<parameter name="volume">15</parameter>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">hammer-1, smith-1</parameter>
+				<parameter name="min">10</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="11" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
+				<parameter name="min">5</parameter>
+				<parameter name="max">30</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+		<entity x="11" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
 
@@ -508,8 +524,8 @@
 			</implementation>
 		</entity>
 
-		<portal x="11" y="14" ref="train_exit">
-			<destination zone="0_tatry_kuznice" ref="train_entrance"/>
+		<portal x="11" y="14" ref="bs_exit">
+			<destination zone="0_tatry_kuznice" ref="bs_entrance"/>
 			<attribute name="face">up</attribute>
 		</portal>
 	</zone>
