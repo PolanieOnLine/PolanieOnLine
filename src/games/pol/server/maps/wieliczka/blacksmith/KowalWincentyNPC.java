@@ -59,7 +59,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 				addHelp("Produkuję bełty do kuszy, a mój znajomy zajmuje się produkcją strzał z mithrilu.");
 				addOffer("Mogę wyprodukować Tobie bełty do kuszy, powiedz tylko #'zrób bełt'. Będę potrzebował 2 #polano oraz #żelazo.");
 				addGoodbye();
-				addReply(Arrays.asList("polano", "drewno"),"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści");
+				addReply(Arrays.asList("polano", "drewno"),"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści.");
 				addReply(Arrays.asList("kowalem Andrzejem", "kowalem", "kowal", "andrzejem", "andrzej"),"Zajmuje się odlewaniem żelaza, znajduje się w swojej kuźni w Zakopcu.");
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
@@ -72,7 +72,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 				new ProducerAdder().addProducer(this, behaviour,
 				        "Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym zrobił dla Ciebie #bełt to daj znać!");
 				addReply(Arrays.asList("bełt", "bełty"),
-						"Jest to pocisk przypominający strzałę, używany do strzelania z kuszy");
+						"Jest to pocisk przypominający strzałę, używany do strzelania z kuszy.");
 				addReply(Arrays.asList("ruda", "żelazo", "ruda żelaza"),
 								"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
 			}

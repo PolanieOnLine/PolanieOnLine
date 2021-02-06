@@ -66,7 +66,7 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 				addGoodbye("Do widzenia.");
 				addReply(Arrays.asList("złota ciupaga", "złotą ciupagę"),"Podejmę się #zadania wykonania złotej ciupagi o ile posiadasz #ciupagę, #polana, #sztabki #złota i #money. Jestem trochę zapracowany i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
 				addReply(Arrays.asList("ciupaga", "ciupagę"),"Ciupaga to ulubiona broń zbójców w Zakopanem.");
-				addReply("polano","Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści");
+				addReply("polano","Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści.");
 				addReply("sztabka złota","Gold bar wytapia Joshua w Ados. Potrzebuję ich do zrobienia ostrza oraz detali.");
 				addReply("money","Każdy ich potrzebuje. Po za tym potrzebne są do zakupienia specjalnych składników bez których złota ciupaga będzie nie wiele warta. Nie zdradzę Tobie o jakie chodzi. To tajemnica rodzinna przekazywana z pokolenia na pokolenie.");
 
