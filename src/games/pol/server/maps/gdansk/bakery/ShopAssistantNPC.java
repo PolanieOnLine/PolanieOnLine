@@ -171,7 +171,7 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				    ConversationPhrases.NO_MESSAGES,
 				    null,
 				    ConversationStates.ATTENDING,
-				    "Żaden problem. trzymaj tak długo ile potrzebujesz, ale nie możesz pożyczyć innych narzędzi dopóki nie zwrócisz ostatniego lub nie zapłacisz za niego.",
+				    "Żaden problem. Trzymaj tak długo ile potrzebujesz, ale nie możesz pożyczyć innych narzędzi dopóki nie zwrócisz ostatniego lub nie zapłacisz za niego.",
 				    null);
 				// does want to pay for it now
 				add(ConversationStates.QUESTION_1,
@@ -186,7 +186,7 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				    ConversationPhrases.NO_MESSAGES,
 				    null,
 				    ConversationStates.ATTENDING,
-				    "Żaden problem. trzymaj tak długo ile potrzebujesz, ale nie możesz pożyczyć innych narzędzi dopóki nie zwrócisz ostatniego lub nie zapłacisz za niego.",
+				    "Żaden problem. Trzymaj tak długo ile potrzebujesz, ale nie możesz pożyczyć innych narzędzi dopóki nie zwrócisz ostatniego lub nie zapłacisz za niego.",
 				    null);
 
 
