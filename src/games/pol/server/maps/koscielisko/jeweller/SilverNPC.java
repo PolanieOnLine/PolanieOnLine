@@ -12,6 +12,8 @@
 package games.pol.server.maps.koscielisko.jeweller;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,8 +21,8 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.adder.MultiProducerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
 
 /**
  * @author ?
@@ -50,7 +52,7 @@ public class SilverNPC implements ZoneConfigurator {
 			protected void createDialog(){
 				addGreeting("Witaj!");
 				addJob("Jesteśmy znanym zakładem złotniczym. Ja i moi czeladnicy zajmujemy się obróbką wielu kamieni szlachetnych\n"
-					+ "i tak ja obrabiam rudę srebra, wystarczy, że powiesz #odlej.\n"
+					+ "i tak ja obrabiam rudę srebra oraz kryształy diamentu, wystarczy, że powiesz #'odlej sztabka srebra' lub #'oszlifuj diament'.\n"
 					+ "Ziemirad zajmuje się obrabianiem kryształy rubinu.\n"
 					+ "Sobek jest bardzo dobry w obróbce kryształów obsydianu.\n"
 					+ "Mieszek, ☺ ach ten Mieszek, kawalarz z niego, ale do rzeczy. On obrobi Tobie kryształ szmaragdu.\n"
@@ -59,20 +61,45 @@ public class SilverNPC implements ZoneConfigurator {
 				addHelp ("Jakiego typu pomocy oczekujesz? Jeżeli chcesz się czegoś dowiedzieć czym się zajmuję to powiedz #praca, a chętnie opowiem.");
 				addGoodbye();
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("polano", 2);
-				requiredResources.put("ruda srebra", 1);
-				requiredResources.put("money", 100);
+				final HashSet<String> productsNames = new HashSet<String>();
+                productsNames.add("diament");
+                productsNames.add("sztabka srebra");
 
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-					"drogosz_cast_silver", Arrays.asList("cast", "odlej"), "sztabka srebra",
-					requiredResources, 10 * 60);
+				final Map<String, Integer> required_diamond = new TreeMap<String, Integer>();
+				required_diamond.put("polano", 5);
+				required_diamond.put("kryształ diamentu", 1);
+				required_diamond.put("money", 200);
 
-				new ProducerAdder().addProducer(this, behaviour,
-						"Pozdrawiam. Sądzę, że jesteś zainteresowany srebrem. Jeżeli tak to zapytaj mnie o #'pomoc'.");
+				final Map<String, Integer> required_silver = new TreeMap<String, Integer>();
+				required_silver.put("polano", 2);
+				required_silver.put("ruda srebra", 1);
+				required_silver.put("money", 100);
+
+				final HashMap<String, Map<String, Integer>> requiredResourcesPerProduct = new HashMap<String, Map<String, Integer>>();
+                requiredResourcesPerProduct.put("diament", required_diamond);
+                requiredResourcesPerProduct.put("sztabka srebra", required_silver);
+
+                final HashMap<String, Integer> productionTimesPerProduct = new HashMap<String, Integer>();
+                productionTimesPerProduct.put("diament", 14 * 60);
+                productionTimesPerProduct.put("sztabka srebra", 10 * 60);
+
+                final HashMap<String, Boolean> productsBound = new HashMap<String, Boolean>();
+                productsBound.put("diament", false);
+                productsBound.put("sztabka srebra", false);
+
+                final MultiProducerBehaviour behaviour = new MultiProducerBehaviour(
+                        "drogosz_grindandcast",
+                        Arrays.asList("grind", "cast", "oszlifuj", "odlej"),
+                        productsNames,
+                        requiredResourcesPerProduct,
+                        productionTimesPerProduct,
+                        productsBound);
+
+				new MultiProducerAdder().addMultiProducer(this, behaviour,
+						"Pozdrawiam. Sądzę, że jesteś zainteresowany srebrem bądź diamentem. Jeżeli tak to zapytaj mnie o #'pomoc'.");
 				addReply("polano",
 						"Musisz Drwala się zapytać. On wie jak zdobyć drzewo.");
-				addReply("ruda srebra",
+				addReply(Arrays.asList("ruda srebra", "kryształ diamentu"),
 						"Jak mi wiadomo kamienie szlachetne wszelkiej maści znajdują się w kopalniach. Mój stary przyjaciel #Bercik może więcej o nich opowiedzieć.");
 				addReply("Bercik",
 						"Bercika znajdziesz na kościelisku niedaleko Zakopanego. Pamiętam, że wokoło kręciło się sporo białych tygrysów.");
@@ -82,7 +109,6 @@ public class SilverNPC implements ZoneConfigurator {
 		drogosz.setEntityClass("richardstallmannpc");
 		drogosz.setPosition(15, 3);
 		drogosz.setDirection(Direction.DOWN);
-		drogosz.initHP(100);
 		zone.add(drogosz);
 	}
 }
