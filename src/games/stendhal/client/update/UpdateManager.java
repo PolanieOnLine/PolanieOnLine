@@ -49,9 +49,9 @@ class UpdateManager {
 	private void downloadUpdateProp(final boolean initialDownload) {
 		// user configuration (for testing)
 		if (bootProp != null) {
-			serverFolder = bootProp.getProperty("server.folder-1.20", ClientGameConfiguration.get("UPDATE_SERVER_FOLDER"))
+			serverFolder = bootProp.getProperty("server.folder-1.16", ClientGameConfiguration.get("UPDATE_SERVER_FOLDER"))
 					+ "/";
-			String updatePropertiesFile = bootProp.getProperty("server.update-prop-1.20", serverFolder + "update-1.20.properties");
+			String updatePropertiesFile = bootProp.getProperty("server.update-prop-1.16", serverFolder + "update-1.16.properties");
 			final HttpClient httpClient = new HttpClient(updatePropertiesFile, initialDownload);
 			updateProp = httpClient.fetchProperties();
 			if (updateProp != null && updateProp.containsKey("init.version")) {
@@ -60,7 +60,7 @@ class UpdateManager {
 		}
 
 		// primary location
-		String updatePropertiesFile = ClientGameConfiguration.get("UPDATE_SERVER_FOLDER") + "/update-1.20.properties";
+		String updatePropertiesFile = ClientGameConfiguration.get("UPDATE_SERVER_FOLDER") + "/update-1.16.properties";
 		HttpClient httpClient = new HttpClient(updatePropertiesFile, initialDownload);
 		updateProp = httpClient.fetchProperties();
 		if (updateProp != null && updateProp.containsKey("init.version")) {
@@ -68,7 +68,7 @@ class UpdateManager {
 		}
 
 		// fallback location
-		updatePropertiesFile = ClientGameConfiguration.get("UPDATE_SERVER_FOLDER_FALLBACK") + "/update-1.20.properties";
+		updatePropertiesFile = ClientGameConfiguration.get("UPDATE_SERVER_FOLDER_FALLBACK") + "/update-1.16.properties";
 		httpClient = new HttpClient(updatePropertiesFile, initialDownload);
 		updateProp = httpClient.fetchProperties();
 	}
@@ -411,9 +411,9 @@ class UpdateManager {
 			sb.append(file + ",");
 		}
 
-		if (!bootProp.getProperty("load-1.20", "").startsWith(sb.toString())) {
-			sb.append(bootProp.getProperty("load-1.20", ""));
-			bootProp.put("load-1.20", sb.toString());
+		if (!bootProp.getProperty("load-1.16", "").startsWith(sb.toString())) {
+			sb.append(bootProp.getProperty("load-1.16", ""));
+			bootProp.put("load-1.16", sb.toString());
 		}
 	}
 }
