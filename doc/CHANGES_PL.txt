@@ -12,10 +12,11 @@ Changelog
 - Zmieniono wygląd "klucza do bram zamku ZRC" oraz "kluczyka Aligerna"
 
 *świat*
-- Dodano 3 nowych NPC:
+- Dodano 4 nowych NPC:
 	- Górnik,
 	- Kowal Markusław,
-	- Zygfryd
+	- Zygfryd,
+	- Radzimir
 - Dodano 7 nowe przedmioty
 - Dodano 6 nowe osiągnięcia:
 	- "Kolekcjoner Płaszczy",
@@ -24,6 +25,7 @@ Changelog
 	- "Oszałamiający Płaszcz",
 	- "Najtwarsza Tarcza",
 	- "Kopalnia Niestraszna"
+- Dodano nowe pomieszczenie w kuźnicach: int_tatry_kuznice_blacksmith
 - Dodano możliwość ulepszenia łuku z mithrilu
 - Dodano możliwość zdobycia lekkiej kuszy z potworów
 - Wprowadzono nową statystykę dla graczy: górnictwo
@@ -31,6 +33,7 @@ Changelog
 
 *kod*
 - Dodano wsparcie dla źródeł surowców na mapach TMX
+- Dodano reguły słowne zależny od płci postaci
 - Usprawniono dodawanie nowych przedmiotów możliwych do ulepszenia
 - Usunięto przestarzały kod RPClass rozdzielony na każdy surowiec
 
@@ -44,6 +47,7 @@ Changelog
 - Naprawiono osiągnięcie "Dawid kontra Goliat"
 - Naprawiono sporządzanie dużego smoczego eliksiru u Arona oraz smoczego eliksiru u Agrypina
 - Naprawiono błąd z wysyłaniem informacji o statystykach postaci gracza do bazy danych
+- Naprawiono wygląd npc Harolda
 
 
 1.16.1
