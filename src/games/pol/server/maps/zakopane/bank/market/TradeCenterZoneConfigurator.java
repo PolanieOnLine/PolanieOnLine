@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.pol.server.maps.zakopane.shop.market;
+package games.pol.server.maps.zakopane.bank.market;
 
 import java.util.Map;
 
@@ -29,8 +29,9 @@ import marauroa.common.game.RPObject;
 public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 
 	private static final String TRADE_ADVISOR_NAME = "Radzimir";
-	private static final int COORDINATE_Y = 6;
-	private static final int COORDINATE_X = 5;
+
+	private static final int COORDINATE_X = 40;
+	private static final int COORDINATE_Y = 5;
 
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
@@ -54,10 +55,6 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 
 	private Market getMarketFromZone(StendhalRPZone zone) {
 		for (RPObject rpObject : zone) {
-			/*if (rpObject.getRPClass().getName().equals(Market.MARKET_RPCLASS_NAME)) {
-				return (Market) rpObject;
-			}
-			*/
 			if (rpObject instanceof Market) {
 				return (Market) rpObject;
 			}
@@ -82,5 +79,4 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		}
 		return null;
 	}
-
 }

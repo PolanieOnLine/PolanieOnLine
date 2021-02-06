@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.pol.server.maps.zakopane.shop.market;
+package games.pol.server.maps.zakopane.bank.market;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,9 +37,6 @@ public final class MarketManagerNPC extends SpeakerNPC {
 
 	MarketManagerNPC(String name) {
 		super(name);
-		// Use smaller than normal range to not interfere players trying to talk
-		// to the other NPCs in the tavern.
-		setPerceptionRange(3);
 	}
 
 	@Override
