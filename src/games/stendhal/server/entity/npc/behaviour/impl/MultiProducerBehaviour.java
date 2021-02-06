@@ -403,7 +403,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 				products.setBoundTo(player.getName());
 			}
 
-				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj "
+				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto "
 					+ Grammar.quantityplnoun(numberOfProductItems, productName, "") + ".");
 			if (player.equipToInventoryOnly(products)) {
 				player.setQuest(questSlot, "done");

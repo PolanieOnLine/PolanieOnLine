@@ -388,7 +388,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			}
 
 			if (player.equipToInventoryOnly(products)) {
-				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj "
+				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto "
 					+ Grammar.quantityplnoun(numberOfProductItems,
 							getProductName(), "") + ".");
 				player.setQuest(questSlot, "done");
