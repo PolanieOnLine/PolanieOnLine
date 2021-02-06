@@ -53,3 +53,5 @@ build_server_xmlconf
 *.cmd
 updatesigner.bat
 update.properties
+/src/net
+/libs/postman
