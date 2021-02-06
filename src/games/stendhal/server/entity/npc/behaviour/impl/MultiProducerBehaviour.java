@@ -330,7 +330,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
             return false;
         } else {
 			res.setAmount(amount);
-            npc.say("Potrzebuję, abyś dostarczył mi "
+            npc.say("Potrzebuję, abyś " + Grammar.genderVerb(player.getGender(), "dostarczył") + " mi "
                     + getRequiredResourceNamesWithHashes(productName, amount)
 					+ " do tej pracy, która zajmie mi "
                     + TimeUtil.approxTimeUntil(getProductionTime(productName, amount))

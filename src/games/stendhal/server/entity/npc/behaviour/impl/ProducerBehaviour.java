@@ -319,7 +319,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			return false;
 		} else {
 			res.setAmount(amount);
-			npc.say("Potrzebuję, abyś przyniósł mi "
+			npc.say("Potrzebuję, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi "
 					+ getRequiredResourceNamesWithHashes(amount)
 					+ " do tej pracy, która zajmie mi " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Czy masz to co potrzebuję?");
 			return true;
