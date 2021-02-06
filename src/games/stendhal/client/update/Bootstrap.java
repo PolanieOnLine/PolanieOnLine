@@ -121,7 +121,7 @@ public class Bootstrap {
 				bootPropOrg = (Properties) bootProp.clone();
 
 				// get list of .jar-files
-				final String jarNameString = bootProp.getProperty("load-1.20", "");
+				final String jarNameString = bootProp.getProperty("load-1.16", "");
 				final StringTokenizer st = new StringTokenizer(jarNameString, ",");
 				while (st.hasMoreTokens()) {
 					final String filename = st.nextToken();
@@ -428,10 +428,7 @@ public class Bootstrap {
 
 	private void clearUpdateFiles() {
 		bootProp.remove("load");
-		bootProp.remove("load-0.69");
-		bootProp.remove("load-0.86");
-		bootProp.remove("load-0.95");
-		bootProp.remove("load-1.20");
+		bootProp.remove("load-1.16");
 		try {
 			saveBootProp();
 		} catch (final IOException e1) {
