@@ -2,16 +2,20 @@ Changelog
 ---------
 1.17
 *klient*
-- Dodano grafikę nowego NPC
+- Dodano nową grafikę NPC
 - Dodano 10 nowych grafik przedmiotów
 - Dodano 3 nowe grafiki surowców (rud)
 - Dodano 4 nowe dźwięki uderzeń kilofa
 - Dodano animację kilofa uderzającego o surowiec
+- Dodano widoczność potworów i źródeł surowców oraz zmieniono widoczność NPC na minimapie
 - Poprawiono kolory grafiki polana
 - Zmieniono wygląd "klucza do bram zamku ZRC" oraz "kluczyka Aligerna"
 
 *świat*
-- Dodano nowego NPC
+- Dodano 3 nowych NPC:
+	- Górnik,
+	- Kowal Markusław,
+	- Zygfryd
 - Dodano 7 nowe przedmioty
 - Dodano 6 nowe osiągnięcia:
 	- "Kolekcjoner Płaszczy",
