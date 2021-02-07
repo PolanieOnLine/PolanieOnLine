@@ -13,11 +13,11 @@
 package games.stendhal.client.entity;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.grammar.Grammar;
 import marauroa.common.game.RPObject;
 
 /** A Player entity. */
 public class Player extends RPEntity {
-
 	/**
 	 * Away property.
 	 */
@@ -89,9 +89,9 @@ public class Player extends RPEntity {
 			away = message;
 			fireChange(PROP_AWAY);
 			if (message != null) {
-				addTextIndicator("Zajęty", NotificationType.INFORMATION);
+				addTextIndicator(Grammar.genderVerb(getGender(), "Zajęty"), NotificationType.INFORMATION);
 			} else {
-				addTextIndicator("Powrócił", NotificationType.INFORMATION);
+				addTextIndicator(Grammar.genderVerb(getGender(), "Powrócił"), NotificationType.INFORMATION);
 			}
 		}
 	}
@@ -117,9 +117,9 @@ public class Player extends RPEntity {
 			grumpy = message;
 			fireChange(PROP_GRUMPY);
 			if (message != null) {
-				addTextIndicator("Niedostępny", NotificationType.INFORMATION);
+				addTextIndicator(Grammar.genderVerb(getGender(), "Niedostępny"), NotificationType.INFORMATION);
 			} else {
-				addTextIndicator("Dostępny", NotificationType.INFORMATION);
+				addTextIndicator(Grammar.genderVerb(getGender(), "Dostępny"), NotificationType.INFORMATION);
 			}
 		}
 	}

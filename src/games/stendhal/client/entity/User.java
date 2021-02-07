@@ -322,9 +322,9 @@ public class User extends Player {
 
 		String text;
 		if (message == null) {
-			text = "Nie jesteś już oznaczony jako oddalony.";
+			text = "Nie jesteś już " + Grammar.genderVerb(getGender(), "oznaczony") + " jako " + Grammar.genderVerb(getGender(), "oddalony") + ".";
 		} else {
-			text = "Zostałeś oznaczony jako oddalony.";
+			text = Grammar.genderVerb(getGender(), "Zostałeś") + " " + Grammar.genderVerb(getGender(), "oznaczony") + " jako " + Grammar.genderVerb(getGender(), "oddalony") + ".";
 		}
 		notifyUser(text, NotificationType.INFORMATION);
 	}
@@ -401,13 +401,9 @@ public class User extends Player {
 	@Override
 	public void onHealed(final int amount) {
 		super.onHealed(amount);
-		if (getGender().equals("F")) {
-			String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
-			notifyUser(getTitle() + " odzyskała " + pointDesc + ".", NotificationType.HEAL);
-		} else {
-			String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
-			notifyUser(getTitle() + " odzyskał " + pointDesc + ".", NotificationType.HEAL);
-		}
+
+		String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
+		notifyUser(getTitle() + " " + Grammar.genderVerb(getGender(), "odzyskał") + " " + pointDesc + ".", NotificationType.HEAL);
 	}
 
 	private void notifyUser(String message, NotificationType type) {
@@ -415,12 +411,8 @@ public class User extends Player {
 	}
 
 	private void notifyUserAboutPlayerOnlineChanges(RPObject changes) {
-		if (getGender().equals("F")) {
-			notifyUserAboutPlayerStatus(changes, "offline", " opuściła PolanieOnLine.");
-		} else notifyUserAboutPlayerStatus(changes, "offline", " opuścił PolanieOnLine.");
-		if (getGender().equals("F")) {
-			notifyUserAboutPlayerStatus(changes, "online", " zawitała do PolanieOnLine.");
-		} else notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolanieOnLine.");
+			notifyUserAboutPlayerStatus(changes, "offline", " " + Grammar.genderVerb(getGender(), "opuścił") + " PolanieOnLine.");
+			notifyUserAboutPlayerStatus(changes, "online", " " + Grammar.genderVerb(getGender(), "zawitał") + " do PolanieOnLine.");
 	}
 	
 	private void notifyUserAboutPlayerStatus(RPObject changes, String status, String messageEnd) {

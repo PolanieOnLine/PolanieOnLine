@@ -24,7 +24,6 @@ import games.stendhal.common.parser.Expression;
  * Helper functions for producing and parsing grammatically-correct sentences.
  */
 public class Grammar {
-
 	private static final Logger logger = Logger.getLogger(Grammar.class);
 
 	// static instance
@@ -1489,6 +1488,9 @@ public class Grammar {
 		if (gender.equals("F")) {
 			if (word.equals("mógł")) {
 				return "mogła";
+			}
+			if (word.equals("powinieneś")) {
+				return "powinnaś";
 			}
 
 			if (word.endsWith("eś")) {

@@ -793,19 +793,11 @@ public abstract class RPEntity extends AudibleEntity {
 				& (!stendhal.FILTER_ATTACK_MESSAGES);
 
 		if (stendhal.SHOW_EVERYONE_ATTACK_INFO || showAttackInfoForPlayer) {
-			if (getGender().equals("F")) {
-				ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-						getTitle() + " otrzymała "
-								+ Grammar.quantityplnoun(damage, "punkt")
-								+ " obrażeń od " + attacker.getTitle(),
-						NotificationType.NEGATIVE));
-			} else {
-				ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-						getTitle() + " otrzymał "
-								+ Grammar.quantityplnoun(damage, "punkt")
-								+ " obrażeń od " + attacker.getTitle(),
-						NotificationType.NEGATIVE));
-			}
+			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+				getTitle() + " " + Grammar.genderVerb(getGender(), "otrzymał") + " "
+						+ Grammar.quantityplnoun(damage, "punkt")
+						+ " obrażeń od " + attacker.getTitle(),
+				NotificationType.NEGATIVE));
 		}
 
 		// play a sound to indicate successful hit
@@ -878,19 +870,11 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	private void onPoisoned(final int amount) {
 		if ((amount > 0) && (User.squaredDistanceTo(x, y) < HEARING_DISTANCE_SQ)) {
-			if (getGender().equals("F")) {
-				ClientSingletonRepository.getUserInterface().addEventLine(
-						new HeaderLessEventLine(
-						getTitle() + " została zatruta. Traci "
-								+ Grammar.quantityplnoun(amount, "punkt")
-								+ " życia.", NotificationType.POISON));
-			} else {
-				ClientSingletonRepository.getUserInterface().addEventLine(
-						new HeaderLessEventLine(
-						getTitle() + " został zatruty. Traci "
-								+ Grammar.quantityplnoun(amount, "punkt")
-								+ " życia.", NotificationType.POISON));
-			}
+			ClientSingletonRepository.getUserInterface().addEventLine(
+				new HeaderLessEventLine(
+					getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " " + Grammar.genderVerb(getGender(), "zatruty") + ". Traci "
+						+ Grammar.quantityplnoun(amount, "punkt")
+						+ " życia.", NotificationType.POISON));
 		}
 	}
 
@@ -1504,35 +1488,21 @@ public abstract class RPEntity extends AudibleEntity {
 						|| amount >= 982 && amount <= 984 || amount >= 992 && amount <= 994) {
 						addTextIndicator("+" + amount,
 								NotificationType.SIGNIFICANT_POSITIVE);
-						if (getGender().equals("F")) {
-							ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-									getTitle()
-									+ " dostała "
-									+ Grammar.quantityplnoun(amount,
-									"punkt") + " doświadczenia.",
-									NotificationType.SIGNIFICANT_POSITIVE));
-						} else {
-							ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-									getTitle()
-									+ " dostał "
-									+ Grammar.quantityplnoun(amount,
-									"punkt") + " doświadczenia.",
-									NotificationType.SIGNIFICANT_POSITIVE));
-						}
+
+						ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+								getTitle()
+								+ " " + Grammar.genderVerb(getGender(), "dostał")
+								+ Grammar.quantityplnoun(amount,
+								"punkt") + " doświadczenia.",
+								NotificationType.SIGNIFICANT_POSITIVE));
 					} else {
 						addTextIndicator("+" + amount,
 								NotificationType.SIGNIFICANT_POSITIVE);
-						if (getGender().equals("F")) {
-							ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-									getTitle()
-									+ " dostała " + amount + " punktów doświadczenia.",
-									NotificationType.SIGNIFICANT_POSITIVE));
-						} else {
-							ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-									getTitle()
-									+ " dostał " + amount + " punktów doświadczenia.",
-									NotificationType.SIGNIFICANT_POSITIVE));
-						}
+
+						ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+								getTitle()
+								+ " " + Grammar.genderVerb(getGender(), "dostał") + " " + amount + " punktów doświadczenia.",
+								NotificationType.SIGNIFICANT_POSITIVE));
 					}
 				} else if (amount < 0) {
 					addTextIndicator("" + amount,
@@ -1566,11 +1536,8 @@ public abstract class RPEntity extends AudibleEntity {
 
 		if (statChange != null && (User.squaredDistanceTo(x, y) < HEARING_DISTANCE_SQ)) {
 			final StringBuilder sb = new StringBuilder(getTitle());
-			if (getGender().equals("F")) {
-				sb.append(" osiągnęła " + Integer.toString(statTypes.get(statChange)) + " poziom");
-			} else {
-				sb.append(" osiągnął " + Integer.toString(statTypes.get(statChange)) + " poziom");
-			}
+			sb.append(" " + Grammar.genderVerb(getGender(), "osiągnął") + " " + Integer.toString(statTypes.get(statChange)) + " poziom");
+
 			if (!statChange.equals("level")) {
 				statChange = statChange.replace("def", "obrony");
 				statChange = statChange.replace("atk", "ataku");
@@ -1597,15 +1564,14 @@ public abstract class RPEntity extends AudibleEntity {
 		if (!attackers.isEmpty()) {
 			Collection<String> attackerNames = new LinkedList<String>();
 			for (Entity attacker : attackers) {
-					attackerNames.add(attacker.getTitle());
+				attackerNames.add(attacker.getTitle());
 			}
-			if (getGender() == null || getGender().equals("M")) {
-				ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(
-						getTitle() + " został zabity przez " + Grammar.enumerateCollection(attackerNames)));
-			} else {
-				ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(
-						getTitle() + " została zabita przez " + Grammar.enumerateCollection(attackerNames)));
+			String text = getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " zabity przez " + Grammar.enumerateCollection(attackerNames);
+
+			if (getGender() == null) {
+				ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(text));;
 			}
+			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(text));
 		}
 	    playSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "death");
 	}
