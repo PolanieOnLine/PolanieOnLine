@@ -19,6 +19,7 @@ import java.util.Locale;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Expression;
+import games.stendhal.server.entity.item.Item;
 
 /**
  * Helper functions for producing and parsing grammatically-correct sentences.
@@ -488,111 +489,63 @@ public class Grammar {
 
 		// in "of"-phrases pluralize only the first part
 		if (enoun.indexOf(of) > -1) {
-			return plural(enoun.substring(0, enoun.indexOf(of)))
-					+ enoun.substring(enoun.indexOf(of)) + postfix;
+			return plural(enoun.substring(0, enoun.indexOf(of))) + enoun.substring(enoun.indexOf(of)) + postfix;
 
-			// first of all handle words which do not change
-		} else if (enoun.endsWith("money") || enoun.endsWith("dice")
-				|| enoun.endsWith("sheep") || enoun.equals("deer")
-				|| enoun.equals("moose") || enoun.equals("magic")
-				|| enoun.endsWith("kości do gry") || enoun.equals("jeleń")
-				|| enoun.endsWith("goat")) {
-			return enoun + postfix;
-
-			// ok and now all the special cases
-		} else if (enoun.endsWith("wojownik")) {
-			return enoun.substring(0, enoun.length()) + "ów" + postfix;
-		} else if (enoun.endsWith("punkt")) {
-			return enoun.substring(0, enoun.length()) + "y" + postfix;
-		} else if (enoun.endsWith(" punkt")) {
-			return enoun.substring(0, enoun.length()) + "y" + postfix;
-		} else if (enoun.equals("sekundę") || enoun.equals("minutę")
-				|| enoun.equals("godzinę")) {
-			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
-		} else if (enoun.equals(" sekundę") || enoun.equals(" minutę")
-				|| enoun.equals(" godzinę")) {
-			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
+		} else if (enoun.equals("wojownik")) {
+			return enoun + "ów" + postfix;
+			
 		} else if (enoun.equals("dzień")) {
-			return enoun.substring(0, enoun.length() - 4) + "ni" + postfix;
+			return enoun.substring(0, enoun.length() - 1) + "ni" + postfix;
 		} else if (enoun.equals("tydzień")) {
 			return enoun.substring(0, enoun.length() - 5) + "godnie" + postfix;
-		} else if (enoun.endsWith("leg") || enoun.endsWith("boot")) {
-			return enoun + "s" + postfix;
-		} else if (enoun.endsWith("robin hat")) {
-			return enoun.substring(0, enoun.length() - 4) + "s hat" + postfix;
-		} else if (enoun.equals("stone")) {
-			return enoun + "s" + postfix;
-		} else if (enoun.endsWith("staff") || enoun.endsWith("chief")) {
-			return enoun + "s" + postfix;
-		} else if ((enoun.length() > 2) && enoun.endsWith("f")
-				&& ("aeiourl".indexOf(enoun.charAt(enoun.length() - 2)) > -1)) {
-			return enoun.substring(0, enoun.length() - 1) + "ves" + postfix;
-		} else if (enoun.endsWith("fe")) {
-			return enoun.substring(0, enoun.length() - 2) + "ves" + postfix;
-		} else if ((enoun.length() >= 4) && enoun.endsWith("ouse")
-				&& ("mMlL".indexOf(enoun.charAt(enoun.length() - 5)) > -1)) {
-			return enoun.substring(0, enoun.length() - 4) + "ice" + postfix;
-		} else if (enoun.endsWith("oose") && !enoun.endsWith("caboose")
-				&& !enoun.endsWith("noose")) {
-			return enoun.substring(0, enoun.length() - 4) + "eese" + postfix;
-		} else if (enoun.endsWith("ooth")) {
-			return enoun.substring(0, enoun.length() - 4) + "eeth" + postfix;
-		} else if (enoun.endsWith("foot")) {
-			return enoun.substring(0, enoun.length() - 4) + "feet" + postfix;
-		} else if (enoun.endsWith("child")) {
-			return enoun + "ren" + postfix;
-		} else if (enoun.endsWith("eau")) {
-			return enoun + "x" + postfix;
-		} else if (enoun.endsWith("ato")) {
-			return enoun + "es" + postfix;
-		} else if (enoun.endsWith("ium")) {
-			return enoun.substring(0, enoun.length() - 2) + "a" + postfix;
-		} else if (enoun.endsWith("alga") || enoun.endsWith("hypha")
-				|| enoun.endsWith("larva")) {
+
+		} else if (enoun.equals("miecz")) {
 			return enoun + "e" + postfix;
-		} else if ((enoun.length() > 3) && enoun.endsWith("us")
-				&& !(enoun.endsWith("lotus") || enoun.endsWith("wumpus"))) {
-			return enoun.substring(0, enoun.length() - 2) + "i" + postfix;
-		} else if (enoun.equals("oni")) {
-			return enoun;
-		} else if (enoun.endsWith("man")
-				&& !(enoun.endsWith("shaman") || enoun.endsWith("human"))) {
-			return enoun.substring(0, enoun.length() - 3) + "men" + postfix;
-		} else if (enoun.endsWith("rtex") || enoun.endsWith("index")) {
-			return enoun.substring(0, enoun.length() - 2) + "ices" + postfix;
-		} else if (enoun.endsWith("trix")) {
-			return enoun.substring(0, enoun.length() - 1) + "ces" + postfix;
-		} else if (enoun.endsWith("sis")) {
-			return enoun.substring(0, enoun.length() - 2) + "es" + postfix;
-		} else if (enoun.endsWith("erinys")) {
-			return enoun.substring(0, enoun.length() - 1) + "es" + postfix;
-		} else if (enoun.endsWith("mumak")) {
-			return enoun + "il" + postfix;
-		} else if (enoun.endsWith("djinni") || enoun.endsWith("efreeti")) {
+		} else if (enoun.equals("spodnie")) {
 			return enoun.substring(0, enoun.length() - 1) + postfix;
-		} else if (enoun.endsWith("porcini") || enoun.endsWith("porcino")) {
+
+		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę")) {
+			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
+
+		} else if (enoun.endsWith("wy")) {
+			return enoun.substring(0, enoun.length() - 2) + "owe" + postfix;
+
+		} else if (enoun.endsWith("ik")) {
+			return enoun.substring(0, enoun.length() - 1) + "cy" + postfix;
+
+		} else if (enoun.endsWith("o") || enoun.endsWith("e")) {
+			return enoun.substring(0, enoun.length() - 1) + "a" + postfix;
+		} else if (enoun.endsWith("um")) {
+			return enoun.substring(0, enoun.length() - 2) + "a" + postfix;
+
+		} else if (enoun.endsWith("ka") || enoun.endsWith("ga")) {
 			return enoun.substring(0, enoun.length() - 1) + "i" + postfix;
-		} else if (enoun.endsWith("łuk treningowy")) {
-			return enoun.substring(0, enoun.length() - 11) + "i treningowe" + postfix;
-		} else if (enoun.endsWith("miecz treningowy")) {
-			return enoun.substring(0, enoun.length() - 11) + "e treningowe" + postfix;
 
-			// If the word is already in plural form, return it unchanged.
-		} else if (!singular(enoun).equals(enoun)) {
-			return enoun + postfix;
+		} else if (enoun.endsWith("ca") || enoun.endsWith("ea") || enoun.endsWith("ia") || enoun.endsWith("ja")
+				|| enoun.endsWith("la") || enoun.endsWith("ża") || enoun.endsWith("rza")) {
+			return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
 
-			// last special case: Does the word end with "ch", "sh", "s", "x"
-			// oder "z"?
-		} else if (enoun.endsWith("ch")
-				|| enoun.endsWith("sh")
-				|| ((enoun.length() > 1) && ("sxz".indexOf(enoun.charAt(enoun.length() - 1)) > -1))) {
-			return enoun + "es" + postfix;
-			// German special case
-		} else if (enoun.equals("glück") || enoun.equals("glücke")) {
-			return "glücke";
+		} else if (enoun.endsWith("a")) {
+			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
+
+		} else if (enoun.endsWith("k") || enoun.endsWith("g")) {
+			return enoun + "i" + postfix;
+
+		} else if (enoun.endsWith("c") || enoun.endsWith("j") || enoun.endsWith("ż") || enoun.endsWith("rz")) {
+			return enoun + "e" + postfix;
+
+		} else if (enoun.endsWith("ć")) {
+			return enoun.substring(0, enoun.length() - 1) + "cie" + postfix;
+		} else if (enoun.endsWith("ń")) {
+			return enoun.substring(0, enoun.length() - 1) + "nie" + postfix;
+		} else if (enoun.endsWith("ś")) {
+			return enoun.substring(0, enoun.length() - 1) + "sie" + postfix;
+		} else if (enoun.endsWith("ź")) {
+			return enoun.substring(0, enoun.length() - 1) + "zie" + postfix;
+
 		} else {
 			// no special case matched, so use the boring default plural rule
-			return enoun + "" + postfix;
+			return enoun + "y" + postfix;
 		}
 	}
 
@@ -610,137 +563,6 @@ public class Grammar {
 		}
 		
 		return plural(noun);
-	}
-
-	/**
-	 * Returns the plural2 form of the given noun if not already given in plural
-	 * form.
-	 * 
-	 * @param noun
-	 *            The noun to examine
-	 * @return An appropriate plural2 form
-	 */
-	public static String plural2(final String noun) {
-		if (noun == null) {
-			return null;
-		}
-
-		String enoun = fullForm(noun);
-		String postfix = "";
-
-		final int position = enoun.indexOf('+');
-		if (position != -1) {
-			if (enoun.charAt(position - 1) == ' ') {
-				postfix = enoun.substring(position - 1);
-				enoun = enoun.substring(0, position - 1);
-			} else {
-				postfix = enoun.substring(position);
-				enoun = enoun.substring(0, position);
-			}
-		}
-
-		// in "of"-phrases pluralize only the first part
-		if (enoun.indexOf(of) > -1) {
-			return plural(enoun.substring(0, enoun.indexOf(of)))
-					+ enoun.substring(enoun.indexOf(of)) + postfix;
-
-			// first of all handle words which do not change
-		} else if (enoun.endsWith("money") || enoun.endsWith("dice")
-				|| enoun.endsWith("sheep") || enoun.equals("deer")
-				|| enoun.equals("moose") || enoun.equals("magic")
-				|| enoun.endsWith("kości do gry") || enoun.equals("jeleń")
-				|| enoun.endsWith("goat")) {
-			return enoun + postfix;
-
-			// ok and now all the special cases
-		} else if (enoun.endsWith("punkt") || enoun.endsWith("wojownik")) {
-			return enoun.substring(0, enoun.length()) + "ów" + postfix;
-		} else if (enoun.endsWith(" punkt") || enoun.endsWith(" wojownik")) {
-			return enoun.substring(0, enoun.length()) + "ów" + postfix;
-		} else if (enoun.equals("sekundę") || enoun.equals("minutę")
-				|| enoun.equals("godzinę")) {
-			return enoun.substring(0, enoun.length() - 1) + "" + postfix;
-		} else if (enoun.equals(" sekundę") || enoun.equals(" minutę")
-				|| enoun.equals(" godzinę")) {
-			return enoun.substring(0, enoun.length() - 1) + "" + postfix;
-		} else if (enoun.equals("dzień")) {
-			return enoun.substring(0, enoun.length() - 4) + "ni" + postfix;
-		} else if (enoun.equals("tydzień")) {
-			return enoun.substring(0, enoun.length() - 5) + "godni" + postfix;
-		} else if (enoun.endsWith("leg") || enoun.endsWith("boot")) {
-			return enoun + "s" + postfix;
-		} else if (enoun.endsWith("robin hat")) {
-			return enoun.substring(0, enoun.length() - 4) + "s hat" + postfix;
-		} else if (enoun.equals("stone")) {
-			return enoun + "s" + postfix;
-		} else if (enoun.endsWith("staff") || enoun.endsWith("chief")) {
-			return enoun + "s" + postfix;
-		} else if ((enoun.length() > 2) && enoun.endsWith("f")
-				&& ("aeiourl".indexOf(enoun.charAt(enoun.length() - 2)) > -1)) {
-			return enoun.substring(0, enoun.length() - 1) + "ves" + postfix;
-		} else if (enoun.endsWith("fe")) {
-			return enoun.substring(0, enoun.length() - 2) + "ves" + postfix;
-		} else if ((enoun.length() >= 4) && enoun.endsWith("ouse")
-				&& ("mMlL".indexOf(enoun.charAt(enoun.length() - 5)) > -1)) {
-			return enoun.substring(0, enoun.length() - 4) + "ice" + postfix;
-		} else if (enoun.endsWith("oose") && !enoun.endsWith("caboose")
-				&& !enoun.endsWith("noose")) {
-			return enoun.substring(0, enoun.length() - 4) + "eese" + postfix;
-		} else if (enoun.endsWith("ooth")) {
-			return enoun.substring(0, enoun.length() - 4) + "eeth" + postfix;
-		} else if (enoun.endsWith("foot")) {
-			return enoun.substring(0, enoun.length() - 4) + "feet" + postfix;
-		} else if (enoun.endsWith("child")) {
-			return enoun + "ren" + postfix;
-		} else if (enoun.endsWith("eau")) {
-			return enoun + "" + postfix;
-		} else if (enoun.endsWith("ato")) {
-			return enoun + "" + postfix;
-		} else if (enoun.endsWith("ium")) {
-			return enoun.substring(0, enoun.length() - 2) + "a" + postfix;
-		} else if (enoun.endsWith("alga") || enoun.endsWith("hypha")
-				|| enoun.endsWith("larva")) {
-			return enoun + "" + postfix;
-		} else if ((enoun.length() > 3) && enoun.endsWith("us")
-				&& !(enoun.endsWith("lotus") || enoun.endsWith("wumpus"))) {
-			return enoun.substring(0, enoun.length() - 2) + "i" + postfix;
-		} else if (enoun.equals("oni")) {
-			return enoun;
-		} else if (enoun.endsWith("man")
-				&& !(enoun.endsWith("shaman") || enoun.endsWith("human"))) {
-			return enoun.substring(0, enoun.length() - 3) + "men" + postfix;
-		} else if (enoun.endsWith("rtex") || enoun.endsWith("index")) {
-			return enoun.substring(0, enoun.length() - 2) + "ices" + postfix;
-		} else if (enoun.endsWith("trix")) {
-			return enoun.substring(0, enoun.length() - 1) + "ces" + postfix;
-		} else if (enoun.endsWith("sis")) {
-			return enoun.substring(0, enoun.length() - 2) + "es" + postfix;
-		} else if (enoun.endsWith("erinys")) { 
-			return enoun.substring(0, enoun.length() - 1) + "es" + postfix;
-		} else if (enoun.endsWith("mumak")) {
-			return enoun + "" + postfix;
-		} else if (enoun.endsWith("djinni") || enoun.endsWith("efreeti")) {
-			return enoun.substring(0, enoun.length() - 1) + postfix;
-		} else if (enoun.endsWith("porcini") || enoun.endsWith("porcino")) {
-			return enoun.substring(0, enoun.length() - 1) + "i" + postfix;
-
-			// If the word is already in plural form, return it unchanged.
-		} else if (!singular(enoun).equals(enoun)) {
-			return enoun + postfix;
-
-			// last special case: Does the word end with "ch", "sh", "s", "x"
-			// oder "z"?
-		} else if (enoun.endsWith("ch")
-				|| enoun.endsWith("sh")
-				|| ((enoun.length() > 1) && ("sxz".indexOf(enoun.charAt(enoun.length() - 1)) > -1))) {
-			return enoun + "" + postfix;
-			// German special case
-		} else if (enoun.equals("glück") || enoun.equals("glücke")) {
-			return "glücke";
-		} else {
-			// no special case matched, so use the boring default plural rule
-			return enoun + "" + postfix;
-		}
 	}
 
 	/**
@@ -1514,6 +1336,23 @@ public class Grammar {
 
 			return word + "a";
 		}
+		return word;
+	}
+
+	public static String genderVerb(Item item, final String word) {
+		String itemName = item.getName();
+
+		if (itemName.endsWith("a")) {
+			if (word.endsWith("ój")) {
+				return word.substring(0, word.length() - 2) + "oja";
+			}
+			if (word.endsWith("y")) {
+				return word.substring(0, word.length() - 1) + "a";
+			}
+
+			return word + "a";
+		}
+
 		return word;
 	}
 }
