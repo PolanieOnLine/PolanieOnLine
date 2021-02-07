@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -407,11 +408,12 @@ public class Corpse extends PassiveEntity implements EquipListener {
 			text += creatureName;
 		} else if (has(ATTR_NAME)) {
 			text += get(ATTR_NAME);
+			String getGender = SingletonRepository.getRuleProcessor().getPlayer(get(ATTR_NAME)).getGender();
 
 			if (has(ATTR_KILLER)) {
 				// only display the killer if it is the corpse of a player
 				if (get("class").equals("player")) {
-					text += ", został zabity przez " + get(ATTR_KILLER);
+					text += ", " + Grammar.genderVerb(getGender, "został") + " " + Grammar.genderVerb(getGender, "zabity") + " przez " + get(ATTR_KILLER);
 				}
 			}
 		} else {
