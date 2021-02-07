@@ -40,7 +40,7 @@
   <image source="../../tileset/logic/creature/spider.png" width="96" height="32"/>
  </tileset>
  <tileset firstgid="239" name="sources" tilewidth="32" tileheight="32" tilecount="16" columns="8">
-  <image source="../../tileset/logic/item/sources.png" width="256" height="64"/>
+  <image source="../../tileset/logic/item/motherlode.png" width="256" height="64"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">

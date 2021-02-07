@@ -683,7 +683,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 							break;
 					}
 				}
-			} else if (clazz.contains("sources.png")) {
+			} else if (clazz.contains("motherlode.png")) {
 				createSourceAt(type, x, y);
 			} else if (clazz.contains("sheep.png")) {
 				final Sheep sheep = new Sheep();
