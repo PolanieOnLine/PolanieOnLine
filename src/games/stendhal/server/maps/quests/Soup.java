@@ -315,7 +315,7 @@ public class Soup extends AbstractQuest {
 								}
 							} else {
 								npc.say("Chyba się pomyliłeś. Nie masz "
-									+ Grammar.a_noun(itemName)
+									+ itemName
 									+ " przy sobie.");
 							}
 						} else {

@@ -213,7 +213,7 @@ public class ToysCollector extends AbstractQuest implements
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
 		return "Hej! To kłamstwo! Nie masz ze sobą "
-				+ Grammar.a_noun(itemName) + ".";
+				+ itemName + ".";
 	}
 
 	@Override

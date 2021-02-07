@@ -200,7 +200,7 @@ public class FishermansLicenseCollector extends AbstractQuest {
 								}
 							} else {
 								raiser.say("Nie próbuj mnie oszukać! Wiem, że nie masz "
-										+ Grammar.a_noun(itemName)
+										+ itemName
 										+ ". Co masz dla mnie?");
 							}
 						} else {

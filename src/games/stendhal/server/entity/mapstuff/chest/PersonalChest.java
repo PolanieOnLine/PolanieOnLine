@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
@@ -219,8 +218,8 @@ public class PersonalChest extends Chest {
 	}
 
 	@Override
-    public String getDescriptionName(final boolean definite) {
-	    return Grammar.article_noun(bankName + " chest", definite);
+    public String getDescriptionName() {
+	    return bankName + " chest";
     }
 
 	/**

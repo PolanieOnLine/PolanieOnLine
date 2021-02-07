@@ -185,10 +185,10 @@ public class PlayerDieer {
 						strings.add(sb.toString());
 					}
 					if (si.getQuantity() == 1) {
-						strings.add(Grammar.a_noun(si.getName()));
+						strings.add(si.getName());
 					}
 				} else {
-					strings.add(Grammar.a_noun(item.getName()));
+					strings.add(item.getName());
 				}
 			}
 			if (ringList.isEmpty()) {

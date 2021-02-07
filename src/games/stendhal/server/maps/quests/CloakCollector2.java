@@ -313,7 +313,7 @@ public class CloakCollector2 extends AbstractQuest {
 								}
 							} else {
 								entity.say("Och, jestem rozczarowana. Nie masz "
-												+ Grammar.a_noun(itemName)
+												+ itemName
 												+ " ze sobą.");
 							}
 						} else {

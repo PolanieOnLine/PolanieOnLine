@@ -59,7 +59,7 @@ public class Clock extends Sign {
 
 		StringBuilder msg = new StringBuilder("Jest godzina ");
 		msg.append(describeMinute(min));
-		msg.append(Grammar.numberString(hour));
+		msg.append(Grammar.clockNumberString(hour));
 		msg.append('.');
 
 		return msg.toString();

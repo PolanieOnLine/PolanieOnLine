@@ -60,7 +60,7 @@ public class VegetableGrower extends GrowingPassiveEntityRespawnPoint implements
 		super(object, "items/grower/" + vegetableview + "_grower", "items/grower/" + vegetableview + " grower", "Pick", maxRipeness, growthRate);
 		vegetableName = name;
 		setDescription("Wygląda na to, że rośnie tutaj "
-				+ Grammar.a_noun(name) + ".");
+				+ name + ".");
 		update();
 	}
 
@@ -73,7 +73,7 @@ public class VegetableGrower extends GrowingPassiveEntityRespawnPoint implements
 		super("items/grower/" + vegetableview + "_grower", "items/grower/" + vegetableview + " grower", "Pick", 1, 1, 1);
 		vegetableName = name;
 		setDescription("Wygląda na to, że rośnie tutaj "
-				+ Grammar.a_noun(name) + ".");
+				+ name + ".");
 	}
 
 	/**
@@ -95,13 +95,13 @@ public class VegetableGrower extends GrowingPassiveEntityRespawnPoint implements
 		String text;
 		switch (getRipeness()) {
 		case 0:
-			text = "Oto miejsce, gdzie można znaleźć " + Grammar.a_noun(vegetableName) + ".";
+			text = "Oto miejsce, gdzie można znaleźć " + vegetableName + ".";
 			break;
 		case 1:
-			text = "Oto zebrane " + Grammar.a_noun(vegetableName) + ".";
+			text = "Oto zebrane " + vegetableName + ".";
 			break;
 		default:
-			text = "Oto niezebrane " + Grammar.a_noun(vegetableName) + ".";
+			text = "Oto niezebrane " + vegetableName + ".";
 			break;
 		}
 		return text;

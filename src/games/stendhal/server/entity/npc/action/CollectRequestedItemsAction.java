@@ -15,7 +15,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
@@ -77,7 +76,7 @@ public final class CollectRequestedItemsAction implements ChatAction {
 					raiser.setCurrentState(this.stateAfterCompletion);
 				}
 			} else {
-				raiser.say("Nie masz przy sobie " + Grammar.a_noun(itemName) + "!");
+				raiser.say("Nie masz przy sobie " + itemName + "!");
 			}
 		} else {
 			raiser.say(alreadyBrought);

@@ -14,12 +14,9 @@ package games.stendhal.server.maps.semos.tavern.market;
 
 import java.util.List;
 
-import marauroa.server.db.command.DBCommandQueue;
-
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.dbcommand.StoreMessageCommand;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
@@ -27,6 +24,7 @@ import games.stendhal.server.entity.trade.Earning;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
 import games.stendhal.server.util.TimeUtil;
+import marauroa.server.db.command.DBCommandQueue;
 
 public class OfferExpirer implements TurnListener{
 	private static Logger logger = Logger.getLogger(OfferExpirer.class);
@@ -125,7 +123,7 @@ public class OfferExpirer implements TurnListener{
 			if (offer.hasItem()) {
 				itemname = offer.getItem().getName();
 			}
-			builder.append(Grammar.a_noun(itemname));
+			builder.append(itemname);
 			builder.append(" wygasła. Masz ");
 			builder.append(TimeUtil.approxTimeUntil((int) (offer.getTimestamp()
 					- System.currentTimeMillis()) / 1000 + TIME_TO_REMOVING));
@@ -144,7 +142,7 @@ public class OfferExpirer implements TurnListener{
 			market.removeExpiredOffer(offer);
 			StringBuilder builder = new StringBuilder();
 			builder.append("Twoja oferta ");
-			builder.append(Grammar.a_noun(offer.getItemName()));
+			builder.append(offer.getItemName());
 			builder.append(" została usunięta z rynku.");
 			sendMessage(offer.getOfferer(), builder);
 		}
@@ -168,7 +166,7 @@ public class OfferExpirer implements TurnListener{
 
 			StringBuilder builder = new StringBuilder();
 			builder.append("Twoja oferta ");
-			builder.append(Grammar.a_noun(offer.getItemName()));
+			builder.append(offer.getItemName());
 			builder.append(" wygaśnie za ");
 			builder.append(TimeUtil.approxTimeUntil((int) ((offer.getTimestamp() - time) / 1000 + TIME_TO_EXPIRING)));
 			builder.append(".");

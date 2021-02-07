@@ -163,7 +163,7 @@ public class CreatureInfo {
 				result.append(getRandomString(locationTexts, locationInfo)).append(' ');
 			} else {
 				result.append(getRandomString(locationUnknownTexts,
-						Grammar.a_noun(creature.getCreatureName()))).append(' ');
+						creature.getCreatureName())).append(' ');
 			}
 		}
 		return result.toString();
@@ -256,7 +256,7 @@ public class CreatureInfo {
 		result = result.replaceAll("%S",
 				Grammar.plural(creature.getCreatureName()));
 		result = result.replaceAll("%a",
-				Grammar.a_noun(creature.getCreatureName()))
+				creature.getCreatureName())
 				+ " ";
 		result += getHowDangerous(player, creature, dangerLiterals) + " ";
 		return result;
@@ -323,13 +323,13 @@ public class CreatureInfo {
 				prevProbability = prevProbability.replaceAll("%s",
 						Grammar.enumerateCollection(items));
 				prevProbability = prevProbability.replaceAll("%a",
-						Grammar.a_noun(item.name));
+						item.name);
 				result.append(prevProbability);
 				items = new ArrayList<String>();
 			}
 			String s = getLiteral(amountLiterals, item.max, 1);
 			s = s.replaceAll("%s", item.name);
-			s = s.replaceAll("%a", Grammar.a_noun(item.name));
+			s = s.replaceAll("%a", item.name);
 			items.add(s);
 			prevProbability = probability;
 			if (++counter >= maxNumberOfItems) {

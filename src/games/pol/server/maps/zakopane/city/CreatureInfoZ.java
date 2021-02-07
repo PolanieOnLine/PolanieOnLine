@@ -11,6 +11,17 @@
  ***************************************************************************/
 package games.pol.server.maps.zakopane.city;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -21,18 +32,6 @@ import games.stendhal.server.entity.creature.impl.DropItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import marauroa.common.game.IRPZone;
 
 /**
@@ -166,7 +165,7 @@ public class CreatureInfoZ {
 				result.append(getRandomString(locationTexts, locationInfo)).append(' ');
 			} else {
 				result.append(getRandomString(locationUnknownTexts,
-						Grammar.a_noun(creature.getCreatureName()))).append(' ');
+						creature.getCreatureName())).append(' ');
 			}
 		}
 		return result.toString();
@@ -259,7 +258,7 @@ public class CreatureInfoZ {
 		result = result.replaceAll("%S",
 				Grammar.plural(creature.getCreatureName()));
 		result = result.replaceAll("%a",
-				Grammar.a_noun(creature.getCreatureName()))
+				creature.getCreatureName())
 				+ " ";
 		result += getHowDangerous(player, creature, dangerLiterals) + " ";
 		return result;
@@ -326,13 +325,13 @@ public class CreatureInfoZ {
 				prevProbability = prevProbability.replaceAll("%s",
 						Grammar.enumerateCollection(items));
 				prevProbability = prevProbability.replaceAll("%a",
-						Grammar.a_noun(item.name));
+						item.name);
 				result.append(prevProbability);
 				items = new ArrayList<String>();
 			}
 			String s = getLiteral(amountLiterals, item.max, 1);
 			s = s.replaceAll("%s", item.name);
-			s = s.replaceAll("%a", Grammar.a_noun(item.name));
+			s = s.replaceAll("%a", item.name);
 			items.add(s);
 			prevProbability = probability;
 			if (++counter >= maxNumberOfItems) {

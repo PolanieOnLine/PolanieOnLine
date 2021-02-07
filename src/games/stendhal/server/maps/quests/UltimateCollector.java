@@ -12,7 +12,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.grammar.Grammar;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -34,12 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -121,7 +120,7 @@ public class UltimateCollector extends AbstractQuest {
 		}
 		res.add("Zaakceptowałem jego ostatnie zadanie na broń i obiecałem przynieść mu specjalną i rzadką broń.");
 		if (!isCompleted(player)) {
-			res.add("Balduin poprosił mnie, aby mu przyniósł " + Grammar.a_noun(player.getRequiredItemName(QUEST_SLOT,0)) + ".");
+			res.add("Balduin poprosił mnie, aby mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
 		}
 		if (isCompleted(player)) {
 			res.add("Super. Jestem teraz największym kolekcjonerem broni! Mogę Balduinowi sprzedawać czarne przedmioty.");

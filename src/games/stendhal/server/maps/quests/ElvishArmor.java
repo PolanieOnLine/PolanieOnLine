@@ -184,7 +184,7 @@ public class ElvishArmor extends AbstractQuest implements
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
 		return "Kłamca! Nie masz "
-										+ Grammar.a_noun(itemName)
+										+ itemName
 										+ " ze sobą.";
 	}
 	@Override

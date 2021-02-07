@@ -164,7 +164,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 				String creatureName = pickedCreature.getName();
 
 
-				raiser.say("Semos potrzebuje pomocy. Idź zabij " + Grammar.a_nounCreature(creatureName)
+				raiser.say("Semos potrzebuje pomocy. Idź zabij " + creatureName
 						+ " i powiedz #załatwione, gdy skończysz.");
 
 				questLast = "" + new Date().getTime();
@@ -297,7 +297,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 					.fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add("Zostałem poproszony o zabicie" + Grammar.a_nounCreature(creatureToKill)
+				res.add("Zostałem poproszony o zabicie" + creatureToKill
 						+ ", aby pomóc Semos. Jeszcze go nie zabiłem.");
 			} else {
 				res.add("Zabiłem " + creatureToKill
@@ -355,7 +355,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
 						npc.say("Już dostałeś zadanie na zgładzenie " + 
-								Grammar.a_nounCreature(player.getQuest(QUEST_SLOT,0).split(",")[0]) +
+								player.getQuest(QUEST_SLOT,0).split(",")[0] +
 								". Powiedz #załatwione kiedy to zrobisz!");
 					}
 				});
@@ -376,7 +376,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
 						if(player.getQuest(QUEST_SLOT, 0)!=null) {
 								npc.say("Już otrzymałeś zadanie na zgładzenie " +
-										Grammar.a_nounCreature(player.getQuest(QUEST_SLOT, 0).split(",")[0]) +
+										player.getQuest(QUEST_SLOT, 0).split(",")[0] +
 										". Powiedz #załatwione kiedy to zrobisz!" +
 										" Jeżeli nie możesz go znaleźć to może znaczyć, że już nie przychodzi do Semos. Możesz zabić #innego potwora jeżeli chcesz.");
 						}
@@ -448,7 +448,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
 							final String questKill = player.getQuest(QUEST_SLOT, 0).split(",")[0];
-							npc.say("Jeszcze nie zabiłeś " + Grammar.a_nounCreature(questKill)
+							npc.say("Jeszcze nie zabiłeś " + questKill
 									+ ". Idź i zrób to i powiedz #załatwione, gdy skończysz.");
 					}
 				});

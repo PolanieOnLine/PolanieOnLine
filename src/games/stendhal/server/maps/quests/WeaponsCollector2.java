@@ -256,7 +256,7 @@ public class WeaponsCollector2 extends AbstractQuest {
 								}
 							} else {
 								raiser.say("Może jestem stary, ale nie posiadasz "
-										+ Grammar.a_noun(itemName)
+										+ itemName
 										+ ". Czego tak naprawdę chcesz ode mnie?");
 							}
 						} else {

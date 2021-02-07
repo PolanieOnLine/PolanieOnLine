@@ -14,8 +14,6 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
-import games.stendhal.common.grammar.Grammar;
-
 /**
  * A key that matches if the identifier and lock number are the right.
  */
@@ -56,7 +54,7 @@ public class HouseKey extends Item {
 	public String describe() {
 		final String[] info = getInfoString().split(";", -1);
 		if (info[2].length() > 0) {
-			return "Oto klucz dla " + Grammar.suffix_s(info[2]) + " do zakupionego w " + info[0] + ".";
+			return "Oto klucz dla " + info[2] + " do zakupionego w " + info[0] + ".";
 		} else {
 			return "Oto klucz do " + info[0] + ".";
 		}
@@ -66,7 +64,7 @@ public class HouseKey extends Item {
 	public String getName() {
 		final String[] info = getInfoString().split(";", -1);
 		if (info[2].length() > 0) {
-			return Grammar.suffix_s(info[2]) + " klucz do drzwi";
+			return info[2] + " klucz do drzwi";
 		} else {
 			return  info[0] + " klucz";
 		}

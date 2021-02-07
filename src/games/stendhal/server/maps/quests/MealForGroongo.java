@@ -675,9 +675,7 @@ public class MealForGroongo extends AbstractQuest {
                 player.setQuest(QUEST_SLOT, 0, "check_dessert");
                 SpeakerNPC.say(
                     "Doskonale! Zacznę przygotowywa " +
-                    Grammar.article_noun(
-                            getRequiredMainDishFancyName(
-                                    player.getQuest(QUEST_SLOT, 2)), true) + " natychmiast." +
+                    		getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) + " natychmiast." +
                     " Tymczasem proszę zapytaj naszego kłopotliwego klienta," +
                     " który deser chciałby sobie zjeść!");
             } else if ("tell_dessert".equals(player.getQuest(QUEST_SLOT, 0))) {

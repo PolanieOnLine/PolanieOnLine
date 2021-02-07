@@ -11,7 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.grammar.Grammar;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -34,12 +38,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author KarajuSs
@@ -73,7 +71,7 @@ public class WegielNaOpal extends AbstractQuest {
 		}
 		res.add("Przyjąłem jego zadanie i przyniose mu węgiel.");
 		if (!isCompleted(player)) {
-			res.add("Stasek poprosił mnie, abym mu przyniósł " + Grammar.a_noun(player.getRequiredItemName(QUEST_SLOT,0)) + ".");
+			res.add("Stasek poprosił mnie, abym mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
 		}
 		if (isCompleted(player)) {
 			res.add("Super! Teraz mogę kupować uzbrojenie w sklepie u Staska.");

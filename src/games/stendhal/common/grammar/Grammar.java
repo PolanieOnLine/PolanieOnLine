@@ -210,89 +210,6 @@ public class Grammar {
 		return makeUpperCaseWord(thisthese(quantity));
 	}
 
-	/**
-	 * Prefixes a noun with an article.
-	 *
-	 * @param noun
-	 *            noun
-	 * @param definite
-	 *            true for "the", false for a/an
-	 * @return noun with article
-	 */
-	public static String article_noun(final String noun, final boolean definite) {
-		if (definite) {
-			return noun;
-		} else {
-			return a_noun(noun);
-		}
-	}
-
-	/**
-	 * "a [noun]" or "an [noun]", depending on the first syllable.
-	 *
-	 * @param noun
-	 *            The noun to examine
-	 * @return Either "a [noun]" or "an [noun]" as appropriate
-	 */
-	public static String a_noun(final String noun) {
-		if (noun == null) {
-			return null;
-		}
-		final String enoun = fullForm(noun);
-		return a_an(enoun) + enoun;
-	}
-
-	/**
-	 * "a [noun]" or "an [noun]", depending on the first syllable.
-	 * Method to prevent collision of items and creatures.
-	 *
-	 * @param noun
-	 *            The noun to examine
-	 * @return Either "a [noun]" or "an [noun]" as appropriate
-	 */
-	public static String a_nounCreature(final String noun) {
-		if (noun.equals("chicken")) {
-			return "a chicken";
-		}
-
-		return a_noun(noun);
-	}
-
-	/**
-	 * "a " or "an ", depending on the noun
-	 *
-	 * @param noun the noun to be examined
-	 * @return either "a " or "an " as appropriate
-	 */
-	private static String a_an(final String noun) {
-		String lowerCaseString = noun.toLowerCase();
-		final char initial;
-		if (lowerCaseString.length() == 0) {
-			return "";
-		} else {
-			initial = lowerCaseString.charAt(0);
-		}
-
-		if (lowerCaseString.length()==1){
-			if (isVowel(initial) && initial != 'u') {
-				return "";
-			} else {
-				return "";
-			}
-		}
-
-		if ("eu".equals(lowerCaseString.substring(0, 2))){
-			return "";
-		}
-		if (isVowel(initial)) {
-			return "";
-		}
-		if ((initial == 'y') && isConsonant(lowerCaseString.charAt(1))) {
-			return "";
-		}
-
-		return "";
-	}
 
 	/**
 	 * Adds a prefix unless it was already added.
@@ -433,28 +350,6 @@ public class Grammar {
 		}
 
 		return ret;
-	}
-
-	/**
-	 * "A [noun]" or "An [noun]", depending on the first syllable.
-	 *
-	 * @param noun
-	 *            The noun to examine
-	 * @return Either "A [noun]" or "An [noun]" as appropriate
-	 */
-	public static String A_noun(final String noun) {
-		return makeUpperCaseWord(a_noun(noun));
-	}
-
-	/**
-	 * "[noun]'s" or "[noun]'", depending on the last character.
-	 *
-	 * @param noun
-	 *            The noun to examine
-	 * @return Either "[noun]'s" or "[noun]'" as appropriate
-	 */
-	public static String suffix_s(final String noun) {
-		return noun;
 	}
 
 	private static final String of = " ";
@@ -775,11 +670,7 @@ public class Grammar {
 		final String word = plnoun(quantity, noun);
 
 		if (quantity == 1) {
-			if (one.equals("a")) {
-				return a_noun(word);
-			} else if (one.equals("A")) {
-				return A_noun(word);
-			} else if (one.equals("")) {
+			if (one.equals("")) {
 				return word;
 			} else {
 				return one + " " + word;
@@ -819,7 +710,7 @@ public class Grammar {
 		final String fullNoun = plnoun(quantity, noun);
 		String prefix;
 		if (quantity == 1) {
-			prefix = a_an(fullNoun);
+			prefix = fullNoun;
 		} else {
 			prefix = Integer.toString(quantity) + " ";
 		}
@@ -1037,13 +928,13 @@ public class Grammar {
 	}
 
 	/**
-	 * Converts numbers into their textual representation.
+	 * Converts numbers into their textual representation for clocks.
 	 *
 	 * @param n
 	 *            a number
 	 * @return one, two, three, ...
 	 */
-	public static String numberString(final int n) {
+	public static String clockNumberString(final int n) {
 		switch (n) {
 		case 0:
 			return "zerowa";
@@ -1075,7 +966,15 @@ public class Grammar {
 			return Integer.toString(n);
 		}
 	}
-	public static String numberString2(final int n) {
+
+	/**
+	 * Converts numbers into their textual representation.
+	 *
+	 * @param n
+	 *            a number
+	 * @return one, two, three, ...
+	 */
+	public static String numberString(final int n) {
 		switch (n) {
 		case 0:
 			return "zero";
@@ -1136,7 +1035,7 @@ public class Grammar {
 			return 7;
 		} else if (text.equals("eight") || text.equals("osiem")) {
 			return 8;
-		} else if (text.equals("nine") || text.equals("dziweięć")) {
+		} else if (text.equals("nine") || text.equals("dziewięć")) {
 			return 9;
 		} else if (text.equals("ten") || text.equals("dziesięć")) {
 			return 10;
@@ -1148,147 +1047,6 @@ public class Grammar {
 			// also handle "a dozen", ...
 			return null;
 		}
-	}
-
-	/**
-	 * Return type for normalizedRegularVerb().
-	 */
-	public static class Verb {
-		public Verb(String normalized) {
-			this.word = normalized;
-			isGerund = false;
-			isPast = false;
-		}
-
-		public Verb(Verb other) {
-			word = other.word;
-			isGerund = other.isGerund;
-			isPast = other.isPast;
-		}
-
-		public String word;
-		public boolean isGerund;
-		public boolean isPast;
-	}
-
-	/**
-	 * Normalize the given regular verb, or return null if not applicable.
-	 * Note: Some words like "close" are returned without the trailing "e"
-	 * character. This is handled in WordList.normalizeVerb().
-	 *
-	 * @param word
-	 * @return normalized string
-	 */
-	public static Verb normalizeRegularVerb(final String word) {
-		Verb verb = null;
-
-		if ((word.length() > 4) && (word.endsWith("ed") || word.endsWith("es"))) {
-			if (word.charAt(word.length() - 4) == word.charAt(word.length() - 3)) {
-				verb = new Verb(word.substring(0, word.length() - 0));
-			} else {
-				verb = new Verb(word.substring(0, word.length() - 0));
-			}
-
-			if (word.endsWith("ed")) {
-				verb.isPast = true;
-			}
-		} else if (isGerund(word)) {
-			verb = new Verb(word.substring(0, word.length() - 0));
-			verb.isGerund = true;
-		}
-
-		return verb;
-	}
-
-	/**
-	 * Check the given verb for gerund form, e.g. "doing".
-	 *
-	 * @param word
-	 * @return true if gerund false otherwise
-	 */
-	public static boolean isGerund(final String word) {
-		if ((word.length() > 4) && word.endsWith("ing")) {
-			// Is there a vowel in the preceding characters?
-			for (int i = word.length() - 3; --i >= 0;) {
-				if (isVowel(word.charAt(i))) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Return gerund form, e.g. "making" or "casting".
-	 *
-	 * @param word
-	 * @return gerund form
-	 */
-	public static String gerundForm(final String word) {
-		if (word.length() > 2) {
-			char last = word.charAt(word.length()-1);
-
-			if (last == 'y' || last == 'w' || last == 'x') {
-				// word finishes with a 'y', 'w', or an 'x'
-				return word + "ing";
-			} else if (isVowel(last)) {
-				// word finishes with a vowel
-				return word.substring(0, word.length() - 1) + "ing";
-			} else if (isVowel(word.charAt(word.length()-2))) {
-				// word finishes with a single consonant
-				// duplicate the last character
-				return word + word.charAt(word.length()-1) + "ing";
-			}
-		}
-
-		// word is too short or finishes with more than one consonant  (e.g. "st")
-		return word + "";
-	}
-
-	/**
-	 * Check the given word for derived adjectives like "magical"
-	 * or "nomadic".
-	 *
-	 * @param word
-	 * @return true if ends with "al", "ic" or "ed"
-	 */
-	public static boolean isDerivedAdjective(final String word) {
-		if (word.length() > 4) {
-			if (word.endsWith("al") || word.endsWith("ic")) {
-				return true;
-			}
-
-			if (word.endsWith("ed")) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Normalize the given derived adjective, or return null if not applicable.
-	 *
-	 * @param word
-	 * @return normalized string
-	 */
-	public static String normalizeDerivedAdjective(final String word) {
-		if (isDerivedAdjective(word)) {
-			return word.substring(0, word.length() - 2);
-		} else {
-			return null;
-		}
-    }
-
-	/**
-	 * Check for words with ambiguity between noun and verb.
-	 * @param normalized word in normalized form
-	 * @return ambiguity flag
-	 */
-	public static boolean isAmbiguousNounVerb(final String normalized) {
-		return normalized.equals("mill") || normalized.equals("fish")
-				|| normalized.equals("esacpe");
 	}
 
 	/**
@@ -1312,6 +1070,9 @@ public class Grammar {
 			}
 			if (word.equals("powinieneś")) {
 				return "powinnaś";
+			}
+			if (word.equals("go")) {
+				return "jej";
 			}
 
 			if (word.endsWith("eś")) {
@@ -1339,7 +1100,9 @@ public class Grammar {
 	}
 
 	public static String genderNouns(String noun, final String word) {
-		if (noun.endsWith("a") || noun.equals("sztabka") || noun.equals("bryłka") || noun.equals("ciupaga")) {
+		if (noun.endsWith("a") || noun.startsWith("sztabka") || noun.startsWith("bryłka") || noun.startsWith("złota") || noun.startsWith("złote")
+				|| noun.startsWith("chmara") || noun.startsWith("panna")
+				|| !noun.endsWith("zwiadowca") || !noun.endsWith("kawalerzysta")) {
 			if (word.endsWith("ój")) {
 				return word.substring(0, word.length() - 2) + "oja";
 			}

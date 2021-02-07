@@ -404,7 +404,7 @@ class DestinationObject extends MoveableObject {
 			if (parent.has("name")) {
 				res[1] = parent.get("name");
 			} else {
-				res[1] = parent.getDescriptionName(false);
+				res[1] = parent.getDescriptionName();
 			}
 			res[2] = slot;
 		} else {

@@ -20,7 +20,6 @@ import java.util.Map;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.messages.SupportMessageTemplatesFactory;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
@@ -102,7 +101,7 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 			}
 		}
 
-		final String message = "Administrator " + sender + " odpowiedział " + Grammar.suffix_s(action.get(TARGET))
+		final String message = "Administrator " + sender + " odpowiedział " + action.get(TARGET)
 				+ " na pytanie: " + reply;
 
 		new GameEvent(sender, SUPPORTANSWER, action.get(TARGET), reply).raise();
@@ -148,7 +147,7 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 			return;
 		}
 
-		final String message = sender + " odpowiedział " + Grammar.suffix_s(target)
+		final String message = sender + " odpowiedział " + target
 		+ " na pytanie przy pomocy postmana: " + supportmessage;
 
 		SingletonRepository.getRuleProcessor().sendMessageToSupporters(message);

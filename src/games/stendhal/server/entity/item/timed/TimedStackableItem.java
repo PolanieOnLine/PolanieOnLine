@@ -15,7 +15,6 @@ package games.stendhal.server.entity.item.timed;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.Entity;
@@ -98,7 +97,7 @@ public abstract class TimedStackableItem extends StackableItem {
 
 	@Override
 	public String describe() {
-		String text = "Oto " + Grammar.a_noun(getTitle()) + ".";
+		String text = "Oto " + getTitle() + ".";
 		if (hasDescription()) {
 			text = getDescription();
 		}

@@ -12,7 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.actions.validator;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
@@ -55,7 +54,7 @@ public class ActionTargetNotIgnoringSender implements ActionValidator {
 
 		// sender is on ignore list
 		if (reply.length() == 0) {
-			return "Umysł " + Grammar.suffix_s(playerName) + " nie jest dostosowany do twojego i nie możesz się z nim skontaktować.";
+			return "Umysł " + playerName + " nie jest dostosowany do twojego i nie możesz się z nim skontaktować.";
 		} else {
 			return playerName + " ignoruje Ciebie: " + reply;
 		}

@@ -37,6 +37,7 @@ public class AchievementLogRenderers {
 		return instance;
 	}
 
+	@SuppressWarnings("serial")
 	public static class HeaderRenderer extends JPanel implements TableCellRenderer {
 		private final JLabel header = new JLabel();
 
@@ -57,6 +58,7 @@ public class AchievementLogRenderers {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	public class DescriptionCellRenderer extends DefaultTableCellRenderer {
 		private final Border border = BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD);
 
@@ -71,6 +73,7 @@ public class AchievementLogRenderers {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	public class SpriteCellRenderer extends JComponent implements TableCellRenderer {
 		private Sprite sprite;
 

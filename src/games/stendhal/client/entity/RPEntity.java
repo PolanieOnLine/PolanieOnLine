@@ -1566,10 +1566,11 @@ public abstract class RPEntity extends AudibleEntity {
 			for (Entity attacker : attackers) {
 				attackerNames.add(attacker.getTitle());
 			}
-			String text = getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " zabity przez " + Grammar.enumerateCollection(attackerNames);
 
-			if (getGender() == null) {
-				ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(text));;
+			String attackers = Grammar.enumerateCollection(attackerNames);
+			String text = getTitle() + " " + Grammar.genderNouns(getTitle(), "został") + " " + Grammar.genderNouns(getTitle(), "zabity") + " przez " + attackers;
+			if (getGender() != null) {
+				text = getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " " + Grammar.genderVerb(getGender(), "zabity") + " przez " + attackers;
 			}
 			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(text));
 		}

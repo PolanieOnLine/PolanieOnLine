@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.constants.Nature;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.events.EquipListener;
 import games.stendhal.server.entity.Entity;
@@ -156,7 +155,7 @@ public abstract class Spell extends PassiveEntity implements EquipListener, Date
 					new PlayerHasItemEquippedInSlot(item, "rhand"),
 					new PlayerHasItemEquippedInSlot(item, "lhand"));
 			if(!staffCondition.fire(caster, null, null)) {
-				caster.sendPrivateText(NotificationType.INFORMATION, "Musisz trzymać w dłoni "+Grammar.a_noun(item)+", aby rzucić zaklęcie.");
+				caster.sendPrivateText(NotificationType.INFORMATION, "Musisz trzymać w dłoni " + item + ", aby rzucić zaklęcie.");
 				return false;
 			}
 		}

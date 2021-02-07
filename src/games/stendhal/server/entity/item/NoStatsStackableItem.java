@@ -13,8 +13,6 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
-import games.stendhal.common.grammar.Grammar;
-
 
 /**
  * Represents a stackable item for which we do not want 'Stats' to show in description.
@@ -43,7 +41,7 @@ public class NoStatsStackableItem extends StackableItem {
 
 	@Override
 	public String describe() {
-		String text = "Oto " + Grammar.a_noun(getTitle()) + ".";
+		String text = "Oto " + getTitle() + ".";
 		if (hasDescription()) {
 			text = getDescription();
 		}

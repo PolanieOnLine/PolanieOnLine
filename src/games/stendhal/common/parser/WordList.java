@@ -423,70 +423,6 @@ final public class WordList {
 	}
 
 	/**
-	 * Return type for normalizeVerb().
-	 */
-	static class Verb extends Grammar.Verb {
-		public Verb(Grammar.Verb verb, WordEntry entry) {
-			super(verb);
-
-			assert entry != null;
-			this.entry = entry;
-		}
-
-		public WordEntry entry; // is never null
-	}
-
-	/**
-	 * Try to normalise the given word as verb.
-	 *
-	 * @param word
-	 *
-	 * @return Verb object with additional information
-	 */
-	Verb normalizeVerb(final String word) {
-		final String trimmedWord = trimWord(word);
-
-		final Grammar.Verb verb = Grammar.normalizeRegularVerb(trimmedWord);
-
-		if (verb != null) {
-			WordEntry entry = words.get(verb.word);
-
-			// try and re-append "e" if it was removed by
-			// normalizeRegularVerb()
-			if ((entry == null) && trimmedWord.endsWith("e")
-					&& !verb.word.endsWith("e")) {
-				entry = words.get(verb.word + "e");
-			}
-
-			if (entry != null) {
-				return new Verb(verb, entry);
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Try to find a matching word for a derived adjective.
-	 *
-	 * @param word
-	 * @return WordEntry
-	 */
-	WordEntry normalizeAdjective(final String word) {
-		final String trimmedWord = trimWord(word);
-
-		final String normalized = Grammar.normalizeDerivedAdjective(trimmedWord);
-
-		if (normalized != null) {
-			final WordEntry entry = words.get(normalized);
-
-			return entry;
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * Register a subject name to be recognized by the conversation parser.
 	 *
 	 * @param name
@@ -709,16 +645,6 @@ final public class WordList {
 		}
 		if (lastType.isSubject() && typeString.startsWith(ExpressionType.OBJECT)) {
 			return true;
-		}
-
-		// handle ambiguous cases like "mill"
-		if (Grammar.isAmbiguousNounVerb(lastExpr.getNormalized())) {
-			if (lastType.isVerb() && typeString.equals(ExpressionType.OBJECT)) {
-				return true;
-			}
-			if (lastType.isObject() && typeString.equals(ExpressionType.VERB)) {
-				return true;
-			}
 		}
 
 		return false;

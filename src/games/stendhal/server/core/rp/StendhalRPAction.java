@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.Testing;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -246,7 +245,7 @@ public class StendhalRPAction {
 			final Player owner = ((DomesticAnimal) victim).getOwner();
 
 			if (owner != null) {
-				name = Grammar.suffix_s(owner.getTitle()) + " " + name;
+				name = owner.getTitle() + " " + name;
 			} else {
 				if (victim instanceof Sheep) {
 					name = "" + name;

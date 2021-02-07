@@ -307,7 +307,7 @@ public class FishSoup extends AbstractQuest {
 								}
 							} else {
 								npc.say("No nie. Nie mam czasu na żarty! Nie masz "
-									+ Grammar.a_noun(itemName)
+									+ itemName
 									+ " ze sobą.");
 							}
 						} else {

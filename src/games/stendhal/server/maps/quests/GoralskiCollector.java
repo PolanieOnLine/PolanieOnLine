@@ -201,7 +201,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
-		return "Rozczarowałeś mnie... Nie masz " + Grammar.a_noun(itemName) + " przy sobie...";
+		return "Rozczarowałeś mnie... Nie masz " + itemName + " przy sobie...";
 	}
 
 	@Override

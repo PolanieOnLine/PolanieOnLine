@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -405,7 +404,7 @@ public class Corpse extends PassiveEntity implements EquipListener {
 		if (hasDescription()) {
 			text = getDescription();
 		} else if (creatureName != null) {
-			text += Grammar.a_noun(creatureName);
+			text += creatureName;
 		} else if (has(ATTR_NAME)) {
 			text += get(ATTR_NAME);
 
@@ -416,7 +415,7 @@ public class Corpse extends PassiveEntity implements EquipListener {
 				}
 			}
 		} else {
-			text += Grammar.a_noun(ItemTools.itemNameToDisplayName(get("class")).replace("pol/", ""));
+			text += ItemTools.itemNameToDisplayName(get("class")).replace("pol/", "");
 		}
 
 		text += ". Możesz je #przeszukać, aby zobaczyć co zawierają.";
@@ -444,13 +443,13 @@ public class Corpse extends PassiveEntity implements EquipListener {
 	 * @return The description name.
 	 */
 	@Override
-	public String getDescriptionName(final boolean definite) {
+	public String getDescriptionName() {
 		final String name = getName();
 
 		if (name != null) {
-			return Grammar.article_noun(name, definite);
+			return name;
 		} else {
-			return super.getDescriptionName(definite);
+			return super.getDescriptionName();
 		}
 	}
 

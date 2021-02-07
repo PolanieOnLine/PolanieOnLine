@@ -210,7 +210,7 @@ public class WeaponsCollector extends AbstractQuest implements
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
 		return "Może jestem stary, ale nic nie masz "
-				+ Grammar.a_noun(itemName)
+				+ itemName
 				+ ". Czego tak naprawdę chcesz ode mnie?";
 	}
 

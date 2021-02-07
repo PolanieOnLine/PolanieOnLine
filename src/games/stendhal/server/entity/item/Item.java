@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.EquipListener;
@@ -760,7 +759,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	@Override
 	public String describe() {
-		String text = "Oto " + Grammar.a_noun(getTitle()) + ".";
+		String text = "Oto " + getTitle() + ".";
 		StringBuilder stats = new StringBuilder();
 		String levelwarning = "";
 		if (hasDescription()) {
@@ -902,13 +901,13 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return The description name.
 	 */
 	@Override
-	public String getDescriptionName(final boolean definite) {
+	public String getDescriptionName() {
 		final String name = getName();
 
 		if (name != null) {
 			return name;
 		} else {
-			return super.getDescriptionName(definite);
+			return super.getDescriptionName();
 		}
 	}
 

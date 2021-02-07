@@ -1648,13 +1648,14 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		final String awayMessage = getAwayMessage();
+		final String gender = SingletonRepository.getRuleProcessor().getPlayer(name).getGender();
 		if (awayMessage != null) {
-			sb.append("\n" + name + " nie ma go teraz, ale zostawił wiadomość: ");
+			sb.append("\n" + name + " nie ma " + Grammar.genderVerb(gender, "go") + " teraz, ale " + Grammar.genderVerb(gender, "zostawił") + " wiadomość: ");
 			sb.append(awayMessage);
 		}
 		final String grumpyMessage = getGrumpyMessage();
 		if (grumpyMessage != null) {
-			sb.append("\n" + name + " ukrywa się i zostawił wiadomość: ");
+			sb.append("\n" + name + " ukrywa się i " + Grammar.genderVerb(gender, "zostawił") + " wiadomość: ");
 			sb.append(grumpyMessage);
 		}
 
@@ -1663,7 +1664,7 @@ public class Player extends DressedEntity implements UseListener {
 			final String sentence = getSentence();
 			if (!sentence.isEmpty()) {
 				sb.append("\n");
-				sb.append("Opis " + Grammar.suffix_s(name));
+				sb.append("Opis " + name);
 				sb.append(" jest: \"" + sentence + "\"");
 			}
 		}

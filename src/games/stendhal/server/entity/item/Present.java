@@ -16,7 +16,6 @@ import java.util.Map;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.player.Player;
 
@@ -71,7 +70,7 @@ public class Present extends Box {
 		final String itemName = getInfoString();
 		final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 		player.sendPrivateText("Gratulacje dostałeś " 
-				+ Grammar.a_noun(ItemTools.itemNameToDisplayName(itemName)) + "!");
+				+ ItemTools.itemNameToDisplayName(itemName) + "!");
 
 		player.equipOrPutOnGround(item);
 		player.notifyWorldAboutChanges();

@@ -12,7 +12,6 @@
  ***************************************************************************/
 package games.stendhal.server.entity.slot;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.mapstuff.chest.PersonalChest;
 
@@ -50,7 +49,7 @@ public class PersonalChestSlot extends ChestSlot {
 		// not depend on this as the banks have had lots of bugs in the past.
 		if (chest.getAttending() != entity) {
 			if (chest.getAttending() != null) {
-				setErrorMessage("Nie możesz wziąć przedmiotów ze skrzyi w banku " + Grammar.suffix_s(chest.getAttending().getName()) + ".");
+				setErrorMessage("Nie możesz wziąć przedmiotów ze skrzyni w banku " + chest.getAttending().getName() + ".");
 			}
 			return false;
 		}

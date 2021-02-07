@@ -24,7 +24,6 @@ import static games.stendhal.common.constants.Actions.TITLE;
 import static games.stendhal.common.constants.Actions.UNSET;
 import static games.stendhal.common.constants.Actions.VALUE;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.Entity;
@@ -131,14 +130,14 @@ public class AlterAction extends AdministrationAction {
 
 					if (ATTR_HP.equals(stat) && (changed.getInt("base_hp") < numberValue)) {
 						logger.info("Admin " + player.getName() + " trying to set entity "
-								+ Grammar.suffix_s(action.get(TARGET)) + " HP over its Base HP, "
+								+ action.get(TARGET) + " HP over its Base HP, "
 								+ "we instead restored entity " + action.get(TARGET) + " to full health.");
 						numberValue = changed.getInt("base_hp");
 					}
 
 					if (ATTR_HP.equals(stat) && (numberValue <= 0)) {
 						logger.error("DENIED: Admin " + player.getName() + " trying to set entity "
-								+ Grammar.suffix_s(action.get(TARGET)) + " HP to 0, making it so unkillable.");
+								+ action.get(TARGET) + " HP to 0, making it so unkillable.");
 						return;
 					}
 

@@ -152,9 +152,9 @@ public class CollectingGroupQuestAdder {
 						Set<String> entries = new HashSet<>();
 						for (Map.Entry<String, Integer> entry : remaining.entrySet()) {
 							int chunkSize = behaviour.getChunkSize(entry.getKey()).intValue();
-							String entr = Grammar.numberString2(chunkSize) + " #'" + Grammar.plnoun(chunkSize, entry.getKey()) + "'";
+							String entr = Grammar.numberString(chunkSize) + " #'" + Grammar.plnoun(chunkSize, entry.getKey()) + "'";
 							if (chunkSize < entry.getValue().intValue()) {
-								entr = entr + " tego ogólnie jeszcze potrzebuję " + Grammar.numberString2(entry.getValue().intValue());
+								entr = entr + " tego ogólnie jeszcze potrzebuję " + Grammar.numberString(entry.getValue().intValue());
 							}
 							entries.add(entr);
 						}

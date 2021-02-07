@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
 import games.stendhal.server.core.config.ItemGroupsXMLLoader;
 import games.stendhal.server.core.rule.defaultruleset.DefaultCreature;
@@ -63,7 +62,7 @@ public class GenerateDescriptions {
 	private static String describe(String desc, String name) {
 		if (desc == null || desc.trim().isEmpty()) {
 			// The default description
-			desc = "Oto " + Grammar.a_noun(name) + ".";
+			desc = "Oto " + name + ".";
 		}
 		return desc + "=" + desc;
 	}

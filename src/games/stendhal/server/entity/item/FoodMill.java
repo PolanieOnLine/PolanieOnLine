@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.RPEntity;
 import marauroa.common.game.RPObject;
@@ -112,12 +111,12 @@ public class FoodMill extends Item {
     	 * and have the correct container in his inventory
     	 */
     	if (!input.equals(first.get("name"))) {
-    		user.sendPrivateText("Musisz mieć conajmniej " + Grammar.a_noun(input) + " w drugiej dłoni");
+    		user.sendPrivateText("Musisz mieć conajmniej " + input + " w drugiej dłoni.");
     		return false;
     	}
 
     	if (containerRequired && !user.isEquipped(container)) {
-    		user.sendPrivateText("Nie masz " + Grammar.a_noun(container) + " ze sobą");
+    		user.sendPrivateText("Nie masz " + container + " ze sobą.");
     		return false;
     	}
 

@@ -397,7 +397,7 @@ public class CollectEnemyData extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						final String response;
 						if (questActiveCondition.fire(player, null, null)) {
-							response = "Nadal potrzebuję, abyś pomógł mi zebrać informacje na temat " + Grammar.a_noun(getEnemyForStep(player, getCurrentStep(player))) + ".";
+							response = "Nadal potrzebuję, abyś pomógł mi zebrać informacje na temat " + getEnemyForStep(player, getCurrentStep(player)) + ".";
 						} else {
 							response = "Najpierw potrzebuję twojej pomocy przy #zadaniu.";
 						}
@@ -741,7 +741,7 @@ public class CollectEnemyData extends AbstractQuest {
 			return null;
 		}
 
-		String questionString = prefix.trim() + " " + Grammar.a_noun(currentCreature);
+		String questionString = prefix.trim() + " " + currentCreature;
 		if (suffix != null) {
 			questionString += " " + suffix.trim();
 		}
@@ -801,13 +801,13 @@ public class CollectEnemyData extends AbstractQuest {
 			final String enemy = getEnemyForStep(player, step);
 			if (enemy != null) {
 				if (!isStepDone(player, step)) {
-					res.add("Poprosił mnie o informacje " + Grammar.a_noun(enemy) + ".");
+					res.add("Poprosił mnie o informacje " + enemy + ".");
 				} else {
 					String key = getQuestionKeyForStep(player, step);
 					if (!key.equals("poziom")) {
 						key = key.toUpperCase();
 					}
-					res.add("Zgłosiłem informacje na temat " + key + " dla stworzenia " + Grammar.a_noun(enemy) + ".");
+					res.add("Zgłosiłem informacje na temat " + key + " dla stworzenia " + enemy + ".");
 				}
 			}
 		}

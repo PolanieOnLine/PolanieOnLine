@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
@@ -59,7 +58,7 @@ public class TwilightElixir extends Drink {
 
 	@Override
 	public String describe() {
-		String text = "Oto " + Grammar.a_noun(getTitle()) + ".";
+		String text = "Oto " + getTitle() + ".";
 		String stats = "";
 		if (hasDescription()) {
 			text = getDescription();

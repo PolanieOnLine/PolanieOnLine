@@ -40,7 +40,6 @@ import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.actions.equip.DropAction;
 import games.stendhal.server.core.engine.GameEvent;
@@ -62,7 +61,6 @@ import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
 import games.stendhal.server.entity.slot.Slots;
-import games.stendhal.server.entity.status.Status;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusList;
 import games.stendhal.server.entity.status.StatusType;
@@ -1869,16 +1867,6 @@ public abstract class RPEntity extends GuidedEntity {
 		rewardKillers(oldXP);
 		rewardKillerAnimals(oldXP);
 
-		if (!(killer instanceof Player) && !(killer instanceof Status) && !(killer instanceof Pet)) {
-			/*
-			 * Prettify the killer name for the corpse. Should be done only
-			 * after the more plain version has been used for the killer list.
-			 * Players are unique, so they should not get an article. Also
-			 * statuses should not, so that "killed by poison" does not become
-			 * "killed by a bottle of poison".
-			 */
-			killerName = Grammar.a_noun(killerName);
-		}
 		// Add a corpse
 		final Corpse corpse = makeCorpse(killerName);
 		damageReceived.clear();
@@ -3140,11 +3128,11 @@ public abstract class RPEntity extends GuidedEntity {
 	 * @return The description name.
 	 */
 	@Override
-	public String getDescriptionName(final boolean definite) {
+	public String getDescriptionName() {
 		if (name != null) {
 			return name;
 		} else {
-			return super.getDescriptionName(definite);
+			return super.getDescriptionName();
 		}
 	}
 

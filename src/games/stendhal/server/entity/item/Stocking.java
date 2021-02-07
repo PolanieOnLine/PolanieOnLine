@@ -15,7 +15,6 @@ package games.stendhal.server.entity.item;
 import java.util.Map;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.player.Player;
 
@@ -59,7 +58,7 @@ public class Stocking extends Box {
 		final Item item = SingletonRepository.getEntityManager().getItem(
 				itemName);
 		player.sendPrivateText("Gratulacje otrzymałeś "
-				+ Grammar.a_noun(itemName) + "!");
+				+ itemName + "!");
 		player.equipOrPutOnGround(item);
 		player.notifyWorldAboutChanges();
 		return true;

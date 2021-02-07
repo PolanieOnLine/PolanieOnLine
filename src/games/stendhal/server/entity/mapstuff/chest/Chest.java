@@ -14,7 +14,6 @@ package games.stendhal.server.entity.mapstuff.chest;
 
 import java.util.Iterator;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.PassiveEntity;
@@ -79,14 +78,9 @@ public class Chest extends Entity implements UseListener {
 		}
 	}
 
-
-	//
-	// Chest
-	//
-
 	@Override
-    public String getDescriptionName(final boolean definite) {
-	    return Grammar.article_noun(CHEST_RPCLASS_NAME, definite);
+    public String getDescriptionName() {
+	    return CHEST_RPCLASS_NAME;
     }
 
 	@Override
@@ -152,10 +146,6 @@ public class Chest extends Entity implements UseListener {
 		return content.iterator();
 	}
 
-	//
-	// UseListener
-	//
-
 	@Override
 	public boolean onUsed(final RPEntity user) {
 		if (user.nextTo(this)) {
@@ -174,10 +164,6 @@ public class Chest extends Entity implements UseListener {
 		}
 		return false;
 	}
-
-	//
-	// Entity
-	//
 
 	@Override
 	public String describe() {

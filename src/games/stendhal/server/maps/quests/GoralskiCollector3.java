@@ -282,7 +282,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 								}
 							} else {
 								entity.say("Może jestem stary, ale nie posiadasz "
-												+ Grammar.a_noun(itemName)
+												+ itemName
 												+ " . Czego tak naprawdę chcesz ode mnie?");
 							}
 						} else {

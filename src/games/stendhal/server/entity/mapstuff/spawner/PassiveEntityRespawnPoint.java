@@ -14,7 +14,6 @@ package games.stendhal.server.entity.mapstuff.spawner;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -62,7 +61,7 @@ public class PassiveEntityRespawnPoint extends Entity implements TurnListener {
 		this.growingItemName = growingItemName;
 		this.meanTurnsForRegrow = meanTurnsForRegrow;
 		setDescription("Wygląda na to, że rośnie tutaj "
-				+ Grammar.a_noun(growingItemName) + ".");
+				+ growingItemName + ".");
 
 		setRPClass("plant_grower");
 		put("type", "plant_grower");
@@ -76,7 +75,7 @@ public class PassiveEntityRespawnPoint extends Entity implements TurnListener {
 		this.growingItemName = growingItemName;
 		this.meanTurnsForRegrow = meanTurnsForRegrow;
 		setDescription("Wygląda na to, że rośnie tutaj "
-				+ Grammar.a_noun(growingItemName) + ".");
+				+ growingItemName + ".");
 
 		setRPClass("plant_grower");
 		put("type", "plant_grower");

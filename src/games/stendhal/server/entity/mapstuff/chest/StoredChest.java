@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.transformer.ItemTransformer;
@@ -124,8 +123,8 @@ public class StoredChest extends Chest {
 	}
 
 	@Override
-	public String getDescriptionName(final boolean definite) {
-		return Grammar.article_noun("chest in " + this.getZone().getName(), definite);
+	public String getDescriptionName() {
+		return "chest in " + this.getZone().getName();
 	}
 
 	/**

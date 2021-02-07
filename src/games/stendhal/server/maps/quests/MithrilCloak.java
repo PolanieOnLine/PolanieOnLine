@@ -12,18 +12,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.grammar.Grammar;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.entity.item.scroll.TwilightMossScroll;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.mithrilcloak.MithrilCloakQuestChain;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /**
  * QUEST: Mithril Cloak
@@ -125,7 +124,7 @@ public class MithrilCloak extends AbstractQuest {
 		}
         res.add("Idy maszyna do szycia jest uszkodzona, a ona zwróciła się do mnie abym znalazł brakujące części.");
 		if (questState.startsWith("machine")) {
-			res.add("Muszę zanieść Idzie " + Grammar.a_noun(player.getRequiredItemName(QUEST_SLOT,1)) + ".");
+			res.add("Muszę zanieść Idzie " + player.getRequiredItemName(QUEST_SLOT,1) + ".");
 			return res;
 		}
 		res.add("Przyniosłem części potrzebne do naprawienia maszyny Idy.");

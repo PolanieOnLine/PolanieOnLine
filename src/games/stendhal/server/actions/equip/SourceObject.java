@@ -132,7 +132,7 @@ class SourceObject extends MoveableObject {
 
 		final Entity entity = (Entity) baseSlot.get(baseItemId);
 		if (!(entity instanceof Item)) {
-			player.sendPrivateText("Oto " + entity.getDescriptionName(true)
+			player.sendPrivateText("Oto " + entity.getDescriptionName()
 					+ " nie jest przedmiotem i nie może być założony");
 			return invalidSource;
 		}
@@ -504,7 +504,7 @@ class SourceObject extends MoveableObject {
 			if (parent.has("name")) {
 				res[1] = parent.get("name");
 			} else {
-				res[1] = parent.getDescriptionName(false);
+				res[1] = parent.getDescriptionName();
 			}
 			res[2] = slot;
 		} else {

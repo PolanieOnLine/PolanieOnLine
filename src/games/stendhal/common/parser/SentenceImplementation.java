@@ -160,40 +160,6 @@ public final class SentenceImplementation extends Sentence {
                 }
             }
 
-            // handle unknown words
-            if (!wordFound) {
-                // recognise declined verbs, e.g. "swimming"
-                final WordList.Verb verb = wl.normalizeVerb(original);
-
-                if (verb != null) {
-                    if (verb.isGerund) {
-                        w.setType(new ExpressionType(verb.entry.getTypeString() + ExpressionType.SUFFIX_GERUND));
-                        wordFound = true;
-                    } else if ((verb.entry.getType() != null) && verb.entry.getType().isVerb()) {
-                        w.setType(verb.entry.getType());
-                        wordFound = true;
-                    } else if (!verb.isPast) { // avoid cases like "rounded"
-                    	w.setType(new ExpressionType(ExpressionType.VERB));
-                        wordFound = true;
-                    }
-
-                    if (wordFound) {
-                    	w.setNormalized(verb.entry.getNormalized());
-                    }
-                }
-            }
-
-            if (!wordFound) {
-                // recognise derived adjectives, e.g. "magical", "nomadic" or "rounded"
-                final WordEntry adjective = wl.normalizeAdjective(original);
-
-                if (adjective != null) {
-                	w.setType(new ExpressionType(ExpressionType.ADJECTIVE));
-                    w.setNormalized(adjective.getNormalized());
-                    wordFound = true;
-                }
-            }
-
             if (!wordFound) {
                 w.setType(new ExpressionType(""));
                 w.setNormalized(original.toLowerCase());

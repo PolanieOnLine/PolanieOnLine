@@ -199,7 +199,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
-		return "Och, jestem rozczarowana. Nie masz " + Grammar.a_noun(itemName) + " ze sobą.";
+		return "Och, jestem rozczarowana. Nie masz " + itemName + " ze sobą.";
 	}
 
 	@Override

@@ -28,7 +28,6 @@ import com.google.common.collect.Iterators;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.constants.Events;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.slot.EntitySlot;
@@ -569,7 +568,7 @@ public abstract class Entity extends RPObject implements Killer {
 			return getDescription();
 		}
 
-		return "Oto " + getDescriptionName(false) + ".";
+		return "Oto " + getDescriptionName() + ".";
 	}
 
 	/**
@@ -582,11 +581,11 @@ public abstract class Entity extends RPObject implements Killer {
 	 * @return name
 	 *
 	 */
-	public String getDescriptionName(final boolean definite) {
+	public String getDescriptionName() {
 		if (has("subclass")) {
-			return Grammar.article_noun(ItemTools.itemNameToDisplayName(get("subclass")), definite);
+			return ItemTools.itemNameToDisplayName(get("subclass"));
 		} else if (has("class")) {
-			return Grammar.article_noun(ItemTools.itemNameToDisplayName(get("class")), definite);
+			return ItemTools.itemNameToDisplayName(get("class"));
 		} else {
 			String ret = "something indescribably strange";
 			if (has("type")) {

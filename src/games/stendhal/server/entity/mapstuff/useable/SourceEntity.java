@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
@@ -129,7 +128,7 @@ public class SourceEntity extends PlayerActivityEntity {
 					player.incMiningXP(xp);
 				}
 
-				player.sendPrivateText("Wydobyłeś " + Grammar.a_noun(item.getTitle()) + ".");
+				player.sendPrivateText("Wydobyłeś " + item.getTitle() + ".");
 			} else {
 				logger.error("could not find item: " + itemName);
 			}
