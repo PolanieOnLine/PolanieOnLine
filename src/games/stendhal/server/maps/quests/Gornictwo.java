@@ -68,6 +68,7 @@ public class Gornictwo extends AbstractQuest {
 		stepDigObsidian();
 		stepDigPlatinum();
 		stepDigMithril();
+		stepDigDiamond();
 		stepDigLast();
 	}
 
@@ -494,21 +495,47 @@ public class Gornictwo extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
-					if (player.isEquipped("bryłka mithrilu", 20) && player.isEquipped("kryształ diamentu", 10) && player.isEquipped("kilof złoty")) {
-						raiser.say("Prześliczne surowce! W nagrodę otrzymasz mój własny kilof wykonany z obsydianu przez co pozwolę sobie zabrać twój kilof złoty w ramach nowego. Cudownie się nim wykopuje surowce! Będziesz " + Grammar.genderVerb(player.getGender(), "chciał") + " go przetestować, prawda? Wykop w takim razie dla mnie po 30 bryłek złota, mithrilu, kryształów obsydianu, ametystu oraz diamentu nowym kilofem!");
+					if (player.isEquipped("bryłka mithrilu", 20) && player.isEquipped("kilof złoty")) {
+						raiser.say("Prześliczne surowce! W nagrodę otrzymasz mój własny kilof wykonany z obsydianu przez co pozwolę sobie zabrać twój kilof złoty w ramach nowego. Cudownie się nim wykopuje surowce! Będziesz " + Grammar.genderVerb(player.getGender(), "chciał") + " go przetestować, prawda? Wykop w takim razie dla mnie 10 kryształów diamentu nowym kilofem!");
 						player.drop("bryłka mithrilu", 20);
-						player.drop("kryształ diamentu", 10);
 						player.drop("kilof złoty", 1);
-						player.incMiningXP(50000);
-						player.addXP(10000);
-						player.addKarma(10);
+						player.incMiningXP(25000);
+						player.addXP(5000);
+						player.addKarma(5);
 						final Item item = SingletonRepository.getEntityManager().getItem("kilof obsydianowy");
 						item.setBoundTo(player.getName());
 						player.equipOrPutOnGround(item);
 						player.notifyWorldAboutChanges();
+						player.setQuest(QUEST_SLOT, "dig_diamond");
+					} else {
+						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek mithrilu oraz kilofa złotego...");
+					}
+				}
+			});
+	}
+
+	private void stepDigDiamond() {
+		final SpeakerNPC npc = npcs.get(getNPCName());
+
+		npc.add(
+			ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(
+				new GreetingMatchesNameCondition(npc.getName()),
+				new QuestInStateCondition(QUEST_SLOT, "dig_diamond")),
+			ConversationStates.ATTENDING, null,
+			new ChatAction() {
+				@Override
+				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
+					if (player.isEquipped("kryształ diamentu", 10)) {
+						raiser.say("Prześliczny kryształ! Teraz poproszę Cię ostatni raz... obiecuję... Wykop w takim razie dla mnie po 30 bryłek złota, mithrilu, kryształów obsydianu, ametystu oraz diamentu.");
+						player.drop("kryształ diamentu", 10);
+						player.incMiningXP(50000);
+						player.addXP(10000);
+						player.addKarma(10);
 						player.setQuest(QUEST_SLOT, "dig_last");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek mithrilu, kryształów diamentu oraz kilofa złotego...");
+						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie kryształów diamentu...");
 					}
 				}
 			});
@@ -536,7 +563,7 @@ public class Gornictwo extends AbstractQuest {
 						player.drop("kryształ diamentu", 30);
 						player.incMiningXP(100000);
 						player.addXP(25000);
-						player.addKarma(20);
+						player.addKarma(25);
 						player.setQuest(QUEST_SLOT, "done");
 					} else {
 						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek oraz kryształów...");
@@ -604,7 +631,10 @@ public class Gornictwo extends AbstractQuest {
 			res.add("Muszę wykopać 10 rud platyny.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "dig_mithril")) {
-			res.add("Muszę wykopać 20 bryłek mithrilu oraz 10 kryształów diamentu.");
+			res.add("Muszę wykopać 20 bryłek mithrilu.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "dig_diamond")) {
+			res.add("Muszę wykopać 10 kryształów diamentu.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "dig_last")) {
 			res.add("Muszę wykopać po 30 bryłek złota, mithrilu, kryształów obsydianu, ametystu oraz diamentu.");
