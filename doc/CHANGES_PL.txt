@@ -4,6 +4,12 @@ Changelog
 *klient*
 - Przetłumaczono parę słówek związany z grupą
 
+*kod*
+- Usprawniono dodawanie wielu handlarzy na daną strefę
+
+*naprawiono błędy*
+- Naprawiono handlowanie z Radzimirem
+
 
 1.17
 *klient*
