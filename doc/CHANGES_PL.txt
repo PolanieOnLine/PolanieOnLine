@@ -12,6 +12,7 @@ Changelog
 - Zmieniono wygląd "klucza do bram zamku ZRC" oraz "kluczyka Aligerna"
 
 *świat*
+- Dodano nowe zadanie: "górnictwo" u Górnika
 - Dodano 4 nowych NPC:
 	- Górnik,
 	- Kowal Markusław,
