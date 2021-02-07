@@ -13,12 +13,10 @@ package games.pol.server.maps.zakopane.bank.market;
 
 import java.util.Map;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.trade.Market;
-import games.stendhal.server.maps.semos.tavern.market.OfferExpirer;
-import marauroa.common.game.RPObject;
+import games.stendhal.server.maps.semos.tavern.market.MarketManagerNPC;
+import games.stendhal.server.maps.semos.tavern.market.TradeCenterZoneConfigurator;
 
 /**
  * adds a market to a zone
@@ -26,7 +24,7 @@ import marauroa.common.game.RPObject;
  * @author madmetzger
  *
  */
-public class TradeCenterZoneConfigurator implements ZoneConfigurator {
+public class TraderNPC extends TradeCenterZoneConfigurator {
 
 	private static final String TRADE_ADVISOR_NAME = "Radzimir";
 
@@ -35,48 +33,15 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
-		Market market = addShopToZone(zone);
-		// start checking for expired offers
-		new OfferExpirer(market);
-
 		buildTradeCenterAdvisor(zone);
 	}
 
-	private Market addShopToZone(StendhalRPZone zone) {
-		Market market = getMarketFromZone(zone);
-		if (market == null) {
-			market = Market.createShop();
-			market.setVisibility(0);
-			zone.add(market, false);
-		}
-
-		return market;
-	}
-
-	private Market getMarketFromZone(StendhalRPZone zone) {
-		for (RPObject rpObject : zone) {
-			if (rpObject instanceof Market) {
-				return (Market) rpObject;
-			}
-		}
-		return null;
-	}
-
 	private void buildTradeCenterAdvisor(StendhalRPZone zone) {
-		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME);
+		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 5);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
 		speaker.setEntityClass("npc_straganiarz");
 		speaker.initHP(100);
 		speaker.setDescription("Radzimir jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
 		zone.add(speaker);
-	}
-
-	public static Market getShopFromZone(StendhalRPZone zone) {
-		for (RPObject rpObject : zone) {
-			if(rpObject.getRPClass().getName().equals(Market.MARKET_RPCLASS_NAME)) {
-				return (Market) rpObject;
-			}
-		}
-		return null;
 	}
 }

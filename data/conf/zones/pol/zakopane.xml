@@ -939,7 +939,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bank 0 -->
 	<zone name="int_zakopane_bank_0" file="interiors/zakopane/bank_0.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.bank.market.TradeCenterZoneConfigurator"/>
+		<configurator class-name="games.pol.server.maps.zakopane.bank.market.TraderNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<attributes>

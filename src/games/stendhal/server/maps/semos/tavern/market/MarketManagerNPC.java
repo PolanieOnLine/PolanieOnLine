@@ -24,15 +24,23 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.TextHasParameterCondition;
 import games.stendhal.server.entity.trade.Offer;
 
-public final class MarketManagerNPC extends SpeakerNPC {
+public class MarketManagerNPC extends SpeakerNPC {
 
 	private Map<String,Offer> offers = new HashMap<String, Offer>();
 
-	MarketManagerNPC(String name) {
+	/**
+	 * Create MarketManager
+	 *
+	 * @param name
+	 * 			The NPC name.
+	 * @param range
+	 * 			Sets the default perception range for player chatting.
+	 */
+	public MarketManagerNPC(String name, int range) {
 		super(name);
 		// Use smaller than normal range to not interfere players trying to talk
 		// to the other NPCs in the tavern.
-		setPerceptionRange(3);
+		setPerceptionRange(range);
 	}
 
 	@Override
@@ -49,7 +57,7 @@ public final class MarketManagerNPC extends SpeakerNPC {
 
 	@Override
 	protected void createDialog() {
-		addGreeting("Witam w centrum handlu w Zakopane. W czym mogę #pomóc?");
+		addGreeting("Witam w centrum handlu. W czym mogę #pomóc?");
 		addJob("Jestem tutaj, aby #pomóc Tobie w sprzedaży przedmiotów.");
 		addOffer("Aby wystawić ofertę na rynku powiedz #sprzedam #przedmiot #cena - wtedy każdy będzie mógł to kupić " +
                 "nawet, gdy Ciebie nie ma. W celu uzyskania szczegółów zapytaj o #pomoc.");

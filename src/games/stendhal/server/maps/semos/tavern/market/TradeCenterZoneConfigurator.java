@@ -32,8 +32,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 	private static final int COORDINATE_X = 10;
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		Market market = addShopToZone(zone);
 		// start checking for expired offers
 		new OfferExpirer(market);
@@ -66,7 +65,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 	}
 
 	private void buildTradeCenterAdvisor(StendhalRPZone zone) {
-		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME);
+		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 3);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
 		speaker.setEntityClass("tradecenteradvisornpc");
 		speaker.setOutfit(3, 34, 3, null, 0, null, 5, null, 0);
