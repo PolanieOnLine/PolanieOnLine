@@ -202,6 +202,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 	private final int DOWN_FE_CM = 21;
 	private final int DOWN_FS_CM = 22;
 	private final int DOWN_FW_CM = 23;
+	@SuppressWarnings("serial")
 	private final List<Integer> stairsUp = new ArrayList<Integer>() {{
 		add(2);
 		add(UP_FN);
@@ -213,6 +214,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 		add(UP_FS_CM);
 		add(UP_FW_CM);
 	}};
+	@SuppressWarnings("serial")
 	private final List<Integer> stairsDown = new ArrayList<Integer>() {{
 		add(3);
 		add(DOWN_FN);
