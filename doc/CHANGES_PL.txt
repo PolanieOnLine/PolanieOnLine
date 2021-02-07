@@ -1,9 +1,12 @@
 Changelog
 ---------
-1.18
+1.17.5
 *klient*
 - Poprawiono wygląd złoża soli
 - Przetłumaczono parę słówek związany z grupą
+
+*świat*
+- W zadaniu "górnictwo" rozdzielono etap z mithrilem na sam mithril i na diament
 
 *kod*
 - Usprawniono dodawanie wielu handlarzy na daną strefę
