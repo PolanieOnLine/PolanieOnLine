@@ -19,7 +19,6 @@ import java.util.Locale;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Expression;
-import games.stendhal.server.entity.item.Item;
 
 /**
  * Helper functions for producing and parsing grammatically-correct sentences.
@@ -1339,10 +1338,8 @@ public class Grammar {
 		return word;
 	}
 
-	public static String genderVerb(Item item, final String word) {
-		String itemName = item.getName();
-
-		if (itemName.endsWith("a")) {
+	public static String genderNouns(String noun, final String word) {
+		if (noun.endsWith("a") || noun.equals("sztabka") || noun.equals("bryłka") || noun.equals("ciupaga")) {
 			if (word.endsWith("ój")) {
 				return word.substring(0, word.length() - 2) + "oja";
 			}
@@ -1351,6 +1348,17 @@ public class Grammar {
 			}
 
 			return word + "a";
+		}
+
+		if (noun.endsWith("e")) {
+			if (word.endsWith("ój")) {
+				return word.substring(0, word.length() - 2) + "oje";
+			}
+			if (word.endsWith("y")) {
+				return word.substring(0, word.length() - 1) + "e";
+			}
+
+			return word + "y";
 		}
 
 		return word;
