@@ -93,9 +93,9 @@ public class AcceptOfferHandler extends OfferHandler {
 			if (m.acceptOffer(offer,player)) {
 				// Successful trade. Tell the offerer
 				StringBuilder earningToFetchMessage = new StringBuilder();
-				earningToFetchMessage.append("Twój ");
+				earningToFetchMessage.append(Grammar.genderNouns(itemname, "Twój") + " ");
 				earningToFetchMessage.append(itemname);
-				earningToFetchMessage.append(" został sprzedany. Możesz przyjść do mnie po należne ci pieniądze.");
+				earningToFetchMessage.append(" " + Grammar.genderNouns(itemname, "został") + " " + Grammar.genderNouns(itemname, "sprzedany") + ". Możesz przyjść do mnie po należne ci pieniądze.");
 
 				logger.debug("wysłanie zawiadomienia do '" + offer.getOfferer() + "': " + earningToFetchMessage.toString());
 				DBCommandQueue.get().enqueue(new StoreMessageCommand("Harold", offer.getOfferer(), earningToFetchMessage.toString(), "N"));
