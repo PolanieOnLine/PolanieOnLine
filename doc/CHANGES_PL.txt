@@ -2,6 +2,7 @@ Changelog
 ---------
 1.18
 *klient*
+- Poprawiono wygląd złoża soli
 - Przetłumaczono parę słówek związany z grupą
 
 *kod*
@@ -9,6 +10,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono handlowanie z Radzimirem
+- Naprawiono błędne pojawianie się złóż w nieporządanych miejscach
 
 
 1.17
