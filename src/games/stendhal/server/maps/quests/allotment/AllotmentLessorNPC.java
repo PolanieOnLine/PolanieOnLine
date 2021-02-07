@@ -136,7 +136,7 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 						public void fire(Player player, Sentence sentence, EventRaiser npc) {
 							long diff = rentHelper.getNextExpiryTime(zone.getName()) - System.currentTimeMillis();
 
-							npc.say("Jest mi przykro w tym momęcie nie mamy wolnych. Proszę wróć za " + TimeUtil.approxTimeUntil((int) (diff / 1000L)) + ".");
+							npc.say("Jest mi przykro w tym momencie nie mamy wolnych. Proszę wróć za " + TimeUtil.approxTimeUntil((int) (diff / 1000L)) + ".");
 						}
 				});
 
@@ -145,7 +145,7 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 					ConversationPhrases.NO_MESSAGES,
 					null,
 					ConversationStates.ATTENDING,
-					"Okey, co mogę jeszcze dla ciebie zrobić?",
+					"Okej, co mogę jeszcze dla ciebie zrobić?",
 					new SetQuestAction(QUEST_SLOT, 1, "0"));
 
 				// if accepts to rent allotment
