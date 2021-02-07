@@ -1508,6 +1508,9 @@ public class Grammar {
 			if (word.endsWith("łbyś")) {
 				return word.substring(0, word.length() - 4) + "łabyś";
 			}
+			if (word.endsWith("ął")) {
+				return word.substring(0, word.length() - 2) + "ęła";
+			}
 
 			return word + "a";
 		}

@@ -15,6 +15,7 @@ package games.stendhal.server.actions;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.admin.AdministrationAction;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -66,7 +67,7 @@ public class GroupManagementAction implements ActionListener {
 				if (params.trim().equals("")) {
 					player.sendPrivateText(NotificationType.ERROR, "Użyj nazwy docelowego wojownika w tym poleceniu.");
 				} else {
-					player.sendPrivateText(NotificationType.ERROR, "Wojownik " + params + " nie jest teraz dostępny");
+					player.sendPrivateText(NotificationType.ERROR, "Wojownik " + params + " nie jest teraz " + Grammar.genderVerb(SingletonRepository.getRuleProcessor().getPlayer(params).getGender(), "dostępny") + ".");
 				}
 				return;
 			}
@@ -110,7 +111,7 @@ public class GroupManagementAction implements ActionListener {
 			return;
 		}
 		if (targetPlayer.isGhost() && (player.getAdminLevel() < AdministrationAction.getLevelForCommand("ghostmode").intValue())) {
-			player.sendPrivateText(NotificationType.ERROR, "Wojownik " + targetPlayer.getName() + " nie jest teraz dostępny");
+			player.sendPrivateText(NotificationType.ERROR, "Wojownik " + targetPlayer.getName() + " nie jest teraz " + Grammar.genderVerb(targetPlayer.getGender(), "dostępny") + ".");
 			return;
 		}
 
@@ -123,12 +124,12 @@ public class GroupManagementAction implements ActionListener {
 		}
 
 		if (targetPlayer.getAwayMessage() != null) {
-			player.sendPrivateText("" + targetPlayer.getName() + " jest oddalony.");
+			player.sendPrivateText("" + targetPlayer.getName() + " jest " + Grammar.genderVerb(targetPlayer.getGender(), "oddalony") + ".");
 			return;
 		}
 
 		if (targetPlayer.getGrumpyMessage() != null) {
-			player.sendPrivateText(targetPlayer.getName() + " zamknął swój umysł i szuka spokoju z wyjątkiem najbliższych przyjaciół");
+			player.sendPrivateText(targetPlayer.getName() + " " + Grammar.genderVerb(targetPlayer.getGender(), "zamknął") + " swój umysł i szuka spokoju z wyjątkiem najbliższych przyjaciół.");
 			return;
 		}
 
@@ -157,7 +158,7 @@ public class GroupManagementAction implements ActionListener {
 
 		// invite
 		group.invite(player, targetPlayer);
-		player.sendPrivateText("Zaprosiłeś wojownika " + targetPlayer.getName() + ", aby dołączył do grupy.");
+		player.sendPrivateText("Zaprosiłeś wojownika " + targetPlayer.getName() + ", aby " + Grammar.genderVerb(targetPlayer.getGender(), "dołączył") + " do grupy.");
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class GroupManagementAction implements ActionListener {
 		// check if the target player is in a group and that this group has invited the player
 		group = SingletonRepository.getGroupManager().getGroup(targetPlayer.getName());
 		if ((group == null) || !group.hasBeenInvited(player.getName())) {
-			player.sendPrivateText(NotificationType.ERROR, "Nie zostałeś zaproszony do grupy lub zaproszenie wygasło.");
+			player.sendPrivateText(NotificationType.ERROR, "Nie " + Grammar.genderVerb(player.getGender(), "zostałeś") + " " + Grammar.genderVerb(player.getGender(), "zaproszony") + " do grupy lub zaproszenie wygasło.");
 			return;
 		}
 
@@ -326,7 +327,7 @@ public class GroupManagementAction implements ActionListener {
 		}
 
 		// tell the members of the kick and remove the target player
-		group.sendGroupMessage("Group", targetPlayer + " został wyrzucony przez " + player.getName());
+		group.sendGroupMessage("Group", targetPlayer + " " + Grammar.genderVerb(SingletonRepository.getRuleProcessor().getPlayer(targetPlayer).getGender(), "został") + " " + Grammar.genderVerb(SingletonRepository.getRuleProcessor().getPlayer(targetPlayer).getGender(), "wyrzucony") + " przez " + player.getName());
 		group.removeMember(targetPlayer);
 	}
 
