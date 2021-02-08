@@ -212,7 +212,7 @@ public class ShowOffersChatAction implements ChatAction {
 
 			message.append(counter);
 			message.append(": ");
-			message.append(Grammar.quantityplnoun(quantity, offer.getItemName(), "a"));
+			message.append(Grammar.quantityplnoun(quantity, offer.getItemName()));
 			message.append(" za ");
 			message.append(offer.getPrice());
 			message.append(" money");
