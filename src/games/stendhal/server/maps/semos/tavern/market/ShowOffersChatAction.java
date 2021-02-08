@@ -199,7 +199,7 @@ public class ShowOffersChatAction implements ChatAction {
 			if (counter > MAX_SHOWN_OFFERS) {
 				message.append("Pokazano tylko " + MAX_SHOWN_OFFERS + " pierwszych ofert.");
 				if (!usingFilter) {
-					message.append(" Możesz przefiltrować listę ofert. Przykład #pokaż #meat i pokaże tylko oferty z meat.");
+					message.append(" Możesz przefiltrować listę ofert. Przykład #pokaż #mięso i pokaże tylko oferty z mięsem.");
 				}
 				return counter;
 			}
