@@ -30,11 +30,11 @@ class BareBonesBrowserLaunchCommandsFactory {
 		commandsAndUrls.put("beginnersguide", "https://polanieonline.eu/wprowadzenie.html");
 		commandsAndUrls.put("faq", "https://polanieonline.eu/faq.html");
 		commandsAndUrls.put("manual", "https://polanieonline.eu/wprowadzenie.html");
-		commandsAndUrls.put("rules", "https://polanieonline.eu/regulamin-gry-polanieonline-mmorpg.html");
-		commandsAndUrls.put("changepassword", "https://polanieonline.eu/account/change-password.html");
+		commandsAndUrls.put("rules", "https://polanieonline.eu/regulamin/regulamin-gry-polanieonline-2.html");
+		commandsAndUrls.put("changepassword", "https://polanieonline.eu/account/ustawienia.html");
 		commandsAndUrls.put("loginhistory", "https://polanieonline.eu/account/history.html");
-		commandsAndUrls.put("merge", "https://polanieonline.eu/account/merge.html");
-		commandsAndUrls.put("halloffame", "https://polanieonline.eu/world/hall-of-fame/all_overview.html");
+		commandsAndUrls.put("merge", "https://polanieonline.eu/account/ustawienia.html");
+		commandsAndUrls.put("halloffame", "https://polanieonline.eu/aleja-slaw/all_overview.html");
 	}
 
 	/**
