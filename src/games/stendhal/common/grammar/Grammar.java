@@ -1100,9 +1100,12 @@ public class Grammar {
 	}
 
 	public static String genderNouns(String noun, final String word) {
+		if (noun.endsWith("zwiadowca") || noun.endsWith("kawalerzysta")) {
+			return word;
+		}
+
 		if (noun.endsWith("a") || noun.startsWith("sztabka") || noun.startsWith("bryłka") || noun.startsWith("złota") || noun.startsWith("złote")
-				|| noun.startsWith("chmara") || noun.startsWith("panna")
-				|| !noun.endsWith("zwiadowca") || !noun.endsWith("kawalerzysta")) {
+				|| noun.startsWith("chmara") || noun.startsWith("panna")) {
 			if (word.endsWith("ój")) {
 				return word.substring(0, word.length() - 2) + "oja";
 			}
