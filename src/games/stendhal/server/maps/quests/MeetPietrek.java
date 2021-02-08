@@ -206,7 +206,7 @@ public class MeetPietrek extends AbstractQuest {
 			npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.YES_MESSAGES, new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
-			epilog + "Wiesz przypominasz mi mnie, gdy",
+			epilog + "Wiesz, przypominasz mi mnie, gdy",
 			null);
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
@@ -217,7 +217,7 @@ public class MeetPietrek extends AbstractQuest {
 		npc.add(ConversationStates.INFORMATION_8,
 			ConversationPhrases.YES_MESSAGES, new QuestNotCompletedCondition(QUEST_SLOT),
 			ConversationStates.IDLE,
-			epilog + "Cóż powodzenia w walkach! Ta tarcza powinna Ci pomóc. Tutaj znajdziesz sławę i chwałę. Uważaj na potwory!",
+			epilog + "Cóż, powodzenia w walkach! Ta tarcza powinna Ci pomóc. Tutaj znajdziesz sławę i chwałę. Uważaj na potwory!",
 			new MultipleActions(reward2));
 
 		npc.add(new ConversationStates[] { ConversationStates.ATTENDING,
