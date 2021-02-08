@@ -3,12 +3,14 @@ Changelog
 1.17.5
 *klient*
 - Poprawiono wygląd złoża soli
+- Poprawiono grafiki węża, żmiji oraz kaimana
 - Przetłumaczono parę słówek związany z grupą
 
 *świat*
 - W zadaniu "górnictwo" rozdzielono etap z mithrilem na sam mithril i na diament
 
 *kod*
+- Wprowadzono więcej reguł gramatycznych języka polskiego
 - Usprawniono dodawanie wielu handlarzy na daną strefę
 
 *naprawiono błędy*
