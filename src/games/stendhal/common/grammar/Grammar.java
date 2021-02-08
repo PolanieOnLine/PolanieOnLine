@@ -1100,12 +1100,13 @@ public class Grammar {
 	}
 
 	public static String genderNouns(String noun, final String word) {
-		if (noun.endsWith("zwiadowca") || noun.endsWith("kawalerzysta")) {
+		if (noun.endsWith("zwiadowca") || noun.endsWith("kawalerzysta") || noun.endsWith("morderca")
+				|| noun.equals("mefisto") || noun.startsWith("szkielet")) {
 			return word;
 		}
 
-		if (noun.endsWith("a") || noun.startsWith("sztabka") || noun.startsWith("bryłka") || noun.startsWith("złota") || noun.startsWith("złote")
-				|| noun.startsWith("chmara") || noun.startsWith("panna")) {
+		if (noun.endsWith("a") || noun.startsWith("sztabka") || noun.startsWith("bryłka") || noun.startsWith("złota") || noun.startsWith("złote") || noun.startsWith("czarna")
+				|| noun.startsWith("chmara") || noun.startsWith("panna") || noun.startsWith("mysz") || noun.startsWith("królowa") || noun.startsWith("gigantyczna")) {
 			if (word.endsWith("ój")) {
 				return word.substring(0, word.length() - 2) + "oja";
 			}
@@ -1125,6 +1126,17 @@ public class Grammar {
 			}
 
 			return word + "y";
+		}
+
+		if (noun.endsWith("o") || noun.equals("oczko") || noun.equals("oko starsze") || noun.equals("coś")) {
+			if (word.endsWith("ój")) {
+				return word.substring(0, word.length() - 2) + "oje";
+			}
+			if (word.endsWith("y")) {
+				return word.substring(0, word.length() - 1) + "e";
+			}
+
+			return word + "o";
 		}
 
 		return word;
