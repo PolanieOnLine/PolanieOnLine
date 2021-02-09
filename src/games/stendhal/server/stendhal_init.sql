@@ -106,7 +106,6 @@ CREATE TABLE IF NOT EXISTS itemlog (
   param2     VARCHAR(64),
   param3     VARCHAR(64),
   param4     VARCHAR(64),
-  param5     VARCHAR(64),
   PRIMARY KEY (id)
 );
 
@@ -117,7 +116,6 @@ CREATE INDEX IF NOT EXISTS i_itemlog_param1 ON itemlog(param1);
 CREATE INDEX IF NOT EXISTS i_itemlog_param2 ON itemlog(param2);
 CREATE INDEX IF NOT EXISTS i_itemlog_param3 ON itemlog(param3);
 CREATE INDEX IF NOT EXISTS i_itemlog_param4 ON itemlog(param4);
-CREATE INDEX IF NOT EXISTS i_itemlog_param5 ON itemlog(param5);
 CREATE INDEX IF NOT EXISTS i_itemlog_source_itemid ON itemlog(source, itemid);
 
 
