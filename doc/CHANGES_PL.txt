@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.18
+*świat*
+- Przez wszystkie nietoperze można przechodzić
+
+
 1.17.5
 *klient*
 - Poprawiono wygląd złoża soli
