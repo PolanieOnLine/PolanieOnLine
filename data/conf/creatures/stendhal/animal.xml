@@ -106,6 +106,7 @@
 			<hp value="20"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
+			<resistance value="1"/>
 		</attributes>
 		<level value="1"/>
 		<experience value="10"/>
@@ -832,6 +833,7 @@
 			<hp value="80"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
+			<resistance value="1"/>
 		</attributes>
 		<level value="7"/>
 		<experience value="70"/>
@@ -940,6 +942,7 @@
 			<hp value="1475"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
+			<resistance value="1"/>
 		</attributes>
 		<level value="150"/>
 		<experience value="33501"/>
@@ -975,6 +978,7 @@
 			<hp value="1825"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
+			<resistance value="1"/>
 		</attributes>
 		<level value="154"/>
 		<experience value="37090"/>
