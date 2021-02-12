@@ -68,7 +68,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 3);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
 		speaker.setEntityClass("tradecenteradvisornpc");
-		speaker.setOutfit(3, 34, 3, null, 0, null, 5, null, 0);
+		speaker.setOutfit(3, 34, 1, null, 0, null, 5, null, 0);
 		speaker.initHP(100);
 		speaker.setDescription("Harold jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
 		zone.add(speaker);
