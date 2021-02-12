@@ -116,7 +116,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 	// enemies required for Pachyderm Mayhem
 	public static final String[] ENEMIES_PACHYDERM = {
-			"słoń", "słoń z kłami", "słoń musth", "mamut włochaty"
+			"słoń", "słoń z kłami", "dziki słoń", "mamut włochaty"
 	};
 
 	@Override

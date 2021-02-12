@@ -684,9 +684,9 @@
 		</ai>
 	</creature>
 
-	<creature name="słoń musth">
+	<creature name="dziki słoń">
 		<type class="stendhal/animal" subclass="elephant_musth" tileid="animal.png:16"/>
-		<description>Oto słoń musth. Jest bardzo agresywny i nieprzewidywalny.</description>
+		<description>Oto dziki słoń. Jest bardzo agresywny i nieprzewidywalny.</description>
 		<attributes>
 			<atk value="248"/>
 			<def value="86"/>
