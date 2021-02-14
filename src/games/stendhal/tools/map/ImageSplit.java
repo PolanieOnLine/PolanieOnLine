@@ -67,7 +67,7 @@ public class ImageSplit {
     public void split() throws IOException {
         System.out.println(prefix);
         BufferedImage img = ImageIO.read(new File(imageFilename));
-        Color bgColor = new Color(255, 255, 255);
+        Color bgColor = new Color(47, 53, 65);
         for (int x = 0; x < divRoundingUp(img.getWidth(), tileSizeSource); x++) {
             for (int y = 0; y < divRoundingUp(img.getHeight(), tileSizeSource); y++) {
                 BufferedImage target = new BufferedImage(tileSizeTarget, tileSizeTarget, BufferedImage.TYPE_INT_RGB);
