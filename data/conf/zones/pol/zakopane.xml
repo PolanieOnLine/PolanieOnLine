@@ -360,6 +360,13 @@
 		<portal x="30" y="116" ref="source_exit">
 			<destination zone="0_zakopane_e" ref="source_entrance"/>
 		</portal>
+
+		<point-of-interest x="28" y="107">
+			<name>Wejście do kopalni</name>
+			<type>dungeon</type>
+			<description>Wejście do kopalni, w której można odnaleźć złoża surowców.</description>
+			<url>https://polanieonline.eu/zakopane</url>
+		</point-of-interest>
 	</zone>
 
 	<!-- zakopane_e2 -->
@@ -679,6 +686,12 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 
+		<point-of-interest x="102" y="42">
+			<name>Bank Podhalański</name>
+			<type>bank</type>
+			<description>Miejsce gdzie możesz zostawić swój dobytek.</description>
+			<url>https://polanieonline.eu/faq</url>
+		</point-of-interest>
 		<portal x="102" y="42" ref="bank_entrace_1">
 			<destination zone="int_zakopane_bank_0" ref="bank_exit_1"/>
 		</portal>
@@ -719,6 +732,12 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
+		<point-of-interest x="48" y="23">
+			<name>Wejście do podziemi pod Zakopanem</name>
+			<type>dungeon</type>
+			<description>Zejście do ciemnych podziemi Zakopane, nikt o nich głośno nie chce mówić.</description>
+			<url>https://polanieonline.eu/zakopane</url>
+		</point-of-interest>
 		<portal x="48" y="23" ref="underground_1_enter">
 			<destination zone="-1_zakopane_underground" ref="underground_1_exit"/>
 		</portal>
@@ -2160,6 +2179,12 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<destination zone="0_zakopane_c" ref="chapel_entrance_1"/>
 		</portal>
 
+		<point-of-interest x="12" y="2">
+			<name>Zejście do Katakumb</name>
+			<type>dungeon</type>
+			<description>W opuszczonej kaplicy w Zakopane znajduje się tajne zejście do katakumb gdzie znajdują się straszne stworzenia.</description>
+			<url>https://polanieonline.eu/zakopane</url>
+		</point-of-interest>
 		<portal x="12" y="2" ref="catacombs_entrace_1">
 			<destination zone="-1_zakopane_catacombs" ref="catacombs_1_exit" />
 			<attribute name="hidden" />

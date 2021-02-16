@@ -132,6 +132,12 @@
 			<attribute name="class">blackboard</attribute>
 		</entity>
 
+		<point-of-interest x="31" y="77">
+			<name>Wejście do kopalni soli</name>
+			<type>dungeon</type>
+			<description>Wejście do kopalni soli, Wieliczki. Należny w niej śmiertelnie uważać na siebie, nie wiadomo co zza roku wyskoczy...</description>
+			<url>https://polanieonline.eu/smocza_kraina</url>
+		</point-of-interest>
 		<portal x="31" y="77" ref="mines_entrance">
 			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_exit"/>
 			<attribute name="face">down</attribute>

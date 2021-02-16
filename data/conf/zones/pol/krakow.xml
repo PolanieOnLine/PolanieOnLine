@@ -202,6 +202,13 @@
 		<portal x="104" y="47" ref="church_entrance">
 			<destination zone="int_krakow_church" ref="church_exit"/>
 		</portal>
+
+		<point-of-interest x="33" y="46">
+			<name>Bank Krakowski</name>
+			<type>bank</type>
+			<description>Miejsce gdzie możesz zostawić swój dobytek.</description>
+			<url>https://polanieonline.eu/faq</url>
+		</point-of-interest>
 		<!-- Bank -->
 		<portal x="33" y="46" ref="bank1_entrance">
 			<destination zone="int_krakow_bank_0" ref="bank1_exit"/>
@@ -232,6 +239,12 @@
 			<destination zone="int_krakow_vineyard_house_0" ref="vyh_exit"/>
 		</portal>
 
+		<point-of-interest x="90" y="87">
+			<name>Wejście do kanałów</name>
+			<type>dungeon</type>
+			<description>Wejście do kanałów pod królewskim miastem, słychać w niej straszliwe piski.</description>
+			<url>https://polanieonline.eu/krakow</url>
+		</point-of-interest>
 		<!-- Poziom -1 - canals -->
 		<portal x="90" y="87" ref="canals_entrance">
 			<destination zone="-1_krakow_canals" ref="canals_exit"/>
@@ -398,6 +411,13 @@
 		<portal x="103" y="81" ref="brama_entrance">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
+
+		<point-of-interest x="89" y="70">
+			<name>Wejście do jaskini pod Wawelem</name>
+			<type>dungeon</type>
+			<description>Lepiej nie zapuszczać się albo nawet nie wchodzić do tej jaskini. Podobno zamieszkują tam wilkołaki wraz ze smokami!</description>
+			<url>https://polanieonline.eu/krakow</url>
+		</point-of-interest>
 		<portal x="89" y="70" ref="wawelski_entrance">
 			<destination zone="-1_krakow_cave_sw" ref="wawelski_exit"/>
 		</portal>
