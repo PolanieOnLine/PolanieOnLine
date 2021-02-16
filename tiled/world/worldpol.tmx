@@ -27,9 +27,6 @@
  <tileset firstgid="114" name="0_dragon_knights_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_dragon_knights_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="130" name="0_dragon_knights_wieliczka" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="0_dragon_knights_wieliczka.png" width="256" height="256"/>
- </tileset>
  <tileset firstgid="130" name="0_dragon_land_n" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_dragon_land_n.png" width="256" height="256"/>
  </tileset>
@@ -171,17 +168,8 @@
  <tileset firstgid="866" name="0_zakopane_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_zakopane_w.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="882" name="1_football_playground" tilewidth="64" tileheight="64" tilecount="0" columns="2">
-  <image source="1_football_playground.png" width="128" height="128"/>
- </tileset>
  <tileset firstgid="882" name="1_koscielisko_podzamcze_zrc" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="1_koscielisko_podzamcze_zrc.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="898" name="1_koscielisko_zamek" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="1_koscielisko_zamek.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="898" name="6_clouds" tilewidth="64" tileheight="64" tilecount="0" columns="1">
-  <image source="6_clouds.png" width="64" height="64"/>
  </tileset>
  <tileset firstgid="898" name="sub_1_desert_corridor" tilewidth="64" tileheight="64" tilecount="4" columns="2">
   <image source="sub_1_desert_corridor.png" width="128" height="128"/>
@@ -339,51 +327,6 @@
  <tileset firstgid="2339" name="sub_1_koscielisko_coalmine" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="sub_1_koscielisko_coalmine.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="2355" name="sub_1_koscielisko_-1_cave" tilewidth="64" tileheight="64" tilecount="0" columns="2">
-  <image source="sub_1_koscielisko_-1_cave.png" width="128" height="80"/>
- </tileset>
- <tileset firstgid="2355" name="sub_2_koscielisko_-2_cave" tilewidth="64" tileheight="64" tilecount="0" columns="1">
-  <image source="sub_2_koscielisko_-2_cave.png" width="72" height="128"/>
- </tileset>
- <tileset firstgid="2355" name="sub_3_koscielisko_-3_cave" tilewidth="64" tileheight="64" tilecount="0" columns="2">
-  <image source="sub_3_koscielisko_-3_cave.png" width="128" height="128"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_se" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_se.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_se3" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_se3.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_e2" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_e2.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_se2" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_se2.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_w" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_w.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_c" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_c.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_e3" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_e3.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_sw" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_sw.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_s" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_s.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_wieliczka_salt_mines_e" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_wieliczka_salt_mines_e.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_dragon_cave" tilewidth="64" tileheight="64" tilecount="0" columns="5">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_dragon_cave.png" width="320" height="320"/>
- </tileset>
- <tileset firstgid="2355" name="sub_1_dragon_knights_springs" tilewidth="64" tileheight="64" tilecount="0" columns="2">
-  <image source="../../../PolskaGRA-VERSION_RELEASE_0_01/tiled/world/sub_1_dragon_knights_springs.png" width="128" height="128"/>
- </tileset>
  <tileset firstgid="2355" name="0_gdansk_forest_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_gdansk_forest_s.png" width="256" height="256"/>
  </tileset>
@@ -437,9 +380,6 @@
  </tileset>
  <tileset firstgid="2627" name="0_warszawa_w" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_warszawa_w.png" width="256" height="256"/>
- </tileset>
- <tileset firstgid="2643" name="0_warszawa_sww" tilewidth="64" tileheight="64" tilecount="0" columns="4">
-  <image source="0_warszawa_sww.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="2643" name="0_warszawa_s" tilewidth="64" tileheight="64" tilecount="16" columns="4">
   <image source="0_warszawa_s.png" width="256" height="256"/>
