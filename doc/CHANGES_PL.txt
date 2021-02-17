@@ -3,10 +3,12 @@ Changelog
 1.18
 *świat*
 - Przez wszystkie nietoperze można przechodzić
+- Poprawiono wizualnie niektóre mapy
 
 *naprawiono błędy*
 - Naprawiono sprzedawanie czarnej halabardy u Balduina
 - Naprawiono sprzedawanie dziobu ptaka u Myśliwego
+- Naprawiono pojawanie się wilka na mapie 0_dragon_knights_forest_sw
 
 
 1.17.5
