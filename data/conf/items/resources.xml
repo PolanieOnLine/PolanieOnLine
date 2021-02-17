@@ -1205,9 +1205,9 @@
 		</equipable>
 	</item>
 
-	<item name="dziub ptaka">
-		<type class="resource" subclass="dziub_ptaka" tileid="-1"/>
-		<description>Oto dziub jakiegoś ptaka. Zachowaj go. Może się przydać.</description>
+	<item name="dziób ptaka">
+		<type class="resource" subclass="dziob_ptaka" tileid="-1"/>
+		<description>Oto dziób jakiegoś ptaka. Zachowaj go. Może się przydać.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
