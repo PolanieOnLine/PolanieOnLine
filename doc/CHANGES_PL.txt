@@ -4,6 +4,10 @@ Changelog
 *świat*
 - Przez wszystkie nietoperze można przechodzić
 
+*naprawiono błędy*
+- Naprawiono sprzedawanie czarnej halabardy u Balduina
+- Naprawiono sprzedawanie dziobu ptaka u Myśliwego
+
 
 1.17.5
 *klient*
