@@ -241,7 +241,7 @@ public class StendhalPlayerDatabase {
 		}
 
 		// pol1.17: add mining column
-		if (!transaction.doesColumnExist("character_stats", "pas")) {
+		if (!transaction.doesColumnExist("character_stats", "mining")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN mining INT(11) AFTER ratk;", null);
 			transaction.execute("UPDATE character_stats SET mining = '10' WHERE mining IS NULL;", null);
 		}
