@@ -708,10 +708,8 @@ public class Grammar {
 	 */
 	public static String quantityplnounWithMarker(int quantity, String noun, char marker) {
 		final String fullNoun = plnoun(quantity, noun);
-		String prefix;
-		if (quantity == 1) {
-			prefix = fullNoun;
-		} else {
+		String prefix = "";
+		if (quantity > 0) {
 			prefix = Integer.toString(quantity) + " ";
 		}
 		final StringBuilder sb = new StringBuilder(prefix);
@@ -1017,8 +1015,6 @@ public class Grammar {
 	public static Integer number(final String text) {
 		if (text.equals("no") || text.equals("zero")) {
 			return 0;
-		} else if (text.equals("a") || text.equals("an")) {
-			return 1;
 		} else if (text.equals("one") || text.equals("jeden")) {
 			return 1;
 		} else if (text.equals("two") || text.equals("dwa")) {
