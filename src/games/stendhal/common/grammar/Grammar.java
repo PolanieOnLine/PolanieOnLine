@@ -393,6 +393,9 @@ public class Grammar {
 		} else if (enoun.equals("tydzień")) {
 			return enoun.substring(0, enoun.length() - 5) + "godnie" + postfix;
 
+		} else if (enoun.startsWith("sok")) {
+			return enoun.substring(0, enoun.length()) + "i" + postfix;
+
 		} else if (enoun.equals("miecz")) {
 			return enoun + "e" + postfix;
 		} else if (enoun.equals("spodnie")) {
