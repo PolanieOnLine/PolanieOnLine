@@ -36,7 +36,7 @@ class AtlasBrowserLaunchCommand implements SlashAction{
 	public boolean execute(final String[] params, final String remainder) {
 		StringBuilder url = new StringBuilder();
 		User user = User.get();
-		url.append("https://polanieonline.eu/world/atlas.html");
+		url.append("https://polanieonline.eu/atlas.html");
 		if (user != null) {
 			url.append("?me=");
 			url.append(user.getZoneName());

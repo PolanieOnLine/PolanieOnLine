@@ -36,7 +36,7 @@ class AtlasPolBrowserLaunchCommand implements SlashAction{
 	public boolean execute(final String[] params, final String remainder) {
 		StringBuilder url = new StringBuilder();
 		User user = User.get();
-		url.append("https://polanieonline.eu/world/atlaspol.html");
+		url.append("https://polanieonline.eu/atlaspol.html");
 		if (user != null) {
 			url.append("?me=");
 			url.append(user.getZoneName());
