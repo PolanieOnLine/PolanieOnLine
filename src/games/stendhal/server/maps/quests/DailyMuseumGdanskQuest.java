@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -166,7 +167,9 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		actions.add(new IncreaseXPDependentOnLevelAction(6, 70.0));
 		actions.add(new IncreaseAtkXPDependentOnLevelAction(6, 70.0));
 		actions.add(new IncreaseDefXPDependentOnLevelAction(6, 70.0));
-		actions.add(new IncreaseRatkXPDependentOnLevelAction(6, 70.0));
+		if (Testing.COMBAT) {
+			actions.add(new IncreaseRatkXPDependentOnLevelAction(6, 70.0));
+		}
 		actions.add(new IncreaseKarmaAction(15.0));
 
 		npc.add(ConversationStates.ATTENDING,

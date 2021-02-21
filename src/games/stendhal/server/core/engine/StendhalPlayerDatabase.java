@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.db.AchievementDAO;
 import games.stendhal.server.core.engine.db.PendingAchievementDAO;
 import games.stendhal.server.core.engine.db.PostmanDAO;
@@ -245,8 +246,14 @@ public class StendhalPlayerDatabase {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN mining INT(11) AFTER ratk;", null);
 			transaction.execute("UPDATE character_stats SET mining = '10' WHERE mining IS NULL;", null);
 		}
-	}
 
+		// pol1.18: remove ratk achievements
+		if (!Testing.COMBAT) {
+			transaction.execute("DELETE FROM achievement WHERE identifier in ("
+					+ "'ratk.level.025', 'ratk.level.050', 'ratk.level.075', "
+					+ "'ratk.level.100', 'ratk.level.150')", null);
+		}
+	}
 
 	private void updateCharacterStatsOutfitToOutfitLayer(DBTransaction transaction) throws SQLException {
 		PreparedStatement prepareStatement = transaction.prepareStatement("UPDATE character_stats SET outfit_layers=? WHERE name=?", null);

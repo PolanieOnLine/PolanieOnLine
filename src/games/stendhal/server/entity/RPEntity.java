@@ -37,7 +37,6 @@ import games.stendhal.common.Level;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
-import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.parser.WordList;
@@ -555,14 +554,9 @@ public abstract class RPEntity extends GuidedEntity {
 		 * XXX: atkStrength never used outside of debugger.
 		 */
 		final int atkStrength, sourceAtk;
-		if (isRanged) {
-			if (Occasion.SECOND_WORLD) {
-				atkStrength = this.getAtk();
-				sourceAtk = this.getCappedAtk();
-			} else {
-				atkStrength = this.getRatk();
-				sourceAtk = this.getCappedRatk();
-			}
+		if (Testing.COMBAT && isRanged) {
+			atkStrength = this.getRatk();
+			sourceAtk = this.getCappedRatk();
 		} else {
 			atkStrength = this.getAtk();
 			sourceAtk = this.getCappedAtk();
@@ -2843,6 +2837,15 @@ public abstract class RPEntity extends GuidedEntity {
 			weapon += weaponItem.getAttack();
 		}
 
+		// calculate ammo when not using RATK stat
+		if (!Testing.COMBAT && weapons.size() > 0) {
+			if (getWeapons().get(0).isOfClass("ranged")) {
+				weapon += getAmmoAtk();
+			} else if (getWeapons().get(0).isOfClass("wand")) {
+				weapon += getMagicAmmoAtk();
+			}
+		}
+
 		if (hasGloves()) {
 			glove += getGloves().getAttack();
 		} if (hasRing()) {
@@ -2887,7 +2890,11 @@ public abstract class RPEntity extends GuidedEntity {
 
 		final StackableItem ammoItem = getAmmunition();
 		if (ammoItem != null) {
-			ammo = ammoItem.getRangedAttack();
+			if (Testing.COMBAT) {
+				ammo = ammoItem.getRangedAttack();
+			} else {
+				ammo = ammoItem.getAttack();
+			}
 		}
 
 		return ammo;
@@ -2898,7 +2905,11 @@ public abstract class RPEntity extends GuidedEntity {
 
 		final StackableItem magiaItem = getMagia();
 		if (magiaItem != null) {
-			magicammo = magiaItem.getRangedAttack();
+			if (Testing.COMBAT) {
+				magicammo = magiaItem.getRangedAttack();
+			} else {
+				magicammo = magiaItem.getAttack();
+			}
 		}
 
 		return magicammo;
@@ -3038,7 +3049,9 @@ public abstract class RPEntity extends GuidedEntity {
 	 */
 	public void updateItemAtkDef() {
 		put("atk_item", ((int) getItemAtk()));
-		put("ratk_item", ((int) getItemRatk()));
+		if (Testing.COMBAT) {
+			put("ratk_item", ((int) getItemRatk()));
+		}
 		put("def_item", ((int) getItemDef()));
 		notifyWorldAboutChanges();
 	}
@@ -3178,7 +3191,7 @@ public abstract class RPEntity extends GuidedEntity {
 		}
 
 		final int attackerATK;
-		if (usesRanged) {
+		if (Testing.COMBAT && usesRanged) {
 			attackerATK = this.getCappedRatk(); // player is using ranged weapon
 		} else {
 			attackerATK = this.getCappedAtk(); // player is using hand-to-hand
@@ -3313,13 +3326,9 @@ public abstract class RPEntity extends GuidedEntity {
 
 		Nature nature;
 		final float itemAtk;
-		if (isRanged) {
+		if (Testing.COMBAT && isRanged) {
 			nature = getRangedDamageType();
-			if (Occasion.SECOND_WORLD) {
-				itemAtk = getItemAtk();
-			} else {
-				itemAtk = getItemRatk();
-			}
+			itemAtk = getItemRatk();
 		} else {
 			nature = getDamageType();
 			itemAtk = getItemAtk();

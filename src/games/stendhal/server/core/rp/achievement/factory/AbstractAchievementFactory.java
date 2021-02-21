@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -65,7 +66,9 @@ public abstract class AbstractAchievementFactory {
 		list.add(new ExperienceAchievementFactory());
 		list.add(new ExperienceDEFAchievementFactory());
 		list.add(new ExperienceATKAchievementFactory());
-		list.add(new ExperienceRATKAchievementFactory());
+		if (Testing.COMBAT) {
+			list.add(new ExperienceRATKAchievementFactory());
+		}
 		list.add(new FightingAchievementFactory());
 		list.add(new FriendAchievementFactory());
 		list.add(new InteriorZoneAchievementFactory());

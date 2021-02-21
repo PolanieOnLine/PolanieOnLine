@@ -19,6 +19,7 @@ import java.util.Map;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -274,7 +275,9 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		actions.add(new IncreaseXPDependentOnLevelAction(5.0/3.0, 290.0));
 		actions.add(new IncreaseAtkXPDependentOnLevelAction(5.0/3.0, 290.0));
 		actions.add(new IncreaseDefXPDependentOnLevelAction(5.0/3.0, 290.0));
-		actions.add(new IncreaseRatkXPDependentOnLevelAction(5.0/3.0, 290.0));
+		if (Testing.COMBAT) {
+			actions.add(new IncreaseRatkXPDependentOnLevelAction(5.0/3.0, 290.0));
+		}
 		actions.add(new IncreaseKarmaAction(50.0));
 		actions.add(new ChatAction() {
 			@Override

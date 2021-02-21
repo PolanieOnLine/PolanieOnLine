@@ -22,6 +22,7 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -416,6 +417,18 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 					}
 				});
 
+		final List<ChatAction> actions = new LinkedList<ChatAction>();
+		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
+		actions.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
+		actions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
+		actions.add(new IncreaseXPDependentOnLevelAction(4, 110.0));
+		actions.add(new IncreaseAtkXPDependentOnLevelAction(4, 110.0));
+		actions.add(new IncreaseDefXPDependentOnLevelAction(4, 110.0));
+		if (Testing.COMBAT) {
+			actions.add(new IncreaseRatkXPDependentOnLevelAction(4, 110.0));
+		}
+		actions.add(new IncreaseKarmaAction(5.0));
+
 		// player killed creature
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
@@ -425,16 +438,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 				        new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
 				"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Zakopanego i dzielnicy!",
-				new MultipleActions(
-						new IncreaseXPDependentOnLevelAction(4, 110.0),
-						new IncreaseAtkXPDependentOnLevelAction(4, 110.0),
-						new IncreaseDefXPDependentOnLevelAction(4, 110.0),
-						new IncreaseRatkXPDependentOnLevelAction(4, 110.0),
-						new IncreaseKarmaAction(5.0),
-						new IncrementQuestAction(QUEST_SLOT, 2, 1),
-						new SetQuestToTimeStampAction(QUEST_SLOT,1),
-						new SetQuestAction(QUEST_SLOT,0,"done")
-		));
+				new MultipleActions(actions));
 	}
 
 	/**
