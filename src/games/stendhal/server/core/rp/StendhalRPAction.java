@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
@@ -342,9 +341,9 @@ public class StendhalRPAction {
 		}
 
 		// For checking if RATK XP should be incremented on successful hit
-		boolean addRatkXP = isRanged;
-		if (Occasion.SECOND_WORLD) {
-			addRatkXP = false;
+		boolean addRatkXP = false;
+		if (Testing.COMBAT) {
+			addRatkXP = isRanged;
 		}
 
 		/* TODO: Remove if alternate attack training method implemented in
@@ -376,12 +375,8 @@ public class StendhalRPAction {
 
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
-			if (isRanged) {
-				if (Occasion.SECOND_WORLD) {
-					itemAtk = player.getItemAtk();
-				} else {
-					itemAtk = player.getItemRatk();
-				}
+			if (Testing.COMBAT && isRanged) {
+				itemAtk = player.getItemRatk();
 			} else {
 				itemAtk = player.getItemAtk();
 			}
@@ -389,11 +384,9 @@ public class StendhalRPAction {
 			int damage = player.damageDone(defender, itemAtk, player.getDamageType());
 			if (!usesTrainingDummy && damage > 0) {
 
-				if (addRatkXP && !(defender instanceof SpeakerNPC)) {
+				if (Testing.COMBAT && addRatkXP && !(defender instanceof SpeakerNPC)) {
 					// Range attack XP is incremented for successful hits regardless of whether player has recently been hit
 					player.incRatkXP();
-				} else if (Occasion.SECOND_WORLD) {
-					player.incAtkXP();
 				}
 
 				// limit damage to target HP

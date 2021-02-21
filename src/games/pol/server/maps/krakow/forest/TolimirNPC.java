@@ -26,6 +26,7 @@ import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -34,6 +35,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.BreakableItem;
@@ -48,6 +50,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTextAction;
@@ -155,6 +158,10 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		initRepairShop();
 		initTraining();
 		addToQuestSystem();
+
+		if (Testing.COMBAT) {
+			initTrainingDummies();
+		}
 	}
 
 	/**
@@ -526,6 +533,27 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, TRAIN_TIME, "Twój trening zakończy się za około"));
 		*/
+	}
+
+	private void initTrainingDummies() {
+		// normally added in tiled, but instantiated here so that can be disabled with "Testing.COMBAT"
+
+		// locations of targets
+		final List<Node> nodes = Arrays.asList(
+				new Node(74, 81),
+				new Node(76, 81),
+				new Node(78, 81),
+				new Node(80, 80),
+				new Node(82, 80),
+				new Node(84, 79),
+				new Node(86, 79),
+				new Node(88, 79));
+
+		for (final Node node: nodes) {
+			final TrainingDummy target = new TrainingDummy("other/bullseye", "Oto treningowa tarcza strzelecka.");
+			target.setPosition(node.getX(), node.getY());
+			archeryZone.add(target);
+		}
 	}
 
 	/**

@@ -420,7 +420,7 @@ public abstract class UpdateConverter {
 			object.put("outfit_expire_age", 0);
 		}
 
-		// port to 29.2
+		// port to POL0.29.2
 		if (!object.has("gender")) {
 			object.put("gender", "M");
 		}
@@ -428,8 +428,9 @@ public abstract class UpdateConverter {
 		// port to 1.31: zone zones
 		transformVisitedSlot(object);
 
+		// port to POL1.17
 		if(!object.has("mining")){
-			object.put("mining", "1");
+			object.put("mining", "10");
     		object.put("mining_xp", "0");
     	}
 	}

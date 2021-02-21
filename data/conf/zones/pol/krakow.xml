@@ -604,7 +604,7 @@
 
 	<!-- krakow_wisla_sw -->
 	<zone name="0_krakow_wisla_sw" level="0" x="513312" y="18304" file="Level 0/krakow/wisla_sw.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.forest.TolimirNPC"/>
+		<configurator class-name="games.pol.server.maps.krakow.forest.TolimirNPC" condition="testing.combat"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>

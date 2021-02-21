@@ -18,7 +18,7 @@
 		<corpse name="rocks"/>
 		<drops>
 			<item value="kamienie" quantity="[1,2]" probability="100.0"/>
-			<item value="kamyk" quantity="[1,19]" probability="100.0"/>
+			<item value="kamyczek" quantity="[1,19]" probability="100.0"/>
 			<item value="buty kamienne" quantity="[1,1]" probability="0.0001"/>
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.0001"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="0.5"/>
@@ -49,7 +49,7 @@
 		<corpse name="giant_rocks"/>
 		<drops>
 			<item value="kamienie" quantity="[1,9]" probability="100.0"/>
-			<item value="kamyk" quantity="[1,39]" probability="100.0"/>
+			<item value="kamyczek" quantity="[1,39]" probability="100.0"/>
 			<item value="buty kamienne" quantity="[1,1]" probability="5.0"/>
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="2.0"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="5.0"/>
@@ -86,7 +86,7 @@
 		<corpse name="giant_rocks"/>
 		<drops>
 			<item value="kamienie" quantity="[1,3]" probability="100.0"/>
-			<item value="kamyk" quantity="[1,59]" probability="100.0"/>
+			<item value="kamyczek" quantity="[1,59]" probability="100.0"/>
 			<item value="buty kamienne" quantity="[1,1]" probability="0.5"/>
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.5"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="1.0"/>
@@ -119,7 +119,7 @@
 		<respawn value="128200"/>
 		<corpse name="giant_rocks"/>
 		<drops>
-			<item value="kamyk" quantity="[1,39]" probability="100.0"/>
+			<item value="kamyczek" quantity="[1,39]" probability="100.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -149,7 +149,7 @@
 		<corpse name="giant_rocks"/>
 		<drops>
 			<item value="kamienie" quantity="[1,19]" probability="100.0"/>
-			<item value="kamyk" quantity="[1,69]" probability="100.0"/>
+			<item value="kamyczek" quantity="[1,69]" probability="100.0"/>
 			<item value="buty kamienne" quantity="[1,1]" probability="5.0"/>
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="5.0"/>
 			<item value="kamienna tarcza" quantity="[1,1]" probability="5.0"/>

@@ -49,6 +49,7 @@ import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.common.constants.Testing;
 import marauroa.client.BannedAddressException;
 import marauroa.client.TimeoutException;
 import marauroa.common.game.CharacterResult;
@@ -240,12 +241,14 @@ public final class CharacterDialog extends JDialog implements Runnable {
 				def = character.get("def");
 			}
 			label.append(def);
-			label.append("/");
-			String ratk = "0";
-			if (character.has("ratk")) {
-				ratk = character.get("ratk");
+			if (Testing.COMBAT) {
+				label.append("/");
+				String ratk = "0";
+				if (character.has("ratk")) {
+					ratk = character.get("ratk");
+				}
+				label.append(ratk);
 			}
-			label.append(ratk);
 		}
 		label.append("</html>");
 
