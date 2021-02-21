@@ -2,34 +2,13 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
-	<item name="kamyk">
-		<type class="magia" subclass="kamyk" tileid="-1"/>
-		<description>Oto kamyk. Weź procę i zobacz z jak daleka można nim ugodzić przeciwnika.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
-		<attributes>
-			<atk value="3"/>
-			<range value="1"/>
-			<quantity value="1"/>
-			<max_quantity value="2147483647"/>
-		</attributes>
-		<weight value="0.1"/>
-		<value value="1"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-		</equipable>
-	</item>
-
 	<item name="zaklęcie pustelnika">
 		<type class="magia" subclass="zaklecie" tileid="-1"/>
 		<description>Oto zaklęcie pustelnika. Prawidłowo użyte być może zrani wroga.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="3"/>
+			<atk value="3" condition="!testing.combat"/>
+      		<ratk value="3" condition="testing.combat"/>
 			<def value="1"/>
 			<range value="0"/>
 			<quantity value="1"/>
@@ -52,8 +31,9 @@
 		<description>Oto magia ziemi. Czar rzucony za jej pomocą ma moc odebierania życia!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="9"/>
-			<def value="9"/>
+			<atk value="7" condition="!testing.combat"/>
+      		<ratk value="7" condition="testing.combat"/>
+			<def value="7"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -76,8 +56,9 @@
 		<description>Oto magia płomieni. Czar rzucony za jej pomocą spali twoich wrogów na proch!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="11"/>
-			<def value="11"/>
+			<atk value="9" condition="!testing.combat"/>
+      		<ratk value="9" condition="testing.combat"/>
+			<def value="9"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -100,8 +81,9 @@
 		<description>Oto magia deszczu. Czar rzucony za jej pomocą sprowadza z niebios zagładę!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="15"/>
-			<def value="15"/>
+			<atk value="12" condition="!testing.combat"/>
+      		<ratk value="12" condition="testing.combat"/>
+			<def value="12"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -124,8 +106,9 @@
 		<description>Oto magia mroku. Czar rzucony za jej pomocą zabija!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="18"/>
-			<def value="18"/>
+			<atk value="15" condition="!testing.combat"/>
+      		<ratk value="15" condition="testing.combat"/>
+			<def value="15"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -148,8 +131,9 @@
 		<description>Oto magia światła. Czar rzucony za jej pomocą jest niezwyciężony!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="20"/>
-			<def value="20"/>
+			<atk value="18" condition="!testing.combat"/>
+      		<ratk value="18" condition="testing.combat"/>
+			<def value="18"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
