@@ -385,6 +385,9 @@ public class Grammar {
 		if (enoun.indexOf(of) > -1) {
 			return plural(enoun.substring(0, enoun.indexOf(of))) + enoun.substring(enoun.indexOf(of)) + postfix;
 
+		} else if (enoun.equals("money")) {
+			return enoun;
+
 		} else if (enoun.equals("wojownik")) {
 			return enoun + "ów" + postfix;
 			
