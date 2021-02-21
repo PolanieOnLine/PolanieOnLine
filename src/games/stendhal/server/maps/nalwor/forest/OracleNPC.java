@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.forest;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -23,11 +28,6 @@ import games.stendhal.server.entity.npc.action.SayNPCNamesForUnstartedQuestsActi
 import games.stendhal.server.entity.npc.action.SayUnstartedQuestDescriptionFromNPCNameAction;
 import games.stendhal.server.entity.npc.condition.TriggerIsNPCNameForUnstartedQuestCondition;
 import games.stendhal.server.maps.Region;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * An oracle who lets players know how they can help others.

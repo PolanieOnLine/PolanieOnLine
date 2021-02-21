@@ -11,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.forest;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * A crystal NPC
