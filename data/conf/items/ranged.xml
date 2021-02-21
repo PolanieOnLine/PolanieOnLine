@@ -7,8 +7,8 @@
 		<description>Oto proca. Podnieś kamyczek i strzelaj z daleka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="8" condition="!testing.combat"/>
-			<ratk value="8" condition="testing.combat"/>
+			<atk value="4" condition="!testing.combat"/>
+			<ratk value="4" condition="testing.combat"/>
 			<range value="4"/>
 		</attributes>
 		<weight value="1.0"/>

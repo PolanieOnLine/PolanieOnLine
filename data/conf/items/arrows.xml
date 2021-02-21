@@ -2,6 +2,29 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<item name="kamyczek">
+		<type class="ammunition" subclass="kamyk" tileid="-1"/>
+		<description>Oto kamyczek. Weź procę i zobacz z jak daleka można nim ugodzić przeciwnika.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk value="2" condition="!testing.combat"/>
+      		<ratk value="2" condition="testing.combat"/>
+			<range value="1"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="strzała">
 		<type class="ammunition" subclass="wooden_arrow" tileid="-1"/>
 		<description>Oto strzała. Z zapasem strzał w jednej ręce i łukiem w drugiej, możesz atakować z dystansu.</description>
