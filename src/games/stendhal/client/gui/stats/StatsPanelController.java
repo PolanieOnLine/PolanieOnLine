@@ -465,9 +465,9 @@ public final class StatsPanelController {
 				return;
 			}
 
-			if ("mining_xp".equals(event.getPropertyName())) {
+			if (event.getPropertyName().equals("mining_xp")) {
 				miningxp = Integer.parseInt((String) event.getNewValue());
-			} else if ("mining".equals(event.getPropertyName())) {
+			} else if (event.getPropertyName().equals("mining")) {
 				mining =  Integer.parseInt((String) event.getNewValue());
 			}
 			updateMining();
