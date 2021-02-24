@@ -105,19 +105,19 @@ public final class KarmaIndicator extends StatusDisplayBar implements PropertyCh
 	 */
 	private String describeKarma(double karma) {
 		if (karma > 499) {
-			return "You have unusually good karma";
+			return "Masz niesamowicie dobrą karmę";
 		} else if (karma > 99) {
-			return "You have great karma";
+			return "Masz wspaniałą karmę";
 		} else if (karma > 5) {
-			return "You have good karma";
+			return "Masz dobrą karmę";
 		} else if (karma > -5) {
-			return "You have average karma";
+			return "Masz średnią karmę";
 		} else if (karma > -99) {
-			return "You have bad karma";
+			return "Masz złą karmę";
 		} else if (karma > -499) {
-			return "You have terrible karma";
+			return "Masz straszną karmę";
 		}
-		return "You have disastrously bad karma";
+		return "Masz katastrofalnie złą karmę";
 	}
 
 	@Override
