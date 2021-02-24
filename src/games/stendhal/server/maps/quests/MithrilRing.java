@@ -20,7 +20,7 @@ public class MithrilRing extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Pierścień z mithrilu",
+				"Pierścień z Mithrilu",
 				"Zbieranie schematów na pierścień? Brzmi ciekawie! Kto by nie chciał mieć pierścienia z mithrilu...",
 				false);
 
