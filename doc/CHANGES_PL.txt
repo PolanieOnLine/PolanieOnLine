@@ -20,6 +20,7 @@ Changelog
 - Naprawiono pojawanie się wilka na mapie 0_dragon_knights_forest_sw
 - Naprawiono błąd graficzny z brakiem danej grafiki postaci
 - Naprawiono tworzenie brakującej kolumny 'mining' dla prywatnych serwerów (prawdopodobnie)
+- Naprawiono automatyczne wydarzenie ThePiedPiper (atak szczurów na miasto Ados)
 - Naprawiono strzelanie z magii na S2
 
 
