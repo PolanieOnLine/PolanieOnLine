@@ -70,8 +70,8 @@ public class InvasionPhase extends TPPQuest {
 				ConversationStates.ATTENDING,
 				"Ados jest zaatakowane przez szczury! "+
 				  "Nie chcę cię teraz nagrodzić czy "+
-				  "wyjaśnić szczegóły tobie"+
-				  " póki wszystkie szczury nie będą martwe.",
+				  "wyjaśnić szczegóły tobie "+
+				  "póki wszystkie szczury nie będą martwe.",
 				null);
 
 		// Player asked about reward at invasion time.
@@ -82,7 +82,7 @@ public class InvasionPhase extends TPPQuest {
 				ConversationStates.ATTENDING,
 				"Ados jest zaatakowane przez szczury! "+
 				  "Nie chcę cię teraz nagrodzić "+
-				  " póki wszystkie szczury nie będą martwe.",
+				  "póki wszystkie szczury nie będą martwe.",
 				null);
 	}
 

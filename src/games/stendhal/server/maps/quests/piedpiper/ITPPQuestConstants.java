@@ -105,7 +105,7 @@ public interface ITPPQuestConstants {
 			"wściekły szczur",
 			"krwiożerczy szczur",
 			"szczur olbrzymi",
-			"archiszur");
+			"archiszczur");
 
 	/**
 	 * List of reward moneys quantities for each type of killed rats.
