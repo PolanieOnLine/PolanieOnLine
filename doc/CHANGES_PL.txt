@@ -3,6 +3,7 @@ Changelog
 1.18
 *klient*
 - Grafika procy oraz kamieni została przeniesiona do odpowiedniego folderu
+- Przetłumaczono opis aktualnego statusu karmy
 
 *świat*
 - Przez wszystkie nietoperze można przechodzić
@@ -11,6 +12,7 @@ Changelog
 
 *serwer*
 - Wyłączono statystykę STR do czasu jego zbalansowania
+- Wymóg do komendy /teleportto wzrósł do 8 poziomu administracyjnego
 
 *naprawiono błędy*
 - Naprawiono sprzedawanie czarnej halabardy u Balduina
