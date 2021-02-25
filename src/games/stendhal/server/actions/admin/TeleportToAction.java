@@ -27,7 +27,7 @@ public class TeleportToAction extends AdministrationAction {
 
 
 	public static void register() {
-		CommandCenter.register(TELEPORTTO, new TeleportToAction(), 6);
+		CommandCenter.register(TELEPORTTO, new TeleportToAction(), 8);
 	}
 
 	@Override
