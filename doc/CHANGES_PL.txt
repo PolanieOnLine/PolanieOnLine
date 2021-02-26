@@ -6,6 +6,7 @@ Changelog
 - Przetłumaczono opis aktualnego statusu karmy
 
 *świat*
+- Dodano nowe automatyczne wydarzenie napadu bandy zbójników na podhale
 - Przez wszystkie nietoperze można przechodzić
 - Poprawiono wizualnie niektóre mapy
 - Zbalansowano strzały, magię, procę oraz różdżki
