@@ -70,7 +70,7 @@ public class InvasionPhase extends TPPQuest {
 				ConversationStates.ATTENDING,
 				"Ados jest zaatakowane przez szczury! "+
 				  "Nie chcę cię teraz nagrodzić czy "+
-				  "wyjaśnić szczegóły tobie "+
+				  "wyjaśnić szczegóły Tobie "+
 				  "póki wszystkie szczury nie będą martwe.",
 				null);
 
@@ -210,7 +210,7 @@ public class InvasionPhase extends TPPQuest {
 	@Override
 	public String getSwitchingToNextPhaseMessage() {
 		final String text =
-			"Mayor Chalmers krzyczy: Nagle #szczury opanowały miasto "+
+			"Mayor Chalmers krzyczy: Nagle #szczury opanowały miasto. "+
 			//"Mayor Chalmers krzyczy: #Szczury zniknęły tak nagle, jak się pojawiły. "+
 			//"Możliwe, że powróciły do kanałów. "+
 			"Muszę wezwać szczurzego eksterminatora Pied Piper. "+

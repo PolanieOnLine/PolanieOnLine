@@ -43,8 +43,8 @@ public class AwaitingPhase extends TPPQuest {
 			new LinkedList<RPZonePath>();
 	private final List<String> conversations = new LinkedList<String>();
 	private final String explainations =
-			"Widzę, że jest tutaj nasz miejski wybawca. Muszę z tobą szybko porozmawiać. "+
-			"Proszę porozmawiaj ze mną ponownie, gdy skończymy rozmowę.";
+			"Widzę, że jest tutaj nasz miejski wybawca. Muszę z nim szybko porozmawiać. "+
+			"Proszę porozmawiaj ze mną ponownie później, gdy skończymy rozmowę.";
 
 
 	/**
@@ -228,7 +228,7 @@ public class AwaitingPhase extends TPPQuest {
 			"because melody will also protect MY rats. " +
 			"Just enjoy the show.";
 			 */
-			"Burmistrz Chalmers oświadcza: Na szczęście, wszystkie #szczuy zostały wygnane, " +
+			"Burmistrz Chalmers oświadcza: Na szczęście, wszystkie #szczury zostały wygnane, " +
 			"Pied Piper zahipnotyzował je i zaprowadził‚ do podziemi. "+
 			"Ci, którzy pomogli Ados City z problem szczurów "+
 			"mogą dostać teraz swoją #nagrodę.";
