@@ -19,7 +19,7 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 
 /**
- * handles ShockStatusHandler
+ * handles PoisonStatusHandler
  */
 public class PoisonStatusHandler implements StatusHandler<PoisonStatus> {
 

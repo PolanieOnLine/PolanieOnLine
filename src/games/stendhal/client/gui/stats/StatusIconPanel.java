@@ -172,7 +172,7 @@ class StatusIconPanel extends JComponent {
 	void setGrumpy(String message) {
 		boolean isGrumpy = message != null;
 		if (isGrumpy) {
-			grumpy.setToolTipText("<html>You are grumpy with the message:<br><b>" + message);
+			grumpy.setToolTipText("<html>Jesteś niedostępny z wiadomością:<br><b>" + message);
 		}
 		if (grumpy.isVisible() != isGrumpy) {
 			grumpy.setVisible(isGrumpy);

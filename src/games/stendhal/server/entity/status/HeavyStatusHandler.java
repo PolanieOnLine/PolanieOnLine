@@ -57,10 +57,10 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 				/* status was not inflicted by another entity */
 				if (attacker == null) {
 					entity.sendPrivateText(NotificationType.SCENE_SETTING,
-							"Twoje stopy zacynają być ciężkie. Jesteś ociężały.");
+							"Twoje stopy zaczynają być ciężkie. Jesteś ociężały.");
 				} else {
 					entity.sendPrivateText(NotificationType.SCENE_SETTING,
-							"Twoje stopy zacynają być ciężkie. Zostałeś ociężały przez "
+							"Twoje stopy zaczynają być ciężkie. Zostałeś ociężały przez "
 					+ attacker.getName() + ".");
 				}
 
