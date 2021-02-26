@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -190,6 +189,7 @@ public class StendhalQuestSystem {
 		loadQuest(new Gornictwo());
 		loadQuest(new HelpKrasnolud());
 		loadQuest(new HerbsForJadzka());
+		loadQuest(new Janosik());
 		loadQuest(new KillDragons());
 		loadQuest(new KillHerszt());
 		loadQuest(new KillMtElves());
