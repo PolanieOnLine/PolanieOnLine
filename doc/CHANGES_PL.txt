@@ -12,8 +12,14 @@ Changelog
 - Zbalansowano strzały, magię, procę oraz różdżki
 
 *serwer*
+- Wymóg komendy /teleportto wzrósł do 8 poziomu administracyjnego
 - Wyłączono statystykę STR do czasu jego zbalansowania
-- Wymóg do komendy /teleportto wzrósł do 8 poziomu administracyjnego
+- Usunięto osiągnięcia dotyczące STR
+- Usunięto przedmioty takie jak:
+	- łuk treningowy
+	- automatyczna kusza
+	- automatyczna kusza A
+	- automatyczna kusza A+
 
 *naprawiono błędy*
 - Naprawiono sprzedawanie czarnej halabardy u Balduina
