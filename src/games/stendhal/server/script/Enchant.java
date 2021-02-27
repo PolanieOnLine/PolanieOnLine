@@ -72,7 +72,7 @@ public class Enchant extends ScriptImpl {
 		// final String creaturename = args.get(1);
 		// final int newatk = MathHelper.parseIntDefault(args.get(2), LOW_ATK);
 		// final int newHP = MathHelper.parseIntDefault(args.get(3), HIGH_HP);
-		final String creaturename = "enchanted " + creature.getTitle();
+		final String creaturename = "zaczarowany " + creature.getTitle();
 
 		final int newatk = LOW_ATK;
 		final int newHP = HIGH_HP;
