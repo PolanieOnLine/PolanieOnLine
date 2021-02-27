@@ -97,40 +97,6 @@
 		</ai>
 	</creature>
 
-	<creature name="nietoperz">
-		<type class="stendhal/animal" subclass="bat" tileid="animal.png:0"/>
-		<description>Oto nietoperz. W myślach powtarzasz: Ja sem netoperek.</description>
-		<attributes>
-			<atk value="36"/>
-			<def value="7"/>
-			<hp value="20"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-			<resistance value="1"/>
-		</attributes>
-		<level value="1"/>
-		<experience value="10"/>
-		<respawn value="900"/>
-		<corpse name="small_winged" harmless="winged_bat" />
-		<drops>
-			<item value="mięso" quantity="[1,2]" probability="50.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<sound value="bat-1" />
-				<sound value="bat-2" />
-				<sound value="bat-3" />
-			</says>
-			<profile name="animal"/>
-			<profile name="offensive"/>
-			<profile name="patrolling"/>
-			<profile name="active_idle"/>
-			<profile name="flying"/>
-		</ai>
-	</creature>
-
 	<creature name="prosiak">
 		<type class="stendhal/farm_animal" subclass="piglet" tileid="farm_animal.png:9"/>
 		<description>Oto prosię umorusane w błocie.</description>
@@ -824,41 +790,6 @@
 		</ai>
 	</creature>
 
-	<creature name="nietoperz wampir">
-		<type class="stendhal/animal" subclass="killer_bat" tileid="animal.png:13"/>
-		<description>Oto nietoperz wampir, który wyssa z ciebie krew!</description>
-		<attributes>
-			<atk value="104"/>
-			<def value="19"/>
-			<hp value="80"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-			<resistance value="1"/>
-		</attributes>
-		<level value="7"/>
-		<experience value="70"/>
-		<respawn value="1200"/>
-		<corpse name="small_winged" harmless="winged_bat" />
-		<drops>
-			<item value="mięso" quantity="[1,2]" probability="80.0"/>
-			<item value="truchło nietoperza" quantity="[1,1]" probability="60.0"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<sound value="bat-1" />
-				<sound value="bat-2" />
-				<sound value="bat-3" />
-			</says>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="patrolling"/>
-			<profile name="active_idle"/>
-			<profile name="flying"/>
-		</ai>
-	</creature>
-
 	<creature name="niedźwiedź grizli">
 		<type class="stendhal/animal" subclass="black_bear" tileid="animal.png:2"/>
 		<description>Oto potężny niedźwiedź grizli. Tylko niektóre udają się na zimowy sen.</description>
@@ -932,6 +863,75 @@
 	</creature>
 
 	<!-- END: mammal -->
+
+	<creature name="nietoperz">
+		<type class="stendhal/animal" subclass="bat" tileid="animal.png:0"/>
+		<description>Oto nietoperz. W myślach powtarzasz: Ja sem netoperek.</description>
+		<attributes>
+			<atk value="36"/>
+			<def value="7"/>
+			<hp value="20"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="1"/>
+		<experience value="10"/>
+		<respawn value="900"/>
+		<corpse name="small_winged" harmless="winged_bat" />
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="50.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bat-1" />
+				<sound value="bat-2" />
+				<sound value="bat-3" />
+			</says>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+			<profile name="active_idle"/>
+			<profile name="flying"/>
+		</ai>
+	</creature>
+
+	<creature name="nietoperz wampir">
+		<type class="stendhal/animal" subclass="killer_bat" tileid="animal.png:13"/>
+		<description>Oto nietoperz wampir, który wyssa z ciebie krew!</description>
+		<attributes>
+			<atk value="104"/>
+			<def value="19"/>
+			<hp value="80"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="7"/>
+		<experience value="70"/>
+		<respawn value="1200"/>
+		<corpse name="small_winged" harmless="winged_bat" />
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+			<item value="truchło nietoperza" quantity="[1,1]" probability="60.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="bat-1" />
+				<sound value="bat-2" />
+				<sound value="bat-3" />
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+			<profile name="active_idle"/>
+			<profile name="flying"/>
+		</ai>
+	</creature>
 
 	<creature name="nietoperz olbrzymi">
 		<type class="stendhal/animal" subclass="bat_giant" tileid="animal.png:5"/>
