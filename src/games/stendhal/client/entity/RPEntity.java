@@ -1568,11 +1568,13 @@ public abstract class RPEntity extends AudibleEntity {
 			}
 
 			String attackers = Grammar.enumerateCollection(attackerNames);
-			String text = getTitle() + " " + Grammar.genderNouns(getTitle(), "został") + " " + Grammar.genderNouns(getTitle(), "zabity") + " przez " + attackers;
-			if (getGender() != null) {
-				text = getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " " + Grammar.genderVerb(getGender(), "zabity") + " przez " + attackers;
+			final String deathText = getTitle() + " " + Grammar.genderNouns(getTitle(), "został") + " " + Grammar.genderNouns(getTitle(), "zabity") + " przez " + attackers;
+
+			if (getGender() == null) {
+				return;
 			}
-			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(text));
+
+			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(deathText));
 		}
 	    playSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "death");
 	}

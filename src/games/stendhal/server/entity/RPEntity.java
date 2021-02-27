@@ -424,6 +424,8 @@ public abstract class RPEntity extends GuidedEntity {
 
 		if (has("gender")) {
 			gender = get("gender");
+		} if (!has("gender")) {
+			setGender("0");
 		}
 
 		if (has("lv_cap")) {
