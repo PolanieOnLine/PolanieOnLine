@@ -235,15 +235,12 @@ public class Creature extends NPC {
 		setSounds(copy.getSounds());
 		setDeathSound(copy.deathSound);
 		setMovementSound(copy.movementSound);
-		if(copy.getResistance()!=0) {
+
+		if (copy.getResistance() != 0) {
 			setResistance(copy.getResistance());
-		} else {
-			setResistance(100);
 		}
-		if(copy.getVisibility()!=0) {
+		if (copy.getVisibility() != 0) {
 			setVisibility(copy.getVisibility());
-		} else {
-			setVisibility(100);
 		}
 
 		if (this.aiProfiles.containsKey("active_idle")) {
