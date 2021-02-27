@@ -245,8 +245,18 @@
 			<destination zone="int_zakopane_townhall" ref="townhall_exit"/>
 		</portal>
 
-		<portal x="93" y="65" ref="chapel_entrance_1">
+		<portal x="87" y="65" ref="chapel_entrance_1">
 			<destination zone="int_zakopane_chapel" ref="chapel_1_exit"/>
+		</portal>
+
+		<point-of-interest x="94" y="58">
+			<name>Zejście do Katakumb</name>
+			<type>dungeon</type>
+			<description>Blisko opuszczonej kaplicy w Zakopane znajduje się zejście do pradawnych katakumb gdzie znajdują się straszne stworzenia.</description>
+			<url>https://polanieonline.eu/zakopane</url>
+		</point-of-interest>
+		<portal x="94" y="58" ref="catacombs_entrance">
+			<destination zone="-1_zakopane_catacombs" ref="catacombs_exit" />
 		</portal>
 
 		<portal x="124" y="88" ref="playroom_entrance">
@@ -2097,7 +2107,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 		<portal x="12" y="17" ref="sewing_exit">
 			<destination zone="0_zakopane_s" ref="sewing_entrance"/>
-			<attribute name="face">left</attribute>
 		</portal>
 	</zone>
 
@@ -2173,25 +2182,11 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<destination zone="0_zakopane_sw" ref="church_entrance_2"/>
 		</portal>
 	</zone>
+
 	<!-- Chapel -->
 	<zone name="int_zakopane_chapel" file="interiors/zakopane/chapel.tmx">
 		<portal x="7" y="14" ref="chapel_1_exit">
 			<destination zone="0_zakopane_c" ref="chapel_entrance_1"/>
-		</portal>
-
-		<point-of-interest x="12" y="2">
-			<name>Zejście do Katakumb</name>
-			<type>dungeon</type>
-			<description>W opuszczonej kaplicy w Zakopane znajduje się tajne zejście do katakumb gdzie znajdują się straszne stworzenia.</description>
-			<url>https://polanieonline.eu/zakopane</url>
-		</point-of-interest>
-		<portal x="12" y="2" ref="catacombs_entrace_1">
-			<destination zone="-1_zakopane_catacombs" ref="catacombs_1_exit" />
-			<attribute name="hidden" />
-		</portal>
-
-		<portal x="11" y="2" ref="catacombs_2_exit">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
 		</portal>
 	</zone>
 
@@ -2325,17 +2320,17 @@ Aktualne ceny u Gazdy Wojtka:
 		</portal>
 	</zone>
 
-	<!-- catacombs-->
-		<zone name="-1_zakopane_catacombs" file="Level -1/zakopane/catacombs.tmx">
+	<!-- catacombs -->
+	<zone name="-1_zakopane_catacombs" file="Level -1/zakopane/catacombs.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
 
-		<portal x="27" y="10" ref="catacombs_1_exit">
-			<destination zone="int_zakopane_chapel" ref="catacombs_2_exit"/>
+		<portal x="27" y="10" ref="catacombs_exit">
+			<destination zone="0_zakopane_c" ref="catacombs_entrance"/>
+			<attribute name="face">left</attribute>
 		</portal>
-
-		</zone>
+	</zone>
 
 	<!-- Level -2 -->
 
