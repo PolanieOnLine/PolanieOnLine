@@ -13,6 +13,7 @@ package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.INSPECT;
 
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
@@ -81,8 +82,10 @@ public class InspectAction extends AdministrationAction {
 					+ inspected.getAtkXP() + ")");
 			st.append("\nOBR:    " + inspected.getDef() + "("
 					+ inspected.getDefXP() + ")");
-			st.append("\nSTR:    " + inspected.getRatk() + "("
-					+ inspected.getRatkXP() + ")");
+			if (Testing.COMBAT) {
+				st.append("\nSTR:    " + inspected.getRatk() + "("
+						+ inspected.getRatkXP() + ")");
+			}
 			st.append("\nGórnictwo:    " + inspected.getMining() + "("
 					+ inspected.getMiningXP() + ")");
 			st.append("\nPD:     " + inspected.getXP());
@@ -90,6 +93,8 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nKarma:  " + inspected.getKarma());
 			st.append("\nMana:  " + inspected.getMana() + " / "
 					+ inspected.getBaseMana());
+			st.append("\nResistance:  " + inspected.getResistance());
+			st.append("\nVisibility:  " + inspected.getVisibility());
 
 			if (inspected.has("outfit_ext")) {
 				st.append("\nUbiór: ");
