@@ -82,7 +82,7 @@
 		</attributes>
 	</zone>
 
-  <zone name="0_dragon_knights_forest_w" level="0" x="513696" y="18560" file="Level 0/dragon_knights/forest_w.tmx">
+  <zone name="0_dragon_knights_swamp" level="0" x="513696" y="18560" file="Level 0/dragon_knights/swamp.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
