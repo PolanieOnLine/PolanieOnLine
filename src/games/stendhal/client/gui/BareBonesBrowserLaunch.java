@@ -35,7 +35,7 @@ public class BareBonesBrowserLaunch {
 	private static final String[] browsers = { "google-chrome", "chromium-browser", "firefox", "opera",
 			"konqueror", "epiphany", "seamonkey", "galeon", "kazehakase",
 			"mozilla" };
-	private static final String errMsg = "Error attempting to launch web browser:\n ";
+	private static final String errMsg = "Błąd podczas uruchamiania przeglądarki:\n ";
 
 	/**
 	 * Opens the specified web page in the user's default browser
