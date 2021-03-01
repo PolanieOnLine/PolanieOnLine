@@ -90,7 +90,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * Speed factor for centering the screen. Smaller is faster,
 	 * and keeps the player closer to the center of the screen when walking.
 	 */
-	private static final int PAN_INERTIA = 50;
+	private static final int PAN_INERTIA = 15;
 	/**
 	 * Space at the right and bottom of the screen next to the off line
 	 * indicator icon.
