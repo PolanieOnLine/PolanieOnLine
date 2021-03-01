@@ -19,6 +19,7 @@ import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -103,6 +104,7 @@ public class WhereDragon extends AbstractQuest {
 
 			setEntityClass("dragonNPC");
 			setPosition(x, y);
+			setCollisionAction(CollisionAction.REROUTE);
 			initHP(100);
 
 			final List<Node> nodes = new LinkedList<Node>();
@@ -195,7 +197,7 @@ public class WhereDragon extends AbstractQuest {
 		zone.add(npc);
 
 		zone = world.getZone("-2_semos_mine_w2");
-		npc = new DragonNPC("Cinnabar", 38, 120);
+		npc = new DragonNPC("Cinnabar", 40, 121);
 		zone.add(npc);
 
 		zone = world.getZone("-3_zakopane_mines");
@@ -215,11 +217,11 @@ public class WhereDragon extends AbstractQuest {
 		zone.add(npc);
 
 		zone = world.getZone("0_warszawa_w");
-		npc = new DragonNPC("Cruorordis", 15, 65);
+		npc = new DragonNPC("Cruorordis", 16, 65);
 		zone.add(npc);
 
 		zone = world.getZone("1_koscielisko_podzamcze_zrc");
-		npc = new DragonNPC("Hekate", 97, 7);
+		npc = new DragonNPC("Hekate", 99, 7);
 		zone.add(npc);
 
 		zone = world.getZone("0_desert_pyramid_nw");
