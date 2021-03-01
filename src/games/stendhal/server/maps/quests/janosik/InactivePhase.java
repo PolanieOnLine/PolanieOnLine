@@ -29,7 +29,7 @@ public class InactivePhase extends RAQuest {
 		// Player asking about rats
 		mainNPC.add(
 				ConversationStates.ATTENDING,
-				Arrays.asList("zbójników", "zbójników!"),
+				Arrays.asList("zbójnicy", "zbójników", "zbójników!"),
 				new RAQuestInPhaseCondition(myphase),
 				ConversationStates.ATTENDING,
 				"Zakopane nie jest teraz nawiedzane przez bandę zbójników. Wciąż masz możliwość "

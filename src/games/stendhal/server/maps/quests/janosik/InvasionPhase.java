@@ -47,7 +47,7 @@ public class InvasionPhase extends RAQuest {
 		// Player asking about rats at invasion time.
 		mainNPC.add(
 				ConversationStates.ATTENDING,
-				Arrays.asList("zbójników", "zbójników!"),
+				Arrays.asList("zbójnicy", "zbójników", "zbójników!"),
 				new RAQuestInPhaseCondition(myphase),
 				ConversationStates.ATTENDING,
 				null,

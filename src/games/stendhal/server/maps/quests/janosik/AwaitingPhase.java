@@ -53,7 +53,7 @@ public class AwaitingPhase extends RAQuest {
 		// Player asking about rats.
 		mainNPC.add(
 				ConversationStates.ATTENDING,
-				Arrays.asList("zbójników", "zbójników!"),
+				Arrays.asList("zbójnicy", "zbójników", "zbójników!"),
 				new RAQuestInPhaseCondition(myphase),
 				ConversationStates.ATTENDING,
 				"Próbowaliśmy oczyścić miasto. "
