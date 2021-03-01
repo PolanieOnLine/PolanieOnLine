@@ -1146,9 +1146,11 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	private void initializeSounds() {
 		addSounds(SoundLayer.FIGHTING_NOISE.groupName, "attack",
-			"punch-1"   , "punch-2", "punch-3",
-			"punch-4"   , "punch-5", "punch-6",
-			"swingaxe-1", "slap-1");
+			"punch-1"   , "punch-2"  , "punch-3",
+			"punch-4"   , "punch-5"  , "punch-6",
+			"swingaxe-1", "slap-1"   , "arrow-1",
+			"pol-slash" , "pol-crash", "pol-sword",
+ 			"pol-swing" , "pol-kling");
 
 		addSounds(SoundLayer.FIGHTING_NOISE.groupName, "block",
 			"clang-metallic-1",	"clang-dull-1");
