@@ -551,7 +551,7 @@ Na południe ↓ Tatry
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">
 #'Przeczytaj REGULAMIN!'
-#'polanieonline.eu'
+#'polanieonline.eu/regulamin/regulamin-gry-polanieonline'
 			</attribute>
 			<attribute name="class">default</attribute>
 		</entity>

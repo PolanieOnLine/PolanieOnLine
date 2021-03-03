@@ -41,7 +41,7 @@ public class SupportMessageTemplatesFactory {
 		addTemplate("$banprivate", "Witaj %s przykro mi, ale nie mogę podać powodu zablokowania inny graczy ze względu na poufność.");
 		addTemplate("$bugstracker","Cześć %s. Wygląda na to, że znalazłeś nowy błąd. Gdybyś mógł zostawić wiadomośc ze szczegółowym opisem jak do tego doszło na #https://polanieonline.eu/bugzilla.html to byłbym wdzięczny - bardzo dziękuję.");
 		addTemplate("$faq", "Cześć. Odpowiedź na swoje pytanie znajdziesz w FAQ, który jest bardzo pomocny więc przeczytaj go uważnie! #https://polanieonline.eu/faq.html. Dziękujemy, że jesteś z nami!");
-		addTemplate("$faqpvp","Witaj %s i przykro słyszeć o tym. Przeczytaj uważnie regulamin dostępny na https://polanieonline.eu/regulamin-gry-mmorpg.html - powodzenia w przyszłości.");
+		addTemplate("$faqpvp","Witaj %s i przykro słyszeć o tym. Przeczytaj uważnie regulamin dostępny na https://polanieonline.eu/regulamin/regulamin-gry-polanieonline - powodzenia w przyszłości.");
 		addTemplate("$faqsocial", "Hi %s, sorry to hear about that. Please read #http://stendhalgame.org/wiki/StendhalFAQ#Player_social_problems which covers some common problems.");
 		addTemplate("$firewallserver", "Hi %s, I am sorry but we cannot help you with the configuration of your router or firewall. It is rather dangerous to modify those settings without knowing exactly what you are doing. So this should only be done by an experienced network administrator who will find instructions in the manual that came with the hardware router or operating system.");
 		addTemplate("$ignore","Cześć %s. Przykro nam, że masz nie przyjemności ze strony innego wojownika. Spróbuj go zignorować używając #/ignore #wojownik, aby zablokować jego wiadomości pochodzące od niego.");
