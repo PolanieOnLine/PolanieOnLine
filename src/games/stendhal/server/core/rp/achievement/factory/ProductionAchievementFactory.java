@@ -38,6 +38,8 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 
 	    final List<String> foodlist = producerRegister.getProducedItemNames("food");
 		final String[] foods = foodlist.toArray(new String[foodlist.size()]);
+		// It help to understand what we need to make yet
+		//String food = String.join(", ", foodlist);
 		// may wish to remove mega potion by hand?
 
 		// this includes a lot of foods! at time of writing, this is at least:
