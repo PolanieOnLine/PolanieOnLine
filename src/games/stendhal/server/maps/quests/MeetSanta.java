@@ -157,7 +157,7 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 			santaHat = 997;
 		}
 
-		player.setOutfit(new Outfit(null, null, null, null, null, santaHat, null).putOver(origOutfit), true);
+		player.setOutfit(new Outfit(null, null, null, null, null, null, null, santaHat, null).putOver(origOutfit), true);
 		player.registerOutfitExpireTime(43200);
 	}
 

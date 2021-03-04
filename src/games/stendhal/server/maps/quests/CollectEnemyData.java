@@ -131,7 +131,7 @@ public class CollectEnemyData extends AbstractQuest {
 
 	private void initNPC() {
 		npc = new SpeakerNPC("Rengard");
-		npc.setOutfit("body=0,head=8,hair=9,dress=76,mask=5,hat=22");
+		npc.setOutfit("body=0,head=0,eyes=16,hair=9,dress=76,mask=5,hat=22");
 		npc.setOutfitColor("skin", SkinColor.DARK);
 		npc.setOutfitColor("hat", 0xff0000);
 		npc.setDescription("Oto Rengard. Doświadczony poszukiwacz przygód z uśmiechem na twarzy oraz błyskiem w oku.");

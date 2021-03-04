@@ -76,7 +76,7 @@ import games.stendhal.server.maps.Region;
  */
 public class Pizza extends AbstractQuest {
 	private static final Logger logger = Logger.getLogger(Pizza.class);
-	private final static Outfit UNIFORM = new Outfit(null, Integer.valueOf(997), null, null, null, null, null);
+	private final static Outfit UNIFORM = new Outfit(null, Integer.valueOf(997), null, null, null, null, null, null, null);
 
 	/**
 	 * A customer data object.

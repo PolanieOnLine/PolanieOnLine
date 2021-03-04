@@ -109,7 +109,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 
 	private void initNPC(final StendhalRPZone zone) {
 		lender = new SpeakerNPC("Pierre");
-		lender.setOutfit("body=2,head=8,dress=7,hat=21");
+		lender.setOutfit("body=2,head=8,eyes=9,dress=7,hat=21");
 		lender.setOutfitColor("skin", SkinColor.LIGHT);
 		lender.setOutfitColor("dress", 0x008080); // teal
 		lender.setOutfitColor("hat", Color.BLUE);

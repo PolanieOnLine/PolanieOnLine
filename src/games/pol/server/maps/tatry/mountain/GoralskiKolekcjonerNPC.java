@@ -62,7 +62,7 @@ public class GoralskiKolekcjonerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("noimagenpc");
+		npc.setOutfit(3, 53, 3, null, 17, 10, 9, 8, null);
 		npc.setPosition(89, 33);
 		npc.initHP(100);
 		zone.add(npc);
