@@ -1,5 +1,23 @@
 Changelog
 ---------
+1.18.1
+*klient*
+- Dodano stare dźwięki atakowania
+- Poprawiono kolory elfickiego naszyjnika
+- Poprawiono linki w kliencie prowadzące do regulaminów
+- Klatki FPS są bardziej stabilniejsze przez co drgania kamery są jeszcze mniejsze
+
+*świat*
+- Gazda Bartek otrzymał nowy wygląd
+- Poprawiono wyglądy NPC Bobby, Xhiphin Zohos oraz wielu innym
+- Poprawiono kolizje na niektórych mapkach
+- Poprawiono ścieżki smoków (tych z zadania na poszukiwanie), tak aby nie kolidowały z innymi obiektami
+- W zadaniach na góralskiego kolekcjonera wprowadzono zmiany dot. wymaganych przedmiotów, największe zmiany dotknęły w drugiej części zadania. + nowe | - usunięte
+	- I część: góralski gorset, kierpce +, chusta góralska, ciupaga, góralska spódnica, góralska biała spódnica, polska tarcza lekka -
+	- II część (kompletnie nowy zestaw): złota ciupaga, polska płytowa tarcza, polska tarcza ciężka, polska tarcza drewniana, polska tarcza kolcza, polska tarcza lekka
+	- III cześć: złota ciupaga z wąsem, korale, pas zbójnicki, kierpce +, góralski kapelusz, cuha góralska, portki bukowe, polska tarcza ciężka -
+
+
 1.18
 *klient*
 - Grafika procy oraz kamieni została przeniesiona do odpowiedniego folderu
