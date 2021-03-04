@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.grammar.Grammar;
@@ -27,16 +29,11 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuest;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class GoralskiCollector extends AbstractQuest implements BringListOfItemsQuest {
-
-	private static final List<String> MOUNTAINEER_ITEMS = Arrays.asList("góralski gorset",
-			"chusta góralska", "ciupaga", "góralska spódnica", "góralska biała spódnica",
-			"polska tarcza lekka");
-
 	private static final String QUEST_SLOT = "goralski_kolekcjoner1";
+
+	private static final List<String> MOUNTAINEER_ITEMS = Arrays.asList("góralski gorset", "kierpce",
+			"chusta góralska", "ciupaga", "góralska spódnica", "góralska biała spódnica");
 
 	private BringListOfItemsQuestLogic bringItems;
 
@@ -177,14 +174,14 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "item", "a")
+		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "przedmiot")
 				+ ". To jest #'" + Grammar.enumerateCollection(missingItems)
 				+ "'. Pomógłbyś mi je zdobyć?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "item", "a")
+		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "przedmiot")
 				+ ". To jest " + Grammar.enumerateCollection(missingItems)
 				+ ". Przyniosłeś mi jakiś?";
 	}

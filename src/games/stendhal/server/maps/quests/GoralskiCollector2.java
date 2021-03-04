@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -29,18 +33,11 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 public class GoralskiCollector2 extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "goralski_kolekcjoner2";
 
-
-	private static final List<String> neededGoral = Arrays.asList("góralski kapelusz", "cuha góralska", "portki bukowe",
-								       "złota ciupaga", "kierpce", "polska tarcza kolcza");
+	private static final List<String> neededGoral = Arrays.asList("złota ciupaga", "polska płytowa tarcza",
+			"polska tarcza ciężka", "polska tarcza drewniana", "polska tarcza kolcza", "polska tarcza lekka");
 
 	@Override
 	public String getSlotName() {
@@ -110,7 +107,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							} else {
 								raiser.say("Chciałbym, abyś ponownie dla mnie przyniósł góralskie przedmioty. "
-										+ "Tym razem chodzi mi dokładnie o góralskie ubrania męskie. Dałbyś radę?");
+										+ "Tym razem chodzi mi dokładnie o tarcze i pozłacaną ciupagę. Dałbyś radę?");
 							}
 						}
 				});
@@ -148,11 +145,9 @@ public class GoralskiCollector2 extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						final List<String> needed = missingGoral(player, true);
-						raiser.say("Oto "
-								+ Grammar.isare(needed.size())
-								+ " "
-								+ Grammar.quantityplnoun(needed.size(), "items", "a")
-								+ " w mojej nowej kolekcji ubrań brakuje wciąż: "
+						raiser.say("Chcę "
+								+ Grammar.quantityplnoun(needed.size(), "przedmiot")
+								+ ", gdzie brakuje wciąż: "
 								+ Grammar.enumerateCollection(needed)
 								+ ". Czy masz coś takiego przy sobie?");
 					}
@@ -211,7 +206,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 									player.equipOrPutOnGround(pas);
 									player.addXP(75000);
 									player.addKarma(30);
-									raiser.say("W końcu moja kolekcja jest kompletna! Dziękuję bardzo. Spójrz tylko na ten #'pas zbójnicki', czyż nie jest on piękny? Proszę weź go... przyda Ci się pewnie.");
+									raiser.say("Ponownie pomogłeś uzupełnić moją kolekcję o kolejne przedmioty, dziękuję! Spójrz tylko na ten #'pas zbójnicki', czyż nie jest on piękny? Proszę weź go... przyda Ci się pewnie.");
 									player.setQuest(QUEST_SLOT, "done");
 									player.notifyWorldAboutChanges();
 									raiser.setCurrentState(ConversationStates.ATTENDING);
@@ -249,7 +244,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj z powrotem. Mam nadzieję, że przyszedłeś mi pomóc z ostatnią #listą broni.",
+				"Witaj z powrotem. Mam nadzieję, że przyszedłeś mi pomóc z #listą.",
 				null);
 	}
 
@@ -267,13 +262,12 @@ public class GoralskiCollector2 extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Góralski Kolekcjoner II",
-				"Gazda Bartek potrzebuje nowych ubrań góralskich - tym razem męskie! Jego kolekcja naprawdę musi być duża.. chyba.",
+				"Gazda Bartek potrzebuje nowych przedmiotów do kolekcji.",
 				true);
 		step_1();
 		step_2();
 		step_3();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {

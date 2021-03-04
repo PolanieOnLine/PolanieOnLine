@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.grammar.Grammar;
@@ -35,16 +39,13 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 public class GoralskiCollector3 extends AbstractQuest {
+	private static final String QUEST_SLOT = "goralski_kolekcjoner3";
+	private static final String OLD_QUEST = "goralski_kolekcjoner2";
 
-    private static final List<String> NEEDEDGORAL3 = Arrays.asList("korale", "pas zbójnicki", "złota ciupaga z wąsem", "góralski gorset", "cuha góralska", "chusta góralska", "portki bukowe", "polska tarcza ciężka");
-    private static final String OLD_QUEST = "goralski_kolekcjoner2";
-    private static final String QUEST_SLOT = "goralski_kolekcjoner3";
+    private static final List<String> NEEDEDGORAL3 = Arrays.asList(
+    		"złota ciupaga z wąsem", "korale", "pas zbójnicki", "kierpce",
+    		"góralski kapelusz", "cuha góralska", "portki bukowe");
 
     @Override
 	public String getSlotName() {
@@ -95,7 +96,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 						}
 					}),
 				ConversationStates.QUEST_3_OFFERED,
-				"Witoj ponownie młody bohaterze... Mam złe wieści... Częściowa moja #kolekcja góralskich ubrań się poniszczyła i mam kolejne #zadanie dla Ciebie... zebrałbyś niektóre ubrania ponownie? Powiedz tylko #'kolekcja', a będę wiedział, że chciałbyś mi pomóc.",
+				"Witoj ponownie młody bohaterze... Mam kolejne #zadanie dla Ciebie... Powiedz tylko #'kolekcja', a będę wiedział, że chciałbyś mi pomóc.",
 				null);
 
 		// player asks what items are needed
@@ -109,7 +110,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
 						final List<String> needed2 = missingitems3(player, true);
 						entity.say("Brakuje "
-								+ Grammar.quantityplnoun(needed2.size(), "item", "a")
+								+ Grammar.quantityplnoun(needed2.size(), "przedmiot")
 								+ ". To jest "
 								+ Grammar.enumerateCollection(needed2)
 								+ ". Znajdziesz dla mnie?");
@@ -177,11 +178,11 @@ public class GoralskiCollector3 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("I don't know " + obj.getOriginal() + ". Can you name me another item please?");
+							raiser.say("Nie poznaję " + obj.getOriginal() + ". Czy mógłbyś podać mi inną nazwę przedmiotu?");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("Nie widziałeś przedtem? Cóż to jest ");
+							stringBuilder.append("Nie widziałem tego przedtem. Cóż to jest ");
 
 							if (item == null) {
 								stringBuilder.append(itemName);
@@ -228,7 +229,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
 						final List<String> needed2 = missingitems3(player, true);
 						entity.say("Chcę "
-								+ Grammar.quantityplnoun(needed2.size(), "item", "a")
+								+ Grammar.quantityplnoun(needed2.size(), "przedmiot")
 								+ ". To jest "
 								+ Grammar.enumerateCollection(needed2)
 								+ ". Przyniosłeś jakiś?");
@@ -269,8 +270,8 @@ public class GoralskiCollector3 extends AbstractQuest {
 
 								if (missing.isEmpty()) {
 									rewardPlayer(player);
-									entity.say("Wow, To niewiarygodne, mogę zobaczyć to z bliska! Wielkie dzięki! Tym razem lepiej zabezpieczę moją kolekcję góralskich ubrań. Mam dla Ciebie niespodziankę!\na"
-													+ " Przyjdź do mnie za chwilę, tylko przygotuję nią, dobra? Tylko nie zapomnij!");
+									entity.say("To niewiarygodne, mogę zobaczyć to z bliska? Wielkie dzięki! Mam dla Ciebie niespodziankę!\n"
+													+ "Oto spinka! Otrzymałem ją od swoich przodków, a teraz będzie należeć do Ciebie! Niech Ci dobrze służy.");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item spinka = SingletonRepository.getEntityManager().getItem("spinka");
 									spinka.setBoundTo(player.getName());
@@ -329,7 +330,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 				"Witoj, a oto twoja nagroda, spójrz tylko na tą lśniącą złotym blaskiem #'spinke', czyż nie jest ona prześliczna? Proszę weź nią.. posiada magiczne właściwości... chroni odpowiednio osobę noszącą ten przedmiot. Niech Ci ona służy!",
 				new MultipleActions(new EquipItemAction("spinka", 1, true), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
-		//		 player returns after finishing the quest and was rewarded
+		// player returns after finishing the quest and was rewarded
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -346,14 +347,14 @@ public class GoralskiCollector3 extends AbstractQuest {
 		step_3();
 		fillQuestInfo(
 				"Góralski Kolekcjoner III",
-				"Kolekcjoner poprosił mnie abym przyniósł ponownie ubrania gdyż, niektóre poniszczyłu mu się. Słabo musiał je zabezpieczyć...",
+				"Kolekcjoner poprosił mnie abym przyniósł ponownie ubrania i rzadką ciupagę z wąsem.",
 				false);
 	}
 
 	private static void rewardPlayer(final Player player) {
 		player.addKarma(65.0);
 		player.addXP(150000);
-  }
+	}
 
 	@Override
 	public String getName() {
