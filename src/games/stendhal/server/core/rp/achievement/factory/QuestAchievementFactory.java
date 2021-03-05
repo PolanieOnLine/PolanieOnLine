@@ -52,6 +52,12 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 		questAchievements.add(createAchievement("quest.special.ados", "Przyjaciel Ados", "Ukończył wszystkie zadania w mieście Ados",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.ADOS_CITY)));
 
+		questAchievements.add(createAchievement("quest.special.zakopane", "Przyjaciel Zakopane", "Ukończył wszystkie zadania w mieście Zakopane",
+				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.ZAKOPANE_CITY)));
+
+		questAchievements.add(createAchievement("quest.special.krakow", "Przyjaciel Krakowa", "Ukończył wszystkie zadania w mieście Kraków",
+				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.KRAKOW_CITY)));
+
 		// complete nearly all the quests in the game?
 		questAchievements.add(createAchievement("quest.count.050", "Pierwsze Zlecenia","Ukończył conajmniej 50 zadań",
 				Achievement.EASY_BASE_SCORE, true, new QuestCountCompletedCondition(50)));
