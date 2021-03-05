@@ -35,7 +35,6 @@ import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
 
 /**
  * Zadanie, które resetuje poziom graczowi z 597 na 0
@@ -428,10 +427,5 @@ public class RebornQuest extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return "Yerena";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
 	}
 }
