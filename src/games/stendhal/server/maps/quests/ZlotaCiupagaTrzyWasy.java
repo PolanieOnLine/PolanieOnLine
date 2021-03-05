@@ -119,7 +119,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Musisz pierw udowodnić swe dobre zamiary. Pomóż mojemu pierwszemu znajomemu Gazdy Bartka rozwiązać jego problem.");
+						npc.say("Musisz pierw udowodnić swe dobre zamiary. Pomóż mojemu pierwszemu znajomemu, Gazdzie Bartkowi, rozwiązać jego problem.");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}
