@@ -38,7 +38,7 @@ public class ZakopaneItemQuestAchievementsFactory extends AbstractAchievementFac
 		achievements.add(createAchievement(
 				ID_HELPER, "Góral Pomocnik", "Ukończył codzienne zadanie na przedmiot 25 razy",
 				Achievement.EASY_BASE_SCORE, true,
-				new QuestStateGreaterThanCondition("gazda_wojtek_daily_item", 2, 44)));
+				new QuestStateGreaterThanCondition("gazda_wojtek_daily_item", 2, 24)));
 
 		achievements.add(createAchievement(
 				ID_STOREKEEPER, "Góral Magazynier", "Ukończył codzienne zadanie na przedmiot 50 razy",
