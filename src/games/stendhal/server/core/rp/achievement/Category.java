@@ -71,5 +71,5 @@ public enum Category {
 	/** rebirths **/
 	REBORN,
 	/** złote ciupagi **/
-	CIUPAGI;
+	ZLOTE_CIUPAGI;
 }

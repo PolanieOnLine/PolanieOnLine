@@ -27,7 +27,7 @@ public class CiupagaAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	protected Category getCategory() {
-		return Category.CIUPAGI;
+		return Category.ZLOTE_CIUPAGI;
 	}
 
 	@Override
