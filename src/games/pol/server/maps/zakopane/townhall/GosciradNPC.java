@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,53 +9,52 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.pol.server.maps.krakow.wawel;
+package games.pol.server.maps.zakopane.townhall;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.Direction;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.SayNPCNamesForUnstartedQuestsAction;
 import games.stendhal.server.entity.npc.action.SayUnstartedQuestDescriptionFromNPCNameAction;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.TriggerIsNPCNameForUnstartedQuestCondition;
 import games.stendhal.server.maps.Region;
 
 /**
- * A young lady (original name: Straznik) who heals players without charge.
+ * @author KarajuSs
  */
-public class StraznikNPC implements ZoneConfigurator {
-	private final List<String> regions = Arrays.asList(Region.KRAKOW_CITY);
+public class GosciradNPC implements ZoneConfigurator {
+	private final List<String> regions = Arrays.asList(Region.ZAKOPANE_CITY);
 
+	/**
+	 * Configure a zone.
+	 *
+	 * @param	zone		The zone to be configured.
+	 * @param	attributes	Configuration attributes.
+	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildguardian(zone);
+		buildNPC(zone);
 	}
 
-	private void buildguardian(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Strażnik") {
+	private void buildNPC(final StendhalRPZone zone) {
+		final SpeakerNPC npc = new SpeakerNPC("Gościrad") {
 
 			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
-			@Override
-			protected void createDialog() {
-				addGreeting("Witaj wędrowcze.");
-				addJob("Prowadzę spokojne życie. Pilnuje #wejścia na wawel. Mogę również Tobie przekazać od samego Króla Kraka kto potrzebuje #pomocy.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("wawel")));
-				addGoodbye();
+			public void createDialog() {
+				addGreeting("Witaj, Gazda Wojtek kazał mi przekazywać rycerzom kto aktualnie w naszych regionach potrzebuje Twojej #'pomocy'.");
 
 				// use a standard action to list the names of NPCs for quests which haven't been started in this region
 				addReply(ConversationPhrases.HELP_MESSAGES, null, new SayNPCNamesForUnstartedQuestsAction(regions));
+
 				// if the player says an NPC name, describe the quest (same description as in the travel log)
 			    add(ConversationStates.ATTENDING,
 						"",
@@ -63,15 +62,22 @@ public class StraznikNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						null,
 						new SayUnstartedQuestDescriptionFromNPCNameAction(regions));
+
+				addQuest("Jest wielu innych, którzy mogą potrzebować #pomocy w " + Grammar.enumerateCollection(regions) + ".");
+				addJob("Zajmuje się papierkową robotą tutaj. Możesz #pomóc innym, a szczególnie " + Grammar.enumerateCollection(regions) + ".");
+				addOffer("Niczego nie sprzedaję.");
+				addGoodbye("Dziękuję, że się zatrzymałeś.");
+			}
+
+			@Override
+			protected void onGoodbye(RPEntity player) {
+				setDirection(Direction.RIGHT);
 			}
 		};
 
-		npc.setEntityClass("transparentnpc");
-		npc.setAlternativeImage("guardian");
-		npc.setDescription("Oto Strażnik. Chroni bramę Wawela przed słabymi i niegodnymi wojownikami.");
-		npc.setPosition(102, 82);
-		npc.initHP(100);
-		npc.put("no_shadow", "");
+		npc.setEntityClass("executivenpc");
+		npc.setPosition(13, 33);
+		npc.setDirection(Direction.RIGHT);
 		zone.add(npc);
 	}
 }

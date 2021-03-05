@@ -2193,6 +2193,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 	<!-- Townhall -->
 	<zone name="int_zakopane_townhall" file="interiors/zakopane/townhall.tmx">
 		<configurator class-name="games.pol.server.maps.zakopane.townhall.GazdaWojtekNPC"/>
+		<configurator class-name="games.pol.server.maps.zakopane.townhall.GosciradNPC"/>
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/townhall_xmas.tmx</parameter>
 		</attributes>
