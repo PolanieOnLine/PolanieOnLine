@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.18.1
+1.19
 *klient*
 - Dodano stare dźwięki atakowania
 - Poprawiono kolory elfickiego naszyjnika
@@ -8,6 +8,11 @@ Changelog
 - Klatki FPS są bardziej stabilniejsze przez co drgania kamery są jeszcze mniejsze
 
 *świat*
+- Dodano nowe osiągniecia: (4)
+	- "Złota Ciupaga"
+	- "Złota Ciupaga z Wąsem"
+	- "Złota Ciupaga z Dwoma Wąsami"
+	- "Złota Ciupaga z Trzema Wąsami"
 - Gazda Bartek otrzymał nowy wygląd
 - Poprawiono wyglądy NPC Bobby, Xhiphin Zohos oraz wielu innym
 - Poprawiono kolizje na niektórych mapkach
@@ -16,6 +21,13 @@ Changelog
 	- I część: góralski gorset, kierpce +, chusta góralska, ciupaga, góralska spódnica, góralska biała spódnica, polska tarcza lekka -
 	- II część (kompletnie nowy zestaw): złota ciupaga, polska płytowa tarcza, polska tarcza ciężka, polska tarcza drewniana, polska tarcza kolcza, polska tarcza lekka
 	- III cześć: złota ciupaga z wąsem, korale, pas zbójnicki, kierpce +, góralski kapelusz, cuha góralska, portki bukowe, polska tarcza ciężka -
+- Hadrin będzie wymagał, abyśmy wsparli jego znajomych w ich problemach zanim weźmie się za ulepszanie ciupagi oraz zwiększył zapotrzebowanie na przedmioty
+	- pazur niebieskiego smoka *NOWE*
+	- pazur czarnego smoka *NOWE*
+	- sztabki złota: 200 => 240
+	- money: 2.000.000 => 2.500.000
+	- polano: 50 => 70
+	- pióro azazela: 1 => 3
 
 *naprawiono błędy*
 - Naprawiono osiągnięcie "Góral pomocnik"
