@@ -8,11 +8,14 @@ Changelog
 - Klatki FPS są bardziej stabilniejsze przez co drgania kamery są jeszcze mniejsze
 
 *świat*
-- Dodano nowe osiągniecia: (4)
+- Dodano nowego NPC: Gościrad, który wraz ze Strażnikiem opowiedzą kto potrzebuje w określonym regionie pomocy
+- Dodano nowe osiągniecia: (6)
 	- "Złota Ciupaga"
 	- "Złota Ciupaga z Wąsem"
 	- "Złota Ciupaga z Dwoma Wąsami"
 	- "Złota Ciupaga z Trzema Wąsami"
+	- "Przyjaciel Zakopane"
+	- "Przyjaciel Krakowa"
 - Gazda Bartek otrzymał nowy wygląd
 - Poprawiono wyglądy NPC Bobby, Xhiphin Zohos oraz wielu innym
 - Poprawiono kolizje na niektórych mapkach
