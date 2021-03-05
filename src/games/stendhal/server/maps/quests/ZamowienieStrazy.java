@@ -281,4 +281,9 @@ public class ZamowienieStrazy extends AbstractQuest {
     public String getName() {
         return "ZamowienieStrazy";
     }
+
+    @Override
+	public String getNPCName() {
+		return "Gwardzista";
+	}
 }
