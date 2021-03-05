@@ -46,6 +46,7 @@ public class KrawiecNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setOutfit(3, 49, 3, 1, 9, 11, 14, 21, null);
 		npc.setDescription("Oto krawiec.");
 		npc.setEntityClass("noimagenpc");
 		npc.setPosition(13, 10);

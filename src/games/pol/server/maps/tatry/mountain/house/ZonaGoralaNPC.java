@@ -74,7 +74,7 @@ public class ZonaGoralaNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("noimagenpc");
+		npc.setOutfit(4, 46, 3, 2, 1, null, 22, null, null);
 		npc.setPosition(16, 15);
 		npc.initHP(100);
 		zone.add(npc);
