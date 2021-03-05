@@ -16,7 +16,7 @@ Changelog
 	- "Złota Ciupaga z Trzema Wąsami"
 	- "Przyjaciel Zakopane"
 	- "Przyjaciel Krakowa"
-- Gazda Bartek otrzymał nowy wygląd
+- Gazda Bartek, Gaździna Bożena oraz Krawiec otrzymali nowy wygląd
 - Poprawiono wyglądy NPC Bobby, Xhiphin Zohos oraz wielu innym
 - Poprawiono kolizje na niektórych mapkach
 - Poprawiono ścieżki smoków (tych z zadania na poszukiwanie), tak aby nie kolidowały z innymi obiektami
