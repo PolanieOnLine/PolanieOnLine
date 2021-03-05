@@ -17,6 +17,9 @@ Changelog
 	- II część (kompletnie nowy zestaw): złota ciupaga, polska płytowa tarcza, polska tarcza ciężka, polska tarcza drewniana, polska tarcza kolcza, polska tarcza lekka
 	- III cześć: złota ciupaga z wąsem, korale, pas zbójnicki, kierpce +, góralski kapelusz, cuha góralska, portki bukowe, polska tarcza ciężka -
 
+*naprawiono błędy*
+- Naprawiono osiągnięcie "Góral pomocnik"
+
 
 1.18
 *klient*
