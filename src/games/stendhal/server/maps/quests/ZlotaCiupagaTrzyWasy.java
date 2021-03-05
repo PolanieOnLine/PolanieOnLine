@@ -134,11 +134,13 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 					raiser.say("W takim razie oto potrzebna lista przedmiotów, gdzie umożliwi mi ulepszenie twej złotej ciupagi.\n"
 							+"Do jej udoskonalenia potrzebuję:\n"
 							+"#'1 pazur arktycznego smoka'\n"
+							+"#'1 pazur niebieskiego smoka'\n"
+							+"#'1 pazur czarnego smoka'\n"
 							+"#'1 złota ciupaga z dwoma wąsami'\n"
-							+"#'200 sztabek złota'\n"
-							+"#'2000000 money'\n"
-							+"#'50 polan' oraz\n"
-							+"#'1 pióro azazela'\n"
+							+"#'240 sztabek złota'\n"
+							+"#'2500000 money'\n"
+							+"#'70 polan' oraz\n"
+							+"#'3 pióro azazela'\n"
 							+"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #'przypomnij'. Dziękuję!");
 					player.setQuest(QUEST_SLOT, "start");
 					player.addKarma(10);
