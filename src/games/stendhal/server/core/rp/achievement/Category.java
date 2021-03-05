@@ -69,5 +69,7 @@ public enum Category {
 	/** pets weight **/
 	WEIGHT,
 	/** rebirths **/
-	REBORN;
+	REBORN,
+	/** złote ciupagi **/
+	CIUPAGI;
 }

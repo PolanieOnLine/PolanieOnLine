@@ -88,6 +88,7 @@ public abstract class AbstractAchievementFactory {
 		list.add(new ZakopaneItemQuestAchievementsFactory());
 		list.add(new GdanskJewelleryQuestAchievementFactory());
 		list.add(new RebornAchievementFactory());
+		list.add(new CiupagaAchievementFactory());
 		return list;
 	}
 }

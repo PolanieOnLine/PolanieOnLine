@@ -197,6 +197,7 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.REBORN);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_MITHRILBOURGH_ENEMY_ARMY);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_KILL_BLORDROUGHS);
+		getAndCheckAchievementsInCategory(player, Category.CIUPAGI);
 	}
 
 	/**
