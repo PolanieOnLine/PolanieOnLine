@@ -6,6 +6,11 @@ Changelog
 - Poprawiono kolory elfickiego naszyjnika
 - Poprawiono linki w kliencie prowadzące do regulaminów
 - Klatki FPS są bardziej stabilniejsze przez co drgania kamery są jeszcze mniejsze
+- Zaktualizowano grafiki przedmiotów:
+	- cytryna
+	- pączek
+	- wisienka
+	- magiczne spodnie płytowe
 
 *świat*
 - Dodano nowego NPC: Gościrad, który wraz ze Strażnikiem opowiedzą kto potrzebuje w określonym regionie pomocy
