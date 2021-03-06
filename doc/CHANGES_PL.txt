@@ -7,6 +7,7 @@ Changelog
 - Poprawiono linki w kliencie prowadzące do regulaminów
 - Klatki FPS są bardziej stabilniejsze przez co drgania kamery są jeszcze mniejsze
 - Zaktualizowano grafiki przedmiotów:
+	- paróweczka
 	- cytryna
 	- pączek
 	- wisienka
