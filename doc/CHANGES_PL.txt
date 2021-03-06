@@ -15,6 +15,8 @@ Changelog
 
 *świat*
 - Dodano nowego NPC: Gościrad, który wraz ze Strażnikiem opowiedzą kto potrzebuje w określonym regionie pomocy
+- Granny Alina gotuje grzybową zupę dla podróżników
+- Jaś oraz Ernest nauczyli się nowego przepisu (tarta z marchewką oraz pączek)
 - Dodano nowe osiągniecia: (6)
 	- "Złota Ciupaga"
 	- "Złota Ciupaga z Wąsem"
