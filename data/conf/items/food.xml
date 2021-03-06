@@ -2017,7 +2017,7 @@
 	</item>
 
 	<item name="kiełbasa wiejska">
-		<type class="food" subclass="sausage" tileid="-1"/>
+		<type class="food" subclass="countrysausage" tileid="-1"/>
 		<description>Oto kiełbasa wiejska.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
