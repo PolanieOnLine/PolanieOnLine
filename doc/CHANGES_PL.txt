@@ -33,8 +33,13 @@ Changelog
 	- II część (kompletnie nowy zestaw): złota ciupaga, polska płytowa tarcza, polska tarcza ciężka, polska tarcza drewniana, polska tarcza kolcza, polska tarcza lekka
 	- III cześć: złota ciupaga z wąsem, korale, pas zbójnicki, kierpce +, góralski kapelusz, cuha góralska, portki bukowe, polska tarcza ciężka -
 - Hadrin będzie wymagał, abyśmy wsparli jego znajomych w ich problemach zanim weźmie się za ulepszanie ciupagi oraz zwiększył zapotrzebowanie na przedmioty
+	- karma: 1500 => 2000
 	- pazur niebieskiego smoka *NOWE*
 	- pazur czarnego smoka *NOWE*
+	- pazur złotego smoka *NOWE*
+	- magiczna krew: 10 *NOWE*
+	- smocza krew: 5 *NOWE*
+	- cudowna krew: 1 *NOWE*
 	- sztabki złota: 200 => 240
 	- money: 2.000.000 => 2.500.000
 	- polano: 50 => 70
