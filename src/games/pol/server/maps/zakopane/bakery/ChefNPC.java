@@ -59,34 +59,32 @@ public class ChefNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addJob("Jam jest tutejszym piekarzem. Jedną z usług jakie prowadzę na tym terenie to produkcja kanapek dla naszych drogich klientów, którzy chwalą sobie ich smak! Powiedz tylko #zrób.");
-				addHelp("Zajmuje się tylko robieniem kanapek. Powiedz #zrób jeżeli zdecydujesz się na #kanapkę.");
-				addReply("chleb", "Tym w naszej firmie zajmuje się Erna. Podejdź do niej i porozmawiaj.");
-				addReply("ser",
-						"Z serem mamy spore trudności, bo mieliśmy niedawno plagę szczurów. Zastanawia mnie jak te wstrętne szkodniki zabrały wszystko ze sobą? Dlatego do kanapek dodajemy oscypek z mleka naszych owiec.");
-				addReply("szynka",
-						"Cóż, wyglądasz mi na dzielnego łowcę. Może po prostu idź do lasu i zapoluj. Tylko nie przynoś mi tych małych kawałków mięsiwa i suchych steków. Do kanapek nadaje się tylko najwyższej klasy szynka!");
-				addReply(Arrays.asList("sandwich", "sandwiches", "kanapka", "kanapki", "kanapkę"),
-						"Moje kanapki są smaczne i pożywne. Jeśli chcesz abym zrobił jedną dla Ciebie powiedz #'zrób' .");
+				addJob("Jam jest tutejszym piekarzem. Jedną z usług jakie prowadzę na tym terenie to produkcja placków z marchewką dla naszych drogich klientów, którzy chwalą sobie ich smak! Powiedz tylko #upiecz.");
+				addHelp("Zajmuje się robieniem placków z marchewką. Powiedz #upiecz jeżeli zdecydujesz się na jeden z moich słynnych przepisów.");
+				addReply("mąka", "Dostajemy zapasy mąki z Krakowa.");
+				addReply("marchew",
+						"Niestety, ale w naszej zimowej krainie ciężko o rosnące marchewki. Najbliżej znajdziesz na działkach w Krakowie.");
+				addReply("por",
+						"Bardzo mi przykro, ale najbliżej por będziesz mógł zdobyć w Krakowie.");
 				addGoodbye();
 			}
 		};
 
 		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("chleb", 1);
-		requiredResources.put("ser", 2);
-		requiredResources.put("szynka", 1);
+		requiredResources.put("mąka", 1);
+		requiredResources.put("marchew", 2);
+		requiredResources.put("por", 1);
 
 		final ProducerBehaviour behaviour = new ProducerBehaviour(
-				"jas_make_sandwiches", Arrays.asList("make", "zrób"), "kanapka",
-				requiredResources, 3 * 60);
+				"jas_make_carrot_pie", Arrays.asList("make", "upiecz"), "tarta z marchewką",
+				requiredResources, 4 * 60);
 
 		new ProducerAdder().addProducer(npc, behaviour,
-				"Witaj! Jakże miło, że zawitałeś do mojej piekarni, gdzie robię #kanapki.");
+				"Witaj! Jakże miło, że zawitałeś do mojej piekarni. Przyszedłeś spróbować moich placków z marchewką? Mogę upiec jeden dla Ciebie.");
 
 		npc.setEntityClass("chefnpc");
 		npc.setPosition(15, 3);
-		npc.initHP(1000);
+		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -43,32 +42,13 @@ import java.util.List;
 
 import marauroa.common.game.IRPZone;
 
-/**
- * QUEST: Special Soup.
- * <p>
- * PARTICIPANTS: <ul><li> Old Mother Helena in Fado tavern</ul>
- *
- * STEPS: <ul><li> Old Mother Helena tells you the ingredients of a special soup <li> You
- * collect the ingredients <li> You bring the ingredients to the tavern <li> The soup
- * is served at table<li> Eating the soup heals you fully over time <li> Making it adds karma
- * </ul>
- *
- * REWARD: <ul><li>healing soup <li> Karma bonus of 5 (if ingredients given individually)<li>20 XP</ul>
- *
- * REPETITIONS: <ul><li> as many as desired <li> Only possible to repeat once every ten
- * minutes</ul>
- *
- * @author kymara
- */
-public class Soup extends AbstractQuest {
+public class MushroomSoup extends AbstractQuest {
+	private static final List<String> NEEDED_FOOD = Arrays.asList("borowik",
+			"pieczarka", "opieńka miodowa", "cebula", "marchew", "por");
 
-	private static final List<String> NEEDED_FOOD = Arrays.asList("marchew",
-			"szpinak", "cukinia", "kapusta", "sałata", "cebula", "kalafior",
-			"brokuł", "por");
+	private static final String QUEST_SLOT = "mushroomsoup_maker";
 
-	private static final String QUEST_SLOT = "soup_maker";
-
-	private static final int REQUIRED_MINUTES = 10;
+	private static final int REQUIRED_MINUTES = 7;
 
 	@Override
 	public String getSlotName() {
@@ -110,10 +90,10 @@ public class Soup extends AbstractQuest {
 	 */
 	private void placeSoupFor(final Player player) {
 		final Item soup = SingletonRepository.getEntityManager()
-				.getItem("zupa");
-		final IRPZone zone = SingletonRepository.getRPWorld().getZone("int_fado_tavern");
+				.getItem("zupa grzybowa");
+		final IRPZone zone = SingletonRepository.getRPWorld().getZone("int_krakow_tavern");
 		// place on table (for effect only :) )
-		soup.setPosition(17, 23);
+		soup.setPosition(31, 6);
 		// only allow player who made soup to eat the soup
 		soup.setBoundTo(player.getName());
 		// here the soup is altered to have the same heal value as the player's
@@ -123,7 +103,7 @@ public class Soup extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Old Mother Helena");
+		final SpeakerNPC npc = npcs.get("Granny Alina");
 
 		// player says hi before starting the quest
 		npc.add(
@@ -144,7 +124,7 @@ public class Soup extends AbstractQuest {
 					new QuestCompletedCondition(QUEST_SLOT),
 					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
 			ConversationStates.QUEST_OFFERED,
-			"Witaj ponownie. Przyszedłeś po więcej smacznej zupy?",
+			"Witaj ponownie. Przyszedłeś po więcej smacznej zupy grzybowej?",
 			null);
 
 		// player returns after finishing the quest (it is repeatable) before
@@ -156,7 +136,7 @@ public class Soup extends AbstractQuest {
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES , "Mam nadzieję, że nie przyszedłeś po więcej zupy, ponieważ nie skończyłam zmywać naczyń. Proszę wróć za ")
+				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES , "Mam nadzieję, że nie przyszedłeś po więcej zupy grzybowej, ponieważ nie skończyłam zmywać naczyń. Proszę wróć za ")
 			);
 
 		// player responds to word 'revive'
@@ -175,7 +155,7 @@ public class Soup extends AbstractQuest {
 						npc.say("Mam wszystkie składniki do mojego przepisu.");
 						npc.setCurrentState(ConversationStates.ATTENDING);
 					} else {
-						npc.say("Moja specjalna zupa posiada magiczne właściwości. "
+						npc.say("Moja specjalna zupa grzybowa posiada magiczne właściwości. "
 								+ "Potrzebuję Ciebie, abyś przyniósł #składniki.");
 					}
 				}
@@ -213,25 +193,27 @@ public class Soup extends AbstractQuest {
 		// players asks about the vegetables individually
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
-			Arrays.asList("szpinak", "cukinia", "cebula", "kalafior", "brokuł", "por"),
+			Arrays.asList("cebula", "marchew", "por"),
 			null,
 			ConversationStates.QUEST_OFFERED,
-			"Znajdziesz to na działkach w Fado. Przyniesiesz mi składniki?",
+			"Znajdziesz na obrzeżach grodu Kraka na pewnej działce. Przyniesiesz mi te składniki?",
 			null);
 
 		// players asks about the vegetables individually
-		npc.add(ConversationStates.QUEST_OFFERED, "kapusta", null,
+		npc.add(ConversationStates.QUEST_OFFERED,
+			"opieńka miodowa",
+			null,
 			ConversationStates.QUEST_OFFERED,
-			"Rośnie w domu w doniczkach. Ktoś taki jak czarownica lub elf mogą spowodować, że wyrośnie. "
-					+ "Przyniosłeś mi składniki?", null);
+			"Opieńki miodowe znalazłbyś u skrzatów leśnych, a dokładnie wojownicy dzielnie chronią ten składnik. Przyniesiesz mi te składniki?",
+			null);
 
 		// players asks about the vegetables individually
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
-			Arrays.asList("sałata", "marchew"),
+			Arrays.asList("pieczarka", "borowik"),
 			null,
 			ConversationStates.QUEST_OFFERED,
-			"Zazwyczaj zdobywam importowane z Semos. Czy chcesz zupę?",
+			"Zazwyczaj rośnie w lasach, ostatnio widzałam dość sporo ich jak szłam w stronę Kuźnic. Przyniesiesz mi te składniki?",
 			null);
 	}
 
@@ -240,7 +222,7 @@ public class Soup extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Old Mother Helena");
+		final SpeakerNPC npc = npcs.get("Granny Alina");
 
 		// player returns while quest is still active
 		npc.add(
@@ -250,7 +232,7 @@ public class Soup extends AbstractQuest {
 					new QuestStartedCondition(QUEST_SLOT),
 					new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "done"))),
 			ConversationStates.QUESTION_1,
-			"Witaj ponownie! Mam nadzieje, że zebrałeś jakieś #składniki na zupę.",
+			"Witaj ponownie! Mam nadzieje, że zebrałeś jakieś #składniki na grzybową zupę.",
 			null);
 
 		// player asks what exactly is missing
@@ -306,7 +288,7 @@ public class Soup extends AbstractQuest {
 									 */
 									placeSoupFor(player);
 									player.getStatusList().removeAll(PoisonStatus.class);
-									npc.say("Zupę masz na stole. Wyleczy Cię. "
+									npc.say("Zupę grzybową masz na stole. Wyleczy Cię. "
 											+ "Mój magiczny sposób robienia zupy da Ci też trochę karmy.");
 									player.setQuest(QUEST_SLOT, "done;"
 											+ System.currentTimeMillis());
@@ -319,7 +301,7 @@ public class Soup extends AbstractQuest {
 									+ " przy sobie.");
 							}
 						} else {
-							npc.say("Już mi przyniosłeś to warzywo.");
+							npc.say("Już mi przyniosłeś ten składnik.");
 						}
 					}
 			});
@@ -342,7 +324,7 @@ public class Soup extends AbstractQuest {
 		npc.add(ConversationStates.QUESTION_1, "",
 			new NotCondition(new TriggerInListCondition(NEEDED_FOOD)),
 			ConversationStates.QUESTION_1,
-			"Nie dodam tego do twojej zupy.", null);
+			"Nie dodam tego do twojej zupy grzybowej.", null);
 
 		// allow to say goodbye while Helena is listening for food names
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.GOODBYE_MESSAGES, null,
@@ -389,7 +371,7 @@ public class Soup extends AbstractQuest {
 			player.addXP(20);
 			placeSoupFor(player);
 			player.getStatusList().removeAll(PoisonStatus.class);
-			npc.say("Zupa, która jest na stole jest dla Ciebie. Uleczy Cię. Daj mi znać jeżeli mogłabym jeszcze w czymś pomóc.");
+			npc.say("Zupa grzybowa, która jest na stole jest dla Ciebie. Uleczy Cię. Daj mi znać jeżeli mogłabym jeszcze w czymś pomóc.");
 			player.setQuest(QUEST_SLOT, "done;"
 					+ System.currentTimeMillis());
 			player.notifyWorldAboutChanges();
@@ -400,8 +382,8 @@ public class Soup extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zupa",
-				"Mother Helena robi pożywną i smaczną zupę..",
+				"Zupa grzybowa",
+				"Granny Alina robi pożywną i smaczną zupę grzybową...",
 				false);
 		step_1();
 		step_2();
@@ -415,18 +397,18 @@ public class Soup extends AbstractQuest {
 				return res;
 			}
 			if (!isCompleted(player)) {
-				res.add("Zbieram składniki do zupy jarzynowej. Wciąż potrzebuje " + Grammar.enumerateCollection(missingFood(player, false)) + ".");
+				res.add("Zbieram składniki do zupy grzybowej. Wciąż potrzebuje " + Grammar.enumerateCollection(missingFood(player, false)) + ".");
 			} else if(isRepeatable(player)){
-				res.add("Old Mother Helena może zrobić mi następną zupę!");
+				res.add("Granny Alina może zrobić mi następną zupę!");
 			} else {
-				res.add("Dostałem kilka smacznych zup. Old Mother Helena jest teraz zajęta zmywaniem naczyń.");
+				res.add("Dostałem kilka smacznych zup grzybowych. Granny Alina jest teraz zajęta zmywaniem naczyń.");
 			}
 			return res;
 	}
 
 	@Override
 	public String getName() {
-		return "Soup";
+		return "MushroomSoup";
 	}
 
 	@Override
@@ -437,11 +419,11 @@ public class Soup extends AbstractQuest {
 
 	@Override
 	public String getRegion() {
-		return Region.FADO_CITY;
+		return Region.KRAKOW_CITY;
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Old Mother Helena";
+		return "Granny Alina";
 	}
 }

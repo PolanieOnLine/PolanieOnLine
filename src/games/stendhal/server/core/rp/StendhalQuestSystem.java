@@ -234,6 +234,7 @@ public class StendhalQuestSystem {
 		loadQuest(new KrakowBank());
 		loadQuest(new KrolewskiPlaszcz());
 		loadQuest(new MakaFarmera());
+		loadQuest(new MushroomSoup());
 		loadQuest(new NaprawaLodzi());
 		loadQuest(new PlaszczKapturka());
 		loadQuest(new PierscienBarona());

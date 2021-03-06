@@ -1182,6 +1182,29 @@
 		</equipable>
 	</item>
 
+	<item name="tarta z marchewką">
+		<type class="food" subclass="carrotpie" tileid="-1"/>
+		<description>Oto tarta z marchewką. Pomaga szybko zregenerować siły.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="180"/>
+			<frequency value="12"/>
+			<quantity value="1"/>
+			<regen value="9"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="13"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="kanapka">
 		<type class="food" subclass="sandwich" tileid="-1"/>
 		<description>Oto kanapka z szynką i serem.</description>

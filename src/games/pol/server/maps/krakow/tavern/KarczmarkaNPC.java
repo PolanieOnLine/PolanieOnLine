@@ -19,6 +19,7 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
@@ -53,11 +54,8 @@ public class KarczmarkaNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj w starej karczmie #'U Babci Aliny'! Co potrzebujesz?");
-				addJob("Jestem karczmarką w swej tawernie.");
-				addHelp("Dobrze, że się pytasz. Aktualnie eksperymentuje, aby zrobić magiczną grzybową zupę. Powiedz mi tylko #'zadanie', a Ci powiem co mógłbyś dla mnie zrobić.");
-				addOffer("Jeżeli wykonasz dla mnie #'zadanie' to będę mogła dla Ciebie robić me specjalne danie!");
-				// borowik, pieczarka, opieńka, pieprznik jadalny, cebula, marchew, por
-				// powtórka co 7 min.
+				addJob("Jestem karczmarką w swej tawernie. Mogę wykonać dla ciebie specjalną zupę, która pomoże zregenerować siły na dalszą podróż.");
+				addHelp("Rozgoście się w mojej tawernie i zamawiajcie jedzenie lub specjalne napoje z różnych krain u barmanki.");
 				addGoodbye();
 			}
 		};
@@ -65,6 +63,7 @@ public class KarczmarkaNPC implements ZoneConfigurator {
 		npc.setDescription("Oto babcia Alina, jest znana ze swojej wspaniałej kuchni domowej.");
 		npc.setEntityClass("granmanpc");
 		npc.setPosition(35, 20);
+		npc.setCollisionAction(CollisionAction.STOP);
 		zone.add(npc);
 	}
 }

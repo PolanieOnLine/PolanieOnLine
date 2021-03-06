@@ -1473,6 +1473,12 @@ Południe: Zakopane
 			<attribute name="class">book_red</attribute>
 		</entity>
 
+		<entity x="31" y="6">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół.</attribute>
+		</entity>
+
 		<portal x="23" y="23" ref="tavern1_exit">
 			<destination zone="0_krakow_rynek" ref="tavern1_entrance"/>
 		</portal>

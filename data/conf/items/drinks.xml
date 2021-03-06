@@ -536,7 +536,7 @@
 
 	<item name="zupa">
 		<type class="drink" subclass="soup" tileid="-1"/>
-		<description>Oto zupę. Pyszna grochóweczka, przywróci sporą ilośc życia.</description>
+		<description>Oto zupa. Pyszna grochóweczka, przywróci sporą ilośc życia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="2500"/>
@@ -564,6 +564,30 @@
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="3500"/>
+			<frequency value="8"/>
+			<quantity value="1"/>
+			<regen value="25"/>
+			<persistent value="1"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1250"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="zupa grzybowa">
+		<type class="drink" subclass="mushroom_soup" tileid="-1"/>
+		<description>Oto bulionówka przepysznej zupy grzybowej.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<attributes>
+			<amount value="1500"/>
 			<frequency value="8"/>
 			<quantity value="1"/>
 			<regen value="25"/>

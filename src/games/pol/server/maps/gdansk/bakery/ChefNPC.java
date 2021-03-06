@@ -75,16 +75,16 @@ public class ChefNPC implements ZoneConfigurator  {
 
 			@Override
 			public void createDialog() {
-				addJob("Jam jest tutejszym piekarzem. Jedną z usług jakie prowadzę na tym terenie jest produkcja placków o niezwykłej nazwie #'pizza'. Ostatnio widuję bardzo dużo głodnych klientów, którzy chwalą sobie ich smak!");
+				addJob("Jam jest tutejszym piekarzem. Jedną z usług jakie prowadzę na tym terenie jest produkcja placków o niezwykłej nazwie #'pizza' oraz #'pączki'. Ostatnio widuję bardzo dużo głodnych klientów, którzy chwalą sobie ich smak!");
 				addHelp("Jeśli chcesz zarobić trochę dukatów wyświadcz mi #przysługę i dostarcz to ciasto co zwą #'pizza'.");
-				addReply("chleb", "Tym w naszej firmie zajmuje się Lena. Podejdź do niej i porozmawiaj.");
-				addReply("ser",
-				"Z serem mamy spore trudności, bo mieliśmy niedawno plagę szczurów. Zastanawia mnie jak te wstrętne szkodniki zabrały wszystko ze sobą? Dlatego do kanapek dodajemy oscypek z mleka naszych owiec.");
-				addReply("szynka",
-				"Cóż, wyglądasz mi na dzielnego łowcę. Może po prostu idź do lasu i zapoluj. Tylko nie przynoś mi tych małych kawałków mięsiwa i suchych steków. Do kanapek nadaje się tylko najwyższej klasy szynka!");
+				addReply("mąka", "Nasze dostawy pochodzą z królewskiego grodu.");
+				addReply(Arrays.asList("mleko", "osełka masła"),
+				"Philomena sprzedaje krowie mleko oraz osełke masła.");
+				addReply(Arrays.asList("jajo", "cukier"),
+				"Masz ogromne szczęście! Nasza znajoma Hermina zajmuje się sprowadzaniem jajekm, cukru oraz innych składników z różnych krain.");
 				addReply(Arrays.asList("pizza", "pizzę"), "Potrzebuję kogoś, kto dostarczy pizzę. Może przyjmiesz to #zadanie.");
-				addReply(Arrays.asList("sandwich", "sandwiches","kanapka","kanapki"),
-				"Moje kanapki są smaczne i pożywne. Jeśli chcesz abym zrobił jedną dla Ciebie powiedz #'zrób <ilość> kanapka' .");
+				addReply(Arrays.asList("donut", "donuts", "pączek", "pączki"),
+				"Moje pączki jak to wielu klientów mówi są genialne. Jeśli chcesz, abym zrobił jednego dla Ciebie powiedz #'upiecz <ilość> pączek'.");
 				addOffer("Moja #pizza potrzebuje sera, a my nie mamy żadnych zapasów. Kupię od Ciebie ser jeżeli chcesz #sprzedać.");
 				final Map<String, Integer> offers = new TreeMap<String, Integer>();
 				offers.put("ser", 5);
@@ -94,19 +94,20 @@ public class ChefNPC implements ZoneConfigurator  {
 
 				// Leander makes sandwiches if you bring him bread, cheese, and ham.
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("chleb", 1);
-				requiredResources.put("ser", 2);
-				requiredResources.put("szynka", 1);
+				requiredResources.put("mąka", 1);
+				requiredResources.put("mleko", 1);
+				requiredResources.put("jajo", 1);
+				requiredResources.put("osełka masła", 1);
+				requiredResources.put("cukier", 1);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"ernest_make_sandwiches", Arrays.asList("make", "zrób"), "kanapka",
+						"ernest_make_donuts", Arrays.asList("make", "upiecz"), "pączek",
 						requiredResources, 3 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj! Jakże miło, że zawitałeś do mojej piekarni, gdzie robię ciasto o zamorskiej nazwie #pizza oraz #'kanapki'.");
-
-
+				"Witaj! Jakże miło, że zawitałeś do mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'.");
 			}};
+
 			npc.setPosition(15, 3);
 			npc.setEntityClass("chefnpc");
 			npc.setDescription("Oto Ernest. Jego praca daje mu piękny zapach.");

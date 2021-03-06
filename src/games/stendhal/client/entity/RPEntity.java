@@ -1493,7 +1493,7 @@ public abstract class RPEntity extends AudibleEntity {
 
 						ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
 								getTitle()
-								+ " " + Grammar.genderVerb(getGender(), "dostał")
+								+ " " + Grammar.genderVerb(getGender(), "dostał") + " "
 								+ Grammar.quantityplnoun(amount,
 								"punkt") + " doświadczenia.",
 								NotificationType.SIGNIFICANT_POSITIVE));

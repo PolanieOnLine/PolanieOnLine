@@ -74,7 +74,7 @@ public class MaidNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				//addGreeting();
-				addJob("Jestem kelnerką w tej oberży. Sprzedajemy importowane piwa i dobre jedzenie.");
+				addJob("Jestem kelnerką w tej oberży. Sprzedajemy importowane napoje i dobre jedzenie.");
 				addHelp("Dlaczego nie wziąć przyjaciół i zrobić sobie przerwy. Możesz skorzystać z długiego stołu, na którym można postawić jedzenie.");
 				addQuest("Och nie mam czasu na coś takiego.");
 

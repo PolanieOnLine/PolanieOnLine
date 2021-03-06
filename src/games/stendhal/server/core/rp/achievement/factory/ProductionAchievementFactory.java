@@ -63,6 +63,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 						new PlayerProducedNumberOfItemsCondition(1, drinks),
 						new QuestCompletedCondition("soup_maker"),
 						new QuestCompletedCondition("fishsoup_maker"),
+						new QuestCompletedCondition("mushroomsoup_maker"),
 						new QuestCompletedCondition("koboldish_torcibud"))));
 
 
