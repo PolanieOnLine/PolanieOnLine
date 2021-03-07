@@ -12,6 +12,11 @@
 // Based on MeetMonogomes
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -27,12 +32,6 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * QUEST: Speak with Monogenes PARTICIPANTS: - Fryderyk
@@ -208,13 +207,9 @@ public class MeetFryderyk extends AbstractQuest {
 			}
 			return res;
 	}
+
 	@Override
 	public String getNPCName() {
 		return "Fryderyk";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
 	}
 }
