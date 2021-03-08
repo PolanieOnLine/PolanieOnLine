@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.19.2
+*klient*
+- Dodano nowe grafiki przedmiotów
+
+*świat*
+- Dodano nowe przedmioty:
+	- "płaszcz zabójcy"
+	- "tarcza wampirza"
+
+*naprawiono błędy*
+- Usunięto zadanie na pierwszą rozmowę z Fryderykiem z regionu Zakopane, aby umożliwić zdobycie osiągnięcia
+
+
 1.19
 *klient*
 - Dodano stare dźwięki atakowania
