@@ -715,4 +715,24 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+	<item name="tarcza wampirza">
+		<type class="shield" subclass="vampire_shield" tileid="-1"/>
+		<description>Oto tarcza wampirza. Strasznie ślizga od krwi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="29"/>
+		</attributes>
+		<weight value="29.0"/>
+		<value value="29222"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>

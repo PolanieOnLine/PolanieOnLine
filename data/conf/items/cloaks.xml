@@ -356,27 +356,27 @@
 	</item>
 
 	<item name="magiczny płaszcz">
-    <type class="cloak" subclass="magic_cloak" tileid="-1"/>
-    <description>Oto magiczny płaszcz. Został wykonany przez druidów Sikhw, zanim zostali zniszczeni.</description>
-    <implementation class-name="games.stendhal.server.entity.item.Item"/>
-    <attributes>
-      <def value="23"/>
-      <min_level value="170"/>
-    </attributes>
-    <weight value="8.0"/>
-    <value value="109375"/>
-    <susceptibility type="light" value="0.9"/>
-    <susceptibility type="dark" value="0.9"/>
-    <susceptibility type="fire" value="0.9"/>
-    <susceptibility type="ice" value="0.9"/>
-    <equipable>
-      <slot name="ground"/>
-      <slot name="content"/>
-      <slot name="bag"/>
-      <slot name="trade"/>
-      <slot name="cloak"/>
-    </equipable>
-  </item>
+		<type class="cloak" subclass="magic_cloak" tileid="-1"/>
+		<description>Oto magiczny płaszcz. Został wykonany przez druidów Sikhw, zanim zostali zniszczeni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="23"/>
+			<min_level value="170"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="109375"/>
+		<susceptibility type="light" value="0.9"/>
+		<susceptibility type="dark" value="0.9"/>
+		<susceptibility type="fire" value="0.9"/>
+		<susceptibility type="ice" value="0.9"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="cloak"/>
+		</equipable>
+	</item>
 
 	<item name="płaszcz mainiocyjski">
 		<type class="cloak" subclass="mainio_cloak" tileid="-1"/>
@@ -645,6 +645,26 @@
 		</attributes>
 		<weight value="5.0"/>
 		<value value="3584"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="płaszcz zabójcy">
+		<type class="cloak" subclass="killer_cloak" tileid="-1"/>
+		<description>Oto płaszcz zabójcy. Wygląda bardzo elegancko.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="23"/>
+			<min_use value="100"/>
+			<min_level value="160"/>
+		</attributes>
+		<weight value="8.0"/>
+		<value value="23322"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
