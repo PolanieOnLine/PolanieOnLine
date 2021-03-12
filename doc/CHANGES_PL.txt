@@ -4,13 +4,10 @@ Changelog
 *klient*
 - Dodano nowe grafiki przedmiotów
 - Poprawiono grafiki przedmiotów:
-	- pas skórzany
-	- wzmocniony pas skórzany
-	- pas kamienny
-	- czarny pas
 	- ciupaga
 	- złota ciupaga
 	- złota ciupaga z jednym, z dwoma, z trzema wąsami
+	- odświeżono 8 pasów
 
 *świat*
 - Dodano nowe przedmioty:
