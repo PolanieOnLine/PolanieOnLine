@@ -19,13 +19,13 @@
 		<respawn value="1160"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,40]" probability="100.0"/>
+			<item value="money" quantity="[10,30]" probability="100.0"/>
 			<item value="polska tarcza kolcza" quantity="[1,1]" probability="0.4"/>
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
 			<item value="góralski kapelusz" quantity="[1,1]" probability="0.002"/>
 			<item value="sztylecik" quantity="[1,1]" probability="5.0"/>
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.0"/>
-			<item value="wzmocniony pas skórzany" quantity="[1,1]" probability="2.5"/>
+			<item value="wzmocniony pas skórzany" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -55,10 +55,10 @@
 		<respawn value="1160"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
+			<item value="money" quantity="[1,2]" probability="50.0"/>
 			<item value="polska tarcza lekka" quantity="[1,1]" probability="3.0"/>
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
-			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.5"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.0"/>
 			<item value="sztylet mroku" quantity="[1,1]" probability="0.0001"/>
 		</drops>
 		<equips/>
@@ -89,14 +89,14 @@
 		<respawn value="1360"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,270]" probability="100.0"/>
+			<item value="money" quantity="[10,270]" probability="90.0"/>
 			<item value="polska płytowa tarcza" quantity="[1,1]" probability="3.0"/>
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
 			<item value="góralski kapelusz" quantity="[1,1]" probability="0.1"/>
 			<item value="krótki miecz" quantity="[1,1]" probability="4.0"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.02"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.25"/>
-			<item value="pas zbójnicki" quantity="[1,1]" probability="0.3"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -126,7 +126,7 @@
 		<respawn value="1460"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,11]" probability="100.0"/>
+			<item value="money" quantity="[8,11]" probability="100.0"/>
 			<item value="polska tarcza ciężka" quantity="[1,1]" probability="3.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="0.0004"/>
 			<item value="spodnie nabijane ćwiekami" quantity="[1,1]" probability="1.0"/>
@@ -165,12 +165,12 @@
 		<respawn value="1060"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,40]" probability="100.0"/>
-			<item value="polska tarcza kolcza" quantity="[1,1]" probability="0.4"/>
+			<item value="money" quantity="[1,20]" probability="100.0"/>
+			<item value="polska tarcza kolcza" quantity="[1,1]" probability="0.5"/>
 			<item value="kierpce" quantity="[1,1]" probability="1.0"/>
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="1.0"/>
 			<item value="napój z winogron" quantity="[1,15]" probability="9.0"/>
-			<item value="kiść winogron" quantity="[1,1]" probability="50.0"/>
+			<item value="kiść winogron" quantity="[1,8]" probability="50.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -201,7 +201,7 @@
 		<respawn value="1520"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[11,31]" probability="99.0"/>
+			<item value="money" quantity="[11,31]" probability="80.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="portki bukowe" quantity="[1,1]" probability="10.0"/>
 			<item value="góralski kapelusz" quantity="[1,1]" probability="2.0"/>
@@ -241,13 +241,13 @@
 		<respawn value="1520"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="money" quantity="[7,11]" probability="90.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="portki bukowe" quantity="[1,1]" probability="0.5"/>
 			<item value="góralski kapelusz" quantity="[1,1]" probability="1.0"/>
 			<item value="cuha góralska" quantity="[1,1]" probability="0.05"/>
 			<item value="kierpce" quantity="[1,1]" probability="0.05"/>
-			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.75"/>
+			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -277,7 +277,7 @@
 		<respawn value="1220"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,21]" probability="99.0"/>
+			<item value="money" quantity="[9,21]" probability="100.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="chusta góralska" quantity="[1,1]" probability="10.0"/>
 			<item value="góralski gorset" quantity="[1,1]" probability="5.0"/>
@@ -319,9 +319,9 @@
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,29]" probability="100.0"/>
+			<item value="money" quantity="[9,29]" probability="80.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.25"/>
-			<item value="polska tarcza lekka" quantity="[1,1]" probability="3.2"/>
+			<item value="polska tarcza lekka" quantity="[1,1]" probability="3.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -347,7 +347,7 @@
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,10]" probability="100.0"/>
+			<item value="money" quantity="[4,10]" probability="80.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.05"/>
 			<item value="polska tarcza kolcza" quantity="[1,1]" probability="2.0"/>
 		</drops>
@@ -375,9 +375,9 @@
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="money" quantity="[4,70]" probability="90.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.5"/>
-			<item value="polska tarcza ciężka" quantity="[1,1]" probability="3.5"/>
+			<item value="polska tarcza ciężka" quantity="[1,1]" probability="3.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -403,10 +403,10 @@
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="money" quantity="[9,80]" probability="90.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.5"/>
 			<item value="pas zbójnicki" quantity="[1,1]" probability="1.0"/>
-			<item value="polska płytowa tarcza" quantity="[1,1]" probability="4.5"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="5.0"/>
 			<item value="polska tarcza ciężka" quantity="[1,1]" probability="4.0"/>
 		</drops>
 		<equips/>
@@ -433,11 +433,11 @@
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,99]" probability="100.0"/>
-			<item value="futro" quantity="[1,1]" probability="10.0"/>
+			<item value="money" quantity="[29,129]" probability="70.0"/>
+			<item value="futrzany płaszcz" quantity="[1,1]" probability="5.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="0.005"/>
 			<item value="pas zbójnicki" quantity="[1,1]" probability="1.0"/>
-			<item value="cuha góralska" quantity="[1,1]" probability="0.04"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -464,11 +464,11 @@
 		<corpse name="human"/>
 		<drops>
 			<item value="pióro herszta hordy zbójeckiej" quantity="[1,1]" probability="100.0"/>
-			<item value="money" quantity="[9,99]" probability="100.0"/>
+			<item value="money" quantity="[10,200]" probability="70.0"/>
 			<item value="ciupaga" quantity="[1,1]" probability="4.0"/>
-			<item value="pas zbójnicki" quantity="[1,1]" probability="1.15"/>
-			<item value="cuha góralska" quantity="[1,1]" probability="0.4"/>
-			<item value="polska płytowa tarcza" quantity="[1,1]" probability="2.2"/>
+			<item value="pas zbójnicki" quantity="[1,1]" probability="1.0"/>
+			<item value="cuha góralska" quantity="[1,1]" probability="0.5"/>
+			<item value="polska płytowa tarcza" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips/>
 		<ai>

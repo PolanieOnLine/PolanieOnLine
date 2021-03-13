@@ -48,9 +48,9 @@
 		<respawn value="666"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,3]" probability="100.0"/>
+			<item value="money" quantity="[1,11]" probability="100.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
-			<item value="kieł wilczy" quantity="[1,1]" probability="100.0"/>
+			<item value="kieł wilczy" quantity="[1,1]" probability="80.0"/>
 			<item value="pazury wilcze" quantity="[1,5]" probability="100.0"/>
 		</drops>
 		<equips/>
@@ -83,7 +83,6 @@
 		<respawn value="99999"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,1]" probability="100.0"/>
 			<item value="stek" quantity="[1,19]" probability="80.0"/>
 		</drops>
 		<equips/>
@@ -114,7 +113,7 @@
 		<respawn value="77777"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,55]" probability="100.0"/>
+			<item value="money" quantity="[1,22]" probability="100.0"/>
 			<item value="stek" quantity="[1,14]" probability="80.0"/>
 			<item value="piórko" quantity="[1,4]" probability="60.0"/>
 		</drops>
@@ -146,7 +145,7 @@
 		<respawn value="1630"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,40]" probability="100.0"/>
+			<item value="money" quantity="[1,30]" probability="100.0"/>
 			<item value="udko" quantity="[1,4]" probability="20.0"/>
 			<item value="piórko" quantity="[1,9]" probability="40.0"/>
 			<item value="płaszcz cieni" quantity="[1,1]" probability="0.25"/>
@@ -174,7 +173,7 @@
 		<respawn value="42187"/>
 		<corpse name="other"/>
 		<drops>
-			<item value="money" quantity="[9,209]" probability="100.0"/>
+			<item value="money" quantity="[1,90]" probability="100.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -200,7 +199,7 @@
 		<respawn value="75216"/>
 		<corpse name="other"/>
 		<drops>
-			<item value="money" quantity="[99,239]" probability="100.0"/>
+			<item value="money" quantity="[1,180]" probability="100.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -295,12 +294,12 @@
 		<respawn value="21300"/>
 		<corpse name="giant"/>
 		<drops>
-			<item value="wielki eliksir" quantity="[1,3]" probability="100.0"/>
-			<item value="mocne antidotum" quantity="[1,6]" probability="80.0"/>
-			<item value="money" quantity="[100,900]" probability="100.0"/>
-			<item value="buty z zielonego potwora" quantity="[1,1]" probability="12.5"/>
-			<item value="kamienna zbroja" quantity="[1,1]" probability="5.5"/>
-			<item value="ząb potwora" quantity="[1,1]" probability="5.5"/>
+			<item value="wielki eliksir" quantity="[1,4]" probability="100.0"/>
+			<item value="mocne antidotum" quantity="[1,3]" probability="80.0"/>
+			<item value="money" quantity="[140,600]" probability="100.0"/>
+			<item value="buty z zielonego potwora" quantity="[1,1]" probability="10.0"/>
+			<item value="kamienna zbroja" quantity="[1,1]" probability="5.0"/>
+			<item value="ząb potwora" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -328,7 +327,7 @@
 		<corpse name="giant_humanoid"/>
 		<drops>
 			<item value="wielki eliksir" quantity="[1,3]" probability="50.0"/>
-			<item value="money" quantity="[9,999]" probability="100.0"/>
+			<item value="money" quantity="[9,400]" probability="100.0"/>
 			<item value="rękawice cieni" quantity="[1,1]" probability="1.0"/>
 			<item value="miecz cieni" quantity="[1,1]" probability="5.0"/>
 		</drops>

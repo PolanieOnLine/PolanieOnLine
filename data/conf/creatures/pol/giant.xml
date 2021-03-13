@@ -21,6 +21,7 @@
 			<item value="money" quantity="[10,150]" probability="100.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,1]" probability="3.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="100.0"/>
 			<item value="tarta z rybnym nadzieniem" quantity="[1,2]" probability="80.0"/>
 			<item value="srebrny sztylecik" quantity="[1,1]" probability="0.5"/>
 		</drops>
@@ -52,6 +53,7 @@
 		<corpse name="giant_human"/>
 		<drops>
 			<item value="money" quantity="[80,100]" probability="100.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="100.0"/>
 			<item value="zbroja karmazynowa" quantity="[1,1]" probability="6.0"/>
 			<item value="tarcza karmazynowa" quantity="[1,1]" probability="4.0"/>
 			<item value="bukłak z wodą" quantity="[2,5]" probability="80.0"/>
@@ -118,12 +120,12 @@
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
+			<item value="money" quantity="[20,100]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
-			<item value="money" quantity="[30,200]" probability="100.0"/>
-			<item value="rękawice karmazynowe" quantity="[1,1]" probability="2.5"/>
+			<item value="rękawice karmazynowe" quantity="[1,1]" probability="2.0"/>
 			<item value="ogniste spodnie" quantity="[1,1]" probability="0.5"/>
-			<item value="różdżka Strzyboga" quantity="[1,1]" probability="2.5"/>
-			<item value="magia deszczu" quantity="[1,3]" probability="12.5"/>
+			<item value="różdżka Strzyboga" quantity="[1,1]" probability="3.0"/>
+			<item value="magia deszczu" quantity="[1,7]" probability="10.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -150,11 +152,11 @@
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
+			<item value="money" quantity="[30,140]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
-			<item value="money" quantity="[30,200]" probability="100.0"/>
 			<item value="rękawice cieni" quantity="[1,1]" probability="0.5"/>
-			<item value="różdżka Strzyboga" quantity="[1,1]" probability="5.5"/>
-			<item value="magia deszczu" quantity="[1,7]" probability="15.5"/>
+			<item value="różdżka Strzyboga" quantity="[1,1]" probability="5.0"/>
+			<item value="magia deszczu" quantity="[2,14]" probability="15.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -181,12 +183,12 @@
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
+			<item value="money" quantity="[40,160]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
-			<item value="money" quantity="[30,200]" probability="100.0"/>
 			<item value="rękawice lazurowe" quantity="[1,1]" probability="2.5"/>
-			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.225"/>
-			<item value="różdżka Wołosa" quantity="[1,1]" probability="2.5"/>
-			<item value="magia deszczu" quantity="[3,11]" probability="17.5"/>
+			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.25"/>
+			<item value="różdżka Wołosa" quantity="[1,1]" probability="2.0"/>
+			<item value="magia deszczu" quantity="[4,19]" probability="17.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -213,13 +215,13 @@
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
+			<item value="money" quantity="[10,180]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
-			<item value="money" quantity="[30,200]" probability="100.0"/>
 			<item value="lodowe rękawice" quantity="[1,1]" probability="0.5"/>
-			<item value="lodowe spodnie" quantity="[1,1]" probability="0.025"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="0.05"/>
 			<item value="lodowe buty" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="7.5"/>
-			<item value="magia deszczu" quantity="[6,17]" probability="22.5"/>
+			<item value="magia deszczu" quantity="[8,24]" probability="20.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -246,12 +248,12 @@
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
+			<item value="money" quantity="[50,200]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
-			<item value="money" quantity="[30,200]" probability="100.0"/>
-			<item value="rękawice szmaragdowe" quantity="[1,1]" probability="1.5"/>
-			<item value="tarcza elficka" quantity="[1,1]" probability="12.5"/>
+			<item value="rękawice szmaragdowe" quantity="[1,1]" probability="2.0"/>
+			<item value="tarcza elficka" quantity="[1,1]" probability="10.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="12.5"/>
-			<item value="magia deszczu" quantity="[9,37]" probability="25.5"/>
+			<item value="magia deszczu" quantity="[11,47]" probability="25.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -280,15 +282,15 @@
 		<respawn value="13579"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[30,500]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,5]" probability="50.0"/>
-			<item value="money" quantity="[99,999]" probability="100.0"/>
-			<item value="czarne spodnie" quantity="[1,1]" probability="0.005"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.1"/>
 			<item value="czarne rękawice" quantity="[1,1]" probability="0.01"/>
-			<item value="czarna zbroja" quantity="[1,1]" probability="0.0005"/>
-			<item value="czarne buty" quantity="[1,1]" probability="0.0025"/>
-			<item value="czarny płaszcz" quantity="[1,1]" probability="0.010"/>
-			<item value="czarna tarcza" quantity="[1,1]" probability="0.005"/>
-			<item value="czarny miecz" quantity="[1,1]" probability="0.005"/>
+			<item value="czarna zbroja" quantity="[1,1]" probability="0.05"/>
+			<item value="czarne buty" quantity="[1,1]" probability="1.0"/>
+			<item value="czarny płaszcz" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="0.05"/>
+			<item value="czarny miecz" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -318,9 +320,9 @@
 		<respawn value="185432"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[110,9000]" probability="70.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,4]" probability="40.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="95.0"/>
-			<item value="money" quantity="[11000,30000]" probability="100.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
@@ -352,9 +354,9 @@
 		<respawn value="165432"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[200,6000]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
-			<item value="money" quantity="[2000,5000]" probability="100.0"/>
 			<item value="zbroja światła" quantity="[1,1]" probability="0.02"/>
 			<item value="pióro anioła" quantity="[1,1]" probability="0.02"/>
 		</drops>
@@ -387,8 +389,8 @@
 		<respawn value="77000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[100,2000]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
-			<item value="money" quantity="[3000,9000]" probability="100.0"/>
 			<item value="pierścień szmaragdowy" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
@@ -421,10 +423,10 @@
 		<respawn value="77000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[200,4000]" probability="60.0"/>
 			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
-			<item value="money" quantity="[3000,10000]" probability="100.0"/>
-			<item value="czarna kosa" quantity="[1,1]" probability="0.005"/>
-			<item value="czarne rękawice" quantity="[1,1]" probability="0.005"/>
+			<item value="czarna kosa" quantity="[1,1]" probability="0.5"/>
+			<item value="czarne rękawice" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -455,6 +457,7 @@
 		<respawn value="111111"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[300,6000]" probability="70.0"/>
 			<item value="wielki eliksir" quantity="[2,9]" probability="50.0"/>
 			<item value="hełm z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="sztabka złota" quantity="[1,9]" probability="1.0"/>

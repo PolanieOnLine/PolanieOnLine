@@ -18,7 +18,9 @@
 		<respawn value="1110"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[10,49]" probability="30.0"/>
 			<item value="pluszowy miś" quantity="[1,1]" probability="1.0"/>
+			<item value="orzech włoski" quantity="[1,2]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -47,7 +49,7 @@
 		<respawn value="1310"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[1,159]" probability="19.0"/>
+			<item value="money" quantity="[1,99]" probability="20.0"/>
 			<item value="sukno" quantity="[1,1]" probability="1.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.1"/>
 		</drops>
@@ -78,7 +80,7 @@
 		<respawn value="1510"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[19,59]" probability="25.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.025"/>
 		</drops>
 		<equips/>
@@ -110,7 +112,7 @@
 		<drops>
 			<item value="money" quantity="[29,39]" probability="20.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.5"/>
-			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.125"/>
+			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -299,8 +301,8 @@
 		<respawn value="3010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[99,189]" probability="5.0"/>
-			<item value="magia ziemi" quantity="[1,99]" probability="80.0"/>
+			<item value="money" quantity="[49,189]" probability="5.0"/>
+			<item value="magia ziemi" quantity="[11,99]" probability="80.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
@@ -330,7 +332,7 @@
 		<respawn value="3010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[99,299]" probability="10.0"/>
+			<item value="money" quantity="[80,200]" probability="10.0"/>
 			<item value="magia ziemi" quantity="[1,15]" probability="100.0"/>
 		</drops>
 		<equips/>
