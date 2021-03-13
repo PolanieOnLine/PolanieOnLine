@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
  <tileset firstgid="1" name="grunt" tilewidth="32" tileheight="32" tilecount="33" columns="3">
   <image source="../../tileset/ground/ground.png" width="96" height="352"/>
  </tileset>
@@ -183,7 +183,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAECu3dUQ6CMAwAUKLR+ygSPrz/sYgeAUpIu8Hjl411r4QMBmwYbAQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgEBU4PaM1lCeAAECBAgQINCOwPJoJ5a1SO7GXWtEKfvfHZ0zKSAaIUCAAAECBAgQIECAAAECBAh0KDB5xtNh1oRMgAABAgQIEDi/wMs49fxJ1kMCBAgQIFAs8DXeKM6A5gkQIECAAAECBAgQIECAAIESAd/llbBrlAABAgQIECBAgEBU4Gc+M0qmPAECBAgQIHARgdE46SKZ1k0CBAgQIECAAAECBAgQqBRw/12pv69t/wnf56YWAQIECBAgQIAAAQIECBAgQIAAAQIEtgrMCe+uWS9gazaUI0CAAAECBAgQIECAAAECBAgQIECAAAECxwh4Nn+Mo6O0IfBJmM+yrmAbuRYFAQL1AkvCNbe+lyIgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgEBf4AylOQb4AAAEA
+   H4sIAAAAAAAECu3dXQ6CMAwAYKLR+/gXHwz3PxWRK4wMlrZ8PI/Zfp0wB8g02QgQIECAAAECBAgQIECAAAECBAgQIECAwDEC8+2YfvVKgACBEQKOYSOUfQYBAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgACB3AKXe+74RU+AAAECBAicW2BJ9NzH1bwrxGB9JhozIcAEQYAAAQIECBAgQIAAAQIECBAIKPCxxhOwKkIiQIAAgTMI/JyDz1BmOXYIPHxHOvTsSoAAAQIECLQImJO3KGlDgAABAgQIECBAgAABAgQIlBPwXF65kkqIAAECBAgQIECgpsDf/VM1CysrAgQIECBAoFvgZZ7UbagDAgQIENhPYHZe2g9TTwQIECBAgEAoAb+/Q5WjKRj/E97EpBEBAgQIECBAgAABAgQIJBVwTSZp4YRNgACBYgLfAfcIeF9AsUEjHQIECBAgQIAAAQIECBAgQIAAAQIECBAIL2BtPnyJBLhB4D3gepb3Cm4oiKYECJQWWAYcc0sDSo4AAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQKCswAp2r11PAAABAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.3">
