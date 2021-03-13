@@ -18,7 +18,7 @@
 		<respawn value="5110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[29,49]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia ziemi" quantity="[1,10]" probability="20.0"/>
 		</drops>
@@ -51,7 +51,7 @@
 		<respawn value="5110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[29,49]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia ziemi" quantity="[1,10]" probability="20.0"/>
 		</drops>
@@ -84,7 +84,7 @@
 		<respawn value="5110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[29,49]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="1.0"/>
 			<item value="magia ziemi" quantity="[1,10]" probability="20.0"/>
 		</drops>
@@ -118,6 +118,7 @@
 		<respawn value="1320"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[1,24]" probability="100.0"/>
 			<item value="płaszcz karmazynowy" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,4]" probability="40.0"/>
@@ -161,6 +162,7 @@
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[1,14]" probability="100.0"/>
 			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="1.5"/>
 			<item value="magia ziemi" quantity="[1,9]" probability="100.0"/>
 			<item value="magia mroku" quantity="[1,1]" probability="90.0"/>
@@ -203,6 +205,7 @@
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[10,30]" probability="100.0"/>
 			<item value="lazurowy płaszcz elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,9]" probability="100.0"/>
@@ -246,6 +249,7 @@
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[1,20]" probability="100.0"/>
 			<item value="czarny płaszcz" quantity="[1,1]" probability="0.05"/>
 			<item value="różdżka Strzyboga" quantity="[1,1]" probability="0.5"/>
 			<item value="magia płomieni" quantity="[1,9]" probability="100.0"/>
@@ -288,6 +292,7 @@
 		<respawn value="8320"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[10,30]" probability="100.0"/>
 			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="0.5"/>
 			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
 			<item value="magia mroku" quantity="[1,19]" probability="75.0"/>
@@ -331,6 +336,7 @@
 		<respawn value="11320"/>
 		<corpse name="human"/>
 		<drops>
+			<item value="money" quantity="[20,200]" probability="100.0"/>
 			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="0.5"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="1.5"/>
 			<item value="magia mroku" quantity="[1,99]" probability="75.0"/>
@@ -381,7 +387,7 @@
 			<item value="pas skórzany" quantity="[1,1]" probability="1.0"/>
 			<item value="rzepa" quantity="[1,1]" probability="1.0"/>
 			<item value="rzodkiewka" quantity="[1,2]" probability="15.0"/>
-			<item value="ziemniaki" quantity="[1,5]" probability="20.5"/>
+			<item value="ziemniaki" quantity="[1,5]" probability="20.0"/>
 			<item value="karp lustrzeń" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips/>
@@ -412,7 +418,7 @@
 		<respawn value="444"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[7,48]" probability="99.0"/>
+			<item value="money" quantity="[7,48]" probability="100.0"/>
 			<item value="kij" quantity="[1,1]" probability="1.0"/>
 			<item value="pas skórzany" quantity="[1,1]" probability="1.0"/>
 			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
@@ -447,7 +453,7 @@
 		<respawn value="1120"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[7,11]" probability="99.0"/>
+			<item value="money" quantity="[7,11]" probability="100.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="20.0"/>
 			<item value="siekierka" quantity="[1,1]" probability="20.0"/>
 			<item value="drewniany sztylecik" quantity="[1,1]" probability="0.5"/>

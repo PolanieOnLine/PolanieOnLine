@@ -18,6 +18,7 @@
 		<respawn value="901"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[1,10]" probability="100.0"/>
 			<item value="sok z chmielu" quantity="[1,1]" probability="60.0"/>
 		</drops>
 		<equips/>
@@ -44,6 +45,7 @@
 		<respawn value="905"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[1,14]" probability="100.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="50.0"/>
 			<item value="opieńka miodowa" quantity="[1,5]" probability="50.0"/>
 		</drops>
@@ -71,6 +73,7 @@
 		<respawn value="910"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[1,7]" probability="100.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="75.0"/>
 		</drops>
 		<equips/>
@@ -97,6 +100,7 @@
 		<respawn value="915"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[1,21]" probability="100.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="90.0"/>
 		</drops>
 		<equips/>
@@ -123,6 +127,7 @@
 		<respawn value="922"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[1,17]" probability="100.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="99.0"/>
 		</drops>
 		<equips/>
@@ -149,6 +154,7 @@
 		<respawn value="931"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[9,39]" probability="100.0"/>
 			<item value="żyntyca" quantity="[1,1]" probability="50.0"/>
 		</drops>
 		<equips/>
@@ -175,6 +181,7 @@
 		<respawn value="941"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[9,21]" probability="100.0"/>
 			<item value="żyntyca" quantity="[1,1]" probability="75.0"/>
 		</drops>
 		<equips/>
@@ -201,6 +208,7 @@
 		<respawn value="953"/>
 		<corpse name="gnome"/>
 		<drops>
+			<item value="money" quantity="[9,19]" probability="100.0"/>
 			<item value="żyntyca" quantity="[1,1]" probability="99.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="99.0"/>
 		</drops>
@@ -224,8 +232,6 @@
 			<hp value="90"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
-			<resistance value="100"/>
-			<visibility value="100"/>
 		</attributes>
 		<level value="23"/>
 		<experience value="350"/>
@@ -234,9 +240,9 @@
 		<drops>
 			<item value="money" quantity="[5,29]" probability="100.0"/>
 			<item value="złota kolczuga" quantity="[1,1]" probability="1.0"/>
-			<item value="zardzewiała zbroja płytowa" quantity="[1,1]" probability="15.5"/>
+			<item value="zardzewiała zbroja płytowa" quantity="[1,1]" probability="15.0"/>
 			<item value="kość dla psa" quantity="[1,1]" probability="20.0"/>
-			<item value="tarcza z czaszką" quantity="[1,1]" probability="0.12"/>
+			<item value="tarcza z czaszką" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -259,14 +265,13 @@
 			<hp value="952"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
-			<resistance value="100"/>
-			<visibility value="100"/>
 		</attributes>
 		<level value="131"/>
 		<experience value="5999"/>
 		<respawn value="1999"/>
 		<corpse name="humanoid"/>
 		<drops>
+			<item value="money" quantity="[9,49]" probability="100.0"/>
 			<item value="rękawice cieni" quantity="[1,1]" probability="0.00025"/>
 			<item value="pluszowy miś" quantity="[1,1]" probability="25.0"/>
 			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
@@ -290,8 +295,6 @@
 			<hp value="240"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
-			<resistance value="100"/>
-			<visibility value="100"/>
 		</attributes>
 		<level value="23"/>
 		<experience value="2345"/>
@@ -326,8 +329,6 @@
 			<hp value="440"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
-			<resistance value="100"/>
-			<visibility value="100"/>
 		</attributes>
 		<level value="33"/>
 		<experience value="2585"/>
@@ -465,7 +466,7 @@
 		<respawn value="18600"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,999]" probability="50.0"/>
+			<item value="money" quantity="[99,444]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,5]" probability="30.0"/>
 			<item value="czarne rękawice" quantity="[1,1]" probability="0.0005"/>
 			<item value="płaszcz z otchłani" quantity="[1,1]" probability="1.0"/>
@@ -499,7 +500,7 @@
 		<respawn value="19600"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,666]" probability="50.0"/>
+			<item value="money" quantity="[99,222]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,2]" probability="30.0"/>
 			<item value="płaszcz licha" quantity="[1,1]" probability="0.5"/>
 			<item value="tarcza licha" quantity="[1,1]" probability="2.5"/>
@@ -534,7 +535,7 @@
 		<respawn value="20600"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[500,2000]" probability="75.0"/>
+			<item value="money" quantity="[99,1000]" probability="75.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="20.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="1.0"/>
 			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.5"/>
@@ -603,7 +604,7 @@
 		<respawn value="4321"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[99,599]" probability="100.0"/>
+			<item value="money" quantity="[49,299]" probability="100.0"/>
 			<item value="magia płomieni" quantity="[22,88]" probability="55.0"/>
 			<item value="bełt płonący" quantity="[1,19]" probability="100.0"/>
 			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.1"/>
@@ -673,7 +674,7 @@
 		<respawn value="4321"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[99,299]" probability="100.0"/>
+			<item value="money" quantity="[49,199]" probability="100.0"/>
 			<item value="magia płomieni" quantity="[44,222]" probability="30.0"/>
 			<item value="bełt płonący" quantity="[1,14]" probability="70.0"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.1"/>
@@ -908,11 +909,11 @@
 			<item value="czarny płaszcz smoczy" quantity="[1,1]" probability="5.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
-			<item value="magia mroku" quantity="[1,45]" probability="47.5"/>
+			<item value="magia mroku" quantity="[1,45]" probability="45.0"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
 			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
-			<item value="zwój czyszczący" quantity="[1,1]" probability="1.25"/>
+			<item value="zwój czyszczący" quantity="[1,1]" probability="1.5"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała żelazna" quantity="10000"/>
@@ -942,15 +943,15 @@
 		<respawn value="3510"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[9,329]" probability="100.0"/>
+			<item value="money" quantity="[9,229]" probability="80.0"/>
 			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="15.0"/>
-			<item value="kryształ szafiru" quantity="[1,1]" probability="31.0"/>
+			<item value="kryształ szafiru" quantity="[1,1]" probability="30.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
-			<item value="magia mroku" quantity="[1,15]" probability="33.33"/>
+			<item value="magia mroku" quantity="[1,15]" probability="30.0"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
 			<item value="pazury wilcze" quantity="[1,1]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
-			<item value="zwój czyszczący" quantity="[1,1]" probability="1.25"/>
+			<item value="zwój czyszczący" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -977,7 +978,7 @@
 		<respawn value="9510"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[9,329]" probability="100.0"/>
+			<item value="money" quantity="[9,329]" probability="70.0"/>
 			<item value="kryształ szafiru" quantity="[1,1]" probability="11.0"/>
 			<item value="złota klinga" quantity="[1,1]" probability="0.025"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
@@ -1011,7 +1012,7 @@
 		<respawn value="3510"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[129,329]" probability="90.0"/>
+			<item value="money" quantity="[129,329]" probability="60.0"/>
 			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="25.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="15.0"/>
 			<item value="klejony łuk" quantity="[1,1]" probability="7.5"/>
