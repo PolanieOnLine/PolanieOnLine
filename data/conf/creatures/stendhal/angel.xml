@@ -24,7 +24,7 @@
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="2.0"/>
 			<item value="spodnie nabijane klejnotami" quantity="[1,1]" probability="2.5"/>
 			<item value="czarny płaszcz" quantity="[1,1]" probability="2.5"/>
-			<item value="czarny pas" quantity="[1,1]" probability="0.3"/>
+			<item value="czarny pas" quantity="[1,1]" probability="0.5"/>
 			<item value="hełm libertyński" quantity="[1,1]" probability="1.0"/>
 			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="2.0"/>
 			<item value="pióro mrocznego anioła" quantity="[1,1]" probability="100.0"/>
@@ -71,9 +71,9 @@
 			<item value="pióro archanioła ciemności" quantity="[1,1]" probability="80.0"/>
 			<item value="zupa" quantity="[2,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
-			<item value="pas z mithrilu" quantity="[1,1]" probability="0.2"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.25"/>
 			<item value="buty z mithrilu" quantity="[1,1]" probability="1.0"/>
-			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.25"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.05"/>
 			<item value="strzała płonąca" quantity="[10,30]" probability="5.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="money" quantity="[5000,25000]" probability="100.0"/>
@@ -253,8 +253,8 @@
 			<item value="pióro archanioła" quantity="[1,1]" probability="100.0"/>
 			<item value="zupa" quantity="[1,3]" probability="30.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
-			<item value="pas z mithrilu" quantity="[1,1]" probability="0.4"/>
-			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.2"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.075"/>
 			<item value="spodnie z mithrilu" quantity="[1,1]" probability="0.3"/>
 			<item value="strzała płonąca" quantity="[10,30]" probability="7.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.2"/>
