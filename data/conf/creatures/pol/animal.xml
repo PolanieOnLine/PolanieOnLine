@@ -293,11 +293,60 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+
+	<creature name="kozioł śnieżny">
+		<type class="pol/zwierzeta" subclass="koziol_sniezny" tileid="pol_zwierzeta.png:-1"/>
+		<description></description>
+		<attributes>
+			<atk value="191"/>
+			<def value="20"/>
+			<hp value="182"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="30"/>
+		<experience value="570"/>
+		<respawn value="199999"/>
+		<corpse name="cat"/>
+		<drops>
+			<item value="mięso" quantity="[1,4]" probability="90.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="wielbłąd">
+		<type class="pol/zwierzeta" subclass="wielblad" tileid="pol_zwierzeta.png:-1"/>
+		<description></description>
+		<attributes>
+			<atk value="191"/>
+			<def value="20"/>
+			<hp value="182"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="30"/>
+		<experience value="570"/>
+		<respawn value="199999"/>
+		<corpse name="cat"/>
+		<drops>
+			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 	<!-- END: zwierzeta -->
 
-	<!-- START: zwierzeta male -->
+	<!-- START: gryzonie -->
 	<creature name="szara mysz">
-		<type class="pol/zwierzeta_male" subclass="mysz_szara" tileid="pol_zwierzeta_male.png:0"/>
+		<type class="pol/gryzonie" subclass="mysz_szara" tileid="pol_zwierzeta_male.png:0"/>
 		<description>Oto szara mysz co na zapiecku przed chłodem się chowa.</description>
 		<attributes>
 			<atk value="5"/>
@@ -326,7 +375,7 @@
 	</creature>
 
 	<creature name="biała mysz">
-		<type class="pol/zwierzeta_male" subclass="mysz_biala" tileid="pol_zwierzeta_male.png:1"/>
+		<type class="pol/gryzonie" subclass="mysz_biala" tileid="pol_zwierzeta_male.png:1"/>
 		<description>Zbyt dużo miodów pitnych i piwa wypiłeś, skoro białe myszy widzisz!</description>
 		<attributes>
 			<atk value="11"/>
@@ -355,7 +404,33 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
-	<!-- END: zwierzeta male -->
+
+	<creature name="wiewiórka">
+		<type class="pol/gryzonie" subclass="wiewiorka" tileid="pol_gryzonie.png:-1"/>
+		<description>Zbyt dużo miodów pitnych i piwa wypiłeś, skoro białe myszy widzisz!</description>
+		<attributes>
+			<atk value="11"/>
+			<def value="15"/>
+			<hp value="60"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="2"/>
+		<experience value="27"/>
+		<respawn value="222"/>
+		<corpse name="corpse"/>
+		<drops>
+			<item value="mięso" quantity="[1,2]" probability="70.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="brave"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: gryzonie -->
 
 	<!-- START: malze -->
 	<creature name="małża">
@@ -415,6 +490,58 @@
 		</ai>
 	</creature>
 	<!-- END: malze -->
+
+	<!-- START: bawoly -->
+	<creature name="żubr">
+		<type class="pol/zwierzeta" subclass="zubr" tileid="pol_zwierzeta.png:-1"/>
+		<description/>
+		<attributes>
+			<atk value="66"/>
+			<def value="13"/>
+			<hp value="78"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="10"/>
+		<experience value="110"/>
+		<respawn value="912"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[3,12]" probability="60.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="bawół">
+		<type class="pol/zwierzeta" subclass="bawol" tileid="pol_zwierzeta.png:-1"/>
+		<description/>
+		<attributes>
+			<atk value="66"/>
+			<def value="13"/>
+			<hp value="78"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="10"/>
+		<experience value="110"/>
+		<respawn value="912"/>
+		<corpse name="animal"/>
+		<drops>
+			<item value="mięso" quantity="[3,12]" probability="60.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+	<!-- END: bawoly -->
 
 	<!-- START: owady -->
 	<creature name="chmara much">
