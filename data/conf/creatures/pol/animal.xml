@@ -438,6 +438,30 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+
+	<creature name="szop">
+		<type class="pol/zwierzeta" subclass="szop" tileid="pol_zwierzeta.png:-1"/>
+		<description></description>
+		<attributes>
+			<atk value="191"/>
+			<def value="20"/>
+			<hp value="182"/>
+			<speed value="0.6"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="30"/>
+		<experience value="570"/>
+		<respawn value="199999"/>
+		<corpse name="cat"/>
+		<drops>
+			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="animal"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 	<!-- END: zwierzeta -->
 
 	<!-- START: gryzonie -->
