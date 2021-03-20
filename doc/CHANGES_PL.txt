@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.19.2
+1.20
 *klient*
 - Dodano nowe grafiki przedmiotów
 - Poprawiono grafiki przedmiotów:
@@ -8,11 +8,26 @@ Changelog
 	- złota ciupaga
 	- złota ciupaga z jednym, z dwoma, z trzema wąsami
 	- odświeżono 8 pasów
+- Odświeżono grafiki potworów:
+	- bobra
+	- małpy
+	- żółwika
 
 *świat*
-- Dodano nowe przedmioty:
+- Dodano nowe przedmioty: (2)
 	- "płaszcz zabójcy"
 	- "tarcza wampirza"
+- Dodano nowe potwory: (10)
+	- kozioł śnieżny
+	- wielbłąd
+	- wiewiórka
+	- żubr
+	- bawół
+	- hipopotam
+	- foka
+	- lew morski
+	- struś
+	- szop
 
 *naprawiono błędy*
 - Usunięto zadanie na pierwszą rozmowę z Fryderykiem z regionu Zakopane, aby umożliwić zdobycie osiągnięcia
