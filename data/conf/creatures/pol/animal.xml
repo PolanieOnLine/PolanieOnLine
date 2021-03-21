@@ -36,7 +36,7 @@
 
 	<creature name="niedźwiadek">
 		<type class="pol/zwierzeta" subclass="niedzwiadek" tileid="pol_zwierzeta.png:1"/>
-		<description/>
+		<description></description>
 		<attributes>
 			<atk value="15"/>
 			<def value="7"/>
@@ -69,7 +69,7 @@
 
 	<creature name="niedźwiadek polarny">
 		<type class="pol/zwierzeta" subclass="niedzwiadek_polarny" tileid="pol_zwierzeta.png:2"/>
-		<description/>
+		<description></description>
 		<attributes>
 			<atk value="21"/>
 			<def value="9"/>
@@ -132,7 +132,7 @@
 
 	<creature name="niedźwiedź polarny">
 		<type class="pol/zwierzeta" subclass="niedzwiedz_polarny" tileid="pol_zwierzeta.png:4"/>
-		<description/>
+		<description></description>
 		<attributes>
 			<atk value="66"/>
 			<def value="13"/>
@@ -164,6 +164,7 @@
 
 	<creature name="dziki pies">
 		<type class="pol/zwierzeta" subclass="pies" tileid="pol_zwierzeta.png:5"/>
+		<description></description>
 		<attributes>
 			<atk value="25"/>
 			<def value="9"/>
@@ -192,6 +193,7 @@
 
 	<creature name="lis">
 		<type class="pol/zwierzeta" subclass="lis" tileid="pol_zwierzeta.png:6"/>
+		<description></description>
 		<attributes>
 			<atk value="45"/>
 			<def value="11"/>
@@ -216,6 +218,7 @@
 
 	<creature name="piesiec">
 		<type class="pol/zwierzeta" subclass="lis_sniezny" tileid="pol_zwierzeta.png:7"/>
+		<description></description>
 		<attributes>
 			<atk value="65"/>
 			<def value="19"/>
@@ -240,6 +243,7 @@
 
 	<creature name="fenek">
 		<type class="pol/zwierzeta" subclass="tj_fenek" tileid="pol_zwierzeta.png:8"/>
+		<description></description>
 		<attributes>
 			<atk value="67"/>
 			<def value="13"/>
@@ -298,18 +302,19 @@
 		<type class="pol/zwierzeta" subclass="koziol_sniezny" tileid="pol_zwierzeta.png:-1"/>
 		<description></description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
-			<speed value="0.6"/>
+			<atk value="81"/>
+			<def value="33"/>
+			<hp value="122"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="30"/>
+		<level value="14"/>
 		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<respawn value="999"/>
+		<corpse name="animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,4]" probability="90.0"/>
+			<item value="futro" quantity="[1,1]" probability="20.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -321,20 +326,22 @@
 
 	<creature name="wielbłąd">
 		<type class="pol/zwierzeta" subclass="wielblad" tileid="pol_zwierzeta.png:-1"/>
-		<description></description>
+		<description>Oto wielbłąd. Być może pomoże ci przejść przez pustynię.</description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
-			<speed value="0.6"/>
-			<size value="1,1"/>
+			<atk value="144"/>
+			<def value="47"/>
+			<hp value="110"/>
+			<speed value="0.7"/>
+			<size value="2,2"/>
 		</attributes>
-		<level value="30"/>
-		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<level value="22"/>
+		<experience value="500"/>
+		<respawn value="999"/>
+		<corpse name="animal_2x2"/>
 		<drops>
 			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+			<item value="futro" quantity="[1,2]" probability="30.0"/>
+			<item value="butelka wody" quantity="[1,2]" probability="10.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -347,22 +354,24 @@
 		<type class="pol/zwierzeta" subclass="hipopotam" tileid="pol_zwierzeta.png:-1"/>
 		<description></description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
-			<speed value="0.6"/>
-			<size value="1,1"/>
+			<atk value="322"/>
+			<def value="64"/>
+			<hp value="240"/>
+			<speed value="0.5"/>
+			<size value="2,2"/>
 		</attributes>
-		<level value="30"/>
-		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<level value="34"/>
+		<experience value="1400"/>
+		<respawn value="9999"/>
+		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+			<item value="mięso" quantity="[2,14]" probability="80.0"/>
+			<item value="szynka" quantity="[1,7]" probability="60.0"/>
 		</drops>
 		<equips/>
 		<ai>
 			<profile name="animal"/>
+			<profile name="offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -371,18 +380,19 @@
 		<type class="pol/zwierzeta" subclass="strus" tileid="pol_zwierzeta.png:-1"/>
 		<description></description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
-			<speed value="0.6"/>
+			<atk value="117"/>
+			<def value="21"/>
+			<hp value="160"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="30"/>
-		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<level value="18"/>
+		<experience value="413"/>
+		<respawn value="840"/>
+		<corpse name="animal"/>
 		<drops>
-			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+			<item value="mięso" quantity="[1,2]" probability="80.0"/>
+			<item value="piórko" quantity="[1,3]" probability="40.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -395,18 +405,19 @@
 		<type class="pol/zwierzeta" subclass="foka" tileid="pol_zwierzeta.png:-1"/>
 		<description></description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
-			<speed value="0.6"/>
+			<atk value="111"/>
+			<def value="22"/>
+			<hp value="133"/>
+			<speed value="0.5"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="30"/>
-		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<level value="11"/>
+		<experience value="144"/>
+		<respawn value="444"/>
+		<corpse name="animal"/>
 		<drops>
-			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+			<item value="mięso" quantity="[2,4]" probability="90.0"/>
+			<item value="szynka" quantity="[1,2]" probability="50.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -419,22 +430,24 @@
 		<type class="pol/zwierzeta" subclass="lew_morski" tileid="pol_zwierzeta.png:-1"/>
 		<description></description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
+			<atk value="200"/>
+			<def value="11"/>
+			<hp value="240"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="30"/>
-		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<level value="17"/>
+		<experience value="390"/>
+		<respawn value="777"/>
+		<corpse name="animal"/>
 		<drops>
-			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+			<item value="mięso" quantity="[1,7]" probability="70.0"/>
+			<item value="szynka" quantity="[1,2]" probability="20.0"/>
 		</drops>
 		<equips/>
 		<ai>
 			<profile name="animal"/>
+			<profile name="offensive"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -443,22 +456,28 @@
 		<type class="pol/zwierzeta" subclass="szop" tileid="pol_zwierzeta.png:-1"/>
 		<description></description>
 		<attributes>
-			<atk value="191"/>
-			<def value="20"/>
-			<hp value="182"/>
-			<speed value="0.6"/>
+			<atk value="77"/>
+			<def value="9"/>
+			<hp value="55"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="30"/>
-		<experience value="570"/>
-		<respawn value="199999"/>
-		<corpse name="cat"/>
+		<level value="6"/>
+		<experience value="47"/>
+		<respawn value="440"/>
+		<corpse name="corpse"/>
 		<drops>
-			<item value="mięso" quantity="[2,12]" probability="80.0"/>
+			<item value="money" quantity="[1,1]" probability="40.0"/>
+			<item value="mięso" quantity="[1,2]" probability="70.0"/>
+			<item value="jabłko" quantity="[1,1]" probability="10.0"/>
+			<item value="jabłko niezgody" quantity="[1,1]" probability="1.0"/>
+			<item value="bryłka złota" quantity="[1,2]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
 			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="coward"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -527,20 +546,21 @@
 
 	<creature name="wiewiórka">
 		<type class="pol/gryzonie" subclass="wiewiorka" tileid="pol_gryzonie.png:-1"/>
-		<description>Zbyt dużo miodów pitnych i piwa wypiłeś, skoro białe myszy widzisz!</description>
+		<description></description>
 		<attributes>
-			<atk value="11"/>
-			<def value="15"/>
-			<hp value="60"/>
-			<speed value="0.9"/>
+			<atk value="44"/>
+			<def value="6"/>
+			<hp value="40"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="2"/>
-		<experience value="27"/>
+		<experience value="17"/>
 		<respawn value="222"/>
-		<corpse name="corpse"/>
+		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,2]" probability="70.0"/>
+			<item value="futro" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -614,20 +634,23 @@
 	<!-- START: bawoly -->
 	<creature name="żubr">
 		<type class="pol/zwierzeta" subclass="zubr" tileid="pol_zwierzeta.png:-1"/>
-		<description/>
+		<description></description>
 		<attributes>
-			<atk value="66"/>
-			<def value="13"/>
-			<hp value="78"/>
-			<speed value="0.7"/>
-			<size value="1,1"/>
+			<atk value="227"/>
+			<def value="33"/>
+			<hp value="300"/>
+			<speed value="0.6"/>
+			<size value="2,2"/>
 		</attributes>
-		<level value="10"/>
-		<experience value="110"/>
-		<respawn value="912"/>
-		<corpse name="animal"/>
+		<level value="27"/>
+		<experience value="940"/>
+		<respawn value="1444"/>
+		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="mięso" quantity="[3,12]" probability="60.0"/>
+			<item value="mięso" quantity="[4,12]" probability="60.0"/>
+			<item value="szynka" quantity="[1,8]" probability="40.0"/>
+			<item value="stek" quantity="[1,4]" probability="40.0"/>
+			<item value="futro" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -639,20 +662,23 @@
 
 	<creature name="bawół">
 		<type class="pol/zwierzeta" subclass="bawol" tileid="pol_zwierzeta.png:-1"/>
-		<description/>
+		<description></description>
 		<attributes>
-			<atk value="66"/>
-			<def value="13"/>
-			<hp value="78"/>
-			<speed value="0.7"/>
-			<size value="1,1"/>
+			<atk value="200"/>
+			<def value="37"/>
+			<hp value="290"/>
+			<speed value="0.6"/>
+			<size value="2,2"/>
 		</attributes>
-		<level value="10"/>
-		<experience value="110"/>
-		<respawn value="912"/>
-		<corpse name="animal"/>
+		<level value="24"/>
+		<experience value="800"/>
+		<respawn value="1111"/>
+		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="mięso" quantity="[3,12]" probability="60.0"/>
+			<item value="mięso" quantity="[1,8]" probability="60.0"/>
+			<item value="szynka" quantity="[1,3]" probability="40.0"/>
+			<item value="stek" quantity="[1,2]" probability="40.0"/>
+			<item value="futro" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -825,6 +851,7 @@
 
 	<creature name="mewa">
 		<type class="pol/ptaki" subclass="mewa" tileid="pol_ptaki.png:2"/>
+		<description></description>
 		<attributes>
 			<atk value="15"/>
 			<def value="9"/>
@@ -858,6 +885,7 @@
 
 	<creature name="kruk">
 		<type class="pol/ptaki" subclass="kruk" tileid="pol_ptaki.png:1"/>
+		<description></description>
 		<attributes>
 			<atk value="20"/>
 			<def value="11"/>
@@ -889,6 +917,7 @@
 
 	<creature name="jastrząb">
 		<type class="pol/ptaki" subclass="jastrzab" tileid="pol_ptaki.png:3"/>
+		<description></description>
 		<attributes>
 			<atk value="33"/>
 			<def value="99"/>
@@ -924,7 +953,7 @@
 	<!-- START: ptaki wielkie -->
 	<creature name="orzeł gigant">
 		<type class="pol/ptaki_wielkie" subclass="orzel_gigant" tileid="pol_ptaki_wielkie.png:0"/>
-		<description/>
+		<description></description>
 		<attributes>
 			<atk value="4300"/>
 			<def value="140"/>
