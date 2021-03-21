@@ -575,7 +575,7 @@
 	<!-- START: malze -->
 	<creature name="małża">
 		<type class="pol/malze" subclass="malza" tileid="pol_malze.png:0"/>
-		<description>Widzisz małżę. Być może ma w środku coś cennego, ale muszla wydaje się być okropnie twarda!</description>
+		<description>Oto małża. Być może ma w środku coś cennego, ale muszla wydaje się być okropnie twarda!</description>
 		<attributes>
 			<atk value="2"/>
 			<def value="300"/>
@@ -603,7 +603,7 @@
 
 	<creature name="małża z perłą">
 		<type class="pol/malze" subclass="malza_z_perla" tileid="pol_malze.png:1"/>
-		<description>Widzisz małżę z perłą. Ta błyskotka to na pewno coś cennego, ale muszla wydaje się być okropnie twarda!</description>
+		<description>Oto małża z perłą. Ta błyskotka to na pewno coś cennego, ale muszla wydaje się być okropnie twarda!</description>
 		<attributes>
 			<atk value="4"/>
 			<def value="300"/>
