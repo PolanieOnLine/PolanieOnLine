@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="1">
  <tileset firstgid="1" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
@@ -33,6 +33,9 @@
  <tileset firstgid="262" name="secret" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="../../tileset/logic/secret.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="263" name="pol_zwierzeta_male" tilewidth="32" tileheight="32" tilecount="3" columns="3">
+  <image source="../../tileset/logic/creature/pol_zwierzeta_male.png" width="96" height="32"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3YwU7rMBRF0UhIMIHfh0H7sTCgUhQlje0kvq69Bksgvao03acOvLdpmt4a9bGi5Hk+M93+3Fd8bdj791Kpz/lTcI0P0Y1r9D+yha1dPNvBfUpvuLer1K18/8vdQnTjiA2cuYWUts/OkLP6z58/ZwPRfaM3cPWZsNZn+f0Z94Dlz0k9D6LbttC/5plQ0jf3nrJ1b1jbRHTbFjdQewclj332NeVseewguuuRDdT4mbV2sHd/uOpvjOimrfc/Ywsl94Uz7xf697OD3PNk7/HRTV+x/9Et3A72L/2bYG0T0e/fq/cv3cGRsyD1s+38b38Pqf9/kHIelPz+GP0+9do/Ygs+/+2reS7o37Yrt5D6+Oj3oLR9D/1zd1Cyhb3fFaOvvbR9T/1rb2F+f4i+3pLuvbavuYXHBqKvMbf7KO1Ld5C7hehrS20+avurt9BiY93P38FyC1ff/4+01v3aHcz3oHkfSjcQ1Tv6/erdVf21fi1H+/t89yO1v9792+qv+Xj0HpfmY9N9bLoDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArXlv4DUQ030p+jUR298GxrHV3wbGYgPoj/7MdxD9OgCI8Qu3Vy7RAAABAA==
@@ -60,7 +63,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+   H4sIAAAAAAAACu3aQQkAAAgAMX3av7AlBBW2BBfgIgAAAADglsrtAgAAAAAAAACAX/wWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMaQLCxz4AAAEA
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.3">

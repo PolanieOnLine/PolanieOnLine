@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
  <tileset firstgid="1" name="sand_1" tilewidth="32" tileheight="32" tilecount="10" columns="2">
   <image source="../../tileset/ground/sand_1.png" width="64" height="160"/>
  </tileset>
@@ -72,29 +72,32 @@
  <tileset firstgid="416" name="monst" tilewidth="32" tileheight="32" tilecount="14" columns="14">
   <image source="../../tileset/logic/creature/undead.png" width="448" height="32"/>
  </tileset>
- <tileset firstgid="430" name="ani" tilewidth="32" tileheight="32" tilecount="28" columns="28">
-  <image source="../../tileset/logic/creature/animal.png" width="896" height="32"/>
+ <tileset firstgid="430" name="ani" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
  </tileset>
- <tileset firstgid="458" name="banery" tilewidth="32" tileheight="32" tilecount="20" columns="1">
+ <tileset firstgid="462" name="banery" tilewidth="32" tileheight="32" tilecount="20" columns="1">
   <image source="../../tileset/pol/wyposazenie/banner.png" width="32" height="640"/>
  </tileset>
- <tileset firstgid="478" name="szkielet" tilewidth="32" tileheight="32" tilecount="11" columns="11">
-  <image source="../../tileset/logic/creature/pol_zjawy.png" width="352" height="32"/>
+ <tileset firstgid="482" name="szkielet" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/logic/creature/pol_zjawy.png" width="256" height="64"/>
  </tileset>
- <tileset firstgid="489" name="zjawy_wielkie" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+ <tileset firstgid="498" name="zjawy_wielkie" tilewidth="32" tileheight="32" tilecount="6" columns="6">
   <image source="../../tileset/logic/creature/pol_zjawy_wielkie.png" width="192" height="32"/>
  </tileset>
- <tileset firstgid="495" name="latarnia_blask" tilewidth="32" tileheight="32" tilecount="25" columns="5">
+ <tileset firstgid="504" name="latarnia_blask" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blask.png" width="160" height="160"/>
  </tileset>
- <tileset firstgid="520" name="reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
-  <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
+ <tileset firstgid="529" name="reptile" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/reptile.png" width="224" height="32"/>
  </tileset>
- <tileset firstgid="526" name="undead_skeleton" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+ <tileset firstgid="536" name="undead_skeleton" tilewidth="32" tileheight="32" tilecount="6" columns="6">
   <image source="../../tileset/logic/creature/undead_skeleton.png" width="192" height="32"/>
  </tileset>
- <tileset firstgid="532" name="undead_specter" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+ <tileset firstgid="542" name="undead_specter" tilewidth="32" tileheight="32" tilecount="6" columns="6">
   <image source="../../tileset/logic/creature/undead_specter.png" width="192" height="32"/>
+ </tileset>
+ <tileset firstgid="548" name="pol_zwierzeta" tilewidth="32" tileheight="32" tilecount="24" columns="8">
+  <image source="../../tileset/logic/creature/pol_zwierzeta.png" width="256" height="96"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -108,7 +111,7 @@
  </layer>
  <layer id="3" name="2_object" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3aMQ0AIBAEwUcUFVLRhhcUkBCahzCjYMsrLgKAX4ySXQAAAAAAAAAAvKD7GACHanYAAHCFlh3AFtsNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICVCRYkZFEAAAEA
+   H4sIAAAAAAAACu3aMQ0AIBAEwUcUFVJRhxMUkBCahzCjYMsrLgKAX4ySXQAAAAAAAAAAvKD7GACHanYAAHCFlh3AFtsNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICVCV8yOZUAAAEA
   </data>
  </layer>
  <layer id="4" name="3_roof" width="128" height="128">
@@ -123,7 +126,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3dPW7CMBQAYGBjQVBxf6nHQGLhJN3LJRiiDpWqxg7YeQ9/n8SICNh+PzFyNhuA3w676bXkfeTXexxrP88862tpPCCPy3btK8hnb01ACvIXwLqO4vDTRqw7zRt6UzOWsz55d6PGg1G/NxPjT3Tqj9zujfefzA+eIQcud/bbFbnag6fA3DyJPo8+g18fZV5ZU9XkiC/zJ4S58f82TiFEyQcndSCEp9cdm/EHRicOQjsf1hcd2Put0yrvuW+bg7oHAPiLGuF/zlOB9ej5ASihnn29VjlYboc+xEUA4Ie6AADasY8MddSmAOV6P1NAjKaWOQNASzf3XAAgJTkcIL+IsTziNQEAAAAAvDNnAwER2CMCmIiHRKNfAAAAKBPlfDp9HKOIsuZgdO5px+fcMAAAgPXpnwEAoL/ez/+JQv+Rm/EjOv/XAQAARqcvAgAAgPYeP2BWpgAAAQA=
+   H4sIAAAAAAAACu3dwU3EMBAAwIMSeCFAFAEVUwYSH2q5EqAAHiceCETsxHZ24xnpnqdLzs7u2k6c0wngp9vry2fN98hvdDvW/p5+NtbaeEAer1d7H0E+N64JSEH+AtjXnTi82Yx1p37DaGrGcq5Pjm7WeDDreXOh/YlO/ZHbZ+f1J/2DLeTA9R79d0XerMFTYKmfRO9HL8GPjzIta6qaHHHWf0JYav8P7RRClHxwrw6E8Ix156b9gdmJg9DPg+uLAaz91umV98zb5qDuAQD+okb4X4v9VJ79x7CKMT8AJdSz7fXKwXI7jCEuAgDf1AUA8FurtVvv5YA6alOAcqPfKSBGU8v9kAD0dIQ883SAcwCAWu/WTQDSixjLIx4TADmZswMAAGAPGe+DsTcQEIE1IkbImKeZj3hINMYLAAAAZVrtT7d1Dss4jlnYExJiMKcdn73mAAAA9mf8DABt2U8GKDH6/T9RGH/kpv2Ibu39Olme61RnAgAASzzHAERkTgMAgKP5AqjxsOYAAAEA
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128">
@@ -138,12 +141,12 @@
  </layer>
  <layer id="9" name="blend_ground" width="128" height="128" opacity="0.4">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3Rxw3DQBRDwb/r1H+lznIOdAM+SgfNAO9OgFXMxbZV7dI+HdKxTb2IMZ3y9zkN6ZKu/p+VW/6+p0d6ppf/Z+Wdvz+/z3tVS71PvYgxLfL3Mq3SOm38DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzxBa6gH8QAAAEA
+   H4sIAAAAAAAACu3RSQ7CQBRDwd/NPIb7n5QZzAVYJotUSW9vyVXMxbVV3dI9PdKzTb2IMb3y9zt9fr/3qtanXsSYev5epGVapbX/Z2WTv7dpl/bp4P9ZOebvUzqnIV38DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzxBXXIeYwAAAEA
   </data>
  </layer>
  <layer id="10" name="blend_roof" width="128" height="128" opacity="0.4">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3Rxw3DQBRDwb/r1H+lznIOdAM+SgfNAO9OgFXMxbZV7dI+HdKxTb2IMZ3y9zkN6ZKu/p+VW/6+p0d6ppf/Z+Wdvz+/z3tVS71PvYgxLfL3Mq3SOm38DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzxBa6gH8QAAAEA
+   H4sIAAAAAAAACu3RSQ7CQBRDwd/NPIb7n5QZzAVYJotUSW9vyVXMxbVV3dI9PdKzTb2IMb3y9zt9fr/3qtanXsSYev5epGVapbX/Z2WTv7dpl/bp4P9ZOebvUzqnIV38DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzxBXXIeYwAAAEA
   </data>
  </layer>
 </map>

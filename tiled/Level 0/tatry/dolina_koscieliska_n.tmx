@@ -63,8 +63,8 @@
  <tileset firstgid="560" name="latarnia_blaszczysko" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png" width="160" height="160"/>
  </tileset>
- <tileset firstgid="585" name="pol_zwierzeta" tilewidth="32" tileheight="32" tilecount="10" columns="10">
-  <image source="../../tileset/logic/creature/pol_zwierzeta.png" width="320" height="32"/>
+ <tileset firstgid="585" name="pol_zwierzeta" tilewidth="32" tileheight="32" tilecount="24" columns="8">
+  <image source="../../tileset/logic/creature/pol_zwierzeta.png" width="256" height="96"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -93,7 +93,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3biQmAMAwAQHE9EcT9hxEXqPg2JncTiJV8jcMAAAAAAO+ax95PAESyiAkAAFCWGQEAuylIPpCXgBaz7PuixHsA4DlqJFr02QBkYaYBAABUY/YLAADAk+yQAABRXdkLqlDb9NyXqvB+K3HnxB/5buNZnQlAN9FjsP4BIA//78G71E0AAAC1uPcGAACAfKLv8wEAAADn6PUBahL/AQAAACAv8z8AAAAAyMfcDwAgN/UecEScAOAMeQMA4pOvAQAAvrMB2gpZDgAAAQA=
+   H4sIAAAAAAAACu3biQmAMAwAQHE9EUT330VcQPFtTO4mEAtJ87TrAAAAAOBdY9/6C4BIJjEBAADK0iMAYDMEyQfyErBnESNuixLvAYDnmPezR50NQBZ6GgAAQDV6vwAAADzJDgkAENWVvaAKd5uW+1IV/m8l3mTyR2al8czOBKCZ6DFY/QCQh/d78C73JgAAgFrMvQEAACCf6Pt8AAAAwDlqfYCaxH8AAAAAyEv/DwAAAADy0fcDAMjNfQ84Ik4AcIa8AQDxydcAAADfWQFc/EejAAABAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.3">

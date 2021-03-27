@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
  <tileset firstgid="1" name="sand_1" tilewidth="32" tileheight="32" tilecount="10" columns="2">
   <image source="../../tileset/ground/sand_1.png" width="64" height="160"/>
  </tileset>
@@ -78,17 +78,20 @@
  <tileset firstgid="426" name="human_evil" tilewidth="32" tileheight="32" tilecount="10" columns="10">
   <image source="../../tileset/logic/creature/human_evil.png" width="320" height="32"/>
  </tileset>
- <tileset firstgid="436" name="animal" tilewidth="32" tileheight="32" tilecount="30" columns="30">
-  <image source="../../tileset/logic/creature/animal.png" width="960" height="32"/>
+ <tileset firstgid="436" name="animal" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
  </tileset>
- <tileset firstgid="466" name="pol_mutanty" tilewidth="32" tileheight="32" tilecount="5" columns="5">
-  <image source="../../tileset/logic/creature/pol_mutanty.png" width="160" height="32"/>
+ <tileset firstgid="468" name="pol_mutanty" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/pol_mutanty.png" width="224" height="32"/>
  </tileset>
- <tileset firstgid="471" name="spider" tilewidth="32" tileheight="32" tilecount="3" columns="3">
+ <tileset firstgid="475" name="spider" tilewidth="32" tileheight="32" tilecount="3" columns="3">
   <image source="../../tileset/logic/creature/spider.png" width="96" height="32"/>
  </tileset>
- <tileset firstgid="474" name="reptile" tilewidth="32" tileheight="32" tilecount="6" columns="6">
-  <image source="../../tileset/logic/creature/reptile.png" width="192" height="32"/>
+ <tileset firstgid="478" name="reptile" tilewidth="32" tileheight="32" tilecount="7" columns="7">
+  <image source="../../tileset/logic/creature/reptile.png" width="224" height="32"/>
+ </tileset>
+ <tileset firstgid="485" name="pol_zwierzeta" tilewidth="32" tileheight="32" tilecount="24" columns="8">
+  <image source="../../tileset/logic/creature/pol_zwierzeta.png" width="256" height="96"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -117,7 +120,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3bXWoCMRAAYHv/i5T+qhcotGewLQieRXxTqWy6MdlM8n3PCkomk5nZ7GoFAABw6eNh6V/Aub316MrnIOspbgGAKEapz2iP2COVWIHl2YcA9czJufI0AAAAAEAd3+axAMAZ7yBCPPYtAK35yjybts42yFK6PvzvHk/9/Ku93z1rDH9rva+fyuNza7914/+b5W3ESBcO1jGE3D4+xZNYgPBeKu7jZzmDK2bG8b1bw2Ql5gTmclwzl+lXtDNTLEIZt2arZnXltP6sp0VqVOCWH/khS805LkCu30Fyln4B3AODEehFoK43ew6q09u5C94iz9v6Fe3+D21xNwQ4MZNlivu7cF9R5wb6SoglZV7g3WxgDvNIAEawc94BAAAToj7zA+jJXi4GADrRw7MpfTIAAACj0xsDAJBC3Uh0YhgAoDw1FwAAc6gjie4xM4Zzvw9AGUeNAsn9AAABAA==
+   H4sIAAAAAAAACu3cW0pDMRAA0Lr/jYhv3YCgi1BQKLgF9V/6p1Vp7k3zmOSc7xZ6yWQymeR2swEAAPjp/qT1L+C7rfEYysMk4yluAYAoZqnP6I/YI5VYgfbMQ4B61uRceRoAiOxDLQMAR2FNBWp6nzjnPE/87ADAb95BhHjMWwB685i5Nt1Z2yBL6fpw6RxP/fyluT88Ywx/631ffyiPr639bjp/btq7FSNDeDOOIeTu41OciQUI76LiPD6XM9ijZxzfdcUxjP4OQok+gb4c+/RlxhVtzRSLUMZ/vVW9unJ6P+vpkRoV5vG5cL6/yA9ZavZxAXK9TpKz7BeoYWnNVZt7YDA+exFamfX/wq4mfW5oyd7OXfAeOW8bV7T7P/TF3RBgR0+WQ9zfheOK2jewr4RYUvoF3s0G1qjZj4z+/jcAcT1ZgwAgy6z3dYG5RD3z29F3A0axlc8AgEGMcDYVeZ8MAMxHn9yZLkAJ9sYAAKRQNxKdGAYAKE/NBQAQW6v7aepIojvNjOHc7wNQxhe2TFSzAAABAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128">

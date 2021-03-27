@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
  <tileset firstgid="1" name="protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
   <image source="../../tileset/logic/protection.png" width="64" height="32"/>
  </tileset>
@@ -93,6 +93,12 @@
  <tileset firstgid="876" name="chimney_smoke" tilewidth="32" tileheight="32" tilecount="40" columns="4">
   <image source="../../tileset/building/chimney_smoke.png" width="128" height="320"/>
  </tileset>
+ <tileset firstgid="916" name="pol_zwierzeta" tilewidth="32" tileheight="32" tilecount="24" columns="8">
+  <image source="../../tileset/logic/creature/pol_zwierzeta.png" width="256" height="96"/>
+ </tileset>
+ <tileset firstgid="940" name="pol_zwierzeta_male" tilewidth="32" tileheight="32" tilecount="3" columns="3">
+  <image source="../../tileset/logic/creature/pol_zwierzeta_male.png" width="96" height="32"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAECu3aMWrEMBCG0b2MIWly/+MlKgQ/g7zuAjvzCmPZuMjoew4u9nq9XpfDHjDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAwHADX3/z1+P7cC+fuYbvWZf5s2mun/qvZ7vsweQ5snmu9e/vO3vXtf69+9fe9Vr/3v1X33qkAf1798/We/3Ow35mnyd/M3367Lvh3dm7P+/dTwv69+2fne/W+vfsf9c772vfs/36ZsnOd+vVP4/Tc5/+/TP17z+1zHundz8trPXUveswd7Y+rU/963Md9mHqDLVlvX7qP3Xfusxde+f1U/v1bJd9mDpH9q7rp/5T96zb3LX7vn7Xv9seTJ9nN8/zXf/pe9V1/my/1rV/17nN5TuOAQYYYIABBhhggAEGGGCAAQYYYIABBhhggAEG/tvAj99ZjP6dif6z/+foP7v/LyHi/xQAAAEA
@@ -120,7 +126,7 @@
  </layer>
  <layer id="5" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer id="6" name="collision" width="128" height="128" opacity="0.3">

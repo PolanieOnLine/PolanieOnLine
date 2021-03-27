@@ -27,6 +27,9 @@
  <tileset firstgid="283" name="kladka_drewniana" tilewidth="32" tileheight="32" tilecount="24" columns="3">
   <image source="../../tileset/pol/mosty/kladka_drewniana.png" width="96" height="256"/>
  </tileset>
+ <tileset firstgid="307" name="pol_zwierzeta_male" tilewidth="32" tileheight="32" tilecount="3" columns="3">
+  <image source="../../tileset/logic/creature/pol_zwierzeta_male.png" width="96" height="32"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu2dy07DMBBFLXXRRflzoOLxw1CpkUw0CWlqZ2Z8z+JsWBnOtWf8aDmVUk6BuNz5/OXlzvQz77GBTwbeCxlQY/J9LWRAlXkdIANaWL0AGdBiLQPeYwO/DOBfi3kGqAF61BmgD9CEDICVAe8xgU8GroU1QBXqgDb0AkAGgAwAGQAyAHUGvgoZUORS/uaADGjCGRHQD2jDXQHQCwAZAPpBbegFwKoD5ECLug6wDmjCW+JSzgHG4Olf9WzoXOE9ligZuN0VKeTgXPBvZUBhLZi7x79GBizv+F/PwAhvB9a8435bDjKuBf95x/3+DETOAd775OCWgbcScy3Y4hzvbTIQaY+I9+MzEKEnwLl/DrwygHd/js4A8z0eR2QA77HplQG856HVeyJ6+bw8+6YQ7/nZswbgfRzma8Az3r1/F9ifgf9qAN7HZW0vwJwfH+tNMd61sN4U414H6zwA7xpMfud7AbyPjbW2838Kxmetr5vmP/7HY8u5Hf7H45G93Nw/GcjLnj187Z/PF+fkmbOb+hzgo7AGZKLFvVy9B8R/Dlrfx1o1gAzEo9c9/FINIAMx6P3+oq4BrAFx6O19noHJP32AjvfaP/sAPe+1f84C9Lwv+Z/WAO+/zchE8I7/eM6P9I5/Xef4xzv+fZxH8Y7/47x7jxH/xzuP7h3/fZxn8b7k/xv/wztf8s/572PevcfZyv9r4fxfzXvtX/n+T9E5/re59x7f0f6n3m9k/8pz3XJv1f4R/ePd9j/62o93Tf84f8z/COc+zPV9/rPPfbzr+se7nn/mu6Z/vLd1n8U/3vv4z3Lvg/c+/rPs/fHe13/0c3+ct3dv1f6o/qG9/yy1H/r4z1L7ob37TLUf2vtXufMH2z9rvy741wb/2uBfG/xrg39t8K/NzTXf96cLdz9Q1wC+81cPegBt6AG0oQcAegBt6AG0WeoByIAG83dA1AA9qAHaUAO0oQYANUAb/GuDf23wr43l33tMgH/AP+Af8A/a/n8AEbHGPAAAAQA=
@@ -54,7 +57,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAauuOl9cAAAEA
+   H4sIAAAAAAAACu3bMREAAAgDMRCFf2u4gA6Jgp971yoAAAAAAAAAAAAAAAAAAAAA4ML0dwEAAAAAYKcDAAAAAAAAAAAAAAAAAAAghQ88AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJBqAWThMvsAAAEA
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.2">
