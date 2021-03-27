@@ -148,7 +148,7 @@
 	</creature>
 
 	<creature name="dwugłowy złoty smok">
-		<type class="pol/smoki" subclass="smok_dwuglowy_zloty" tileid="pol_smoki.png:13"/>
+		<type class="pol/smoki" subclass="smok_dwuglowy_zloty" tileid="pol_smoki.png:12"/>
 		<description/>
 		<attributes>
 			<atk value="2631"/>
