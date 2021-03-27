@@ -299,7 +299,7 @@
 	</creature>
 
 	<creature name="kozioł śnieżny">
-		<type class="pol/zwierzeta" subclass="koziol_sniezny" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="koziol_sniezny" tileid="pol_zwierzeta.png:10"/>
 		<description></description>
 		<attributes>
 			<atk value="81"/>
@@ -325,7 +325,7 @@
 	</creature>
 
 	<creature name="wielbłąd">
-		<type class="pol/zwierzeta" subclass="wielblad" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="wielblad" tileid="pol_zwierzeta.png:15"/>
 		<description>Oto wielbłąd. Być może pomoże ci przejść przez pustynię.</description>
 		<attributes>
 			<atk value="144"/>
@@ -351,7 +351,7 @@
 	</creature>
 
 	<creature name="hipopotam">
-		<type class="pol/zwierzeta" subclass="hipopotam" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="hipopotam" tileid="pol_zwierzeta.png:16"/>
 		<description></description>
 		<attributes>
 			<atk value="322"/>
@@ -377,7 +377,7 @@
 	</creature>
 
 	<creature name="struś">
-		<type class="pol/zwierzeta" subclass="strus" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="strus" tileid="pol_zwierzeta.png:14"/>
 		<description></description>
 		<attributes>
 			<atk value="117"/>
@@ -402,7 +402,7 @@
 	</creature>
 
 	<creature name="foka">
-		<type class="pol/zwierzeta" subclass="foka" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="foka" tileid="pol_zwierzeta.png:11"/>
 		<description></description>
 		<attributes>
 			<atk value="111"/>
@@ -427,7 +427,7 @@
 	</creature>
 
 	<creature name="lew morski">
-		<type class="pol/zwierzeta" subclass="lew_morski" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="lew_morski" tileid="pol_zwierzeta.png:12"/>
 		<description></description>
 		<attributes>
 			<atk value="200"/>
@@ -453,7 +453,7 @@
 	</creature>
 
 	<creature name="szop">
-		<type class="pol/zwierzeta" subclass="szop" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="szop" tileid="pol_zwierzeta.png:13"/>
 		<description></description>
 		<attributes>
 			<atk value="77"/>
@@ -545,7 +545,7 @@
 	</creature>
 
 	<creature name="wiewiórka">
-		<type class="pol/gryzonie" subclass="wiewiorka" tileid="pol_gryzonie.png:-1"/>
+		<type class="pol/gryzonie" subclass="wiewiorka" tileid="pol_zwierzeta_male.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="44"/>
@@ -633,7 +633,7 @@
 
 	<!-- START: bawoly -->
 	<creature name="żubr">
-		<type class="pol/zwierzeta" subclass="zubr" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="zubr" tileid="pol_zwierzeta.png:17"/>
 		<description></description>
 		<attributes>
 			<atk value="227"/>
@@ -661,7 +661,7 @@
 	</creature>
 
 	<creature name="bawół">
-		<type class="pol/zwierzeta" subclass="bawol" tileid="pol_zwierzeta.png:-1"/>
+		<type class="pol/zwierzeta" subclass="bawol" tileid="pol_zwierzeta.png:18"/>
 		<description></description>
 		<attributes>
 			<atk value="200"/>
