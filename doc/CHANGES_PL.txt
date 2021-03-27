@@ -9,9 +9,9 @@ Changelog
 	- złota ciupaga z jednym, z dwoma, z trzema wąsami
 	- odświeżono 8 pasów
 - Odświeżono grafiki potworów:
-	- bobra
-	- małpy
-	- żółwika
+	- bóbr
+	- małpa
+	- żółwik
 
 *świat*
 - Dodano nowe przedmioty: (2)
@@ -28,8 +28,12 @@ Changelog
 	- lew morski
 	- struś
 	- szop
+- Dodano nowe mapy wydarzeniowe w krainie prasłowiańskiej (Wielkanocne)
+- Poprawiono procent szans na zdobycie przedmiotu w większości potworów
 
 *naprawiono błędy*
+- Poprawiono opisy małży
+- Poprawiono kolizję na niektórych mapach
 - Usunięto zadanie na pierwszą rozmowę z Fryderykiem z regionu Zakopane, aby umożliwić zdobycie osiągnięcia
 
 
