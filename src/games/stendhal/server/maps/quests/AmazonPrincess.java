@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.InflictStatusOnNPCAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
@@ -139,24 +140,21 @@ npc.add(ConversationStates.ATTENDING,
 			ConversationStates.ATTENDING,
 			null,
 			new MultipleActions(
-						new DropItemAction("napój z oliwką"),
-						new ChatAction() {
-							@Override
-							public void fire(final Player player,
-									final Sentence sentence,
-									final EventRaiser npc) {
-								int pieAmount = Rand.roll1D6() + 1;
-								new EquipItemAction("tarta z rybnym nadzieniem", pieAmount, true).fire(player, sentence, npc);
-								npc.say("Dziękuję!! Weź tą " +
-										Grammar.thisthese(pieAmount) + " " +
-										Grammar.quantityplnoun(pieAmount, "tarta z rybnym nadzieniem", "") +
-										" z mojej kuchni i pocałunek ode mnie.");
-								new SetQuestAndModifyKarmaAction(getSlotName(), "drinking;"
-																 + System.currentTimeMillis(), 15.0).fire(player, sentence, npc);
-							}
-						},
-						new InflictStatusOnNPCAction("napój z oliwką")
-						));
+					new IncreaseXPAction(200),
+					new DropItemAction("napój z oliwką"),
+					new ChatAction() {
+						@Override
+						public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+							int pieAmount = Rand.roll1D6() + 1;
+							new EquipItemAction("tarta z rybnym nadzieniem", pieAmount, true).fire(player, sentence, npc);
+							npc.say("Dziękuję!! Proszę, weź " +
+									Grammar.thisthese(pieAmount) + " " +
+									Grammar.quantityplnoun(pieAmount, "tarta z rybnym nadzieniem", "") +
+									" z mojej kuchni i pocałunek ode mnie.");
+							new SetQuestAndModifyKarmaAction(getSlotName(), "drinking;" + System.currentTimeMillis(), 15.0).fire(player, sentence, npc);
+						}
+					},
+					new InflictStatusOnNPCAction("napój z oliwką")));
 
 		npc.add(
 			ConversationStates.ATTENDING, triggers,
@@ -176,7 +174,7 @@ npc.add(ConversationStates.ATTENDING,
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Amazon Princess",
+				"Księżniczka Amazonki",
 				"Spragniona księżniczka chce pić.",
 				true);
 		offerQuestStep();
@@ -190,7 +188,7 @@ npc.add(ConversationStates.ATTENDING,
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Princess Esclara powitała mnie w domu na Amazon Island.");
+		res.add("Księżniczka Esclara powitała mnie w domu na wyspie Amazonki.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Prosiła mnie aby dostarczył jej napój z oliwką, ale ja nie wiem czy znajdę czas na to.");
@@ -205,7 +203,7 @@ npc.add(ConversationStates.ATTENDING,
             if (isRepeatable(player)) {
                 res.add("Dostarczyłem napój dla księżniczki, ale założę się, że jest gotowa na następny. Może będę miał więcej tart z rybą.");
             } else {
-                res.add("Princess Esclara uwielbia napój z oliwką, dostarczyłem go jej. Dostałem tartę z nadzieniem rybnym i pocałunek!!");
+                res.add("Księżniczka Esclara uwielbia napój z oliwką, dostarczyłem go jej. Dostałem tartę z nadzieniem rybnym i pocałunek!!");
             }
 		}
 		return res;
