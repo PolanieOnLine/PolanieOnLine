@@ -11,7 +11,7 @@
 			<atk value="278"/>
 			<def value="49"/>
 			<hp value="175"/>
-			<speed value="0.5"/>
+			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="29"/>
@@ -258,7 +258,7 @@
 
 	<creature name="krasnal">
 		<type class="stendhal/dwarf" subclass="dwarf" tileid="dwarf.png:1"/>
-		<description>Widzisz krasnala. Ten zamiast siedzieć w altance idzie szukać w kopalni złota.</description>
+		<description>Oto krasnal. Ten zamiast siedzieć w altance idzie szukać w kopalni złota.</description>
 		<attributes>
 			<atk value="168"/>
 			<def value="26"/>
@@ -367,7 +367,7 @@
 			<atk value="244"/>
 			<def value="43"/>
 			<hp value="160"/>
-			<speed value="1.0"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="25"/>
