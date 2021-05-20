@@ -1,5 +1,11 @@
 Changelog
 ---------
+1.21
+*świat*
+- Za wykonanie zadania u Księżniczki Esclari otrzymamy doświadczenie
+- Zmieniono prędkość poruszania się stworów takich jak: duergar oraz krasnal bohater
+
+
 1.20
 *klient*
 - Dodano nowe grafiki przedmiotów
