@@ -52,7 +52,7 @@ import games.stendhal.server.maps.Region;
  * STEPS:
  * <ul>
  * <li>1. Lorenz ask you for a scythe to bring him</li>
- * <li>2. You have to ask Princess Esclara for a 'reason'</li>
+ * <li>2. You have to ask Księżniczka Esclara for a 'reason'</li>
  * <li>3. You have to bring him an egg</li>
  * <li>4. You have to inform Princess Ylflia</li>
  * <li>5. You have to bring him a barbarian armor</li>
@@ -125,7 +125,7 @@ import games.stendhal.server.maps.Region;
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 				new PlayerHasItemWithHimCondition("kosa")),
 				ConversationStates.ATTENDING,
-				"Dziękuję!! Pierwszą część mamy za sobą! Teraz mogę ściąć wszystkie te kwiatki! Zapytaj Princess Esclara dlaczego tutaj jestem! Sądzę, że coś powie, gdy podasz jej moje imię...",
+				"Dziękuję!! Pierwszą część mamy za sobą! Teraz mogę ściąć wszystkie te kwiatki! Zapytaj Księżniczki Esclarii dlaczego tutaj jestem! Sądzę, że coś powie, gdy podasz jej moje imię...",
 				new MultipleActions(reward));
 
 		npc.add(
@@ -144,7 +144,7 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step3() {
-	final SpeakerNPC npc = npcs.get("Princess Esclara");
+	final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
 
 		npc.add(ConversationStates.ATTENDING, "Lorenz",
 				new QuestInStateCondition(QUEST_SLOT, "capture"),
@@ -172,14 +172,14 @@ import games.stendhal.server.maps.Region;
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "capture"),
 				ConversationStates.ATTENDING,
-				"Proszę zapytaj Princess Esclara dlaczego tutaj jestem! Sądzę, że wypowiadając moje imię sprowokujesz ją do wyjawienia powodu",
+				"Proszę zapytaj Księżniczki Esclarii dlaczego tutaj jestem! Sądzę, że wypowiadając moje imię sprowokujesz ją do wyjawienia powodu",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
 				ConversationStates.ATTENDING,
-				"Założę się, że Princess Esclara powiedziała, że zostałem uwięziony za #tunel ... ",
+				"Założę się, że Księżniczka Esclara powiedziała, że zostałem uwięziony za #tunel ... ",
 				null);
 	}
 
@@ -196,7 +196,7 @@ import games.stendhal.server.maps.Region;
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "jajo"),
 						new PlayerHasItemWithHimCondition("jajo")),
 						ConversationStates.ATTENDING,
-						"Dziękuję przyjacielu. Teraz musisz powiedzieć Princess Ylflia w Zamku Kalavan, że jestem tutaj #uwięziony. Pospiesz się!",
+						"Dziękuję przyjacielu. Teraz musisz powiedzieć Księżniczce Ylflii w Zamku Kalavan, że jestem tutaj #uwięziony. Pospiesz się!",
 						new MultipleActions(reward));
 
 		npc.add(
@@ -215,19 +215,19 @@ import games.stendhal.server.maps.Region;
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("jailed", "uwięziony"),
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
-				ConversationStates.ATTENDING, "Wiem to, *Jestem* uwięziony! Potrzebuję Ciebie, abyś powiedział Princess Ylflia, że jestem tutaj!",
+				ConversationStates.ATTENDING, "Wiem to, *Jestem* uwięziony! Potrzebuję Ciebie, abyś powiedział Księżniczce Ylflii, że jestem tutaj!",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
 				ConversationStates.ATTENDING,
-				"Potrzebuję Ciebie, abyś poszedł do Princess Ylflia i powiedział, że jestem tutaj #uwięziony.",
+				"Potrzebuję Ciebie, abyś poszedł do Księżniczki Ylflii i powiedział, że jestem tutaj #uwięziony.",
 				null);
 	}
 
 	private void step6() {
-	final SpeakerNPC npc = npcs.get("Princess Ylflia");
+	final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("jailed", "Lorenz", "uwięziony"),
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
@@ -255,7 +255,7 @@ import games.stendhal.server.maps.Region;
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "greetings"),
 				ConversationStates.ATTENDING,
-				"Teraz musisz porozmawiać z Princess Ylflia ... Mam nadzieję, że przesłała swoje najgorętsze #pozdrowienia...",
+				"Teraz musisz porozmawiać z Księżniczką Ylflią... Mam nadzieję, że przesłała swoje najgorętsze #pozdrowienia...",
 				null);
 	}
 
@@ -273,7 +273,7 @@ import games.stendhal.server.maps.Region;
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
 						new PlayerHasItemWithHimCondition("zbroja barbarzyńcy")),
 						ConversationStates.ATTENDING,
-						"To wszystko! Teraz jestem gotowy do mojej ucieczki! Oto coś dla Ciebie. Ukradłem Princess Esclara! Żeby tylko się nie dowiedziała. Teraz zostaw mnie!",
+						"To wszystko! Teraz jestem gotowy do mojej ucieczki! Oto coś dla Ciebie. Ukradłem Księżniczce Esclari! Żeby tylko się nie dowiedziała. Teraz zostaw mnie!",
 						new MultipleActions(reward));
 
 		npc.add(
@@ -323,7 +323,7 @@ import games.stendhal.server.maps.Region;
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Lorenz chce abym udał się do Princess Esclara z zapytaniem: 'dlaczego on pojmany'. Muszę powiedzieć jej jego imię aby jej przypomnieć.");
+		res.add("Lorenz chce abym udał się do Księżniczki Esclari z zapytaniem: 'dlaczego on pojmany'. Muszę powiedzieć jej jego imię aby jej przypomnieć.");
 		if ("capture".equals(questState)) {
 			return res;
 		}
@@ -335,11 +335,11 @@ import games.stendhal.server.maps.Region;
 		if ("egg".equals(questState)) {
 			return res;
 		}
-		res.add("Teraz muszę powiedzieć Princess Ylflia, dlaczego Lorenz nie było tak długo ... Nie jestem nawet pewien, czy zna ją! Ale i tak muszę powiedzieć jej jego imię.");
+		res.add("Teraz muszę powiedzieć Księżniczce Ylflii, dlaczego Lorenz nie było tak długo... Nie jestem nawet pewien, czy zna ją! Ale i tak muszę powiedzieć jej jego imię.");
 		if ("jailed".equals(questState)) {
 			return res;
 		}
-		res.add("Princess Ylflia prosił mnie, aby przekazał Lorencowi pozdrowienia.");
+		res.add("Księżniczka Ylflia poprosiła mnie, abym przekazał Lorencowi pozdrowienia.");
 		if ("spoken".equals(questState)) {
 			return res;
 		}

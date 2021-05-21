@@ -47,7 +47,7 @@ import games.stendhal.server.maps.Region;
  *
  * PARTICIPANTS:
  * <ul>
- * <li>Princess Esclara, the Amazon Princess in a Hut on Amazon Island</li>
+ * <li>Księżniczka Esclara, the Amazon Princess in a Hut on Amazon Island</li>
  * </ul>
  *
  * STEPS:
@@ -79,7 +79,7 @@ public class AmazonPrincess extends AbstractQuest {
 
 
 	private void offerQuestStep() {
-		final SpeakerNPC npc = npcs.get("Princess Esclara");
+		final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
 npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -133,7 +133,7 @@ npc.add(ConversationStates.ATTENDING,
 	 * serves drinks to all, not just those with the quest
 	 */
 	private void bringCocktailStep() {
-		final SpeakerNPC npc = npcs.get("Princess Esclara");
+		final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
 		npc.add(
 			ConversationStates.ATTENDING, triggers,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new PlayerHasItemWithHimCondition("napój z oliwką")),
@@ -167,7 +167,7 @@ npc.add(ConversationStates.ATTENDING,
 			ConversationStates.ATTENDING, triggers,
 			new QuestNotInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
-			"Czasami mógłbyś mi wyświadczyć #przysługę ...", null);
+			"Czasami mógłbyś mi wyświadczyć #przysługę...", null);
 
 	}
 
@@ -243,6 +243,6 @@ npc.add(ConversationStates.ATTENDING,
 
 	@Override
 	public String getNPCName() {
-		return "Princess Esclara";
+		return "Księżniczka Esclara";
 	}
 }

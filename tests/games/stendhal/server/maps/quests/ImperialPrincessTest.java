@@ -78,7 +78,7 @@ public class ImperialPrincessTest {
 		en.step(player, "hi");
 		assertEquals("Leave me! Can't you see I am trying to eat?", getReply(npc));
 
-		npc = SingletonRepository.getNPCList().get("Princess Ylflia");
+		npc = SingletonRepository.getNPCList().get("Księżniczka Ylflia");
 		en = npc.getEngine();
 		// she uses the player level for this, so lets set the player level  to what it was in this test
 		player.setLevel(270);
@@ -180,7 +180,7 @@ public class ImperialPrincessTest {
 		en.step(player, "hi");
 		assertEquals("Leave me! Can't you see I am trying to eat?", getReply(npc));
 
-		npc = SingletonRepository.getNPCList().get("Princess Ylflia");
+		npc = SingletonRepository.getNPCList().get("Księżniczka Ylflia");
 		en = npc.getEngine();
 
 		en.step(player, "hi");

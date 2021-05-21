@@ -51,7 +51,7 @@ public class AmazonPrincessTest {
 	public void setUp() {
 		final ZoneConfigurator zoneConf = new PrincessNPC();
 		zoneConf.configureZone(new StendhalRPZone("admin_test"), null);
-		npc = SingletonRepository.getNPCList().get("Princess Esclara");
+		npc = SingletonRepository.getNPCList().get("Księżniczka Esclara");
 		en = npc.getEngine();
 
 		final AbstractQuest quest = new AmazonPrincess();

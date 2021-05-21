@@ -53,7 +53,7 @@ public class JailedBarbarianTest {
 		new games.stendhal.server.maps.kalavan.castle.PrincessNPC().configureZone(zone, null);
 
 		final AbstractQuest quest = new JailedBarbarian();
-		// princess Esclara's greeting response is defined in her quest
+		// Księżniczka Esclara's greeting response is defined in her quest
 		final AbstractQuest quest2 = new AmazonPrincess();
 		quest.addToWorld();
 		quest2.addToWorld();
@@ -96,7 +96,7 @@ public class JailedBarbarianTest {
 		assertEquals("I already asked you to bring me a #scythe to cut the flowers down!", getReply(npc));
 		en.step(player, "scythe");
 		// [15:41] lula earns 1000 experience points.
-		assertEquals("Thank you!! First part is done! Now I can cut all flowers down! Now please ask Princess Esclara why I am here! I think saying my name should tell her something...", getReply(npc));
+		assertEquals("Thank you!! First part is done! Now I can cut all flowers down! Now please ask Księżniczka Esclara why I am here! I think saying my name should tell her something...", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye bye, and cut down some of these ugly flowers!", getReply(npc));
 
@@ -105,12 +105,12 @@ public class JailedBarbarianTest {
 		en.step(player, "hi");
 		assertEquals("Flowers, flowers. All over here these ugly flowers!", getReply(npc));
 		en.step(player, "quest");
-		assertEquals("Please go ask Princess Esclara why I am here! I think saying my name should prompt her to tell you", getReply(npc));
+		assertEquals("Please go ask Księżniczka Esclara why I am here! I think saying my name should prompt her to tell you", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye bye, and cut down some of these ugly flowers!", getReply(npc));
 
 		// -----------------------------------------------
-		npc = SingletonRepository.getNPCList().get("Princess Esclara");
+		npc = SingletonRepository.getNPCList().get("Księżniczka Esclara");
 		en = npc.getEngine();
 
 		en.step(player, "hi");
@@ -142,7 +142,7 @@ public class JailedBarbarianTest {
 		en.step(player, "hi");
 		assertEquals("Flowers, flowers. All over here these ugly flowers!", getReply(npc));
 		en.step(player, "quest");
-		assertEquals("I bet Princess Esclara said I was imprisoned because of the #tunnel ... ", getReply(npc));
+		assertEquals("I bet Księżniczka Esclara said I was imprisoned because of the #tunnel ... ", getReply(npc));
 		en.step(player, "tunnel");
 		assertEquals("What she drives me nuts, like all the flowers! This makes me hungry, go and get an #egg for me! Just let me know, you got one.", getReply(npc));
 		en.step(player, "egg");
@@ -161,9 +161,9 @@ public class JailedBarbarianTest {
 		assertEquals("I asked you to fetch an #egg for me!", getReply(npc));
 		en.step(player, "egg");
 		// [15:43] lula earns 1000 experience points.
-		assertEquals("Thank you again my friend. Now you have to tell Princess Ylflia, in Kalavan Castle, that I am #jailed here. Please hurry up!", getReply(npc));
+		assertEquals("Thank you again my friend. Now you have to tell Księżniczka Ylflia, in Kalavan Castle, that I am #jailed here. Please hurry up!", getReply(npc));
 		en.step(player, "jailed");
-		assertEquals("I know that *I'm* jailed! I need you to go tell Princess Ylflia that I am here!", getReply(npc));
+		assertEquals("I know that *I'm* jailed! I need you to go tell Księżniczka Ylflia that I am here!", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye bye, and cut down some of these ugly flowers!", getReply(npc));
 
@@ -172,11 +172,11 @@ public class JailedBarbarianTest {
 		en.step(player, "hi");
 		assertEquals("Flowers, flowers. All over here these ugly flowers!", getReply(npc));
 		en.step(player, "quest");
-		assertEquals("I need you to go tell Princess Ylflia that I am #jailed here.", getReply(npc));
+		assertEquals("I need you to go tell Księżniczka Ylflia that I am #jailed here.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye bye, and cut down some of these ugly flowers!", getReply(npc));
 
-		npc = SingletonRepository.getNPCList().get("Princess Ylflia");
+		npc = SingletonRepository.getNPCList().get("Księżniczka Ylflia");
 		en = npc.getEngine();
 		en.step(player, "hi");
 		assertEquals("How do you do?", getReply(npc));
@@ -213,7 +213,7 @@ public class JailedBarbarianTest {
 		assertEquals("I am waiting for you to bring me a barbarian #armor so I am strong enough to escape.", getReply(npc));
 		en.step(player, "armor");
 		// [15:43] lula earns 50000 experience points.
-		assertEquals("Thats all! Now I am prepared for my escape! Here is something I have stolen from Princess Esclara! Do not let her know. And now leave me!", getReply(npc));
+		assertEquals("Thats all! Now I am prepared for my escape! Here is something I have stolen from Księżniczka Esclara! Do not let her know. And now leave me!", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye bye, and cut down some of these ugly flowers!", getReply(npc));
 

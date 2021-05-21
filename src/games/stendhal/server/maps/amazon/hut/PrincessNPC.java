@@ -45,7 +45,7 @@ public class PrincessNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC princessNPC = new SpeakerNPC("Princess Esclara") {
+		final SpeakerNPC princessNPC = new SpeakerNPC("Księżniczka Esclara") {
 
 			@Override
 			protected void createPath() {

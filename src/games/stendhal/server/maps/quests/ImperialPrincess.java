@@ -99,22 +99,22 @@ public class ImperialPrincess extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Princess Ylflia zapytał mnie o zioła i mikstury, aby złagodzić ból jeńców w piwnicach Kalavan.");
+		res.add("Księżniczka Ylflia zapytała mnie o zioła i mikstury, aby złagodzić ból jeńców w piwnicach Kalavan.");
 		if (!questState.equals("recommended") && !questState.equals("done")) {
-			res.add("Muszę powiedzieć Princess Ylflia, że mam \" zioła \", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.");
+			res.add("Muszę powiedzieć Księżniczce Ylflii, że mam \" zioła \", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "recommended", "done")) {
-			res.add("Przyniosłem Princess Ylflia wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
+			res.add("Przyniosłem Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
 		}
 		if (questState.equals("done")) {
-			res.add("King Cozart nadał mi obywatelstwo Kalavan.");
+			res.add("Król Cozart nadał mi obywatelstwo Kalavan.");
 		}
 		return res;
 	}
 
 	private void step_1() {
 
-		final SpeakerNPC npc = npcs.get("Princess Ylflia");
+		final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -128,7 +128,7 @@ public class ImperialPrincess extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT,"recommended"),
 				ConversationStates.ATTENDING,
-				"Porozmawiaj z moim ojcem, Królem. Zapytałam się go o przyznanie Tobie obywatelstwa Kalavan, " +
+				"Porozmawiaj z moim ojcem, Królem Cozartem. Zapytałam się go o przyznanie Tobie obywatelstwa Kalavan, " +
 				"aby wyrazić Ci moją wdzięczność.",
 				null);
 
@@ -209,7 +209,7 @@ public class ImperialPrincess extends AbstractQuest {
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Princess Ylflia");
+		final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
 
 		/** If player has quest and not in state recommended,
 		 * we can check the slot to see what the stored level was.
@@ -245,7 +245,7 @@ public class ImperialPrincess extends AbstractQuest {
 								player.drop("antidotum", required_antidote);
 								player.drop("eliksir", required_potion);
 								player.drop("arandula", required_arandula);
-								raiser.say("Doskonale! Zarekomenduję Ciebie mojemu ojcu jako dobrą " +
+								raiser.say("Doskonale! Zarekomenduję Cie mojemu ojcu jako dobrą " +
 										"i pomocną osobę. On się zgodzi ze mną, że nadajesz się na " +
 										"obywatela Kalavan.");
 								player.addXP(level * 400);
@@ -313,7 +313,7 @@ public class ImperialPrincess extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Obywatelstwo Kalavan",
-				"Jeżeli chcesz dostać oficjalne obywatelstwo Kalavan City to najpierw musisz zapytać o pozwolenie króla nim porozmawiasz z jego córką Princess Ylflia...",
+				"Jeżeli chcesz dostać oficjalne obywatelstwo miasta Kalavan to najpierw musisz zapytać o pozwolenie króla nim porozmawiasz z jego córką Księżniczką Ylflią...",
 				true);
 		step_1();
 		step_2();
@@ -336,6 +336,6 @@ public class ImperialPrincess extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Princess Ylflia";
+		return "Księżniczka Ylflia";
 	}
 }
