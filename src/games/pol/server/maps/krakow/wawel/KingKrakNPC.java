@@ -51,8 +51,8 @@ public class KingKrakNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj młody wojowniku. Co ode mnie oczekujesz przychodząc na mój dziedziniec?");
-				addJob("Jestem królem państwa Polan.");
-				addOffer("Dla Ciebie mam #nic do zaoferowania!");
+				addJob("Jestem tutejszym królem.");
+				addOffer("Spytaj się strażnika wejścia o ofertę. Mogę jedynie zaoferować #zadanie dla Ciebie...");
 				addGoodbye();
 			}
 		};

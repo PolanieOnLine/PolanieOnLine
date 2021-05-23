@@ -51,7 +51,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 								if (player.isQuestCompleted(LUD3)) {
 									if (player.isQuestCompleted(LUD4)) {
 										if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-											raiser.say("Potrzebuję nowego płaszcza królewskiego. Aktualny mój płaszcz się powoli niszczy. Potrzebuję od Ciebie #'czarnego płaszcza smoczego' i to 10 sztuk! Przyniósłbyś byś mi to?");
+											raiser.say("Potrzebuję nowego królewskiego płaszcza. Potrzebuję od Ciebie #'czarnego płaszcza smoczego' i to 10 sztuk! W nagrodę otrzymasz ode mnie status szlachcica w na tych ziemiach. Pomożesz?");
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else {
@@ -81,7 +81,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.IDLE,
-			"Jako król państwa Polan, dziękuję Ci za pomoc!",
+			"Jako władca ziem Polan, dziękuję Ci za pomoc!",
 			null);
 
 		npc.add(
@@ -97,7 +97,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Może nie zasługujesz na miano rycerza... Jeszcze... Precz!",
+			"Może nie zasługujesz na miano szlachcica... Precz!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -15.0));
 	}
 
@@ -109,7 +109,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("czarny płaszcz smoczy",10)),
 			ConversationStates.ATTENDING,
-			"Widzę, że masz przy sobie płaszcze z czarnego smoka. Czy są one dla mnie?", null);
+			"Oto i przybył mój wysłannik za smoczymi płaszczami. Czuję, iż coś masz dla mnie, prawda?", null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -130,7 +130,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
-			"Dziękuję Ci za pomoc! Teraz mój królewski krawiec uszyje dla mnie nowy królewski płaszcz.",
+			"Dziękuję Ci za pomoc! Teraz mój królewski krawiec uszyje dla mnie nowy płaszcz.",
 			new MultipleActions(reward));
 
 		npc.add(
@@ -148,19 +148,19 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z królem Krakiem.");
+		res.add("Rozmawiałem z królem Krakiem. Za pomoc obiecał nadać mi status szlachcica.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam pomóc królowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Pomogę królowi.");
+			res.add("Postanowiłem pomóc królowi w wykonaniu nowego płaszcza.");
 		}
 		if ("start".equals(questState) && player.isEquipped("płaszcz czarnego smoka", 10) || "done".equals(questState)) {
-			res.add("Mam 10 płaszczy dla Króla Kraka.");
+			res.add("Posiadam już 10 płaszczy dla Króla Kraka.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Oddałem płaszcze królowi.");
+			res.add("Oddałem potrzebne przedmioty do wykonania królewskiego płaszcza.");
 		}
 		return res;
 	}
@@ -169,7 +169,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Królewski Płaszcz",
-				"Król Krak - władca królewskiego państwa Polan potrzebuje nowego królewskiego płaszcza.",
+				"Król Krak - władca ziem Polan potrzebuje nowego królewskiego płaszcza.",
 				false);
 		start();
 		done();
