@@ -2,8 +2,11 @@ Changelog
 ---------
 1.21
 *świat*
-- Za wykonanie zadania u Księżniczki Esclari otrzymamy doświadczenie
+- Dodano możliwość skupu skóry białego tygrysa u Bogusia
+- Wykonanie zadania u Księżniczki Esclari otrzymamy doświadczenie
 - Zmieniono prędkość poruszania się stworów takich jak: duergar oraz krasnal bohater
+- Poprawiono dialogi z Królem Krakiem
+- Spolszczono niektórym NPC nazwy
 
 
 1.20
