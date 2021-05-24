@@ -733,7 +733,7 @@
 		<item name="skóra złotego smoka" price="6800" />
 	</shop>
 
-	<!-- Boguś kupuje: -->
+	<!-- Kelas kupuje: -->
 	<shop name="buypiora" type="buys">
 		<item name="piórko" price="4" />
 		<item name="pióro anioła" price="3500" />
