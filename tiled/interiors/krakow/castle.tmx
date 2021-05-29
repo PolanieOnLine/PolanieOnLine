@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="45" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="tower_stone_drewno" tilewidth="32" tileheight="32" tilecount="18" columns="3">
+  <image source="../../tileset/pol/domki/tower_stone_drewno.png" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="19" name="deski_kaflee" tilewidth="32" tileheight="32" tilecount="16" columns="2">
+  <image source="../../tileset/pol/domki/podloga/deski_kaflee.png" width="64" height="256"/>
+ </tileset>
+ <tileset firstgid="35" name="barbamur" tilewidth="32" tileheight="32" tilecount="52" columns="13">
+  <image source="../../tileset/pol/domki/barbakan_mury.png" width="416" height="128"/>
+ </tileset>
+ <tileset firstgid="87" name="trawa" tilewidth="32" tileheight="32" tilecount="33" columns="3">
+  <image source="../../tileset/ground/ground.png" width="96" height="352"/>
+ </tileset>
+ <tileset firstgid="120" name="tower_stone_dzwonnica" tilewidth="32" tileheight="32" tilecount="51" columns="3">
+  <image source="../../tileset/pol/domki/tower_stone_dzwonnica.png" width="96" height="544"/>
+ </tileset>
+ <tileset firstgid="171" name="tower_stone_top" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/pol/domki/tower_stone_top.png" width="128" height="128"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJzt2LEJACEMQNHMIWJxS+n+k5xF7ORA8WICv/hFisBLmyQiqZcXKrpzuwjGL7NX48wcxTqK5iXaqWpN+3tuB80WYcaMGTNmzJgxY8aM2d5MRDY9Dgyr5YDu2d/Z6w0vsfkYaw==
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztmM0Kg0AMhLe19Wb/3qg9F9//cRohAXsQHVPHKjMwhIm77HfJwTSllKu5MV/caB7qIeen5q7ezA+vdzeah3rI+am5X7cgMXO0R+aY0fcKjrdR5ug/y/e8M/IY09j31vzq9Rk5y7yGxMyRmDkSM0di5kjMHImZIzFzlGU+mI/uCsxz7lQ/YD6Zz+4azHPu1Anm+CfL7H6y+yKUOfqZ3U92X4Qy/6PEzNGWmWNGtX9edv/8AemaLTY=
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztxyEBAAAIAzDaIOjfjxDHsblVAdzq8BMeAAAAAD5Z4BABSQ==
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztzrENgDAAA8GMQ+ghswIrMCRegAqUgHQnfeHOpQBftKV9YMfD/1Oqae6037CkNbVOGwAA/uocEABw7wLXby8i
+  </data>
+ </layer>
+ <layer id="5" name="objects" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAIBXAxfoAAE=
+  </data>
+ </layer>
+ <layer id="7" name="collision" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAIBXAxfoAAE=
+  </data>
+ </layer>
+ <layer id="6" name="protection" width="45" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAIBXAxfoAAE=
+  </data>
+ </layer>
+</map>
