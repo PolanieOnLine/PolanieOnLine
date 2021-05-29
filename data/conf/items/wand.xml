@@ -145,4 +145,25 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+	<item name="różdżka spowolnienia">
+		<type class="wand" subclass="magic_wand_of_gods" tileid="-1"/>
+		<description>Oto różdżka spowolnienia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="0" condition="!testing.combat"/>
+			<ratk value="0" condition="testing.combat"/>
+			<range value="4"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="51496"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>

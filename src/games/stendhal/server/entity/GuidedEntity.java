@@ -36,6 +36,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 
 	/** The entity's default speed value */
 	protected double baseSpeed;
+	protected double defaultSpeed;
 
 	private final EntityGuide guide = new EntityGuide();
 
@@ -63,6 +64,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 */
 	public GuidedEntity() {
 		baseSpeed = 0;
+		defaultSpeed = 0;
 		guide.guideMe(this);
 	}
 
@@ -75,6 +77,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	public GuidedEntity(final RPObject object) {
 		super(object);
 		baseSpeed = 0;
+		defaultSpeed = 0;
 		guide.guideMe(this);
 		update();
 	}
@@ -99,6 +102,14 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 */
 	public final void setBaseSpeed(final double bs) {
 		this.baseSpeed = bs;
+	}
+
+	public final double getDefaultSpeed() {
+		return this.defaultSpeed;
+	}
+
+	public final void setDefaultSpeed(final double bs) {
+		this.defaultSpeed = bs;
 	}
 
 	//

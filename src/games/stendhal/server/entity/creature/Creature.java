@@ -187,6 +187,7 @@ public class Creature extends NPC {
 		this();
 
 		this.baseSpeed = copy.baseSpeed;
+		this.defaultSpeed = copy.baseSpeed;
 		setSize((int) copy.getWidth(), (int) copy.getHeight());
 
 		setCorpse(copy.getCorpseName(), copy.getHarmlessCorpseName(), copy.getCorpseWidth(), copy.getCorpseHeight());
@@ -337,6 +338,7 @@ public class Creature extends NPC {
 		this();
 
 		this.baseSpeed = baseSpeed;
+		this.defaultSpeed = baseSpeed;
 
 		setSize(width, height);
 

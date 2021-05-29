@@ -441,6 +441,15 @@ public class StendhalRPAction {
 		}
 
 		if (isRanged) {
+			if (player.getWandWeapon().getName().equals("różdżka spowolnienia")) {
+				if (defender.getBaseSpeed() == defender.getDefaultSpeed()) {
+					if (defender.getSize() <= 1) {
+						defender.setBaseSpeed(defender.getBaseSpeed()/(1 + defender.getSize()));
+					} else {
+						defender.setBaseSpeed(defender.getBaseSpeed()/defender.getSize());
+					}
+				}
+			}
 			// Removing the missile is deferred here so that the weapon
 			// information is available when calculating the damage.
 			useMissile(player);
