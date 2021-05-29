@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<achievements xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../achievements.xsd ">
+
+	<implementation class-name="games.stendhal.server.ExperienceAchievementFactory"/>
+	<type subclass="experience.png"/>
+
+	<achievement id="xp.level.050" title="Chłop" description="Osiągnął poziom 50">
+		<attributes>
+			<score value="1"/>
+			<condition value="new LevelGreaterThanCondition(49)"/>
+		</attributes>
+	</achievement>
+</achievements>

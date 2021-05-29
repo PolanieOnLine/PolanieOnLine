@@ -22,10 +22,12 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.WordList;
+import games.stendhal.server.core.config.AchievementGroupsXMLLoader;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
 import games.stendhal.server.core.config.ItemGroupsXMLLoader;
 import games.stendhal.server.core.config.ShopsXMLLoader;
 import games.stendhal.server.core.config.SpellGroupsXMLLoader;
+import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.Creature;
@@ -57,6 +59,9 @@ public class DefaultEntityManager implements EntityManager {
 	/** lists all spell that are being used at least once . */
 	private final Map<String, Spell> createdSpell;
 
+	private final Map<String, Achievement> createdAchievement;
+	private final Map<String, DefaultAchievement> classToAchievement;
+
 	/**
 	 * lists all loaded default spells that are usable
 	 */
@@ -70,13 +75,39 @@ public class DefaultEntityManager implements EntityManager {
 		createdCreature = new HashMap<String, Creature>();
 		createdItem = new HashMap<String, Item>();
 		createdSpell = new HashMap<String, Spell>();
+		createdAchievement = new HashMap<String, Achievement>();
 		classToItem = new HashMap<String, DefaultItem>();
 		nameToSpell = new HashMap<String, DefaultSpell>();
+		classToAchievement = new HashMap<String, DefaultAchievement>();
 		buildItemTables();
 		buildCreatureTables();
 		buildSpellTables();
+		buildAchievementTables();
 
 		ShopsXMLLoader.get().init();
+	}
+
+	private void buildAchievementTables() {
+		try {
+			final AchievementGroupsXMLLoader loader = new AchievementGroupsXMLLoader(new URI("/data/conf/achievements.xml"));
+			final List<DefaultAchievement> items = loader.load();
+
+			for (final DefaultAchievement item : items) {
+				final String clazz = item.getAchievementClass();
+
+				if (classToAchievement.containsKey(clazz)) {
+					LOGGER.warn("Repeated achievement name: " + clazz);
+				}
+
+				classToAchievement.put(clazz, item);
+
+				String typeString = ExpressionType.OBJECT;
+
+				WordList.getInstance().registerName(item.getId(), typeString);
+			}
+		} catch (final Exception e) {
+			LOGGER.error("achievements.xml could not be loaded", e);
+		}
 	}
 
 	/**
@@ -417,5 +448,19 @@ public class DefaultEntityManager implements EntityManager {
 	@Override
 	public Collection<String> getConfiguredSpells() {
 		return nameToSpell.keySet();
+	}
+
+	@Override
+	public boolean addAchievement(DefaultAchievement ach) {
+		final String clazz = ach.getAchievementClass();
+
+		if (classToAchievement.containsKey(clazz)) {
+			LOGGER.warn("Repeated item name: " + clazz);
+			return false;
+		}
+
+		classToAchievement.put(clazz, ach);
+
+		return true;
 	}
 }

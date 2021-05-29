@@ -16,9 +16,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.constants.Testing;
+import games.stendhal.server.core.config.AchievementGroupsXMLLoader;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
+import games.stendhal.server.core.rule.defaultruleset.DefaultAchievement;
 import games.stendhal.server.entity.npc.ChatCondition;
 /**
  * Factory class for achievements creation with a fixed category
@@ -37,7 +38,8 @@ public abstract class AbstractAchievementFactory {
 	 *
 	 * @return the achievments
 	 */
-	public abstract Collection<Achievement> createAchievements();
+	//public abstract Collection<Achievement> createAchievements();
+	public abstract Collection<DefaultAchievement> createAchievements();
 
 	/**
 	 * Creates a single achievement
@@ -57,7 +59,7 @@ public abstract class AbstractAchievementFactory {
 	 * Create a list of all known achievement factories
 	 * @return the list of factories
 	 */
-	public static List<AbstractAchievementFactory> createFactories() {
+	/*public static List<AbstractAchievementFactory> createFactories() {
 		List<AbstractAchievementFactory> list = new LinkedList<AbstractAchievementFactory>();
 		//add new created factories here
 		list.add(new AdosItemQuestAchievementsFactory());
@@ -89,6 +91,16 @@ public abstract class AbstractAchievementFactory {
 		list.add(new GdanskJewelleryQuestAchievementFactory());
 		list.add(new RebornAchievementFactory());
 		list.add(new CiupagaAchievementFactory());
+		return list;
+	}*/
+
+	public static List<AchievementGroupsXMLLoader> createFactories() {
+		// create loaders for each factory type of achieve
+		AchievementGroupsXMLLoader ExperienceAchievementLoader = new AchievementGroupsXMLLoader("achievements/experience.xml");
+
+		List<AchievementGroupsXMLLoader> list = new LinkedList<AchievementGroupsXMLLoader>();
+		//add loaders into the list
+		list.add(ExperienceAchievementLoader);
 		return list;
 	}
 }

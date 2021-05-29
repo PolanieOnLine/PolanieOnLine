@@ -12,13 +12,17 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.factory;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.server.core.rp.achievement.Achievement;
+import org.xml.sax.SAXException;
+
+import games.stendhal.server.core.config.AchievementsXMLLoader;
 import games.stendhal.server.core.rp.achievement.Category;
-import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
+import games.stendhal.server.core.rule.defaultruleset.DefaultAchievement;
 /**
  * Factory for experience achievements
  *
@@ -46,9 +50,12 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 	}
 
 	@Override
-	public Collection<Achievement> createAchievements() {
-		List<Achievement> xpAchievements = new LinkedList<Achievement>();
-		xpAchievements.add(createAchievement(
+	public Collection<DefaultAchievement> createAchievements() {
+		List<DefaultAchievement> xpAchievements = new LinkedList<DefaultAchievement>();
+		//create loader instance
+		AchievementsXMLLoader xpLoader = new AchievementsXMLLoader();
+		
+		/*xpAchievements.add(createAchievement(
 				ID_PAROBEK, "Parobek", "Osiągnął poziom 10",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(9)));
@@ -112,7 +119,25 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 				ID_KROL, "Król", "Osiągnął poziom 597",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(596)));
+		*/
+		URI achievementURI = null;
+		try {
+			achievementURI = new URI("achievements/experience.xml");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		//try to load the achievements list from the resource file
+
+		try {
+			xpAchievements = xpLoader.load(achievementURI);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//return achievements list
 		return xpAchievements;
 	}
 
