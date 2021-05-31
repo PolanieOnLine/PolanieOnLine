@@ -202,6 +202,14 @@ public class ImproverAdder {
 					int atk = toImprove.getAttack();
 					int def = toImprove.getDefense();
 					currentUpgradeFee = (improves + 1) * ((atk + def) * 2500);
+					/*
+					 * This condition is only used if someone didn't add the item to list in PlayerTransformer
+					 * if "max_improves" has been changed for item.
+					 */
+					if (toImprove.getImprove() > toImprove.getMaxImproves()) {
+						// Set fee to '0'.
+						currentUpgradeFee *= 0;
+					}
 
 					if (foundMoreThanOne) {
 						improver.say("Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?");

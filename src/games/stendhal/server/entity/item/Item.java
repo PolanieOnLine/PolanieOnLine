@@ -1077,6 +1077,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		return 0;
 	}
 
+	public void setImprove(int improve) {
+		put("improve", improve); 
+	}
+
 	/**
 	 * Checks the item if has been max improved.
 	 *
@@ -1109,6 +1113,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * Increase "improve" value of the item.
 	 */
 	public void upgradeItem() {
-		put("improve", improveUp());
+		/*
+		 * Checking if the item have more improved value than "max_improves" attr is set.
+		 * Then replace current value with value of attr "max_improves" otherwise improve up normal value.
+		 */
+		if (getImprove() > getMaxImproves()) {
+			setImprove(getMaxImproves());
+		} else { 
+			setImprove(improveUp());
+		}
 	}
 }
