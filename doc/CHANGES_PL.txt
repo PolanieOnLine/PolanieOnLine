@@ -8,6 +8,9 @@ Changelog
 - Poprawiono dialogi z Królem Krakiem
 - Spolszczono niektórym NPC nazwy
 
+*naprawiono błędy*
+- Naprawiono zakładanie hełmu monarchistycznego
+
 
 1.20
 *klient*
