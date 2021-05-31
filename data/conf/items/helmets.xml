@@ -559,7 +559,7 @@
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
-			<slot name="helmet"/>
+			<slot name="head"/>
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
