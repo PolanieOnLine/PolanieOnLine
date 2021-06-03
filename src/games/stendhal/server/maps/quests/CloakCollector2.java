@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -65,17 +64,18 @@ import games.stendhal.server.maps.Region;
  * REPETITIONS: - None.
  */
 public class CloakCollector2 extends AbstractQuest {
+	private static final String OLD_QUEST = "cloaks_collector";
+	private static final String QUEST_SLOT = "cloaks_collector_2";
 
-    private static final List<String> NEEDEDCLOAKS2 = Arrays.asList("płaszcz karmazynowy", "płaszcz cieni", "płaszcz xenocyjski",
-								       "płaszcz elficki", "płaszcz chaosu", "płaszcz mainiocyjski",
-								       "złoty płaszcz", "czarny płaszcz smoczy");
-    private static final String OLD_QUEST = "cloaks_collector";
-    private static final String QUEST_SLOT = "cloaks_collector_2";
+	// NPC
+	private static final String NPC_NAME = "Josephine";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
-    @Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private static final List<String> NEEDEDCLOAKS2 = Arrays.asList(
+			"płaszcz karmazynowy", "płaszcz cieni", "płaszcz xenocyjski",
+			"płaszcz elficki", "płaszcz chaosu", "płaszcz mainiocyjski",
+			"złoty płaszcz", "czarny płaszcz smoczy");
+
 	/**
 	 * Returns a list of the names of all cloaks that the given player still has
 	 * to bring to fulfill the quest.
@@ -87,7 +87,6 @@ public class CloakCollector2 extends AbstractQuest {
 	 * @return A list of cloak names
 	 */
 	private List<String> missingcloaks2(final Player player, final boolean hash) {
-
 		String doneText2 = player.getQuest(QUEST_SLOT);
 		final List<String> neededCopy2 = new LinkedList<String>(NEEDEDCLOAKS2);
 
@@ -108,9 +107,7 @@ public class CloakCollector2 extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Josephine");
-
-		// player says hi before starting the quest
+		// Player says hi before starting the quest
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -124,7 +121,7 @@ public class CloakCollector2 extends AbstractQuest {
 				"Witaj ponownie przybyszu! Doszły mnie słuchy o nowych płaszczach, i żałuję że poprzednio Cię o nie nie poprosiłam, ale nie przepadałam za nimi. Obawiam się, że moja #kolekcja jest niekompletna...",
 				null);
 
-		// player asks what cloaks are needed
+		// Player asks what cloaks are needed
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				Arrays.asList("collection", "kolekcja"),
 				null,
@@ -146,7 +143,8 @@ public class CloakCollector2 extends AbstractQuest {
 						return "list missingcloaks2";
 					}
 				});
-		// player says yes
+
+		// Player says yes
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -166,7 +164,7 @@ public class CloakCollector2 extends AbstractQuest {
 					}
 				});
 
-		// player is not willing to help
+		// Player is not willing to help
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
@@ -185,7 +183,7 @@ public class CloakCollector2 extends AbstractQuest {
 					}
 				});
 
-		// player asks about an individual cloak. We used the trick before that all cloaks were named by colour
+		// Player asks about an individual cloak. We used the trick before that all cloaks were named by colour
 		// (their subclass) - so she would tell them what colour it was. In this case it fails for elvish,
 		// xeno and shadow which are not named by colour. So, this time she'll say, e.g.
 		// It's a shadow cloak, sorry if that's not much help, so will you find them all?
@@ -203,7 +201,7 @@ public class CloakCollector2 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("I don't know " + obj.getOriginal() + ". Can you name me another cloak please?");
+							raiser.say("Nie kojarzę " + obj.getOriginal() + ". Mogę cię poprosić o podanie nazwy innego płaszcza?");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
@@ -226,11 +224,12 @@ public class CloakCollector2 extends AbstractQuest {
 					}
 			});
 		}
+
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				"",
 				null,
 				ConversationStates.QUEST_2_OFFERED,
-				"Sorry, I don't know about that. Please name me another cloak.",
+				"Przepraszam, ale nie kojarzę tego. Proszę podaj nazwę innego płaszcza.",
 				null);
 	}
 
@@ -239,9 +238,7 @@ public class CloakCollector2 extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Josephine");
-
-		// player returns while quest is still active
+		// Player returns while quest is still active
 		npc.add(
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -249,7 +246,8 @@ public class CloakCollector2 extends AbstractQuest {
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.QUESTION_2,
 				"Witaj z powrotem! Przyniosłeś ze sobą jakieś #płaszcze?", null);
-		// player asks what exactly is missing
+
+		// Player asks what exactly is missing
 		npc.add(ConversationStates.QUESTION_2,
 				Arrays.asList("cloaks", "płaszcze"),
 				null,
@@ -271,7 +269,8 @@ public class CloakCollector2 extends AbstractQuest {
 						return "enumerate missingcloaks2";
 					}
 				});
-		// player says he has a required cloak with him
+
+		// Player says he has a required cloak with him
 		npc.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -301,7 +300,7 @@ public class CloakCollector2 extends AbstractQuest {
 
 								if (missing.isEmpty()) {
 									rewardPlayer(player);
-									entity.say("Och, jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą Karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!");
+									entity.say("O jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą Karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item boots = SingletonRepository.getEntityManager().getItem("buty zabójcy");
 									boots.setBoundTo(player.getName());
@@ -340,7 +339,7 @@ public class CloakCollector2 extends AbstractQuest {
 				"Dobrze. Jeżeli potrzebujesz pomocy to powiedz.",
 				null);
 
-		// player says he didn't bring any cloaks to different question
+		// Player says he didn't bring any cloaks to different question
 		npc.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.NO_MESSAGES,
 				new ChatCondition() {
@@ -351,16 +350,18 @@ public class CloakCollector2 extends AbstractQuest {
 				}, ConversationStates.ATTENDING, "Dobrze w takim razie wróć później.",
 				null);
 
-		// player returns after finishing the quest but not rewarded
+		// Player returns after finishing the quest but not rewarded
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "done")),
 				ConversationStates.ATTENDING,
 				"Och! Nie nagrodziłam Ciebie za ponowną pomoc! Weź te buty. Sądzę, że są wspaniałe, ale nie pasują na mnie :(",
-				new MultipleActions(new EquipItemAction("buty zabójcy", 1, true), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
+				new MultipleActions(
+						new EquipItemAction("buty zabójcy", 1, true),
+						new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
-		//		 player returns after finishing the quest and was rewarded
+		// Player returns after finishing the quest and was rewarded
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -370,39 +371,39 @@ public class CloakCollector2 extends AbstractQuest {
 				null);
 	}
 
+	private static void rewardPlayer(final Player player) {
+		player.addKarma(100.0);
+		player.addXP(100000);
+	}
+
 	@Override
 	public void addToWorld() {
 		step_1();
 		step_2();
 		step_3();
 		fillQuestInfo(
-				"Płaszcze dla Kolekcjonera II",
+				"Płaszcze Kolekcjonerki II",
 				"Josephine potrzebuję więcej płaszczy!",
 				false);
 	}
 
-	private static void rewardPlayer(final Player player) {
-		player.addKarma(100.0);
-		player.addXP(100000);
-      	}
-
 	@Override
-	public String getName() {
-		return "CloakCollector2";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		if (!isCompleted(player)) {
+			res.add("Muszę zebrać więcej płaszczy dla Josephine. Wciąż muszę " + Grammar.enumerateCollection(missingcloaks2(player, false)) + " zebrać.");
+		} else {
+			res.add("Mam wszystkie płaszcze jakie Josephine chciała, a ona dała mi wspaniałe buty mordercy.");
+		}
+		return res;
 	}
 
 	@Override
-	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			if (!isCompleted(player)) {
-				res.add("Muszę zebrać więcej płaszczy dla Josephine. Wciąż muszę " + Grammar.enumerateCollection(missingcloaks2(player, false)) + " zebrać.");
-			} else {
-				res.add("Mam wszystkie płaszcze jakie Josephine chciała, a ona dała mi wspaniałe buty mordercy.");
-			}
-			return res;
+	public String getName() {
+		return "Płaszcze Kolekcjonerki II";
 	}
 
 	// The previous quest likely requires at least this level.
@@ -416,8 +417,14 @@ public class CloakCollector2 extends AbstractQuest {
 	public String getRegion() {
 		return Region.FADO_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Josephine";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 }

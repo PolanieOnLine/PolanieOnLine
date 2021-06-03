@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -51,42 +50,19 @@ import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
  * <li> None.</li>
  * </ul>
  */
-public class ElvishArmor extends AbstractQuest implements
-		BringListOfItemsQuest {
-
+public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest {
 	private static final String QUEST_SLOT = "elvish_armor";
-
-	private BringListOfItemsQuestLogic bringItems;
 
 	private static final List<String> NEEDEDITEMS = Arrays.asList(
 			"zbroja elficka", "spodnie elfickie", "buty elfickie", "miecz elficki",
 			"płaszcz elficki", "tarcza elficka");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		return bringItems.getHistory(player);
-	}
-
+	private BringListOfItemsQuestLogic bringItems;
 
 	private void setupAbstractQuest() {
 		final BringListOfItemsQuest concreteQuest = this;
 		bringItems = new BringListOfItemsQuestLogic(concreteQuest);
 		bringItems.addToWorld();
-	}
-
-  	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Zbroja Elficka",
-				"Lupos elf Albinos chce zdobyć więdze o produkcji elvish armor. Pyta młodych podróżnych o przyniesienie kilku próbek.",
-				true);
-		offerSteps();
-		setupAbstractQuest();
 	}
 
 	@Override
@@ -245,11 +221,29 @@ public class ElvishArmor extends AbstractQuest implements
 				"Nie sądzę, abym mógł Tobie zaufać ... ", null);
 	}
 
+	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Zbroja Elficka",
+				"Lupos, elf Albinos, chce zdobyć więdzę o produkcji zbroi elfickiej. Pyta młodych podróżnych o przyniesienie kilku próbek.",
+				true);
+		offerSteps();
+		setupAbstractQuest();
+	}
 
+	@Override
+	public List<String> getHistory(final Player player) {
+		return bringItems.getHistory(player);
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
 
 	@Override
 	public String getName() {
-		return "ElvishArmor";
+		return "Zbroja Elficka";
 	}
 
 	@Override

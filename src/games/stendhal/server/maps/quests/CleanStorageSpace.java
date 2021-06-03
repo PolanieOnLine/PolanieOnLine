@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -32,13 +37,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import marauroa.common.Pair;
 
 /**
@@ -61,36 +59,11 @@ import marauroa.common.Pair;
 public class CleanStorageSpace extends AbstractQuest {
 	private static final String QUEST_SLOT = "clean_storage";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Eonna w jej domu obok piekarni.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę wyczyścić jej piwnicy z potworów.");
-		return res;	
-		}
-		res.add("Obiecałem Eonna zabić szczury i węże w piwnicy.");
-		if ("start".equals(questState) && player.hasKilled("szczur") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż") || "done".equals(questState)) {
-		res.add("Wyczyściłem piwnicę Eonny z gryzoni i węży.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Eonna podziękowała mi i nazwała mnie swoim bohaterem.");
-		}
-		return res;
-	}
-	
-	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Eonna");
+	// NPC
+	private static final String NPC_NAME = "Eonna";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
+	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -104,8 +77,6 @@ public class CleanStorageSpace extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Dziękuję jeszcze raz! Sądzę, że na dole jest nadal czysto.", null);
 
-		final List<ChatAction> start = new LinkedList<ChatAction>();
-		
 		final HashMap<String, Pair<Integer, Integer>> toKill = 
 			new HashMap<String, Pair<Integer, Integer>>();
 		// first number is required solo kills, second is required shared kills
@@ -113,6 +84,7 @@ public class CleanStorageSpace extends AbstractQuest {
 		toKill.put("szczur jaskiniowy", new Pair<Integer, Integer>(0,1));
 		toKill.put("wąż", new Pair<Integer, Integer>(0,1));
 
+		final List<ChatAction> start = new LinkedList<ChatAction>();
 		start.add(new IncreaseKarmaAction(2.0));
 		start.add(new SetQuestAction(QUEST_SLOT, 0, "start"));
 		start.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
@@ -127,7 +99,7 @@ public class CleanStorageSpace extends AbstractQuest {
 
 		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING,
-				"*chlip* Cóż może ktoś inny będzie moim bohaterem...",
+				"*chlip* Cóż, może ktoś inny będzie moim bohaterem...",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -2.0));
 
 		npc.add(
@@ -144,9 +116,6 @@ public class CleanStorageSpace extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Eonna");
-		
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new EquipItemAction("buteleczka wody", 10, true));
 		reward.add(new IncreaseKarmaAction(10.0));
@@ -189,15 +158,37 @@ public class CleanStorageSpace extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "CleanStorageSpace";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Eonne w jej domu, blisko piekarni.");
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if ("rejected".equals(questState)) {
+			res.add("Nie mam zamiaru pozbywać się potworów z jej piwnicy.");
+		return res;	
+		}
+		res.add("Obiecałem Eonnie zabić szczury i węże w piwnicy.");
+		if ("start".equals(questState) && player.hasKilled("szczur") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż") || "done".equals(questState)) {
+		res.add("Wyczyściłem piwnicę Eonny z gryzoni i węży.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Eonna podziękowała mi i nazwała mnie swoim bohaterem.");
+		}
+		return res;
 	}
-	
+
+	@Override
+	public String getName() {
+		return "Porządki w Piwnicy";
+	}
+
 	@Override
 	public int getMinLevel() {
 		return 0;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
@@ -205,6 +196,11 @@ public class CleanStorageSpace extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Eonna";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 }

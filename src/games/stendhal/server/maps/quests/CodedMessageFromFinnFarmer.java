@@ -1,4 +1,19 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
@@ -26,11 +41,6 @@ import games.stendhal.server.entity.npc.condition.TimeReachedCondition;
 import games.stendhal.server.entity.npc.condition.TriggerMatchesQuestSlotCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * QUEST: Coded Message from Finn Farmer
@@ -61,43 +71,17 @@ import java.util.List;
  * @author kymara, hendrik
  */
 public class CodedMessageFromFinnFarmer extends AbstractQuest {
-
-
 	private static final String QUEST_SLOT = "coded_message";
+
+	// NPC
+	private static final String NPC_NAME = "Finn Farmer";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
 	private static final int QUEST_INDEX_STATUS = 0;
 	private static final int QUEST_INDEX_MESSAGE = 1;
 	private static final int QUEST_INDEX_REPEATED = 2;
 	private static final int QUEST_INDEX_TIME = 3;
 	private static final int REQUIRED_MINUTES = 24 * 60;
-
-	@Override
-	public List<String> getHistory(Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Rozmawiałem w Ados z chłopcem o imieniu Finn Farmer.");
-		res.add("Finn poprosił mnie o przekazanie Georgowi tajnej wiadomości. Mogę go spotkać niedaleko jego psa Tommy w parku Ados.");
-
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if (questState.equals("rejected")) {
-			res.add("Ale odrzuciłem prośbę.");
-			return res;
-		}
-
-		res.add("Zgodziłem się na przekazanie wiadomości.");
-		if (questState.equals("deliver_to_george")) {
-			return res;
-		}
-
-		res.add("Po rozmowie z Georgiem dałem mu tajną wiadomość, którą muszę dostarczyć Finnowi.");
-		if (questState.equals("deliver_to_finn")) {
-			return res;
-		}
-		
-		res.add("Zakończyłem moją misję jako posłaniec. Finn Farmer prawie oszalał z przyłączenia, gdy przekazałem mu odpowiedź Georga.");
-		return res;
-	}
 
 	private String[][] TEMPLATES = new String[][] {
 		new String[] {
@@ -149,13 +133,11 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 	 * prepare Finn Farmer to start the quest
 	 */
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Finn Farmer");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, QUEST_INDEX_STATUS, "deliver_to_george"),
 				ConversationStates.ATTENDING,
-				"Dziękuję, że zgodziłeś się powiedzieć Georgowi tą wiadomość:",
+				"Dziękuję, że zgodziłeś się przekazać George'owi tą wiadomość:",
 				new SayTextAction("[quest.coded_message:1]"));
 
 
@@ -175,14 +157,14 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 						new QuestNotActiveCondition(QUEST_SLOT),
 						new TimeReachedCondition(QUEST_SLOT, QUEST_INDEX_TIME)),
 				ConversationStates.QUEST_OFFERED,
-				"Mam pilną wiadomość dla #Georgowi! Jest naprawdę ważna! Ale moi rodzice nie pozwalają mi samemu na spacery po Ados, jako że jestem małym dzieckiem! Czy mógłbyś dostarczyć mu tą wiadomość?",
+				"Mam pilną wiadomość dla #George'#a! Jest naprawdę ważna! Ale moi rodzice nie pozwalają mi samemu na spacerować po Ados, dlatego że jestem dzieckiem! Czy mógłbyś dostarczyć mu tą wiadomość?",
 				null);
 
 		npc.add(ConversationStates.QUEST_OFFERED, 
 				Arrays.asList("george", "georgowi"),
 				null,
 				ConversationStates.QUEST_OFFERED,
-				"Znajdź Tommiego. Może jest w Parku Ados. Georga nie będzie daleko. Czy mógłbyś dostarczyć mu tą wiadomość?",
+				"Znajdź Tommiego. Może jest w Parku Ados. George nie będzie daleko. Czy mógłbyś dostarczyć mu tą wiadomość?",
 				null);
 
 		npc.add(ConversationStates.QUEST_OFFERED, 
@@ -214,7 +196,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 				ConversationPhrases.GREETING_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, QUEST_INDEX_STATUS, "deliver_to_george"),
 				ConversationStates.ATTENDING,
-				"Nie powinnam rozmawiać z obcymi, ale wyglądasz na takiego co ma coś ważnego do powiedzenia. Co to jest?",
+				"Nie powinienem rozmawiać z obcymi, ale wyglądasz na takiego co ma coś ważnego do powiedzenia. Co to jest?",
 				null);
 
 		npc.add(ConversationStates.IDLE,
@@ -231,7 +213,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, QUEST_INDEX_STATUS, "deliver_to_george")
 				), 
 				ConversationStates.IDLE,
-				"Rzeczywiście jest ot całkiem interesujące. Proszę daj znać Finnowi:",
+				"Rzeczywiście jest całkiem interesujące. Proszę daj znać Finnowi:",
 				new MultipleActions(
 					new CreateAndSayCodedMessage(),
 					new SetQuestAction(QUEST_SLOT, QUEST_INDEX_STATUS, "deliver_to_finn")
@@ -245,7 +227,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 					new TriggerMightbeACodedMessageCondition()
 				),
 				ConversationStates.ATTENDING,
-				"Oh? To wszystko nie ma sensu!",
+				"Och? To wszystko nie ma sensu!",
 				null);
 	}
 
@@ -253,13 +235,11 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 	 * let Finn Farmer accept the answer
 	 */
 	private void step3() {
-		final SpeakerNPC npc = npcs.get("Finn Farmer");
-		
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, QUEST_INDEX_STATUS, "deliver_to_finn"),
 				ConversationStates.QUEST_ITEM_BROUGHT,
-				"I co powiedziała George?",
+				"I co powiedział George?",
 				null);
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT, 
@@ -274,7 +254,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 					new SetQuestToFutureRandomTimeStampAction(QUEST_SLOT, QUEST_INDEX_TIME, REQUIRED_MINUTES, REQUIRED_MINUTES),
 					new IncreaseXPAction(500),
 					new IncreaseKarmaAction(20),
-					new SayTextAction("Dziękuję za powiedzenie Georgowi!"),
+					new SayTextAction("Dziękuję za powiedzenie George'owi!"),
 					new SayTextAction("!me tańczę ze szczęścia."),
 					new SayTextAction("To było naprawdę ważne!"),
 					new SayTextAction("Jego odpowiedź jest naprawdę interesująca!"),
@@ -289,7 +269,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 					new TriggerMightbeACodedMessageCondition()
 				),
 				ConversationStates.QUEST_ITEM_BROUGHT,
-				"Oh? To wszystko nie ma sensu!",
+				"Och? To wszystko nie ma sensu!",
 				null);
 	}
 
@@ -299,19 +279,48 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 		step2();
 		step3();
 		fillQuestInfo(
-			"Zaszyfrowana wiadomość od Finn Farmer",
-			"Finn Farmer ma ważną tajną informację dla Georga.",
+			"Zaszyfrowana Wiadomość",
+			"Finn Farmer ma ważną oraz tajną informację dla George'a.",
 			false);
 	}
 
 	@Override
+	public List<String> getHistory(Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem w Ados z chłopcem o imieniu Finn Farmer.");
+		res.add("Finn poprosił mnie o przekazanie George'owi tajnej wiadomości. Mogę go spotkać niedaleko jego psa Tommy w parku Ados.");
+
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if (questState.equals("rejected")) {
+			res.add("Odrzuciłem jego prośbę.");
+			return res;
+		}
+
+		res.add("Zgodziłem się na przekazanie wiadomości.");
+		if (questState.equals("deliver_to_george")) {
+			return res;
+		}
+
+		res.add("George przekazał mi tajną wiadomość, którą muszę dostarczyć Finnowi.");
+		if (questState.equals("deliver_to_finn")) {
+			return res;
+		}
+		
+		res.add("Zakończyłem moją misję jako posłaniec. Finn Farmer prawie oszalał z radości, gdy przekazałem mu odpowiedź George'a.");
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
-		return "coded_message";
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "Zaszyfrowana wiadomość od Finn Farmer";
+		return "Zaszyfrowana Wiadomość";
 	}
 
 	@Override
@@ -326,15 +335,13 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Finn Farmer";
+		return NPC_NAME;
 	}
 
 	@Override
 	public boolean isRepeatable(Player player) {
 		return new TimeReachedCondition(QUEST_SLOT, QUEST_INDEX_TIME).fire(player,null, null);
 	}
-
-
 
 	/**
 	 * creates, stores and says a coded message

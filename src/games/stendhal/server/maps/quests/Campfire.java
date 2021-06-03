@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -72,56 +72,16 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class Campfire extends AbstractQuest {
-
-	private static final int REQUIRED_WOOD = 10;
-
-	private static final int REQUIRED_MINUTES = 60;
-
 	private static final String QUEST_SLOT = "campfire";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	// NPC
+	private static final String NPC_NAME = "Sally";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
-	@Override
-	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Sally");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę pomagać Sally");
-			return res;
-		}
-		res.add("Chcę pomóc Sally");
-		if (player.isEquipped("polano", REQUIRED_WOOD) || isCompleted(player)) {
-			res.add("Znalazłem 10 polan potrzebnych do rozpalenia ogniska");
-		}
-		if (isCompleted(player)) {
-			res.add("Dałem Sally polana. Dała mi trochę jedzenia. Dostałem także 50 pd");
-		}
-		if(isRepeatable(player)){
-			res.add("Sally's potrzebuje ponownie polan.");
-		} 
-		return res;
-	}
+	private static final int REQUIRED_WOOD = 10;
+	private static final int REQUIRED_MINUTES = 60;
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Sally");
-
 		// player returns with the promised wood
 		npc.add(ConversationStates.IDLE, 
 			ConversationPhrases.GREETING_MESSAGES,
@@ -217,9 +177,7 @@ public class Campfire extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Sally");
 		// player has wood and tells sally, yes, it is for her
-		
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("polano", REQUIRED_WOOD));
 		reward.add(new IncreaseXPAction(50));
@@ -277,8 +235,33 @@ public class Campfire extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Sally w swoim obozowisku.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę wesprzeć obozowiska drewnem.");
+			return res;
+		}
+		res.add("Bardzo chętnie pomogę Sally w zbieraniu polana do ogniska.");
+		if (player.isEquipped("polano", REQUIRED_WOOD) || isCompleted(player)) {
+			res.add("Udało mi się zebrać 10 polan potrzebnych do rozpalenia ogniska.");
+		}
+		if (isCompleted(player)) {
+			res.add("Przekazałem drewno Sally. W zamian otrzymałem od niej trochę jedzenia na podróż.");
+		}
+		if(isRepeatable(player)){
+			res.add("Sally potrzebuje więcej drewna do ponownego rozpalenia ogniska.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getName() {
-		return "Campfire";
+		return "Obozowisko";
 	}
 
 	@Override
@@ -288,11 +271,26 @@ public class Campfire extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Sally";
+		return NPC_NAME;
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.ORRIL;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

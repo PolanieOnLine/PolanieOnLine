@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,17 +33,10 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
 public class DiceGambling extends AbstractQuest {
-
 	private static final int STAKE = 100;
 
 	@Override
-	public String getSlotName() {
-		return "dice_gambling";
-	}
-
-	@Override
 	public void addToWorld() {
-
 		final CroupierNPC ricardo = (CroupierNPC) SingletonRepository.getNPCList().get("Ricardo");
 
 		final Map<Integer, Pair<String, String>> prizes = initPrices();
@@ -109,17 +101,17 @@ public class DiceGambling extends AbstractQuest {
 			null);
 
 		fillQuestInfo(
-				"Hazard Koścmi",
-				"Spróbuj szczęścia w kości w Semos's Tavern.",
+				"Hazard Kośćmi",
+				"Spróbuj szczęścia w kości w Semoskiej tawernie.",
 				true);
 	}
 
 	private Map <Integer, Pair<String, String>> initPrices() {
 		Map<Integer, Pair<String, String>> map = new HashMap<Integer, Pair<String, String>>();
 		map.put(3, new Pair<String, String>("tarcza lazurowa",
-				"Facet, jesteś jednym wielkim pechowcem! Tak mi przykro! Weź tą tarczę lazurową."));
+				"Facet, jesteś jednym wielkim pechowcem! Tak mi przykro! Weź tę tarczę lazurową."));
 		map.put(7, new Pair<String, String>("sok z chmielu",
-				"Oto nagroda pocieszenia, sok z chmielu."));
+				"Oto nagroda pocieszenia, sok z chmielu. Miejmy nadzieję, że chociaż trochę spragniony jesteś."));
 		map.put(8, new Pair<String, String>("napój z winogron",
 				"Wygrałeś ten wyborny napój z winogron!"));
 		map.put(9, new Pair<String, String>("tarcza ćwiekowa",
@@ -141,14 +133,14 @@ public class DiceGambling extends AbstractQuest {
 		map.put(17,	new Pair<String, String>("płaszcz karmazynowy",
 				"Wyglądasz niesamowicie w tym modnym karmazynowym płaszczu!"));
 		map.put(18, new Pair<String, String>("hełm zabójcy",
-				"Trafiłeś JACKPOT! Hełm zabójcy!"));
+				"Trafiłeś JACKPOT, ale masz szczęście! Główna nagroda to hełm zabójcy!"));
 
 		return map;
 	}
 
 	@Override
 	public String getName() {
-		return "DiceGambling";
+		return "Hazard Kośćmi";
 	}
 
 	@Override
@@ -166,4 +158,8 @@ public class DiceGambling extends AbstractQuest {
 		return "Ricardo";
 	}
 
+	@Override
+	public String getSlotName() {
+		return "dice_gambling";
+	}
 }

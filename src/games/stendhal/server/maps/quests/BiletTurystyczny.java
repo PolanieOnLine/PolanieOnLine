@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
@@ -37,61 +41,21 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * QUEST: Rainbow Beans
- *
- * PARTICIPANTS:
- * <ul>
- * <li>Juhas, a dealer in bilet turystyczny
- * </ul>
- *
- * STEPS:
- * <ul>
- * <li>The NPC sells bilet turystyczny to players above level 200</li>
- * <li>When used, rainbow beans teleport you to a dreamworld full of strange
- * sights, hallucinations and the creatures of your nightmares</li>
- * <li>You can remain there for up to 30 minutes</li>
- * </ul>
- *
- * REWARD:
- * <ul>
- * <li>The desert land is very beautiful!</li>
- * <li>XP from creatures you kill there</li>
- * </ul>
- *
- * REPETITIONS:
- * <ul>
- * <li>No more than once every 1 day</li>
- * </ul>
- *
- * NOTES:
- * <ul>
- * <li>The area of the dreamworld will be a no teleport zone</li>
- * <li>You can exit via a portal if you want to exit before the 30 minutes is
- * up</li>
- * </ul>
- */
 public class BiletTurystyczny extends AbstractQuest {
-
-	private static final int REQUIRED_LEVEL = 100;
-
-	private static final int REQUIRED_MONEY = 5000;
-
-	private static final int REQUIRED_MINUTES = 60 * 12;
-
 	private static final String QUEST_SLOT = "bilet_turystyczny";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Juhas");
+	// NPC
+	private static final String NPC_NAME = "Juhas";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
+	// Level needed
+	private static final int REQUIRED_LEVEL = 100;
+	// Money
+	private static final int REQUIRED_MONEY = 5000;
+	// Time
+	private static final int REQUIRED_MINUTES = 60 * 12;
+
+	private void step_1() {
 		// player says hi before starting the quest
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("bilet", "bilet turystyczny", "bilety"),
@@ -218,6 +182,15 @@ public class BiletTurystyczny extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		return new ArrayList<String>();
+	}
+	@Override
+	public boolean isVisibleOnQuestStatus() {
+		return false;
+	}
+
+	@Override
 	public void addToWorld() {
 		/* login notifier to teleport away players logging into the dream world.
 		 * there is a note in TimedTeleportScroll that it should be done there or its subclass.
@@ -236,10 +209,6 @@ public class BiletTurystyczny extends AbstractQuest {
 				false);
 		step_1();
 
-	}
-	@Override
-	public String getName() {
-		return "BiletTurystyczny";
 	}
 
 	@Override
@@ -260,21 +229,22 @@ public class BiletTurystyczny extends AbstractQuest {
 	}
 
 	@Override
-	public boolean isVisibleOnQuestStatus() {
-		return false;
+	public String getName() {
+		return "Bilet Turystyczny";
 	}
 
 	@Override
-	public List<String> getHistory(final Player player) {
-		return new ArrayList<String>();
-	}
-	@Override
-	public String getNPCName() {
-		return "Juhas";
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
+	}
+
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
 	}
 }

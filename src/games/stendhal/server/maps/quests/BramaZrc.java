@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on UltimateCollector and HelpMrsYeti.
-
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -40,22 +38,16 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.player.Player;
 
 public class BramaZrc extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "brama_zrc";
-
 	private static final String ARMOR_DAGOBERT_QUEST_SLOT = "armor_dagobert";
+
+	// NPC
+	private static final String NPC_NAME = "Cień";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static Logger logger = Logger.getLogger(BramaZrc.class);
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Cień");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -109,22 +101,16 @@ public class BramaZrc extends AbstractQuest {
 			ConversationStates.IDLE,
 			"Nie to nie.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
-
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Cień");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("rzeczy", "przedmiotów"),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING, "Mój magazyn jest pusty a rycerze tego zakonu muszą coś jeść. Tu mam #listę potrzebnych artykułów.",
 				new SetQuestAction(QUEST_SLOT, "dostawca"));
-
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Cień");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("lista", "listę", "artykuły"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"dostawca"),
 								 new NotCondition(
@@ -164,7 +150,6 @@ public class BramaZrc extends AbstractQuest {
 		cienactions.add(new IncreaseKarmaAction(100));
 		cienactions.add(new SetQuestAction(QUEST_SLOT, "done"));
 
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("lista", "listę", "artykuły"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT,"dostawca"),
 							 new PlayerHasItemWithHimCondition("stek",20),
@@ -183,11 +168,10 @@ public class BramaZrc extends AbstractQuest {
 			new MultipleActions(cienactions));
 	}
 
-
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Brama ZRC",
+				"Brama Zakonu Rycerzy Cienia",
 				"Cień, strażnik bramy Zakonu Rycerzy Cienia ma dla ciebie zadanie.",
 				true);
 		step_1();
@@ -211,11 +195,11 @@ public class BramaZrc extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Cień poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
+		res.add(NPC_NAME + " poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
 		if ("dostawca".equals(questState)) {
 			return res;
 		}
-		res.add("Cień jest szczęśliwy z mojej pomocy. W zamian dostałem klucz do bram zakonu.");
+		res.add(NPC_NAME + " jest szczęśliwy z mojej pomocy. W zamian dostałem klucz do bram zakonu.");
 		if (isCompleted(player)) {
 			return res;
 		}
@@ -228,11 +212,16 @@ public class BramaZrc extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "BramaZrc";
+		return "Brama Zakonu Rycerzy Cienia";
 	}
 	@Override
 	public String getNPCName() {
-		return "Cień";
+		return NPC_NAME;
 	}
 }

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -70,18 +69,16 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class FindGhosts extends AbstractQuest {
-
-	private static Logger logger = Logger.getLogger(FindGhosts.class);
-
 	public static final String QUEST_SLOT = "find_ghosts";
+
+	// NPC
+	private static final String NPC_NAME = "Carena";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final List<String> NEEDED_SPIRITS =
 		Arrays.asList("mary", "ben", "zak", "goran");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private static Logger logger = Logger.getLogger(FindGhosts.class);
 
 	private List<String> missingNames(final Player player) {
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -107,8 +104,6 @@ public class FindGhosts extends AbstractQuest {
 	}
 
 	private void askingStep() {
-		final SpeakerNPC npc = npcs.get("Carena");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestInStateCondition(QUEST_SLOT, "rejected")),
@@ -160,9 +155,6 @@ public class FindGhosts extends AbstractQuest {
 	}
 
 	private void tellingStep() {
-
-		final SpeakerNPC npc = npcs.get("Carena");
-
 		// the player returns to Carena after having started the quest, or found
 		// some ghosts.
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -304,8 +296,13 @@ public class FindGhosts extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "FindGhosts";
+		return "Poszukiwania Duchów";
 	}
 
 	@Override
@@ -315,7 +312,7 @@ public class FindGhosts extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Carena";
+		return NPC_NAME;
 	}
 
 	@Override

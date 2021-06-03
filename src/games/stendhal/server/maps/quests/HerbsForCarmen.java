@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -73,6 +72,10 @@ import games.stendhal.server.util.ItemCollection;
 public class HerbsForCarmen extends AbstractQuest {
 	public static final String QUEST_SLOT = "herbs_for_carmen";
 
+	// NPC
+	private static final String NPC_NAME = "Carmen";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
 	/**
 	 * required items for the quest.
 	 */
@@ -99,8 +102,6 @@ public class HerbsForCarmen extends AbstractQuest {
 	}
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Carmen");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(
@@ -187,40 +188,37 @@ public class HerbsForCarmen extends AbstractQuest {
 			null,
 			ConversationStates.ATTENDING,
 			"Na północ od Semos, niedaleko młodniaka rośnie ponoć zioło arandula. Oto rycina, na której zobaczysz jak wygląda.",
-			new ExamineChatAction("arandula.png", "Carmen's drawing", "Arandula"));
-
+			new ExamineChatAction("arandula.png", "Rysunek Carmen", "Arandula"));
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Carmen");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj ponownie. Czy przyniosłeś mi zapasy ziół leczniczych?",
+				"Witaj ponownie. Czy przyniosłeś zapasy ziół leczniczych?",
 				null);
 
 		/* player asks what exactly is missing (says ingredients) */
 		npc.add(ConversationStates.ATTENDING, "zapasy", null,
 				ConversationStates.QUESTION_2, null,
-				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz coś ze sobą?"));
+				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Masz coś ze sobą?"));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.QUESTION_2,
-				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz to?"));		
+				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Posiadasz te przedmioty?"));		
 
 		/* player says he has a required item with him (says yes) */
 		npc.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.QUESTION_2, "Dobrze, a co jeszcze masz?",
+				ConversationStates.QUESTION_2, "Dobrze, a co masz?",
 				null);
 
 		ChatAction completeAction = new  MultipleActions(
 				new SetQuestAction(QUEST_SLOT, "done"),
-				new SayTextAction("Wspaniale! Znów mogę leczyć czcigodnych wojowników bez opłat! Dziękuję. Przyjmij ode mnie podarek za swoją pracę."),
+				new SayTextAction("Cudownie! Będę mogła wrócić do leczenia czcigodnych wojowników bez opłat! Dziękuję. Przyjmij ode mnie podarek za swoją pracę."),
 				new IncreaseXPAction(500),
 				new IncreaseKarmaAction(15),
 				new EquipItemAction("mały eliksir", 5)
@@ -266,7 +264,7 @@ public class HerbsForCarmen extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Ok, i daj mi znać jeśli mogę #pomóc w czymkolwiek innym.", null);
+				"Ok, daj znać jeśli mogę #pomóc w czymś innym.", null);
 
 		/* says quest and quest can't be started nor is active*/
 		npc.add(ConversationStates.ATTENDING,
@@ -294,12 +292,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "HerbsForCarmen";
-	}
-
-	public String getTitle() {
 		return "Zioła dla Carmen";
-
 	}
 
 	@Override
@@ -314,6 +307,6 @@ public class HerbsForCarmen extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Carmen";
+		return NPC_NAME;
 	}
 }

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -48,7 +47,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-
 /**
  * QUEST: Find Jefs Mother
  *
@@ -83,20 +81,15 @@ import games.stendhal.server.maps.Region;
  *
  */
 public class FindJefsMom extends AbstractQuest {
-
-	// 4320 minutes (3 days)
-	private static final int REQUIRED_MINUTES = 4320;
-
 	private static final String QUEST_SLOT = "find_jefs_mom";
 
+	// NPC
+	private static final String NPC_NAME = "Jef";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private static final int REQUIRED_MINUTES = 4320;// 4320 minutes (3 days)
+
 	private void offerQuestStep() {
-		final SpeakerNPC npc = npcs.get("Jef");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestInStateCondition(QUEST_SLOT, 0, "rejected")),
@@ -227,8 +220,6 @@ public class FindJefsMom extends AbstractQuest {
 	}
 
 	private void bringFlowerToJefStep() {
-		final SpeakerNPC npc = npcs.get("Jef");
-
 		ChatAction addRandomNumberOfItemsAction = new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
@@ -243,25 +234,24 @@ public class FindJefsMom extends AbstractQuest {
 
 			}
 		};
+
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("flower", "zantedeschia", "fine", "amber", "done", "cała", "zdrowa", "dobrze", "kwiat", "bielikrasa"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "found_mom"), new PlayerHasItemWithHimCondition("bielikrasa")),
 				ConversationStates.ATTENDING, null,
 				new MultipleActions(new DropItemAction("bielikrasa"),
-                                    new IncreaseXPAction(800),
-                                    new IncreaseKarmaAction(15),
-									addRandomNumberOfItemsAction,
-									new IncrementQuestAction(QUEST_SLOT, 2, 1),
-									new SetQuestToTimeStampAction(QUEST_SLOT,1),
-									new SetQuestAction(QUEST_SLOT, 0, "done")));
-
-
+						new IncreaseXPAction(800),
+						new IncreaseKarmaAction(15),
+						addRandomNumberOfItemsAction,
+						new IncrementQuestAction(QUEST_SLOT, 2, 1),
+						new SetQuestToTimeStampAction(QUEST_SLOT,1),
+						new SetQuestAction(QUEST_SLOT, 0, "done")));
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Znajdź matkę Jefa",
+				"Poszukiwanie Matki Jefa",
 				"Jef, mały chłopiec w Kirdneh, czeka na swoją mamę Amber, która nie wróciła z zakupów na rynku.",
 				false);
 		offerQuestStep();
@@ -298,19 +288,16 @@ public class FindJefsMom extends AbstractQuest {
 		}
 
 		return res;
+	}
 
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "FindJefsMom";
-	}
-
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"done"),
-				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
+		return "Poszukiwanie Matki Jefa";
 	}
 
 	@Override
@@ -320,5 +307,11 @@ public class FindJefsMom extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return "Jef";
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"done"),
+				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
 	}
 }

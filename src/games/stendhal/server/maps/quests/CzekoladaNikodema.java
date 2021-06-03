@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -45,18 +45,16 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class CzekoladaNikodema extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "czekolada_nikodema";
+
+	// NPC
+	private static final String NPC_NAME = "Nikodem";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	/** The delay between repeating quests. */
 	private static final int REQUIRED_MINUTES = 90; // 1 godzina i 30 minut
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	private void chocolateStep() {
-		final SpeakerNPC npc = npcs.get("Nikodem");
 
+	private void chocolateStep() {
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -226,9 +224,24 @@ public class CzekoladaNikodema extends AbstractQuest {
 		}
 		return res;
 	}
+
 	@Override
 	public String getName() {
-		return "CzekoladaNikodema";
+		return "Czekolada Nikodema";
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.KRAKOW_CITY;
+	}
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
@@ -240,14 +253,5 @@ public class CzekoladaNikodema extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"eating;").fire(player, null, null);
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.KRAKOW_CITY;
-	}
-	@Override
-	public String getNPCName() {
-		return "Nikodem";
 	}
 }

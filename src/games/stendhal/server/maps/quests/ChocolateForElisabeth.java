@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -87,19 +86,16 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class ChocolateForElisabeth extends AbstractQuest {
-
-	// constants
 	private static final String QUEST_SLOT = "chocolate_for_elisabeth";
+
+	// NPC
+	private static final String NPC_NAME = "Elisabeth";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	/** The delay between repeating quests. */
 	private static final int REQUIRED_MINUTES = 60;
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	private void chocolateStep() {
-		final SpeakerNPC npc = npcs.get("Elisabeth");
 
+	private void chocolateStep() {
 		// first conversation with Elisabeth.
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -300,6 +296,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 					ConversationPhrases.GREETING_MESSAGES, new GreetingMatchesNameCondition(mummyNPC.getName()), true,
 					ConversationStates.ATTENDING, "Witaj ponownie.", null);
 	}
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -309,7 +306,6 @@ public class ChocolateForElisabeth extends AbstractQuest {
 		chocolateStep();
 		meetMummyStep();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -335,14 +331,15 @@ public class ChocolateForElisabeth extends AbstractQuest {
             if (isRepeatable(player)) {
                 res.add("Przyniosłem trochę czekolady dla Elisabeth. Dała mi w zamian kwiatki. Może chciałaby więcej czekolady.");
             } else {
-                res.add("Elisabeth je czekoladę, którą jej dałem i dała mi w zamian kwiaty.");
+                res.add("Elisabeth je czekoladę, którą jej dałem, a w zamian otrzymałem piękne kwiaty.");
             }
 		}
 		return res;
 	}
+
 	@Override
 	public String getName() {
-		return "ChocolateForElisabeth";
+		return "Czekolada dla Elisabeth";
 	}
 
 	// Getting to Kirdneh is not too feasible till this level
@@ -352,9 +349,18 @@ public class ChocolateForElisabeth extends AbstractQuest {
 	}
 
 	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"eating;"),
-				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
+	public String getRegion() {
+		return Region.KIRDNEH;
+	}
+
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
@@ -363,11 +369,8 @@ public class ChocolateForElisabeth extends AbstractQuest {
 	}
 
 	@Override
-	public String getRegion() {
-		return Region.KIRDNEH;
-	}
-	@Override
-	public String getNPCName() {
-		return "Elisabeth";
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"eating;"),
+				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
 	}
 }

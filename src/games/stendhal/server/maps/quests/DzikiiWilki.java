@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2016-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on CleanStorageSpace.
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -62,41 +61,15 @@ import marauroa.common.Pair;
  * <li> after 2 days
  */
 public class DzikiiWilki extends AbstractQuest {
-	private static final String QUEST_SLOT = "pomoc_mscilawowi";
+	private static final String QUEST_SLOT = "dzikie_zwierzyny";
+
+	// NPC
+	private static final String NPC_NAME = "Farmer Mścisław";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_DAY;
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem farmera Mścisława tuż obok własnej farmy.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem farmerowi pomocy.");
-		return res;
-		}
-		res.add("Postanowiłem pomóc farmerowi Mścisławowi.");
-		if (("start".equals(questState) && player.hasKilled("wilk") && player.hasKilled("dzik") && player.hasKilled("lisicia")) || "done".equals(questState)) {
-			res.add("Okolice farmy Mścisława zostały oczyszczone od dzikich zwierząt.");
-		} else if(isRepeatable(player)){
-			res.add("Farmer Mścisław pewnie znowu potrzebuje mojej pomocy w sprawie tych dzikich zwierząt. Pójdę sprawdzić.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Farmer Mścisław jest zadowolony i oddał mi część swoich żniw.");
-		}
-		return res;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Farmer Mścisław");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -167,8 +140,6 @@ public class DzikiiWilki extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Farmer Mścisław");
-		
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new EquipItemAction("marchew", 3));
 		reward.add(new EquipItemAction("szpinak", 3));
@@ -183,7 +154,7 @@ public class DzikiiWilki extends AbstractQuest {
 		reward.add(new IncreaseXPAction(450));
 		reward.add(new SetQuestAction(QUEST_SLOT, "killed;1"));
 		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-				
+
 		LinkedList<String> triggers = new LinkedList<String>();
 		triggers.addAll(ConversationPhrases.FINISH_MESSAGES);
 		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);		
@@ -209,8 +180,8 @@ public class DzikiiWilki extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Bezpieczeństwo farmy przede wszystkim!",
-				"Farmer Mścisław poprosił mnie o pomoc w pozbyciu się paru dzików i wilków z okolic farmy. Cały czas wyjadają jego warzywa.",
+				"Dzikie Zwierzyny",
+				"Farmer Mścisław poprosił mnie o pomoc w pozbyciu się paru dzików i wilków z okolic jego farmy. Cały czas wyjadają jego warzywa.",
 				false);
 		step_1();
 		step_2();
@@ -218,15 +189,54 @@ public class DzikiiWilki extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "DzikiiWilki";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Mścisława tuż obok swojej farmy.");
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if ("rejected".equals(questState)) {
+			res.add("Odmówiłem farmerowi pomocy.");
+		return res;
+		}
+		res.add("Postanowiłem pomóc farmerowi Mścisławowi.");
+		if (("start".equals(questState) && player.hasKilled("wilk") && player.hasKilled("dzik") && player.hasKilled("lisicia")) || "done".equals(questState)) {
+			res.add("Okolice farmy Mścisława zostały oczyszczone od dzikich zwierząt.");
+		} else if(isRepeatable(player)){
+			res.add("Farmer Mścisław pewnie znowu potrzebuje mojej pomocy w sprawie tych dzikich zwierząt. Pójdę sprawdzić.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Mścisław jest zadowolony i oddał mi część swoich żniw.");
+		}
+		return res;
 	}
 
-		@Override
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Dzikie Zwierzyny";
+	}
+
+	@Override
 	public int getMinLevel() {
 		return 5;
 	}
-	
+
+	@Override
+	public String getRegion() {
+		return Region.GDANSK_CITY;
+	}
+
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
+	}
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
@@ -236,14 +246,5 @@ public class DzikiiWilki extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.GDANSK_CITY;
-	}
-	@Override
-	public String getNPCName() {
-		return "Farmer Mścisław";
 	}
 }

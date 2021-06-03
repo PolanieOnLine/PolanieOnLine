@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,37 +38,12 @@ import marauroa.common.Pair;
 
 public class ClearTower extends AbstractQuest {
 	private static final String QUEST_SLOT = "clear_tower";
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Czarnoksiężnika w jakieś starej wieży.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
-		return res;
-		}
-		res.add("Postanowiłem pomóc Czarnoksiężnikowi.");
-		if (("start".equals(questState) && player.hasKilled("starszy gargulec") && player.hasKilled("mroczny gargulec")
-				&& player.hasKilled("trujący gargulec") && player.hasKilled("gargulec")
-				&& player.hasKilled("nietoperz wampir") && player.hasKilled("nietoperz")
-				&& player.hasKilled("pająk") && player.hasKilled("pająk ptasznik")
-				&& player.hasKilled("wściekły szczur") && player.hasKilled("krwiożerczy szczur")
-				&& player.hasKilled("szczur zombie")) || "done".equals(questState)) {
-			res.add("Wieża została wyczyszczona.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Czarnoksiężnik będzie miał dla mnie drugie zadanie.");
-		}
-		return res;
-	}
+
+	// NPC
+	private static final String NPC_NAME = "Czarnoksiężnik";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -114,7 +89,6 @@ public class ClearTower extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 			reward.add(new IncreaseKarmaAction(15.0));
 			reward.add(new IncreaseXPAction(10000));
@@ -137,34 +111,61 @@ public class ClearTower extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Wyczyszczenie wieży",
+				"Wyczyszczenie Starej Wieży",
 				"Czarnoksiężnik kazał wyczyścić wieżę, aby sprawdzić jakie podstawowe umiejętności posiadasz.",
 				false);
 		step_1();
 		step_2();
 		step_3();
 	}
-	
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Czarnoksiężnika w jakiejś starej wieży.");
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if ("rejected".equals(questState)) {
+			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
+		return res;
+		}
+		res.add("Postanowiłem pomóc Czarnoksiężnikowi w pozbyciu się zalęgłych potworów.");
+		if (("start".equals(questState) && player.hasKilled("starszy gargulec") && player.hasKilled("mroczny gargulec")
+				&& player.hasKilled("trujący gargulec") && player.hasKilled("gargulec")
+				&& player.hasKilled("nietoperz wampir") && player.hasKilled("nietoperz")
+				&& player.hasKilled("pająk") && player.hasKilled("pająk ptasznik")
+				&& player.hasKilled("wściekły szczur") && player.hasKilled("krwiożerczy szczur")
+				&& player.hasKilled("szczur zombie")) || "done".equals(questState)) {
+			res.add("Wieża została wyczyszczona.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Czarnoksiężnik będzie miał dla mnie drugie zadanie.");
+		}
+		return res;
+	}
+
 	@Override
 	public int getMinLevel() {
 		return 35;
 	}
-	
+
 	@Override
 	public String getName() {
-		return "ClearTower";
+		return "Wyczyszczenie Starej Wieży";
 	}
-	
+
 	@Override
 	public String getNPCName() {
-		return "Czarnoksiężnik";
+		return NPC_NAME;
 	}
 
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;

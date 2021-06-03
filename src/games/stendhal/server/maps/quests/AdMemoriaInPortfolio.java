@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -112,10 +111,8 @@ import games.stendhal.server.maps.Region;
  * portfolio stores takes 1 slot in player bag/inventory
  * portfolio provides additional slots to store scrolls
  */
-
 public class AdMemoriaInPortfolio extends AbstractQuest {
-
-	private static Logger logger = Logger.getLogger(AdMemoriaInPortfolio.class);
+	//private static Logger logger = Logger.getLogger(AdMemoriaInPortfolio.class);
 
 	private static final int APPLE_AMOUNT = 1;
 	private static final String QUEST_SLOT = "admemoriainportfolio";

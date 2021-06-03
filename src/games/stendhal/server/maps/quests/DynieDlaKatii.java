@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2019 - Stendhal                      *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -44,60 +44,16 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class DynieDlaKatii extends AbstractQuest {
-
-	private static final int WYMAGANE_DYNIE = 10;
-
-	private static final int REQUIRED_MINUTES = 240;
-
 	private static final String QUEST_SLOT = "dynie_dla_katii";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	// NPC
+	private static final String NPC_NAME = "Katia";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
-	@Override
-	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
-	}
+	private static final int WYMAGANE_DYNIE = 10;
+	private static final int REQUIRED_MINUTES = 240;
 
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(
-				new QuestNotInStateCondition(QUEST_SLOT, "start"),
-				new QuestStartedCondition(QUEST_SLOT),
-				new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Poznałem Katie.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę zbierać dla niej dyń...");
-			return res;
-		}
-		res.add("Chcę pozbierać kilka dyń!");
-		if (player.isEquipped("straszna dynia", WYMAGANE_DYNIE) || isCompleted(player)) {
-			res.add("Zdobyłem straszne dynie dla Katii");
-		}
-		if (isCompleted(player)) {
-			res.add("Zaniosłem Katii dynie." +
-		             "W zamian otrzymałem tajemniczą srebrną skrzynkę.");
-		}
-		if(isRepeatable(player)){
-			res.add("Ponownie mogę poszukać kilku dyń dla Katii!");
-		}
-		return res;
-	}
-	
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Katia");
-
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
@@ -178,8 +134,6 @@ public class DynieDlaKatii extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Katia");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("straszna dynia", WYMAGANE_DYNIE));
 		reward.add(new IncreaseXPAction(2000));
@@ -221,7 +175,7 @@ public class DynieDlaKatii extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Straszne dynie dla Katii",
+				"Straszne Dynie",
 				"Katia przebrała się za czarownicę oraz wszystkim innym przebierańcom daje tajemniczą srebrną skrzynkę za przyniesienie strasznych dyń do niej!",
 				true);
 		prepareRequestingStep();
@@ -229,8 +183,39 @@ public class DynieDlaKatii extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Poznałem Katie.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę zbierać dla niej dyń...");
+			return res;
+		}
+		res.add("Chcę pozbierać kilka dyń!");
+		if (player.isEquipped("straszna dynia", WYMAGANE_DYNIE) || isCompleted(player)) {
+			res.add("Zdobyłem straszne dynie dla Katii");
+		}
+		if (isCompleted(player)) {
+			res.add("Zaniosłem Katii dynie." +
+		             "W zamian otrzymałem tajemniczą srebrną skrzynkę.");
+		}
+		if(isRepeatable(player)){
+			res.add("Ponownie mogę poszukać kilku dyń dla Katii!");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "DynieDlaKatii";
+		return "Straszne Dynie";
 	}
 
 	@Override
@@ -240,11 +225,24 @@ public class DynieDlaKatii extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Katia";
+		return NPC_NAME;
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestNotInStateCondition(QUEST_SLOT, "start"),
+				new QuestStartedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

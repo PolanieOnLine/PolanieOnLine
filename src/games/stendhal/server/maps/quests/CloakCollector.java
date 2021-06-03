@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.grammar.Grammar;
@@ -26,9 +28,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuest;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: Cloak Collector
@@ -56,20 +55,18 @@ import java.util.List;
  * REPETITIONS: - None.
  */
 public class CloakCollector extends AbstractQuest implements BringListOfItemsQuest {
+	private static final String QUEST_SLOT = "cloaks_collector";
+
+	// NPC
+	private static final String NPC_NAME = "Josephine";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final List<String> NEEDED_CLOAKS = Arrays.asList("peleryna",
 			"peleryna elficka", "płaszcz krasnoludzki", "lazurowy płaszcz elficki", "płaszcz kamienny",
 			"szmaragdowy płaszcz smoczy", "kościany płaszcz smoczy", "płaszcz licha",
 			"płaszcz wampirzy", "lazurowy płaszcz smoczy");
 
-	private static final String QUEST_SLOT = "cloaks_collector";
-
 	private BringListOfItemsQuestLogic bringItems;
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		return bringItems.getHistory(player);
-	}
 
 	private void setupAbstractQuest() {
 		final BringListOfItemsQuest concreteQuest = this;
@@ -77,19 +74,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 		bringItems.addToWorld();
 	}
 
-	@Override
-	public void addToWorld() {
-		step_1();
-		setupAbstractQuest();
-		fillQuestInfo(
-				"Płaszcze dla Kolekcjonera",
-				"Josephine szuka płaszczy w wielu kolorach.",
-				false);
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Josephine");
-
 		// player asks about an individual cloak before accepting the quest
 		for(final String itemName : NEEDED_CLOAKS) {
 			npc.add(ConversationStates.QUEST_OFFERED, itemName, null,
@@ -131,7 +116,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 
 	@Override
 	public SpeakerNPC getNPC() {
-		return npcs.get("Josephine");
+		return npcs.get(NPC_NAME);
 	}
 
 	@Override
@@ -255,8 +240,23 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 	}
 
 	@Override
+	public void addToWorld() {
+		step_1();
+		setupAbstractQuest();
+		fillQuestInfo(
+				"Płaszcze Kolekcjonerki",
+				"Josephine szuka płaszczy w wielu kolorach.",
+				false);
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		return bringItems.getHistory(player);
+	}
+
+	@Override
 	public String getName() {
-		return "CloakCollector";
+		return "Płaszcze Kolekcjonerki";
 	}
 
 	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.
@@ -272,6 +272,6 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 
 	@Override
 	public String getNPCName() {
-		return "Josephine";
+		return NPC_NAME;
 	}
 }

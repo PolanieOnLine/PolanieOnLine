@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -26,9 +28,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * QUEST: Dragon Lair Access
@@ -53,18 +52,14 @@ import java.util.List;
  * <li> after 1 week.
  * </ul>
  */
-
 public class DragonLair extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "dragon_lair";
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+
+	// NPC
+	private static final String NPC_NAME = "Wishman";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
 	private void step_1() {
-
-		final SpeakerNPC npc = npcs.get("Wishman");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -115,7 +110,7 @@ public class DragonLair extends AbstractQuest {
 	public void addToWorld() {
 		step_1();
 		fillQuestInfo(
-				"Legowisko Smoka",
+				"Smocze Leże",
 				"Wishman, nadzwyczajny żołnierz z Mrocznego Legionu Blordrough, strzeże smoków... i umożliwi Ci do nich dostęp.",
 				true);
 
@@ -123,34 +118,35 @@ public class DragonLair extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-
-			final String questState = player.getQuest(QUEST_SLOT);
-			res.add("Wishman zaproponował, ·abym zabawił się z jego smokami!");
-			if ("rejected".equals(questState)) {
-				res.add("Dla mnie wyglądają trochę przerażająco");
-				return res;
-            }
-
-			if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
-                res.add("Wishman odblokował legowisko smoków.");
-				return res;
-			}
-
-			if (isRepeatable(player)) {
-				res.add("Te smoki znów potrzebują zabawy. Powinienem je wkrótce odwiedzić.");
-			} else if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-				res.add("Ostatnio smoki miały mnóstwo zabazwy. Wishman jeszcze nie pozwala mi wrócić.");
-			}
-
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
+		}
+
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add(NPC_NAME + " zaproponował, abym zabawił się z jego smokami!");
+		if ("rejected".equals(questState)) {
+			res.add("Dla mnie wyglądają trochę przerażająco.");
+			return res;
+		}
+
+		if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
+			res.add("Wishman odblokował legowisko smoków.");
+			return res;
+		}
+
+		if (isRepeatable(player)) {
+			res.add("Smoki znów potrzebują zabawy. Powinienem je wkrótce odwiedzić.");
+		} else if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
+			res.add("Ostatnio smoki miały mnóstwo zabawy. " + NPC_NAME + " jeszcze nie pozwala mi wrócić.");
+		}
+
+		return res;
 	}
+
 	@Override
 	public String getName() {
-		return "DragonLair";
+		return "Smocze Leże";
 	}
 
 	// getting past the assassins to this location needs a higher level; the lair itself is dangerous too
@@ -160,12 +156,18 @@ public class DragonLair extends AbstractQuest {
 	}
 
 	@Override
+	public String getNPCName() {
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public boolean isRepeatable(final Player player) {
 		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 						 new TimePassedCondition(QUEST_SLOT,1,MathHelper.MINUTES_IN_ONE_WEEK)).fire(player, null, null);
-	}
-	@Override
-	public String getNPCName() {
-		return "Wishman";
 	}
 }

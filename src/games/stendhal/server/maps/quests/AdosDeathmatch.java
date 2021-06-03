@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -324,7 +323,7 @@ public class AdosDeathmatch extends AbstractQuest {
 	}
 	@Override
 	public String getName() {
-		return "AdosDeathmatch";
+		return "Arena Deathmatch";
 	}
 	@Override
 	public int getMinLevel() {

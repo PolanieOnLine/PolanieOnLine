@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -52,7 +51,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-
 /**
  * QUEST: The Elf Princess
  *
@@ -85,19 +83,16 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class ElfPrincess extends AbstractQuest {
+	private static final String QUEST_SLOT = "elf_princess";
+
+	// NPC
+	private static final String NPC_NAME = "Tywysoga";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
     /* delay in minutes */
 	private static final int DELAY = 5;
-	private static final String QUEST_SLOT = "elf_princess";
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void offerQuestStep() {
-		final SpeakerNPC npc = npcs.get("Tywysoga");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestInStateCondition(QUEST_SLOT, 0, "rejected")),
@@ -234,7 +229,6 @@ public class ElfPrincess extends AbstractQuest {
 	}
 
 	private void bringFlowerStep() {
-		final SpeakerNPC npc = npcs.get("Tywysoga");
 		ChatAction addRandomNumberOfItemsAction = new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
@@ -287,7 +281,7 @@ public class ElfPrincess extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Dzielnie dostałem się na górę Nalwor Tower, aby spotkać się z Princess Tywysoga.");
+		res.add("Dzielnie dostałem się na górę Wieży Nalwor, aby spotkać się z Księżniczką Tywysogą.");
         // todo split on ; to put the 0th part in questState
         final String questStateFull = player.getQuest(QUEST_SLOT);
         final String[] parts = questStateFull.split(";");
@@ -299,26 +293,40 @@ public class ElfPrincess extends AbstractQuest {
 			res.add("Księżnika zleciła mi znalezienie cudownej Róży Kwiaciarki, aby odebrać cenną orchideę dla niej.");
 		}
 		if ("got_flower".equals(questState) || isCompleted(player)) {
-			res.add("Znalzłem Różę Kwiaciarkę i mam kwiatek, który muszę doręczyć Princess Tywysoga.");
+			res.add("Znalazłem Różę Kwiaciarkę i mam kwiatek, który muszę doręczyć Księżniczce Tywysodze.");
 		}
         if (isRepeatable(player)) {
             res.add("Wziąłem kwiatek do Księżniczki, a ona dała mi sztabki złota. Jeżeli chcę jej znowu sprawić radość to mogę znowu wziąć kolejne zadanie.");
         }
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Zaniosłem juz Princess Tywysoga " + Grammar.quantityplnoun(repetitions, "cenny kwiat", "one") + ".");
+			res.add("Zaniosłem już Księżniczce Tywysodze " + Grammar.quantityplnoun(repetitions, "cenny kwiat", "one") + ".");
 		}
 		return res;
 	}
 
 	@Override
 	public String getName() {
-		return "ElfPrincess";
+		return "Orchidea dla Księżniczki Elfów";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 60;
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.NALWOR_CITY;
+	}
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
@@ -332,14 +340,5 @@ public class ElfPrincess extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestInStateCondition(QUEST_SLOT,0,"flower_brought").fire(player,null, null);
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.NALWOR_CITY;
-	}
-	@Override
-	public String getNPCName() {
-		return "Tywysoga";
 	}
 }

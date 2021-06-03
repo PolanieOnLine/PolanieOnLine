@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -56,14 +56,16 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class DailyMonsterKuzniceQuest extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "daily_kuznice_kill_monster";
-	private final SpeakerNPC npc = npcs.get("Sołtys");
-	private static Logger logger = Logger.getLogger("DailyMonsterKuzniceQuest");
+
+	// NPC
+	private static final String NPC_NAME = "Sołtys";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private final static int delay = 2 * MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
 
+	private static Logger logger = Logger.getLogger("DailyMonsterKuzniceQuest");
 
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
@@ -235,58 +237,6 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 			}
 		}
 		*/
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem się z sołtysem w dzielnicy Zakopanego, Kuźnicach");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę pomóc Kuźnicom.");
-			return res;
-		}
-
-		res.add("Chcę pomóc Kuźnicom.");
-		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
-			final boolean questDone = new KilledForQuestCondition(QUEST_SLOT, 0)
-					.fire(player, null, null);
-			final String creatureToKill = getCreatureToKillFromPlayer(player);
-			if (!questDone) {
-				res.add("Zostałem poproszony o zabicie" + creatureToKill
-						+ ", aby pomóc Kuźnicom. Jeszcze go nie zabiłem.");
-			} else {
-				res.add("Zabiłem " + creatureToKill
-						+ ", aby pomóc Kuźnicom.");
-			}
-		}
-		if (player.isQuestCompleted(QUEST_SLOT)) {
-			final String[] tokens = (questState + ";0;0;0").split(";");
-			final String questLast = tokens[1];
-			final long timeRemaining = Long.parseLong(questLast) + MathHelper.MILLISECONDS_IN_ONE_DAY
-					- System.currentTimeMillis();
-
-			if (timeRemaining > 0L) {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie sołtys i odebrałem nagrodę w ciągu 24 godzin.");
-			} else {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie sołtys i teraz Kuźnice znów potrzebuje mojej pomocy.");
-			}
-		}
-		// add to history how often player helped Semos so far
-		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
-		if (repetitions > 0) {
-			res.add("pomogłem Kuźnicom "
-					+ Grammar.quantityplnounCreature(repetitions, "razy") + " do tej pory.");
-		}
-		return res;
 	}
 
 	private String getCreatureToKillFromPlayer(Player player) {
@@ -486,19 +436,60 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem się z sołtysem w dzielnicy Zakopanego, Kuźnicach");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę pomóc Kuźnicom.");
+			return res;
+		}
+
+		res.add("Chcę pomóc Kuźnicom.");
+		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
+			final boolean questDone = new KilledForQuestCondition(QUEST_SLOT, 0)
+					.fire(player, null, null);
+			final String creatureToKill = getCreatureToKillFromPlayer(player);
+			if (!questDone) {
+				res.add("Zostałem poproszony o zabicie" + creatureToKill
+						+ ", aby pomóc Kuźnicom. Jeszcze go nie zabiłem.");
+			} else {
+				res.add("Zabiłem " + creatureToKill
+						+ ", aby pomóc Kuźnicom.");
+			}
+		}
+		if (player.isQuestCompleted(QUEST_SLOT)) {
+			final String[] tokens = (questState + ";0;0;0").split(";");
+			final String questLast = tokens[1];
+			final long timeRemaining = Long.parseLong(questLast) + MathHelper.MILLISECONDS_IN_ONE_DAY
+					- System.currentTimeMillis();
+
+			if (timeRemaining > 0L) {
+				res.add("Zabiłem ostatniego potwora o którego prosił mnie sołtys i odebrałem nagrodę w ciągu 24 godzin.");
+			} else {
+				res.add("Zabiłem ostatniego potwora o którego prosił mnie sołtys i teraz Kuźnice znów potrzebuje mojej pomocy.");
+			}
+		}
+		// add to history how often player helped Semos so far
+		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
+		if (repetitions > 0) {
+			res.add("pomogłem Kuźnicom "
+					+ Grammar.quantityplnounCreature(repetitions, "razy") + " do tej pory.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getName() {
-		return "DailyMonsterKuzniceQuest";
+		return "Dzienne Zadanie w Kuźnicach";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 0;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 
 	@Override
@@ -508,6 +499,17 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Sołtys";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

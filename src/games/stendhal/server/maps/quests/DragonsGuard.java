@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on WizardBank and RainbowBeans
 package games.stendhal.server.maps.quests;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -44,12 +48,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.TimeUtil;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import marauroa.common.game.IRPZone;
 
 /**
@@ -60,14 +58,10 @@ import marauroa.common.game.IRPZone;
  */
 
 public class DragonsGuard extends AbstractQuest implements LoginListener {
-
-	// constants
 	private static final String QUEST_SLOT = "dragons_land";
 
 	private static final String MITHRIL_CLOAK_QUEST_SLOT = "mithril_cloak";
-
 	private static final String MITHRIL_SHIELD_QUEST_SLOT = "mithrilshield_quest";
-
 
 	private static final String ZONE_NAME = "0_dragon_land_s";
 	private static final List<String> DRAGONS_MAPS = Arrays.asList("0_dragon_land_n",
@@ -208,17 +202,9 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 	}
 
 	private void createNPC() {
-
 		npc = new SpeakerNPC("Strażnik Cieciurad") {
 			@Override
-			protected void createPath() {
-				// NPC doesn't move
-				setPath(null);
-			}
-
-			@Override
 			protected void createDialog() {
-
 				// never started quest
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
@@ -445,7 +431,7 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 
 	@Override
 	public String getName() {
-		return "DragonsGuard";
+		return "Kraina Smoków";
 	}
 
 	@Override

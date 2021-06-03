@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
@@ -38,10 +41,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: Coal for Haunchy
@@ -74,15 +73,16 @@ import java.util.List;
  * @author Vanessa Julius and storyteller
  */
 public class CoalForHaunchy extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "coal_for_haunchy";
+
+	// NPC
+	private static final String NPC_NAME = "Haunchy Meatoch";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	// The delay between repeating quests is 48 hours or 2880 minutes
 	private static final int REQUIRED_MINUTES = 2880;
 
 	private void offerQuestStep() {
-		final SpeakerNPC npc = npcs.get("Haunchy Meatoch");
-		
 		// player says quest when he has not ever done the quest before (rejected or just new)
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, 
@@ -137,14 +137,11 @@ public class CoalForHaunchy extends AbstractQuest {
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 
-	/*
-	 * Get Coal Step :
+	/**
+	 * Get Coal Step:
 	 * Players will get some coal in Semos Mine and with buying some from other players.
-	 * 
 	 */
 	private void bringCoalStep() {
-		final SpeakerNPC npc = npcs.get("Haunchy Meatoch");
-		
 		final List<String> triggers = new ArrayList<String>();
 		triggers.add("węgiel");
 		triggers.add("stone coal");
@@ -193,13 +190,12 @@ public class CoalForHaunchy extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Węgiel dla Haunchy",
-				"Haunchy Meatoch boi się o swój ogień w grillu. Czy zapas węgla wystarczy nim jego steki będą gotowe czy będzie potrzebowal więcej?",
+				"Węgiel do Grilla",
+				"Haunchy Meatoch ma wątpliwości co do swojego ognia w grillu, jego zapas węgla może nie wystarczyć do usmażenia przepysznych steków.",
 				true);
 		offerQuestStep();
 		bringCoalStep();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -207,22 +203,22 @@ public class CoalForHaunchy extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Haunchy Meatoch powitał mnie na rynku w Ados.");
+		res.add(NPC_NAME + " powitał mnie na rynku w Ados.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Poprosił mnie o dostarzenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
-			res.add("Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem Haunchy, że pomogę mu zdobyć 25 kawałków węgla.");
+			res.add("Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem " + NPC_NAME + ", że pomogę mu zdobyć węgiel do grilla.");
 		}
 		if ("start".equals(questState) && player.isEquipped("węgiel",25) || isCompleted(player)) {
-			res.add("Znalazłem 25 kawałków węgla dla Haunchy. Sądzę, że się ucieszy.");
+			res.add("Znalazłem 25 kawałków węgla dla " + NPC_NAME + ". Sądzę, że się ucieszy.");
 		}
 		if (isCompleted(player)) {
 			if (isRepeatable(player)) {
-				res.add("Wziąłem 25 kawałków węgla do Haunchy, ale założe się to mało i będze potrzebował więcej. Może wezmę więcej pszynych steków z grilla.");
+				res.add("Wziąłem 25 kawałków węgla do " + NPC_NAME + ", ale założe się to mało i będze potrzebował więcej. Może wezmę więcej pszynych steków z grilla.");
 			} else {
-				res.add("Haunchy Meatoch był zadowolony, gdy dałem mu węgiel. Ma go teraz wystarczająco dużo. Dał mi kilka pysznych steków jakich w życiu nie jadłem!");
+				res.add(NPC_NAME + " był zadowolony, gdy dałem mu węgiel. Ma go teraz wystarczająco dużo. W zamian otrzymałem od niego kilka pysznych steków jakich w życiu nie jadłem!");
 			}			
 		}
 		return res;
@@ -235,7 +231,17 @@ public class CoalForHaunchy extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "CoalForHaunchy";
+		return "Węgiel do Grilla";
+	}
+	
+	@Override
+	public String getRegion() {
+		return Region.ADOS_CITY;
+	}
+
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
 	}
 
 	@Override
@@ -247,15 +253,5 @@ public class CoalForHaunchy extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"waiting;").fire(player, null, null);
-	}
-	
-	@Override
-	public String getRegion() {
-		return Region.ADOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Haunchy Meatoch";
 	}
 }

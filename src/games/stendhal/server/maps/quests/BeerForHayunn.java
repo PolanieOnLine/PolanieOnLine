@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -32,11 +36,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Beer For Hayunn
@@ -69,7 +68,9 @@ public class BeerForHayunn extends AbstractQuest {
 	public static final String QUEST_SLOT = "beer_hayunn";
 	private static final String OTHER_QUEST_SLOT = "meet_hayunn";
 
-
+	// NPC
+	private static final String NPC_NAME = "Hayunn Naratha";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -96,8 +97,6 @@ public class BeerForHayunn extends AbstractQuest {
 	}
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Hayunn Naratha");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			// Don't give the task until the previous is completed to avoid
@@ -157,8 +156,6 @@ public class BeerForHayunn extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Hayunn Naratha");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestActiveCondition(QUEST_SLOT),
@@ -200,7 +197,7 @@ public class BeerForHayunn extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Piwo dla Hayunna",
+				"Napój dla Hayunna",
 				"Hayunn Naratha największy wojownik w Semos Guard House potrzebuje soku z chmielu.",
 				false);
 		prepareRequestingStep();
@@ -214,12 +211,7 @@ public class BeerForHayunn extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "BeerForHayunn";
-	}
-
-	public String getTitle() {
-
-		return "Piwo dla Hayunn";
+		return "Napój dla Hayunna";
 	}
 
 	@Override
@@ -234,6 +226,6 @@ public class BeerForHayunn extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Hayunn Naratha";
+		return NPC_NAME;
 	}
 }

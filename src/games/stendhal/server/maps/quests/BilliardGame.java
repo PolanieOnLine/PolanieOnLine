@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,17 +34,12 @@ import games.stendhal.server.maps.Region;
 import marauroa.common.Pair;
 
 public class BilliardGame extends AbstractQuest {
+	private static final String QUEST_SLOT = "bilard";
 
-	private static final int STAKE = 250;
-
-	@Override
-	public String getSlotName() {
-		return "billiard_game";
-	}
+	private static final int STAKE = 250; // Cost
 
 	@Override
 	public void addToWorld() {
-
 		final CroupierNPC npc = (CroupierNPC) SingletonRepository.getNPCList().get("Maris");
 
 		final Map<Integer, Pair<String, String>> prizes = initPrices();
@@ -140,7 +135,7 @@ public class BilliardGame extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "BilliardGame";
+		return "Gra w Bilarda";
 	}
 
 	@Override
@@ -151,6 +146,11 @@ public class BilliardGame extends AbstractQuest {
 	@Override
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-//Na podstawie taska DailyItemQuest.
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -52,6 +51,10 @@ import games.stendhal.server.maps.Region;
 
 public class DailyMuseumGdanskQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily_museum_gdansk_quest";
+
+	// NPC
+	private static final String NPC_NAME = "Mieczysław";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK; 
@@ -109,7 +112,6 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	}
 	
 	private void getQuest() {
-		final SpeakerNPC npc = npcs.get("Mieczysław");
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
@@ -143,8 +145,6 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	}
 
 	private void completeQuest() {
-		final SpeakerNPC npc = npcs.get("Mieczysław");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -192,8 +192,6 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	}
 
 	private void abortQuest() {
-		final SpeakerNPC npc = npcs.get("Mieczysław");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -221,8 +219,17 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	}
 
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
+	public void addToWorld() {
+		fillQuestInfo(
+		"Dzienne Zadanie w Gdańsku",
+		"Mieczysław potrzebuje dostaw towaru do Gdańska.",
+		true);
+
+		buildItemsMap();
+
+		getQuest();
+		completeQuest();
+		abortQuest();
 	}
 
 	@Override
@@ -264,33 +271,13 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	}
 
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-		"Dzienne Zadanie Mieczysława",
-		"Mieczysław potrzebuje dostaw towaru do Gdańska.",
-		true);
-
-		buildItemsMap();
-
-		getQuest();
-		completeQuest();
-		abortQuest();
-	}
-
-	@Override
 	public String getName() {
-		return "DailyMuseumGdanskQuest";
+		return "Dzienne Zadanie w Gdańsku";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 0;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-								new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 	
 	@Override
@@ -300,6 +287,17 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Mieczysław";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+								new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

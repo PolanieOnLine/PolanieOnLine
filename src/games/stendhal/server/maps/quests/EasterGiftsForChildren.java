@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -33,11 +37,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Easter gifts for children
@@ -68,37 +67,13 @@ import java.util.List;
  * </ul>
  */
 public class EasterGiftsForChildren extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "easter_gifts_[year]";
 
-
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Rozmawiałem z Caroline w Ados. Pracuje tam w swojej tawernie.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem jej przyniesienia słodyczy.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Przyrzekłem, że przyniosę Caroline trochę słodyczy dla dzieci z okolic Faiumoni jako Wielkanocny prezent.");
-		}
-		if ("start".equals(questState) && player.isEquipped("tabliczka czekolady", 5)  && player.isEquipped("małe jajo wielkanocne", 1) && player.isEquipped("jabłko", 5)  && player.isEquipped("wisienka", 5) || "done".equals(questState)) {
-			res.add("Mam wszystkie słodycze i zabiorę je do Caroline.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Wziąłem słodycze do Caroline. W zamian dała mi prezent Wielkanocny na moje podróże jako prawdziwemu bohaterowi. :)");
-		}
-		return res;
-	}
+	// NPC
+	private static final String NPC_NAME = "Caroline";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Caroline");
-
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -151,37 +126,35 @@ public class EasterGiftsForChildren extends AbstractQuest {
 
 		// player wants to know where he can get this sweets from
 		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("chocolate bar", "chocolate bars", "chocolate", "tabliczka czekolady", "tabliczka", "czekolady"),
-				null,
-				ConversationStates.ATTENDING,
-				"Tabliczka czekolady jest sprzedawana w tawernach i słyszałem też, że pare złych dzieci też je nosi. Jeśli znajdziesz je to pamiętaj, że Elizabeth w Kirdneh też uwielbia czekoladę. :)", null);
+			ConversationStates.ATTENDING,
+			Arrays.asList("chocolate bar", "chocolate bars", "chocolate", "tabliczka czekolady", "tabliczka", "czekolady"),
+			null,
+			ConversationStates.ATTENDING,
+			"Tabliczka czekolady jest sprzedawana w tawernach i słyszałem też, że pare złych dzieci też je nosi. Jeśli znajdziesz je to pamiętaj, że Elizabeth w Kirdneh też uwielbia czekoladę. :)", null);
 
 		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("apple", "apples", "jabłko", "jabłka"),
-				null,
-				ConversationStates.ATTENDING,
-				"Jabłka można znaleść na farmie na wschód od miasta. Są naprawdę zdrowe i możesz z nich upiec wspaniały jabłecznik. Można też dostać z ogrodów Marthy w mieście Kalavan.", null);
+			ConversationStates.ATTENDING,
+			Arrays.asList("apple", "apples", "jabłko", "jabłka"),
+			null,
+			ConversationStates.ATTENDING,
+			"Jabłka można znaleść na farmie na wschód od miasta. Są naprawdę zdrowe i możesz z nich upiec wspaniały jabłecznik. Można też dostać z ogrodów Marthy w mieście Kalavan.", null);
 
 		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("cherry", "cherries", "wisienka", "wisienki"),
-				null,
-				ConversationStates.ATTENDING,
-				"Old Mother Helena w Fado sprzedaje najpiękniejsze wisienki. Są naprawdę pyszne! Mam nadzieję, że spróbowałeś wspaniałego ciasta z wiśniami upieczonego przez Gerthę będącą w ogrodach miasta Kalavan.", null);
+			ConversationStates.ATTENDING,
+			Arrays.asList("cherry", "cherries", "wisienka", "wisienki"),
+			null,
+			ConversationStates.ATTENDING,
+			"Old Mother Helena w Fado sprzedaje najpiękniejsze wisienki. Są naprawdę pyszne! Mam nadzieję, że spróbowałeś wspaniałego ciasta z wiśniami upieczonego przez Gerthę będącą w ogrodach miasta Kalavan.", null);
 
 		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("small easter egg", "chocolate egg", "małe jajo wielkanocne", "czekoladowe jajko"),
-				null,
-				ConversationStates.ATTENDING,
-				"Małe jajo wielkanocne jest specjalnością zajączka Wielkanocnego, który kica podczas dni Wielkanocy. Może spotkasz go na swojej drodze. :)", null);
+			ConversationStates.ATTENDING,
+			Arrays.asList("small easter egg", "chocolate egg", "małe jajo wielkanocne", "czekoladowe jajko"),
+			null,
+			ConversationStates.ATTENDING,
+			"Małe jajo wielkanocne jest specjalnością zajączka Wielkanocnego, który kica podczas dni Wielkanocy. Może spotkasz go na swojej drodze. :)", null);
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Caroline");
-
 		// player returns while quest is still active
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -218,8 +191,6 @@ public class EasterGiftsForChildren extends AbstractQuest {
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(50));
 
-
-
 		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
@@ -234,7 +205,6 @@ public class EasterGiftsForChildren extends AbstractQuest {
 
 			ConversationStates.ATTENDING, "Jak wspaniale! Teraz mogę wypełnić koszyk dla dzieci! Będą szczęśliwe! Bardzo dziękuję za twoją pomoc i życzę wesołych Świąt Wielkanocnych! Proszę przyjmij te zwoje w dowód wdzięczności. :)",
 			new MultipleActions(reward));
-
 
 		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
@@ -256,13 +226,36 @@ public class EasterGiftsForChildren extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem z Caroline w Ados. Pracuje tam w swojej tawernie.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Odmówiłem jej przyniesienia słodyczy.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Przyrzekłem, że przyniosę Caroline trochę słodyczy dla dzieci z okolic Faiumoni jako Wielkanocny prezent.");
+		}
+		if ("start".equals(questState) && player.isEquipped("tabliczka czekolady", 5)  && player.isEquipped("małe jajo wielkanocne", 1) && player.isEquipped("jabłko", 5)  && player.isEquipped("wisienka", 5) || "done".equals(questState)) {
+			res.add("Mam wszystkie słodycze i zabiorę je do Caroline.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Wziąłem słodycze do Caroline. W zamian dała mi prezent Wielkanocny na moje podróże jako prawdziwemu bohaterowi. :)");
+		}
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "EasterGiftsForChildren";
+		return "Prezent Wielkanocny";
 	}
 
 	@Override
@@ -277,6 +270,6 @@ public class EasterGiftsForChildren extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Caroline";
+		return NPC_NAME;
 	}
 }

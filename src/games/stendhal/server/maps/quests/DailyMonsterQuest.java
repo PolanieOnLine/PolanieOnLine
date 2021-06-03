@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -74,21 +73,21 @@ import games.stendhal.server.maps.Region;
  */
 
 public class DailyMonsterQuest extends AbstractQuest {
-
-	private static DailyMonsterQuest instance;
-
 	private static final String QUEST_SLOT = "daily";
-	private SpeakerNPC npc;
-	private final String npcName = "Mayor Sakhs";
-	private static Logger logger = Logger.getLogger("DailyMonsterQuest");
+
+	// NPC
+	private static final String NPC_NAME = "Mayor Sakhs";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
 
+	private static Logger logger = Logger.getLogger("DailyMonsterQuest");
+
+	private static DailyMonsterQuest instance;
 
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
-
 
 	/**
 	 * Get the static instance.
@@ -273,68 +272,6 @@ public class DailyMonsterQuest extends AbstractQuest {
 		*/
 	}
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem się z burmistrzem  w Sakhs Semos Townhall");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę pomóc Semos.");
-			return res;
-		}
-
-		res.add("Chcę pomóc Semos.");
-		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
-			final boolean questDone = new KilledForQuestCondition(QUEST_SLOT, 0)
-					.fire(player, null, null);
-			final String creatureToKill = getCreatureToKillFromPlayer(player);
-			if (!questDone) {
-				res.add("Zostałem poproszony o zabicie" + creatureToKill
-						+ ", aby pomóc Semos. Jeszcze go nie zabiłem.");
-			} else {
-				res.add("Zabiłem " + creatureToKill
-						+ ", aby pomóc Semos.");
-			}
-		}
-		if (player.isQuestCompleted(QUEST_SLOT)) {
-			final String[] tokens = (questState + ";0;0;0").split(";");
-			final String questLast = tokens[1];
-			final long timeRemaining = Long.parseLong(questLast) + MathHelper.MILLISECONDS_IN_ONE_DAY
-					- System.currentTimeMillis();
-
-			if (timeRemaining > 0L) {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie burmistrz i odebrałem nagrodę w ciągu 24 godzin.");
-			} else {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie burmistrz i teraz Semos znów potrzebuje mojej pomocy.");
-			}
-		}
-		// add to history how often player helped Semos so far
-		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
-		if (repetitions > 0) {
-			res.add("pomogłem Semos "
-					+ Grammar.quantityplnounCreature(repetitions, "razy") + " do tej pory.");
-		}
-		return res;
-	}
-
-	private String getCreatureToKillFromPlayer(Player player) {
-		String actualQuestSlot = player.getQuest(QUEST_SLOT, 0);
-		String[] split = actualQuestSlot.split(",");
-		if (split.length > 1) {
-			// only return object if the slot was in the format expected (i.e. not done;timestamp;count etc)
-			return split[0];
-		}
-		return null;
-	}
-
 	/**
 	 * player said "quest"
 	 */
@@ -507,8 +444,6 @@ public class DailyMonsterQuest extends AbstractQuest {
 
 	@Override
 	public void addToWorld() {
-		npc = npcs.get(npcName);
-
 		fillQuestInfo(
 				"Dzienne Zadanie na Potwora",
 				"Mayor Sakhs potrzebuje wojowników do utrzymania bezpieczeństwa w mieście Semos.",
@@ -520,19 +455,70 @@ public class DailyMonsterQuest extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem się z burmistrzem  w Sakhs Semos Townhall");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę pomóc Semos.");
+			return res;
+		}
+
+		res.add("Chcę pomóc Semos.");
+		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
+			final boolean questDone = new KilledForQuestCondition(QUEST_SLOT, 0)
+					.fire(player, null, null);
+			final String creatureToKill = getCreatureToKillFromPlayer(player);
+			if (!questDone) {
+				res.add("Zostałem poproszony o zabicie" + creatureToKill
+						+ ", aby pomóc Semos. Jeszcze go nie zabiłem.");
+			} else {
+				res.add("Zabiłem " + creatureToKill
+						+ ", aby pomóc Semos.");
+			}
+		}
+		if (player.isQuestCompleted(QUEST_SLOT)) {
+			final String[] tokens = (questState + ";0;0;0").split(";");
+			final String questLast = tokens[1];
+			final long timeRemaining = Long.parseLong(questLast) + MathHelper.MILLISECONDS_IN_ONE_DAY
+					- System.currentTimeMillis();
+
+			if (timeRemaining > 0L) {
+				res.add("Zabiłem ostatniego potwora o którego prosił mnie burmistrz i odebrałem nagrodę w ciągu 24 godzin.");
+			} else {
+				res.add("Zabiłem ostatniego potwora o którego prosił mnie burmistrz i teraz Semos znów potrzebuje mojej pomocy.");
+			}
+		}
+		// add to history how often player helped Semos so far
+		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
+		if (repetitions > 0) {
+			res.add("pomogłem Semos "
+					+ Grammar.quantityplnounCreature(repetitions, "razy") + " do tej pory.");
+		}
+		return res;
+	}
+
+	private String getCreatureToKillFromPlayer(Player player) {
+		String actualQuestSlot = player.getQuest(QUEST_SLOT, 0);
+		String[] split = actualQuestSlot.split(",");
+		if (split.length > 1) {
+			// only return object if the slot was in the format expected (i.e. not done;timestamp;count etc)
+			return split[0];
+		}
+		return null;
+	}
+
+	@Override
 	public String getName() {
-		return "DailyMonsterQuest";
+		return "Dzienne Zadanie w Semos";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 0;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 
 	@Override
@@ -542,6 +528,17 @@ public class DailyMonsterQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return npcName;
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

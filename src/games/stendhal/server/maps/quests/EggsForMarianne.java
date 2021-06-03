@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2019 - Stendhal                      *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -72,63 +72,16 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class EggsForMarianne extends AbstractQuest {
-
-	//a dozen of eggs
-	private static final int REQUIRED_EGGS = 12;
-
-	//60 minutes before quest can be repeated
-	private static final int REQUIRED_MINUTES = 60;
-
 	private static final String QUEST_SLOT = "eggs_for_marianne";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	// NPC
+	private static final String NPC_NAME = "Marianne";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
-	@Override
-	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(
-				new QuestNotInStateCondition(QUEST_SLOT, "start"),
-				new QuestStartedCondition(QUEST_SLOT),
-				new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Poznałem Marianne.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę pomagać Mariannie.");
-			return res;
-		}
-		res.add("Chcę pomóc Mariannie");
-		if (player.isEquipped("egg", REQUIRED_EGGS) || isCompleted(player)) {
-			res.add("Znalazłem jajka dla Marianny");
-		}
-		if (isCompleted(player)) {
-			res.add("Zaniosłem Mariannie jajka." +
-		             "W zamian otrzymałem kwiatka." +
-					 "Zdobyłem także trochę PD.");
-		}
-		if(isRepeatable(player)){
-			res.add("Marianna znowu potrzebuje kurze jaja.");
-		}
-		return res;
-	}
+	private static final int REQUIRED_EGGS = 12; //a dozen of eggs
+	private static final int REQUIRED_MINUTES = 60; //60 minutes before quest can be repeated
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Marianne");
-
 		// player returns with the promised eggs
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -238,9 +191,7 @@ public class EggsForMarianne extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Marianne");
 		// player has eggs and tells Marianne, yes, it is for her
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("jajo", REQUIRED_EGGS));
 		reward.add(new IncreaseXPAction(100));
@@ -291,7 +242,7 @@ public class EggsForMarianne extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Jajka dla Marianny",
+				"Kurze Jaja",
 				"Matka Marianny zamierza zrobić naleśniki, lecz potrzebuje jajka.",
 				true);
 		prepareRequestingStep();
@@ -299,8 +250,38 @@ public class EggsForMarianne extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Marianne w okolic Deniran.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę pomagać Mariannie.");
+			return res;
+		}
+		res.add("Chętnie pomogę biednej Mariannie w zdobyciu tuzin kurzyj jaj.");
+		if (player.isEquipped("egg", REQUIRED_EGGS) || isCompleted(player)) {
+			res.add("Znalazłem jajka dla Marianny");
+		}
+		if (isCompleted(player)) {
+			res.add("Zaniosłem Mariannie kurze jaja, a w zamian otrzymałem pięknego kwiatka.");
+		}
+		if(isRepeatable(player)){
+			res.add("Marianna znowu potrzebuje kurzych jaj.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "EggsForMarianne";
+		return "Kurze Jaja";
 	}
 
 	@Override
@@ -310,11 +291,24 @@ public class EggsForMarianne extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Marianne";
+		return NPC_NAME;
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.DENIRAN;
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestNotInStateCondition(QUEST_SLOT, "start"),
+				new QuestStartedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

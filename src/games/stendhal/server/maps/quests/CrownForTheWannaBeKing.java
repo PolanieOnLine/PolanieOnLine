@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.grammar.Grammar;
@@ -38,11 +42,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.ItemCollection;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * QUEST: CrownForTheWannaBeKing
@@ -300,14 +299,14 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 		step_2();
 		step_3();
 		fillQuestInfo(
-				"Korona dla Niedoszłego Króla",
+				"Korona Niedoszłego Króla",
 				"Ivan Abe chce rządzić Kalavan ... i potrzebuje korony.",
 				false);
 	}
 
 	@Override
 	public String getName() {
-		return "CrownForTheWannaBeKing";
+		return "Korona Niedoszłego Króla";
 	}
 
 	@Override
@@ -317,7 +316,7 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Ivan Abe";
+		return NPC_NAME;
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -40,28 +40,12 @@ import games.stendhal.server.maps.Region;
 
 public class BringMagic extends AbstractQuest {
 	private static final String QUEST_SLOT = "bring_magic";
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Czarnoksiężnika w jakieś starej wieży.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
-		return res;
-		}
-		if ("done".equals(questState)) {
-			res.add("Za pomoc w zadaniach otrzymałem wspaniały magiczny hełm od Czarnoksiężnika.");
-		}
-		return res;
-	}
-	
-	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
 
+	// NPC
+	private static final String NPC_NAME = "Czarnoksiężnik";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
+	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(
@@ -106,8 +90,6 @@ public class BringMagic extends AbstractQuest {
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("magia ziemi", 100));
 		reward.add(new DropItemAction("magia płomieni", 100));
@@ -156,8 +138,6 @@ public class BringMagic extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
-
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -202,34 +182,52 @@ public class BringMagic extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Magia dla Czarnoksiężnika",
-				"Ostatnie zadania to przyniesienie każdego rodzaju magii dla Czarnoksiężnika.",
+				"Magiczne zasoby",
+				"Czarnoksiężnik zleca nam przyniesienie zasobów magicznych zaklęć różnych typów natur.",
 				false);
 		step_1();
 		step_2();
 		step_3();
 	}
-	
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Czarnoksiężnika w starej wieży w okolicy lasu.");
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if ("rejected".equals(questState)) {
+			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
+		return res;
+		}
+		if ("done".equals(questState)) {
+			res.add("Za pomoc w zadaniach otrzymałem wspaniały magiczny hełm od Czarnoksiężnika.");
+		}
+		return res;
+	}
+
 	@Override
 	public int getMinLevel() {
 		return 120;
 	}
-	
+
 	@Override
 	public String getName() {
-		return "BringMagic";
+		return "Magiczne Zasoby";
 	}
-	
+
 	@Override
 	public String getNPCName() {
-		return "Czarnoksiężnik";
+		return NPC_NAME;
 	}
 
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;

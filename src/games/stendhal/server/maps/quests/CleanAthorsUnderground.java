@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -70,19 +69,15 @@ import marauroa.common.Pair;
  */
 
 public class CleanAthorsUnderground extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "clean_athors_underground";
+
+	// NPC
+	private static final String NPC_NAME = "John";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("John");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -159,8 +154,6 @@ public class CleanAthorsUnderground extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("John");
-
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 	    actions.add(new EquipItemAction("wielki eliksir", 20));
 		actions.add(new IncreaseXPAction(80000));
@@ -219,7 +212,22 @@ public class CleanAthorsUnderground extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "CleanAthorsUnderground";
+		return "Posprzątaj podziemia Athor";
+	}
+
+	@Override
+	public String getNPCName() {
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.ATHOR_ISLAND;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
@@ -231,15 +239,5 @@ public class CleanAthorsUnderground extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
-	}
-
-	@Override
-	public String getNPCName() {
-		return "John";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ATHOR_ISLAND;
 	}
 }

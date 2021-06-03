@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -70,42 +70,44 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class AmazonPrincess extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "amazon_princess";
+
+	// NPC
+	private static final String NPC_NAME = "Księżniczka Esclara";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	// The delay between repeating quests is 60 minutes
 	private static final int REQUIRED_MINUTES = 60;
 	private static final List<String> triggers = Arrays.asList("drink", "napój","napój z oliwką");
 
-
 	private void offerQuestStep() {
-		final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
-npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
 				"Napiłabym się drinka, powinien być egzotyczny. Czy możesz mi go przynieść?",
 				null);
-npc.add(ConversationStates.ATTENDING,
-		ConversationPhrases.QUEST_MESSAGES,
-		new QuestCompletedCondition(QUEST_SLOT),
-		ConversationStates.ATTENDING,
-		"Nie jestem teraz spragniona dziękuję!",
-		null);
 
-npc.add(ConversationStates.ATTENDING,
-		ConversationPhrases.QUEST_MESSAGES,
-		new AndCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES), new QuestStateStartsWithCondition(QUEST_SLOT, "drinking;")),
-		ConversationStates.QUEST_OFFERED,
-		"Ostatni napój, który mi kupiłeś był wspaniały. Przyniesiesz mi następny?",
-		null);
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestCompletedCondition(QUEST_SLOT),
+				ConversationStates.ATTENDING,
+				"Nie jestem teraz spragniona dziękuję!",
+				null);
 
-npc.add(ConversationStates.ATTENDING,
-		ConversationPhrases.QUEST_MESSAGES,
-		new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)), new QuestStateStartsWithCondition(QUEST_SLOT, "drinking;")),
-		ConversationStates.ATTENDING,
-		null,
-		new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jestem pełna, aby wypić następny napój przez co najmniej "));
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES), new QuestStateStartsWithCondition(QUEST_SLOT, "drinking;")),
+				ConversationStates.QUEST_OFFERED,
+				"Ostatni napój, który mi kupiłeś był wspaniały. Przyniesiesz mi następny?",
+				null);
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)), new QuestStateStartsWithCondition(QUEST_SLOT, "drinking;")),
+				ConversationStates.ATTENDING,
+				null,
+				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jestem pełna, aby wypić następny napój przez co najmniej "));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, null,
@@ -113,7 +115,7 @@ npc.add(ConversationStates.ATTENDING,
 				"Kocham te egzotyczne napoje ale zapomniałam nazwę mojego ulubionego.",
 				null);
 
-// Player agrees to get the drink
+		// Player agrees to get the drink
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING,
@@ -133,7 +135,6 @@ npc.add(ConversationStates.ATTENDING,
 	 * serves drinks to all, not just those with the quest
 	 */
 	private void bringCocktailStep() {
-		final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
 		npc.add(
 			ConversationStates.ATTENDING, triggers,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new PlayerHasItemWithHimCondition("napój z oliwką")),
@@ -168,7 +169,6 @@ npc.add(ConversationStates.ATTENDING,
 			new QuestNotInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
 			"Czasami mógłbyś mi wyświadczyć #przysługę...", null);
-
 	}
 
 	@Override
@@ -180,7 +180,6 @@ npc.add(ConversationStates.ATTENDING,
 		offerQuestStep();
 		bringCocktailStep();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -216,7 +215,7 @@ npc.add(ConversationStates.ATTENDING,
 
 	@Override
 	public String getName() {
-		return "AmazonPrincess";
+		return "Księżniczka Amazonki";
 	}
 
 	// Amazon is dangerous below this level - don't hint to go there
@@ -243,6 +242,6 @@ npc.add(ConversationStates.ATTENDING,
 
 	@Override
 	public String getNPCName() {
-		return "Księżniczka Esclara";
+		return NPC_NAME;
 	}
 }

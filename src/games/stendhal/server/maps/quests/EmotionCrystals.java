@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2013 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -76,6 +76,10 @@ import games.stendhal.server.maps.Region;
 public class EmotionCrystals extends AbstractQuest {
 	private static final String QUEST_SLOT = "emotion_crystals";
 
+	// NPC
+	private static final String NPC_NAME = "Julius";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
 	private static final String[] crystalColors = { "czerwony", "purpurowy", "żółty", "różowy", "niebieski" };
 
 	// Amount of time, in minutes, player must wait before retrying the riddle (24 hours)
@@ -85,57 +89,7 @@ public class EmotionCrystals extends AbstractQuest {
 	private static final int OFFSET_TIMESTAMPS = 1;
 	private static final int OFFSET_SUCCESS_MARKER = 6;
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-
-		// Only include Julius in the quest log if player has spoken to him
-		if (player.isQuestInState(QUEST_SLOT, 0, "start") || player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
-			res.add("Rozmawiałem z żołnierzen Juliusem, który pilnuje wejścia do Ados.");
-			if (player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
-				res.add("Jestem emocjonalnie nie przygotowany i musiałem odrzucić jego prośbę.");
-			}
-			else {
-				res.add("Obiecałem, że zdobędę pięć kryształów z całego Faiumoni.");
-			}
-		}
-
-		List<String> gatheredCrystals = new ArrayList<String>();
-		boolean hasAllCrystals = true;
-
-		for (String color : crystalColors) {
-			if (player.isEquipped(color + " kryształ emocji")) {
-				if (!gatheredCrystals.contains(color + " kryształ emocji")) {
-					gatheredCrystals.add(color + " kryształ emocji");
-				}
-			} else {
-				hasAllCrystals = false;
-			}
-		}
-
-		if (!gatheredCrystals.isEmpty()) {
-			String tell = "Znalazłem następujące kryształy: ";
-			tell += Grammar.enumerateCollection(gatheredCrystals);
-			res.add(tell);
-		}
-
-		if (hasAllCrystals) {
-			res.add("Zdobyłem wszystkie kryształy emocji i powinienem zanieść je do Juliusa w Ados.");
-		}
-
-		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add("Dałem kryształy Juliusowi dla jego żony. Dostałem doświadczenie, karmę i przydatne spodnie kamienne.");
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Julius");
-
-
 		// Player asks for quest
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -364,8 +318,6 @@ public class EmotionCrystals extends AbstractQuest {
 
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Julius");
-
 		// Reward
 		final List<ChatAction> rewardAction = new LinkedList<ChatAction>();
 		for (String color : crystalColors) {
@@ -435,17 +387,59 @@ public class EmotionCrystals extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+
+		// Only include Julius in the quest log if player has spoken to him
+		if (player.isQuestInState(QUEST_SLOT, 0, "start") || player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
+			res.add("Rozmawiałem z żołnierzen Juliusem, który pilnuje wejścia do Ados.");
+			if (player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
+				res.add("Jestem emocjonalnie nie przygotowany i musiałem odrzucić jego prośbę.");
+			}
+			else {
+				res.add("Obiecałem, że zdobędę pięć kryształów z całego Faiumoni.");
+			}
+		}
+
+		List<String> gatheredCrystals = new ArrayList<String>();
+		boolean hasAllCrystals = true;
+
+		for (String color : crystalColors) {
+			if (player.isEquipped(color + " kryształ emocji")) {
+				if (!gatheredCrystals.contains(color + " kryształ emocji")) {
+					gatheredCrystals.add(color + " kryształ emocji");
+				}
+			} else {
+				hasAllCrystals = false;
+			}
+		}
+
+		if (!gatheredCrystals.isEmpty()) {
+			String tell = "Znalazłem następujące kryształy: ";
+			tell += Grammar.enumerateCollection(gatheredCrystals);
+			res.add(tell);
+		}
+
+		if (hasAllCrystals) {
+			res.add("Zdobyłem wszystkie kryształy emocji i powinienem zanieść je do Juliusa w Ados.");
+		}
+
+		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
+			res.add("Dałem kryształy Juliusowi dla jego żony. Dostałem doświadczenie, karmę i przydatne spodnie kamienne.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "EmotionCrystals";
-	}
-
-	public String getTitle() {
-
 		return "Kryształy Emocji";
 	}
 
@@ -461,6 +455,6 @@ public class EmotionCrystals extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Julius";
+		return NPC_NAME;
 	}
 }

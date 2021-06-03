@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -73,19 +72,15 @@ import games.stendhal.server.entity.player.Player;
  * </ul>
  */
 public class CloaksForBario extends AbstractQuest {
+	private static final String QUEST_SLOT = "cloaks_for_bario";
+
+	// NPC
+	private static final String NPC_NAME = "Bario";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final int REQUIRED_CLOAKS = 10;
 
-	private static final String QUEST_SLOT = "cloaks_for_bario";
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Bario");
-
 		// player says hi before starting the quest
 		npc.add(
 				ConversationStates.IDLE,
@@ -139,8 +134,6 @@ public class CloaksForBario extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Bario");
-
 		// player returns while quest is still active
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -222,7 +215,7 @@ public class CloaksForBario extends AbstractQuest {
 		step_3();
 		fillQuestInfo(
 				"Płaszcze dla Bario",
-				"Bario, potrzebuję płaszczy aby ogrzać się.",
+				"Bario potrzebuję płaszczy, aby ogrzać się.",
 				false);
 	}
 
@@ -232,10 +225,10 @@ public class CloaksForBario extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem zmarźniętego krasnala, który ukrywa się pod ziemią w Ados Outside NW. Poprosił mnie, żebym przyniósł mu 10 lazurowych płaszczy elfickich.");
+		res.add("Spotkałem zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym przyniósł mu 10 lazurowych płaszczy elfickich.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie chcę, pomóc Bario..");
+			res.add("Nie chcę pomagać Bario...");
 		} else if (!questState.equals("done")) {
 			int cloaks = MathHelper.parseIntDefault(player.getQuest(QUEST_SLOT),  REQUIRED_CLOAKS);
 			res.add("Muszę przynieść Bario " + Grammar.quantityplnoun(cloaks, "lazurowy płaszcz elficki", "one") + "." );
@@ -247,15 +240,21 @@ public class CloaksForBario extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "CloaksForBario";
+		return "Płaszcze dla Bario";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 20;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Bario";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 }

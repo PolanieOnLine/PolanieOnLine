@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -69,10 +68,11 @@ import games.stendhal.server.maps.Region;
  * <li> once a day
  */
 public class DailyItemQuest extends AbstractQuest {
-
-	private static DailyItemQuest instance;
-
 	private static final String QUEST_SLOT = "daily_item";
+
+	// NPC
+	private static final String NPC_NAME = "Mayor Chalmers";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
@@ -80,12 +80,13 @@ public class DailyItemQuest extends AbstractQuest {
 	/** How often the quest may be repeated */
 	private static final int delay = MathHelper.MINUTES_IN_ONE_DAY;
 
+	private static DailyItemQuest instance;
+
 	/**
 	 * All items which are possible/easy enough to find. If you want to do
 	 * it better, go ahead. *
 	 */
 	private static Map<String,Integer> items;
-
 
 	/**
 	 * Get the static instance.
@@ -330,7 +331,6 @@ public class DailyItemQuest extends AbstractQuest {
 	}
 	
 	private void getQuest() {
-		final SpeakerNPC npc = npcs.get("Mayor Chalmers");
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
@@ -364,8 +364,6 @@ public class DailyItemQuest extends AbstractQuest {
 	}
 	
 	private void completeQuest() {
-		final SpeakerNPC npc = npcs.get("Mayor Chalmers");
-		
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -410,8 +408,6 @@ public class DailyItemQuest extends AbstractQuest {
 	}
 	
 	private void abortQuest() {
-		final SpeakerNPC npc = npcs.get("Mayor Chalmers");
-		
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -439,10 +435,19 @@ public class DailyItemQuest extends AbstractQuest {
 	}
 
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
+	public void addToWorld() {
+		fillQuestInfo(
+				"Dzienne Zadanie na Przedmiot",
+				"Mayor Chalmers potrzebuje zapasów dla miasta Ados.",
+				true);
+
+		buildItemsMap();
+
+		getQuest();
+		completeQuest();
+		abortQuest();
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -482,33 +487,13 @@ public class DailyItemQuest extends AbstractQuest {
 	}
 
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Dzienne Zadanie na Przedmiot",
-				"Mayor Chalmers potrzebuje zapasów dla miasta Ados.",
-				true);
-
-		buildItemsMap();
-
-		getQuest();
-		completeQuest();
-		abortQuest();
-	}
-
-	@Override
 	public String getName() {
-		return "DailyItemQuest";
+		return "Dzienne Zadanie w Ados";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 0;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 
 	@Override
@@ -518,6 +503,17 @@ public class DailyItemQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Mayor Chalmers";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

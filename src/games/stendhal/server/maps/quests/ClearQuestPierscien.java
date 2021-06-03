@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on UltimateCollector
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -39,31 +38,23 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
 	public class ClearQuestPierscien extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "clear_questy_pierscieni";
 
 	private static final String PIERSCIEN_MIESZCZANINA_QUEST_SLOT = "pierscien_mieszczanina"; 
-
 	private static final String PIERSCIEN_RYCERZA_QUEST_SLOT = "pierscien_rycerza";
-
 	private static final String PIERSCIEN_BARONA_QUEST_SLOT = "pierscien_barona";
-
 	private static final String PIERSCIEN_MAGNATA_QUEST_SLOT = "pierscien_magnata";
 
 	private static final String MITHRIL_CLOAK_QUEST_SLOT = "mithril_cloak";
-
 	private static final String MITHRILSHIELD_QUEST_SLOT = "mithrilshield_quest";
+
+	// NPC
+	private static final String NPC_NAME = "eFuR";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static Logger logger = Logger.getLogger(PierscienBarona.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void checkLevelHelm() {
-		final SpeakerNPC npc = npcs.get("eFuR");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -92,8 +83,6 @@ import games.stendhal.server.entity.player.Player;
 	} 
 
 	private void checkCollectingQuests() {
-		final SpeakerNPC npc = npcs.get("eFuR");
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -150,9 +139,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void requestItem() {
-		final SpeakerNPC npc = npcs.get("eFuR");
-
-				npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("płaszcz"),
 				new AndCondition( 
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
@@ -181,7 +168,7 @@ import games.stendhal.server.entity.player.Player;
 									+"Przyjmuje zapłatę w całości, nie na raty!!!\n"
 									+"Jeżeli będziesz miał kasę powiedz mi #'/płaszcz/'. Dziękuję!", null);
 
-				npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("tarcza", "tarcze"),
 				new AndCondition( 
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
@@ -238,7 +225,7 @@ import games.stendhal.server.entity.player.Player;
 								 new AndCondition(new PlayerHasItemWithHimCondition("money",250000),
 												  new PlayerHasItemWithHimCondition("sztabka złota",30)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
-									+"#'250k money'\n"
+									+"#'250 000 money'\n"
 									+"#'30 sztabek złota'\n"
 									+"Przyjmuje zapłatę w całości, nie na raty!!!\n"
 									+"Jeżeli zapomnisz powiedz mi #'/mieszczanin/'. Dziękuję!", null);
@@ -271,7 +258,7 @@ import games.stendhal.server.entity.player.Player;
 								 new AndCondition(new PlayerHasItemWithHimCondition("money",350000),
 												  new PlayerHasItemWithHimCondition("sztabka złota",50)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
-									+"#'350k money'\n"
+									+"#'350 000 money'\n"
 									+"#'50 sztabek złota'\n"
 									+"Przyjmuje zapłatę w całości, nie na raty!!!\n"
 									+"Jeżeli zapomnisz powiedz mi #'/rycerz/'. Dziękuję!", null);
@@ -305,7 +292,7 @@ import games.stendhal.server.entity.player.Player;
 								 new AndCondition(new PlayerHasItemWithHimCondition("money",450000),
 												  new PlayerHasItemWithHimCondition("sztabka złota",70)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
-									+"#'450k money'\n"
+									+"#'450 000 money'\n"
 									+"#'70 sztabek złota'\n"
 									+"Przyjmuje zapłatę w całości, nie na raty!!!\n"
 									+"Jeżeli zapomnisz powiedz mi #'/baron/'. Dziękuję!", null);
@@ -339,7 +326,7 @@ import games.stendhal.server.entity.player.Player;
 								 new AndCondition(new PlayerHasItemWithHimCondition("money",600000),
 												  new PlayerHasItemWithHimCondition("sztabka złota",100)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
-									+"#'600k money'\n"
+									+"#'600 000 money'\n"
 									+"#'100 sztabek złota'\n"
 									+"Przyjmuje zapłatę w całości, nie na raty!!!\n"
 									+"Jeżeli zapomnisz powiedz mi #'/magnat/'. Dziękuję!", null);
@@ -348,8 +335,8 @@ import games.stendhal.server.entity.player.Player;
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Anulowanie zadani",
-				"eFuR anuluje zadania w zamian za opłatę..",
+				"Anulowanie zadań",
+				"eFuR anuluje zadania w zamian za opłatę...",
 				true);
 
 		checkLevelHelm(); 
@@ -364,39 +351,39 @@ import games.stendhal.server.entity.player.Player;
 				return res;
 			}
 			final String questState = player.getQuest(QUEST_SLOT);
-			res.add("Spotkałem smoka eFuR.");
-			res.add("Zaproponował mi anulowanie jednego z zadani na pierścień mieszczanina, ryczerza, barona, magnata lub pöaszcz i tarcze z mithrilu.");
+			res.add("Napotkałem przedziwnego smoka, który karze się nazywać eFuR.");
+			res.add("Zaproponował mi anulowanie jednego z zadań na pierścień mieszczanina lub ryczerza lub barona lub magnata lub na płaszcz lub na tarcze z mithrilu.");
 			if ("rejected".equals(questState)) {
-				res.add("Narazie stan zadań niech zostanie taki jaki jest..");
+				res.add("Narazie stan zadań niech zostanie taki jaki jest...");
 				return res;
 			}
 			if ("start".equals(questState)) {
 				return res;
 			}
-			res.add("eFuR zażądał za anulowanie zadania na pierścień mieszczanina 250k money i 30 sztabek złota. Hasło: mieszczanin.");
+			res.add("eFuR zażądał za anulowanie zadania na pierścień mieszczanina 250 000 money i 30 sztabek złota. Hasło: mieszczanin.");
 			if ("mieszczanin".equals(questState)) {
 				return res;
 			}
 
-			res.add("eFuR zażądał za anulowanie zadania na pierścień rycerza 350k money i 50 sztabek złota. Hasło: rycerz.");
+			res.add("eFuR zażądał za anulowanie zadania na pierścień rycerza 350 000 money i 50 sztabek złota. Hasło: rycerz.");
 			if ("rycerz".equals(questState)) {
 				return res;
 			}
 
-			res.add("eFuR zażądał za anulowanie zadania na pierścień barona 450k money i 70 sztabek złota. Hasło: baron.");
+			res.add("eFuR zażądał za anulowanie zadania na pierścień barona 450 000 money i 70 sztabek złota. Hasło: baron.");
 			if ("baron".equals(questState)) {
 				return res;
 			}
 
-			res.add("eFuR zażądał za anulowanie zadania na pierścień magnata 600k money i 100 sztabek złota. Hasło: magnat.");
+			res.add("eFuR zażądał za anulowanie zadania na pierścień magnata 600 000 money i 100 sztabek złota. Hasło: magnat.");
 			if ("magnat".equals(questState)) {
 				return res;
 			}
-			res.add("eFuR zażądał za anulowanie zadania na płaszcz z mithrilu 2000000 money. Hasło: płaszcz.");
+			res.add("eFuR zażądał za anulowanie zadania na płaszcz z mithrilu 2 000 000 money. Hasło: płaszcz.");
 			if ("magnat".equals(questState)) {
 				return res;
 			}
-			res.add("eFuR zażądał za anulowanie zadania na tarczę z mithrilu 1500000 money. Hasło: tarcza.");
+			res.add("eFuR zażądał za anulowanie zadania na tarczę z mithrilu 1 500 000 money. Hasło: tarcza.");
 			if ("magnat".equals(questState)) {
 				return res;
 			}
@@ -409,11 +396,16 @@ import games.stendhal.server.entity.player.Player;
 
 	@Override
 	public String getName() {
-		return "EfurNPC";
+		return "Anulowanie zadań";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "eFuR";
+		return NPC_NAME;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 }

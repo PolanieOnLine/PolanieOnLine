@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                     Copyright © 2021 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -52,7 +52,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 import marauroa.common.Pair;
 
-
 /**
  * QUEST: Collect Enemy Data (collect_enemy_data)
  *
@@ -84,11 +83,10 @@ import marauroa.common.Pair;
  * </ul>
  */
 public class CollectEnemyData extends AbstractQuest {
-
 	private static final Logger logger = Logger.getLogger(CollectEnemyData.class);
 
 	private static final String QUEST_NAME = "Zbierz Informacje Wroga";
-	private static final String QUEST_SLOT = QUEST_NAME.toLowerCase().replace(" ", "_");
+	private static final String QUEST_SLOT = "collect_enemy_data";
 
 	private SpeakerNPC npc;
 
@@ -102,8 +100,8 @@ public class CollectEnemyData extends AbstractQuest {
 	private static final int bestiaryPrice = 500000;
 
 	private static final Map<String, Pair<String, String>> questionOptions = new HashMap<String, Pair<String, String>>() {{
-		put("poziom", new Pair<String, String>("Jaki jest poziom", null));
-		put("zdrowia", new Pair<String, String>("Ile zdrowia ma", null));
+		put("poziom", new Pair<String, String>("Jaki poziom on wynosi", null));
+		put("zdrowia", new Pair<String, String>("Ile zdrowia posiada", null));
 		put("obr", new Pair<String, String>("Jaki jest poziom obrony", null));
 		put("atk", new Pair<String, String>("Jaki jest poziom ataku", null));
 	}};
@@ -127,7 +125,6 @@ public class CollectEnemyData extends AbstractQuest {
 			return isCompleted(player);
 		}
 	};
-
 
 	private void initNPC() {
 		npc = new SpeakerNPC("Rengard");
@@ -795,7 +792,7 @@ public class CollectEnemyData extends AbstractQuest {
 			return res;
 		}
 
-		res.add("Spotkałem " + npc.getName() + ", wędrownego poszukiwacza przygód.");
+		res.add("Napotkałem " + npc.getName() + ", wędrownego poszukiwacza przygód.");
 
 		for (int step = 0; step < 3; step++) {
 			final String enemy = getEnemyForStep(player, step);

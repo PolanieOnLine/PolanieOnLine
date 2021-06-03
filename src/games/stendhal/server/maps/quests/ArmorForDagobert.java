@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -33,11 +37,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Armor for Dagobert
@@ -68,37 +67,13 @@ import java.util.List;
  * </ul>
  */
 public class ArmorForDagobert extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "armor_dagobert";
 
-	
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Dagobert. Jest konsultantem w banku w Semos.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego proźbę.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Przyrzekłem, że znajdę dla niego skórzany kirys ponieważ został okradziony.");
-		}
-		if ("start".equals(questState) && (player.isEquipped("skórzany kirys") || player.isEquipped("skórzany kirys z naramiennikami")) || "done".equals(questState)) {
-			res.add("Znalazłem skórzany kirys i zabiorę go do Dagoberta.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Wziąłem skórzany kirys do Dagoberta. Podziękował i dał mi nagrodę.");
-		}
-		return res;
-	}
+	// NPC
+	private static final String NPC_NAME = "Dagobert";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Dagobert");
-
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -143,8 +118,6 @@ public class ArmorForDagobert extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Dagobert");
-
 		// player returns while quest is still active
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -207,6 +180,29 @@ public class ArmorForDagobert extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Dagobert. Jest konsultantem w banku w Semos.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego proźbę.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Przyrzekłem, że znajdę dla niego skórzany kirys ponieważ został okradziony.");
+		}
+		if ("start".equals(questState) && (player.isEquipped("skórzany kirys") || player.isEquipped("skórzany kirys z naramiennikami")) || "done".equals(questState)) {
+			res.add("Znalazłem skórzany kirys i zabiorę go do Dagoberta.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Wziąłem skórzany kirys do Dagoberta. Podziękował i dał mi nagrodę.");
+		}
+		return res;
+	}
+
+	@Override
 	public void addToWorld() {
 		fillQuestInfo(
 				"Zbroja dla Dagoberta",
@@ -223,21 +219,21 @@ public class ArmorForDagobert extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "ArmorForDagobert";
+		return "Zbroja dla Dagoberta";
 	}
-	
+
 	@Override
 	public int getMinLevel() {
 		return 0;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
 	}
-	
+
 	@Override
 	public String getNPCName() {
-		return "Dagobert";
+		return NPC_NAME;
 	}
 }
