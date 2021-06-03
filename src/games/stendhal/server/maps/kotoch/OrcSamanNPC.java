@@ -39,7 +39,7 @@ public class OrcSamanNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Orc Saman") {
+		final SpeakerNPC npc = new SpeakerNPC("Szaman Orków") {
 
 			@Override
 			protected void createPath() {
@@ -56,14 +56,14 @@ public class OrcSamanNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Oof.");
-				addJob("Ja Orc Saman.");
-				addHelp("Orc Saman potrzebuje pomocy! Zrób #zadanie.");
+				addJob("Ja Szaman Orków.");
+				addHelp("Szaman Orków potrzebuje pomocy! Zrób #zadanie.");
 				addOffer("Żadnego handlu.");
 				addGoodbye("Żegnaj.");
 			}
 		};
 
-		npc.setDescription("Oto Orc Saman.");
+		npc.setDescription("Oto Szaman Orków.");
 		npc.setEntityClass("orcsamannpc");
 		npc.setPosition(8, 113);
 		npc.initHP(100);

@@ -32,7 +32,7 @@ import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
 public class ClubOfThornsTest {
-	private static final String NPC = "Orc Saman";
+	private static final String NPC = "Szaman Orków";
 	private static final String KEY_NAME = "kotoch prison key";
 	private static final String QUEST_NAME = "club_thorns";
 	private static final String VICTIM = "mountain orc chief";
