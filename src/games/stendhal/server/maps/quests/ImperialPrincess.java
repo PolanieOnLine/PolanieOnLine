@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +10,6 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,6 +65,8 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class ImperialPrincess extends AbstractQuest {
+	private static final String QUEST_SLOT = "imperial_princess";
+	private final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
 
 	/** The player is asked to get a number of herbs depending on level.
 	 * So if they are level 40, they must bring 1 + 1 arandula
@@ -83,39 +83,7 @@ public class ImperialPrincess extends AbstractQuest {
 	 */
 	private static final int ANTIDOTE_DIVISOR = 20;
 
-	// It is called Imperial Princess because the soldiers in this castle are Imperial soldiers.
-	private static final String QUEST_SLOT = "imperial_princess";
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Księżniczka Ylflia zapytała mnie o zioła i mikstury, aby złagodzić ból jeńców w piwnicach Kalavan.");
-		if (!questState.equals("recommended") && !questState.equals("done")) {
-			res.add("Muszę powiedzieć Księżniczce Ylflii, że mam \" zioła \", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "recommended", "done")) {
-			res.add("Przyniosłem Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
-		}
-		if (questState.equals("done")) {
-			res.add("Król Cozart nadał mi obywatelstwo Kalavan.");
-		}
-		return res;
-	}
-
 	private void step_1() {
-
-		final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -148,7 +116,8 @@ public class ImperialPrincess extends AbstractQuest {
 				"Uwięzione potwory wyglądają dużo lepiej od ostatniego razu. Odważyłam się zaryzykować i zejść do piwnicy. Dziękuję!",
 				null);
 
-		/** If quest is not started yet, start it.
+		/**
+		 * If quest is not started yet, start it.
 		 * The amount of each item that the player must collect depends on their level when they started the quest.
 		 */
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("herbs", "ziół", "zioła"),
@@ -209,11 +178,11 @@ public class ImperialPrincess extends AbstractQuest {
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
-
-		/** If player has quest and not in state recommended,
+		/** 
+		 * If player has quest and not in state recommended,
 		 * we can check the slot to see what the stored level was.
-		 * If the player has brought the right number of herbs, get them */
+		 * If the player has brought the right number of herbs, get them
+		 */
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("herb", "herbs", "ziół", "zioła"),
 				new AndCondition(
 						new QuestActiveCondition(QUEST_SLOT),
@@ -269,7 +238,7 @@ public class ImperialPrincess extends AbstractQuest {
 					}
 				});
 
-		/** The player asked about herbs but he brought them already and needs to speak to the King next */
+		/* The player asked about herbs but he brought them already and needs to speak to the King next */
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("herb", "herbs", "ziół", "zioła"),
 				new QuestInStateCondition(QUEST_SLOT,"recommended"),
@@ -278,7 +247,7 @@ public class ImperialPrincess extends AbstractQuest {
 				"pójść do niego i porozmawiać z nim.",
 				null);
 
-		/** The player asked about herbs but the quest was finished */
+		/* The player asked about herbs but the quest was finished */
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("herb", "herbs", "ziół", "zioła"),
 				new QuestCompletedCondition(QUEST_SLOT),
@@ -289,10 +258,10 @@ public class ImperialPrincess extends AbstractQuest {
 	}
 
 	private void step_3() {
-		/** The King is also in the castle and he is the father of the Princess who gave the quest */
+		/* The King is also in the castle and he is the father of the Princess who gave the quest */
 		final SpeakerNPC npc = npcs.get("King Cozart");
 
-		/** Complete the quest by speaking to King, who will return right back to idle once he rewards the player*/
+		/* Complete the quest by speaking to King, who will return right back to idle once he rewards the player*/
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "recommended")),
@@ -300,7 +269,7 @@ public class ImperialPrincess extends AbstractQuest {
 			"Pozdrawiam! Moja cudowna córka poprosiła mnie o przyznanie Tobie obywatelstwa miasta Kalavan. Rozpatrywanie zostało zakończone. Teraz wybacz mi, że wrócę do mojego posiłku. Do widzenia.",
 			new MultipleActions(new IncreaseXPAction(500), new SetQuestAction(QUEST_SLOT, "done")));
 
-		/** If you aren't in the condition to speak to him (not completed quest, or already spoke) the King will dismiss you */
+		/* If you aren't in the condition to speak to him (not completed quest, or already spoke) the King will dismiss you */
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotInStateCondition(QUEST_SLOT, "recommended")),
@@ -319,9 +288,35 @@ public class ImperialPrincess extends AbstractQuest {
 		step_2();
 		step_3();
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Księżniczka Ylflia zapytała mnie o zioła i mikstury, aby złagodzić ból jeńców w piwnicach Kalavan.");
+		if (!questState.equals("recommended") && !questState.equals("done")) {
+			res.add("Muszę powiedzieć Księżniczce Ylflii, że mam \" zioła \", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "recommended", "done")) {
+			res.add("Przyniosłem Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
+		}
+		if (questState.equals("done")) {
+			res.add("Król Cozart nadał mi obywatelstwo Kalavan.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "ImperialPrincess";
+		return "Obywatelstwo Kalavan";
 	}
 
 	@Override

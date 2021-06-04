@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -66,19 +65,13 @@ import marauroa.common.Pair;
  * <li> after 7 days.
  * </ul>
  */
-
 public class KillGnomes extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_gnomes";
+	private final SpeakerNPC npc = npcs.get("Jenny");
+
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Jenny");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -133,10 +126,6 @@ public class KillGnomes extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Jenny");
-
-
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 	    actions.add(new EquipItemAction("eliksir", 10));
 		actions.add(new IncreaseXPAction(1000));
@@ -170,7 +159,7 @@ public class KillGnomes extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabij Gnomy",
+				"Zabicie Gnomów",
 				"Pomocy! Gnomy ukradły marchewki młynarzowej Jenny! Idź do wioski gnomów i zemścij się w jej imieniu.",
 				false);
 		step_1();
@@ -194,15 +183,29 @@ public class KillGnomes extends AbstractQuest {
 			return res;
 	}
 
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
 
 	@Override
 	public String getName() {
-		return "KillGnomes";
+		return "Zabicie Gnomów";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 10;
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.SEMOS_SURROUNDS;
 	}
 
 	@Override
@@ -215,15 +218,4 @@ public class KillGnomes extends AbstractQuest {
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
 	}
-
-	@Override
-	public String getNPCName() {
-		return "Jenny";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.SEMOS_SURROUNDS;
-	}
-
 }

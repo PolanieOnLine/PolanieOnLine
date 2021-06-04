@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -81,20 +80,13 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class IcecreamForAnnie extends AbstractQuest {
-
-	// constants
 	private static final String QUEST_SLOT = "icecream_for_annie";
+	private final SpeakerNPC npc = npcs.get("Annie Jones");
 
 	/** The delay between repeating quests. */
 	private static final int REQUIRED_MINUTES = 60;
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void icecreamStep() {
-		final SpeakerNPC npc = npcs.get("Annie Jones");
-
 		// first conversation with annie. be like [strike]every good child[/strike] kymara was when she was little and advertise name and age.
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -292,46 +284,60 @@ public class IcecreamForAnnie extends AbstractQuest {
 		meetMummyStep();
 	}
 
-
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Annie Jones jest słodka dziewczynką grającą w ogrodach miasta Kalavan.");
+		res.add("Annie Jones jest uroczą dziewczynką bawiącą się w ogrodach miasta Kalavan.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie lubię słodkich dziewczynek.");
+			res.add("Nie lubię uroczych dziewczynek.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start","mummy") || isCompleted(player)) {
-			res.add("Mała Annie chce lody.");
+			res.add("Mała Annie potrzebuje zimne lody.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start","mummy") && player.isEquipped("lody") || isCompleted(player)) {
 			res.add("Znalazłem smaczne lody dla Annie.");
 		}
         if ("mummy".equals(questState) || isCompleted(player)) {
-            res.add("Rozmawiałem z panią Jones, zgodziła się mogę dać lody do córki.");
+            res.add("Rozmawiałem z panią Jones, która zgodziła się i mogę przekazać lody dla jej córki.");
         }
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add("Dałem lody do Annie, ona dała mi prezent. Być może mam ochotę na jeszcze jeden prezent.");
+                res.add("Dałem lody do Annie, a w zamian dała mi prezent. Lubię prezenty!.");
             } else {
-                res.add("Annie jest zajęta jedzeniem lodów, które jej dałem, a ona dała mi w zamian prezent.");
+                res.add("Aktualnie dziewczynka jest zajęta jedzeniem lodów, które jej dałem.");
             }
 		}
 		return res;
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "IcecreamForAnnie";
+		return "Porcja Lodów dla Annie";
 	}
 
 	// Getting to Kalavan is not too feasible till this level
 	@Override
 	public int getMinLevel() {
 		return 10;
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.KALAVAN;
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
 	}
 
 	@Override
@@ -343,14 +349,5 @@ public class IcecreamForAnnie extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"eating;").fire(player, null, null);
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.KALAVAN;
-	}
-	@Override
-	public String getNPCName() {
-		return "Annie Jones";
 	}
 }

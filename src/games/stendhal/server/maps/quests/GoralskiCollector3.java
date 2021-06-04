@@ -43,14 +43,14 @@ public class GoralskiCollector3 extends AbstractQuest {
 	private static final String QUEST_SLOT = "goralski_kolekcjoner3";
 	private static final String OLD_QUEST = "goralski_kolekcjoner2";
 
+	// NPC
+	private static final String NPC_NAME = "Gazda Bartek";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+
     private static final List<String> NEEDEDGORAL3 = Arrays.asList(
     		"złota ciupaga z wąsem", "korale", "pas zbójnicki", "kierpce",
     		"góralski kapelusz", "cuha góralska", "portki bukowe");
 
-    @Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	/**
 	 * Returns a list of the names of all items that the given player still has
 	 * to bring to fulfill the quest.
@@ -83,8 +83,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Gazda Bartek");
-
 		// player says hi before starting the quest
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -160,13 +158,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 					}
 				});
 
-		// player asks about an individual item. We used the trick before that all items were named by colour
-		// (their subclass) - so she would tell them what colour it was. In this case it fails for elvish,
-		// xeno and shadow which are not named by colour. So, this time she'll say, e.g.
-		// It's a shadow item, sorry if that's not much help, so will you find them all?
-		// rather than say for elf item she'd said 'It's a white item, so will you find them all?'
-		// it will still work for red (red_spotted is the subclass), black dragon (black),
-		// golden, mainio (primary coloured), chaos (multicoloured).
 		for(final String itemName : NEEDEDGORAL3) {
 			npc.add(ConversationStates.QUEST_3_OFFERED,
 				itemName,
@@ -208,8 +199,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Gazda Bartek");
-
 		// player returns while quest is still active
 		npc.add(
 				ConversationStates.IDLE,
@@ -240,6 +229,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 						return "enumerate missingitems3";
 					}
 				});
+
 		// player says he has a required item with him
 		npc.add(ConversationStates.QUESTION_3,
 				ConversationPhrases.YES_MESSAGES,
@@ -340,25 +330,20 @@ public class GoralskiCollector3 extends AbstractQuest {
 				null);
 	}
 
-	@Override
-	public void addToWorld() {
-		step_1();
-		step_2();
-		step_3();
-		fillQuestInfo(
-				"Góralski Kolekcjoner III",
-				"Kolekcjoner poprosił mnie abym przyniósł ponownie ubrania i rzadką ciupagę z wąsem.",
-				false);
-	}
-
 	private static void rewardPlayer(final Player player) {
 		player.addKarma(65.0);
 		player.addXP(150000);
 	}
 
 	@Override
-	public String getName() {
-		return "GoralskiCollector3";
+	public void addToWorld() {
+		fillQuestInfo(
+				"Góralski Kolekcjoner III",
+				"Kolekcjoner poprosił mnie abym przyniósł ponownie ubrania i rzadką ciupagę z wąsem.",
+				false);
+		step_1();
+		step_2();
+		step_3();
 	}
 
 	@Override
@@ -376,12 +361,22 @@ public class GoralskiCollector3 extends AbstractQuest {
 	}
 
 	@Override
+	public String getName() {
+		return "Góralski Kolekcjoner III";
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getRegion() {
 		return Region.TATRY_MOUNTAIN;
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Gazda Bartek";
+		return NPC_NAME;
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -41,28 +41,9 @@ import marauroa.common.Pair;
 
 public class KillMtElves extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_mountain_elves";
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Czarnoksiężnika w jakieś starej wieży.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
-		return res;
-		}
-		if ("done".equals(questState)) {
-			res.add("Zabiłem wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(
@@ -117,7 +98,6 @@ public class KillMtElves extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 			reward.add(new EquipItemAction("hełm kolczy", 1, true));
 			reward.add(new IncreaseKarmaAction(20.0));
@@ -141,34 +121,52 @@ public class KillMtElves extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabicie elfów górskich",
-				"Jako drugie zadanie, Czarnoksiężnik chce abyśmy zabili elfów górskich, a to niby wszystko dla nauki...",
+				"Zguba Górskich Elfów",
+				"Czarnoksiężnik chce abyś pozbył się elfów górskich, a to niby wszystko dla nauki...",
 				false);
 		step_1();
 		step_2();
 		step_3();
 	}
-	
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Czarnoksiężnika w jakieś starej wieży.");
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if ("rejected".equals(questState)) {
+			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
+		return res;
+		}
+		if ("done".equals(questState)) {
+			res.add("Zabiłem wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
+		}
+		return res;
+	}
+
 	@Override
 	public int getMinLevel() {
 		return 70;
 	}
-	
+
 	@Override
 	public String getName() {
-		return "KillMTElves";
+		return "Zguba Górskich Elfów";
 	}
-	
+
 	@Override
 	public String getNPCName() {
-		return "Czarnoksiężnik";
+		return npc.getName();
 	}
 
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;

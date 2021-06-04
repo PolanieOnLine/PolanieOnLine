@@ -74,56 +74,15 @@ import marauroa.common.game.IRPZone;
  * </ul>
  */
 public class FishSoupForHughie extends AbstractQuest {
+	private static final String QUEST_SLOT = "fishsoup_for_hughie";
+	
+	// NPC
+	private static final String NPC_NAME = "Anastasia";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final int REQUIRED_MINUTES = 7 * MathHelper.MINUTES_IN_ONE_DAY;
 
-	private static final String QUEST_SLOT = "fishsoup_for_hughie";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Anastasia poprosiła mnie, żebym przyniósł zupę rybną dla jej syna, Hughiego.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chce pomóc dla Hughiego.");
-			return res;
-		}
-		res.add("Naprawdę chcę pomóc Hughiemu i Anastasii.");
-		if (player.isEquipped("zupa rybna") || isCompleted(player)) {
-			res.add("Mam składniki niezbędne do zrobienia zupy rybnej, która uleczy Hugiego.");
-		}
-		if (isCompleted(player)) {
-			res.add("Hughie zjadł swoją zupę, a Anastasia dała mi eliksiry.");
-		}
-		if(isRepeatable(player)){
-			res.add("Minęło już trochę czasu, odkąd sprawdziłem, co słychać u Hugiego i Anastasii. Muszę pamiętać, żeby znowu zobaczyć się z nimi.");
-		}
-		return res;
-	}
-
-
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Anastasia");
-
 		// player returns with the promised fish soup
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -210,9 +169,7 @@ public class FishSoupForHughie extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Anastasia");
 		// player has fish soup and tells Anastasia, yes, it is for her
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("zupa rybna"));
 		reward.add(new IncreaseXPAction(200));
@@ -261,15 +218,45 @@ public class FishSoupForHughie extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Zupa Rybna dla Hughie",
-				"Syn Anastasii, Hugie, jest chory i potrzebuje czegoś, co go wyleczy.",
+				"Syn Anastasii, Hughie, jest chory i potrzebuje czegoś, co go wyleczy.",
 				true);
 		prepareRequestingStep();
 		prepareBringingStep();
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Anastasia poprosiła mnie, żebym przyniósł zupę rybną dla jej syna, Hughiego.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chce pomóc dla Hughiego.");
+			return res;
+		}
+		res.add("Naprawdę chcę pomóc Hughiemu i Anastasii.");
+		if (player.isEquipped("zupa rybna") || isCompleted(player)) {
+			res.add("Mam składniki niezbędne do zrobienia zupy rybnej, która uleczy Hugiego.");
+		}
+		if (isCompleted(player)) {
+			res.add("Hughie zjadł swoją zupę, a Anastasia dała mi eliksiry.");
+		}
+		if(isRepeatable(player)){
+			res.add("Minęło już trochę czasu, odkąd sprawdziłem, co słychać u Hugiego i Anastasii. Muszę pamiętać, żeby znowu zobaczyć się z nimi.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "Fish Soup for Hughie";
+		return "Zupa Rybna dla Hughie";
 	}
 
 	@Override
@@ -279,11 +266,21 @@ public class FishSoupForHughie extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Anastasia";
+		return NPC_NAME;
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.ADOS_SURROUNDS;
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

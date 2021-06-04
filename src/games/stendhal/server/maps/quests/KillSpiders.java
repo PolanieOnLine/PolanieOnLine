@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -59,19 +59,11 @@ import games.stendhal.server.maps.Region;
  * <li> after 7 days.
  * </ul>
  */
-
 public class KillSpiders extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "kill_all_spiders";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private final SpeakerNPC npc = npcs.get("Morgrin");
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Morgrin");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				null,
@@ -105,7 +97,6 @@ public class KillSpiders extends AbstractQuest {
 		actions.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "started", 5.0));
 		//actions.add(new StartRecordingKillsAction(QUEST_SLOT,1,"spider", "poisonous spider", "giant spider"));
 
-
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -126,7 +117,6 @@ public class KillSpiders extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Morgrin");
 		// support for old-style quests
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -184,22 +174,12 @@ public class KillSpiders extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabij Pająki",
+				"Zabicie Pająków",
 				"Dozorca Morgrin ze szkoły magów chce, abym wyczyścił piwnicę szkolną z pająków.",
 				true);
 		step_1();
 		step_2();
 		step_3();
-	}
-
-	@Override
-	public String getName() {
-		return "KillSpiders";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 70;
 	}
 
 	@Override
@@ -262,6 +242,31 @@ public class KillSpiders extends AbstractQuest {
 	}
 
 	@Override
+	public String getName() {
+		return "Zabicie Pająków";
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 70;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.FADO_CAVES;
+	}
+
+	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed;"),
 				 new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK)).fire(player,null, null);
@@ -270,15 +275,5 @@ public class KillSpiders extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed;").fire(player, null, null);
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Morgrin";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.FADO_CAVES;
 	}
 }

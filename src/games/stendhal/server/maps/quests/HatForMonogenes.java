@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -62,50 +61,24 @@ import games.stendhal.server.maps.Region;
 public class HatForMonogenes extends AbstractQuest {
 	private static final String QUEST_SLOT = "hat_monogenes";
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (player.hasQuest(QUEST_SLOT)) {
-			res.add("Spotkałem Monogenes na wiosnę w wiosce Semos");
-		}
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Muszę znaleźć jakiś skórzany kapelusz, który trzymałby ciepło.");
-		if (player.isQuestInState(QUEST_SLOT, "start")
-				&& player.isEquipped("skórzany hełm")
-				|| player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Znalazłem kapelusz.");
-		}
-		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Dałem kapelusz Monogenesowi i nagrodził mnie 10 pd.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Monogenes");
 
 	private void createRequestingStep() {
-		final SpeakerNPC monogenes = npcs.get("Monogenes");
-
-		monogenes.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
 			"Czy mógłbyś przynieść mi #kapelusz do zakrycia mojej łysinki? Brrrrr! Dni w Semos robią się coraz chłodniejsze...",
 			null);
 
-		monogenes.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
 			"Dziękuję za ofertę dobry człowieku, ale ten kapelusz wystarczy mi na pięć zim i nie potrzebuję ich więcej.",
 			null);
 
-		monogenes.add(
+		npc.add(
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
@@ -113,7 +86,7 @@ public class HatForMonogenes extends AbstractQuest {
 			"Dziękuję przyjacielu. Będę tutaj czekał na twój powrót!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
-		monogenes.add(
+		npc.add(
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
@@ -121,7 +94,7 @@ public class HatForMonogenes extends AbstractQuest {
 			"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj i zamarzał na śmierć... *sniff*",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
-		monogenes.add(
+		npc.add(
 			ConversationStates.QUEST_OFFERED,
 			"hat",
 			null,
@@ -131,19 +104,17 @@ public class HatForMonogenes extends AbstractQuest {
 	}
 
 	private void createBringingStep() {
-		final SpeakerNPC monogenes = npcs.get("Monogenes");
-
-		monogenes.add(ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(monogenes.getName()),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("skórzany hełm")),
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Hej! Czy ten skórzany hełm jest dla mnie?", null);
 
-		monogenes.add(ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(monogenes.getName()),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("skórzany hełm"))),
 			ConversationStates.ATTENDING,
@@ -158,7 +129,7 @@ public class HatForMonogenes extends AbstractQuest {
 
 		// make sure the player isn't cheating by putting the
 		// helmet away and then saying "yes"
-		monogenes.add(
+		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
 			new PlayerHasItemWithHimCondition("skórzany hełm"),
@@ -166,7 +137,7 @@ public class HatForMonogenes extends AbstractQuest {
 			"Niech Cię pobłogosławię mój dobry przyjacielu! Teraz mojej głowie będzie wygodnie i ciepło.",
 			new MultipleActions(reward));
 
-		monogenes.add(
+		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES,
 			null,
@@ -178,7 +149,7 @@ public class HatForMonogenes extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Kapelusz dla Monogenesa",
+				"Kapelusz Monogenesa",
 				"Monogenes potrzebuje kapelusza, który trzymałby ciepło podczas zimy.",
 				false);
 		createRequestingStep();
@@ -186,16 +157,43 @@ public class HatForMonogenes extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (player.hasQuest(QUEST_SLOT)) {
+			res.add("Spotkałem Monogenes na wiosnę w wiosce Semos");
+		}
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Muszę znaleźć jakiś skórzany kapelusz, który trzymałby ciepło.");
+		if (player.isQuestInState(QUEST_SLOT, "start")
+				&& player.isEquipped("skórzany hełm")
+				|| player.isQuestCompleted(QUEST_SLOT)) {
+			res.add("Zdobyłem kapelusz.");
+		}
+		if (player.isQuestCompleted(QUEST_SLOT)) {
+			res.add("Dałem kapelusz Monogenesowi i nagrodził mnie 10 pd.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "HatForMonogenes";
+		return "Kapelusz Monogenesa";
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Monogenes";
+		return npc.getName();
 	}
 }

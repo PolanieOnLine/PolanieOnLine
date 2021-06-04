@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -51,7 +50,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import marauroa.common.Pair;
 
-
 /**
  * QUEST: KillEnemyArmy
  *
@@ -75,18 +73,13 @@ import marauroa.common.Pair;
  *
  * REPETITIONS: <ul><li> once a week.</ul>
  */
-
- public class KillEnemyArmy extends AbstractQuest {
-
+public class KillEnemyArmy extends AbstractQuest {
 	private static final String QUEST_NPC = "Despot Halb Errvl";
 	private static final String QUEST_SLOT = "kill_enemy_army";
 	private static final int delay = MathHelper.MINUTES_IN_ONE_WEEK;
 
 	protected HashMap<String, Pair<Integer, String>> enemyForces = new HashMap<String, Pair<Integer,String>>();
 	protected HashMap<String, List<String>> enemys = new HashMap<String, List<String>>();
-
-
-
 
 	public KillEnemyArmy() {
 		super();
@@ -110,7 +103,6 @@ import marauroa.common.Pair;
 		enemyForces.put("oni",
 				new Pair<Integer, String>(200,"Bardzo dziwny naród, żyjący w swoim zamku w lesie Fado. Istnieją pogłoski, że wchodzą w sojusz z czarodziejami z magicznego miasta."));
 
-
 		/*
 		 * those are not interesting
 		enemyForces.put("dwarf",
@@ -126,7 +118,6 @@ import marauroa.common.Pair;
 		/*
 		 *  fill creatures map
 		 */
-
 		enemys.put("blordrough",
 				Arrays.asList("blordrough kwatermistrz",
 							  "uzbrojony lider",
@@ -301,7 +292,6 @@ import marauroa.common.Pair;
 		return count;
 	}
 
-
 	class GiveQuestAction implements ChatAction {
 		/**
 		 * function will update player quest slot.
@@ -355,8 +345,6 @@ import marauroa.common.Pair;
 		}
 	}
 
-
-
 	/**
 	 * class for quest talking.
 	 */
@@ -379,7 +367,6 @@ import marauroa.common.Pair;
 							". Musisz zabić co najmniej "+killsnumber+" "+Grammar.plnoun(killed, player.getQuest(QUEST_SLOT, 1)));
 					return;
 				}
-
 		}
 	}
 
@@ -402,12 +389,10 @@ import marauroa.common.Pair;
 		}
 	}
 
-
 	/**
 	 * add quest state to npc's fsm.
 	 */
 	private void step_1() {
-
 		SpeakerNPC npc = npcs.get(QUEST_NPC);
 
 		// quest can be given
@@ -496,7 +481,6 @@ import marauroa.common.Pair;
 		    		  ConversationStates.ATTENDING,
 		    		  null,
 		    		  new ExplainAction());
-
 		}
 	}
 
@@ -506,40 +490,13 @@ import marauroa.common.Pair;
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabij Wrogą Armię",
+				"Zgładzenie Wrogiej Armii",
 				"Despot Halb Errvl poprosił mnie o zabicie kilku jego wrogów.",
 				true);
 		step_1();
 	}
 
-	/**
-	 * return name of quest slot.
-	 */
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	/**
-	 * return name of quest.
-	 */
-	@Override
-	public String getName() {
-		return "KillEnemyArmy";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 80;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
-	}
-
- 	@Override
  	public List<String> getHistory(final Player player) {
  		LinkedList<String> history = new LinkedList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -589,6 +546,21 @@ import marauroa.common.Pair;
  	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Zgładzenie Wrogiej Armii";
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 80;
+	}
+
+	@Override
 	public String getNPCName() {
 		return "Despot Halb Errvl";
 	}
@@ -596,5 +568,11 @@ import marauroa.common.Pair;
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_SURROUNDS;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

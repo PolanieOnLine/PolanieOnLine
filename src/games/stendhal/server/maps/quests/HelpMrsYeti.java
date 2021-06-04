@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -82,22 +81,16 @@ import games.stendhal.server.maps.Region;
  * <li>Not repeatable.</li>
  * </ul>
  */
-
  public class HelpMrsYeti extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "mrsyeti";
+
+	private final SpeakerNPC npc = npcs.get("Mrs. Yeti");
+
 	private static final int DELAY_IN_MINUTES = 60*24;
 
 	private static Logger logger = Logger.getLogger(HelpMrsYeti.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void startQuest() {
-		final SpeakerNPC npc = npcs.get("Mrs. Yeti");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -127,13 +120,13 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void makePotion() {
-	// player needs to bring some items to make the potion:
-	// a 'magic' knife from a blacksmith
-	// 3 lilia flowers
-	// sclaria
-	// wine
-	// black pearl
-	final SpeakerNPC npc = npcs.get("Salva Mattori");
+		// player needs to bring some items to make the potion:
+		// a 'magic' knife from a blacksmith
+		// 3 lilia flowers
+		// sclaria
+		// wine
+		// black pearl
+		final SpeakerNPC npc = npcs.get("Salva Mattori");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("eliksir", "potion"),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -188,14 +181,13 @@ import games.stendhal.server.maps.Region;
 																   new PlayerHasItemWithHimCondition("napój z winogron"),
 																   new PlayerHasItemWithHimCondition("czarna perła")))),
 				ConversationStates.ATTENDING, "Potrzebuję 3 kwiaty lilii, 1 kokudę, 1 kieliszek wina i 1 czarną perłę, aby przygotować miłosny eliksir. Proszę przynieś mi wszystko naraz. Dziękuję!", null);
-
-
 	}
 
 	private void makeMagicKnife() {
 		// although the player does end up just taking an ordinary knife to salva, this step must be completed
 		// (must be in quest state 'knife' when they take the knife)
-	final SpeakerNPC npc = npcs.get("Hackim Easso");
+		final SpeakerNPC npc = npcs.get("Hackim Easso");
+
 		npc.add(ConversationStates.ATTENDING, "salva",
 				new QuestInStateCondition(QUEST_SLOT, "hackim"),
 				ConversationStates.ATTENDING, "Salva potrzebuje kolejny magiczny mieczyk? No cóż, oczywiście, że ci pomogę. Jestem jednak bardzo głodny. "
@@ -215,11 +207,9 @@ import games.stendhal.server.maps.Region;
 				new NotCondition(new PlayerHasItemWithHimCondition("tarta",5))),
 				ConversationStates.ATTENDING, "Arlindo z Ados robi najlepszą tartę. Nie zapomnij przynieść mi pięciu sztuk, jestem bardzo głodny!",
 				null);
-
 	}
 
 	private void bringPotion() {
-	final SpeakerNPC npc = npcs.get("Mrs. Yeti");
 		final String extraTrigger = "eliksir";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -255,16 +245,13 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void bringDragon() {
-	final SpeakerNPC npc = npcs.get("Mrs. Yeti");
-
 		final String extraTrigger = "smoki";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		// easy to check if they have a pet or sheep at all
-		npc.add(
-			ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "dragon"),
 							 new NotCondition(new PlayerHasPetOrSheepCondition())),
 			ConversationStates.ATTENDING,
@@ -273,8 +260,7 @@ import games.stendhal.server.maps.Region;
 			null);
 
 		// if they have any pet or sheep, then check if it's a baby dragon
-		npc.add(
-			ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "dragon"),
 							 new PlayerHasPetOrSheepCondition()),
 			ConversationStates.ATTENDING,
@@ -284,7 +270,7 @@ import games.stendhal.server.maps.Region;
 				public void fire(final Player player, final Sentence sentence,
 								final EventRaiser npc) {
 					if(!player.hasPet()){
-						npc.say("Jaką miĹłą owieczkę prowadzisz. Ja jednak potrzebuję małego smoka dla pana Yeti. Porozmawiaj z Morgrinem ze szkoły magicznej.");
+						npc.say("Jaką miłą owieczkę prowadzisz. Ja jednak potrzebuję małego smoka dla pana Yeti. Porozmawiaj z Morgrinem ze szkoły magicznej.");
 						return;
 					}
 					Pet pet = player.getPet();
@@ -306,16 +292,12 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void getReward() {
-
-	final SpeakerNPC npc = npcs.get("Mrs. Yeti");
-
 		final String extraTrigger = "nagroda";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
-		npc.add(
-			ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "reward"),
 							 // delay is in minutes, last parameter is argument of timestamp
 							 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES))),
@@ -324,17 +306,14 @@ import games.stendhal.server.maps.Region;
 			new SayTimeRemainingAction(QUEST_SLOT,1,DELAY_IN_MINUTES,"Witaj! Szykuję mojemu mężowi gulasz z małego smoka, a nagrodą dla ciebie zajmę się dopiero za "));
 
 
-		npc.add(
-			ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "reward"),
 							// delay is in minutes, last parameter is argument of timestamp
 							new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES)),
 			ConversationStates.ATTENDING,
 			"Dziękuję! Aby ci się odwdzięczyć chcę ci zaoferować możliwość kupna ryb. Powiedz #kupię #płotka, a sprzedam ci tanio. Mam ich mnóstwo, a ty pewnie z nich zrobisz użytek.",
 			new MultipleActions(new SetQuestAction(QUEST_SLOT,"done"), new IncreaseXPAction(1000)));
-
 	}
-
 
 	@Override
 	public void addToWorld() {
@@ -352,68 +331,73 @@ import games.stendhal.server.maps.Region;
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Spotkałem panią Yeti w lodowych jaskiniach poniżej Semos Mountain.");
+		res.add("Pani Yeti poprosiła mnie, aby przynieść od Salvy Mattori specjalny eliksir miłości dla jej męża.");
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę, mieszać się w historie miłosne ..");
+			return res;
+		}
+		if ("start".equals(questState)) {
+			return res;
+		}
+		res.add("Salva Mattori potrzebuje magiczny mieczyk od Hackim Easso, wtedy da mi napój.");
+		if ("hackim".equals(questState)) {
+			return res;
+		}
+		res.add("Hackim jest głodny i chce 5 tart zanim mi pomoże.");
+		if ("pies".equals(questState)) {
+			return res;
+		}
+		res.add("Hackim powiedział abym kupił zwykły mieczyk u Xin Blanca! Najwyraźniej nabirał Salvę przez te wszystkie lata. Ona wierzyła, że są magiczne...");
+		if ("knife".equals(questState)) {
+			return res;
+		}
+		res.add("Eliksir miłości wymaga 3 kwiaty lili, 1 gałązka kokudy, 1 szklanka napoju z winogron i 1 czarną perłę.");
+		if ("potion".equals(questState)) {
+			return res;
+		}
+		res.add("Muszę zanieść eliksir miłości do pani Yeti.");
+		if ("gotpotion".equals(questState)) {
+			return res;
+		}
+		res.add("Pani Yeti potrzebuje czegoś, co udobrucha jej męża i poprosiła mnie, abym przyprowadził małego smoka.");
+		if ("dragon".equals(questState)) {
+			return res;
+		}
+		res.add("Ojej! Ona zabiła tego smoka aby zrobić gulasz!");
+		if (questState.startsWith("reward")) {
+			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
+				res.add("Pani Yeti kazał mi wrócić za dzień, aby odebrać nagrodę to wydaje się tak odległe.");
+			} else {
+				res.add("Pani Yeti kazała mi wrócić za dzień, aby odebrać nagrodę, więc muszę czekać.");
 			}
-			final String questState = player.getQuest(QUEST_SLOT);
-			res.add("Spotkałem panią Yeti w lodowych jaskiniach poniżej Semos Mountain.");
-			res.add("Pani Yeti poprosiła mnie, aby przynieść od Salvy Mattori specjalny eliksir miłości dla jej męża.");
-			if ("rejected".equals(questState)) {
-				res.add("Nie chcę, mieszać się w historie miłosne ..");
-				return res;
-			}
-			if ("start".equals(questState)) {
-				return res;
-			}
-			res.add("Salva Mattori potrzebuje magiczny mieczyk od Hackim Easso, wtedy da mi napój.");
-			if ("hackim".equals(questState)) {
-				return res;
-			}
-			res.add("Hackim jest głodny i chce 5 tart zanim mi pomoże.");
-			if ("pies".equals(questState)) {
-				return res;
-			}
-			res.add("Hackim powiedział abym kupił zwykły mieczyk u Xin Blanca! Najwyraźniej nabirał Salvę przez te wszystkie lata. Ona wierzyła, że są magiczne...");
-			if ("knife".equals(questState)) {
-				return res;
-			}
-			res.add("Eliksir miłości wymaga 3 kwiaty lili, 1 gałązka kokudy, 1 szklanka napoju z winogron i 1 czarną perłę.");
-			if ("potion".equals(questState)) {
-				return res;
-			}
-			res.add("Muszę zanieść eliksir miłości do pani Yeti.");
-			if ("gotpotion".equals(questState)) {
-				return res;
-			}
-			res.add("Pani Yeti potrzebuje czegoś, co udobrucha jej męża i poprosiła mnie, abym przyprowadził małego smoka.");
-			if ("dragon".equals(questState)) {
-				return res;
-			}
-			res.add("Ojej! Ona zabiła tego smoka aby zrobić gulasz!");
-			if (questState.startsWith("reward")) {
-				if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-					res.add("Pani Yeti kazał mi wrócić za dzień, aby odebrać nagrodę to wydaje się tak odległe.");
-				} else {
-					res.add("Pani Yeti kazała mi wrócić za dzień, aby odebrać nagrodę, więc muszę czekać.");
-				}
-				return res;
-			}
-			res.add("Pani Yeti jest bardzo zadowolona z wyniku mojej pomocy, a teraz sprzeda mi płotki bardzo tanio.");
-			if (isCompleted(player)) {
-				return res;
-			}
+			return res;
+		}
+		res.add("Pani Yeti jest bardzo zadowolona z wyniku mojej pomocy, a teraz sprzeda mi płotki bardzo tanio.");
+		if (isCompleted(player)) {
+			return res;
+		}
 
-			// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-			final List<String> debug = new ArrayList<String>();
-			debug.add("Stan zadania to: " + questState);
-			logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-			return debug;
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "HelpMrsYeti";
+		return "Pomoc Mrs. Yeti";
 	}
 
 	@Override
@@ -423,7 +407,7 @@ import games.stendhal.server.maps.Region;
 
 	@Override
 	public String getNPCName() {
-		return "Mrs. Yeti";
+		return npc.getName();
 	}
 
 	@Override

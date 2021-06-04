@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -62,15 +61,17 @@ import games.stendhal.server.util.TimeUtil;
  *
  * REPETITIONS: <ul><li> once a week.</ul>
  */
-
 public class KillBlordroughs extends AbstractQuest {
 	private static KillBlordroughs instance;
 
 	private static final String QUEST_NPC = "Mrotho";
 	private static final String QUEST_SLOT = "kill_blordroughs";
+
 	private final long questdelay = MathHelper.MILLISECONDS_IN_ONE_WEEK;
 	protected final int killsnumber = 100;
+
 	private SpeakerNPC npc;
+
 	private static Logger logger = Logger.getLogger(KillBlordroughs.class);
 
 	protected static List<String> BLORDROUGHS = Arrays.asList(
@@ -405,8 +406,8 @@ public class KillBlordroughs extends AbstractQuest {
 	public void addToWorld() {
 		npc = npcs.get(QUEST_NPC);
 		fillQuestInfo(
-				"Zabij Blordroughtów",
-				"Mrotho chce abyś zabił kilku żołnierzy Blordroughtów.",
+				"Pozbycie się Blordroughtów",
+				"Mrotho chce, abyś pozbył się kilku żołnierzy Blordroughtów.",
 				true);
 		step_1();
 	}
@@ -435,30 +436,24 @@ public class KillBlordroughs extends AbstractQuest {
 	}
 
 	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(
-				new QuestCompletedCondition(QUEST_SLOT),
-				new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK)).fire(player, null, null);
-	}
-
-	/**
-	 * return name of quest slot.
-	 */
-	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
 
-	/**
-	 * return name of quest.
-	 */
 	@Override
 	public String getName() {
-		return "KillBlordroughs";
+		return "Pozbycie się Blordroughtów";
 	}
 
 	@Override
 	public String getNPCName() {
 		return "Mrotho";
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestCompletedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK)).fire(player, null, null);
 	}
 }

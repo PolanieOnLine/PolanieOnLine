@@ -1,6 +1,14 @@
-/**
- *
- */
+/***************************************************************************
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -69,59 +77,11 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class HelpWithTheHarvest extends AbstractQuest {
-	
 	private static final String QUEST_SLOT = "helpwiththeharvest";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(Player player) {
-		List<String> result = new ArrayList<String>();
-		if(new QuestStartedCondition(QUEST_SLOT).fire(player, null, null) && !createFinishedCondition().fire(player, null, null)) {
-			result.add("Chcę pomóc Eheneumniranin w jego żniwach.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "rejected")) {
-		    result.add("Na dzień dzisiejszy praca na farmie jest zbyt ciężka dla mnie.");
-		}
-
-		if(constructHayCartsNotYetCompletedCondition().fire(player, null, null)) {
-			result.add("Muszę doprowadzić dwa wóżki siana do stodoły na północ od Eheneumniranina.");
-		}
-		if(createTaskFinishedCondition().fire(player, null, null)) {
-			result.add("Doprowadziłem wystarczającą ilość wózków do stodoły. Mogę teraz powiedzieć Eheneumniraninowi, że skończyłem.");
-		}
-		if(createFinishedCondition().fire(player, null, null)) {
-			result.add("Pomogłem " + getNPCName() + " i dostałem swoją nagrodę.");
-		}
-		return result;
-	}
-
-	@Override
-	public String getName() {
-		return "Pomoc w żniwach";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 5;
-	}
-
-	@Override
-	public void addToWorld() {
-		placeCartsAndTargets();
-		configureNPC();
-		fillQuestInfo(getName(), "Eheneumniranin potrzebuje pomocy w żniwach.", false);
-	}
+	private final SpeakerNPC npc = npcs.get("Eheneumniranin");
 
 	private void configureNPC() {
-		SpeakerNPC npc = npcs.get("Eheneumniranin");
-
-		/*
-		 * Add a reply on the trigger phrase "quest"
-		 */
+		// Add a reply on the trigger phrase "quest"
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -129,9 +89,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				"Jesteś tutaj, aby pomóc mi trochę w moich żniwach?",
 				null);
 
-		/*
-		 * Player is interested in helping, so explain the quest.
-		 */
+		// Player is interested in helping, so explain the quest.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -143,9 +101,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 		
 		npc.addReply(Arrays.asList("barn", "stodoła", "stodoły"), "Stodołe Karla możesz znaleść na północ stąd. Wyróżnia się ogromnym znakiem z jego imieniem.");
 
-		/*
-		 * Player refused to help - end the conversation.
-		 */
+		// Player refused to help - end the conversation.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -154,9 +110,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -2.0));
 
 
-		/*
-		 * Player has not yet put the carts to the right spots
-		 */
+		// Player has not yet put the carts to the right spots
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("done", "zrobiłem", "zrobiłeś"),
 				constructHayCartsNotYetCompletedCondition(),
@@ -164,9 +118,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				"Jeszcze nie dostarczyłeś obu wózków z sianem do stodoły leżącej na północ stąd.",
 				null);
 
-		/*
-		 * Player asks for a quest although he has it already open
-		 */
+		// Player asks for a quest although he has it already open
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
@@ -174,18 +126,15 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				"Już cię prosiłem o dostarczenie dwóch wózków z sianem do stodoły Karla. Daj znąć jeśli już to #zrobiłeś.",
 				null);
 
-		/*
-		 * Player has put both carts at the right spots
-		 */
+		// Player has put both carts at the right spots
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("done"),
 				createTaskFinishedCondition(),
 				ConversationStates.ATTENDING,
 				"Dziękuję za twoją pomoc przy żniwach. Oto twoja nagroda",
 				createReward());
-		/*
-		 * Player has finished the quest and can get additional information
-		 */
+
+		// Player has finished the quest and can get additional information
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("jenny"),
 				createFinishedCondition(),
@@ -228,12 +177,14 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				"Erna jest asystentką #Leandera w piekarni. Jeżeli przyniesiesz jej #mąkę to upiecze dla ciebie #chleb.",
 				null);
 
-        /*
-         * Add a reply on the trigger phrase "quest" after it is finished
-         */
-        npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, createFinishedCondition(), ConversationStates.ATTENDING, "Przenieśliśmy już pełne żniwa, jeszcze raz dziękuję za pomoc.", null);
+        // Add a reply on the trigger phrase "quest" after it is finished
+        npc.add(ConversationStates.ATTENDING,
+        		ConversationPhrases.QUEST_MESSAGES,
+        		createFinishedCondition(),
+        		ConversationStates.ATTENDING,
+        		"Przenieśliśmy już pełne żniwa, jeszcze raz dziękuję za pomoc.",
+        		null);
 	}
-
 
 	/**
 	 * Place the carts and targets into the zone
@@ -243,7 +194,6 @@ public class HelpWithTheHarvest extends AbstractQuest {
 
 		ChatCondition c = constructHayCartsNotYetCompletedCondition();
 		String cartDescription = "Oto wózek ze zbożem. Czy możesz go popchać do stodoły Karla?";
-
 
 		Block cartOne = new Block(true, "hay_cart");
 		cartOne.setPosition(87, 100);
@@ -322,13 +272,58 @@ public class HelpWithTheHarvest extends AbstractQuest {
 	}
 
 	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Pomoc w Żniwach",
+				"Eheneumniranin potrzebuje pomocy w żniwach.", false);
+		placeCartsAndTargets();
+		configureNPC();
+	}
+
+	@Override
+	public List<String> getHistory(Player player) {
+		List<String> result = new ArrayList<String>();
+		if(new QuestStartedCondition(QUEST_SLOT).fire(player, null, null) && !createFinishedCondition().fire(player, null, null)) {
+			result.add("Chcę pomóc Eheneumniranin w jego żniwach.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "rejected")) {
+		    result.add("Na dzień dzisiejszy praca na farmie jest zbyt ciężka dla mnie.");
+		}
+
+		if(constructHayCartsNotYetCompletedCondition().fire(player, null, null)) {
+			result.add("Muszę doprowadzić dwa wóżki siana do stodoły na północ od Eheneumniranina.");
+		}
+		if(createTaskFinishedCondition().fire(player, null, null)) {
+			result.add("Doprowadziłem wystarczającą ilość wózków do stodoły. Mogę teraz powiedzieć Eheneumniraninowi, że skończyłem.");
+		}
+		if(createFinishedCondition().fire(player, null, null)) {
+			result.add("Pomogłem " + getNPCName() + " i dostałem swoją nagrodę.");
+		}
+		return result;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Pomoc w Żniwach";
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 5;
+	}
+
+	@Override
 	public String getRegion() {
 		return Region.ADOS_SURROUNDS;
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Eheneumniranin";
+		return npc.getName();
 	}
-
 }

@@ -164,12 +164,12 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 	@Override
 	public String respondToQuestRefusal() {
 		// player.addKarma(-5.0);
-		return "Och ... nie jesteś zbyt miły. Do widzenia.";
+		return "Och... nie jesteś zbyt miły. Do widzenia.";
 	}
 
 	@Override
 	public String askForItemsAfterPlayerSaidHeHasItems() {
-		return "Cudownie! Jakie #rzeczy przyniosłeś mi?";
+		return "Tak więc jakie #rzeczy przyniosłeś mi?";
 	}
 
 	@Override
@@ -188,12 +188,12 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String respondToItemBrought() {
-		return "Ohh... Bardzo dziękuję! Co jeszcze przyniosłeś?";
+		return "Super, co jeszcze przyniosłeś?";
 	}
 
 	@Override
 	public String respondToLastItemBrought() {
-		return "Dziękuję bardzo.. za te góralskie rzeczy.. Proszę, przyjmij korale, mogą Ci się kiedyś przydać.";
+		return "Dziękuję bardzo... za te góralskie rzeczy... Proszę, przyjmij korale, mogą Ci się kiedyś przydać.";
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String respondToOfferOfNotMissingItem() {
-		return "Już mi to przyniosłeś kiedyś...";
+		return "Już mi to przyniosłeś, kiedyś...";
 	}
 
 	@Override
@@ -213,7 +213,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String respondToPlayerSayingHeHasNoItems(final List<String> missingItems) {
-		return "Dobrze wróć później.";
+		return "Dobrze, wróć później.";
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String getName() {
-		return "GoralskiCollector";
+		return "Góralski Kolekcjoner I";
 	}
 
 	@Override

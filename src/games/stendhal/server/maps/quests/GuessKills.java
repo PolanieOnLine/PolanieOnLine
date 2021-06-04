@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -109,7 +109,7 @@ public class GuessKills extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Gra w zgadywanie",
+				"Gra w Zgadywanie",
 				"Crearid gra w grę, w której musisz zgadnąć ile potworów zabiłeś.",
 				true);
 		prepareQuestStep();
@@ -134,7 +134,7 @@ public class GuessKills extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "GuessKills";
+		return "Gra w Zgadywanie";
 	}
 
 	@Override

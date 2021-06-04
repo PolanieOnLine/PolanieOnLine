@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -97,10 +97,9 @@ import marauroa.common.game.SlotIsFullException;
  * @see McPeglegIOU
  */
 public class KanmararnSoldiers extends AbstractQuest {
+	private static final String QUEST_SLOT = "soldier_henry";
 
 	private static final Logger logger = Logger.getLogger(KanmararnSoldiers.class);
-
-	private static final String QUEST_SLOT = "soldier_henry";
 
 	/**
 	 * The maximum time (in seconds) until plundered corpses will be filled
@@ -115,22 +114,15 @@ public class KanmararnSoldiers extends AbstractQuest {
 	private static final String SLD_PETER = "Peter";
 	private static final String SRG_JAMES = "Sergeant James";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	/**
 	 * A CorpseRefiller checks, in regular intervals, if the given corpse.
 	 *
 	 * @author daniel
 	 *
 	 */
-	static class CorpseRefiller implements TurnListener {
+	private static class CorpseRefiller implements TurnListener {
 		private final Corpse corpse;
-
 		private final String itemName;
-
 		private final String description;
 
 		public CorpseRefiller(final Corpse corpse, final String itemName, final String description) {
@@ -187,23 +179,21 @@ public class KanmararnSoldiers extends AbstractQuest {
 		}
 	}
 
-
-
-	static class HenryQuestNotCompletedCondition implements ChatCondition {
+	private static class HenryQuestNotCompletedCondition implements ChatCondition {
 		@Override
 		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
 			return !player.hasQuest(QUEST_SLOT) || player.getQuest(QUEST_SLOT).equals("start");
 		}
 	}
 
-	static class HenryQuestCompletedCondition implements ChatCondition {
+	private static class HenryQuestCompletedCondition implements ChatCondition {
 		@Override
 		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
 			return player.hasQuest(QUEST_SLOT) && !player.getQuest(QUEST_SLOT).equals("start");
 		}
 	}
 
-	static class GiveMapAction implements ChatAction {
+	private static class GiveMapAction implements ChatAction {
 		private boolean bind = false;
 
 		public GiveMapAction(boolean bind) {
@@ -222,7 +212,6 @@ public class KanmararnSoldiers extends AbstractQuest {
 			player.setQuest(QUEST_SLOT, "map");
 		}
 	}
-
 
 	/**
 	 * We add text for NPC Henry who will get us on the quest.
@@ -458,7 +447,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Żołnierz Kanmararn",
+				"Żołnierze Kanmararn",
 				"Jakiś czas temu Sergeant James wraz ze swoimi najdzielniejszymi żołnierzami rozpoczął poszukiwanie skarbu w Kanmararn mieście krasnali. Jeszcze nie wrócili. Pójdziesz ich poszukać?.",
 				true);
 		prepareCowardSoldier();
@@ -468,37 +457,43 @@ public class KanmararnSoldiers extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			final String questState = player.getQuest(QUEST_SLOT);
-			res.add("Spotkałem przerażonego żołnierza w Kanmararn City. Zapytał mnie, czy odnazał bym jego przyjaciół: Petera, Charlesa, i Toma.");
-			if ("rejected".equals(questState)) {
-				res.add("Nie pomogę dla Henry.");
-				return res;
-			}
-			if ("start".equals(questState)) {
-				return res;
-			}
-			res.add("Niestety znalazłem tylko ich zwłoki Petera, Charlesa, i Toma. Henry był przerażony. Za fatygę dał mi mapę i jakąś karteczkę. Nie mam pojęcia po co mi to.");
-			if ("map".equals(questState)) {
-				return res;
-			}
-			res.add("Poznałem sierżanta Jamesa i dałem mu mapę. On dał mi w zamian solidne buty mainiocyjskie.");
-			if (isCompleted(player)) {
-				return res;
-			}
-			// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-			final List<String> debug = new ArrayList<String>();
-			debug.add("Stan zadania to: " + questState);
-			logger.error("History doesn't have a matching quest state for " + questState);
-			return debug;
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Spotkałem przerażonego żołnierza w Kanmararn City. Zapytał mnie, czy odnazał bym jego przyjaciół: Petera, Charlesa, i Toma.");
+		if ("rejected".equals(questState)) {
+			res.add("Nie pomogę dla Henry.");
+			return res;
+		}
+		if ("start".equals(questState)) {
+			return res;
+		}
+		res.add("Niestety znalazłem tylko ich zwłoki Petera, Charlesa, i Toma. Henry był przerażony. Za fatygę dał mi mapę i jakąś karteczkę. Nie mam pojęcia po co mi to.");
+		if ("map".equals(questState)) {
+			return res;
+		}
+		res.add("Poznałem sierżanta Jamesa i dałem mu mapę. On dał mi w zamian solidne buty mainiocyjskie.");
+		if (isCompleted(player)) {
+			return res;
+		}
+
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("History doesn't have a matching quest state for " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "KanmararnSoldiers";
+		return "Żołnierze Kanmararn";
 	}
 
 	@Override

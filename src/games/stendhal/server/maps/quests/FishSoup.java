@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -60,19 +59,17 @@ import marauroa.common.game.IRPZone;
  * @author Vanessa Julius and Krupi (idea)
  */
 public class FishSoup extends AbstractQuest {
+	private static final String QUEST_SLOT = "fishsoup_maker";
+
+	// NPC
+	private static final String NPC_NAME = "Florence Boullabaisse";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final List<String> NEEDED_FOOD = Arrays.asList("pokolec",
 			"dorsz", "palia alpejska", "płotka", "błazenek", "cebula", "makrela",
 			"czosnek", "por", "okoń", "pomidor");
 
-	private static final String QUEST_SLOT = "fishsoup_maker";
-
 	private static final int REQUIRED_MINUTES = 20;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	/**
 	 * Returns a list of the names of all food that the given player still has
@@ -122,8 +119,6 @@ public class FishSoup extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Florence Boullabaisse");
-
 		// player says hi before starting the quest
 		npc.add(
 			ConversationStates.IDLE,
@@ -240,8 +235,6 @@ public class FishSoup extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Florence Boullabaisse");
-
 		// player returns while quest is still active
 		npc.add(
 			ConversationStates.IDLE,
@@ -415,14 +408,13 @@ public class FishSoup extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "FishSoup";
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES)).fire(player, null, null);
+	public String getName() {
+		return "Zupa Rybna";
 	}
 
 	@Override
@@ -432,6 +424,12 @@ public class FishSoup extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Florence Boullabaisse";
+		return NPC_NAME;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+					new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

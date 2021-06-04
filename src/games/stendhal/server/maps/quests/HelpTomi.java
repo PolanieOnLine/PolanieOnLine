@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -62,45 +61,20 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class HelpTomi extends AbstractQuest {
+	private static final String QUEST_SLOT = "help_tomi";
+	private final SpeakerNPC npc = npcs.get("tomi");
+
+	private static final String extraTrigger = "miecz lodowy";
+
 	/**
 	 * Number of repetitions after which the XP growth becomes linear, instead
 	 * of quadratic.
 	 */
 	private static final int N_0 = 10;
 
-	private static final String QUEST_SLOT = "help_tomi";
-	private static final String extraTrigger = "miecz lodowy";
 	private List<String> questTrigger;
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Tomiego, chłopca torturowanego w piekle.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.startsWith("done")) {
-			res.add("Tomi prosił o \"miecz lodowy\" i wzioł ten, który przyniosłem!");
-			// provided quest isn't in 'old version' we should be able to check how many times it was done
-			if (!"done".equals(questState)) {
-				final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
-				if (repetitions>1) {
-					res.add("Dałem " + repetitions + " mieczy lodowych Tomiemu dotychczas.");
-				}
-			}
-		}
-		return res;
-	}
-
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("tomi");
-
 		// says quest or ice and doesn't have an ice sword and hasn't brought one before
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
@@ -162,23 +136,48 @@ public class HelpTomi extends AbstractQuest {
 					npc.say(saybuf.toString());
 				}
 			});
-
 	}
 
 	@Override
 	public void addToWorld() {
 		// want "ice" and quest_messages to have same meaning in this quest
 		fillQuestInfo(
-				"Pomoc Tomiemu",
-				"Chłopiec Tomi jest torturowany w gorącym piekle. Jedyną rzeczą, która może mu pomóc jest jego... MIECZ LODOWY!",
+				"Schłodzenie Tomiego",
+				"Chłopiec Tomi jest torturowany w gorącym piekle. Jedyna rzecz, która może mu pomóc jest jego... MIECZ LODOWY!",
 				true);
 	    questTrigger = ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, extraTrigger);
 		step1();
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Napotkałem Tomiego, małego chłopca leżącego na stole, który jest torturowany w piekle.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.startsWith("done")) {
+			res.add("Tomi poprosił mnie o \"miecz lodowy\" i wziął ten, który mu przyniosłem!");
+			// provided quest isn't in 'old version' we should be able to check how many times it was done
+			if (!"done".equals(questState)) {
+				final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
+				if (repetitions>1) {
+					res.add("Przekazałem dotychczas " + repetitions + " mieczy lodowych Tomiemu.");
+				}
+			}
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "HelpTomi";
+		return "Schłodzenie Tomiego";
 	}
 
 	// there is a minimum level requirement to get into hell - this quest is in hell
@@ -191,9 +190,10 @@ public class HelpTomi extends AbstractQuest {
 	public boolean isRepeatable(final Player player) {
 		return true;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Tomi";
+		return npc.getName();
 	}
 
 	@Override

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -71,19 +70,13 @@ import games.stendhal.server.maps.Region;
  * <li>Not repeatable.</li>
  * </ul>
  */
-
- public class JailedBarbarian extends AbstractQuest {
- 	private static final String QUEST_SLOT = "jailedbarb";
+public class JailedBarbarian extends AbstractQuest {
+	private static final String QUEST_SLOT = "jailedbarb";
+	private final SpeakerNPC npc = npcs.get("Lorenz");
 
 	private static Logger logger = Logger.getLogger(JailedBarbarian.class);
 
- 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Lorenz");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -113,8 +106,6 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step2() {
-	final SpeakerNPC npc = npcs.get("Lorenz");
-
 	    final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("kosa"));
 		reward.add(new IncreaseXPAction(1000));
@@ -144,7 +135,7 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step3() {
-	final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
+		final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
 
 		npc.add(ConversationStates.ATTENDING, "Lorenz",
 				new QuestInStateCondition(QUEST_SLOT, "capture"),
@@ -156,12 +147,9 @@ import games.stendhal.server.maps.Region;
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
 				ConversationStates.ATTENDING, "Jestem teraz wściekła i nie chce już o tym rozmawiać! Jeżeli chcesz się dowiedzieć więcej to musisz go zapytać o #tunel!",
 				null);
-
 	}
 
 	private void step4() {
-	final SpeakerNPC npc = npcs.get("Lorenz");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("tunnel", "tunel"),
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
 				ConversationStates.ATTENDING,
@@ -184,8 +172,6 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step5() {
-		final SpeakerNPC npc = npcs.get("Lorenz");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("jajo"));
 		reward.add(new IncreaseXPAction(1000));
@@ -227,7 +213,7 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step6() {
-	final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
+		final SpeakerNPC npc = npcs.get("Księżniczka Ylflia");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("jailed", "Lorenz", "uwięziony"),
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
@@ -243,8 +229,6 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step7() {
-	final SpeakerNPC npc = npcs.get("Lorenz");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("greetings", "pozdrowienia"),
 				new QuestInStateCondition(QUEST_SLOT, "spoken"),
 				ConversationStates.ATTENDING,
@@ -260,8 +244,6 @@ import games.stendhal.server.maps.Region;
 	}
 
 	private void step8() {
-		final SpeakerNPC npc = npcs.get("Lorenz");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("zbroja barbarzyńcy"));
 		reward.add(new IncreaseXPAction(50000));
@@ -359,8 +341,13 @@ import games.stendhal.server.maps.Region;
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "JailedBarbarian";
+		return "Uwięziony Barbarzyńca";
 	}
 
 	// Amazon is dangerous below this level - don't hint to go there
@@ -373,8 +360,9 @@ import games.stendhal.server.maps.Region;
 	public String getRegion() {
 		return Region.AMAZON_ISLAND;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Lorenz";
+		return npc.getName();
 	}
 }

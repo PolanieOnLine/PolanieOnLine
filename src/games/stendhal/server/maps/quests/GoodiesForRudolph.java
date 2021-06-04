@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -70,8 +69,11 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class GoodiesForRudolph extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "goodies_rudolph";
+
+	// NPC
+	private static final String NPC_NAME = "Rudolph";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final int REQUIRED_MONTHS = 11;
 	private static final int REQUIRED_MINUTES = 60 * 24 * 30 * REQUIRED_MONTHS;
@@ -79,39 +81,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 	private static final String RUDOLPH_TALK_QUEST_ACCEPT = "Słyszałem o wspaniałych #przysmakach, które masz tutaj w Semos. Jeśli zdobędziesz 5 mchów renifera, 10 jabłek i 10 marchew to dam ci nagrodę.";
 	private static final String RUDOLPH_TALK_QUEST_OFFER = "Chcę pyszne przysmaki tylko ty możesz mi pomóc je zdobyć. Czy możesz mi pomóc?";
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Rudolpha. Jest on Czerwononosym Reniferem biegającym w pobliżu Semos.");
-		final String questStateFull = player.getQuest(QUEST_SLOT);
-		final String[] parts = questStateFull.split(";");
-		final String questState = parts[0];
-
-		if ("rejected".equals(questState)) {
-			res.add("Zapytał mnie o znalezienie przysmaków dla niego, ale odrzuciłem jego prośbę.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, "start", "done")) {
-			res.add("Przyrzekłem, że znajdę dla niego przysmaki ponieważ jest miłym reniferem.");
-		}
-		if ("start".equals(questState) && player.isEquipped("mech renifera", 5)  && player.isEquipped("marchew", 10) && player.isEquipped("jabłko", 10) || "done".equals(questState)) {
-			res.add("Mam wszystkie przysmaki, które zabiorę do Rudolpha.");
-		}
-		if (isCompleted(player)) {
-			if (isRepeatable(player)) {
-				res.add("Minął rok kiedy ostatnio pomogłem Rudolphowi. Powinienem go zapytać czy znów nie potrzebuje mojej pomocy.");
-			} else {
-				res.add("Wziąłem przysmaki do Rudolpha. Jako podziękowanie dał MI trochę przysmaków. :)");
-			}
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Rudolph");
-
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -164,8 +134,6 @@ public class GoodiesForRudolph extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Rudolph");
-
 		// player returns while quest is still active
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -229,11 +197,41 @@ public class GoodiesForRudolph extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Przysmaki dla Rudolpha",
+				"Przysmaki Rudolpha",
 				"Rudolph jest ulubionym reniferem świętego Mikołaja, który rozpaczliwie chce przysmaków.",
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Rudolpha. Jest on Czerwononosym Reniferem biegającym w pobliżu Semos.");
+		final String questStateFull = player.getQuest(QUEST_SLOT);
+		final String[] parts = questStateFull.split(";");
+		final String questState = parts[0];
+
+		if ("rejected".equals(questState)) {
+			res.add("Zapytał mnie o znalezienie przysmaków dla niego, ale odrzuciłem jego prośbę.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "start", "done")) {
+			res.add("Przyrzekłem, że znajdę dla niego przysmaki ponieważ jest miłym reniferem.");
+		}
+		if ("start".equals(questState) && player.isEquipped("mech renifera", 5)  && player.isEquipped("marchew", 10) && player.isEquipped("jabłko", 10) || "done".equals(questState)) {
+			res.add("Mam wszystkie przysmaki, które zabiorę do Rudolpha.");
+		}
+		if (isCompleted(player)) {
+			if (isRepeatable(player)) {
+				res.add("Minął rok kiedy ostatnio pomogłem Rudolphowi. Powinienem go zapytać czy znów nie potrzebuje mojej pomocy.");
+			} else {
+				res.add("Wziąłem przysmaki do Rudolpha. Jako podziękowanie otrzymałem trochę przysmaków. :)");
+			}
+		}
+		return res;
 	}
 
 	@Override
@@ -243,18 +241,12 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "GoodiesForRudolph";
+		return "Przysmaki Rudolpha";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 0;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "done"),
-				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player, null, null);
 	}
 
 	@Override
@@ -264,6 +256,13 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Rudolph";
+		return NPC_NAME;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestStateStartsWithCondition(QUEST_SLOT, "done"),
+				new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

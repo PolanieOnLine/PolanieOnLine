@@ -71,35 +71,12 @@ import games.stendhal.server.util.ItemCollection;
  */
 public class HerbsForCarmen extends AbstractQuest {
 	public static final String QUEST_SLOT = "herbs_for_carmen";
-
-	// NPC
-	private static final String NPC_NAME = "Carmen";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Carmen");
 
 	/**
 	 * required items for the quest.
 	 */
 	protected static final String NEEDED_ITEMS = "arandula=5;borowik=1;jabłko=3;polano=2;pieczarka=1";
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Carmen poprosiła mnie o zebranie składników, aby pomóc jej nadal leczyć innych.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę, pomóc Carmen. Myślę, że ona znajdzie kogoś, kto jej pomoże.");
-		} else if (!"done".equals(questState)) {
-			final ItemCollection missingItems = new ItemCollection();
-			missingItems.addFromQuestStateString(questState);
-			res.add("Wciąż muszę przynieść Carmen " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
-		} else {
-			res.add("Pomogłem Carmen i ona może teraz dalej uzdrawiać.");
-		}
-		return res;
-	}
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
@@ -286,6 +263,26 @@ public class HerbsForCarmen extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Carmen poprosiła mnie o zebranie składników, aby pomóc jej nadal leczyć innych.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę, pomóc Carmen. Myślę, że ona znajdzie kogoś, kto jej pomoże.");
+		} else if (!"done".equals(questState)) {
+			final ItemCollection missingItems = new ItemCollection();
+			missingItems.addFromQuestStateString(questState);
+			res.add("Wciąż muszę przynieść Carmen " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
+		} else {
+			res.add("Pomogłem Carmen i ona może teraz dalej uzdrawiać.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
@@ -307,6 +304,6 @@ public class HerbsForCarmen extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

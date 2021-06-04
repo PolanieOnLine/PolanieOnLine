@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -72,33 +71,19 @@ import marauroa.common.Pair;
  * REPETITIONS: <ul><li>once in two weeks</ul>
  *
  * @author Vanessa Julius, idea by anoyyou
-
  */
-
 public class KillMonks extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "kill_monks";
+	private final SpeakerNPC npc = npcs.get("Andy");
+
 	protected HashMap<String, Pair<Integer, Integer>> creaturestokill = new HashMap<String, Pair<Integer,Integer>>();
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	public KillMonks() {
 		super();
-		 creaturestokill.put("mnich", 
-
-				 new Pair<Integer, Integer>(0, 25));
-
-		 creaturestokill.put("mnich ciemności",
-				 new Pair<Integer, Integer>(0, 25));
-
+		creaturestokill.put("mnich", new Pair<Integer, Integer>(0, 25));
+		creaturestokill.put("mnich ciemności", new Pair<Integer, Integer>(0, 25));
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Andy");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -150,9 +135,6 @@ public class KillMonks extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Andy");
-
 		ChatAction addRandomNumberOfItemsAction = new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
@@ -196,10 +178,28 @@ public class KillMonks extends AbstractQuest {
 				null);
 	}
 
+	private String howManyWereKilled(final Player player, final String questState) {
+		KillsForQuestCounter killsCounter = new KillsForQuestCounter(questState);
+		int killedMonks = 25 - killsCounter.remainingKills(player, "mnich");
+		int killedDarkMonks = 25 - killsCounter.remainingKills(player, "mnich ciemności");
+		return "Wciąż muszę zabić " + Grammar.quantityplnoun(killedMonks, "mnich") + " i " + Grammar.quantityplnoun(killedDarkMonks, "mnich ciemności") + ".";
+	}
+
+	private List<String> howManyWereKilledFormatted(final Player player, final String questState) {
+		KillsForQuestCounter killsCounter = new KillsForQuestCounter(questState);
+		int killedMonks = 25 - killsCounter.remainingKills(player, "mnich");
+		int killedDarkMonks = 25 - killsCounter.remainingKills(player, "mnich ciemności");
+
+		List<String> entries = new ArrayList<>();
+		entries.add("Mnisi: <tally>" + killedMonks + "</tally>");
+		entries.add("Mnisi ciemności: <tally>" + killedDarkMonks + "</tally>");
+		return entries;
+	}
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabij Mnichów",
+				"Zguba Mnichów",
 				"Żona Andiego została zamordowana przez mnichów, a teraz on chce dokonać na nich zemsty.",
 				false);
 		step_1();
@@ -253,28 +253,24 @@ public class KillMonks extends AbstractQuest {
 			return res;
 	}
 
-	private String howManyWereKilled(final Player player, final String questState) {
-		KillsForQuestCounter killsCounter = new KillsForQuestCounter(questState);
-		int killedMonks = 25 - killsCounter.remainingKills(player, "mnich");
-		int killedDarkMonks = 25 - killsCounter.remainingKills(player, "mnich ciemności");
-		return "Wciąż muszę zabić " + Grammar.quantityplnoun(killedMonks, "mnich") + " i " + Grammar.quantityplnoun(killedDarkMonks, "mnich ciemności") + ".";
-	}
-
-	private List<String> howManyWereKilledFormatted(final Player player, final String questState) {
-		KillsForQuestCounter killsCounter = new KillsForQuestCounter(questState);
-		int killedMonks = 25 - killsCounter.remainingKills(player, "mnich");
-		int killedDarkMonks = 25 - killsCounter.remainingKills(player, "mnich ciemności");
-
-		List<String> entries = new ArrayList<>();
-		entries.add("Mnisi: <tally>" + killedMonks + "</tally>");
-		entries.add("Mnisi ciemności: <tally>" + killedDarkMonks + "</tally>");
-		return entries;
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "KillMonks";
+		return "Zguba Mnichów";
+	}
 
+	@Override
+	public String getNPCName() {
+		return npc.getName();
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.ADOS_CITY;
 	}
 
 	@Override
@@ -286,15 +282,5 @@ public class KillMonks extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Andy";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ADOS_CITY;
 	}
 }

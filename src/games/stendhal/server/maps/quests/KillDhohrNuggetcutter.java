@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
@@ -35,12 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import marauroa.common.Pair;
 
 /**
@@ -69,19 +67,11 @@ import marauroa.common.Pair;
  * <li> after 14 days.
  * </ul>
  */
-
 public class KillDhohrNuggetcutter extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "kill_dhohr_nuggetcutter";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private final SpeakerNPC npc = npcs.get("Zogfang");
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Zogfang");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				null,
@@ -145,8 +135,6 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Zogfang");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
@@ -183,7 +171,7 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabij Dhohr Nuggetcutter",
+				"Zguba Dhohr Nuggetcutter",
 				"Ork Zogfang, który pilnuje wejścia do Abandonded Keep i chce abyś zabił pozostałe w tym obszarze krasnale.",
 				false);
 		step_1();
@@ -193,29 +181,39 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			if (!isCompleted(player)) {
-				res.add("Muszę zabić Dhohr Nuggetcutter i jego kumpli naprośbę Orka Zogfanga.");
-			} else if(isRepeatable(player)){
-				res.add("Ork Zogfang potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
-			} else {
-				res.add("Moja wyprawa na krasnoludy uspokoiła na jakiś czas nerwy Orka Zogfanga.");
-			}
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
+		}
+		if (!isCompleted(player)) {
+			res.add("Muszę zabić Dhohr Nuggetcutter i jego kumpli naprośbę Orka Zogfanga.");
+		} else if(isRepeatable(player)){
+			res.add("Ork Zogfang potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
+		} else {
+			res.add("Moja wyprawa na krasnoludy uspokoiła na jakiś czas nerwy Orka Zogfanga.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "KillDhohrNuggetcutter";
+		return "Zguba Dhohr Nuggetcutter";
 	}
 
 	// The kill requirements and surviving in the zone requires at least this level
 	@Override
 	public int getMinLevel() {
 		return 70;
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
 	}
 
 	@Override
@@ -227,10 +225,5 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Zogfang";
 	}
 }

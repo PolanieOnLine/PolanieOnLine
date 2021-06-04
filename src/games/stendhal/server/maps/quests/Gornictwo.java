@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2020-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -30,6 +41,8 @@ public class Gornictwo extends AbstractQuest {
 	private static final String QUEST_SLOT = "gornictwo";
 	private static final String MINES_EXAM = "cech_gornika";
 
+	private final SpeakerNPC npc = npcs.get("Górnik");
+
 	private static final int REQUIRED_MINUTES = 10;
 
 	@Override
@@ -40,11 +53,6 @@ public class Gornictwo extends AbstractQuest {
 	@Override
 	public String getName() {
 		return "Górnictwo";
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Górnik";
 	}
 
 	@Override
@@ -73,8 +81,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void step1() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		// Checks if the player completed quest
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -104,8 +110,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigSulfur() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
@@ -144,8 +148,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepPassedExam() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -168,8 +170,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigIron() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -194,8 +194,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigCopper() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -221,8 +219,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepPickForging() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -259,8 +255,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigGold() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -285,8 +279,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigJewelry() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -313,8 +305,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigShadow() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -339,8 +329,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigSilver() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -367,8 +355,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepPickGoldForging() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -405,8 +391,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigAmetyst() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -431,8 +415,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigObsidian() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -457,8 +439,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigPlatinum() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -483,8 +463,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigMithril() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -515,8 +493,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigDiamond() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -542,8 +518,6 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	private void stepDigLast() {
-		final SpeakerNPC npc = npcs.get(getNPCName());
-
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,

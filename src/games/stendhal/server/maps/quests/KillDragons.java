@@ -49,17 +49,13 @@ import marauroa.common.Pair;
 
 public class KillDragons extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_dragons";
+	private final SpeakerNPC npc = npcs.get("Alicja");
+
 	private static final int DELAY_IN_MINUTES = 60*24;
+
 	private static Logger logger = Logger.getLogger(KillDragons.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Alicja");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
@@ -96,8 +92,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step2() {
-		final SpeakerNPC npc = npcs.get("Alicja");
-
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
@@ -141,7 +135,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas1() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "zielony";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -180,7 +173,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step3() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "szkielet"),
@@ -223,7 +215,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas2() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "szkielet";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -262,7 +253,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step4() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "niebieski"),
@@ -306,7 +296,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas3() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "niebieski";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -346,7 +335,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step5() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "zgnily"),
@@ -390,7 +378,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas4() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "zgnily";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -429,7 +416,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step6() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "czerwony"),
@@ -472,7 +458,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas5() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "czerwony";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -511,7 +496,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step7() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "pustynny"),
@@ -536,6 +520,7 @@ public class KillDragons extends AbstractQuest {
 						raiser.say("Nawet jeśli zabiłeś pustynnego smoka, na pewno odwiedzi mnie ponownie w koszmarze jeśli nie będę miała amuletu. Proszę, podrzuć mi skóry złotego smoka.");
 					}
 				});
+
 		//player wykonal obydwa zlecenia
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"pustynny"),
@@ -554,7 +539,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas6() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "pustynny";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -593,7 +577,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step8() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "zloty"),
@@ -637,7 +620,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas7() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "zloty";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -676,7 +658,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step9() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "dwa_niebieski"),
@@ -720,7 +701,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas8() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "dwuglowy niebieski";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -759,7 +739,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step10() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "dwu_zielony"),
@@ -803,7 +782,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas9() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "dwuglowy zielony";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -842,7 +820,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step11() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "arktyczny"),
@@ -886,7 +863,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas10() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "arktyczny";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -925,7 +901,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step12() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "dru_czerwony"),
@@ -969,7 +944,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas11() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "dwuglowy czerwony";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -1008,7 +982,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step13() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "czarny"),
@@ -1052,7 +1025,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas12() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "czarny";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -1091,7 +1063,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step14() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "dwuglowy_czarny"),
@@ -1135,7 +1106,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas13() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "czarny dwuglowy";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -1174,7 +1144,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step15() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "czar_latajacy"),
@@ -1223,7 +1192,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas14() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "czarny latajacy";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -1262,7 +1230,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step16() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "latajacy_zloty"),
@@ -1310,7 +1277,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void czas15() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		final String extraTrigger = "zloty latajacy";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -1350,7 +1316,6 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	private void step17() {
-		final SpeakerNPC npc = npcs.get("Alicja");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "wawelski"),
@@ -1397,7 +1362,6 @@ public class KillDragons extends AbstractQuest {
 					}
 				});
 	}
-
 
 	@Override
 	public void addToWorld() {
@@ -1724,13 +1688,18 @@ public class KillDragons extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "KillDragons";
+		return "Koszmary Alicji";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Alicja";
+		return npc.getName();
 	}
 
 	@Override

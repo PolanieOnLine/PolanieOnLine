@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -64,13 +63,11 @@ import games.stendhal.server.maps.Region;
  */
 
 public class FishermansLicenseCollector extends AbstractQuest {
-
 	public static final String QUEST_SLOT = "fishermans_license2";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	// NPC
+	private static final String NPC_NAME = "Santiago";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static final List<String> neededFish =
 		Arrays.asList("pstrąg", "okoń", "makrela", "dorsz", "płotka", "palia alpejska", "błazenek", "pokolec");
@@ -107,8 +104,6 @@ public class FishermansLicenseCollector extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Santiago");
-
 		// player says hi before starting the quest
 		npc.add(
 			ConversationStates.IDLE,
@@ -216,8 +211,6 @@ public class FishermansLicenseCollector extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Santiago");
-
 		// player returns while quest is still active
 		npc.add(
 			ConversationStates.IDLE,
@@ -242,14 +235,13 @@ public class FishermansLicenseCollector extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Karta Rybacka część 2",
+				"Karta Rybacka część II",
 				"Jesteś prawdziwym rybakiem? Jeżeli tak to spróbuj przekonać rybaka Santiago o swoich umiejętnościach przynosząć mu rybę z każdego rodzaju.",
 				true);
 		step_1();
 		step_2();
 		step_3();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -267,8 +259,13 @@ public class FishermansLicenseCollector extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "FishermansLicenseCollector";
+		return "Karta Rybacka część II";
 	}
 
 	@Override

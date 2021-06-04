@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -36,10 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * QUEST: Kill Dark Elves
  * <p>
@@ -64,6 +63,8 @@ import java.util.List;
  */
 public class KillDarkElves extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_dark_elves";
+	private final SpeakerNPC npc = npcs.get("Maerion");
+
 	protected final List<String> creatures =
 		Arrays.asList("elf ciemności kapitan",
 				      "elf ciemności generał",
@@ -75,14 +76,7 @@ public class KillDarkElves extends AbstractQuest {
 					  "elf ciemności łucznik elitarny",
 				      "elf ciemności łucznik");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Maerion");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
@@ -140,11 +134,6 @@ public class KillDarkElves extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Maerion");
-
-		// support for old-style quest
-
 		// the player returns to Maerion after having started the quest.
 		// Maerion checks if the player has killed one of enough dark elf types
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -160,27 +149,24 @@ public class KillDarkElves extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new KilledCondition("elf ciemności łucznik", "elf ciemności kapitan", "coś"),
-						new NotCondition(new PlayerHasItemWithHimCondition("amulet")))
-				, ConversationStates.QUEST_STARTED
-				, "Co się stało z amuletem? Pamiętasz, że potrzebuję go z powrotem!"
-				, null);
+						new NotCondition(new PlayerHasItemWithHimCondition("amulet"))),
+				ConversationStates.QUEST_STARTED,
+				"Co się stało z amuletem? Pamiętasz, że potrzebuję go z powrotem!",
+				null);
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new KilledCondition("elf ciemności łucznik", "elf ciemności kapitan", "coś"),
-						new PlayerHasItemWithHimCondition("amulet"))
-				, ConversationStates.ATTENDING
-				, "Bardzo, bardzo dziękuję. Cieszę się z oddania amuletu. Weź ten pierścień. Może on odrodzić twe moce po śmierci.",
+						new PlayerHasItemWithHimCondition("amulet")),
+				ConversationStates.ATTENDING,
+				"Bardzo, bardzo dziękuję. Cieszę się z oddania amuletu. Weź ten pierścień. Może on odrodzić twe moce po śmierci.",
 				new MultipleActions(new DropItemAction("amulet"),
 						new EquipItemAction("pierścień szmaragdowy", 1, true),
 						new IncreaseXPAction(100000),
 						new IncreaseKarmaAction(25.0),
 						new SetQuestAction(QUEST_SLOT, "done")));
-
-
-		// support for new-style quest
 
 		// building string for completed quest state
 		StringBuilder sb = new StringBuilder("started");
@@ -198,7 +184,7 @@ public class KillDarkElves extends AbstractQuest {
 						new NotCondition(
 								new QuestInStateCondition(QUEST_SLOT, completedQuestState))),
 				ConversationStates.QUEST_STARTED,
-				"Nie pamiętasz? Obiecałeś mi rozwiązać problem z ciemnymi elfami"+
+				"Nie pamiętasz? Obiecałeś mi rozwiązać problem z ciemnymi elfami" +
 				" Zabij każdego ciemnego elfa w #sekretnym #pokoju w szczególności "+
 				" przywódców ciemnych elfów, ich czarodziejów i wszystkich łuczników." +
 				"  nie zapomnij też o matronie."+
@@ -210,18 +196,18 @@ public class KillDarkElves extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, completedQuestState),
 						new NotCondition(
-								new PlayerHasItemWithHimCondition("amulet")))
-				, ConversationStates.QUEST_STARTED
-				, "Co się stało z amuletem? Pamiętaj muszę go mieć z powrotem!"
-				, null);
+								new PlayerHasItemWithHimCondition("amulet"))),
+				ConversationStates.QUEST_STARTED,
+				"Co się stało z amuletem? Pamiętaj muszę go mieć z powrotem!",
+				null);
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, completedQuestState),
-						new PlayerHasItemWithHimCondition("amulet"))
-				, ConversationStates.ATTENDING
-				, "Bardzo, bardzo dziękuję. Cieszę się z oddania amuletu. Weź ten pierścień. Może on odrodzić twe moce po śmierci.",
+						new PlayerHasItemWithHimCondition("amulet")),
+				ConversationStates.ATTENDING,
+				"Bardzo, bardzo dziękuję. Cieszę się z oddania amuletu. Weź ten pierścień. Może on odrodzić twe moce po śmierci.",
 				new MultipleActions(new DropItemAction("amulet"),
 						new EquipItemAction("pierścień szmaragdowy", 1, true),
 						new IncreaseXPAction(100000),
@@ -237,22 +223,6 @@ public class KillDarkElves extends AbstractQuest {
 			null);
 	}
 
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Zabij Mroczne Elfy",
-				"Maerion lider elfów chce, abyś zabił mroczne elfy w sekretnym pokoju i odzyskał jego amulet.",
-				false);
-		step_1();
-		step_2();
-		step_3();
-	}
-
-	@Override
-	public String getName() {
-		return "KillDarkElves";
-	}
-
 	/**
 	 * function return list of drow creatures to kill
 	 * @return - list of dark elves to kill
@@ -261,10 +231,15 @@ public class KillDarkElves extends AbstractQuest {
 		return creatures;
 	}
 
-	// Killing the thing probably requires a level even higher than this - but they can get help
 	@Override
-	public int getMinLevel() {
-		return 100;
+	public void addToWorld() {
+		fillQuestInfo(
+				"Zguba Mrocznych Elfów",
+				"Maerion lider elfów chce, abyś zabił mroczne elfy w sekretnym pokoju i odzyskał jego amulet.",
+				false);
+		step_1();
+		step_2();
+		step_3();
 	}
 
 	@Override
@@ -361,12 +336,28 @@ public class KillDarkElves extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	// Killing the thing probably requires a level even higher than this - but they can get help
+	@Override
+	public int getMinLevel() {
+		return 100;
+	}
+
+	@Override
+	public String getName() {
+		return "Zguba Mrocznych Elfów";
+	}
+
+	@Override
 	public String getRegion() {
 		return Region.NALWOR_CITY;
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Maerion";
+		return npc.getName();
 	}
 }

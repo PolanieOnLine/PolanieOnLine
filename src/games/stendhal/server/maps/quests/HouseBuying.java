@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -28,13 +27,12 @@ public class HouseBuying extends AbstractQuest {
 
 	@Override
 	public void addToWorld() {
-
 		quest = new HouseBuyingMain();
 		quest.addToWorld();
 
 		fillQuestInfo(
 				"Kupno Domu",
-				"Mieszkania można kupić w całej Faiumoni i ziemiach Polan.",
+				"Mieszkania można kupić w całej Faiumoni i na ziemiach Polan.",
 				false);
 	}
 
@@ -45,7 +43,7 @@ public class HouseBuying extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "HouseBuying";
+		return "Kupno Domu";
 	}
 
 	@Override

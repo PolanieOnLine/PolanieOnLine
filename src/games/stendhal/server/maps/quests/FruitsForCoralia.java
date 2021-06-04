@@ -1,4 +1,20 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -28,11 +44,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.ItemCollection;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * QUEST: Fruits for Coralia
@@ -65,16 +76,16 @@ import java.util.Map;
  * @author pinchanzee
  */
 public class FruitsForCoralia extends AbstractQuest {
-
-
-
 	/**
 	 * NOTE: Reward has not been set, nor has the XP.
 	 * left them default here, but in the JUnit test
 	 * called reward item "REWARD" temporarily
 	 */
-
 	public static final String QUEST_SLOT = "fruits_coralia";
+
+	// NPC
+	private static final String NPC_NAME = "Coralia";
+	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	/**
 	 * The delay between repeating quests.
@@ -87,74 +98,7 @@ public class FruitsForCoralia extends AbstractQuest {
 	 */
 	protected static final String NEEDED_ITEMS = "jabłko=4;banan=5;wisienka=9;winogrona=2;gruszka=4;arbuz=1;granat=2";
 
-	@Override
-	public void addToWorld() {
-		fillQuestInfo("Owoce dla Coralii",
-				"Coralia kelnerka w Tawernie Ados poszukuje świeżych owoców do swojego egzotycznego kapelusza.",
-				true);
-		prepareQuestStep();
-		prepareBringingStep();
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "FruitsForCoralia";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 0;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(
-					new QuestStateStartsWithCondition(QUEST_SLOT, "done;"),
-					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ADOS_CITY;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Coralia poprosiła mnie o świeże owoce do swojego kapelusza.");
-		final String questState = player.getQuest(QUEST_SLOT);
-
-		if ("rejected".equals(questState)) {
-			// quest rejected
-			res.add("Zdecydowałem, że nie pomogę Coralii w poszukiwaniach owoców ponieważ mam lepsze rzeczy do zrobienia.");
-		} else if (!player.isQuestCompleted(QUEST_SLOT)) {
-			// not yet finished
-			final ItemCollection missingItems = new ItemCollection();
-			missingItems.addFromQuestStateString(questState);
-			res.add("Wciąż muszę przynieść Coralii " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
-		} else if (isRepeatable(player)) {
-			// may be repeated now
-			res.add("Mnięło trochę czasu odkąd przyniosłem Coralii świeże owoce do jej kapelusza. Ciekaw jestem czy już zeschły?");
-		} else {
-			// not (currently) repeatable
-			res.add("Przyniosłem Coralii owoce, których potrzebowała do swojego kapelusza, a ona zastąpiła nimi stare, które utraciły blask.");
-		}
-		return res;
-	}
-
 	public void prepareQuestStep() {
-		SpeakerNPC npc = npcs.get("Coralia");
-
-		// various quest introductions
-
 		// offer quest first time
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, Arrays.asList("fruit", "owoc")),
@@ -194,9 +138,6 @@ public class FruitsForCoralia extends AbstractQuest {
 			"Czy mój kapelusz nie wygląda świeżo? Teraz nie potrzebuję świeżych owoców, ale dziękuję za troskę!",
 			null);
 
-		// end of quest introductions
-
-
 		// introduction chat
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("hat", "kapelusz"),
@@ -234,8 +175,6 @@ public class FruitsForCoralia extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Witaj ponownie. Jeżeli przyniosłeś świeże owoce na mój kapelusz to z radością je wezmę!",
 			null);
-
-
 
 		// specific fruit info
 		npc.add(ConversationStates.QUESTION_1,
@@ -288,10 +227,7 @@ public class FruitsForCoralia extends AbstractQuest {
 			null);
 	}
 
-
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Coralia");
-
 		// ask for required items
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, Arrays.asList("hat", "kapelusz")),
@@ -345,7 +281,70 @@ public class FruitsForCoralia extends AbstractQuest {
 	}
 
 	@Override
+	public void addToWorld() {
+		fillQuestInfo("Owoce dla Coralii",
+				"Coralia kelnerka w Tawernie Ados poszukuje świeżych owoców do swojego egzotycznego kapelusza.",
+				true);
+		prepareQuestStep();
+		prepareBringingStep();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Coralia poprosiła mnie o świeże owoce do swojego kapelusza.");
+		final String questState = player.getQuest(QUEST_SLOT);
+
+		if ("rejected".equals(questState)) {
+			// quest rejected
+			res.add("Zdecydowałem, że nie pomogę Coralii w poszukiwaniach owoców ponieważ mam lepsze rzeczy do zrobienia.");
+		} else if (!player.isQuestCompleted(QUEST_SLOT)) {
+			// not yet finished
+			final ItemCollection missingItems = new ItemCollection();
+			missingItems.addFromQuestStateString(questState);
+			res.add("Wciąż muszę przynieść Coralii " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
+		} else if (isRepeatable(player)) {
+			// may be repeated now
+			res.add("Mnięło trochę czasu odkąd przyniosłem Coralii świeże owoce do jej kapelusza. Ciekaw jestem czy już zeschły?");
+		} else {
+			// not (currently) repeatable
+			res.add("Przyniosłem Coralii owoce, których potrzebowała do swojego kapelusza, a ona zastąpiła nimi stare, które utraciły blask.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Owoce dla Coralii";
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 0;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestStateStartsWithCondition(QUEST_SLOT, "done;"),
+				new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player, null, null);
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.ADOS_CITY;
+	}
+
+	@Override
 	public String getNPCName() {
-		return "Coralia";
+		return NPC_NAME;
 	}
 }

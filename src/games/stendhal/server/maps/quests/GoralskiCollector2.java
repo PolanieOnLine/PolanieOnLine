@@ -39,18 +39,11 @@ public class GoralskiCollector2 extends AbstractQuest {
 	private static final List<String> neededGoral = Arrays.asList("złota ciupaga", "polska płytowa tarcza",
 			"polska tarcza ciężka", "polska tarcza drewniana", "polska tarcza kolcza", "polska tarcza lekka");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	public List<String> getNeededItems() {
 		return neededGoral;
 	}
 
-	public SpeakerNPC getNPC() {
-		return npcs.get("Gazda Bartek");
-	}
+	private final SpeakerNPC npc = npcs.get("Gazda Bartek");
 
 	/**
 	 * Returns a list of the names of all weapons that the given player still
@@ -82,8 +75,6 @@ public class GoralskiCollector2 extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = getNPC();
-
 		// player says hi before starting the quest
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -162,10 +153,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						final List<String> missing = missingGoral(player, false);
-						raiser.say("Powiadom mnie jeśli coś znajdziesz "
-								+ Grammar.itthem(missing.size())
-								+ ". Do widzenia.");
+						raiser.say("Powiadom mnie jeśli coś znajdziesz. Do widzenia.");
 					}
 				});
 
@@ -229,8 +217,6 @@ public class GoralskiCollector2 extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = getNPC();
-
 		// player returns while quest is still active
 		playerReturnsWhileQuestIsActive(npc);
 
@@ -284,13 +270,18 @@ public class GoralskiCollector2 extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "GoralskiCollector2";
+		return "Góralski Kolekcjoner II";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Gazda Bartek";
+		return npc.getName();
 	}
 
 	@Override

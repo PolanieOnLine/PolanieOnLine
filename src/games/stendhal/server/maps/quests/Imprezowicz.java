@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,34 +38,9 @@ import games.stendhal.server.maps.Region;
 
 public class Imprezowicz extends AbstractQuest {
 	public static final String QUEST_SLOT = "wino_dla_imprezowicza";
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Rozmawiałem z Cadhesem.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę dać wina dla Cadhesa");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Dam Cadhesowi napój z winogron.");
-		}
-		if ("start".equals(questState) && player.isEquipped("napój z winogron")
-				|| "done".equals(questState)) {
-			res.add("Mam wino dla Cadhesa.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Dałem wino Cadhesowi.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Cadhes");
 
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Cadhes");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, 
 			new QuestNotCompletedCondition(QUEST_SLOT),
@@ -106,8 +81,6 @@ public class Imprezowicz extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Cadhes");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestActiveCondition(QUEST_SLOT),
@@ -148,11 +121,35 @@ public class Imprezowicz extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Wino dla Cadhesa",
-				"Jeden z imprezowiczów o imieniu Cadhes potrzebuje wina.",
+				"Imprezowicz",
+				"Cadhes jest spragniony i chce tylko jeden kieliszek wina.",
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem z Cadhesem.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie dam wina Cadhesowi.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Zgodziłem się przynieść napój z winogron Cadhesowi.");
+		}
+		if ("start".equals(questState) && player.isEquipped("napój z winogron")
+				|| "done".equals(questState)) {
+			res.add("Mam wino dla Cadhesa.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Przekazałem kieliszek wina Cadhesowi.");
+		}
+		return res;
 	}
 
 	@Override
@@ -165,11 +162,6 @@ public class Imprezowicz extends AbstractQuest {
 		return "Imprezowicz";
 	}
 
-	public String getTitle() {
-		
-		return "Wino dla Cadhesa";
-	}
-
 	@Override
 	public String getRegion() {
 		return Region.TATRY_MOUNTAIN;
@@ -177,6 +169,6 @@ public class Imprezowicz extends AbstractQuest {
 	
 	@Override
 	public String getNPCName() {
-		return "Cadhes";
+		return npc.getName();
 	}
 }

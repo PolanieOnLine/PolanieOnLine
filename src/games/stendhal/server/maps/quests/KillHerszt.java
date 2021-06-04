@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on KillDhohrNuggetcutter.
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -70,22 +69,14 @@ import marauroa.common.Pair;
  * <li> after 14 days.
  * </ul>
  */
-
 public class KillHerszt extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "kill_herszt";
+	private final SpeakerNPC npc = npcs.get("Gazda Jędrzej");
+
 	private static final String GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT = "gazda_jedrzej_basehp";
 	private static final String GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT = "gazda_jedrzej_nagroda";
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Gazda Jędrzej");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				null,
@@ -149,8 +140,6 @@ public class KillHerszt extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Gazda Jędrzej");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
@@ -196,7 +185,7 @@ public class KillHerszt extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zabij Herszta",
+				"Pozbycie się Rozbójników",
 				"Gazda Jędrzej chce abym zajął się rozbójnikami, którzy swoją siedzibę mają w jaskini nie daleko miasta.",
 				false);
 		step_1();
@@ -206,30 +195,44 @@ public class KillHerszt extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			if (!isCompleted(player)) {
-				res.add("Muszę zabić herszta i wszystkich jego kumpli na prośbę Gazdy Jęrzeja.");
-			} else if(isRepeatable(player)){
-				res.add("Gazda Jędrzej potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
-			} else {
-				res.add("Moja wyprawa na zbójników uspokoiła na jakiś czas nerwy Gazdy Jędrzeja.");
-			}
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
+		}
+		if (!isCompleted(player)) {
+			res.add("Muszę zabić herszta i wszystkich jego kumpli na prośbę Gazdy Jęrzeja.");
+		} else if(isRepeatable(player)){
+			res.add("Gazda Jędrzej potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
+		} else {
+			res.add("Moja wyprawa na zbójników uspokoiła na jakiś czas nerwy Gazdy Jędrzeja.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "KillHerszt";
+		return "Pozbycie się Rozbójników";
 	}
 
-	// The kill requirements and surviving in the zone requires at least this level
 	@Override
 	public int getMinLevel() {
 		return 30;
-		}
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.ZAKOPANE_CITY;
+	}
 
 	@Override
 	public boolean isRepeatable(final Player player) {
@@ -240,15 +243,5 @@ public class KillHerszt extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Gazda Jędrzej";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
 	}
 }

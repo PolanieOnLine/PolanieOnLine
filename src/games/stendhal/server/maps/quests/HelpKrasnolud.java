@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,9 +9,14 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on HelpMrsYeti.
-
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.creature.Pet;
@@ -22,9 +27,9 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseBaseHPAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.action.IncreaseBaseHPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
@@ -42,29 +47,15 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-
 public class HelpKrasnolud extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "krasnolud";
+	private final SpeakerNPC npc = npcs.get("Krasnolud");
+
 	private static final int DELAY_IN_MINUTES = 60*48;
 
 	private static Logger logger = Logger.getLogger(HelpKrasnolud.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void startQuest() {
-		final SpeakerNPC npc = npcs.get("Krasnolud");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -94,8 +85,7 @@ public class HelpKrasnolud extends AbstractQuest {
 	}
 
 	private void makeArmor() {
-
-	final SpeakerNPC npc = npcs.get("Wielkolud");
+		final SpeakerNPC npc = npcs.get("Wielkolud");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("krasnolud", "armor", "zbroja","zbroję"),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -160,9 +150,8 @@ public class HelpKrasnolud extends AbstractQuest {
 	}
 
 	private void makeHelmet() {
-		// although the player does end up just taking an ordinary knife to salva, this step must be completed
-		// (must be in quest state 'knife' when they take the knife)
-	final SpeakerNPC npc = npcs.get("Gulimo");
+		final SpeakerNPC npc = npcs.get("Gulimo");
+
 		npc.add(ConversationStates.ATTENDING, "wielkolud",
 				new QuestInStateCondition(QUEST_SLOT, "gulimo"),
 				ConversationStates.ATTENDING, "Twierdzisz, że Wielkolud cię przysyła do mnie. Zapewne chodzi o Hełm. Hełm... Hełm... Lazurowy hełm gdzie ja go położyłem... Ech pamięć już nie ta, co kiedyś. "
@@ -183,11 +172,9 @@ public class HelpKrasnolud extends AbstractQuest {
 				new NotCondition(new PlayerHasItemWithHimCondition("kieł smoka",100))),
 				ConversationStates.ATTENDING, "Kły smoka zdobędziesz zabijając smoki. To chyba oczywiste! Liczę, że wejdziesz w ich posiadanie, ale nie kupując od innych wojowników!",
 				null);
-
 	}
 
 	private void bringArmor() {
-	final SpeakerNPC npc = npcs.get("Krasnolud");
 		final String extraTrigger = "armor";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -223,16 +210,13 @@ public class HelpKrasnolud extends AbstractQuest {
 	}
 
 	private void bringDragon() {
-	final SpeakerNPC npc = npcs.get("Krasnolud");
-
 		final String extraTrigger = "smoki";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		// easy to check if they have a pet or sheep at all
-		npc.add(
-				ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "dragon"),
 								new NotCondition(new PlayerHasPetOrSheepCondition())),
 				ConversationStates.ATTENDING,
@@ -241,8 +225,7 @@ public class HelpKrasnolud extends AbstractQuest {
 				null);
 
 		// if they have any pet or sheep, then check if it's a baby dragon
-		npc.add(
-				ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "dragon"),
 								new PlayerHasPetOrSheepCondition()),
 				ConversationStates.ATTENDING,
@@ -274,16 +257,12 @@ public class HelpKrasnolud extends AbstractQuest {
 	}
 
 	private void getReward() {
-
-	final SpeakerNPC npc = npcs.get("Krasnolud");
-
 		final String extraTrigger = "reward";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
-		npc.add(
-				ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "reward"),
 								// delay is in minutes, last parameter is argument of timestamp
 								new NotCondition(new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES))),
@@ -292,17 +271,14 @@ public class HelpKrasnolud extends AbstractQuest {
 				new SayTimeRemainingAction(QUEST_SLOT,1,DELAY_IN_MINUTES, "Witaj! Teraz szykuję sobie gulasz, nagrodą dla ciebie zajmę się dopiero jak skończę. Więc za"));
 
 
-		npc.add(
-				ConversationStates.ATTENDING, questTrigger,
+		npc.add(ConversationStates.ATTENDING, questTrigger,
 				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "reward"),
 								// delay is in minutes, last parameter is argument of timestamp
 								new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES)),
 				ConversationStates.ATTENDING,
 				"Dziękuję! Nagrodą niech będzie podniesienie twojej żywotności a zarazem wytrzymałości w walce z potworami.",
 				new MultipleActions(new SetQuestAction(QUEST_SLOT,"done"), new IncreaseBaseHPAction(50), new IncreaseKarmaAction(100.0), new IncreaseXPAction(10000)));
-
 	}
-
 
 	@Override
 	public void addToWorld() {
@@ -320,80 +296,86 @@ public class HelpKrasnolud extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Spotkałem Krasnoluda w kuźni Zakopane.");
+		res.add("Krasnolud poprosił mnie abym mu przyniósł lazurową zbroje od Wielkoluda.");
+		if ("rejected".equals(questState)) {
+			res.add("Nie mam ochoty bawić się w posłańca.");
+			return res;
+		}
+		if ("start".equals(questState)) {
+			return res;
+		}
+		res.add("Wielkolud zażądał lazurowego hełmu w zamian za zbroje. Mam udać się do Gulimo po niego i powiedzieć: wielkolud.");
+		if ("gulimo".equals(questState)) {
+			return res;
+		}
+		res.add("Gulimo żąda w zamian za hełm 100 kłów smoka.");
+		if ("kiel_smoka".equals(questState)) {
+			return res;
+		}
+		res.add("Przyniosłem Gulimo kły, niestety nie miał hełmu. Dał mi podpowiedź, że mogę go kupić u Hagnurk.");
+		if ("helmet".equals(questState)) {
+			return res;
+		}
+		res.add("Zaniosłem hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
+		if ("armor".equals(questState)) {
+			return res;
+		}
+		res.add("Dostarczyłem wszystkie skóry Wielkoludowi w końcu dał mi lazurową zbroję dla Krasnoluda");
+		if ("gotarmor".equals(questState)) {
+			return res;
+		}
+		res.add("Krasnalud był wdzięczny za przyniesienie zbroi i poprosił mnie abym przyprowadził mu małego smoka.");
+		if ("dragon".equals(questState)) {
+			return res;
+		}
+		res.add("No nie ten krasnal postanowił zrobić z biednego smoka gulasz!");
+		if (questState.startsWith("reward")) {
+			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
+				res.add("Krasnolud po nagrodę kazał zgłosić się za tydzień.");
+			} else {
+				res.add("Krasnolud kazał mi wrócić za dzień, aby odebrać nagrodę, więc muszę czekać.");
 			}
-			final String questState = player.getQuest(QUEST_SLOT);
-			res.add("Spotkałem Krasnoluda w kuźni Zakopane.");
-			res.add("Krasnolud poprosił mnie abym mu przyniósł lazurową zbroje od Wielkoluda.");
-			if ("rejected".equals(questState)) {
-				res.add("Nie mam ochoty bawić się w posłańca.");
-				return res;
-			}
-			if ("start".equals(questState)) {
-				return res;
-			}
-			res.add("Wielkolud zażądał lazurowego hełmu w zamian za zbroje. Mam udać się do Gulimo po niego i powiedzieć: wielkolud.");
-			if ("gulimo".equals(questState)) {
-				return res;
-			}
-			res.add("Gulimo żąda w zamian za hełm 100 kłów smoka.");
-			if ("kiel_smoka".equals(questState)) {
-				return res;
-			}
-			res.add("Przyniosłem Gulimo kły, niestety nie miał hełmu. Dał mi podpowiedź, że mogę go kupić u Hagnurk.");
-			if ("helmet".equals(questState)) {
-				return res;
-			}
-			res.add("Zaniosłem hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
-			if ("armor".equals(questState)) {
-				return res;
-			}
-			res.add("Dostarczyłem wszystkie skóry Wielkoludowi w końcu dał mi lazurową zbroję dla Krasnoluda");
-			if ("gotarmor".equals(questState)) {
-				return res;
-			}
-			res.add("Krasnalud był wdzięczny za przyniesienie zbroi i poprosił mnie abym przyprowadził mu małego smoka.");
-			if ("dragon".equals(questState)) {
-				return res;
-			}
-			res.add("No nie ten krasnal postanowił zrobić z biednego smoka gulasz!");
-			if (questState.startsWith("reward")) {
-				if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-					res.add("Krasnolud po nagrodę kazał zgłosić się za tydzień.");
-				} else {
-					res.add("Krasnolud kazał mi wrócić za dzień, aby odebrać nagrodę, więc muszę czekać.");
-				}
-				return res;
-			}
-			res.add("Krasnolud nagrodził mnie podniesieniem bazy hp o 50 i dostalem sporo karmy oraz xp.");
-			if (isCompleted(player)) {
-				return res;
-			}
+			return res;
+		}
+		res.add("Krasnolud nagrodził mnie podniesieniem bazy hp o 50 i dostalem sporo karmy oraz xp.");
+		if (isCompleted(player)) {
+			return res;
+		}
 
-			// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-			final List<String> debug = new ArrayList<String>();
-			debug.add("Stan zadania to: " + questState);
-			logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-			return debug;
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "HelpKrasnolud";
+		return "Pomoc Krasnoludowi";
 	}
 
-		@Override
+	@Override
 	public int getMinLevel() {
 		return 250;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Krasnolud";
+		return npc.getName();
 	}
 
-  @Override
+	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;
 	}

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -55,19 +54,10 @@ import games.stendhal.server.maps.Region;
  * REPETITIONS: - None.
  */
 public class JailedDwarf extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "jailed_dwarf";
-
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private final SpeakerNPC npc = npcs.get("Hunel");
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Hunel");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestCompletedCondition(QUEST_SLOT)),
@@ -117,8 +107,13 @@ public class JailedDwarf extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "JailedDwarf";
+		return "Uwięziony Krasnal";
 	}
 
 	@Override
@@ -128,7 +123,7 @@ public class JailedDwarf extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Hunel";
+		return npc.getName();
 	}
 
 	@Override
