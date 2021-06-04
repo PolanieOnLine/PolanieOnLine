@@ -44,11 +44,11 @@ public class CaptiveNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("pomocy!");
-				addJob("pomóż mi");
-				addHelp("gdzie jest mój miecz lodowy?");
-				addOffer("proszę miecz lodowy");
-				addGoodbye("Do widzenia");
+				addGreeting("Pomocy!");
+				addJob("Pomóż mi!");
+				addHelp("Gdzie jest mój miecz lodowy?");
+				addOffer("Proszę, miecz lodowy...");
+				addGoodbye("Potrze..buję miecz lodowy!");
 			}
 		};
 
