@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,7 +22,6 @@ import games.stendhal.server.entity.RPEntity;
 import marauroa.common.game.RPObject;
 
 public class FoodMill extends Item {
-
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(RPEntity.class);
 
@@ -62,7 +60,7 @@ public class FoodMill extends Item {
     		input = "zwój zapisany";
     		output = "niezapisany zwój";
     	} else if ("obrotowy nożyk".equals(tool)) {
-    		input = "skóra";
+    		input = "skóra zwierzęca";
     		output = "skórzana nić";
     	} else {
     		input = "jabłko";
@@ -146,7 +144,6 @@ public class FoodMill extends Item {
     	return true;
     }
 
-
     /**
      * @param handSlot should be rhand or lhand
      * @return the opposite hand to handSlot
@@ -158,5 +155,4 @@ public class FoodMill extends Item {
             return "rhand";
         }
     }
-
 }
