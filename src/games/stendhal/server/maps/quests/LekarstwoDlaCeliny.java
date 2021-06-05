@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -39,6 +39,9 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class LekarstwoDlaCeliny extends AbstractQuest {
+	private static final String QUEST_SLOT = "lekarstwo_dla_celiny";
+	private final SpeakerNPC npc = npcs.get("Bolesław");
+
 	/** HISTORIA **/
 	static final String HISTORY_QUEST_OFFERED = "Bolesław poprosił mnie o kupienie butelki od Bogusia w szpitalu w Zakopane.";
 	static final String HISTORY_GOT_FLASK = "Mam butelkę i wkrótce zaniosę ją Bolesławowi.";
@@ -50,53 +53,12 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 
 	static final String STATE_START = "start";
 	static final String STATE_DAD = "tata";
-	static final String STATE_HERB = "corpse&herbs";
+	static final String STATE_HERB = "arandula";
 	static final String STATE_SHOWN_DRAWING = "shownDrawing";
 	static final String STATE_POTION = "eliksir";
 	static final String STATE_DONE = "done";
 
-	private static final String QUEST_SLOT = "lekarstwo_dla_celiny";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_START, STATE_DAD, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_QUEST_OFFERED);
-		}
-		if (questState.equals(STATE_START) && player.isEquipped("butelka")
-				|| player.isQuestInState(QUEST_SLOT, 0, STATE_DAD, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_GOT_FLASK);
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_DAD, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_TAKE_FLASK_TO_ILISA);
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_ILISA_ASKED_FOR_HERB);
-		}
-		if (questState.equals(STATE_HERB) && player.isEquipped("arandula")
-				|| player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_GOT_HERB);
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_POTION_READY);
-		}
-		if (questState.equals(STATE_DONE)) {
-			res.add(HISTORY_DONE);
-		}
-		return res;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Bolesław");
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
@@ -124,7 +86,7 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 				Arrays.asList("butelka", "butelkę", "butelką"),
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
-				"Mógłbyś zdobyć butelkę od #'Bogusia'.",
+				"Mógłbyś zdobyć butelkę od #'Bogusia'?",
 				null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -175,12 +137,6 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 	}
 
 	private void step_2() {
-
-	}
-
-	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Bolesław");
-
 		final List<ChatAction> processStep = new LinkedList<ChatAction>();
 		processStep.add(new EquipItemAction("money", 100));
 		processStep.add(new IncreaseXPAction(550));
@@ -192,14 +148,14 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_START),
 						new PlayerHasItemWithHimCondition("butelka")),
 				ConversationStates.ATTENDING, 
-				"Dobrze, że masz butelkę! Tutaj masz pieniądze na pokrycie twoich wydatków. Teraz potrzebuję, abyś wziął ją do #'Gaździna Jadźka'... ona będzie wiedziała co robić dalej.",
+				"Dobrze, że masz butelkę! Tutaj masz pieniądze na pokrycie twoich wydatków. Teraz potrzebuję, abyś wziął ją do #'Gaździna Jadźka'... Powiedz jej imię mojej córki.",
 				new MultipleActions(processStep));
 
 		// player said hi with flask on ground then picked it up and said flask
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("butelka", "butelkę", "butelką"),
                 new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, STATE_START), new PlayerHasItemWithHimCondition("butelka")),
                 ConversationStates.ATTENDING,
-                "Dobrze, że masz butelkę! Tutaj masz pieniądze na pokrycie twoich wydatków. Teraz potrzebuję, abyś wziął ją do #'Gaździna Jadźka'... ona będzie wiedziała co robić dalej.",
+                "Dobrze, że masz butelkę! Tutaj masz pieniądze na pokrycie twoich wydatków. Teraz potrzebuję, abyś wziął ją do #'Gaździna Jadźka'... Powiedz jej imię mojej córki.",
                 new MultipleActions(processStep));
 
 		// remind the player to take the flask to Ilisa.
@@ -208,14 +164,14 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_DAD),
 						new PlayerHasItemWithHimCondition("butelka")),
 				ConversationStates.ATTENDING, 
-				"Dobrze, że masz butelkę! Teraz potrzebuję, abyś wziął ją do #'Gaździna Jadźka'... ona będzie wiedziała co robić dalej.",
+				"Dobrze, że masz butelkę! Teraz potrzebuję, abyś wziął ją do #'Gaździna Jadźka'... Powiedz jej imię mojej córki.",
 				null);
 
 		// another reminder in case player says task again
         npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
                 new QuestInStateCondition(QUEST_SLOT, 0, STATE_DAD),
                 ConversationStates.ATTENDING,
-                "Potrzebuję Ciebie, abyś wziął flaszę do #'Gaździna Jadźka'... ona będzie widziała co robić dalej.",
+                "Potrzebuję Ciebie, abyś wziął butelkę do #'Gaździna Jadźka'... Powiedz jej imię mojej córki.",
                 null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -226,17 +182,16 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 				null);
 	}
 
-	private void step_4() {
+	private void step_3() {
 		final SpeakerNPC npc = npcs.get("Gaździna Jadźka");
 
-		npc.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.ATTENDING,
+				Arrays.asList("Celina", "choroba"),
 				new AndCondition(
-						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_DAD),
 						new NotCondition(new PlayerHasItemWithHimCondition("butelka"))),
 				ConversationStates.ATTENDING, 
-				"Lekarstwo dla #Celiny? Jej ojciec nie powiedział Tobie, aby przynieść butelkę?",
+				"Potrzebuję butelki do wyważenia lekarstwa dla #Celiny...",
 				null);
 
 		final List<ChatAction> processStep = new LinkedList<ChatAction>();
@@ -244,9 +199,9 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 		processStep.add(new IncreaseXPAction(350));
 		processStep.add(new SetQuestAction(QUEST_SLOT, 0, STATE_HERB));
 
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.ATTENDING,
+				Arrays.asList("Celina", "choroba"),
 				new AndCondition(
-						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_DAD),
 						new PlayerHasItemWithHimCondition("butelka")),
 				ConversationStates.ATTENDING, 
@@ -263,40 +218,24 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 						new NotCondition(new QuestInStateCondition(QUEST_SLOT, 1, STATE_SHOWN_DRAWING)),
 						new NotCondition(new PlayerHasItemWithHimCondition("arandula"))),
 				ConversationStates.ATTENDING,
-				"Na północ od Semos koło trzech wzgórz rośnie zioło zwane arandula. Oto rysunek, który narysowałam. Teraz już wiesz czego szukać.",
+				"Na północ od Semos koło trzech wzgórz rośnie zioło zwane arandula. Oto rysunek, który narysowałam. Jak wrócisz to przypomnij mi mówiąc #arandula.",
 				new MultipleActions(showArandulaDrawing, flagDrawingWasShown));
 
 		npc.add(
 				ConversationStates.ATTENDING,
-				Arrays.asList("herb", "arandula", "ziół", "zioła"),
+				Arrays.asList("herb", "ziół", "zioła"),
 				new QuestStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Na północ od Semos koło trzech wzgórz rośnie zioło zwane arandula. Oto rysunek, który narysowałam. Teraz już wiesz czego szukać.",
+				"Na północ od Semos koło trzech wzgórz rośnie zioło zwane arandula. Oto rysunek, który narysowałam. Jak wrócisz to przypomnij mi mówiąc #arandula.",
 				new MultipleActions(showArandulaDrawing, flagDrawingWasShown));
-
-		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("celina", "celiny"),
-				null,
-				ConversationStates.ATTENDING,
-				"Potrzebuje silnego lekarstwa, aby mogła się wyleczyć. Jej ojciec oferuje dobrą nagrodę temu kto jej pomoże.",
-				null);
-
-		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("bolesław", "boleslaw", "bolesławowi", "boleslawowi"),
-				null,
-				ConversationStates.ATTENDING,
-				"Bolesław jest ojcem Celiny.",
-				null);
 	}
 
-	private void step_5() {
+	private void step_4() {
 		final SpeakerNPC npc = npcs.get("Gaździna Jadźka");
 
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.ATTENDING,
+				Arrays.asList("arandula"),
 				new AndCondition(
-						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_HERB),
 						new NotCondition(new PlayerHasItemWithHimCondition("arandula"))),
 				ConversationStates.ATTENDING, 
@@ -308,13 +247,13 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
         processStep.add(new IncreaseKarmaAction(10));
 		processStep.add(new SetQuestAction(QUEST_SLOT, 0, STATE_POTION));
 
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.ATTENDING,
+				Arrays.asList("arandula"),
 				new AndCondition(
-						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_HERB),
 						new PlayerHasItemWithHimCondition("arandula")),
 				ConversationStates.ATTENDING,
-				"Dobrze! Dziękuję. Teraz wymieszam... szczypta tego... i kilka kropli... jest! Powiedz #'Bolesławowi', że chcę zobaczyć jak się ma jego córka.",
+				"Dobrze! Dziękuję. Teraz wymieszam... szczypta tego... i kilka kropli... jest! Przekaż #'Bolesławowi', aby odwiedził mnie w szpitalu wraz z córką.",
 				new MultipleActions(processStep));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList(STATE_POTION,
@@ -322,9 +261,7 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 				"Oto lekarstwo, na które czeka #Celina.", null);
 	}
 
-	private void step_6() {
-		SpeakerNPC npc = npcs.get("Bolesław");
-
+	private void step_5() {
         // another reminder in case player says task again
         npc.add(ConversationStates.ATTENDING,
         		ConversationPhrases.QUEST_MESSAGES,
@@ -344,7 +281,7 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_POTION)),
 				ConversationStates.ATTENDING,
-				"Dziękuję! Zaraz przejdę się z moją córką, by porozmawiać z #'Gaździną Jadźką' tak szybko jak tylko możemy.",
+				"Dziękuję! Zaraz przejdę się wraz z córką, by porozmawiać z #'Gaździną Jadźką' tak szybko jak tylko będziemy mogli.",
 				new MultipleActions(processStep));
 	}
 
@@ -359,19 +296,58 @@ public class LekarstwoDlaCeliny extends AbstractQuest {
 		step_3();
 		step_4();
 		step_5();
-		step_6();
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_START, STATE_DAD, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_QUEST_OFFERED);
+		}
+		if (questState.equals(STATE_START) && player.isEquipped("butelka")
+				|| player.isQuestInState(QUEST_SLOT, 0, STATE_DAD, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_GOT_FLASK);
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_DAD, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_TAKE_FLASK_TO_ILISA);
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_ILISA_ASKED_FOR_HERB);
+		}
+		if (questState.equals(STATE_HERB) && player.isEquipped("arandula")
+				|| player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_GOT_HERB);
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_POTION_READY);
+		}
+		if (questState.equals(STATE_DONE)) {
+			res.add(HISTORY_DONE);
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "LekrastwoDlaCeliny";
+		return "Lekarstwo dla Celiny";
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Bolesław";
+		return npc.getName();
 	}
 }
