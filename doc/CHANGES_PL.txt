@@ -10,6 +10,8 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono zakładanie hełmu monarchistycznego
+- Naprawiono obrotowy nożyk
+- Naprawiono zadanie u Bolesława
 
 
 1.20
