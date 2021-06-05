@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.List;
+
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.marriage.MarriageQuestChain;
-
-import java.util.List;
 
 /**
  * QUEST: Marriage
@@ -56,14 +55,7 @@ import java.util.List;
  */
 public class Marriage extends AbstractQuest {
 	private static final String QUEST_SLOT = "marriage";
-  private MarriageQuestChain marriage = null;
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
+	private MarriageQuestChain marriage = null;
 
 	@Override
 	public void addToWorld() {
@@ -75,14 +67,19 @@ public class Marriage extends AbstractQuest {
 		marriage.addToWorld();
 	}
 
-		@Override
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		return marriage.getHistory(player);
 	}
 
 	@Override
 	public String getName() {
-		return "Marriage";
+		return "Ślub";
 	}
 
 	@Override
@@ -90,10 +87,8 @@ public class Marriage extends AbstractQuest {
 		return Region.FADO_CITY;
 	}
 
-
 	@Override
 	public String getNPCName() {
 		return "Sister Benedicta";
 	}
-
 }

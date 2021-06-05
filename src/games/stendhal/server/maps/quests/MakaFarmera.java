@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,44 +38,9 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class MakaFarmera extends AbstractQuest {
-	
-	private static final int ILOSC_MAKI = 50;
-
 	private static final String QUEST_SLOT = "maka";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-			res.add("Spotkałem farmera o imieniu Bruno, który znajduje się na plantacji zboża.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę pomagać farmerowi.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "aisha", "done")) {
-			res.add("Obiecałem Bruno, że zaniosę zapasy mąki do krakowskiej piekarni");
-		}
-		if (questState.equals("aisha") && player.isEquipped("mąka",
-				ILOSC_MAKI)
-				|| questState.equals("done")) {
-			res.add("Otrzymałem od Aishy zapasy mąki i teraz muszę zanieść to do Edny.");
-		}
-		if (questState.equals("aisha")
-				&& !player.isEquipped("mąka", ILOSC_MAKI)) {
-			res.add("O nie! Zgubiłem całą mąkę, którą miałem przynieść Ednie!");
-		}
-		if (questState.equals("done")) {
-			res.add("Zaniosłem zapasy do piekarni oraz zostałem pochwalony przez Edne.");
-		}
-		return res;
-	}
+	private static final int ILOSC_MAKI = 50;
 
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Farmer Bruno");
@@ -183,7 +148,7 @@ public class MakaFarmera extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Zapasy mąki",
+			"Zapasy Mąki",
 			"Krakowska piekarnia potrzebuje zapasów mąki do pieczenia chleba.",
 			false);
 		step_1();
@@ -192,8 +157,42 @@ public class MakaFarmera extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+			res.add("Spotkałem farmera o imieniu Bruno, który znajduje się na plantacji zboża.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę pomagać farmerowi.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "aisha", "done")) {
+			res.add("Obiecałem Bruno, że zaniosę zapasy mąki do krakowskiej piekarni");
+		}
+		if (questState.equals("aisha") && player.isEquipped("mąka",
+				ILOSC_MAKI)
+				|| questState.equals("done")) {
+			res.add("Otrzymałem od Aishy zapasy mąki i teraz muszę zanieść to do Edny.");
+		}
+		if (questState.equals("aisha")
+				&& !player.isEquipped("mąka", ILOSC_MAKI)) {
+			res.add("O nie! Zgubiłem całą mąkę, którą miałem przynieść Ednie!");
+		}
+		if (questState.equals("done")) {
+			res.add("Zaniosłem zapasy do piekarni oraz zostałem pochwalony przez Edne.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "MakaFarmera";
+		return "Zapasy Mąki";
 	}
 
 	@Override

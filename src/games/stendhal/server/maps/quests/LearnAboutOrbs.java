@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -24,10 +27,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * QUEST: Learn about Orbs
@@ -57,33 +56,10 @@ import java.util.List;
  * </ul>
  */
 public class LearnAboutOrbs extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "learn_scrying";
-
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Ilisa w świątyni w Semos.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("done")) {
-			res.add("Ilisa pokazała mi jak używać kul. Muszę uważać, ponieważ mogą mnie wysłać w inne niebezpieczne miejsce.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Ilisa");
 
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Ilisa");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
@@ -138,15 +114,33 @@ public class LearnAboutOrbs extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Nauka o Kulach",
-				"Ilisa nauczy mnie o Kulach.",
+				"Ilisa uczy o działaniu magicznych kul.",
 				false);
 		step1();
+	}
 
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Ilisa w świątyni w Semos.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("done")) {
+			res.add("Ilisa pokazała mi jak używać kul. Muszę uważać, ponieważ mogą mnie wysłać w inne niebezpieczne miejsce.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "LearnAboutOrbs";
+		return "Nauka o Kulach";
 	}
 
 	@Override
@@ -161,6 +155,6 @@ public class LearnAboutOrbs extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Ilisa";
+		return npc.getName();
 	}
 }

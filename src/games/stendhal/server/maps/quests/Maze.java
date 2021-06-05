@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
@@ -33,70 +36,11 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.maze.MazeGenerator;
 import games.stendhal.server.maps.quests.maze.MazeSign;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Maze extends AbstractQuest {
 	/** Minimum time between repeats. */
 	private static final int COOLING_TIME = MathHelper.MINUTES_IN_ONE_HOUR * 24;
 	private MazeSign sign;
 	private MazeGenerator maze = null;
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Labirynt",
-				"Wszystko co potrzebujesz to dobre oko...",
-				false);
-		addMazeSign();
-		setupConversation();
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(getSlotName())) {
-				return res;
-			}
-			res.add("Haizen stworzył magiczny labirynt dla mnie do przejścia.");
-
-			if (player.getZone().getName().endsWith("_maze")) {
-				res.add("Obecnie jestem uwięziony w labiryncie.");
-			} else {
-				if (!isCompleted(player)) {
-					res.add("Nie mogę przejść ostatniego labiryntu.");
-				} else {
-					res.add("Przeszedłem labirynt!");
-				}
-				if (isRepeatable(player)) {
-					res.add("Mógłbym jeszcze raz spróbować przejść labirynt.");
-				} else {
-					res.add("Haizen nie ma czasu na stworznie nowego labiryntu dla mnie.");
-				}
-			}
-			final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
-			if (repetitions > 1) {
-				res.add("Do tej pory przeszedłem " + repetitions + " razy labirynt.");
-			}
-
-			return res;
-	}
-
-	@Override
-	public String getName() {
-		return "Maze";
-	}
-
-	@Override
-	public String getSlotName() {
-		return "maze";
-	}
-
-	@Override
-	public boolean isRepeatable(Player player) {
-		return new TimePassedCondition(getSlotName(), 1, COOLING_TIME).fire(player, null, null);
-	}
 
 	private SpeakerNPC getNPC() {
 		return npcs.get("Haizen");
@@ -177,6 +121,61 @@ public class Maze extends AbstractQuest {
 	 */
 	protected Portal getPortal() {
 		return maze.getPortal();
+	}
+
+	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Labirynt",
+				"Wszystko co potrzebujesz to dobre oko...",
+				false);
+		addMazeSign();
+		setupConversation();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+			final List<String> res = new ArrayList<String>();
+			if (!player.hasQuest(getSlotName())) {
+				return res;
+			}
+			res.add("Haizen stworzył magiczny labirynt dla mnie do przejścia.");
+
+			if (player.getZone().getName().endsWith("_maze")) {
+				res.add("Obecnie jestem uwięziony w labiryncie.");
+			} else {
+				if (!isCompleted(player)) {
+					res.add("Nie mogę przejść ostatniego labiryntu.");
+				} else {
+					res.add("Przeszedłem labirynt!");
+				}
+				if (isRepeatable(player)) {
+					res.add("Mógłbym jeszcze raz spróbować przejść labirynt.");
+				} else {
+					res.add("Haizen nie ma czasu na stworznie nowego labiryntu dla mnie.");
+				}
+			}
+			final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
+			if (repetitions > 1) {
+				res.add("Do tej pory przeszedłem " + repetitions + " razy labirynt.");
+			}
+
+			return res;
+	}
+
+	@Override
+	public String getName() {
+		return "Labirynt";
+	}
+
+	@Override
+	public String getSlotName() {
+		return "maze";
+	}
+
+	@Override
+	public boolean isRepeatable(Player player) {
+		return new TimePassedCondition(getSlotName(), 1, COOLING_TIME).fire(player, null, null);
 	}
 
 	@Override

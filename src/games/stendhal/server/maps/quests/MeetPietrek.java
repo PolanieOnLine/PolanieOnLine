@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -29,10 +33,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * QUEST: Speak with Hayunn
  * <p>
@@ -50,33 +50,12 @@ import java.util.List;
  * REPETITIONS: <ul><li> Get the URLs as much as wanted but you only get the reward once.</ul>
  */
 public class MeetPietrek extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "meet_pietrek";
 
 	//This is 1 minute at 300 ms per turn
 	private static final int TIME_OUT = 200;
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("FIRST_CHAT");
-		if (isCompleted(player)) {
-			res.add("DONE");
-		}
-		return res;
-	}
-
 	private void preparePietrek() {
-
 		final SpeakerNPC npc = npcs.get("Pietrek");
 
 		// player wants to learn how to attack
@@ -246,9 +225,28 @@ public class MeetPietrek extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "MeetPietrek";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("FIRST_CHAT");
+		if (isCompleted(player)) {
+			res.add("DONE");
+		}
+		return res;
 	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Spotkanie Pietrka";
+	}
+
 	@Override
 	public String getNPCName() {
 		return "Pietrek";

@@ -1,4 +1,19 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Expression;
@@ -18,10 +33,6 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: Meet Marie-Henri
@@ -55,62 +66,10 @@ import java.util.List;
  * @author RedQueen
  */
 public class MeetMarieHenri extends AbstractQuest {
-
 	public static final String QUEST_SLOT = "meet_marie_henri";
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo("Spotkaj Marie-Henri",
-				"Słynny francuski pisarz sprawdza ogólną wiedzę w bibliotece Ados.",
-				false);
-		createSteps();
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "MeetMarieHenri";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ADOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Marie-Henri";
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Marie-Henri w księgarni Ados.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Poprosił mnie abym poszukał mu pseudonimu, którego użyje podczas pisania powieści. Nie czuje się na siłach aby mu pomóc.");
-		}
-		if ("start".equals(questState) || "done".equals(questState)) {
-			res.add("Postaram się znaleść pseudonim dla niego.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Odpowiedziałem poprawnie na Marie-Henri pytanie, w zamian dostałem nagrodę.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Marie-Henri");
 
 	private void createSteps() {
-		// player is asking for a quest
-		SpeakerNPC npc = npcs.get("Marie-Henri");
-
-
 		// TODO: rewrite this to use standard conditions and actions
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, null,
@@ -224,5 +183,54 @@ public class MeetMarieHenri extends AbstractQuest {
 						}
 					}
 				});
+	}
+
+	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Spotkanie Marie-Henri",
+				"Słynny francuski pisarz sprawdza ogólną wiedzę w bibliotece Ados.",
+				false);
+		createSteps();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Marie-Henri w księgarni Ados.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Poprosił mnie abym poszukał mu pseudonimu, którego użyje podczas pisania powieści. Nie czuje się na siłach aby mu pomóc.");
+		}
+		if ("start".equals(questState) || "done".equals(questState)) {
+			res.add("Postaram się znaleść pseudonim dla niego.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Odpowiedziałem poprawnie na Marie-Henri pytanie, w zamian dostałem nagrodę.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Spotkanie Marie-Henri";
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.ADOS_CITY;
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
 	}
 }

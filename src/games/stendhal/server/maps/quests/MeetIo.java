@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -25,10 +28,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * QUEST: Speak with Io PARTICIPANTS: - Io
  * 
@@ -39,31 +38,9 @@ import java.util.List;
  * REPETITIONS: - As much as wanted, but you only get the reward once.
  */
 public class MeetIo extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "meet_io";
 
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem telepatkę Io Flotto w świątyni Semos.");
-		if (isCompleted(player)) {
-			res.add("Io nauczyła mnie sześciu podstawowych zasad telepatii i przyrzekła przypomnieć mi jeżeli będę musiał odświeżyć moją wiedzę.");
-		}
-		return res;
-	}
-
 	private void prepareIO() {
-
 		final SpeakerNPC npc = npcs.get("Io Flotto");
 
 		npc.add(ConversationStates.ATTENDING,
@@ -174,12 +151,30 @@ public class MeetIo extends AbstractQuest {
 				false);
 		prepareIO();
 	}
+	
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem telepatkę Io Flotto w świątyni Semos.");
+		if (isCompleted(player)) {
+			res.add("Io nauczyła mnie sześciu podstawowych zasad telepatii i przyrzekła przypomnieć mi jeżeli będę musiał odświeżyć moją wiedzę.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
 
 	@Override
 	public String getName() {
-		return "MeetIo";
+		return "Spotkanie Io";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;

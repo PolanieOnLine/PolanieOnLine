@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                   (C) Copyright 2020-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.grammar.Grammar;
@@ -26,17 +29,13 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuest;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItemsQuest {
+	private static final String QUEST_SLOT = "gloves_collector";
 
 	private static final List<String> NEEDED_GLOVES = Arrays.asList("skórzane rękawice",
 			"skórzane wzmocnione rękawice", "skórzane twarde rękawice", "rękawice elfickie", "rękawice karmazynowe",
 			"rękawice lazurowe", "rękawice szmaragdowe", "lodowe rękawice", "ogniste rękawice", "rękawice chaosu",
 			"rękawice cieni", "rękawice mainiocyjskie", "rękawice xenocyjskie");
-
-	private static final String QUEST_SLOT = "gloves_collector";
 
 	private BringListOfItemsQuestLogic bringItems;
 
@@ -49,16 +48,6 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 		final BringListOfItemsQuest concreteQuest = this;
 		bringItems = new BringListOfItemsQuestLogic(concreteQuest);
 		bringItems.addToWorld();
-	}
-
-	@Override
-	public void addToWorld() {
-		step_1();
-		setupAbstractQuest();
-		fillQuestInfo(
-				"Rękawice dla Kolekcjonera",
-				"Anastazja szuka rękawic w wielu kolorach.",
-				false);
 	}
 
 	private void step_1() {
@@ -227,8 +216,18 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 	}
 
 	@Override
+	public void addToWorld() {
+		step_1();
+		setupAbstractQuest();
+		fillQuestInfo(
+				"Rękawice Kolekcjonerki",
+				"Anastazja szuka rękawic w wielu kolorach.",
+				false);
+	}
+
+	@Override
 	public String getName() {
-		return "KolekcjonerRekawic";
+		return "Rękawice Kolekcjonerki";
 	}
 
 	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.

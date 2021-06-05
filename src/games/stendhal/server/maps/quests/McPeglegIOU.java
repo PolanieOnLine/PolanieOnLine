@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -24,10 +27,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: McPegleg's IOU
@@ -45,22 +44,10 @@ import java.util.List;
  * REPETITIONS: - None.
  */
 public class McPeglegIOU extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "IOU";
+	private final SpeakerNPC npc = npcs.get("McPegleg");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step_1() {
-		// find the IOU in a corpse in kanmararn.
-		// this is implemented in KanmararnSoldiers
-	}
-
-	private void step_2() {
-
-		final SpeakerNPC npc = npcs.get("McPegleg");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("iou", "henry", "charles", "note", "notatka","karteczka"),
 			new QuestNotCompletedCondition(QUEST_SLOT),
@@ -104,12 +91,10 @@ public class McPeglegIOU extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"McPegleg IOU",
+				"Kupon IOU",
 				"Czy znalazłeś karteczke z imieniem McPegleg? Może McPegleg wie co z tym zrobić...",
 				false);
-
 		step_1();
-		step_2();
 	}
 
 	@Override
@@ -126,17 +111,23 @@ public class McPeglegIOU extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "McPeglegIOU";
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
- 	@Override
+	@Override
+	public String getName() {
+		return "Kupon IOU";
+	}
+
+	@Override
 	public int getMinLevel() {
 		return 40;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "McPegleg";
+		return npc.getName();
 	}
 
 	@Override

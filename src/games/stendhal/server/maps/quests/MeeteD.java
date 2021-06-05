@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,47 +31,11 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 
-/**
- * QUEST: Speak with Hayunn 
- * <p>
- * PARTICIPANTS: <ul><li> Hayunn Naratha</ul>
- *
- * STEPS: <ul>
- * <li> Talk to Hayunn to activate the quest.
- * <li> He asks you to kill a rat, also offering to teach you how
- * <li> Return and learn how to loot, identify items and heal
- * <li> Return and learn how to double click move, and get some URLs
- * </ul>
- *
- * REWARD: <ul><li> 20 XP <li> 5 gold coins <li> studded shield </ul>
- *
- * REPETITIONS: <ul><li> Get the URLs as much as wanted but you only get the reward once.</ul>
- */
 public class MeeteD extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "meet_eD";
 
 	//This is 1 minute at 300 ms per turn
 	private static final int TIME_OUT = 200;
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("FIRST_CHAT");
-		if (isCompleted(player)) {
-			res.add("DONE");
-		}
-		return res;
-	}
 
 	private void prepareeFuR() {
 		final SpeakerNPC npc = npcs.get("eFuR");
@@ -189,8 +153,26 @@ public class MeeteD extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("FIRST_CHAT");
+		if (isCompleted(player)) {
+			res.add("DONE");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "MeeteD";
+		return "Poznanie eFuRa";
 	}
 	@Override
 	public String getNPCName() {

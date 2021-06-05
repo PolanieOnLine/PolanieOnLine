@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on WizardBank.
-
 package games.stendhal.server.maps.quests;
 
 import java.lang.ref.WeakReference;
@@ -49,16 +47,12 @@ import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.IRPZone;
 
 public class KrakowBank extends AbstractQuest implements LoginListener {
-
-	// constants
 	private static final String QUEST_SLOT = "krakowski_bank";
 
 	private static final String GRAFINDLE_QUEST_SLOT = "grafindle_gold";
-
 	private static final String ZARA_QUEST_SLOT = "suntan_cream_zara";
 
 	private static final String ZONE_NAME = "int_krakow_bank_0";
-
 	private static final String ZONE_NAME_1 = "int_krakow_bank_1";
 
 	/** Time (in Seconds) allowed in the bank. ~ 10 min */
@@ -69,7 +63,6 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 
 	// "static" data
 	private StendhalRPZone zone = null;
-
 	private StendhalRPZone zone_1 = null;
 
 	private SpeakerNPC npc;
@@ -166,11 +159,6 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 				}
 			}
 		}
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
 	}
 
 	private void createNPC() {
@@ -384,8 +372,13 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "KrakowskiBank";
+		return "Krakowski Bank";
 	}
 
 	@Override
@@ -397,6 +390,7 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
 	}
+
 	@Override
 	public String getNPCName() {
 		return "Bankier Tibor";

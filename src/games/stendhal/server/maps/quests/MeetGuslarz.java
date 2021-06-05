@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -27,10 +31,6 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Meet Guslarz anywhere around the World.
@@ -57,15 +57,10 @@ public class MeetGuslarz extends AbstractQuest {
 	private TeleporterBehaviour teleporterBehaviour;
 	
 	/** the name of the quest */
-	public static final String QUEST_NAME = "MeetGuslarz";
+	public static final String QUEST_NAME = "Spotkanie Guślarza";
 
 	// The default is 100 (30 seconds) so make ours half this
 	private static final int TIME_OUT = 50;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	
 	private SpeakerNPC createguslarz() {
 		guslarz = new SpeakerNPC("Guślarz") {
@@ -153,20 +148,25 @@ public class MeetGuslarz extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
 		return QUEST_NAME;
 	}
-	
+
 	@Override
 	public boolean isVisibleOnQuestStatus() {
 		return false;
 	}
-	
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
 	}
-	
+
 	@Override
 	public String getNPCName() {
 		return "Guślarz";

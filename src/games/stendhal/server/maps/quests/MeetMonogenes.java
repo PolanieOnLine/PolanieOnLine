@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -43,10 +42,6 @@ import games.stendhal.server.maps.Region;
  * 
  */
 public class MeetMonogenes extends AbstractQuest {
-	@Override
-	public String getSlotName() {
-		return "Monogenes";
-	}
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -189,11 +184,6 @@ public class MeetMonogenes extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "MeetMonogenes";
-	}
-	
-	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
 			if (!player.hasQuest("Monogenes")) {
@@ -204,11 +194,22 @@ public class MeetMonogenes extends AbstractQuest {
 			} 
 			return res;
 	}
-	
+
+	@Override
+	public String getSlotName() {
+		return "Monogenes";
+	}
+
+	@Override
+	public String getName() {
+		return "Spotkanie Monogenesa";
+	}
+
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
 		return "Monogenes";

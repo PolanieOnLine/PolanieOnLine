@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on MeetMonogomes
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -46,10 +45,6 @@ import games.stendhal.server.entity.player.Player;
  *
  */
 public class MeetFryderyk extends AbstractQuest {
-	@Override
-	public String getSlotName() {
-		return "meetFryderyk";
-	}
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -192,11 +187,6 @@ public class MeetFryderyk extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "MeetFryderyk";
-	}
-
-	@Override
 	public List<String> getHistory(final Player player) {
 			final List<String> res = new ArrayList<String>();
 			if (!player.hasQuest("Fryderyk")) {
@@ -206,6 +196,16 @@ public class MeetFryderyk extends AbstractQuest {
 				res.add("Rozmawiałem z Fryderykiem i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
 			}
 			return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return "meetFryderyk";
+	}
+
+	@Override
+	public String getName() {
+		return "Spotkanie Fryderyka";
 	}
 
 	@Override

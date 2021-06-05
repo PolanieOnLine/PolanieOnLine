@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on RainbowBeans.java
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
@@ -36,10 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: Labirynt
@@ -76,22 +75,15 @@ import java.util.List;
  * </ul>
  */
 public class Labirynt extends AbstractQuest {
+	private static final String QUEST_SLOT = "ozo";
+	private final SpeakerNPC npc = npcs.get("Ozo");
 
 	private static final int REQUIRED_LEVEL = 250;
-
 	private static final int REQUIRED_MONEY = 20000;
 
 	private static final int REQUIRED_WEEK = 2 * 7;
 
-	private static final String QUEST_SLOT = "ozo";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Ozo");
-
 		// player says hi before starting the quest
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -120,11 +112,12 @@ public class Labirynt extends AbstractQuest {
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_WEEK))),  
 			ConversationStates.ATTENDING, 
 			null,
-			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_WEEK, "Wszystko w porządku? Mam nadzieję, że nie chcesz więcej magicznych biletów. Nie mogę sprzedać Ci ich więcej przez co najmniej "));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_WEEK,
+					"Wszystko w porządku? Mam nadzieję, że nie chcesz więcej magicznych biletów. Nie mogę sprzedać Ci ich więcej przez co najmniej "));
 
 		// player responds to word 'deal' - enough level
 		npc.add(ConversationStates.INFORMATION_1, 
-			Arrays.asList("deal", "handluję","bilet","magiczny bilet"),
+			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet"),
 			new AndCondition(
 					new QuestNotStartedCondition(QUEST_SLOT), 
 					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
@@ -136,7 +129,7 @@ public class Labirynt extends AbstractQuest {
 
 		// player responds to word 'deal' - low level
 		npc.add(ConversationStates.INFORMATION_1, 
-			Arrays.asList("deal", "handluję","bilet","magiczny bilet"),
+			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet"),
 			new AndCondition(
 					new QuestNotStartedCondition(QUEST_SLOT), 
 					new LevelLessThanCondition(REQUIRED_LEVEL)),
@@ -157,7 +150,7 @@ public class Labirynt extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES, 
 				new PlayerHasItemWithHimCondition("money", REQUIRED_MONEY),
 				ConversationStates.ATTENDING, 
-				"W porządku oto twój scroll. Gdy go użyjesz to wrócisz za około 5 godzin. Jeśli będziesz chciał wrócić wcześniej to skorzystaj tam z wyjścia w środku labiryntu.",
+				"W porządku, oto zwój. Gdy go użyjesz to wrócisz za około 5 godzin. Jeśli będziesz chciał wrócić wcześniej to skorzystaj z wyjścia w środku labiryntu.",
 				new MultipleActions(
 						new DropItemAction("money", REQUIRED_MONEY),
 						new EquipItemAction("magiczny bilet", 1, true),
@@ -200,7 +193,7 @@ public class Labirynt extends AbstractQuest {
 		// just in information state (like if they said no then changed mind and
 		// are trying to get him to deal again)
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("deal", "beans", "magiczne fasolki", "yes", "tak"),
+			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet", "yes", "tak"),
 			new LevelGreaterThanCondition(REQUIRED_LEVEL-1),
 			ConversationStates.ATTENDING,
 			"Już mówiliśmy o tym! Spróbuj innym razem.",
@@ -210,10 +203,10 @@ public class Labirynt extends AbstractQuest {
 		// just in information state (like if they said no then changed mind and
 		// are trying to get him to deal again)
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("deal", "beans", "magiczne fasolki", "yes", "tak"),
+			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet", "yes", "tak"),
 			new LevelLessThanCondition(REQUIRED_LEVEL),
 			ConversationStates.ATTENDING, 
-			"Ten towar jest tylko dla stanu rycerskiego nie  dla Ciebie. Nie ma szans abym go sprzedał Ci!",
+			"Ten towar jest tylko dla stanu rycerskiego nie dla Ciebie. Nie ma szans abym go sprzedał Ci!",
 			null);
 	}
 
@@ -235,11 +228,21 @@ public class Labirynt extends AbstractQuest {
 				"Magiczny bilet jest przepustką do obcej krainy.",
 				false);
 		step_1();
-
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		return new ArrayList<String>();
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "Labirynt";
+		return "Magiczny Bilet";
 	}
 
 	@Override
@@ -265,11 +268,7 @@ public class Labirynt extends AbstractQuest {
 	}
 
 	@Override
-	public List<String> getHistory(final Player player) {
-		return new ArrayList<String>();
-	}
-	@Override
 	public String getNPCName() {
-		return "Ozo";
+		return npc.getName();
 	}
 }

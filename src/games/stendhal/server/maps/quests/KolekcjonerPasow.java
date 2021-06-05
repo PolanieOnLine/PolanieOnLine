@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                   (C) Copyright 2020-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.grammar.Grammar;
@@ -26,18 +29,14 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuest;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQuest {
+	private static final String QUEST_SLOT = "belts_collector";
 
 	private static final List<String> NEEDED_BELTS = Arrays.asList("pas skórzany",
 			"wzmocniony pas skórzany", "pas kolczy", "lodowy pas", "ognisty pas", "złoty pas kolczy",
 			"pas karmazynowy", "pas lazurowy", "pas barbarzyńcy", "pas elficki", "pas zbójnicki",
 			"pas cieni", "pas kamienny", "pas chaosu", "pas krasnoludzki", "złoty pas", "pas olbrzymi",
 			"pas mainiocyjski", "pas xenocyjski");
-
-	private static final String QUEST_SLOT = "belts_collector";
 
 	private BringListOfItemsQuestLogic bringItems;
 
@@ -50,16 +49,6 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 		final BringListOfItemsQuest concreteQuest = this;
 		bringItems = new BringListOfItemsQuestLogic(concreteQuest);
 		bringItems.addToWorld();
-	}
-
-	@Override
-	public void addToWorld() {
-		step_1();
-		setupAbstractQuest();
-		fillQuestInfo(
-				"Pasy dla Kolekcjonera",
-				"Eltefia szuka pasy w wielu kolorach.",
-				false);
 	}
 
 	private void step_1() {
@@ -228,8 +217,18 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 	}
 
 	@Override
+	public void addToWorld() {
+		step_1();
+		setupAbstractQuest();
+		fillQuestInfo(
+				"Pasy Kolekcjonerki",
+				"Eltefia szuka pasy w wielu kolorach.",
+				false);
+	}
+
+	@Override
 	public String getName() {
-		return "KolekcjonerPasow";
+		return "Pasy Kolekcjonerki";
 	}
 
 	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.

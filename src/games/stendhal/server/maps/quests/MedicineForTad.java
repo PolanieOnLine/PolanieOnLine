@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2015 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -33,11 +38,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Introduce new players to game <p>PARTICIPANTS:<ul>
@@ -68,6 +68,8 @@ import java.util.List;
  * </ul>
  */
 public class MedicineForTad extends AbstractQuest {
+	private static final String QUEST_SLOT = "introduce_players";
+	private final SpeakerNPC npc = npcs.get("Tad");
 
 	static final String ILISA_TALK_ASK_FOR_FLASK = "Lekarstwo dla #Tad? Nie powiedział Tobie, aby przynieść flaszę?";
 	static final String ILISA_TALK_ASK_FOR_HERB = "Ach widzę, że masz flaszę. #Tad potrzebuje lekarstwa? Hmm... Potrzebuję kilku #ziół. Pomożesz?";
@@ -114,51 +116,7 @@ public class MedicineForTad extends AbstractQuest {
 	static final String STATE_POTION = "eliksir";
 	static final String STATE_DONE = "done";
 
-	private static final String QUEST_SLOT = "introduce_players";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (player.hasQuest("TadFirstChat")) {
-			res.add(HISTORY_MET_TAD);
-		}
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_START, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_QUEST_OFFERED);
-		}
-		if (questState.equals(STATE_START) && player.isEquipped("flasza")
-				|| player.isQuestInState(QUEST_SLOT, 0, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_GOT_FLASK);
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_TAKE_FLASK_TO_ILISA);
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_HERB, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_ILISA_ASKED_FOR_HERB);
-		}
-		if (questState.equals(STATE_HERB) && player.isEquipped("arandula")
-				|| player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_GOT_HERB);
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
-			res.add(HISTORY_POTION_READY);
-		}
-		if (questState.equals(STATE_DONE)) {
-			res.add(HISTORY_DONE);
-		}
-		return res;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Tad");
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
@@ -237,12 +195,6 @@ public class MedicineForTad extends AbstractQuest {
 	}
 
 	private void step_2() {
-		/** Just buy the stuff from Margaret. It isn't a quest */
-	}
-
-	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Tad");
-
 		final List<ChatAction> processStep = new LinkedList<ChatAction>();
 		processStep.add(new EquipItemAction("money", 100));
 		processStep.add(new IncreaseXPAction(150));
@@ -288,7 +240,7 @@ public class MedicineForTad extends AbstractQuest {
 				null);
 	}
 
-	private void step_4() {
+	private void step_3() {
 		final SpeakerNPC npc = npcs.get("Ilisa");
 
 		npc.add(ConversationStates.IDLE,
@@ -345,7 +297,7 @@ public class MedicineForTad extends AbstractQuest {
 				null);
 	}
 
-	private void step_5() {
+	private void step_4() {
 		final SpeakerNPC npc = npcs.get("Ilisa");
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -376,9 +328,7 @@ public class MedicineForTad extends AbstractQuest {
 				ILISA_TALK_EXPLAIN_MEDICINE, null);
 	}
 
-	private void step_6() {
-		SpeakerNPC npc = npcs.get("Tad");
-
+	private void step_5() {
         // another reminder in case player says task again
         npc.add(ConversationStates.ATTENDING,
         		ConversationPhrases.QUEST_MESSAGES,
@@ -390,7 +340,7 @@ public class MedicineForTad extends AbstractQuest {
 		final List<ChatAction> processStep = new LinkedList<ChatAction>();
 		processStep.add(new IncreaseXPAction(100));
 		processStep.add(new SetQuestAction(QUEST_SLOT, 0, STATE_DONE));
-		
+
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
@@ -399,12 +349,12 @@ public class MedicineForTad extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				TAD_TALK_COMPLETE_QUEST,
 				new MultipleActions(processStep));
-	
+
 		/*
 		 * if player has not finished this quest, ketteh will remind player about him.
 		 * if player has not started, and not finished, ketteh will ask if player has met him.
 		 */
-		npc = npcs.get("Ketteh Wehoh");
+		SpeakerNPC npc = npcs.get("Ketteh Wehoh");
 
         npc.add(ConversationStates.ATTENDING, 
         		ConversationPhrases.GOODBYE_MESSAGES,
@@ -421,7 +371,6 @@ public class MedicineForTad extends AbstractQuest {
                 ConversationStates.IDLE,
                 KETTEH_TALK_BYE_INTRODUCES_TAD,
                 null);
-
 	}
 
 	@Override
@@ -435,11 +384,52 @@ public class MedicineForTad extends AbstractQuest {
 		step_3();
 		step_4();
 		step_5();
-		step_6();
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (player.hasQuest("TadFirstChat")) {
+			res.add(HISTORY_MET_TAD);
+		}
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_START, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_QUEST_OFFERED);
+		}
+		if (questState.equals(STATE_START) && player.isEquipped("flasza")
+				|| player.isQuestInState(QUEST_SLOT, 0, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_GOT_FLASK);
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_TAKE_FLASK_TO_ILISA);
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_HERB, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_ILISA_ASKED_FOR_HERB);
+		}
+		if (questState.equals(STATE_HERB) && player.isEquipped("arandula")
+				|| player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_GOT_HERB);
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, STATE_POTION, STATE_DONE)) {
+			res.add(HISTORY_POTION_READY);
+		}
+		if (questState.equals(STATE_DONE)) {
+			res.add(HISTORY_DONE);
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "MedicineForTad";
+		return "Lekarstwo dla Tada";
 	}
 
 	@Override

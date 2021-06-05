@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2013 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -55,21 +55,12 @@ import games.stendhal.server.entity.player.Player;
  * REPETITIONS:None
  */
 public class MeetSanta extends AbstractQuest implements LoginListener {
-
-	// quest slot changed ready for 2015
-	private static final String QUEST_SLOT = "meet_santa_[seasonyear]";
-
-	public static final String QUEST_NAME = "MeetSanta";
+	private static final String QUEST_SLOT = "meet_santa_[seasonyear]";// quest slot changed ready for 2015
 
 	/** the Santa NPC. */
 	protected SpeakerNPC santa;
 
 	private TeleporterBehaviour teleporterBehaviour;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	private SpeakerNPC createSanta() {
 		santa = new SpeakerNPC("Święty Mikołaj") {
@@ -243,8 +234,13 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "MeetSanta";
+		return "Spotkanie Świętego Mikołaja";
 	}
 
 	@Override

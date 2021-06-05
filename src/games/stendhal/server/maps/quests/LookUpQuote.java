@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.ConversationParser;
@@ -28,11 +32,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * QUEST: Quest to get a fishing rod 
@@ -58,54 +57,34 @@ import java.util.Map;
  * 
  * @author dine
  */
-
 public class LookUpQuote extends AbstractQuest {
 	private static final String QUEST_SLOT = "get_fishing_rod";
+	private final SpeakerNPC npc = npcs.get("Pequod");
 
 	private static Map<String, String> quotes = new HashMap<String, String>();
 	static {
-		quotes.put("Rybak Bully", "Clownfish are always good for a laugh.");
+		quotes.put("Rybak Bully",
+						"Clownfish are always good for a laugh.");
 		quotes.put("Rybak Jacky",
 						"Don't mistake your trout for your old trout, she wouldn't taste so good.");
 		quotes.put("Rybak Tommy",
 						"I wouldn't trust a surgeonfish in a hospital, there's something fishy about them.");
 		quotes.put("Rybak Sody",
-				"Devout Crustaceans believe in the One True Cod.");
+						"Devout Crustaceans believe in the One True Cod.");
 		quotes.put("Rybak Humphrey",
 						"I don't understand why no-one buys my fish. The sign says 'Biggest Roaches in town'.");
 		quotes.put("Rybak Monty",
 						"My parrot doesn't like to sit on a perch. He says it smells fishy.");
 		quotes.put("Rybak Charby",
 						"That fish restaurant really overcooks everything. It even advertises char fish.");
-		quotes.put("Rybak Ally", "Holy mackerel! These chips are tasty.");
-	}
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Pequod w domku w mieście Ados i poprosił mnie o znalezienie cytatu znanego rybaka.");
-		if (!player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Cytat, który muszę znaleść jest " + player.getQuest(QUEST_SLOT) + ".");
-		} else {
-			res.add("Znalazłem cytat dla Pequod i dostałem wędkę.");
-		}
-		return res;
+		quotes.put("Rybak Ally",
+						"Holy mackerel! These chips are tasty.");
 	}
 
 	private void createFishingRod() {
-		final SpeakerNPC fisherman = npcs.get("Pequod");
-
-		fisherman.add(ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
-			new GreetingMatchesNameCondition(fisherman.getName()), true,
+			new GreetingMatchesNameCondition(npc.getName()), true,
 			ConversationStates.ATTENDING, null,
 			new ChatAction() {
 				@Override
@@ -123,7 +102,7 @@ public class LookUpQuote extends AbstractQuest {
 			});
 
 		// TODO: rewrite this to use standard conditions and actions
-		fisherman.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
 			new ChatAction() {
@@ -142,12 +121,12 @@ public class LookUpQuote extends AbstractQuest {
 				}
 			});
 
-		fisherman.add(ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.ATTENDING,
 			"W takim razie nie wyświadczę Tobie przysługi. Nigdy.", null);
 
-		fisherman.add(ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
 			ConversationStates.ATTENDING, null,
 			new ChatAction() {
@@ -159,17 +138,17 @@ public class LookUpQuote extends AbstractQuest {
 				}
 			});
 
-		fisherman.add(ConversationStates.QUESTION_1,
+		npc.add(ConversationStates.QUESTION_1,
 			ConversationPhrases.YES_MESSAGES, null,
 			ConversationStates.QUESTION_2, "Jak brzmi?", null);
 
-		fisherman.add(ConversationStates.QUESTION_1,
+		npc.add(ConversationStates.QUESTION_1,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.ATTENDING,
 			"Nie dobrze. Mogłem mieć dla Ciebie niezłą nagrodę.", null);
 
 		// TODO: rewrite this to use standard conditions and actions
-		fisherman.addMatching(ConversationStates.QUESTION_2, Expression.JOKER, new JokerExprMatcher(), null,
+		npc.addMatching(ConversationStates.QUESTION_2, Expression.JOKER, new JokerExprMatcher(), null,
 			ConversationStates.ATTENDING, null,
 			new ChatAction() {
 				@Override
@@ -208,17 +187,39 @@ public class LookUpQuote extends AbstractQuest {
 				false);
 		createFishingRod();
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Pequod w domku w mieście Ados i poprosił mnie o znalezienie cytatu znanego rybaka.");
+		if (!player.isQuestCompleted(QUEST_SLOT)) {
+			res.add("Cytat, który muszę znaleść jest " + player.getQuest(QUEST_SLOT) + ".");
+		} else {
+			res.add("Znalazłem cytat dla Pequod i dostałem wędkę.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "LookUpQuote";
+		return "Poszukiwania Cytatu";
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.ADOS_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Pequod";
+		return npc.getName();
 	}
 }

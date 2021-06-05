@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -28,6 +39,7 @@ import games.stendhal.server.maps.Region;
 
 public class KrolewskiPlaszcz extends AbstractQuest {
 	public static final String QUEST_SLOT = "krolewski_plaszcz";
+	private final SpeakerNPC npc = npcs.get("Król Krak");
 
 	private static final String UZBROJENIE = "zamowienie_strazy";
 	private static final String LUD1 = "maka";
@@ -36,7 +48,6 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 	private static final String LUD4 = "zabawka_leo";
 
 	private void start() {
-		final SpeakerNPC npc = npcs.get("Król Krak");
 		String text = "I ja mam Tobie zaufać? Gdzie pomogłeś mojemu ludowi?!";
 
 		npc.add(ConversationStates.ATTENDING,
@@ -55,15 +66,15 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else {
-										npc.say(text + " Poszukaj małego chłopca o imieniu Leo, ponieważ zgubił swoją zabawkę i nie może jej odzyskać!");
+										npc.say(text + " Poszukaj małego chłopca o imieniu Leo, zgubił swojego ulubionego pluszaka i nie może odzyskać!");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
-									npc.say(text + " Poszukaj dziewczynki o imieniu Balbina, gdyż potrzebujego pewnego płaszcza do spełnienia swojego marzenia!");
+									npc.say(text + " Poszukaj dziewczynki o imieniu Balbina, potrzebujego płaszcza do spełnienia swego marzenia!");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say(text + " Poszukaj pewnego rybaka o imieniu Thomas, potrzebuje pomocy przy naprawie jego łódki!");
+								npc.say(text + " Poszukaj rybaka o imieniu Thomas, potrzebuje pomocy przy naprawie jego łódki!");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
@@ -71,7 +82,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Moja armia królewska potrzebuje wyposażenia! Gwardzista już złożył zamówienie u miejskiego kowala! Lepiej mu pomóż jeśli Ci na tym zależy.");
+						npc.say("Moja armia królewska potrzebuje wyposażenia! Nasz gwardzista złożył zamówienie u miejskiego kowala! Lepiej mu pomóż jeśli Ci na tym zależy.");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}
@@ -102,8 +113,6 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 	}
 
 	private void done() {
-		final SpeakerNPC npc = npcs.get("Król Krak");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
@@ -143,6 +152,16 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 	}
 
 	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Królewski Płaszcz",
+				"Król Krak - władca ziem Polan potrzebuje nowego królewskiego płaszcza.",
+				false);
+		start();
+		done();
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -164,16 +183,6 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		}
 		return res;
 	}
-	
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Królewski Płaszcz",
-				"Król Krak - władca ziem Polan potrzebuje nowego królewskiego płaszcza.",
-				false);
-		start();
-		done();
-	}
 
 	@Override
 	public String getSlotName() {
@@ -182,11 +191,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "KrolewskiPlaszcz";
-	}
-
-	public String getTitle() {
-		return "Królewski płaszcz";
+		return "Królewski Płaszcz";
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -273,7 +272,7 @@ public class MealForGroongo extends AbstractQuest {
     @Override
     public void addToWorld() {
         fillQuestInfo(
-            "Jedzenie dla Groongo Rahnnt",
+            "Hotelowa Restauracja",
             "Groongo jest głodny i potrzebuje skromny posiłek w restauracji hotelu w Fado.",
             true);
         stageBeginQuest();
@@ -399,7 +398,7 @@ public class MealForGroongo extends AbstractQuest {
 
     @Override
     public String getName() {
-        return "MealForGroongo";
+        return "Hotelowa Restauracja";
     }
 
     @Override

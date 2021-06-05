@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -53,11 +53,6 @@ public class MeetKetteh extends AbstractQuest {
 	private static final String QUEST_SLOT = "Ketteh";
 	private static final int GRACE_PERIOD = 5;
 	private static final int JAIL_TIME = 10;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Ketteh Wehoh");
@@ -186,8 +181,6 @@ public class MeetKetteh extends AbstractQuest {
 				null);
 	}
 
-
-
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -221,8 +214,13 @@ public class MeetKetteh extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "MeetKetteh";
+		return "Spotkanie Ketteh Wehoh";
 	}
 
 	@Override

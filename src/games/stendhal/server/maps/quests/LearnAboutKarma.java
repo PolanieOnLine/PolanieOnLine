@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -26,9 +28,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * QUEST: Learn about Karma
@@ -57,31 +56,10 @@ import java.util.List;
  * </ul>
  */
 public class LearnAboutKarma extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "learn_karma";
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Sarzina w domku w Fado i zapytałem ją o zadanie.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("done")) {
-			res.add("Sarzina powiedziała mi o karmie i o tym, że mogę wrócić, aby przypomnieć sobie jak to działa.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Sarzina");
 
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Sarzina");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
@@ -147,19 +125,19 @@ public class LearnAboutKarma extends AbstractQuest {
 					final String canseekarma = "Teraz zobaczymy jakiego koloru jest twoja karma. ";
 					final String rk = Long.toString(roundedkarma);
                     if (roundedkarma > 499 ) {
-                        npc.say(Yk+"jest niesamowicie wysoka, "+rk+"! Musiałeś zrobić bardzo dużo dobrych uczynków. " + canseekarma + " Jest na niebiesko." );
+                        npc.say(Yk+"jest niesamowicie wysoka, "+rk+"! Musiałeś zrobić bardzo dużo dobrych uczynków. " + canseekarma + " Jest na niebiesko.");
                     } else if (roundedkarma > 99) {
                         npc.say(Yk+"jest wysoka, "+rk+". " + canseekarma + " Jest jeszcze na niebiesko.");
                     } else if (roundedkarma > 5) {
-                    	npc.say(Yk+"wynosi "+rk+" jest dobra. " + canseekarma + " Musisz uważać zbliża się do koloru czerwonego.");
+                    	npc.say(Yk+"wynosi "+rk+" jest dobra. " + canseekarma + " Musisz uważać, zbliża się do koloru czerwonego.");
                     } else if (roundedkarma > -5) {
                         npc.say(Yk+"wynosi "+rk+". " + canseekarma + " Znajduje się w połowie skali.");
                     } else if (roundedkarma > -99) {
-                        npc.say(Yk+"to "+rk+" jest zła. " + canseekarma + " Postaraj się aby była na niebiesko.");
+                        npc.say(Yk+"to "+rk+" jest zła. " + canseekarma + " Postaraj się, aby była na niebiesko.");
                     } else if (roundedkarma > -499) {
                         npc.say(Yk+"jest straszna, "+rk+"! " + canseekarma + " Jest na czerwono.");
                     } else {
-                    	npc.say(Yk+"jest katasrofalna, "+rk+"!!! " + canseekarma + " Zabrakło skali dla niej. Musisz być bardzo złym człowiekiem... ");
+                    	npc.say(Yk+"jest katastrofalna, "+rk+"!!! " + canseekarma + " Zabrakło skali dla niej. Musisz być bardzo złym człowiekiem...");
                     }
 				}
 			});
@@ -170,30 +148,50 @@ public class LearnAboutKarma extends AbstractQuest {
 			"Zatem, mogę ci jeszcze jakoś pomóc?", null);
 
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.QUEST_MESSAGES,
-				null, ConversationStates.QUESTION_1,
-				"Jeśli popytasz o zadania tu i tam, wypełnisz je, wówczas twoja karma urośnie. Chcesz wiedzieć jaką masz teraz karmę?", null);
+			null, ConversationStates.QUESTION_1,
+			"Jeśli popytasz o zadania tu i tam, wypełnisz je, wówczas twoja karma urośnie. Chcesz wiedzieć jaką masz teraz karmę?", null);
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
 				"Nauka o Karmie",
-				"Sarzina nauczy mnie o Karmie.",
+				"Sarzina uczy o działaniu karmy.",
 				false);
 		step1();
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Sarzina w domku w Fado i zapytałem ją o zadanie.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("done")) {
+			res.add("Sarzina opowiedziała mi o karmie i o tym, że mogę wrócić, aby przypomnieć sobie jak to działa.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "LearnAboutKarma";
+		return "Nauka o Karmie";
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.FADO_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Sarzina";
+		return npc.getName();
 	}
 }
