@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2007-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on KillDhohrNuggetcutter.
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
@@ -35,12 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import marauroa.common.Pair;
 
 /**
@@ -69,22 +67,14 @@ import marauroa.common.Pair;
  * <li> after 14 days.
  * </ul>
  */
-
-public class ProzbaWielkoluda extends AbstractQuest {
-
+public class ProsbaWielkoluda extends AbstractQuest {
 	private static final String QUEST_SLOT = "prozba_wielkoluda";
+	private final SpeakerNPC npc = npcs.get("Wielkolud");
 
 	private static final String POMOC_DLA_WIELKOLUDA_QUEST_SLOT = "pomoc_dla_wielkoluda";
 	private static final String NAGRODA_WIELKOLUDA_QUEST_SLOT = "nagroda_wielkoluda";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Wielkolud");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, 
 				null,
@@ -148,8 +138,6 @@ public class ProzbaWielkoluda extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Wielkolud");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
@@ -194,8 +182,7 @@ public class ProzbaWielkoluda extends AbstractQuest {
 		 			}
 				});
 
-		npc.add(
-			ConversationStates.ANY,
+		npc.add(ConversationStates.ANY,
 			"pokutników",
 			null,
 			ConversationStates.ATTENDING,
@@ -231,8 +218,13 @@ public class ProzbaWielkoluda extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ProzbaWielkoluda";
+		return "Prośba Wielkoluda";
 	}
 
 	// The kill requirements and surviving in the zone requires at least this level
@@ -254,6 +246,6 @@ public class ProzbaWielkoluda extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Wielkolud";
+		return npc.getName();
 	}
 }

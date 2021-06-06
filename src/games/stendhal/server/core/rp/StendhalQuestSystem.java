@@ -224,7 +224,7 @@ public class StendhalQuestSystem {
 		\**	                    **/
 		loadQuest(new BramaZrc());
 		loadQuest(new PierscienRycerza());
-		loadQuest(new ProzbaWielkoluda());
+		loadQuest(new ProsbaWielkoluda());
 		loadQuest(new StazNaGornika());
 		loadQuest(new ZagadkiBrzezdoma());
 		/** 					**\
