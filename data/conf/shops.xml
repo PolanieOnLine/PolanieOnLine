@@ -1019,7 +1019,7 @@
 		<item name="zboże" price="4" />
 	</shop>
 
-	<!-- Thomas sprzedaje: -->
+	<!-- Tomasz sprzedaje: -->
 	<shop name="sellthomas" type="sells">
 		<item name="tuńczyk" price="5" />
 	</shop>

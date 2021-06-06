@@ -43,7 +43,7 @@ public class ThomasNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Thomas") {
+		final SpeakerNPC npc = new SpeakerNPC("Tomasz") {
 
 			@Override
 			protected void createPath() {
@@ -70,7 +70,7 @@ public class ThomasNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Thomas. Zajmuje się łowieniem ryb rzecznych, jednak codziennie wypływa również do portu, gdzie czeka na niego świeża dostawa tuńczyka. Tuńczyk to morska ryba, której nie złowi się w rzece, a jest na niego spore zapotrzebowanie.");
+		npc.setDescription("Oto Tomasz. Zajmuje się łowieniem ryb rzecznych, jednak codziennie wypływa również do portu, gdzie czeka na niego świeża dostawa tuńczyka. Tuńczyk to morska ryba, której nie złowi się w rzece, a jest na niego spore zapotrzebowanie.");
 		npc.setEntityClass("fishermannpc");
 		npc.setPosition(79, 51);
 		npc.initHP(100);
