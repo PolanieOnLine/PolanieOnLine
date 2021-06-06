@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -28,10 +31,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: News from Hackim
@@ -59,32 +58,6 @@ import java.util.List;
  */
 public class NewsFromHackim extends AbstractQuest {
 	private static final String QUEST_SLOT = "news_hackim";
-
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-				res.add("Hackim asystent kowala chce abym zaniósł tajną wiadomość do Xin Blanca w tawernie Semos.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("QUEST_REJECTED");
-			return res;
-		}
-			res.add("To zadanie było zbyt niebespieczne dla mnie i nie chciałem zrobić niczego nielegalnego.");
-		if (isCompleted(player)) {
-			res.add("Dostarczyłem wiadomości do Xin Blanca. W zamian dostałem spodnie.");
-		}
-		return res;
-	}
 
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Hackim Easso");
@@ -172,10 +145,34 @@ public class NewsFromHackim extends AbstractQuest {
 		step_1();
 		step_2();
 	}
+	
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+				res.add("Hackim asystent kowala chce abym zaniósł tajną wiadomość do Xin Blanca w tawernie Semos.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("QUEST_REJECTED");
+			return res;
+		}
+			res.add("To zadanie było zbyt niebespieczne dla mnie i nie chciałem zrobić niczego nielegalnego.");
+		if (isCompleted(player)) {
+			res.add("Dostarczyłem wiadomości do Xin Blanca. W zamian dostałem spodnie.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
 
 	@Override
 	public String getName() {
-		return "NewsFromHackim";
+		return "Wiadomości od Hackima";
 	}
 	
 	@Override

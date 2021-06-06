@@ -57,10 +57,7 @@ import games.stendhal.server.maps.Region;
 
 public class DailyMonsterKuzniceQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily_kuznice_kill_monster";
-
-	// NPC
-	private static final String NPC_NAME = "Sołtys";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Sołtys");
 
 	private final static int delay = 2 * MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
@@ -499,7 +496,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

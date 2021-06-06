@@ -71,10 +71,7 @@ import games.stendhal.server.maps.Region;
  */
 public class AmazonPrincess extends AbstractQuest {
 	private static final String QUEST_SLOT = "amazon_princess";
-
-	// NPC
-	private static final String NPC_NAME = "Księżniczka Esclara";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
 
 	// The delay between repeating quests is 60 minutes
 	private static final int REQUIRED_MINUTES = 60;
@@ -242,6 +239,6 @@ public class AmazonPrincess extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

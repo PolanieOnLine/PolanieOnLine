@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -72,38 +72,6 @@ public class RebornQuest extends AbstractQuest {
 	private final String UKOŃCZONE = "Wybacz... lecz nie czuję się za dobrze, aby ponownie użyć swej mocy...";
 	
 	private final String DODATKOWA_NAGRODA = NAGRODA + " Otrzymałeś również pamiątkę po swoich wcześniejszych podróżach!";
-
-	@Override
-	public List<String> getHistory(Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem smoka Yerena w jaskini, w domku na górze Zakopane.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Odmówiłem cofnięcia się w czasie.");
-		if ("rejected".equals(questState)) {
-			return res;
-		}
-		res.add("Postanowiłem wysłuchać smoka Yerena i cofnąć się w czasie.");
-		if ("start".equals(questState)) {
-			return res;
-		}
-		res.add("Yerena cofnęła mój poziom i od teraz muszę na nowo zdobywać punkty doświadczenia!");
-		if ("done".equals(questState)) {
-			return res;
-		}
-
-		final List<String> debug = new ArrayList<String>();
-		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasujące do stanu poszukiwania " + questState);
-		return debug;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	private ChatAction Welcome() {
 		return new ChatAction() {
@@ -404,7 +372,7 @@ public class RebornQuest extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Smok, który włada czasem",
+				"Władca Czasu",
 				"Yerena potrafi cofnąć wojownika w czasie, do momentu jego pierwszych narodzin.",
 				false);
 		// Pierwszy reset
@@ -420,8 +388,40 @@ public class RebornQuest extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem smoka Yerena w jaskini, w domku na górze Zakopane.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Odmówiłem cofnięcia się w czasie.");
+		if ("rejected".equals(questState)) {
+			return res;
+		}
+		res.add("Postanowiłem wysłuchać smoka Yerena i cofnąć się w czasie.");
+		if ("start".equals(questState)) {
+			return res;
+		}
+		res.add("Yerena cofnęła mój poziom i od teraz muszę na nowo zdobywać punkty doświadczenia!");
+		if ("done".equals(questState)) {
+			return res;
+		}
+
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasujące do stanu poszukiwania " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "RebornQuest";
+		return "Władca Czasu";
 	}
 
 	@Override

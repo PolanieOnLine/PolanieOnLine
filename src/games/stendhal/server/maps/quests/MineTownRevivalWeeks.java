@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -35,15 +34,10 @@ import games.stendhal.server.maps.quests.revivalweeks.TicTacToeGame;
  * <p>Puts a sign by the tower to say why it is shut.
  */
 public class MineTownRevivalWeeks extends AbstractQuest {
-
-	public static final String QUEST_NAME = "SemosMineTownRevivalWeeks";
 	private static final String QUEST_SLOT = "semos_mine_town_revival";
-	private List<LoadableContent> content = new LinkedList<LoadableContent>();
+	public static final String QUEST_NAME = "Tydzień Odrodzenia Miasta Kopalni";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private List<LoadableContent> content = new LinkedList<LoadableContent>();
 
 	@Override
 	public void addToWorld() {
@@ -81,6 +75,11 @@ public class MineTownRevivalWeeks extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
 		return QUEST_NAME;
 	}
@@ -99,5 +98,4 @@ public class MineTownRevivalWeeks extends AbstractQuest {
 	public String getRegion() {
 		return Region.SEMOS_SURROUNDS;
 	}
-
 }

@@ -70,10 +70,7 @@ import games.stendhal.server.maps.Region;
  */
 public class FindGhosts extends AbstractQuest {
 	public static final String QUEST_SLOT = "find_ghosts";
-
-	// NPC
-	private static final String NPC_NAME = "Carena";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Carena");
 
 	private static final List<String> NEEDED_SPIRITS =
 		Arrays.asList("mary", "ben", "zak", "goran");
@@ -312,7 +309,7 @@ public class FindGhosts extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

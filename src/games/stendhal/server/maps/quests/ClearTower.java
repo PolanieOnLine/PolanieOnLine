@@ -38,10 +38,7 @@ import marauroa.common.Pair;
 
 public class ClearTower extends AbstractQuest {
 	private static final String QUEST_SLOT = "clear_tower";
-
-	// NPC
-	private static final String NPC_NAME = "Czarnoksiężnik";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -158,7 +155,7 @@ public class ClearTower extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

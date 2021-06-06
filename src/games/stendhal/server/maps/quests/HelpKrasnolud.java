@@ -57,64 +57,62 @@ public class HelpKrasnolud extends AbstractQuest {
 
 	private void startQuest() {
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED,
-				"Potrzebuję mocnego a zarazem dość rzadkiego pancerza. Czy mógłbym mieć do ciebie prośbę byś go dla mnie zdobył?",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestNotStartedCondition(QUEST_SLOT),
+			ConversationStates.QUEST_OFFERED,
+			"Potrzebuję mocnego a zarazem dość rzadkiego pancerza. Czy mógłbym mieć do ciebie prośbę byś go dla mnie zdobył?",
+			null);
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestCompletedCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Wspaniale! Nareszcie mam zbroje o jakiej marzyłem.",
-				null);
-
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestCompletedCondition(QUEST_SLOT),
+			ConversationStates.ATTENDING,
+			"Wspaniale! Nareszcie mam zbroje o jakiej marzyłem.",
+			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"Dziękuję ci za chęci i dobre serce! Musisz udać się do Wielkoluda i powiedzieć mu, iż potrzebujesz #zbroję. On będzie wiedział, o czym mowa.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 10.0));
+			ConversationPhrases.YES_MESSAGES, null,
+			ConversationStates.ATTENDING,
+			"Dziękuję ci za chęci i dobre serce! Musisz udać się do Wielkoluda i powiedzieć mu, iż potrzebujesz #zbroję. On będzie wiedział, o czym mowa.",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 10.0));
 
 		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Nie! Łaski bez, ktoś inny o szlachetnym sercu mnie wesprze w tej sprawie...",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -15.0));
+			ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
+			"Nie! Łaski bez, ktoś inny o szlachetnym sercu mnie wesprze w tej sprawie...",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -15.0));
 	}
 
 	private void makeArmor() {
 		final SpeakerNPC npc = npcs.get("Wielkolud");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("krasnolud", "armor", "zbroja","zbroję"),
-				new QuestInStateCondition(QUEST_SLOT, "start"),
-				ConversationStates.ATTENDING, "Ten krasnal wysłał cię po lazurową zbroję powiadasz... Ostatnio chyba ktoś przyniósł do mnie coś takiego. "
-				+ " Ale jak wiesz nic nie ma za darmo, potrzebuję koniecznie #'/lazurowy hełm/' dostarcz mi go a może dostaniesz tę zbroję o ile ją gdzieś tu mam... "
-				+ " Tymczasem udaj się do Gulimo w górach Ados on podobnież jest w posiadaniu takowego hełmu, o który cię proszę."
-				+ " Wystarczy jak powiesz mu moje imię #/Wielkolud/, on już będzie wiedział, o co chodzi.",
-				new SetQuestAction(QUEST_SLOT, "gulimo"));
+			new QuestInStateCondition(QUEST_SLOT, "start"),
+			ConversationStates.ATTENDING, "Ten krasnal wysłał cię po lazurową zbroję powiadasz... Ostatnio chyba ktoś przyniósł do mnie coś takiego. "
+			+ " Ale jak wiesz nic nie ma za darmo, potrzebuję koniecznie #'/lazurowy hełm/' dostarcz mi go a może dostaniesz tę zbroję o ile ją gdzieś tu mam... "
+			+ " Tymczasem udaj się do Gulimo w górach Ados on podobnież jest w posiadaniu takowego hełmu, o który cię proszę."
+			+ " Wystarczy jak powiesz mu moje imię #/Wielkolud/, on już będzie wiedział, o co chodzi.",
+			new SetQuestAction(QUEST_SLOT, "gulimo"));
 
-		npc.add(
-			ConversationStates.ATTENDING, Arrays.asList("wielkolud","helmet", "hełm"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("wielkolud","helmet", "hełm"),
 			new NotCondition(new QuestInStateCondition(QUEST_SLOT, "helmet")),
 			ConversationStates.ATTENDING,
 			"Zanim ci pomogę udaj się po hełm, o który cię prosiłem do Gulimo i powiedz mu moje imię by wiedział, od kogo przybywasz..",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "helmet", "zbroja", "zbroję", "armor"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
-				new PlayerHasItemWithHimCondition("lazurowy hełm")),
-				ConversationStates.ATTENDING, "Bardzo dobrze! Teraz chcę byś jeszcze przyniósł mi przedmioty z listy zanim dam ci #/zbroję/."
-				+ " Potrzebuję:\n"
-     		   + "#'30 skór czerwonego smoka'\n"+ "#'30 skór zielonego smoka'\n"+ "#'30 skór niebieskiego smoka'\n"+ "#'30 skór czarnego smoka'\n"+ "i #'10 złotego smoka'",
-				new MultipleActions(new SetQuestAction(QUEST_SLOT, "armor"), new DropItemAction("lazurowy hełm")));
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
+			new PlayerHasItemWithHimCondition("lazurowy hełm")),
+			ConversationStates.ATTENDING, "Bardzo dobrze! Teraz chcę byś jeszcze przyniósł mi przedmioty z listy zanim dam ci #/zbroję/."
+			+ " Potrzebuję:\n"
+			+ "#'30 skór czerwonego smoka'\n"+ "#'30 skór zielonego smoka'\n"+ "#'30 skór niebieskiego smoka'\n"+ "#'30 skór czarnego smoka'\n"+ "i #'10 złotego smoka'",
+			new MultipleActions(new SetQuestAction(QUEST_SLOT, "armor"), new DropItemAction("lazurowy hełm")));
 
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "hełm", "zbroja", "zbroję", "armor"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
-				new NotCondition(new PlayerHasItemWithHimCondition("lazurowy hełm"))),
-				ConversationStates.ATTENDING, "Rozumiem, iż byłeś już u Gulimo. Więc gdzie masz lazurowy hełm, o który cię prosiłem?",
-				null);
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
+			new NotCondition(new PlayerHasItemWithHimCondition("lazurowy hełm"))),
+			ConversationStates.ATTENDING, "Rozumiem, iż byłeś już u Gulimo. Więc gdzie masz lazurowy hełm, o który cię prosiłem?",
+			null);
 
 		final List<ChatAction> armoractions = new LinkedList<ChatAction>();
 		armoractions.add(new DropItemAction("skóra czerwonego smoka",30));
@@ -128,23 +126,23 @@ public class HelpKrasnolud extends AbstractQuest {
 
 		// don't make player wait for potion - could add this in later if wanted
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "zbroja", "zbroję", "armor"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
-								new PlayerHasItemWithHimCondition("skóra czerwonego smoka",30),
-								new PlayerHasItemWithHimCondition("skóra zielonego smoka",30),
-								new PlayerHasItemWithHimCondition("skóra niebieskiego smoka",30),
-								new PlayerHasItemWithHimCondition("skóra czarnego smoka",30),
-								new PlayerHasItemWithHimCondition("skóra złotego smoka",10)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko, o co cię prosiłem. A oto lazurowa zbroja, pozdrów ode mnie Krasnoluda. Oby częściej przysyłał takich wojowników jak ty.",
-				new MultipleActions(armoractions));
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
+					new PlayerHasItemWithHimCondition("skóra czerwonego smoka",30),
+					new PlayerHasItemWithHimCondition("skóra zielonego smoka",30),
+					new PlayerHasItemWithHimCondition("skóra niebieskiego smoka",30),
+					new PlayerHasItemWithHimCondition("skóra czarnego smoka",30),
+					new PlayerHasItemWithHimCondition("skóra złotego smoka",10)),
+			ConversationStates.ATTENDING, "Widzę, że masz wszystko, o co cię prosiłem. A oto lazurowa zbroja, pozdrów ode mnie Krasnoluda. Oby częściej przysyłał takich wojowników jak ty.",
+			new MultipleActions(armoractions));
 
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "zbroja", "zbroję", "armor"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
-								new NotCondition(
-												new AndCondition(new PlayerHasItemWithHimCondition("skóra czerwonego smoka",30),
-																new PlayerHasItemWithHimCondition("skóra zielonego smoka",30),
-																new PlayerHasItemWithHimCondition("skóra niebieskiego smoka",30),
-																new PlayerHasItemWithHimCondition("skóra czarnego smoka",30),
-																new PlayerHasItemWithHimCondition("skóra złotego smoka",10)))),
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
+					new NotCondition(
+							new AndCondition(new PlayerHasItemWithHimCondition("skóra czerwonego smoka",30),
+							new PlayerHasItemWithHimCondition("skóra zielonego smoka",30),
+							new PlayerHasItemWithHimCondition("skóra niebieskiego smoka",30),
+							new PlayerHasItemWithHimCondition("skóra czarnego smoka",30),
+							new PlayerHasItemWithHimCondition("skóra złotego smoka",10)))),
 				ConversationStates.ATTENDING, "Potrzebuję 30 skór czerwonego smoka, 30 skór niebieskiego smoka, 30 skór zielonego smoka, 30 skór czarnego smoka i 10 skór złotego smoka."
 				+ " Proszę dostarcz mi wszystko z listy naraz by nie zawracać mi głowy ciągle... Powodzenia!", null);
 	}
@@ -153,25 +151,25 @@ public class HelpKrasnolud extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Gulimo");
 
 		npc.add(ConversationStates.ATTENDING, "wielkolud",
-				new QuestInStateCondition(QUEST_SLOT, "gulimo"),
-				ConversationStates.ATTENDING, "Twierdzisz, że Wielkolud cię przysyła do mnie. Zapewne chodzi o Hełm. Hełm... Hełm... Lazurowy hełm gdzie ja go położyłem... Ech pamięć już nie ta, co kiedyś. "
-				+ " Jest coś co potrzebuję do mojej kolekcji a mianowicie #kieł smoka."
-				+ " Ja poszukam hełmu a ty mógłbyś w tym czasie przynieść 100 kłów smoka.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "kiel_smoka", 1.0));
+			new QuestInStateCondition(QUEST_SLOT, "gulimo"),
+			ConversationStates.ATTENDING, "Twierdzisz, że Wielkolud cię przysyła do mnie. Zapewne chodzi o Hełm. Hełm... Hełm... Lazurowy hełm gdzie ja go położyłem... Ech pamięć już nie ta, co kiedyś. "
+			+ " Jest coś co potrzebuję do mojej kolekcji a mianowicie #kieł smoka."
+			+ " Ja poszukam hełmu a ty mógłbyś w tym czasie przynieść 100 kłów smoka.",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "kiel_smoka", 1.0));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wielkolud", "kieł", "smok"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "kiel_smoka"),
-				new PlayerHasItemWithHimCondition("kieł smoka",100)),
-				ConversationStates.ATTENDING, "Pięknie ci dziękuję! Niestety mam złe wieści nie znalazłem tego hełmu... Chyba go gdzieś wydałem. "
-				+ " Ale poczekaj niech pomyślę... Tak wiem! Gdzieś na wyższym piętrze jest ork o imieniu Hagnurk "
-				+ " udaj się do niego, handluje, bowiem on szczególnym orężem powinien mieć w swym kramie ten hełm",
-				new MultipleActions(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "helmet", 1.0), new DropItemAction("kieł smoka",100)));
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "kiel_smoka"),
+			new PlayerHasItemWithHimCondition("kieł smoka",100)),
+			ConversationStates.ATTENDING, "Pięknie ci dziękuję! Niestety mam złe wieści nie znalazłem tego hełmu... Chyba go gdzieś wydałem. "
+			+ " Ale poczekaj niech pomyślę... Tak wiem! Gdzieś na wyższym piętrze jest ork o imieniu Hagnurk "
+			+ " udaj się do niego, handluje, bowiem on szczególnym orężem powinien mieć w swym kramie ten hełm",
+			new MultipleActions(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "helmet", 1.0), new DropItemAction("kieł smoka",100)));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wielkolud", "kieł", "smok"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "kiel_smoka"),
-				new NotCondition(new PlayerHasItemWithHimCondition("kieł smoka",100))),
-				ConversationStates.ATTENDING, "Kły smoka zdobędziesz zabijając smoki. To chyba oczywiste! Liczę, że wejdziesz w ich posiadanie, ale nie kupując od innych wojowników!",
-				null);
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "kiel_smoka"),
+			new NotCondition(new PlayerHasItemWithHimCondition("kieł smoka",100))),
+			ConversationStates.ATTENDING, "Kły smoka zdobędziesz zabijając smoki. To chyba oczywiste! Liczę, że wejdziesz w ich posiadanie, ale nie kupując od innych wojowników!",
+			null);
 	}
 
 	private void bringArmor() {

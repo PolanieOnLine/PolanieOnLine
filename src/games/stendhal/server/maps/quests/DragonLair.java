@@ -54,10 +54,7 @@ import games.stendhal.server.entity.player.Player;
  */
 public class DragonLair extends AbstractQuest {
 	private static final String QUEST_SLOT = "dragon_lair";
-
-	// NPC
-	private static final String NPC_NAME = "Wishman";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Wishman");
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -124,7 +121,7 @@ public class DragonLair extends AbstractQuest {
 		}
 
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(NPC_NAME + " zaproponował, abym zabawił się z jego smokami!");
+		res.add(npc.getName() + " zaproponował, abym zabawił się z jego smokami!");
 		if ("rejected".equals(questState)) {
 			res.add("Dla mnie wyglądają trochę przerażająco.");
 			return res;
@@ -138,7 +135,7 @@ public class DragonLair extends AbstractQuest {
 		if (isRepeatable(player)) {
 			res.add("Smoki znów potrzebują zabawy. Powinienem je wkrótce odwiedzić.");
 		} else if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add("Ostatnio smoki miały mnóstwo zabawy. " + NPC_NAME + " jeszcze nie pozwala mi wrócić.");
+			res.add("Ostatnio smoki miały mnóstwo zabawy. " + npc.getName() + " jeszcze nie pozwala mi wrócić.");
 		}
 
 		return res;
@@ -157,7 +154,7 @@ public class DragonLair extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

@@ -51,10 +51,7 @@ import games.stendhal.server.maps.Region;
 
 public class DailyMuseumGdanskQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily_museum_gdansk_quest";
-
-	// NPC
-	private static final String NPC_NAME = "Mieczysław";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Mieczysław");
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK; 
@@ -287,7 +284,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

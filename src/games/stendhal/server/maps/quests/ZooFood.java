@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
@@ -42,12 +47,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * QUEST: Zoo Food
  * <p>
@@ -74,60 +73,20 @@ import java.util.Map;
  * REPETITIONS: - Once per week.
  */
 public class ZooFood extends AbstractQuest {
+	private static final String QUEST_SLOT = "zoo_food";
+	private final SpeakerNPC npc = npcs.get("Katinka");
 
 	private static final int REQUIRED_HAM = 10;
 	private static final int DELAY = MathHelper.MINUTES_IN_ONE_WEEK;
 
-	private static final String QUEST_SLOT = "zoo_food";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Katinkę w zoo");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie mam czasu na zwierzęta i ich problemy z jedzeniem");
-			return res;
-		}
-		res.add("Nie chcę widzieć jak te biedne zwierzęta umierają! Pomogę im w zdobyciu jedzenia!");
-		if (questState.startsWith("start;")) {
-			String questItem = player.getRequiredItemName(QUEST_SLOT,1);
-			int amount = player.getRequiredItemQuantity(QUEST_SLOT,1);
-			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem, "a") + " dla zwierząt."));
-			} else {
-				res.add(String.format("Mam " +Grammar.quantityplnoun(amount, questItem, "a") + " dla zwierząt, muszę to zanieść do schroniska w Ados."));
-			}
-		}
-		if (isCompleted(player)) {
-			if(new TimePassedCondition(QUEST_SLOT, 1, DELAY).fire(player, null, null)) {
-				res.add("Zwierzęta znów są głodne! Muszę zapytać Katinki czego potrzebują.");
-			} else {
-				res.add("Zwierzęta nie są głodne!");
-			}
-		}
-		return res;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Katinka");
-
         // Player has never done the zoo quest
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
 				"Witam w schronisku dla dzikich zwierząt w Ados! Mamy wiele zwierząt do wykarmienia. Potrzebujemy pomocy... mam dla ciebie #zadanie do zrobienia.",
-				null
-		);
+				null);
 
         // Player returns within one week of completing quest
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -135,8 +94,7 @@ public class ZooFood extends AbstractQuest {
 						new QuestCompletedCondition(QUEST_SLOT), 
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY))),
                 ConversationStates.ATTENDING, "Witam ponownie w schronisku dla dzikich zwierząt w Ados! Jeszcze raz dziękuję za uratowanie naszych zwierząt!",
-				null
-		);
+				null);
 
         // Player returns and longer than a week has passed, ask to help again
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -178,15 +136,13 @@ public class ZooFood extends AbstractQuest {
 				ConversationStates.ATTENDING, null,
                 new MultipleActions(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start;", 5.0),
 				new StartRecordingRandomItemCollectionAction(QUEST_SLOT, 1, items, "Dziękuję! Proszę" 
-                + " przynieś [item] lub tyle ile dasz rady."))
-		);
+                + " przynieś [item] lub tyle ile dasz rady.")));
 
 		// player is not willing to help
 		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES, 
 				null,
 				ConversationStates.ATTENDING, "Och... Chyba będziemy musieli nakarmić je jeleniami...",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0)
-		);
+				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 		
         // Player returns within one week of completing quest
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
@@ -209,8 +165,6 @@ public class ZooFood extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Katinka");
-
 		// compatibility with old quests:
 		// player returns while initial quest is still active, set it to match the new way
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -254,8 +208,6 @@ public class ZooFood extends AbstractQuest {
 	}
 
 	private void step_4() {
-		final SpeakerNPC npc = npcs.get("Dr. Feelgood");
-
 		// player returns while quest is still active
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -288,23 +240,60 @@ public class ZooFood extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "ZooFood";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Katinkę w zoo");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie mam czasu na zwierzęta i ich problemy z jedzeniem");
+			return res;
+		}
+		res.add("Nie chcę widzieć jak te biedne zwierzęta umierają! Pomogę im w zdobyciu jedzenia!");
+		if (questState.startsWith("start;")) {
+			String questItem = player.getRequiredItemName(QUEST_SLOT,1);
+			int amount = player.getRequiredItemQuantity(QUEST_SLOT,1);
+			if (!player.isEquipped(questItem, amount)) {
+				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem, "a") + " dla zwierząt."));
+			} else {
+				res.add(String.format("Mam " +Grammar.quantityplnoun(amount, questItem, "a") + " dla zwierząt, muszę to zanieść do schroniska w Ados."));
+			}
+		}
+		if (isCompleted(player)) {
+			if(new TimePassedCondition(QUEST_SLOT, 1, DELAY).fire(player, null, null)) {
+				res.add("Zwierzęta znów są głodne! Muszę zapytać Katinki czego potrzebują.");
+			} else {
+				res.add("Zwierzęta nie są głodne!");
+			}
+		}
+		return res;
 	}
-	
+
 	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,DELAY)).fire(player, null, null);
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Jedzenie dla Zoo";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Katinka";
+		return npc.getName();
 	}
 	
 	@Override
 	public String getRegion() {
 		return Region.ADOS_SURROUNDS;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+					new TimePassedCondition(QUEST_SLOT,1,DELAY)).fire(player, null, null);
 	}
 }

@@ -41,26 +41,21 @@ import games.stendhal.server.entity.player.Player;
 public class Blackjack extends AbstractQuest {
 	// spades ♠
 	 private static final String SPADES = "\u2660";
-
 	// hearts ♥
 	private static final String HEARTS = "\u2665";
-
 	// diamonds ♦
 	private static final String DIAMONDS = "\u2666";
-
 	// clubs ♣
 	private static final String CLUBS = "\u2663";
 
 	private static final int CHAT_TIMEOUT = 60;
 
 	private static final int MIN_STAKE = 10;
-
 	private static final int MAX_STAKE = 400;
 
 	private int stake;
 
 	private boolean bankStands;
-
 	private boolean playerStands;
 
 	private Map<String, Integer> cardValues;
@@ -68,11 +63,9 @@ public class Blackjack extends AbstractQuest {
 	private Stack<String> deck;
 
 	private final List<String> playerCards = new LinkedList<String>();
-
 	private final List<String> bankCards = new LinkedList<String>();
 
 	private StackableItem playerCardsItem;
-
 	private StackableItem bankCardsItem;
 
 	private SpeakerNPC ramon;

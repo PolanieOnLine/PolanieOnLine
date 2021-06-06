@@ -70,10 +70,7 @@ import games.stendhal.server.maps.Region;
  */
 public class GoodiesForRudolph extends AbstractQuest {
 	private static final String QUEST_SLOT = "goodies_rudolph";
-
-	// NPC
-	private static final String NPC_NAME = "Rudolph";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Rudolph");
 
 	private static final int REQUIRED_MONTHS = 11;
 	private static final int REQUIRED_MINUTES = 60 * 24 * 30 * REQUIRED_MONTHS;
@@ -256,7 +253,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

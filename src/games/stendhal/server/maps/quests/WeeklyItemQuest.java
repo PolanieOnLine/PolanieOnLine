@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -84,12 +83,13 @@ import games.stendhal.server.maps.Region;
  * <ul><li> once a week</ul>
  */
 public class WeeklyItemQuest extends AbstractQuest {
+	private static final String QUEST_SLOT = "weekly_item";
+	private final SpeakerNPC npc = npcs.get("Hazel");
+
 	/** the logger instance */
 	private static final Logger logger = Logger.getLogger(WeeklyItemQuest.class);
 
 	private static WeeklyItemQuest instance;
-
-	private static final String QUEST_SLOT = "weekly_item";
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK * 6;
@@ -326,8 +326,6 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private void getQuest() {
-		final SpeakerNPC npc = npcs.get("Hazel");
-
 		final ChatCondition startEasyCondition = new AndCondition(
 				new LevelLessThanCondition(LEVEL_MED),
 				new OrCondition(
@@ -399,8 +397,6 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private void completeQuest() {
-		final SpeakerNPC npc = npcs.get("Hazel");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -456,12 +452,9 @@ public class WeeklyItemQuest extends AbstractQuest {
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Nie masz ze sobą [item]"
 						+ " Zdobądź i powiedz wtedy #zakończone."));
-
 	}
 
 	private void abortQuest() {
-		final SpeakerNPC npc = npcs.get("Hazel");
-
 		final ChatCondition startEasyCondition = new AndCondition(
 				new LevelLessThanCondition(LEVEL_MED),
 				new QuestActiveCondition(QUEST_SLOT),
@@ -513,12 +506,19 @@ public class WeeklyItemQuest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Obawiam się, że jeszcze nie dałem Tobie #zadania.",
 				null);
-
 	}
 
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
+	public void addToWorld() {
+		fillQuestInfo(
+				"Muzeum Kirdneh potrzebuje pomocy!",
+				"Hazel, kuratorka Muzeum Kirdneh, chce aby było one największym w kraju i potrzebuje mojej pomocy raz na tydzień.",
+				true);
+		buildItemsMap();
+
+		getQuest();
+		completeQuest();
+		abortQuest();
 	}
 
 	@Override
@@ -559,21 +559,13 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Muzeum Kirdneh potrzebuje pomocy!",
-				"Hazel, kuratorka Muzeum Kirdneh, chce aby było one największym w kraju i potrzebuje mojej pomocy raz na tydzień.",
-				true);
-		buildItemsMap();
-
-		getQuest();
-		completeQuest();
-		abortQuest();
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "WeeklyItemQuest";
+		return "Tygodniowe Zadanie w Kirdneh";
 	}
 
 	// the items requested are pretty hard to get, so it's not worth prompting player to go till they are higher level.
@@ -583,18 +575,18 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
-	}
-
-	@Override
 	public String getRegion() {
 		return Region.KIRDNEH;
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Hazel";
+		return npc.getName();
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

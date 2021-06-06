@@ -73,10 +73,7 @@ import games.stendhal.server.maps.Region;
  */
 public class Campfire extends AbstractQuest {
 	private static final String QUEST_SLOT = "campfire";
-
-	// NPC
-	private static final String NPC_NAME = "Sally";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Sally");
 
 	private static final int REQUIRED_WOOD = 10;
 	private static final int REQUIRED_MINUTES = 60;
@@ -271,7 +268,7 @@ public class Campfire extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

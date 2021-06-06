@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2020-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -58,78 +69,7 @@ public class PochorowaneKonie extends AbstractQuest {
 	private static final int REQUIRED_MINUTES = 1; // 1 minuta
 
 	private static Logger logger = Logger.getLogger(PochorowaneKonie.class);
-	
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Marcela w Zakopańskiej stajni.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę pomagać stajennemu i weterynarzowi.");
-			return res;
-		}
-		res.add("Stajenny Marcel kazał mi podejść do weterynarza, który już znajduje się przy jego koniach.");
-		if (player.isQuestInState(QUEST_SLOT, "feelgood")) {
-			res.add("Muszę zanieść wyniki badań do Dr. Feelgood");
-			return res;
-		}
-		res.add("Zaniosłem wyniki badań i muszę poczekać 10 minut jak weterynarz skończy analizować co to za choroba.");
-		if (questState.startsWith("wyniki")) {
-			return res;
-		}
-		if (player.isQuestInState(QUEST_SLOT, "grypa końska", "tężec", "zołzy",
-				"łykawość", "lipcówka", "kulawizna", "ochwat", "opoje", "nosacizna", "gruda",
-				"żabka", "surra", "szpat", "sarkoidoza", "afrykański pomór", "brodawczyca")) {
-			res.add("Dr. Feelgood przeanalizował wyniki Dr. Wojciecha i kazał mi przekazać mówiać " + questState + " gdy wrócę do Dr. Wojciecha.");
-			return res;
-		}
-		res.add("Dr. Wojciech poznał prawdziwą chorobę koni.");
-		if (questState.equals("poznana_choroba")) {
-			return res;
-		}
-		if (player.isQuestInState(QUEST_SLOT, "mocne antidotum", "antidotum", "duży eliksir", "eliksir", "mały eliksir")) {
-			res.add("Kazał mi przynieść " + Grammar.quantityplnoun(ILE_LEKOW, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
-			return res;
-		}
-		res.add("Zaniosłem potrzebne leki oraz kazał mi poczekać 1 godzinę.");
-		if (questState.equals("godzina")) {
-			return res;
-		}
-		res.add("Weterynarz poprsił mnie, abym przyniósł dla koni jedzenie.");
-		if (questState.equals("jedzenie")) {
-			return res;
-		}
-		if (player.isQuestInState(QUEST_SLOT, "jabłko", "marchew", "chleb")) {
-			res.add("Kazał mi przynieść " + Grammar.quantityplnoun(ILE_JEDZENIA, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
-			return res;
-		}
-		res.add("Muszę poczekać 5 minut jak konie skończą jeść.");
-		if (questState.equals("konie_jedza")) {
-			return res;
-		}
-		res.add("Hurra! Konie z tego wyjdą! Muszę przekazać stajennemu dobrą wiadomość! Powiem mu, że konie wyzdrowieją.");
-		if (questState.equals("stajenny")) {
-			return res;
-		}
-		res.add("Stajenny się ucieszył! Otrzymałem od niego pas skórzany w nagrodę za pomoc.");
-		if (questState.equals("done")) {
-			return res;
-		}
-		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-		final List<String> debug = new ArrayList<String>();
-		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-		return debug;
-	}
-	
+
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Stajenny Marcel");
 
@@ -476,7 +416,7 @@ public class PochorowaneKonie extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Pochorowane konie",
+				"Pochorowane Konie",
 				"Stajenny Marcel potrzebuje pomocy w wyleczeniu jego koni.",
 				false);
 		step1();
@@ -492,8 +432,79 @@ public class PochorowaneKonie extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Marcela w Zakopańskiej stajni.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę pomagać stajennemu i weterynarzowi.");
+			return res;
+		}
+		res.add("Stajenny Marcel kazał mi podejść do weterynarza, który już znajduje się przy jego koniach.");
+		if (player.isQuestInState(QUEST_SLOT, "feelgood")) {
+			res.add("Muszę zanieść wyniki badań do Dr. Feelgood");
+			return res;
+		}
+		res.add("Zaniosłem wyniki badań i muszę poczekać 10 minut jak weterynarz skończy analizować co to za choroba.");
+		if (questState.startsWith("wyniki")) {
+			return res;
+		}
+		if (player.isQuestInState(QUEST_SLOT, "grypa końska", "tężec", "zołzy",
+				"łykawość", "lipcówka", "kulawizna", "ochwat", "opoje", "nosacizna", "gruda",
+				"żabka", "surra", "szpat", "sarkoidoza", "afrykański pomór", "brodawczyca")) {
+			res.add("Dr. Feelgood przeanalizował wyniki Dr. Wojciecha i kazał mi przekazać mówiać " + questState + " gdy wrócę do Dr. Wojciecha.");
+			return res;
+		}
+		res.add("Dr. Wojciech poznał prawdziwą chorobę koni.");
+		if (questState.equals("poznana_choroba")) {
+			return res;
+		}
+		if (player.isQuestInState(QUEST_SLOT, "mocne antidotum", "antidotum", "duży eliksir", "eliksir", "mały eliksir")) {
+			res.add("Kazał mi przynieść " + Grammar.quantityplnoun(ILE_LEKOW, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
+			return res;
+		}
+		res.add("Zaniosłem potrzebne leki oraz kazał mi poczekać 1 godzinę.");
+		if (questState.equals("godzina")) {
+			return res;
+		}
+		res.add("Weterynarz poprsił mnie, abym przyniósł dla koni jedzenie.");
+		if (questState.equals("jedzenie")) {
+			return res;
+		}
+		if (player.isQuestInState(QUEST_SLOT, "jabłko", "marchew", "chleb")) {
+			res.add("Kazał mi przynieść " + Grammar.quantityplnoun(ILE_JEDZENIA, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
+			return res;
+		}
+		res.add("Muszę poczekać 5 minut jak konie skończą jeść.");
+		if (questState.equals("konie_jedza")) {
+			return res;
+		}
+		res.add("Hurra! Konie z tego wyjdą! Muszę przekazać stajennemu dobrą wiadomość! Powiem mu, że konie wyzdrowieją.");
+		if (questState.equals("stajenny")) {
+			return res;
+		}
+		res.add("Stajenny się ucieszył! Otrzymałem od niego pas skórzany w nagrodę za pomoc.");
+		if (questState.equals("done")) {
+			return res;
+		}
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "PochorowaneKonie";
+		return "Pochorowane Konie";
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -43,24 +43,17 @@ import games.stendhal.server.util.TimeUtil;
 /**
  * @author zekkeq
  */
-
 public class ZlotyPierscien extends AbstractQuest {
-	private static final int REQUIRED_MINUTES = 60;
-
 	private static final String QUEST_SLOT = "zloty_pierscien";
+	private final SpeakerNPC npc = npcs.get("Kowal Wincenty");
 
 	private static final String ZAMOWIENIE_STRAZY = "zamowienie_strazy";
 
+	private static final int REQUIRED_MINUTES = 60;
+
 	private static Logger logger = Logger.getLogger(ZlotyPierscien.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Kowal Wincenty");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -128,7 +121,6 @@ public class ZlotyPierscien extends AbstractQuest {
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Kowal Wincenty");
 		final List<ChatAction> nagroda = new LinkedList<ChatAction>();
 		nagroda.add(new DropItemAction("sztabka złota",20));
 		nagroda.add(new DropItemAction("money",100000));
@@ -157,8 +149,6 @@ public class ZlotyPierscien extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Kowal Wincenty");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("pierścień", "złoty", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -193,7 +183,7 @@ public class ZlotyPierscien extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Złoty pierścień",
+			"Złoty Pierścień",
 			"Kowal Wincenty może wykonać złoty pierścień.",
 			true);
 		step_1();
@@ -239,12 +229,17 @@ public class ZlotyPierscien extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZlotyPierscien";
+		return "Złoty Pierścień";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Kowal Wincenty";
+		return npc.getName();
 	}
 }

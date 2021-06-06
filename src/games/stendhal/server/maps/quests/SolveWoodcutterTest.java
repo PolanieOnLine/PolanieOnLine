@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -68,6 +68,7 @@ import games.stendhal.server.entity.player.Player;
 
 public class SolveWoodcutterTest extends AbstractQuest {
 	private static final String QUEST_SLOT = "woodcutter_license";
+
 	private static final String TEMP_QUEST_SLOT = "question_woodcutter_license";
 	private static final String TEST_QUEST_SLOT = "test_woodcutter_license";
 	private static final String KARMA_QUEST_SLOT = "karma_woodcutter_license";
@@ -442,7 +443,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Rozwiąż Test na Drwala",
+				"Egzamin na Drwala",
 				"Musisz zdać test na drwala, aby zdobyć umiejętność ścinania drzew.",
 				false);
 		setQuestion();
@@ -450,7 +451,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "SolveWoodcutterTest";
+		return "Egzamin na Drwala";
 	}
 
 	// there is a minimum level requirement to get new skill
@@ -468,6 +469,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 	public List<String> getHistory(final Player player) {
 		return new ArrayList<String>();
 	}
+
 	@Override
 	public String getNPCName() {
 		return "Drwal";

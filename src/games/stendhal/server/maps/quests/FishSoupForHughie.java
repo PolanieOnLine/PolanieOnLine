@@ -75,10 +75,7 @@ import marauroa.common.game.IRPZone;
  */
 public class FishSoupForHughie extends AbstractQuest {
 	private static final String QUEST_SLOT = "fishsoup_for_hughie";
-	
-	// NPC
-	private static final String NPC_NAME = "Anastasia";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Anastasia");
 
 	private static final int REQUIRED_MINUTES = 7 * MathHelper.MINUTES_IN_ONE_DAY;
 
@@ -266,7 +263,7 @@ public class FishSoupForHughie extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

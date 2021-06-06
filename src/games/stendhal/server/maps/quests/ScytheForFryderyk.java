@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2007-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on HatForMonogenes.
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -32,10 +35,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Scythe For Fryderyk
@@ -62,11 +61,97 @@ import java.util.List;
  */
 public class ScytheForFryderyk extends AbstractQuest {
 	private static final String QUEST_SLOT = "scythe_fryderyk";
+	private final SpeakerNPC npc = npcs.get("Fryderyk");
+
+	private void createRequestingStep() {
+		npc.add(ConversationStates.ATTENDING,
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestNotCompletedCondition(QUEST_SLOT),
+			ConversationStates.QUEST_OFFERED,
+			"Czy mógłbyś przynieść mi #kosę? Potrzebuję ją do żniw.",
+			null);
+
+		npc.add(ConversationStates.ATTENDING,
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestCompletedCondition(QUEST_SLOT),
+			ConversationStates.ATTENDING,
+			"Dziękuję za ofertę dobry człowieku, ale ta kosa wystarczy mi na pięć wiosen i nie potrzebuję ich więcej.",
+			null);
+
+		npc.add(ConversationStates.QUEST_OFFERED,
+			ConversationPhrases.YES_MESSAGES,
+			null,
+			ConversationStates.ATTENDING,
+			"Dziękuję przyjacielu. Będę tutaj czekał na twój powrót!",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
+
+		npc.add(ConversationStates.QUEST_OFFERED,
+			ConversationPhrases.NO_MESSAGES,
+			null,
+			ConversationStates.ATTENDING,
+			"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj, a moje plony zmarnieją... *sniff*",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
+
+		npc.add(ConversationStates.QUEST_OFFERED,
+			"kosa",
+			null,
+			ConversationStates.QUEST_OFFERED,
+			"Nie wiesz co to jest kosa?! Jedyne narzędzie, którym można skosić plony na polu. Składa się z metalowego ostrza i drewnianego kija, a wszystko przypomina literę L. Zrobisz to dla mnie?",
+			null);
+	}
+
+	private void createBringingStep() {
+		npc.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new PlayerHasItemWithHimCondition("kosa")),
+			ConversationStates.QUEST_ITEM_BROUGHT,
+			"Hej! Czy ta kosa jest dla mnie?", null);
+
+		npc.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new NotCondition(new PlayerHasItemWithHimCondition("kosa"))),
+			ConversationStates.ATTENDING,
+			"Hej mój przyjacielu. Pamiętasz o kosie, którą mi obiecałeś. Pytałem się o nią wcześniej? Moje plony czekają na mnie...",
+			null);
+
+		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new DropItemAction("kosa"));
+		reward.add(new IncreaseXPAction(2200));
+		reward.add(new IncreaseKarmaAction(25));
+		reward.add(new EquipItemAction("skórzany hełm"));
+		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
+
+		// make sure the player isn't cheating by putting the
+		// helmet away and then saying "yes"
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
+			ConversationPhrases.YES_MESSAGES,
+			new PlayerHasItemWithHimCondition("kosa"),
+			ConversationStates.ATTENDING,
+			"Niech Cię pobłogosławię mój dobry przyjacielu! Teraz będę wstanie zebrać moje plony.",
+			new MultipleActions(reward));
+
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
+			ConversationPhrases.NO_MESSAGES,
+			null,
+			ConversationStates.ATTENDING,
+			"Ktoś miał dzisiaj dużo szczęścia... *Apsik*.",
+			null);
+	}
 
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
+	public void addToWorld() {
+    	fillQuestInfo(
+			"Kosa Fryderyka",
+			"Fryderyk potrzebuje do żniw kosę, dostarcz mu ją.",
+			false);
+		createRequestingStep();
+		createBringingStep();
 	}
+
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
@@ -88,111 +173,19 @@ public class ScytheForFryderyk extends AbstractQuest {
 		return res;
 	}
 
-	private void createRequestingStep() {
-		final SpeakerNPC fryderyk = npcs.get("Fryderyk");
-
-		fryderyk.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestNotCompletedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED,
-			"Czy mógłbyś przynieść mi #kosę? Potrzebuję ją do żniw.",
-			null);
-
-		fryderyk.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
-			"Dziękuję za ofertę dobry człowieku, ale ta kosa wystarczy mi na pięć wiosen i nie potrzebuję ich więcej.",
-			null);
-
-		fryderyk.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Dziękuję przyjacielu. Będę tutaj czekał na twój powrót!",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
-
-		fryderyk.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj, a moje plony zmarnieją... *sniff*",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
-
-		fryderyk.add(
-			ConversationStates.QUEST_OFFERED,
-			"kosa",
-			null,
-			ConversationStates.QUEST_OFFERED,
-			"Nie wiesz co to jest kosa?! Jedyne narzędzie, którym można skosić plony na polu. Składa się z metalowego ostrza i drewnianego kija, a wszystko przypomina literę L. Zrobisz to dla mnie?",
-			null);
-	}
-
-	private void createBringingStep() {
-		final SpeakerNPC fryderyk = npcs.get("Fryderyk");
-
-		fryderyk.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(fryderyk.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"),
-					new PlayerHasItemWithHimCondition("kosa")),
-			ConversationStates.QUEST_ITEM_BROUGHT,
-			"Hej! Czy ta kosa jest dla mnie?", null);
-
-		fryderyk.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(fryderyk.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"),
-					new NotCondition(new PlayerHasItemWithHimCondition("kosa"))),
-			ConversationStates.ATTENDING,
-			"Hej mój przyjacielu. Pamiętasz o kosie, którą mi obiecałeś. Pytałem się o nią wcześniej? Moje plony czekają na mnie...",
-			null);
-
-		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("kosa"));
-		reward.add(new IncreaseXPAction(2200));
-		reward.add(new IncreaseKarmaAction(25));
-		reward.add(new EquipItemAction("skórzany hełm"));
-		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-
-		// make sure the player isn't cheating by putting the
-		// helmet away and then saying "yes"
-		fryderyk.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES,
-			new PlayerHasItemWithHimCondition("kosa"),
-			ConversationStates.ATTENDING,
-			"Niech Cię pobłogosławię mój dobry przyjacielu! Teraz będę wstanie zebrać moje plony.",
-			new MultipleActions(reward));
-
-		fryderyk.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Ktoś miał dzisiaj dużo szczęścia... *Apsik*.",
-			null);
-	}
-
 	@Override
-	public void addToWorld() {
-    		fillQuestInfo(
-				"Kosa dla Fryderyka",
-				"Fryderyk potrzebuje do żniw kosę, dostarcz mu ją.",
-				false);
-		createRequestingStep();
-		createBringingStep();
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "ScytheForFryderyk";
+		return "Kosa Fryderyka";
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Fryderyk";
+		return npc.getName();
 	}
 
 	@Override

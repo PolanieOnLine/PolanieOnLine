@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2012 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.ConvCtxForMatchingSource;
@@ -27,11 +31,6 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * QUEST: Quest to get a recipe for a potion for Imorgen
@@ -64,9 +63,9 @@ import java.util.Map;
  *
  * @author storyteller and bluelads4
  */
-
 public class TheMissingBooks extends AbstractQuest {
 	private static final String QUEST_SLOT = "find_book";
+	private final SpeakerNPC npc = npcs.get("Cameron");
 
 	private static Map<String, String> quotes = new HashMap<String, String>();
 	static {
@@ -86,29 +85,7 @@ public class TheMissingBooks extends AbstractQuest {
 						"ciepły napój na zimę. Po jakimś czasie i skończonej pracy otrzymasz pyszne naleśniki z polewą czekoladową ");
 	}
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Cameron w Constantines Villa. Poprosił mnie abym znalazł dla niego cytat z książki.");
-		if (!player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("To koniec tego cytatu ja muszę znaleść początek: " + player.getQuest(QUEST_SLOT) + ".");
-		} else {
-			res.add("Powiedziałem cytat do Cameron w zamian dostałem receptę, która może przydać się dla Imorgen.");
-		}
-		return res;
-	}
-
 	private void createRecipe() {
-		final SpeakerNPC npc = npcs.get("Cameron");
-
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new GreetingMatchesNameCondition(npc.getName()), true,
@@ -207,18 +184,40 @@ public class TheMissingBooks extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zagubione książki",
-				"Cameron, Biblotekarz w Constantines Villa, zgineło mu parę drogocennych książek.",
+				"Zagubione Książki",
+				"Cameron, Biblotekarz w Constantines Villa, zagineło mu parę drogocennych książek.",
 				false);
 		createRecipe();
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Cameron w Constantines Villa. Poprosił mnie abym odnalazł dla niego cytat z książki.");
+		if (!player.isQuestCompleted(QUEST_SLOT)) {
+			res.add("To koniec tego cytatu ja muszę znaleść początek: " + player.getQuest(QUEST_SLOT) + ".");
+		} else {
+			res.add("Powiedziałem cytat do Cameron w zamian dostałem receptę, która może przydać się dla Imorgen.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "TheMissingBooks";
+		return "Zagubione Książki";
 
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Cameron";
+		return npc.getName();
 	}
 }

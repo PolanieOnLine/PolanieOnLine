@@ -60,7 +60,6 @@ import games.stendhal.server.maps.Region;
  */
 public class HatForMonogenes extends AbstractQuest {
 	private static final String QUEST_SLOT = "hat_monogenes";
-
 	private final SpeakerNPC npc = npcs.get("Monogenes");
 
 	private void createRequestingStep() {

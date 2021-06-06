@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -42,48 +42,15 @@ import games.stendhal.server.maps.Region;
 /**
  * @author KarajuSs
  */
-
 public class WegielNaOpal extends AbstractQuest {
-
-	/** Quest slot for this quest, the Ultimate Collector */
 	private static final String QUEST_SLOT = "wegiel_na_opal";
+	private final SpeakerNPC npc = npcs.get("Stasek");
 
 	private static final String ADAS_QUEST_SLOT = "pomoc_adasiowi"; // adas
-
 	private static final String FRYDERYK_QUEST_SLOT = "scythe_fryderyk"; // fryderyk
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Stasek zaproponował mi zadanie.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę przynosić mu węgla.");
-			return res;
-		}
-		res.add("Przyjąłem jego zadanie i przyniose mu węgiel.");
-		if (!isCompleted(player)) {
-			res.add("Stasek poprosił mnie, abym mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
-		}
-		if (isCompleted(player)) {
-			res.add("Super! Teraz mogę kupować uzbrojenie w sklepie u Staska.");
-		}
-		return res;
-	}
-
 	private void startQuests() {
-		final SpeakerNPC npc = npcs.get("Stasek");
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
@@ -108,9 +75,7 @@ public class WegielNaOpal extends AbstractQuest {
 	}
 
 	private void requestItem() {
-		final SpeakerNPC npc = npcs.get("Stasek");
 		final Map<String,Integer> items = new HashMap<String, Integer>();
-
 		items.put("węgiel",50);
 
 		// If all quests are completed, ask for an item
@@ -127,8 +92,6 @@ public class WegielNaOpal extends AbstractQuest {
 	}
 
 	private void collectItem() {
-		final SpeakerNPC npc = npcs.get("Stasek");
-
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -165,11 +128,8 @@ public class WegielNaOpal extends AbstractQuest {
 	}
 
 	private void offerSteps() {
-  		final SpeakerNPC npc = npcs.get("Stasek");
-
 		// player returns after finishing the quest and says offer
-		npc.add(
-				ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.OFFER_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
@@ -187,7 +147,7 @@ public class WegielNaOpal extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Węgiel na opał",
+				"Węgiel na Opał",
 				"Stasek, właściciel sklepu z uzbrojeniem w Zakopanem ma dla mnie zadanie.",
 				true);
 
@@ -198,13 +158,40 @@ public class WegielNaOpal extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Stasek zaproponował mi wykonanie pewnego zadania.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę przynosić mu węgla.");
+			return res;
+		}
+		res.add("Podejmę się wyzwania i przyniosę dla niego węgiel.");
+		if (!isCompleted(player)) {
+			res.add("Stasek poprosił mnie, abym mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
+		}
+		if (isCompleted(player)) {
+			res.add("Super! Teraz mogę kupować uzbrojenie w sklepie u Staska.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "WegielNaOpal";
+		return "Węgiel na Opał";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Stasek";
+		return npc.getName();
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -43,25 +43,17 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.TimeUtil;
 
 public class ZlotyRog extends AbstractQuest {
-
-	private static final int REQUIRED_WAIT_DAYS = 4;
-
-	private static final int REQUIRED_MINUTES = 60;
-
 	private static final String QUEST_SLOT = "zloty_rog";
+	private final SpeakerNPC npc = npcs.get("Bartłomiej");
 
 	private static final String WEAPONS_COLLECTOR_QUEST_SLOT = "weapons_collector";
 
+	private static final int REQUIRED_WAIT_DAYS = 4;
+	private static final int REQUIRED_MINUTES = 60;
+
 	private static Logger logger = Logger.getLogger(ZlotyRog.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Bartłomiej");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -131,8 +123,6 @@ public class ZlotyRog extends AbstractQuest {
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Bartłomiej");
-
 		final List<ChatAction> ciupagaactions = new LinkedList<ChatAction>();
 		ciupagaactions.add(new DropItemAction("piórko",100));
 		ciupagaactions.add(new DropItemAction("pióro anioła",20));
@@ -177,8 +167,6 @@ public class ZlotyRog extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Bartłomiej");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("nagroda", "zadanie", "task"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -279,11 +267,6 @@ public class ZlotyRog extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "ZlotyRog";
-	}
-
-	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -323,8 +306,18 @@ public class ZlotyRog extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Złoty Róg";
+	}
+
+	@Override
 	public String getNPCName() {
-		return "Bartłomiej";
+		return npc.getName();
 	}
 
 	@Override

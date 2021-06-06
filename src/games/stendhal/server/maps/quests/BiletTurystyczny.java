@@ -43,10 +43,7 @@ import games.stendhal.server.maps.Region;
 
 public class BiletTurystyczny extends AbstractQuest {
 	private static final String QUEST_SLOT = "bilet_turystyczny";
-
-	// NPC
-	private static final String NPC_NAME = "Juhas";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Juhas");
 
 	// Level needed
 	private static final int REQUIRED_LEVEL = 100;
@@ -245,6 +242,6 @@ public class BiletTurystyczny extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

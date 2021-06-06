@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -56,6 +56,7 @@ import games.stendhal.server.maps.Region;
 
 public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "weekly_item_wieliczka";
+	private final SpeakerNPC npc = npcs.get("Zbigniew");
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK * 3;
@@ -217,7 +218,6 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 	}
 
 	private void getQuest() {
-		final SpeakerNPC npc = npcs.get("Zbigniew");
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))),
@@ -251,8 +251,6 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 	}
 
 	private void completeQuest() {
-		final SpeakerNPC npc = npcs.get("Zbigniew");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -308,12 +306,9 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Nie masz ze sobą [item]"
 						+ " Zdobądź i powiedz wtedy #zakończone."));
-
 	}
 
 	private void abortQuest() {
-		final SpeakerNPC npc = npcs.get("Zbigniew");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -336,12 +331,19 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Obawiam się, że jeszcze nie dałem Tobie #zadania.",
 				null);
-
 	}
 
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
+	public void addToWorld() {
+		fillQuestInfo(
+				"Wieliczka potrzebuje pomocy!",
+				"Zbigniew, burmistrz Wieliczki, chce uzupełnić magazyn w ratuszu i potrzebuje mojej pomocy raz na tydzień.",
+				true);
+		buildItemsMap();
+
+		getQuest();
+		completeQuest();
+		abortQuest();
 	}
 
 	@Override
@@ -381,32 +383,18 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 	}
 
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Burmistrz Wieliczki potrzebuje pomocy!",
-				"Zbigniew, burmistrz Wieliczki, chce uzupełnić magazyn w ratuszu i potrzebuje mojej pomocy raz na tydzień.",
-				true);
-		buildItemsMap();
-
-		getQuest();
-		completeQuest();
-		abortQuest();
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "WeeklyItemWieliczkaQuest";
+		return "Tygodniowe Zadanie w Wieliczce";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 60;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 
 	@Override
@@ -417,5 +405,11 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return "Zbigniew";
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
+						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

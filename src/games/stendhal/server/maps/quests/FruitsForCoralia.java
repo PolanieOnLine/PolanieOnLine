@@ -82,10 +82,7 @@ public class FruitsForCoralia extends AbstractQuest {
 	 * called reward item "REWARD" temporarily
 	 */
 	public static final String QUEST_SLOT = "fruits_coralia";
-
-	// NPC
-	private static final String NPC_NAME = "Coralia";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Coralia");
 
 	/**
 	 * The delay between repeating quests.
@@ -345,6 +342,6 @@ public class FruitsForCoralia extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

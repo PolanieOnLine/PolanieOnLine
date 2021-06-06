@@ -73,10 +73,7 @@ import games.stendhal.server.entity.player.Player;
  */
 public class CloaksForBario extends AbstractQuest {
 	private static final String QUEST_SLOT = "cloaks_for_bario";
-
-	// NPC
-	private static final String NPC_NAME = "Bario";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Bario");
 
 	private static final int REQUIRED_CLOAKS = 10;
 
@@ -250,7 +247,7 @@ public class CloaksForBario extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

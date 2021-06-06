@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -35,11 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * QUEST: Plink's Toy
  * <p>
@@ -54,44 +53,11 @@ import java.util.List;
  * REPETITIONS: <ul><li> None. </ul>
  */
 public class PlinksToy extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "plinks_toy";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			if (player.isEquipped("pluszowy miś")) {
-				res.add("Plink opowiedział o misiu, którego mam ze sobą");
-			}
-			return res;
-		}
-		res.add("Spotkałem Plinka");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę szukać pluszowego misia Plinka");
-			return res;
-		}
-		res.add("Nie chcę pomóc Plink w szukaniu jego misia");
-		if (player.isEquipped("pluszowy miś") || isCompleted(player)) {
-			res.add("Znalazłem pluszowego misia Plinka");
-		}
-		if (isCompleted(player)) {
-			res.add("Dałem Plinkowi jego misia.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Plink");
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Plink");
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotCompletedCondition(QUEST_SLOT),
@@ -109,16 +75,14 @@ public class PlinksToy extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			"*pociągnięcie nosem* Ale... ale... PROSZĘ! *płacz*", null);
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			Arrays.asList("wolf", "wolves", "wilków"),
 			null,
 			ConversationStates.QUEST_OFFERED,
 			"Przyszły od równiny, a teraz chodzą po #parku, który jest na wschód stąd. Nie powinienem się do nich zbliżać, one są niebezpieczne.",
 			null);
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			Arrays.asList("park", "parku"),
 			null,
 			ConversationStates.QUEST_OFFERED,
@@ -142,8 +106,6 @@ public class PlinksToy extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Plink");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("pluszowy miś"));
 		reward.add(new IncreaseXPAction(200));
@@ -160,8 +122,7 @@ public class PlinksToy extends AbstractQuest {
 			"Znalazłeś go! *przytula misia* Dziękuję, dziękuję! *uśmiech*",
 			new MultipleActions(reward));
 
-		npc.add(
-			ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("pluszowy miś","miś"),
 			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT), new NotCondition(new PlayerHasItemWithHimCondition("pluszowy miś"))),
 			ConversationStates.ATTENDING,
@@ -188,18 +149,47 @@ public class PlinksToy extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			if (player.isEquipped("pluszowy miś")) {
+				res.add("Plink opowiedział o misiu, którego mam ze sobą");
+			}
+			return res;
+		}
+		res.add("Spotkałem Plinka");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę szukać pluszowego misia Plinka");
+			return res;
+		}
+		res.add("Nie chcę pomóc Plink w szukaniu jego misia");
+		if (player.isEquipped("pluszowy miś") || isCompleted(player)) {
+			res.add("Znalazłem pluszowego misia Plinka");
+		}
+		if (isCompleted(player)) {
+			res.add("Dałem Plinkowi jego misia.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "PlinksToy";
+		return "Zabawka Plinka";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Plink";
+		return npc.getName();
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_SURROUNDS;
 	}
-	
 }

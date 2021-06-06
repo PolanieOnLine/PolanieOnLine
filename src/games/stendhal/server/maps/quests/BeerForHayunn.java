@@ -67,34 +67,7 @@ import games.stendhal.server.maps.Region;
 public class BeerForHayunn extends AbstractQuest {
 	public static final String QUEST_SLOT = "beer_hayunn";
 	private static final String OTHER_QUEST_SLOT = "meet_hayunn";
-
-	// NPC
-	private static final String NPC_NAME = "Hayunn Naratha";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Rozmawiałem z Hayunn.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę dać soku z chmielu dla Hayunn.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Dam Hayunn sok z chmielu.");
-		}
-		if ("start".equals(questState) && player.isEquipped("sok z chmielu")
-				|| "done".equals(questState)) {
-			res.add("Mam sok z chmielu.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Dałem sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 500 pd.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Hayunn Naratha");
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
@@ -205,6 +178,30 @@ public class BeerForHayunn extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem z Hayunn.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę dać soku z chmielu dla Hayunn.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Dam Hayunn sok z chmielu.");
+		}
+		if ("start".equals(questState) && player.isEquipped("sok z chmielu")
+				|| "done".equals(questState)) {
+			res.add("Mam sok z chmielu.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Dałem sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 500 pd.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
@@ -226,6 +223,6 @@ public class BeerForHayunn extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

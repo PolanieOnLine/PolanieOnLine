@@ -56,7 +56,6 @@ import marauroa.common.game.IRPZone;
  * 
  * @author edi18028
  */
-
 public class DragonsGuard extends AbstractQuest implements LoginListener {
 	private static final String QUEST_SLOT = "dragons_land";
 

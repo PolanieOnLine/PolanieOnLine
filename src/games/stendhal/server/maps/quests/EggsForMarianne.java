@@ -73,10 +73,7 @@ import games.stendhal.server.maps.Region;
  */
 public class EggsForMarianne extends AbstractQuest {
 	private static final String QUEST_SLOT = "eggs_for_marianne";
-
-	// NPC
-	private static final String NPC_NAME = "Marianne";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Marianne");
 
 	private static final int REQUIRED_EGGS = 12; //a dozen of eggs
 	private static final int REQUIRED_MINUTES = 60; //60 minutes before quest can be repeated
@@ -291,7 +288,7 @@ public class EggsForMarianne extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -41,11 +45,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Quest to fetch water for a thirsty person.
@@ -79,31 +78,23 @@ import java.util.List;
  * 
  * REPEATABLE: 
  */
-
 public class WaterForXhiphin extends AbstractQuest {
-
-	// constants
 	private static final String QUEST_SLOT = "water_for_xhiphin";
-	
+	private final SpeakerNPC npc = npcs.get("Xhiphin Zohos");
+
 	/** To combine with the quest triggers */
 	private static final String EXTRA_TRIGGER = "woda";
-	
-	/** The delay between repeating quests.
-	 * 7200 minutes */
+
+	/**
+	 * The delay between repeating quests.
+	 * 7200 minutes
+	 * */
 	private static final int REQUIRED_MINUTES = 7200;
-	
+
 	/** How the water is marked as clean */
 	private static final String CLEAN_WATER_INFOSTRING = "clean";
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
 	private void requestStep() {
-		final SpeakerNPC npc = npcs.get("Xhiphin Zohos");
-		
 		// player asks about quest for first time (or rejected)
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
@@ -111,7 +102,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED, 
 				"Jestem bardzo spragniony czy mógłbyś przynieść mi trochę świeżej wody?",
 				null);
-		
+
 		// player can repeat quest
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
@@ -119,7 +110,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationStates.QUEST_OFFERED, 
 				"Zaschło mi w gardle z tego gadania czy mógłbyś przynieść mi trochę wody?",
 				null);	
-		
+
 		// player can't repeat quest
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
@@ -127,9 +118,8 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Dzięukję. Nic teraz nie potrzebuję.",
 				null);	
-		
+
 		// if the quest is active we deal with the response to quest/water in a following step
-		
 		// Player agrees to get the water
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, 
@@ -139,7 +129,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				new MultipleActions(
 				        new SetQuestAction(QUEST_SLOT, 0, "start"),
 				        new IncreaseKarmaAction(5.0)));
-		
+
 		// Player says no, they've lost karma
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, 
@@ -150,8 +140,7 @@ public class WaterForXhiphin extends AbstractQuest {
 						new SetQuestAction(QUEST_SLOT, 0, "rejected"),
 						new DecreaseKarmaAction(5.0)));
 	}
-		
-	
+
 	private void checkWaterStep() {
 		final SpeakerNPC waterNPC = npcs.get("Stefan");
 
@@ -172,6 +161,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				player.equipOrPutOnGround(water);
 			}
 		});
+
 		waterNPC.add(ConversationStates.ATTENDING, 
 					Arrays.asList("water", "clean", "check", "woda", "czysta", "czystość", "sprawdzał"),
 					new PlayerHasItemWithHimCondition("woda"),
@@ -179,7 +169,7 @@ public class WaterForXhiphin extends AbstractQuest {
 					"To woda jak dla mnie to wygląda na czystą! Musi być z dobrego źródła.",
 					// take the item and give them a new one with an infostring or mark all?
 					new MultipleActions(actions));
-		
+
 		// player asks about water but doesn't have it with them
 		waterNPC.add(ConversationStates.ATTENDING, 
 					Arrays.asList("water", "clean", "check", "woda", "czysta", "czystość", "sprawdzał"),
@@ -187,13 +177,9 @@ public class WaterForXhiphin extends AbstractQuest {
 					ConversationStates.ATTENDING, 
 					"Możesz zdobyć wodę ze źródła w górach lub z dużych źródeł w podliżu wodospadów. Jeżeli przyniesiesz mi to sprawdzę jej czystość.",
 					null);
-
 	}
 
-	
 	private void finishStep() {
-		final SpeakerNPC npc = npcs.get("Xhiphin Zohos");
-		
 		// Player has got water and it has been checked
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		// make sure we drop the checked water not any other water
@@ -205,7 +191,7 @@ public class WaterForXhiphin extends AbstractQuest {
 		reward.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		reward.add(new IncreaseKarmaAction(5.0));
 		reward.add(new InflictStatusOnNPCAction("woda"));
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
 				new AndCondition(
@@ -214,7 +200,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Bardzo dziękuję! To jest to co chciałem! Przyjmij te mikstury, które dała mi Sarzina.",
 				new MultipleActions(reward));
-		
+
         // player returns with no water at all. 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
@@ -224,7 +210,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Poczekam, aż przyniesiesz mi trochę wody. To słońce strasznie grzeje.",
 				null);
-		
+
         // add the other possibilities
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
@@ -235,25 +221,21 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Hmm... to nie to. Nie ufam Tobie, ale nie jestem pewien czy ta woda nadaje się do picia. Czy mógłbyś się udać do #Stefana i poprosić go o #sprawdzenie?",
 				null);
-		
+
 		npc.addReply("Stefan", "Stefan jest szefem restauracji w hotelu w Fado. Ufam mu w sprawie sprawdzania wody czy nadaje się do jedzenia lub picia. On jest profesjonalistą.");
 		npc.addReply(Arrays.asList("check", "sprawdzenie"), "Przykro mi, ale nie jestem ekspertem w potrawach i napojach. Zapytaj #Stefana.");
-
 	}
-	
-	
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Woda Dla Xhiphin Zohos",
+				"Woda Dla Xhiphina",
 				"Xhiphin Zohos potrzebuje trochę świeżej wody.",
 				true);
 		requestStep();
 		checkWaterStep();
 		finishStep();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -287,21 +269,26 @@ public class WaterForXhiphin extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "WaterForXhiphin";
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
-	
+
+	@Override
+	public String getName() {
+		return "Woda Dla Xhiphina";
+	}
+
 	@Override
 	public int getMinLevel() {
 		return 5;
 	}
-	
+
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.FADO_CITY;
@@ -309,7 +296,6 @@ public class WaterForXhiphin extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Xhiphin Zohos";
+		return npc.getName();
 	}
-	
 }

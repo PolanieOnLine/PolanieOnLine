@@ -39,11 +39,9 @@ import games.stendhal.server.entity.player.Player;
 
 public class BramaZrc extends AbstractQuest {
 	private static final String QUEST_SLOT = "brama_zrc";
-	private static final String ARMOR_DAGOBERT_QUEST_SLOT = "armor_dagobert";
+	private final SpeakerNPC npc = npcs.get("Cień");
 
-	// NPC
-	private static final String NPC_NAME = "Cień";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private static final String ARMOR_DAGOBERT_QUEST_SLOT = "armor_dagobert";
 
 	private static Logger logger = Logger.getLogger(BramaZrc.class);
 
@@ -195,11 +193,11 @@ public class BramaZrc extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add(NPC_NAME + " poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
+		res.add(npc.getName() + " poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
 		if ("dostawca".equals(questState)) {
 			return res;
 		}
-		res.add(NPC_NAME + " jest szczęśliwy z mojej pomocy. W zamian dostałem klucz do bram zakonu.");
+		res.add(npc.getName() + " jest szczęśliwy z mojej pomocy. W zamian dostałem klucz do bram zakonu.");
 		if (isCompleted(player)) {
 			return res;
 		}
@@ -222,6 +220,6 @@ public class BramaZrc extends AbstractQuest {
 	}
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

@@ -83,7 +83,6 @@ import games.stendhal.server.maps.Region;
  */
  public class HelpMrsYeti extends AbstractQuest {
 	private static final String QUEST_SLOT = "mrsyeti";
-
 	private final SpeakerNPC npc = npcs.get("Mrs. Yeti");
 
 	private static final int DELAY_IN_MINUTES = 60*24;

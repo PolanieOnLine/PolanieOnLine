@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -75,7 +74,10 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class Pizza extends AbstractQuest {
+	private static final String QUEST_SLOT = "dostawca_pizzy2";
+
 	private static final Logger logger = Logger.getLogger(Pizza.class);
+
 	private final static Outfit UNIFORM = new Outfit(null, Integer.valueOf(997), null, null, null, null, null, null, null);
 
 	/**
@@ -153,41 +155,7 @@ public class Pizza extends AbstractQuest {
 		}
 	}
 
-	private static final String QUEST_SLOT = "dostawca_pizzy2";
-
 	private static Map<String, CustomerData> customerDB;
-
-
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem Ernesta i zgodził się pomóc przy roznoszeniu pizzy.");
-		if (!"done".equals(questState)) {
-			final String[] questData = questState.split(";");
-			final String customerName = questData[0];
-			final CustomerData customerData = customerDB.get(customerName);
-			res.add("Ernest dał mi " + customerData.flavor + " dla " + customerName + ".");
-			res.add("Ernest powiedział do mnie: \"" + customerData.npcDescription + "\"");
-			if (!isDeliveryTooLate(player)) {
-				res.add("Jeśli pośpiesze się, doniosę pizze jeszcze gorąco.");
-			} else {
-				res.add("Pizza jest już zimna.");
-			}
-		} else {
-			res.add("Mam przy sobie pizzę, którą ostatnio dał mi Ernest.");
-		}
-		return res;
-	}
 
 	// Don't add Sally here, as it would conflict with Ernest telling
 	// about his daughter.
@@ -655,8 +623,38 @@ public class Pizza extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Spotkałem Ernesta i zgodził się pomóc przy roznoszeniu pizzy.");
+		if (!"done".equals(questState)) {
+			final String[] questData = questState.split(";");
+			final String customerName = questData[0];
+			final CustomerData customerData = customerDB.get(customerName);
+			res.add("Ernest dał mi " + customerData.flavor + " dla " + customerName + ".");
+			res.add("Ernest powiedział do mnie: \"" + customerData.npcDescription + "\"");
+			if (!isDeliveryTooLate(player)) {
+				res.add("Jeśli pośpiesze się, doniosę pizze jeszcze gorąco.");
+			} else {
+				res.add("Pizza jest już zimna.");
+			}
+		} else {
+			res.add("Mam przy sobie pizzę, którą ostatnio dał mi Ernest.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "DostawcaPizzy2";
+		return "Gdański Dostawca Pizzy";
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
@@ -40,10 +43,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * QUEST: Snowballs
  * <p>
@@ -61,60 +60,14 @@ import java.util.List;
  * REPETITIONS: <li> Unlimited, but 2 hours of waiting is
  * required between repetitions
  */
-
 public class Snowballs extends AbstractQuest {
+	private static final String QUEST_SLOT = "snowballs";
+	private final SpeakerNPC npc = npcs.get("Mr. Yeti");
 
 	private static final int REQUIRED_SNOWBALLS = 25;
-
 	private static final int REQUIRED_MINUTES = 120;
 
-	private static final String QUEST_SLOT = "snowballs";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT)
-				&& !player.getQuest(QUEST_SLOT).equals("start")
-				&& !player.getQuest(QUEST_SLOT).equals("rejected");
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Poszedłem do jaskiń lodowych i spotkałem się z Panem Yeti.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chciałem tym razem pomóc Mr. Yeti, a on nazłość wysłał mnie w daleką podróż...");
-			return res;
-		}
-		res.add("Mr. Yeti poprosił mnie, abym zebrał dla niego trochę śnieżek. Obiecałem mu to.");
-		if ((player.isEquipped("śnieżka", REQUIRED_SNOWBALLS)) || isCompleted(player)) {
-			res.add("Znalazłem trochę śnieżek, gdy zabiłem kilku lodowych golemów. ");
-		}
-		if (isCompleted(player)) {
-			res.add("Sprawiłem, że Pan Yeti poczuł się szczęśliwy, gdy dałem mu śnieżki, o które prosił.");
-		}
-		if(isRepeatable(player)){
-			res.add("Pan Yeti potrzebuje śnieżek ponownie!");
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Mr. Yeti");
-
 		// says hi without having started quest before
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -126,7 +79,7 @@ public class Snowballs extends AbstractQuest {
 
 		// says hi - got the snow yeti asked for
 		npc.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
+				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new PlayerHasItemWithHimCondition("śnieżka", REQUIRED_SNOWBALLS)),
@@ -136,7 +89,7 @@ public class Snowballs extends AbstractQuest {
 
 		// says hi - didn't get the snow yeti asked for
 		npc.add(ConversationStates.IDLE,
-      ConversationPhrases.GREETING_MESSAGES,
+				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new NotCondition(new PlayerHasItemWithHimCondition("śnieżka", REQUIRED_SNOWBALLS))),
@@ -146,7 +99,7 @@ public class Snowballs extends AbstractQuest {
 
 		// says hi - quest was done before and is now repeatable
 		npc.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
+				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotInStateCondition(QUEST_SLOT, "start"),
@@ -177,11 +130,11 @@ public class Snowballs extends AbstractQuest {
 
 		// asks about quest but already on it
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING,
-			"Już mi obiecałeś, że przyniesiesz kilka śnieżek! Dwadzieścia pięć kulek pamiętaj ...",
-			null);
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "start"),
+				ConversationStates.ATTENDING,
+				"Już mi obiecałeś, że przyniesiesz kilka śnieżek! Dwadzieścia pięć kulek pamiętaj ...",
+				null);
 
 		// asks about quest - has done it but it's repeatable now
 		npc.add(ConversationStates.ATTENDING,
@@ -217,32 +170,30 @@ public class Snowballs extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-
-		final SpeakerNPC npc = npcs.get("Mr. Yeti");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("śnieżka", REQUIRED_SNOWBALLS));
 		reward.add(new IncreaseXPAction(50));
 		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT));
 		// player gets either cod or perch, which we don't have a standard action for
 		// and the npc says the name of the reward, too
-		reward.add(new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						String rewardClass;
-						if (Rand.throwCoin() == 1) {
-							rewardClass = "dorsz";
-						} else {
-							rewardClass = "okoń";
-						}
-						npc.say("Dziękuję! Weź trochę " + rewardClass + "! Nie lubię ich jeść.");
-						final StackableItem reward = (StackableItem) SingletonRepository.getEntityManager().getItem(rewardClass);
-						reward.setQuantity(20);
-						player.equipOrPutOnGround(reward);
-						player.addKarma(20.0);
-						player.notifyWorldAboutChanges();
+		reward.add(
+			new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+					String rewardClass;
+					if (Rand.throwCoin() == 1) {
+						rewardClass = "dorsz";
+					} else {
+						rewardClass = "okoń";
 					}
-				});
+					npc.say("Dziękuję! Weź trochę " + rewardClass + "! Nie lubię ich jeść.");
+					final StackableItem reward = (StackableItem) SingletonRepository.getEntityManager().getItem(rewardClass);
+					reward.setQuantity(20);
+					player.equipOrPutOnGround(reward);
+					player.addKarma(20.0);
+					player.notifyWorldAboutChanges();
+				}
+			});
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
@@ -270,7 +221,7 @@ public class Snowballs extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Śnieżki dla Mr. Yeti",
+				"Śnieżki",
 				"Mieszkańcy lodowego regionu w Faiumoni potrzebują twojej pomocy w uzbieraniu kilku śnieżek dla nich.",
 				false);
 		prepareRequestingStep();
@@ -278,11 +229,41 @@ public class Snowballs extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "Snowballs";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Poszedłem do jaskiń lodowych i spotkałem się z Panem Yeti.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chciałem tym razem pomóc Mr. Yeti, a on nazłość wysłał mnie w daleką podróż...");
+			return res;
+		}
+		res.add("Mr. Yeti poprosił mnie, abym zebrał dla niego trochę śnieżek. Obiecałem mu to.");
+		if ((player.isEquipped("śnieżka", REQUIRED_SNOWBALLS)) || isCompleted(player)) {
+			res.add("Znalazłem trochę śnieżek, gdy zabiłem kilku lodowych golemów. ");
+		}
+		if (isCompleted(player)) {
+			res.add("Sprawiłem, że Pan Yeti poczuł się szczęśliwy, gdy dałem mu śnieżki, o które prosił.");
+		}
+		if(isRepeatable(player)){
+			res.add("Pan Yeti potrzebuje śnieżek ponownie!");
+		}
+		return res;
 	}
 
-		// the djinns, ice golems and ice elementals on the way to yeti caves are quite dangerous
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Śnieżki";
+	}
+
+	// the djinns, ice golems and ice elementals on the way to yeti caves are quite dangerous
 	@Override
 	public int getMinLevel() {
 		return 60;
@@ -290,7 +271,7 @@ public class Snowballs extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Mr. Yeti";
+		return npc.getName();
 	}
 
 	@Override
@@ -298,4 +279,15 @@ public class Snowballs extends AbstractQuest {
 		return Region.SEMOS_YETI_CAVE;
 	}
 
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT)
+				&& !player.getQuest(QUEST_SLOT).equals("start")
+				&& !player.getQuest(QUEST_SLOT).equals("rejected");
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
+	}
 }

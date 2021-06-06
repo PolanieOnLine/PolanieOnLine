@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2010-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on UltimateCollector
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -40,22 +39,15 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
-	public class PierscienRycerza extends AbstractQuest {
-
+public class PierscienRycerza extends AbstractQuest {
 	private static final String QUEST_SLOT = "pierscien_rycerza";
+	private final SpeakerNPC npc = npcs.get("Edgard");
 
 	private static final String MITHRILSHIELD_QUEST_SLOT = "mithrilshield_quest";  
 
 	private static Logger logger = Logger.getLogger(PierscienRycerza.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void checkLevelHelm() {
-		final SpeakerNPC npc = npcs.get("Edgard");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -100,10 +92,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void checkCollectingQuests() {
-		final SpeakerNPC npc = npcs.get("Edgard");
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestCompletedCondition(MITHRILSHIELD_QUEST_SLOT),
 					 new QuestNotStartedCondition(QUEST_SLOT)),
@@ -122,8 +111,6 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void requestItem() {
-		final SpeakerNPC npc = npcs.get("Edgard");
-
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("wyposażenie", "wyposazenie","listę"),
 				new AndCondition(
@@ -219,12 +206,17 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "PierscienRycerza";
+		return "Pierścień Rycerza";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Edgard";
+		return npc.getName();
 	}
 }

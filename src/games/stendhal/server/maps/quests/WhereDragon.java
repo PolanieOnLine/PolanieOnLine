@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on SevenCherubs.
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
@@ -30,18 +35,10 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.PoisonStatus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-
 public class WhereDragon extends AbstractQuest {
 	private static final String QUEST_SLOT = "where_dragon";
 
 	private final HashMap<String, String> dragonHistory = new HashMap<String,String>();
-
 	private void fillHistoryMap() {
 		dragonHistory.put("Antithei",   "Spotkałem Antithei na Kościelisku.");
 		dragonHistory.put("Felcor",     "Spotkałem Felcor w Ados Caves.");
@@ -59,11 +56,6 @@ public class WhereDragon extends AbstractQuest {
 	}
 
 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
 	public boolean isCompleted(final Player player) {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return false;
@@ -72,30 +64,6 @@ public class WhereDragon extends AbstractQuest {
 		final String[] done = npcDoneText.split(";");
 		final int left = 13 - done.length;
 		return left < 0;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (player.hasQuest(QUEST_SLOT)) {
-			final String npcDoneText = player.getQuest(QUEST_SLOT);
-			final String[] done = npcDoneText.split(";");
-			boolean first = true;
-			for (final String dragon : done) {
-				if (!dragon.trim().equals("")) {
-					res.add(dragon.toUpperCase());
-					if (first) {
-						first = false;
-						res.add("Podjąłem się znalezienia wszystkich smoków.");
-					}
-					res.add(dragonHistory.get(dragon));
-				}
-			}
-			if (isCompleted(player)) {
-				res.add("Smoki znalazłem i dostałem nagrodę.");
-			}
-		}
-		return res;
 	}
 
 	static class DragonNPC extends SpeakerNPC {
@@ -181,7 +149,7 @@ public class WhereDragon extends AbstractQuest {
 		final StendhalRPWorld world = SingletonRepository.getRPWorld();
 		fillHistoryMap();
 		fillQuestInfo(
-			"Poszukaj Smoków",
+			"Poszukiwanie Smoków",
 			"Znajdź wszystkie 13 smoków.",
 			false);
 
@@ -242,7 +210,36 @@ public class WhereDragon extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (player.hasQuest(QUEST_SLOT)) {
+			final String npcDoneText = player.getQuest(QUEST_SLOT);
+			final String[] done = npcDoneText.split(";");
+			boolean first = true;
+			for (final String dragon : done) {
+				if (!dragon.trim().equals("")) {
+					res.add(dragon.toUpperCase());
+					if (first) {
+						first = false;
+						res.add("Podjąłem się znalezienia wszystkich smoków.");
+					}
+					res.add(dragonHistory.get(dragon));
+				}
+			}
+			if (isCompleted(player)) {
+				res.add("Smoki znalazłem i dostałem nagrodę.");
+			}
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "WhereDragon";
+		return "Poszukiwanie Smoków";
 	}
 }

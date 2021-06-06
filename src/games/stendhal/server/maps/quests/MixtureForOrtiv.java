@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -37,11 +41,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.ItemCollection;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * QUEST: Mixture for Ortiv
@@ -74,37 +73,15 @@ import java.util.Map;
  * @author Vanessa Julius
  */
 public class MixtureForOrtiv extends AbstractQuest {
-
 	public static final String QUEST_SLOT = "mixture_for_ortiv";
+	private final SpeakerNPC npc = npcs.get("Ortiv Milquetoast");
 
 	/**
 	 * required items for the quest.
 	 */
 	protected static final String NEEDED_ITEMS = "flasza=1;arandula=2;skrzydlica=10;kokuda=1;muchomor=12;lukrecja=2;jabłko=10;napój z winogron=30;czosnek=2;moździerz z tłuczkiem=1";
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Ortiv Milquetoast emerytowanego nauczyciela w jego domku w Kirdneh River.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę teraz pomagać Ortivowi. Powinien sam poszukać składników.");
-		} else if (!"done".equals(questState)) {
-			final ItemCollection missingItems = new ItemCollection();
-			missingItems.addFromQuestStateString(questState);
-			res.add("Wciąż muszę przynieść dla Ortiv " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
-		} else {
-			res.add("Pomogłem dla Ortiv. Teraz może spać bezpiecznie w swoim łóżku. On nagrodził mnie podniesieniem XP i sztyletem mordercy.");
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Ortiv Milquetoast");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new LevelGreaterThanCondition(2),
@@ -185,8 +162,6 @@ public class MixtureForOrtiv extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Ortiv Milquetoast");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
@@ -250,11 +225,31 @@ public class MixtureForOrtiv extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Mikstura dla Ortiva",
+				"Mikstura Ortiva",
 				"Ortiv poprosił mnie o składniki do jego mikstury, która pomoże mu trzymać zabójców i bandytów w piwnicy.",
 				true);
 		prepareRequestingStep();
 		prepareBringingStep();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Ortiv Milquetoast emerytowanego nauczyciela w jego domku w Kirdneh River.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę teraz pomagać Ortivowi. Powinien sam poszukać składników.");
+		} else if (!"done".equals(questState)) {
+			final ItemCollection missingItems = new ItemCollection();
+			missingItems.addFromQuestStateString(questState);
+			res.add("Wciąż muszę przynieść dla Ortiv " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
+		} else {
+			res.add("Pomogłem dla Ortiv. Teraz może spać bezpiecznie w swoim łóżku. On nagrodził mnie podniesieniem XP i sztyletem mordercy.");
+		}
+		return res;
 	}
 
 	@Override
@@ -264,17 +259,12 @@ public class MixtureForOrtiv extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "MixtureForOrtiv";
-	}
-
-	public String getTitle() {
-
-		return "Mikstua dla Ortiva";
+		return "Mikstura Ortiva";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Ortiv Milquetoast";
+		return npc.getName();
 	}
 
 	@Override

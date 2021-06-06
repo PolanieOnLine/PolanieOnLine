@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
@@ -28,12 +33,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.PoisonStatus;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Find the seven cherubs that are all around the world.
@@ -75,45 +74,6 @@ public class SevenCherubs extends AbstractQuest {
 		cherubsHistory.put("Zophiel",   "Spotkałem Zophiel na górze Semos.");
 		cherubsHistory.put("Azazel",    "Spotkałem Azazel na Ados Rock.");
 		cherubsHistory.put("Uriel",     "Spotkałem Uriel na górze Orril.");
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return false;
-		}
-		final String npcDoneText = player.getQuest(QUEST_SLOT);
-		final String[] done = npcDoneText.split(";");
-		final int left = 7 - done.length;
-		return left < 0;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (player.hasQuest(QUEST_SLOT)) {
-			final String npcDoneText = player.getQuest(QUEST_SLOT);
-			final String[] done = npcDoneText.split(";");
-			boolean first = true;
-			for (final String cherub : done) {
-				if (!cherub.trim().equals("")) {
-					if (first) {
-						first = false;
-						res.add("Zacząłem szukać siedmiu aniołków");
-					}
-					res.add(cherubsHistory.get(cherub));
-				}
-			}
-			if (isCompleted(player)) {
-				res.add("Zrobione! Znalazłem je wszystkie!");
-			}
-		}
-		return res;
 	}
 
 	static class CherubNPC extends SpeakerNPC {
@@ -265,7 +225,46 @@ public class SevenCherubs extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (player.hasQuest(QUEST_SLOT)) {
+			final String npcDoneText = player.getQuest(QUEST_SLOT);
+			final String[] done = npcDoneText.split(";");
+			boolean first = true;
+			for (final String cherub : done) {
+				if (!cherub.trim().equals("")) {
+					if (first) {
+						first = false;
+						res.add("Zacząłem szukać siedmiu aniołków");
+					}
+					res.add(cherubsHistory.get(cherub));
+				}
+			}
+			if (isCompleted(player)) {
+				res.add("Zrobione! Znalazłem je wszystkie!");
+			}
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "SevenCherubs";
+		return "Siedem Aniołków";
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return false;
+		}
+		final String npcDoneText = player.getQuest(QUEST_SLOT);
+		final String[] done = npcDoneText.split(";");
+		final int left = 7 - done.length;
+		return left < 0;
 	}
 }

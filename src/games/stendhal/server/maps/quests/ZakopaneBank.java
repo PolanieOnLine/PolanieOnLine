@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on WizardBank.
-
 package games.stendhal.server.maps.quests;
 
 import java.lang.ref.WeakReference;
@@ -49,35 +47,22 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.IRPZone;
 
-/**
- * Controls player access to the Wizard's Bank via an NPC. 
- * <p>He takes a fee to enter. Players are allowed only 5 minutes access at once.
- * 
- * @author kymara
- */
-
 public class ZakopaneBank extends AbstractQuest implements LoginListener {
-
-	// constants
 	private static final String QUEST_SLOT = "zakopane_bank";
 
 	private static final String GRAFINDLE_QUEST_SLOT = "grafindle_gold";
-
 	private static final String ZARA_QUEST_SLOT = "suntan_cream_zara";
 
 	private static final String ZONE_NAME = "int_zakopane_bank_0";
-
 	private static final String ZONE_NAME_1 = "int_zakopane_bank_1";
 
 	/** Time (in Seconds) allowed in the bank. */
 	private static final int TIME = 60 * 5;
-
 	// Cost to access chests
 	private static final int COST = 1000;
 
 	// "static" data
 	private StendhalRPZone zone = null;
-
 	private StendhalRPZone zone_1 = null;
 
 	private SpeakerNPC npc;
@@ -143,9 +128,6 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 			return true;
 		}
 
-		// override hash
-
-
 		@Override
 		public void onTurnReached(final int currentTurn) {
 			// check that the player is still in game and stop the timer
@@ -174,11 +156,6 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 				}
 			}
 		}
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
 	}
 
 	private void createNPC() {
@@ -403,8 +380,13 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZakopaneBank";
+		return "Bank Zakopane";
 	}
 
 	@Override

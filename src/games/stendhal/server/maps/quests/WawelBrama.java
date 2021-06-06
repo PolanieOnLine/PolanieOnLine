@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2010-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on LearnAboutOrbs.
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -24,42 +27,11 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * QUEST: Wawel brama
- *
-
- * </ul>
- */
 public class WawelBrama extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "brama_wawel";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Stanąłem przed bramą Wawelu.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("done")) {
-			res.add("Mam prawo wejść na teren Zamku i stanąć przed królem.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Strażnik");
 
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Strażnik");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
@@ -107,25 +79,44 @@ public class WawelBrama extends AbstractQuest {
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES,
 			null, ConversationStates.QUESTION_1,
 			"Cóż musisz stanąć obok. Podejdź bliżej i powiedz #wejście.", null);
-
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Straż przed Bramą na Wawel.",
-			"Strażnik Sprawdza kto może wejść na teren zamku. Wpuszcza od 100 poziomu.",
+			"Brama Wawel",
+			"Strażnik sprawdza kto może wejść na teren zamku. Wpuszcza od 100 poziomu.",
 			false);
 
 		step1();
 	}
 
 	@Override
-	public String getName() {
-		return "WawelBrama";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Stanąłem przed bramą Wawelu.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("done")) {
+			res.add("Mam prawo wejść na teren Zamku i stanąć przed królem.");
+		}
+		return res;
 	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Brama Wawel";
+	}
+
 	@Override
 	public String getNPCName() {
-		return "Strażnik";
+		return npc.getName();
 	}
 }

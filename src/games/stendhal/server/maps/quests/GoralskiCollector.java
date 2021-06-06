@@ -31,6 +31,7 @@ import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
 
 public class GoralskiCollector extends AbstractQuest implements BringListOfItemsQuest {
 	private static final String QUEST_SLOT = "goralski_kolekcjoner1";
+	private final SpeakerNPC npc = npcs.get("Gazda Bartek");
 
 	private static final List<String> MOUNTAINEER_ITEMS = Arrays.asList("góralski gorset", "kierpce",
 			"chusta góralska", "ciupaga", "góralska spódnica", "góralska biała spódnica");
@@ -59,8 +60,6 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Gazda Bartek");
-
 		// player asks about an individual cloak before accepting the quest
 		for(final String itemName : MOUNTAINEER_ITEMS) {
 			npc.add(ConversationStates.QUEST_OFFERED, itemName, null,
@@ -102,7 +101,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public SpeakerNPC getNPC() {
-		return npcs.get("Gazda Bartek");
+		return npcs.get(npc.getName());
 	}
 
 	@Override
@@ -237,6 +236,6 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String getNPCName() {
-		return "Gazda Bartek";
+		return npc.getName();
 	}
 }

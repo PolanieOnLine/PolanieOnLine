@@ -72,10 +72,7 @@ import games.stendhal.server.maps.Region;
  */
 public class CodedMessageFromFinnFarmer extends AbstractQuest {
 	private static final String QUEST_SLOT = "coded_message";
-
-	// NPC
-	private static final String NPC_NAME = "Finn Farmer";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Finn Farmer");
 
 	private static final int QUEST_INDEX_STATUS = 0;
 	private static final int QUEST_INDEX_MESSAGE = 1;
@@ -335,7 +332,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

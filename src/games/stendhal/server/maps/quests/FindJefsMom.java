@@ -82,10 +82,7 @@ import games.stendhal.server.maps.Region;
  */
 public class FindJefsMom extends AbstractQuest {
 	private static final String QUEST_SLOT = "find_jefs_mom";
-
-	// NPC
-	private static final String NPC_NAME = "Jef";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Jef");
 
 	private static final int REQUIRED_MINUTES = 4320;// 4320 minutes (3 days)
 
@@ -306,7 +303,7 @@ public class FindJefsMom extends AbstractQuest {
 	}
 	@Override
 	public String getNPCName() {
-		return "Jef";
+		return npc.getName();
 	}
 
 	@Override

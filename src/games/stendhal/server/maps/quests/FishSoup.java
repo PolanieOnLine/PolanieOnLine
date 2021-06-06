@@ -60,10 +60,7 @@ import marauroa.common.game.IRPZone;
  */
 public class FishSoup extends AbstractQuest {
 	private static final String QUEST_SLOT = "fishsoup_maker";
-
-	// NPC
-	private static final String NPC_NAME = "Florence Boullabaisse";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Florence Boullabaisse");
 
 	private static final List<String> NEEDED_FOOD = Arrays.asList("pokolec",
 			"dorsz", "palia alpejska", "płotka", "błazenek", "cebula", "makrela",
@@ -424,7 +421,7 @@ public class FishSoup extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

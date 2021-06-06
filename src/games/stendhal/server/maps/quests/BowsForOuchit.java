@@ -66,10 +66,7 @@ import games.stendhal.server.maps.Region;
 
 public class BowsForOuchit extends AbstractQuest {
 	public static final String QUEST_SLOT = "bows_ouchit";
-
-	// NPC
-	private static final String NPC_NAME = "Ouchit";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Ouchit");
 
 	public void prepareQuestStep() {
 		// Add a reply on the trigger phrase "quest" to Ouchit
@@ -279,6 +276,6 @@ public class BowsForOuchit extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

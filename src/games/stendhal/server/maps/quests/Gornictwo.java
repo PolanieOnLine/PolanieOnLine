@@ -40,27 +40,11 @@ import games.stendhal.server.util.TimeUtil;
 public class Gornictwo extends AbstractQuest {
 	private static final String QUEST_SLOT = "gornictwo";
 	private static final String MINES_EXAM = "cech_gornika";
-
 	private final SpeakerNPC npc = npcs.get("Górnik");
 
 	private static final int REQUIRED_MINUTES = 10;
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "Górnictwo";
-	}
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-			"Górnictwo",
-			"Górnik odnaleziony w kopalni pod Zakopcem potrzebuje pomocy w uzupełnieniu informacji o minerałach.",
-			false);
+	private void diggingSteps() {
 		step1();
 		stepDigSulfur();
 		stepPassedExam();
@@ -547,6 +531,15 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+			"Górnictwo",
+			"Górnik odnaleziony w kopalni pod Zakopcem potrzebuje pomocy w uzupełnieniu informacji o minerałach.",
+			false);
+		diggingSteps();
+	}
+
+	@Override
 	public List<String> getHistory(Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -619,6 +612,16 @@ public class Gornictwo extends AbstractQuest {
 		}
 
 		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Górnictwo";
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2010-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on UltimateCollector
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -40,30 +39,19 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
-	public class PierscienBarona extends AbstractQuest {
-
+public class PierscienBarona extends AbstractQuest {
 	private static final String QUEST_SLOT = "pierscien_barona";
+	private final SpeakerNPC npc = npcs.get("eDragon");
 
 	private static final String HUNGRY_JOSHUA_QUEST_SLOT = "hungry_joshua"; 
-
 	private static final String FISHERMANS_LICENSE2_QUEST_SLOT = "fishermans_license2";
-
 	private static final String OBSIDIAN_KNIFE_QUEST_SLOT = "obsidian_knife";
-
 	private static final String MITHRIL_CLOAK_QUEST_SLOT = "mithril_cloak";
-
 	private static final String CIUPAGA_DWA_WASY_QUEST_SLOT = "ciupaga_dwa_wasy";
 
 	private static Logger logger = Logger.getLogger(PierscienBarona.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void checkLevelHelm() {
-		final SpeakerNPC npc = npcs.get("eDragon");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -111,10 +99,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void checkCollectingQuests() {
-		final SpeakerNPC npc = npcs.get("eDragon");
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestCompletedCondition(CIUPAGA_DWA_WASY_QUEST_SLOT),
 					 new QuestNotStartedCondition(QUEST_SLOT)),
@@ -161,8 +146,6 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void requestItem() {
-		final SpeakerNPC npc = npcs.get("eDragon");
-
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("listę", "liste", "pierścień"),
 				new AndCondition( 
@@ -266,12 +249,17 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "EdragonNPC";
+		return "Pierścień Barona";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "eDragon";
+		return npc.getName();
 	}
 }

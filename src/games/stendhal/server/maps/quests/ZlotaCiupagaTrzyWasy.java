@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -43,27 +43,20 @@ import games.stendhal.server.util.TimeUtil;
 /**
  * @author zekkeq
  */
-
 public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
-	private static final int REQUIRED_MINUTES = 1440;
-
 	private static final String QUEST_SLOT = "ciupaga_trzy_wasy";
+	private final SpeakerNPC npc = npcs.get("Hadrin");
 
 	private static final String FRIEND_1 = "goralski_kolekcjoner3";
 	private static final String FRIEND_2 = "belts_collector";
 	private static final String FRIEND_3 = "gloves_collector";
 	private static final String FRIEND_4 = "krolewski_plaszcz";
 
+	private static final int REQUIRED_MINUTES = 1440;
+
 	private static Logger logger = Logger.getLogger(ZlotaCiupagaTrzyWasy.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Hadrin");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -221,8 +214,6 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	}
 
 	private void step_3() { 
-		final SpeakerNPC npc = npcs.get("Hadrin");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("ciupaga", "złota", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -257,7 +248,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Złota Ciupaga Trzy Wąsy",
+			"Złota Ciupaga z Trzema Wąsami",
 			"Hadrin wzmocni twoją Złotą Ciupagę z Dwoma Wąsami.",
 			true);
 		step_1();
@@ -303,12 +294,17 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZlotaCiupagaTrzyWasy";
+		return "Złota Ciupaga z Trzema Wąsami";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Hadrin";
+		return npc.getName();
 	}
 }

@@ -35,6 +35,7 @@ import games.stendhal.server.maps.Region;
 
 public class GoralskiCollector2 extends AbstractQuest {
 	private static final String QUEST_SLOT = "goralski_kolekcjoner2";
+	private final SpeakerNPC npc = npcs.get("Gazda Bartek");
 
 	private static final List<String> neededGoral = Arrays.asList("złota ciupaga", "polska płytowa tarcza",
 			"polska tarcza ciężka", "polska tarcza drewniana", "polska tarcza kolcza", "polska tarcza lekka");
@@ -42,8 +43,6 @@ public class GoralskiCollector2 extends AbstractQuest {
 	public List<String> getNeededItems() {
 		return neededGoral;
 	}
-
-	private final SpeakerNPC npc = npcs.get("Gazda Bartek");
 
 	/**
 	 * Returns a list of the names of all weapons that the given player still

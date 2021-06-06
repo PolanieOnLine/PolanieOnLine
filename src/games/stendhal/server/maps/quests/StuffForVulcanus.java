@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -67,14 +66,13 @@ import games.stendhal.server.util.TimeUtil;
  * </ul>
  */
 public class StuffForVulcanus extends AbstractQuest {
+	private static final String QUEST_SLOT = "immortalsword_quest";
+	private final SpeakerNPC npc = npcs.get("Vulcanus");
 
 	private static final String I_WILL_NEED_SEVERAL_THINGS = "Będę potrzebował kilku rzeczy: ";
-
 	private static final String IN_EXACT_ORDER = "Wróć, gdy będziesz je miał #dokładnie w tej kolejności!";
 
 	private static final int REQUIRED_MINUTES = 10;
-
-	private static final String QUEST_SLOT = "immortalsword_quest";
 
 	private final ItemCollector itemCollector = new ItemCollector();
 
@@ -90,14 +88,7 @@ public class StuffForVulcanus extends AbstractQuest {
 		questLogic.setQuest(this);
 	}
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Vulcanus");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -127,8 +118,7 @@ public class StuffForVulcanus extends AbstractQuest {
 				}
 			});
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
@@ -144,9 +134,6 @@ public class StuffForVulcanus extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Vulcanus");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "start")),
@@ -255,11 +242,6 @@ public class StuffForVulcanus extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "StuffForVulcanus";
-	}
-
-	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new LinkedList<>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -293,6 +275,16 @@ public class StuffForVulcanus extends AbstractQuest {
 		return res;
 	}
 
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Rzeczy dla Vulcanusa";
+	}
+
 	private boolean broughtAllItems(final String questState) {
 		return "start;15;26;12;6".equals(questState);
 	}
@@ -305,9 +297,9 @@ public class StuffForVulcanus extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Vulcanus";
+		return npc.getName();
 	}
-	
+
 	@Override
 	public String getRegion() {
 		return Region.KOTOCH;

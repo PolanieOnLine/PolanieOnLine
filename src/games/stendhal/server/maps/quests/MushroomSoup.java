@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2020-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -34,26 +39,16 @@ import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import marauroa.common.game.IRPZone;
 
 public class MushroomSoup extends AbstractQuest {
+	private static final String QUEST_SLOT = "mushroomsoup_maker";
+	private final SpeakerNPC npc = npcs.get("Granny Alina");
+
 	private static final List<String> NEEDED_FOOD = Arrays.asList("borowik",
 			"pieczarka", "opieńka miodowa", "cebula", "marchew", "por");
 
-	private static final String QUEST_SLOT = "mushroomsoup_maker";
-
 	private static final int REQUIRED_MINUTES = 7;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	/**
 	 * Returns a list of the names of all food that the given player still has
@@ -103,8 +98,6 @@ public class MushroomSoup extends AbstractQuest {
 	}
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Granny Alina");
-
 		// player says hi before starting the quest
 		npc.add(
 			ConversationStates.IDLE,
@@ -222,8 +215,6 @@ public class MushroomSoup extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Granny Alina");
-
 		// player returns while quest is still active
 		npc.add(
 			ConversationStates.IDLE,
@@ -382,8 +373,8 @@ public class MushroomSoup extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zupa grzybowa",
-				"Granny Alina robi pożywną i smaczną zupę grzybową...",
+				"Zupa Grzybowa",
+				"Gospodyni Alina robi pożywną i smaczną zupę grzybową...",
 				false);
 		step_1();
 		step_2();
@@ -399,7 +390,7 @@ public class MushroomSoup extends AbstractQuest {
 			if (!isCompleted(player)) {
 				res.add("Zbieram składniki do zupy grzybowej. Wciąż potrzebuje " + Grammar.enumerateCollection(missingFood(player, false)) + ".");
 			} else if(isRepeatable(player)){
-				res.add("Granny Alina może zrobić mi następną zupę!");
+				res.add("Alina może zrobić dla mnie następną zupę!");
 			} else {
 				res.add("Dostałem kilka smacznych zup grzybowych. Granny Alina jest teraz zajęta zmywaniem naczyń.");
 			}
@@ -407,8 +398,13 @@ public class MushroomSoup extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "MushroomSoup";
+		return "Zupa Grzybowa";
 	}
 
 	@Override
@@ -424,6 +420,6 @@ public class MushroomSoup extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Granny Alina";
+		return npc.getName();
 	}
 }

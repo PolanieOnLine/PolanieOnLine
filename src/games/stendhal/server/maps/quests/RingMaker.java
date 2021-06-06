@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.item.RingOfLife;
@@ -32,11 +35,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 /**
  * QUEST: The Ring Maker
@@ -67,26 +65,16 @@ import java.util.List;
  * not to interfere with that mission.
  */
 public class RingMaker extends AbstractQuest {
+	private static final String QUEST_SLOT = "fix_emerald_ring";
 
 	private static final String FORGING = "forging";
 
 	private static final int REQUIRED_GOLD = 2;
-
 	private static final int REQUIRED_MONEY = 80000;
-
 	private static final int REQUIRED_GEM = 1;
-
 	private static final int REQUIRED_MINUTES = 10;
 
-	private static final String QUEST_SLOT = "fix_emerald_ring";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	void fixRingStep(final SpeakerNPC npc) {
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("pierścień szmaragdowy","pierścień szmaragdowy", "life", "szmaragd"),
 			new AndCondition(new PlayerHasItemWithHimCondition("pierścień szmaragdowy"),
 					         new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, FORGING))),
@@ -246,8 +234,13 @@ public class RingMaker extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "RingMaker";
+		return "Twórca Pierścienia";
 	}
 
 	@Override

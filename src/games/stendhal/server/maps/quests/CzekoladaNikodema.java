@@ -46,10 +46,7 @@ import games.stendhal.server.maps.Region;
 
 public class CzekoladaNikodema extends AbstractQuest {
 	private static final String QUEST_SLOT = "czekolada_nikodema";
-
-	// NPC
-	private static final String NPC_NAME = "Nikodem";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Nikodem");
 
 	/** The delay between repeating quests. */
 	private static final int REQUIRED_MINUTES = 90; // 1 godzina i 30 minut
@@ -236,7 +233,7 @@ public class CzekoladaNikodema extends AbstractQuest {
 	}
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

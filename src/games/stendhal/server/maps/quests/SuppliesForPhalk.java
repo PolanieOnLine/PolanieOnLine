@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -37,13 +43,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /**
  * QUEST: Supplies For Phalk
@@ -76,20 +75,13 @@ import org.apache.log4j.Logger;
  * <li>Not repeatable.</li>
  * </ul>
  */
-
- public class SuppliesForPhalk extends AbstractQuest {
-
+public class SuppliesForPhalk extends AbstractQuest {
  	private static final String QUEST_SLOT = "supplies_for_phalk";
+ 	private final SpeakerNPC npc = npcs.get("Phalk");
 
  	private static Logger logger = Logger.getLogger(SuppliesForPhalk.class);
 
- 	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void askForFood() {
-		final SpeakerNPC npc = npcs.get("Phalk");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -123,8 +115,6 @@ import org.apache.log4j.Logger;
 	}
 
 	private void receiveFood() {
-	final SpeakerNPC npc = npcs.get("Phalk");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("food", "jedzenie", "jedzenia"),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.QUEST_ITEM_QUESTION,
@@ -150,7 +140,6 @@ import org.apache.log4j.Logger;
 				"Dziękuję!!! Jest jeszcze jedna rzecz, którą mógłbyś zrobić dla mnie: moje ubrania są stare i podarte. Potrzebuję nowego #płaszcza i nowej #zbroi. Proszę przynieś mi je i powiedz #ubrania.",
 				new MultipleActions(actions)
 		);
-
 
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION, ConversationPhrases.YES_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -188,11 +177,10 @@ import org.apache.log4j.Logger;
 				ConversationStates.ATTENDING,
 				"Mrotho (mieszka w Ados) powiedział mi, że poszuka dla mnie złotej zbroji. Powiedz mu moje imię.",
 				null);
-
 	}
 
 	private void getCloak() {
-	final SpeakerNPC npc = npcs.get("Wrvil");
+		final SpeakerNPC npc = npcs.get("Wrvil");
 
 		npc.add(ConversationStates.ATTENDING, "Phalk",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),new QuestInStateCondition(QUEST_SLOT, 1, "none")) ,
@@ -240,14 +228,12 @@ import org.apache.log4j.Logger;
 				new MultipleActions(actions)
 		);
 
-
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION, ConversationPhrases.YES_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),new QuestInStateCondition(QUEST_SLOT, 1, "none"),
 				new NotCondition(new PlayerHasItemWithHimCondition("strzała żelazna",20))),
 				ConversationStates.ATTENDING,
 				"Jesteś typem kłamcy. Nieprawdaż? Wróć, gdy będziesz miał zapłatę.",
 				null);
-
 
 		// player got the cloak already but lost it?
 		npc.add(ConversationStates.ATTENDING, "Phalk",
@@ -270,6 +256,7 @@ import org.apache.log4j.Logger;
 					player.equipOrPutOnGround(cloak);
 				}
 			});
+
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION, ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
 						new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),new QuestInStateCondition(QUEST_SLOT, 1, "cloak")),
@@ -291,7 +278,6 @@ import org.apache.log4j.Logger;
 				ConversationStates.ATTENDING,
 				"Dobrze, ale Phalk akceptuje tylko płaszcz krasnoludzki ode mnie z jego imieniem wyszytym.",
 				null);
-
 	}
 
 	private void getArmor() {
@@ -378,6 +364,7 @@ import org.apache.log4j.Logger;
 				player.equipOrPutOnGround(armor);
 			}
 		});
+
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION, ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
 						new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),new QuestInStateCondition(QUEST_SLOT, 2, "armor")),
@@ -399,13 +386,10 @@ import org.apache.log4j.Logger;
 				ConversationStates.ATTENDING,
 				"Dobrze, ale Phalk przyjmie zbroję tylko ode mnie ze swoim imieniem wyrytym na niej.",
 				null);
-
 	}
 
 
 	private void receiveClothes() {
-	final SpeakerNPC npc = npcs.get("Phalk");
-
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new IncreaseXPAction(4000));
 		actions.add(new DropInfostringItemAction("złota zbroja","Phalk"));
@@ -499,17 +483,23 @@ import org.apache.log4j.Logger;
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "SuppliesForPhalk";
+		return "Zapasy dla Phalka";
 	}
 
 	@Override
 	public int getMinLevel() {
 		return 30;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Phalk";
+		return npc.getName();
 	}
 
 	@Override

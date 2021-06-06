@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -116,79 +115,6 @@ public class ObsidianKnife extends AbstractQuest {
 	private static final String NAME = "Alrak";
 
 	private static Logger logger = Logger.getLogger(ObsidianKnife.class);
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Alrak w kuźni w Wofol.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę pomóc Alrakowi.");
-			return res;
-		}
-		res.add("Alrak poprosił mnie o przyniesienie trochę jedzenia.");
-		if (player.isQuestInState(QUEST_SLOT, "szynka", "mięso", "ser")) {
-			res.add("Muszę przynieść " + Grammar.quantityplnoun(REQUIRED_FOOD, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
-			return res;
-		}
-		res.add("Przyniosłem Alrakowi jedzenie.");
-		if (questState.equals("food_brought")) {
-			return res;
-		}
-		res.add("Muszę poprosić w bibliotece o książkę o kamieniach dla Alrak.");
-		if (questState.equals("seeking_book")) {
-			return res;
-		}
-		res.add("Mam książkę, którą Alrak chciał.");
-		if (questState.equals("got_book")) {
-			return res;
-		}
-		res.add("Alrak czyta książkę, którą mu przyniosłem.");
-		if (questState.startsWith("reading")) {
-			return res;
-		}
-        res.add("Alrak powiedzial, ze ksiazka nauczy go jak wykonac saks, brzmialo to calkiem ciekawie.");
-		if (questState.equals("book_read")) {
-			return res;
-		}
-        res.add("Alrak powiedział, że jeśli zabiję czarnego smoka i przyniosę mu dorsza oraz obsydian to zrobi mi nóż.");
-		if (questState.equals("knife_offered")
-		&& !player.hasKilled("czarny smok")) {
-			return res;
-		}
-		res.add("Zabiłem czarnego smoka.");
-		if (questState.equals("knife_offered")
-				&& player.hasKilled("czarny smok")) {
-			return res;
-		}
-		res.add("Przyniosłem dorsza i obsydian.");
-		if (questState.equals("knife_offered")
-				&& player.isEquipped("obsydian")
-				&& player.isEquipped(FISH))  {
-			return res;
-		}
-		res.add("zaniosłem dorsza i obsydian do Alrak. Teraz wyrabia mój nóż.");
-		if (questState.startsWith("forging")) {
-			return res;
-		}
-		res.add("Odebrałem obsydianowego saksa. Jestem wniebowzięty!");
-		if (questState.equals("done")) {
-			return res;
-		}
-		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-		final List<String> debug = new ArrayList<String>();
-		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-		return debug;
-	}
 
 	private void prepareQuestOfferingStep() {
 		final SpeakerNPC npc = npcs.get("Alrak");
@@ -530,8 +456,81 @@ public class ObsidianKnife extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Alrak w kuźni w Wofol.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę pomóc Alrakowi.");
+			return res;
+		}
+		res.add("Alrak poprosił mnie o przyniesienie trochę jedzenia.");
+		if (player.isQuestInState(QUEST_SLOT, "szynka", "mięso", "ser")) {
+			res.add("Muszę przynieść " + Grammar.quantityplnoun(REQUIRED_FOOD, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
+			return res;
+		}
+		res.add("Przyniosłem Alrakowi jedzenie.");
+		if (questState.equals("food_brought")) {
+			return res;
+		}
+		res.add("Muszę poprosić w bibliotece o książkę o kamieniach dla Alrak.");
+		if (questState.equals("seeking_book")) {
+			return res;
+		}
+		res.add("Mam książkę, którą Alrak chciał.");
+		if (questState.equals("got_book")) {
+			return res;
+		}
+		res.add("Alrak czyta książkę, którą mu przyniosłem.");
+		if (questState.startsWith("reading")) {
+			return res;
+		}
+        res.add("Alrak powiedzial, ze ksiazka nauczy go jak wykonac saks, brzmialo to calkiem ciekawie.");
+		if (questState.equals("book_read")) {
+			return res;
+		}
+        res.add("Alrak powiedział, że jeśli zabiję czarnego smoka i przyniosę mu dorsza oraz obsydian to zrobi mi nóż.");
+		if (questState.equals("knife_offered")
+		&& !player.hasKilled("czarny smok")) {
+			return res;
+		}
+		res.add("Zabiłem czarnego smoka.");
+		if (questState.equals("knife_offered")
+				&& player.hasKilled("czarny smok")) {
+			return res;
+		}
+		res.add("Przyniosłem dorsza i obsydian.");
+		if (questState.equals("knife_offered")
+				&& player.isEquipped("obsydian")
+				&& player.isEquipped(FISH))  {
+			return res;
+		}
+		res.add("zaniosłem dorsza i obsydian do Alrak. Teraz wyrabia mój nóż.");
+		if (questState.startsWith("forging")) {
+			return res;
+		}
+		res.add("Odebrałem obsydianowego saksa. Jestem wniebowzięty!");
+		if (questState.equals("done")) {
+			return res;
+		}
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ObsidianKnife";
+		return "Obsydianowy Saks";
 	}
 
 	@Override
@@ -541,7 +540,7 @@ public class ObsidianKnife extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Alrak";
+		return NAME;
 	}
 
 	@Override

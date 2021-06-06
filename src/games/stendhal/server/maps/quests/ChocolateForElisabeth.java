@@ -87,10 +87,7 @@ import games.stendhal.server.maps.Region;
  */
 public class ChocolateForElisabeth extends AbstractQuest {
 	private static final String QUEST_SLOT = "chocolate_for_elisabeth";
-
-	// NPC
-	private static final String NPC_NAME = "Elisabeth";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Elisabeth");
 
 	/** The delay between repeating quests. */
 	private static final int REQUIRED_MINUTES = 60;
@@ -355,7 +352,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

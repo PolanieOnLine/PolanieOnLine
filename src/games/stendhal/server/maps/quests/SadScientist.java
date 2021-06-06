@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -91,91 +90,13 @@ import games.stendhal.server.util.ItemCollection;
  * </ul>
  */
 public class SadScientist extends AbstractQuest {
-
-	private static Logger logger = Logger.getLogger(SadScientist.class);
+	private static final String QUEST_SLOT = "sad_scientist";
 
 	private static final String LETTER_DESCRIPTION = "Oto list dla Vasi Elos.";
-	private static final String QUEST_SLOT = "sad_scientist";
 	private static final int REQUIRED_MINUTES = 20;
 	private static final String NEEDED_ITEMS = "szmaragd=1;obsydian=1;szafir=1;rubin=2;sztabka złota=20;sztabka mithrilu=1";
 
-	@Override
-	public String getName() {
-		return "TheSadScientist";
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		final String questState = player.getQuest(QUEST_SLOT);
-		// it might have been rejected before Vasi even explained what he wanted.
-		if ("rejected".equals(questState)) {
-			res.add("Vasi Elos poprosił mnie o pomoc, ale nie jestem zainteresowany, aby pomóc naukowcowi.");
-			return res;
-		}
-		res.add("Vasi Elos poprosił mnie, abym dostarczył mu złoto i mithril, aby mógł sprawić dla swej słodkiej Very spodnie wysadzane klejnotami jako prezent.");
-		if (getConditionForBeingInCollectionPhase().fire(player,null,null)) {
-			final ItemCollection missingItems = new ItemCollection();
-			missingItems.addFromQuestStateString(questState);
-			res.add("Do zrobienia spodni potrzeba jeszcze: " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
-			return res;
-		}
-		res.add("Vasi Elos potrzebuje spodni cienia. Muszę mu je dostarczyć.");
-		if ("legs".equals(questState)) {
-			return res;
-		}
-		res.add("Vasi Elos wysadza spodnie klejnotami, które mu dostarczyłem.");
-		if (questState.startsWith("making")) {
-			return res;
-		}
-		res.add("Vasi Elos wysłał mnie do Mayor Sakhs, abym dowiedział się gdzie jest Vera.");
-		if ("find_vera".equals(questState) && !player.isEquippedWithInfostring("karteczka", QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Mam straszną wiadomość dla Vasi Elos od Mayora Sakhsa.");
-		if ("find_vera".equals(questState) && player.isEquippedWithInfostring("karteczka", QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Vasi Elos jest taki smutny i zły, że Vera odeszła. Muszę zabić jego własnego brata i dać mu kielich pełen krwi jego brata.");
-		if (questState.startsWith("kill_scientist") && !new KilledForQuestCondition(QUEST_SLOT, 1).fire(player, null, null)) {
-			return res;
-		}
-		res.add("Zabiłem Imperial Scientist Sergej Elos i muszę jako dowód dostarczyć kielich z jego krwią.");
-		if (questState.startsWith("kill_scientist") && new KilledForQuestCondition(QUEST_SLOT, 1).fire(player, null, null)) {
-			return res;
-		}
-		res.add("Vasi Elos jest naprawdę zrozpaczony. Naznaczył spodnie krwią brata.");
-		if (questState.startsWith("decorating")) {
-			return res;
-		}
-		res.add("Spodnie naznaczone krwią są całe czarne. Należą teraz do mnie." +
-				"Ale jakim kosztem.");
-		if ("done".equals(questState)){
-			return res;
-		}
-        // if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-		final List<String> debug = new ArrayList<String>();
-		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-		return debug;
-	}
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-			"Smutny Naukowiec",
-			"Vasi Elos samotny naukowiec chce abym przyniósł mu prezent dla jego dziewczyny.",
-			false);
-		prepareQuestSteps();
-	}
+	private static Logger logger = Logger.getLogger(SadScientist.class);
 
 	private void prepareQuestSteps() {
 		prepareScientist();
@@ -257,9 +178,7 @@ public class SadScientist extends AbstractQuest {
 				action);
 	}
 
-
-	private void playerReturnsWithoutKillingTheImperialScientistOrWithoutGoblet(
-			SpeakerNPC npc) {
+	private void playerReturnsWithoutKillingTheImperialScientistOrWithoutGoblet(SpeakerNPC npc) {
 		final ChatCondition condition = new AndCondition(
 		new GreetingMatchesNameCondition(npc.getName()),
 			new QuestStateStartsWithCondition(QUEST_SLOT, "kill_scientist"),
@@ -388,8 +307,8 @@ public class SadScientist extends AbstractQuest {
 				condition,
 				ConversationStates.IDLE,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES,  "Czy myślisz, że mogę pracować tak szybko? Odejdź. " +
-						"Wróć za"));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES,
+						"Czy myślisz, że mogę pracować tak szybko? Odejdź. Wróć za"));
 	}
 
 	private void bringItemsPhase(final SpeakerNPC npc) {
@@ -409,7 +328,8 @@ public class SadScientist extends AbstractQuest {
 				itemPhaseCondition,
 				ConversationStates.QUESTION_1,
 				null,
-				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Proszę wróć, gdy będziesz miał wszystko co jest potrzebne do zrobienia spodni nabijanych klejnotami. Potrzebuję [items]."));
+				new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+						"Proszę wróć, gdy będziesz miał wszystko co jest potrzebne do zrobienia spodni nabijanych klejnotami. Potrzebuję [items]."));
 
 		//player says no
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES,
@@ -442,7 +362,6 @@ public class SadScientist extends AbstractQuest {
 							));
 		}
 	}
-
 
 //									new SetQuestAction(QUEST_SLOT,"making;"), new SetQuestToTimeStampAction(QUEST_SLOT, 1),
 	/**
@@ -493,14 +412,16 @@ public class SadScientist extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Odejdź!",null);
+				"Odejdź!",
+				null);
 
 		//offer the quest
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
-				"Hm.... Wyglądasz jak byś chciał mi pomóc?",null);
+				"Hm.... Wyglądasz jak byś chciał mi pomóc?",
+				null);
 
 		//accept the quest
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -560,7 +481,86 @@ public class SadScientist extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestCompletedCondition(QUEST_SLOT)),
 				ConversationStates.IDLE,
-				"Odejdź!",null);
+				"Odejdź!",
+				null);
+	}
+
+	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+			"Smutny Naukowiec",
+			"Vasi Elos samotny naukowiec chce abym przyniósł mu prezent dla jego dziewczyny.",
+			false);
+		prepareQuestSteps();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		// it might have been rejected before Vasi even explained what he wanted.
+		if ("rejected".equals(questState)) {
+			res.add("Vasi Elos poprosił mnie o pomoc, ale nie jestem zainteresowany, aby pomóc naukowcowi.");
+			return res;
+		}
+		res.add("Vasi Elos poprosił mnie, abym dostarczył mu złoto i mithril, aby mógł sprawić dla swej słodkiej Very spodnie wysadzane klejnotami jako prezent.");
+		if (getConditionForBeingInCollectionPhase().fire(player,null,null)) {
+			final ItemCollection missingItems = new ItemCollection();
+			missingItems.addFromQuestStateString(questState);
+			res.add("Do zrobienia spodni potrzeba jeszcze: " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
+			return res;
+		}
+		res.add("Vasi Elos potrzebuje spodni cienia. Muszę mu je dostarczyć.");
+		if ("legs".equals(questState)) {
+			return res;
+		}
+		res.add("Vasi Elos wysadza spodnie klejnotami, które mu dostarczyłem.");
+		if (questState.startsWith("making")) {
+			return res;
+		}
+		res.add("Vasi Elos wysłał mnie do Mayor Sakhs, abym dowiedział się gdzie jest Vera.");
+		if ("find_vera".equals(questState) && !player.isEquippedWithInfostring("karteczka", QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Mam straszną wiadomość dla Vasi Elos od Mayora Sakhsa.");
+		if ("find_vera".equals(questState) && player.isEquippedWithInfostring("karteczka", QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Vasi Elos jest taki smutny i zły, że Vera odeszła. Muszę zabić jego własnego brata i dać mu kielich pełen krwi jego brata.");
+		if (questState.startsWith("kill_scientist") && !new KilledForQuestCondition(QUEST_SLOT, 1).fire(player, null, null)) {
+			return res;
+		}
+		res.add("Zabiłem Imperial Scientist Sergej Elos i muszę jako dowód dostarczyć kielich z jego krwią.");
+		if (questState.startsWith("kill_scientist") && new KilledForQuestCondition(QUEST_SLOT, 1).fire(player, null, null)) {
+			return res;
+		}
+		res.add("Vasi Elos jest naprawdę zrozpaczony. Naznaczył spodnie krwią brata.");
+		if (questState.startsWith("decorating")) {
+			return res;
+		}
+		res.add("Spodnie naznaczone krwią są całe czarne. Należą teraz do mnie." +
+				"Ale jakim kosztem.");
+		if ("done".equals(questState)){
+			return res;
+		}
+        // if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Smutny Naukowiec";
 	}
 
 	// The items and surviving in the basement mean we shouldn't direct them till level 100 or so

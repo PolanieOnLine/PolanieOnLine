@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -76,24 +76,17 @@ import games.stendhal.server.util.TimeUtil;
  * </ul>
  */
 public class ZlotaCiupagaJedenWas extends AbstractQuest {
-	private static final int REQUIRED_WAIT_DAYS = 5;
-
-	private static final int REQUIRED_HOURS = 8;
-
 	private static final String QUEST_SLOT = "zlota_ciupaga_was";
+	private final SpeakerNPC npc = npcs.get("Józek");
 
 	private static final String NAGRODA_WIELKOLUDA_QUEST_SLOT = "nagroda_wielkoluda";
 
+	private static final int REQUIRED_WAIT_DAYS = 5;
+	private static final int REQUIRED_HOURS = 8;
+
 	private static Logger logger = Logger.getLogger(ZlotaCiupagaJedenWas.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Józek");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -168,9 +161,6 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Józek");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("ulepszyć", "ulepszyc", "ulepszenia"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -216,7 +206,6 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	}
 
 	private void step_4() {
-		final SpeakerNPC npc = npcs.get("Józek");
 		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
 
 		npc.add(ConversationStates.IDLE, 
@@ -251,7 +240,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Złota ciupaga z jednym wąsem",
+				"Złota Ciupaga z Jednym Wąsem",
 				"Józek wzmocni Twoją złotą ciupagę.",
 				true);
 		step_1();
@@ -301,12 +290,17 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZlotaCiupagaWas";
+		return "Złota Ciupaga z Jednym Wąsem";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Józek";
+		return npc.getName();
 	}
 }

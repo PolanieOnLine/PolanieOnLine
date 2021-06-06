@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on FishermansLicenseQuiz.
-
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -68,11 +66,9 @@ import marauroa.common.game.RPObjectNotFoundException;
  * 
  * @author dine
  */
-
 public class StazNaGornika extends AbstractQuest {
 	static final String QUEST_SLOT = "cech_gornika";
-
-	// TODO: use standard conditions and actions
+	private final SpeakerNPC npc = npcs.get("Bercik");
 
 	private final List<String> speciesList = Arrays.asList("szmaragd", "szafir", "ametyst", "kryształ ametystu",
 			"rubin", "obsydian", "diament", "bursztyn", "ruda żelaza", "ruda srebra", "bryłka złota", "bryłka mithrilu", "sztabka srebra", "sztabka mithrilu", "sztabka złota");
@@ -83,29 +79,6 @@ public class StazNaGornika extends AbstractQuest {
 			"int_koscielisko_stones_room");
 
 	private Item miningOnTable;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Bercika. Po zaliczeniu egzaminu na górnika, moje szanse na wydobycie kamieni zwiększą się.");
-		if (!player.isQuestCompleted(QUEST_SLOT)) {
-			if (remainingTimeToWait(player)>0) {
-				res.add("Jest zbyt wcześnie, aby spróbować ponownie, przystąpić do egzaminu.");
-			} else {
-				res.add("Minelo sporo czasu od oblania ostatniego egzaminu, mogę teraz spróbować ponownie.");
-			}
-		} else {
-			res.add("Egzamin zaliczyłem z wynikiem pozytywnym. Teraz moje szanse znalezienia kamieni szlachetnych są dużo większe.");
-		}
-		return res;
-	}
 
 	public void cleanUpTable() {
 		if (miningOnTable != null) {
@@ -155,10 +128,8 @@ public class StazNaGornika extends AbstractQuest {
 	}
 
 	private void createQuizStep() {
-		final SpeakerNPC minerman = npcs.get("Bercik");
-
 		// Don't Use condition here, because of FishermansLicenseCollector
-		minerman.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, null,
 				ConversationStates.ATTENDING, null,
 				new ChatAction() {
@@ -172,7 +143,7 @@ public class StazNaGornika extends AbstractQuest {
 					}
 				});
 
-		minerman.add(ConversationStates.ATTENDING, Arrays.asList("exam", "egzamin", "egzaminu"), null,
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("exam", "egzamin", "egzaminu"), null,
 				ConversationStates.ATTENDING, null,
 				new ChatAction() {
 					@Override
@@ -193,12 +164,12 @@ public class StazNaGornika extends AbstractQuest {
 					}
 				});
 
-		minerman.add(ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Wróć, gdy będziesz gotowy.",
 				null);
 
-		minerman.add(ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.QUESTION_1,
 				"Dobrze. Pierwsze pytanie brzmi: Co to jest?",
@@ -210,7 +181,7 @@ public class StazNaGornika extends AbstractQuest {
 					}
 				});
 
-		minerman.addMatching(ConversationStates.QUESTION_1, Expression.JOKER, new JokerExprMatcher(),
+		npc.addMatching(ConversationStates.QUESTION_1, Expression.JOKER, new JokerExprMatcher(),
 				new NotCondition(new TriggerInListCondition(ConversationPhrases.GOODBYE_MESSAGES)),
 				ConversationStates.ATTENDING, null,
 				new ChatAction() {
@@ -247,7 +218,7 @@ public class StazNaGornika extends AbstractQuest {
 					}
 				});
 
-		minerman.add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
+		npc.add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
 				ConversationStates.IDLE, "Do widzenia.", new ChatAction() {
 
 			// this should be put into a custom ChatAction for this quest when the quest is refactored
@@ -269,11 +240,36 @@ public class StazNaGornika extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "StazNaGornika";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Bercika. Po zaliczeniu egzaminu na górnika, moje szanse na wydobycie kamieni zwiększą się.");
+		if (!player.isQuestCompleted(QUEST_SLOT)) {
+			if (remainingTimeToWait(player)>0) {
+				res.add("Jest zbyt wcześnie, aby spróbować ponownie, przystąpić do egzaminu.");
+			} else {
+				res.add("Minelo sporo czasu od oblania ostatniego egzaminu, mogę teraz spróbować ponownie.");
+			}
+		} else {
+			res.add("Egzamin zaliczyłem z wynikiem pozytywnym. Teraz moje szanse znalezienia kamieni szlachetnych są dużo większe.");
+		}
+		return res;
 	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Egzamin na Górnika";
+	}
+
 	@Override
 	public String getNPCName() {
-		return "Bercik";
+		return npc.getName();
 	}
 }

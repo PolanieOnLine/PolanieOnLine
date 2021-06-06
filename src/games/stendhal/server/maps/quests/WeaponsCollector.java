@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.Arrays;
+import java.util.List;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -21,9 +23,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuest;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: The Weapons Collector
@@ -51,30 +50,14 @@ import java.util.List;
  * <p>
  * REPETITIONS: None
  */
-public class WeaponsCollector extends AbstractQuest implements
-		BringListOfItemsQuest {
+public class WeaponsCollector extends AbstractQuest implements BringListOfItemsQuest {
+	private static final String QUEST_SLOT = "weapons_collector";
 
 	private static final List<String> neededWeapons = Arrays.asList("berdysz",
 			"miecz zaczepny", "pałasz", "kiścień", "miecz", "katana",
 			"złoty buzdygan", "bułat", "kosa", "miecz elficki");
 
-	private static final String QUEST_SLOT = "weapons_collector";
-
-  private BringListOfItemsQuestLogic bringItems;
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		return bringItems.getHistory(player);
-	}
-
-	@Override
-	public void addToWorld() {
-			fillQuestInfo(
-				"Kolekcjoner Broni",
-				"Balduin, pustelnik, który żyje w górach Ados, ma ekscytujące wyzwanie dla Ciebie.",
-				true);
-		setupAbstractQuest();
-	}
+	private BringListOfItemsQuestLogic bringItems;
 
 	private void setupAbstractQuest() {
 		final BringListOfItemsQuest concreteQuest = this;
@@ -90,11 +73,6 @@ public class WeaponsCollector extends AbstractQuest implements
 	@Override
 	public List<String> getNeededItems() {
 		return neededWeapons;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
 	}
 
 	@Override
@@ -225,8 +203,27 @@ public class WeaponsCollector extends AbstractQuest implements
 	}
 
 	@Override
+	public void addToWorld() {
+			fillQuestInfo(
+				"Kolekcjoner Broni",
+				"Balduin, pustelnik, który żyje w górach Ados, ma ekscytujące wyzwanie dla Ciebie.",
+				true);
+		setupAbstractQuest();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		return bringItems.getHistory(player);
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "WeaponsCollector";
+		return "Kolekcjoner Broni";
 	}
 
  	// it can be a long quest so they can always start it before they can necessarily finish all

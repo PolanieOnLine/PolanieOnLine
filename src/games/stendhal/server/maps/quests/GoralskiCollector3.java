@@ -42,10 +42,7 @@ import games.stendhal.server.maps.Region;
 public class GoralskiCollector3 extends AbstractQuest {
 	private static final String QUEST_SLOT = "goralski_kolekcjoner3";
 	private static final String OLD_QUEST = "goralski_kolekcjoner2";
-
-	// NPC
-	private static final String NPC_NAME = "Gazda Bartek";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Gazda Bartek");
 
     private static final List<String> NEEDEDGORAL3 = Arrays.asList(
     		"złota ciupaga z wąsem", "korale", "pas zbójnicki", "kierpce",
@@ -62,7 +59,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 	 * @return A list of item names
 	 */
 	private List<String> missingitems3(final Player player, final boolean hash) {
-
 		String doneText2 = player.getQuest(QUEST_SLOT);
 		final List<String> neededCopy2 = new LinkedList<String>(NEEDEDGORAL3);
 
@@ -377,6 +373,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

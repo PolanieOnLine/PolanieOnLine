@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on few tasks. Zwracac uwage na zmiany w plikach o sprzedazy owcy, mrs.yeti(biega o czas)
-
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -44,19 +42,14 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class Oscypek extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "oscypek";
+	private final SpeakerNPC npc = npcs.get("Baca Zbyszek");
+
 	private static final int DELAY_IN_MINUTES = 60*3;
+
 	private static Logger logger = Logger.getLogger(Oscypek.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -86,7 +79,6 @@ public class Oscypek extends AbstractQuest {
 	}
 
 	private void step2() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("sheep", "owca"),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING, null,
@@ -120,8 +112,6 @@ public class Oscypek extends AbstractQuest {
 
 
 	private void interpretacion1() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("kowal jacek", "kowal Jacek"),
 				new QuestInStateCondition(QUEST_SLOT, "inter1"),
 				ConversationStates.ATTENDING, null,
@@ -163,8 +153,6 @@ public class Oscypek extends AbstractQuest {
 
 
 	private void step3() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		npc.add(ConversationStates.ATTENDING, "puciera",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "puciera_done"),
 				new PlayerHasItemWithHimCondition("puciera")),
@@ -189,18 +177,16 @@ public class Oscypek extends AbstractQuest {
 			null);
 
 		npc.add(
-				ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "puciera_done"),
-				ConversationStates.ATTENDING,
-				"Prosiłem Ciebie o przyniesienie puciery!",
-				null);
+			ConversationStates.ATTENDING,
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestInStateCondition(QUEST_SLOT, "puciera_done"),
+			ConversationStates.ATTENDING,
+			"Prosiłem Ciebie o przyniesienie puciery!",
+			null);
 	}
 
 
 	private void interpretacion2() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		npc.add(ConversationStates.ATTENDING, "grudziarka",
 				new QuestInStateCondition(QUEST_SLOT, "inter2"),
 				ConversationStates.ATTENDING, null,
@@ -243,8 +229,6 @@ public class Oscypek extends AbstractQuest {
 
 
 	private void step4() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		npc.add(ConversationStates.ATTENDING, "grudziarka",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "grudziarka_done"),
 				new PlayerHasItemWithHimCondition("grudziarka")),
@@ -268,17 +252,15 @@ public class Oscypek extends AbstractQuest {
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "grudziarka_done"),
-				ConversationStates.ATTENDING,
-				"Prosiłem Ciebie o przyniesienie #grudziarki!",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestInStateCondition(QUEST_SLOT, "grudziarka_done"),
+			ConversationStates.ATTENDING,
+			"Prosiłem Ciebie o przyniesienie #grudziarki!",
+			null);
 	}
 
 
 	private void step5() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("polano", "drewno"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "drewno"),
 				new PlayerHasItemWithHimCondition("polano")),
@@ -302,17 +284,15 @@ public class Oscypek extends AbstractQuest {
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "drewno"),
-				ConversationStates.ATTENDING,
-				"Prosiłem Ciebie o przyniesienie #'drewna'!",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestInStateCondition(QUEST_SLOT, "drewno"),
+			ConversationStates.ATTENDING,
+			"Prosiłem Ciebie o przyniesienie #'drewna'!",
+			null);
 		}
 
 
 	private void step6() {
-		final SpeakerNPC npc = npcs.get("Baca Zbyszek");
-
 		final String extraTrigger = "oscypki";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -438,6 +418,11 @@ public class Oscypek extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
 		return "Oscypek";
 	}
@@ -449,6 +434,6 @@ public class Oscypek extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Baca Zbyszek";
+		return npc.getName();
 	}
 }

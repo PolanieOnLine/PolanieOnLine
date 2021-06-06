@@ -68,10 +68,7 @@ import games.stendhal.server.maps.Region;
  */
 public class ArmorForDagobert extends AbstractQuest {
 	private static final String QUEST_SLOT = "armor_dagobert";
-
-	// NPC
-	private static final String NPC_NAME = "Dagobert";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Dagobert");
 
 	private void prepareRequestingStep() {
 		npc.add(
@@ -234,6 +231,6 @@ public class ArmorForDagobert extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

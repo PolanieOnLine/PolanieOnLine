@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
@@ -37,10 +40,6 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: Rainbow Beans
@@ -77,22 +76,15 @@ import java.util.List;
  * </ul>
  */
 public class RainbowBeans extends AbstractQuest {
+	private static final String QUEST_SLOT = "rainbow_beans";
+	private final SpeakerNPC npc = npcs.get("Pdiddi");
 
 	private static final int REQUIRED_LEVEL = 30;
-
 	private static final int REQUIRED_MONEY = 2000;
 
 	private static final int REQUIRED_MINUTES = 6 * 60;
 
-	private static final String QUEST_SLOT = "rainbow_beans";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Pdiddi");
-
 		// player says hi before starting the quest
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -238,9 +230,20 @@ public class RainbowBeans extends AbstractQuest {
 		step_1();
 
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		return new ArrayList<String>();
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "RainbowBeans";
+		return "Magiczne Fasolki";
 	}
 
 	@Override
@@ -266,12 +269,8 @@ public class RainbowBeans extends AbstractQuest {
 	}
 
 	@Override
-	public List<String> getHistory(final Player player) {
-		return new ArrayList<String>();
-	}
-	@Override
 	public String getNPCName() {
-		return "Pdiddi";
+		return npc.getName();
 	}
 
 	@Override

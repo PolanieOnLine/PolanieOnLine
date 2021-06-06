@@ -72,7 +72,6 @@ import games.stendhal.server.util.ItemCollection;
  * </ul>
  */
 public class CrownForTheWannaBeKing extends AbstractQuest {
-
 	/**
 	 * required items for the quest.
 	 */
@@ -103,11 +102,6 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 	 * how much XP is given as the reward.
 	 */
 	private static final int XP_REWARD = 100000;
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	/**
 	 * initialize the introduction and start of the quest.
@@ -272,6 +266,17 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 	}
 
 	@Override
+	public void addToWorld() {
+		step_1();
+		step_2();
+		step_3();
+		fillQuestInfo(
+				"Korona Niedoszłego Króla",
+				"Ivan Abe chce rządzić Kalavan... i potrzebuje korony.",
+				false);
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -294,14 +299,8 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 	}
 
 	@Override
-	public void addToWorld() {
-		step_1();
-		step_2();
-		step_3();
-		fillQuestInfo(
-				"Korona Niedoszłego Króla",
-				"Ivan Abe chce rządzić Kalavan ... i potrzebuje korony.",
-				false);
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override

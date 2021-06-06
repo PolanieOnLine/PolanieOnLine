@@ -69,10 +69,7 @@ import games.stendhal.server.maps.Region;
  */
 public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "gazda_wojtek_daily_item";
-
-	// NPC
-	private static final String NPC_NAME = "Gazda Wojtek";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Gazda Wojtek");
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK; 
@@ -342,7 +339,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

@@ -62,10 +62,7 @@ import marauroa.common.Pair;
  */
 public class DzikiiWilki extends AbstractQuest {
 	private static final String QUEST_SLOT = "dzikie_zwierzyny";
-
-	// NPC
-	private static final String NPC_NAME = "Farmer Mścisław";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Farmer Mścisław");
 
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_DAY;
 
@@ -234,7 +231,7 @@ public class DzikiiWilki extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

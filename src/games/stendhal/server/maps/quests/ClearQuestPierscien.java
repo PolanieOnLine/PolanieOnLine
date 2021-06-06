@@ -37,8 +37,9 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
-	public class ClearQuestPierscien extends AbstractQuest {
+public class ClearQuestPierscien extends AbstractQuest {
 	private static final String QUEST_SLOT = "clear_questy_pierscieni";
+	private final SpeakerNPC npc = npcs.get("eFuR");
 
 	private static final String PIERSCIEN_MIESZCZANINA_QUEST_SLOT = "pierscien_mieszczanina"; 
 	private static final String PIERSCIEN_RYCERZA_QUEST_SLOT = "pierscien_rycerza";
@@ -47,10 +48,6 @@ import games.stendhal.server.entity.player.Player;
 
 	private static final String MITHRIL_CLOAK_QUEST_SLOT = "mithril_cloak";
 	private static final String MITHRILSHIELD_QUEST_SLOT = "mithrilshield_quest";
-
-	// NPC
-	private static final String NPC_NAME = "eFuR";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
 
 	private static Logger logger = Logger.getLogger(PierscienBarona.class);
 
@@ -335,10 +332,9 @@ import games.stendhal.server.entity.player.Player;
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Anulowanie zadań",
+				"Anulowanie Zadań",
 				"eFuR anuluje zadania w zamian za opłatę...",
 				true);
-
 		checkLevelHelm(); 
 		checkCollectingQuests();
 		requestItem();
@@ -346,62 +342,59 @@ import games.stendhal.server.entity.player.Player;
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			final String questState = player.getQuest(QUEST_SLOT);
-			res.add("Napotkałem przedziwnego smoka, który karze się nazywać eFuR.");
-			res.add("Zaproponował mi anulowanie jednego z zadań na pierścień mieszczanina lub ryczerza lub barona lub magnata lub na płaszcz lub na tarcze z mithrilu.");
-			if ("rejected".equals(questState)) {
-				res.add("Narazie stan zadań niech zostanie taki jaki jest...");
-				return res;
-			}
-			if ("start".equals(questState)) {
-				return res;
-			}
-			res.add("eFuR zażądał za anulowanie zadania na pierścień mieszczanina 250 000 money i 30 sztabek złota. Hasło: mieszczanin.");
-			if ("mieszczanin".equals(questState)) {
-				return res;
-			}
-
-			res.add("eFuR zażądał za anulowanie zadania na pierścień rycerza 350 000 money i 50 sztabek złota. Hasło: rycerz.");
-			if ("rycerz".equals(questState)) {
-				return res;
-			}
-
-			res.add("eFuR zażądał za anulowanie zadania na pierścień barona 450 000 money i 70 sztabek złota. Hasło: baron.");
-			if ("baron".equals(questState)) {
-				return res;
-			}
-
-			res.add("eFuR zażądał za anulowanie zadania na pierścień magnata 600 000 money i 100 sztabek złota. Hasło: magnat.");
-			if ("magnat".equals(questState)) {
-				return res;
-			}
-			res.add("eFuR zażądał za anulowanie zadania na płaszcz z mithrilu 2 000 000 money. Hasło: płaszcz.");
-			if ("magnat".equals(questState)) {
-				return res;
-			}
-			res.add("eFuR zażądał za anulowanie zadania na tarczę z mithrilu 1 500 000 money. Hasło: tarcza.");
-			if ("magnat".equals(questState)) {
-				return res;
-			}
-			// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-			final List<String> debug = new ArrayList<String>();
-			debug.add("Stan zadania to: " + questState);
-			logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-			return debug;
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		res.add("Napotkałem przedziwnego smoka, który karze się nazywać eFuR.");
+		res.add("Zaproponował mi anulowanie jednego z zadań na pierścień mieszczanina lub ryczerza lub barona lub magnata lub na płaszcz lub na tarcze z mithrilu.");
+		if ("rejected".equals(questState)) {
+			res.add("Narazie stan zadań niech zostanie taki jaki jest...");
+			return res;
+		}
+		if ("start".equals(questState)) {
+			return res;
+		}
+		res.add("eFuR zażądał za anulowanie zadania na pierścień mieszczanina 250 000 money i 30 sztabek złota. Hasło: mieszczanin.");
+		if ("mieszczanin".equals(questState)) {
+			return res;
+		}
+		res.add("eFuR zażądał za anulowanie zadania na pierścień rycerza 350 000 money i 50 sztabek złota. Hasło: rycerz.");
+		if ("rycerz".equals(questState)) {
+			return res;
+		}
+		res.add("eFuR zażądał za anulowanie zadania na pierścień barona 450 000 money i 70 sztabek złota. Hasło: baron.");
+		if ("baron".equals(questState)) {
+			return res;
+		}
+		res.add("eFuR zażądał za anulowanie zadania na pierścień magnata 600 000 money i 100 sztabek złota. Hasło: magnat.");
+		if ("magnat".equals(questState)) {
+			return res;
+		}
+		res.add("eFuR zażądał za anulowanie zadania na płaszcz z mithrilu 2 000 000 money. Hasło: płaszcz.");
+		if ("magnat".equals(questState)) {
+			return res;
+		}
+		res.add("eFuR zażądał za anulowanie zadania na tarczę z mithrilu 1 500 000 money. Hasło: tarcza.");
+		if ("magnat".equals(questState)) {
+			return res;
+		}
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
 	}
 
 	@Override
 	public String getName() {
-		return "Anulowanie zadań";
+		return "Anulowanie Zadań";
 	}
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

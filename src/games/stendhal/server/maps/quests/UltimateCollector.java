@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -40,7 +39,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-
 /**
  * QUEST: Ultimate Collector
  * <p>
@@ -61,79 +59,36 @@ import games.stendhal.server.maps.Region;
  * REPETITIONS: <ul><li> None. </ul>
  */
 public class UltimateCollector extends AbstractQuest {
-
 	/** Quest slot for this quest, the Ultimate Collector */
 	private static final String QUEST_SLOT = "ultimate_collector";
+	private final SpeakerNPC npc = npcs.get("Balduin");
 
 	/** Club of Thorns in Kotoch: The Szaman Orków is the NPC */
 	private static final String CLUB_THORNS_QUEST_SLOT = "club_thorns"; // kotoch
-
 	/** Vampire Sword quest: Hogart is the NPC */
 	private static final String VAMPIRE_SWORD_QUEST_SLOT = "vs_quest"; // dwarf blacksmith
-
 	/** Obsidian Knife quest: Alrak is the NPC */
 	private static final String OBSIDIAN_KNIFE_QUEST_SLOT = "obsidian_knife"; // dwarf blacksmith
-
 	/** Immortal Sword Quest in Kotoch: Vulcanus is the NPC */
 	private static final String IMMORTAL_SWORD_QUEST_SLOT = "immortalsword_quest"; // kotoch
-
 	/** Mithril Cloak quest: Ida is the NPC */
 	private static final String MITHRIL_CLOAK_QUEST_SLOT = "mithril_cloak"; // mithril
-
 	/** Mithril Shield quest: Baldemar is the NPC */
 	private static final String MITHRIL_SHIELD_QUEST_SLOT = "mithrilshield_quest"; // mithril
-
 	/** Cloak Collector 2nd quest: Josephine is the NPC (Completing 2nd requires 1st) */
 	private static final String CLOAKSCOLLECTOR2_QUEST_SLOT = "cloaks_collector_2"; // cloaks
-
 	/** Cloaks For Bario (Freezing Dwarf) quest: Bario is the NPC  */
 	private static final String CLOAKS_FOR_BARIO_QUEST_SLOT = "cloaks_for_bario"; // cloaks
-
 	// private static final String HELP_TOMI_QUEST_SLOT = "help_tomi"; don't require
-
 	/** Elvish Armor quest: Lupos is the NPC */
 	private static final String ELVISH_ARMOR_QUEST_SLOT = "elvish_armor"; // specific for this one
-
 	/** Kanmararn Soldiers quest: Henry is the NPC  */
 	private static final String KANMARARN_QUEST_SLOT = "soldier_henry"; // specific for this one
-
 	/** Weapons Collector 2nd quest: Balduin is the NPC (Completing 2nd requires 1st) */
 	private static final String WEAPONSCOLLECTOR2_QUEST_SLOT = "weapons_collector2";
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Balduin zaproponował mi zadanie na specjalną broń.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę przynosić mu więcej broni.");
-			return res;
-		}
-		res.add("Zaakceptowałem jego ostatnie zadanie na broń i obiecałem przynieść mu specjalną i rzadką broń.");
-		if (!isCompleted(player)) {
-			res.add("Balduin poprosił mnie, aby mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
-		}
-		if (isCompleted(player)) {
-			res.add("Super. Jestem teraz największym kolekcjonerem broni! Mogę Balduinowi sprzedawać czarne przedmioty.");
-		}
-		return res;
-	}
-
 	private void checkCollectingQuests() {
-		final SpeakerNPC npc = npcs.get("Balduin");
-
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestCompletedCondition(WEAPONSCOLLECTOR2_QUEST_SLOT),
@@ -151,7 +106,6 @@ public class UltimateCollector extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Wciąż masz zadanie do wykonania w Kotoch. Szukaj dokładnie, a zostaniesz największym kolekcjonerem!",
 			null);
-
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("challenge", "wyzwanie", "wyzwania"),
@@ -204,10 +158,7 @@ public class UltimateCollector extends AbstractQuest {
 	}
 
 	private void requestItem() {
-
-		final SpeakerNPC npc = npcs.get("Balduin");
 		final Map<String,Integer> items = new HashMap<String, Integer>();
-
 		// the numbers are based on depo's metric for rarity (bigger number = more rare) which may be out of date https://sourceforge.net/tracker/?func=detail&aid=2066597&group_id=1111&atid=973767
 		// nothing rarer than a demon fire sword, and not included items which are quest rewards elsewhere
 		items.put("nihonto",1); // 5169
@@ -243,9 +194,6 @@ public class UltimateCollector extends AbstractQuest {
 	}
 
 	private void collectItem() {
-
-		final SpeakerNPC npc = npcs.get("Balduin");
-
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -282,8 +230,6 @@ public class UltimateCollector extends AbstractQuest {
 	}
 
 	private void offerSteps() {
-  		final SpeakerNPC npc = npcs.get("Balduin");
-
 		// player returns after finishing the quest and says offer
 		npc.add(
 				ConversationStates.ATTENDING,
@@ -292,7 +238,6 @@ public class UltimateCollector extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Kupię czarne przedmioty, ale mogę sobie pozwolić tylko zapłacić skromną cenę.",
 				null);
-
 
 		// player returns when the quest is in progress and says offer
 		npc.add(ConversationStates.ATTENDING,
@@ -314,12 +259,38 @@ public class UltimateCollector extends AbstractQuest {
 		requestItem();
 		collectItem();
 		offerSteps();
+	}
 
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Balduin zaproponował mi zadanie na specjalną broń.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę przynosić mu więcej broni.");
+			return res;
+		}
+		res.add("Zaakceptowałem jego ostatnie zadanie na broń i obiecałem przynieść mu specjalną i rzadką broń.");
+		if (!isCompleted(player)) {
+			res.add("Balduin poprosił mnie, aby mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
+		}
+		if (isCompleted(player)) {
+			res.add("Super. Jestem teraz największym kolekcjonerem broni! Mogę Balduinowi sprzedawać czarne przedmioty.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "UltimateCollector";
+		return "Największy Kolekcjoner Broni";
 	}
 
 	// This is the max level of the min levels for the other quests
@@ -330,7 +301,7 @@ public class UltimateCollector extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Balduin";
+		return npc.getName();
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.Level;
 import games.stendhal.common.parser.Sentence;
@@ -34,10 +38,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.semos.city.SheepBuyerNPC.SheepBuyerSpeakerNPC;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: Sheep Growing for Nishiya
@@ -68,65 +68,15 @@ import java.util.List;
  * </ul>
  */
 public class SheepGrowing extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "sheep_growing";
-	private static final String TITLE = "Sheep Growing for Nishiya";
+	private final SpeakerNPC npc = npcs.get("Nishiya");
+
 	private static final int MIN_XP_GAIN = 30;
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				TITLE,
-				"Nishiya, sprzedawca owiec, obiecał Sato, że da mu owcę. " +
-					"Jest bardzo zajęty i potrzebuje pomocy w opiece nad " +
-					"jedną z owiec i przyprowadzeniu jej do Sato.",
-				true);
-		generalInformationDialogs();
-		preparePlayerGetsSheepStep();
-		preparePlayerHandsOverSheepStep();
-		preparePlayerReturnsStep();
-	}
-	
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new LinkedList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Nishiya zapytał mnie, czy mógłbym zająć się owcą dla niego.");
-		
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Mówiłem Nishiyi, że mam teraz ważniejsze sprawy na głowie... może będę mieć na to czas później.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "handed_over", "done")) {
-			res.add("Obiecuję zaopiekować się jedną z jego owiec.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "handed_over", "done")) {
-			res.add("Przekazałem owcę, by podrosła, Sato. Powinienem wrócić teraz do Nishiyi.");
-		}
-		if(questState.equals("done")) {
-			res.add("Wróciłem do sprzedawcy owiec. Nishiya był bardzo szczęśliwy, że mu pomogłem!");
-		}
-		return res;
-	}
-	
-	@Override
-	public String getName() {
-		return TITLE;
-	}
 	
 	/**
 	 * General information for the player related to the quest.
 	 */
 	private void generalInformationDialogs() {
-		final SpeakerNPC npc = npcs.get("Nishiya");
-		
 		npc.add(ConversationStates.ATTENDING, "Sato", null, ConversationStates.ATTENDING, "Sato zajmuje się skupem owiec w mieście Semos. " +
 				"Znajdziesz go, jeśli pójdziesz ścieżką na wschód.", null);
 		npc.add(ConversationStates.QUEST_OFFERED, "Sato", null, ConversationStates.QUEST_OFFERED, "Sato zajmuje się skupem owiec w mieście Semos. " +
@@ -146,8 +96,6 @@ public class SheepGrowing extends AbstractQuest {
 	 * The step where the player speaks with Nishiya about quests and gets the sheep.
 	 */
 	private void preparePlayerGetsSheepStep() {
-		final SpeakerNPC npc = npcs.get("Nishiya");
-		
 		// If quest is not done or started yet ask player for help (if he does not have a sheep already)
 		ChatCondition playerHasNoSheep = new ChatCondition() {
             @Override
@@ -155,8 +103,7 @@ public class SheepGrowing extends AbstractQuest {
 				return !player.hasSheep();
 			}
 		};
-		npc.add(
-				ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(playerHasNoSheep, 
 						new QuestNotInStateCondition(QUEST_SLOT, "start"), 
@@ -170,8 +117,7 @@ public class SheepGrowing extends AbstractQuest {
 				new SetQuestAction(QUEST_SLOT, "asked"));
 		
 		// If quest is offered and player says no reject the quest
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				new AndCondition(playerHasNoSheep, 
 						new QuestInStateCondition(QUEST_SLOT, "asked")),
@@ -180,8 +126,7 @@ public class SheepGrowing extends AbstractQuest {
 				new SetQuestAction(QUEST_SLOT, "rejected"));
 		
 		// If quest is still active but not handed over do not give an other sheep to the player
-		npc.add(
-				ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(
 					new QuestActiveCondition(QUEST_SLOT),
@@ -202,8 +147,7 @@ public class SheepGrowing extends AbstractQuest {
 				StendhalRPAction.placeat(npc.getZone(), sheep, npc.getX(), npc.getY() + 1);
 			}
 		});
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(playerHasNoSheep, 
 						new QuestInStateCondition(QUEST_SLOT, "asked")),
@@ -251,11 +195,10 @@ public class SheepGrowing extends AbstractQuest {
 					&& player.getSheep().getWeight() >= Sheep.MAX_WEIGHT;
 			}
 		};
-		
+
 		// Sato asks for sheep
 		final SpeakerNPC npc = npcs.get("Sato");
-		npc.add(
-				ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT,"start"),
@@ -264,8 +207,7 @@ public class SheepGrowing extends AbstractQuest {
 				"Cześć. Cóż za piękna i zdrowa owca przyszła tutaj z Tobą! Czyżby była ona dla mnie?",
 				null);
 
-		npc.add(
-				ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT,"start"),
@@ -275,8 +217,7 @@ public class SheepGrowing extends AbstractQuest {
 				null);
 		
 		// Player answers yes - Sheep is given to Sato
-		npc.add(
-				ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT,"start"),
@@ -288,8 +229,7 @@ public class SheepGrowing extends AbstractQuest {
 				new MultipleActions(removeSheepAction));
 		
 		// Player answers no - Sheep stays at player
-		npc.add(
-				ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.NO_MESSAGES,
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT,"start"),
@@ -299,14 +239,13 @@ public class SheepGrowing extends AbstractQuest {
 				null);
         
 
-		npc.add(
-				ConversationStates.ATTENDING, 
+		npc.add(ConversationStates.ATTENDING, 
 				ConversationPhrases.QUEST_MESSAGES,
 						new QuestInStateCondition(QUEST_SLOT, "handed_over"),
 				ConversationStates.ATTENDING, 
 				"Dziękuję za przyniesienie mi owcy Nishiyi! Mój przyjaciel był z tego szczęśliwy.", null);
 	}
-	
+
 	/**
 	 * The step where the player returns to Nishiya to get his reward.
 	 */
@@ -327,19 +266,16 @@ public class SheepGrowing extends AbstractQuest {
 		});
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction( 10 ));
-		
-		final SpeakerNPC npc = npcs.get("Nishiya");
+
 		// Asks player if he handed over the sheep
-		npc.add(
-				ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "handed_over"),
 				ConversationStates.QUEST_ITEM_QUESTION,
 				"Dałeś już owcę Sato?",
 				null);
 		// Player answers yes - give reward
-		npc.add(
-				ConversationStates.QUEST_ITEM_QUESTION,
+		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
 				ConversationPhrases.YES_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "handed_over"),
 				ConversationStates.IDLE,
@@ -347,8 +283,7 @@ public class SheepGrowing extends AbstractQuest {
 				"Naprawdę mi pomogłeś.",
 				new MultipleActions(reward));
 		// Player answers no - 
-		npc.add(
-				ConversationStates.QUEST_ITEM_QUESTION,
+		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
 				ConversationPhrases.NO_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "handed_over"),
 				ConversationStates.IDLE,
@@ -365,12 +300,60 @@ public class SheepGrowing extends AbstractQuest {
 	}
 	
 	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Hodowla Owiec",
+				"Nishiya, sprzedawca owiec, obiecał Sato, że da mu owcę. " +
+					"Jest bardzo zajęty i potrzebuje pomocy w opiece nad " +
+					"jedną z owiec i przyprowadzeniu jej do Sato.",
+				true);
+		generalInformationDialogs();
+		preparePlayerGetsSheepStep();
+		preparePlayerHandsOverSheepStep();
+		preparePlayerReturnsStep();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new LinkedList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Nishiya zapytał mnie, czy mógłbym zająć się owcą dla niego.");
+		
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Mówiłem Nishiyi, że mam teraz ważniejsze sprawy na głowie... może będę mieć na to czas później.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "handed_over", "done")) {
+			res.add("Obiecuję zaopiekować się jedną z jego owiec.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "handed_over", "done")) {
+			res.add("Przekazałem owcę, by podrosła, Sato. Powinienem wrócić teraz do Nishiyi.");
+		}
+		if(questState.equals("done")) {
+			res.add("Wróciłem do sprzedawcy owiec. Nishiya był bardzo szczęśliwy, że mu pomogłem!");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Hodowla Owiec";
+	}
+	
+	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
     }
 
 	@Override
 	public String getNPCName() {
-		return "Nishiya";
+		return npc.getName();
 	}
 }

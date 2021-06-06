@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2010-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on UltimateCollector and HelpMrsYeti.
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -43,68 +42,21 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
 public class PierscienMagnata extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "pierscien_magnata";
+	private final SpeakerNPC npc = npcs.get("Jubiler Zdzichu");
 
 	private static final String CLUB_THORNS_QUEST_SLOT = "club_thorns";
-
 	private static final String KILL_DRAGONS_QUEST_SLOT = "kill_dragons"; 
-
 	private static final String VAMPIRE_SWORD_QUEST_SLOT = "vs_quest"; 
-
 	private static final String IMMORTAL_SWORD_QUEST_SLOT = "immortalsword_quest";
-
 	private static final String FIND_RAT_KIDS_QUEST_SLOT = "find_rat_kids";
-
 	private static final String FIND_GHOSTS_QUEST_SLOT = "find_ghosts";
-
 	private static final String SAD_SCIENTIST_QUEST_SLOT = "sad_scientist"; 
-
 	private static final String PIERSCIEN_BARONA_QUEST_SLOT = "pierscien_barona";
 
 	private static Logger logger = Logger.getLogger(PierscienMagnata.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Jubilera Zdzicha.");
-		res.add("Zaproponował mi pierścień magnata.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie potrzebna mi są błyskotki..");
-			return res;
-		} 
-		if (questState.equals("start")) {
-			return res;
-		} 
-		res.add("Zdzichu poprosił abym mu dostarczył mu parę żeczy. po zdobyciu ich mam mu powiedzieć: pierścień.");
-		if (questState.equals("start")) {
-			return res;
-		} 
-		res.add("Jubiler Zdzichu był zadowolony z mojej postawy. W zamian dostałem pierścień magnata.");
-
-		if (isCompleted(player)) {
-			return res;
-		} 
-
-		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-		final List<String> debug = new ArrayList<String>();
-		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
-		return debug;
-	}
-
 	private void checkLevelHelm() {
-		final SpeakerNPC npc = npcs.get("Jubiler Zdzichu");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -153,10 +105,7 @@ public class PierscienMagnata extends AbstractQuest {
 	}
 
 	private void checkCollectingQuests() {
-		final SpeakerNPC npc = npcs.get("Jubiler Zdzichu");
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 							 new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
@@ -206,8 +155,6 @@ public class PierscienMagnata extends AbstractQuest {
 	}
 
 	private void requestItem() {
-		final SpeakerNPC npc = npcs.get("Jubiler Zdzichu");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("challenge", "pierścień", "pierscien"),
 			new AndCondition(
@@ -283,11 +230,50 @@ public class PierscienMagnata extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "PierscienMagnata";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Jubilera Zdzicha.");
+		res.add("Zaproponował mi pierścień magnata.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie potrzebna mi są błyskotki..");
+			return res;
+		} 
+		if (questState.equals("start")) {
+			return res;
+		} 
+		res.add("Zdzichu poprosił abym mu dostarczył mu parę żeczy. po zdobyciu ich mam mu powiedzieć: pierścień.");
+		if (questState.equals("start")) {
+			return res;
+		} 
+		res.add("Jubiler Zdzichu był zadowolony z mojej postawy. W zamian dostałem pierścień magnata.");
+
+		if (isCompleted(player)) {
+			return res;
+		} 
+
+		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		final List<String> debug = new ArrayList<String>();
+		debug.add("Stan zadania to: " + questState);
+		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		return debug;
 	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Pierścień Magnata";
+	}
+
 	@Override
 	public String getNPCName() {
-		return "Jubiler Zdzichu";
+		return npc.getName();
 	}
 }

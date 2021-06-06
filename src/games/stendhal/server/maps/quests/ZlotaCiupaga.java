@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -73,25 +73,17 @@ import games.stendhal.server.util.TimeUtil;
  * </ul>
  */
 public class ZlotaCiupaga extends AbstractQuest {
-
-	private static final int REQUIRED_WAIT_DAYS = 1;
-
-	private static final int REQUIRED_MINUTES = 360;
-
 	private static final String QUEST_SLOT = "andrzej_make_zlota_ciupaga";
+	private final SpeakerNPC npc = npcs.get("Kowal Andrzej");
 
 	private static final String GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT = "gazda_jedrzej_nagroda";
 
+	private static final int REQUIRED_WAIT_DAYS = 1;
+	private static final int REQUIRED_MINUTES = 360;
+
 	private static Logger logger = Logger.getLogger(ZlotaCiupaga.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Kowal Andrzej");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -151,13 +143,9 @@ public class ZlotaCiupaga extends AbstractQuest {
 			ConversationStates.IDLE,
 			"Twoja strata.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
-
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Kowal Andrzej");
-
-
 		final List<ChatAction> ciupagaactions = new LinkedList<ChatAction>();
 		ciupagaactions.add(new DropItemAction("ciupaga",1));
 		ciupagaactions.add(new DropItemAction("sztabka złota",25));
@@ -192,8 +180,6 @@ public class ZlotaCiupaga extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Kowal Andrzej");
-
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("ciupaga", "złota", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -228,14 +214,13 @@ public class ZlotaCiupaga extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Rzeczy dla Andrzeja",
+			"Złota Ciupaga",
 			"Andrzej o ile na to zasługujesz wykona dla Ciebie złotą ciupagę.",
 			false);
 
 		step_1();
 		step_2();
 		step_3();
-
 	}
 
 	@Override
@@ -282,11 +267,17 @@ public class ZlotaCiupaga extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "ZlotaCiupaga";
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
+
+	@Override
+	public String getName() {
+		return "Złota Ciupaga";
+	}
+
 	@Override
 	public String getNPCName() {
-		return "Kowal Andrzej";
+		return npc.getName();
 	}
 }

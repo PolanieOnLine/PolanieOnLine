@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -28,19 +39,13 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class ZamowienieStrazy extends AbstractQuest {
+	private static final String QUEST_SLOT = "zamowienie_strazy";
+
 	private static final int ILOSC_ZELAZA = 150;
 	private static final int ILOSC_MIEDZI = 40;
 	private static final int ILOSC_ZLOTA = 20;
 
 	private static final String DESCRIPTION = "Oto zamówienie gwardzisty.";
-
-	public static final String QUEST_SLOT = "zamowienie_strazy";
-
-    @Override
-	public List<String> getHistory(final Player player) {
-        final List<String> res = new ArrayList<String>();
-        return res;
-    }
 
 	public void step_1() {
 	    final SpeakerNPC npc = npcs.get("Inez");
@@ -267,6 +272,12 @@ public class ZamowienieStrazy extends AbstractQuest {
         step_7();
     }
 
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		return res;
+	}
+
     @Override
     public String getSlotName() {
         return QUEST_SLOT;
@@ -279,7 +290,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 
     @Override
     public String getName() {
-        return "ZamowienieStrazy";
+        return "Zamówienie Straży";
     }
 
     @Override

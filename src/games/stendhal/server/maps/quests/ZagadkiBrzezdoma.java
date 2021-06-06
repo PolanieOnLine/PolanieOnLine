@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -66,16 +66,11 @@ import games.stendhal.server.entity.player.Player;
  * <li>Not repeatable.</li>
  * </ul>
  */
-
- public class ZagadkiBrzezdoma extends AbstractQuest {
-
+public class ZagadkiBrzezdoma extends AbstractQuest {
 	private static final String QUEST_SLOT = "zagadki";
+
 	private static Logger logger = Logger.getLogger(ZagadkiBrzezdoma.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Brzezdom");
 
@@ -109,7 +104,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void step2() {
-	final SpeakerNPC npc = npcs.get("Brzezdom");
+		final SpeakerNPC npc = npcs.get("Brzezdom");
 
 		npc.add(ConversationStates.ATTENDING, "maryna",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -145,7 +140,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void step3() {
-	final SpeakerNPC npc = npcs.get("Stary Baca");
+		final SpeakerNPC npc = npcs.get("Stary Baca");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("król", "króla"),
 				new QuestInStateCondition(QUEST_SLOT, "baca"),
@@ -185,7 +180,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void step5() {
-	final SpeakerNPC npc = npcs.get("Maryna");	
+		final SpeakerNPC npc = npcs.get("Maryna");	
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("sabała", "sabalik", "jan krzeptowski"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "gorset"),
@@ -231,7 +226,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void step6() {
-	final SpeakerNPC npc = npcs.get("Boguś");
+		final SpeakerNPC npc = npcs.get("Boguś");
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("gąsienica", "gąsienice"),
 				new QuestInStateCondition(QUEST_SLOT, "kapusta"),
@@ -254,7 +249,7 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void step7() {
-	final SpeakerNPC npc = npcs.get("Edgard");
+		final SpeakerNPC npc = npcs.get("Edgard");
 
 		npc.add(ConversationStates.ATTENDING,  "perun",
 				new QuestInStateCondition(QUEST_SLOT, "bogowie"),
@@ -270,8 +265,8 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	private void step8() {
-	final SpeakerNPC npc = npcs.get("Bercik");
-	
+		final SpeakerNPC npc = npcs.get("Bercik");
+
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("armor", "zbroja", "zbroję"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
 				new PlayerHasItemWithHimCondition("czarna zbroja")),
@@ -293,19 +288,18 @@ import games.stendhal.server.entity.player.Player;
 				};
 		});
 
-		npc.add(
-			ConversationStates.ATTENDING, Arrays.asList("armor", "zbroja", "zbroję"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("armor", "zbroja", "zbroję"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"), new NotCondition(new PlayerHasItemWithHimCondition("czarna zbroja"))),
 			ConversationStates.ATTENDING,
 			"Nie posiadasz black armor przy sobie! Edgard mówił, że można liczyć na ciebie! Idź i zdobądź go dla mnie!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
-				new QuestInStateCondition(QUEST_SLOT, "armor"),
-				ConversationStates.ATTENDING,
-				"Czekam na black #armor od Ciebie.",
-				null);
+			ConversationPhrases.QUEST_MESSAGES, 
+			new QuestInStateCondition(QUEST_SLOT, "armor"),
+			ConversationStates.ATTENDING,
+			"Czekam na black #armor od Ciebie.",
+			null);
 	}
 
 	@Override
@@ -323,11 +317,6 @@ import games.stendhal.server.entity.player.Player;
 		step6();
 		step7();
 		step8();
-	}
-
-	@Override
-	public String getName() {
-		return "ZagadkiBrzezdoma";
 	}
 
 	@Override
@@ -382,9 +371,20 @@ import games.stendhal.server.entity.player.Player;
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Zagadki Brzezdoma";
+	}
+
+	@Override
 	public int getMinLevel() {
 		return 60;
 	}
+
 	@Override
 	public String getNPCName() {
 		return "Brzezdom";

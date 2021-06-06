@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -65,6 +64,7 @@ import games.stendhal.server.maps.Region;
 
 public class ScubaLicenseQuiz extends AbstractQuest {
 	private static final String QUEST_SLOT = "get_diving_license";
+	private final SpeakerNPC instructor = npcs.get("Edward");
 
 	private static Map<String, String> anwsers = new HashMap<String, String>();
 	static {
@@ -80,29 +80,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 						"przeziębienie");
 	}
 
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Edwarda byłego nurka, który uczy inne osoby. Jeżeli zdam jego egzamin to dostanę licencję nurka.");
-		if (!player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Pytanie na które muszę odpowiedzieć " + player.getQuest(QUEST_SLOT) + ".");
-		} else {
-			res.add("Zdałem egzamin Edwarda i dostałem licencję nurka.");
-		}
-		return res;
-	}
-
 	private void createLicense() {
-		final SpeakerNPC instructor = npcs.get("Edward");
-
 		instructor.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new GreetingMatchesNameCondition(instructor.getName()), true,
@@ -210,14 +188,35 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Egzamin na Licencję Nurkowania",
+				"Kurs Nurkowania",
 				"Edward przyznaje licencję nurkowania dla tych co zdali egzamin.",
 				false);
 		createLicense();
 	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem Edwarda byłego nurka, który uczy inne osoby. Jeżeli zdam jego egzamin to dostanę licencję nurka.");
+		if (!player.isQuestCompleted(QUEST_SLOT)) {
+			res.add("Pytanie na które muszę odpowiedzieć " + player.getQuest(QUEST_SLOT) + ".");
+		} else {
+			res.add("Zdałem egzamin Edwarda i dostałem licencję nurka.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
 	@Override
 	public String getName() {
-		return "DivingLicenseQuiz";
+		return "Kurs Nurkowania";
 	}
 
 	@Override
@@ -226,14 +225,13 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 	}
 	@Override
 	public String getNPCName() {
-		return "Edward";
+		return instructor.getName();
 	}
 
 	/**
 	 * is scuba diving possible?
 	 */
 	public static class ScubaCondition implements ChatCondition {
-
         @Override
         public boolean fire(Player player, Sentence sentence, Entity npc) {
             return player.isEquippedItemInSlot("armor", "zbroja akwalungowa") && player.isQuestCompleted("get_diving_license");

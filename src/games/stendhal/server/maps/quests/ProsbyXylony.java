@@ -1,6 +1,5 @@
-/****na podstawie zadania KillDragons****/
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -48,17 +47,13 @@ import marauroa.common.Pair;
 
 public class ProsbyXylony extends AbstractQuest {
 	private static final String QUEST_SLOT = "prosby_wiedzmy";
+	private final SpeakerNPC npc = npcs.get("Xylona");
+
 	private static final int DELAY_IN_MINUTES = 60*1;
+
 	private static Logger logger = Logger.getLogger(ProsbyXylony.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step1() {
-		final SpeakerNPC npc = npcs.get("Xylona");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
@@ -95,8 +90,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step2() {
-		final SpeakerNPC npc = npcs.get("Xylona");
-
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
@@ -141,7 +134,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void czas1() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		final String extraTrigger = "składniki";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -180,7 +172,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step3() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "dwuglowyzielonysmok"),
@@ -224,7 +215,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void czas2() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		final String extraTrigger = "smok";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -258,8 +248,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step4() {
-		final SpeakerNPC npc = npcs.get("Xylona");
-
 		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"kielsmoka"),
@@ -290,7 +278,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void czas3() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		final String extraTrigger = "kieł smoka";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -331,7 +318,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step5() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "czarnesmoczysko"),
@@ -381,7 +367,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void czas4() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		final String extraTrigger = "duże smoki";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -416,7 +401,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step6() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"krewsmoka"),
@@ -446,7 +430,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void czas5() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		final String extraTrigger = "krew";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -479,7 +462,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step7() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"glodna"),
@@ -520,7 +502,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void czas6() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		final String extraTrigger = "jedzenie";
 		List<String> questTrigger;
 		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
@@ -568,7 +549,6 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	private void step8() {
-		final SpeakerNPC npc = npcs.get("Xylona");
 		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "ostatnie"),
@@ -789,12 +769,17 @@ public class ProsbyXylony extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ProsbyXylony";
+		return "Prośby Xylony";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Xylona";
+		return npc.getName();
 	}
 }

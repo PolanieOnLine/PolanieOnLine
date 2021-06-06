@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -82,11 +81,6 @@ public class MithrilCloak extends AbstractQuest {
 	private static final String QUEST_SLOT = "mithril_cloak";
 
 	private static Logger logger = Logger.getLogger(MithrilCloak.class);
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	@Override
 	public void addToWorld() {
@@ -241,8 +235,13 @@ public class MithrilCloak extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "MithrilCloak";
+		return "Płaszcz z Mithrilu";
 	}
 
 	// it's a long quest so they can always start it before they can necessarily finish all

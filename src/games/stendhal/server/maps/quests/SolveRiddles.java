@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -70,6 +69,7 @@ import games.stendhal.server.maps.Region;
 
 public class SolveRiddles extends AbstractQuest {
 	private static final String QUEST_SLOT = "solve_riddles";
+
 	private static final int xpreward = 100;
 	private Riddles riddles;
 
@@ -299,7 +299,7 @@ public class SolveRiddles extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Rozwiąż Zagadki",
+				"Rozwiązanie Zagadki",
 				"Musisz rozwiązać zagadki, aby opuścić najgorętszy obszar w Faiumoni.",
 				false);
 		setRiddle("Grim Reaper");
@@ -307,7 +307,7 @@ public class SolveRiddles extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "SolveRiddles";
+		return "Rozwiązanie Zagadki";
 	}
 
 	// there is a minimum level requirement to get into hell - this quest is in hell

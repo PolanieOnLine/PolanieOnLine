@@ -66,10 +66,7 @@ import games.stendhal.server.maps.Region;
  */
 public class ClubOfThorns extends AbstractQuest {
 	private static final String QUEST_SLOT = "club_thorns";
-
-	// NPC
-	private static final String NPC_NAME = "Szaman Orków";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Szaman Orków");
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -186,7 +183,7 @@ public class ClubOfThorns extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

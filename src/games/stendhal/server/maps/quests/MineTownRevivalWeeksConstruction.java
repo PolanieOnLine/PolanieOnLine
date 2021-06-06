@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2010 - Stendhal                      *
+ *                   (C) Copyright 2020-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,15 +24,10 @@ import games.stendhal.server.maps.quests.revivalweeks.LoadableContent;
  * Sets up the construction of Mine Town Revival Weeks
  */
 public class MineTownRevivalWeeksConstruction extends AbstractQuest {
-
-	public static final String QUEST_NAME = "SemosMineTownRevivalWeeksConstruction";
 	private static final String QUEST_SLOT = "semos_mine_town_revival_construction";
-	private List<LoadableContent> content = new LinkedList<LoadableContent>();
+	public static final String QUEST_NAME = "Budowa Festiwalu Odrodzenia Miasta Kopalni";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private List<LoadableContent> content = new LinkedList<LoadableContent>();
 
 	@Override
 	public void addToWorld() {
@@ -58,6 +53,11 @@ public class MineTownRevivalWeeksConstruction extends AbstractQuest {
 			loadableContent.removeFromWorld();
 		}
 		return true;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override

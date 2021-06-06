@@ -58,10 +58,7 @@ import marauroa.common.Pair;
  */
 public class CleanStorageSpace extends AbstractQuest {
 	private static final String QUEST_SLOT = "clean_storage";
-
-	// NPC
-	private static final String NPC_NAME = "Eonna";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Eonna");
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -196,7 +193,7 @@ public class CleanStorageSpace extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

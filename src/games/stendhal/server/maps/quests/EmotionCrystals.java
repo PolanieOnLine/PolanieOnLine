@@ -75,10 +75,7 @@ import games.stendhal.server.maps.Region;
  */
 public class EmotionCrystals extends AbstractQuest {
 	private static final String QUEST_SLOT = "emotion_crystals";
-
-	// NPC
-	private static final String NPC_NAME = "Julius";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Julius");
 
 	private static final String[] crystalColors = { "czerwony", "purpurowy", "żółty", "różowy", "niebieski" };
 
@@ -455,6 +452,6 @@ public class EmotionCrystals extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

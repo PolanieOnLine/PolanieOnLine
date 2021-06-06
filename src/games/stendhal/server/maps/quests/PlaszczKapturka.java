@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -44,53 +44,12 @@ import games.stendhal.server.maps.Region;
 
 public class PlaszczKapturka extends AbstractQuest {
 	private static final String QUEST_SLOT = "plaszcz_kapturka";
+	private final SpeakerNPC npc = npcs.get("Balbina");
 
 	private static final int REQUIRED_MINUTES = 30; // 30 minut
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			if (player.isEquipped("płaszcz kapturka")) {
-				res.add("Balbina opowiedziała mi o swoim marzeniu, aby zostać czerwonym kapturkiem");
-			}
-			return res;
-		}
-		res.add("Spotkałem Balbine wraz z przyjaciółmi w parku zabaw");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę pomagać Balbinie w sprawie płaszcza czarwonego kapturka");
-			return res;
-		}
-		res.add("Chcę pomóc małej Balbinie");
-		if (questState.equals("start")) {
-			res.add("Muszę porozmawiać z jej mamą na temat płaszcza czerwonego kapturka. Słowo: kapturkiem");
-		}
-		if (questState.equals("mummy")) {
-			res.add("Mama Balbiny poleciła mi pójście do miejscowego krawca, by uszyć taki płaszcz. Słowo: Balbina");
-		}
-		if (questState.equals("krawiec")) {
-			res.add("Muszę znaleźć skórę czerwonego smoka dla krawca");
-		}
-		if (player.isEquipped("płaszcz kapturka") || isCompleted(player)) {
-			res.add("Mam już płaszcz kapturka dla Balbiny");
-		}
-		if (isCompleted(player)) {
-			res.add("Przekazałem Balbinie jej wymarzony płaszcz czerwonego kapturka.");
-		}
-		return res;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Balbina");
-
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
@@ -240,8 +199,6 @@ public class PlaszczKapturka extends AbstractQuest {
 	}
 
 	private void step_6() {
-		final SpeakerNPC npc = npcs.get("Balbina");
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("płaszcz czerwonego kapturka"));
 		reward.add(new IncreaseXPAction(5000));
@@ -286,13 +243,52 @@ public class PlaszczKapturka extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			if (player.isEquipped("płaszcz kapturka")) {
+				res.add("Balbina opowiedziała mi o swoim marzeniu, aby zostać czerwonym kapturkiem");
+			}
+			return res;
+		}
+		res.add("Spotkałem Balbine wraz z przyjaciółmi w parku zabaw");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę pomagać Balbinie w sprawie płaszcza czarwonego kapturka");
+			return res;
+		}
+		res.add("Chcę pomóc małej Balbinie");
+		if (questState.equals("start")) {
+			res.add("Muszę porozmawiać z jej mamą na temat płaszcza czerwonego kapturka. Słowo: kapturkiem");
+		}
+		if (questState.equals("mummy")) {
+			res.add("Mama Balbiny poleciła mi pójście do miejscowego krawca, by uszyć taki płaszcz. Słowo: Balbina");
+		}
+		if (questState.equals("krawiec")) {
+			res.add("Muszę znaleźć skórę czerwonego smoka dla krawca");
+		}
+		if (player.isEquipped("płaszcz kapturka") || isCompleted(player)) {
+			res.add("Mam już płaszcz kapturka dla Balbiny");
+		}
+		if (isCompleted(player)) {
+			res.add("Przekazałem Balbinie jej wymarzony płaszcz czerwonego kapturka.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "PlaszczKapturka";
+		return "Płaszcz Kapturka";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Balbina";
+		return npc.getName();
 	}
 
 	@Override

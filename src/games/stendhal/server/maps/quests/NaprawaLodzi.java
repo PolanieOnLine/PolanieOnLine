@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,49 +38,13 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class NaprawaLodzi extends AbstractQuest {
-	
+	private static final String QUEST_SLOT = "naprawa_lodzi";
+	private final SpeakerNPC npc = npcs.get("Tomasz");
+
 	private static final int ILOSC_DREWNA = 20;
 	private static final int ILOSC_RYB = 3;
 
-	private static final String QUEST_SLOT = "naprawa_lodzi";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-			res.add("Spotkałem pewnego rybaka o imieniu Thomas, który chciałby wypłynąć w głębokie wody, ale nie może, ponieważ ma zepsutą łódź.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę pomagać rybakowi.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Obiecałem Thomasowi, że przyniąsę wystarczająco dużo drewna, aby mógł naprawić swoją łódź.");
-		}
-		if (questState.equals("start") && player.isEquipped("polano",
-				ILOSC_DREWNA)
-				|| questState.equals("done")) {
-			res.add("Mam już wystarczająco dużo drewna. Teraz musiałbym zanieść je do Thomasa.");
-		}
-		if (questState.equals("start")
-				&& !player.isEquipped("polano", ILOSC_DREWNA)) {
-			res.add("Jeszcze nie zdobyłem wystarczająco dużo drewna dla rybaka.");
-		}
-		if (questState.equals("done")) {
-			res.add("Zaniosłem drewno rybakowi i w nagrodę od niego otrzymałem rzadkie ryby!");
-		}
-		return res;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Thomas");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, 
 			new QuestCompletedCondition(QUEST_SLOT),
@@ -111,8 +75,6 @@ public class NaprawaLodzi extends AbstractQuest {
 	}
 
 	private void step_2() {
-		final SpeakerNPC npc = npcs.get("Thomas");
-
 		/** Complete the quest */
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("polano", ILOSC_DREWNA));
@@ -147,8 +109,6 @@ public class NaprawaLodzi extends AbstractQuest {
 	}
 
 	private void offerSteps() {
-  		final SpeakerNPC npc = npcs.get("Thomas");
-
 		// player returns after finishing the quest and says offer
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.OFFER_MESSAGES,
@@ -169,7 +129,7 @@ public class NaprawaLodzi extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Naprawa łodzi",
+				"Naprawa Łodzi",
 				"Krakowski rybak potrzebuje pomocy w sprawie naprawienia łodzi.",
 				false);
 		step_1();
@@ -178,8 +138,42 @@ public class NaprawaLodzi extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+			res.add("Spotkałem pewnego rybaka o imieniu Tomasz, który chciałby wypłynąć w głębokie wody, ale nie może, ponieważ ma zepsutą łódź.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.equals("rejected")) {
+			res.add("Nie chcę pomagać rybakowi.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Obiecałem Tomaszowi, że przyniąsę wystarczająco dużo drewna, aby mógł naprawić swoją łódź.");
+		}
+		if (questState.equals("start") && player.isEquipped("polano",
+				ILOSC_DREWNA)
+				|| questState.equals("done")) {
+			res.add("Mam już wystarczająco dużo drewna. Teraz musiałbym zanieść je do Tomasza.");
+		}
+		if (questState.equals("start")
+				&& !player.isEquipped("polano", ILOSC_DREWNA)) {
+			res.add("Jeszcze nie zdobyłem wystarczająco dużo drewna dla rybaka.");
+		}
+		if (questState.equals("done")) {
+			res.add("Zaniosłem drewno rybakowi i w nagrodę od niego otrzymałem rzadkie ryby!");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "NaprawaLodzi";
+		return "Naprawa Łodzi";
 	}
 
 	@Override
@@ -189,6 +183,6 @@ public class NaprawaLodzi extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Thomas";
+		return npc.getName();
 	}
 }

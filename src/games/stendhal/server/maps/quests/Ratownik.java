@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2007-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -33,14 +33,10 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class Ratownik extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "ratownik";
+
 	private static Logger logger = Logger.getLogger(Ratownik.class);
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 	private void step1() {
 		final SpeakerNPC npc = npcs.get("Ratownik Mariusz");
 
@@ -443,6 +439,11 @@ public class Ratownik extends AbstractQuest {
 		debug.add("Stan zadania to: " + questState);
 		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
 		return debug;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override

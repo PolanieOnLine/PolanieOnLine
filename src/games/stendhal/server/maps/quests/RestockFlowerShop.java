@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2013 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -88,41 +88,7 @@ public class RestockFlowerShop extends AbstractQuest {
 	// Quest NPC
 	private final SpeakerNPC npc = npcs.get("Seremela");
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		String npcName = npc.getName();
-		if (player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
-			res.add("Kwiatki wywołują u mnie kichanie.");
-		} else if (!player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			String questState = player.getQuest(QUEST_SLOT);
-			res.add("Zaoferowałem pomoc " + npcName + " w uzupełnieniu zapasów kwiaciarni.");
-
-			final ItemCollection remaining = new ItemCollection();
-			remaining.addFromQuestStateString(questState);
-
-			// Check to avoid ArrayIndexOutOfBoundsException
-			if (!remaining.isEmpty()) {
-				String requestedFlowers = "Wciąż potrzebuję przynieść następujące kwiatki: " + Grammar.enumerateCollection(remaining.toStringList()) + ".";
-				res.add(requestedFlowers);
-			}
-		} else {
-            if (isRepeatable(player)) {
-                res.add("Minęło trochę czasu od ostatniej pomocy " + npcName + ". Może znów potrzebuje mojej pomocy.");
-            } else {
-                res.add("Teraz" + npcName + " ma odpowiedni zapas kwiatów.");
-            }
-		}
-
-		return res;
-	}
-
-
 	private void setupBasicResponses() {
-
 		List<List<String>> keywords = Arrays.asList(
 				Arrays.asList("flower", "kwiat"),
 				ConversationPhrases.HELP_MESSAGES);
@@ -141,7 +107,6 @@ public class RestockFlowerShop extends AbstractQuest {
 	}
 
 	private void setupActiveQuestResponses() {
-
 		// Player asks to be reminded of remaining flowers required
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("flower", "remind", "what", "item", "list", "something", "kwiat", "przypomnij", "co", "przedmiot", "lista", "coś"),
@@ -197,7 +162,6 @@ public class RestockFlowerShop extends AbstractQuest {
 	}
 
 	private void prepareRequestingStep() {
-
 		// Player requests quest
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -234,8 +198,7 @@ public class RestockFlowerShop extends AbstractQuest {
 						new IncreaseKarmaAction(5.0),
 						new StartItemsCollectionWithLimitAction(QUEST_SLOT, 0, flowerTypes, MAX_FLOWERS),
 						new AddItemToCollectionAction(QUEST_SLOT, "woda", REQ_WATER),
-						new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Wspaniale! To jest to czego potrzebuję: [items]."))
-		);
+						new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Wspaniale! To jest to czego potrzebuję: [items].")));
 
 		// Player rejects quest
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -272,8 +235,7 @@ public class RestockFlowerShop extends AbstractQuest {
 							"Dziękuję! Co jeszcze przyniosłeś?",
 							"Nie potrzebuję już tego więcej.",
 							rewardAction,
-							ConversationStates.IDLE
-							));
+							ConversationStates.IDLE));
 		}
 
 		// NPC asks if player brought items
@@ -321,10 +283,47 @@ public class RestockFlowerShop extends AbstractQuest {
 	}
 
 	@Override
-	public boolean isRepeatable(Player player) {
-		return new AndCondition(
-				new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
-				new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)).fire(player, null, null);
+	public void addToWorld() {
+		fillQuestInfo(
+				"Odnowienie Zapasów Kwiaciarni",
+				getNPCName() + " potrzebuje odnowić zapasy kwiaciarni w mieście Nalwor.",
+				true);
+		setupBasicResponses();
+		setupActiveQuestResponses();
+		prepareRequestingStep();
+		prepareBringingStep();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		String npcName = npc.getName();
+		if (player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
+			res.add("Kwiatki wywołują u mnie kichanie.");
+		} else if (!player.isQuestInState(QUEST_SLOT, 0, "done")) {
+			String questState = player.getQuest(QUEST_SLOT);
+			res.add("Zaoferowałem pomoc " + npcName + " w uzupełnieniu zapasów kwiaciarni.");
+
+			final ItemCollection remaining = new ItemCollection();
+			remaining.addFromQuestStateString(questState);
+
+			// Check to avoid ArrayIndexOutOfBoundsException
+			if (!remaining.isEmpty()) {
+				String requestedFlowers = "Wciąż potrzebuję przynieść następujące kwiatki: " + Grammar.enumerateCollection(remaining.toStringList()) + ".";
+				res.add(requestedFlowers);
+			}
+		} else {
+            if (isRepeatable(player)) {
+                res.add("Minęło trochę czasu od ostatniej pomocy " + npcName + ". Może znów potrzebuje mojej pomocy.");
+            } else {
+                res.add("Teraz" + npcName + " ma odpowiedni zapas kwiatów.");
+            }
+		}
+
+		return res;
 	}
 
 	@Override
@@ -339,10 +338,6 @@ public class RestockFlowerShop extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "RestockFlowerShop";
-	}
-
-	public String getTitle() {
 		return "Odnowienie Zapasów Kwiaciarni";
 	}
 
@@ -357,14 +352,9 @@ public class RestockFlowerShop extends AbstractQuest {
 	}
 
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				getTitle(),
-				getNPCName() + " potrzebuje odnowić zapasy kwiaciarni w mieście Nalwor.",
-				true);
-		setupBasicResponses();
-		setupActiveQuestResponses();
-		prepareRequestingStep();
-		prepareBringingStep();
+	public boolean isRepeatable(Player player) {
+		return new AndCondition(
+				new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
+				new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)).fire(player, null, null);
 	}
 }

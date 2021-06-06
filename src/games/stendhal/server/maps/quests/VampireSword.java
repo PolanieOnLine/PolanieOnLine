@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -40,13 +46,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * QUEST: The Vampire Sword
@@ -86,22 +85,13 @@ import java.util.TreeMap;
  * </ul>
  */
 public class VampireSword extends AbstractQuest {
+	private static final String QUEST_SLOT = "vs_quest";
+	private final SpeakerNPC npc = npcs.get("Hogart");
 
 	private static final int REQUIRED_IRON = 50;
-
 	private static final int REQUIRED_MINUTES = 10;
 
-	private static final String QUEST_SLOT = "vs_quest";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void prepareQuestOfferingStep() {
-
-		final SpeakerNPC npc = npcs.get("Hogart");
-
 		// Player asks about quests, and had previously rejected or never asked: offer it
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -150,7 +140,6 @@ public class VampireSword extends AbstractQuest {
 	}
 
 	private void prepareGobletFillingStep() {
-
 		final SpeakerNPC npc = npcs.get("Markovich");
 
 		npc.addGoodbye("*kaszlnięcie* ... Do widzenia ... *kaszlnięcie*");
@@ -178,14 +167,10 @@ public class VampireSword extends AbstractQuest {
 				"sicky_fill_goblet", Arrays.asList("fill", "napełnij"), "czara", requiredResources,
 				5 * 60, true);
 		new ProducerAdder().addProducer(npc, behaviour,
-			"Proszę nie próbuj mnie zabijać...Jestem tylko starym chorym #wampirem. Czy masz #krew, którą mógłbym wypić? Jeżeli masz #'pustą czarę' to napełnię ją krwią z mojego kotła.");
-
+			"Proszę nie próbuj mnie zabijać... Jestem tylko starym chorym #wampirem. Czy masz #krew, którą mógłbym wypić? Jeżeli masz #'pustą czarę' to napełnię ją krwią z mojego kotła.");
 	}
 
 	private void prepareForgingStep() {
-
-		final SpeakerNPC npc = npcs.get("Hogart");
-
 		final List<ChatAction> startforging = new LinkedList<ChatAction>();
 		startforging.add(new DropItemAction("czara"));
 		startforging.add(new DropItemAction("żelazo", 50));
@@ -213,9 +198,9 @@ public class VampireSword extends AbstractQuest {
 						new PlayerHasItemWithHimCondition("czara"),
 						new KilledCondition("lord wampir"),
 						new NotCondition(new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON))),
-		ConversationStates.QUEST_ITEM_BROUGHT,
-		"Stoczyłeś ciężkie boje, aby przynieść ten kielich. Użyję jego zawartość do wykucia ( #forge ) miecza zwanego krwiopijcą",
-		null);
+				ConversationStates.QUEST_ITEM_BROUGHT,
+				"Stoczyłeś ciężkie boje, aby przynieść ten kielich. Użyję jego zawartość do wykucia ( #forge ) miecza zwanego krwiopijcą",
+				null);
 
 		// Player has only an empty goblet currently, remind to go to Catacombs
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -234,9 +219,9 @@ public class VampireSword extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT,"start"),
 						new PlayerHasItemWithHimCondition("czara"),
 						new NotCondition(new KilledCondition("lord wampir"))),
-		ConversationStates.IDLE,
-		"Hm, ta czara jest pusta. Musisz zabić vampira i napełnić ją jego krwią.",
-		null);
+				ConversationStates.IDLE,
+				"Hm, ta czara jest pusta. Musisz zabić vampira i napełnić ją jego krwią.",
+				null);
 
 		// Player lost the empty goblet?
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -286,8 +271,7 @@ public class VampireSword extends AbstractQuest {
 			"Skończyłem wykuwanie Wampirzego Miecza. Zasłużyłeś na niego. Teraz wracam do pracy, Do widzenia!",
 			new MultipleActions(reward));
 
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			Arrays.asList("forge", "wykuj"),
 			null,
 			ConversationStates.QUEST_ITEM_BROUGHT,
@@ -296,8 +280,7 @@ public class VampireSword extends AbstractQuest {
 				+ " #żelazo, aby stworzyć miecz. Nie zapomnij też przynieść czary z krwią wampira.",
 			null);
 
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			"żelazo",
 			null,
 			ConversationStates.IDLE,
@@ -328,14 +311,14 @@ public class VampireSword extends AbstractQuest {
 			res.add("Nie potrzebny mi miecz zwany krwiopijca");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Chcę miecz wysysający krew. Potrzebuję wrócić do Hogarta z czarą wypełnioną krwią");
+			res.add("Chcę miecz wysysający krew. Potrzebuję wrócić do Hogarta z czarą wypełnioną krwią.");
 		}
 		if (questState.equals("start") && player.isEquipped("czara")
 				|| questState.equals("done")) {
-			res.add("Wziąłem pełną czarę do Hogarata i teraz potrzebuję uzbierać 50  żelaza");
+			res.add("Wziąłem pełną czarę do Hogarata i teraz potrzebuję uzbierać 50 żelaza.");
 		}
 		if (player.getQuest(QUEST_SLOT).startsWith("forging;")) {
-			res.add("Wziąłem 50  żelaza i czarę do Hogarta. Teraz wyrabia mój miecz.");
+			res.add("Wziąłem 50 żelaza i czarę do Hogarta. Teraz wyrabia mój miecz.");
 		}
 		if (questState.equals("done")) {
 			res.add("Nareszcie dostałem krwiopijcę.");
@@ -344,8 +327,13 @@ public class VampireSword extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "VampireSword";
+		return "Krwiopijca";
 	}
 
 	@Override
@@ -355,7 +343,7 @@ public class VampireSword extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Hogart";
+		return npc.getName();
 	}
 
 	@Override

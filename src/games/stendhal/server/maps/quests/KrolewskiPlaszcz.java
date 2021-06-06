@@ -74,7 +74,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say(text + " Poszukaj rybaka o imieniu Thomas, potrzebuje pomocy przy naprawie jego łódki!");
+								npc.say(text + " Poszukaj rybaka o imieniu Tomasz, potrzebuje pomocy przy naprawie jego łódki!");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {

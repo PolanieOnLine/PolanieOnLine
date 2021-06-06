@@ -42,7 +42,6 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 
 public class SimpleQuestCreator {
-
 	private static final Logger logger = Logger.getLogger(SimpleQuestCreator.class);
 
 	private static SimpleQuestCreator instance;
@@ -62,7 +61,6 @@ public class SimpleQuestCreator {
 	public static final String ID_ATK = "atk";
 	public static final String ID_RATK = "ratk";
 
-
 	public static SimpleQuestCreator getInstance() {
 		if (instance == null) {
 			instance = new SimpleQuestCreator();
@@ -76,7 +74,6 @@ public class SimpleQuestCreator {
 	}
 
 	public class SimpleQuest extends AbstractQuest {
-
 		private final String QUEST_SLOT;
 		private final String name;
 		private final SpeakerNPC npc;
@@ -394,7 +391,6 @@ public class SimpleQuestCreator {
 					return isRepeatable();
 				}
 			};
-
 
 			npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,

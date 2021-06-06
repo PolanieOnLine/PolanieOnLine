@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,7 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.grammar.Grammar;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -23,10 +25,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuest;
 import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * QUEST: Toys Collector
@@ -49,44 +47,16 @@ import java.util.List;
  * </ul>
  * REPETITIONS: <ul><li> None.</ul>
  */
-public class ToysCollector extends AbstractQuest implements
-		BringListOfItemsQuest {
-
+public class ToysCollector extends AbstractQuest implements BringListOfItemsQuest {
 	private static final String QUEST_SLOT = "toys_collector";
-	
+
 	private static final List<String> neededToys = 
 		Arrays.asList("pluszowy miś", "kości do gry", "koszula");
-		
-	// don't want to use the standard history for this kind of quest for anna as we dont want to say what she needs.
-	@Override
-	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			final String questState = player.getQuest(QUEST_SLOT);
-			if (!"done".equals(questState)) {
-				res.add("Anna chce coś do zabawy. Muszę pomyśleć co ją uszczęśliwi!");
-			} else {
-				res.add("Mam kilka zabawek dla Anna, Jens i George do zabawy.");
-			}
-			return res;
-	}
 
 	private void setupAbstractQuest() {
 		final BringListOfItemsQuest concreteQuest = this;
 		BringListOfItemsQuestLogic bringItems = new BringListOfItemsQuestLogic(concreteQuest);
 		bringItems.addToWorld();
-	}
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Kolekcjoner Zabawek",
-				"Spróbuj znaleść zabawki dla Anny i jej przyjaciół.",
-				false);
-		setupAbstractQuest();
-		specialStuff();
 	}
 
 	private void specialStuff() {
@@ -227,8 +197,33 @@ public class ToysCollector extends AbstractQuest implements
 	}
 
 	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Kolekcjonerka Zabawek",
+				"Spróbuj znaleść zabawki dla Anny i jej przyjaciół.",
+				false);
+		setupAbstractQuest();
+		specialStuff();
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+			final List<String> res = new ArrayList<String>();
+			if (!player.hasQuest(QUEST_SLOT)) {
+				return res;
+			}
+			final String questState = player.getQuest(QUEST_SLOT);
+			if (!"done".equals(questState)) {
+				res.add("Anna chce coś do zabawy. Muszę pomyśleć co ją uszczęśliwi!");
+			} else {
+				res.add("Mam kilka zabawek dla Anna, Jens i George do zabawy.");
+			}
+			return res;
+	}
+
+	@Override
 	public String getName() {
-		return "ToysCollector";
+		return "Kolekcjonerka Zabawek";
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -42,18 +42,13 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
 public class ZlotaCiupagaDwaWasy extends AbstractQuest {
-	private static final int REQUIRED_MINUTES = 720;
-
 	private static final String QUEST_SLOT = "ciupaga_dwa_wasy";
 
 	private static final String KRASNOLUD_QUEST_SLOT = "krasnolud";
 
-	private static Logger logger = Logger.getLogger(ZlotaCiupagaDwaWasy.class);
+	private static final int REQUIRED_MINUTES = 720;
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private static Logger logger = Logger.getLogger(ZlotaCiupagaDwaWasy.class);
 
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Władca Smoków");
@@ -209,7 +204,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Złota Ciupaga Dwa Wąsy",
+			"Złota Ciupaga z Dwoma Wąsami",
 			"Krasnolud wzmocni twoją Złotą Ciupagę z Jednym Wąsem.",
 			true);
 		step_1();
@@ -255,8 +250,13 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZlotaCiupagaDwaWasy";
+		return "Złota Ciupaga z Dwoma Wąsami";
 	}
 
 	@Override

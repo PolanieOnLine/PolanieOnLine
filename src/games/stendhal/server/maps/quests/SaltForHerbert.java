@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2019 - Stendhal                      *
+ *                   (C) Copyright 2019-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -72,59 +72,13 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class SaltForHerbert extends AbstractQuest {
+	private static final String QUEST_SLOT = "salt_for_herbert";
+	private final SpeakerNPC npc = npcs.get("Herbert");
 
 	private static final int REQUIRED_SALT = 8;
-
 	private static final int REQUIRED_MINUTES = 60;
 
-	private static final String QUEST_SLOT = "salt_for_herbert";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(
-				new QuestNotInStateCondition(QUEST_SLOT, "start"),
-				new QuestStartedCondition(QUEST_SLOT),
-				new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Poznałem Herberta.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę pomagać Herbertowi.");
-			return res;
-		}
-		res.add("Chcę pomóc Herbertowi");
-		if (player.isEquipped("sól", REQUIRED_SALT) || isCompleted(player)) {
-			res.add("Wydobyłem potrzebną sól dla Herbarta");
-		}
-		if (isCompleted(player)) {
-			res.add("Zaniosłem Herbertowi sól.");
-		}
-		if(isRepeatable(player)){
-			res.add("Herbert znowu potrzebuje sól.");
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Herbert");
-
 		// player returns with the promised eggs
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -178,38 +132,38 @@ public class SaltForHerbert extends AbstractQuest {
 
 		// first time player asks/ player had rejected
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED,
-				"Potrzebuję soli. " +
-				"Chciałem przygotować dla mojej rodziny obiad, lecz zabrakło mi kamiennej soli! " +
-				"Czy mógłbyś wydobyć ją dla mnie?",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestNotStartedCondition(QUEST_SLOT),
+			ConversationStates.QUEST_OFFERED,
+			"Potrzebuję soli. " +
+			"Chciałem przygotować dla mojej rodziny obiad, lecz zabrakło mi kamiennej soli! " +
+			"Czy mógłbyś wydobyć ją dla mnie?",
+			null);
 
 		// player returns - enough time has passed
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
-						new QuestNotInStateCondition(QUEST_SLOT, "start"),
-						new QuestStartedCondition(QUEST_SLOT),
-						new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)),
-				ConversationStates.QUEST_OFFERED,
-				"Znowu potrzebuję soli! " +
-				"Czy mógłbym Cię ponownie poprosić o zebranie więcej soli dla mnie?",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new AndCondition(
+					new QuestNotInStateCondition(QUEST_SLOT, "start"),
+					new QuestStartedCondition(QUEST_SLOT),
+					new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)),
+			ConversationStates.QUEST_OFFERED,
+			"Znowu potrzebuję soli! " +
+			"Czy mógłbym Cię ponownie poprosić o zebranie więcej soli dla mnie?",
+			null);
 
 		// player returns - enough time has passed
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"),
-				new QuestStartedCondition(QUEST_SLOT),
-				new NotCondition(new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES))),
-				ConversationStates.ATTENDING,
-				null,
-				new SayTimeRemainingAction(QUEST_SLOT,REQUIRED_MINUTES,
-						"Dziękuję! " +
-						"Myślę, że sól, którą mi już przyniosłeś " +
-						"wystarczy na jakąś chwilę..."));
+			ConversationPhrases.QUEST_MESSAGES,
+			new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"),
+			new QuestStartedCondition(QUEST_SLOT),
+			new NotCondition(new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES))),
+			ConversationStates.ATTENDING,
+			null,
+			new SayTimeRemainingAction(QUEST_SLOT,REQUIRED_MINUTES,
+					"Dziękuję! " +
+					"Myślę, że sól, którą mi już przyniosłeś " +
+					"wystarczy na jakąś chwilę..."));
 
 		// player is willing to help
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -230,9 +184,6 @@ public class SaltForHerbert extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Herbert");
-		// player has eggs and tells Marianne, yes, it is for her
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("sól", REQUIRED_SALT));
 		reward.add(new IncreaseXPAction(250));
@@ -286,8 +237,38 @@ public class SaltForHerbert extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Poznałem Herberta.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę pomagać Herbertowi.");
+			return res;
+		}
+		res.add("Chcę pomóc Herbertowi");
+		if (player.isEquipped("sól", REQUIRED_SALT) || isCompleted(player)) {
+			res.add("Wydobyłem potrzebną sól dla Herbarta");
+		}
+		if (isCompleted(player)) {
+			res.add("Zaniosłem Herbertowi sól.");
+		}
+		if(isRepeatable(player)){
+			res.add("Herbert znowu potrzebuje sól.");
+		}
+		return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "SaltForHerbert";
+		return "Sól dla Herberta";
 	}
 
 	@Override
@@ -297,11 +278,24 @@ public class SaltForHerbert extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Herbert";
+		return npc.getName();
 	}
 
 	@Override
 	public String getRegion() {
 		return Region.WIELICZKA;
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestNotInStateCondition(QUEST_SLOT, "start"),
+				new QuestStartedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }

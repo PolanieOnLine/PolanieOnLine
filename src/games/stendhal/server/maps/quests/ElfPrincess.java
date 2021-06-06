@@ -84,10 +84,7 @@ import games.stendhal.server.maps.Region;
  */
 public class ElfPrincess extends AbstractQuest {
 	private static final String QUEST_SLOT = "elf_princess";
-
-	// NPC
-	private static final String NPC_NAME = "Tywysoga";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Tywysoga");
 
     /* delay in minutes */
 	private static final int DELAY = 5;
@@ -321,7 +318,7 @@ public class ElfPrincess extends AbstractQuest {
 	}
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

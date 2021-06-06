@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -68,21 +67,13 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class ZekielsPracticalTestQuest extends AbstractQuest {
+	private static final String QUEST_SLOT = "zekiels_practical_test";
+	private final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
 
 	private static final int REQUIRED_IRON = 2;
-
 	private static final int REQUIRED_BEESWAX = 6;
 
-	private static final String QUEST_SLOT = "zekiels_practical_test";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void prepareQuestOfferingStep() {
-		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
-
 		// player asks about quest when he has not started it
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -144,8 +135,6 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void bringItemsStep() {
-		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
-
 		// player returns with iron but no beeswax
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
@@ -189,15 +178,15 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 
 		// player returned after climbing the tower partially. reset status to candles done and start again
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new OrCondition(
-								new QuestInStateCondition(QUEST_SLOT,"first_step"),
-								new QuestInStateCondition(QUEST_SLOT,"second_step"),
-								new QuestInStateCondition(QUEST_SLOT,"third_step"),
-								new QuestInStateCondition(QUEST_SLOT,"fourth_step"),
-								new QuestInStateCondition(QUEST_SLOT,"fifth_step"),
-								new QuestInStateCondition(QUEST_SLOT,"sixth_step"),
-								new QuestInStateCondition(QUEST_SLOT,"last_step"))),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new OrCondition(
+							new QuestInStateCondition(QUEST_SLOT,"first_step"),
+							new QuestInStateCondition(QUEST_SLOT,"second_step"),
+							new QuestInStateCondition(QUEST_SLOT,"third_step"),
+							new QuestInStateCondition(QUEST_SLOT,"fourth_step"),
+							new QuestInStateCondition(QUEST_SLOT,"fifth_step"),
+							new QuestInStateCondition(QUEST_SLOT,"sixth_step"),
+							new QuestInStateCondition(QUEST_SLOT,"last_step"))),
 			ConversationStates.ATTENDING,
 			"Witaj! Nie zdałeś egzaminu praktycznego. Powiedz mi, jeśli chcesz go teraz #powtórzyć " +
 			"albo jeśli chcesz się najpierw czegoś #dowiedzieć.",
@@ -205,8 +194,6 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void practicalTestStep() {
-		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
-
 		// player returns after bringing the candles but hasn't tried to climb tower
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
@@ -273,7 +260,6 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void finishQuestStep() {
-
 		// NOTE: this is a different NPC from Zekiel Strażnik used above. This one 'finishes' the quest
 		// and is in int_semos_wizards_tower_7, not the basement.
 		final SpeakerNPC npc = npcs.get("Zekiel");
@@ -292,10 +278,6 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	private void questFinished() {
-
-		// this is the basement level normal Zekiel Strażnik again
-		final SpeakerNPC npc = npcs.get("Zekiel Strażnik");
-
 		// player returns having completed the quest
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -342,7 +324,6 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 				"Praktyczny Test Zekiela",
 				"Zekiel, strażnik magicznej wieży, chce uczyć cię na temat domen czarodziejów i ich historii.",
 				true);
-
 		prepareQuestOfferingStep();
 		bringItemsStep();
 		practicalTestStep();
@@ -372,13 +353,18 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZekielsPracticalTest";
+		return "Praktyczny Test Zekiela";
 	}
 
 	@Override
 	public String getNPCName() {
-		return "Zekiel Strażnik";
+		return npc.getName();
 	}
 
 	@Override

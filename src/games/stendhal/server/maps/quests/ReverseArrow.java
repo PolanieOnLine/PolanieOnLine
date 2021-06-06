@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -55,14 +55,10 @@ import marauroa.common.game.IRPZone;
  * @author hendrik
  */
 
-public class ReverseArrow extends AbstractQuest implements
-		Token.TokenMoveListener<Token>, LoginListener {
-
+public class ReverseArrow extends AbstractQuest implements Token.TokenMoveListener<Token>, LoginListener {
 	private static final Logger LOGGER = Logger.getLogger(ReverseArrow.class);
 
-	// constants
 	private static final String QUEST_SLOT = "reverse_arrow";
-
 	private static final String ZONE_NAME = "int_ados_reverse_arrow";
 
 	/** Time (in Seconds) to solve the puzzle. */
@@ -73,7 +69,6 @@ public class ReverseArrow extends AbstractQuest implements
 
 	/** Horizontal position of the upper left token at the beginning. */
 	private static final int OFFSET_X = 8;
-
 	/** Vertical position of the upper left token at the beginning. */
 	private static final int OFFSET_Y = 9;
 
@@ -99,7 +94,6 @@ public class ReverseArrow extends AbstractQuest implements
 	 * Checks the result.
 	 */
 	protected class ReverseArrowCheck implements TurnListener {
-
 		/**
 		 * Is the task solved?
 		 *
@@ -291,16 +285,6 @@ public class ReverseArrow extends AbstractQuest implements
 				LOGGER.error("user is no instance of Player but: " + user, new Throwable());
 			}
 		}
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "ReverseArrow";
 	}
 
 	/**
@@ -527,10 +511,9 @@ public class ReverseArrow extends AbstractQuest implements
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Odwrócona Strzała",
-				"Sądzisz, że możesz rozwiązać tą małą zagadkę? Pośpiesz się masz kilka sekund.",
+				"Odwróć Strzałkę",
+				"Sądzisz, że możesz rozwiązać tą małą zagadkę? Pośpiesz się, masz na to tylko kilka sekund.",
 				false);
-
 		SingletonRepository.getLoginNotifier().addListener(this);
 
 		step_1();
@@ -551,6 +534,16 @@ public class ReverseArrow extends AbstractQuest implements
 				res.add("Ułożyłem puzle poprawnie.");
 			}
 			return res;
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Odwróć Strzałkę";
 	}
 
 	@Override

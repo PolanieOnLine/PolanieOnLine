@@ -70,10 +70,7 @@ import games.stendhal.server.maps.Region;
  */
 public class FindRatChildren extends AbstractQuest {
 	private static final String QUEST_SLOT = "find_rat_kids";
-
-	// NPC
-	private static final String NPC_NAME = "Agnus";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Agnus");
 
 	// children names must be lower text as this is what we compare against
 	private static final List<String> NEEDED_KIDS =
@@ -310,7 +307,7 @@ public class FindRatChildren extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

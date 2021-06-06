@@ -68,10 +68,7 @@ import games.stendhal.server.maps.Region;
  */
 public class EasterGiftsForChildren extends AbstractQuest {
 	private static final String QUEST_SLOT = "easter_gifts_[year]";
-
-	// NPC
-	private static final String NPC_NAME = "Caroline";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Caroline");
 
 	private void prepareRequestingStep() {
 		npc.add(
@@ -270,6 +267,6 @@ public class EasterGiftsForChildren extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

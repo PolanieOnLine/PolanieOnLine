@@ -66,16 +66,14 @@ import games.stendhal.server.util.TimeUtil;
  * </ul>
  */
 public class StuffForBaldemar extends AbstractQuest {
+	private static final String QUEST_SLOT = "mithrilshield_quest";
+	private final SpeakerNPC npc = npcs.get("Baldemar");
 
 	static final String TALK_NEED_KILL_GIANT = "Tą tarczę mogą otrzymać ci co zabili czarnego giganta bez pomocy innych osób.";
-
 	private static final String I_WILL_NEED_MANY_THINGS = "Będę potrzebował wiele, wiele rzeczy: ";
-
 	private static final String IN_EXACT_ORDER = "Wróć, gdy będziesz miał wszystko #dokładnie w tej kolejności!";
 
 	private static final int REQUIRED_MINUTES = 10;
-
-	private static final String QUEST_SLOT = "mithrilshield_quest";
 
 	private final ItemCollector itemCollector = new ItemCollector();
 
@@ -111,14 +109,7 @@ public class StuffForBaldemar extends AbstractQuest {
 		questLogic.setQuest(this);
 	}
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Baldemar");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -150,8 +141,7 @@ public class StuffForBaldemar extends AbstractQuest {
 				}
 			});
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
@@ -167,8 +157,6 @@ public class StuffForBaldemar extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Baldemar");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "start")),
@@ -247,17 +235,12 @@ public class StuffForBaldemar extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Rzeczy dla Baldemara",
-				"Baldemar przyjazny, elitarny czarodziej mithrilbourghtó wykuje dla ciebie specjalną tarczę.",
+				"Rzeczy Baldemara",
+				"Baldemar przyjazny, elitarny czarodziej mithrilbourghtów wykuje dla ciebie specjalną tarczę.",
 				false);
 		step_1();
 		step_2();
 		step_3();
-	}
-
-	@Override
-	public String getName() {
-		return "StuffForBaldemar";
 	}
 
 	@Override
@@ -294,6 +277,16 @@ public class StuffForBaldemar extends AbstractQuest {
 		return res;
 	}
 
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Rzeczy Baldemara";
+	}
+
 	private boolean broughtAllItems(final String questState) {
 		return "start;20;1;1;5;10;10;1;1;10;20;10;20;15;1".equals(questState);
 	}
@@ -305,7 +298,7 @@ public class StuffForBaldemar extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Baldemar";
+		return npc.getName();
 	}
 
 	@Override

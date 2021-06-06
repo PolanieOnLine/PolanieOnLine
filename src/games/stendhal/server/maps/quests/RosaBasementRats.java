@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,8 +9,13 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on CleanStorageSpace.
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -31,65 +36,13 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import marauroa.common.Pair;
 
-/**
- * QUEST: CleanStorageSpace
- * <p>
- * PARTICIPANTS:
- * <li> Eonna
- * <p>
- * STEPS:
- * <li> Eonna asks you to clean her storage space.
- * <li> You go kill at least a rat, a cave rat and a cobra.
- * <li> Eonna checks your kills and then thanks you.
- * <p>
- * REWARD:
- * <li> 550 XP, karma
- * <p>
- * REPETITIONS:
- * <li> None.
- */
 public class RosaBasementRats extends AbstractQuest {
 	private static final String QUEST_SLOT = "pomoc_w_tawernie_rosa";
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Spotkałem Rose w karczmie Gdańskiej.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Rosie pomocy.");
-		return res;
-		}
-		res.add("Postanowiłem pomóc Rosie.");
-		if (("start".equals(questState) && player.hasKilled("rat") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
-			res.add("Piwnica została oczyszczona z gryzoni i węży.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Rosa jest zadowolona.");
-		}
-		return res;
-	}
+	private final SpeakerNPC npc = npcs.get("Rosa");
 
 	private void step_1() {
-		final SpeakerNPC npc = npcs.get("Rosa");
-
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES, 
 				new QuestNotStartedCondition(QUEST_SLOT),
@@ -143,8 +96,6 @@ public class RosaBasementRats extends AbstractQuest {
 	}
 
 	private void step_3() {
-
-		final SpeakerNPC npc = npcs.get("Rosa");
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new IncreaseKarmaAction(10.0));
 		reward.add(new IncreaseXPAction(550));
@@ -170,15 +121,15 @@ public class RosaBasementRats extends AbstractQuest {
 				Arrays.asList("basement", "piwnicy", "piwnica"),
 				null,
 				ConversationStates.ATTENDING,
-				"Tak jak powiedziałam w dół schodami. Proszę wyczyść ze wszystkich szczurów i zobacz czy nie ma tam węża!",
+				"Tak jak powiedziałam, schodami w dół. Proszę wyczyść ze wszystkich szczurów i zobacz czy czasem nie ma tam węża!",
 				null);
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Pomoc Rosie",
-				"Piwnica w karczmie Gdańskiej jest pełna szczurów. Rosa poprosiła mnie abym pozbył się tych szczurów.",
+				"Odszczurzanie Piwnicy",
+				"Piwnica w Gdańskiej karczmie jest pełna szczurów. Rosa poprosiła mnie, abym pozbył się tych szczurów.",
 				false);
 		step_1();
 		step_2();
@@ -186,11 +137,38 @@ public class RosaBasementRats extends AbstractQuest {
 	}
 
 	@Override
-	public String getName() {
-		return "RosaBasementRats";
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Spotkałem barmankę w Gdańskiej karczmie.");
+		final String questState = player.getQuest(QUEST_SLOT, 0);
+		if ("rejected".equals(questState)) {
+			res.add("Odmówiłem Rosie pomocy.");
+		return res;
+		}
+		res.add("Postanowiłem pomóc w oczyszczaniu piwnicy.");
+		if (("start".equals(questState) && player.hasKilled("rat") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
+			res.add("Piwnica została oczyszczona z gryzoni i węży.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Rosa jest zadowolona.");
+		}
+		return res;
 	}
 
-		@Override
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
+	public String getName() {
+		return "Odszczurzanie Piwnicy";
+	}
+
+	@Override
 	public int getMinLevel() {
 		return 0;
 	}
@@ -199,8 +177,9 @@ public class RosaBasementRats extends AbstractQuest {
 	public String getRegion() {
 		return Region.GDANSK_CITY;
 	}
+
 	@Override
 	public String getNPCName() {
-		return "Adaś";
+		return npc.getName();
 	}
 }

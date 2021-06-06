@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -47,42 +47,11 @@ import games.stendhal.server.maps.Region;
 
 public class ZlotyAmulet extends AbstractQuest {
 	public static final String QUEST_SLOT = "zloty_amulet";
+	private final SpeakerNPC npc = npcs.get("Jagienka");
 	
 	private static final int REQUIRED_MINUTES = 10; // 10 minut
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Rozmawiałem z Jagienką.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie pomogę Jagience.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Pomogę Jagience ze złotym amuletem.");
-		}
-		if ("start".equals(questState) && player.isEquipped("bryłka złota", 20) || "done".equals(questState)) {
-			res.add("Mam 20 bryłek złota dla Jagienki.");
-		}
-		if ("kowal".equals(questState) || "done".equals(questState)) {
-			res.add("Złotnik stwierdził, że te bryłki złota idealnie się nadają na jej amulet, więc kazała mi pójść do Kowala Jacka i powiedzieć mu jej imię.");
-		}
-		if ("jagienka".equals(questState) && player.isEquipped("złoty amulet")
-				|| "done".equals(questState)) {
-			res.add("Mam złoty amulet dla Jagienki.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Oddałem złoty amulet Jagience.");
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Jagienka");
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
@@ -115,8 +84,6 @@ public class ZlotyAmulet extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Jagienka");
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
@@ -156,8 +123,6 @@ public class ZlotyAmulet extends AbstractQuest {
 	}
 
 	private void zlotnikStep() {
-		final SpeakerNPC npc = npcs.get("Jagienka");
-
 		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -197,8 +162,7 @@ public class ZlotyAmulet extends AbstractQuest {
 				"Hej! Kim jest Jagienka? Ahhh.. Dobra, już sobie przypomniałem. Rozumiem, że ona chce zrobić złoty amulet dla siebie?",
 				null);
 		
-		npc.add(
-				ConversationStates.QUEST_2_OFFERED,
+		npc.add(ConversationStates.QUEST_2_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "kowal"), 
@@ -210,8 +174,7 @@ public class ZlotyAmulet extends AbstractQuest {
 						new SetQuestAction(QUEST_SLOT, "forging;"),
 						new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
 		
-		npc.add(
-				ConversationStates.QUEST_2_OFFERED,
+		npc.add(ConversationStates.QUEST_2_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "kowal"),
@@ -246,8 +209,6 @@ public class ZlotyAmulet extends AbstractQuest {
 	}
 	
 	private void lastStep() {
-		final SpeakerNPC npc = npcs.get("Jagienka");
-		
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "jagienka"),
@@ -264,7 +225,7 @@ public class ZlotyAmulet extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Złoty amulet",
+				"Złoty Amulet",
 				"Jagienka zamarzyła sobie o jakimś złotym amulecie i nie może przestać o nim śnić.",
 				false);
 		prepareRequestingStep();
@@ -275,17 +236,43 @@ public class ZlotyAmulet extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem z Jagienką.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie pomogę Jagience.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Pomogę Jagience ze złotym amuletem.");
+		}
+		if ("start".equals(questState) && player.isEquipped("bryłka złota", 20) || "done".equals(questState)) {
+			res.add("Mam 20 bryłek złota dla Jagienki.");
+		}
+		if ("kowal".equals(questState) || "done".equals(questState)) {
+			res.add("Złotnik stwierdził, że te bryłki złota idealnie się nadają na jej amulet, więc kazała mi pójść do Kowala Jacka i powiedzieć mu jej imię.");
+		}
+		if ("jagienka".equals(questState) && player.isEquipped("złoty amulet")
+				|| "done".equals(questState)) {
+			res.add("Mam złoty amulet dla Jagienki.");
+		}
+		if ("done".equals(questState)) {
+			res.add("Oddałem złoty amulet Jagience.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "ZlotyAmulet";
-	}
-
-	public String getTitle() {
-		return "Złoty amulet";
+		return "Złoty Amulet";
 	}
 
 	@Override
@@ -295,6 +282,6 @@ public class ZlotyAmulet extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Jagienka";
+		return npc.getName();
 	}
 }

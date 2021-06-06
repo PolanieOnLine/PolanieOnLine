@@ -69,10 +69,7 @@ import games.stendhal.server.maps.Region;
  */
 public class DailyItemQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily_item";
-
-	// NPC
-	private static final String NPC_NAME = "Mayor Chalmers";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Mayor Chalmers");
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
@@ -503,7 +500,7 @@ public class DailyItemQuest extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

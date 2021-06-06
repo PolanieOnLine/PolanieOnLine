@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,9 +9,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on WizardBank.
-
 package games.stendhal.server.maps.quests;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -41,44 +44,25 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.ArrayList;
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.List;
-
 import marauroa.common.game.IRPZone;
 
-/**
- * Controls player access to the Wizard's Bank via an NPC.
- * <p>He takes a fee to enter. Players are allowed only 5 minutes access at once.
- *
- * @author kymara
- */
-
 public class ZakopaneClouds extends AbstractQuest implements LoginListener {
-
 	private static final String QUEST_SLOT = "zakopane_clouds";
 
 	private static final String ZLOTA_CIUPAGA_WAS_QUEST_SLOT = "zlota_ciupaga_was";
-
 	private static final String MITHRILSHIELD_QUEST_QUEST_SLOT = "mithrilshield_quest";
-
 	private static final String ZAGADKI_QUEST_SLOT = "zagadki";
 
 	private static final String ZONE_NAME = "int_zakopane_mill_0";
-
 	private static final String ZONE_NAME_1 = "int_zakopane_mill_1";
 
 	/** Time (in Seconds) allowed in the bank. */
 	private static final int TIME = 60 * 30;
-
 	// Cost to access chests
 	private static final int COST = 10000;
 
 	// "static" data
 	private StendhalRPZone zone = null;
-
 	private StendhalRPZone zone_1 = null;
 
 	private SpeakerNPC npc;
@@ -143,7 +127,6 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 			return true;
 		}
 
-		// override hash
 		@Override
 		public void onTurnReached(final int currentTurn) {
 			// check that the player is still in game and stop the timer
@@ -171,11 +154,6 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 				}
 			}
 		}
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
 	}
 
 	private void createNPC() {
@@ -390,8 +368,13 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "ZakopaneClouds";
+		return "Chmury Zakopanego";
 	}
 
 	@Override

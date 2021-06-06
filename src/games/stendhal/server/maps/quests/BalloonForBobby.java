@@ -68,24 +68,10 @@ import games.stendhal.server.maps.Region;
 
 public class BalloonForBobby extends AbstractQuest {
 	public static final String QUEST_SLOT = "balloon_bobby";
+	private final SpeakerNPC npc = npcs.get("Bobby");
+
 	// List of outfits which are balloons
 	private static final Outfit[] balloonList = new Outfit[4];
-
-	// NPC
-	private static final String NPC_NAME = "Bobby";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo("Balonik Bobbiego",
-				"Młody chłopiec Bobby w Fado wpatruje się w niebo, szukając balonów. On je kocha i chce mieć jednego dla siebie.",
-				true);
-		prepareBalloonList();
-		prepareRequestQuestStep();
-		prepareGreetWithBalloonStep();
-		prepareAttendingWithBalloonStep();
-		prepareQuestItemQuestionStep();
-	}
 
 	// Load the different outfits into the list
 	public void prepareBalloonList() {
@@ -245,6 +231,19 @@ public class BalloonForBobby extends AbstractQuest {
 	}
 
 	@Override
+	public void addToWorld() {
+		fillQuestInfo(
+				"Balonik Bobbiego",
+				"Młody chłopiec Bobby w Fado wpatruje się w niebo, szukając balonów. On je kocha i chce mieć jednego dla siebie.",
+				true);
+		prepareBalloonList();
+		prepareRequestQuestStep();
+		prepareGreetWithBalloonStep();
+		prepareAttendingWithBalloonStep();
+		prepareQuestItemQuestionStep();
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (player.hasQuest(QUEST_SLOT)) {
@@ -258,7 +257,7 @@ public class BalloonForBobby extends AbstractQuest {
  			if (questState.equals("rejected")) {
 				res.add("Nienawidzę balonów.");
 			} else if (questState.equals("start")) {
-				res.add("Kocham baloniki! Pomogę chłopcowi o imieniu " + NPC_NAME + ", aby zdobył chociaż jeden.");
+				res.add("Kocham baloniki! Pomogę chłopcowi o imieniu " + npc.getName() + ", aby zdobył chociaż jeden.");
 			} else if (questState.equals("done")) {
 				String balloon = "balonik";
 				if (completedCount > 1 || completedCount > 20 && completedCount < 25) {
@@ -266,7 +265,7 @@ public class BalloonForBobby extends AbstractQuest {
 				} else {
 					balloon = balloon + "ów";
 				}
- 				res.add("Znalazłem i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + NPC_NAME + ".");
+ 				res.add("Znalazłem i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + npc.getName() + ".");
 			}
 		}
 
@@ -275,7 +274,7 @@ public class BalloonForBobby extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Balonik Chłopca";
+		return "Balonik Bobbiego";
 	}
 
 	@Override
@@ -290,7 +289,7 @@ public class BalloonForBobby extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

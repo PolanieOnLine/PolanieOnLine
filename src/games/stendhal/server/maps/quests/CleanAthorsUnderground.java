@@ -65,15 +65,10 @@ import marauroa.common.Pair;
  * REPETITIONS: <ul><li>once in a week</ul>
  *
  * @author Vanessa Julius, idea by anoyyou
-
  */
-
 public class CleanAthorsUnderground extends AbstractQuest {
 	private static final String QUEST_SLOT = "clean_athors_underground";
-
-	// NPC
-	private static final String NPC_NAME = "John";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("John");
 
 	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
 
@@ -186,7 +181,7 @@ public class CleanAthorsUnderground extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Posprzątaj podziemia Athor",
+				"Posprzątanie Podziemia Athor",
 				"John i jego żona Jane chcą zwiedzić podziemia Athor podczas swoich wakacji, ale niestety nie mogą.",
 				false);
 		step_1();
@@ -212,12 +207,12 @@ public class CleanAthorsUnderground extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Posprzątaj podziemia Athor";
+		return "Posprzątanie Podziemia Athor";
 	}
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

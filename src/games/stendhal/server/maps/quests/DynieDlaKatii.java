@@ -45,10 +45,7 @@ import games.stendhal.server.maps.Region;
 
 public class DynieDlaKatii extends AbstractQuest {
 	private static final String QUEST_SLOT = "dynie_dla_katii";
-
-	// NPC
-	private static final String NPC_NAME = "Katia";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Katia");
 
 	private static final int WYMAGANE_DYNIE = 10;
 	private static final int REQUIRED_MINUTES = 240;
@@ -225,7 +222,7 @@ public class DynieDlaKatii extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

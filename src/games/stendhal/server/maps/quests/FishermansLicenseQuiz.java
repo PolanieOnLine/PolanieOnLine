@@ -67,10 +67,7 @@ import marauroa.common.game.RPObjectNotFoundException;
  */
 public class FishermansLicenseQuiz extends AbstractQuest {
 	static final String QUEST_SLOT = "fishermans_license1";
-
-	// NPC
-	private static final String NPC_NAME = "Santiago";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Santiago");
 
 	// TODO: use standard conditions and actions
 	private final List<String> speciesList = Arrays.asList("pstrąg", "okoń",
@@ -278,6 +275,6 @@ public class FishermansLicenseQuiz extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Santiago";
+		return npc.getName();
 	}
 }

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.events.TurnListener;
@@ -23,13 +29,6 @@ import games.stendhal.server.maps.quests.piedpiper.ITPPQuestConstants;
 import games.stendhal.server.maps.quests.piedpiper.InactivePhase;
 import games.stendhal.server.maps.quests.piedpiper.InvasionPhase;
 import games.stendhal.server.maps.quests.piedpiper.TPPQuestHelperFunctions;
-
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /**
  * QUEST: The Pied Piper
@@ -64,15 +63,12 @@ import org.apache.log4j.Logger;
  * REPETITIONS: <ul><li> once between a week and two weeks.</ul>
  */
  public class ThePiedPiper extends AbstractQuest implements ITPPQuestConstants {
-
 	protected static final Logger logger = Logger.getLogger(ThePiedPiper.class);
-
 
 	private static LinkedList<ITPPQuest> phases = new LinkedList<ITPPQuest>();
     private static TPP_Phase phase = INACTIVE;
 
 	protected LinkedHashMap<String, Integer> timings = new LinkedHashMap<String, Integer>();
-
 
 	/**
 	 * function will set timings to either test server or game server.
@@ -195,7 +191,6 @@ import org.apache.log4j.Logger;
 		}
 	}
 
-
 	/**
 	 * Set new time period for quest timer (time to next quest phase).
 	 * @param max - maximal time in seconds
@@ -208,7 +203,6 @@ import org.apache.log4j.Logger;
 					Rand.randUniform(max, min),	questTimer);
 		}
 	}
-
 
 	/**
 	 * first start
@@ -224,7 +218,7 @@ import org.apache.log4j.Logger;
 				getDefaultPhaseClass().getMaxTimeOut());
 	}
 
- 	@Override
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
@@ -247,14 +241,14 @@ import org.apache.log4j.Logger;
 
  	@Override
 	public String getName() {
-		return "ThePiedPiper";
+		return "Pied Piper";
 	}
 
 	@Override
 	public void addToWorld() {
 		questTimer = new QuestTimer();
 		fillQuestInfo(
-				"The Pied Piper",
+				"Pied Piper",
 				"Miasto Ados jest okresowo nawiedzane przez plagę szczurów.",
 				true);
 

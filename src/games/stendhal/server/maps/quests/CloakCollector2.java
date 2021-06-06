@@ -66,10 +66,7 @@ import games.stendhal.server.maps.Region;
 public class CloakCollector2 extends AbstractQuest {
 	private static final String OLD_QUEST = "cloaks_collector";
 	private static final String QUEST_SLOT = "cloaks_collector_2";
-
-	// NPC
-	private static final String NPC_NAME = "Josephine";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Josephine");
 
 	private static final List<String> NEEDEDCLOAKS2 = Arrays.asList(
 			"płaszcz karmazynowy", "płaszcz cieni", "płaszcz xenocyjski",
@@ -420,7 +417,7 @@ public class CloakCollector2 extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

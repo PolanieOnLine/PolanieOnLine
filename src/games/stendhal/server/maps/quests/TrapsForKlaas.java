@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -76,48 +76,23 @@ import games.stendhal.server.maps.Region;
  * </ul>
  */
 public class TrapsForKlaas extends AbstractQuest {
+	private static final String QUEST_SLOT = "traps_for_klaas";
+	private final SpeakerNPC npc = npcs.get("Klaas");
 
-	public final int REQUIRED_TRAPS = 20;
+	private static final String info_string = "liścik do aptekarza";
+
+	public static final int REQUIRED_TRAPS = 20;
 
     // Time player must wait to repeat quest (1 day)
     private static final int WAIT_TIME = 60 * 24;
 
-	private static final String QUEST_SLOT = "traps_for_klaas";
-	private static final String info_string = "liścik do aptekarza";
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Rozmawiałem z Klaasem.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę mieć nic do czynienia z gryzoniami.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Przyrzekłem zdobyć " + REQUIRED_TRAPS + " pułapki na gryzonie i dostarczyć je Klaasowi.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add("Dałem pułapki na gryzonie Klaasowi. Zdobyłem trochę doświadczenia i antidota.");
-		}
-		if (isRepeatable(player)) {
-		    res.add("Powinienem sprawdzić czy Klaas znów nie potrzebuje mojej pomocy.");
-		}
-		return res;
-	}
-
 	private void prepareRequestingStep() {
-		final SpeakerNPC npc = npcs.get("Klaas");
-
 		// Player asks for quest
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-		        new AndCondition(
-		                new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
-		                new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)
-		                ),
+			new AndCondition(
+					new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
+					new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
 			ConversationStates.QUEST_OFFERED,
 			"Szczury tutaj dostają się do spichlerza. Czy pomożesz mi w uwolnieniu nas od tego plugastwa?",
 			null);
@@ -125,22 +100,21 @@ public class TrapsForKlaas extends AbstractQuest {
         // Player requests quest before wait period ended
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-                new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
+			new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
 			ConversationStates.ATTENDING,
-			null,
-                new SayTimeRemainingAction(QUEST_SLOT, 1, WAIT_TIME, "Dziękuje za pułapki. Teraz jedzenie będzie bezpieczne, ale możliwe, że znów będę potrzbował twojej pomocy."));
+			null, new SayTimeRemainingAction(QUEST_SLOT, 1, WAIT_TIME,
+					"Dziękuje za pułapki. Teraz jedzenie będzie bezpieczne, ale możliwe, że znów będę potrzbował twojej pomocy."));
 
 		// Player asks for quest after already started
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Wiem, że już się ciebie pytałem o zdobycie " + REQUIRED_TRAPS + " pułapek na gryzonie.",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.ATTENDING,
+			"Wiem, że już się ciebie pytałem o zdobycie " + REQUIRED_TRAPS + " pułapek na gryzonie.",
+			null);
 
 		// Player accepts quest
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
@@ -148,8 +122,7 @@ public class TrapsForKlaas extends AbstractQuest {
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		// Player rejects quest
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			// Klaas walks away
@@ -158,8 +131,7 @@ public class TrapsForKlaas extends AbstractQuest {
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		// Player asks about rodent traps
-		npc.add(
-			ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("rodent trap", "trap", "rodent traps", "traps", "pułapka na gryzonie", "pułapka", "pułapki na gryzonie", "pułapki", "pułapek na gryzonie", "pułapek"),
 			new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
@@ -169,8 +141,6 @@ public class TrapsForKlaas extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
-		final SpeakerNPC npc = npcs.get("Klaas");
-
 		final ChatCondition giveNoteRewardCondition = new ChatCondition() {
 			private final String avrQuestSlot = "antivenom_ring";
 
@@ -232,9 +202,9 @@ public class TrapsForKlaas extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT),
 						new NotCondition(new PlayerHasItemWithHimCondition("pułapka na gryzonie"))),
-			ConversationStates.ATTENDING,
-			"Mógłbym użyć te #pułapki. W czym mogę ci pomóc?",
-			null);
+				ConversationStates.ATTENDING,
+				"Mógłbym użyć te #pułapki. W czym mogę ci pomóc?",
+				null);
 
 		// Player is not carrying 20 traps
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
@@ -268,8 +238,7 @@ public class TrapsForKlaas extends AbstractQuest {
 						equipNoteAction));
 
         // Player says did not bring items
-		npc.add(
-            ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
             ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
@@ -277,8 +246,7 @@ public class TrapsForKlaas extends AbstractQuest {
 			null);
 
 		// Player asks about the apothecary
-		npc.add(
-			ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("apothecary", "aptekarza", "aptekarz"),
 			null,
 			ConversationStates.ATTENDING,
@@ -323,17 +291,35 @@ public class TrapsForKlaas extends AbstractQuest {
 	}
 
 	@Override
+	public List<String> getHistory(final Player player) {
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return res;
+		}
+		res.add("Rozmawiałem z Klaasem.");
+		final String questState = player.getQuest(QUEST_SLOT);
+		if ("rejected".equals(questState)) {
+			res.add("Nie chcę mieć nic do czynienia z gryzoniami.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
+			res.add("Przyrzekłem zdobyć " + REQUIRED_TRAPS + " pułapki na gryzonie i dostarczyć je Klaasowi.");
+		}
+		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
+			res.add("Dałem pułapki na gryzonie Klaasowi. Zdobyłem trochę doświadczenia i antidota.");
+		}
+		if (isRepeatable(player)) {
+		    res.add("Powinienem sprawdzić czy Klaas znów nie potrzebuje mojej pomocy.");
+		}
+		return res;
+	}
+
+	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
 	}
 
 	@Override
 	public String getName() {
-		return "TrapsForKlaas";
-	}
-
-	public String getTitle() {
-
 		return "Pułapki dla Klaasa";
 	}
 
@@ -349,7 +335,7 @@ public class TrapsForKlaas extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Klaas";
+		return npc.getName();
 	}
 
 	@Override

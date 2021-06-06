@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -28,11 +32,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * QUEST: The Weapons Collector Part 2
@@ -63,9 +62,7 @@ import java.util.List;
  * </ul>
  */
 public class WeaponsCollector2 extends AbstractQuest {
-
 	private static final String QUEST_SLOT = "weapons_collector2";
-
 
 	private static final List<String> neededWeapons = Arrays.asList(
 			// fairly rare from glow_monster in haunted house
@@ -75,11 +72,6 @@ public class WeaponsCollector2 extends AbstractQuest {
 			// rare from devil_queen on mountain
 			"półtorak"
 	);
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
 
 	public List<String> getNeededItems() {
 		return neededWeapons;
@@ -278,7 +270,7 @@ public class WeaponsCollector2 extends AbstractQuest {
 		playerReturnsWhileQuestIsActive(npc);
 
 		// player returns after finishing the quest
-	//	playerReturnsAfterFinishingQuest(npc);
+		// playerReturnsAfterFinishingQuest(npc);
 	}
 
 	private void playerReturnsWhileQuestIsActive(final SpeakerNPC npc) {
@@ -304,14 +296,13 @@ public class WeaponsCollector2 extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Kolekcjoner Broni 2",
+				"Kolekcjoner Broni II",
 				"Balduin, pustelnik, który żyje w górach Ados, ma nowe ekscytujące wyzwanie dla Ciebie.",
 				true);
 		step_1();
 		step_2();
 		step_3();
 	}
-
 
 	@Override
 	public List<String> getHistory(final Player player) {
@@ -328,8 +319,13 @@ public class WeaponsCollector2 extends AbstractQuest {
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "WeaponsCollector2";
+		return "Kolekcjoner Broni II";
 	}
 
 	// it can be a long quest so they can always start it before they can necessarily finish all

@@ -64,10 +64,7 @@ import games.stendhal.server.maps.Region;
 
 public class FishermansLicenseCollector extends AbstractQuest {
 	public static final String QUEST_SLOT = "fishermans_license2";
-
-	// NPC
-	private static final String NPC_NAME = "Santiago";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Santiago");
 
 	private static final List<String> neededFish =
 		Arrays.asList("pstrąg", "okoń", "makrela", "dorsz", "płotka", "palia alpejska", "błazenek", "pokolec");
@@ -275,6 +272,6 @@ public class FishermansLicenseCollector extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return "Santiago";
+		return npc.getName();
 	}
 }

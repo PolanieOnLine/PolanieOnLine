@@ -56,10 +56,7 @@ import games.stendhal.server.maps.quests.logic.BringListOfItemsQuestLogic;
  */
 public class CloakCollector extends AbstractQuest implements BringListOfItemsQuest {
 	private static final String QUEST_SLOT = "cloaks_collector";
-
-	// NPC
-	private static final String NPC_NAME = "Josephine";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Josephine");
 
 	private static final List<String> NEEDED_CLOAKS = Arrays.asList("peleryna",
 			"peleryna elficka", "płaszcz krasnoludzki", "lazurowy płaszcz elficki", "płaszcz kamienny",
@@ -116,7 +113,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 
 	@Override
 	public SpeakerNPC getNPC() {
-		return npcs.get(NPC_NAME);
+		return npcs.get(npc.getName());
 	}
 
 	@Override
@@ -272,6 +269,6 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 }

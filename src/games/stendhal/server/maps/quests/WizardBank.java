@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -55,18 +55,15 @@ import marauroa.common.game.IRPZone;
  * @author kymara
  */
 public class WizardBank extends AbstractQuest implements LoginListener,LogoutListener {
-	// constants
 	private static final String QUEST_SLOT = "wizard_bank";
 
 	private static final String GRAFINDLE_QUEST_SLOT = "grafindle_gold";
-
 	private static final String ZARA_QUEST_SLOT = "suntan_cream_zara";
 
 	private static final String ZONE_NAME = "int_magic_bank";
 
 	/** Time (in Seconds) allowed in the bank. */
 	private static final int TIME = 60 * 5;
-
 	// Cost to access chests
 	private static final int COST = 1000;
 
@@ -136,10 +133,6 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 			return true;
 		}
 
-		// override hash
-
-
-
 		@Override
 		public void onTurnReached(final int currentTurn) {
 			// check that the player is still in game and stop the timer
@@ -170,13 +163,7 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 		}
 	}
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
 	private void createNPC() {
-
 		npc = new SpeakerNPC("Javier X") {
 			@Override
 			protected void createPath() {
@@ -395,8 +382,13 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 	}
 
 	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
+	}
+
+	@Override
 	public String getName() {
-		return "WizardBank";
+		return "Bank Czarodzieja";
 	}
 
 	@Override

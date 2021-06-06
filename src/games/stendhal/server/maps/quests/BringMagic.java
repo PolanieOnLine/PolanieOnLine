@@ -40,10 +40,7 @@ import games.stendhal.server.maps.Region;
 
 public class BringMagic extends AbstractQuest {
 	private static final String QUEST_SLOT = "bring_magic";
-
-	// NPC
-	private static final String NPC_NAME = "Czarnoksiężnik";
-	private final SpeakerNPC npc = npcs.get(NPC_NAME);
+	private final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -182,7 +179,7 @@ public class BringMagic extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Magiczne zasoby",
+				"Magiczne Zasoby",
 				"Czarnoksiężnik zleca nam przyniesienie zasobów magicznych zaklęć różnych typów natur.",
 				false);
 		step_1();
@@ -220,7 +217,7 @@ public class BringMagic extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return NPC_NAME;
+		return npc.getName();
 	}
 
 	@Override

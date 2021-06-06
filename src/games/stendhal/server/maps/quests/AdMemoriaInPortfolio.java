@@ -112,15 +112,11 @@ import games.stendhal.server.maps.Region;
  * portfolio provides additional slots to store scrolls
  */
 public class AdMemoriaInPortfolio extends AbstractQuest {
-	//private static Logger logger = Logger.getLogger(AdMemoriaInPortfolio.class);
-
-	private static final int APPLE_AMOUNT = 1;
 	private static final String QUEST_SLOT = "admemoriainportfolio";
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+	private static final int APPLE_AMOUNT = 1;
+
+	//private static Logger logger = Logger.getLogger(AdMemoriaInPortfolio.class);
 
 	/** A convenience function to make it easier to test quest */
     /** admemoriainportfolio_step_0 */
@@ -377,7 +373,6 @@ public class AdMemoriaInPortfolio extends AbstractQuest {
 
 	@Override
 	public void addToWorld() {
-
 		fillQuestInfo(
             // title of the quest:
             "Ad Memoria in Portfolio",
@@ -394,6 +389,11 @@ public class AdMemoriaInPortfolio extends AbstractQuest {
 		admemoriainportfolio_step_1(); //activate quest
 		admemoriainportfolio_step_2(); //progress quest
 		admemoriainportfolio_step_3(); //reclaim quest reward
+	}
+
+	@Override
+	public String getSlotName() {
+		return QUEST_SLOT;
 	}
 
 	@Override
