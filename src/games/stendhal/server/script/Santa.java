@@ -24,7 +24,6 @@ import games.stendhal.server.maps.quests.MeetSanta;
  * @author kymara
  */
 public class Santa extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		if (args.size() != 1) {
@@ -47,7 +46,7 @@ public class Santa extends ScriptImpl {
 	 */
 	private void startChristmas(Player admin) {
 		if (System.getProperty("stendhal.santa") != null) {
-			admin.sendPrivateText("Mikołaj jest już aktywowany.");
+			admin.sendPrivateText("Święty Mikołaj został aktywowany.");
 			return;
 		}
 		System.setProperty("stendhal.santa", "true");
@@ -61,11 +60,10 @@ public class Santa extends ScriptImpl {
 	 */
 	private void stopChristmas(Player admin) {
 		if (System.getProperty("stendhal.santa") == null) {
-			admin.sendPrivateText("Santa nie jest aktywny.");
+			admin.sendPrivateText("Święty Mikołaj został dezaktywowany.");
 			return;
 		}
 		System.getProperties().remove("stendhal.santa");
 		StendhalQuestSystem.get().unloadQuest(MeetSanta.QUEST_NAME);
 	}
-
 }

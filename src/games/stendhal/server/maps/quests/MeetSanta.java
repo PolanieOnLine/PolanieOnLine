@@ -56,8 +56,10 @@ import games.stendhal.server.entity.player.Player;
  */
 public class MeetSanta extends AbstractQuest implements LoginListener {
 	private static final String QUEST_SLOT = "meet_santa_[seasonyear]";// quest slot changed ready for 2015
+	/** The name of the quest */
+	public static final String QUEST_NAME = "Spotkanie Świętego Mikołaja";
 
-	/** the Santa NPC. */
+	/** The Santa NPC. */
 	protected SpeakerNPC santa;
 
 	private TeleporterBehaviour teleporterBehaviour;
@@ -208,7 +210,7 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Spotkanie Świętego Mikołaja",
+				QUEST_NAME,
 				"Pada śnieg, pada śnieg, spamuje cały czas... Ho Ho Ho! Spiesz się i znajdź Świętego Mikołaja w Faiumoni! Jeżeli byłeś grzeczny to dostaniesz prezent...",
 				false);
 		SingletonRepository.getLoginNotifier().addListener(this);
@@ -240,7 +242,7 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 
 	@Override
 	public String getName() {
-		return "Spotkanie Świętego Mikołaja";
+		return QUEST_NAME;
 	}
 
 	@Override

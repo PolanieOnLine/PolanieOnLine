@@ -24,7 +24,6 @@ import games.stendhal.server.maps.quests.MeetBunny;
  * @author kymara
  */
 public class EasterBunny extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		if (args.size() != 1) {
@@ -36,7 +35,7 @@ public class EasterBunny extends ScriptImpl {
 		if (enable) {
 			startEaster(admin);
 		} else {
-			stopEaster();
+			stopEaster(admin);
 		}
 	}
 
@@ -47,7 +46,7 @@ public class EasterBunny extends ScriptImpl {
 	 */
 	private void startEaster(Player admin) {
 		if (System.getProperty("stendhal.easterbunny") != null) {
-			admin.sendPrivateText("Króliczek Wielkanocny jest aktywny.");
+			admin.sendPrivateText("Zajączek Wielkanocny został aktywowany.");
 			return;
 		}
 		System.setProperty("stendhal.easterbunny", "true");
@@ -59,9 +58,12 @@ public class EasterBunny extends ScriptImpl {
 	 *
 	 * @param admin adminstrator running the script
 	 */
-	private void stopEaster() {
+	private void stopEaster(Player admin) {
+		if (System.getProperty("stendhal.easterbunny") == null) {
+			admin.sendPrivateText("Zajączek Wielkanocny został dezaktywowany.");
+			return;
+		}
 		System.getProperties().remove("stendhal.easterbunny");
 		StendhalQuestSystem.get().unloadQuest(MeetBunny.QUEST_NAME);
 	}
-
 }

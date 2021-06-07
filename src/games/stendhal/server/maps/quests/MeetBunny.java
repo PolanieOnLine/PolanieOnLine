@@ -46,16 +46,14 @@ import games.stendhal.server.entity.player.Player;
  * REPETITIONS: None
  */
 public class MeetBunny extends AbstractQuest {
-	// quest slot changed ready for 2015
-	private static final String QUEST_SLOT = "meet_bunny_[year]";
+	private static final String QUEST_SLOT = "meet_bunny_[year]";// quest slot changed ready for 2015
+	/** The name of the quest */
+	public static final String QUEST_NAME = "Spotkanie Zajączka Wielkanocnego";
 
-	/** the Bunny NPC. */
+	/** The Bunny NPC. */
 	protected SpeakerNPC bunny;
 
 	private ItemDroppingTeleporterBehaviour teleporterBehaviour;
-
-	/** the name of the quest */
-	public static final String QUEST_NAME = "Spotkanie Zajączka Wielkanocnego";
 
 	// The default is 30 seconds so make ours half this
 	private static final int TIME_OUT = 15;
@@ -110,7 +108,7 @@ public class MeetBunny extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Spotkanie Zajączka Wielkanocnego",
+				QUEST_NAME,
 				"Wielkanoc wkrótce nadejdzie, a paru bohaterów już widziało króliczka skakjącego to tu to tam. Czy będziesz miał na tyle szczęscia, aby go złapać w określonym czasie? Trzymaj się jest bardzo szybki, a także nosi ze sobą niespodzianki...",
 				false);
 

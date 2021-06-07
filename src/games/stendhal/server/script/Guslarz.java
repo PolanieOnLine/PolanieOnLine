@@ -24,7 +24,6 @@ import games.stendhal.server.maps.quests.MeetGuslarz;
  * @author edi18028
  */
 public class Guslarz extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		if (args.size() != 1) {
@@ -36,7 +35,7 @@ public class Guslarz extends ScriptImpl {
 		if (enable) {
 			startGusla(admin);
 		} else {
-			stopGusla();
+			stopGusla(admin);
 		}
 	}
 
@@ -47,7 +46,7 @@ public class Guslarz extends ScriptImpl {
 	 */
 	private void startGusla(Player admin) {
 		if (System.getProperty("stendhal.guslarz") != null) {
-			admin.sendPrivateText("Guślarz jest aktywowany.");
+			admin.sendPrivateText("Guślarz został aktywowany.");
 			return;
 		}
 		System.setProperty("stendhal.guslarz", "true");
@@ -59,9 +58,12 @@ public class Guslarz extends ScriptImpl {
 	 *
 	 * @param admin adminstrator running the script
 	 */
-	private void stopGusla() {
+	private void stopGusla(Player admin) {
+		if (System.getProperty("stendhal.guslarz") == null) {
+			admin.sendPrivateText("Guślarz został aktywowany.");
+			return;
+		}
 		System.getProperties().remove("stendhal.guslarz");
 		StendhalQuestSystem.get().unloadQuest(MeetGuslarz.QUEST_NAME);
 	}
-
 }
