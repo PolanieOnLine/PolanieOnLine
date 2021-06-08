@@ -1,5 +1,13 @@
 Changelog
 ---------
+1.22
+*klient*
+- Usunięto statystykę górnictwa z lewego panelu gracza
+
+*świat*
+- Dodano możliwość sprawdzenia swojego aktualnego poziomu górnictwa u NPC'ta Górnik
+
+
 1.21
 *świat*
 - Dodano możliwość skupu skóry białego tygrysa u Bogusia
