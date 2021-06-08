@@ -2942,7 +2942,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * @return maximum mining
 	 */
 	private int getMaxMiningForLevel(int level) {
-			return (int) (10 * Math.cbrt(level) + 60);
+		return (int) (10 * Math.cbrt(level) + 60);
 	}
 
 	/**
