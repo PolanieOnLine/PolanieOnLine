@@ -195,6 +195,7 @@ public class StendhalQuestSystem {
 		loadQuest(new KillMtElves());
 		loadQuest(new KolekcjonerRekawic());
 		loadQuest(new Labirynt());
+		loadQuest(new LearnAboutMining());
 		loadQuest(new LekarstwoDlaCeliny());
 		loadQuest(new MeetFryderyk());
 		loadQuest(new MeetPietrek());

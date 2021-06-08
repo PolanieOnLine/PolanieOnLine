@@ -86,6 +86,7 @@ class StatsPanel extends JPanel {
 
 		miningLabel = new StatLabel();
 		add(miningLabel, SLayout.EXPAND_X);
+		miningLabel.setVisible(false);
 
 		xpLabel = new StatLabel();
 		add(xpLabel, SLayout.EXPAND_X);
@@ -168,6 +169,9 @@ class StatsPanel extends JPanel {
 	 * @param miningLevel
 	 */
 	void setMining(String mining) {
+		if (!miningLabel.isVisible()) {
+			miningLabel.setVisible(true);
+		}
 		miningLabel.setText(mining);
 	}
 

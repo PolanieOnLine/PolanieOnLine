@@ -75,18 +75,18 @@ public class Gornictwo extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_2_OFFERED, 
 			"Zechcesz pomóc mi zebrać wszystkie informacje na temat kamieni?", null);
 
 		npc.add(
-			ConversationStates.QUEST_OFFERED,
+			ConversationStates.QUEST_2_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
 			ConversationStates.ATTENDING,
 			"W takim razie podnieś mój stary już kilof, może na niewiele się nada, lecz jeszcze Tobie posłuży oraz postaraj się wydobyć dla mnie 2 rudy siarki.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(
-			ConversationStates.QUEST_OFFERED,
+			ConversationStates.QUEST_2_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.ATTENDING,
 			"Trudno, samemu zdobędę potrzebne mi informacje.",

@@ -127,9 +127,11 @@ public final class StatsPanelController {
 		addPropertyChangeListenerWithModifiedSupport(pcs, "ratk", listener);
 		pcs.addPropertyChangeListener("ratk_xp", listener);
 
-		listener = new MININGChangeListener();
-		addPropertyChangeListenerWithModifiedSupport(pcs, "mining", listener);
-		pcs.addPropertyChangeListener("mining_xp", listener);
+		if (System.getProperty("pol.miningstat") != null) {
+			listener = new MININGChangeListener();
+			addPropertyChangeListenerWithModifiedSupport(pcs, "mining", listener);
+			pcs.addPropertyChangeListener("mining_xp", listener);
+		}
 
 		listener = new XPChangeListener();
 		pcs.addPropertyChangeListener("xp", listener);
@@ -278,8 +280,11 @@ public final class StatsPanelController {
 	 * Called when mining xp has changed.
 	*/
 	private void updateMining() {
-		final long next = Level.getXP(mining - 9) - miningxp;
+		if (System.getProperty("pol.miningstat") != null) {
+			return;
+		}
 
+		final long next = Level.getXP(mining - 9) - miningxp;
 		final String text = "Górnictwo:" + SPC + mining + SPC + "(" + next + ")";
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
