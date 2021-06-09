@@ -44,6 +44,8 @@ public class Gornictwo extends AbstractQuest {
 
 	private static final int REQUIRED_MINUTES = 10;
 
+	private final String noStones = "Nie próbuj mnie oszukiwać! Potrafię rozpoznać kłamstwa... Widzę, że nie masz przy sobie ";
+
 	private void diggingSteps() {
 		step1();
 		stepDigSulfur();
@@ -147,7 +149,7 @@ public class Gornictwo extends AbstractQuest {
 						player.incMiningXP(1000);
 						player.setQuest(QUEST_SLOT, "dig_iron");
 					} else {
-						raiser.say("Nadal wyczum iż brak ci wiedzy na temat różnych kamieni...");
+						raiser.say("Nadal wyczuwam iż brak Ci wiedzy na temat kamieni...");
 					}
 				}
 			});
@@ -171,7 +173,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(1000);
 						player.setQuest(QUEST_SLOT, "dig_copper");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie rud żelaza...");
+						raiser.say(noStones + "rud żelaza...");
 					}
 				}
 			});
@@ -196,7 +198,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(1250);
 						player.setQuest(QUEST_SLOT, "pick_forging;" + System.currentTimeMillis());
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie rudy miedzi oraz polan...");
+						raiser.say(noStones + "rudy miedzi oraz polan...");
 					}
 				}
 			});
@@ -256,7 +258,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(1550);
 						player.setQuest(QUEST_SLOT, "dig_jewelry");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek złota...");
+						raiser.say(noStones + "bryłek złota...");
 					}
 				}
 			});
@@ -282,7 +284,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(2000);
 						player.setQuest(QUEST_SLOT, "dig_shadow");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie kryształów...");
+						raiser.say(noStones + "kryształów...");
 					}
 				}
 			});
@@ -306,7 +308,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(2200);
 						player.setQuest(QUEST_SLOT, "dig_silver");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie rudy cieni...");
+						raiser.say(noStones + "rudy cieni...");
 					}
 				}
 			});
@@ -332,7 +334,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(2000);
 						player.setQuest(QUEST_SLOT, "pickgold_forging;" + System.currentTimeMillis());
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie rudy srebra, polana oraz kilofa stalowego...");
+						raiser.say(noStones + "rudy srebra, polana oraz kilofa stalowego...");
 					}
 				}
 			});
@@ -392,7 +394,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(2300);
 						player.setQuest(QUEST_SLOT, "dig_obsidian");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie kryształów ametystu...");
+						raiser.say(noStones + "kryształów ametystu...");
 					}
 				}
 			});
@@ -416,7 +418,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(3000);
 						player.setQuest(QUEST_SLOT, "dig_platinum");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie kryształów obsydianu...");
+						raiser.say(noStones + "kryształów obsydianu...");
 					}
 				}
 			});
@@ -440,7 +442,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addXP(2500);
 						player.setQuest(QUEST_SLOT, "dig_mithril");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek mithrilu oraz kryształów diamentu...");
+						raiser.say(noStones + "rud platyny...");
 					}
 				}
 			});
@@ -470,7 +472,7 @@ public class Gornictwo extends AbstractQuest {
 						player.notifyWorldAboutChanges();
 						player.setQuest(QUEST_SLOT, "dig_diamond");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek mithrilu oraz kilofa złotego...");
+						raiser.say(noStones + "bryłek mithrilu oraz kilofa złotego...");
 					}
 				}
 			});
@@ -495,7 +497,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addKarma(10);
 						player.setQuest(QUEST_SLOT, "dig_last");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie kryształów diamentu...");
+						raiser.say(noStones + "kryształów diamentu...");
 					}
 				}
 			});
@@ -524,7 +526,7 @@ public class Gornictwo extends AbstractQuest {
 						player.addKarma(25);
 						player.setQuest(QUEST_SLOT, "done");
 					} else {
-						raiser.say("Nie mam pojęcie czy ludzie myślą iż ja nie widzę tego, ale jednak... Widzę, że nie masz przy sobie bryłek oraz kryształów...");
+						raiser.say(noStones + "bryłek oraz kryształów...");
 					}
 				}
 			});
