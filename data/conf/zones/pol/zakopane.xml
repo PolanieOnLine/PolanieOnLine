@@ -2126,6 +2126,9 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Tavern -->
 	<zone name="int_zakopane_tavern" file="interiors/zakopane/tavern.tmx">
+		<attributes>
+			<parameter name="file" condition="pol.birthday">interiors/zakopane/tavern_tort.tmx</parameter>
+		</attributes>
 		<configurator class-name="games.pol.server.maps.zakopane.tavern.JagnaNPC"/>
 		<entity x="28" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
