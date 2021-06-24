@@ -6,6 +6,11 @@ Changelog
 
 *świat*
 - Dodano możliwość sprawdzenia swojego aktualnego poziomu górnictwa u NPC'ta Górnik
+- Przygotowano do wydarzenia urodzinowego
+
+*naprawiono błędy*
+- Poprawiono literówkę wymaganego przedmiotu przez burmistrza w Wieliczce
+- Poprawiono dialogi u NPC Górnik o braku danego surowca u gracza
 
 
 1.21
