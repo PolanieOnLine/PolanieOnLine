@@ -187,7 +187,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		items.put("rękawice lazurowe",1);
 		items.put("lodowe rękawice",1);
 		items.put("ogniste rękawice",1);
-		items.put("rękawice ceni",1);
+		items.put("rękawice cieni",1);
 		items.put("rękawice płytowe",1);
 		items.put("kamienne rękawice",1);
 		
