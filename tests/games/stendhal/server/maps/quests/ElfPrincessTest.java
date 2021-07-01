@@ -57,7 +57,7 @@ public class ElfPrincessTest {
 		MockStendlRPWorld.get().addRPZone(zone);
 		zoneConf = new FlowerSellerNPC();
 		zoneConf.configureZone(zone, null);
-		npcRose = SingletonRepository.getNPCList().get("Rose Leigh");
+		npcRose = SingletonRepository.getNPCList().get("Róża Kwiaciarka");
 		enRose = npcRose.getEngine();
 
 		final AbstractQuest quest = new ElfPrincess();
@@ -115,7 +115,7 @@ public class ElfPrincessTest {
 		assertEquals("I do so love those pretty flowers from Rose Leigh ...", getReply(npc));
 		en.step(player, "flower");
 		assertTrue(getReply(npc).startsWith("Thank you! Take these "));
-		assertTrue(player.isEquipped("gold bar"));
+		assertTrue(player.isEquipped("sztabka złota"));
 		// [00:09] superkym earns 5000 experience points.
 		en.step(player, "bye");
 		assertEquals("Goodbye, strange one.", getReply(npc));

@@ -55,7 +55,7 @@ public class PoisonerTest {
 		final StendhalRPWorld world = SingletonRepository.getRPWorld();
 		final StendhalRPZone zone = new StendhalRPZone("test");
 		world.addRPZone(zone);
-		final ConsumableItem c200_1 = new ConsumableItem("cheese", "", "", attributes);
+		final ConsumableItem c200_1 = new ConsumableItem("ser", "", "", attributes);
 		zone.add(c200_1);
 		final Poisoner poisoner = new Poisoner();
 		final Player bob = PlayerTestHelper.createPlayer("player");
