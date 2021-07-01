@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -41,6 +41,7 @@ import games.stendhal.server.entity.player.UpdateConverter;
 import games.stendhal.server.entity.slot.BankSlot;
 import games.stendhal.server.entity.slot.Banks;
 import games.stendhal.server.entity.slot.PlayerKeyringSlot;
+import games.stendhal.server.entity.slot.PlayerMoneyPouchSlot;
 import games.stendhal.server.entity.slot.PlayerSlot;
 import games.stendhal.server.entity.slot.PlayerTradeSlot;
 import games.stendhal.server.entity.spell.Spell;
@@ -155,7 +156,7 @@ public class PlayerTransformer implements Transformer {
 		// load items
 		final String[] slotsItems = { "bag", "rhand", "lhand", "neck", "head", "armor",
 				"legs", "feet", "finger", "fingerb", "glove", "cloak", "back", "pas", "belt",
-				"keyring", "money", "trade" };
+				"keyring", /*"portfolio",*/ "trade", "pouch" };
 
 		try {
 			for (final String slotName : slotsItems) {
@@ -172,6 +173,8 @@ public class PlayerTransformer implements Transformer {
 				*/
 				} else if (slotName.equals("trade")) {
 					newSlot = new PlayerTradeSlot(slotName);
+				} else if (slotName.equals("pouch")) {
+					newSlot = new PlayerMoneyPouchSlot(slotName);
 				} else {
 					newSlot = new PlayerSlot(slotName);
 				}
@@ -307,7 +310,7 @@ public class PlayerTransformer implements Transformer {
 
 			sheep.notifyWorldAboutChanges();
 		}
-		
+
 		// load goat
 		final Goat goat = player.getPetOwner().retrieveGoat();
 
@@ -417,7 +420,6 @@ public class PlayerTransformer implements Transformer {
 			}
 		}
 	}
-
 	/**
 	 * binds special items to the player.
 	 *
@@ -443,7 +445,6 @@ public class PlayerTransformer implements Transformer {
 			}
 		}
 	}
-
 
 	public static final String DEFAULT_ENTRY_ZONE = "int_zakopane_home";
 	public static final String RESET_ENTRY_ZONE = "int_zakopane_home";
@@ -498,4 +499,5 @@ public class PlayerTransformer implements Transformer {
 		return StendhalRPAction.placeat(playerZone, animal, player.getX(),
 				player.getY());
 	}
+
 }

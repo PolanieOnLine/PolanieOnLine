@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -58,9 +57,11 @@ Inspectable {
 	private final Map<String, ItemPanel> slotPanels = new HashMap<String, ItemPanel>();
 	private User player;
 
+	private JComponent specialSlots;
+
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
-	private JComponent specialSlots;
+	private static FeatureEnabledItemPanel pouch;
 
 	/**
 	 * Create a new character window.
@@ -81,10 +82,14 @@ Inspectable {
 	public void setPlayer(final User userEntity) {
 		player = userEntity;
 		userEntity.addContentChangeListener(this);
+
+		//final RPObject obj = userEntity.getRPObject();
+
 		// Compatibility. Show additional slots only if the user has those.
 		// This can be removed after a couple of releases (and specialSlots
 		// field moved to createLayout()).
-		if (userEntity.getRPObject().hasSlot("belt")) {
+		/*
+		if (obj.hasSlot("belt")) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -92,6 +97,8 @@ Inspectable {
 				}
 			});
 		}
+		*/
+
 		refreshContents();
 	}
 
@@ -157,20 +164,24 @@ Inspectable {
 		right.add(panel);
 		panel = createItemPanel(itemClass, store, "glove", "data/gui/slot-gloves.png");
 		right.add(panel);
-		panel = createItemPanel(itemClass, store, "money", "data/gui/slot-pouch.png");
-		right.add(panel);
 
 		// Bag, keyring, etc
 		specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		specialSlots.setAlignmentX(CENTER_ALIGNMENT);
 		// Compatibility. See the note at setPlayer().
-		specialSlots.setVisible(false);
+		//specialSlots.setVisible(false);
 		content.add(specialSlots);
 
-		panel = createItemPanel(itemClass, store, "back", "data/gui/slot-bag.png");
-		specialSlots.add(panel);
+		pouch = new FeatureEnabledItemPanel("pouch", SpriteStore.get().getSprite("data/gui/slot-pouch.png"));
+		slotPanels.put("pouch", pouch);
+		pouch.setAcceptedTypes(itemClass);
+		specialSlots.add(pouch);
+		featureChangeListeners.add(pouch);
+
+		/*
 		panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
 		specialSlots.add(panel);
+		*/
 
 		setContent(content);
 	}
@@ -243,6 +254,7 @@ Inspectable {
 			return;
 		}
 
+		/*
 		String slotName = added.getName();
 		if (("belt".equals(slotName) || "back".equals(slotName)) && !player.getRPObject().hasSlot(slotName)) {
 			// One of the new slots was added to the player. Set them visible.
@@ -253,6 +265,7 @@ Inspectable {
 				}
 			});
 		}
+		*/
 
 		for (RPObject obj : added) {
 			ID id = obj.getID();

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                      (C) Copyright 2003 - Marauroa                      *
  ***************************************************************************
@@ -140,6 +139,9 @@ public class PlayerRPClass {
 		player.addRPSlot("spells", 9, Definition.PRIVATE);
 
 		player.addRPSlot("trade", 4);
+
+		// special slot to carry money
+		player.addRPSlot("pouch", 1, Definition.PRIVATE);
 
 		// The guild name
 		player.addAttribute("guild", Type.STRING);

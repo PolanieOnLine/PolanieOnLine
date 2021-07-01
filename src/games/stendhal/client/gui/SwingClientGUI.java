@@ -550,6 +550,7 @@ class SwingClientGUI implements J2DClientGUI {
 		this.user = user;
 		character.setPlayer(user);
 		keyring.setSlot(user, "keyring");
+		//portfolio.setSlot(user, "portfolio");
 		spells.setSlot(user, "spells");
 		inventory.setSlot(user, "bag");
 	}

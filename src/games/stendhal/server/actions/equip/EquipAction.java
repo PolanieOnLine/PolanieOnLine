@@ -60,19 +60,19 @@ public class EquipAction extends EquipmentAction {
 		}
 
 		// try to move money to pouch by default
-		if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals("money")
+		if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals("pouch")
 				&& source.getEntityName().equals("money")) {
 			// check if money can be moved to pouch
 			// XXX: this check should be changed if we switch to containers
-			if (player.hasSlot("money")) {
+			if (player.getFeature("pouch") != null && player.hasSlot("pouch")) {
 				final boolean moneyInBag = player.isEquippedItemInSlot("bag", "money");
-				final boolean moneyInPouch = player.isEquippedItemInSlot("money", "money");
+				final boolean moneyInPouch = player.isEquippedItemInSlot("pouch", "money");
 				// stack on pouch
 				if (moneyInPouch || (!moneyInPouch && !moneyInBag)) {
-					action.put(EquipActionConsts.TARGET_SLOT, "money");
+					action.put(EquipActionConsts.TARGET_SLOT, "pouch");
 					if (action.has(Actions.TARGET_PATH)) {
 						action.put(Actions.TARGET_PATH,
-								Arrays.asList(player.get("id"), "money"));
+								Arrays.asList(player.get("id"), "pouch"));
 					}
 				}
 			}
