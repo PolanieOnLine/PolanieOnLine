@@ -33,7 +33,7 @@ public class PlayerMoneyPouchSlot extends PlayerSlot {
 	@Override
 	public boolean isReachableForTakingThingsOutOfBy(final Entity entity) {
 		if (!mayAccessKeyRing(entity)) {
-			setErrorMessage("You don't own a money pouch. You should look for someone who can create one for you.");
+			setErrorMessage("Nie masz sakiewki na pieniądze. Powinieneś poszukać kogoś, kto może ją dla Ciebie wykonać.");
 			return false;
 		}
 		return super.isReachableForTakingThingsOutOfBy(entity);
@@ -42,7 +42,7 @@ public class PlayerMoneyPouchSlot extends PlayerSlot {
 	@Override
 	public boolean isReachableForThrowingThingsIntoBy(Entity entity) {
 		if (!mayAccessKeyRing(entity)) {
-			setErrorMessage("You don't own a money pouch. You should look for someone who can create one for you.");
+			setErrorMessage("Nie masz sakiewki na pieniądze. Powinieneś poszukać kogoś, kto może ją dla Ciebie wykonać.");
 			return false;
 		}
 		return super.isReachableForThrowingThingsIntoBy(entity);
