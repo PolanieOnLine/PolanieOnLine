@@ -159,7 +159,7 @@
 
 	<item name="klucz do bramy">
 		<type class="key" subclass="purple" tileid="-1"/>
-		<description>Nie powinieneś widzieć tego opisu</description>
+		<description>Nie powinieneś widzieć tego opisu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.GateKey"/>
 		<attributes/>
 		<weight value="1.0"/>
