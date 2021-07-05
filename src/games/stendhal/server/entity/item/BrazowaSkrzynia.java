@@ -94,9 +94,8 @@ public class BrazowaSkrzynia extends Box {
 		player.incObtainedForItem(item.getName(), item.getQuantity());
 		player.notifyWorldAboutChanges();
 		player.sendPrivateText("Gratulacje! Ze skrzynki otrzymałeś #'"
-				+ Grammar.quantityplnoun(amount, itemName, "a")+ "'!");
+				+ Grammar.quantityplnoun(amount, itemName)+ "'!");
 
 		return true;
 	}
-
 }
