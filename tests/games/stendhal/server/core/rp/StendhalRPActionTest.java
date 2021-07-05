@@ -79,7 +79,7 @@ public class StendhalRPActionTest {
 	public void startAttackingCreature() {
 		final Player player = PlayerTestHelper.createPlayer("hyde");
 
-		Creature victim = SingletonRepository.getEntityManager().getCreature("mouse");
+		Creature victim = SingletonRepository.getEntityManager().getCreature("mysz domowa");
 		zone.add(victim);
 
 		// both at level 0
@@ -101,7 +101,7 @@ public class StendhalRPActionTest {
 
 		// weak player, strong monster
 		player.setLevel(0);
-		victim = SingletonRepository.getEntityManager().getCreature("dark angel");
+		victim = SingletonRepository.getEntityManager().getCreature("anioł ciemności");
 		zone.add(victim);
 		StendhalRPAction.startAttack(player, victim);
 		assertSame(player.getAttackTarget(), victim);

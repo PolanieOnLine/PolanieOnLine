@@ -39,12 +39,12 @@ public class PoisonAttackerTest {
 	 */
 	@Test
 	public void testPoisoner() {
-		final String poisontype = "greater poison";
+		final String poisontype = "mocna trucizna";
 		final ConsumableItem poison = (ConsumableItem) SingletonRepository.getEntityManager().getItem(poisontype);
 
 		final PoisonAttacker poisoner = new PoisonAttacker(100, poison);
 		final Player victim = PlayerTestHelper.createPlayer("bob");
-		poisoner.onAttackAttempt(victim, SingletonRepository.getEntityManager().getCreature("snake"));
+		poisoner.onAttackAttempt(victim, SingletonRepository.getEntityManager().getCreature("wąż"));
 		assertTrue(victim.hasStatus(StatusType.POISONED));
 	}
 
@@ -53,12 +53,12 @@ public class PoisonAttackerTest {
 	 */
 	@Test
 	public void testPoisonerProbabilityZero() {
-		final String poisontype = "greater poison";
+		final String poisontype = "mocna trucizna";
 		final ConsumableItem poison = (ConsumableItem) SingletonRepository.getEntityManager().getItem(poisontype);
 
 		final PoisonAttacker poisoner = new PoisonAttacker(0, poison);
 		final Player victim = PlayerTestHelper.createPlayer("bob");
-		poisoner.onAttackAttempt(victim, SingletonRepository.getEntityManager().getCreature("snake"));
+		poisoner.onAttackAttempt(victim, SingletonRepository.getEntityManager().getCreature("wąż"));
 		assertFalse(victim.hasStatus(StatusType.POISONED));
 	}
 }

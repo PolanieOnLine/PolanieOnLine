@@ -177,13 +177,13 @@ public class RPEntityTest {
 		entity.addSlot(new PlayerSlot("bag"));
 
 		// More than one non stackable
-		entity.equip("bag", ItemTestHelper.createItem("carrot"));
-		entity.equip("bag", ItemTestHelper.createItem("wooden shield"));
-		entity.equip("bag", ItemTestHelper.createItem("wooden shield"));
+		entity.equip("bag", ItemTestHelper.createItem("marchew"));
+		entity.equip("bag", ItemTestHelper.createItem("drewniana tarcza"));
+		entity.equip("bag", ItemTestHelper.createItem("drewniana tarcza"));
 		entity.equip("bag", ItemTestHelper.createItem("money", 4));
-		assertEquals(2, entity.getNumberOfEquipped("wooden shield"));
-		entity.drop("wooden shield", 2);
-		assertEquals(0, entity.getNumberOfEquipped("wooden shield"));
+		assertEquals(2, entity.getNumberOfEquipped("drewniana tarcza"));
+		entity.drop("drewniana tarcza", 2);
+		assertEquals(0, entity.getNumberOfEquipped("drewniana tarcza"));
 
 		// Stackable in more than one stack
 		entity.addSlot(new PlayerSlot("rhand"));
@@ -202,7 +202,7 @@ public class RPEntityTest {
 		entity.drop("money", 5);
 		assertEquals(37, entity.getNumberOfEquipped("money"));
 
-		assertEquals(1, entity.getNumberOfEquipped("carrot"));
+		assertEquals(1, entity.getNumberOfEquipped("marchew"));
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class RPEntityTest {
 		entity.addSlot(new PlayerSlot("rhand"));
 
 		assertThat(entity.getItemAtk(), is(0f));
-		final Item item = SingletonRepository.getEntityManager().getItem("dagger");
+		final Item item = SingletonRepository.getEntityManager().getItem("sztylecik");
 		entity.getSlot("lhand").add(item);
 		assertThat(entity.getItemAtk(), is((float) item.getAttack()));
 		entity.getSlot("rhand").add(item);
@@ -235,7 +235,7 @@ public class RPEntityTest {
 		entity.addSlot(new PlayerSlot("rhand"));
 
 		assertThat(entity.getItemAtk(), is(0f));
-		final Item item = SingletonRepository.getEntityManager().getItem("cheese");
+		final Item item = SingletonRepository.getEntityManager().getItem("ser");
 		entity.getSlot("lhand").add(item);
 		assertThat(entity.getItemAtk(), is(0f));
 		entity.getSlot("rhand").add(item);
@@ -256,11 +256,11 @@ public class RPEntityTest {
 		entity.addSlot(new PlayerSlot("rhand"));
 
 		assertThat(entity.getItemAtk(), is(0f));
-		final Item lefthanditem = SingletonRepository.getEntityManager().getItem("l hand sword");
+		final Item lefthanditem = SingletonRepository.getEntityManager().getItem("miecz leworęczny");
 		entity.getSlot("lhand").add(lefthanditem);
 		assertThat(entity.getItemAtk(), is(0f));
 
-		final Item righthanditem = SingletonRepository.getEntityManager().getItem("r hand sword");
+		final Item righthanditem = SingletonRepository.getEntityManager().getItem("miecz praworęczny");
 		entity.getSlot("rhand").add(righthanditem);
 		assertThat(entity.getItemAtk(),
 				is((float) (lefthanditem.getAttack() + righthanditem.getAttack())));
@@ -279,11 +279,11 @@ public class RPEntityTest {
 
 		assertThat(entity.getItemAtk(), is(0f));
 
-		final Item lefthanditem = SingletonRepository.getEntityManager().getItem("l hand sword");
+		final Item lefthanditem = SingletonRepository.getEntityManager().getItem("miecz leworęczny");
 		entity.getSlot("rhand").add(lefthanditem);
 		assertThat(entity.getItemAtk(), is(0f));
 
-		final Item righthanditem = SingletonRepository.getEntityManager().getItem("r hand sword");
+		final Item righthanditem = SingletonRepository.getEntityManager().getItem("miecz praworęczny");
 		entity.getSlot("lhand").add(righthanditem);
 		assertThat(entity.getItemAtk(), is(0f));
 
@@ -500,7 +500,7 @@ public class RPEntityTest {
 	@Test
 	public void testgetDroppables() {
 		RPEntity entity = new MockRPEntity();
-		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		Item cheese = SingletonRepository.getEntityManager().getItem("ser");
 		Item flag = new CaptureTheFlagFlag();
 
 		List<Item> droppables;

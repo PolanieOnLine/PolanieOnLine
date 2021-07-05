@@ -39,11 +39,11 @@ public class GoodiesForRudolphTest extends ZonePlayerAndNPCTestImpl {
 
 	private static final String NPC_RUDOLPH = "Rudolph";
 
-	private static final String ITEM_APPLE = "apple";
-	private static final String ITEM_CARROT = "carrot";
+	private static final String ITEM_APPLE = "jabłko";
+	private static final String ITEM_CARROT = "marchew";
 	private static final String ITEM_MONEY = "money";
-	private static final String ITEM_REINDEER_MOSS = "reindeer moss";
-	private static final String ITEM_SNOWGLOBE = "snowglobe";
+	private static final String ITEM_REINDEER_MOSS = "mech renifera";
+	private static final String ITEM_SNOWGLOBE = "zima zaklęta w kuli";
 
 	private static final String RUDOLPH_TALK_GREETING_DEFAULT = "Hi, my jolly friend. What a wonderful time of year this is!";
 	private static final String RUDOLPH_TALK_GREETING_WITHOUT_GOODIES = "Oh my. I am so in anticipation of those goodies which I have asked you for. Hopefully it will not be much longer before you can bring them to me.";

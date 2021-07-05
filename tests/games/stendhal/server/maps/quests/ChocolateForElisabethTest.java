@@ -38,8 +38,8 @@ public class ChocolateForElisabethTest extends ZonePlayerAndNPCTestImpl {
 	private static final String ELISABETH = "Elisabeth";
 	private static final String ZONE_NAME = "0_kirdneh_city";
 
-	private static final String CHOCOLATE = "chocolate bar";
-	private static final String[] FLOWERS = { "daisies", "zantedeschia", "pansy" };
+	private static final String CHOCOLATE = "tabliczka czekolady";
+	private static final String[] FLOWERS = { "stokrotki", "bielikrasa", "bratek" };
 
 	private static final String LIZ_TALK_GREETING_DEFAULT = "Hello.";
 	private static final String LIZ_TALK_GREETING_FIRST_TIME = "I can't remember when I smelt the good taste of #chocolate the last time...";

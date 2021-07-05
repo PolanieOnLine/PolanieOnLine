@@ -107,7 +107,7 @@ public class AttackWeakestTest {
 		 *  creature needs to be offensive to see the
 		 *  targets.
 		 */
-		final Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
+		final Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
 
 		Player veteran = PlayerTestHelper.createPlayer("test dummy");
 		Player newbie = PlayerTestHelper.createPlayer("test dummy2");
@@ -139,7 +139,7 @@ public class AttackWeakestTest {
 		 *  creature needs to be offensive to see the
 		 *  targets.
 		 */
-		final Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
+		final Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
 
 		Player veteran = PlayerTestHelper.createPlayer("veteran");
 		Player newbie = PlayerTestHelper.createPlayer("newbie");
@@ -177,7 +177,7 @@ public class AttackWeakestTest {
 		 *  creature needs to be offensive to see the
 		 *  targets.
 		 */
-		final Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
+		final Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
 
 		Player veteran = PlayerTestHelper.createPlayer("veteran");
 		Player newbie = PlayerTestHelper.createPlayer("newbie");
@@ -229,8 +229,8 @@ public class AttackWeakestTest {
 		 *  creature needs to be offensive to see the
 		 *  targets.
 		 */
-		final Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
-		final Creature scrollCreature = new AttackableCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
+		final Creature scrollCreature = new AttackableCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 
 		Player veteran = PlayerTestHelper.createPlayer("veteran");
 

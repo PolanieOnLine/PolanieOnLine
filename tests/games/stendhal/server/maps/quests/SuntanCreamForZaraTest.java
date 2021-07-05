@@ -62,7 +62,7 @@ public class SuntanCreamForZaraTest {
 		assertEquals("Nice to meet you!", getReply(npc));
 		en.step(player, "task");
 		assertEquals("I fell asleep in the sun and now my skin is burnt. Can you bring me the magic #'suntan cream' that the #lifeguards produce?", getReply(npc));
-		en.step(player, "suntan cream");
+		en.step(player, "olejek do opalania");
 		assertEquals("The #lifeguards make a great cream to protect from the sun and to heal sunburns at the same time. Now, will you get it for me?", getReply(npc));
 		en.step(player, "lifeguards");
 		assertEquals("The lifeguards are called Pam and David. I think they are in the dressing rooms. So, will you ask them for me?", getReply(npc));
@@ -82,7 +82,7 @@ public class SuntanCreamForZaraTest {
 		assertEquals("I know that the #'suntan cream' is hard to get, but I hope that you didn't forget my painful problem...", getReply(npc));
 		en.step(player, "task");
 		assertEquals("Did you forget that you promised me to ask the #lifeguards for #'suntan cream'?", getReply(npc));
-		en.step(player, "suntan cream");
+		en.step(player, "olejek do opalania");
 		assertEquals("The #lifeguards make a great cream to protect from the sun and to heal sunburns at the same time.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("I hope to see you soon!", getReply(npc));
@@ -100,7 +100,7 @@ public class SuntanCreamForZaraTest {
 
 		en.step(player, "hi");
 		assertEquals("Hallo!", getReply(npc));
-		en.step(player, "suntan cream");
+		en.step(player, "olejek do opalania");
 		assertEquals("David's and mine suntan cream is famous all over the island. But the way to the labyrinth entrance is blocked, so we can't get all the ingredients we need. If you bring me the things we need, I can #mix our special suntan cream for you.", getReply(npc));
 		en.step(player, "mix");
 		assertEquals("I can only mix a suntan cream if you bring me a #'bottle of minor potion', a #'sprig of arandula', and a #kokuda.", getReply(npc));
@@ -113,10 +113,10 @@ public class SuntanCreamForZaraTest {
 		en.step(player, "bye");
 		assertEquals("Have fun!", getReply(npc));
 
-		PlayerTestHelper.equipWithItem(player, "minor potion");
+		PlayerTestHelper.equipWithItem(player, "mały eliksir");
 		PlayerTestHelper.equipWithItem(player, "kokuda");
 		PlayerTestHelper.equipWithItem(player, "arandula");
-		assertFalse(player.isEquipped("suntan cream"));
+		assertFalse(player.isEquipped("olejek do opalania"));
 
 		en.step(player, "hi");
 		assertEquals("Hallo!", getReply(npc));
@@ -128,7 +128,7 @@ public class SuntanCreamForZaraTest {
 		assertEquals("Have fun!", getReply(npc));
 
 		assertNotNull(player.getQuest("pamela_mix_cream"));
-		assertFalse(player.isEquipped("minor potion"));
+		assertFalse(player.isEquipped("mały eliksir"));
 		assertFalse(player.isEquipped("kokuda"));
 		assertFalse(player.isEquipped("arandula"));
 
@@ -151,7 +151,7 @@ public class SuntanCreamForZaraTest {
 		assertThat(player.getXP(), greaterThan(xp));
 		// wow one whole xp
 
-		assertTrue(player.isEquipped("suntan cream"));
+		assertTrue(player.isEquipped("olejek do opalania"));
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class SuntanCreamForZaraTest {
 		en = npc.getEngine();
 
 		player.setQuest(questSlot, "start");
-		PlayerTestHelper.equipWithItem(player, "suntan cream");
+		PlayerTestHelper.equipWithItem(player, "olejek do opalania");
 
 		en.step(player, "hi");
 		assertEquals("Great! You got the suntan cream! Is it for me?", getReply(npc));
@@ -183,8 +183,8 @@ public class SuntanCreamForZaraTest {
 		en.step(player, "bye");
 		assertEquals("I hope to see you soon!", getReply(npc));
 
-		assertFalse(player.isEquipped("suntan cream"));
-		assertTrue(player.isEquipped("small key"));
+		assertFalse(player.isEquipped("olejek do opalania"));
+		assertTrue(player.isEquipped("kluczyk Zary"));
 
 		assertEquals(player.getQuest(questSlot), "done");
 

@@ -54,7 +54,7 @@ public class UseActionTest {
 		MockStendlRPWorld.get();
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		Item cheese = SingletonRepository.getEntityManager().getItem("ser");
 		player.equip("bag", cheese);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
 		zone.add(player);
@@ -62,19 +62,19 @@ public class UseActionTest {
 		action.put(BASEITEM, cheese.getID().getObjectID());
 		action.put(BASEOBJECT, player.getID().getObjectID());
 		action.put(BASESLOT, "bag");
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		ua.onAction(player, action);
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 
 		// Same using item path
-		cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		cheese = SingletonRepository.getEntityManager().getItem("ser");
 		player.equip("bag", cheese);
 		action = new RPAction();
 		action.put(Actions.TARGET_PATH, Arrays.asList(Integer.toString(player.getID().getObjectID()),
 				"bag", Integer.toString(cheese.getID().getObjectID())));
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		ua.onAction(player, action);
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class UseActionTest {
 		MockStendlRPWorld.get();
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		final StackableItem cheese = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		final StackableItem cheese = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		cheese.setQuantity(2);
 		player.equip("bag", cheese);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -94,9 +94,9 @@ public class UseActionTest {
 		action.put(BASEITEM, cheese.getID().getObjectID());
 		action.put(BASEOBJECT, player.getID().getObjectID());
 		action.put(BASESLOT, "bag");
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		ua.onAction(player, action);
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		assertEquals(1, cheese.getQuantity());
 
 		// The same using item path
@@ -104,9 +104,9 @@ public class UseActionTest {
 		action = new RPAction();
 		action.put(Actions.TARGET_PATH, Arrays.asList(Integer.toString(player.getID().getObjectID()),
 				"bag", Integer.toString(cheese.getID().getObjectID())));
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		ua.onAction(player, action);
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		assertEquals(1, cheese.getQuantity());
 	}
 
@@ -120,7 +120,7 @@ public class UseActionTest {
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		final Chest chest = new Chest();
-		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		Item cheese = SingletonRepository.getEntityManager().getItem("ser");
 		chest.add(cheese);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
 		zone.collisionMap.clear();
@@ -138,7 +138,7 @@ public class UseActionTest {
 		assertTrue(player.has("eating"));
 
 		// Same using item paths
-		cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		cheese = SingletonRepository.getEntityManager().getItem("ser");
 		chest.add(cheese);
 		action = new RPAction();
 		action.put(Actions.TARGET_PATH, Arrays.asList(Integer.toString(chest.getID().getObjectID()),
@@ -155,7 +155,7 @@ public class UseActionTest {
 	public void testIsItemBoundToOtherPlayer() {
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		final Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		final Item cheese = SingletonRepository.getEntityManager().getItem("ser");
 		assertFalse(ua.isItemBoundToOtherPlayer(player, null));
 		assertFalse(ua.isItemBoundToOtherPlayer(player, cheese));
 		cheese.setBoundTo("jack");
@@ -177,7 +177,7 @@ public class UseActionTest {
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		final Player player2 = PlayerTestHelper.createPlayer("croesus");
-		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		Item cheese = SingletonRepository.getEntityManager().getItem("ser");
 
 		player2.equip("bag", cheese);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -187,16 +187,16 @@ public class UseActionTest {
 		action.put(BASEITEM, cheese.getID().getObjectID());
 		action.put(BASEOBJECT, player2.getID().getObjectID());
 		action.put(BASESLOT, "bag");
-		assertTrue(player2.isEquipped("cheese"));
+		assertTrue(player2.isEquipped("ser"));
 		ua.onAction(player, action);
-		assertTrue(player2.isEquipped("cheese"));
+		assertTrue(player2.isEquipped("ser"));
 
 		// Same using item path
 		action = new RPAction();
 		action.put(Actions.TARGET_PATH, Arrays.asList(Integer.toString(player2.getID().getObjectID()),
 				"bag", Integer.toString(cheese.getID().getObjectID())));
 		ua.onAction(player, action);
-		assertTrue(player2.isEquipped("cheese"));
+		assertTrue(player2.isEquipped("ser"));
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class UseActionTest {
 	public void testItemOnGround() {
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		Item cheese = SingletonRepository.getEntityManager().getItem("ser");
 
 		final StendhalRPZone zone = new StendhalRPZone("zone");
 		zone.add(player);
@@ -217,7 +217,7 @@ public class UseActionTest {
 		assertEquals(0, cheese.getQuantity());
 
 		// Same using item path
-		cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		cheese = SingletonRepository.getEntityManager().getItem("ser");
 		zone.add(cheese);
 		action = new RPAction();
 		action.put(Actions.TARGET_PATH, Arrays.asList(Integer.toString(cheese.getID().getObjectID())));
@@ -233,8 +233,8 @@ public class UseActionTest {
 	public void testItemFromCorpse() {
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
-		Corpse corpse = new Corpse("rat", 0, 0);
+		Item cheese = SingletonRepository.getEntityManager().getItem("ser");
+		Corpse corpse = new Corpse("szczur", 0, 0);
 
 		final StendhalRPZone zone = new StendhalRPZone("zone");
 		corpse.add(cheese);
@@ -248,7 +248,7 @@ public class UseActionTest {
 		assertEquals(0, cheese.getQuantity());
 
 		// Same using item path
-		cheese = SingletonRepository.getEntityManager().getItem("cheese");
+		cheese = SingletonRepository.getEntityManager().getItem("ser");
 		corpse.add(cheese);
 		action = new RPAction();
 		action.put(Actions.TARGET_PATH, Arrays.asList(Integer.toString(corpse.getID().getObjectID()),

@@ -69,7 +69,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 		assertEquals(bob, item.getContainer());
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -77,7 +77,7 @@ public class MarketTest {
 		assertTrue(market.contains(offer));
 		assertFalse(offer.getItem().getContainer().equals(bob));
 		assertTrue(offer.getItem().getContainer().equals(offer));
-		assertNull(bob.getFirstEquipped("axe"));
+		assertNull(bob.getFirstEquipped("topór"));
 		Offer object = (Offer) new OfferTransformer().transform(offer);
 		assertEquals(offer, object);
 		assertFalse(object.getItem().getContainer().equals(bob));
@@ -94,7 +94,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -110,7 +110,7 @@ public class MarketTest {
 		ernie.equipToInventoryOnly(erniesMoney);
 		assertThat(ernie.isEquipped("money", price), is(Boolean.TRUE));
 		market.acceptOffer(offer, ernie);
-		assertThat(Boolean.valueOf(ernie.isEquipped("axe")), is(Boolean.TRUE));
+		assertThat(Boolean.valueOf(ernie.isEquipped("topór")), is(Boolean.TRUE));
 		assertThat(ernie.isEquipped("money", price), is(Boolean.FALSE));
 		assertThat(Boolean.valueOf(george.isEquipped("money")), is(Boolean.FALSE));
 		assertThat(market.hasEarningsFor(george), is(Boolean.TRUE));
@@ -131,11 +131,11 @@ public class MarketTest {
 		Market market = Market.createShop();
 		zone.add(market);
 
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		george.equipToInventoryOnly(item);
 		Offer offer = market.createOffer(george, item, 10, 1);
 
-		item = SingletonRepository.getEntityManager().getItem("carrot");
+		item = SingletonRepository.getEntityManager().getItem("marchew");
 		george.equipToInventoryOnly(item);
 		Offer offer2 = market.createOffer(george, item, 11, 1);
 
@@ -188,13 +188,13 @@ public class MarketTest {
 		Market market = Market.createShop();
 		zone.add(market);
 		Player george = PlayerTestHelper.createPlayer("george");
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		item.setBoundTo("george");
 		george.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(george, item, 42, 1);
 		assertNull("Creating offers for non bound items should fail", offer);
-		assertThat(george.isEquipped("axe"), is(Boolean.TRUE));
+		assertThat(george.isEquipped("topór"), is(Boolean.TRUE));
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -218,7 +218,7 @@ public class MarketTest {
 		ernie.equipToInventoryOnly(erniesMoney);
 		assertThat(ernie.isEquipped("money", price), is(Boolean.TRUE));
 		market.acceptOffer(offer, ernie);
-		assertThat(Boolean.valueOf(ernie.isEquipped("axe")), is(Boolean.FALSE));
+		assertThat(Boolean.valueOf(ernie.isEquipped("topór")), is(Boolean.FALSE));
 		assertThat(ernie.isEquipped("money", price), is(Boolean.TRUE));
 	}
 
@@ -232,7 +232,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -246,7 +246,7 @@ public class MarketTest {
 
 		assertThat(ernie.isEquipped("money", price), is(Boolean.FALSE));
 		market.acceptOffer(offer, ernie);
-		assertThat(Boolean.valueOf(ernie.isEquipped("axe")), is(Boolean.FALSE));
+		assertThat(Boolean.valueOf(ernie.isEquipped("topór")), is(Boolean.FALSE));
 		assertThat(ernie.isEquipped("money", tooFewMoney), is(Boolean.TRUE));
 		assertThat(Boolean.valueOf(bob.isEquipped("money")), is(Boolean.FALSE));
 		market.fetchEarnings(bob);
@@ -265,13 +265,13 @@ public class MarketTest {
 		Market market = Market.createShop();
 		zone.add(market);
 		Player george = PlayerTestHelper.createPlayer("george");
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		george.equipToInventoryOnly(item);
 		Offer offer = market.createOffer(george, item, 0, 1);
 
 		Player ernie = PlayerTestHelper.createPlayer("ernie");
 		market.acceptOffer(offer, ernie);
-		assertThat(ernie.isEquipped("axe"), is(Boolean.TRUE));
+		assertThat(ernie.isEquipped("topór"), is(Boolean.TRUE));
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("greater potion");
+		Item item = SingletonRepository.getEntityManager().getItem("duży eliksir");
 		((StackableItem) item).setQuantity(6);
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
@@ -290,7 +290,7 @@ public class MarketTest {
 		george.equipToInventoryOnly(item);
 		Integer number = Integer.valueOf(5);
 		Offer offer = market.createOffer(george, item, price, number);
-		assertThat(offer.getItem().getName(), is("greater potion"));
+		assertThat(offer.getItem().getName(), is("duży eliksir"));
 		assertThat(((StackableItem) offer.getItem()).getQuantity(), is(5));
 		assertThat(offer.getPrice(), is(price));
 		assertThat(Boolean.valueOf(george.isEquipped(item.getName(), 1)),
@@ -301,7 +301,7 @@ public class MarketTest {
 		ernie.equipToInventoryOnly(erniesMoney);
 		assertThat(ernie.isEquipped("money", price), is(Boolean.TRUE));
 		market.acceptOffer(offer, ernie);
-		assertThat(Boolean.valueOf(ernie.isEquipped("greater potion", 5)), is(Boolean.TRUE));
+		assertThat(Boolean.valueOf(ernie.isEquipped("duży eliksir", 5)), is(Boolean.TRUE));
 		assertThat(ernie.isEquipped("money", price), is(Boolean.FALSE));
 		assertThat(Boolean.valueOf(george.isEquipped("money")), is(Boolean.FALSE));
 		market.fetchEarnings(george);
@@ -318,7 +318,7 @@ public class MarketTest {
 		Market market = Market.createShop();
 		zone.add(market);
 		Player george = PlayerTestHelper.createPlayer("george");
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("meat");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("mięso");
 		// ensure the item gets an id
 		george.equipToInventoryOnly(item);
 		george.drop(item);
@@ -336,7 +336,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -355,7 +355,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -375,7 +375,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -383,7 +383,7 @@ public class MarketTest {
 		market.removeOffer(offer, bob);
 		assertFalse(market.contains(offer));
 		assertFalse(market.getExpiredOffers().contains(offer));
-		assertTrue(bob.getFirstEquipped("axe") != null);
+		assertTrue(bob.getFirstEquipped("topór") != null);
 	}
 
 	// returning the item to player from an offer that has expired
@@ -396,7 +396,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -406,7 +406,7 @@ public class MarketTest {
 
 		assertFalse(market.contains(offer));
 		assertFalse(market.getExpiredOffers().contains(offer));
-		assertTrue(bob.getFirstEquipped("axe") != null);
+		assertTrue(bob.getFirstEquipped("topór") != null);
 	}
 
 	/**
@@ -418,7 +418,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		// make an offer to the shop and make it disappear
@@ -431,7 +431,7 @@ public class MarketTest {
 
 		assertFalse(market.contains(offer));
 		assertFalse(market.getExpiredOffers().contains(offer));
-		assertNull(bob.getFirstEquipped("axe"));
+		assertNull(bob.getFirstEquipped("topór"));
 	}
 
 	/**
@@ -446,12 +446,12 @@ public class MarketTest {
 
 		assertTrue(market.getOffersOlderThan(10000).size() == 0);
 
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 		Offer offer = market.createOffer(bob, item, 10, 1);
 		offer.put("timestamp", "0");
 
-		Item item2 = SingletonRepository.getEntityManager().getItem("cheese");
+		Item item2 = SingletonRepository.getEntityManager().getItem("ser");
 		bob.equipToInventoryOnly(item2);
 		Offer offer2 = market.createOffer(bob, item2, 10, 1);
 
@@ -473,13 +473,13 @@ public class MarketTest {
 
 		assertTrue(market.getExpiredOffersOlderThan(10000).size() == 0);
 
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 		Offer offer = market.createOffer(bob, item, 10, 1);
 		offer.put("timestamp", "0");
 		market.expireOffer(offer);
 
-		Item item2 = SingletonRepository.getEntityManager().getItem("axe");
+		Item item2 = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item2);
 		Offer offer2 = market.createOffer(bob, item2, 11, 1);
 		market.expireOffer(offer2);
@@ -500,11 +500,11 @@ public class MarketTest {
 		Market market = Market.createShop();
 		zone.add(market);
 
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		george.equipToInventoryOnly(item);
 		Offer offer = market.createOffer(george, item, 10, 1);
 
-		item = SingletonRepository.getEntityManager().getItem("carrot");
+		item = SingletonRepository.getEntityManager().getItem("marchew");
 		george.equipToInventoryOnly(item);
 		Offer offer2 = market.createOffer(george, item, 11, 1);
 
@@ -537,7 +537,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -557,7 +557,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -579,7 +579,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		bob.equipToInventoryOnly(item);
 
 		Offer offer = market.createOffer(bob, item, 10, 1);
@@ -600,7 +600,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -616,7 +616,7 @@ public class MarketTest {
 		ernie.equipToInventoryOnly(erniesMoney);
 		assertThat(ernie.isEquipped("money", price), is(Boolean.TRUE));
 		market.acceptOffer(offer, ernie);
-		assertThat(Boolean.valueOf(ernie.isEquipped("axe")), is(Boolean.TRUE));
+		assertThat(Boolean.valueOf(ernie.isEquipped("topór")), is(Boolean.TRUE));
 		assertThat(ernie.isEquipped("money", price), is(Boolean.FALSE));
 		assertThat(Boolean.valueOf(george.isEquipped("money")), is(Boolean.FALSE));
 		List<Earning> earningsOlderThan = market.getEarningsOlderThan(-1);
@@ -636,7 +636,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -676,7 +676,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -714,7 +714,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem erniesMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);
@@ -752,7 +752,7 @@ public class MarketTest {
 		StendhalRPZone zone = new StendhalRPZone("shop");
 		Market market = Market.createShop();
 		zone.add(market);
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem money = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(10);

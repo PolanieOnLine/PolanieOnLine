@@ -81,9 +81,9 @@ public class VampireSwordTest {
 	}
 
 	public VampireSwordTest() {
-		requiredForFilling.put("vampirette entrails", 7);
-		requiredForFilling.put("bat entrails", 7);
-		requiredForFilling.put("skull ring", 1);
+		requiredForFilling.put("truchło wampira", 7);
+		requiredForFilling.put("truchło nietoperza", 7);
+		requiredForFilling.put("pierścień z czaszką", 1);
 		requiredForFilling.put("pusta czara", 1);
 	}
 
@@ -307,7 +307,7 @@ public class VampireSwordTest {
 	 */
 	@Test
 	public void testBloodMaterialDescription() {
-		for (String material : Arrays.asList("blood", "vampirette entrails", "bat entrails")) {
+		for (String material : Arrays.asList("blood", "truchło wampira", "truchło nietoperza")) {
 			final Player player = PlayerTestHelper.createPlayer("me");
 			final SpeakerNPC npc = vs.npcs.get(VAMPIRE_NPC);
 			final Engine en = vs.npcs.get(VAMPIRE_NPC).getEngine();
@@ -325,7 +325,7 @@ public class VampireSwordTest {
 	 */
 	@Test
 	public void testVampireLordDescription() {
-		for (String word : Arrays.asList("lord", "vampire", "skull ring")) {
+		for (String word : Arrays.asList("lord", "vampire", "pierścień z czaszką")) {
 			final Player player = PlayerTestHelper.createPlayer("me");
 			final SpeakerNPC npc = vs.npcs.get(VAMPIRE_NPC);
 			final Engine en = vs.npcs.get(VAMPIRE_NPC).getEngine();
@@ -383,11 +383,11 @@ public class VampireSwordTest {
 
 		Item item = SingletonRepository.getEntityManager().getItem("pusta czara");
 		player.equipToInventoryOnly(item);
-		item = SingletonRepository.getEntityManager().getItem("skull ring");
+		item = SingletonRepository.getEntityManager().getItem("pierścień z czaszką");
 		player.equipToInventoryOnly(item);
-		item = SingletonRepository.getEntityManager().getItem("bat entrails");
+		item = SingletonRepository.getEntityManager().getItem("truchło nietoperza");
 		player.equipToInventoryOnly(item);
-		item = SingletonRepository.getEntityManager().getItem("vampirette entrails");
+		item = SingletonRepository.getEntityManager().getItem("truchło wampira");
 		player.equipToInventoryOnly(item);
 
 		en.step(player, "fill");

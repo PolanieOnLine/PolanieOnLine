@@ -91,7 +91,7 @@ public class DailyMonsterQuestTest {
 
 		en.setCurrentState(ATTENDING);
 		CreatureTestHelper.generateRPClasses();
-		SingletonRepository.getEntityManager().getCreature("rat");
+		SingletonRepository.getEntityManager().getCreature("szczur");
 		assertThat(en.getCurrentState(), is(ATTENDING));
 		assertTrue(en.step(bob, "quest"));
 		assertThat(en.getCurrentState(), is(ATTENDING));
@@ -106,7 +106,7 @@ public class DailyMonsterQuestTest {
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		en.setCurrentState(ATTENDING);
 		CreatureTestHelper.generateRPClasses();
-		SingletonRepository.getEntityManager().getCreature("rat");
+		SingletonRepository.getEntityManager().getCreature("szczur");
 		assertThat(en.getCurrentState(), is(ATTENDING));
 		assertTrue(en.step(bob, "quest"));
 		assertThat(en.getCurrentState(), is(ATTENDING));
@@ -125,11 +125,11 @@ public class DailyMonsterQuestTest {
 		CreatureTestHelper.generateRPClasses();
 		assertNull("empty list", dmqpick.pickIdealCreature(-1, false, new LinkedList<Creature>()));
 		final LinkedList<Creature> creatureList = new LinkedList<Creature>();
-		creatureList.add(SingletonRepository.getEntityManager().getCreature("rat"));
-		assertThat("1 rat in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("rat"));
-		assertThat("1 rat in list", dmqpick.pickIdealCreature(1000, false, creatureList).getName(), is("rat"));
+		creatureList.add(SingletonRepository.getEntityManager().getCreature("szczur"));
+		assertThat("1 rat in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("szczur"));
+		assertThat("1 rat in list", dmqpick.pickIdealCreature(1000, false, creatureList).getName(), is("szczur"));
 		creatureList.add(SingletonRepository.getEntityManager().getCreature("balrog"));
-		assertThat("rat and balrog in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("rat"));
+		assertThat("rat and balrog in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("szczur"));
 
 	}
 
@@ -171,7 +171,5 @@ public class DailyMonsterQuestTest {
 			assertThat("1 rat in list", dmqpick.pickIdealCreature(level, false, creatureList).getLevel(),
 					lessThanOrEqualTo(level + 5));
 		}
-
 	}
-
 }

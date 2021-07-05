@@ -41,7 +41,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testCreation() {
-		final Item key = SingletonRepository.getEntityManager().getItem("house key");
+		final Item key = SingletonRepository.getEntityManager().getItem("klucz od drzwi");
 		assertNotNull("Generated item is not null", key);
 		assertTrue("The key is not a HouseKey", key instanceof HouseKey);
 		assertTrue("The key is not persistent", key.isPersistent());
@@ -52,7 +52,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testCopy() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("house key");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
 		final HouseKey key2 = new HouseKey(key);
 
 		assertEquals(key, key2);
@@ -64,7 +64,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testDescription() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("house key");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
 		key.setup("henhouse", 42, null);
 		assertEquals(key.describe(), "You see a key to henhouse.");
 		key.setup("outhouse", 13, "Mr. Taxman");
@@ -76,7 +76,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testMatches() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("house key");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
 
 		// only match when both the id and lock number match
 		key.setup("henhouse", 42, null);
@@ -98,7 +98,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testImage() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("house key");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
 
 		// The subclass is up to the implementation to decide, but
 		// it should be same for all keys with the same id and lock number
