@@ -69,7 +69,7 @@ public class RebornQuest extends AbstractQuest {
 
 	private final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 	private final String NAGRODA = "Została zagięta Twoja teraźniejszość przez potężnego smoka czasu, #'Yereny'... abyś mógł przeżyć przygodę jeszcze raz... Podążaj nową ścieżką, którą sobie obierzesz...";
-	private final String UKOŃCZONE = "Wybacz... lecz nie czuję się za dobrze, aby ponownie użyć swej mocy...";
+	private final String UKONCZONE = "Wybacz... lecz nie czuję się za dobrze, aby ponownie użyć swej mocy...";
 	
 	private final String DODATKOWA_NAGRODA = NAGRODA + " Otrzymałeś również pamiątkę po swoich wcześniejszych podróżach!";
 
@@ -365,7 +365,7 @@ public class RebornQuest extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "done;5"),
 				ConversationStates.ATTENDING,
-				UKOŃCZONE,
+				UKONCZONE,
 				null);
 	}
 
