@@ -738,7 +738,7 @@
 
 	<!-- Museum 0 -->
 	<zone name="int_gdansk_museum_0" file="interiors/gdansk/int_museum_0.tmx">
-		<configurator class-name="games.pol.server.maps.gdansk.museum.MieczysławNPC"/>
+		<configurator class-name="games.pol.server.maps.gdansk.museum.MuseumDirectorNPC"/>
 
 		<portal x="23" y="26" ref="museum_1_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_1"/>

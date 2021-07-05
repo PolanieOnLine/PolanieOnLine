@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2018-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,7 +24,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 /**
  * @author KarajuSs
  */
-public class MieczysławNPC implements ZoneConfigurator {
+public class MuseumDirectorNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
 
 	/**
@@ -35,17 +35,17 @@ public class MieczysławNPC implements ZoneConfigurator {
 	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildZakopaneRatuszArea(zone);
+		buildNPC(zone);
 	}
 
-	private void buildZakopaneRatuszArea(final StendhalRPZone zone) {
+	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Mieczysław") {
 
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Jestem Mieczysław. Opiekuje się miastem Gdańsk!");
-				addHelp("Nasze miasto potrzebuje różnych rzeczy. Jeżeli potrzebujesz banku to znajdziesz go na południe od muzeum.");
+				addJob("Jestem dyrektorem tutejszej instytucji jakim jest muzeum w Gdańsku!");
+				addHelp("Muzeum potrzebuje nowych eksponatów, jeśli jesteś gotów na #zadanie ode mnie to się odezwij.");
 				addOffer("Mogę sprzedać #'zwój gdański', #'zwój tatrzański' oraz #'niezapisany zwój'. Chyba, że szukasz u mnie #zadania.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("mieczyslaw")));
 				addGoodbye("Życzę powodzenia!");
