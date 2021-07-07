@@ -408,7 +408,11 @@ public class Corpse extends PassiveEntity implements EquipListener {
 			text += creatureName;
 		} else if (has(ATTR_NAME)) {
 			text += get(ATTR_NAME);
-			String getGender = SingletonRepository.getRuleProcessor().getPlayer(get(ATTR_NAME)).getGender();
+			Player player = SingletonRepository.getRuleProcessor().getPlayer(get(ATTR_NAME));
+			String getGender = player.getGender();
+			if (getGender == null) {
+				getGender = "M";
+			}
 
 			if (has(ATTR_KILLER)) {
 				// only display the killer if it is the corpse of a player
