@@ -13,8 +13,10 @@
 package games.stendhal.common;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -125,6 +127,15 @@ public class GrammarTest {
 	}
 
 	/**
+	 * Tests for article_noun.
+	 */
+	@Test
+	public void testarticle_noun() {
+		assertEquals("the test", Grammar.article_noun("test", true));
+		assertEquals("a test", Grammar.article_noun("test", false));
+	}
+
+	/**
 	 * Tests for isAre.
 	 */
 	@Test
@@ -139,6 +150,27 @@ public class GrammarTest {
 		assertEquals("Has", Grammar.HasHave(1));
 		assertEquals("Have", Grammar.HasHave(2));
 		assertEquals("Have", Grammar.HasHave(0));
+	}
+
+	/**
+	 * Tests for a_noun.
+	 */
+	@Test
+	public void testa_noun() {
+		assertNull(Grammar.a_noun(null));
+		assertEquals("an eater", Grammar.a_noun("eater"));
+		assertEquals("a money", Grammar.a_noun("money"));
+		assertEquals("a youngster", Grammar.a_noun("youngster"));
+		assertEquals("an yclept", Grammar.a_noun("yclept"));
+		assertEquals("a s", Grammar.a_noun("s"));
+		assertEquals("an a", Grammar.a_noun("a"));
+		assertEquals("an e", Grammar.a_noun("e"));
+		assertEquals("an i", Grammar.a_noun("i"));
+		assertEquals("an o", Grammar.a_noun("o"));
+		assertEquals("a u", Grammar.a_noun("u"));
+		assertEquals("a ", Grammar.a_noun(""));
+		assertEquals("a eupepsia", Grammar.a_noun("eupepsia"));
+		assertEquals("a eu", Grammar.a_noun("eu"));
 	}
 
 	/**
@@ -168,6 +200,27 @@ public class GrammarTest {
 		assertEquals("pair of iron boots", Grammar.fullForm("iron boots"));
 		assertEquals("chocolate",Grammar.fullForm("chocolate"));
 		assertEquals("ice cream", Grammar.fullForm("icecream"));
+	}
+
+	/**
+	 * Tests for a_noun.
+	 */
+	@Test
+	public void testA_noun() {
+		assertEquals("An eater", Grammar.A_noun("eater"));
+		assertEquals("A money", Grammar.A_noun("money"));
+		assertEquals("A s", Grammar.A_noun("s"));
+		assertEquals("An a", Grammar.A_noun("a"));
+		assertEquals("A ", Grammar.A_noun(""));
+	}
+
+	/**
+	 * Tests for suffix_s.
+	 */
+	@Test
+	public void testSuffix_s() {
+		assertEquals("s'", Grammar.suffix_s("s"));
+		assertEquals("a's", Grammar.suffix_s("a"));
 	}
 
 	private static void testPluralisationOfAGivenSingularWord(final String message, final String plural, final String singular) {
@@ -422,7 +475,7 @@ public class GrammarTest {
 		testPluralisationAndSingularisation("lotuses", "lotus");
 		testPluralisationAndSingularisation("mumakil", "mumak");
 
-		testPluralisationAndSingularisation("djinn", "djinni");
+		testPluralisationAndSingularisation("djinns", "djinn");
 		testPluralisationAndSingularisation("efreet", "efreeti");
 		testPluralisationAndSingularisation("ys", "y");
 		// baby: ... + consonant + "y"
@@ -753,6 +806,58 @@ public class GrammarTest {
 	}
 
 	/**
+	 * Tests for normalizeVerbs.
+	 */
+	@Test
+	public void testNormalizeVerbs() {
+		assertNull(Grammar.normalizeRegularVerb("open"));
+		assertEquals("open", Grammar.normalizeRegularVerb("opened").word);
+		assertEquals("open", Grammar.normalizeRegularVerb("opens").word);
+		assertEquals("open", Grammar.normalizeRegularVerb("opening").word);
+
+		assertNull(Grammar.normalizeRegularVerb("close"));
+		assertEquals("clos", Grammar.normalizeRegularVerb("closed").word);
+		assertEquals("clos", Grammar.normalizeRegularVerb("closes").word);
+		assertEquals("clos", Grammar.normalizeRegularVerb("closing").word);
+
+		assertNull(Grammar.normalizeRegularVerb("to fish"));
+		assertEquals("fish", Grammar.normalizeRegularVerb("fished").word);
+		assertEquals("fish", Grammar.normalizeRegularVerb("fishes").word);
+		assertEquals("fish", Grammar.normalizeRegularVerb("fishing").word);
+	}
+
+	/**
+	 * Tests for gerund.
+	 */
+	@Test
+	public void testGerund() {
+		assertTrue(Grammar.isGerund("doing"));
+		assertFalse(Grammar.isGerund("do"));
+		assertTrue(Grammar.isGerund("working"));
+		assertFalse(Grammar.isGerund("work"));
+		assertTrue(Grammar.isGerund("swimming"));
+		assertFalse(Grammar.isGerund("swim"));
+		assertFalse(Grammar.isGerund("thing"));
+		assertFalse(Grammar.isGerund("spring"));
+		assertTrue(Grammar.isGerund("acting"));
+	}
+
+	/**
+	 * Tests for normalizeAdjectives.
+	 */
+	@Test
+	public void testNormalizeAdjectives() {
+		assertTrue(Grammar.isDerivedAdjective("nomadic"));
+		assertFalse(Grammar.isDerivedAdjective("nomad"));
+		assertFalse(Grammar.isDerivedAdjective("thing"));
+		assertFalse(Grammar.isDerivedAdjective("swim"));
+
+		assertNull(Grammar.normalizeDerivedAdjective("word"));
+		assertEquals("magic", Grammar.normalizeDerivedAdjective("magical"));
+		assertEquals("nomad", Grammar.normalizeDerivedAdjective("nomadic"));
+	}
+
+	/**
 	 * Tests for leatherLegs.
 	 */
 	@Test
@@ -779,4 +884,20 @@ public class GrammarTest {
 		assertEquals("These", Grammar.ThisThese(2));
 		assertEquals("These", Grammar.ThisThese(0));
 	}
+
+	/**
+	 * Tests for gerundForm().
+	 */
+	@Test
+	public void testGerundForm() {
+		assertEquals("baking", Grammar.gerundForm("bake"));
+		assertEquals("casting", Grammar.gerundForm("cast"));
+		assertEquals("making", Grammar.gerundForm("make"));
+		assertEquals("milling", Grammar.gerundForm("mill"));
+		assertEquals("sitting", Grammar.gerundForm("sit"));
+		assertEquals("swimming", Grammar.gerundForm("swim"));
+		assertEquals("swapping", Grammar.gerundForm("swap"));
+		assertEquals("studying", Grammar.gerundForm("study"));
+	}
+
 }

@@ -184,6 +184,8 @@ public class KillBlordroughsTest {
         assertEquals(tempkarma, player.getKarma()-5, 0.000001);
         en.step(player, "bye");
 		assertEquals("Goodbye, comrade.", getReply(npc));
+
+		assertEquals(1, quest.getCompletedCount(player));
 	}
 
 	@Test
@@ -211,5 +213,7 @@ public class KillBlordroughsTest {
 		assertEquals(tempkarma, player.getKarma()-30, 0.000001);
 		en.step(player, "bye");
 		assertEquals("Goodbye, comrade.", getReply(npc));
+
+		assertEquals(1, quest.getCompletedCount(player));
 	}
 }
