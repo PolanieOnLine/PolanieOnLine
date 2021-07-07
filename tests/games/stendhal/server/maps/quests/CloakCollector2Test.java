@@ -10,6 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static utilities.SpeakerNPCTestHelper.getReply;
@@ -186,7 +187,7 @@ public class CloakCollector2Test {
 		for (final String itemName : CLOAKS.subList(1, CLOAKS.size())) {
 			en.stepTest(player, itemName);
 			assertEquals("Oh, I'm disappointed. You don't really have "
-					+ Grammar.a_noun(itemName) + " with you.", getReply(npc));
+					+ itemName + " with you.", getReply(npc));
 
 			final Item cloak = new Item(itemName, "", "", null);
 			player.getSlot("bag").add(cloak);
@@ -205,7 +206,7 @@ public class CloakCollector2Test {
 		final String lastCloak = CLOAKS.get(0);
 		en.stepTest(player, lastCloak);
 		assertEquals("Oh, I'm disappointed. You don't really have "
-				+ Grammar.a_noun(lastCloak) + " with you.", getReply(npc));
+				+ lastCloak + " with you.", getReply(npc));
 		final Item cloak = new Item(lastCloak, "", "", null);
 		player.getSlot("bag").add(cloak);
 		en.stepTest(player, lastCloak);

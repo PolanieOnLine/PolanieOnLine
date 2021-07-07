@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -32,7 +31,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -42,7 +40,6 @@ import games.stendhal.server.maps.MockStendlRPWorld;
 import utilities.PlayerTestHelper;
 
 public class ElvishArmorTest {
-
 	private static Engine npcEngine;
 
 	@BeforeClass
@@ -181,7 +178,7 @@ public class ElvishArmorTest {
 
 			assertThat(playerSays, npcEngine.getCurrentState(), is(QUESTION_1));
 			assertThat(playerSays, getReply(npc), is("Liar! You don't really have "
-					+ Grammar.a_noun(playerSays)	+ " with you."));
+					+ playerSays + " with you."));
 		}
 	}
 
