@@ -79,7 +79,7 @@ public class HttpClientTest {
 		File file = File.createTempFile("test", ".txt");
 		file.deleteOnExit();
 
-		HttpClient client = new HttpClient("http://sf.net/projects/arianne");
+		HttpClient client = new HttpClient("http://sf.net/projects/game-polanieonline");
 		client.fetchFile(file.getAbsolutePath());
 		assertTrue(file.length() > 100);
 		if (!file.delete()) {
@@ -88,7 +88,7 @@ public class HttpClientTest {
 
 		file = File.createTempFile("test", ".txt");
 		file.deleteOnExit();
-		client = new HttpClient("http://sf.net/projects/arianne/file-does-not-exist");
+		client = new HttpClient("http://sf.net/projects/game-polanieonline/file-does-not-exist");
 		client.fetchFile(file.getAbsolutePath());
 		assertEquals(0, file.length());
 
@@ -96,11 +96,11 @@ public class HttpClientTest {
 		client.fetchFile(file.getAbsolutePath());
 		assertEquals(0, file.length());
 
-		client = new HttpClient("http://sf.net:81/projects/arianne");
+		client = new HttpClient("http://sf.net:81/projects/game-polanieonline");
 		client.fetchFile(file.getAbsolutePath());
 		assertEquals(0, file.length());
 
-		client = new HttpClient("http://sourceforge.net/projects/arianne/files/z_old/stendhal-updates/stendhal-diff-0.75-0.75.1.jar/download");
+		client = new HttpClient("http://sourceforge.net/projects/game-polanieonline/files/z_old/updates/polanieonline-diff-1.21-1.22.jar/download");
 		client.fetchFile(file.getAbsolutePath());
 		assertTrue(file.length() > 10000);
 

@@ -40,18 +40,21 @@ public class PlayerTestHelperTest {
 		assertTrue(bob.hasSlot("bag"));
 		assertTrue(bob.hasSlot("lhand"));
 		assertTrue(bob.hasSlot("rhand"));
-		assertTrue(bob.hasSlot("armor"));
+		assertTrue(bob.hasSlot("neck"));
 		assertTrue(bob.hasSlot("head"));
+		assertTrue(bob.hasSlot("armor"));
 		assertTrue(bob.hasSlot("legs"));
 		assertTrue(bob.hasSlot("feet"));
 		assertTrue(bob.hasSlot("finger"));
+		assertTrue(bob.hasSlot("fingerb"));
+		assertTrue(bob.hasSlot("glove"));
 		assertTrue(bob.hasSlot("cloak"));
+		assertTrue(bob.hasSlot("pas"));
 		assertTrue(bob.hasSlot("keyring"));
+		assertTrue(bob.hasSlot("money"));
 		assertTrue(bob.hasSlot("!quests"));
 		assertTrue(bob.hasSlot("!kills"));
 		assertTrue(bob.hasSlot("!tutorial"));
 		assertTrue(bob.hasSlot("!visited"));
-
 	}
-
 }
