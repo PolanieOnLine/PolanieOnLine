@@ -514,13 +514,13 @@ public class AdministrationActionTest {
 		pl.setAdminLevel(5000);
 		RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "rat");
+		action.put("creature", "szczur");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);
 		assertEquals(1, pl.getID().getObjectID());
 		final Creature rat = (Creature) zone.getEntityAt(0, 0);
-		assertEquals("rat", rat.get("subclass"));
+		assertEquals("szczur", rat.get("subclass"));
 
 		action = new RPAction();
 		action.put("type", "altercreature");
@@ -766,7 +766,7 @@ public class AdministrationActionTest {
 	public final void testOnDestroyRat() {
 		CreatureTestHelper.generateRPClasses();
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -791,7 +791,7 @@ public class AdministrationActionTest {
 	public final void testOnDestroyRatWithTargetID() {
 
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -815,7 +815,7 @@ public class AdministrationActionTest {
 	@Test
 	public final void testOnInspectRatWithTargetID() {
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -832,7 +832,7 @@ public class AdministrationActionTest {
 		assertTrue(CommandCenter.execute(pl, action));
 		assertThat(pl.events().get(0).get("text"),
 				startsWith(
-						"Inspected creature is called \"rat\" defined in "
+						"Inspected creature is called \"szczur\" defined in "
 						+ "games.stendhal.server.entity.creature.RaidCreature "
 						+ "and has the following attributes:"));
 	}

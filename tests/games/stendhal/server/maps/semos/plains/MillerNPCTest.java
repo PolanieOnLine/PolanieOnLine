@@ -149,7 +149,7 @@ public class MillerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Congratulations! Here are your pansy seeds!", getReply(npc));
-		assertTrue(player.isEquipped("seed", 3));
+		assertTrue(player.isEquipped("nasionka", 3));
 	}
 
 	/**
@@ -169,8 +169,8 @@ public class MillerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Congratulations! Here is your daisies seed!", getReply(npc));
-		assertTrue(player.isEquipped("seed"));
-		Item seed = player.getFirstEquipped("seed");
+		assertTrue(player.isEquipped("nasionka"));
+		Item seed = player.getFirstEquipped("nasionka");
 		assertEquals("daisies", seed.getInfoString());
 
 		equipWithMoney(player, 100);

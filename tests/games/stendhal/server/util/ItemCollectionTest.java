@@ -35,29 +35,29 @@ public class ItemCollectionTest {
 	    assertEquals("", coll.toStringForQuestState());
         assertEquals(ConversationPhrases.EMPTY, coll.toStringList());
 
-	    coll.addItem("cheese", 5);
-	    assertEquals("cheese=5", coll.toStringForQuestState());
+	    coll.addItem("ser", 5);
+	    assertEquals("ser=5", coll.toStringForQuestState());
 
-	    coll.addFromQuestStateString("cheese=2;ham=3");
-        assertEquals("cheese=7;ham=3", coll.toStringForQuestState());
+	    coll.addFromQuestStateString("ser=2;szynka=3");
+        assertEquals("ser=7;szynka=3", coll.toStringForQuestState());
 
-        assertTrue(coll.removeItem("cheese", 1));
-        assertEquals("cheese=6;ham=3", coll.toStringForQuestState());
+        assertTrue(coll.removeItem("ser", 1));
+        assertEquals("ser=6;szynka=3", coll.toStringForQuestState());
         assertEquals(Arrays.asList("6 pieces of cheese", "3 pieces of ham"), coll.toStringList());
         assertEquals(Arrays.asList("6 #'pieces of cheese'", "3 #'pieces of ham'"), coll.toStringListWithHash());
 
-        assertFalse(coll.removeItem("ham", 5));
-        assertEquals("cheese=6;ham=3", coll.toStringForQuestState());
+        assertFalse(coll.removeItem("szynka", 5));
+        assertEquals("ser=6;szynka=3", coll.toStringForQuestState());
 
-        assertTrue(coll.removeItem("cheese", 6));
-        assertEquals("ham=3", coll.toStringForQuestState());
+        assertTrue(coll.removeItem("ser", 6));
+        assertEquals("szynka=3", coll.toStringForQuestState());
 
-        assertTrue(coll.removeItem("ham", 3));
+        assertTrue(coll.removeItem("szynka", 3));
         assertEquals("", coll.toStringForQuestState());
 
-        coll.addItem("shadow legs", 1);
-        assertEquals("shadow legs=1",coll.toStringForQuestState());
-        assertTrue(coll.removeItem("shadow legs",1));
+        coll.addItem("spodnie cieni", 1);
+        assertEquals("spodnie cieni=1",coll.toStringForQuestState());
+        assertTrue(coll.removeItem("spodnie cieni",1));
         assertEquals("", coll.toStringForQuestState());
 	}
 
@@ -65,10 +65,10 @@ public class ItemCollectionTest {
 	public void testAddFromQuestStateString() {
 		final ItemCollection coll = new ItemCollection();
 		assertEquals("", coll.toStringForQuestState());
-		coll.addFromQuestStateString("cheese=6;ham=3;shadow legs=1");
-		assertEquals("cheese=6;ham=3;shadow legs=1", coll.toStringForQuestState());
-		assertTrue(coll.removeItem("shadow legs",1));
-		assertEquals("cheese=6;ham=3", coll.toStringForQuestState());
+		coll.addFromQuestStateString("ser=6;szynka=3;spodnie cieni=1");
+		assertEquals("ser=6;szynka=3;spodnie cieni=1", coll.toStringForQuestState());
+		assertTrue(coll.removeItem("spodnie cieni",1));
+		assertEquals("ser=6;szynka=3", coll.toStringForQuestState());
 	}
 
 }

@@ -36,8 +36,8 @@ public class PlayerHasItemEquippedInSlotTest {
 	@Test
 	public void testSuccess() throws Exception {
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		PlayerTestHelper.equipWithItemToSlot(player, "axe", "rhand");
-		final PlayerHasItemEquippedInSlot condition = new PlayerHasItemEquippedInSlot("axe", "rhand");
+		PlayerTestHelper.equipWithItemToSlot(player, "topór", "rhand");
+		final PlayerHasItemEquippedInSlot condition = new PlayerHasItemEquippedInSlot("topór", "rhand");
 		assertThat(condition.fire(player, null, null), is(Boolean.TRUE));
 	}
 
@@ -49,7 +49,7 @@ public class PlayerHasItemEquippedInSlotTest {
 	@Test
 	public void testFail() throws Exception {
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		final PlayerHasItemEquippedInSlot condition = new PlayerHasItemEquippedInSlot("axe", "rhand");
+		final PlayerHasItemEquippedInSlot condition = new PlayerHasItemEquippedInSlot("topór", "rhand");
 		assertThat(condition.fire(player, null, null), is(Boolean.FALSE));
 	}
 

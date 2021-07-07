@@ -74,7 +74,7 @@ public class MeetHayunnTest {
 		assertEquals("Bye.", getReply(npc));
 
 		// [15:13] rat has been killed by omerob
-		player.setSoloKill("rat");
+		player.setSoloKill("szczur");
 
 		en.step(player, "hi");
 		// [15:14] omerob earns 10 experience points.

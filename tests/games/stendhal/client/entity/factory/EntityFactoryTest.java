@@ -122,7 +122,7 @@ public class EntityFactoryTest {
 
 	@Test
 	public final void seed() {
-		final RPObject rp = new MockRPObject("item", "misc", "seed");
+		final RPObject rp = new MockRPObject("item", "misc", "nasionka");
 		final IEntity en = EntityFactory.createEntity(rp);
 		assertNotNull("entity should be created", en);
 		assertEquals("we should have created a Useableitem by now", UseableItem.class, en

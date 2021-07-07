@@ -71,10 +71,10 @@ public class SpellTest {
 		Player target = createTarget();
 		boolean targetValid = healingSpell.isTargetValid(caster, target);
 		assertThat(Boolean.valueOf(targetValid), is(Boolean.TRUE));
-		Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
+		Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
 		boolean creatureTargetValid = healingSpell.isTargetValid(caster, creature);
 		assertThat(Boolean.valueOf(creatureTargetValid), is(Boolean.FALSE));
-		Item i = SingletonRepository.getEntityManager().getItem("axe");
+		Item i = SingletonRepository.getEntityManager().getItem("topór");
 		boolean itemIsInvalid = healingSpell.isTargetValid(caster, i);
 		assertThat(Boolean.valueOf(itemIsInvalid), is(Boolean.FALSE));
 	}
@@ -82,7 +82,7 @@ public class SpellTest {
 	@Test(expected=InvalidSpellTargetException.class)
 	public void testIsTargetValidCreature() throws Exception {
 		Player caster = createWizard();
-		Creature creature = SingletonRepository.getEntityManager().getCreature("rat");
+		Creature creature = SingletonRepository.getEntityManager().getCreature("szczur");
 		boolean creatureTargetValid = healingSpell.isTargetValid(caster, creature);
 		assertThat(Boolean.valueOf(creatureTargetValid), is(Boolean.FALSE));
 		healingSpell.cast(caster, creature);
@@ -91,7 +91,7 @@ public class SpellTest {
 	@Test(expected=InvalidSpellTargetException.class)
 	public void testIsTargetValidItem() throws Exception {
 		Player caster = createWizard();
-		Item i = SingletonRepository.getEntityManager().getItem("axe");
+		Item i = SingletonRepository.getEntityManager().getItem("topór");
 		boolean itemIsInvalid = healingSpell.isTargetValid(caster, i);
 		assertThat(Boolean.valueOf(itemIsInvalid), is(Boolean.FALSE));
 		healingSpell.cast(caster, i);
@@ -179,7 +179,7 @@ public class SpellTest {
 	public void testAttackTargetPositive() throws Exception {
 		Player caster = createWizard();
 		Player target = createTarget();
-		Creature targetCreature = SingletonRepository.getEntityManager().getCreature("rat");
+		Creature targetCreature = SingletonRepository.getEntityManager().getCreature("szczur");
 		assertThat(Boolean.valueOf(attackSpell.isTargetValid(caster, target)), is(Boolean.TRUE));
 		assertThat(Boolean.valueOf(attackSpell.isTargetValid(caster, targetCreature)), is(Boolean.TRUE));
 	}
@@ -187,7 +187,7 @@ public class SpellTest {
 	@Test
 	public void testAttackTargetNegative() throws Exception {
 		Player caster = createWizard();
-		Item target = SingletonRepository.getEntityManager().getItem("axe");
+		Item target = SingletonRepository.getEntityManager().getItem("topór");
 		assertThat(Boolean.valueOf(attackSpell.isTargetValid(caster, target)), is(Boolean.FALSE));
 	}
 
@@ -197,7 +197,7 @@ public class SpellTest {
 		Player caster = createWizard();
 		caster.setID(new ID(99, "test"));
 		caster.setAtk(10);
-		Creature targetCreature = SingletonRepository.getEntityManager().getCreature("rat");
+		Creature targetCreature = SingletonRepository.getEntityManager().getCreature("szczur");
 		targetCreature.setID(new ID(999, "test"));
 		Integer startingValue = Integer.valueOf(targetCreature.getHP());
 		zone.add(targetCreature);

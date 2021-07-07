@@ -158,10 +158,10 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 	public void testDropItem() {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
-		Item item = SingletonRepository.getEntityManager().getItem("cheese");
+		Item item = SingletonRepository.getEntityManager().getItem("ser");
 
 		player.equip("bag", item);
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		localzone.add(player);
 		RPAction drop = new RPAction();
 		drop.put("type", "drop");
@@ -179,7 +179,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, drop);
 		Assert.assertEquals(0, player.events().size());
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 
 		// same with source path
 		localzone.remove(item);
@@ -192,10 +192,10 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		drop.put("y", player.getY() + 1);
 		// sanity checks
 		assertEquals(0, localzone.getItemsOnGround().size());
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		action.onAction(player, drop);
 		Assert.assertEquals(0, player.events().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 		assertEquals(1, localzone.getItemsOnGround().size());
 	}
 
@@ -206,10 +206,10 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 	public void testDropSomeOfItem() {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		item.setQuantity(5);
 		player.equip("bag", item);
-		assertTrue(player.isEquipped("cheese", 5));
+		assertTrue(player.isEquipped("ser", 5));
 		localzone.add(player);
 		final RPAction drop = new RPAction();
 		drop.put("type", "drop");
@@ -227,8 +227,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, drop);
 		Assert.assertEquals(0, player.events().size());
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese", 4));
-		assertTrue(player.isEquipped("cheese", 3));
+		assertFalse(player.isEquipped("ser", 4));
+		assertTrue(player.isEquipped("ser", 3));
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		item.setQuantity(5);
 		localzone.add(item);
 		localzone.add(player);
@@ -256,8 +256,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		Assert.assertEquals(0, player.events().size());
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese", 3));
-		assertTrue(player.isEquipped("cheese", 2));
+		assertFalse(player.isEquipped("ser", 3));
+		assertTrue(player.isEquipped("ser", 2));
 
 		// Continue the same, but use item path this time
 		equip = new RPAction();
@@ -270,8 +270,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 		Assert.assertEquals(0, player.events().size());
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese", 5));
-		assertTrue(player.isEquipped("cheese", 4));
+		assertFalse(player.isEquipped("ser", 5));
+		assertTrue(player.isEquipped("ser", 4));
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		item.setQuantity(5);
 		item.setPosition(0, 2);
 		localzone.add(item);
@@ -300,7 +300,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		assertEquals("You cannot reach that far.", PlayerTestHelper.getPrivateReply(player));
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 
 		// The same, but using paths
 		equip = new RPAction();
@@ -313,7 +313,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 		assertEquals("You cannot reach that far.", PlayerTestHelper.getPrivateReply(player));
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		item.setQuantity(5);
 		item.setBoundTo("croesus");
 		localzone.add(item);
@@ -342,14 +342,14 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		assertEquals("This cheese is a special reward for croesus. You do not deserve to use it.", PlayerTestHelper.getPrivateReply(player));
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 		// Should work if we bind it to bob instead
 		item.setBoundTo("bob");
 		action.onAction(player, equip);
 		assertEquals(0, player.events().size());
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese", 3));
-		assertTrue(player.isEquipped("cheese", 2));
+		assertFalse(player.isEquipped("ser", 3));
+		assertTrue(player.isEquipped("ser", 2));
 
 		// The same, but using paths
 		equip = new RPAction();
@@ -362,16 +362,16 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 		assertEquals(0, player.events().size());
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese", 5));
-		assertTrue(player.isEquipped("cheese", 4));
+		assertFalse(player.isEquipped("ser", 5));
+		assertTrue(player.isEquipped("ser", 4));
 
 		// Bind it again to croesus. Should fail again.
 		item.setBoundTo("croesus");
 		action.onAction(player, equip);
 		assertEquals("This cheese is a special reward for croesus. You do not deserve to use it.", PlayerTestHelper.getPrivateReply(player));
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese", 5));
-		assertTrue(player.isEquipped("cheese", 4));
+		assertFalse(player.isEquipped("ser", 5));
+		assertTrue(player.isEquipped("ser", 4));
 		assertEquals(1, item.getQuantity());
 	}
 
@@ -385,7 +385,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		final Player player2 = PlayerTestHelper.createPlayer("blocker");
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		item.setQuantity(5);
 		player2.setPosition(0, 1);
 		item.setPosition(0, 1);
@@ -405,7 +405,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		assertEquals("You cannot take items which are below other players", PlayerTestHelper.getPrivateReply(player));
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 
 		// The same, but using paths
 		equip = new RPAction();
@@ -418,7 +418,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 		assertEquals("You cannot take items which are below other players", PlayerTestHelper.getPrivateReply(player));
 		assertEquals(1, localzone.getItemsOnGround().size());
-		assertFalse(player.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
 	}
 
 	/**
@@ -429,10 +429,10 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		player.equip("rhand", item);
 		localzone.add(player);
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 
 		final EquipmentAction action = new EquipAction();
 		RPAction equip = new RPAction();
@@ -446,9 +446,9 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		action.onAction(player, equip);
 
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		assertTrue("Check the cheese is in bag, not in rhand anymore", player.getSlot("bag").getFirst() == item);
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 
 		// The same, but using paths; move the cheese back to hand
 		equip = new RPAction();
@@ -459,9 +459,9 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		equip.put(Actions.TARGET_PATH, path);
 
 		action.onAction(player, equip);
-		assertTrue(player.isEquipped("cheese"));
+		assertTrue(player.isEquipped("ser"));
 		assertTrue("Check the cheese is in back in rhand", player.getSlot("rhand").getFirst() == item);
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 	}
 
 	/**
@@ -472,11 +472,11 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		player.equip("bank", item);
 		localzone.add(player);
-		assertFalse(player.isEquipped("cheese"));
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 
 		final EquipmentAction action = new EquipAction();
 
@@ -492,8 +492,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 
 		// Should fail - the player is not at a chest
-		assertFalse(player.isEquipped("cheese"));
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 
 		// The same using item paths
 		equip = new RPAction();
@@ -505,8 +505,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		action.onAction(player, equip);
 		// Should fail again
-		assertFalse(player.isEquipped("cheese"));
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 	}
 
 	/**
@@ -517,11 +517,11 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		StendhalRPZone localzone = new StendhalRPZone("testzone", 20, 20);
 		SingletonRepository.getRPWorld().addRPZone(localzone);
 		final Player player = PlayerTestHelper.createPlayer("bob");
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		player.equip("bag", item);
 		localzone.add(player);
-		assertTrue(player.isEquipped("cheese"));
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertTrue(player.isEquipped("ser"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 
 		final EquipmentAction action = new EquipAction();
 
@@ -537,8 +537,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 
 		// Should fail - the player is not at a chest
-		assertTrue(player.isEquipped("cheese"));
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertTrue(player.isEquipped("ser"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 
 		// The same using item paths
 		equip = new RPAction();
@@ -550,8 +550,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 
 		action.onAction(player, equip);
 		// Should fail again
-		assertTrue(player.isEquipped("cheese"));
-		assertEquals(1, player.getTotalNumberOf("cheese"));
+		assertTrue(player.isEquipped("ser"));
+		assertEquals(1, player.getTotalNumberOf("ser"));
 	}
 
 
@@ -564,12 +564,12 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		SingletonRepository.getRPWorld().addRPZone(localzone);
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		final Player player2 = PlayerTestHelper.createPlayer("croesus");
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		player2.equip("bag", item);
 		localzone.add(player);
 		localzone.add(player2);
-		assertFalse(player.isEquipped("cheese"));
-		assertTrue(player2.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertTrue(player2.isEquipped("ser"));
 
 		final EquipmentAction action = new EquipAction();
 
@@ -585,8 +585,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 
 		// No stealing
-		assertFalse(player.isEquipped("cheese"));
-		assertTrue(player2.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertTrue(player2.isEquipped("ser"));
 
 		// The same using item paths
 		equip = new RPAction();
@@ -599,8 +599,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player, equip);
 
 		// Should fail again
-		assertFalse(player.isEquipped("cheese"));
-		assertTrue(player2.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertTrue(player2.isEquipped("ser"));
 	}
 
 	/**
@@ -612,12 +612,12 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		SingletonRepository.getRPWorld().addRPZone(localzone);
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		final Player player2 = PlayerTestHelper.createPlayer("croesus");
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("cheese");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("ser");
 		player2.equip("bag", item);
 		localzone.add(player);
 		localzone.add(player2);
-		assertFalse(player.isEquipped("cheese"));
-		assertTrue(player2.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertTrue(player2.isEquipped("ser"));
 
 		final EquipmentAction action = new EquipAction();
 
@@ -633,8 +633,8 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player2, equip);
 
 		// No charity
-		assertFalse(player.isEquipped("cheese"));
-		assertTrue(player2.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertTrue(player2.isEquipped("ser"));
 
 		// The same using item paths
 		equip = new RPAction();
@@ -647,7 +647,7 @@ public class EquipmentActionTest  extends ZoneAndPlayerTestImpl {
 		action.onAction(player2, equip);
 
 		// Should fail again
-		assertFalse(player.isEquipped("cheese"));
-		assertTrue(player2.isEquipped("cheese"));
+		assertFalse(player.isEquipped("ser"));
+		assertTrue(player2.isEquipped("ser"));
 	}
 }

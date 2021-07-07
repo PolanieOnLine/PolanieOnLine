@@ -33,7 +33,7 @@ public class PrepareOfferHandlerTest {
 	@Test
 	public void testBuildTweetMessage() {
 		PrepareOfferHandler handler = new PrepareOfferHandler();
-		Item item = ItemTestHelper.createItem("axe");
+		Item item = ItemTestHelper.createItem("topór");
 		int price = 10;
 		assertThat(handler.buildTweetMessage(item, 1, price),is("New offer for an axe at 10 money. "));
 		item.put("atk",1);

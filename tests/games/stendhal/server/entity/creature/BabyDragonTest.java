@@ -36,7 +36,7 @@ public class BabyDragonTest {
 		MockStendlRPWorld.get();
 	}
 
-	List<String> foods = Arrays.asList("ham", "pizza", "meat");
+	List<String> foods = Arrays.asList("szynka", "pizza", "meat");
 
 	/**
 	 * Tests for babyDragon.

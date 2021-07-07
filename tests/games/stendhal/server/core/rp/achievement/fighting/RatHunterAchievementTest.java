@@ -31,7 +31,7 @@ import utilities.ZoneAndPlayerTestImpl;
 
 public class RatHunterAchievementTest extends ZoneAndPlayerTestImpl {
 
-	private final String enemy = "rat";
+	private final String enemy = "szczur";
 	private final int reqCount = 15;
 
 
@@ -95,7 +95,7 @@ public class RatHunterAchievementTest extends ZoneAndPlayerTestImpl {
 		zone.add(player);
 		assertNotNull(player);
 
-		assertFalse(player.hasKilled("rat"));
+		assertFalse(player.hasKilled("szczur"));
 
 		AchievementTestHelper.init(player);
 		assertFalse(achievementReached());

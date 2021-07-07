@@ -44,7 +44,7 @@ public class SeedTest {
 	 */
 	@Test
 	public void testExecute() {
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("seed");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		assertNotNull(player);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -68,7 +68,7 @@ public class SeedTest {
 	 */
 	@Test
 	public void testExecuteSeedInBag() {
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("seed");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		assertNotNull(player);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -86,7 +86,7 @@ public class SeedTest {
 	 */
 	@Test
 	public void testExecuteNonameSeed() {
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("seed");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		assertNotNull(player);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -125,9 +125,9 @@ public class SeedTest {
 		SingletonRepository.getRPWorld().addRPZone(zone);
 		zone.add(player);
 
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("seed");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
 		assertNotNull(seed);
-		seed.setInfoString("daisies");
+		seed.setInfoString("stokrotki");
 		zone.add(seed);
 		seed.setPosition(1, 0);
 
@@ -140,7 +140,7 @@ public class SeedTest {
 			flg.setToFullGrowth();
 			flg.onUsed(player);
 			assertNull(player.getZone().getEntityAt(1, 0));
-			assertTrue("player has daisies", player.isEquipped("daisies"));
+			assertTrue("player has daisies", player.isEquipped("stokrotki"));
 		} else {
 			fail("seed produced non flowergrower");
 		}

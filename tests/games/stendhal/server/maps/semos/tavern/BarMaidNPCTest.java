@@ -112,13 +112,13 @@ public class BarMaidNPCTest extends ZonePlayerAndNPCTestImpl {
 		// equip with enough money
 		assertTrue(equipWithMoney(player, 2000));
 
-		assertFalse(player.isEquipped("ham"));
+		assertFalse(player.isEquipped("szynka"));
 		assertTrue(en.step(player, "buy 5 hams"));
 		assertEquals("5 pieces of ham will cost 400. Do you want to buy them?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Congratulations! Here are your pieces of ham!", getReply(npc));
-		assertTrue(player.isEquipped("ham", 5));
+		assertTrue(player.isEquipped("szynka", 5));
 
 		assertTrue(en.step(player, "buy ham"));
 		assertEquals("A piece of ham will cost 80. Do you want to buy it?", getReply(npc));

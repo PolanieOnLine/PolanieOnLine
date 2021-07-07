@@ -97,7 +97,7 @@ public class ConversationParserTest {
 		assertEquals("buy", sentence.getVerbString());
 		assertEquals("buy", sentence.getTriggerExpression().getNormalized());
 		assertEquals(0, sentence.getObject(0).getAmount());
-		assertEquals("bread", sentence.getObjectName());
+		assertEquals("chleb", sentence.getObjectName());
 		assertEquals("buy No Bread", sentence.getOriginalText());
 		assertEquals("buy No Bread", sentence.getTrimmedText());
 		assertEquals("buy bread", sentence.getNormalized());
@@ -488,7 +488,7 @@ public class ConversationParserTest {
 
 		sentence = ConversationParser.parse("buy wedding ring");
 		assertEquals("buy/VER wedding ring/OBJ", sentence.toString());
-		assertEquals("wedding ring", sentence.getObjectName());
+		assertEquals("pierścień zaręczynowy", sentence.getObjectName());
 
 		sentence = ConversationParser.parse("buy engagement ring");
 		assertEquals("buy/VER engagement ring/OBJ", sentence.toString());

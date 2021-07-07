@@ -29,7 +29,7 @@ public class InvasionPhaseTest extends TPPTestHelper {
         en.step(player, "bye"); // in case if previous test was failed
         en.step(player, "hi");
 		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
-		en.step(player, "rats");
+		en.step(player, "szczury");
 		assertEquals("There " + Grammar.isare(TPPQuestHelperFunctions.getRatsCount()) +
 				" still about "+ TPPQuestHelperFunctions.getRatsCount() + " rats alive.", getReply(npc));
 		en.step(player, "bye");
@@ -42,7 +42,7 @@ public class InvasionPhaseTest extends TPPTestHelper {
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "hi");
 		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
-		en.step(player, "rats");
+		en.step(player, "szczury");
 		assertEquals("Ados isn't being invaded by rats right now. You can still "+
 							  "get a #reward for the last time you helped. You can ask for #details "+
 							  "if you want.", getReply(npc));
@@ -73,7 +73,7 @@ public class InvasionPhaseTest extends TPPTestHelper {
 		en.step(player, "bye"); // in case if previous test was failed
 		en.step(player, "hi");
 		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
-		en.step(player, "rats");
+		en.step(player, "szczury");
 		assertEquals("There "+ Grammar.isare(TPPQuestHelperFunctions.getRatsCount()) +
 				" still about "+ TPPQuestHelperFunctions.getRatsCount() +" rats alive.", getReply(npc));
 		en.step(player, "details");
@@ -91,7 +91,7 @@ public class InvasionPhaseTest extends TPPTestHelper {
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "hi");
 		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
-		en.step(player, "rats");
+		en.step(player, "szczury");
 		assertEquals("Ados isn't being invaded by rats right now. You can still "+
 							  "get a #reward for the last time you helped. You can ask for #details "+
 							  "if you want.", getReply(npc));
@@ -110,7 +110,7 @@ public class InvasionPhaseTest extends TPPTestHelper {
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "hi");
 		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
-		en.step(player, "rats");
+		en.step(player, "szczury");
 		assertEquals("Ados isn't being invaded by rats right now. You can still "+
 							  "get a #reward for the last time you helped. You can ask for #details "+
 							  "if you want.", getReply(npc));

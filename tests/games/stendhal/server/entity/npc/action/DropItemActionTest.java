@@ -36,11 +36,11 @@ public class DropItemActionTest {
 	@Test
 	public void testFire() {
 		Player p = PlayerTestHelper.createPlayer("bob");
-		PlayerTestHelper.equipWithItem(p, "axe");
-		assertThat(Boolean.valueOf(p.isEquipped("axe")), is(Boolean.TRUE));
-		DropItemAction action = new DropItemAction("axe");
+		PlayerTestHelper.equipWithItem(p, "topór");
+		assertThat(Boolean.valueOf(p.isEquipped("topór")), is(Boolean.TRUE));
+		DropItemAction action = new DropItemAction("topór");
 		action.fire(p, null, null);
-		assertThat(Boolean.valueOf(p.isEquipped("axe")), is(Boolean.FALSE));
+		assertThat(Boolean.valueOf(p.isEquipped("topór")), is(Boolean.FALSE));
 	}
 
 }

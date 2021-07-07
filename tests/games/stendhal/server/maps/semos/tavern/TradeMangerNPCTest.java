@@ -80,7 +80,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithItem(player, "axe");
+		PlayerTestHelper.equipWithItem(player, "topór");
 		PlayerTestHelper.equipWithStackableItem(player, "money", 42);
 
 		assertTrue(en.step(player, "hello"));
@@ -107,7 +107,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		Item item = SingletonRepository.getEntityManager().getItem("axe");
+		Item item = SingletonRepository.getEntityManager().getItem("topór");
 		StackableItem playersMoney = (StackableItem) SingletonRepository
 				.getEntityManager().getItem("money");
 		Integer price = Integer.valueOf(1500);
@@ -140,7 +140,7 @@ public class TradeMangerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 		player.addXP(1700);
 
-		PlayerTestHelper.equipWithItem(player, "axe");
+		PlayerTestHelper.equipWithItem(player, "topór");
 		PlayerTestHelper.equipWithStackableItem(player, "money", 42);
 
 		assertTrue(en.step(player, "hello"));

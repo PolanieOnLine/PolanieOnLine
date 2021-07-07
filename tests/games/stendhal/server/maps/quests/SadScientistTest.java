@@ -39,7 +39,7 @@ import utilities.QuestHelper;
 public class SadScientistTest {
 	private static final String QUEST_SLOT = "sad_scientist";
 	// better: use the one from quest and make it visible
-	private static final String NEEDED_ITEMS = "emerald=1;obsidian=1;sapphire=1;carbuncle=2;gold bar=20;mithril bar=1;shadow legs=1";
+	private static final String NEEDED_ITEMS = "emerald=1;obsidian=1;sapphire=1;carbuncle=2;gold bar=20;mithril bar=1;spodnie cieni=1";
 	private Player player = null;
 	private SpeakerNPC npc = null;
 	private Engine en = null;
@@ -149,18 +149,18 @@ public class SadScientistTest {
 		// -----------------------------------------------
 		en.step(player, "gold bar");
 		assertEquals("I am a stupid fool too much in love with my wife Vera to remember, of course these legs also need a base to add " +
-		"the jewels to. Please return with a pair of shadow legs. Bye.", getReply(npc));
+		"the jewels to. Please return with a pair of spodnie cieni. Bye.", getReply(npc));
 
 		assertEquals(en.getCurrentState(), ConversationStates.IDLE);
 
 		// return with no legs
 		en.step(player, "hi");
-		assertEquals("Hello again. Please return when you have the shadow legs, a base for me to add jewels to make jewelled legs for Vera.", getReply(npc));
+		assertEquals("Hello again. Please return when you have the spodnie cieni, a base for me to add jewels to make jewelled legs for Vera.", getReply(npc));
 
-		PlayerTestHelper.equipWithItem(player, "shadow legs");
+		PlayerTestHelper.equipWithItem(player, "spodnie cieni");
 
 		en.step(player, "hi");
-		assertEquals("The shadow legs! Wonderful! I will start my work. I can do this in very little time with the help of technology! " +
+		assertEquals("The spodnie cieni! Wonderful! I will start my work. I can do this in very little time with the help of technology! " +
 		"Please come back in 20 minutes.", getReply(npc));
 
 		assertEquals(en.getCurrentState(), ConversationStates.IDLE);

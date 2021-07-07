@@ -77,13 +77,13 @@ public class SummonActionTest {
 		pl.put("adminlevel", 5000);
 		final RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "rat");
+		action.put("creature", "szczur");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);
 		assertEquals(1, pl.getID().getObjectID());
 		final Creature rat = (Creature) zone.getEntityAt(0, 0);
-		assertEquals("rat", rat.get("subclass"));
+		assertEquals("szczur", rat.get("subclass"));
 		assertTrue("RaidCreature", rat instanceof RaidCreature);
 	}
 

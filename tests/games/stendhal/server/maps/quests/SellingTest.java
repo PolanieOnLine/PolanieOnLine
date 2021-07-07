@@ -97,10 +97,10 @@ public class SellingTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Sorry! You don't have any piece of cheese.", getReply(npc));
 
 		 // equip the player with enough cheese to be sold
-		assertFalse(player.isEquipped("cheese", 1));
-		assertTrue(equipWithStackableItem(player, "cheese", 3));
-        assertTrue(player.isEquipped("cheese", 3));
-        assertFalse(player.isEquipped("cheese", 4));
+		assertFalse(player.isEquipped("ser", 1));
+		assertTrue(equipWithStackableItem(player, "ser", 3));
+        assertTrue(player.isEquipped("ser", 3));
+        assertFalse(player.isEquipped("ser", 4));
 
 		assertTrue(en.step(player, "sell cheese"));
 		assertEquals("A piece of cheese is worth 5. Do you want to sell it?", getReply(npc));
@@ -113,8 +113,8 @@ public class SellingTest extends ZonePlayerAndNPCTestImpl {
 
 		 // check if we got the promised money and the cheese is gone into Siandra's hands
 		assertTrue(player.isEquipped("money", 5));
-        assertTrue(player.isEquipped("cheese", 2));
-        assertFalse(player.isEquipped("cheese", 3));
+        assertTrue(player.isEquipped("ser", 2));
+        assertFalse(player.isEquipped("ser", 3));
 
 		 // test what happens when trying to sell nothing
 		assertTrue(en.step(player, "sell 0 cheese"));

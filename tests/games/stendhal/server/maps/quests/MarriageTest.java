@@ -454,11 +454,11 @@ public class MarriageTest {
 		player2.setQuest("marriage", "just_married");
 
 		// Both players should carry exactly one wedding ring with them.
-		if (!(player.isEquipped("wedding ring"))) {
-			PlayerTestHelper.equipWithItem(player, "wedding ring");
+		if (!(player.isEquipped("pierścień zaręczynowy"))) {
+			PlayerTestHelper.equipWithItem(player, "pierścień zaręczynowy");
 		}
-		if (!(player2.isEquipped("wedding ring"))) {
-			PlayerTestHelper.equipWithItem(player2, "wedding ring");
+		if (!(player2.isEquipped("pierścień zaręczynowy"))) {
+			PlayerTestHelper.equipWithItem(player2, "pierścień zaręczynowy");
 		}
 
 		npc = SingletonRepository.getNPCList().get("Wilfred");
@@ -476,19 +476,19 @@ public class MarriageTest {
 		en.step(player, "no");
 		assertEquals("I hope you have a happy marriage, then.", getReply(npc));
 
-		assertTrue(player.drop("wedding ring"));
+		assertTrue(player.drop("pierścień zaręczynowy"));
 		en.step(player, "divorce");
 		assertEquals("I apologise, but I need your wedding ring in order to divorce you. If you have lost yours, you can go to Ognir to make another.", getReply(npc));
 
-		PlayerTestHelper.equipWithItem(player, "wedding ring");
+		PlayerTestHelper.equipWithItem(player, "pierścień zaręczynowy");
 		en.step(player, "divorce");
 		assertEquals("I see you haven't been on your honeymoon yet. Are you sure you want to divorce so soon?", getReply(npc));
 
 		en.step(player, "yes");
 		assertEquals("What a pity...what a pity...and you two were married so happily, too...", getReply(npc));
 		assertEquals("player has divorced from you.", PlayerTestHelper.getPrivateReply(player2));
-		assertFalse(player.isEquipped("wedding ring"));
-		assertFalse(player2.isEquipped("wedding ring"));
+		assertFalse(player.isEquipped("pierścień zaręczynowy"));
+		assertFalse(player2.isEquipped("pierścień zaręczynowy"));
 
 		en.step(player, "divorce");
 		assertEquals("You're not even married. Stop wasting my time!", getReply(npc));

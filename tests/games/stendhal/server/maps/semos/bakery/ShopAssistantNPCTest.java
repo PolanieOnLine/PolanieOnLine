@@ -127,7 +127,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "yes");
 		final String[] questStatus = player.getQuest(QBAKEBREAD).split(";");
-		final String[] expected = { "1", "bread", "" };
+		final String[] expected = { "1", "chleb", "" };
 		assertEquals("amount", expected[0], questStatus[0]);
 		assertEquals("item", expected[1], questStatus[1]);
 
@@ -136,7 +136,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				"OK, I will bake a loaf of bread for you, but that will take some time. Please come back in 10 minutes.",
 				getReply(npc));
 		assertEquals(0, player.getNumberOfEquipped("flour"));
-		assertEquals(0, player.getNumberOfEquipped("bread"));
+		assertEquals(0, player.getNumberOfEquipped("chleb"));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
 		player.setQuest(QBAKEBREAD, "1;;0");
@@ -145,7 +145,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(
 				"Welcome back! I'm done with your order. Here you have the loaf of bread.",
 				getReply(npc));
-		assertEquals(1, player.getNumberOfEquipped("bread"));
+		assertEquals(1, player.getNumberOfEquipped("chleb"));
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "yes");
 		final String[] questStatus = player.getQuest(QBAKEBREAD).split(";");
-		final String[] expected = { "2", "bread", "" };
+		final String[] expected = { "2", "chleb", "" };
 		assertEquals("amount", expected[0], questStatus[0]);
 		assertEquals("item", expected[1], questStatus[1]);
 
@@ -183,7 +183,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				"OK, I will bake 2 loaves of bread for you, but that will take some time. Please come back in 20 minutes.",
 				getReply(npc));
 		assertEquals(0, player.getNumberOfEquipped("flour"));
-		assertEquals(0, player.getNumberOfEquipped("bread"));
+		assertEquals(0, player.getNumberOfEquipped("chleb"));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
 		player.setQuest(QBAKEBREAD, "2;;0");
@@ -192,7 +192,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(
 				"Welcome back! I'm done with your order. Here you have 2 loaves of bread.",
 				getReply(npc));
-		assertEquals(2, player.getNumberOfEquipped("bread"));
+		assertEquals(2, player.getNumberOfEquipped("chleb"));
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "yes");
 		final String[] questStatus = player.getQuest(QBAKEBREAD).split(";");
-		final String[] expected = { "3", "bread", "" };
+		final String[] expected = { "3", "chleb", "" };
 		assertEquals("amount", expected[0], questStatus[0]);
 		assertEquals("item", expected[1], questStatus[1]);
 
@@ -230,7 +230,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				"OK, I will bake 3 loaves of bread for you, but that will take some time. Please come back in 30 minutes.",
 				getReply(npc));
 		assertEquals(0, player.getNumberOfEquipped("flour"));
-		assertEquals(0, player.getNumberOfEquipped("bread"));
+		assertEquals(0, player.getNumberOfEquipped("chleb"));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
 		player.setQuest(QBAKEBREAD, "3;;0");
@@ -239,7 +239,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(
 				"Welcome back! I'm done with your order. Here you have 3 loaves of bread.",
 				getReply(npc));
-		assertEquals(3, player.getNumberOfEquipped("bread"));
+		assertEquals(3, player.getNumberOfEquipped("chleb"));
 	}
 
 

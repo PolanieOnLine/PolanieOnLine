@@ -129,7 +129,7 @@ public class DailyMonsterQuestTest {
 		assertThat("1 rat in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("szczur"));
 		assertThat("1 rat in list", dmqpick.pickIdealCreature(1000, false, creatureList).getName(), is("szczur"));
 		creatureList.add(SingletonRepository.getEntityManager().getCreature("balrog"));
-		assertThat("rat and balrog in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("szczur"));
+		assertThat("szczur and balrog in list", dmqpick.pickIdealCreature(-1, false, creatureList).getName(), is("szczur"));
 
 	}
 

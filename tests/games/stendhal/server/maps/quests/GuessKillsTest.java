@@ -103,7 +103,7 @@ public class GuessKillsTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Goodbye, come back when you want to continue.", getReply(npc));
 
 		// Add other creature to test if NPC remembers old creature
-		SingletonRepository.getEntityManager().getCreature("rat");
+		SingletonRepository.getEntityManager().getCreature("szczur");
 		player.setKeyedSlot("!kills", "solo.rat", "10");
 
 		// Leave quest early and come back, get guess close
@@ -139,7 +139,7 @@ public class GuessKillsTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "sdf");
 		assertEquals("How could that possibly be an answer? Give me a proper number.", getReply(npc));
 
-		if (reply.contains("rat")) {
+		if (reply.contains("szczur")) {
 			en.step(player, "10");
 		} else {
 			en.step(player, "1001");

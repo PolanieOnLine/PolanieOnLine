@@ -57,7 +57,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 	 */
 	@Test
 	public void testHiAndbye() {
-		assertTrue(!player.hasKilled("rat"));
+		assertTrue(!player.hasKilled("szczur"));
 
 		final SpeakerNPC npc = getNPC("Eonna");
 		final Engine en = npc.getEngine();
@@ -103,8 +103,8 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(en.step(player, "bye"));
 		assertFalse(npc.isTalking());
 		assertEquals("Bye.", getReply(npc));
-		player.setSoloKill("rat");
-		assertTrue(player.hasKilled("rat"));
+		player.setSoloKill("szczur");
+		assertTrue(player.hasKilled("szczur"));
 		player.setSharedKill("caverat");
 		player.setSharedKill("snake");
 		assertTrue(en.step(player, "hi"));

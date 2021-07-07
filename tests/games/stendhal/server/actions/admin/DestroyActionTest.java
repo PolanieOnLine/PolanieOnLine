@@ -46,7 +46,7 @@ public class DestroyActionTest {
 	@Test
 	public void testPerform() {
 		DestroyAction destroyAction = new DestroyAction();
-		Corpse corpse = new Corpse("rat", 0, 0);
+		Corpse corpse = new Corpse("szczur", 0, 0);
 		Player player = PlayerTestHelper.createPlayer("bob");
 		StendhalRPZone zone = new StendhalRPZone("zone");
 		zone.add(corpse);
