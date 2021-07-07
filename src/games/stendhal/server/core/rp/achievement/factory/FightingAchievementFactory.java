@@ -63,6 +63,10 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"szczur olbrzymi", "człekoszczur", "człekoszczurzyca", "archiszczur"
 	};
 
+	public static final String[] ENEMIES_BEARS = {
+			"niedźwiedź", "niedźwiedź grizli", "miś"
+	};
+
 	public static final String[] ENEMIES_DRAGONSLAYER = {
 			"szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok",
 			"czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny",
@@ -145,7 +149,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		fightingAchievements.add(createAchievement(
 				ID_BEARS, "Łowca Niedźwiedzi", "Zabił po 25 niedźwiedzi grizli, niedźwiedzi i misi",
 				Achievement.EASY_BASE_SCORE, true,
-				new PlayerHasKilledNumberOfCreaturesCondition(25, "niedźwiedź", "niedźwiedź grizli", "miś")));
+				new PlayerHasKilledNumberOfCreaturesCondition(25, ENEMIES_BEARS)));
 
 		fightingAchievements.add(createAchievement(
 				ID_FOXES, "Łowca Lisic", "Zabił 20 lisic",

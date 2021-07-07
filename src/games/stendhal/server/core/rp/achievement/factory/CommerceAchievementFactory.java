@@ -42,6 +42,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_NAILS = "sell.item.nails";
 	public static final String ID_SKINS = "sell.item.skins";
 
+	public static final int COUNT_HAPPY_HOUR = 100;
+
 	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
 	public static final String[] ITEMS_HEALTH_IMPORTANT = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir" };
 	public static final String[] ITEMS_VANILLA_OR_CHOCOLATE = { "shake waniliowy", "shake czekoladowy" };
@@ -72,7 +74,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
-				new BoughtNumberOfCondition(100, ITEMS_HAPPY_HOUR)));
+				new BoughtNumberOfCondition(COUNT_HAPPY_HOUR, ITEMS_HAPPY_HOUR)));
 
 		achievements.add(createAchievement(
 				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił razem 500 różnych eliksirów",

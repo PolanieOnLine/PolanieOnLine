@@ -11,14 +11,19 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.experience;
 
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_ADVENTURER;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_APPRENTICE;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_EXPERIENCED_ADV;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_GREENHORN;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_HIGH_MASTER;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_MASTER;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_MASTER_ADV;
-import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_NOVICE;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_PAROBEK;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_CHLOP;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_KMIEC;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_MIESZCZANIN;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_SZLACHCIC;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_RYCERZ;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_BARONET;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_BARON;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_WICEHRABIA;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_HRABIA;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_MAGNAT;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_KSIAZE;
+import static games.stendhal.server.core.rp.achievement.factory.ExperienceAchievementFactory.ID_KROL;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -39,15 +44,13 @@ import utilities.AchievementTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.ZoneAndPlayerTestImpl;
 
-
 public class ExperienceAchievementTest extends ZoneAndPlayerTestImpl {
-
 	private Player player;
 
-	private final List<String> idList = Arrays.asList(ID_GREENHORN, ID_NOVICE,
-			ID_APPRENTICE, ID_ADVENTURER, ID_EXPERIENCED_ADV, ID_MASTER_ADV,
-			ID_MASTER, ID_HIGH_MASTER);
-
+	private final List<String> idList = Arrays.asList(ID_PAROBEK, ID_CHLOP,
+			ID_KMIEC, ID_MIESZCZANIN, ID_SZLACHCIC, ID_RYCERZ, ID_BARONET,
+			ID_BARON, ID_WICEHRABIA, ID_HRABIA, ID_MAGNAT, ID_KSIAZE,
+			ID_KROL);
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -73,14 +76,19 @@ public class ExperienceAchievementTest extends ZoneAndPlayerTestImpl {
 	public void init() {
 		resetPlayer();
 
-		doCycle(ID_GREENHORN, 10);
-		doCycle(ID_NOVICE, 50);
-		doCycle(ID_APPRENTICE, 100);
-		doCycle(ID_ADVENTURER, 200);
-		doCycle(ID_EXPERIENCED_ADV, 300);
-		doCycle(ID_MASTER_ADV, 400);
-		doCycle(ID_MASTER, 500);
-		doCycle(ID_HIGH_MASTER, 597);
+		doCycle(ID_PAROBEK, 10);
+		doCycle(ID_CHLOP, 50);
+		doCycle(ID_KMIEC, 100);
+		doCycle(ID_MIESZCZANIN, 150);
+		doCycle(ID_SZLACHCIC, 200);
+		doCycle(ID_RYCERZ, 250);
+		doCycle(ID_BARONET, 300);
+		doCycle(ID_BARON, 350);
+		doCycle(ID_WICEHRABIA, 400);
+		doCycle(ID_HRABIA, 450);
+		doCycle(ID_MAGNAT, 500);
+		doCycle(ID_KSIAZE, 550);
+		doCycle(ID_KROL, 597);
 	}
 
 	/**
