@@ -57,3 +57,4 @@ update-1.16.properties
 /libs/postman
 /build-archive
 /tmp
+/tests/net
