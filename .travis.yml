@@ -1,13 +1,19 @@
 language: java
 before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
   - pip install --user codecov
+dist: bionic
+addons:
+  apt:
+    packages:
+      - ant-optional
+service:
+  - xvfb
+script: xvfb-run -e /dev/stdout -a ant test
 notifications:
   irc:
     channels:
-      - "chat.freenode.net#polanieonline"
-      - "chat.freenode.net#polanieonline-devel"
+      - "irc.libera.chat#polanieonline"
+      - "irc.libera.chat#polanieonline-devel"
     on_success: change
     on_failure: change
     use_notice: false
