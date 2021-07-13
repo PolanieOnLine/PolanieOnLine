@@ -8,6 +8,7 @@ Changelog
 - Spolszczono nazwy przedmiotów / stworzeń w plikach testowych
 
 *naprawiono błędy*
+- Poprawiono opis postmana
 - Poprawiono gramatykę opisu małych skrzynek (drewniana, srebra, złota)
 - Naprawiono NullPointerException przy zwłokach
 - Naprawiono większość błędów w plikach testowych
