@@ -1607,7 +1607,9 @@ public class Player extends DressedEntity implements UseListener {
 				+ ".";
 
 		final StringBuilder sb = new StringBuilder();
-		if (getAdminLevel() == 0 || name == "postman") {
+		if (name.equals("postman")) {
+			sb.append("Oto " + name + ". Listonosz, który stara się, aby wszelkie listy dotarły do ich odbiorców. Wiek " + time + ".");
+		} else if (getAdminLevel() == 0) {
 			if (getLevel() < 50) {
 				sb.append(textparobek);
 			} else if ((getLevel() >= 50) && (getLevel() < 100)) {
@@ -1633,7 +1635,7 @@ public class Player extends DressedEntity implements UseListener {
 			} else if ((getLevel() >= 550) && (getLevel() < 598)) {
 				sb.append(textksiaze);
 			}
-		} else { 
+		} else {
 			if ((getAdminLevel() >= 1) && (getAdminLevel() < 7)) {
 				sb.append(texttutor);
 			} else if ((getAdminLevel() >= 7) && (getAdminLevel() < 1000)) {
