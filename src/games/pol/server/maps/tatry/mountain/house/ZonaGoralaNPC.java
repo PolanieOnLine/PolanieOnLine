@@ -77,7 +77,6 @@ public class ZonaGoralaNPC implements ZoneConfigurator {
 		npc.setOutfit(4, 46, 3, 2, 1, null, 22, null, null);
 		npc.setGender("F");
 		npc.setPosition(16, 15);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }
