@@ -72,6 +72,7 @@ public class BogusNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Boguś wyglądający na uczciwego.");
 		npc.setEntityClass("npcjuhasboguslaw");
+		npc.setGender("M");
 		npc.setPosition(4, 4);
 		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);

@@ -80,10 +80,11 @@ public class AmetystNPC implements ZoneConfigurator {
 			}
 		};
 
+		wojtek.setDescription("Oto Wojtek. Wygląda na porządnego czeladnika.");
 		wojtek.setEntityClass("weaponsellernpc");
+		wojtek.setGender("M");
 		wojtek.setPosition(4, 11);
 		wojtek.setDirection(Direction.RIGHT);
-		wojtek.initHP(100);
 		zone.add(wojtek);
 	}
 }

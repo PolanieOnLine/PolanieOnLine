@@ -83,9 +83,10 @@ public class AligernNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Aligern, który wygląda na nieco zmęczonego.");
 		npc.setEntityClass("drugsdealernpc");
+		npc.setGender("M");
 		npc.setPosition(9, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

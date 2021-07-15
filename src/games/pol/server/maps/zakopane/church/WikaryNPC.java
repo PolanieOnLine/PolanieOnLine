@@ -200,8 +200,8 @@ public class WikaryNPC implements ZoneConfigurator {
 		 * part ever gets done, this image can change.
 		 */
 		npc.setEntityClass("npcwikary");
+		npc.setGender("M");
 		npc.setPosition(3, 12);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

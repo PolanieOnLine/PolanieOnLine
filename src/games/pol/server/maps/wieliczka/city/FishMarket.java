@@ -59,9 +59,10 @@ public class FishMarket implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(116, 43);
-		npc.setEntityClass("sailor1npc");
 		npc.setDescription("Oto Walery. Skupuje ryby.");
+		npc.setEntityClass("sailor1npc");
+		npc.setGender("M");
+		npc.setPosition(116, 43);
 		zone.add(npc);
 	}
 }

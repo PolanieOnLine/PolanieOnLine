@@ -95,8 +95,9 @@ public class Skille50NPC implements ZoneConfigurator {
 			
 		});
 
-		npc.setEntityClass("blackwizardpriestnpc");
 		npc.setDescription("Oto Choros. Jest Wysokim Kapłanem, który może Cię czegoś nauczyć.");
+		npc.setEntityClass("blackwizardpriestnpc");
+		npc.setGender("M");
 		npc.setPosition(38, 3);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);

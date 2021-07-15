@@ -65,9 +65,10 @@ public class vegNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto sprzedawca Colin, który sprzedaje warzywa.");
 		npc.setEntityClass("blacksheepnpc");
+		npc.setGender("M");
 		npc.setPosition(10, 2);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

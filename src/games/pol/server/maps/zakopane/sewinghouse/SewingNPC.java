@@ -50,9 +50,9 @@ public class SewingNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Falisława. Szwaczka, która szyje rękawice dla wojowników.");
 		npc.setEntityClass("woman_004_npc");
+		npc.setGender("F");
 		npc.setPosition(10, 4);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

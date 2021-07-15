@@ -43,7 +43,7 @@ import marauroa.common.game.IRPZone;
 
 public class MushroomSoup extends AbstractQuest {
 	private static final String QUEST_SLOT = "mushroomsoup_maker";
-	private final SpeakerNPC npc = npcs.get("Granny Alina");
+	private final SpeakerNPC npc = npcs.get("babcia Alina");
 
 	private static final List<String> NEEDED_FOOD = Arrays.asList("borowik",
 			"pieczarka", "opieńka miodowa", "cebula", "marchew", "por");

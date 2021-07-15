@@ -69,9 +69,10 @@ public class FishyNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Joachim. Marynarz, który skupuje ryby z całego świata.");
 		npc.setEntityClass("sailor1npc");
+		npc.setGender("M");
 		npc.setPosition(37, 75);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

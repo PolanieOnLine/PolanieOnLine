@@ -62,8 +62,8 @@ public class StKingaNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto St Kinga. Jest mnichem i zajmuje się leczeniem ran u dzielnych wojowników.");
 		npc.setEntityClass("npckinga");
+		npc.setGender("F");
 		npc.setPosition(37, 4);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

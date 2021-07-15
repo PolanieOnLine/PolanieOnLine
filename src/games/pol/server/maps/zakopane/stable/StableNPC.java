@@ -46,10 +46,11 @@ public class StableNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto stajenny Marcel, który opiekuje się końmi.");
 		npc.setEntityClass("hanknpc");
+		npc.setGender("M");
 		npc.setPosition(26, 21);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -81,10 +81,10 @@ public class PankracyNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto mistrz Pankracy, który kierował odbudową sukiennic po pożarze w 1555 roku.");
 		npc.setEntityClass("oldheronpc");
-		npc.setDescription("Mistrz Pankracy kierował odbudową sukiennic po pożarze w 1555 roku.");
+		npc.setGender("M");
 		npc.setPosition(12, 23);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

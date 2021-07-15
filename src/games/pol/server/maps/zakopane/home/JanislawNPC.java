@@ -31,6 +31,7 @@ public class JanislawNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("npcstarybaca");
+		npc.setGender("M");
 		npc.setDirection(Direction.RIGHT);
 		npc.setPosition(2, 14);
 		zone.add(npc);

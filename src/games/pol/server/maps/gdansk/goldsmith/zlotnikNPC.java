@@ -65,9 +65,10 @@ public class zlotnikNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto złotnik, który zwie się Jerzy. Być może skupi trochę kamieni szlachetnych.");
 		npc.setEntityClass("goldsmithnpc");
+		npc.setGender("M");
 		npc.setPosition(10, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -240,8 +240,9 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 		};
 
 		npc.setDescription("Oto Tolimir, który wydaje się być utalentowanym strzelcem.");
-		npc.setPosition(77, 90);
 		npc.setEntityClass("rangernpc");
+		npc.setGender("M");
+		npc.setPosition(77, 90);
 		npc.setDirection(Direction.RIGHT);
 		archeryZone.add(npc);
 	}

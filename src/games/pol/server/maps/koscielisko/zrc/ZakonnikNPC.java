@@ -66,10 +66,10 @@ public class ZakonnikNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Zakonnik.");
+		npc.setDescription("Oto Zakonnik w Zakonie Rycerzy Cienia.");
 		npc.setEntityClass("npczakonnik");
+		npc.setGender("M");
 		npc.setPosition(118, 3);
-		npc.initHP(1000);
 		zone.add(npc);
 	}
 }

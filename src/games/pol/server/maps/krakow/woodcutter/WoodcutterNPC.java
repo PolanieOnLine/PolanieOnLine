@@ -73,9 +73,10 @@ public class WoodcutterNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Drwal, który organizuje egzaminy na drwala.");
 		npc.setEntityClass("woodcutternpc");
+		npc.setGender("M");
 		npc.setPosition(4, 4);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

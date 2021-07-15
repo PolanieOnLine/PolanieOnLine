@@ -68,9 +68,10 @@ public class FlowerNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Petronela. Handluje pięknymi czerwonymi różami.");
 		npc.setEntityClass("woman_001_npc");
+		npc.setGender("F");
 		npc.setPosition(30, 70);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

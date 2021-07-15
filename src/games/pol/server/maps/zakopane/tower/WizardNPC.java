@@ -56,9 +56,10 @@ public class WizardNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto czarnoksiężnik. Lepiej na niego uważać, aby nie rzucił na ciebie jakąś klątwę.");
 		npc.setEntityClass("highpriestnpc");
+		npc.setGender("M");
 		npc.setPosition(7, 3);
-		npc.setDescription("Oto czarnoksiężnik.");
 		zone.add(npc);
 	}
 }

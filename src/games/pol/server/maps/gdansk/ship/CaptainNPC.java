@@ -88,9 +88,11 @@ public class CaptainNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(23, 36);
+		npc.setDescription("Oto kapitan statku, który zwie się Wacek.");
 		npc.setEntityClass("npc_kptjacekwrobel");
+		npc.setGender("M");
 		npc.setDirection(Direction.DOWN);
+		npc.setPosition(23, 36);
 		zone.add(npc);
 	}
 }

@@ -71,10 +71,10 @@ public class JozekNPC implements ZoneConfigurator {
 			}
 		};
 
-		jozekNPC.setEntityClass("weaponsellernpc");
-		jozekNPC.setPosition(6, 2);
-		jozekNPC.initHP(1000);
 		jozekNPC.setDescription("Oto Jóżek, który jest w stanie ulepszyć twoją złotą ciupagę.");
+		jozekNPC.setEntityClass("weaponsellernpc");
+		jozekNPC.setGender("M");
+		jozekNPC.setPosition(6, 2);
 		zone.add(jozekNPC);
 	}
 }

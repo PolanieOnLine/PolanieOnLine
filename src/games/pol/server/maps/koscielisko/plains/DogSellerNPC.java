@@ -127,17 +127,17 @@ public class DogSellerNPC implements ZoneConfigurator {
 						"Owczarki kochają meat, ham, kiełbasa swojska, steak i oscypek. Wystarczy położyć kawałek na ziemi, a owczarek podejdzie i zje. Możesz sprawdzić jego wagę klikając prawym przyciskiem  na niego i wybierając 'Zobacz'. Jego waga będzie rosła po zjedzeniu każdego ham.");
 				addReply(Arrays.asList("travel", "podróżować"),
 						"Gdy zmieniasz miejsce pobytu twój owczarek powinien być blisko Ciebie, aby nie zginął. Jeżeli nie zwraca na Ciebie uwagi wystarczy powiedzieć #owczarek aby go zawołać. Jeśli zdecydujesz się porzucić go to kliknij na siebie prawym przyciskiem i wybierz 'Porzuć zwierzątko', ale szczerze mówiąc sądzę, że takie zachowanie jest odrażające.");
-				addReply("sell",
+				addReply(Arrays.asList("sell", "sprzedać", "sprzedam"),
 						"Sprzedać??? Jakiego rodzaju potworem jesteś? Dlaczego w ogóle chciałbyś sprzedać swojego pięknego owczarka?");
 				addReply(Arrays.asList("own", "przygarnąć"),
 						"Jeżeli znajdziesz dzikiego lub porzuconego owczarka to, aby go przygarnąć naciśnij na nim prawy przycisk myszki i wybierz 'Przygarnij', a wtedy zacznie chodzić za tobą. Owczarki stają się trochę dzikie bez właściciela!");
 			}
 		};
 
+		npc.setDescription("Oto Stary Baca, który opiekuje się owczarkami.");
 		npc.setEntityClass("npcstarybaca");
+		npc.setGender("M");
 		npc.setPosition(100, 120);
-		npc.initHP(100);
-		npc.setDescription("Stary Baca opiekuje się owczarkami.");
 		zone.add(npc);
 	}
 }

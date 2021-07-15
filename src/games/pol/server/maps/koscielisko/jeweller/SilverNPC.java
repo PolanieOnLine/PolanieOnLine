@@ -106,7 +106,9 @@ public class SilverNPC implements ZoneConfigurator {
 			}
 		};
 
+		drogosz.setDescription("Oto Drogosz, zajmuje się słynnym zakładem złotniczym.");
 		drogosz.setEntityClass("richardstallmannpc");
+		drogosz.setGender("M");
 		drogosz.setPosition(15, 3);
 		drogosz.setDirection(Direction.DOWN);
 		zone.add(drogosz);

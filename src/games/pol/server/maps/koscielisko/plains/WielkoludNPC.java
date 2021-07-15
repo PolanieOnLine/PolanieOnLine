@@ -80,8 +80,8 @@ public class WielkoludNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Wielkolud, strzeże dzikich ostępów Kościeliska.");
 		npc.setEntityClass("npcwielkolud");
+		npc.setGender("M");
 		npc.setPosition(1, 75);
-		npc.initHP(1000);
 		zone.add(npc);
 	}
 }

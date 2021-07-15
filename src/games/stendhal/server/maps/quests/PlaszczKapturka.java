@@ -100,7 +100,7 @@ public class PlaszczKapturka extends AbstractQuest {
 	}
 
 	private void step_3() {
-		final SpeakerNPC npc = npcs.get("Krawiec");
+		final SpeakerNPC npc = npcs.get("rzemieślnik Wojciech");
 
 		npc.add(ConversationStates.ATTENDING, 
 			"Balbina",
@@ -114,7 +114,7 @@ public class PlaszczKapturka extends AbstractQuest {
 			null,
 			ConversationStates.IDLE,
 			"O to dobrze kojarzę. Rozumiem, że chciałaby, abym uszył dla niej płaszcz czerwonego kapturka, zgadza się? To przynieś mi trochę skóry czerwonego smoka, może być tak z 5 sztuk. Możesz ruszać.",
-			new SetQuestAction(QUEST_SLOT, "krawiec"));
+			new SetQuestAction(QUEST_SLOT, "rzemieślnik Wojciech"));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
@@ -125,7 +125,7 @@ public class PlaszczKapturka extends AbstractQuest {
 	}
 
 	private void step_4() {
-		final SpeakerNPC npc = npcs.get("Krawiec");
+		final SpeakerNPC npc = npcs.get("rzemieślnik Wojciech");
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("skóra czerwonego smoka",5));
@@ -137,7 +137,7 @@ public class PlaszczKapturka extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestInStateCondition(QUEST_SLOT, "krawiec"),
+				new QuestInStateCondition(QUEST_SLOT, "rzemieślnik Wojciech"),
 				new PlayerHasItemWithHimCondition("skóra czerwonego smoka",5)),
 			ConversationStates.ATTENDING, 
 			"Masz już tą skórę, o którą Cię poprosiłem?",
@@ -146,7 +146,7 @@ public class PlaszczKapturka extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestInStateCondition(QUEST_SLOT, "krawiec"),
+				new QuestInStateCondition(QUEST_SLOT, "rzemieślnik Wojciech"),
 				new NotCondition(new PlayerHasItemWithHimCondition("skóra czerwonego smoka",5))),
 			ConversationStates.IDLE, 
 			"Nie masz tego przy sobie o co Ciebie poprosiłem... Idź i wróć kiedy już to zdobędziesz.",
@@ -154,21 +154,21 @@ public class PlaszczKapturka extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.YES_MESSAGES,
-			new QuestInStateCondition(QUEST_SLOT, "krawiec"),
+			new QuestInStateCondition(QUEST_SLOT, "rzemieślnik Wojciech"),
 			ConversationStates.IDLE,
 			"Dobrze, to biorę się do pracy. Za jakieś 30 minut powinienem skończyć.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.NO_MESSAGES,
-			new QuestInStateCondition(QUEST_SLOT, "krawiec"),
+			new QuestInStateCondition(QUEST_SLOT, "rzemieślnik Wojciech"),
 			ConversationStates.ATTENDING,
 			"Oby na pewno?",
 			null);
 	}
 
 	private void step_5() {
-		final SpeakerNPC npc = npcs.get("Krawiec");
+		final SpeakerNPC npc = npcs.get("rzemieślnik Wojciech");
 
 		npc.add(ConversationStates.IDLE, 
 			ConversationPhrases.GREETING_MESSAGES,
@@ -264,7 +264,7 @@ public class PlaszczKapturka extends AbstractQuest {
 		if (questState.equals("mummy")) {
 			res.add("Mama Balbiny poleciła mi pójście do miejscowego krawca, by uszyć taki płaszcz. Słowo: Balbina");
 		}
-		if (questState.equals("krawiec")) {
+		if (questState.equals("rzemieślnik Wojciech")) {
 			res.add("Muszę znaleźć skórę czerwonego smoka dla krawca");
 		}
 		if (player.isEquipped("płaszcz kapturka") || isCompleted(player)) {

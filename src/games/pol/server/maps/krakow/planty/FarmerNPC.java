@@ -69,8 +69,8 @@ public class FarmerNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto farmer, który zwie się Bruno. Zajmuje się uprawą zboża w królestwie.");
 		npc.setEntityClass("hoeingmannpc");
+		npc.setGender("M");
 		npc.setPosition(76, 23);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

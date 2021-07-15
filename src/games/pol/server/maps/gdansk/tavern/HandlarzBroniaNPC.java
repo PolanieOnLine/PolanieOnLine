@@ -68,10 +68,10 @@ public class HandlarzBroniaNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("weaponsellernpc");
-		npc.setPosition(36, 12);
-		npc.initHP(100);
 		npc.setDescription("Oto Harrison. Zajmuje się handlem brońmi.");
+		npc.setEntityClass("weaponsellernpc");
+		npc.setGender("M");
+		npc.setPosition(36, 12);
 		zone.add(npc);
 	}
 }

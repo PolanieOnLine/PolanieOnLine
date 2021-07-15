@@ -53,11 +53,6 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 		final SpeakerNPC npc = new SpeakerNPC("Maryna") {
 
 			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
-			@Override
 			public void createDialog() {
 				addGoodbye("Do widzenia!");
 				addGreeting("Ahoj, Przyjacielu! W czym mogę #pomóc?");
@@ -149,8 +144,10 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(28, 34);
+		npc.setDescription("Oto Maryna, która opiekuje się pasażerami łajby, aby bezpiecznie zeszli na brzeg.");
 		npc.setEntityClass("pirate_sailor2npc");
+		npc.setGender("F");
+		npc.setPosition(28, 34);
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
 	}

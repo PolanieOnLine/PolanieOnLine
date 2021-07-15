@@ -88,8 +88,10 @@ public class CaptainNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(23, 36);
+		npc.setDescription("Oto kapitan łajby, Jacek.");
 		npc.setEntityClass("npc_kptjacekwrobel");
+		npc.setGender("M");
+		npc.setPosition(23, 36);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}

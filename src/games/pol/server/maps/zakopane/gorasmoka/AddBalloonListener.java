@@ -29,7 +29,6 @@ public class AddBalloonListener implements ZoneConfigurator {
 				BalloonScroll scroll = (BalloonScroll) SingletonRepository.getEntityManager().getItem(BALLOON);
 				scroll.teleportBack(player);
 			}
-
 		});
 	}
 }

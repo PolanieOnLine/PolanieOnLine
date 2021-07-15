@@ -63,9 +63,10 @@ public class BrzezdomNPC implements ZoneConfigurator {
 			}
 		};
 
+		BrzezdomNPC.setDescription("Oto Brzezdom. Lubi zadawać zagadki oraz opowiadać legendy nowym wojownikom.");
 		BrzezdomNPC.setEntityClass("jailedbarbariannpc");
+		BrzezdomNPC.setGender("M");
 		BrzezdomNPC.setPosition(44, 86);
-		BrzezdomNPC.initHP(100);
 		zone.add(BrzezdomNPC);
 	}
 }

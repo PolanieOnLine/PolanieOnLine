@@ -65,8 +65,8 @@ public class GiowaniNPC implements ZoneConfigurator {
 
 		npc.setDescription("Ten makaroniarz przybył z dalekiej Italii.");
 		npc.setEntityClass("recruiter3npc");
+		npc.setGender("M");
 		npc.setPosition(22, 16);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

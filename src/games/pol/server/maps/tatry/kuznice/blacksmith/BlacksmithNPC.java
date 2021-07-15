@@ -79,6 +79,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 		kuznia.setDescription("Oto kowal Markusław. Jest strasznie zapracowany!");
 		kuznia.setEntityClass("goldsmithnpc");
+		kuznia.setGender("M");
 		kuznia.setPosition(18, 2);
 		zone.add(kuznia);
 	}

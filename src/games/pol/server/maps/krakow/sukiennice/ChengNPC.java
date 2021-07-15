@@ -58,9 +58,9 @@ public class ChengNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Cheng, kupiec z Chin.");
 		npc.setEntityClass("npcwikary");
+		npc.setGender("M");
 		npc.setPosition(26, 30);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

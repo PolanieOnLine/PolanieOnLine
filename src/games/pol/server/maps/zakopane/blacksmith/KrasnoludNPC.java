@@ -94,8 +94,8 @@ public class KrasnoludNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("dwarfnpc");
+		npc.setGender("M");
 		npc.setPosition(8, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -52,9 +52,10 @@ public class VetNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto weterynarz dr. Wojciech, który stara się wyleczyć chore konie.");
 		npc.setEntityClass("doctornpc");
+		npc.setGender("M");
 		npc.setPosition(26, 12);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

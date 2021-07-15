@@ -65,9 +65,10 @@ public class meatNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto sprzedawca zwany Czesławem, który sprzedaje mięso.");
 		npc.setEntityClass("blacksheepnpc");
+		npc.setGender("M");
 		npc.setPosition(10, 2);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

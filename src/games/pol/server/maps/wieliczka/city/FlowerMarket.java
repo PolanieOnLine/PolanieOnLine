@@ -52,9 +52,10 @@ public class FlowerMarket implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(111, 49);
-		npc.setEntityClass("woman_001_npc");
 		npc.setDescription("Oto Lisa. Sprzedaje kwiatki dla młodych par.");
+		npc.setEntityClass("woman_001_npc");
+		npc.setGender("F");
+		npc.setPosition(111, 49);
 		zone.add(npc);
 	}
 }

@@ -91,9 +91,10 @@ public class HadrinNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto krasnolud zwany Hadrinem. Jeśli masz dobre zamiary to ulepszy twą złotą ciupagę.");
 		npc.setEntityClass("dwarfnpc");
+		npc.setGender("M");
 		npc.setPosition(6, 12);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

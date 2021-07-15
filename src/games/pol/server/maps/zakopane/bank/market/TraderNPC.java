@@ -39,9 +39,9 @@ public class TraderNPC extends TradeCenterZoneConfigurator {
 	private void buildTradeCenterAdvisor(StendhalRPZone zone) {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 5);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
-		speaker.setEntityClass("npc_straganiarz");
-		speaker.initHP(100);
 		speaker.setDescription("Radzimir jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
+		speaker.setEntityClass("npc_straganiarz");
+		speaker.setGender("M");
 		zone.add(speaker);
 	}
 }

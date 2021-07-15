@@ -40,7 +40,7 @@ public class MinerNPC implements ZoneConfigurator {
 	}
 
 	private void buildMiner(final StendhalRPZone zone) {
-		final SpeakerNPC minerman = new SpeakerNPC("Bercik") {
+		final SpeakerNPC npc = new SpeakerNPC("Bercik") {
 
 			@Override
 			protected void createPath() {
@@ -62,10 +62,11 @@ public class MinerNPC implements ZoneConfigurator {
 			}
 		};
 
-		minerman.setEntityClass("fishermannpc");
-		minerman.setDirection(Direction.DOWN);
-		minerman.setPosition(19, 3);
-		minerman.initHP(100);
-		zone.add(minerman);
+		npc.setDescription("Oto sztygar Bercik. Zajmuje się egzaminami na górnika.");
+		npc.setEntityClass("fishermannpc");
+		npc.setGender("M");
+		npc.setDirection(Direction.DOWN);
+		npc.setPosition(19, 3);
+		zone.add(npc);
 	}
 }

@@ -62,9 +62,10 @@ public class OzoNPC implements ZoneConfigurator {
 			}
 		};
 
+		ozoNPC.setDescription("Oto Ozo, który wygląda jakby handlował czymś przedziwnym.");
 		ozoNPC.setEntityClass("scarletarmynpc");
+		ozoNPC.setGender("M");
 		ozoNPC.setPosition(33, 49);
-		ozoNPC.initHP(1000);
 		zone.add(ozoNPC);
 	}
 }

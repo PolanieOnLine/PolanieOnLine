@@ -73,8 +73,8 @@ public class ShopAssistantNPC implements ZoneConfigurator {
 						"Witaj w piekarni w Zakopanem! Możemy upiec pyszny chleb dla każdego kto pomoże nam przynosząc mąkę z młyna. Powiedz tylko #upiecz.");
 
 		npc.setEntityClass("housewifenpc");
+		npc.setGender("F");
 		npc.setPosition(26, 9);
-		npc.initHP(1000);
 		zone.add(npc);
 	}
 }

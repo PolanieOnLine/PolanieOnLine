@@ -51,11 +51,12 @@ public class CelinaNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Celina. Jest bardzo chora.");
 		npc.setEntityClass("npc_choredziecko");
+		npc.setGender("F");
 		npc.setPosition(19, 2);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
-		npc.setDescription("Oto Celina. Jest bardzo chora.");
+		npc.initHP(50);
 		zone.add(npc);
 	}
 }

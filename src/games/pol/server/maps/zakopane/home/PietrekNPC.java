@@ -86,11 +86,10 @@ public class PietrekNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(22, 3);
-		npc.setEntityClass("oldheronpc");
 		npc.setDescription("Oto Pietrek. Poniżej jego siwych włosów, a brudną zbroją widzisz świecące oczy i twarde mięśnie.");
-		npc.setBaseHP(100);
-		npc.setHP(100);
+		npc.setEntityClass("oldheronpc");
+		npc.setGender("M");
+		npc.setPosition(22, 3);
 		zone.add(npc);
 	}
 }

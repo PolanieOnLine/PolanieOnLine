@@ -139,9 +139,11 @@ public class FerryConveyerPirateIslandNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(97, 22);
+		npc.setDescription("Oto Roko, który zabiera chętnych na piracką wyspę.");
 		npc.setEntityClass("npcflisak1");
+		npc.setGender("M");
 		npc.setDirection(Direction.DOWN);
+		npc.setPosition(97, 22);
 		zone.add(npc);
 	}
 }

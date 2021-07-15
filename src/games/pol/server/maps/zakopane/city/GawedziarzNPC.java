@@ -285,9 +285,11 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 			}
 
 		};
-		npc.setPosition(35, 46);
+
+		npc.setDescription("Oto Sabała, góral podhalański, honorowy przewodnik tatrzański, muzykant, świetny myśliwy, gawędziarz i pieśniarz.");
 		npc.setEntityClass("npcstaryprzewodnik");
-		npc.setDescription("Oto Sabała, góral podhalański, honorowy przewodnik tatrzański, muzykant, swietny myśliwy, gawędziarz i pieśniarz.");
+		npc.setGender("M");
+		npc.setPosition(35, 46);
 		npc.setSounds(Arrays.asList("laugh-2"));
 		zone.add(npc);
 	}

@@ -52,7 +52,9 @@ public class ImprezowiczNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Cadhes. Lepiej z nim długo nie rozmawiać, wygląda na zbyt upojonego.");
 		npc.setEntityClass("oldfishermannpc");
+		npc.setGender("M");
 		npc.setPosition(34, 7);
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(70);

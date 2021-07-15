@@ -58,7 +58,9 @@ public class SoltysNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto sołtys kuźnic.");
 		npc.setEntityClass("npcgoral");
+		npc.setGender("M");
 		npc.setPosition(10, 29);
 		zone.add(npc);
 	}

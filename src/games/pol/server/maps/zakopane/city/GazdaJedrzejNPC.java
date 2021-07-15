@@ -38,7 +38,7 @@ public class GazdaJedrzejNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC gazdajedrzejNPC = new SpeakerNPC("Gazda Jędrzej") {
+		final SpeakerNPC npc = new SpeakerNPC("Gazda Jędrzej") {
 
 			@Override
 			protected void createPath() {
@@ -60,9 +60,10 @@ public class GazdaJedrzejNPC implements ZoneConfigurator {
 			}
 		};
 
-		gazdajedrzejNPC.setEntityClass("npcgazdajedrzej");
-		gazdajedrzejNPC.setPosition(31, 125);
-		gazdajedrzejNPC.initHP(1000);
-		zone.add(gazdajedrzejNPC);
+		npc.setDescription("Oto gazda Jędrzej. Wygląda na bardzo smutnego, jakby potrzebował pomocy.");
+		npc.setEntityClass("npcgazdajedrzej");
+		npc.setGender("M");
+		npc.setPosition(31, 125);
+		zone.add(npc);
 	}
 }

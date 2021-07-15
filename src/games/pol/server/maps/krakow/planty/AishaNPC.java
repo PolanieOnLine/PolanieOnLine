@@ -70,6 +70,7 @@ public class AishaNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Aisha. Wygląda na sympatyczną osobę.");
 		npc.setEntityClass("woman_003_npc");
+		npc.setGender("F");
 		npc.setPosition(100, 30);
 		zone.add(npc);
 	}

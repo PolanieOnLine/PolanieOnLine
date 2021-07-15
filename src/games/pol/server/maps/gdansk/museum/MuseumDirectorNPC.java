@@ -52,9 +52,10 @@ public class MuseumDirectorNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto dyrektor muzeum w Gdańsku, Mieczysław. Być może potrzebuje pomocy z eksponatami.");
 		npc.setEntityClass("beggarnpc");
+		npc.setGender("M");
 		npc.setPosition(24, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -68,6 +68,7 @@ public class GornikNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Górnik. Może opowie nam o różnych kilofach.");
 		npc.setEntityClass("npcgornik");
+		npc.setGender("M");
 		npc.setDirection(Direction.RIGHT);
 		npc.setPosition(18, 70);
 		zone.add(npc);

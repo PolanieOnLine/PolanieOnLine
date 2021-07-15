@@ -62,10 +62,11 @@ public class MarisNPC implements ZoneConfigurator {
 		};
 
 	private void buildNPC(final StendhalRPZone zone) {
-		npc.setEntityClass("naughtyteen2npc");
-		npc.setPosition(2, 3);
-		npc.setDirection(Direction.DOWN);
 		npc.setDescription("Oto Maris, wygląda na zbyt młodą osobę, aby mieć swój własny interes w tawernie.");
+		npc.setEntityClass("naughtyteen2npc");
+		npc.setGender("M");
+		npc.setDirection(Direction.DOWN);
+		npc.setPosition(2, 3);
 		npc.initHP(100);
 		final Rectangle tableArea = new Rectangle(3, 6, 1, 2);
 

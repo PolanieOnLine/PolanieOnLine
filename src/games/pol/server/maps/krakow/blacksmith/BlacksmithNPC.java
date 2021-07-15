@@ -79,8 +79,8 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Samson. Jest miejscowym kowalem i specjalizuje się w przetapianiu miedzi. Dodatkowo prowadzi też sprzedaż potrzebnych do pracy narzędzi.");
 		npc.setEntityClass("blacksmithnpc");
+		npc.setGender("M");
 		npc.setPosition(20, 89);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

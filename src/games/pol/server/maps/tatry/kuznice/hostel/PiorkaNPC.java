@@ -65,7 +65,9 @@ public class PiorkaNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Kelas, zajmuje się kolekcjonowaniem przedmiotów.");
 		npc.setEntityClass("npcbronek");
+		npc.setGender("M");
 		npc.setPosition(28, 18);
 		zone.add(npc);
 	}

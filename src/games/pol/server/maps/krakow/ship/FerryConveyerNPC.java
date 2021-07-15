@@ -132,8 +132,10 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(15, 93);
+		npc.setDescription("Oto Janek, który pomoże wejść na statek.");
 		npc.setEntityClass("npcflisak2");
+		npc.setGender("M");
+		npc.setPosition(15, 93);
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
 	}

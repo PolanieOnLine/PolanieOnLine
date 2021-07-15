@@ -55,8 +55,9 @@ public class AmandaNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("mothernpc");
 		npc.setDescription("Oto Amanda. Opiekuje się swoją córką Balbiną.");
+		npc.setEntityClass("mothernpc");
+		npc.setGender("F");
 		npc.setPosition(95, 66);
 		zone.add(npc);
 	}

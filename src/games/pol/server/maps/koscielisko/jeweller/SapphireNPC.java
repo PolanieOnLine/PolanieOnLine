@@ -71,10 +71,11 @@ public class SapphireNPC implements ZoneConfigurator {
 			}
 		};
 
+		krzesim.setDescription("Oto Krzesim, wygląda na czeladnika. Ciekawe jakimi kamieniami się zajmuje.");
 		krzesim.setEntityClass("man_001_npc");
+		krzesim.setGender("M");
 		krzesim.setPosition(27, 17);
 		krzesim.setDirection(Direction.LEFT);
-		krzesim.initHP(100);
 		zone.add(krzesim);
 	}
 }

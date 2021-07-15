@@ -67,10 +67,11 @@ public class ObsidianNPC implements ZoneConfigurator {
 			}
 		};
 
+		sobek.setDescription("Oto Sobek. Wyglądem przypomina czeladnika, ciekawe jakimi kamieniami się zajmuje.");
 		sobek.setEntityClass("youngnpc");
+		sobek.setGender("M");
 		sobek.setPosition(4, 29);
 		sobek.setDirection(Direction.RIGHT);
-		sobek.initHP(100);
 		zone.add(sobek);
 	}
 }

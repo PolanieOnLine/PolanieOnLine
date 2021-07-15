@@ -277,9 +277,11 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				    null);
 
 			}};
-			npc.setPosition(26, 9);
-			npc.setEntityClass("housewifenpc");
+
 			npc.setDescription("Oto Lena. Pracuje już długo dla Ernesta i jest jego lojalnym pomocnikiem.");
+			npc.setEntityClass("housewifenpc");
+			npc.setGender("F");
+			npc.setPosition(26, 9);
 			zone.add(npc);
 	}
 }

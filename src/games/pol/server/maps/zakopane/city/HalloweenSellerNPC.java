@@ -68,8 +68,8 @@ public class HalloweenSellerNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("witch2npc");
+		npc.setGender("F");
 		npc.setPosition(49, 16);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

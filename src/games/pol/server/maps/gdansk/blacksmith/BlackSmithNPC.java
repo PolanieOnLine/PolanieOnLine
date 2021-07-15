@@ -61,10 +61,10 @@ public class BlackSmithNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("blacksmithnpc");
-		npc.setPosition(17, 2);
-		npc.initHP(100);
 		npc.setDescription("Oto Polirois. Wygląda na zapracowanego.");
+		npc.setEntityClass("blacksmithnpc");
+		npc.setGender("M");
+		npc.setPosition(17, 2);
 		zone.add(npc);
 	}
 }

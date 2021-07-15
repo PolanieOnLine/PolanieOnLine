@@ -1051,8 +1051,8 @@
 		<item name="niezapisany zwój" price="2100" />
 	</shop>
 
-	<!-- Xylona sprzedaje: -->
-	<shop name="xylona" type="sells">
+	<!-- Benigna sprzedaje: -->
+	<shop name="benigna" type="sells">
 		<item name="zwój przywołania" price="200" />
 		<item name="zwój gdański" price="350" />
 		<item name="zwój krakowski" price="450" />

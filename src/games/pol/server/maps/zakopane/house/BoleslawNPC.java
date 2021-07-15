@@ -51,11 +51,11 @@ public class BoleslawNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Bolesław. Ojciec Celiny.");
 		npc.setEntityClass("man_001_npc");
+		npc.setGender("M");
 		npc.setPosition(11, 4);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
-		npc.setDescription("Oto Bolesław. Jest ojcem Celiny.");
 		zone.add(npc);
 	}
 }

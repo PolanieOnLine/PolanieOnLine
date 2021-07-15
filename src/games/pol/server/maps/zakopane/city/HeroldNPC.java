@@ -230,10 +230,12 @@ public class HeroldNPC implements ZoneConfigurator {
 			}
 
 		};
-		npc.setPosition(62, 32);
+
+		npc.setDescription("Oto Herold, stawia znaki z wiadomością od rycerzy.");
 		npc.setEntityClass("signguynpc");
+		npc.setGender("M");
+		npc.setPosition(62, 32);
 		zone.add(npc);
-		npc.setDescription("Oto Herold, stawia znaki z wiadomością od graczy.");
 	}
 
 	private static ChatCondition getRentMatchCond() {

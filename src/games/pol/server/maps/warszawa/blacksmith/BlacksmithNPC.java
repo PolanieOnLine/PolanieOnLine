@@ -70,6 +70,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 		improver.addReply("sprawdzić", "Spytaj się mnie #sprawdź <#'nazwa przedmiotu'>, aby dowiedzieć się ile maksymalnie byłbym w stanie go #ulepszyć!");
 		improver.addReply("ulepszyć", "Powiedz mi #ulepsz <#'nazwa przedmiotu'>, abym wiedział jaki przedmiot chcesz udoskonalić!");
 
+		improver.setGender("M");
 		improver.setPosition(10, 4);
 		zone.add(improver);
 	}

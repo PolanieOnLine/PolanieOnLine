@@ -49,7 +49,7 @@ public class WitchNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Xylona") {
+		final SpeakerNPC npc = new SpeakerNPC("Benigna") {
 
 			@Override
 			protected void createPath() {
@@ -79,7 +79,7 @@ public class WitchNPC implements ZoneConfigurator {
 				addReply("collard",	"To ta kapusta w doniczce. Bądź ostrożny z tym!");
 
 				addHelp("Mogę Cię uleczyć. Powiedz tylko #ulecz. Jeżeli szukać pracy to powiedz tylko #'zadanie'.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("xylona")));
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("benigna")));
 				new HealerAdder().addHealer(this, 500);
 				add(ConversationStates.ATTENDING,
 				        Arrays.asList("magic", "scroll", "scrolls", "magia", "magiczne", "zwój", "zwoje"),
@@ -114,11 +114,11 @@ public class WitchNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto wiedźma zwana imieniem Benigna. Lata na miotle.");
 		npc.setEntityClass("witchnpc");
-		npc.setPosition(24, 7);
-		npc.initHP(100);
-		npc.setDescription("Oto wiedźma zwana imieniem Xylona. Lata na miotle.");
+		npc.setGender("F");
 		npc.setSounds(Arrays.asList("witch-cackle-1"));
+		npc.setPosition(24, 7);
 		zone.add(npc);
 	}
 }

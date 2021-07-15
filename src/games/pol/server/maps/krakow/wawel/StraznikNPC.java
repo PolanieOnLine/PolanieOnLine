@@ -66,11 +66,11 @@ public class StraznikNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Strażnik. Chroni bramę Wawela przed słabymi i niegodnymi wojownikami.");
 		npc.setEntityClass("transparentnpc");
 		npc.setAlternativeImage("guardian");
-		npc.setDescription("Oto Strażnik. Chroni bramę Wawela przed słabymi i niegodnymi wojownikami.");
+		npc.setGender("M");
 		npc.setPosition(102, 82);
-		npc.initHP(100);
 		npc.put("no_shadow", "");
 		zone.add(npc);
 	}

@@ -56,8 +56,9 @@ public class SmokNPC implements ZoneConfigurator {
 			}
 		};
 
-		smokNPC.setDescription("Oto Władca Smoków");
+		smokNPC.setDescription("Oto Władca Smoków.");
 		smokNPC.setEntityClass("npcsmok");
+		smokNPC.setGender("M");
 		smokNPC.setPosition(8, 6);
 		smokNPC.initHP(5000);
 		zone.add(smokNPC);

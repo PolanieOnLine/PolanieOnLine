@@ -148,8 +148,10 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(28, 34);
+		npc.setDescription("Oto Fionella, która zajmuje się pasażeramy, aby bezpiecznie zeszli z łajby na prom.");
 		npc.setEntityClass("pirate_sailor2npc");
+		npc.setGender("F");
+		npc.setPosition(28, 34);
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
 	}

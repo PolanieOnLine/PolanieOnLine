@@ -112,9 +112,10 @@ public class BacaZbyszekNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto baca Zbyszek, który pasi oraz sprzedaje owce.");
 		npc.setEntityClass("npcbaca");
+		npc.setGender("M");
 		npc.setPosition(42, 110);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

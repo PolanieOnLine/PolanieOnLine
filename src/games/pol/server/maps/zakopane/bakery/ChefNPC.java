@@ -83,8 +83,8 @@ public class ChefNPC implements ZoneConfigurator {
 				"Witaj! Jakże miło, że zawitałeś do mojej piekarni. Przyszedłeś spróbować moich placków z marchewką? Mogę upiec jeden dla Ciebie.");
 
 		npc.setEntityClass("chefnpc");
+		npc.setGender("M");
 		npc.setPosition(15, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

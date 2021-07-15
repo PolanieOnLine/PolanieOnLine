@@ -39,7 +39,9 @@ public class DzieciakiNPCs implements ZoneConfigurator {
 	private void buildNPCs(final StendhalRPZone zone) {
 		final String[] names = {"Aserata", "Gabr", "Vinn", "Roberto"};
 		final String[] classes = { "kid2npc", "kid1npc", "kid9npc", "kid8npc" };
-		final String[] descriptions = {"Oto Aserata. Śpi ona głąbokim snem.", "Oto Gabr, który cicho chrapie.", "Oto Vinn. Wydaje się być naprawdę zmęczony.", "Oto Roberto. Miał kilka stresujących dni urlopu."};
+		final String[] descriptions = { "Oto Aserata. Śpi ona głąbokim snem.", "Oto Gabr, który cicho chrapie.",
+				"Oto Vinn. Wydaje się być naprawdę zmęczony.", "Oto Roberto. Miał kilka stresujących dni urlopu." };
+		final String[] genders = { "F", "M", "M", "M" };
 		final int[][] start = { {3, 3}, {9, 3}, {15, 3}, {21, 3} };
 		for (int i = 0; i < 4; i++) {
 			final SpeakerNPC npc = new SpeakerNPC(names[i]) {
@@ -56,15 +58,16 @@ public class DzieciakiNPCs implements ZoneConfigurator {
 						ConversationPhrases.GREETING_MESSAGES,
 						new GreetingMatchesNameCondition(getName()), true,
 						ConversationStates.IDLE,
-						"ZZzzzz ... ",
+						"ZZzzzz...",
 						null);
 				}
 			};
-			npc.setEntityClass(classes[i]);
-			npc.setPosition(start[i][0], start[i][1]);
+
 			npc.setDescription(descriptions[i]);
+			npc.setEntityClass(classes[i]);
+			npc.setGender(genders[i]);
+			npc.setPosition(start[i][0], start[i][1]);
 			npc.setDirection(Direction.LEFT);
-			npc.initHP(100);
 			zone.add(npc);
 		}
 	}

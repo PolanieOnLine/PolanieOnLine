@@ -51,7 +51,9 @@ public class TajemniczaOsobaNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto tajemnicza osoba w ciemnym kaftanie.");
 		npc.setEntityClass("npctajemniczaosoba");
+		npc.setGender("M");
 		npc.setPosition(9, 34);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);

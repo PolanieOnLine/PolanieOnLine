@@ -75,8 +75,8 @@ public class LajkonikNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Lajkonik. Jest jednym z symboli miasta Krakowa. Jeżeli go spytasz opowie ci historię wydarzenia z 1287 roku.");
 		npc.setEntityClass("lajkoniknpc");
+		npc.setGender("M");
 		npc.setPosition(88, 45);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -52,10 +52,10 @@ public class MarianekNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Marianek, jest kowalem.");
+		npc.setDescription("Oto Marianek. Wyglądem przypomina kowala.");
 		npc.setEntityClass("blacksmithnpc");
+		npc.setGender("M");
 		npc.setPosition(5, 4);
-		npc.initHP(1000);
 		zone.add(npc);
 	}
 }

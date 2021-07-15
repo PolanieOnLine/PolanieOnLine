@@ -80,9 +80,9 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 
 		kuznia.setDescription("Oto kowal Wincenty. Jest strasznie zapracowany!");
 		kuznia.setEntityClass("goldsmithnpc");
+		kuznia.setGender("M");
 		kuznia.setDirection(Direction.DOWN);
 		kuznia.setPosition(5, 5);
-		kuznia.initHP(100);
 		zone.add(kuznia);
 	}
 }

@@ -47,11 +47,11 @@ public class EdragonNPC implements ZoneConfigurator {
 			}
 		};
 
-    npc.setDescription("Oto smok eDragon, uciekł z siedziby przed jej zburzeniem.");
+		npc.setDescription("Oto smok eDragon, uciekł z siedziby przed jej zburzeniem.");
 		npc.setEntityClass("npc_eDragon");
+		npc.setGender("M");
 		npc.setPosition(123, 71);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

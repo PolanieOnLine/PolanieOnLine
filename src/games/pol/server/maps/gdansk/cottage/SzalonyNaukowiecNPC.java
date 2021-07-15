@@ -79,11 +79,11 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto szalony naukowiec zwany Aron. Lepiej z nim długo nie rozmawiać.");
+		npc.setDescription("Oto Aron, odziany w jakąś dziwną białą szatą. Wygląda na jakiegoś szalonego naukowca, lepiej z nim długo nie rozmawiać.");
 		npc.setEntityClass("madscientistnpc");
-		npc.setPosition(26, 8);
+		npc.setGender("M");
 		npc.setDirection(Direction.UP);
-		npc.initHP(100);
+		npc.setPosition(26, 8);
 		zone.add(npc);
 	}
 }

@@ -54,6 +54,7 @@ public class ZdzichuNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Jubiler Zdzichu.");
 		npc.setEntityClass("blacksmithnpc");
+		npc.setGender("M");
 		npc.setPosition(10, 6);
 		npc.initHP(1000);
 		zone.add(npc);

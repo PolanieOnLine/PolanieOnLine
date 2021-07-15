@@ -44,7 +44,7 @@ public class ZielarkaNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Witaj");
+				addJob("Witaj!");
 				addHelp("Skupuję zioła. Na stole leży książka, w niej są ceny i rodzaje ziół, które kupię.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyziola")), false);
 				addOffer("Skupuję zioła, oferta moja jest w książce.");
@@ -54,9 +54,9 @@ public class ZielarkaNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Zielarka, która wie wszystko o ziołach.");
 		npc.setEntityClass("confectionerapplepienpc");
+		npc.setGender("F");
 		npc.setPosition(15, 44);
 		npc.setDirection(Direction.UP);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

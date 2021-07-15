@@ -61,9 +61,10 @@ public class ArmoryMarket implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(105, 48);
-		npc.setEntityClass("man_002_npc");
 		npc.setDescription("Oto Kilian. Zajmuje się skupowaniem uzbrojenia.");
+		npc.setEntityClass("man_002_npc");
+		npc.setGender("M");
+		npc.setPosition(105, 48);
 		zone.add(npc);
 	}
 }

@@ -84,8 +84,8 @@ public class MysliwyNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto myśliwy króla.");
 		npc.setEntityClass("scarletarmynpc");
+		npc.setGender("M");
 		npc.setPosition(8, 127);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

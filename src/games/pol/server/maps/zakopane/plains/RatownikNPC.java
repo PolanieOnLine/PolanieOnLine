@@ -37,7 +37,7 @@ public class RatownikNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC ratownikNPC = new SpeakerNPC("Ratownik Mariusz") {
+		final SpeakerNPC npc = new SpeakerNPC("Ratownik Mariusz") {
 
 			@Override
 			protected void createPath() {
@@ -58,9 +58,9 @@ public class RatownikNPC implements ZoneConfigurator {
 			}
 		};
 
-		ratownikNPC.setEntityClass("npcratownik");
-		ratownikNPC.setPosition(108, 11);
-		ratownikNPC.initHP(1000);
-		zone.add(ratownikNPC);
+		npc.setEntityClass("npcratownik");
+		npc.setGender("M");
+		npc.setPosition(108, 11);
+		zone.add(npc);
 	}
 }

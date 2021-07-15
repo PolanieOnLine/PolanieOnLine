@@ -104,7 +104,9 @@ public class RadomilNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Radomi, który może zdjąć piętno zabójcy za dobrą karmę.");
 		npc.setEntityClass("npcwikary");
+		npc.setGender("M");
 		npc.setPosition(5, 2);
 		zone.add(npc);
 	}

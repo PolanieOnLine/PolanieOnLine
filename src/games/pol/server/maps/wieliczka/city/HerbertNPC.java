@@ -51,9 +51,10 @@ public class HerbertNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(40, 100);
-		npc.setEntityClass("holidaymakernpc");
 		npc.setDescription("Oto Herbert. Wygląda jakby potrzebował pomocy.");
+		npc.setEntityClass("holidaymakernpc");
+		npc.setGender("M");
+		npc.setPosition(40, 100);
 		npc.setDirection(Direction.RIGHT);
 		zone.add(npc);
 	}

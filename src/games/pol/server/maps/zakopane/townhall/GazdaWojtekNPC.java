@@ -59,8 +59,8 @@ public class GazdaWojtekNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("npcgazda");
+		npc.setGender("M");
 		npc.setPosition(12, 4);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

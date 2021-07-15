@@ -55,9 +55,10 @@ public class MalteisNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto rycerz Malteis, który wraz ze swoją drużyną rycerską ochrania to miasto przed złem.");
 		npc.setEntityClass("malteisnpc");
+		npc.setGender("M");
 		npc.setPosition(11, 4);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

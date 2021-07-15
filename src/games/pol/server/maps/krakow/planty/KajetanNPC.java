@@ -124,8 +124,8 @@ public class KajetanNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Kajetan. Zajmuje się wypasaniem kóz.");
 		npc.setEntityClass("seller3npc");
+		npc.setGender("M");
 		npc.setPosition(103, 110);
-		npc.initHP(100);
 		npc.setSounds(Arrays.asList("cough-11", "cough-2", "cough-3"));
 		zone.add(npc);
 	}

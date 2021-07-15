@@ -51,11 +51,11 @@ public class StasekNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Stasek. Prowadzi bardzo atraktycjny sklep.");
 		npc.setEntityClass("barman3npc");
+		npc.setGender("M");
 		npc.setPosition(5, 6);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
-		npc.setDescription("Oto Stasek. Prowadzi bardzo atraktycjny sklep.");
 		zone.add(npc);
 	}
 }

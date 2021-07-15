@@ -39,7 +39,7 @@ public class KarczmarkaNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Granny Alina") {
+		final SpeakerNPC npc = new SpeakerNPC("babcia Alina") {
 
 			@Override
 			protected void createPath() {
@@ -62,6 +62,7 @@ public class KarczmarkaNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto babcia Alina, jest znana ze swojej wspaniałej kuchni domowej.");
 		npc.setEntityClass("granmanpc");
+		npc.setGender("F");
 		npc.setPosition(35, 20);
 		npc.setCollisionAction(CollisionAction.STOP);
 		zone.add(npc);

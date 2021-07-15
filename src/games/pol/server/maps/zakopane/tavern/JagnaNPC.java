@@ -61,10 +61,11 @@ public class JagnaNPC implements ZoneConfigurator {
 			}
 		};
 
+		jagna.setDescription("Oto Jagna, wydaje się być bardzo miłą osobą.");
 		jagna.setEntityClass("hotelreceptionistnpc");
+		jagna.setGender("F");
 		jagna.setPosition(25, 3);
 		jagna.setDirection(Direction.DOWN);
-		jagna.initHP(100);
 		jagna.setSounds(Arrays.asList("hiccup-1", "hiccup-2", "hiccup-3"));
 		zone.add(jagna);
 	}

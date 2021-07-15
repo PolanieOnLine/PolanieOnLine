@@ -76,8 +76,8 @@ public class MieszkaniecGdanska1NPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("npcdziewczynka");
+		npc.setGender("F");
 		npc.setPosition(113, 108);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

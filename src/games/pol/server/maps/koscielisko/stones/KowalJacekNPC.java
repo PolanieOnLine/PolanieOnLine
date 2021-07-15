@@ -31,7 +31,7 @@ public class KowalJacekNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC KowalJacekNPC = new SpeakerNPC("Kowal Jacek") {
+		final SpeakerNPC npc = new SpeakerNPC("Kowal Jacek") {
 
 			@Override
 			protected void createPath() {
@@ -46,16 +46,17 @@ public class KowalJacekNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć!");
-				addJob("Jak widzisz kowala życie nie jest łatwe, masę roboty mam.");
+				addJob("Jak widzisz, kowala życie nie jest łatwe, masę roboty mam.");
 				addHelp("Ja ci? Chyba raczej ty mi.");
 				addOffer("Nie mam nic do zaoferowania!");
 				addGoodbye("Do widzenia.");
 			}
 		};
 
-		KowalJacekNPC.setEntityClass("goldsmithnpc");
-		KowalJacekNPC.setPosition(3, 5);
-		KowalJacekNPC.initHP(100);
-		zone.add(KowalJacekNPC);
+		npc.setDescription("Oto kowal Jacek. Wygląda na strasznie zapracowanego.");
+		npc.setEntityClass("goldsmithnpc");
+		npc.setGender("M");
+		npc.setPosition(3, 5);
+		zone.add(npc);
 	}
 }

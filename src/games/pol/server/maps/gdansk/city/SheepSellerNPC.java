@@ -106,11 +106,11 @@ public class SheepSellerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("sellernpc");
 		npc.setDescription("Oto Nathan, który patroluje ścieżki szukając owiec. Możesz kupić jedną od niego.");
-		npc.setPosition(18, 6);
-		npc.initHP(100);
+		npc.setEntityClass("sellernpc");
+		npc.setGender("M");
 		npc.setSounds(Arrays.asList("cough-11", "cough-2", "cough-3"));
+		npc.setPosition(18, 6);
 		zone.add(npc);
 	}
 }

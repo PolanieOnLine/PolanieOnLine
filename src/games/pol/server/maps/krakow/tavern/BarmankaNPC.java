@@ -65,6 +65,7 @@ public class BarmankaNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto śliczna Idris. Jest barmanką w tej karczmie.");
 		npc.setEntityClass("tavernbarmaidnpc");
+		npc.setGender("F");
 		npc.setPosition(26, 7);
 		zone.add(npc);
 	}

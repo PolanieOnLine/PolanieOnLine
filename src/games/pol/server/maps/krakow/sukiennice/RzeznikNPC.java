@@ -45,19 +45,19 @@ public class RzeznikNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Dobry dzień");
+				addJob("Dobry dzień.");
 				addHelp("Tak możesz pomóc sprzedając mi jakiekolwiek mięsiwo.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buymieso")), false);
 				addOffer("Oferta moja jest w książce przede mną.");
-				addGoodbye("Żegnam");
+				addGoodbye("Żegnam.");
 			}
 		};
 
 		npc.setDescription("Oto Rzeźnik, jakiś taki gburowaty.");
 		npc.setEntityClass("jailedbarbariannpc");
+		npc.setGender("M");
 		npc.setPosition(26, 43);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

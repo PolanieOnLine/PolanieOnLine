@@ -67,6 +67,7 @@ public class BlacksmithAssistNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Inez. Jest asystentem kowala.");
 		npc.setEntityClass("naughtyteennpc");
+		npc.setGender("M");
 		npc.setPosition(5, 7);
 		zone.add(npc);
 	}

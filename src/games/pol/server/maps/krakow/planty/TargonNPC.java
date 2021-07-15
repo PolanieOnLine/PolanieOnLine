@@ -200,6 +200,7 @@ public class TargonNPC implements ZoneConfigurator {
 		new BuyerAdder().addBuyer(npc, new GoatBuyerBehaviour(buyitems), true);
 		npc.setDescription("Oto Targon. Kupuje tylko w pełni wypasione kozy i płaci za nie całkiem dobrze.");
 		npc.setEntityClass("buyernpc");
+		npc.setGender("M");
 		npc.setPosition(98, 32);
 		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
 		zone.add(npc);

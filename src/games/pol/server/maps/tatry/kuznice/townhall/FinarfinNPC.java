@@ -76,7 +76,9 @@ public class FinarfinNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Finarfin, który wspiera nowych rycerzy oraz samego sołtysa.");
 		npc.setEntityClass("executivenpc");
+		npc.setGender("M");
 		npc.setPosition(27, 6);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);

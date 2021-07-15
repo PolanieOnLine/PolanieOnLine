@@ -130,9 +130,10 @@ public class ArthurNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(60, 72);
-		npc.setEntityClass("icecreamsellernpc");
 		npc.setDescription("Oto Arthur. Wygląda na przyjaznego faceta.");
+		npc.setEntityClass("icecreamsellernpc");
+		npc.setGender("M");
+		npc.setPosition(60, 72);
 		zone.add(npc);
 	}
 }

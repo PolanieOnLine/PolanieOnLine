@@ -73,9 +73,9 @@ public class NaukowiecNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Agrypin. Wygląda jakby coś rozpracował.");
 		npc.setEntityClass("madscientistnpc");
+		npc.setGender("M");
 		npc.setPosition(6, 4);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

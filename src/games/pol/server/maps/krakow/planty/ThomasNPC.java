@@ -72,8 +72,8 @@ public class ThomasNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Tomasz. Zajmuje się łowieniem ryb rzecznych, jednak codziennie wypływa również do portu, gdzie czeka na niego świeża dostawa tuńczyka. Tuńczyk to morska ryba, której nie złowi się w rzece, a jest na niego spore zapotrzebowanie.");
 		npc.setEntityClass("fishermannpc");
+		npc.setGender("M");
 		npc.setPosition(79, 51);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

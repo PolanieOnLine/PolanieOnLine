@@ -34,12 +34,12 @@ public class KrawiecNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Krawiec") {
+		final SpeakerNPC npc = new SpeakerNPC("rzemieślnik Wojciech") {
 
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Jestem z zawodu krawcem.");
+				addJob("Jestem krawcem. Potrzebujesz coś zszyć?");
 				addHelp("Nie potrzebuję pomocy.");
 				addOffer("Nie mam nic Tobie do zaoferowania.");
 				addGoodbye("Do widzenia.");
@@ -47,8 +47,8 @@ public class KrawiecNPC implements ZoneConfigurator {
 		};
 
 		npc.setOutfit(3, 49, 3, 1, 9, 11, 14, 21, null);
-		npc.setDescription("Oto krawiec.");
-		npc.setEntityClass("noimagenpc");
+		npc.setDescription("Oto krawiec rzemieślnik zwany Wojciech. Nie wygląda jakoś na zapracowanego.");
+		npc.setGender("M");
 		npc.setPosition(13, 10);
 		zone.add(npc);
 	}

@@ -58,8 +58,8 @@ public class BronekNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Bronek, wygląda na porządnego górala.");
 		npc.setEntityClass("npcbronek");
+		npc.setGender("M");
 		npc.setPosition(16, 18);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

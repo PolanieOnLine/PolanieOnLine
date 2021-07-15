@@ -58,9 +58,10 @@ public class GroceryNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Hermina. Prowadzi mały sklepik spożywczy.");
 		npc.setEntityClass("woman_004_npc");
+		npc.setGender("F");
 		npc.setPosition(39, 74);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

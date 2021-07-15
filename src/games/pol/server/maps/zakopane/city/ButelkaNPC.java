@@ -74,10 +74,10 @@ public class ButelkaNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto nosiwoda Jakub. Być może napełni trochę orzeźwiającej wody do butelki.");
 		npc.setEntityClass("oldcowboynpc");
+		npc.setGender("M");
 		npc.setPosition(19, 95);
-		npc.initHP(1000);
-		npc.setDescription("Oto Nosiwoda Jakub.");
 		zone.add(npc);
 	}
 }

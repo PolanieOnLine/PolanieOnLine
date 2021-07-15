@@ -132,9 +132,11 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(77, 37);
+		npc.setDescription("Oto Staszek, który zabiera chętnych pasażerów na prom do Warszawy.");
 		npc.setEntityClass("npcflisak1");
+		npc.setGender("M");
 		npc.setDirection(Direction.LEFT);
+		npc.setPosition(77, 37);
 		zone.add(npc);
 	}
 }

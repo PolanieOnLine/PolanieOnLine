@@ -61,10 +61,10 @@ public class BartlomiejNPC implements ZoneConfigurator {
 			}
 		};
 
-		bartlomiejNPC.setDescription("Oto Kowal Bartłomiej. Znalazł pracę u herszta zbójników!");
+		bartlomiejNPC.setDescription("Oto kowal Bartłomiej. Znalazł pracę u herszta zbójników!");
 		bartlomiejNPC.setEntityClass("beardmannpc");
+		bartlomiejNPC.setGender("M");
 		bartlomiejNPC.setPosition(11, 59);
-		bartlomiejNPC.initHP(1000);
 		zone.add(bartlomiejNPC);
 	}
 }

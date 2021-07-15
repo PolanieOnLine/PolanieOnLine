@@ -104,8 +104,8 @@ public class MieszkaniecGdanska4NPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Ścibor. Wygląda jakby wiedział bardzo dużo na temat tego miasta.");
 		npc.setEntityClass("manwithhatnpc");
+		npc.setGender("M");
 		npc.setPosition(18, 101);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -76,6 +76,7 @@ public class GosciradNPC implements ZoneConfigurator {
 		};
 
 		npc.setEntityClass("executivenpc");
+		npc.setGender("M");
 		npc.setPosition(13, 33);
 		npc.setDirection(Direction.RIGHT);
 		zone.add(npc);

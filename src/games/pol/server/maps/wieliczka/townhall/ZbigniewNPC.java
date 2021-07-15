@@ -63,10 +63,10 @@ public class ZbigniewNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("badmayornpc");
 		npc.setDescription("Oto burmistrz Wieliczki, Zbigniew, zdaje się, że idzie w twoją stronę.");
+		npc.setEntityClass("badmayornpc");
+		npc.setGender("M");
 		npc.setPosition(13, 4);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -53,11 +53,11 @@ public class PrzekupkaNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Przekupka");
+		npc.setDescription("Oto Przekupka, która skupuje warzywa.");
 		npc.setEntityClass("curatornpc");
+		npc.setGender("F");
 		npc.setPosition(26, 11);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

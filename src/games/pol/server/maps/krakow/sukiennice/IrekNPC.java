@@ -55,9 +55,9 @@ public class IrekNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto badylarz Irek");
 		npc.setEntityClass("man_000_npc");
+		npc.setGender("M");
 		npc.setPosition(26, 4);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

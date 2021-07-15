@@ -66,9 +66,10 @@ public class PotionNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto alchemiczka, która zwie się Manuela. Handluje swoimi wyrobami.");
 		npc.setEntityClass("wizardwomannpc");
+		npc.setGender("F");
 		npc.setPosition(44, 76);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

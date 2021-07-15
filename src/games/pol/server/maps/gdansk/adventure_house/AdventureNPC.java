@@ -237,10 +237,12 @@ public class AdventureNPC implements ZoneConfigurator  {
 						"Bardzo dobrze.",
 						null);
 			}};
-			npc.setPosition(5, 14);
-			npc.setEntityClass("brownwizardnpc");
-			npc.setDirection(Direction.DOWN);
+
 			npc.setDescription("Oto Gereon. Pilnuje razem ze strażnikami wyjścia, aby potwory nie wyszły na zewnątrz.");
+			npc.setEntityClass("brownwizardnpc");
+			npc.setGender("M");
+			npc.setPosition(5, 14);
+			npc.setDirection(Direction.DOWN);
 			npc.setLevel(600);
 			npc.initHP(75);
 			zone.add(npc);

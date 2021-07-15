@@ -62,10 +62,10 @@ public class ResetLVLNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("npcsmok");
 		npc.setDescription("Oto Yerena. Smok, który włada czasem.");
+		npc.setEntityClass("npcsmok");
+		npc.setGender("F");
 		npc.setPosition(16, 18);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

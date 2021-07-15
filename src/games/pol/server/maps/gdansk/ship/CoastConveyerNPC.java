@@ -149,9 +149,11 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(28, 34);
+		npc.setDescription("Oto Basia, która opiekuje się pasażerami statku, aby bezpiecznie zeszli na ląd.");
 		npc.setEntityClass("pirate_sailor2npc");
+		npc.setGender("F");
 		npc.setDirection(Direction.LEFT);
+		npc.setPosition(28, 34);
 		zone.add(npc);
 	}
 

@@ -44,8 +44,9 @@ public class KidsNPC implements ZoneConfigurator {
 	private void buildKids(final StendhalRPZone zone) {
 		final String[] names = { "Kasper", "Leo", "Balbina", "Nikodem", "Roch" };
 		final String[] classes = { "kid3npc", "kid4npc", "kid5npc", "kid6npc", "kid7npc" };
-		final String[] descriptions = {"Oto Kasper. Wydaje się być nieco znudzony.", "Oto Leo, który uwielbia się bawić!", "Oto Balbina. Jest uroczą dziewczynką.",
-					"Oto Nikodem. Zgubił swoją zabawkę i nie może jej znaleźć.", "Oto Roch. Lubi opowiadać żarty."};
+		final String[] descriptions = { "Oto Kasper. Wydaje się być nieco znudzony.", "Oto Leo, który uwielbia się bawić!", "Oto Balbina. Jest uroczą dziewczynką.",
+					"Oto Nikodem. Zgubił swoją zabawkę i nie może jej znaleźć.", "Oto Roch. Lubi opowiadać żarty." };
+		final String[] genders = { "M", "M", "F", "M", "M" };
 		final Node[] start = new Node[] {new Node(118, 71), new Node(118, 77), new Node(114, 77), new Node(114, 80), new Node(118, 74)};
 		for (int i = 0; i < 5; i++) {
 			final SpeakerNPC npc = new SpeakerNPC(names[i]) {
@@ -96,10 +97,10 @@ public class KidsNPC implements ZoneConfigurator {
 				}
 			};
 
-			npc.setEntityClass(classes[i]);
-			npc.setPosition(start[i].getX(), start[i].getY());
 			npc.setDescription(descriptions[i]);
-			npc.initHP(100);
+			npc.setEntityClass(classes[i]);
+			npc.setGender(genders[i]);
+			npc.setPosition(start[i].getX(), start[i].getY());
 			zone.add(npc);
 		}
 	}

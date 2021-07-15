@@ -54,9 +54,9 @@ public class RybakMiloradNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Rybak Miłorad, który jest bardzo uprzejmy.");
 		npc.setEntityClass("man_008_npc");
+		npc.setGender("M");
 		npc.setPosition(26, 36);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

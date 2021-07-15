@@ -77,6 +77,7 @@ public class LanoszNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Lanosz. Mąż Edny, jest doskonałym piekarzem, a jego specjalnością są kanapki rybne, przygotowywane z miejscowych świeżych składników.");
 		npc.setEntityClass("chefnpc");
+		npc.setGender("M");
 		npc.setPosition(14, 5);
 		zone.add(npc);
 	}

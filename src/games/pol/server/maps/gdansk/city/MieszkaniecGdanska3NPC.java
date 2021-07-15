@@ -67,10 +67,10 @@ public class MieszkaniecGdanska3NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto farmer Mścisław. Jest bardzo miły dla nowych osób.");
+		npc.setDescription("Oto farmer Mścisław. Wygląda na miłego dla nowo poznanych osób.");
 		npc.setEntityClass("hoeingmannpc");
+		npc.setGender("M");
 		npc.setPosition(52, 88);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

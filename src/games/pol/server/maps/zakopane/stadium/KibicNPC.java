@@ -65,8 +65,8 @@ public class KibicNPC implements ZoneConfigurator {
 
 		kibic.setDescription("Oto Kibic, który jest wiernym kibicem PolanieOnLine.");
 		kibic.setEntityClass("npckibic");
+		kibic.setGender("M");
 		kibic.setPosition(26, 5);
-		kibic.initHP(1000);
 		zone.add(kibic);
 	}
 }

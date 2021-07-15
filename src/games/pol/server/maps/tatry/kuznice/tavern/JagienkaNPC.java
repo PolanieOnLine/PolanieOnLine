@@ -65,7 +65,9 @@ public class JagienkaNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Jagienka, która wygląda na bardzo uprzejmą osobę.");
 		npc.setEntityClass("npcjagienka");
+		npc.setGender("F");
 		npc.setPosition(26, 29);
 		zone.add(npc);
 	}

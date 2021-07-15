@@ -79,9 +79,10 @@ public class GazdzinaMaryskaNPC implements ZoneConfigurator {
 			}
 		};
 
+		GazdzinaMaryskaNPC.setDescription("Oto Gaździna Maryśka, która zajmuje się gospodą.");
 		GazdzinaMaryskaNPC.setEntityClass("curatornpc");
+		GazdzinaMaryskaNPC.setGender("F");
 		GazdzinaMaryskaNPC.setPosition(18, 4);
-		GazdzinaMaryskaNPC.initHP(100);
 		zone.add(GazdzinaMaryskaNPC);
 	}
 }

@@ -50,14 +50,14 @@ public class eFuRNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj! dzielny wojowniku.");
 				addJob("Pilnuję koboltów w tych podziemiach.");
-				addHelp("Mi pomóc? Dziękuję nie trzeba ale mogę tobie anulować #zadanie na jeden z pierścieni lub itemy z mithrilu.");
+				addHelp("Mi pomóc? Dziękuję nie trzeba ale mogę tobie anulować #zadanie na jeden z pierścieni lub przedmioty z mithrilu.");
 				addGoodbye("Do widzenia.");
 			}
 		};
 
 		npc.setEntityClass("npcsmok");
+		npc.setGender("M");
 		npc.setPosition(8, 141);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

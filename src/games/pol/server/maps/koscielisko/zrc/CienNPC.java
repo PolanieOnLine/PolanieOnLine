@@ -27,6 +27,5 @@ public class CienNPC extends SpeakerNPCFactory {
 		npc.addJob("Prowadzę spokojne życie. Pilnuje wejścia do Zakonu Rycerzy Cienia.");
 		npc.addHelp("hm.");
 		npc.addGoodbye("Do widzenia kolego.");
-		
 	}
 }

@@ -87,9 +87,10 @@ public class DwojakiElwirkaNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(2, 13);
-		npc.setEntityClass("confectionerapplepienpc");
 		npc.setDescription("Oto Elwirka, która umie przygotować pyszne potrawy z gruli i lubi winogrona.");
+		npc.setEntityClass("confectionerapplepienpc");
+		npc.setGender("F");
+		npc.setPosition(2, 13);
 		zone.add(npc);
 	}
 }

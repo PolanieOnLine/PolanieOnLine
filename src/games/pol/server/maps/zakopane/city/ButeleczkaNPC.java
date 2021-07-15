@@ -74,10 +74,10 @@ public class ButeleczkaNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto nosiwoda Witek. Być może napełni trochę orzeźwiającej wody do buteleczki.");
 		npc.setEntityClass("naughtyteen2npc");
+		npc.setGender("M");
 		npc.setPosition(19, 104);
-		npc.initHP(1000);
-		npc.setDescription("Oto Nosiwoda Witek.");
 		zone.add(npc);
 	}
 }

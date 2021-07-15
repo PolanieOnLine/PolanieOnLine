@@ -63,9 +63,10 @@ public class FryderykNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Fryderyk, który wygląda jakby znał te miejsce od podszewki.");
 		npc.setEntityClass("paulnpc");
+		npc.setGender("M");
 		npc.setPosition(21, 8);
-		npc.initHP(100);
 		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-male-01"));
 		zone.add(npc);
 	}

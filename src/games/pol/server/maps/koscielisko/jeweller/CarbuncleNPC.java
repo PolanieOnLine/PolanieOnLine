@@ -67,10 +67,11 @@ public class CarbuncleNPC implements ZoneConfigurator {
 			}
 		};
 
+		ziemirad.setDescription("Oto Ziemirad, który jest tutejszym czeladnikiem. Ciekawe jakimi kamieniami się zajmuje.");
 		ziemirad.setEntityClass("weaponsellernpc");
+		ziemirad.setGender("M");
 		ziemirad.setPosition(4, 17);
 		ziemirad.setDirection(Direction.RIGHT);
-		ziemirad.initHP(100);
 		zone.add(ziemirad);
 	}
 }

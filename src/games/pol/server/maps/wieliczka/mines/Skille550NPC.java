@@ -103,6 +103,7 @@ public class Skille550NPC implements ZoneConfigurator {
 		});
 
 		npc.setEntityClass("blackwizardpriestnpc");
+		npc.setGender("M");
 		npc.setPosition(118, 24);
 		zone.add(npc);
 	}

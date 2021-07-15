@@ -69,10 +69,11 @@ public class EmeraldNPC implements ZoneConfigurator {
 			}
 		};
 
+		mieszek.setDescription("Oto Mieszek, który wygląda na czeladnika. Ciekawe jakimi kamieniami się zajmuje.");
 		mieszek.setEntityClass("recruiter1npc");
+		mieszek.setGender("M");
 		mieszek.setPosition(27, 29);
 		mieszek.setDirection(Direction.LEFT);
-		mieszek.initHP(100);
 		zone.add(mieszek);
 	}
 }

@@ -55,10 +55,10 @@ public class JolandaNPC implements ZoneConfigurator {
 			}
 		};
 
-		jolanda.setEntityClass("elegantladynpc");
-		jolanda.setPosition(124, 106);
-		jolanda.initHP(100);
 		jolanda.setDescription("Oto Jolanda. Podczas podróży została zaatakowana przez smoka.");
+		jolanda.setEntityClass("elegantladynpc");
+		jolanda.setGender("F");
+		jolanda.setPosition(124, 106);
 		zone.add(jolanda);
 	}
 }

@@ -51,7 +51,7 @@ public class ArmoryNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Zajmuje się handlem różne wyposażenia.");
+				addJob("Zajmuje się handlem różnego wyposażenia.");
 				addHelp("Spójrz na tablice po mojej lewej, aby zobaczyć co mógłbyś mi sprzedać.");
 				addOffer("Spójrz na tablicę, aby zobaczyć moje ceny i co skupuję.");
 				addQuest("Zapytaj się Mieczysława, znajduje się on w muzeum.");
@@ -60,10 +60,11 @@ public class ArmoryNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Dariusz. Zajmuje się handlem wyposażenia.");
 		npc.setEntityClass("man_002_npc");
-		npc.setPosition(30, 78);
+		npc.setGender("M");
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
+		npc.setPosition(30, 78);
 		zone.add(npc);
 	}
 }

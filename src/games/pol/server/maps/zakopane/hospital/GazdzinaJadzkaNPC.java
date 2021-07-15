@@ -63,10 +63,10 @@ public class GazdzinaJadzkaNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Gaździna Jadźka.");
+		npc.setDescription("Oto Gaździna Jadźka. Pomaga opatrzeć rany po ciężkich bojach.");
 		npc.setEntityClass("npcgenowefa");
+		npc.setGender("F");
 		npc.setPosition(20, 10);
-		npc.initHP(100);
 		npc.setSounds(Arrays.asList("giggle-female-01", "giggle-female-02"));
 		zone.add(npc);
 	}

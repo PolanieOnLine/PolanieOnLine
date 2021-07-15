@@ -47,7 +47,7 @@ import marauroa.common.Pair;
 
 public class ProsbyXylony extends AbstractQuest {
 	private static final String QUEST_SLOT = "prosby_wiedzmy";
-	private final SpeakerNPC npc = npcs.get("Xylona");
+	private final SpeakerNPC npc = npcs.get("Benigna");
 
 	private static final int DELAY_IN_MINUTES = 60*1;
 

@@ -72,11 +72,11 @@ public class MithrilNPC implements ZoneConfigurator {
 			}
 		};
 
+		forger.setDescription("Oto Larrangin. Wygląda na to że zna się na magi...");
 		forger.setEntityClass("mithrilforgernpc");
+		forger.setGender("M");
 		forger.setDirection(Direction.DOWN);
 		forger.setPosition(17, 6);
-		forger.initHP(100);
-		forger.setDescription("Oto Larrangin. Wygląda na to że zna się na magi...");
 		zone.add(forger);
 	}
 }

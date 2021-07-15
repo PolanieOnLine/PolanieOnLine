@@ -87,9 +87,9 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 
 		kuznia.setDescription("Oto zapracowany Kowal Andrzej. Czasami trzeba mu przypomnieć co powinien zrobić!");
 		kuznia.setEntityClass("goldsmithnpc");
+		kuznia.setGender("M");
 		kuznia.setDirection(Direction.DOWN);
 		kuznia.setPosition(23, 12);
-		kuznia.initHP(100);
 		zone.add(kuznia);
 	}
 }

@@ -44,5 +44,7 @@ public class SaddlerNPC extends SpeakerNPCFactory {
 
 		new ProducerAdder().addProducer(npc, behaviour,
 				"Pozdrawiam! Jeżeli przyniesiesz mi #skórę zwierzęcą to uszyję Tobie bukłak na wodę. Powiedz tylko #'uszyj pusty bukłak'.");
+
+		npc.setGender("M");
 	}
 }

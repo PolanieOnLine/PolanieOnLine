@@ -62,8 +62,8 @@ public class CollectorNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Anastazja. Wygląda jakby chciała zajmować się modą.");
 		npc.setEntityClass("woman_009_npc");
+		npc.setGender("F");
 		npc.setPosition(7, 12);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

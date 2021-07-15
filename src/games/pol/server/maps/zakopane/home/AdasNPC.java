@@ -62,9 +62,10 @@ public class AdasNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto mały chłopiec o imieniu Adam. Jest nieco czymś przygnębiony.");
 		npc.setEntityClass("npcdzieckogoralskie");
+		npc.setGender("M");
 		npc.setPosition(6, 3);
-		npc.initHP(100);
 		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
 		zone.add(npc);
 	}

@@ -108,9 +108,10 @@ public class ChefNPC implements ZoneConfigurator  {
 				"Witaj! Jakże miło, że zawitałeś do mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'.");
 			}};
 
-			npc.setPosition(15, 3);
-			npc.setEntityClass("chefnpc");
 			npc.setDescription("Oto Ernest. Jego praca daje mu piękny zapach.");
+			npc.setEntityClass("chefnpc");
+			npc.setGender("M");
+			npc.setPosition(15, 3);
 			zone.add(npc);
 	}
 }

@@ -45,7 +45,7 @@ public class MieszkaniecGdanska2NPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witam, nie jesteś skąd prawda?");
+				addGreeting("Witam, nie jesteś stąd prawda?");
 				addJob("Nie mam dla Ciebie żadnego zadania.");
 				addHelp("Nie potrzebuję Twojej pomocy.");
 				addOffer("Nie mam nic Tobie do zaoferowania... Możesz się przejść do naszej karczmy w Gdańsku, która się znajduje w centrum naszego miasta, tam może znajdziesz coś dla siebie.");
@@ -57,9 +57,9 @@ public class MieszkaniecGdanska2NPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Adela, mama Jagody. Nie wygląda na taką osobę aby chciała chwilę porozmawiać.");
 		npc.setEntityClass("woman_003_npc");
+		npc.setGender("F");
 		npc.setPosition(111, 103);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

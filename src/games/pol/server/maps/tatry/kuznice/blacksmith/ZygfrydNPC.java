@@ -82,6 +82,7 @@ public class ZygfrydNPC implements ZoneConfigurator {
 
 		kuznia.setDescription("Oto młody Zygfryd. Pomaga tutejszemu kowalowi w odlewaniu sztabek.");
 		kuznia.setEntityClass("naughtyteennpc");
+		kuznia.setGender("M");
 		kuznia.setPosition(7, 4);
 		zone.add(kuznia);
 	}

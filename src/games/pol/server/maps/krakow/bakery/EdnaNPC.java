@@ -72,8 +72,8 @@ public class EdnaNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Edna. Wraz ze swoim mężem prowadzą najlepszą piekarnię w całym Kraku.");
 		npc.setEntityClass("housewifenpc");
+		npc.setGender("F");
 		npc.setPosition(27, 8);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

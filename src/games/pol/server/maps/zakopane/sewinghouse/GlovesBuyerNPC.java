@@ -57,9 +57,9 @@ public class GlovesBuyerNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Ludwina. Zajmuje się skupem rękawic.");
 		npc.setEntityClass("woman_002_npc");
+		npc.setGender("F");
 		npc.setPosition(8, 3);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

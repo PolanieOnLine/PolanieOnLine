@@ -73,8 +73,8 @@ public class RybakNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto rybak.");
 		npc.setEntityClass("fishermannpc");
+		npc.setGender("M");
 		npc.setPosition(17, 94);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

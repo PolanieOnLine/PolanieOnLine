@@ -195,6 +195,7 @@ public class DobromirNPC implements ZoneConfigurator {
 		new BuyerAdder().addBuyer(npc, new SheepBuyerBehaviour(buyitems), true);
 		npc.setDescription("Oto Dobromir. Zajmuje się handlem owiec.");
 		npc.setEntityClass("npc_dobromir");
+		npc.setGender("M");
 		npc.setPosition(19, 92);
 		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
 		zone.add(npc);

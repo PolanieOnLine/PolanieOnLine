@@ -54,6 +54,7 @@ public class CollectorNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Eltefia. Wygląda młodo oraz pięknie!");
 		npc.setEntityClass("woman_004_npc");
+		npc.setGender("F");
 		npc.setPosition(4, 3);
 		zone.add(npc);
 	}

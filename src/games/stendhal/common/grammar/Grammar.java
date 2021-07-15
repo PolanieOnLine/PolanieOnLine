@@ -385,7 +385,7 @@ public class Grammar {
 		if (enoun.indexOf(of) > -1) {
 			return plural(enoun.substring(0, enoun.indexOf(of))) + enoun.substring(enoun.indexOf(of)) + postfix;
 
-		} else if (enoun.equals("money")) {
+		} else if (enoun.equals("money") || enoun.equals("kierpce") || enoun.equals("korale")) {
 			return enoun;
 
 		} else if (enoun.equals("wojownik")) {
@@ -1060,7 +1060,7 @@ public class Grammar {
 	public static String enumerateCollectionPlural(Collection<String> collection) {
 		Collection<String> pluralCollection = new ArrayList<String>(collection.size());
 		for (String entry : collection) {
-			pluralCollection.add(plural(entry));
+			pluralCollection.add(entry); // plural(entry)
 		}
 		return enumerateCollection(pluralCollection);
 	}

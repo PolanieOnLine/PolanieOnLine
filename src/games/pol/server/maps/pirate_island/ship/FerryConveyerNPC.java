@@ -132,8 +132,10 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setPosition(3, 89);
+		npc.setDescription("Oto Odwagard. Pilnuje, by wszyscy chętni weszli bezpiecznie na statek.");
 		npc.setEntityClass("npcflisak1");
+		npc.setGender("M");
+		npc.setPosition(3, 89);
 		npc.setDirection(Direction.RIGHT);
 		zone.add(npc);
 	}
