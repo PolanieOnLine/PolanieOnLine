@@ -648,8 +648,8 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			res.add("Nie mam ochoty wykonywać próśb czarownicy - Benigny.");
 			return res;
 		}
-		res.add("Benigna jej pierwsza prośba była, abym zabił błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
-		if ("start".equals(questState)) {
+		res.add("Pierwsza prośba Benigny była, abym zabił błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
+		if (questState.startsWith("start")) {
 			return res;
 		}
 		res.add("Zabiłem błękitnego smoka i zaniosłem Benignie jego skórę w dowód, że pokonałem go samodzielnie!");
@@ -666,7 +666,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			return res;
 		}
 		res.add("Benigna kazała mi zabić dwugłowego zielonego smoka i przynieść 5 skór zielonego smoka.");
-		if ("dwuglowyzielonysmok".equals(questState)) {
+		if (questState.startsWith("dwuglowyzielonysmok")) {
 			return res;
 		}
 		res.add("Zabiłem dwugłowego zielonego smoka i zaniosłem Benignie potrzebne jej skóry!");
@@ -683,7 +683,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			return res;
 		}
 		res.add("Benigna tym razem nie chciała abym coś dla niej zabił. Mam jej przynieść tylko 50 kłów smoka.");
-		if ("kielsmoka".equals(questState)) {
+		if (questState.startsWith("kielsmoka")) {
 			return res;
 		}
 		res.add("Zaniosłem potrzebne Benignie kły smoków!");
@@ -700,7 +700,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			return res;
 		}
 		res.add("Benigna poprosiła mnie, abym zabił czarne smoczysko i smoka arktycznego. Chciała również 3 skóry czarnego smoka oraz 3 skóry arktycznego smoka.");
-		if ("czarnesmoczysko".equals(questState)) {
+		if (questState.startsWith("czarnesmoczysko")) {
 			return res;
 		}
 		res.add("Zabiłem czarne smoczysko i smoka arktycznego oraz zaniosłem jej potrzebne materiały!");
@@ -717,7 +717,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			return res;
 		}
 		res.add("Benigna ponownie nie chciała, abym coś dla niej zabił. Jedynie co mam zrobić to przynieść 30 krwi smoków.");
-		if ("krewsmoka".equals(questState)) {
+		if (questState.startsWith("krewsmoka")) {
 			return res;
 		}
 		res.add("Zaniosłem potrzebną krew smoka Benignie!");
@@ -734,7 +734,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			return res;
 		}
 		res.add("Benigna poprosiła mnie, abym przyniósł dla niej trochę jedzenia, ponieważ zgłodniała. Mam przynieść: 100 mięsa, 40 chleba, 40 sera, 20 bukłaków z wodą.");
-		if ("glodna".equals(questState)) {
+		if (questState.startsWith("glodna")) {
 			return res;
 		}
 		res.add("Przyniosłem jedzenie dla Benigny tak jak mnie o to prosiła.");
@@ -753,7 +753,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		res.add("Benigna dała mi swoje ostatnie zadanie. Mam zabić resztę smoków, o które prosi oraz przynieść mi ich skóry. "
 		+ "Dokładnie mam zabić: dwugłowy czarny smok, dwugłowy czerwony smok, dwugłowy niebieski smok, czerwony smok, zielony smok oraz złoty smok."
 		+ "Mam przynieść: 10 skór czarnego, czerwonego, niebieskiego, zielonego oraz złotego smoka.");
-		if ("ostatnie".equals(questState)) {
+		if (questState.startsWith("ostatnie")) {
 			return res;
 		}
 		res.add("To było ostatnie zadanie Benigny. Oddała mi ostatnią pamiątkę po swej zmarłej babci, był to amulet - pazur niebieskiego smoka. Powiedziała mi również, że od teraz mogę korzystać z jej magicznej kuli, która leży na stole.");
@@ -775,7 +775,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Prośby Benigny";
+		return "Prośby Wiedźmy";
 	}
 
 	@Override
