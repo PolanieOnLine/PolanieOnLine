@@ -2,7 +2,13 @@ Changelog
 ---------
 1.22.1
 *świat*
+- Wiele NPC otrzymało swój opis
+- Wróciło zadanie u wedźmy Benigny ukrywającej się w chatce w podziemiach
 - Zmieniono dialog u Mieczysława
+- Zmieniono nazwy NPC:
+	- "Granny Alina" => "babcia Alina"
+	- "Xylona" => "Benigna"
+	- "Krawiec" => "rzemieślnik Wojciech"
 
 *testy*
 - Spolszczono nazwy przedmiotów / stworzeń w plikach testowych
