@@ -269,6 +269,7 @@ public class StendhalQuestSystem {
 		loadQuest(new DailyMuseumGdanskQuest());
 		loadQuest(new DzikiiWilki());
 		loadQuest(new Pizza());
+		loadQuest(new ProsbyWiedzmy());
 		loadQuest(new RosaBasementRats());
 		/**						**\
 		 *         INNE  	 	 *
