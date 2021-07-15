@@ -68,7 +68,7 @@ public class EdgardNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Edgard, który szybka lata.");
+		npc.setDescription("Oto Edgard, który szybko lata.");
 		npc.setEntityClass("npcedgard");
 		npc.setGender("M");
 		npc.setPosition(2, 42);
