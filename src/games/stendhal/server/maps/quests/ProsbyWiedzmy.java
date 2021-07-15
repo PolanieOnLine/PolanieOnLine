@@ -45,13 +45,13 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
-public class ProsbyXylony extends AbstractQuest {
+public class ProsbyWiedzmy extends AbstractQuest {
 	private static final String QUEST_SLOT = "prosby_wiedzmy";
 	private final SpeakerNPC npc = npcs.get("Benigna");
 
 	private static final int DELAY_IN_MINUTES = 60*1;
 
-	private static Logger logger = Logger.getLogger(ProsbyXylony.class);
+	private static Logger logger = Logger.getLogger(ProsbyWiedzmy.class);
 
 	private void step1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -616,8 +616,8 @@ public class ProsbyXylony extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Prośby Xylony",
-				"Xylona chce kontrolować wszystkie smoki swoim nowym amuletem. Czy to jest w ogólne możliwe?",
+				"Prośby Wiedźmy",
+				"Benigna chce kontrolować wszystkie smoki swoim nowym amuletem. Czy to jest w ogólne możliwe?",
 				false);
 
 		step1();
@@ -643,19 +643,19 @@ public class ProsbyXylony extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem Xylone, która mieszka w jaskini w swej chatce.");
+		res.add("Spotkałem Benigne, która mieszka w jaskini w swej chatce.");
 		if ("rejected".equals(questState)) {
-			res.add("Nie mam ochoty wykonywać próśb czarownicy - Xylony.");
+			res.add("Nie mam ochoty wykonywać próśb czarownicy - Benigny.");
 			return res;
 		}
-		res.add("Xylona jej pierwsza prośba była, abym zabił błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
+		res.add("Benigna jej pierwsza prośba była, abym zabił błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem błękitnego smoka i zaniosłem Xylonie jego skórę w dowód, że pokonałem go samodzielnie!");
+		res.add("Zabiłem błękitnego smoka i zaniosłem Benignie jego skórę w dowód, że pokonałem go samodzielnie!");
 		if (questState.startsWith("czas_składniki")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Mam ponownie odwiedzić Xylone, aby dała mi kolejne zlecenie. Hasło: składniki");
+				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: składniki");
 			} else {
 				res.add("Mam wrócić za " + DELAY_IN_MINUTES + " minut. Hasło: składniki");
 			}
@@ -665,14 +665,14 @@ public class ProsbyXylony extends AbstractQuest {
 		if ("dwuglowyzielonysmok?".equals(questState)) {
 			return res;
 		}
-		res.add("Xylona kazała mi zabić dwugłowego zielonego smoka i przynieść 5 skór zielonego smoka.");
+		res.add("Benigna kazała mi zabić dwugłowego zielonego smoka i przynieść 5 skór zielonego smoka.");
 		if ("dwuglowyzielonysmok".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem dwugłowego zielonego smoka i zaniosłem Xylonie potrzebne jej skóry!");
+		res.add("Zabiłem dwugłowego zielonego smoka i zaniosłem Benignie potrzebne jej skóry!");
 		if (questState.startsWith("czas_kiel")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Mam ponownie odwiedzić Xylone, aby dała mi kolejne zlecenie. Hasło: smok");
+				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: smok");
 			} else {
 				res.add("Mam wrócić za " + DELAY_IN_MINUTES + " minut. Hasło: smok");
 			}
@@ -682,14 +682,14 @@ public class ProsbyXylony extends AbstractQuest {
 		if ("kly?".equals(questState)) {
 			return res;
 		}
-		res.add("Xylona tym razem nie chciała abym coś dla niej zabił. Mam jej przynieść tylko 50 kłów smoka.");
+		res.add("Benigna tym razem nie chciała abym coś dla niej zabił. Mam jej przynieść tylko 50 kłów smoka.");
 		if ("kielsmoka".equals(questState)) {
 			return res;
 		}
-		res.add("Zaniosłem potrzebne Xylonie kły smoków!");
+		res.add("Zaniosłem potrzebne Benignie kły smoków!");
 		if (questState.startsWith("czas_czarnysmok")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Mam ponownie odwiedzić Xylone, aby dała mi kolejne zlecenie. Hasło: kieł smoka");
+				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: kieł smoka");
 			} else {
 				res.add("Mam wrócić za " + DELAY_IN_MINUTES + " minut. Hasło: kieł smoka");
 			}
@@ -699,14 +699,14 @@ public class ProsbyXylony extends AbstractQuest {
 		if ("dużesmoki?".equals(questState)) {
 			return res;
 		}
-		res.add("Xylona poprosiła mnie, abym zabił czarne smoczysko i smoka arktycznego. Chciała również 3 skóry czarnego smoka oraz 3 skóry arktycznego smoka.");
+		res.add("Benigna poprosiła mnie, abym zabił czarne smoczysko i smoka arktycznego. Chciała również 3 skóry czarnego smoka oraz 3 skóry arktycznego smoka.");
 		if ("czarnesmoczysko".equals(questState)) {
 			return res;
 		}
 		res.add("Zabiłem czarne smoczysko i smoka arktycznego oraz zaniosłem jej potrzebne materiały!");
 		if (questState.startsWith("czas_krewsmoka")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Mam ponownie odwiedzić Xylone, aby dała mi kolejne zlecenie. Hasło: duże smoki");
+				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: duże smoki");
 			} else {
 				res.add("Mam wrócić za " + DELAY_IN_MINUTES + " minut. Hasło: duże smoki");
 			}
@@ -716,14 +716,14 @@ public class ProsbyXylony extends AbstractQuest {
 		if ("krew?".equals(questState)) {
 			return res;
 		}
-		res.add("Xylona ponownie nie chciała, abym coś dla niej zabił. Jedynie co mam zrobić to przynieść 30 krwi smoków.");
+		res.add("Benigna ponownie nie chciała, abym coś dla niej zabił. Jedynie co mam zrobić to przynieść 30 krwi smoków.");
 		if ("krewsmoka".equals(questState)) {
 			return res;
 		}
-		res.add("Zaniosłem potrzebną krew smoka Xylonie!");
+		res.add("Zaniosłem potrzebną krew smoka Benignie!");
 		if (questState.startsWith("czas_glodna")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Mam ponownie odwiedzić Xylone, aby dała mi kolejne zlecenie. Hasło: krew");
+				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: krew");
 			} else {
 				res.add("Mam wrócić za " + DELAY_IN_MINUTES + " minut. Hasło: krew");
 			}
@@ -733,14 +733,14 @@ public class ProsbyXylony extends AbstractQuest {
 		if ("glodna?".equals(questState)) {
 			return res;
 		}
-		res.add("Xylona poprosiła mnie, abym przyniósł dla niej trochę jedzenia, ponieważ zgłodniała. Mam przynieść: 100 mięsa, 40 chleba, 40 sera, 20 bukłaków z wodą.");
+		res.add("Benigna poprosiła mnie, abym przyniósł dla niej trochę jedzenia, ponieważ zgłodniała. Mam przynieść: 100 mięsa, 40 chleba, 40 sera, 20 bukłaków z wodą.");
 		if ("glodna".equals(questState)) {
 			return res;
 		}
-		res.add("Przyniosłem jedzenie dla Xylony tak jak mnie o to prosiła.");
+		res.add("Przyniosłem jedzenie dla Benigny tak jak mnie o to prosiła.");
 		if (questState.startsWith("czas_ostatnie")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Mam ponownie odwiedzić Xylone, aby dała mi kolejne zlecenie. Hasło: jedzenie");
+				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: jedzenie");
 			} else {
 				res.add("Mam wrócić za " + DELAY_IN_MINUTES + " minut. Hasło: jedzenie");
 			}
@@ -750,13 +750,13 @@ public class ProsbyXylony extends AbstractQuest {
 		if ("ostatnie?".equals(questState)) {
 			return res;
 		}
-		res.add("Xylona dała mi swoje ostatnie zadanie. Mam zabić resztę smoków, o które prosi oraz przynieść mi ich skóry. "
+		res.add("Benigna dała mi swoje ostatnie zadanie. Mam zabić resztę smoków, o które prosi oraz przynieść mi ich skóry. "
 		+ "Dokładnie mam zabić: dwugłowy czarny smok, dwugłowy czerwony smok, dwugłowy niebieski smok, czerwony smok, zielony smok oraz złoty smok."
 		+ "Mam przynieść: 10 skór czarnego, czerwonego, niebieskiego, zielonego oraz złotego smoka.");
 		if ("ostatnie".equals(questState)) {
 			return res;
 		}
-		res.add("To było ostatnie zadanie Xylony. Oddała mi ostatnią pamiątkę po swej zmarłej babci, był to amulet - pazur niebieskiego smoka. Powiedziała mi również, że od teraz mogę korzystać z jej magicznej kuli, która leży na stole.");
+		res.add("To było ostatnie zadanie Benigny. Oddała mi ostatnią pamiątkę po swej zmarłej babci, był to amulet - pazur niebieskiego smoka. Powiedziała mi również, że od teraz mogę korzystać z jej magicznej kuli, która leży na stole.");
 		if (isCompleted(player)) {
 			return res;
 		}
@@ -775,7 +775,7 @@ public class ProsbyXylony extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Prośby Xylony";
+		return "Prośby Benigny";
 	}
 
 	@Override
