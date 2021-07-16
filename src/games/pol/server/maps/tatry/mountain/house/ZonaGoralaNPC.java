@@ -68,12 +68,13 @@ public class ZonaGoralaNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj. Co Ciebie sprowadza tutaj do nas?");
-				addJob("Praca? Może znajdzie się coś. Pójdź do mego męża, pewnie on będzie miał jakieś zadanie dla Ciebie... jest na zewnątrz.");
-				addHelp("Nie potrzebuję Twojej pomocy. Wyjdź na zewnątrz i spotaj się z moim mężem, on pewnie będzie miał jakieś ciekawe zadanie dla Ciebie.");
+				addJob("Praca? Podejdź do mojego męża, zapewne coś Tobie zleci... znajduje się na zewnątrz.");
+				addHelp("Nie potrzebuję Twojej pomocy. Wyjdź na zewnątrz i spotkaj się z moim mężem, on pewnie będzie miał jakieś ciekawe zadanie dla Ciebie.");
 				addGoodbye("Jak będziesz czegoś potrzebował to wróć.");
 			}
 		};
 
+		npc.setDescription("Oto gaździna Bożena. Opiekuje się rodzinnym domkiem na wzgórzu.");
 		npc.setOutfit(4, 46, 3, 2, 1, null, 22, null, null);
 		npc.setGender("F");
 		npc.setPosition(16, 15);
