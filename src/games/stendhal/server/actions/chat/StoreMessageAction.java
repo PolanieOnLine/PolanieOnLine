@@ -102,7 +102,7 @@ public class StoreMessageAction implements ActionListener, TurnListener {
 		}
 
 		if (!characterExists) {
-			sourceplayer.sendPrivateText(NotificationType.ERROR, "postman powiedział tobie: Przykro mi, ale nie mogę znaleść wojownika " + target + " z związku z tym wiadomość nie może zostać przyjęta.");
+			sourceplayer.sendPrivateText(NotificationType.ERROR, "postman powiedział tobie: Przykro mi, ale nie mogę znaleźć wojownika " + target + " z związku z tym wiadomość nie może zostać przyjęta.");
 			return;
 		}
 

@@ -11,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.outside;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Builds a NPC outside Magician house in Ados  (name:Venethiel) who is the pupil of Magician Haizen
@@ -26,7 +26,6 @@ import java.util.Map;
  * @author geomac
  */
 public class MagicianHouseGreeterNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		createMagicianHouseGreeterNPC(zone);
@@ -34,7 +33,6 @@ public class MagicianHouseGreeterNPC implements ZoneConfigurator {
 
 	private void createMagicianHouseGreeterNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Venethiel") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć. Jestem podekscytowana magicznym #labiryntem!");
@@ -58,9 +56,9 @@ public class MagicianHouseGreeterNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Venethiel. Chce się nauczyć magii.");
 		npc.setEntityClass("magicianhousegreeternpc");
+		npc.setGender("F");
 		npc.setPosition(70, 52);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

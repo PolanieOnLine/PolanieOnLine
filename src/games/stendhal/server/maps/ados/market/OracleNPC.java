@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,30 +29,22 @@ import games.stendhal.server.entity.npc.action.SayUnstartedQuestDescriptionFromN
 import games.stendhal.server.entity.npc.condition.TriggerIsNPCNameForUnstartedQuestCondition;
 import games.stendhal.server.maps.Region;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * An oracle who lets players know how they can help others.
  */
 public class OracleNPC implements ZoneConfigurator {
-
 	/**
 	 * region that this NPC can give information about
 	 */
 	private final List<String> regions = Arrays.asList(Region.ADOS_SURROUNDS, Region.ADOS_CITY);
 
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Calla") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Co za moc małego kwiatka! Jaką masz moc? Obywatele Ados szukają #pomocy...");
@@ -114,11 +111,12 @@ public class OracleNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		npc.setPosition(62, 86);
-		npc.setDescription("Oto Calla. Czuć od niej liliami.");
+
+		npc.setDescription("Oto Calla. Pachnie kwiatami lilii.");
 		npc.setEntityClass("oracle2npc");
+		npc.setGender("F");
+		npc.setPosition(62, 86);
 		npc.setShadowStyle("floating");
 		zone.add(npc);
 	}
-
 }

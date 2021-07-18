@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -33,7 +32,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
  * @author hendrik
  */
 public class BakerNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -51,32 +49,20 @@ public class BakerNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				// to the well
 				nodes.add(new Node(15, 3));
-				// to a barrel
 				nodes.add(new Node(15, 8));
-				// to the baguette on the table
 				nodes.add(new Node(13, 9));
-				// around the table
 				nodes.add(new Node(13, 10));
 				nodes.add(new Node(10, 10));
-				// to the sink
 				nodes.add(new Node(10, 12));
-				// to the pizza/cake/whatever
 				nodes.add(new Node(7, 12));
 				nodes.add(new Node(7, 10));
-				// to the pot
 				nodes.add(new Node(3, 10));
-				// towards the oven
 				nodes.add(new Node(3, 4));
 				nodes.add(new Node(5, 4));
-				// to the oven
 				nodes.add(new Node(5, 3));
-				// one step back
 				nodes.add(new Node(5, 4));
-				// towards the well
 				nodes.add(new Node(15, 4));
-
 				setPath(new FixedPath(nodes, true));
 			}
 
@@ -85,9 +71,9 @@ public class BakerNPC implements ZoneConfigurator {
 				// addGreeting("Hi, most of the people are out of town at the moment.");
 				addJob("Jestem lokalnym piekarzem. Mimo iż dostajemy większość zapasów z Semos to i tak jest sporo pracy do zrobienia.");
 				addReply(Arrays.asList("mąka", "mięso", "marchew"),
-               "W Ados brakuje zapasów. Dostajemy większość jedzenia z Semos, które jest na zachód stąd.");
-				addReply(Arrays.asList("button mushroom","pieczarka"),
-					    "Doszły nas słuchy, że w kuchni brakuje żywności. Postanowiliśmy powiększyć zapasy grzybów. Teraz znajdziesz ich większą ilość w lasach. ");
+						"W Ados brakuje zapasów. Dostajemy większość jedzenia z Semos, które jest na zachód stąd.");
+				addReply(Arrays.asList("button mushroom", "pieczarka"),
+						"Doszły nas słuchy, że w kuchni brakuje żywności. Postanowiliśmy powiększyć zapasy grzybów. Teraz znajdziesz ich większą ilość w lasach. ");
 				addHelp("Jeżeli posiadasz mnóstwo mięsa lub sera to możesz sprzedać Siandrze w barze Ados.");
 				addGoodbye();
 
@@ -107,12 +93,11 @@ public class BakerNPC implements ZoneConfigurator {
 			}
 		};
 
+		baker.setDescription("Oto Arlindo, który jest oficjalnym piekarzem w Ados. Znany jest z przepysznego placka");
 		baker.setEntityClass("bakernpc");
+		baker.setGender("M");
 		baker.setDirection(Direction.DOWN);
 		baker.setPosition(15, 3);
-		baker.initHP(100);
-		baker.setDescription("Arlindo jest oficjalnym piekarzem w Ados. Znany jest z przepysznego placka");
 		zone.add(baker);
 	}
-
 }

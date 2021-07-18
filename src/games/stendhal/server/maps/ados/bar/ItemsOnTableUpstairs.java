@@ -31,7 +31,7 @@ public class ItemsOnTableUpstairs implements ZoneConfigurator {
 		// grower for an empty slim bottle (1h)
 		final PassiveEntityRespawnPoint bottleGrower1 = new PassiveEntityRespawnPoint("wąska butelka", 12000);
 		bottleGrower1.setPosition(7, 4);
-		bottleGrower1.setDescription("Wygląda na miejsce, gdzie można znaleść butelkę.");
+		bottleGrower1.setDescription("Wygląda na miejsce, gdzie można znaleźć butelkę.");
 		zone.add(bottleGrower1);
 
 		bottleGrower1.setToFullGrowth();
@@ -39,7 +39,7 @@ public class ItemsOnTableUpstairs implements ZoneConfigurator {
 		// grower for an empty slim bottle (1h)
 		final PassiveEntityRespawnPoint bottleGrower2 = new PassiveEntityRespawnPoint("wąska butelka", 12000);
 		bottleGrower2.setPosition(8, 25);
-		bottleGrower2.setDescription("Wygląda na miejsce, gdzie można znaleść butelkę.");
+		bottleGrower2.setDescription("Wygląda na miejsce, gdzie można znaleźć butelkę.");
 		zone.add(bottleGrower2);
 
 		bottleGrower2.setToFullGrowth();
@@ -47,7 +47,7 @@ public class ItemsOnTableUpstairs implements ZoneConfigurator {
 		// grower for an empty eared bottle (1h)
 		final PassiveEntityRespawnPoint bottleGrower3 = new PassiveEntityRespawnPoint("butla czwórniaczka", 12000);
 		bottleGrower3.setPosition(19, 9);
-		bottleGrower3.setDescription("Wygląda na miejsce, gdzie można znaleść butelkę.");
+		bottleGrower3.setDescription("Wygląda na miejsce, gdzie można znaleźć butelkę.");
 		zone.add(bottleGrower3);
 
 		bottleGrower3.setToFullGrowth();

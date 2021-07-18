@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.citygardens;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -26,20 +28,12 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 /**
  * Builds an ice cream seller npc.
  *
  * @author kymara
  */
 public class IceCreamSellerNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -51,18 +45,8 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-	//
-	// IceCreamSellerNPC
-	//
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Sam") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć. Czy mogę #zaoferować Tobie porcję lodów?");
@@ -70,7 +54,7 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 				addHelp("Mogę #zaoferować odświeżającą porcję lodów.");
 				addQuest("Prowadzę proste życie. Nie potrzebuję wiele do szczęścia.");
 
-			 add(ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 					ConversationPhrases.YES_MESSAGES,
 					null,
 					ConversationStates.ATTENDING,
@@ -86,7 +70,6 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 				offers.put("lody", 30);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offers));
 				addGoodbye("Do widzenia. Ciesz się dniem!");
-
 			}
 
 			@Override
@@ -95,10 +78,10 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Sam, jego praca polega na uszczęśliwieniu dzieci. Sprzedaje lody. Jupi ja!");
 		npc.setEntityClass("icecreamsellernpc");
+		npc.setGender("M");
 		npc.setPosition(73, 54);
-		npc.initHP(100);
-		npc.setDescription("Sama praca polega na uszczęśliwieniu dzieci. Sprzedaje lody. Jupi ja! ");
 		zone.add(npc);
 	}
 }

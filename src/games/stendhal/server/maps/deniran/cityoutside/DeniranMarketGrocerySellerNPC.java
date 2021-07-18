@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -34,7 +33,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
  *
  */
 public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final String[] yells = {
@@ -48,7 +46,6 @@ public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		//Ambrogio is a temporary name
 		final SpeakerNPC npc = new SpeakerNPC("Ambrogio") {
-
 			@Override
 			public void createDialog() {
 				addGreeting(
@@ -104,9 +101,10 @@ public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 		// Finalize Deniran Market Seller NPC (Grocery)
 		//npc.setEntityClass("fatsellernpc");
 		npc.setEntityClass("deniran_marketsellernpc1grocery");
+		npc.setDescription("Oto Ambrogio, zapracowany sprzedawca na rynku.");
+		npc.setGender("M");
 		npc.setPosition(26, 122);
 		npc.setCollisionAction(CollisionAction.REVERSE);
-		npc.setDescription("Oto Ambrogio, zapracowany sprzedawca na rynku...");
 		zone.add(npc);
 
 		return npc;

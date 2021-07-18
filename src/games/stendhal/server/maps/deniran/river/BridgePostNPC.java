@@ -23,10 +23,8 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * A soldier guarding the bridge
  */
 public class BridgePostNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -46,10 +44,12 @@ public class BridgePostNPC implements ZoneConfigurator {
 				setDirection(Direction.UP);
 			}
 		};
+
+		npc.setDescription("Oto żołnierz strzegącego mostu.");
+		npc.setEntityClass("deniran_stormtrooper");
+		npc.setGender("M");
 		npc.setDirection(Direction.UP);
 		npc.setPosition(65, 25);
-		npc.setEntityClass("deniran_stormtrooper");
-		npc.setDescription("Oto żołnierz strzegącego mostu.");
 		zone.add(npc);
 	}
 }

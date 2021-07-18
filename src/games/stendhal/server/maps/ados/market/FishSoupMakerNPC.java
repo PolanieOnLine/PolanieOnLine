@@ -11,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,10 +23,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a npc in Ados (name:Florence Boullabaisse) who is a fish soup maker on the market
  *
@@ -30,7 +30,6 @@ import java.util.Map;
  *
  */
 public class FishSoupMakerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -38,7 +37,6 @@ public class FishSoupMakerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Florence Boullabaisse") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -69,10 +67,10 @@ public class FishSoupMakerNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Florence Boullabaisse. Jest doskonałym szefem od zup.");
 		npc.setEntityClass("fishsoupmakernpc");
+		npc.setGender("M");
 		npc.setPosition(63, 14);
 		npc.setCollisionAction(CollisionAction.STOP);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

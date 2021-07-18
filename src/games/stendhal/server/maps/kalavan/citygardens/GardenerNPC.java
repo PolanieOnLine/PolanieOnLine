@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -45,13 +44,8 @@ import games.stendhal.server.util.TimeUtil;
  * @author kymara
  */
 public class GardenerNPC implements ZoneConfigurator {
-
 	private static final String QUEST_SLOT = "sue_swap_kalavan_city_scroll";
     private static final Integer MAX_LUNCHES = 7;
-
-	//
-	// ZoneConfigurator
-	//
 
 	/**
 	 * Configure a zone.
@@ -62,14 +56,12 @@ public class GardenerNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Sue") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -189,6 +181,7 @@ public class GardenerNPC implements ZoneConfigurator {
 						}
 					}
 				}
+
 				addReply(ConversationPhrases.YES_MESSAGES, "Bardzo ciepło...");
 				addReply(ConversationPhrases.NO_MESSAGES, "Lepszy niż deszczowy!");
 				addJob("Jestem ogrodnikiem. Mam nadzieję, że podobają Ci się rabatki.");
@@ -220,10 +213,10 @@ public class GardenerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("gardenernpc");
-		npc.setPosition(100, 123);
-		npc.initHP(100);
 		npc.setDescription("Oto Sue. Jej kwiaty są przepiękne. Ona naprawdę ma do tego rękę.");
+		npc.setEntityClass("gardenernpc");
+		npc.setGender("F");
+		npc.setPosition(100, 123);
 		zone.add(npc);
 	}
 

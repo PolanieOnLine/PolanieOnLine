@@ -23,7 +23,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class KingNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -44,9 +43,11 @@ public class KingNPC implements ZoneConfigurator {
 				setDirection(Direction.DOWN);
 			}
 		};
-		npc.setPosition(14,7);
-		npc.setEntityClass("deniran_king");
+
 		npc.setDescription("Oto król Deniran, Edward.");
+		npc.setEntityClass("deniran_king");
+		npc.setGender("M");
+		npc.setPosition(14,7);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 		

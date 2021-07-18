@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,18 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.holiday_area;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Map;
-
 public class WifeNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -36,21 +33,16 @@ public class WifeNPC implements ZoneConfigurator  {
 			}
 
 			@Override
-			protected void createPath() {
-				// doesn't move
-				setPath(null);
-	}
-
-			@Override
 			public void createDialog() {
 				addGreeting("Cześć!");
 				addGoodbye("Do widzenia!");
 			}
-
 		};
-		npc.setPosition(28, 44);
+
+		npc.setDescription ("Oto Jane, który jest na urlopie ze swoim mężem Johnem.");
 		npc.setEntityClass("swimmer6npc");
-		npc.setDescription ("Jane jest na urlopie ze swoim mężem Johnem.");
+		npc.setGender("F");
+		npc.setPosition(28, 44);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}

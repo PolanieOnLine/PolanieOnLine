@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.city;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,11 +25,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * In Kirdneh open market .
@@ -46,7 +45,6 @@ public class KirdnehFishyMarketNPC implements ZoneConfigurator {
 
 	private void buildfishyguy(final StendhalRPZone zone) {
 		final SpeakerNPC fishyguy = new SpeakerNPC("Fishmonger") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -57,7 +55,6 @@ public class KirdnehFishyMarketNPC implements ZoneConfigurator {
 				nodes.add(new Node(68, 87));
 				nodes.add(new Node(68, 89));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -72,14 +69,13 @@ public class KirdnehFishyMarketNPC implements ZoneConfigurator {
 				addOffer("Sprawdź na tablicy ile dublonów mogę dać.");
 				addQuest("Nie masz towaru, którego ja potrzebuję.");
 				addGoodbye("Arrgh, zostań pójdę z tobą!");
-
 			}
 		};
 
-		fishyguy.setEntityClass("sailor1npc");
-		fishyguy.setPosition(63, 89);
-		fishyguy.initHP(100);
 		fishyguy.setDescription("Oto Fishmonger. Śmierdzi rybami, które skupuje.");
+		fishyguy.setEntityClass("sailor1npc");
+		fishyguy.setGender("M");
+		fishyguy.setPosition(63, 89);
 		zone.add(fishyguy);
 	}
 }

@@ -19,11 +19,9 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SilentNPC;
 
-
 public class DeniranArmy implements ZoneConfigurator  {
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPCs(zone);
 	}
 
@@ -35,6 +33,7 @@ public class DeniranArmy implements ZoneConfigurator  {
 				//npc.setIdea("defence");
 				npc.setEntityClass("deniran_stormtrooper");
 				npc.setDescription("Oto armia żołnierzy Deniran.");
+				npc.setGender("M");
 				npc.setPosition(17+i, 83+j);
 				npc.setDirection(Direction.DOWN);
 				npc.setName("Żołnierze Deniran");
@@ -46,6 +45,7 @@ public class DeniranArmy implements ZoneConfigurator  {
 				//npc.setIdea("defence");
 				npc.setEntityClass("deniran_stormtrooper");
 				npc.setDescription("Oto armia żołnierzy Deniran.");
+				npc.setGender("M");
 				npc.setPosition(83+i, 83+j);
 				npc.setDirection(Direction.DOWN);
 				npc.setName("Żołnierze Deniran");

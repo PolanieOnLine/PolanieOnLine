@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -21,10 +24,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Creates the NPCs and portals in Ados City.
@@ -45,7 +44,6 @@ public class WeaponryTraderNPC implements ZoneConfigurator {
 
 	private void buildAlexander(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Alexander") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -62,7 +60,6 @@ public class WeaponryTraderNPC implements ZoneConfigurator {
                 nodes.add(new Node(44, 32));
                 nodes.add(new Node(52, 32));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -84,12 +81,11 @@ public class WeaponryTraderNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Alexander. Zwykły handlarz brońmi, nikomu nie ufa...");
 		npc.setEntityClass("weaponrytradernpc");
+		npc.setGender("M");
 		npc.setPosition(52, 34);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
-		npc.setSpeed(0.1);
-		npc.setDescription("Alexander jest handlarzem broni. Nikomu nie ufa...");
 		zone.add(npc);
 	}
 }

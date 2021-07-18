@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -20,8 +22,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Map;
 
 /**
  * Mia works in the Botanical Gardens cafe.
@@ -33,14 +33,12 @@ public class CafeSellerNPC implements ZoneConfigurator {
 	 * region that this NPC can give information about
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Mia") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Witamy w naszej kawiarni w Ogrodzie Botanicznym Ados!");
@@ -61,15 +59,12 @@ public class CafeSellerNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
 		};
-		npc.setPosition(69, 114);
-		npc.setDescription("Oto Mia gotowa obsłużyć klientów z pięknym uśmiechem.");
+
+		npc.setDescription("Oto Mia. Gotowa obsłużyć klientów z pięknym uśmiechem.");
 		npc.setEntityClass("cafesellernpc");
+		npc.setGender("F");
+		npc.setPosition(69, 114);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}

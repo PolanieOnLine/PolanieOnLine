@@ -78,7 +78,7 @@ public class MinerNPC implements ZoneConfigurator {
                 new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addQuest("Przykro mi, ale jak widzisz jestem pokryty pyłem i wciąż nie skończyłem swojej pracy. Nie mogę teraz myśleć o zadaniach dla ciebie, ale możesz mi pomóc przynosząc trochę węgla.");
 				addJob("Jestem górnikiem. Pracuję ciężko w kopalni. Jeżeli pójdziesz w głąb ziemi to będzie coraz cieplej i będzie więcej pyłu. Jak widzisz ciężko jest tutaj coś zobaczyć w tym słabym świetle...");
-				addReply(Arrays.asList("map", "mapę", "mapa"), "To jest mapa Semos Mine, którą sam narysowałem jakiś czas temu. Może ci pomóc znaleść drogę, ale uważaj nie wszystko jest dokładne tak jak powinno!",
+				addReply(Arrays.asList("map", "mapę", "mapa"), "To jest mapa Semos Mine, którą sam narysowałem jakiś czas temu. Może ci pomóc znaleźć drogę, ale uważaj nie wszystko jest dokładne tak jak powinno!",
 						new ExamineChatAction("map-semos-mine.png", "Semos Mine", "Rough map of Semos Mine"));
 				addGoodbye("Miło było cię zobaczyć. Powodzenia!");
 

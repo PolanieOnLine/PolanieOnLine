@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -36,7 +35,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
 public class AnimalKeeperNPC implements ZoneConfigurator {
-
 	private static final String ZONE_NAME = "int_ados_pet_sanctuary";
 
 	/**
@@ -52,7 +50,6 @@ public class AnimalKeeperNPC implements ZoneConfigurator {
 
 	private void buildZooArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Katinka") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -128,17 +125,15 @@ public class AnimalKeeperNPC implements ZoneConfigurator {
 					null);
 
 				addGoodbye("Do widzenia!");
-				
-			}
-			// remaining behaviour is defined in maps.quests.ZooFood.
+			}// remaining behaviour is defined in maps.quests.ZooFood.
 		};
 
+		npc.setDescription("Oto Katinka. Opiekuje się zwierzątkami w tym Zoo.");
 		npc.setEntityClass("woman_007_npc");
+		npc.setGender("F");
 		npc.setPosition(41, 40);
 		//npc.setDirection(Direction.DOWN);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.initHP(100);
-		npc.setDescription("Oto Katinka. Opiekuje się zwierzętami w tym Zoo.");
 		zone.add(npc);
 	}
 }

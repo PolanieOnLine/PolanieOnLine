@@ -42,16 +42,12 @@ import games.stendhal.server.events.ShowOutfitListEvent;
 import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.util.TimeUtil;
 
-
 public class OutfitLenderNPC implements ZoneConfigurator {
-
 	private static final Logger logger = Logger.getLogger(OutfitLenderNPC.class);
 
 	private SpeakerNPC lender;
-
 	// how long player can wear outfit (10 hours)
 	private static final int endurance = 10 * MathHelper.MINUTES_IN_ONE_HOUR;
-
 
 	private enum OutfitType {
 		// set hair to -1 to not be drawn
@@ -70,7 +66,6 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 			return outfit_str;
 		}
 	};
-
 
 	private class DeniranOutfit {
 		private final String label;
@@ -100,7 +95,6 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		}
 	}
 
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		initNPC(zone);
@@ -113,7 +107,8 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		lender.setOutfitColor("skin", SkinColor.LIGHT);
 		lender.setOutfitColor("dress", 0x008080); // teal
 		lender.setOutfitColor("hat", Color.BLUE);
-		lender.setDescription("Oto " + lender.getName() + ", bardzo modny młody człowiek.");
+		lender.setDescription("Oto " + lender.getName() + ", bardzo modny, młody człowiek.");
+		lender.setGender("M");
 
 		lender.addGreeting();
 		lender.addGoodbye();

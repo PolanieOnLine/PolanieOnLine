@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.cocktail_bar;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,17 +22,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Cocktail Bar at the Athor island beach (Inside / Level 0).
  *
  * @author kymara
  */
 public class BarmanNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,13 +41,6 @@ public class BarmanNPC implements ZoneConfigurator {
 
 	private void buildBar(final StendhalRPZone zone) {
 		final SpeakerNPC barman = new SpeakerNPC("Pedro") {
-
-			@Override
-			protected void createPath() {
-				// doesn't move
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addJob("Mogę przyrządzić różne koktajle! Powiedz tylko #zrób.");
@@ -71,11 +62,11 @@ public class BarmanNPC implements ZoneConfigurator {
 			}
 		};
 
+		barman.setDescription("Oto Pedro, barman. Może zmiksuje przepyszny koktajl dla ciebie.");
 		barman.setEntityClass("barmannpc");
+		barman.setGender("M");
 		barman.setPosition(9, 5);
 		barman.setDirection(Direction.DOWN);
-		barman.initHP(100);
-		barman.setDescription("Oto Pedro, barman. Może zmiksuje przepyszny koktajl dla ciebie.");
 		zone.add(barman);
 	}
 }

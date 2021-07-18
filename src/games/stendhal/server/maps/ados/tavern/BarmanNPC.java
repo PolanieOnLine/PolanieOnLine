@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.tavern;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -20,18 +24,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Ados Tavern (Inside / Level 0).
  *
  * @author kymara
  */
 public class BarmanNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,7 +43,6 @@ public class BarmanNPC implements ZoneConfigurator {
 
 	private void buildTavern(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final SpeakerNPC barman = new SpeakerNPC("Dale") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -65,7 +62,7 @@ public class BarmanNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Hej przystojniaku ...");
+				addGreeting("Cześć, wyglądasz świetnie...");
 				addJob("Uszczęśliwiam panie. Jak się masz?");
 				addQuest("Usiądź, zrelaksuj się i zobacz przedstawienie.");
 				addHelp("Ten pokój jest dla kobiet. Mężczyźni siedzą w innym barze. Coralia obsługuje panów.");
@@ -74,14 +71,14 @@ public class BarmanNPC implements ZoneConfigurator {
 				offerings.put("napój z oliwką", 100);
 				offerings.put("tabliczka czekolady", 100);
 				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
-				addGoodbye("Na razie kociaczki.");
+				addGoodbye("Na zobaczenia kociaczki.");
 			}
 		};
 
+		barman.setDescription("Oto Dale, jest barmanem. Spytaj, może ma coś ciekawego do zaoferowania.");
 		barman.setEntityClass("barman3npc");
+		barman.setGender("M");
 		barman.setPosition(27, 2);
-		barman.initHP(100);
-		barman.setDescription("Dale jest barmanem. Spytaj, może ma coś ciekawego do zaoferowania.");
 		zone.add(barman);
 	}
 }

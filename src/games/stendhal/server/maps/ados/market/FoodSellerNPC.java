@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -22,11 +26,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Food and drink seller,  at Ados Market
@@ -43,7 +42,6 @@ public class FoodSellerNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final SpeakerNPC npc = new SpeakerNPC("Adena") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -62,10 +60,10 @@ public class FoodSellerNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Adena. Przyjaźnie uśmiechnięta, a także ciężko pracująca.");
 		npc.setEntityClass("marketsellernpc");
-		npc.setDescription("Adena przyjaźnie uśmiechnięta,a także ciężko pracująca.");
+		npc.setGender("F");
 		npc.setPosition(31, 8);
-		npc.initHP(100);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}

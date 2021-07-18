@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.weaponshop;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,10 +24,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds an NPC to buy previously un bought weapons.
@@ -47,7 +46,6 @@ public class BuyerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Yorphin Baos") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -72,10 +70,10 @@ public class BuyerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Yorphin Baos właściciel sklepu.");
+		npc.setDescription("Oto Yorphin Baos, właściciel sklepu.");
 		npc.setEntityClass("weaponsellernpc");
+		npc.setGender("M");
 		npc.setPosition(4, 5);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

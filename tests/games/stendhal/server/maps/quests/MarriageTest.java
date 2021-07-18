@@ -340,7 +340,7 @@ public class MarriageTest {
 		player.removeQuest("spouse");
 		player2.removeQuest("spouse");
 
-		npc = SingletonRepository.getNPCList().get("Priest");
+		npc = SingletonRepository.getNPCList().get("Ksiądz");
 		en = npc.getEngine();
 		en.step(player, "hi");
 		assertEquals("Welcome to the church!", getReply(npc));

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,11 +25,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a Greeter NPC.
@@ -48,7 +47,6 @@ public class GreeterNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Orchiwald") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -73,7 +71,6 @@ public class GreeterNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("kamienie", "stones"), "Posiadają właściwości mistyczne. Lubimy być w pobliżu nich, gdy zmienia się pora roku.");
 				addHelp("Mógłbym sprzedać Ci zaczarowane zwoje, abyś mógł wrócić do Fado. Mam dojście do tanich zwojów.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("fadoscrolls")) {
-
 					@Override
 					public int getUnitPrice(final String item) {
 						// Player gets 20 % rebate
@@ -85,10 +82,10 @@ public class GreeterNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Orchiwald albino elf.");
+		npc.setDescription("Oto Orchiwald. Strasznie wyblakły elf.");
 		npc.setEntityClass("albinoelf2npc");
+		npc.setGender("M");
 		npc.setPosition(3, 12);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

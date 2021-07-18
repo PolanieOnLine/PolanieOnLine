@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -28,13 +27,9 @@ import games.stendhal.server.util.Area;
  * @author hendrik
  */
 public class DeathmatchInfo {
-
 	private final DeathmatchArea arena;
-
 	private final Spot entranceSpot;
-
 	private final StendhalRPZone zone;
-
 	private Map<String, Integer> helpers;
 
 	/**
@@ -46,14 +41,12 @@ public class DeathmatchInfo {
 	 *            zone
 	 * @param entrance the spot where the players stands before entering DM.
 	 */
-	public DeathmatchInfo(final Area arena, final StendhalRPZone zone,
-			final Spot entrance) {
+	public DeathmatchInfo(final Area arena, final StendhalRPZone zone, final Spot entrance) {
 		super();
 		this.arena = new DeathmatchArea(arena);
 		this.zone = zone;
 		this.entranceSpot = entrance;
 	}
-
 
 	/**
 	 * Gets the arena.

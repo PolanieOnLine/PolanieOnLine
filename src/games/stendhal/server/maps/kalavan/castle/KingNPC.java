@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.castle;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds the king in Kalavan castle.
@@ -28,10 +27,6 @@ import java.util.Map;
  * @author kymara
  */
 public class KingNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,14 +36,12 @@ public class KingNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC kingNPC = new SpeakerNPC("King Cozart") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -64,10 +57,10 @@ public class KingNPC implements ZoneConfigurator {
 			}
 		};
 
-		kingNPC.setEntityClass("kingcozartnpc");
-		kingNPC.setPosition(40, 22);
-		kingNPC.initHP(100);
 		kingNPC.setDescription("Oto King Cozart, król Kalavan i jego obywateli.");
+		kingNPC.setEntityClass("kingcozartnpc");
+		kingNPC.setGender("M");
+		kingNPC.setPosition(40, 22);
 		zone.add(kingNPC);
 	}
 }

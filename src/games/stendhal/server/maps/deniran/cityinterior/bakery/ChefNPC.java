@@ -31,7 +31,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @see games.stendhal.server.maps.quests.PizzaDelivery
  */
 public class ChefNPC implements ZoneConfigurator  {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -39,7 +38,6 @@ public class ChefNPC implements ZoneConfigurator  {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Patrick") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -73,22 +71,24 @@ public class ChefNPC implements ZoneConfigurator  {
 				/*
 				// Leander makes sandwiches if you bring him bread, cheese, and ham.
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("bread", 1);
-				requiredResources.put("cheese", 2);
-				requiredResources.put("ham", 1);
+				requiredResources.put("chleb", 1);
+				requiredResources.put("ser", 2);
+				requiredResources.put("szynka", 1);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"leander_make_sandwiches", "make", "sandwich",
+						"leander_make_sandwiches", "make", "kanapka",
 						requiredResources, 3 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				"Hallo! Glad to see you in my kitchen where I make #pizza and #sandwiches.");
+				"Cześć! Miło cię widzieć w mojej kuchni, gdzie robię #pizzę i #kanapki.");
 				*/
+			}
+		};
 
-			}};
-			npc.setPosition(13, 3);
-			npc.setEntityClass("chefnpc");
-			npc.setDescription("Oto Patrick. Nosi uroczy kapelusz szefa kuchni.");
-			zone.add(npc);
+		npc.setDescription("Oto Patrick. Nosi uroczy kapelusz szefa kuchni.");
+		npc.setEntityClass("chefnpc");
+		npc.setGender("M");
+		npc.setPosition(13, 3);
+		zone.add(npc);
 	}
 }

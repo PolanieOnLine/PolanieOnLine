@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.ship;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -22,22 +24,15 @@ import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /** Factory for cargo worker on Athor Ferry. */
-
 public class CargoWorkerNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Klaas") {
-
 			/*@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -76,28 +71,27 @@ public class CargoWorkerNPC implements ZoneConfigurator  {
 			}
 		};
 
-			new AthorFerry.FerryListener() {
+		new AthorFerry.FerryListener() {
+			@Override
+			public void onNewFerryState(final Status status) {
+				switch (status) {
+				case ANCHORED_AT_MAINLAND:
+				case ANCHORED_AT_ISLAND:
+					npc.say("UWAGA: Dopłyneliśmy!");
+					break;
 
-
-				@Override
-				public void onNewFerryState(final Status status) {
-					switch (status) {
-					case ANCHORED_AT_MAINLAND:
-					case ANCHORED_AT_ISLAND:
-						npc.say("UWAGA: Dopłyneliśmy!");
-						break;
-
-					default:
-						npc.say("UWAGA: Wypływamy!");
-						break;
-					}
+				default:
+					npc.say("UWAGA: Wypływamy!");
+					break;
 				}
-			};
+			}
+		};
 
-			npc.setPosition(25, 38);
-			npc.setEntityClass("seller2npc");
-			npc.setDescription ("Oto Klaas, który zajmuje się ładunkiem. Nie cierpi szczurów!");
-			npc.setDirection(Direction.DOWN);
-			zone.add(npc);
+		npc.setDescription ("Oto Klaas, który zajmuje się ładunkiem. Nie cierpi szczurów!");
+		npc.setEntityClass("seller2npc");
+		npc.setGender("M");
+		npc.setPosition(25, 38);
+		npc.setDirection(Direction.DOWN);
+		zone.add(npc);
 	}
 }

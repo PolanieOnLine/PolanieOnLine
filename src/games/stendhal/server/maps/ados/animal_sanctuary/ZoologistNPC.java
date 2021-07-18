@@ -38,15 +38,11 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
  * @author AntumDeluge
  */
 public class ZoologistNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure the NPC in a zone.
 	 */
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
-		/**
-		 * Create & configure the NPC instance.
-		 */
 		final SpeakerNPC npc = new SpeakerNPC("Zoey") {
 			/**
 			 * Configure how NPC will converse with player.
@@ -82,10 +78,11 @@ public class ZoologistNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto " + npc.getName() + ", oddany zoolog");
 		npc.setEntityClass("zoologistnpc");
+		npc.setGender("F");
 		npc.setPosition(27, 3);
 		npc.setDirection(Direction.UP);
-		npc.setDescription("Oto " + npc.getName() + ", oddany zoolog");
 		zone.add(npc);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.hauntedhouse;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a female Ghost NPC.
@@ -28,10 +27,6 @@ import java.util.Map;
  * @author kymara
  */
 public class WomanGhostNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -42,6 +37,7 @@ public class WomanGhostNPC implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
+
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC woman = new SpeakerNPC("Carena") {
 			@Override
@@ -69,13 +65,13 @@ public class WomanGhostNPC implements ZoneConfigurator {
 				//addGreeting("Wooouhhhhhh!");
 				addJob("Nic pożytecznego nie mogłam zrobić na tym świecie. Teraz nawiedzam ten dom.");
 				addHelp("Tutaj jest ostrzeżenie: Jeżeli zginiesz to staniesz się duchem jak ja częściowo widocznym i niematerialnym. Jeżeli znajdziesz swoją drogę wyjścia z afterlife to narodzisz się na nowo.");
-				addGoodbye("Żegnaj");
+				addGoodbye("Żegnaj.");
 				// remaining behaviour defined in games.stendhal.server.maps.quests.FindGhosts
 			}
 		};
+
 		woman.setDescription("Oto duch kobiety, która wygląda na zmartwioną.");
 		woman.setResistance(0);
-
 		woman.setEntityClass("woman_011_npc");
 		// She is a ghost so she is see through
 		woman.setVisibility(40);

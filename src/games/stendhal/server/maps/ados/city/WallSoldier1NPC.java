@@ -45,7 +45,6 @@ public class WallSoldier1NPC implements ZoneConfigurator {
 	 * @param zone StendhalRPZone
 	 */
 	private void buildAdosWallSoldier(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Helius") {
 
 			@Override
@@ -67,10 +66,10 @@ public class WallSoldier1NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(26, 73);
-		npc.initHP(100);
 		npc.setDescription("Oto Helius, żołnierz, który strzeże mury miasta Ados.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(26, 73);
 		zone.add(npc);
 	}
 }

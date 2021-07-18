@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.city;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,10 +25,6 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Creates the NPCs and portals in Ados City.
@@ -48,7 +47,9 @@ public class KidsNPCs implements ZoneConfigurator {
 		final String[] names = { "Jens", "George", "Anna" };
 		final String[] classes = { "kid3npc", "kid4npc", "kid5npc" };
 		final String[] descriptions = {"Oto Jens. Wydaje się być nieco znudzony.", "Oto George, który uwielbia się bawić!", "Oto Anna. Jest uroczą dziewczynką, która szuka zabawek."};
+		final String[] genders = { "M", "M", "F" };
 		final Node[] start = new Node[] {new Node(45, 31), new Node(46, 34), new Node(46, 37)};
+
 		for (int i = 0; i < 3; i++) {
 			final SpeakerNPC npc = new SpeakerNPC(names[i]) {
 				@Override
@@ -89,12 +90,12 @@ public class KidsNPCs implements ZoneConfigurator {
 				}
 			};
 
-			npc.setEntityClass(classes[i]);
-			npc.setPosition(start[i].getX(), start[i].getY());
 			npc.setDescription(descriptions[i]);
+			npc.setEntityClass(classes[i]);
+			npc.setGender(genders[i]);
+			npc.setPosition(start[i].getX(), start[i].getY());
 			npc.setDirection(Direction.DOWN);
 			npc.setCollisionAction(CollisionAction.STOP);
-			npc.initHP(100);
 			zone.add(npc);
 		}
 	}

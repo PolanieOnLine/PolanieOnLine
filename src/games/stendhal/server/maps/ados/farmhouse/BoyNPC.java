@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.farmhouse;
 
+import java.util.Map;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -23,15 +24,12 @@ import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Map;
-
 /**
  * Boy NPC
  *
  * @author kymara
  */
 public class BoyNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,12 +43,6 @@ public class BoyNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Hughie") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				// boy says nothing at all
@@ -68,10 +60,11 @@ public class BoyNPC implements ZoneConfigurator {
 				});
 			}
 		};
+
+		npc.setDescription("Oto mały chłopiec o imieniu Hughie, który wygląda na jakby miał gorączkę.");
 		npc.setEntityClass("kid8npc");
+		npc.setGender("M");
 		npc.setPosition(33, 6);
-		npc.initHP(100);
-		npc.setDescription("Oto mały chłopiec, który wygląda na jakby miał gorączkę.");
 	    zone.add(npc);
 	}
 }

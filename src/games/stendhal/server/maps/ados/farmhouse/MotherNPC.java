@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.farmhouse;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Mother NPC
@@ -28,7 +27,6 @@ import java.util.Map;
  * @author kymara
  */
 public class MotherNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -42,7 +40,6 @@ public class MotherNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Anastasia") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -61,10 +58,11 @@ public class MotherNPC implements ZoneConfigurator {
 				addGoodbye("Do widzenia.");
 			}
 		};
+
+		npc.setDescription("Oto Anastasia. Wygląda na nieco przybitą.");
 		npc.setEntityClass("woman_006_npc");
+		npc.setGender("F");
 		npc.setPosition(30, 9);
-		npc.initHP(100);
-		npc.setDescription("Oto Anastasia, wygląda na przybitą.");
 	    zone.add(npc);
 	}
 }

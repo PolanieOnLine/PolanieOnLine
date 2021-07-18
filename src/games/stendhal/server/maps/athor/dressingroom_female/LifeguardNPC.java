@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.dressingroom_female;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,18 +25,12 @@ import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Dressing rooms at the Athor island beach (Inside / Level 0).
  *
  * @author daniel
  */
 public class LifeguardNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -46,13 +44,6 @@ public class LifeguardNPC implements ZoneConfigurator {
 
 	private void buildFemaleDressingRoom(final StendhalRPZone zone) {
 		final SpeakerNPC pam = new SpeakerNPC("Pam") {
-
-			@Override
-			protected void createPath() {
-				// doesn't move
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addJob("Jestem jedną z ratowniczek na tej plaży. Jak widzisz zajmuję się też damską przebieralnią. Mogę też zrobić #'olejek do opalania'.");
@@ -90,11 +81,11 @@ public class LifeguardNPC implements ZoneConfigurator {
 			}
 		};
 
+		pam.setDescription("Oto Pam. Czeka na modelki, które mogą nosić strój kąpielowy jej najnowszej kolekcji.");
 		pam.setEntityClass("lifeguardfemalenpc");
+		pam.setGender("F");
 		pam.setDirection(Direction.LEFT);
 		pam.setPosition(12, 11);
-		pam.initHP(100);
-		pam.setDescription("Oto Pam. Ona czeka na modele, które mogą nosić strój kąpielowy jej najnowszej kolekcji.");
 		zone.add(pam);
 	}
 }

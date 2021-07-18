@@ -34,7 +34,6 @@ class NotifyPlayerAboutHallOfFamePoints implements TurnListener {
 	private ResultHandle handle;
 	private String questSlot;
 
-
 	/**
 	 * creates a new NotifyPlayerAboutHallOfFamePoints turn listener
 	 *
@@ -51,8 +50,6 @@ class NotifyPlayerAboutHallOfFamePoints implements TurnListener {
 		DBCommand command = new ReadHallOfFamePointsCommand(playerName, fametype);
 		DBCommandQueue.get().enqueueAndAwaitResult(command, handle);
 	}
-
-
 
 	@Override
 	public void onTurnReached(int currentTurn) {

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.swamp;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -19,16 +23,10 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Entrance to Deathmatch.
  */
 public class DeathmatchRecruiterNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,9 +39,7 @@ public class DeathmatchRecruiterNPC implements ZoneConfigurator {
 	}
 
 	private void buildDeathmatchRecruiter(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Thonatus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> path = new LinkedList<Node>();
@@ -92,10 +88,10 @@ public class DeathmatchRecruiterNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(15, 26);
-		npc.initHP(100);
 		npc.setDescription("Oto Thonatus, rekrutuje na Deathmatch w Ados. Masz szczęście, że go tak szybko znalazłeś..");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(15, 26);
 		zone.add(npc);
 	}
 }

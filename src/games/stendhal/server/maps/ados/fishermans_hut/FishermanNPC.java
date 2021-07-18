@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2011 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,15 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.ados.fishermans_hut;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.grammar.Grammar;
@@ -33,22 +41,12 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
-
 /**
  * Ados Fisherman (Inside / Level 0).
  *
  * @author dine
  */
 public class FishermanNPC implements ZoneConfigurator {
-
 	private static Logger logger = Logger.getLogger(FishermanNPC.class);
 
 	private static final String QUEST_SLOT = "pequod_make_oil";
@@ -76,11 +74,8 @@ public class FishermanNPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				// from left
 				nodes.add(new Node(3, 3));
-				// to right
 				nodes.add(new Node(12, 3));
-				// to left
 				nodes.add(new Node(3, 3));
 				setPath(new FixedPath(nodes, true));
 			}
@@ -256,11 +251,12 @@ public class FishermanNPC implements ZoneConfigurator {
 				});
 			}
 		};
+
 		fisherman.setDescription("Oto Pequod zapominalski stary rybak. Czasami trzeba mu przypomnieć co powinien zrobić!");
 		fisherman.setEntityClass("fishermannpc");
+		fisherman.setGender("M");
 		fisherman.setDirection(Direction.DOWN);
 		fisherman.setPosition(3, 3);
-		fisherman.initHP(100);
 		zone.add(fisherman);
 	}
 }

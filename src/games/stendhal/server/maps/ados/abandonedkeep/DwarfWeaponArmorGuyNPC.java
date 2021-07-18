@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -45,7 +44,6 @@ public class DwarfWeaponArmorGuyNPC implements ZoneConfigurator {
 
 	private void buildgulimo(final StendhalRPZone zone) {
 		final SpeakerNPC gulimo = new SpeakerNPC("Gulimo") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,9 +56,8 @@ public class DwarfWeaponArmorGuyNPC implements ZoneConfigurator {
 				nodes.add(new Node(11, 27));
 				nodes.add(new Node(11, 24));
 				setPath(new FixedPath(nodes, true));
-
 			}
-
+	
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -74,9 +71,9 @@ public class DwarfWeaponArmorGuyNPC implements ZoneConfigurator {
 		};
 
 		gulimo.setEntityClass("greendwarfnpc");
+		gulimo.setDescription("Oto Gulimo. Sprzedaje dobrej jakości zbroje i broń.");
+		gulimo.setGender("M");
 		gulimo.setPosition(3, 24);
-		gulimo.initHP(100);
-		gulimo.setDescription("You see Gulimo. He sells good quality armor and weapons.");
 		zone.add(gulimo);
 	}
 }

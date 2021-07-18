@@ -45,9 +45,7 @@ public class WallSoldier3NPC implements ZoneConfigurator {
 	 * @param zone StendhalRPZone
 	 */
 	private void buildAdosWallSoldier(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Vincendus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> path = new LinkedList<Node>();
@@ -68,15 +66,14 @@ public class WallSoldier3NPC implements ZoneConfigurator {
 If the player types yes then the soldier he will respond like this: example: Kill 10 tigers, 10 lions, 10 gnomes, 10 elephants  the reward will be 100exp and 40 or 50gold
 
 The quest will be repeatable every 24 hours and the kind of monster and the amount that the player needs to kill will be random (it will have a cap on how many needs to kill for example no more than 40 lions the reward will be varied depends on how many of each kind the player neds to kill.
-
  */
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(79, 43);
-		npc.initHP(100);
 		npc.setDescription("Oto Vincendus, żołnierz, który strzeże mury miasta Ados.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(79, 43);
 		zone.add(npc);
 	}
 }

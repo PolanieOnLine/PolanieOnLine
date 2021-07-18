@@ -144,7 +144,7 @@ public class RestockFlowerShop extends AbstractQuest {
 						"#Jenny ma nasiona tego typu kwiatków.",
 						"#Fleur zawsze posiada najpiękniejsze róże.",
 						"Bielikrasa to mój ulubiony kwiat. Niektórzy nazywają je arum lub lilie choć nimi nie są. Zapytaj #Jenny czy nie ma jakiś bulw.",
-						"Potrzebuję wody, aby moje #kwiaty były świeże. Musisz znaleść źródło wody i wziąć jej trochę do #butelek. Może jest toś kto sprzedaje wodę.",
+						"Potrzebuję wody, aby moje #kwiaty były świeże. Musisz znaleźć źródło wody i wziąć jej trochę do #butelek. Może jest toś kto sprzedaje wodę.",
 						"#Jenny dużo wie o kwiatach. Może też porozmawiasz z #Fleur.",
 						"Możesz spotkać Jenny w pobliżu młyna obok Semos. Tam gdzie mieli się zboże na mąkę.",
 						"Fleur pracuje na targu w Kirdneh.",

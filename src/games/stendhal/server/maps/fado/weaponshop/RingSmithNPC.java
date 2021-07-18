@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.weaponshop;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -23,11 +27,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds an NPC to buy gems and gold and sell engagement ring.
@@ -51,14 +50,12 @@ public class RingSmithNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Ognir") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -87,10 +84,10 @@ public class RingSmithNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Ognir przyjazny brodaty gość.");
+		npc.setDescription("Oto Ognir, przyjazny brodaty gość.");
 		npc.setEntityClass("ringsmithnpc");
+		npc.setGender("M");
 		npc.setPosition(18, 8);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

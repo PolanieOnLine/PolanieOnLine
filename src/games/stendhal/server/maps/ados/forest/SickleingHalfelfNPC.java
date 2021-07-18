@@ -32,7 +32,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author omero
  */
 public class SickleingHalfelfNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,8 +44,7 @@ public class SickleingHalfelfNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
-		SpeakerNPC npc = new SpeakerNPC("Eheneumniranin") {
-
+		final SpeakerNPC npc = new SpeakerNPC("Eheneumniranin") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,7 +56,6 @@ public class SickleingHalfelfNPC implements ZoneConfigurator {
 				nodes.add(new Node(85, 107));
 				nodes.add(new Node(75, 107));
 				nodes.add(new Node(75, 96));
-
 				setPath(new FixedPath(nodes, true));
 			}
 
@@ -71,14 +68,13 @@ public class SickleingHalfelfNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("sickle", "sierp", "sierpem"),"Użyteczne narzedzie rolnika tak jak kosa. Powinieneś zapytać jakiegoś kowala czy nie oferuje ostrych sierpów.");
 				addGoodbye("Powodzenia...");
 			}
-	
 		};
 
-		npc.setEntityClass("sickleinghalfelfnpc");
-		npc.setPosition(76,97);
-		npc.initHP(100);
-		npc.setCollisionAction(CollisionAction.REVERSE); // So does not block straw carts
 		npc.setDescription("Oto Eheneumniranin pół elf... Stracił pamięć i wygląda na zagubionego.");
+		npc.setEntityClass("sickleinghalfelfnpc");
+		npc.setGender("M");
+		npc.setPosition(76,97);
+		npc.setCollisionAction(CollisionAction.REVERSE); // So does not block straw carts
 		zone.add(npc);
 	}
 }

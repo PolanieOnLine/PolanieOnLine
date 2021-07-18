@@ -27,10 +27,8 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * Builds a NPC in a house on Ados market (name:Stefan) who is the daughter of fisherman Fritz
  *
  * @author Vanessa Julius
- *
  */
 public class HotelChefNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -38,7 +36,6 @@ public class HotelChefNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Stefan") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -120,14 +117,13 @@ public class HotelChefNPC implements ZoneConfigurator {
 	                    "Nie jest tak łatwo zdobyć w czasach wojny! Powinieneś trochę zmielić sam... " +
 	                    "Lub znajdź kogoś, kto sprzedaje to!");
 			}
-
 		};
 
 		npc.setDescription("Oto Stefan, młody szef kuchni z hotelu w Fado.");
 		npc.setEntityClass("hotelchefnpc");
+		npc.setGender("M");
 		npc.setPosition(92, 9);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

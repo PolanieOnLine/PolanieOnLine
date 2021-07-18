@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.city;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -19,19 +21,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Builds the flower seller in kirdneh.
  *
  * @author kymara
  */
 public class FlowerSellerNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,19 +36,12 @@ public class FlowerSellerNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC sellernpc = new SpeakerNPC("Fleur") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć! Przyszedłeś tutaj #pohandlować?");
@@ -68,10 +56,10 @@ public class FlowerSellerNPC implements ZoneConfigurator {
 			}
 		};
 
+		sellernpc.setDescription("Oto Fleur. Jej róże są dla młodych par.");
 		sellernpc.setEntityClass("woman_001_npc");
+		sellernpc.setGender("F");
 		sellernpc.setPosition(64, 82);
-		sellernpc.initHP(100);
-			sellernpc.setDescription("Oto Fleur. Jej róże są dla młodych par.");
 		zone.add(sellernpc);
 	}
 }

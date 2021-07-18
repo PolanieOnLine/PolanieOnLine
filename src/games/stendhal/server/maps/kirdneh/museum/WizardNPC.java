@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.museum;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a wizard npc, an expert in textiles.
@@ -28,7 +27,6 @@ import java.util.Map;
  * @author kymara
  */
 public class WizardNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -42,7 +40,6 @@ public class WizardNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Kampusch") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -62,13 +59,12 @@ public class WizardNPC implements ZoneConfigurator {
 				addGoodbye("Żegnaj.");
 				// remaining behaviour defined in maps.quests.MithrilCloak
 	 	     }
-
 		};
 
-		npc.setDescription("Oto czarodziej mithrilbourghtów zwiedzający muzeum");
+		npc.setDescription("Oto Kampusch, czarodziej mithrilbourghtów zwiedzający muzeum");
 		npc.setEntityClass("mithrilforgernpc");
+		npc.setGender("M");
 		npc.setPosition(23, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

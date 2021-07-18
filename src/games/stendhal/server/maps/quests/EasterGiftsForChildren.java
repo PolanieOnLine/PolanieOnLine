@@ -134,7 +134,7 @@ public class EasterGiftsForChildren extends AbstractQuest {
 			Arrays.asList("apple", "apples", "jabłko", "jabłka"),
 			null,
 			ConversationStates.ATTENDING,
-			"Jabłka można znaleść na farmie na wschód od miasta. Są naprawdę zdrowe i możesz z nich upiec wspaniały jabłecznik. Można też dostać z ogrodów Marthy w mieście Kalavan.", null);
+			"Jabłka można znaleźć na farmie na wschód od miasta. Są naprawdę zdrowe i możesz z nich upiec wspaniały jabłecznik. Można też dostać z ogrodów Marthy w mieście Kalavan.", null);
 
 		npc.add(
 			ConversationStates.ATTENDING,

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -58,14 +57,13 @@ public class OrcWeaponArmorGuyNPC implements ZoneConfigurator {
 				nodes.add(new Node(109, 13));
 				nodes.add(new Node(104, 13));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Jestem sprzedawcą. Kim jesteś?");
-				addHelp("Sprzedaję przedmioty spójrz na tablicę na ścianie.");
+				addJob("Jestem handlarzem, a Ty kim jesteś?");
+				addHelp("Sprzedaję przedmioty, spójrz na tablicę na ścianie.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellbetterstuff1")), false);
 				addOffer("Spójrz na tablicę na ścianie, aby zapoznać się z moją ofertą.");
 				addQuest("Jestem szczęśliwy. Nie potrzebuję niczego.");
@@ -73,10 +71,10 @@ public class OrcWeaponArmorGuyNPC implements ZoneConfigurator {
 			}
 		};
 
+		hagnurk.setDescription("Oto Hagnurk. Zajmuje się handlem u orków.");
 		hagnurk.setEntityClass("orcsalesmannpc");
+		hagnurk.setGender("M");
 		hagnurk.setPosition(106, 5);
-		hagnurk.initHP(100);
-		hagnurk.setDescription("Oto Hagnurk. Jest sprzedawcą u orków.");
 		zone.add(hagnurk);
 	}
 }

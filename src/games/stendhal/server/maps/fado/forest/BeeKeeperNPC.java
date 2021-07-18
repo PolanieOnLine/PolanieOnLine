@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -20,18 +24,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Fado forest NPC - beekeeper.
  *
  * @author kymara
  */
 public class BeeKeeperNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,7 +43,6 @@ public class BeeKeeperNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Aldrin") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -87,10 +84,10 @@ public class BeeKeeperNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("beekeepernpc");
-		npc.setPosition(44, 76);
-		npc.initHP(100);
 		npc.setDescription("Oto Aldrin. Dba o przczoły, które latają wokół niego...");
+		npc.setEntityClass("beekeepernpc");
+		npc.setGender("M");
+		npc.setPosition(44, 76);
 		zone.add(npc);
 	}
 }

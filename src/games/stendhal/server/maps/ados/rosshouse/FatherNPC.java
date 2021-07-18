@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -21,6 +20,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+
 /**
  * <p>Creates a normal version of Mr. Ross in the ross house.
  */
@@ -39,14 +39,7 @@ public class FatherNPC implements ZoneConfigurator {
 	}
 
 	public void createDadNPC(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Mr. Ross") {
-			@Override
-			protected void createPath() {
-				setPath(null);
-
-			}
-
 			@Override
 			protected void createDialog() {
 			    addGreeting("Witam.");
@@ -73,14 +66,13 @@ public class FatherNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-
 		};
 
+		npc.setDescription("Oto tata Susi, Mr. Ross. Uspokoił się trochę po ostatniej przygodzie córki.");
 		npc.setOutfit(MRROSS_OUTFIT);
+		npc.setGender("M");
 		npc.setPosition(12, 7);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
-		npc.setDescription("Oto tata Susi, Mr. Ross. Uspokoił się trochę po ostatniej przygodzie córki.");
 		zone.add(npc);
 	}
 

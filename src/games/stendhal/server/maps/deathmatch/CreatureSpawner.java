@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -30,14 +29,12 @@ import games.stendhal.server.entity.creature.LevelBasedComparator;
 import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
 import games.stendhal.server.entity.player.Player;
 
-
 /**
  * This class spawns creatures during a deathmatch session.
  *
  * @author hendrik
  */
 public class CreatureSpawner  {
-
 	static final Logger logger = Logger.getLogger(CreatureSpawner.class);
 
 	// spawn a new monster each 20 seconds
@@ -181,5 +178,4 @@ public class CreatureSpawner  {
 	DeathMatchCreature spawnNewCreature(final int questLevel , final Player player, final DeathmatchInfo deathmatchInfo) {
 		return spawnNewCreature(calculateNextCreature(questLevel), player,  deathmatchInfo);
 	}
-
 }

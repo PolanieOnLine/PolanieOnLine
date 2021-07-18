@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,18 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kotoch;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
- *
  * @author kymara
  */
 public class OrcSamanNPC implements ZoneConfigurator {
@@ -40,7 +38,6 @@ public class OrcSamanNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Szaman Orków") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -56,17 +53,17 @@ public class OrcSamanNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Oof.");
-				addJob("Ja Szaman Orków.");
-				addHelp("Szaman Orków potrzebuje pomocy! Zrób #zadanie.");
+				addJob("Ja szaman orków.");
+				addHelp("Szaman orków potrzebuje pomocy! Zrób #zadanie.");
 				addOffer("Żadnego handlu.");
 				addGoodbye("Żegnaj.");
 			}
 		};
 
-		npc.setDescription("Oto Szaman Orków.");
+		npc.setDescription("Oto Szaman Orków. Ciekawe jakie rytuały wyprawia.");
 		npc.setEntityClass("orcsamannpc");
+		npc.setGender("M");
 		npc.setPosition(8, 113);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

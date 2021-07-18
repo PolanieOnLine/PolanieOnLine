@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,12 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Creates Mircea, an old witch who lives in Imorgens house, Fado forest.
@@ -25,7 +24,6 @@ import java.util.Map;
  * @author Vanessa Julius
  */
 public class OldWitchNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -39,14 +37,6 @@ public class OldWitchNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Mircea") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-
-			}
-
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć *Kaszlnięcie*");
@@ -60,10 +50,10 @@ public class OldWitchNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("oldwitchnpc");
-		npc.setPosition(12, 4);
-		npc.initHP(100);
 		npc.setDescription("Oto Mircea. Jest starszą bliźniaczą siostrą czarownicą, która z każdą sekundą wygląda na słabszą.");
+		npc.setEntityClass("oldwitchnpc");
+		npc.setGender("F");
+		npc.setPosition(12, 4);
 		zone.add(npc);
 	}
 }

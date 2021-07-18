@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.ship;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -24,23 +25,17 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-import java.util.Map;
-
 /** Factory for the captain of Athor Ferry. */
-
 public class CaptainNPC implements ZoneConfigurator  {
-
 	private Status ferrystate;
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Captain Brownbeard") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Ahoj szczury lądowe!");
@@ -61,7 +56,6 @@ public class CaptainNPC implements ZoneConfigurator  {
 						//.getCurrentDescription());
 					}
 				});
-
 			}
 
 			@Override
@@ -72,7 +66,6 @@ public class CaptainNPC implements ZoneConfigurator  {
 		};
 
 		new AthorFerry.FerryListener() {
-
 			@Override
 			public void onNewFerryState(final Status status) {
 				ferrystate = status;
@@ -91,11 +84,12 @@ public class CaptainNPC implements ZoneConfigurator  {
 					npc.setDirection(Direction.DOWN);
 
 			}
-			};
+		};
 
-		npc.setPosition(23, 38);
-		npc.setEntityClass("piratenpc");
 		npc.setDescription ("Oto Brownbeard kapitan promu Athor. Przewizie cię z lądu na wyspę.");
+		npc.setEntityClass("piratenpc");
+		npc.setGender("M");
+		npc.setPosition(23, 38);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}

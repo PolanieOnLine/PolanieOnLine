@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.maps.kirdneh.city;
 
 import java.util.LinkedList;
@@ -29,7 +28,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  *
  * @author omero
  */
-
 public class KirdnehAnxiousSorceressNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
@@ -38,7 +36,6 @@ public class KirdnehAnxiousSorceressNPC implements ZoneConfigurator {
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Vlamyklela") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -51,10 +48,8 @@ public class KirdnehAnxiousSorceressNPC implements ZoneConfigurator {
 
 			@Override
 			public void createDialog() {
-				addGreeting(
-						"Ave");
-				addGoodbye(
-						"Fortvna");
+				addGreeting("Ave");
+				addGoodbye("Fortvna");
                 /**
                  * When one has Ad Memoria In Portfolio quest active
                  * Will Convert 1x purple apple into 1x mauve apple
@@ -78,20 +73,17 @@ public class KirdnehAnxiousSorceressNPC implements ZoneConfigurator {
                     "Say you are were bestowed with a purple apple...",
                     null
 	            );
-
 				/**
 				 * additional behavior defined in AdMemoriaInPortfolio quest
 				 */
-
 			}
 		};
 
 		// Finalize Vlamyklela
+		npc.setDescription("You see Vlamyklela... She seems to be anxiously awaiting news!");
 		npc.setEntityClass("bluesorceressnpc");
-		npc.initHP(100);
 		npc.setPosition(113,99);
 		npc.setCollisionAction(CollisionAction.REROUTE);
-		npc.setDescription("You see Vlamyklela... She seems to be anxiously awaiting news!");
 		zone.add(npc);
 		return npc;
 	}

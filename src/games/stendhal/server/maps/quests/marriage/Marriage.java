@@ -56,7 +56,7 @@ class Marriage {
 		 *
 		 */
 
-		priest = npcs.get("Priest");
+		priest = npcs.get("Ksiądz");
 		priest.add(ConversationStates.ATTENDING,
 					Arrays.asList("marry", "poślub"),
 					new ChatCondition() {

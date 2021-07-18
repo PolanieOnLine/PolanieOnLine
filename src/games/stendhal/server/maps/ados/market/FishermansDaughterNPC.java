@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Builds a NPC in a house on Ados market (name:Caroline) who is the daughter of fisherman Fritz
@@ -28,22 +27,13 @@ import java.util.Map;
  *
  */
 public class FishermansDaughterNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		createFishermansDaughterSellingNPC(zone);
 	}
 
 	public void createFishermansDaughterSellingNPC(final StendhalRPZone zone) {
-
-
 		final SpeakerNPC npc = new SpeakerNPC("Caroline") {
-			@Override
-			protected void createPath() {
-				setPath(null);
-
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć, miło Cię poznać!");
@@ -68,9 +58,9 @@ public class FishermansDaughterNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Caroline. Wydaje się być miłą, choć zdecydowaną, panią, która stara się dotrzeć do wybranego celu.");
 		npc.setEntityClass("fishermansdaughternpc");
+		npc.setGender("F");
 		npc.setPosition(8, 3);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

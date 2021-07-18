@@ -1,4 +1,21 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.kalavan.cottage_2;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -9,12 +26,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Provides Martha, the apple pies confectioner NPC.
  * She has a twin sister: Gertha, the cherry pies confectioner NPC.
@@ -22,7 +33,6 @@ import java.util.TreeMap;
  * @author omero
  */
 public class ConfectionerApplePieNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -36,7 +46,6 @@ public class ConfectionerApplePieNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Martha") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -54,13 +63,12 @@ public class ConfectionerApplePieNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-
 				addJob("Mieszkam tutaj z moja bliźniaczą siostrą #Gertha. Naszą pasją jest wypiekanie pysznych ciast z owocami!");
 
 				addReply("gertha",
 					"Jest moją bliźniaczą siostrą, z którą razem mieszkam... Jak ja także lubi piec ciasta z owocami! Powiedz #upiecz jeśli się zdecydujesz.");
 				addReply("miód",
-					"Powinineś znaleść tutejszego pszczelarza jest trochę na północny-zachód stąd...");
+					"Powinineś znaleźć tutejszego pszczelarza jest trochę na północny-zachód stąd...");
 				addReply("mleko",
 					"Powinieneś odwiedzić farmę. Znajduje się tam gdzie zobyczysz krowy...");
 				addReply("mąka",
@@ -70,14 +78,10 @@ public class ConfectionerApplePieNPC implements ZoneConfigurator {
 				addReply("jabłko",
 					"Mmm... Gdy od czasu do czasu podróżuje z Semos do Ados to zawsze zatrzymuje się w sadzie obok farmy przy drodze...");
 
-
 				addHelp("Jeżeli to pomoże to mogę upiec jabłecznik dla Ciebie!");
-
 				addOffer("Kocham #piec ciasta z jabłkami. Poproś mnie mówiąc #upiecz!");
-
                 /** this is a teaser for a quest not yet available */
 				addQuest("Teraz dopracowuję przepis na mój jabłecznik, ale w przyszłości możliwe, że będę chciała spróbować czegoś nowego. Dam ci znać.");
-
 				addGoodbye("Uważaj na siebie!");
 
 				// (uses sorted TreeMap instead of HashMap)
@@ -96,11 +100,11 @@ public class ConfectionerApplePieNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Martha. Kocha piec placki z jabłkami dla gości.");
 		npc.setEntityClass("confectionerapplepienpc");
+		npc.setGender("F");
 		npc.setDirection(Direction.DOWN);
 		npc.setPosition(4, 3);
-		npc.initHP(100);
-		npc.setDescription("Oto Martha. Kocha piec placki z jabłkami dla gości.");
 		zone.add(npc);
 	}
 }

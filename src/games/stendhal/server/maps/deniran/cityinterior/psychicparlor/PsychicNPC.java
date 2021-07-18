@@ -45,9 +45,7 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 
-
 public class PsychicNPC implements ZoneConfigurator {
-
 	private static SpeakerNPC psychic;
 
 	private Creature requestedEnemy = null;
@@ -68,6 +66,7 @@ public class PsychicNPC implements ZoneConfigurator {
 			}
 		};
 		psychic.setEntityClass("wizardwomannpc");
+		psychic.setGender("F");
 
 		psychic.setPosition(26, 11);
 		psychic.setIdleDirection(Direction.LEFT);

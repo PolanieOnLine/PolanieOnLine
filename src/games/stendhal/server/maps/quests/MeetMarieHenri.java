@@ -206,7 +206,7 @@ public class MeetMarieHenri extends AbstractQuest {
 			res.add("Poprosił mnie abym poszukał mu pseudonimu, którego użyje podczas pisania powieści. Nie czuje się na siłach aby mu pomóc.");
 		}
 		if ("start".equals(questState) || "done".equals(questState)) {
-			res.add("Postaram się znaleść pseudonim dla niego.");
+			res.add("Postaram się znaleźć pseudonim dla niego.");
 		}
 		if ("done".equals(questState)) {
 			res.add("Odpowiedziałem poprawnie na Marie-Henri pytanie, w zamian dostałem nagrodę.");

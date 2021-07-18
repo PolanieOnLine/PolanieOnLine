@@ -335,7 +335,7 @@ public class MealForGroongo extends AbstractQuest {
                 missingIngredients.addFromQuestStateString(ingredients);
                 res.add("Groongo zjadłby " +
                     getRequiredMainDishFancyName(player.getQuest(QUEST_SLOT, 2)) +
-                    " jako danie główne. Pomagam Chef Stefan znaleść składniki do przygotowania tego." +
+                    " jako danie główne. Pomagam Chef Stefan znaleźć składniki do przygotowania tego." +
                     " Wciąż muszę przynieść " +
                     Grammar.enumerateCollection(missingIngredients.toStringList()) + "."
                 );

@@ -11,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.city;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.SilentNPC;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.SilentNPC;
 
 /**
  * Rabbits
@@ -25,15 +25,12 @@ import java.util.Map;
  * @author AntumDeluge
  */
 public class RabbitNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-
 	    // All rabbits
 	    List<SilentNPC> rabbits = new LinkedList<SilentNPC>();
 
@@ -56,5 +53,4 @@ public class RabbitNPC implements ZoneConfigurator {
 	        zone.add(mammal);
 		}
 	}
-
 }

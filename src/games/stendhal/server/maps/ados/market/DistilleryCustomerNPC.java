@@ -27,7 +27,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  *
  */
 public class DistilleryCustomerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -35,17 +34,11 @@ public class DistilleryCustomerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Hank") {
-
-			@Override
-			protected void createPath() {
-				// no path
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Cześć! Jak się masz?");
 				addHelp("Nie sądzę, abym mógł ci pomóc. Mam tu mały #drink w pięknej destylarni #Uncle #Dag. Może chciałbyś się przyłączyć? Moglibyśmy #porozmawiać o interesujących rzeczach.");
-				addJob("Pracowałem jako górnik w #kopalni węgla na półnoć od #Semos #City. Gdy zamknięto ją to przeniosłem się do Ados City z moją #rodziną próbując znaleść nową pracę.");
+				addJob("Pracowałem jako górnik w #kopalni węgla na półnoć od #Semos #City. Gdy zamknięto ją to przeniosłem się do Ados City z moją #rodziną próbując znaleźć nową pracę.");
 				addOffer("Mogę zaoferować ci #'drink', a wszystkie moje drobniaki już się rozszeszły.");
 				addGoodbye("Do widzenia! Trzymaj się!");
 				addReply(ConversationPhrases.QUEST_MESSAGES,
@@ -70,9 +63,9 @@ public class DistilleryCustomerNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Hank. Delektuje się swoim drinkiem.");
 		npc.setEntityClass("hanknpc");
+		npc.setGender("M");
 		npc.setPosition(37, 31);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 

@@ -150,7 +150,7 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 	 * %1 = list of locations.
 	 */
 	private static final String[] LOCATION_TEXTS = new String[] {
-			"Widziołek %1.", "Powinieneś znaleść %1.",
+			"Widziołek %1.", "Powinieneś znaleźć %1.",
 			"Zabiłek kilka %1." };
 
 	/**

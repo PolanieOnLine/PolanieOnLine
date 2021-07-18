@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -41,7 +40,6 @@ class DeathmatchEngine implements TurnListener {
 	private CreatureSpawner spawner;
 
 	private boolean keepRunning = true;
-
 
 	/**
 	 * Creates a new ScriptAction to handle the deathmatch logic.
@@ -90,30 +88,27 @@ class DeathmatchEngine implements TurnListener {
 	}
 
 	private void action() {
-
 		final DeathmatchState deathmatchState = DeathmatchState.createFromQuestString(player.getQuest("deathmatch"));
 
 		switch (deathmatchState.getLifecycleState()) {
+			case BAIL:
+				if (((new Date()).getTime() - deathmatchState.getStateTime() > BAIL_DELAY)) {
+					handleBail();
+	
+					keepRunning = false;
+					return;
+				}
+				break;
 
-		case BAIL:
-			if (((new Date()).getTime() - deathmatchState.getStateTime() > BAIL_DELAY)) {
-				handleBail();
-
+			case CANCEL:
+				spawner.removePlayersMonsters();
+	
+				// and finally remove this ScriptAction
 				keepRunning = false;
 				return;
-			}
-			break;
 
-		case CANCEL:
-			spawner.removePlayersMonsters();
-
-			// and finally remove this ScriptAction
-			keepRunning = false;
-			return;
-
-		default:
-			//cannot happen we switch on a enum
-
+			default:
+				//cannot happen we switch on a enum
 		}
 
 		// check whether the deathmatch was completed
@@ -190,5 +185,4 @@ class DeathmatchEngine implements TurnListener {
 
 		spawner.removePlayersMonsters();
 	}
-
 }

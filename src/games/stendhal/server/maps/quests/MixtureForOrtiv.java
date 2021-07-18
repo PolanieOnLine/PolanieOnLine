@@ -150,7 +150,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 			npc.addReply("skrzydlica","Skrzydlica jest ciężka do znalezienia...jest okryta białymi prążkami na przemian z czerwonymi, zielonymi " +
 					" lub brązowymi. Słyszałem o miejscach w Faiumoni gdzie możesz ją złowić, ale uważaj. Każdy kolec jest trujący!");
 
-			npc.addReply("kokuda","Kokuda ciężko jest znaleść. Byłbym wdzięczny, gdybyś zdobył jakąś z wyspy Athor...");
+			npc.addReply("kokuda","Kokuda ciężko jest znaleźć. Byłbym wdzięczny, gdybyś zdobył jakąś z wyspy Athor...");
 
 			npc.addReply("lukrecja", "To małe ciągotki, które w mieście magów sprzedaje młoda dziewczyna. Są wspaniałe i słodkie.");
 

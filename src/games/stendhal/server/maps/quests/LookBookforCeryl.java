@@ -228,7 +228,7 @@ public class LookBookforCeryl extends AbstractQuest {
 			res.add("Nie chcę szukać książki.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "jynath", "done")) {
-			res.add("Chcę znaleść czarną księgę.");
+			res.add("Chcę znaleźć czarną księgę.");
 		}
 		if (questState.equals("jynath") && player.isEquipped("księga czarna")
 				|| questState.equals("done")) {

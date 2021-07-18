@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.city;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,19 +22,13 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a sad NPC (name: Andy) who lost his wife
  *
  * @author Erdnuggel (idea) and Vanessa Julius (implemented)
  *
  */
-
 public class ManWithHatNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -53,7 +50,6 @@ public class ManWithHatNPC implements ZoneConfigurator {
                 nodes.add(new Node(42, 6));
                 nodes.add(new Node(41, 6));
                	setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -63,15 +59,14 @@ public class ManWithHatNPC implements ZoneConfigurator {
 				addJob("Przestałem pracować, gdy moja żona odeszła.");
 				addOffer("Nie mam nic do zaoferowania.");
 				addGoodbye("Do widzenia i dziękuję za rozmowę.");
-
 			}
 		};
 
 		npc.setDescription("Oto mężczyzna w kapeluszu. Nazywa się Andy i wygląda na bardzo przygnębionego.");
 		npc.setEntityClass("manwithhatnpc");
+		npc.setGender("M");
 		npc.setPosition(41, 6);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

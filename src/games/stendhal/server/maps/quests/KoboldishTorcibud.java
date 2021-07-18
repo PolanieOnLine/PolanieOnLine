@@ -289,7 +289,7 @@ public class KoboldishTorcibud extends AbstractQuest {
 			Arrays.asList("arandula","sclaria","kekik"),
 			new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
-			"Hau! Zioło rośnie na równinach lub w lasach... Łatwo znaleść!",
+			"Hau! Zioło rośnie na równinach lub w lasach... Łatwo znaleźć!",
 			null);
 
 		// Player is curious about mandragora
@@ -299,7 +299,7 @@ public class KoboldishTorcibud extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Hau! Jedyne co wiem, to że jest rzadkim korzeniem rosnącym w lesie"
 				+ " szczególnie blisko miejsc nasiąkniętych magią..."
-				+ " Nie jest łatwo go znaleść!",
+				+ " Nie jest łatwo go znaleźć!",
 			null);
 
 		// Player says stuff to be reminded of what is still missing

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -35,10 +34,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 public class GreeterNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
 
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -50,13 +45,8 @@ public class GreeterNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-	//
-	// OL0_GreeterNPC
-	//
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC greeterNPC = new SpeakerNPC("Xhiphin Zohos") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -81,10 +71,10 @@ public class GreeterNPC implements ZoneConfigurator {
 			}
 		};
 
-		greeterNPC.setOutfit(1, 6, 1, null, 0, null, 5, null, 0);
-		greeterNPC.setPosition(39, 29);
-		greeterNPC.initHP(1000);
 		greeterNPC.setDescription("Oto Xhiphin Zohos. Jest pomocnym obywatelem Fado.");
+		greeterNPC.setOutfit(1, 6, 1, null, 0, null, 5, null, 0);
+		greeterNPC.setGender("M");
+		greeterNPC.setPosition(39, 29);
 		zone.add(greeterNPC);
 	}
 }

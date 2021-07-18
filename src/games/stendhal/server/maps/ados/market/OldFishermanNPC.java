@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,17 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a npc in Ados (name:Fritz) who is an old fisherman on the market
@@ -31,7 +30,6 @@ import java.util.Map;
  *
  */
 public class OldFishermanNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -39,7 +37,6 @@ public class OldFishermanNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Fritz") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -57,7 +54,6 @@ public class OldFishermanNPC implements ZoneConfigurator {
                 nodes.add(new Node(62, 77));
 				nodes.add(new Node(62, 79));
                	setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -71,15 +67,14 @@ public class OldFishermanNPC implements ZoneConfigurator {
 				addOffer("Moje miejsca połowów na morzu są nawiedzane przez niebezpieczne #sztormy. Nie mogę tam teraz płynąć.");
 				addReply(Arrays.asList("storm", "sztormy"), "Duży sztorm prawie zniszczył moją łódź! Przykro mi przyjacielu. Nie mogę ci nic zaoferować w tym momencie...");
 				addGoodbye("Dozobaczenia przyjacielu! I uważaj na ten śliski grunt!");
-
 			}
 		};
 
 		npc.setDescription("Oto Fritz. Nie, on nie śmierdzi! On tylko nie prał swoich rzeczy od wieków będąc od dłuższego czasu na morzu.");
 		npc.setEntityClass("oldfishermannpc");
+		npc.setGender("M");
 		npc.setPosition(67, 79);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

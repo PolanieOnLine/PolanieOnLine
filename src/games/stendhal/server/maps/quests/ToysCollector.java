@@ -200,7 +200,7 @@ public class ToysCollector extends AbstractQuest implements BringListOfItemsQues
 	public void addToWorld() {
 		fillQuestInfo(
 				"Kolekcjonerka Zabawek",
-				"Spróbuj znaleść zabawki dla Anny i jej przyjaciół.",
+				"Spróbuj znaleźć zabawki dla Anny i jej przyjaciół.",
 				false);
 		setupAbstractQuest();
 		specialStuff();

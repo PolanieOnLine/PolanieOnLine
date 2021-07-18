@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.castle;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a mad scientist NPC who give thread to a player if needed.
@@ -28,7 +27,6 @@ import java.util.Map;
  * @author tigertoes
  */
 public class MadScientist2NPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -42,7 +40,6 @@ public class MadScientist2NPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Boris Karlova") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -59,16 +56,17 @@ public class MadScientist2NPC implements ZoneConfigurator {
 				nodes.add(new Node(101, 113));
 				setPath(new FixedPath(nodes, true));
 			}
+
 			@Override
 		    protected void createDialog() {
 				// remaining behaviour defined in maps.quests.MithrilCloak
 			}
 		};
 
-		npc.setDescription("Oto nieco dziwna osoba. Może nie powinieneś zawracać jej głowy?");
+		npc.setDescription("Oto Boris Karlova, nieco dziwna osoba. Może nie powinieneś zawracać jego głowy?");
 		npc.setEntityClass("madscientistnpc");
+		npc.setGender("M");
 		npc.setPosition(95, 113);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

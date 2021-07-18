@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.dressingrooms;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -20,19 +25,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.OutfitChangerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Dressing rooms at fado hotel.
  *
  * @author kymara
  */
 public class GroomAssistantNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -46,7 +44,6 @@ public class GroomAssistantNPC implements ZoneConfigurator {
 
 	private void buildDressingRoom(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Timothy") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -59,7 +56,7 @@ public class GroomAssistantNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				// greeting in Marriage quest
 				addJob("Pomagam panom młodym w odpowiednim doborze ubrania na ich ślub.");
-				addHelp("Powiedz mi #ubierz jeżeli chciałbyś założyć #garnitur ( #suit ) na swój ślub.");
+				addHelp("Powiedz mi #ubierz jeżeli chciałbyś założyć #garnitur (#'suit') na swój ślub.");
 				addReply(Arrays.asList("garnitur", "suit"), "Jeżeli chcesz dobrze wyglądać musisz założyć #garnitur na swój ślub. Powiedz tylko #ubierz. Kosztuje to 50 monet.");
 				addQuest("Raczej powinieneś myśleć o swoim ślubie.");
 				addGoodbye("Do widzenia. Mam nadzieje, że poszczęści Ci się w życiu.");
@@ -71,10 +68,10 @@ public class GroomAssistantNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("executivenpc");
-		npc.setPosition(20, 10);
-		npc.initHP(100);
 		npc.setDescription("Oto Timothy. Czeka na osoby, ktore wkrótce ożenią się.");
+		npc.setEntityClass("executivenpc");
+		npc.setGender("M");
+		npc.setPosition(20, 10);
 		zone.add(npc);
 	}
 }

@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.tavern;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -20,23 +25,13 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds the tavern maid NPC.
  *
  * @author timothyb89/kymara
  */
 public class MaidNPC implements ZoneConfigurator {
-
 	private static final int TIME_OUT = 60;
-
-	//
-	// ZoneConfigurator
-	//
 
 	/**
 	 * Configure a zone.
@@ -49,13 +44,8 @@ public class MaidNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-	//
-	// MaidNPC
-	//
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC tavernMaid = new SpeakerNPC("Old Mother Helena") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -91,12 +81,12 @@ public class MaidNPC implements ZoneConfigurator {
 			}
 		};
 
-		tavernMaid.setPlayerChatTimeout(TIME_OUT);
+		tavernMaid.setDescription("Oto Old Mother Helena. Jest świetną kucharką a jej zupa jest znana w całej krainie Faiumoni i nie tylko.");
 		tavernMaid.setEntityClass("oldmaidnpc");
+		tavernMaid.setGender("F");
+		tavernMaid.setPlayerChatTimeout(TIME_OUT);
 		tavernMaid.setPosition(10, 16);
 		tavernMaid.setCollisionAction(CollisionAction.STOP);
-		tavernMaid.initHP(100);
-		tavernMaid.setDescription("Oto Old Mother Helena. Jest świetną kucharką a jej zupa jest znana w całej krainie Faumoni i nie tylko.");
 		zone.add(tavernMaid);
 	}
 }

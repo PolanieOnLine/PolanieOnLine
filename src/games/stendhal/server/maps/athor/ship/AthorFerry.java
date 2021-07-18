@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,12 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.ship;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class simulates a ferry going back and forth between the mainland and
@@ -37,7 +36,6 @@ import java.util.List;
  *
  */
 public final class AthorFerry implements TurnListener {
-
 	/** How much it costs to board the ferry. */
 	public static final int PRICE = 25;
 
@@ -46,17 +44,11 @@ public final class AthorFerry implements TurnListener {
 
 	private Status current;
 
-
-
-
-
 	/**
 	 * A list of non-player characters that get notice when the ferry arrives or
 	 * departs, so that they can react accordingly, e.g. inform nearby players.
 	 */
 	private final List<IFerryListener> listeners;
-
-
 
 	private AthorFerry() {
 		listeners = new LinkedList<IFerryListener>();
@@ -86,7 +78,6 @@ public final class AthorFerry implements TurnListener {
 	 *
 	 * @return A String representation of time remaining till next state.
 	 */
-
 	private String getRemainingSeconds() {
 		final int secondsUntilNextState = SingletonRepository.getTurnNotifier()
 				.getRemainingSeconds(this);
@@ -122,8 +113,6 @@ public final class AthorFerry implements TurnListener {
 		public FerryListener() {
 			SingletonRepository.getAthorFerry().addListener(this);
 		}
-
-
 	}
 
 	public interface IFerryListener {
@@ -215,5 +204,4 @@ public final class AthorFerry implements TurnListener {
 		 */
 		abstract int duration();
 	}
-
 }

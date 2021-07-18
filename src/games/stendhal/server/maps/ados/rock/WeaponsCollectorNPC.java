@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.rock;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -20,8 +21,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehaviour;
-
-import java.util.Map;
 
 public class WeaponsCollectorNPC implements ZoneConfigurator {
    private final ShopList shops = SingletonRepository.getShopList();
@@ -38,13 +37,6 @@ public class WeaponsCollectorNPC implements ZoneConfigurator {
 
 	private void buildRockArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Balduin") {
-
-			@Override
-			protected void createPath() {
-				// NPC doesn't move
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 			  // This greeting is mostly not used as the quests override it
@@ -61,11 +53,11 @@ public class WeaponsCollectorNPC implements ZoneConfigurator {
 			 * maps.quests.UltimateCollector. */
 		};
 
+		npc.setDescription("Oto Balduin. Żyje tu jako pustelnik. Możliwe, że ma dla ciebie zadanie.");
 		npc.setEntityClass("oldwizardnpc");
+		npc.setGender("M");
 		npc.setPosition(16, 8);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
-		npc.setDescription("Oto Balduin. Żyje tu jako pustelnik. Możliwe, że ma dla ciebie zadanie.");
 		zone.add(npc);
 	}
 }

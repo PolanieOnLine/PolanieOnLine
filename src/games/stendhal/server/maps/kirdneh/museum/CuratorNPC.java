@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.museum;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -22,9 +24,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /**
  * Builds a Curator NPC in Kirdneh museum .
  *
@@ -32,9 +31,6 @@ import java.util.Map;
  */
 public class CuratorNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
-	//
-	// ZoneConfigurator
-	//
 
 	/**
 	 * Configure a zone.
@@ -45,19 +41,12 @@ public class CuratorNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Hazel") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witam w Muzeum Kirdneh.");
@@ -75,11 +64,11 @@ public class CuratorNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Hazel, kustoszka muzeum Kirdneh.");
 		npc.setEntityClass("curatornpc");
+		npc.setGender("F");
 		npc.setPosition(2, 38);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
-		npc.setDescription("Oto Hazel, kustoszka muzeum Kirdneh.");
 		zone.add(npc);
 	}
 }

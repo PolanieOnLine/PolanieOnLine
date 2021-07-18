@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.sewingroom;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -23,11 +26,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/*
+/**
  * Ados City, house with a woman who makes sails for the ships
  */
 public class SeamstressNPC implements ZoneConfigurator {
@@ -49,7 +48,6 @@ public class SeamstressNPC implements ZoneConfigurator {
 
 	private void buildSeamstress(final StendhalRPZone zone) {
 		final SpeakerNPC seamstress = new SpeakerNPC("Ida") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -71,10 +69,10 @@ public class SeamstressNPC implements ZoneConfigurator {
 			}
 		};
 
-		seamstress.setEntityClass("woman_002_npc");
-		seamstress.setPosition(7, 7);
-		seamstress.initHP(100);
 		seamstress.setDescription("Oto Ida, jest znaną szwaczką w przemyśle stoczniowym. Ale może też tobie pomóc.");
+		seamstress.setEntityClass("woman_002_npc");
+		seamstress.setGender("F");
+		seamstress.setPosition(7, 7);
 		zone.add(seamstress);
 
 		// initialize clone to be placed in twilight zone

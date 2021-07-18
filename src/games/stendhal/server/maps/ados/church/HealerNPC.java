@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -31,17 +30,14 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 /**
  * The healer (original name: Valo). He makes mega potions.
  */
-
 public class HealerNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
-		SpeakerNPC npc = new SpeakerNPC("Valo") {
+		final SpeakerNPC npc = new SpeakerNPC("Valo") {
 
 			@Override
 			protected void createPath() {
@@ -84,16 +80,17 @@ public class HealerNPC implements ZoneConfigurator {
 						Arrays.asList("concoct", "sporządź"), "wielki eliksir", requiredResources, 2 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				"Pozdrawiam młodzieńcze. #Uleczę Cię i #pomogę Tobie.");
+						"Pozdrawiam młodzieńcze. #Uleczę Cię i #pomogę Tobie.");
 				// charge (1*the player level + 1) to heal
 				new HealerAdder().addHealer(this, -1);
 			}
 		};
-		npc.setEntityClass("grandadnpc");
+
 		npc.setDescription("Oto Valo. Jest otoczony pewnego rodzaju poświatą.");
+		npc.setEntityClass("grandadnpc");
+		npc.setGender("M");
 		npc.setPosition(26, 5);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

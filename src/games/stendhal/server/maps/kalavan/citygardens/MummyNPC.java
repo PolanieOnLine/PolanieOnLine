@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.citygardens;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * Builds the mother of Annie Jones.
@@ -26,10 +25,6 @@ import java.util.Map;
  * @author kymara
  */
 public class MummyNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,17 +36,10 @@ public class MummyNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC mummyNPC = new SpeakerNPC("Mrs. Jones") {
 			@Override
-			protected void createPath() {
-			    // does not move
-				setPath(null);
-			}
-			@Override
 			protected void createDialog() {
-
 				// greeting in maps/quests/IcecreamForAnnie.java
 				addOffer("Nie mogę. Jestem zajęta pilnowaniem mojej córki.");
 				addQuest("Nic, dziękuję.");
@@ -66,10 +54,10 @@ public class MummyNPC implements ZoneConfigurator {
 			}
 		};
 
-		mummyNPC.setDescription("Oto kobieta odpoczywająca na ławce i obserwująca zabawę córki.");
+		mummyNPC.setDescription("Oto Mrs. Jones, kobieta odpoczywająca na ławce i obserwująca zabawę córki.");
 		mummyNPC.setEntityClass("woman_000_npc");
+		mummyNPC.setGender("F");
 		mummyNPC.setPosition(53, 88);
-		mummyNPC.initHP(100);
 		zone.add(mummyNPC);
 	}
 }

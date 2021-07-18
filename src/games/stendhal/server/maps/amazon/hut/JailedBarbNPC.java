@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.amazon.hut;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -18,21 +23,12 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds the jailed Barbarian in Prison Hut on amazon island.
  *
  * @author Teiv
  */
 public class JailedBarbNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,8 +41,7 @@ public class JailedBarbNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC JailedBarbNPC = new SpeakerNPC("Lorenz") {
-
+		final SpeakerNPC jailedBarbNPC = new SpeakerNPC("Lorenz") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -76,11 +71,11 @@ public class JailedBarbNPC implements ZoneConfigurator {
 			}
 		};
 
-		JailedBarbNPC.setEntityClass("jailedbarbariannpc");
-		JailedBarbNPC.setPosition(11, 12);
-		JailedBarbNPC.setCollisionAction(CollisionAction.STOP);
-		JailedBarbNPC.initHP(100);
-		JailedBarbNPC.setDescription("Oto uwięziony barbarzyńca, Lorenz. Co on zrobił amazonkom?");
-		zone.add(JailedBarbNPC);
+		jailedBarbNPC.setDescription("Oto uwięziony barbarzyńca, Lorenz. Co on zrobił amazonkom?");
+		jailedBarbNPC.setEntityClass("jailedbarbariannpc");
+		jailedBarbNPC.setGender("M");
+		jailedBarbNPC.setPosition(11, 12);
+		jailedBarbNPC.setCollisionAction(CollisionAction.STOP);
+		zone.add(jailedBarbNPC);
 	}
 }

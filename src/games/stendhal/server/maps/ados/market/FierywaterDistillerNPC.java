@@ -11,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.market;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,10 +23,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Provides Uncle Dag NPC, in Ados Market.
  * He will produce fierywater bottles if he is given sugar canes (from cane fields)
@@ -30,7 +30,6 @@ import java.util.TreeMap;
  * @author omero
  */
 public class FierywaterDistillerNPC implements ZoneConfigurator {
-
     @Override
     public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
         buildNPC(zone);
@@ -38,12 +37,6 @@ public class FierywaterDistillerNPC implements ZoneConfigurator {
 
     private void buildNPC(final StendhalRPZone zone) {
         final SpeakerNPC npc = new SpeakerNPC("Uncle Dag") {
-
-            @Override
-            protected void createPath() {
-                setPath(null);
-            }
-
             @Override
             protected void createDialog() {
                 addGreeting("Cześć!");
@@ -57,7 +50,7 @@ public class FierywaterDistillerNPC implements ZoneConfigurator {
                 addReply(Arrays.asList("sugar", "cane", "canes", "sugar cane", "trzciny", "cukrowej","trzcina cukrowa"),
                     "Zdobywam potrzebną trzcinę cukrową z Athor island.");
                 addReply(Arrays.asList("wood", "polano"),
-                    "Możesz znaleść mnóstwo polan w pobliżu drzew, a lasy są najlepszym miejscem, gdzie znajdziesz drzewa!");
+                    "Możesz znaleźć mnóstwo polan w pobliżu drzew, a lasy są najlepszym miejscem, gdzie znajdziesz drzewa!");
                 addGoodbye("Zapraszam na rynek!");
             }
 
@@ -72,15 +65,15 @@ public class FierywaterDistillerNPC implements ZoneConfigurator {
         requiredResources.put("polano", 1);
 
         final ProducerBehaviour behaviour = new ProducerBehaviour("uncle_dag_brew_fierywater",
-            Arrays.asList("brew", "wywarzenie"), "ekstrakt litworowy", requiredResources, 20 * 60);
+        		Arrays.asList("brew", "wywarzenie"), "ekstrakt litworowy", requiredResources, 20 * 60);
         new ProducerAdder().addProducer(npc, behaviour,
-            "Cześć! Jestem Uncle Dag, gorzelnik! Jeżeli przyniesiesz mi #'trzcinę cukrową' i #polano to #wywarzę dla Ciebie #'ekstrakt litworowy'.");
+        		"Cześć! Jestem Uncle Dag, gorzelnik! Jeżeli przyniesiesz mi #'trzcinę cukrową' i #polano to #wywarzę dla Ciebie #'ekstrakt litworowy'.");
 
         npc.setDescription("Oto Uncle Dag. Prowadzi gorzelnie na rynku Ados.");
         npc.setEntityClass("fierywaterdistillernpc");
+        npc.setGender("M");
         npc.setPosition(35, 30);
         npc.setDirection(Direction.DOWN);
-        npc.initHP(100);
         zone.add(npc);
     }
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.house;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds Josephine NPC (Cloak Collector).
@@ -28,10 +27,6 @@ import java.util.Map;
  * @author kymara
  */
 public class WomanNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,13 +38,8 @@ public class WomanNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-	//
-	// IL0_womanNPC - Josephine, the Cloaks Collector
-	//
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC woman = new SpeakerNPC("Josephine") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -74,8 +64,8 @@ public class WomanNPC implements ZoneConfigurator {
 
 		woman.setDescription("Oto Josephine, modnie ubrana młoda kobieta. Wygląda trochę na flirciarę.");
 		woman.setEntityClass("youngwomannpc");
+		woman.setGender("F");
 		woman.setPosition(3, 4);
-		woman.initHP(100);
 		zone.add(woman);
 	}
 }

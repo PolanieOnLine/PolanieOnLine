@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.city;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Builds a information giving NPC in Kirdneh city.
@@ -27,10 +26,6 @@ import java.util.Map;
  * @author kymara
  */
 public class GossipNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,19 +35,12 @@ public class GossipNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jef") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
@@ -71,10 +59,10 @@ public class GossipNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("kid6npc");
-		npc.setPosition(114, 67);
-		npc.initHP(100);
 		npc.setDescription("Oto Jef. Wygląda jak by czekał na kogoś.");
+		npc.setEntityClass("kid6npc");
+		npc.setGender("M");
+		npc.setPosition(114, 67);
 		zone.add(npc);
 	}
 }

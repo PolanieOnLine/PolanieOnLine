@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.constants.Occasion;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -36,14 +37,12 @@ public class Skille350NPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMineArea(zone);
 	}
 
 	private void buildMineArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Festris") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -89,14 +88,14 @@ public class Skille350NPC implements ZoneConfigurator {
 
 					player.setAtkXP(750000 + player.getAtkXP());
 					player.setDefXP(1750000 + player.getDefXP());
-					if (!Occasion.SECOND_WORLD) {
+					if (Testing.COMBAT && !Occasion.SECOND_WORLD) {
 						player.setRatkXP(750000 + player.getRatkXP());
 					}
 					player.addXP(350000);
 
 					player.incAtkXP();
 					player.incDefXP();
-					if (!Occasion.SECOND_WORLD) {
+					if (Testing.COMBAT && !Occasion.SECOND_WORLD) {
 						player.incRatkXP();
 					}
 				}
@@ -105,12 +104,12 @@ public class Skille350NPC implements ZoneConfigurator {
 					player.setQuest("FestrisFirstChat", "done");
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");
 				}
-
 			}
-
 		});
 
+		npc.setDescription("Oto kapłanka Festris, która może użyć swej magii do wzmocnienia siły podczas walk.");
 		npc.setEntityClass("blackwizardpriestnpc");
+		npc.setGender("F");
 		npc.setPosition(112, 76);
 		zone.add(npc);
 	}

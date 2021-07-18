@@ -30,7 +30,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  *
  */
 public class HalfElfNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -38,7 +37,6 @@ public class HalfElfNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Aerianna") {
-
 			@Override
 			protected void createPath() {
                 final List<Node> nodes = new LinkedList<Node>();
@@ -91,9 +89,9 @@ public class HalfElfNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Aerianna. Piękna młoda kobieta w elfickimi uszami.");
 		npc.setEntityClass("halfelfnpc");
+		npc.setGender("F");
 		npc.setPosition(55, 47);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Creates Imorgen, a young witch who lives in Fado Forest.
@@ -27,7 +26,6 @@ import java.util.Map;
  * @author Vanessa Julius
  */
 public class WitchNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,13 +39,6 @@ public class WitchNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Imorgen") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-
-			}
-
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
@@ -67,10 +58,10 @@ public class WitchNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngwitchnpc");
-		npc.setPosition(59, 29);
-		npc.initHP(100);
 		npc.setDescription("Oto Imorgen. Jest młodą czarownicą z tajemniczą aurą, którą może rzucić na długi dystans.");
+		npc.setEntityClass("youngwitchnpc");
+		npc.setGender("F");
+		npc.setPosition(59, 29);
 		zone.add(npc);
 	}
 }

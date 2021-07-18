@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,12 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.city;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Builds a little girl NPC (Elisabeth) in Kirdneh city.
@@ -25,10 +24,6 @@ import java.util.Map;
  * @author Vanessa Julius idea by miasma
  */
 public class LittleGirlNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -38,20 +33,12 @@ public class LittleGirlNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Elisabeth") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-
-			}
-
 			@Override
 			protected void createDialog() {
 				// greeting message in quest given (ChocolateForElisabeth)
@@ -66,10 +53,10 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("littlegirl2npc");
-		npc.setPosition(92, 15);
-		npc.initHP(100);
 		npc.setDescription("Oto Elisabeth. Wygląda na głodną.");
+		npc.setEntityClass("littlegirl2npc");
+		npc.setGender("F");
+		npc.setPosition(92, 15);
 		zone.add(npc);
 	}
 }

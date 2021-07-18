@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.ados.coast;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -26,18 +28,13 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.ship.AthorFerry;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /**
  * Factory for an NPC who brings players from the docks to Athor Ferry
  * in a rowing boat.
  */
 public class FerryConveyerNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -61,91 +58,91 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 
 			@Override
 			public void createDialog() {
-		addGreeting("Witam zajmuję się usługami transportowymi do #Athor #island przy pomocy #promu! W czym mogę Ci #pomóc?");
-		addGoodbye();
-		addHelp("Możesz wejść na #prom za "
-				+ AthorFerry.PRICE
-				+ " złota tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom. Powiedz #wejdź, aby dostać się na prom.");
-		addJob("Jeżeli pasażerowie chcą wejść ( #board ) na #prom do #Athor #island to ja ich zabieram na statek.");
-		addReply(Arrays.asList("ferry", "prom", "promu"), "Prom żegluje regularnie pomiędzy tym wybrzeżem, a #Athor #island. Możesz wejść ( #board ) na statek tylko kiedy jest tutaj. Zapytaj mnie o #status jeżeli chcesz sprawdzić gdzie aktualnie się znajduje.");
-		addReply(Arrays.asList("Athor", "island"), "Athor Island jest miejscem wypoczynku, gdzie wiele osób spędza swoje wakacje.");
-		add(ConversationStates.ATTENDING, "status",
-				null,
-				ConversationStates.ATTENDING,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						npc.say(ferrystate.toString());
-					}
-				});
+				addGreeting("Witam zajmuję się usługami transportowymi do #Athor #island przy pomocy #promu! W czym mogę Ci #pomóc?");
+				addGoodbye();
+				addHelp("Możesz wejść na #prom za "
+						+ AthorFerry.PRICE
+						+ " złota tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom. Powiedz #wejdź, aby dostać się na prom.");
+				addJob("Jeżeli pasażerowie chcą wejść ( #board ) na #prom do #Athor #island to ja ich zabieram na statek.");
+				addReply(Arrays.asList("ferry", "prom", "promu"), "Prom żegluje regularnie pomiędzy tym wybrzeżem, a #Athor #island. Możesz wejść ( #board ) na statek tylko kiedy jest tutaj. Zapytaj mnie o #status jeżeli chcesz sprawdzić gdzie aktualnie się znajduje.");
+				addReply(Arrays.asList("Athor", "island"), "Athor Island jest miejscem wypoczynku, gdzie wiele osób spędza swoje wakacje.");
+				add(ConversationStates.ATTENDING, "status",
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new ChatAction() {
+							@Override
+							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+								npc.say(ferrystate.toString());
+							}
+						});
+		
+				add(ConversationStates.ATTENDING,
+						Arrays.asList("board", "wejdź"),
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new ChatAction() {
+							@Override
+							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+								if (ferrystate == Status.ANCHORED_AT_MAINLAND) {
+									npc.say("Aby wejść na prom musisz zapłacić " + AthorFerry.PRICE
+								+ " złota. Czy chcesz zapłacić?");
+									npc.setCurrentState(ConversationStates.SERVICE_OFFERED);
+								} else {
+									npc.say(ferrystate.toString()
+										+ " Możesz wejść na prom wtedy, kiedy prom jest zacumowany na stałym lądzie.");
+								}
+							}
+						});
+		
+				add(ConversationStates.SERVICE_OFFERED,
+						ConversationPhrases.YES_MESSAGES,
+						null,
+						ConversationStates.ATTENDING, null,
+						new ChatAction() {
+							@Override
+							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+								if (player.drop("money", AthorFerry.PRICE)) {
+									player.teleport(getShipZone(), 27, 33, Direction.LEFT, null);
+		
+								} else {
+									npc.say("Hej! Nie masz tyle pieniędzy!");
+								}
+							}
+						});
+		
+				add(ConversationStates.SERVICE_OFFERED,
+						ConversationPhrases.NO_MESSAGES,
+						null,
+						ConversationStates.ATTENDING,
+						"Nie wiesz co tracisz, szczurze lądowy!",
+						null);
+			}
+		};
 
-		add(ConversationStates.ATTENDING,
-				Arrays.asList("board", "wejdź"),
-				null,
-				ConversationStates.ATTENDING,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						if (ferrystate == Status.ANCHORED_AT_MAINLAND) {
-							npc.say("Aby wejść na prom musisz zapłacić " + AthorFerry.PRICE
-						+ " złota. Czy chcesz zapłacić?");
-							npc.setCurrentState(ConversationStates.SERVICE_OFFERED);
-						} else {
-							npc.say(ferrystate.toString()
-								+ " Możesz wejść na prom wtedy, kiedy prom jest zacumowany na stałym lądzie.");
-						}
-					}
-				});
+		new AthorFerry.FerryListener() {
+		@Override
+			public void onNewFerryState(final Status status) {
+				ferrystate = status;
+				switch (status) {
+				case ANCHORED_AT_MAINLAND:
+					npc.say("UWAGA: Prom przybył do wybrzeża! Można wejść na statek mówiąc #wejdź.");
+					break;
+				case DRIVING_TO_ISLAND:
+					npc.say("UWAGA: Prom odpłynął. Nie można się już dostać na statek.");
+					break;
+				default:
+					break;
+				}
+			}
+		};
 
-		add(ConversationStates.SERVICE_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						if (player.drop("money", AthorFerry.PRICE)) {
-							player.teleport(getShipZone(), 27, 33, Direction.LEFT, null);
-
-						} else {
-							npc.say("Hej! Nie masz tyle pieniędzy!");
-						}
-					}
-				});
-
-		add(ConversationStates.SERVICE_OFFERED,
-				ConversationPhrases.NO_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Nie wiesz co tracisz, szczurze lądowy!",
-				null);
-
-
-			}};
-
-				new AthorFerry.FerryListener() {
-				@Override
-					public void onNewFerryState(final Status status) {
-						ferrystate = status;
-						switch (status) {
-						case ANCHORED_AT_MAINLAND:
-							npc.say("UWAGA: Prom przybył do wybrzeża! Można wejść na statek mówiąc #wejdź.");
-							break;
-						case DRIVING_TO_ISLAND:
-							npc.say("UWAGA: Prom odpłynął. Nie można się już dostać na statek.");
-							break;
-						default:
-							break;
-						}
-					}
-				};
-
-			npc.setPosition(101, 103);
-			npc.setDescription("Oto Eliza. Zabiera klientów na pokład promu do Athor island.");
-			npc.setEntityClass("woman_008_npc");
-			npc.setDirection(Direction.LEFT);
-			zone.add(npc);
+		npc.setDescription("Oto Eliza. Zabiera klientów na pokład promu do Athor island.");
+		npc.setEntityClass("woman_008_npc");
+		npc.setGender("F");
+		npc.setPosition(101, 103);
+		npc.setDirection(Direction.LEFT);
+		zone.add(npc);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,17 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.tunnel;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * Outside entrance to dragon lair in -1_ados_outside_w.
  */
 public class WishmanNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -36,12 +34,6 @@ public class WishmanNPC implements ZoneConfigurator {
 
 	private void buildWishman(final StendhalRPZone zone) {
 		final SpeakerNPC wishman = new SpeakerNPC("Wishman") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			public void createDialog() {
 				addGreeting("Pozdrawiam podróżniku. Co mogę dla Ciebie zrobić?");
@@ -53,10 +45,10 @@ public class WishmanNPC implements ZoneConfigurator {
 			}
 		};
 
-		wishman.setDescription("Oto Wishman kiedyś storm trooper w mrocznych legionach Blordroughtów. Teraz strażnik wszystkiego co pozostało po smokach.");
+		wishman.setDescription("Oto Wishman, kiedyś storm trooper w mrocznych legionach Blordroughtów. Teraz strażnik wszystkiego co pozostało po smokach.");
 		wishman.setEntityClass("stormtroopernpc");
+		wishman.setGender("M");
 		wishman.setPosition(30, 28);
-		wishman.initHP(100);
 		zone.add(wishman);
 	}
 }

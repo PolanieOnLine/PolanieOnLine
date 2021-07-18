@@ -196,7 +196,7 @@ public class LookUpQuote extends AbstractQuest {
 		}
 		res.add("Spotkałem Pequod w domku w mieście Ados i poprosił mnie o znalezienie cytatu znanego rybaka.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Cytat, który muszę znaleść jest " + player.getQuest(QUEST_SLOT) + ".");
+			res.add("Cytat, który muszę znaleźć jest " + player.getQuest(QUEST_SLOT) + ".");
 		} else {
 			res.add("Znalazłem cytat dla Pequod i dostałem wędkę.");
 		}

@@ -2386,7 +2386,7 @@
 
 	<item name="kapusta pekińska">
 		<type class="food" subclass="chinese-cabbage" tileid="-1"/>
-		<description>Oto kapusta pekińska. Trudno ją znaleść.</description>
+		<description>Oto kapusta pekińska. Trudno ją znaleźć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>

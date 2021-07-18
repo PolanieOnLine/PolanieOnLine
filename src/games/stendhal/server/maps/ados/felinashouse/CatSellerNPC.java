@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,12 +11,18 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.felinashouse;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.grammar.ItemParserResult;
-import games.stendhal.server.entity.Entity;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -25,14 +30,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class CatSellerNPC implements ZoneConfigurator {
-
 	public static final int BUYING_PRICE = 100;
 
 	/**
@@ -47,7 +45,6 @@ public class CatSellerNPC implements ZoneConfigurator {
 	}
 
 	private void buildHouseArea(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Felina") {
 			@Override
 			protected void createPath() {
@@ -112,23 +109,22 @@ public class CatSellerNPC implements ZoneConfigurator {
 						"Koty kochają kurczaka i rybę. Wystarczy położyć kawałek na ziemi, a kot podejdzie i zje. Możesz sprawdzić jego wagę klikając prawym przyciskiem  na niego i wybierając 'Zobacz'. Jego waga będzie rosła po zjedzeniu każdego kawałka kurczaka.");
 				addReply(Arrays.asList("podróżować", "travel"),
 						"Gdy zmieniasz miejsce pobytu twój kot powinien być blisko Ciebie, aby nie zginął. Jeżeli nie zwraca na Ciebie uwagi wystarczy powiedzieć #cat aby go zawołać. Jeśli zdecydujesz się porzucić go to kliknij na siebie prawym przyciskiem i wybierz 'Porzuć zwierzątko', ale szczerze mówiąc sądzę, że takie zachowanie jest odrażające.");
-				addReply("sell",
+				addReply(Arrays.asList("sell", "sprzedać", "sprzedam"),
 						"Sprzedać??? Jakiego rodzaju potworem jesteś? Dlaczego w ogóle chciałbyś sprzedać swojego pięknego kota?");
 				addReply(Arrays.asList("przygarnąć", "own"),
 						"Jeżeli znajdziesz dzikiego lub porzuconego kota to, aby go przygarnąć możesz kliknąć na niego prawym przyciskiem i wybrać 'Przygarnij', a wtedy zacznie chodzić za tobą. Koty stają się trochę wściekłe bez właściciela!");
 			}
 		};
 
+		npc.setDescription("Oto Felina, która opiekuje się małymi kotkami. Ich miauczenie dochodzi z każdego kąta.");
 		npc.setEntityClass("woman_009_npc");
+		npc.setGender("F");
 		npc.setPosition(6, 8);
-		npc.initHP(100);
-		npc.setDescription("Felina opiekuje się kotami. Ich miauczenie dochodzi z każdego kąta.");
 		zone.add(npc);
 
 		// Also put a cat in her bedroom (people can't Own it as it is behind a fence)
 		final Cat hercat = new Cat();
-                hercat.setPosition(19, 3);
-                zone.add(hercat);
-
+		hercat.setPosition(19, 3);
+		zone.add(hercat);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.city;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -20,17 +23,12 @@ import games.stendhal.server.entity.npc.behaviour.adder.OutfitChangerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
 import games.stendhal.server.util.TimeUtil;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Creates the NPCs and portals in Ados City.
  *
  * @author hendrik
  */
 public class MakeupArtistNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -51,18 +49,11 @@ public class MakeupArtistNPC implements ZoneConfigurator {
 	 */
 	public void buildFidorea(final StendhalRPZone zone, int x, int y) {
 		final SpeakerNPC npc = new SpeakerNPC("Fidorea") {
-
 			private static final int MINUTES_BEFORE_WEAR_OFF = 5 * 60;
 
 			@Override
-			protected void createPath() {
-				// npc does not move
-				setPath(null);
-			}
-
-			@Override
 			protected void createDialog() {
-				addGreeting("Cześć. Czy potrzebujesz mojej #pomocy?");
+				addGreeting("Cześć. Potrzebujesz mojej #pomocy?");
 				addHelp(getHelpDescription());
 
 				// this is a hint that one of the items Anna wants is a dress (goblin dress)
@@ -87,11 +78,11 @@ public class MakeupArtistNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto piękna kobieta. Jej imię to Fidorea, kocha kolory.");
 		npc.setEntityClass("woman_008_npc");
+		npc.setGender("F");
 		npc.setPosition(x, y);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
-		npc.setDescription("Oto piękna kobieta. Jej imię to Fidorea, kocha kolory.");
 		zone.add(npc);
 	}
 }

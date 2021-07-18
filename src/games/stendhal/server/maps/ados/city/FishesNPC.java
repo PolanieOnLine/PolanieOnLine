@@ -1,4 +1,19 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2013 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.ados.city;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -7,20 +22,12 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SilentNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds some fish NPCs.
  *
  * @author AntumDeluge
  */
 public class FishesNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -28,13 +35,11 @@ public class FishesNPC implements ZoneConfigurator {
 	 * @param	attributes	Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
-	
+
 	private void buildNPC(final StendhalRPZone zone) {
-		
 		// Fish that swims around in the fountain
 		final SilentNPC f1 = new SilentNPC() {
 			@Override
@@ -47,14 +52,14 @@ public class FishesNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		
+
 		f1.setPosition(53, 109);
 		f1.setDescription("Oto ryba.");
 		f1.setDirection(Direction.DOWN);
 		f1.setEntityClass("animal/fish_roach");
 		f1.setVisibility(50); //underwater
 		zone.add(f1);
-		
+
 		// Fish that swims up and down in the coast
 		final SilentNPC f2 = new SilentNPC() {
 			@Override
@@ -76,7 +81,7 @@ public class FishesNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		
+
 		f2.setPosition(84, 81);
 		f2.setDescription("Oto ryba.");
 		f2.setDirection(Direction.UP);

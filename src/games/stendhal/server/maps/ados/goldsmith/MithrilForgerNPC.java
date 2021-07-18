@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,16 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.goldsmith;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Ados MithrilForger (Inside / Level 0).
@@ -42,12 +41,6 @@ public class MithrilForgerNPC implements ZoneConfigurator {
 
 	private void buildForger(final StendhalRPZone zone) {
 		final SpeakerNPC forger = new SpeakerNPC("Pedinghaus") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Pozdrawiam.");
@@ -74,11 +67,11 @@ public class MithrilForgerNPC implements ZoneConfigurator {
 			}
 		};
 
+		forger.setDescription("Oto Pedinghaus. Wygląda na to że zna się na magi...");
 		forger.setEntityClass("mithrilforgernpc");
+		forger.setGender("M");
 		forger.setDirection(Direction.RIGHT);
 		forger.setPosition(10, 12);
-		forger.initHP(100);
-		forger.setDescription("Oto Pedinghaus. Wygląda na to że zna się na magi...");
 		zone.add(forger);
 	}
 }

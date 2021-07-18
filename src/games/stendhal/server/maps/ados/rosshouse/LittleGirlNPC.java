@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -44,7 +43,6 @@ public class LittleGirlNPC implements ZoneConfigurator {
 	}
 
 	public void createGirlNPC(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Susi") {
 			@Override
 			protected void createPath() {
@@ -61,7 +59,6 @@ public class LittleGirlNPC implements ZoneConfigurator {
 				nodes.add(new Node(7, 11));
 				nodes.add(new Node(7, 7));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -86,12 +83,12 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Susi. Słyszałeś/aś kiedykolwiek opowieść o jej zaginięciu?");
 		npc.setOutfit(SUSI_OUTFIT);
 		npc.setOutfitColor("skin", SkinColor.LIGHT);
+		npc.setGender("F");
 		npc.setPosition(3, 7);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
-		npc.setDescription("Oto Susi. Słyszałeś/aś kiedykolwiek opowieść o jej zaginięciu?");
 		zone.add(npc);
 	}
 

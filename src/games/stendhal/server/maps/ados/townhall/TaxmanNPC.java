@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.townhall;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds an NPC to keep track of all the traders in Faiumoni
@@ -30,7 +29,6 @@ import java.util.Map;
  * @author kymara
  */
 public class TaxmanNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,7 +43,6 @@ public class TaxmanNPC implements ZoneConfigurator {
 	private void buildNPC(final StendhalRPZone zone) {
 		// Please change the NPCOwned Chest name if you change this NPC name.
 		final SpeakerNPC npc = new SpeakerNPC("Mr. Taxman") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,12 +65,11 @@ public class TaxmanNPC implements ZoneConfigurator {
 				addGoodbye("Do widzenia - i nie myśl nawet o próbie zaglądnięcia w księgi!");
 			}
 		};
-		npc.setDescription("Oto siejący postrach, bezwzględny Poborca Podatkowy.");
+
+		npc.setDescription("Oto siejący postrach Mr. Taxman, bezwzględny Poborca Podatkowy.");
 		npc.setEntityClass("taxmannpc");
+		npc.setGender("M");
 		npc.setPosition(2, 14);
-		npc.initHP(100);
 		zone.add(npc);
-
-
 	}
 }

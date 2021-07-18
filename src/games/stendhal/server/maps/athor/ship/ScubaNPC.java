@@ -1,4 +1,3 @@
-/* $Id: CaptainNPC.java,v 1.23 2013/06/10 22:13:14 bluelads99 Exp $ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.athor.ship;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -28,25 +30,18 @@ import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehav
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /** Factory for the Scuba Diver on Athor Ferry. */
-
 public class ScubaNPC implements ZoneConfigurator  {
-
 	private Status ferrystate;
 	private final ShopList shops = SingletonRepository.getShopList();
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Edward") {
-
 			@Override
 			public void createDialog() {
 				addGoodbye("Żegnaj...");
@@ -78,7 +73,6 @@ public class ScubaNPC implements ZoneConfigurator  {
 						npc.say(ferrystate.toString());
 					}
 				});
-
 			}
 
 			@Override
@@ -89,7 +83,6 @@ public class ScubaNPC implements ZoneConfigurator  {
 		};
 
 		new AthorFerry.FerryListener() {
-			
 			@Override
 			public void onNewFerryState(final Status status) {
 				ferrystate = status;
@@ -106,13 +99,13 @@ public class ScubaNPC implements ZoneConfigurator  {
 				}
 				// Turn back to the wheel
 				npc.setDirection(Direction.DOWN);
-
 			}
 		};
-		
-		npc.setPosition(17, 40);
+
+		npc.setDescription ("Oto wytrawny żeglarz, Edward. Jest zaabsorbowany czymś innym.");
 		npc.setEntityClass("pirate_sailornpc");
-		npc.setDescription ("Oto wytrawny żeglarz, ale zaabsorbowany czymś innym.");
+		npc.setGender("M");
+		npc.setPosition(17, 40);
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);	
 	}

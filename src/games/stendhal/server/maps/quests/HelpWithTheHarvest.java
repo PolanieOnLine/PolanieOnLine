@@ -99,7 +99,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 
 		npc.addReply(Arrays.asList("push", "pchnąć", "przepchnij"), "Możesz łatwo poruszyć wózki pchając je przed wejście do stodoły. Uważaj, aby gdzieś nie utknąć, bo nie będziesz mógł ich przesunąć dalej.");
 		
-		npc.addReply(Arrays.asList("barn", "stodoła", "stodoły"), "Stodołe Karla możesz znaleść na północ stąd. Wyróżnia się ogromnym znakiem z jego imieniem.");
+		npc.addReply(Arrays.asList("barn", "stodoła", "stodoły"), "Stodołe Karla możesz znaleźć na północ stąd. Wyróżnia się ogromnym znakiem z jego imieniem.");
 
 		// Player refused to help - end the conversation.
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -139,7 +139,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				Arrays.asList("jenny"),
 				createFinishedCondition(),
 				ConversationStates.ATTENDING,
-				"#Jenny możesz znaleść w pobliżu młyna Semos. Zmieli dla ciebie zboże na #mąkę o ile przyniesiesz jej kilak kłosów.",
+				"#Jenny możesz znaleźć w pobliżu młyna Semos. Zmieli dla ciebie zboże na #mąkę o ile przyniesiesz jej kilak kłosów.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,

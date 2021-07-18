@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -80,8 +79,8 @@ public class BuyerNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Mrotho, strzeże baraków w Ados.");
 		npc.setEntityClass("barracksbuyernpc");
+		npc.setGender("M");
 		npc.setPosition(45, 49);
-		npc.initHP(500);
 		zone.add(npc);
 	}
 }

@@ -198,7 +198,7 @@ public class TheMissingBooks extends AbstractQuest {
 		}
 		res.add("Spotkałem Cameron w Constantines Villa. Poprosił mnie abym odnalazł dla niego cytat z książki.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("To koniec tego cytatu ja muszę znaleść początek: " + player.getQuest(QUEST_SLOT) + ".");
+			res.add("To koniec tego cytatu ja muszę znaleźć początek: " + player.getQuest(QUEST_SLOT) + ".");
 		} else {
 			res.add("Powiedziałem cytat do Cameron w zamian dostałem receptę, która może przydać się dla Imorgen.");
 		}

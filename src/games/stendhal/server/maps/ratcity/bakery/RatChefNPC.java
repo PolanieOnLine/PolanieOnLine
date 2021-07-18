@@ -76,7 +76,7 @@ public class RatChefNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("egg","jajo"),
                     "Poszukaj go, gdzie kury są.");
 				addReply(Arrays.asList("milk","mleko"),
-                    "Farma jest dobrym miejscem, gdzie można znaleść mleko.");
+                    "Farma jest dobrym miejscem, gdzie można znaleźć mleko.");
 				addReply(Arrays.asList("butter","osełka masła"),
                     "Tam gzie znajdziesz mleko to znajdziesz też masło!");
 				addReply(Arrays.asList("ekstrakt litworowy"),
@@ -87,9 +87,9 @@ public class RatChefNPC implements ZoneConfigurator {
                 addReply(Arrays.asList("kitchen tool" ,"narzędzi kuchennych"),
                     "Tak młynek do cukru! Bardzo źle straciłem swój, który pożyczyłem od Erny jakiś czas temu... Proszę nie wspominaj jej mojego imienia!");
                 addReply(Arrays.asList("erna", "erny"),
-                    "Jest asystentką Leandera. Zawsze możesz ją znaleść w piekarni w Semos!");
+                    "Jest asystentką Leandera. Zawsze możesz ją znaleźć w piekarni w Semos!");
                 addReply(Arrays.asList("cane", "canes", "cane field", "cane fields", "sugar cane", "sugar canes", "polu trzciny", "pole", "pole trzciny"),
-                    "Słyszałem, że trzcina cukrowa potrzebują ciepła i wilgotnego klimatu do życia. Może mógłbyś znaleść je na wyspie Athor");
+                    "Słyszałem, że trzcina cukrowa potrzebują ciepła i wilgotnego klimatu do życia. Może mógłbyś znaleźć je na wyspie Athor");
 				addOffer("Serwuje naleśniki z polewą czekoladową.");
 				addHelp("Piekę naleśniki z polewą czekoladową. Powiedz #'upiecz naleśniki z polewą czekoladową', a upiekę je dla ciebie.");
 				addGoodbye("Au revoir voyageur... Wróć i odwiedź mnie kiedy tylko chcesz!");

@@ -45,7 +45,6 @@ public class WallSoldier3NPC implements ZoneConfigurator {
 	 * @param zone StendhalRPZone
 	 */
 	private void buildAdosWallSoldier(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Flavius") {
 
 			@Override
@@ -67,10 +66,10 @@ public class WallSoldier3NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(83, 73);
-		npc.initHP(100);
 		npc.setDescription("Oto Flavius, żołnierz, który strzeże mury miasta Ados.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(83, 73);
 		zone.add(npc);
 	}
 }

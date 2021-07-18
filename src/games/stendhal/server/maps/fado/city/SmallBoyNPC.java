@@ -39,13 +39,6 @@ public class SmallBoyNPC implements ZoneConfigurator {
 
 	private void buildSmallBoyNPC(final StendhalRPZone zone) {
 		final SpeakerNPC boynpc = new SpeakerNPC("Bobby") {
-
-			@Override
-			protected void createPath() {
-				// does not move
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Hm?");
@@ -63,11 +56,11 @@ public class SmallBoyNPC implements ZoneConfigurator {
 			}
 		};
 
+		boynpc.setDescription("Oto Bobby. Patrzy w niebo i wygląda na marzyciela.");
 		boynpc.setOutfit(3, 3, 3, null, 4, null, 7, 1, 0);
+		boynpc.setGender("M");
 		boynpc.setPosition(42, 30);
 		boynpc.setDirection(Direction.RIGHT);
-		boynpc.initHP(100);
-		boynpc.setDescription("Oto Bobby. Patrzy w niebo i wygląda na marzyciela.");
 		zone.add(boynpc);
 	}
 }

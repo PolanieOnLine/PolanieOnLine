@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.athor.ship;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -25,16 +27,10 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /** Factory for cargo worker on Athor Ferry. */
-
 public class CoastConveyerNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -43,27 +39,17 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 
 	private StendhalRPZone getIslandDockZone() {
 		if (islandDocksZone == null) {
-
 			islandDocksZone = SingletonRepository.getRPWorld().getZone("0_athor_island");
 		}
-
 		return islandDocksZone;
 	}
-
 
 	private Status ferryState;
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jackie") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			public void createDialog() {
-
 				addGoodbye("Do widzenia!");
 				addGreeting("Ahoj, Przyjacielu! W czym mogę #pomóc?");
 				addHelp("Tak, możesz zejść mówiąc #zejdź, ale wtedy kiedy zacumujemy na przystani. Zapytaj mnie o #status jeżeli nie masz pojęcia gdzie jesteśmy.");
@@ -101,11 +87,9 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 						default:
 							npc.say(ferryState.toString()
 								+ " Możesz zejść na ląd kiedy jesteśmy zacumowani na przystani.");
-
 						}
 					}
 				});
-
 
 				add(ConversationStates.SERVICE_OFFERED,
 						ConversationPhrases.YES_MESSAGES,
@@ -128,7 +112,6 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 							npc.say("Niedobrze! Statek już wypłynął.");
 
 						}
-
 					}
 				});
 
@@ -137,34 +120,34 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 						null,
 						ConversationStates.ATTENDING,
 						"Aye, przyjacielu!", null);
+			}
+		};
 
-			}};
-			new AthorFerry.FerryListener() {
-
-
-				@Override
-				public void onNewFerryState(final Status status) {
-					ferryState = status;
-					switch (status) {
-					case ANCHORED_AT_MAINLAND:
-						npc.say("UWAGA: Prom dobił do stałego lądu! Możesz teraz zejść mówiąc #zejdź.");
-						break;
-					case ANCHORED_AT_ISLAND:
-						npc.say("UWAGA: Prom dobił do wyspy! Możesz teraz zejść mówiąc #zejdź.");
-						break;
-					default:
-						npc.say("UWAGA: Prom wypłynął.");
-						break;
-					}
-
+		new AthorFerry.FerryListener() {
+			@Override
+			public void onNewFerryState(final Status status) {
+				ferryState = status;
+				switch (status) {
+				case ANCHORED_AT_MAINLAND:
+					npc.say("UWAGA: Prom dobił do stałego lądu! Możesz teraz zejść mówiąc #zejdź.");
+					break;
+				case ANCHORED_AT_ISLAND:
+					npc.say("UWAGA: Prom dobił do wyspy! Możesz teraz zejść mówiąc #zejdź.");
+					break;
+				default:
+					npc.say("UWAGA: Prom wypłynął.");
+					break;
 				}
-			};
 
-			npc.setPosition(29, 34);
-			npc.setEntityClass("pirate_sailor2npc");
-			npc.setDescription ("Jackie pomaga pasażerom zejść ze statku na ląd. Jest prawdziwą piratką!");
-			npc.setDirection(Direction.LEFT);
-			zone.add(npc);
+			}
+		};
+
+		npc.setDescription ("Oto Jackie, pomaga pasażerom zejść ze statku na ląd. Jest prawdziwą piratką!");
+		npc.setEntityClass("pirate_sailor2npc");
+		npc.setGender("F");
+		npc.setPosition(29, 34);
+		npc.setDirection(Direction.LEFT);
+		zone.add(npc);
 	}
 
 	private static StendhalRPZone getMainlandDocksZone() {

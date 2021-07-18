@@ -46,9 +46,7 @@ public class GreeterSoldierNPC implements ZoneConfigurator {
 	 * @param zone StendhalRPZone
 	 */
 	private void buildAdosGreetingSoldier(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Julius") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> path = new LinkedList<Node>();
@@ -72,10 +70,10 @@ public class GreeterSoldierNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(84, 109);
-		npc.initHP(100);
 		npc.setDescription("Oto Julius, żołnierz, który strzeże wejścia do miasta Ados.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(84, 109);
 		zone.add(npc);
 	}
 }

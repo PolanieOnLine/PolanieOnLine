@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.citygardens;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a little girl called Annie Jones.
@@ -28,10 +27,6 @@ import java.util.Map;
  * @author kymara
  */
 public class LittleGirlNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,10 +38,8 @@ public class LittleGirlNPC implements ZoneConfigurator {
 		createNPC(zone);
 	}
 
-
 	private void createNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Annie Jones") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -60,17 +53,17 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				// greeting and quest in maps/quests/IcecreamForAnnie.java
-			addOffer("Jestem małą dziewczynką. Nie mam nic do zaoferowania.");
-			addJob("Pomagam mojej mamusi.");
-			addHelp("Zapytaj mamusi.");
-			addGoodbye("Ta ta.");
+				addOffer("Jestem małą dziewczynką. Nie mam nic do zaoferowania.");
+				addJob("Pomagam mojej mamusi.");
+				addHelp("Zapytaj mamusi.");
+				addGoodbye("Ta ta.");
 			}
 		};
 
-		npc.setDescription("Oto mała dziewczynka, bawiąca się na placu zabaw.");
+		npc.setDescription("Oto mała dziewczynka Annie Jones, bawiąca się na placu zabaw.");
 		npc.setEntityClass("pinkgirlnpc");
+		npc.setGender("F");
 		npc.setPosition(44, 90);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -185,7 +185,7 @@ public class SignLessorNPC implements ZoneConfigurator {
 								SingletonRepository.getRuleProcessor().sendMessageToSupporters("SignLessorNPC", message);
 								new GameEvent(player.getName(), "sign", "deleted", playerName).raise();
 							} else {
-								player.sendPrivateText("Nie mogę znaleść znaku postawionego przez " + playerName);
+								player.sendPrivateText("Nie mogę znaleźć znaku postawionego przez " + playerName);
 							}
 						}
 

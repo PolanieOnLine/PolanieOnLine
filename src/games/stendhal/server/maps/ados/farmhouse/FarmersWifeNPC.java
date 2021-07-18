@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.farmhouse;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -19,11 +23,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * NPC to sell milk.
@@ -70,10 +69,11 @@ public class FarmersWifeNPC implements ZoneConfigurator {
 				addGoodbye("Żegnaj.");
 			}
 		};
-		npc.setEntityClass("wifenpc");
-		npc.setPosition(27, 4);
-		npc.initHP(100);
+
 		npc.setDescription("Oto Philomena. Pachnie nieco krowami, których mleko jest wyjątkowe.");
+		npc.setEntityClass("wifenpc");
+		npc.setGender("F");
+		npc.setPosition(27, 4);
 	    zone.add(npc);
 	}
 }

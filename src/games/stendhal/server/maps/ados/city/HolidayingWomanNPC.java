@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -63,14 +62,13 @@ public class HolidayingWomanNPC implements ZoneConfigurator {
 				addQuest("Niestety, nie mam żadnego zadania dla Ciebie.");
 				addJob("Hahaha! Jestem tutaj na urlopie i po prostu wyszłam na spacer.");
 				addGoodbye("Do widzenia.");
-
-				}
+			}
 		};
 
-		npc.setEntityClass("woman_016_npc");
-		npc.setPosition(47, 90);
-		npc.initHP(100);
 		npc.setDescription("Oto Alice Farmer. Spędza wakacje w Ados.");
+		npc.setEntityClass("woman_016_npc");
+		npc.setGender("F");
+		npc.setPosition(47, 90);
 		zone.add(npc);
 	}
 }

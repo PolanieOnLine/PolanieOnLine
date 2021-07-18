@@ -39,9 +39,7 @@ import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.maps.Region;
 import marauroa.common.Pair;
 
-
 public class GreeterNPC implements ZoneConfigurator {
-
 	private static final StendhalRPWorld world = SingletonRepository.getRPWorld();
 
 	private SpeakerNPC greeter;
@@ -82,7 +80,6 @@ public class GreeterNPC implements ZoneConfigurator {
 		put("mamut włochaty",
 				"Te potwory istnieją już od początku czasów. Bądź ostrożny, jeśli spotkasz ich stado. Są bardzo silne.");
 	}};
-
 
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
@@ -233,7 +230,7 @@ public class GreeterNPC implements ZoneConfigurator {
 				null,
 				createReply(InquiryType.CREATURE));
 
-
+		greeter.setGender("F");
 		greeter.setPosition(65, 75);
 		zone.add(greeter);
 	}

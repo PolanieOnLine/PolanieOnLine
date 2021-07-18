@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.cottage;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -20,12 +25,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * NPC who makes tea.
@@ -45,8 +44,7 @@ public class HouseKeeperNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Granny Graham") {
-
+		final SpeakerNPC npc = new SpeakerNPC("babcia Graham") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -82,11 +80,12 @@ public class HouseKeeperNPC implements ZoneConfigurator {
 				        "To najlepszy napój. Słodzę ją miodem. Powiedz #'zaparz filiżanka herbaty' o ile będziesz chciał.");
 			}
 		};
-		npc.setDescription("Oto starsza Granny Graham krzątająca się po kuchni i mówiąca do siebie.");
+
+		npc.setDescription("Oto starsza babcia Graham krzątająca się po kuchni i mówiąca do siebie.");
 		npc.setEntityClass("granmanpc");
+		npc.setGender("F");
 		npc.setDirection(Direction.RIGHT);
 		npc.setPosition(4, 4);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

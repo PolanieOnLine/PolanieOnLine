@@ -62,7 +62,7 @@ public class DwarfGuardianNPC implements ZoneConfigurator {
 						raiser.say(reply);
 					}
 				});
-				addReply(Arrays.asList("stone", "stones", "kamień", "kamienie"), "Możesz znaleść ich tony na terenie Faiumoni. Nie które nie są zbyt duże i możesz je z całą siła popchnąć...ale zgaduję, że wojownik taki jak ty nie bedzie miał z tym problemów.");
+				addReply(Arrays.asList("stone", "stones", "kamień", "kamienie"), "Możesz znaleźć ich tony na terenie Faiumoni. Nie które nie są zbyt duże i możesz je z całą siła popchnąć...ale zgaduję, że wojownik taki jak ty nie bedzie miał z tym problemów.");
 				addJob("Jestem krasnalem strażnikiem i staram się zawrócić śmiałków z drogi, jaką wybrał dla nich los.");
 				addHelp("Uważaj, gdy będziesz biegł przez głębokie tunele kopalni w Semos. Czekają tam na Ciebie różne silne potwory! Potrzebujesz dobrego sprzętu, o oferty zapytaj Harolda w Tawernie w Semos, być może on będzie w stanie Ci pomóc...");
 				addGoodbye();

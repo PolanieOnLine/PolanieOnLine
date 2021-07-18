@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -24,7 +23,6 @@ import games.stendhal.server.entity.player.Player;
  * (if it is allowed in the current state).
  */
 public class LeaveAction implements ChatAction {
-
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 		final DeathmatchState deathmatchState = DeathmatchState.createFromQuestString(player.getQuest("deathmatch"));

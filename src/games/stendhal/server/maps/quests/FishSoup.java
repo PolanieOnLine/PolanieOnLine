@@ -204,7 +204,7 @@ public class FishSoup extends AbstractQuest {
 			Arrays.asList("pokolec","dorsz", "palia alpejska", "płotka", "błazenek", "makrela", "okoń"),
 			null,
 			ConversationStates.QUEST_OFFERED,
-			"Są różne miejsca połowów w Faiumoni. Jeżęli chcesz wiedzieć gdzie możesz znaleść każdy z rodzjów ryby" +
+			"Są różne miejsca połowów w Faiumoni. Jeżęli chcesz wiedzieć gdzie możesz znaleźć każdy z rodzjów ryby" +
 			" to zajrzyj do biblioteki w Ados. Przyniesiesz mi te składniki?",
 			null);
 

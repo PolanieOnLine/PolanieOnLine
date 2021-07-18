@@ -28,8 +28,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author daniel / kymara
  */
 public class ShopAssistantNPC implements ZoneConfigurator  {
-
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -37,7 +35,6 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Christina") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -55,23 +52,24 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				/*
 				// Christina bakes bread if you bring her supplies from the port.
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("flour", 2);
+				requiredResources.put("mąka", 2);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour("christina_bake_bread",
-						"bake", "bread", requiredResources, 10 * 60);
+						"bake", "chleb", requiredResources, 10 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
 				"Welcome to the Semos bakery! We'll #bake fine bread for anyone who helps bring our #flour delivery from the mill.");
 
 				addOffer("Psss. I am not allowed to sell you any §bread officially because it is all needed by the army."); // TODO
 				*/
+			}
+		};
 
-
-			}};
-			npc.setPosition(24, 4);
-			npc.setDirection(Direction.DOWN);
-			npc.setEntityClass("housewifenpc");
-			npc.setDescription("Oto Christina. Ma piękny zapach.");
-			zone.add(npc);
+		npc.setDescription("Oto Christina. Ma piękny zapach.");
+		npc.setEntityClass("housewifenpc");
+		npc.setGender("F");
+		npc.setPosition(24, 4);
+		npc.setDirection(Direction.DOWN);
+		zone.add(npc);
 	}
 }

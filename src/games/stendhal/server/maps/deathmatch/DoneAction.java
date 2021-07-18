@@ -33,11 +33,9 @@ import marauroa.server.db.command.DBCommandQueue;
  * Handles player claim of victory by giving reward after verifying the winning.
  */
 public class DoneAction implements ChatAction {
-
 	private static final Logger logger = Logger.getLogger(DoneAction.class);
 
 	private final DeathmatchInfo deathmatchInfo;
-
 
 	public DoneAction(final DeathmatchInfo deathmatchInfo) {
 		this.deathmatchInfo = deathmatchInfo;

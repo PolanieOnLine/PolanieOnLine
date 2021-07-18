@@ -28,8 +28,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author hendrik
  */
 public class WizardNPC implements ZoneConfigurator  {
-
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -37,7 +35,6 @@ public class WizardNPC implements ZoneConfigurator  {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Byron Mcgalister") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -50,11 +47,14 @@ public class WizardNPC implements ZoneConfigurator  {
 				addJob("Robię teraz badania. Proszę, nie przeszkadzaj mi. Muszę się skoncentrować.");
 				addGoodbye();
 
-			}};
-			npc.setPosition(4, 2);
-			npc.setDirection(Direction.DOWN);
-			npc.setEntityClass("wizardnpc");
-			npc.setDescription("Oto Byron Mcgalister. Przypomina wyglądem czarodzieja.");
-			zone.add(npc);
+			}
+		};
+
+		npc.setDescription("Oto Byron Mcgalister. Przypomina wyglądem czarodzieja.");
+		npc.setEntityClass("wizardnpc");
+		npc.setGender("M");
+		npc.setPosition(4, 2);
+		npc.setDirection(Direction.DOWN);
+		zone.add(npc);
 	}
 }

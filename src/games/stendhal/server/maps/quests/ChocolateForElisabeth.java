@@ -102,7 +102,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 				"Nie pamiętam kiedy ostatnio czułam zapach dobrej tabliczki #czekolady...",
 				null);
 
-		npc.addReply(Arrays.asList("chocolate", "czekolada", "czekolady"), "Moja mama powiedziała mi, że czekoladę można znaleść w szkole zabójców, która jest #niebezpieczna. Powiedziała mi także, że ktoś sprzedaje ją w Ados...");
+		npc.addReply(Arrays.asList("chocolate", "czekolada", "czekolady"), "Moja mama powiedziała mi, że czekoladę można znaleźć w szkole zabójców, która jest #niebezpieczna. Powiedziała mi także, że ktoś sprzedaje ją w Ados...");
 
 		npc.addReply(Arrays.asList("dangerous", "niebezpieczna"), "Paru bandytów czeka na drodze do szkoły, a zabójcy strzegą jej i dlatego moja mama i ja musimy zostać w Kirdneh ponieważ nie jest tam bezpiecznie...");
 

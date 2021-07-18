@@ -1,7 +1,18 @@
-/**
- *
- */
+/***************************************************************************
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.ados.church;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -9,9 +20,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * A praying NPC in ados church
@@ -22,7 +30,15 @@ public class VergerNPC implements ZoneConfigurator {
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		final String[] text = {"... Nie jesteś sam, ponieważ jest tutaj wiele osób, z którymi możesz się zaprzyjaźnić…" , "Nie martw się! Każdy ma czasem gorszy dzień…" , "…Po prostu myśl bardziej pozytywnie, a życie stanie się łatwiejsze…" , "… Pamiętaj: wszystko pójdzie dobrze…" , "Dziękuję, że przyszedłeś tutaj i spędziłeś ze mną trochę czasu." , "Zadbaj o nieszczęśliwych, w sercach smutnych zaszczep nadzieję…"};
+		final String[] text = {
+				"... Nie jesteś sam, ponieważ jest tutaj wiele osób, z którymi możesz się zaprzyjaźnić…",
+				"Nie martw się! Każdy ma czasem gorszy dzień…",
+				"…Po prostu myśl bardziej pozytywnie, a życie stanie się łatwiejsze…",
+				"… Pamiętaj: wszystko pójdzie dobrze…",
+				"Dziękuję, że przyszedłeś tutaj i spędziłeś ze mną trochę czasu.",
+				"Zadbaj o nieszczęśliwych, w sercach smutnych zaszczep nadzieję…"
+			};
+
 		new MonologueBehaviour(buildNPC(zone), text, 3);
 	}
 
@@ -48,14 +64,13 @@ public class VergerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("vergernpc");
 		npc.setDescription("Oto Simon. Ma przymknięte oczy i cicho się modli, choć czasem możesz usłyszeć pojedyńcze słowa odmawianej modlitwy.");
+		npc.setEntityClass("vergernpc");
+		npc.setGender("M");
 		npc.setPosition(29, 14);
 		npc.setDirection(Direction.UP);
-		npc.initHP(100);
 		zone.add(npc);
 
 		return npc;
 	}
-
 }

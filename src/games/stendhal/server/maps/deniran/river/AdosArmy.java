@@ -19,11 +19,9 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SilentNPC;
 
-
 public class AdosArmy implements ZoneConfigurator  {
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPCs(zone);
 	}
 
@@ -35,13 +33,13 @@ public class AdosArmy implements ZoneConfigurator  {
 				//npc.setIdea("defence");
 				npc.setEntityClass("youngsoldiernpc");
 				npc.setDescription("Oto armia żołnierzy Ados.");
+				npc.setGender("M");
 				npc.setPosition(55+i, 97+j);
 				npc.setDirection(Direction.DOWN);
 				npc.setName("Żołnierze Ados");
 				zone.add(npc);
 				npclist.add(npc);
 			}
-
 		}
 	};
 }

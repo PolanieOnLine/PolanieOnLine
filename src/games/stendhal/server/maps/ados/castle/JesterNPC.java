@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.castle;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -19,11 +23,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a Jester NPC to inform entrants to the castle.
@@ -73,10 +72,11 @@ public class JesterNPC implements ZoneConfigurator {
 				addGoodbye("Do widzenia!");
 			}
 		};
+
 		npc.setDescription("Oto Huckle Rohn, nadworny błazen.");
 		npc.setEntityClass("magic_jesternpc");
+		npc.setGender("M");
 		npc.setPosition(8, 57);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

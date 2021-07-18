@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -24,7 +23,6 @@ import games.stendhal.server.entity.player.Player;
  * handles "bail" trigger to free the player from deathmatch with a penalty.
  */
 public class BailAction implements ChatAction {
-
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 		final String questInfo = player.getQuest("deathmatch");

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.labyrinth;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -20,17 +21,13 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.ItemGuardCreature;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 
-import java.util.Map;
-
 public class MinotaurKingCreature implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildLabyrinth(zone);
@@ -38,9 +35,7 @@ public class MinotaurKingCreature implements ZoneConfigurator {
 
 	private void buildLabyrinth(final StendhalRPZone zone) {
 		final EntityManager manager = SingletonRepository.getEntityManager();
-
 		final Creature creature = new ItemGuardCreature(manager.getCreature("król minotaur"), "kokuda");
-
 		final CreatureRespawnPoint point = new CreatureRespawnPoint(zone, 58, 55, creature, 1);
 
 		zone.add(point);

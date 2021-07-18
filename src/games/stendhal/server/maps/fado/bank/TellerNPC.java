@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.bank;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds the bank teller NPC.
@@ -28,10 +27,6 @@ import java.util.Map;
  * @author timothyb89
  */
 public class TellerNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,13 +38,8 @@ public class TellerNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-	//
-	// IL0_TellerNPC
-	//
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC bankNPC = new SpeakerNPC("Yance") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,9 +58,9 @@ public class TellerNPC implements ZoneConfigurator {
 		};
 
 		bankNPC.setEntityClass("youngnpc");
+		bankNPC.setDescription("Oto Yance, jest dyrektorem banku w Fado. On może udzielić ci porady jak korzystać ze skrzyń.");
+		bankNPC.setGender("M");
 		bankNPC.setPosition(15, 3);
-		bankNPC.initHP(1000);
-		bankNPC.setDescription("Yance jest dyrektorem w banku Fado. On może udzielić ci porady jak kożystać ze skrzyń.");
 		zone.add(bankNPC);
 	}
 }

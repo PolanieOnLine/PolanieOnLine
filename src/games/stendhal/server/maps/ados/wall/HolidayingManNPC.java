@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,19 +11,18 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.wall;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Creates a man NPC to help populate Ados
- *
  */
 public class HolidayingManNPC implements ZoneConfigurator {
 	/**
@@ -40,7 +38,6 @@ public class HolidayingManNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Martin Farmer") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -59,17 +56,16 @@ public class HolidayingManNPC implements ZoneConfigurator {
 				addGreeting("Hi hi.");
 				addHelp("Burmistrz tego miasta jest naprawdę w porządku. Odwiedziłem go wraz z żoną wczoraj aby uzyskać pomoc.");
 				addOffer("Co takiego? Ja jestem na wczasach.");
-				addQuest("Ehm ... I nie potrzebuję pomocy w tej chwili, ale dzięki.");
+				addQuest("Ehm... I nie potrzebuję pomocy w tej chwili, ale dzięki.");
 				addJob("Nie nie, ja tu jestem z żoną Alice na wakacjach.");
 				addGoodbye("Do zobaczenia i zajmij się lwami za murem.");
-
-				}
+			}
 		};
 
-		npc.setEntityClass("man_008_npc");
-		npc.setPosition(70, 52);
-		npc.initHP(100);
 		npc.setDescription("Oto Martin Farmer. Jest na wakacjach z żoną Alice.");
+		npc.setEntityClass("man_008_npc");
+		npc.setGender("M");
+		npc.setPosition(70, 52);
 		zone.add(npc);
 	}
 }

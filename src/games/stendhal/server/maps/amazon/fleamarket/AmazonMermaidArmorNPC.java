@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.amazon.fleamarket;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,15 +25,11 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
- * In Amazon Island ne .
+ * In Amazon Island ne.
  */
 public class AmazonMermaidArmorNPC implements ZoneConfigurator {
-    private final ShopList shops = SingletonRepository.getShopList();
+	private final ShopList shops = SingletonRepository.getShopList();
 
 	/**
 	 * Configure a zone.
@@ -45,7 +44,6 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 
 	private void buildmermaid(final StendhalRPZone zone) {
 		final SpeakerNPC mermaid = new SpeakerNPC("Nicklesworth") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -74,7 +72,6 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 				nodes.add(new Node(9, 82));
 				nodes.add(new Node(8, 82));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -86,14 +83,13 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 				addOffer("Nie lubię tego mówić, ale spójrz na tamtą tablicę, aby poznać moje ceny i to co ja skupuję.");
 				addQuest("Niczego nie potrzebuję. Dziękuję.");
 				addGoodbye("Do widzenia. NIENAWIDZISZ tego miejsca? ;) Powiedź hej gigantycznej amazonce jak już jesteś tutaj.");
-
 			}
 		};
 
-		mermaid.setEntityClass("marmaidnpc");
-		mermaid.setPosition(8, 92);
-		mermaid.initHP(100);
 		mermaid.setDescription("Oto Nicklesworth. Czyż syreny nie są piękne?");
+		mermaid.setEntityClass("marmaidnpc");
+		mermaid.setGender("F");
+		mermaid.setPosition(8, 92);
 		zone.add(mermaid);
 	}
 }

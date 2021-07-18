@@ -25,8 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  */
 public class LittleGirlNPC implements ZoneConfigurator {
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -48,9 +47,10 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setPosition(89, 54);
-		npc.setEntityClass("kid5npc");
 		npc.setDescription("Oto mała dziewczynka, Marianna.");
+		npc.setEntityClass("kid5npc");
+		npc.setGender("F");
+		npc.setPosition(89, 54);
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
 	}

@@ -19,24 +19,18 @@ import java.util.Calendar;
  * @author hendrik
  */
 public enum DaylightPhase {
-
 	/** during the night */
-	NIGHT (0x47408c, "night"),
-
+	NIGHT (0x47408c, "noc"),
 	/** early morning before sunrise at */
-	DAWN (0x774590, "night"),
-
+	DAWN (0x774590, "świt"),
 	/** the sun is rising */
-	SUNRISE (0xc0a080, "sunrise"),
-
+	SUNRISE (0xc0a080, "wschód słońca"),
 	/** during the day */
-	DAY ("day"),
-
+	DAY ("dzień"),
 	/** the sun is setting */
-	SUNSET (0xc0a080, "sunset"),
-
+	SUNSET (0xc0a080, "zachód słońca"),
 	/** early night */
-	DUSK (0x774590, "night");
+	DUSK (0x774590, "wieczór");
 
 	private Integer color;
 	private String greetingName;

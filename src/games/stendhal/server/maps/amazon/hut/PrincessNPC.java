@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.amazon.hut;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -18,21 +23,12 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds the princess in Princess Hut on amazon island.
  *
  * @author Teiv
  */
 public class PrincessNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -46,7 +42,6 @@ public class PrincessNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC princessNPC = new SpeakerNPC("Księżniczka Esclara") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -63,7 +58,7 @@ public class PrincessNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-			        addGreeting("Huh, Co ty tutaj robisz?");
+				addGreeting("Huh, Co ty tutaj robisz?");
 				addReply(Arrays.asList("sorry", "przepraszam"), "Nie powinieneś się do mnie wślizgiwać od tak!");
 				addReply(Arrays.asList("look", "zobacz", "zobaczyć", "przeszukaj"), "Nie powinieneś tu szperać, tutaj wszystko jest moje!");
 				addReply(Arrays.asList("nothing", "nic"), "Odejdź i idź robić to gdzie indziej, a nie w moim domku!");
@@ -74,11 +69,11 @@ public class PrincessNPC implements ZoneConfigurator {
 			}
 		};
 
+		princessNPC.setDescription("Oto księżniczka Esclara. Pachnie kokosem i ananasem...");
 		princessNPC.setEntityClass("amazoness_princessnpc");
+		princessNPC.setGender("F");
 		princessNPC.setPosition(6, 13);
 		princessNPC.setCollisionAction(CollisionAction.STOP);
-		princessNPC.initHP(100);
-		princessNPC.setDescription("Oto księżniczka Esclara. Pachnie kokosem i ananasem...");
 		zone.add(princessNPC);
 	}
 }

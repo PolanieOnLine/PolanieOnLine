@@ -45,9 +45,7 @@ public class WallSoldier2NPC implements ZoneConfigurator {
 	 * @param zone StendhalRPZone
 	 */
 	private void buildAdosWallSoldier(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Grekus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> path = new LinkedList<Node>();
@@ -68,10 +66,10 @@ public class WallSoldier2NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(76, 20);
-		npc.initHP(100);
 		npc.setDescription("Oto Grekus, żołnierz, który strzeże mury miasta Ados.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(76, 20);
 		zone.add(npc);
 	}
 }

@@ -325,7 +325,7 @@ public class JailedBarbarian extends AbstractQuest {
 		if ("spoken".equals(questState)) {
 			return res;
 		}
-		res.add("Lorenz w końcu postanowił spróbować uwolnić się. Muszę mu znaleść zbroję barbarzyńy.");
+		res.add("Lorenz w końcu postanowił spróbować uwolnić się. Muszę mu znaleźć zbroję barbarzyńy.");
 		if ("armor".equals(questState)) {
 			return res;
 		}

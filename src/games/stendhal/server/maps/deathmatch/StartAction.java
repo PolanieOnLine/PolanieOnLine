@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -24,7 +23,6 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public class StartAction implements ChatAction {
-
 	private final DeathmatchInfo deathmatchInfo;
 
 	/**

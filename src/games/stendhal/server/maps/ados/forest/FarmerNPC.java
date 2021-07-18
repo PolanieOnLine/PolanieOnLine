@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.forest;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -19,12 +24,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds Karl, the farmer NPC.
@@ -34,7 +33,6 @@ import java.util.Map;
  * @author kymara
  */
 public class FarmerNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -48,11 +46,6 @@ public class FarmerNPC implements ZoneConfigurator {
 
 	private void buildFarmer(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Karl") {
-
-			/*
-			 * Karl walks around near the red barn and along the path some way.
-			 */
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -90,10 +83,10 @@ public class FarmerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Karl miły starszy rolnik.");
+		npc.setDescription("Oto Karl, miły starszy rolnik.");
 		npc.setEntityClass("beardmannpc");
+		npc.setGender("M");
 		npc.setPosition(64, 76);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -29,8 +29,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class WeaponDealerNPC implements ZoneConfigurator  {
-
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -80,9 +78,10 @@ public class WeaponDealerNPC implements ZoneConfigurator  {
 			shops.add("deniranequipsell", key, pricesSell.get(key));
 		}
 
-		npc.setPosition(11, 5);
-		npc.setEntityClass("wellroundedguynpc");
 		npc.setDescription("Oto D J Smith, sprzedawca broni.");
+		npc.setEntityClass("wellroundedguynpc");
+		npc.setGender("M");
+		npc.setPosition(11, 5);
 		zone.add(npc);
 	}
 

@@ -33,14 +33,12 @@ public class Skille100NPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMineArea(zone);
 	}
 
 	private void buildMineArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Altharis") {
-			
 			@Override
 			protected void createDialog() {
 				addGreeting(null, new ChatAction() {
@@ -88,10 +86,11 @@ public class Skille100NPC implements ZoneConfigurator {
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");
 				}
 			}
-			
 		});
 
+		npc.setDescription("Oto kapłan Altharis. Przed czymś chyba chroni.");
 		npc.setEntityClass("blackwizardpriestnpc");
+		npc.setGender("M");
 		npc.setPosition(75, 109);
 		npc.setDirection(Direction.RIGHT);
 		zone.add(npc);

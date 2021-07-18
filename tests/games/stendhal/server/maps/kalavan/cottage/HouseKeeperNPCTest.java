@@ -45,7 +45,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 	}
 
 	public HouseKeeperNPCTest() {
-		setNpcNames("Granny Graham");
+		setNpcNames("babcia Graham");
 		setZoneForPlayer(ZONE_NAME);
 		addZoneConfigurator(new HouseKeeperNPC(), ZONE_NAME);
 	}
@@ -55,7 +55,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 	 */
 	@Test
 	public void testHiAndBye() {
-		final SpeakerNPC npc = getNPC("Granny Graham");
+		final SpeakerNPC npc = getNPC("babcia Graham");
 		assertNotNull(npc);
 		final Engine en = npc.getEngine();
 
@@ -71,7 +71,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 	 */
 	@Test
 	public void testMakeTea() {
-		final SpeakerNPC npc = getNPC("Granny Graham");
+		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
@@ -151,7 +151,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 	 */
 	@Test
 	public void testBuy() {
-		final SpeakerNPC npc = getNPC("Granny Graham");
+		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi Granny Graham"));
@@ -169,7 +169,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 	 */
 	@Test
 	public void testSell() {
-		final SpeakerNPC npc = getNPC("Granny Graham");
+		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi Granny Graham"));

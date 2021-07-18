@@ -41,7 +41,6 @@ import games.stendhal.server.entity.npc.condition.PlayerNextToCondition;
 import games.stendhal.server.entity.player.Player;
 
 public class PotionsDealerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -133,6 +132,7 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 		npc.setPath(new FixedPath(nodes, true));
 		npc.setCollisionAction(CollisionAction.STOP);
 		npc.setOutfit(new Outfit("body=7,head=16,mouth=2,eyes=1,dress=29,mask=1,hair=20"));
+		npc.setGender("F");
 
 		zone.add(npc);
 	}

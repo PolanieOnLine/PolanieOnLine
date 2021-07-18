@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.city;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Builds a information giving NPC in Kirdneh city.
@@ -27,10 +26,6 @@ import java.util.Map;
  * @author Vanessa Julius idea by miasma
  */
 public class MummyNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,19 +35,12 @@ public class MummyNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Carey") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				//Greeting message in quest given (ChocolateForElisabeth)
@@ -72,10 +60,10 @@ public class MummyNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("mothernpc");
-		npc.setPosition(84, 9);
-		npc.initHP(100);
 		npc.setDescription("Oto Carey. Opiekuje się swoją córką Elisabeth.");
+		npc.setEntityClass("mothernpc");
+		npc.setGender("F");
+		npc.setPosition(84, 9);
 		zone.add(npc);
 	}
 }

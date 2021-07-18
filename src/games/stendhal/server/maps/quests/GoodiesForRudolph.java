@@ -126,7 +126,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 			Arrays.asList("goodies", "przysmakach"),
 			null,
 			ConversationStates.ATTENDING,
-			"Mech reniferów jest jasnozielony, który rośnie wokół tego miasta. Jabłka można znaleść na farmie na wschód od miasta, a marchew jest na północny-wschód od miasta.",
+			"Mech reniferów jest jasnozielony, który rośnie wokół tego miasta. Jabłka można znaleźć na farmie na wschód od miasta, a marchew jest na północny-wschód od miasta.",
 			null);
 	}
 

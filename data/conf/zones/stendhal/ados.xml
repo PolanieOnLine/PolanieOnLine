@@ -115,7 +115,7 @@
 			<name>Tunel Amazoński Zachodnie Wejście</name>
 			<title>Tunel Amazoński</title>
 			<type>dungeon</type>
-			<description>Ogromny system tuneli pomiędzy górami Ados, a Amazonią przyprawia o ból głowy, gdy próbujesz znaleść wyjście. Być może jest gdzieś lina... (Poziom Wojownika 50 - 200)</description>
+			<description>Ogromny system tuneli pomiędzy górami Ados, a Amazonią przyprawia o ból głowy, gdy próbujesz znaleźć wyjście. Być może jest gdzieś lina... (Poziom Wojownika 50 - 200)</description>
 			<url>https://polanieonline.eu/ados</url>
 	</point-of-interest>
 	</zone>
@@ -292,13 +292,13 @@
 
 		<entity x="43" y="44">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
-			<attribute name="text">Cześć i witaj na #targu Ados! Możesz znaleść tu kuszące oferty! Odwiedź #Alexander (spacerujący sprzedawca), #Haunchy #Meatoch (zachód), #Uncle #Dag (tuż przy ścieżce), #Adena (na północny-zachód) i #Florence #Boullabaisse (na północny-wschód) na ich stanowiskach.
+			<attribute name="text">Cześć i witaj na #targu Ados! Możesz znaleźć tu kuszące oferty! Odwiedź #Alexander (spacerujący sprzedawca), #Haunchy #Meatoch (zachód), #Uncle #Dag (tuż przy ścieżce), #Adena (na północny-zachód) i #Florence #Boullabaisse (na północny-wschód) na ich stanowiskach.
 - Kierownik targowiska -</attribute>
 		</entity>
 
 		<entity x="38" y="44">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
-			<attribute name="text">Cześć i witaj na #targu Ados! Możesz znaleść tu kuszące oferty! Odwiedź #Alexander (spacerujący sprzedawca), #Haunchy #Meatoch (zachód), #Uncle #Dag (tuż przy ścieżce), #Adena (na północny-zachód) i #Florence #Boullabaisse (na północny-wschód) na ich stanowiskach.
+			<attribute name="text">Cześć i witaj na #targu Ados! Możesz znaleźć tu kuszące oferty! Odwiedź #Alexander (spacerujący sprzedawca), #Haunchy #Meatoch (zachód), #Uncle #Dag (tuż przy ścieżce), #Adena (na północny-zachód) i #Florence #Boullabaisse (na północny-wschód) na ich stanowiskach.
 - Kierownik targowiska -</attribute>
 		</entity>
 
@@ -779,7 +779,7 @@ używanie zwojów.
 		<point-of-interest x="67" y="24">
 			<name>Zewnętrzne Ados</name>
 			<type>dungeon</type>
-			<description>Podziemia na zewnątrz Ados można znaleść blisko góry Ados w zachodniej części Ados. Wejście znajduje się blisko Schroniska dla zwierząt.</description>
+			<description>Podziemia na zewnątrz Ados można znaleźć blisko góry Ados w zachodniej części Ados. Wejście znajduje się blisko Schroniska dla zwierząt.</description>
 			<url>https://polanieonline.eu/ados</url>
 		</point-of-interest>
 
@@ -1656,7 +1656,7 @@ Rybacy mówią o dużych łowiskach,
 gdzie mieszkają elfy.
 Makrela można złowić tylko na
 otwartym morzu.
-Bardziej egzotyczne ryby można znaleść
+Bardziej egzotyczne ryby można znaleźć
 na wyspie Athor.
 W górskim jeziorku obok Ados jest miejsce,
 gdzie bardzo łatwo moża złowić palię alpejską.
@@ -5889,7 +5889,7 @@ Wschodni Tunel: Niezbadany</attribute>
 		<entity x="120" y="19">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Reader" />
 			<attribute name="text">Oto kawałek papieru, a na nim jest napisane:
-Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleść jedzenie, a potwór, który mnie ściagał wciąż czeka przy wejściu. Zgubiłem mój dziennik, a to jest ostatnia kartka jaką mam. Mogę poczuć delikatny wiatr na mojej twarzy. Być może wyjście jest gdzieś w okolicy.
+Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleźć jedzenie, a potwór, który mnie ściagał wciąż czeka przy wejściu. Zgubiłem mój dziennik, a to jest ostatnia kartka jaką mam. Mogę poczuć delikatny wiatr na mojej twarzy. Być może wyjście jest gdzieś w okolicy.
 			</attribute>
 			<attribute name="class">transparent</attribute>
 			<attribute name="resistance">0</attribute>
@@ -5986,7 +5986,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleś�
 		<entity x="37" y="30">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Reader"/>
 			<attribute name="text">Dziennik podróżnika Zephiros:
-Minęły trzy dni od kiedy zdecydowałem się na odkrywanie niższych poziomów jaskiń i muszę jeszcze znaleść wyjście. Jak bym chciał znaleść źródło wody na wyższy poziomie. Mogę w ciemnościach usłyszeć syreny. Już nie mogę wytrzymać ich wrzasków. Niech bóg ma mnie w opiece i wszystkich, którzy pójdą moimi śladami.
+Minęły trzy dni od kiedy zdecydowałem się na odkrywanie niższych poziomów jaskiń i muszę jeszcze znaleźć wyjście. Jak bym chciał znaleźć źródło wody na wyższy poziomie. Mogę w ciemnościach usłyszeć syreny. Już nie mogę wytrzymać ich wrzasków. Niech bóg ma mnie w opiece i wszystkich, którzy pójdą moimi śladami.
 			</attribute>
 			<attribute name="class">transparent</attribute>
 			<attribute name="resistance">0</attribute>

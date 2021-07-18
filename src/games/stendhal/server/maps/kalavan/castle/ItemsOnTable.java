@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.castle;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
-
-import java.util.Map;
 
 /**
  * Creates the items on the table in the castle basement.
@@ -30,7 +29,6 @@ public class ItemsOnTable implements ZoneConfigurator {
 	}
 
 	private void buildBasementArea(final StendhalRPZone zone) {
-
 		// Plant grower for poison
 		final PassiveEntityRespawnPoint plantGrower = new PassiveEntityRespawnPoint("zabójcza trucizna", 2000);
 		plantGrower.setPosition(109, 103);
@@ -94,8 +92,5 @@ public class ItemsOnTable implements ZoneConfigurator {
 		zone.add(bottleGrower3);
 
 		bottleGrower3.setToFullGrowth();
-
-
 	}
-
 }

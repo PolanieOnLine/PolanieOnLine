@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.felinashouse;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -20,26 +25,18 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SilentNPC;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * A cat
  *
  * @author AntumDeluge
  */
 public class KittensNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-
 	    // Kitten walking around room
 		final SilentNPC k1 = new Kitten();
 

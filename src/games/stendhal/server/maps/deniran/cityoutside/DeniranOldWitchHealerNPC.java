@@ -23,10 +23,8 @@ import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
  * Provides Ermenegilda, a Healer for Deniran
  *
  * @author omero
- *
  */
 public class DeniranOldWitchHealerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final String[] mumbles = {
@@ -39,7 +37,6 @@ public class DeniranOldWitchHealerNPC implements ZoneConfigurator {
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Ermenegilda") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Witaj.");
@@ -50,12 +47,12 @@ public class DeniranOldWitchHealerNPC implements ZoneConfigurator {
 		};
 
 		// Finalize Ermenegilda
-		npc.setEntityClass("oldwitchnpc");
 		npc.setDescription("Oto Ermenegilda. Może ciebie uleczyć.");
+		npc.setEntityClass("oldwitchnpc");
+		npc.setGender("F");
 		npc.setPosition(18, 105);
 		//heal according to player level (cost -1)
 		new HealerAdder().addHealer(npc, -1);
-		npc.initHP(100);
 		zone.add(npc);
 		return npc;
 	}

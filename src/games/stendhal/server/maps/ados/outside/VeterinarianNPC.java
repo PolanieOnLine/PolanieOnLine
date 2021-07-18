@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -39,7 +38,7 @@ import games.stendhal.server.entity.player.Player;
 public class VeterinarianNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
 
-		/**
+	/**
 	 * Configure a zone.
 	 *
 	 * @param	zone		The zone to be configured.
@@ -52,7 +51,6 @@ public class VeterinarianNPC implements ZoneConfigurator {
 
 	private void buildZooArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Dr. Feelgood") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -71,13 +69,10 @@ public class VeterinarianNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				//Behaviours.addHelp(this,
 				//				   "...");
-
 				add(ConversationStates.ATTENDING, Arrays.asList("heal", "ulecz"), null, ConversationStates.ATTENDING, null, new HealPetsAction());
-
 				addJob("Jestem weterynarzem.");
-				
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("healing")) {
 
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("healing")) {
 					@Override
 					public int getUnitPrice(final String item) {
 						// Player gets 20 % rebate
@@ -90,12 +85,12 @@ public class VeterinarianNPC implements ZoneConfigurator {
 			// remaining behaviour is defined in maps.quests.ZooFood.
 		};
 
+		npc.setDescription("Oto Dr. Feelgood. Jest ekspertem w swoim zawodzie.");
 		npc.setEntityClass("doctornpc");
+		npc.setGender("M");
 		npc.setPosition(53, 28);
 		//npc.setDirection(Direction.DOWN);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.initHP(100);
-		npc.setDescription("Oto Dr. Feelgood. Jest ekspertem w swoim zawodzie.");
 		zone.add(npc);
 	}
 	
@@ -106,13 +101,13 @@ public class VeterinarianNPC implements ZoneConfigurator {
 		@Override
 		public void fire(Player player, Sentence sentence, EventRaiser npc) {
 			List<DomesticAnimal> healed = new LinkedList<DomesticAnimal>();
-			
+
 			for (DomesticAnimal pet : player.getAnimals()) {
 				if (pet.heal() > 0) {
 					healed.add(pet);
 				}
 			}
-			
+
 			/*
 			 * Feelgood is only concerned about the animals if there's some that
 			 * needs healing, and won't suggest trading in that case.
@@ -132,23 +127,22 @@ public class VeterinarianNPC implements ZoneConfigurator {
 				msg.append(" uzdrowiony. Bardziej troszcz się o ");
 				msg.append(Grammar.itthem(numHealed));
 				msg.append(" w przyszłości.");
-				
+
 				npc.say(msg.toString());
 			} else {
 				npc.say("Przykro mi, ale jestem tylko licencjonowanym uzdrowicielem zwierząt. (Ale... ciii! Mogę złożyć Tobie #'ofertę'.)");
 			}
 		}
-		
+
 		/**
 		 * Get a generic name for a pet that Feelgood can use. He does not
 		 * know what the player calls the pet so he calls cats cats etc.
-		 *  
+		 *
 		 * @param pet the animal whose name is wanted
 		 * @return printable name of the animal type
 		 */
 		private String getPetName(DomesticAnimal pet) {
 			String type = pet.get("type");
-			
 			return ItemTools.itemNameToDisplayName(type);
 		}
 	}

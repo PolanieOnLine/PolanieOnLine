@@ -11,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.hotel;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
-
-import java.util.Map;
 
 /**
  * Provides Groongo Rahnnt, The Troublesome Customer in Fado's Hotel Restaurant.
@@ -27,10 +27,8 @@ import java.util.Map;
  * Groongo Rahnnt offered quest will involve Stefan, the chef of Fado's Hotel Restaurant
  *
  * @author omero
- *
  */
 public class TroublesomeCustomerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final String[] rants = {
@@ -48,12 +46,6 @@ public class TroublesomeCustomerNPC implements ZoneConfigurator {
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Groongo Rahnnt") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Gah! W końcu ktoś się pojawił, aby wykonać swoje #'zadanie'...");
@@ -70,11 +62,11 @@ public class TroublesomeCustomerNPC implements ZoneConfigurator {
 		};
 
 		// Finalize Groongo Rahnnt, the Fado's Hotel Restaurant Troublesome Customer
-		npc.setEntityClass("troublesomecustomernpc");
 		npc.setDescription("Oto Groongo Rahnnt. Jest niecierpliwy, że nikt nie zwraca na niego uwagi!");
+		npc.setEntityClass("troublesomecustomernpc");
+		npc.setGender("M");
 		npc.setPosition(70, 24);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 
 		return npc;

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kotoch;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 public class SmithNPC implements ZoneConfigurator {
 	/**
@@ -35,13 +34,6 @@ public class SmithNPC implements ZoneConfigurator {
 
 	private void buildKotochSmitherArea(final StendhalRPZone zone) {
 		final SpeakerNPC smith = new SpeakerNPC("Vulcanus") {
-
-			@Override
-			// he doesn't move.
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Szacum wodzu! Jestem Vulcanus kowal.");
@@ -49,22 +41,21 @@ public class SmithNPC implements ZoneConfigurator {
 				addHelp("Mógłbym Ci pomóc w zdobyciu #specjalnego przedmiotu...");
 				addJob("Używałem do wykuwania broni dla Króla Faiumoni, ale było to dawno temu. Teraz droga jest zablokowana.");
 
-				add(
-				        ConversationStates.ATTENDING,
-				        Arrays.asList("special", "specjalnego"),
-				        null,
-				        ConversationStates.ATTENDING,
-				        "Kto Ci to powiedział!?! *kaszlnięcie* W każdym razie tak. Mogę wykuć dla Ciebie specjalny przedmiot, ale będziesz musiał wykonać #zadanie",
-				        null);
+				add(ConversationStates.ATTENDING,
+						Arrays.asList("special", "specjalnego"),
+						null,
+						ConversationStates.ATTENDING,
+						"Kto Ci to powiedział!?! *kaszlnięcie* W każdym razie tak. Mogę wykuć dla Ciebie specjalny przedmiot, ale będziesz musiał wykonać #zadanie",
+						null);
 			}
 		};
 
 		smith.setDescription("Oto Vulcanus. Czujesz się dziwnie stojąc w jego pobliżu.");
 		smith.setEntityClass("transparentnpc");
 		smith.setAlternativeImage("vulcanus");
+		smith.setGender("M");
 		smith.setPosition(62, 115);
 		smith.setDirection(Direction.DOWN);
-		smith.initHP(100);
 		zone.add(smith);
 	}
 }

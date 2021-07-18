@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -45,7 +44,6 @@ public class KirdnehArmorGuyNPC implements ZoneConfigurator {
 
 	private void buildlawrence(final StendhalRPZone zone) {
 		final SpeakerNPC lawrence = new SpeakerNPC("Lawrence") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,7 +56,6 @@ public class KirdnehArmorGuyNPC implements ZoneConfigurator {
 				nodes.add(new Node(71, 93));
 				nodes.add(new Node(63, 93));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -70,14 +67,13 @@ public class KirdnehArmorGuyNPC implements ZoneConfigurator {
 				addOffer("Spójrz na tablicę, aby zobaczyć moje ceny i co skupuję.");
 				addQuest("Nie mam zadania dla Ciebie.");
 				addGoodbye("Jeżeli znajdziesz ząb z mitycznego czarnego smoka to daj mi znać.");
-
 			}
 		};
 
-		lawrence.setEntityClass("man_002_npc");
-		lawrence.setPosition(63, 95);
-		lawrence.initHP(100);
 		lawrence.setDescription("Oto Lawrence. Jego miejsce pracy jest na rynku.");
+		lawrence.setEntityClass("man_002_npc");
+		lawrence.setGender("M");
+		lawrence.setPosition(63, 95);
 		zone.add(lawrence);
 	}
 }

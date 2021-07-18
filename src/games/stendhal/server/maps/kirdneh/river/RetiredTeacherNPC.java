@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.river;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,19 +23,12 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a npc in the house at Kirdneh River (name:Ortiv Milquetoast) who is a coward retired teacher
  *
  * @author Vanessa Julius
- *
  */
 public class RetiredTeacherNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -39,7 +36,6 @@ public class RetiredTeacherNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Ortiv Milquetoast") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -71,12 +67,11 @@ public class RetiredTeacherNPC implements ZoneConfigurator {
                 nodes.add(new Node(13, 22));
                 nodes.add(new Node(13, 27));
                	setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Oh obcy znalazł mój ukryty dom, witam!");
+				addGreeting("Och... obcy znalazł mój ukryty dom, witam!");
 				addHelp("Nigdy nie ładuj się w kłopoty z #zabójcami, bo są silniejsi niż ty!");
 				addReply(Arrays.asList("assassins", "zabójcami"), "Przyjdą po Ciebie tak czy inaczej! Kilkoro z nich czeka na dole pod moją piwnicą!");
 				addJob("Byłem nauczycielem alchemi, ale kilku z moich #studentów stało się brzydkimi bandytami i zabójcami...");
@@ -87,11 +82,11 @@ public class RetiredTeacherNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Ortiv Milquetoast. Otacza go jakąś aura nauczyciela. Wygląda na wystaszonego i zdenerwowanego.");
+		npc.setDescription("Oto Ortiv Milquetoast. Otacza go jakaś aura nauczyciela. Wygląda na wystaszonego i zdenerwowanego.");
 		npc.setEntityClass("retiredteachernpc");
+		npc.setGender("M");
 		npc.setPosition(15, 28);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

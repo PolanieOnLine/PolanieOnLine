@@ -45,13 +45,7 @@ public class PriestNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		SpeakerNPC priest = new SpeakerNPC("Priest") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
+		final SpeakerNPC priest = new SpeakerNPC("Ksiądz") {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witam w kościele!");
@@ -69,11 +63,11 @@ public class PriestNPC implements ZoneConfigurator {
 			}
 		};
 
-		priest.setDescription("Oto ksiądz w kościole w Fado");
+		priest.setDescription("Oto ksiądz znajdujący się w kościole w Fado");
 		priest.setEntityClass("priestnpc");
+		priest.setGender("M");
 		priest.setPosition(11, 5);
 		priest.setDirection(Direction.DOWN);
-		priest.initHP(100);
 		zone.add(priest);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -20,14 +27,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.MultiProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Provides a Meat and Fish professional smoker in Fado forest.
@@ -48,7 +47,6 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
 
     private void buildNPC(final StendhalRPZone zone) {
         final SpeakerNPC npc = new SpeakerNPC("Olmo") {
-
             @Override
             protected void createPath() {
                 final List<Node> nodes = new LinkedList<Node>();
@@ -65,7 +63,6 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
                 nodes.add(new Node(22, 52));
                 nodes.add(new Node(22, 50));
                 nodes.add(new Node(22, 53));
-
                 setPath(new FixedPath(nodes, true));
             }
 
@@ -152,11 +149,11 @@ public class MeatAndFishSmokerNPC implements ZoneConfigurator {
             }
         };
 
+        npc.setDescription("Oto Olmo. Wygląda na zajętego wędzeniem mięsa i ryb.");
         npc.setEntityClass("meatandfishsmokernpc");
+        npc.setGender("M");
         npc.setDirection(Direction.DOWN);
         npc.setPosition(26, 53);
-        npc.initHP(100);
-        npc.setDescription("Oto Olmo. Wygląda na zajętego wędzeniem mięsa i ryb.");
         zone.add(npc);
     }
 }

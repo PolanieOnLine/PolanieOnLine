@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -32,9 +31,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
  * @author kymara
  */
 public class BarMaidNPC implements ZoneConfigurator {
-
 	private final ShopList shops = SingletonRepository.getShopList();
-
 
 	/**
 	 * Configure a zone.
@@ -77,10 +74,11 @@ public class BarMaidNPC implements ZoneConfigurator {
  				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyfood")), true);
 			}
 		};
-		npc.setDescription("Oto piękna młoda barmanka.");
+
+		npc.setDescription("Oto piękna młoda barmanka, Siandra.");
 		npc.setEntityClass("woman_004_npc");
+		npc.setGender("F");
 		npc.setPosition(8, 27);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

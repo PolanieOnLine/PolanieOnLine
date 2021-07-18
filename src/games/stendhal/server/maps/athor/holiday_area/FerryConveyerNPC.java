@@ -11,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.holiday_area;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -26,20 +29,13 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.ship.AthorFerry;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
 /**
  * Factory for an NPC who brings players from the docks to Athor Ferry in a
  * rowing boat.
  */
-
 public class FerryConveyerNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -55,7 +51,6 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jessica") {
-
 			@Override
 			public void createDialog() {
 				addGoodbye("Do widzenia!");
@@ -115,29 +110,31 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			@Override
 			protected void onGoodbye(final RPEntity player) {
 				setDirection(Direction.LEFT);
-			}};
+			}
+		};
 
-			new AthorFerry.FerryListener() {
-				@Override
-				public void onNewFerryState(final Status status) {
-					ferrystate = status;
-					switch (status) {
-					case ANCHORED_AT_ISLAND:
-						npc.say("Uwaga: Prom przybył do wybrzeża! Można #wejść na statek.");
-						break;
-					case DRIVING_TO_MAINLAND:
-						npc.say("Uwaga: Prom odpłynął. Nie można się już dostać na statek.");
-						break;
-					default:
-						break;
-					}
+		new AthorFerry.FerryListener() {
+			@Override
+			public void onNewFerryState(final Status status) {
+				ferrystate = status;
+				switch (status) {
+				case ANCHORED_AT_ISLAND:
+					npc.say("Uwaga: Prom przybył do wybrzeża! Można #wejść na statek.");
+					break;
+				case DRIVING_TO_MAINLAND:
+					npc.say("Uwaga: Prom odpłynął. Nie można się już dostać na statek.");
+					break;
+				default:
+					break;
 				}
-			};
+			}
+		};
 
-			npc.setPosition(16, 88);
-			npc.setEntityClass("woman_008_npc");
-			npc.setDescription ("Oto Jessica. Swoją łódką zabiera pasażerów na pokład statku.");
-			npc.setDirection(Direction.LEFT);
-			zone.add(npc);
+		npc.setDescription ("Oto Jessica. Swoją łódką zabiera pasażerów na pokład statku.");
+		npc.setEntityClass("woman_008_npc");
+		npc.setGender("F");
+		npc.setPosition(16, 88);
+		npc.setDirection(Direction.LEFT);
+		zone.add(npc);
 	}
 }

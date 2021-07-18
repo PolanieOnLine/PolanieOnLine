@@ -93,7 +93,7 @@ public class CoalForHaunchy extends AbstractQuest {
 				Arrays.asList("węgiel","węgla"),
 				null,
 				ConversationStates.QUEST_OFFERED,
-				"Węgiel nie jest łatwo znaleść. Normalnie możesz go znaleść pod ziemią, ale może będziesz miał szczęście i znajdziesz w tunelach starej kopalni Semos...",
+				"Węgiel nie jest łatwo znaleźć. Normalnie możesz go znaleźć pod ziemią, ale może będziesz miał szczęście i znajdziesz w tunelach starej kopalni Semos...",
 				null);
 
         // player has completed the quest (doesn't happen here)

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.holiday_area;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,11 +27,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/*
+/**
  * Outside holiday area on Athor Island)
  */
 public class HotdogLadyNPC implements ZoneConfigurator {
@@ -47,7 +46,6 @@ public class HotdogLadyNPC implements ZoneConfigurator {
 
 	private void buildhotdoglady(final StendhalRPZone zone) {
 		final SpeakerNPC hotdoglady = new SpeakerNPC("Sara Beth") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,21 +56,21 @@ public class HotdogLadyNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Super!!! Cieszę się, że się zatrzymałeś!!! Naprawdę!!!");
+				addGreeting("O, Super! Cieszę się, że się zatrzymałeś!!! Naprawdę!");
 				addJob("Jestem przygotowana psychicznie! Łapię promienie i sprzedaję rzeczy!");
 				addHelp("Och! Myślisz, że mam wskazówkę?");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellhotdogs")), false);
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buy4hotdogs")), false);
 				addOffer("Sprawdź tablicę, która tam stoi, aby poznać ceny.");
 				addQuest("Cokolwiek!");
-				addGoodbye("Na razie. Chcesz z czymś frytki?");
+				addGoodbye("Do zobaczenia. Chcesz z czymś frytki?");
 			}
 		};
 
-		hotdoglady.setEntityClass("woman_013_npc");
-		hotdoglady.setPosition(33,69);
-		hotdoglady.initHP(100);
 		hotdoglady.setDescription("Oto Sara Beth. Jej punkt z hotdogami jest popularny na wyspie Athor.");
+		hotdoglady.setEntityClass("woman_013_npc");
+		hotdoglady.setGender("F");
+		hotdoglady.setPosition(33,69);
 		zone.add(hotdoglady);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,23 +11,21 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.hotel;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /**
  * Builds a NPC in a house on Ados market (name:Damon) who is the daughter of fisherman Fritz
  *
  * @author Vanessa Julius
- *
  */
 public class HotelGuestNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -36,12 +33,6 @@ public class HotelGuestNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Damon") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Hej!");
@@ -57,17 +48,16 @@ public class HotelGuestNPC implements ZoneConfigurator {
 				addGoodbye("Pa!");
 			}
 
-		@Override
-		protected void onGoodbye(RPEntity player) {
-			setDirection(Direction.RIGHT);
-		}
-
+			@Override
+			protected void onGoodbye(RPEntity player) {
+				setDirection(Direction.RIGHT);
+			}
 		};
 
 		npc.setDescription("Oto Damon. Jego oczy świecą nawet w ciemności.");
 		npc.setEntityClass("hotelguestnpc");
+		npc.setGender("M");
 		npc.setPosition(77, 23);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

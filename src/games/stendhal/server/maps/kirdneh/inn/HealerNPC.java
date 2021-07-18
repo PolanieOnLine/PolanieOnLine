@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.inn;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.grammar.ItemParserResult;
@@ -29,9 +31,6 @@ import games.stendhal.server.entity.npc.condition.TriggerIsProducedItemOfClassCo
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /**
  * Builds a Healer NPC for kirdneh.
  * She likes a drink
@@ -39,7 +38,6 @@ import java.util.Map;
  * @author kymara
  */
 public class HealerNPC implements ZoneConfigurator {
-
 	/**
 	 * Behaviour parse result in the current conversation.
 	 * Remark: There is only one conversation between a player and the NPC at any time.
@@ -59,13 +57,6 @@ public class HealerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Katerina") {
-
-			@Override
-			protected void createPath() {
-			    // sits still on stool
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 			    addGreeting("Hik #całusik!");
@@ -88,11 +79,11 @@ public class HealerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto kobieta, która niegdyś uważana byłą za piękną, lecz teraz podupadła nieco, o czym świadczy jej strój...");
+		npc.setDescription("Oto Katerina, kobieta, która niegdyś uważana byłą za piękną, lecz teraz podupadła nieco, o czym świadczy jej strój...");
 		npc.setEntityClass("womanonstoolnpc");
+		npc.setGender("F");
 		npc.setPosition(25, 9);
 		npc.setDirection(Direction.UP);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 
@@ -157,5 +148,4 @@ public class HealerNPC implements ZoneConfigurator {
 		        ConversationStates.ATTENDING,
 		        "Czego chcesz?", null);
 	}
-
 }

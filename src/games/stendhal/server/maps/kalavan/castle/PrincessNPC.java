@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,16 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.castle;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds the princess in Kalavan castle.
@@ -29,10 +28,6 @@ import java.util.Map;
  * @author kymara
  */
 public class PrincessNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -42,14 +37,12 @@ public class PrincessNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC princessNPC = new SpeakerNPC("Księżniczka Ylflia") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -80,10 +73,10 @@ public class PrincessNPC implements ZoneConfigurator {
 			}
 		};
 
-		princessNPC.setEntityClass("princess2npc");
-		princessNPC.setPosition(19, 21);
-		princessNPC.initHP(100);
 		princessNPC.setDescription("Oto Księżniczka Ylflia. Mimo, że jest księżniczką, wydaje się być bardzo przyjazną i pomocną.");
+		princessNPC.setEntityClass("princess2npc");
+		princessNPC.setGender("F");
+		princessNPC.setPosition(19, 21);
 		zone.add(princessNPC);
 	}
 }

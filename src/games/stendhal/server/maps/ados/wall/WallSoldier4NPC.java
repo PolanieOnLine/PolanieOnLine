@@ -45,9 +45,7 @@ public class WallSoldier4NPC implements ZoneConfigurator {
 	 * @param zone StendhalRPZone
 	 */
 	private void buildAdosWallSoldier(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Xinderus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> path = new LinkedList<Node>();
@@ -68,10 +66,10 @@ public class WallSoldier4NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
-		npc.setPosition(76, 63);
-		npc.initHP(100);
 		npc.setDescription("Oto Xinderus, żołnierz, który strzeże mury miasta Ados.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(76, 63);
 		zone.add(npc);
 	}
 }

@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.maps.atlantis.cityinside;
 
 import java.util.Map;
@@ -31,11 +30,8 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 
-
 public class PotionsDealerNPC implements ZoneConfigurator {
-
 	private SpeakerNPC seller;
-
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
@@ -77,6 +73,7 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 
 		seller.addOffer("Zobacz listę na czarnej tablicy, by zobaczyć co sprzedaję.");
 
+		seller.setGender("F");
 		seller.setIdleDirection(Direction.DOWN);
 		seller.setPosition(8, 7);
 		zone.add(seller);

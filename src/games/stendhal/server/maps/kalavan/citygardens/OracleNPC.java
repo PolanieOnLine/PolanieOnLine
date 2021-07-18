@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.citygardens;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,24 +29,17 @@ import games.stendhal.server.entity.npc.action.SayUnstartedQuestDescriptionFromN
 import games.stendhal.server.entity.npc.condition.TriggerIsNPCNameForUnstartedQuestCondition;
 import games.stendhal.server.maps.Region;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * An oracle who lets players know how they can help others.
  */
 public class OracleNPC implements ZoneConfigurator {
-
 	/**
 	 * region that this NPC can give information about
 	 */
 	private final List<String> regions = Arrays.asList(Region.KALAVAN, Region.KIRDNEH, Region.FADO_CITY, Region.FADO_CAVES);
 
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -90,11 +88,12 @@ public class OracleNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		npc.setPosition(22,111);
+
 		npc.setDescription("Oto Lobelia. Patrzy uważnie na rabatki wokół niej.");
 		npc.setEntityClass("oracle4npc");
+		npc.setGender("F");
+		npc.setPosition(22,111);
 		npc.setShadowStyle("floating");
 		zone.add(npc);
 	}
-
 }

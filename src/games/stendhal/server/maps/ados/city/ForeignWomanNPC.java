@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,16 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.city;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a npc in Ados (name:Marla) who is there on vacation
@@ -30,7 +29,6 @@ import java.util.Map;
  *
  */
 public class ForeignWomanNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -55,7 +53,6 @@ public class ForeignWomanNPC implements ZoneConfigurator {
                 nodes.add(new Node(74, 9));
                 nodes.add(new Node(73, 9));
                	setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -66,15 +63,14 @@ public class ForeignWomanNPC implements ZoneConfigurator {
 				addJob("Nie, jestem już zbyt stara, aby pracować!");
 				addOffer("Mogę zaoferować Ci tylko to świeże powietrze, pachnące morską bryzą.");
 				addGoodbye("Bywaj.");
-
 			}
 		};
 
-		npc.setDescription("Oto Marla.  Odbyła długą podróż aż do swojego kurortu.");
+		npc.setDescription("Oto Marla. Odbyła długą podróż aż do swojego kurortu.");
 		npc.setEntityClass("womanexoticdressnpc");
+		npc.setGender("F");
 		npc.setPosition(73, 7);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

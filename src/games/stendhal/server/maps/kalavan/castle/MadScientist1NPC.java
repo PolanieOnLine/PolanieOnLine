@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.castle;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * Builds a mad scientist NPC who takes your silk glands makes thread, then gives them to another NPC.
@@ -24,7 +23,6 @@ import java.util.Map;
  * @author kymara with modifications by tigertoes
  */
 public class MadScientist1NPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -38,12 +36,6 @@ public class MadScientist1NPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Vincento Price") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			    protected void createDialog() {
 				addHelp("Ha ha ha ha!");
@@ -53,13 +45,12 @@ public class MadScientist1NPC implements ZoneConfigurator {
 				addGoodbye("Ta ta!");
 				// remaining behaviour defined in maps.quests.MithrilCloak
 	 	     }
-
 		};
 
-		npc.setDescription("Oto nieco dziwna osoba. Może nie powinieneś zawracać jej głowy?");
+		npc.setDescription("Oto Vincento Price, nieco dziwna osoba. Może nie powinieneś zawracać jego głowy?");
 		npc.setEntityClass("madscientistnpc");
+		npc.setGender("M");
 		npc.setPosition(18, 84);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

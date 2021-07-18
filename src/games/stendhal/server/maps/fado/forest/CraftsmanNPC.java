@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,10 +24,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehaviour;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds an albino elf NPC .
@@ -48,7 +47,6 @@ public class CraftsmanNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Lupos") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -63,19 +61,18 @@ public class CraftsmanNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-			    //addGreeting("Welcome to this forest, south of Or'ril river.");
+			    //addGreeting("Co cię sprowadza do lasu, na południe od rzeki Or'ril.");
 				addJob("Jestem rzemieślnikiem. Pewnego dnia, mam nadzieję, uda mi się wytworzyć taki przedmiot jaki robią zielone elfy.");
 				addHelp("Mój przyjaciel Orchiwald jest największym gadułą. Mógłby z tobą rozmawiać godzinami o albino elfach i jak tutaj się dostaliśmy.");
-				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("elvish_armor", "I'm not able to buy anything from you right now.", shops.get("buyelvish")), false);
+				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("elvish_armor", "W tej chwili nie mogę nic od ciebie kupić.", shops.get("buyelvish")), false);
 				addGoodbye("Do widzenia.");
 			}
 		};
 
-		npc.setDescription("Oto Lupos albino elf.");
+		npc.setDescription("Oto Lupos. Jak widzisz jest albino-elfem.");
 		npc.setEntityClass("albinoelfnpc");
+		npc.setGender("M");
 		npc.setPosition(3, 11);
-		npc.initHP(100);
-		npc.setDescription("Oto Lupos. Jak widzisz jest albinos elfem.");
 		zone.add(npc);
 	}
 }

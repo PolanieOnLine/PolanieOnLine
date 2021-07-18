@@ -23,7 +23,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 public class LibrarianNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -74,15 +73,13 @@ public class LibrarianNPC implements ZoneConfigurator {
 				nodes.add(new Node(17, 14));
 				setPath(new FixedPath(nodes, true));
 			}
-
-
-
 		};
-		npc.setPosition(17, 14);
-		npc.setEntityClass("librarian2npc");
+
 		npc.setDescription("Oto Julia, miejscowa bibliotekarka.");
+		npc.setEntityClass("librarian2npc");
+		npc.setGender("F");
+		npc.setPosition(17, 14);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}
-
 }

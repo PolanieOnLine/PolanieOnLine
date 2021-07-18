@@ -26,10 +26,8 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * A port manager
  */
 public class PortManagerNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -53,11 +51,12 @@ public class PortManagerNPC implements ZoneConfigurator {
 				nodes.add(new Node(100, 52));
 				setPath(new FixedPath(nodes, true));
 			}
-
 		};
-		npc.setPosition(82, 52);
+
+		npc.setDescription("Oto silny mężczyzna Fiete, który leniwie kroczy.");
 		npc.setEntityClass("beardmannpc");
-		npc.setDescription("Oto silny mężczyzna, który leniwie kroczy.");
+		npc.setGender("M");
+		npc.setPosition(82, 52);
 		zone.add(npc);
 	}
 }
