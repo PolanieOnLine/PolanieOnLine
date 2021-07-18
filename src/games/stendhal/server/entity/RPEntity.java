@@ -424,7 +424,7 @@ public abstract class RPEntity extends GuidedEntity {
 
 		if (has("gender")) {
 			gender = get("gender");
-		} if (!has("gender")) {
+		} if (!has("gender") || getGender() == null) {
 			setGender("0");
 		}
 
