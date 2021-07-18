@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.CloneManager;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Zekiel, the guardian statue of the Wizards Tower (Zekiel in the basement)
@@ -27,7 +26,6 @@ import java.util.Map;
  * @see games.stendhal.server.maps.semos.wizardstower.WizardsGuardStatueSpireNPC
  */
 public class WizardsGuardStatueNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildZekiel(zone);
@@ -54,7 +52,6 @@ public class WizardsGuardStatueNPC implements ZoneConfigurator {
 		zekiel.addReply("malleus", "Malleus to najpotężniejszy magik oraz przywódca destruktywnych magów. Jego domeną jest ogień. Żył z demonami aby zrozumieć ich ambicje.");
 
 		zekiel.setPosition(15, 15);
-		zekiel.initHP(100);
 		zone.add(zekiel);
 	}
 }

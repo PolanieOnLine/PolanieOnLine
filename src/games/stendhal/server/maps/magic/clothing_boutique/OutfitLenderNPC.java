@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -40,7 +39,6 @@ import games.stendhal.server.events.ShowOutfitListEvent;
 import marauroa.common.Pair;
 
 public class OutfitLenderNPC implements ZoneConfigurator {
-
 	// outfits to last for 10 hours normally
 	public static final int endurance = 10 * 60;
 
@@ -225,9 +223,9 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("slim_woman_npc");
-		npc.initHP(100);
 		npc.setDescription("Oto Liliana. Pracuje w butiku w magicznym mieście.");
+		npc.setEntityClass("slim_woman_npc");
+		npc.setGender("F");
 
 		if (Occasion.MINETOWN) {
 			npc.clearPath();

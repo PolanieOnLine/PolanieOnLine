@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.temple;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,10 +25,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.HealerAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class HealerNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
@@ -43,7 +42,6 @@ public class HealerNPC implements ZoneConfigurator {
 
 	private void buildSemosTempleArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Ilisa") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -64,10 +62,10 @@ public class HealerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("welcomernpc");
 		npc.setDescription("Oto Ilisa. Jest młoda, ładna i otacza ją magiczna aura.");
+		npc.setEntityClass("welcomernpc");
+		npc.setGender("F");
 		npc.setPosition(9, 6);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

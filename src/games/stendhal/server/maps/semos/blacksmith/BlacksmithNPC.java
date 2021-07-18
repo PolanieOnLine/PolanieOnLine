@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.blacksmith;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -23,12 +28,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * The blacksmith (original name: Xoderos). Brother of the goldsmith in Ados.
  * He refuses to sell weapons, but he casts iron for the player, and he sells
@@ -39,16 +38,13 @@ import java.util.TreeMap;
  * @see games.stendhal.server.maps.quests.HungryJoshua
  */
 public class BlacksmithNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Xoderos") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -91,22 +87,23 @@ public class BlacksmithNPC implements ZoneConfigurator  {
 				addGoodbye();
 				new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("selltools")));
 
-		// Xoderos casts iron if you bring him wood and iron ore.
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("polano", 1);
-		requiredResources.put("ruda żelaza", 1);
+				// Xoderos casts iron if you bring him wood and iron ore.
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+				requiredResources.put("polano", 1);
+				requiredResources.put("ruda żelaza", 1);
 
-		final ProducerBehaviour behaviour = new ProducerBehaviour("xoderos_cast_iron",
-				 Arrays.asList("cast", "odlej"), "żelazo", requiredResources, 5 * 60);
+				final ProducerBehaviour behaviour = new ProducerBehaviour("xoderos_cast_iron",
+						Arrays.asList("cast", "odlej"), "żelazo", requiredResources, 5 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej.");
+						"Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej.");
+			}
+		};
 
-
-			}};
-			npc.setPosition(23, 12);
-			npc.setEntityClass("blacksmithnpc");
-			npc.setDescription("Oto Xoderos, silny kowal Semos.");
-			zone.add(npc);
+		npc.setDescription("Oto Xoderos, silny kowal Semos.");
+		npc.setEntityClass("blacksmithnpc");
+		npc.setGender("M");
+		npc.setPosition(23, 12);
+		zone.add(npc);
 	}
 }

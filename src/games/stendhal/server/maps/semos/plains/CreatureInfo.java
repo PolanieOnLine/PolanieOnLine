@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -36,23 +35,15 @@ import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.IRPZone;
 
 public class CreatureInfo {
-
 	private final Map<Double, String> probabilityLiterals;
-
 	private final Map<Integer, String> amountLiterals;
-
 	private final Map<Double, String> dangerLiterals;
 
 	private final String[] lineStartTexts;
-
 	private final String[] respawnTexts;
-
 	private final String[] carryTexts;
-
 	private final String[] carryNothingTexts;
-
 	private final String[] locationTexts;
-
 	private final String[] locationUnknownTexts;
 
 	/**

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,16 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Erastus, the archmage of the Wizards Tower
@@ -29,7 +28,6 @@ import java.util.Map;
  * see games.stendhal.server.maps.quests.ArchmageErastusQuest
  */
 public class BlueArchmageNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildErastus(zone);
@@ -37,7 +35,6 @@ public class BlueArchmageNPC implements ZoneConfigurator {
 
 	private void buildErastus(final StendhalRPZone zone) {
 		final SpeakerNPC erastus = new SpeakerNPC("Erastus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -88,14 +85,13 @@ public class BlueArchmageNPC implements ZoneConfigurator {
 						"Ale są wielcy magowie, którzy potrafią połączyć żywioły i stworzyć czar tak potężny, jakiego ten świat jeszcze nie widział. Arcymagowie.");
 				addQuest("Tak, mam zadanie dla Ciebie, ale najpierw musisz dowiedzieć się więcej o magii i kręgu czarodziejów. Dam Ci je, gdy ukończysz wszystkie zadania, jakie inni magowie Ci zlecą.");
 				addGoodbye("Do zobaczenia, odkrywco!");
-
 			} //remaining behaviour defined in maps.quests.ArchmageErastusQuest
 		};
 
 		erastus.setDescription("Oto Erastus, wielki mistrz wszystkich rodzajów magii.");
 		erastus.setEntityClass("blueoldwizardnpc");
+		erastus.setGender("M");
 		erastus.setPosition(21, 36);
-		erastus.initHP(100);
 		zone.add(erastus);
 	}
 }

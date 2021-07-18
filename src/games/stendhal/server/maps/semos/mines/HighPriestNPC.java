@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,8 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.mines;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.constants.Occasion;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,8 +24,6 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Map;
 
 public class HighPriestNPC implements ZoneConfigurator {
 	/**
@@ -35,19 +35,12 @@ public class HighPriestNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMineArea(zone);
 	}
 
 	private void buildMineArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Aenihata") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting(null, new ChatAction() {
@@ -85,14 +78,14 @@ public class HighPriestNPC implements ZoneConfigurator {
 
 					player.setAtkXP(1000000 + player.getAtkXP());
 					player.setDefXP(10000000 + player.getDefXP());
-					if (!Occasion.SECOND_WORLD) {
+					if (Testing.COMBAT && !Occasion.SECOND_WORLD) {
 						player.setRatkXP(500000 + player.getRatkXP());
 					}
 					player.addXP(100000);
 
 					player.incAtkXP();
 					player.incDefXP();
-					if (!Occasion.SECOND_WORLD) {
+					if (Testing.COMBAT && !Occasion.SECOND_WORLD) {
 						player.incRatkXP();
 					}
 				}
@@ -101,13 +94,12 @@ public class HighPriestNPC implements ZoneConfigurator {
 					player.setQuest("AenihataFirstChat", "done");
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");
 				}
-
 			}
-
 		});
 
-		npc.setEntityClass("highpriestnpc");
 		npc.setDescription("Oto Aenihata. Jest jednym z najpotężniejszych Wysokich Kapłanów, który próbuje chronić Faiumoni swoimi umiejętnościami magicznymi.");
+		npc.setEntityClass("highpriestnpc");
+		npc.setGender("M");
 		npc.setPosition(23, 44);
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(85);

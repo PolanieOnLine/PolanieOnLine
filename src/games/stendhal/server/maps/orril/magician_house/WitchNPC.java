@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -34,6 +33,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
  */
 public class WitchNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
+
 	/**
 	 * Configure a zone.
 	 *
@@ -43,14 +43,12 @@ public class WitchNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildJynathHouse(zone);
 	}
 
 	private void buildJynathHouse(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jynath") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -84,8 +82,7 @@ public class WitchNPC implements ZoneConfigurator {
 				addHelp("Mogę Cię uleczyć. Powiedz tylko #ulecz.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("scrolls")));
 				new HealerAdder().addHealer(this, 1500);
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        Arrays.asList("magic", "scroll", "scrolls", "zwój", "zwoje"),
 				        null,
 				        ConversationStates.ATTENDING,
@@ -94,15 +91,13 @@ public class WitchNPC implements ZoneConfigurator {
 				add(ConversationStates.ATTENDING, Arrays.asList("semos", "city", "zwój semos"), null,
 				        ConversationStates.ATTENDING,
 				        "Semos zwoje zabierają natychmiast do Semos. Dobry droga wyjścia z niebezpieczeństwa!", null);
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        Arrays.asList("empty", "marked", "niezapisany zwój", "markable", "marked scroll"),
 				        null,
 				        ConversationStates.ATTENDING,
 				        "Puste zwoje są używane do oznaczania pozycji. Zaznaczone zwoje mogą Cię zabrać z powrotem do tej lokacji. Są trochę drogie.",
 				        null);
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        "zwój przywołania",
 				        null,
 				        ConversationStates.ATTENDING,
@@ -112,11 +107,11 @@ public class WitchNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto wiedźma zwana Jynath. Lata na miotle.");
 		npc.setEntityClass("witchnpc");
 		npc.setShadowStyle("floating");
+		npc.setGender("F");
 		npc.setPosition(24, 7);
-		npc.initHP(100);
-		npc.setDescription("Oto wiedźma zwana Jynath. Ona lata na miotle.");
 		npc.setSounds(Arrays.asList("witch-cackle-1"));
 		zone.add(npc);
 	}

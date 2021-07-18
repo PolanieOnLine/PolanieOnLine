@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.mithrilbourgh.stores;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,11 +28,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds an NPC to buy previously un bought weapons.
@@ -52,7 +51,6 @@ public class BuyerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Diehelm Brui") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -81,10 +79,11 @@ public class BuyerNPC implements ZoneConfigurator {
 				addGoodbye("Do widzenia.");
 			}
 		};
-		npc.setDescription("Oto Diehelm Brui, Kwatermistrz.");
+
+		npc.setDescription("Oto Diehelm Brui, kwatermistrz.");
 		npc.setEntityClass("recruiter3npc");
+		npc.setGender("M");
 		npc.setPosition(10, 4);
-		npc.initHP(100);
 		zone.add(npc);
 
 		// Add a book with the shop offers

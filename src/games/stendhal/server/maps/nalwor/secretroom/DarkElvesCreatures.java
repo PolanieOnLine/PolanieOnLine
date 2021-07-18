@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.secretroom;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.creature.CircumstancesOfDeath;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
-import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.magic.school.SpidersCreatures;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +19,14 @@ import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.CircumstancesOfDeath;
+import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.magic.school.SpidersCreatures;
+
 /**
  * Configure secret room.
  */
@@ -35,9 +34,9 @@ public class DarkElvesCreatures implements ZoneConfigurator {
 	private static final String QUEST_SLOT = "kill_dark_elves";
 	// be sure to have synchronized creatures lists with DrowCreatures.class
 	private final List<String> creatures =
-		Arrays.asList("elf ciemności kapitan"
-				      ,"elf ciemności generał"
-				     );
+		Arrays.asList(
+			"elf ciemności kapitan",
+			"elf ciemności generał");
 
 	/**
 	 * Configure a zone.

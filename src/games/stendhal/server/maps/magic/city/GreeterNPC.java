@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.magic.city;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,11 +25,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a Wizard NPC who explains about the city.
@@ -48,7 +47,6 @@ public class GreeterNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Erodel Bmud") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -79,7 +77,7 @@ public class GreeterNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-			        addGreeting("Witaj wędrowcze.");
+				addGreeting("Witaj wędrowcze.");
 				addJob("Jestem czarodziejem jak każdy, który mieszka w tym podziemnym magicznym mieście. Praktykujemy tutaj #magię.");
 				addReply(Arrays.asList("magic", "magię"), "W rzeczywistości czary takie jak Sunlight Spell służą tutaj do utrzymania trawy i kwiatków. Wygląda na to, że zastanawiasz się dlaczego tradycyjni wrogowie tacy jak mroczne i zielone elfy żyją tutaj razem. Pozwól mi #wyjaśnić.");
 				addReply(Arrays.asList("explain", "wyjaśnić"), "Jako miasto tylko dla czarodziei mamy dużo do nauczenia się od innych. Dlatego stare zwady są zapominane i dzięki temu żyjemy tutaj w pokoju.");
@@ -93,15 +91,15 @@ public class GreeterNPC implements ZoneConfigurator {
 					}
 				});
 
-				addQuest("Nikt nie może żyć, gdy inny przetrwał! Dark Lord musi zginąć... nie ... czekaj... to innym razem. Wybacz mi za zmylenie Ciebie. Niczego nie potrzebuję.");
+				addQuest("Nikt nie może żyć, gdy inny przetrwał! Lord ciemności musi zginąć... nie... czekaj... to innym razem. Wybacz mi za zmylenie Ciebie. Niczego nie potrzebuję.");
 				addGoodbye("Żegnaj.");
 			}
 		};
 
-		npc.setDescription("Oto przyjacielsko nastawiony starszy czarownik.");
+		npc.setDescription("Oto Erodel Bmud, przyjacielsko nastawiony starszy czarownik.");
 		npc.setEntityClass("friendlywizardnpc");
+		npc.setGender("M");
 		npc.setPosition(99, 111);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

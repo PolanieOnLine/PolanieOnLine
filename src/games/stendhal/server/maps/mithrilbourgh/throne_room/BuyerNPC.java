@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.mithrilbourgh.throne_room;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -22,8 +23,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-
-import java.util.Map;
 
 /**
  * Builds an NPC to buy previously un bought mainio weapons.
@@ -47,12 +46,6 @@ public class BuyerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Despot Halb Errvl") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Mam nadzieję, że miałeś dobry powód, aby mi przeszkodzić?");
@@ -66,17 +59,16 @@ public class BuyerNPC implements ZoneConfigurator {
 				addGoodbye("Do widzenia.");
 			}
 
-	  	@Override
+			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-
 		};
-		npc.setDescription("Oto niecierpliwy człowiek. Otacza się wojskiem lotniczym.");
-		npc.setEntityClass("blacklordnpc");
-		npc.setPosition(19, 4);
-		npc.initHP(100);
-		zone.add(npc);
 
+		npc.setDescription("Oto Despot Halb Errvl, niecierpliwy człowiek. Otacza się wojskiem lotniczym.");
+		npc.setEntityClass("blacklordnpc");
+		npc.setGender("M");
+		npc.setPosition(19, 4);
+		zone.add(npc);
 	}
 }

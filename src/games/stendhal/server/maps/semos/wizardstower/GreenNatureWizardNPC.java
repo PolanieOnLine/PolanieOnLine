@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Silvanus, the nature wizard of the Wizards Tower
@@ -36,7 +35,6 @@ public class GreenNatureWizardNPC implements ZoneConfigurator {
 
 	private void buildSilvanus(final StendhalRPZone zone) {
 		final SpeakerNPC silvanus = new SpeakerNPC("Silvanus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -77,14 +75,13 @@ public class GreenNatureWizardNPC implements ZoneConfigurator {
 				addQuest("Magia dopiero zaczyna pojawiać się w świecie. Jestem przez to bardzo zajęty, muszę przygotować druidów z #Lyreade do spotkania w kręgu czarodziejów. Powiem Ci, gdy będę mieć jakieś zadanie dla Ciebie.");
 				addReply("Lyreade", "Lyreade, szkoła naturalnej magii, jest ukryta w gęstych, elfickich lasach.");
 				addGoodbye("Do zobaczenia, przyjacielu!");
-
 			} //remaining behaviour defined in maps.quests.WizardSilvanusPlainQuest
 		};
 
 		silvanus.setDescription("Oto Silvanus, najstarszy mędrca druidów.");
 		silvanus.setEntityClass("greenelfwizardnpc");
+		silvanus.setGender("M");
 		silvanus.setPosition(11, 4);
-		silvanus.initHP(100);
 		zone.add(silvanus);
 	}
 }

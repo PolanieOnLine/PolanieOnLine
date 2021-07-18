@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -23,10 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-import java.util.Arrays;
-import java.util.Map;
-
-/*
+/**
  * Inside Semos Tavern - Level 1 (upstairs)
  */
 public class RareWeaponsSellerNPC implements ZoneConfigurator {
@@ -46,19 +45,12 @@ public class RareWeaponsSellerNPC implements ZoneConfigurator {
 	private void buildMcPegleg(final StendhalRPZone zone) {
 		// Adding a new NPC that buys some of the stuff that Xin doesn't
 		final SpeakerNPC mcpegleg = new SpeakerNPC("McPegleg") {
-
-			@Override
-			protected void createPath() {
-				// McPegleg doesn't move (room too small)
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
-				addGreeting("Yo man! Wyglądasz na kogoś kto potrzebuje #pomocy.");
-				addJob("Jestem handlarzem ... powiedzmy ... #rzadkimi rzeczami.");
-				addHelp("Nie jestem pewien czy mogę Ci ufać .... #pirat z krzywą #nogą musi mieć #oko na nowych ludzi.");
-				addQuest("Jeżeli znajdziesz #rzadką #zbroję lub #broń ...");
+				addGreeting("Cześć! Wyglądasz na kogoś kto potrzebuje #pomocy.");
+				addJob("Jestem handlarzem... powiedzmy... #rzadkimi rzeczami.");
+				addHelp("Nie jestem pewien czy mogę Ci ufać... #pirat z krzywą #nogą musi mieć #oko na nowych ludzi.");
+				addQuest("Jeżeli znajdziesz #rzadką #zbroję lub #broń...");
 				addGoodbye("Arrghh, do zobaczenia wkrótce!");
 				add(ConversationStates.ATTENDING, Arrays.asList("weapon", "broń", "armor", "zbroję", "rare" ,"rzadką" ,"rzadkimi", "rare armor", "rzadką zbroję"),
 				        ConversationStates.ATTENDING,
@@ -70,20 +62,17 @@ public class RareWeaponsSellerNPC implements ZoneConfigurator {
 				        "To nie twój interes!", null);
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrare")), false);
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
 		};
 
-		// Add some atmosphere
-		mcpegleg.setDescription("Oto podejrzany facet z opaską na oku i drewnianą nogą.");
-
-		// Add our new NPC to the game world
+		mcpegleg.setDescription("Oto McPegleg, podejrzany facet z opaską na oku i drewnianą nogą.");
 		mcpegleg.setEntityClass("pirate_sailornpc");
+		mcpegleg.setGender("M");
 		mcpegleg.setPosition(15, 4);
-		mcpegleg.initHP(100);
 		zone.add(mcpegleg);
 	}
 }

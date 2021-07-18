@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,17 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.hell;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * Inside Nalwor Hell - level -1 .
  */
 public class CaptiveNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -36,12 +34,6 @@ public class CaptiveNPC implements ZoneConfigurator {
 
 	private void buildTomi(final StendhalRPZone zone) {
 		final SpeakerNPC tomi = new SpeakerNPC("tomi") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Pomocy!");
@@ -52,13 +44,14 @@ public class CaptiveNPC implements ZoneConfigurator {
 			}
 		};
 
+		tomi.setDescription("Oto Tomi. Jest cały spocony i na pewno potrzebuje coś do ochłodzenia.");
 		tomi.setEntityClass("transparentnpc");
 		tomi.setAlternativeImage("tomi");
+		tomi.setGender("M");
 		tomi.setPosition(119, 13);
 		tomi.setBaseHP(100);
 		tomi.setHP(50);
 		tomi.setShadowStyle(null);
-		tomi.setDescription("Oto Tomi. Jest cały spocony i na pewno potrzebuje coś do ochłodzenia.");
 		zone.add(tomi);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.orril.dungeon;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -19,18 +22,12 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.RatKidsNPCBase;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a Rat Child NPC.
  *
  * @author Norien
  */
 public class RatChild2NPC implements ZoneConfigurator {
-
-
 	/**
 	 * Configure a zone.
 	 *
@@ -47,22 +44,20 @@ public class RatChild2NPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-                                //path goes here
-                                nodes.add(new Node(45, 19));
-                                nodes.add(new Node(65, 19));
-                                nodes.add(new Node(65, 54));
-                                nodes.add(new Node(69, 54));
-                                nodes.add(new Node(69, 15));
-                                nodes.add(new Node(45, 15));
-
-                                setPath(new FixedPath(nodes, true));
+				nodes.add(new Node(45, 19));
+				nodes.add(new Node(65, 19));
+				nodes.add(new Node(65, 54));
+				nodes.add(new Node(69, 54));
+				nodes.add(new Node(69, 15));
+				nodes.add(new Node(45, 15));
+				setPath(new FixedPath(nodes, true));
 			}
 		};
 
-		rat.setDescription("Oto dziecko człekoszczura.");
+		rat.setDescription("Oto Mariel, dziecko człekoszczura.");
 		rat.setEntityClass("ratchild2npc");
+		rat.setGender("F");
 		rat.setPosition(45, 19);
-		rat.initHP(100);
 		zone.add(rat);
 	}
 }

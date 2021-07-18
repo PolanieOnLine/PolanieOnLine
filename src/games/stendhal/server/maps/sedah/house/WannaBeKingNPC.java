@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -28,7 +27,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author johnnnny
  */
 public class WannaBeKingNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -61,10 +59,10 @@ public class WannaBeKingNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto groźny Abe Ivan. Chce zostać królem Kalavan.");
 		npc.setEntityClass("wannabekingnpc");
+		npc.setGender("M");
 		npc.setPosition(3, 7);
-		npc.initHP(100);
-		npc.setDescription("Oto groźny Abe Ivan. On chce być królem Kalavan.");
 		zone.add(npc);
 	}
 }

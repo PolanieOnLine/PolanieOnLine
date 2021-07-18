@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -30,11 +29,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author Teiv
  */
 public class GroundskeeperNPC implements ZoneConfigurator {
-
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -46,10 +40,8 @@ public class GroundskeeperNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC groundskeeperNPC = new SpeakerNPC("Morgrin") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -75,11 +67,11 @@ public class GroundskeeperNPC implements ZoneConfigurator {
 			}
 		};
 
+		groundskeeperNPC.setDescription("Oto Morgrin, kierownik szkoły w magicznym mieście. Jest zawsze zajęty i potrzebuje pomocnej dłoni.");
 		groundskeeperNPC.setEntityClass("groundskeepernpc");
+		groundskeeperNPC.setGender("M");
 		groundskeeperNPC.setPosition(35, 13);
 		groundskeeperNPC.setCollisionAction(CollisionAction.STOP);
-		groundskeeperNPC.initHP(1000);
-		groundskeeperNPC.setDescription("Oto Morgrin, kierownik szkoły w Magic City. Jest zawsze zajęty i potrzebuje pomocnej dłoni.");
 		zone.add(groundskeeperNPC);
 	}
 }

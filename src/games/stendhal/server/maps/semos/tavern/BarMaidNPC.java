@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -33,7 +32,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 
-/*
+/**
  * Food and drink seller,  Inside Semos Tavern - Level 0 (ground floor)
  * Sells the flask required for Tad's quest IntroducePlayers
  */
@@ -53,7 +52,6 @@ public class BarMaidNPC implements ZoneConfigurator {
 
 	private void buildMargaret(final StendhalRPZone zone) {
 		final SpeakerNPC margaret = new SpeakerNPC("Margaret") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -72,34 +70,30 @@ public class BarMaidNPC implements ZoneConfigurator {
 				addJob("Jestem kelnerką w tej oberży. Sprzedajemy #flaszki , importowane i lokalne soki z chmielu oraz dobre jedzenie.");
 				addHelp("Oberża ta jest na tyle duża, żeby tu odpocząć i spotkać nowych ludzi! Jeżeli chcesz poznać moją #ofertę, to powiedz mi o tym.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("food&drinks")));
-
 				addGoodbye();
 			}
 		};
 
 		//coupon for free beer
-
         margaret.add(ConversationStates.ATTENDING,
                 (Arrays.asList("coupon", "coupons", "beer coupon", "free beer", "kupon", "kupony", "darmowy sok z chmielu")),
                 new PlayerHasItemWithHimCondition("kupon"),
                 ConversationStates.ATTENDING,
                 "Oh widzę, że znalazłeś jeden z kuponów, które rozdałam jakiś czas temu. Przyjemnego kosztowania soku z chmielu!",
                 new MultipleActions(new DropItemAction("kupon"),
-                					new EquipItemAction("sok z chmielu"))
-                );
+                					new EquipItemAction("sok z chmielu")));
 
         margaret.add(ConversationStates.ATTENDING,
         		(Arrays.asList("coupon", "coupons", "beer coupon", "free beer", "kupon", "kupony", "darmowy sok z chmielu")),
                 new NotCondition(new PlayerHasItemWithHimCondition("kupon")),
                 ConversationStates.ATTENDING,
                 "Nie kłam. Nie masz kuponu ze sobą. Dziś trudno prowadzić tawernę. Nie oszukuj mnie!",
-                null
-                );
+                null);
 
+        margaret.setDescription("Oto Margaret, wygląda na miłą osobę. Nie możesz jej pomóc, ale możesz coś od niej kupić.");
 		margaret.setEntityClass("tavernbarmaidnpc");
-		margaret.setDescription("Margaret wygląda na miłą osobę. Nie możesz jej pomóc, ale możesz coś od niej kupić.");
+		margaret.setGender("F");
 		margaret.setPosition(11, 4);
-		margaret.initHP(100);
 		margaret.setSounds(Arrays.asList("hiccup-01", "hiccup-1", "hiccup-2", "hiccup-3"));
 		zone.add(margaret);
 	}

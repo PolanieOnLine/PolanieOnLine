@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -27,7 +26,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehaviour;
 
 public class MrsYetiNPC implements ZoneConfigurator {
-
 	public static final int BUYING_PRICE = 10;
  	private static final String QUEST_SLOT = "mrsyeti";
 
@@ -44,7 +42,6 @@ public class MrsYetiNPC implements ZoneConfigurator {
 
 	private void buildYeti(final StendhalRPZone zone) {
 		final SpeakerNPC yetifemale = new SpeakerNPC("Mrs. Yeti") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -75,11 +72,10 @@ public class MrsYetiNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-
 				final Map<String, Integer> items = new HashMap<String, Integer>();
 				items.put("płotka", BUYING_PRICE);
-
 				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour(QUEST_SLOT, "Mam #zadanie dla Ciebie. Oddam ci wszystko tylko pomóż!", items));
+
 				// for quest see games.stendhal.server.maps.quest.HelpMrsYeti
 				addGreeting("Pozdrawiam, hmm dziwny cudzoziemiec!");
 				addJob("Idę na łowy po żywności, podczas gdy Pan Yeti ogląda, rzeźby ze śniegu.");
@@ -88,11 +84,11 @@ public class MrsYetiNPC implements ZoneConfigurator {
 			}
 		};
 
+		yetifemale.setDescription("Oto Mrs. Yeti, pani o białych włosach z dużymi stopami!");
 		yetifemale.setEntityClass("yetifemalenpc");
-		yetifemale.setDescription("Oto Mrs. Yeti pani o białych włosach z dużymi stopami!");
+		yetifemale.setGender("F");
 		yetifemale.setPosition(102, 19);
 		yetifemale.setCollisionAction(CollisionAction.STOP);
-		yetifemale.initHP(100);
 		zone.add(yetifemale);
 	}
 }

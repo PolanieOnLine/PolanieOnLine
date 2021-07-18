@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,18 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.plains;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.ReadPostmanMessages;
 
-import java.util.Map;
-
 /**
  * Adds the listener for postman messages
  */
 public class AddPostmanListener implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -34,7 +32,4 @@ public class AddPostmanListener implements ZoneConfigurator {
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		SingletonRepository.getLoginNotifier().addListener(new ReadPostmanMessages());
 	}
-
-
-
 }

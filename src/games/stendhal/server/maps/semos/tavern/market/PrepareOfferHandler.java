@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,7 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern.market;
 
-import marauroa.server.db.command.DBCommandQueue;
+import java.util.Arrays;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
@@ -32,8 +32,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
 import games.stendhal.server.util.AsynchronousProgramExecutor;
-
-import java.util.Arrays;
+import marauroa.server.db.command.DBCommandQueue;
 
 public class PrepareOfferHandler {
 	private Item item;

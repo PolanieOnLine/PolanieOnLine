@@ -54,12 +54,6 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 	private SpeakerNPC buildSemosHouseArea() {
 		final SpeakerNPC mizuno = new SpeakerNPC("Mizuno") {
 	    	@Override
-	    	protected void createPath() {
-	    		// npc does not move
-	    		setPath(null);
-	    	}
-
-	    	@Override
 	    	protected void createDialog() {
 	    		addGreeting("Czego potrzebujesz?");
 	    		addJob("Wolę to zatrzymać dla siebie.");
@@ -188,7 +182,7 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 				                    + " dla ciebie, ale to zajmie trochę czasu. Proszę wróć za "
 				                    + getApproximateRemainingTime(player) + ".");
 				            		return true;
-				            	}
+				            }
 				        }
 				    }
                 }
@@ -206,11 +200,12 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 			}
 		};
 
+		mizuno.setDescription("Oto Mizuno. Jak duch nawiedza Ados robiąć nie wiadomo co.");
 		mizuno.setEntityClass("man_001_npc");
+		mizuno.setGender("M");
 		mizuno.initHP(100);
 		mizuno.setHP(80);
 		mizuno.setCollisionAction(CollisionAction.REVERSE);
-		mizuno.setDescription("Oto Mizuno. Jak duch nawiedza Ados robiąć nie wiadomo co.");
 
 		// start in int_semos_house
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_semos_house");

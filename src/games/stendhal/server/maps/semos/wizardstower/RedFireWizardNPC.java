@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Malleus, the fire wizard of the Wizards Tower
@@ -28,7 +27,6 @@ import java.util.Map;
  * see games.stendhal.server.maps.quests.WizardMalleusPlainQuest
  */
 public class RedFireWizardNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMalleus(zone);
@@ -36,7 +34,6 @@ public class RedFireWizardNPC implements ZoneConfigurator {
 
 	private void buildMalleus(final StendhalRPZone zone) {
 		final SpeakerNPC malleus = new SpeakerNPC("Malleus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -77,14 +74,13 @@ public class RedFireWizardNPC implements ZoneConfigurator {
 				addQuest("Magia stawia pierwsze kroki na tym świecie. Jestem zajęty, czarnoksiężnicy z #Yrafear eż są obecni na spotkaniu kręgu czarodziejów. Gdy będę miał jakieś zadanie dla Ciebie, powiem Ci o tym.");
 				addReply("Yrafear", "Yrafear, szkoła magii ognia, leży głęboko pod ziemiami Faiumoni.");
 				addGoodbye("Żegnaj!");
-
 			} //remaining behaviour defined in maps.quests.WizardMalleusPlainQuest
 		};
 
 		malleus.setDescription("Oto Malleus, mistrz magii destrukcji.");
 		malleus.setEntityClass("reddarkwizardnpc");
+		malleus.setGender("M");
 		malleus.setPosition(2, 43);
-		malleus.initHP(100);
 		zone.add(malleus);
 	}
 }

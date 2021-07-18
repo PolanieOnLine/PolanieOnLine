@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2012 - Stendhal                    *
  ***************************************************************************
@@ -10,8 +9,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.maps.orril.constantines_villa;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,19 +21,12 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a npc in Constantines Villa (name:Klaus) who is one of Constantines villa guards
  *
  * @author storyteller (idea) and Vanessa Julius (implemented)
- *
  */
-
 public class GuardEntranceNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -39,7 +34,6 @@ public class GuardEntranceNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Klaus") {
-
 			//NPC walks around in the entrance hall of Constantines villa
 			@Override
 			protected void createPath() {
@@ -75,24 +69,19 @@ public class GuardEntranceNPC implements ZoneConfigurator {
 				nodes.add(new Node(13,45));
 				nodes.add(new Node(15,45));
                	setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
-
 			//Greeting and goodbye message in quest code TheMissingBooks.java
-
 			protected void createDialog() {
 				addGreeting("Hej [name]! Dlaczego tutaj szukasz? Odejdź stąd NATYCHMIAST!");
-
-
 			}
 		};
 
-		npc.setDescription("Oto Klaus jeden ze strażników Constantines. Lepiej nie wchodzić mu w drogę!");
+		npc.setDescription("Oto Klaus, jeden ze strażników Konstantyna. Lepiej nie wchodzić mu w drogę!");
 		npc.setEntityClass("nightguardswordnpc");
+		npc.setGender("M");
 		npc.setPosition(15, 46);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.maps.semos.mountain;
 
 import java.util.LinkedList;
@@ -37,7 +36,6 @@ public class BefuddledSorcerorNPC implements ZoneConfigurator {
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Brosoklelo") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();

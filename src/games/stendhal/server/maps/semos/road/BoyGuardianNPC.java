@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,17 +11,19 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.road;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ConversationPhrases;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
 import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
@@ -30,9 +31,7 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasShieldEquippedCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-
-import java.util.Arrays;
-import java.util.Map;
+import games.stendhal.server.entity.player.Player;
 
 public class BoyGuardianNPC implements ZoneConfigurator {
 	/**
@@ -44,27 +43,18 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMineArea(zone);
 	}
 
 	private void buildMineArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Will") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
-
 				String greetingBasis = "Hej, ty! Trzymaj się. Właśnie opuszczasz miasto! ";
 
 				// When the players level is below 15 AND (he has a shield equipped OR he completed the "meet_hayunn" quest)
-				add(
-						ConversationStates.IDLE,
+				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(
 								new LevelLessThanCondition(15),
@@ -77,8 +67,7 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 						greetingBasis + "Uważaj na zwierzęta, które mogą cię zaatakować i innych wrogów, którzy kręcą sięw pobliżu. Lepiej weź ze sobą coś do jedzenia i picia ze sobą! ",
 						null);
 				// When the players level is below 15 AND he has NO shield AND he has NOT completed the "meet_hayunn" quest
-				add(
-						ConversationStates.IDLE,
+				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(
 								new LevelLessThanCondition(15),
@@ -89,8 +78,7 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 						greetingBasis + "Coo! Nie masz nawet tarczy. Wróć i porozmawiaj z Hayunn w starym domku strażników w wiosce Semos nim wpadniesz w tarapaty.",
 						null);
 				// When the player is above level 15
-				add(
-						ConversationStates.IDLE,
+				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new LevelGreaterThanCondition(15),
 						ConversationStates.ATTENDING,
@@ -124,11 +112,11 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 			}
 		});
 
+		npc.setDescription("Oto Will. W przyszłości chce być zawodowym strażnikiem miejskim.");
 		npc.setEntityClass("boyguardnpc");
-		npc.setDescription("Oto Will. W przyszłości chce być zawodowym śtrażnikiem miejskim.");
+		npc.setGender("M");
 		npc.setPosition(6, 43);
 		npc.setDirection(Direction.DOWN);
-		npc.initHP(100);
 		npc.setPerceptionRange(4);
 		zone.add(npc);
 	}

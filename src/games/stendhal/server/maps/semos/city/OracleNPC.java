@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,31 +29,22 @@ import games.stendhal.server.entity.npc.action.SayUnstartedQuestDescriptionFromN
 import games.stendhal.server.entity.npc.condition.TriggerIsNPCNameForUnstartedQuestCondition;
 import games.stendhal.server.maps.Region;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * An oracle who lets players know how they can help others.
- *
  */
 public class OracleNPC implements ZoneConfigurator {
-
 	/**
 	 * region that this NPC can give information about
 	 */
 	private final List<String> regions = Arrays.asList(Region.SEMOS_CITY, Region.SEMOS_SURROUNDS);
 
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Periwinkle") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Róże są czerwone, a fiołki niebieskie. Semos potrzebuje #pomocy co możesz zrobic?");
@@ -91,10 +87,12 @@ public class OracleNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		npc.setPosition(2, 29);
+
 		npc.setDescription("Oto Periwinkle. Wygląda na senną i roztargnioną.");
 		npc.setEntityClass("oracle1npc");
 		npc.setShadowStyle("floating");
+		npc.setGender("F");
+		npc.setPosition(2, 29);
 		zone.add(npc);
 	}
 

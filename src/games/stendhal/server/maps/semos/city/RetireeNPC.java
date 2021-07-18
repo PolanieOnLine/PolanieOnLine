@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -36,16 +35,13 @@ import games.stendhal.server.entity.player.Player;
  * A crazy old man (original name: Diogenes) who walks around the city.
  */
 public class RetireeNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Diogenes") {
-
 			@Override
 			public void createDialog() {
 				addGreeting();
@@ -70,23 +66,23 @@ public class RetireeNPC implements ZoneConfigurator {
 			                }
 		                });
 
-		// A convenience function to make it easier for admins to test quests.
-		add(ConversationStates.ATTENDING, Arrays.asList("cleanme!", "wyczyść mnie!"), null, ConversationStates.ATTENDING, "Co?",
-		        new ChatAction() {
-					        @Override
-			        public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				        if (AdministrationAction.isPlayerAllowedToExecuteAdminCommand(player, "alter", false)) {
-					        for (final String quest : player.getQuests()) {
-						        player.removeQuest(quest);
-					        }
-				        } else {
-					        npc.say("Co? Nie. Wyczyściłeś mnie! Dzięki.");
-					        player.damage(5, npc.getEntity());
-					        player.notifyWorldAboutChanges();
-				        }
-			        }
-		        });
-	}
+				// A convenience function to make it easier for admins to test quests.
+				add(ConversationStates.ATTENDING, Arrays.asList("cleanme!", "wyczyść mnie!"), null, ConversationStates.ATTENDING, "Co?",
+						new ChatAction() {
+							@Override
+							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+								if (AdministrationAction.isPlayerAllowedToExecuteAdminCommand(player, "alter", false)) {
+									for (final String quest : player.getQuests()) {
+										player.removeQuest(quest);
+									}
+								} else {
+									npc.say("Co? Nie. Wyczyściłeś mnie! Dzięki.");
+									player.damage(5, npc.getEntity());
+									player.notifyWorldAboutChanges();
+								}
+							}
+		        		});
+			}
 
 			@Override
 			protected void createPath() {
@@ -101,11 +97,12 @@ public class RetireeNPC implements ZoneConfigurator {
 				nodes.add(new Node(22, 29));
 				setPath(new FixedPath(nodes, true));
 			}
-
 		};
-		npc.setPosition(24, 43);
+
+		npc.setDescription("Oto Diogenes, jest starszym mężczyzną, ale żwawym jak na swój wiek. Wygląda na przyjaznego i pomocnego.");
 		npc.setEntityClass("beggarnpc");
-		npc.setDescription("Diogenes jest starszym mężczyzną, ale żwawym jak na swój wiek. Wygląda na przyjaznego i pomocnego.");
+		npc.setGender("M");
+		npc.setPosition(24, 43);
 		npc.setSounds(Arrays.asList("laugh-old-man-01", "laugh-old-man-02"));
 		zone.add(npc);
 	}

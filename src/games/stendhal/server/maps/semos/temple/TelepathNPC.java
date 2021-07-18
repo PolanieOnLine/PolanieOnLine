@@ -52,7 +52,6 @@ public class TelepathNPC implements ZoneConfigurator {
 
 	private void buildSemosTempleArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Io Flotto") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -74,7 +73,6 @@ public class TelepathNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-
 				// player has met io before and has a pk skull
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
@@ -138,16 +136,18 @@ public class TelepathNPC implements ZoneConfigurator {
 							}
 					    }
 				);
+
 				// player didn't want pk icon removed, offer other help
 				add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES, null, ConversationStates.ATTENDING, "Dobrze! Mogę ci #pomóc w różnych rzeczach jeżeli chcesz.", null);
 				// player satisfied the pk removal requirements and said yes they were sorry
 				add(ConversationStates.QUESTION_2, ConversationPhrases.YES_MESSAGES, null, ConversationStates.ATTENDING,
-				        "Dobrze. Wiedziałam.", new ChatAction() {
-
+						"Dobrze. Wiedziałam.",
+						new ChatAction() {
 					        @Override
 					        public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 								player.rehabilitate();
-							} });
+							}
+						});
 				// player said no they are not really sorry
 				add(ConversationStates.QUESTION_2, ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE, "Myślałam, że nie! Do widzenia!", null);
 				addJob("Potrafię użyć całą moc ludzkiego umysłu. Zrobiłam wielkie postępy w telepatii i telekinezie. Jednakże nadal nie mogę przewidywać przyszłości. Nie jestem pewna czy będziemy w stanie zniszczyć mroczne legiony Blordroughów...");
@@ -157,11 +157,11 @@ public class TelepathNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Io Flotto. Widzi ciebie.");
 		npc.setEntityClass("floattingladynpc");
 		npc.setShadowStyle("floating");
-		npc.setDescription("Oto Io Flotto. Widzi ciebie.");
+		npc.setGender("F");
 		npc.setPosition(8, 19);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

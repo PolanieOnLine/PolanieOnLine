@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.wofol.bar;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
@@ -26,12 +31,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
   * Provides Wrviliza, the kobold barmaid in Wo'fol.
   * She's Wrvil's wife.
@@ -41,7 +40,6 @@ import java.util.Map;
   * @author omero
   */
 public class KoboldBarmaidNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -54,9 +52,7 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Wrviliza") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -72,7 +68,6 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 			}
 
 			@Override
-
 			protected void createDialog() {
 				class TorcibudSellerBehaviour extends SellerBehaviour {
 					TorcibudSellerBehaviour(final Map<String, Integer> items) {
@@ -136,12 +131,12 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 									+ Grammar.isare(amount) + " your "
 									+ Grammar.plnoun(amount, chosenItemName) + "!");
 							return true;
-					        } else {
-					                seller.say("Hau.. W tej chwili nie możesz dodać więcej "
- 					                       + Grammar.plnoun(amount, chosenItemName)
-                    				       + " do plecaka.");
-					                return false;
-					        }
+						} else {
+							seller.say("Hau.. W tej chwili nie możesz dodać więcej "
+									+ Grammar.plnoun(amount, chosenItemName)
+									+ " do plecaka.");
+							return false;
+						}
 					}
 				}
 
@@ -189,10 +184,10 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Wrviliza, kelnerka kobold.");
 		npc.setEntityClass("koboldbarmaidnpc");
+		npc.setGender("F");
 		npc.setPosition(9, 3);
-		npc.initHP(100);
-		npc.setDescription("Oto Wrviliza kelnerka kobold.");
 		zone.add(npc);
 
 	}

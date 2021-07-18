@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.sedah.storage;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,20 +24,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds the storage NPC in Sedah City.
  *
  * @author Teiv
  */
 public class StorageNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,14 +39,12 @@ public class StorageNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone, final
-			Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC storageNPC = new SpeakerNPC("Pjotr Yearl") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -78,8 +71,7 @@ public class StorageNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj przyjacielu. Powinienem być zajęty.");
 				addJob("Moją pracą jest służenie Wojsku #Scarlet.");
-				addReply(
-						"scarlet",
+				addReply("scarlet",
 						"Wojsko Scarlet jest specjalną dywizją Wojska Kalavańskiego. Noszą oni czerwone zbroje.");
 				addHelp("Widziałeś nie została mi ani jedna zbroja. Teraz nie mogę służyć Wojsku #Scarlet!");
 				addOffer("Przynieś mi jakąś zbroję, a zapłacę za nią!");
@@ -88,10 +80,10 @@ public class StorageNPC implements ZoneConfigurator {
 			}
 		};
 
+		storageNPC.setDescription("Oto Pjotr Yearl, który wydaje się być nieco zestresowany. Czy on może potrzebuje pomocy?");
 		storageNPC.setEntityClass("scarletarmynpc");
+		storageNPC.setGender("M");
 		storageNPC.setPosition(35, 23);
-		storageNPC.initHP(100);
-		storageNPC.setDescription("Pjotr Yearl wydaje się być nieco zestresowany. Czy on może potrzebuje pomocy?");
 		zone.add(storageNPC);
 	}
 }

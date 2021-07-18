@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
 import java.awt.geom.Rectangle2D;
@@ -31,8 +42,6 @@ import marauroa.common.game.RPObject;
  * A merchant (original name: Sato) who buys sheep from players.
  */
 public class SheepBuyerNPC implements ZoneConfigurator {
-
-	// The sheep pen where Sato moves what he buys
 	/** Left X coordinate of the sheep pen */
 	private static final int SHEEP_PEN_X = 39;
 	/** Top Y coordinate of the sheep pen */
@@ -49,7 +58,6 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 	private Area pen;
 
 	public class SheepBuyerSpeakerNPC extends SpeakerNPC {
-
 		public SheepBuyerSpeakerNPC(String name) {
 			super(name);
 			// HP needs to be > 0 for Sato to appear in the killer list for
@@ -150,8 +158,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 	}
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		final SpeakerNPC npc = new SheepBuyerSpeakerNPC("Sato") {
 			@Override
 			public void createDialog() {
@@ -178,10 +185,12 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 		final Map<String, Integer> buyitems = new HashMap<String, Integer>();
 		buyitems.put("sheep", 150);
 		new BuyerAdder().addBuyer(npc, new SheepBuyerBehaviour(buyitems), true);
+
+		npc.setDescription("Oto Sato, który kocha owce.");
+		npc.setEntityClass("buyernpc");
+		npc.setGender("M");
 		npc.setPosition(40, 45);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.setEntityClass("buyernpc");
-		npc.setDescription("Oto Sato, który kocha owce.");
 		npc.setSounds(Arrays.asList("hiccup-01", "hiccup-1", "sneeze-male-01", "sneeze-1"));
 		zone.add(npc);
 	}
@@ -209,7 +218,6 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 		@Override
 		public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
 			// res.getAmount() is currently ignored.
-
 			final Sheep sheep = player.getSheep();
 
 			if (sheep != null) {

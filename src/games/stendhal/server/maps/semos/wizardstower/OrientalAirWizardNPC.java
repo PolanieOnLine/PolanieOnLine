@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Jaer, the air wizard of the Wizards Tower
@@ -28,7 +27,6 @@ import java.util.Map;
  * see games.stendhal.server.maps.quests.WizardJaerPlainQuest
  */
 public class OrientalAirWizardNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildJaer(zone);
@@ -36,7 +34,6 @@ public class OrientalAirWizardNPC implements ZoneConfigurator {
 
 	private void buildJaer(final StendhalRPZone zone) {
 		final SpeakerNPC jaer = new SpeakerNPC("Jaer") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -84,14 +81,13 @@ public class OrientalAirWizardNPC implements ZoneConfigurator {
 				addQuest("Magia dopiero zaczyna istnieć w świecie, przez co jestem bardzo zajęty. Ktoś musi pilnować iluzjonistów z #Pękniętej #Chmury w kręgu czarodziejów. Powiem Ci, kiedy będę miec jakieś zadanie dla Ciebie.");
 				addReply("Cloudburst", "Pęknięta Chmura to szkoła iluzjonistów, lewitujących nad ziemią, wysoko w chmurach.");
 				addGoodbye("Żegnaj!");
-
 			} //remaining behaviour defined in maps.quests.WizardJaerPlainQuest
 		};
 
 		jaer.setDescription("Oto Jaer, mistrz iluzji.");
 		jaer.setEntityClass("orientalwizardnpc");
+		jaer.setGender("M");
 		jaer.setPosition(40, 43);
-		jaer.initHP(100);
 		zone.add(jaer);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.semos.caves;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
@@ -25,16 +29,11 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class BabyDragonSellerNPC implements ZoneConfigurator {
-
 	private static final String QUEST_SLOT = "hatching_dragon";
 	// A baby dragon takes this long to hatch
 	private static final long REQUIRED_DAYS = 7L;
+
 	/**
 	 * Configure a zone.
 	 *
@@ -47,11 +46,10 @@ public class BabyDragonSellerNPC implements ZoneConfigurator {
 	}
 
 	private void buildHouseArea(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Terry") {
 			@Override
 			protected void createPath() {
-			      	final List<Node> nodes = new LinkedList<Node>();
+				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(66, 8));
 				nodes.add(new Node(69, 8));
 				nodes.add(new Node(69, 17));
@@ -104,6 +102,7 @@ public class BabyDragonSellerNPC implements ZoneConfigurator {
 					    }
 					}
 				});
+
 		        addReply(Arrays.asList("hatch", "wykluje", "wykluj"), null, new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -112,17 +111,18 @@ public class BabyDragonSellerNPC implements ZoneConfigurator {
 						// but we might as well warn player here that they wouldn't be allowed two.
 							raiser.say("Ale masz już zwierzątko. Jeśli dałbym Ci drugie to mogłyby się pogryźć... albo gorzej...");
 					   } else {
-						if (player.isEquipped("mityczne jajo")) {
-						    player.drop("mityczne jajo");
-						    raiser.say("Dobrze wezmę Twoje jajko i wykluję je w jednym z tych ohydnych pudełek. Wróć za " + 7 + " dzień i powinieneś być wtedy dumny z posiadania nowo narodzonego smoczka.");
-						    player.setQuest(QUEST_SLOT, Long.toString(System.currentTimeMillis()));
-						    player.notifyWorldAboutChanges();
-						} else {
-						    raiser.say("No cóż, nie posiadasz mitycznego jaja. Wróć jeśli jakieś znajdziesz, tylko wtedy mogę Ci pomóc.");
-						}
+							if (player.isEquipped("mityczne jajo")) {
+							    player.drop("mityczne jajo");
+							    raiser.say("Dobrze wezmę Twoje jajko i wykluję je w jednym z tych ohydnych pudełek. Wróć za " + 7 + " dzień i powinieneś być wtedy dumny z posiadania nowo narodzonego smoczka.");
+							    player.setQuest(QUEST_SLOT, Long.toString(System.currentTimeMillis()));
+							    player.notifyWorldAboutChanges();
+							} else {
+							    raiser.say("No cóż, nie posiadasz mitycznego jaja. Wróć jeśli jakieś znajdziesz, tylko wtedy mogę Ci pomóc.");
+							}
 					    }
 					}
-				    });
+		        });
+
 				addJob("Hoduję smoki. Musisz mieć smocze jajo, z którego #wykluje się mały smok.");
 				addQuest("Jeśli zdobędziesz mityczne jajo, zaopiekuję się nim aż #wykluje się z niego smok.");
 				addHelp("Jestem smoczym wychowawcą. Jeśli masz smocze jajo może coś się z niego #wykluje. Mogę Ci opowiedzieć jak #podróżować ze zwierzakiem i #dbać o niego. Jeśli przypadkiem spotkasz porzuconego smoka możesz go mieć na #własność.");
@@ -139,15 +139,15 @@ public class BabyDragonSellerNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Terry. W wolnym czasie bawi się z małymi smokami.");
 		npc.setEntityClass("man_005_npc");
-		npc.setDescription("oto Terry. W wolnym czasie bawi się z małymi smokami.");
+		npc.setGender("M");
 		npc.setPosition(66, 8);
-		npc.initHP(100);
 		zone.add(npc);
 
 		// Also put a dragon in the caves (people can't Own it as it is behind rocks)
 		final BabyDragon drag = new BabyDragon();
-                drag.setPosition(62, 8);
-                zone.add(drag);
+		drag.setPosition(62, 8);
+		zone.add(drag);
 	}
 }

@@ -11,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.mountain;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * A crystal NPC
@@ -36,33 +36,21 @@ public class YellowCrystalNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-
-		// Create the NPC
 		final SpeakerNPC crystal = new SpeakerNPC("Żółty Kryształ") {
-
-			@Override
-			protected void createPath() {
-				// NPC doesn't move
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj mam nadzieję, że korzystasz z dóbr natury.");
 				addHelp("W okolicach gór jest pięknie wyglądająca wieża. Jest wielka!");
 				addJob("Jestem kryształem. Co mogę więcej powiedzieć?");
 				addGoodbye("Żegnaj i wróć, gdy będziesz potrzebował mojej pomocy.");
-
 			}
 		};
 
+		crystal.setDescription("Oto żółty kryształ. Co za energetyzujący widok.");
 		crystal.setEntityClass("transparentnpc");
 		crystal.setAlternativeImage("crystalyellownpc");
 		crystal.setPosition(76, 16);
-		crystal.initHP(100);
-		crystal.setDescription("Oto żółty kryształ. Co za energetyzujący widok.");
 		crystal.setResistance(0);
-
 		zone.add(crystal);
 	}
 

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -28,7 +27,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @see games.stendhal.server.maps.quests.PlinksToy
  */
 public class LittleBoyNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,8 +39,7 @@ public class LittleBoyNPC implements ZoneConfigurator {
 	}
 
 	private void buildSemosNorthPlainsArea(StendhalRPZone zone) {
-		SpeakerNPC npc = new SpeakerNPC("Plink") {
-
+		final SpeakerNPC npc = new SpeakerNPC("Plink") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,10 +55,8 @@ public class LittleBoyNPC implements ZoneConfigurator {
 				nodes.add(new Node(46, 98));
 				nodes.add(new Node(46, 100));
 				nodes.add(new Node(38, 100));
-
 				setPath(new FixedPath(nodes, true));
 			}
-
 
 			@Override
 			public void createDialog() {
@@ -72,12 +67,12 @@ public class LittleBoyNPC implements ZoneConfigurator {
 				addOffer("Hej nie oddam tobie mojego misia! Jest mój! *ściska*");
 				addGoodbye();
 			}
-
 		};
-		npc.setEntityClass("plinknpc");
+
 		npc.setDescription("Oto młody chłopiec o imieniu Plink. Płacze i potrzebuje pomocy...");
+		npc.setEntityClass("plinknpc");
+		npc.setGender("M");
 		npc.setPosition(38, 100);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 

@@ -17,13 +17,11 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 
-
-/*
+/**
  * NOTE: because the lab entrance portal is not configured in .xml, neither can
  *       this portal else there is a reference error during build.
  */
 public class LabExitPortal implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		final Portal labExit = new Portal();

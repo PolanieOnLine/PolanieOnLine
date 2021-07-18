@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -33,18 +32,19 @@ import games.stendhal.server.util.Area;
  * Then it should give an amulet that is bound to the player.
  */
 public class DrowCreatures implements ZoneConfigurator {
-	private static final String QUEST_SLOT="kill_dark_elves";
+	private static final String QUEST_SLOT = "kill_dark_elves";
 	// at the beginning places there must be creatures from DarkElvesCreatures.class
 	private final List<String> creatures =
-		Arrays.asList("elf ciemności kapitan",
-				          "elf ciemności generał",
-				          "elf ciemności rycerz",
-				          "elf ciemności czarownik",
-				          "elf ciemności czarnoksiężnik",
-				          "elf ciemności królewicz",
-				          "elf ciemności matrona",
-					        "elf ciemności łucznik elitarny",
-				          "elf ciemności łucznik");
+		Arrays.asList(
+				"elf ciemności kapitan",
+				"elf ciemności generał",
+				"elf ciemności rycerz",
+				"elf ciemności czarownik",
+				"elf ciemności czarnoksiężnik",
+				"elf ciemności królewicz",
+				"elf ciemności matrona",
+				"elf ciemności łucznik elitarny",
+				"elf ciemności łucznik");
 
 	/**
 	 * Configure a zone.

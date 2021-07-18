@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.wofol.bakery;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -20,22 +25,12 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Builds the wofol baker NPC.
  *
  * @author kymara
  */
 public class BakerNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -47,13 +42,8 @@ public class BakerNPC implements ZoneConfigurator {
 		buildNPC(zone);
 	}
 
-	//
-	// BakerNPC
-	//
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC baker = new SpeakerNPC("Kroip") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -110,10 +100,10 @@ public class BakerNPC implements ZoneConfigurator {
 			}
 		};
 
-		baker.setEntityClass("koboldchefnpc");
-		baker.setPosition(15, 3);
-		baker.initHP(1000);
 		baker.setDescription("Oto Kroip. Był stażystą Leandra, a obecnie jest znany jako piekarz pizzy w Wofol.");
+		baker.setEntityClass("koboldchefnpc");
+		baker.setGender("M");
+		baker.setPosition(15, 3);
 		zone.add(baker);
 	}
 }

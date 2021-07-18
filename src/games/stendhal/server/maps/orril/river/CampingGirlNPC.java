@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,12 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.orril.river;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * Configure Orril River South Campfire (Outside/Level 0).
@@ -36,13 +35,6 @@ public class CampingGirlNPC implements ZoneConfigurator {
 
 	private void buildCampfireArea(final StendhalRPZone zone) {
 		final SpeakerNPC sally = new SpeakerNPC("Sally") {
-
-			@Override
-			protected void createPath() {
-				// NPC does not move
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				//addGreeting();
@@ -53,11 +45,11 @@ public class CampingGirlNPC implements ZoneConfigurator {
 			}
 		};
 
+		sally.setDescription("Oto Sally. Jest córką Leandera, piekarza Semos a obecnie obozuję nad rzeką.");
 		sally.setEntityClass("girlnpc");
+		sally.setGender("F");
 		sally.setPosition(40, 61);
 		sally.setDirection(Direction.RIGHT);
-		sally.initHP(100);
-		sally.setDescription("Oto Sally. Jest córką Leandera, piekarza Semos a obecnie obozuję nad rzeką.");
 		zone.add(sally);
 	}
 }

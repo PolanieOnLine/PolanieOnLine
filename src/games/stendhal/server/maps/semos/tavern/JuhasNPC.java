@@ -1,4 +1,3 @@
-/* $Id: JuhasNPC.java,v 1.8 2011/03/09 00:48:01 Legolas Exp $ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -28,9 +27,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
- * Ados MithrilForger (Inside / Level 0).
- *
- * @author kymara
+ * @author Legolas
  */
 public class JuhasNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
@@ -41,7 +38,6 @@ public class JuhasNPC implements ZoneConfigurator {
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildJuhas(zone);
@@ -49,12 +45,6 @@ public class JuhasNPC implements ZoneConfigurator {
 
 	private void buildJuhas(final StendhalRPZone zone) {
 		final SpeakerNPC juhas = new SpeakerNPC("Juhas") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Pozdrawiam.");
@@ -136,17 +126,18 @@ public class JuhasNPC implements ZoneConfigurator {
 
 				addGoodbye("Do widzenia i udanej podróży.");
 			}
-			
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.UP);
 			}
 		};
 
+		juhas.setDescription("Oto Juhas, który zasłania się nieco swoim kapeluszem.");
 		juhas.setEntityClass("npcjuhas");
+		juhas.setGender("M");
 		juhas.setPosition(10, 6);
 		juhas.setDirection(Direction.UP);
-		juhas.initHP(100);
 		zone.add(juhas);
 	}
 }

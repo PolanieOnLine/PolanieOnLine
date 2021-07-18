@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.semos.bank;
+
+import java.awt.geom.Rectangle2D;
+import java.util.Set;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.GameEvent;
@@ -30,24 +32,16 @@ import games.stendhal.server.entity.mapstuff.portal.Teleporter;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
 import games.stendhal.server.entity.player.Player;
 
-import java.awt.geom.Rectangle2D;
-import java.util.Set;
-
 public class Vault extends StendhalRPZone {
-
 	private PersonalChest chest;
 
-	public Vault(final String name, final StendhalRPZone zone,
-			final Player player) {
+	public Vault(final String name, final StendhalRPZone zone, final Player player) {
 		super(name, zone);
-
 		init(player);
-
 	}
 
 	private void init(final Player player) {
-		Portal portal = new Teleporter(new Spot(player.getZone(),
-				player.getX(), player.getY()));
+		Portal portal = new Teleporter(new Spot(player.getZone(), player.getX(), player.getY()));
 		portal.setPosition(4, 8);
 		add(portal);
 
@@ -57,17 +51,17 @@ public class Vault extends StendhalRPZone {
 
 		WalkBlocker walkblocker = new WalkBlocker();
 		walkblocker.setPosition(2, 5);
-		walkblocker
-				.setDescription("Oto kosz na śmieci przeznaczony na przedmioty, które chcesz się pozbyć.");
+		walkblocker.setDescription("Oto kosz na śmieci przeznaczony na przedmioty, które chcesz się pozbyć.");
 		add(walkblocker);
+
 		// Add a sign explaining about equipped items
 		final Sign book = new Sign();
 		book.setPosition(2, 2);
-		book
-				.setText("Przedmioty zostawione na podłodze zostaną zwrócone Tobie, gdy opuścisz skarbiec. To jest na wypadek, gdybyś upuścił go przez przypadek. Poniżej znajduje się kosz na śmieci przeznaczony na wszystko co chcesz wyrzucić. Zostanie automatycznie opróżniony, gdy opuścisz skarbiec.");
+		book.setText("Przedmioty zostawione na podłodze zostaną zwrócone Tobie, gdy opuścisz skarbiec. To jest na wypadek, gdybyś upuścił go przez przypadek. Poniżej znajduje się kosz na śmieci przeznaczony na wszystko co chcesz wyrzucić. Zostanie automatycznie opróżniony, gdy opuścisz skarbiec.");
 		book.setEntityClass("book_blue");
 		book.setResistance(0);
 		add(book);
+
 		disallowIn();
 		this.addMovementListener(new VaultMovementListener());
 	}
@@ -81,14 +75,12 @@ public class Vault extends StendhalRPZone {
 		}
 
 		@Override
-		public void onEntered(final ActiveEntity entity,
-				final StendhalRPZone zone, final int newX, final int newY) {
+		public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX, final int newY) {
 			// ignore
 		}
 
 		@Override
-		public void onExited(final ActiveEntity entity,
-				final StendhalRPZone zone, final int oldX, final int oldY) {
+		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY) {
 			if (!(entity instanceof Player)) {
 				return;
 			}
@@ -118,10 +110,9 @@ public class Vault extends StendhalRPZone {
 						}
 
 						if (equippedToBag) {
-
 							message = Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
-												+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
-												+ "zwrócone do " + slotNamePL + ".";
+									+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
+									+ "zwrócone do " + slotNamePL + ".";
 
 							new GameEvent(player.getName(), "equip", item.getName(), "vault", slotName, Integer.toString(item.getQuantity())).raise();
 							// Make it look like a normal equip
@@ -129,9 +120,9 @@ public class Vault extends StendhalRPZone {
 						} else {
 							boolean equippedToBank = player.equip("bank", item);
 							if (equippedToBank) {
-								message =  Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
-								+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
-								+ "zwrócone do twojej skrzyni w banku.";
+								message = Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
+										+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
+										+ "zwrócone do twojej skrzyni w banku.";
 
 								new GameEvent(player.getName(), "equip", item.getName(), "vault", "bank", Integer.toString(item.getQuantity())).raise();
 								// Make it look like the player put it in the chest
@@ -154,8 +145,8 @@ public class Vault extends StendhalRPZone {
 						// the timeout method enters the zone and coords of item, this is useful, this is useful we will know it was in wastebin
 						new ItemLogger().timeout(item);
 					}
-
 				}
+
 				// since we are about to destroy the vault, change the player
 				// zoneid to semos bank so that if they are relogging,
 				// they can enter back to the bank (not the default zone of
@@ -171,15 +162,12 @@ public class Vault extends StendhalRPZone {
 		}
 
 		@Override
-		public void onMoved(final ActiveEntity entity,
-				final StendhalRPZone zone, final int oldX, final int oldY,
-				final int newX, final int newY) {
+		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY, final int newX, final int newY) {
 			// ignore
 		}
 
 		@Override
-		public void beforeMove(ActiveEntity entity, StendhalRPZone zone,
-				int oldX, int oldY, int newX, int newY) {
+		public void beforeMove(ActiveEntity entity, StendhalRPZone zone, int oldX, int oldY, int newX, int newY) {
 			// does nothing, but is specified in the implemented interface
 		}
 	}
@@ -192,16 +180,12 @@ public class Vault extends StendhalRPZone {
 	 */
 	private static void notifyPlayer(final String target, final String message)  {
 		// only uses postman if they logged out. Otherwise, just send the private message.
-
 		final Player player = SingletonRepository.getRuleProcessor().getPlayer(target);
-
 		new GuaranteedDelayedPlayerTextSender("Dagobert", player, message, 2);
-
 	}
 
 	@Override
 	public void onFinish() throws Exception {
 		this.remove(chest);
-
 	}
 }

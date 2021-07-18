@@ -11,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.bakery;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
-
-import java.util.Map;
 
 /**
  * Creates bottles in Semos bakery
@@ -27,7 +27,6 @@ public class ItemsOnTable implements ZoneConfigurator {
 	}
 
 	private void buildBakeryArea(final StendhalRPZone zone) {
-
 		// grower for an empty slim bottle that cannot be taken (out of reach)
 		final PassiveEntityRespawnPoint bottleGrower1 = new PassiveEntityRespawnPoint("wąska butelka", 288000);
 		bottleGrower1.setPosition(4, 1);
@@ -43,6 +42,5 @@ public class ItemsOnTable implements ZoneConfigurator {
 		zone.add(bottleGrower2);
 
 		bottleGrower2.setToFullGrowth();
-
 	}
 }

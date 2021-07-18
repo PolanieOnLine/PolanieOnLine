@@ -28,11 +28,8 @@ import games.stendhal.server.entity.mapstuff.portal.Teleporter;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.deathmatch.CreatureSpawner;
 
-
 public class Northpole extends StendhalRPZone {
-
 	private static final Logger logger = Logger.getLogger(Northpole.class);
-
 
 	/** how many creatures will be spawned.*/
 	protected static final int NUMBER_OF_CREATURES = 5;
@@ -51,13 +48,9 @@ public class Northpole extends StendhalRPZone {
 
 	private int numCreatures;
 
-
-	public Northpole(final String name, final StendhalRPZone zone,
-			final Player player) {
+	public Northpole(final String name, final StendhalRPZone zone, final Player player) {
 		super(name, zone);
-
 		init(player);
-
 	}
 
 	private void init(final Player player) {
@@ -111,14 +104,12 @@ public class Northpole extends StendhalRPZone {
 		}
 
 		@Override
-		public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX,
-								  final int newY) {
-				// ignore
+		public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX, final int newY) {
+			// ignore
 		}
 
 		@Override
-		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
-							 final int oldY) {
+		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY) {
 			if (!(entity instanceof Player)) {
 				return;
 			}
@@ -140,17 +131,13 @@ public class Northpole extends StendhalRPZone {
 		}
 
 		@Override
-		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
-							final int oldY, final int newX, final int newY) {
-
+		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY, final int newX, final int newY) {
 			// ignore
 		}
 
 		@Override
-		public void beforeMove(ActiveEntity entity, StendhalRPZone zone,
-				int oldX, int oldY, int newX, int newY) {
+		public void beforeMove(ActiveEntity entity, StendhalRPZone zone, int oldX, int oldY, int newX, int newY) {
 			// does nothing, but is specified in the implemented interface
 		}
-
 	}
 }

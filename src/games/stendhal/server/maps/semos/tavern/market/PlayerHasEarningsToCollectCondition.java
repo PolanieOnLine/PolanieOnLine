@@ -5,6 +5,7 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
+
 /**
  * Check if a player has collectable earnings in the market managed by the manager NPC
  *
@@ -20,5 +21,4 @@ public class PlayerHasEarningsToCollectCondition implements ChatCondition {
 		}
 		return false;
 	}
-
 }

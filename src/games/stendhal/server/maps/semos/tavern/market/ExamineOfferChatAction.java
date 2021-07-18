@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,14 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern.market;
 
+import java.util.Map;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Offer;
 import games.stendhal.server.events.ExamineEvent;
-
-import java.util.Map;
 
 public class ExamineOfferChatAction extends KnownOffersChatAction {
 	@Override

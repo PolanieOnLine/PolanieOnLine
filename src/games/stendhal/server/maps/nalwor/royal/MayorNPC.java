@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,16 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.royal;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds the elf mayor NPC.
@@ -42,7 +41,6 @@ public class MayorNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Maerion") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -71,10 +69,10 @@ public class MayorNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto królewski elf. Coś w nim wzbudza twój niepokój.");
+		npc.setDescription("Oto Maerion, królewski elf. Coś w nim wzbudza twój niepokój.");
 		npc.setEntityClass("elfmayornpc");
+		npc.setGender("M");
 		npc.setPosition(9, 23);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

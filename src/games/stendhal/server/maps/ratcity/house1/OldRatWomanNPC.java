@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ratcity.house1;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds a Rat Mother NPC.
@@ -28,8 +27,7 @@ import java.util.Map;
  * @author Norien
  */
 public class OldRatWomanNPC implements ZoneConfigurator {
-
-         /**
+	/**
 	 * Configure a zone.
 	 *
 	 * @param	zone		The zone to be configured.
@@ -39,6 +37,7 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
+
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC woman = new SpeakerNPC("Agnus") {
 			@Override
@@ -48,7 +47,6 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 				nodes.add(new Node(3, 13));
 				nodes.add(new Node(12, 13));
 				nodes.add(new Node(12, 4));
-
 				setPath(new FixedPath(nodes, true));
 			}
 
@@ -61,11 +59,10 @@ public class OldRatWomanNPC implements ZoneConfigurator {
 				// remaining behaviour defined in games.stendhal.server.maps.quests.FindRatChildren
 			}
 		};
-		woman.setDescription("Oto matka człekoszczurzych dzieci. Wygląda na zatroskaną.");
 
-
+		woman.setDescription("Oto Agnus, matka człekoszczurzych dzieci. Wygląda na zatroskaną.");
 		woman.setEntityClass("oldratwomannpc");
-
+		woman.setGender("F");
 		woman.setPosition(3, 4);
 		// She has low HP
 		woman.initHP(30);

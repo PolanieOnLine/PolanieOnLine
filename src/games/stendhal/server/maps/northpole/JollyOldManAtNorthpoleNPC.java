@@ -40,7 +40,6 @@ public class JollyOldManAtNorthpoleNPC implements ZoneConfigurator {
 
 	private void buildkriskringle(final StendhalRPZone zone) {
 		final SpeakerNPC kriskringle = new SpeakerNPC("Kris Kringle") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -59,23 +58,22 @@ public class JollyOldManAtNorthpoleNPC implements ZoneConfigurator {
 				nodes.add(new Node(4,7));
 				nodes.add(new Node(4,4));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Ho Ho Ho. You have come just in time. I need some help with these brats. They have stolen all the candy that I need for filling stockings. Please get it back. Will you help?");
-				addJob("I am someone who tries to make everyone happy at Christmas time.");
-				addHelp("I am the one that needs help.");
-				addOffer("I offer you some nice rewards. Seek to gather all the candy and return.");
-				addGoodbye("Farewell. You will be able to sample the candy, but remember I need most of it.");
+				addGreeting("Ho Ho Ho. Przybyłeś w samą porę. Potrzebuję pomocy z tymi bachorami. Ukradli wszystkie cukierki, których potrzebuję do napełniania skarpet. Proszę, odzyskaj to. Pomożesz?");
+				addJob("Jestem kimś, kto stara się uszczęśliwić wszystkich w okresie świątecznym.");
+				addHelp("To ja potrzebuję pomocy.");
+				addOffer("Oferuję ci kilka fajnych nagród. Postaraj się zebrać wszystkie cukierki i wróć.");
+				addGoodbye("Do zobaczenia. Będziesz mógł spróbować cukierków, ale pamiętaj, że potrzebuję ich większości.");
 			} //remaining behaviour defined in quest
 		};
 
-		kriskringle.setDescription("You see Kris Kringle - a wonderfully jolly man that is having difficulty with bratty elf kids.");
+		kriskringle.setDescription("Oto Kris Kringle. Cudownie wesoły mężczyzna, który ma problemy z rozpustnymi elfami.");
 		kriskringle.setEntityClass("kriskringle");
+		kriskringle.setGender("M");
 		kriskringle.setPosition(14, 4);
-		kriskringle.initHP(100);
 		zone.add(kriskringle);
 	}
 }

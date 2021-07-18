@@ -49,7 +49,6 @@ public class PriestessNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Kendra Mattori") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -70,11 +69,11 @@ public class PriestessNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto piękna kobieta, ukrywająca się pod owinięta tkaniną.");
+		npc.setDescription("Oto piękna kobieta Kendra Mattori, ukrywająca się pod owinięta tkaniną.");
 		npc.setEntityClass("cloakedwoman2npc");
+		npc.setGender("F");
 		npc.setPosition(9, 10);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

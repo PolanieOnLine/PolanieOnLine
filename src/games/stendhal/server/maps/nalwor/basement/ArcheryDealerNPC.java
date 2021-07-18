@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.basement;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,27 +25,19 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Inside Nalwor Inn basement .
  */
-
 public class ArcheryDealerNPC implements ZoneConfigurator  {
-
 	private final ShopList shops = SingletonRepository.getShopList();
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Merenwen") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -62,10 +57,13 @@ public class ArcheryDealerNPC implements ZoneConfigurator  {
 				addQuest("Nie mam dla Ciebie zadania.");
 				addGoodbye("Bądź szczęśliwy. Do widzenia.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyarcherstuff")), false);
-			}};
-			npc.setPosition(10, 5);
-			npc.setDescription("Oto piękna czarodziejka elfów Merenwen. Skupuje przedmioty związane z łucznictwem.");
-			npc.setEntityClass("mageelfnpc");
-			zone.add(npc);
+			}
+		};
+
+		npc.setDescription("Oto piękna czarodziejka elfów Merenwen. Skupuje przedmioty związane z łucznictwem.");
+		npc.setEntityClass("mageelfnpc");
+		npc.setGender("F");
+		npc.setPosition(10, 5);
+		zone.add(npc);
    	}
 }

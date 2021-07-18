@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.magic.house1;
+
+import java.awt.geom.Rectangle2D;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.Spot;
@@ -25,15 +28,8 @@ import games.stendhal.server.entity.mapstuff.portal.Teleporter;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.deathmatch.CreatureSpawner;
 
-import java.awt.geom.Rectangle2D;
-
-import org.apache.log4j.Logger;
-
-
 public class AdventureIsland extends StendhalRPZone {
-
 	private static final Logger logger = Logger.getLogger(AdventureIsland.class);
-
 
 	/** how many creatures will be spawned.*/
 	protected static final int NUMBER_OF_CREATURES = 5;
@@ -52,13 +48,9 @@ public class AdventureIsland extends StendhalRPZone {
 
 	private int numCreatures;
 
-
-	public AdventureIsland(final String name, final StendhalRPZone zone,
-			final Player player) {
+	public AdventureIsland(final String name, final StendhalRPZone zone, final Player player) {
 		super(name, zone);
-
 		init(player);
-
 	}
 
 	private void init(final Player player) {
@@ -112,14 +104,12 @@ public class AdventureIsland extends StendhalRPZone {
 		}
 
 		@Override
-			public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX,
-								  final int newY) {
-				// ignore
-			}
+		public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX, final int newY) {
+			// ignore
+		}
 
 		@Override
-		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
-							 final int oldY) {
+		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY) {
 			if (!(entity instanceof Player)) {
 				return;
 			}
@@ -135,23 +125,19 @@ public class AdventureIsland extends StendhalRPZone {
 				entity.put("x", returnX);
 				entity.put("y", returnY);
 
-					// start a turn notifier counting down to shut down the zone in 15 minutes
-					TurnNotifier.get().notifyInSeconds(15*60, new AdventureIslandRemover(zone));
+				// start a turn notifier counting down to shut down the zone in 15 minutes
+				TurnNotifier.get().notifyInSeconds(15*60, new AdventureIslandRemover(zone));
 			}
 		}
 
 		@Override
-		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
-							final int oldY, final int newX, final int newY) {
-
+		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY, final int newX, final int newY) {
 			// ignore
 		}
 
 		@Override
-		public void beforeMove(ActiveEntity entity, StendhalRPZone zone,
-				int oldX, int oldY, int newX, int newY) {
+		public void beforeMove(ActiveEntity entity, StendhalRPZone zone, int oldX, int oldY, int newX, int newY) {
 			// does nothing, but is specified in the implemented interface
 		}
-
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.area.Allotment;
-
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.mapstuff.area.Allotment;
 
 /**
  * Configures ground to be fertile in zone. usage in zones.xml.
@@ -42,7 +41,6 @@ import org.apache.log4j.Logger;
  *
  */
 public class FertileGrounds implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		if (zone != null) {
@@ -71,5 +69,4 @@ public class FertileGrounds implements ZoneConfigurator {
 		return attributes.containsKey("x") && attributes.containsKey("y") && attributes.containsKey("width")
 				&& attributes.containsKey("height");
 	}
-
 }

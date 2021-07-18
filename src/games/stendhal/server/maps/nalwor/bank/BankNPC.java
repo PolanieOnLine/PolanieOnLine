@@ -29,10 +29,6 @@ import java.util.Map;
  * @author kymara
  */
 public class BankNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,18 +41,9 @@ public class BankNPC implements ZoneConfigurator {
 		buildladyNPC(zone);
 	}
 
-	//
-	// name inspired by a name in lotr
 	// TODO: He complains if someone steals something from his chest: they should be sent to elf jail.
-
 	private void buildoldNPC(final StendhalRPZone zone) {
 		final SpeakerNPC oldnpc = new SpeakerNPC("Grafindle") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Pozdrawiam. Jeżeli potrzebujesz #pomocy to pytaj.");
@@ -67,20 +54,16 @@ public class BankNPC implements ZoneConfigurator {
 			}
 		};
 
-		oldnpc.setDirection(Direction.DOWN);
-		oldnpc.setEntityClass("elfbankeroldnpc");
 		oldnpc.setDescription("Oto Grafindle, który pracuje w banku Nalwor.");
+		oldnpc.setEntityClass("elfbankeroldnpc");
+		oldnpc.setGender("M");
+		oldnpc.setDirection(Direction.DOWN);
 		oldnpc.setPosition(13, 17);
-		oldnpc.initHP(100);
 		zone.add(oldnpc);
 	}
 
-	//
-	// Ariannyddion is welsh for bank, so ...
-	//
 	private void buildladyNPC(final StendhalRPZone zone) {
 		final SpeakerNPC ladynpc = new SpeakerNPC("Nnyddion") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -104,11 +87,11 @@ public class BankNPC implements ZoneConfigurator {
 			}
 		};
 
-		ladynpc.setDescription("Oto piękna elfka w pięknej sukni.");
+		ladynpc.setDescription("Oto Nnyddion, piękna elfka w pięknej sukni.");
 		ladynpc.setEntityClass("elfbankladynpc");
+		ladynpc.setGender("F");
 		ladynpc.setDirection(Direction.DOWN);
 		ladynpc.setPosition(17, 31);
-		ladynpc.initHP(100);
 		zone.add(ladynpc);
 	}
 }

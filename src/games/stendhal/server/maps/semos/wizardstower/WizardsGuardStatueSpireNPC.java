@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
+
+import java.util.Arrays;
+import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -25,9 +27,6 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /**
  * Zekiel, the guardian statue of the Wizards Tower (Zekiel in the spire)
  *
@@ -35,7 +34,6 @@ import java.util.Map;
  * @see games.stendhal.server.maps.semos.wizardstower.WizardsGuardStatueNPC
  */
 public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
-
 	private static SpeakerNPC zekielspire;
 
 	@Override
@@ -46,12 +44,6 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 	private void buildZekielSpire(final StendhalRPZone zone) {
 		if (zekielspire == null) {
 			zekielspire = new SpeakerNPC("Zekiel") {
-
-				@Override
-				protected void createPath() {
-					setPath(null);
-				}
-
 				@Override
 				protected void createDialog() {
 					addGreeting("Pozdrawiam ponownie wędrowcze!");
@@ -233,7 +225,6 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 						"Don't forget that you can't enter a magical rift without a rift cloak.",
 						null);
 	*/
-
 					//behavior on special item XARUHWAIYZ PHIAL
 				} //remaining behavior defined in maps.quests.ZekielsPracticalTestQuest
 			};

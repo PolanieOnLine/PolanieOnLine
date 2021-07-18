@@ -33,15 +33,13 @@ import games.stendhal.server.maps.Region;
  * An oracle who lets players know how they can help others.
  */
 public class OracleNPC implements ZoneConfigurator {
-
 	/**
 	 * region that this NPC can give information about
 	 */
 	private final List<String> regions = Arrays.asList(Region.NALWOR_CITY, Region.ORRIL_DUNGEONS, Region.HELL);
 
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -91,11 +89,12 @@ public class OracleNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-		npc.setPosition(75, 117);
+
 		npc.setDescription("Oto Zinnia. Wygląda jakoś wyjątkowo.");
 		npc.setEntityClass("oracle3npc");
+		npc.setGender("F");
 		npc.setShadowStyle("floating");
+		npc.setPosition(75, 117);
 		zone.add(npc);
 	}
-
 }

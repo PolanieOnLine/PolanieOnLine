@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -16,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import marauroa.server.db.command.DBCommandQueue;
-
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.grammar.Grammar;
@@ -31,6 +28,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
+import marauroa.server.db.command.DBCommandQueue;
 
 public class AcceptOfferHandler extends OfferHandler {
 	/** the logger instance. */

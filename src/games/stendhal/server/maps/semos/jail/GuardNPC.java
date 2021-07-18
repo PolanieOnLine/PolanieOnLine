@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -35,16 +34,13 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public class GuardNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Marcus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -88,18 +84,20 @@ public class GuardNPC implements ZoneConfigurator  {
 				        null);
 
 				addGoodbye();
-			}};
-			npc.setPosition(9, 7);
-			npc.setDescription("Oto jeden ze strażników więziennych Semos zwany Marcus.");
-			npc.setEntityClass("youngsoldiernpc");
-			zone.add(npc);
+			}
+		};
+
+		npc.setDescription("Oto jeden ze strażników więziennych Semos zwany Marcus.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
+		npc.setPosition(9, 7);
+		zone.add(npc);
 	}
 
 	/**
 	 * Is the player speaking to us in jail?
 	 */
 	public static class InJailCondition implements ChatCondition {
-
 		@Override
 		public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 			return Jail.isInJail(player);
@@ -110,7 +108,6 @@ public class GuardNPC implements ZoneConfigurator  {
 	 * Is the player speaking to us not in jail?
 	 */
 	public static class NotInJailCondition implements ChatCondition {
-
 		@Override
 		public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 			return !Jail.isInJail(player);

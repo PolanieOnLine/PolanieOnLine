@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.kanmararn;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,14 +25,10 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class DwarfGuardNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
 
-		/**
+	/**
 	 * Configure a zone.
 	 *
 	 * @param	zone		The zone to be configured.
@@ -42,7 +41,6 @@ public class DwarfGuardNPC implements ZoneConfigurator {
 
 	private void buildPrisonArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Hunel") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -56,17 +54,15 @@ public class DwarfGuardNPC implements ZoneConfigurator {
 			    addQuest("Boję się stąd wychodzić... Czy możesz mi #zaoferować naprawdę dobry sprzęt?");
 				addJob("Byłem strażnikiem w więzieniu. Dopóki... cóż pewnie znasz resztę.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buychaos")), true);
-
 				addGoodbye("Do widzenia ... bądź ostrożny ...");
-			}
-			// remaining behaviour is defined in maps.quests.JailedDwarf.
+			}// remaining behaviour is defined in maps.quests.JailedDwarf.
 		};
 
+		npc.setDescription("Oto Hunel, jest przyjaznym krasnoludem. Jak on tu wszedł i dlaczego on jest przestraszony?");
 		npc.setEntityClass("dwarfguardnpc");
-		npc.setDescription("Hunel jest przyjaznym krasnoludem. Jak on tu wszedł i dlaczego on jest przestraszony?");
+		npc.setGender("M");
 		npc.setPosition(10, 23);
 		npc.setPerceptionRange(7);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

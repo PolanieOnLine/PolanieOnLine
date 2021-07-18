@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.storage;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class HousewifeNPC implements ZoneConfigurator {
 	/**
@@ -36,7 +35,6 @@ public class HousewifeNPC implements ZoneConfigurator {
 
 	private void buildSemosStorageArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Eonna") {
-
 			/**
 			 * Creates a path around the table with the beers and to the furnance.
 			 */
@@ -62,10 +60,10 @@ public class HousewifeNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("welcomernpc");
 		npc.setDescription("Oto Eonna. Jest wspaniałą gospodynią domową, która panicznie boi się szczurów!");
+		npc.setEntityClass("welcomernpc");
+		npc.setGender("F");
 		npc.setPosition(4, 13);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

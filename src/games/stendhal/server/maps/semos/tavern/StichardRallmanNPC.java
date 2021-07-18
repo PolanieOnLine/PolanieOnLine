@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 public class StichardRallmanNPC implements ZoneConfigurator {
 	/**
@@ -34,16 +33,10 @@ public class StichardRallmanNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC stallman = new SpeakerNPC("Stichard Rallman") {
-
 			@Override
             public void say(final String text) {
 				setDirection(Direction.DOWN);
 				super.say(text, false);
-			}
-
-			@Override
-			protected void createPath() {
-				setPath(null);
 			}
 
 			@Override
@@ -62,11 +55,11 @@ public class StichardRallmanNPC implements ZoneConfigurator {
 			}
 		};
 
+		stallman.setDescription("Oto Stichard Rallman, który wie wszystko o wolnym oprogramowaniu i licencjach.");
 		stallman.setEntityClass("richardstallmannpc");
-		stallman.setDescription("Stichard Rallman wie wszystko o wolnym oprogramowaniu i licencjach.");
+		stallman.setGender("M");
 		stallman.setPosition(26, 11);
 		stallman.setDirection(Direction.DOWN);
-		stallman.initHP(100);
 		zone.add(stallman);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.magic.theater;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,11 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/*
+/**
  * Inside Magic Theater)
  */
 public class MagicBarmaidNPC implements ZoneConfigurator {
@@ -45,7 +44,6 @@ public class MagicBarmaidNPC implements ZoneConfigurator {
 
 	private void buildmagicbarmaid(final StendhalRPZone zone) {
 		final SpeakerNPC magicbarmaid = new SpeakerNPC("Trillium") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -67,10 +65,10 @@ public class MagicBarmaidNPC implements ZoneConfigurator {
 			}
 		};
 
-		magicbarmaid.setEntityClass("woman_015_npc");
-		magicbarmaid.setPosition(13, 3);
-		magicbarmaid.initHP(100);
 		magicbarmaid.setDescription("Oto Trillium. Jest ona barmanką teatru w magicznym mieście. Oferuje napoje i żywności.");
+		magicbarmaid.setEntityClass("woman_015_npc");
+		magicbarmaid.setGender("F");
+		magicbarmaid.setPosition(13, 3);
 		zone.add(magicbarmaid);
 	}
 }

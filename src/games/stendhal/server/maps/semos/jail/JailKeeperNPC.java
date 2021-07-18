@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.jail;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Semos Jail - Level -2.
@@ -42,7 +41,6 @@ public class JailKeeperNPC implements ZoneConfigurator {
 
 	private void buildJailKeeper(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Sten Tanquilos") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -62,10 +60,10 @@ public class JailKeeperNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("youngsoldiernpc");
 		npc.setDescription("Oto jeden ze strażników więziennych Semos zwany Sten Tanquilos.");
+		npc.setEntityClass("youngsoldiernpc");
+		npc.setGender("M");
 		npc.setPosition(4, 17);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 

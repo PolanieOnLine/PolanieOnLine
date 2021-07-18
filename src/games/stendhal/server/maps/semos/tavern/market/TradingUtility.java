@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -19,6 +18,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Money;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
+
 /**
  * helper class for handling adding and prolonging offers
  * @author madmetzger

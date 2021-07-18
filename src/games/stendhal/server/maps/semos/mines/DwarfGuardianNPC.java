@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.mines;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -21,9 +23,6 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
-import java.util.Map;
 
 public class DwarfGuardianNPC implements ZoneConfigurator {
 	/**
@@ -35,19 +34,12 @@ public class DwarfGuardianNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildMineArea(zone);
 	}
 
 	private void buildMineArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Phalk") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting(null, new ChatAction() {
@@ -85,8 +77,9 @@ public class DwarfGuardianNPC implements ZoneConfigurator {
 			}
 		});
 
-		npc.setEntityClass("dwarf_guardiannpc");
 		npc.setDescription("Oto Phalk. Jest żołnierzem, który nie chce rezygnować z przygód, jakie zesłał mu los.");
+		npc.setEntityClass("dwarf_guardiannpc");
+		npc.setGender("M");
 		npc.setPosition(118, 26);
 		npc.setDirection(Direction.LEFT);
 		npc.initHP(25);

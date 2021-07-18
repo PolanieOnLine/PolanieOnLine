@@ -58,22 +58,18 @@ import java.util.TreeMap;
  * @author daniel / kymara
  */
 public class ShopAssistantNPC implements ZoneConfigurator  {
-
 	private static final int COST = 3000;
 	private static final String QUEST_SLOT = "borrow_kitchen_equipment";
 
 	private static final List<String> ITEMS = Arrays.asList("młynek do cukru", "moździerz z tłuczkiem", "obrotowy nożyk");
 
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Erna") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -97,15 +93,15 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				addHelp("Chleb jest bardzo dobry, zwłaszcza dla takiego śmiałka jak ty, któremu już niedobrze, gdy widzi surowe mięsiwo. Mój szef Leander, robi najlepsze kanapki w okolicy!");
 				addGoodbye();
 
-		// Erna bakes bread if you bring her flour.
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("mąka", 2);
+				// Erna bakes bread if you bring her flour.
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+				requiredResources.put("mąka", 2);
 
-		final ProducerBehaviour behaviour = new ProducerBehaviour("erna_bake_bread",
-				Arrays.asList("bake", "upiecz"), "chleb", requiredResources, 10 * 60);
+				final ProducerBehaviour behaviour = new ProducerBehaviour("erna_bake_bread",
+						Arrays.asList("bake", "upiecz"), "chleb", requiredResources, 10 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-		        "Witaj w piekarni w Semos! Możemy upiec pyszny chleb dla każdego kto pomoże nam, przynosząc #mąkę z młyna. Powiedz tylko #'upiecz'.");
+						"Witaj w piekarni w Semos! Możemy upiec pyszny chleb dla każdego kto pomoże nam, przynosząc #mąkę z młyna. Powiedz tylko #'upiecz'.");
 
 				addOffer("Nasi dostawcy pizzy mogą #pożyczyć narzędzia kuchenne ode mnie.");
 
@@ -277,10 +273,13 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				    "Ni masz tego ze sobą! Czy chcesz teraz za to zapłacić " + COST + " money?",
 				    null);
 
-			}};
-			npc.setPosition(26, 9);
-			npc.setEntityClass("housewifenpc");
-			npc.setDescription("Oto Erna. Pracuje już długo dla Leandera i jest jego lojalnym pomocnikiem.");
-			zone.add(npc);
+			}
+		};
+
+		npc.setDescription("Oto Erna. Pracuje już długo dla Leandera i jest jego lojalnym pomocnikiem.");
+		npc.setEntityClass("housewifenpc");
+		npc.setGender("F");
+		npc.setPosition(26, 9);
+		zone.add(npc);
 	}
 }

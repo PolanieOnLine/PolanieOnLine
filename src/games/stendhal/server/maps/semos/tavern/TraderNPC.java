@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,11 +27,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/*
+/**
  * Inside Semos Tavern - Level 0 (ground floor)
  */
 public class TraderNPC implements ZoneConfigurator {
@@ -47,7 +46,6 @@ public class TraderNPC implements ZoneConfigurator {
 
 	private void buildXinBlanca(final StendhalRPZone zone) {
 		final SpeakerNPC xinBlanca = new SpeakerNPC("Xin Blanca") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -73,10 +71,10 @@ public class TraderNPC implements ZoneConfigurator {
 			}
 		};
 
-		xinBlanca.setEntityClass("weaponsellernpc");
 		xinBlanca.setDescription("Oto Xin Blanca. Jest popularny wśród młodych podróżników ze swojego sklepu z ekwipunkiem...");
+		xinBlanca.setEntityClass("weaponsellernpc");
+		xinBlanca.setGender("M");
 		xinBlanca.setPosition(2, 15);
-		xinBlanca.initHP(100);
 		zone.add(xinBlanca);
 	}
 }

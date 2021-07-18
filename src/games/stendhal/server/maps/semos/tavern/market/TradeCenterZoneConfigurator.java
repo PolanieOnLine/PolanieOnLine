@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -19,14 +18,13 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.trade.Market;
 import marauroa.common.game.RPObject;
+
 /**
  * adds a market to a zone
  *
  * @author madmetzger
- *
  */
 public class TradeCenterZoneConfigurator implements ZoneConfigurator {
-
 	private static final String TRADE_ADVISOR_NAME = "Harold";
 	private static final int COORDINATE_Y = 13;
 	private static final int COORDINATE_X = 10;
@@ -67,10 +65,10 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 	private void buildTradeCenterAdvisor(StendhalRPZone zone) {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 3);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
+		speaker.setDescription("Harold jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
 		speaker.setEntityClass("tradecenteradvisornpc");
 		speaker.setOutfit(3, 34, 1, null, 0, null, 5, null, 0);
-		speaker.initHP(100);
-		speaker.setDescription("Harold jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
+		speaker.setGender("M");
 		zone.add(speaker);
 	}
 
@@ -82,5 +80,4 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		}
 		return null;
 	}
-
 }

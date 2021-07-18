@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -20,8 +19,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 
 public class ReaperClones implements ZoneConfigurator {
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPCS(zone);
 	}
 
@@ -29,6 +27,7 @@ public class ReaperClones implements ZoneConfigurator {
 		SpeakerNPC npc = ReaperNPC.createNPC("Grim\u00A0Reaper");
 		npc.setPosition(5, 7);
 		zone.add(npc);
+
 		npc = Reaper2NPC.createNPC("repaeR\u00A0mirG");
 		npc.setPosition(10, 7);
 		zone.add(npc);

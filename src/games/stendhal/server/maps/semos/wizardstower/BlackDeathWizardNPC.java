@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.wizardstower;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Ravashack, the death wizard of the Wizards Tower
@@ -28,7 +27,6 @@ import java.util.Map;
  * see games.stendhal.server.maps.quests.WizardRavashackPlainQuest
  */
 public class BlackDeathWizardNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildRavashack(zone);
@@ -36,7 +34,6 @@ public class BlackDeathWizardNPC implements ZoneConfigurator {
 
 	private void buildRavashack(final StendhalRPZone zone) {
 		final SpeakerNPC ravashack = new SpeakerNPC("Ravashack") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -76,14 +73,13 @@ public class BlackDeathWizardNPC implements ZoneConfigurator {
 				addQuest("Magia w tym świecie dopiero się zaczyna i jestem bardzo zajęty. Mym celem jest wprowadzenie nekromantów z #Wraithforge do okręgu czarodziejów. Z czasem będę miał dla ciebie zadanie.");
 				addReply("Wraithforge", "W centrum pola chwały leży Wraithforge, szkoła czarnej magii.");
 				addGoodbye("Żegnaj, śmiertelniku!");
-
 			} //remaining behaviour defined in maps.quests.WizardRavashackPlainQuest
 		};
 
-		ravashack.setDescription("Oto Ravashack, wielki i mistyczy Nekromanta.");
+		ravashack.setDescription("Oto Ravashack, wielki i mistyczny Nekromanta.");
 		ravashack.setEntityClass("largeblackwizardnpc");
+		ravashack.setGender("M");
 		ravashack.setPosition(5, 17);
-		ravashack.initHP(100);
 		zone.add(ravashack);
 	}
 }

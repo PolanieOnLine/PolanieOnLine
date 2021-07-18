@@ -12,7 +12,6 @@
 package games.stendhal.server.maps.northpole;
 
 import java.util.HashSet;
-
 import java.util.Set;
 
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -55,5 +54,4 @@ public class NorthpoleRemover implements TurnListener {
 			SingletonRepository.getRPWorld().removeZone(zone);
 		}
 	}
-
 }

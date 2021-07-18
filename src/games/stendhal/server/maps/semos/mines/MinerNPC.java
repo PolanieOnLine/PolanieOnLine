@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.mines;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,12 +27,6 @@ import games.stendhal.server.entity.npc.action.ExamineChatAction;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a NPC in Semos Mine (name:Barbarus) who is a miner and informs players about his job
  *
@@ -35,7 +34,6 @@ import java.util.Map;
  *
  */
 public class MinerNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -43,7 +41,6 @@ public class MinerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Barbarus") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -59,14 +56,12 @@ public class MinerNPC implements ZoneConfigurator {
                 nodes.add(new Node(58, 78));
                 nodes.add(new Node(57, 78));
                	setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Powodzenia!");
-				addReply("good luck", "Good luck! I hope you'll leave this mine healthy!");
-				addReply("glück auf", "Glüüück Auf, Glück Auf...! *sing");
+				addGreeting("Witaj!");
+				addReply("szczęścia", "Szczęścia, szczęścia...! *śpiewa*");
 				addReply("powodzenia", "Powodzenia! Mam nadzieje, że wyjdziesz cało z tej kopalni!");
 				addHelp("Zawsze pamiętaj swoją drogę! Inaczej możesz się zgubić w tych tunelach, które wiądą daleko wgłąb góry! I... nim zapomnę: W #kopalni jest coś niebezpiecznego... Słyszałem dziwne #dźwięki od czasu do czasu, które wydobywają się gdzieś z dołu...");
 				addReply(Arrays.asList("mine", "kopalni"),"Ta kopalnia to jeden wielki system tuneli wykopanych w górze dawno temu. Nikt nie zna wszystkich dróg w tunelach może z wyjątkiem krasnali, harhar... *kaszlnięcie*");
@@ -81,15 +76,14 @@ public class MinerNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("map", "mapę", "mapa"), "To jest mapa Semos Mine, którą sam narysowałem jakiś czas temu. Może ci pomóc znaleźć drogę, ale uważaj nie wszystko jest dokładne tak jak powinno!",
 						new ExamineChatAction("map-semos-mine.png", "Semos Mine", "Rough map of Semos Mine"));
 				addGoodbye("Miło było cię zobaczyć. Powodzenia!");
-
 			}
 		};
 
 		npc.setDescription("Oto Barbarus. Wygląda na brudnego i bardzo spoconego. Jego twarz i ramiona są prawie czarne ponieważ są pokryte pyłem.");
 		npc.setEntityClass("minernpc");
+		npc.setGender("M");
 		npc.setPosition(57, 78);
 		npc.setDirection(Direction.RIGHT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

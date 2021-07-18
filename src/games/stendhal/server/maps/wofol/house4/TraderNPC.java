@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.wofol.house4;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,11 +27,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/*
+/**
  * Inside the Kobold City, interior called house4
  */
 public class TraderNPC implements ZoneConfigurator {
@@ -47,7 +46,6 @@ public class TraderNPC implements ZoneConfigurator {
 
 	private void buildTrader(final StendhalRPZone zone) {
 		final SpeakerNPC trader = new SpeakerNPC("Wrvil") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,14 +66,13 @@ public class TraderNPC implements ZoneConfigurator {
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buystuff2")), false);
 				addOffer("Spójrz na tę tablicę na ścianie, to przeczytasz co aktualnie skupuję i sprzedaję.");
 				addGoodbye("Żegnaj! Ale nie waż się atakować moich przyjaciół Koboldów.");
-
 			}
 		};
 
-		trader.setEntityClass("koboldnpc");
-		trader.setPosition(4, 4);
-		trader.initHP(100);
 		trader.setDescription("Oto Wrvil. On może wyposażyć i może uczynić cię bogatym w tym samym czasie.");
+		trader.setEntityClass("koboldnpc");
+		trader.setGender("M");
+		trader.setPosition(4, 4);
 		zone.add(trader);
 	}
 }

@@ -24,10 +24,8 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
  * @author AntumDeluge
- *
  */
 public class ApothecaryNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -41,7 +39,6 @@ public class ApothecaryNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jameson") {
-
 			@Override
 			protected void createPath() {
 				List<Node> nodes=new LinkedList<Node>();
@@ -80,14 +77,10 @@ public class ApothecaryNPC implements ZoneConfigurator {
 			}
 		};
 
-		// The NPC sprite from data/sprites/npc/
+		npc.setDescription("Oto Jameson. Stale pracuje z dala od ludzi.");
 	    npc.setEntityClass("apothecarynpc");
-		// set a description for when a player does 'Look'
-		npc.setDescription("Oto Jameson, stale pracuje z dala od ludzi.");
-		// Set the initial position to be the first node on the Path you defined above.
+	    npc.setGender("M");
 		npc.setPosition(7, 9);
-		npc.initHP(100);
-
 		zone.add(npc);
 	}
 }

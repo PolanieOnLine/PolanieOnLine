@@ -71,7 +71,6 @@ import games.stendhal.server.util.TimeUtil;
  * FIXME: (client) no sound for training targets when hit
  */
 public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListener {
-
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "archery_range";
 
@@ -229,6 +228,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				+ " Ninje je często wykorzystują. Zalecam używanie #'automatyczne kusze'.");
 		ranger.addReply(FEE_PHRASES, "Opłata za #trenowanie tutaj to " + Integer.toString(COST) + " money.");
 
+		ranger.setGender("M");
 		ranger.setPosition(120, 99);
 		archeryZone.add(ranger);
 	}

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,21 +11,18 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.kanmararn;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class CowardSoldierNPC implements ZoneConfigurator {
-
-
    /**
 	 * Configure a zone.
 	 *
@@ -40,7 +36,6 @@ public class CowardSoldierNPC implements ZoneConfigurator {
 
 	private void buildHideoutArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Henry") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -65,12 +60,12 @@ public class CowardSoldierNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("treasure", "skarbu"),
 					"Duży skarb musi być ukryty #gdzieś w tych podziemiach.");
 				addReply(Arrays.asList("somewhere", "gdzieś"), "Jeżeli mi #pomożesz to dam ci wskazówkę.");
-			}
-			// remaining behaviour is defined in maps.quests.KanmararnSoldiers.
+			}// remaining behaviour is defined in maps.quests.KanmararnSoldiers.
 		};
 
+		npc.setDescription("Oto Henry. Jest jednym z zaginionych żołnierzy Semos, ukrywa się w ciemnej jaskini...");
 		npc.setEntityClass("youngsoldiernpc");
-		npc.setDescription("Oto Henry. Jest jednym z zaginionych żołnierzy Semos, ukrywa się w ciemnej jaskini ...");
+		npc.setGender("M");
 		npc.setPosition(57, 113);
 		npc.setBaseHP(100);
 		npc.initHP(20);

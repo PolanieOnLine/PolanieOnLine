@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -32,7 +31,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
 public class SheepSellerNPC implements ZoneConfigurator {
-
 	public static final int BUYING_PRICE = 30;
 
 	/**
@@ -109,10 +107,10 @@ public class SheepSellerNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Nishiya, który patroluje ścieżki szukając owiec. Możesz kupić jedną od niego.");
 		npc.setEntityClass("sellernpc");
-		npc.setDescription("Nishiya patroluje ścieżki szukając owiec. Możesz kupić jedną od niego.");
+		npc.setGender("M");
 		npc.setPosition(33, 44);
-		npc.initHP(100);
 		npc.setSounds(Arrays.asList("cough-male-01", "cough-male-02", "cough-male-03"));
 		zone.add(npc);
 	}

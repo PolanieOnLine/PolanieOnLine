@@ -11,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.wofol.bar;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
   * Provides Kormic, a regular customer of Kobold's Den bar in Wo'fol.
@@ -25,7 +25,6 @@ import java.util.Map;
   * @author omero
   */
 public class KoboldBarRegularNPC implements ZoneConfigurator {
-
     /**
      * Configure a zone.
      *
@@ -38,25 +37,15 @@ public class KoboldBarRegularNPC implements ZoneConfigurator {
     }
 
     private void buildNPC(final StendhalRPZone zone) {
-
         final SpeakerNPC npc = new SpeakerNPC("Kormic") {
-
             @Override
             public void say(final String text) {
-
-                    // doesn't turn
-                    say(text, false);
+            	// doesn't turn
+            	say(text, false);
             }
 
             @Override
-            protected void createPath() {
-                setPath(null);
-            }
-
-            @Override
-
             protected void createDialog() {
-
                 addGreeting("*BuRP*");
                 addHelp("*GrOaN*");
                 addQuest("*mOaN*");
@@ -66,11 +55,11 @@ public class KoboldBarRegularNPC implements ZoneConfigurator {
             }
         };
 
+        npc.setDescription("Oto Kormic, stary bywalec pubu Kobold's Den.");
         npc.setEntityClass("koboldbarregularnpc");
+        npc.setGender("M");
         npc.setPosition(6, 5);
-        npc.initHP(100);
         npc.setDirection(Direction.UP);
-        npc.setDescription("Oto Kormic stary bywalec pubu Kobold's Den.");
         zone.add(npc);
 
     }

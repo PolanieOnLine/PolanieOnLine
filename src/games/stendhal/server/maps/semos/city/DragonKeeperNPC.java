@@ -1,9 +1,13 @@
 package games.stendhal.server.maps.semos.city;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import games.stendhal.common.grammar.ItemParserResult;
-import games.stendhal.server.entity.Entity;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -11,12 +15,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 public class DragonKeeperNPC implements ZoneConfigurator {
-
 	public static final int BUYING_PRICE = 1;
 
 	/**
@@ -31,9 +30,7 @@ public class DragonKeeperNPC implements ZoneConfigurator {
 	}
 
 	private void buildHouseArea(final StendhalRPZone zone) {
-
-		final SpeakerNPC npc = new SpeakerNPC("The Dragon Keeper") {
-
+		final SpeakerNPC npc = new SpeakerNPC("Dragon Keeper") {
 			@Override
 			protected void createDialog() {
 				class DragonSellerBehaviour extends SellerBehaviour {
@@ -81,10 +78,11 @@ public class DragonKeeperNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Dragon Keeper, który przyleciał do miasta na plecach latającego smoka.");
 		npc.setEntityClass("man_005_npc");
+		npc.setGender("M");
 		npc.setPosition(17, 7);
 		npc.initHP(85);
-		npc.setDescription("The Dragon Keeper przyleciał do miasta na plecach latającego smoka.");
 		zone.add(npc);
 
 	}

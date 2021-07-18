@@ -37,16 +37,13 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
  * the dungeon entrance.
  */
 public class GossipNPC implements ZoneConfigurator {
-
     @Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Nomyr Ahba") {
-
 			@Override
 			public void createDialog() {
 				addGreeting(null,new SayTextAction("Witaj ponownie [name]. W czym mogę #pomóc tym razem?"));
@@ -75,20 +72,20 @@ public class GossipNPC implements ZoneConfigurator {
 						null,
 						ConversationStates.IDLE,
 						"Czy mógłbyś mi pomóc i zerknąć przez tamto okno o ile nie jesteś zajęty?... Chcę sprawdzić co się tam dzieje.",
-                    null);
+						null);
 
                 add(ConversationStates.ATTENDING,
-                    Arrays.asList("sack", "worek"),
-                    null,
-                    ConversationStates.ATTENDING,
-                    "Nie jesteś zbyt ciekawy o zawartość mojego worka. Możesz zapytać Karla o swój, aby zapełnić go czym chcesz. Nawet sugar!",
-                    null);
+                		Arrays.asList("sack", "worek"),
+                		null,
+                		ConversationStates.ATTENDING,
+                		"Nie jesteś zbyt ciekawy o zawartość mojego worka. Możesz zapytać Karla o swój, aby zapełnić go czym chcesz. Nawet sugar!",
+                		null);
 
                 add(ConversationStates.ATTENDING,
-                    "karl",
-                    null,
-                    ConversationStates.ATTENDING,
-                    "Oh. Jest spokojnym rolnikiem, który mieszka na farmie trochę na wschód stąd. Idź drogą do Ados, a znajdziesz go.",
+                		"karl",
+                		null,
+                		ConversationStates.ATTENDING,
+                		"Och. Jest spokojnym rolnikiem, który mieszka na farmie trochę na wschód stąd. Idź drogą do Ados, a znajdziesz go.",
 						null);
 
 				add(ConversationStates.INFORMATION_1,
@@ -110,8 +107,7 @@ public class GossipNPC implements ZoneConfigurator {
 				addQuest("Dzięki, że pytasz, ale w tej chwili nie mam żadnego zadania dla Ciebie.");
                 addOffer("Tz także trzymam ten #worek ze sobą. Nie oznacza to, że mam coś dla Ciebie...Ale słyszałem, że stary Monogenes potrzebuje jakiejś pomocy...");
 				addGoodbye();
-	}
-
+			}
 
 			@Override
 			protected void createPath() {
@@ -123,12 +119,13 @@ public class GossipNPC implements ZoneConfigurator {
 				nodes.add(new Node(46, 21));
 				setPath(new FixedPath(nodes, true));
 			}
-
 		};
-		npc.setPosition(46, 20);
+
+		npc.setDescription("Ten facet tutaj to Nomyr Ahba. Wydaje się być ciekawy. Jego ogromny worek maskuje go.");
 		npc.setEntityClass("thiefnpc");
+		npc.setGender("M");
+		npc.setPosition(46, 20);
 		zone.add(npc);
-		npc.setDescription("Ten facet tutaj, Nomyr Ahba. Wydaje się być ciekawy. Jego ogromny worek maskuje go.");
 	}
 
 }

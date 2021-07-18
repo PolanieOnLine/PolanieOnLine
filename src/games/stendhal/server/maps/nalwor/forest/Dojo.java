@@ -43,7 +43,6 @@ import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.maps.nalwor.forest.TrainingArea.TrainerNPC;
 
 public class Dojo implements ZoneConfigurator {
-
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "dojo";
 
@@ -101,6 +100,7 @@ public class Dojo implements ZoneConfigurator {
 	private void initNPC() {
 		samurai = new TrainerNPC(samuraiName, FULL_MESSAGE, "Hej %s! Nie możesz sobie biegać po dojo za darmo.");
 		samurai.setEntityClass("samurai1npc");
+		samurai.setGender("M");
 		samurai.setIdleDirection(Direction.DOWN);
 		samurai.setPosition(24, 74);
 

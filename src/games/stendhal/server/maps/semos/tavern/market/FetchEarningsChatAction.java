@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern.market;
 
+import java.util.Set;
+
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -20,12 +21,10 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Earning;
 import games.stendhal.server.entity.trade.Market;
 
-import java.util.Set;
 /**
  * chat action to let a player fetch his earnings from the market
  *
  * @author madmetzger
- *
  */
 public class FetchEarningsChatAction implements ChatAction {
 

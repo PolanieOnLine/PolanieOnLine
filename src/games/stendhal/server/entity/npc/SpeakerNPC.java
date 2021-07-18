@@ -194,6 +194,8 @@ public class SpeakerNPC extends PassiveNPC {
 		createDialog();
 		createDefaultReplies();
 
+		initHP(100);
+		setGender("0");
 		// Set default collision action to reverse.
 		setCollisionAction(CollisionAction.REVERSE);
 

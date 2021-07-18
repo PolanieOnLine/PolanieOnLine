@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.tavern;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -22,11 +25,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/*
+/**
  * Inside Semos Tavern - Level 1 (upstairs)
  */
 public class BowAndArrowSellerNPC implements ZoneConfigurator {
@@ -45,7 +44,6 @@ public class BowAndArrowSellerNPC implements ZoneConfigurator {
 
 	private void buildOuchit(final StendhalRPZone zone) {
 		final SpeakerNPC ouchit = new SpeakerNPC("Ouchit") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,10 +66,10 @@ public class BowAndArrowSellerNPC implements ZoneConfigurator {
 			}
 		};
 
-		ouchit.setEntityClass("weaponsellernpc");
-		ouchit.setPosition(21, 3);
-		ouchit.initHP(100);
 		ouchit.setDescription("Oto Ouchit. Łucznictwo jest jego pasją.");
+		ouchit.setEntityClass("weaponsellernpc");
+		ouchit.setGender("M");
+		ouchit.setPosition(21, 3);
 		zone.add(ouchit);
 	}
 }

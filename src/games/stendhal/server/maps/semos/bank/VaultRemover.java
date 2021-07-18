@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -46,5 +45,4 @@ public class VaultRemover implements TurnListener {
 		}
 		SingletonRepository.getRPWorld().removeZone(zone);
 	}
-
 }

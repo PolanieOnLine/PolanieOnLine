@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,13 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.magic.school;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.creature.CircumstancesOfDeath;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
-import games.stendhal.server.entity.player.Player;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +19,19 @@ import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.CircumstancesOfDeath;
+import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
+import games.stendhal.server.entity.player.Player;
+
 /**
  * Configure Magic School Cellar.
  */
 public class SpidersCreatures implements ZoneConfigurator {
-	private final List<String> creatures =
-		Arrays.asList("pająk","pająk ptasznik","królowa pająków");
+	private final List<String> creatures = Arrays.asList(
+			"pająk","pająk ptasznik","królowa pająków");
 	private final String QUEST_SLOT="kill_all_spiders";
 
 	/**

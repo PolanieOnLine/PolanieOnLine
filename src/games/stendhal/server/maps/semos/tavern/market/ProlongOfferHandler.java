@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -13,6 +12,7 @@
 package games.stendhal.server.maps.semos.tavern.market;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +29,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.Arrays;
 
 public class ProlongOfferHandler extends OfferHandler {
 	@Override

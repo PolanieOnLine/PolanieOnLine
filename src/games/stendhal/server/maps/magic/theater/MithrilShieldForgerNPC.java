@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,12 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.magic.theater;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Configure Baldemar - mithril shield forger.
@@ -38,12 +37,6 @@ public class MithrilShieldForgerNPC implements ZoneConfigurator {
 
 	private void buildbaldemar(final StendhalRPZone zone) {
 		final SpeakerNPC baldemar = new SpeakerNPC("Baldemar") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Och cześć. Właśnie patrzysz na naszą lokalną tradycję.");
@@ -55,10 +48,10 @@ public class MithrilShieldForgerNPC implements ZoneConfigurator {
 			} //remaining behaviour defined in quest
 		};
 
-		baldemar.setDescription("Oto Baldemar czarodziej Mithrilbourghtów, który studiował wytapianie mithrilu.");
+		baldemar.setDescription("Oto Baldemar, czarodziej Mithrilbourghtów, który studiował wytapianie mithrilu.");
 		baldemar.setEntityClass("mithrilforgernpc");
+		baldemar.setGender("M");
 		baldemar.setPosition(4, 6);
-		baldemar.initHP(100);
 		zone.add(baldemar);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2011 - Stendhal                    *
  ***************************************************************************
@@ -12,9 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
-import java.util.Arrays;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +64,7 @@ public class SignLessorNPC implements ZoneConfigurator {
 	protected RentedSignList rentedSignList;
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		final Shape shape = new Rectangle(21, 48, 17, 1);
 		rentedSignList = new RentedSignList(zone, shape);
 		buildNPC(zone);
@@ -74,7 +72,6 @@ public class SignLessorNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Gordon") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Witaj! Wynajmuję znaki i usuwam stare.");
@@ -207,13 +204,14 @@ public class SignLessorNPC implements ZoneConfigurator {
 				nodes.add(new Node(20, 51));
 				setPath(new FixedPath(nodes, true));
 			}
-
 		};
+
+		npc.setDescription("Oto Gordon. Umieszcza wiadomości na tabliczkach.");
+		npc.setEntityClass("signguynpc");
+		npc.setGender("M");
 		npc.setPosition(20, 50);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.setEntityClass("signguynpc");
 		zone.add(npc);
-		npc.setDescription("Oto Gordon. Umieszcza wiadomości na tabliczkach.");
 	}
 
 	private static ChatCondition getRentMatchCond() {
@@ -233,7 +231,6 @@ public class SignLessorNPC implements ZoneConfigurator {
 	}
 
 	class RentSignChatAction implements ChatAction {
-
 		private final Logger logger = Logger.getLogger(RentSignChatAction.class);
 
 		@Override
@@ -255,7 +252,7 @@ public class SignLessorNPC implements ZoneConfigurator {
 			// confirm, log, tell postman
 			if (success) {
 				player.drop("money", MONEY);
-				npc.say("Dobrze postawie znak z twoją wiadomością.");
+				npc.say("Dobrze, postawie znak z twoją wiadomością.");
 
 				// inform IRC using postman
 				final Player postman = SingletonRepository.getRuleProcessor().getPlayer("postman");

@@ -34,7 +34,6 @@ import games.stendhal.server.maps.nalwor.forest.AssassinRepairerAdder.AssassinRe
  * An NPC that sells special swords for training.
  */
 public class DojoSellerNPC implements ZoneConfigurator {
-
 	private static StendhalRPZone dojoZone;
 
 	private final String sellerName = "Akutagawa";
@@ -61,6 +60,7 @@ public class DojoSellerNPC implements ZoneConfigurator {
 
 		seller = repairerAdder.new AssassinRepairer(sellerName, repairableSellPrices);
 		seller.setEntityClass("samurai2npc");
+		seller.setGender("M");
 		seller.setIdleDirection(Direction.LEFT);
 		seller.setPosition(37, 80);
 

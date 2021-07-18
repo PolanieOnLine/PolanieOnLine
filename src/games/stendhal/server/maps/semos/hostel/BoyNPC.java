@@ -46,12 +46,6 @@ public class BoyNPC implements ZoneConfigurator {
 
 	private void buildSemosTownhallArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Tad") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				add(ConversationStates.IDLE,
@@ -88,10 +82,6 @@ public class BoyNPC implements ZoneConfigurator {
 				addGoodbye();
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * @see games.stendhal.server.entity.npc.SpeakerNPC#onGoodbye(games.stendhal.server.entity.RPEntity)
-			 */
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.LEFT);
@@ -109,13 +99,11 @@ public class BoyNPC implements ZoneConfigurator {
 			}
 		});
 
-		npc.setEntityClass("childnpc");
 		npc.setDescription("Oto młody chłopak Tad. Wygląda źle, a jego twarz jest blada.");
-
+		npc.setEntityClass("childnpc");
+		npc.setGender("M");
 		npc.setPosition(18, 21);
 		npc.setDirection(Direction.LEFT);
-
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

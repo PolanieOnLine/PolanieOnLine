@@ -23,11 +23,6 @@ public class FightTrainingNPC implements ZoneConfigurator {
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Rochar-Zith") {
 			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
-			@Override
 			protected void createDialog() {
 				addGreeting("Witaj! Jak może jeszcze posłużyć moje zardzewiałe ramię?");
 				addJob("Jestem trenerem walki, który może ci pokazać, jak łatwo pokonać wrogów.");
@@ -41,10 +36,10 @@ public class FightTrainingNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("jailedbarbariannpc");
 		npc.setDescription("Oto Rochar-Zith, stojący w tym miejscu nieruchomo, wpatrując się w horyzont.");
+		npc.setEntityClass("jailedbarbariannpc");
+		npc.setGender("M");
 		npc.setPosition(23, 30);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

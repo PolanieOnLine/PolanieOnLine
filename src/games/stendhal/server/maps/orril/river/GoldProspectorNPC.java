@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.orril.river;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -19,9 +21,6 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Configure Orril River South Campfire (Outside/Level 0).
@@ -39,9 +38,7 @@ public class GoldProspectorNPC implements ZoneConfigurator {
 	}
 
 	private void buildGoldSourceArea(final StendhalRPZone zone) {
-
 		final SpeakerNPC bill = new SpeakerNPC("Bill") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Czołem partnerze!");
@@ -50,8 +47,7 @@ public class GoldProspectorNPC implements ZoneConfigurator {
 				        ConversationStates.INFORMATION_1,
 				        "Wyjawię Tobie sekret o wydobywaniu złota. Jeżeli jesteś zainteresowany?", null);
 
-				add(
-				        ConversationStates.INFORMATION_1,
+				add(ConversationStates.INFORMATION_1,
 				        ConversationPhrases.YES_MESSAGES,
 				        null,
 				        ConversationStates.ATTENDING,
@@ -77,14 +73,13 @@ public class GoldProspectorNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
-
 		};
 
+		bill.setDescription("Oto Bill, emerytowany poszukiwacz złota. Teraz czeka na swoich następców w tym interesie.");
 		bill.setEntityClass("oldcowboynpc");
+		bill.setGender("M");
 		bill.setPosition(105, 58);
 		bill.setDirection(Direction.DOWN);
-		bill.initHP(100);
-		bill.setDescription("Bill jest emerytowanym poszukiwaczem złota. Teraz czeka na swoich następców w tym interesie.");
 		zone.add(bill);
 	}
 }

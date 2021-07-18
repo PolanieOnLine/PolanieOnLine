@@ -21,7 +21,6 @@ import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.player.Player;
 
 public class LabEntrancePortal implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final Portal labEntrance = new Portal() {
@@ -30,25 +29,21 @@ public class LabEntrancePortal implements ZoneConfigurator {
 				if (isAllowed(user)) {
 					return super.onUsed(user);
 				}
-
 				// show a hint if player cannot enter lab
 				if (user instanceof Player) {
 					((Player) user).sendPrivateText(NotificationType.WARNING, "Czujesz skądś świeży powiew powietrza.");
 				}
-
 				return false;
 			}
 
 			private boolean isAllowed(final RPEntity user) {
 				if (user instanceof Player) {
 					final Player player = (Player) user;
-
 					// can enter if Antivenom Ring quest has been started or player has note to apothecary item
 					if (player.getQuest("antivenom_ring") != null || player.isEquippedWithInfostring("karteczka", "liścik do aptekarza")) {
 						return true;
 					}
 				}
-
 				return false;
 			}
 		};

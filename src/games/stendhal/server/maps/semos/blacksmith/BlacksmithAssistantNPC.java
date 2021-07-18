@@ -19,6 +19,7 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -27,7 +28,6 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.CollisionAction;
 
 /**
  * The blacksmith's young assistant (original name: Hackim Easso).
@@ -36,16 +36,13 @@ import games.stendhal.server.entity.CollisionAction;
  * @see games.stendhal.server.maps.quests.MeetHackim
  */
 public class BlacksmithAssistantNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Hackim Easso") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -69,7 +66,6 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 
 			@Override
 			public void createDialog() {
-
 				// A little trick to make NPC remember if it has met
 		        // player before and react accordingly
 		        // NPC_name quest doesn't exist anywhere else neither is
@@ -89,12 +85,13 @@ public class BlacksmithAssistantNPC implements ZoneConfigurator  {
 				addOffer("Możesz zapytać Xoderos. On sprzedaje jakąś broń własnej produkcji.");
 				addGoodbye();
 			}
-
 		};
+
+		npc.setDescription("Oto Hackim Easso, pomocnik kowala.");
+		npc.setEntityClass("naughtyteennpc");
+		npc.setGender("M");
 		npc.setPosition(5, 2);
 		npc.setCollisionAction(CollisionAction.REVERSE); // prevent trapping players
-		npc.setEntityClass("naughtyteennpc");
-		npc.setDescription("Oto Hackim Easso, pomocnik kowala.");
 		zone.add(npc);
 	}
 }

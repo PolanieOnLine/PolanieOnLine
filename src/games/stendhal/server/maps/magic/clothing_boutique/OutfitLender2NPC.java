@@ -39,7 +39,6 @@ import games.stendhal.server.events.ShowOutfitListEvent;
 import marauroa.common.Pair;
 
 public class OutfitLender2NPC implements ZoneConfigurator {
-
 	// outfits to last for 10 hours normally
 	public static final int endurance = 10 * 60;
 
@@ -223,9 +222,9 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("wizardwomannpc");
-		npc.initHP(100);
 		npc.setDescription("Oto Saskia. Pracuje w butiku w magicznym mieście.");
+		npc.setEntityClass("wizardwomannpc");
+		npc.setGender("F");
 
 		if (Occasion.MINETOWN) {
 			npc.clearPath();

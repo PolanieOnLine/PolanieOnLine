@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.orril.dungeon;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -19,18 +22,12 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.RatKidsNPCBase;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Builds a Rat Child NPC.
  *
  * @author Norien
  */
 public class RatChildBoy1NPC implements ZoneConfigurator {
-
-
 	/**
 	 * Configure a zone.
 	 *
@@ -47,7 +44,6 @@ public class RatChildBoy1NPC implements ZoneConfigurator {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				//path goes here
 				nodes.add(new Node(40, 105));
 				nodes.add(new Node(40, 109));
 				nodes.add(new Node(44 ,109));
@@ -59,10 +55,10 @@ public class RatChildBoy1NPC implements ZoneConfigurator {
 			}
 		};
 
-		rat.setDescription("Oto dziecko człekoszczura.");
+		rat.setDescription("Oto Cody, dziecko człekoszczura.");
 		rat.setEntityClass("ratchildboy1npc");
+		rat.setGender("M");
 		rat.setPosition(40, 105);
-		rat.initHP(100);
 		zone.add(rat);
 	}
 }

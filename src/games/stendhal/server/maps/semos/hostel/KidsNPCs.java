@@ -43,15 +43,10 @@ public class KidsNPCs implements ZoneConfigurator {
 		final String[] names = {"Taylora", "Covester", "Mick", "Richard"};
 		final String[] classes = { "kid2npc", "kid1npc", "kid9npc", "kid8npc" };
 		final String[] descriptions = {"Oto Taylora. Śpi ona głąbokim snem.", "Oto Covester, który cicho chrapie.", "Oto Mick. Wydaje się być naprawdę zmęczony.", "Oto Richard. Miał kilka stresujących dni urlopu."};
+		final String[] genders = { "F", "M", "M", "M" };
 		final int[][] start = { {3, 3}, {9, 3}, {15, 3}, {21, 3} };
 		for (int i = 0; i < 4; i++) {
 			final SpeakerNPC npc = new SpeakerNPC(names[i]) {
-				@Override
-				protected void createPath() {
-					// they sleeping!
-					setPath(null);
-				}
-
 				@Override
 				protected void createDialog() {
 					add(
@@ -59,15 +54,16 @@ public class KidsNPCs implements ZoneConfigurator {
 						ConversationPhrases.GREETING_MESSAGES,
 						new GreetingMatchesNameCondition(getName()), true,
 						ConversationStates.IDLE,
-						"ZZzzzz ... ",
+						"ZZzzzz...",
 						null);
 				}
 			};
-			npc.setEntityClass(classes[i]);
-			npc.setPosition(start[i][0], start[i][1]);
+
 			npc.setDescription(descriptions[i]);
+			npc.setEntityClass(classes[i]);
+			npc.setGender(genders[i]);
+			npc.setPosition(start[i][0], start[i][1]);
 			npc.setDirection(Direction.LEFT);
-			npc.initHP(100);
 			zone.add(npc);
 		}
 	}

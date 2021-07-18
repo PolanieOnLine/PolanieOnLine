@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -28,8 +27,6 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
  * provided that the quest KillDarkElves is not completed.
  */
 public class ThingCreature implements ZoneConfigurator {
-
-
 	/**
 	 * Configure a zone.
 	 *

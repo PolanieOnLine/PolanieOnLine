@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                    (C) Copyright 2003-2010 - Stendhal                   *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.plains;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SilentNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A bunch of butterflies
@@ -28,13 +27,11 @@ import java.util.Map;
  * @author AntumDeluge
  */
 public class ButterfliesNPC implements ZoneConfigurator {
-
 	// Butterflies
 	List<SilentNPC> butterflies = new LinkedList<SilentNPC>();
 
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -166,5 +163,4 @@ public class ButterfliesNPC implements ZoneConfigurator {
 			zone.add(insect);
 		}
 	}
-
 }

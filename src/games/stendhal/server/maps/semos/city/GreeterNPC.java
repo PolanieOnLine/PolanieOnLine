@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,13 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.city;
 
+import java.util.Map;
+
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Map;
 
 /**
  * An old man (original name: Monogenes) who stands around and gives directions
@@ -28,10 +27,8 @@ import java.util.Map;
  * @see games.stendhal.server.maps.quests.HatForMonogenes
  */
 public class GreeterNPC implements ZoneConfigurator {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -48,15 +45,13 @@ public class GreeterNPC implements ZoneConfigurator {
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.LEFT);
 			}
-
-
-
 		};
-		npc.setPosition(27, 43);
-		npc.setEntityClass("oldmannpc");
+
 		npc.setDescription("Oto Monogenes. Wygląda bardzo staro, możliwe, że ma dużą wiedzę...");
+		npc.setEntityClass("oldmannpc");
+		npc.setGender("M");
+		npc.setPosition(27, 43);
 		npc.setDirection(Direction.LEFT);
 		zone.add(npc);
 	}
-
 }

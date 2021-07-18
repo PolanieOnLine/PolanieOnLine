@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.semos.plains;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -28,24 +33,16 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Experienced warrior knowing a lot about creatures (location semos_plains_s).
  * Original name: Starkad
  *
  * @author johnnnny
  */
-
 public class ExperiencedWarriorNPC implements ZoneConfigurator  {
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
@@ -54,24 +51,20 @@ public class ExperiencedWarriorNPC implements ZoneConfigurator  {
 	 * creatureLevel * INFORMATION_COST_LEVEL_FACTOR
 	 */
 	static final int INFORMATION_BASE_COST = 2;
-
 	/**
 	 * multiplier of the creature level for the information cost.
 	 */
 	static final double INFORMATION_COST_LEVEL_FACTOR = 3;
-
 	/**
 	 * literals for probabilities. %s is replaced with item description (name
 	 * and amount)
 	 */
 	private static Map<Double, String> probabilityLiterals;
-
 	/**
 	 * literal for item amounts %s is replaced with singular item name, %a with
 	 * "a/an item name" depending on the item name.
 	 */
 	private static Map<Integer, String> amountLiterals;
-
 	/**
 	 * literal for how dangerous a creature is based on the percentage
 	 * difference to player level %s is replaced with singular creature name, %S
@@ -280,14 +273,14 @@ public class ExperiencedWarriorNPC implements ZoneConfigurator  {
 				nodes.add(new Node(85,32));
 				nodes.add(new Node(107,32));
 				nodes.add(new Node(107,2));
-
 				setPath(new FixedPath(nodes, true));
 			}
-
 		};
-		npc.setPosition(37, 2);
+
+		npc.setDescription("Oto Starkad, wielki wojownik i obrońca Semos.");
 		npc.setEntityClass("experiencedwarriornpc");
-		npc.setDescription("Oto Starkad wielki wojownik i obrońca Semos.");
+		npc.setGender("M");
+		npc.setPosition(37, 2);
 		zone.add(npc);
 	}
 

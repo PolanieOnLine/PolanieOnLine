@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,18 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.assassinhq;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Inside assassin headquarters classroom area.
  */
 public class LilJohnnnnyNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -37,12 +35,6 @@ public class LilJohnnnnyNPC implements ZoneConfigurator {
 
 	private void buildLilJohnnnny(final StendhalRPZone zone) {
 		final SpeakerNPC liljohnnnny = new SpeakerNPC("lil johnnnny") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Nie chciałem #go skrzywdzić.");
@@ -59,8 +51,8 @@ public class LilJohnnnnyNPC implements ZoneConfigurator {
 
 		liljohnnnny.setDescription("Oto lil johnnnny, knujący swój następny plan.");
 		liljohnnnny.setEntityClass("liljohnnnnynpc");
+		liljohnnnny.setGender("M");
 		liljohnnnny.setPosition(23, 2);
-		liljohnnnny.initHP(100);
 		zone.add(liljohnnnny);
 	}
 }

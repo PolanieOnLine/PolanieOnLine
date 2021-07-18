@@ -29,7 +29,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author omero
  */
 public class HoeingManNPC implements ZoneConfigurator {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -37,14 +36,12 @@ public class HoeingManNPC implements ZoneConfigurator {
 
 	private SpeakerNPC buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jingo Radish") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(48, 62));
 				nodes.add(new Node(43, 76));
 				nodes.add(new Node(43, 62));
-
 				setPath(new FixedPath(nodes, true));
 			}
 
@@ -61,11 +58,10 @@ public class HoeingManNPC implements ZoneConfigurator {
 			}
 		};
 
-		// Finalize Jingo Radish, the hoeing man near the Mill north of Semos
+		npc.setDescription("Oto Jingo Radish. Człowiek z motyką, który zajęty jest odchwaszczaniem...");
 		npc.setEntityClass("hoeingmannpc");
-		npc.setDescription("Oto człowiek z motyką, który zajęty jest odchwaszczaniem...");
+		npc.setGender("M");
 		npc.setPosition(48,62);
-		npc.initHP(100);
 		zone.add(npc);
 
 		return npc;

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.assassinhq;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,10 +24,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Inside Nalwor Assassin Headquarters - Level 0 .
@@ -45,7 +44,6 @@ public class PrincipalNPC implements ZoneConfigurator {
 
 	private void buildprincipal(final StendhalRPZone zone) {
 		final SpeakerNPC principal = new SpeakerNPC("Femme Fatale") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -54,7 +52,6 @@ public class PrincipalNPC implements ZoneConfigurator {
 				nodes.add(new Node(3, 14));
 				nodes.add(new Node(3, 18));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -69,10 +66,10 @@ public class PrincipalNPC implements ZoneConfigurator {
 			}
 		};
 
+		principal.setDescription("Oto Femme Fatale. Poszukuję broni i zbroi.");
 		principal.setEntityClass("principalnpc");
+		principal.setGender("F");
 		principal.setPosition(2, 18);
-		principal.initHP(100);
-		principal.setDescription("Pani ta to Femme Fatale. Poszukuję broni i zbroi.");
 		zone.add(principal);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -27,7 +26,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-/*
+/**
  * Configure Orril Dwarf Mine (Underground/Level -2).
  */
 public class IronBuyerNPC implements ZoneConfigurator {
@@ -49,9 +48,7 @@ public class IronBuyerNPC implements ZoneConfigurator {
 	}
 
 	private void buildDwarfMineArea(final StendhalRPZone zone) {
-		// NOTE: This is a female character ;)
 		final SpeakerNPC loretta = new SpeakerNPC("Loretta") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -74,9 +71,9 @@ public class IronBuyerNPC implements ZoneConfigurator {
 
 		loretta.setDescription("Oto Loretta, starsza kobieta krasnal. Pracuje przy torach dla wagoników.");
 		loretta.setEntityClass("greendwarfnpc");
+		loretta.setGender("F");
 		loretta.setPosition(49, 68);
 		loretta.setCollisionAction(CollisionAction.STOP);
-		loretta.initHP(100);
 		zone.add(loretta);
 	}
 }

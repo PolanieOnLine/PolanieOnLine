@@ -30,7 +30,6 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 
 public class HistorianGeographerNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,7 +43,6 @@ public class HistorianGeographerNPC implements ZoneConfigurator {
 
 	private void buildSemosLibraryArea(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Zynn Iwuhos") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,10 +66,6 @@ public class HistorianGeographerNPC implements ZoneConfigurator {
 				addGreeting(null, new SayTextAction("Witaj ponownie [name]. W czym mogę Ci #pomóc tym razem?"));
 				addGoodbye();
 
-						        // A little trick to make NPC remember if it has met
-		        // player before and react accordingly
-						        // NPC_name quest doesn't exist anywhere else neither is
-						        // used for any other purpose
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(getName()),
@@ -89,8 +83,7 @@ public class HistorianGeographerNPC implements ZoneConfigurator {
 				        "marked", "summon", "magic", "wizard", "sorcerer", "oferta", "kupię"), null, ConversationStates.ATTENDING,
 				        "Nie sprzedaję już zwojów... Pokłóciłem się z moim dostawcą co zwie się #Haizen.", null);
 
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        Arrays.asList("haizen", "haizen."),
 				        null,
 				        ConversationStates.ATTENDING,
@@ -99,10 +92,10 @@ public class HistorianGeographerNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("wisemannpc");
 		npc.setDescription("Oto Zynn Iwuhos. Wygląda na starszego niż mapy leżące tutaj wokoło.");
+		npc.setEntityClass("wisemannpc");
+		npc.setGender("M");
 		npc.setPosition(15, 3);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,15 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.orril.dungeon;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Configure Xavkas - mithrilbourgh traitor.
@@ -40,31 +39,29 @@ public class MithrilbourghTraitorNPC implements ZoneConfigurator {
 	}
 
 	private void buildXavkas(final StendhalRPZone zone) {
-		final SpeakerNPC Xavkas = new SpeakerNPC("Xavkas"){
-
+		final SpeakerNPC xavkas = new SpeakerNPC("Xavkas"){
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(101, 141));
 				nodes.add(new Node(106,141));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Jestem niewinny, mówię ci.  Wyciągnij mnie stąd!");
+				addGreeting("Jestem niewinny, mówię ci. Wyciągnij mnie stąd!");
 				addJob("Jestem czarodziejem. Byłem kiedyś starszym w radzie Mithrilbourghtów.");
 				addHelp("Nic nie mogę zrobić, aby ci pomóc.");
-				addQuest("Nie wiem co możesz teraz dla mnie zrobić.  Wróć później.");
-				addGoodbye("PNie zapomnij o mnie.");
+				addQuest("Nie wiem co możesz teraz dla mnie zrobić. Wróć później.");
+				addGoodbye("Nie zapomnij o mnie.");
 			} //remaining behaviour defined in quest
 		};
 
-		Xavkas.setDescription("Xavkas czarodziej Mithrilbourgh, kiedyś starsz, a później zdrajca, a teraz więzień.  Kim on jest.");
-		Xavkas.setEntityClass("mithrilforgernpc");
-		Xavkas.setPosition(101, 141);
-		Xavkas.initHP(100);
-		zone.add(Xavkas);
+		xavkas.setDescription("Oto Xavkas, czarodziej Mithrilbourgh. Kiedyś straż, a później zdrajca, a teraz więzień. Kim on jest.");
+		xavkas.setEntityClass("mithrilforgernpc");
+		xavkas.setGender("M");
+		xavkas.setPosition(101, 141);
+		zone.add(xavkas);
 	}
 }

@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -37,7 +36,6 @@ public class MrYetiNPC implements ZoneConfigurator {
 
 	private void buildYeti(final StendhalRPZone zone) {
 		final SpeakerNPC yetimale = new SpeakerNPC("Mr. Yeti") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,11 +66,11 @@ public class MrYetiNPC implements ZoneConfigurator {
 			}
 		};
 
-		yetimale.setEntityClass("yetimalenpc");
 		yetimale.setDescription("Oto Mr. Yeti o białych włosach z dużymi stopami!");
+		yetimale.setEntityClass("yetimalenpc");
+		yetimale.setGender("M");
 		yetimale.setPosition(29, 29);
 		yetimale.setCollisionAction(CollisionAction.STOP);
-		yetimale.initHP(100);
 		zone.add(yetimale);
 	}
 }

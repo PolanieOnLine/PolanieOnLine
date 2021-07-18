@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.semos.gnomevillage;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -21,10 +24,6 @@ import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Inside Gnome Village.
@@ -45,14 +44,12 @@ public class GarbiddleNPC implements ZoneConfigurator {
 
 	private void buildgarbiddle(final StendhalRPZone zone) {
 		final SpeakerNPC garbiddle = new SpeakerNPC("Garbiddle") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(37, 112));
 				nodes.add(new Node(41, 112));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
@@ -67,10 +64,10 @@ public class GarbiddleNPC implements ZoneConfigurator {
 			}
 		};
 
-		garbiddle.setEntityClass("gnomenpc");
-		garbiddle.setPosition(37, 112);
-		garbiddle.initHP(100);
 		garbiddle.setDescription("Oto Garbiddle, mała pani gnom. Czeka na klientów.");
+		garbiddle.setEntityClass("gnomenpc");
+		garbiddle.setGender("F");
+		garbiddle.setPosition(37, 112);
 		zone.add(garbiddle);
 	}
 }

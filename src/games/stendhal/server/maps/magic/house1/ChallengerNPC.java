@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.magic.house1;
+
+import java.util.Arrays;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -32,13 +36,7 @@ import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
-import java.util.Map;
-
 import marauroa.common.game.IRPZone;
-
-import org.apache.log4j.Logger;
 
 /**
  * The Chaos Sorcerer controlling entry to the adventure island
@@ -46,23 +44,21 @@ import org.apache.log4j.Logger;
  * @author kymara
  */
 public class ChallengerNPC implements ZoneConfigurator  {
-
- private static final int MINUTES_IN_DAYS = 24 * 60;
+	private static final int MINUTES_IN_DAYS = 24 * 60;
 	/** how many creatures will be spawned.*/
- private static final int NUMBER_OF_CREATURES = 5;
- /** lowest level allowed to island.*/
- private static final int MIN_LEVEL = 50;
- /** Cost multiplier for getting to island. */
- private static final int COST_FACTOR = 300;
-  /** How long to wait before visiting island again. */
- private static final int DAYS_BEFORE_REPEAT = 3;
- /** The name of the quest slot where we store the time last visited. */
- private static final String QUEST_SLOT = "adventure_island";
+	private static final int NUMBER_OF_CREATURES = 5;
+	/** lowest level allowed to island.*/
+	private static final int MIN_LEVEL = 50;
+	/** Cost multiplier for getting to island. */
+	private static final int COST_FACTOR = 300;
+	/** How long to wait before visiting island again. */
+	private static final int DAYS_BEFORE_REPEAT = 3;
+	/** The name of the quest slot where we store the time last visited. */
+	private static final String QUEST_SLOT = "adventure_island";
 
- private static final Logger logger = Logger.getLogger(ChallengerNPC.class);
+	private static final Logger logger = Logger.getLogger(ChallengerNPC.class);
 
 	private static final class ChallengeChatAction implements ChatAction {
-
 		@Override
 		public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 			int cost = COST_FACTOR * player.getLevel();
@@ -73,8 +69,7 @@ public class ChallengerNPC implements ZoneConfigurator  {
 				return;
 			}
 			// now set up the new zone
-			final StendhalRPZone challengezone = (StendhalRPZone) SingletonRepository
-					.getRPWorld().getRPZone("int_adventure_island");
+			final StendhalRPZone challengezone = (StendhalRPZone) SingletonRepository.getRPWorld().getRPZone("int_adventure_island");
 			String zoneName = player.getName() + "_adventure_island";
 
 			final AdventureIsland zone = new AdventureIsland(zoneName, challengezone, player);
@@ -115,19 +110,12 @@ public class ChallengerNPC implements ZoneConfigurator  {
 	}
 
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Haastaja") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			public void createDialog() {
 				addGreeting("I tak przybył bohater.");
@@ -243,14 +231,17 @@ public class ChallengerNPC implements ZoneConfigurator  {
 						ConversationStates.ATTENDING,
 						"Bardzo dobrze.",
 						null);
-			}};
-			npc.setPosition(14, 4);
-			npc.setEntityClass("chaos_sorcerornpc");
-			npc.setDirection(Direction.DOWN);
-			npc.setDescription("Oto Haastaja Challenger. Jest potężnym czarownikiem chaosu.");
-			npc.setLevel(600);
-			npc.initHP(75);
-			zone.add(npc);
+			}
+		};
+
+		npc.setDescription("Oto Haastaja, pretendent. Jest potężnym czarownikiem chaosu.");
+		npc.setEntityClass("chaos_sorcerornpc");
+		npc.setGender("M");
+		npc.setPosition(14, 4);
+		npc.setDirection(Direction.DOWN);
+		npc.setLevel(600);
+		npc.initHP(75);
+		zone.add(npc);
 	}
 
 	// Not made as an entity.npc.condition. file because the zone name depends on player here.
