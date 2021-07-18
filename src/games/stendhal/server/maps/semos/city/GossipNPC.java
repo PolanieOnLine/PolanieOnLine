@@ -121,7 +121,7 @@ public class GossipNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Ten facet tutaj to Nomyr Ahba. Wydaje się być ciekawy. Jego ogromny worek maskuje go.");
+		npc.setDescription("Oto Nomyr Ahba. Wydaje się być ciekawy. Jego ogromny worek maskuje go.");
 		npc.setEntityClass("thiefnpc");
 		npc.setGender("M");
 		npc.setPosition(46, 20);
