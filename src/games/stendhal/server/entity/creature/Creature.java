@@ -206,7 +206,7 @@ public class Creature extends NPC {
 		this.statusAttackers = copy.statusAttackers;
 		this.noises = copy.noises;
 
-		if(Occasion.MOREXP || Occasion.SECOND_WORLD) {
+		if (Occasion.MOREXP || Occasion.SECOND_WORLD) {
 			this.respawnTime = (int) ((copy.respawnTime)*0.8);
 		} else {
 			this.respawnTime = copy.respawnTime;
@@ -218,17 +218,24 @@ public class Creature extends NPC {
 		setEntitySubclass(copy.get("subclass"));
 
 		setDescription(copy.getDescription());
-		setAtk(copy.getAtk());
-		setRatk(copy.getRatk());
-		setDef(copy.getDef());
-		if(Occasion.MOREXP) {
-			setXP((int)(copy.getXP()*1.5));
-		} else if(Occasion.SECOND_WORLD) {
-			setXP((int)(copy.getXP()*1.75));
+		if (Occasion.SECOND_WORLD) {
+			setAtk((int) (copy.getAtk() * 1.05));
+			setRatk((int) (copy.getRatk() * 1.05));
+			setDef((int) (copy.getDef() * 1.05));
+			setXP((int) (copy.getXP() * 1.75));
+			initHP((int) (copy.getBaseHP() * 1.2));
+		} else {
+			setAtk(copy.getAtk());
+			setRatk(copy.getRatk());
+			setDef(copy.getDef());
+			setXP(copy.getXP());
+			initHP(copy.getBaseHP());
+		}
+		if (Occasion.MOREXP) {
+			setXP((int) (copy.getXP() * 1.5));
 		} else {
 			setXP(copy.getXP());
 		}
-		initHP(copy.getBaseHP());
 		setName(copy.getName());
 
 		setLevel(copy.getLevel());
@@ -268,7 +275,6 @@ public class Creature extends NPC {
 					+ this);
 		}
 	}
-
 
 	/**
 	 * creates a new creature without properties. These must be set in the
