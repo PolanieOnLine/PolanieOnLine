@@ -65,7 +65,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="25"/>
-			<min_use value="120" condition="server.secondworld"/>
+			<min_use value="120"/>
 			<min_level value="200"/>
 		</attributes>
 		<weight value="8.0"/>
@@ -403,7 +403,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="28"/>
-			<min_use value="150" condition="server.secondworld"/>
+			<min_use value="150"/>
 			<min_level value="300"/>
 		</attributes>
 		<weight value="5.0"/>
