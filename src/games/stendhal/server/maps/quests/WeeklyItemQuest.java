@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -357,7 +358,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie przyniesienia do muzeum [item]"
-						+ ". Powiedz #zakończone jeżeli będziesz miał  ze sobą."));
+						+ ". Powiedz #zakończone jeżeli będziesz miał ze sobą."));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -365,7 +366,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie przyniesienia do muzeum [item]"
-						+ ". Powiedz #zakończone jeżeli będziesz miał  ze sobą. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej."));
+						+ ". Powiedz #zakończone jeżeli będziesz miał ze sobą. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej."));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
@@ -401,14 +402,14 @@ public class WeeklyItemQuest extends AbstractQuest {
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Nie pamiętam, abym dawał Tobie #zadanie.",
+				"Nie pamiętam, abym dawała Tobie #zadanie.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Już ukończyłeś ostatnie zadanie, które Ci dałem.",
+				"Już ukończyłeś ostatnie zadanie, które Ci dałam.",
 				null);
 
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
@@ -417,8 +418,10 @@ public class WeeklyItemQuest extends AbstractQuest {
 		actions.add(new IncrementQuestAction(QUEST_SLOT,2,1));
 		actions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		actions.add(new IncreaseXPDependentOnLevelAction(5.0/3.0, 290.0));
-		actions.add(new IncreaseAtkXPDependentOnLevelAction(5.0/3.0, 290.0));
-		actions.add(new IncreaseDefXPDependentOnLevelAction(5.0/3.0, 290.0));
+		if (!Occasion.SECOND_WORLD) {
+			actions.add(new IncreaseAtkXPDependentOnLevelAction(5.0/3.0, 290.0));
+			actions.add(new IncreaseDefXPDependentOnLevelAction(5.0/3.0, 290.0));
+		}
 		if (Testing.COMBAT) {
 			actions.add(new IncreaseRatkXPDependentOnLevelAction(5.0/3.0, 290.0));
 		}
@@ -527,7 +530,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Hazela kuratora muzeum Kirdneh.");
+		res.add("Spotkałem kuratorkę muzeum Kirdneh, Hazel.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomagać muzeum w Kirdneh i stać się największym w kraju.");

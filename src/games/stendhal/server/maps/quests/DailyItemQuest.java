@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -381,8 +382,10 @@ public class DailyItemQuest extends AbstractQuest {
 		actions.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
 		actions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		actions.add(new IncreaseXPDependentOnLevelAction(8, 90.0));
-		actions.add(new IncreaseAtkXPDependentOnLevelAction(8, 90.0));
-		actions.add(new IncreaseDefXPDependentOnLevelAction(8, 90.0));
+		if (!Occasion.SECOND_WORLD) {
+			actions.add(new IncreaseAtkXPDependentOnLevelAction(8, 90.0));
+			actions.add(new IncreaseDefXPDependentOnLevelAction(8, 90.0));
+		}
 		actions.add(new IncreaseKarmaAction(10.0));
 		
 		npc.add(ConversationStates.ATTENDING,
