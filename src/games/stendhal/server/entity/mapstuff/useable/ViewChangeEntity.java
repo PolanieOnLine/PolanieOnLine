@@ -41,7 +41,7 @@ public class ViewChangeEntity extends UseableEntity {
 
 	@Override
 	public String describe() {
-		return "Oto scrying orb. Zapisane jest \"Użycie kosztuje " + COST
+		return "Oto wróżąca kula. Zapisane jest \"Użycie kosztuje " + COST
 			+ " money. Stój w spokoju i skoncentruj się podczas oglądania\".";
 	}
 
