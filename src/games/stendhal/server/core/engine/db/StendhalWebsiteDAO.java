@@ -154,7 +154,7 @@ public class StendhalWebsiteDAO {
 		params.put("outfit_colors", getOutfitColors(player));
 		params.put("outfit_layers", player.getOutfit().getData(player.getOutfitColors()));
 		params.put("xp", player.getXP());
-		params.put("money", player.getTotalNumberOf("money"));
+		params.put("money", player.getTotalNumberOf("dukaty"));
 		params.put("married", extractSpouseOrNull(player));
 		params.put("atk", player.getAtk());
 		params.put("def", player.getDef());

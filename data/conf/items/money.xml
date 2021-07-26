@@ -22,7 +22,6 @@
 	</item>
 
 	<!-- START: Nowe rodzaje monet -->
-	<!-- 
 	<item name="miedziaki">
 		<type class="money" subclass="copper" tileid="-1"/>
 		<description>Oto miedziaki. Podstawowy środek płatniczy najniższych klas społecznych.</description>
@@ -82,6 +81,5 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
-	-->
 	<!-- END: Nowe rodzaje monet -->
 </items>

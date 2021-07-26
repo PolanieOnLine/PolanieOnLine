@@ -93,9 +93,9 @@ public class SellerBehaviour extends MerchantBehaviour {
 			price = (int) (BAD_BOY_BUYING_PENALTY * price);
 		}
 
-		if (player.isEquipped("money", price)) {
+		if (player.isEquipped("dukaty", price)) {
 			if (player.equipToInventoryOnly(item)) {
-				player.drop("money", price);
+				player.drop("dukaty", price);
 				seller.say("Gratulacje! Oto twój "
 						+ Grammar.plnoun(amount, chosenItemName) + "!");
 				player.incBoughtForItem(chosenItemName, amount);

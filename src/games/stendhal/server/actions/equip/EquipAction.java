@@ -61,12 +61,12 @@ public class EquipAction extends EquipmentAction {
 
 		// try to move money to pouch by default
 		if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals("money")
-				&& source.getEntityName().equals("money")) {
+				&& source.getEntityName().equals("dukaty")) {
 			// check if money can be moved to pouch
 			// XXX: this check should be changed if we switch to containers
 			if (player.hasSlot("money")) {
-				final boolean moneyInBag = player.isEquippedItemInSlot("bag", "money");
-				final boolean moneyInPouch = player.isEquippedItemInSlot("money", "money");
+				final boolean moneyInBag = player.isEquippedItemInSlot("bag", "dukaty");
+				final boolean moneyInPouch = player.isEquippedItemInSlot("money", "dukaty");
 				// stack on pouch
 				if (moneyInPouch || (!moneyInPouch && !moneyInBag)) {
 					action.put(EquipActionConsts.TARGET_SLOT, "money");
