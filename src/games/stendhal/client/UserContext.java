@@ -39,12 +39,12 @@ public class UserContext implements RPObjectChangeListener {
 	 */
 	private static final Logger logger = Logger.getLogger(UserContext.class);
 
-	private static UserContext instance;
+	private static final UserContext instance = new UserContext();
 
 	/**
 	 * The currently enabled features.
 	 */
-	private HashMap<String, String> features;
+	private final HashMap<String, String> features = new HashMap<>();
 
 	/**
 	 * The feature change listeners.
@@ -71,32 +71,16 @@ public class UserContext implements RPObjectChangeListener {
 	 */
 	private int goatID;
 
-	private RPObject player;
+	private volatile RPObject player;
 
 	/**
 	 * Constructor.
 	 *
 	 */
-	public UserContext() {
-
-		adminlevel = 0;
-		name = null;
-		sheepID = 0;
-		goatID = 0;
-		features = new HashMap<String, String>();
-
-		instance = this;
+	private UserContext() {
 	}
 
-	//
-	// UserContext
-	//
-
 	public static UserContext get() {
-		if (instance == null) {
-			instance = new UserContext();
-		}
-
 		return instance;
 	}
 
