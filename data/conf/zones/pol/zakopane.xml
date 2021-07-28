@@ -85,7 +85,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.zakopane.gorasmoka.AddBalloonListener"/>
+		<configurator class-name="games.pol.server.maps.zakopane.gorasmoka.AddWhiteBalloonListener"/>
 		<configurator class-name="games.pol.server.maps.zakopane.gorasmoka.OzoNPC"/>
 		<configurator class-name="games.pol.server.maps.zakopane.plains.RatownikNPC"/>
 

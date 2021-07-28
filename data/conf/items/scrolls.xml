@@ -250,6 +250,27 @@
 		</equipable>
 	</item>
 
+	<item name="biały balonik">
+		<type class="scroll" subclass="balonik" tileid="-1"/>
+		<description>Oto biały balonik. Jeśli nie ważysz zbyt dużo może unieść cię wysoko ponad góry.</description>
+		<implementation class-name="games.stendhal.server.entity.item.scroll.WhiteBalloonScroll"/>
+		<attributes>
+			<infostring value="6_zakopane_clouds 8 6 10000 0_zakopane_ne 70 5"/>
+			<quantity value="1"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
 	<item name="mroczny mech">
 		<type class="scroll" subclass="twilightmoss" tileid="-1"/>
 		<description>Oto mroczny mech. Jego użycie może wpędzić cię w halucynacje.</description>
@@ -386,27 +407,6 @@
 		</attributes>
 		<weight value="0.01"/>
 		<value value="1"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="lhand"/>
-			<slot name="rhand"/>
-			<slot name="keyring"/>
-		</equipable>
-	</item>
-
-	<item name="biały balonik">
-		<type class="scroll" subclass="balonik" tileid="-1"/>
-		<description>Oto biały balonik. Jeśli nie ważysz zbyt dużo może unieść cię wysoko ponad góry.</description>
-		<implementation class-name="games.stendhal.server.entity.item.scroll.BalloonScroll"/>
-		<attributes>
-			<infostring value="6_zakopane_clouds 8 6 10000 0_tatry_dolina_koscieliska_n 70 5"/>
-			<quantity value="1"/>
-		</attributes>
-		<weight value="0.01"/>
-		<value value="10000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

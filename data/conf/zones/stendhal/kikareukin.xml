@@ -28,7 +28,7 @@
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
-				<parameter name="enterMessage">Balonik uniósł Ciebie w powietrze przez ciemno szare chmury. Wylądowałeś na chmurze, która wygląda na całkiem twardą. Zorientowałeś się, że możesz chodzić po szarych chmurach ..., ale nie zbyt długo.</parameter>
+				<parameter name="enterMessage">Balonik uniósł Ciebie w powietrze przez ciemno szare chmury. Wylądowałeś na chmurze, która wygląda na całkiem twardą. Zorientowałeś się, że możesz chodzić po szarych chmurach..., ale nie zbyt długo.</parameter>
 			</implementation>
 		</entity>
 		<portal x="29" y="6" ref="exit1">

@@ -21,7 +21,7 @@ import games.stendhal.server.entity.player.Player;
  * Represents the balloon that takes the player to 7 kikareukin clouds,
  * after which it will teleport player to a random location in 6 kikareukin islands.
  */
-public class BalloonScroll extends TimedTeleportScroll {
+public class WhiteBalloonScroll extends TimedTeleportScroll {
 	private static final long DELAY = 6 * MathHelper.MILLISECONDS_IN_ONE_HOUR;
 	private static final int NEWTIME = 540;
 
@@ -33,7 +33,7 @@ public class BalloonScroll extends TimedTeleportScroll {
 	 * @param subclass
 	 * @param attributes
 	 */
-	public BalloonScroll(final String name, final String clazz, final String subclass,
+	public WhiteBalloonScroll(final String name, final String clazz, final String subclass,
 			final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 	}
@@ -44,7 +44,7 @@ public class BalloonScroll extends TimedTeleportScroll {
 	 * @param item
 	 *            item to copy
 	 */
-	public BalloonScroll(final BalloonScroll item) {
+	public WhiteBalloonScroll(final WhiteBalloonScroll item) {
 		super(item);
 	}
 
@@ -63,7 +63,7 @@ public class BalloonScroll extends TimedTeleportScroll {
 	@Override
 	protected boolean useTeleportScroll(final Player player) {
 		if (!"6_kikareukin_islands".equals(player.getZone().getName())) {
-			if ("7_kikareukin_clouds".equals(player.getZone().getName())) {
+			if ("6_zakopane_clouds".equals(player.getZone().getName())) {
 				player.sendPrivateText("Inny balon nie mógł wynieść cię wyżej.");
 			} else {
 				player.sendPrivateText("Balon próbował unieść cię wyżej, ale wysokość była zbyt niska, aby podnieść Ciebie. " 
@@ -72,11 +72,11 @@ public class BalloonScroll extends TimedTeleportScroll {
 			return false;
 		}
 		long lastuse = -1;
-		if (player.hasQuest("balloon")) {
-			lastuse = Long.parseLong(player.getQuest("balloon"));
+		if (player.hasQuest("balloon_white")) {
+			lastuse = Long.parseLong(player.getQuest("balloon_white"));
 		}
 
-		player.setQuest("balloon", Long.toString(System.currentTimeMillis()));
+		player.setQuest("balloon_white", Long.toString(System.currentTimeMillis()));
 
 		final long timeRemaining = (lastuse + DELAY) - System.currentTimeMillis();
 		if (timeRemaining > 0) {
@@ -86,7 +86,7 @@ public class BalloonScroll extends TimedTeleportScroll {
 			// delay message for 1 turn for technical reasons
 			new DelayedPlayerTextSender(player, "Chmury osłabły od ostatniego razu i nie utrzymają Ciebie zbyt długo.", 1);
 
-			return super.useTeleportScroll(player, "7_kikareukin_clouds", 31, 21, NEWTIME);
+			return super.useTeleportScroll(player, "6_zakopane_clouds", 8, 6, NEWTIME);
 		}
 
 		return super.useTeleportScroll(player);

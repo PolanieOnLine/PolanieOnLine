@@ -1,19 +1,19 @@
 package games.pol.server.maps.zakopane.gorasmoka;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
-import games.stendhal.server.entity.item.scroll.BalloonScroll;
+import games.stendhal.server.entity.item.scroll.WhiteBalloonScroll;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Map;
 
 /**
  * Adds the listener for teleporting back to the islands if you login in the clouds
  */
-public class AddBalloonListener implements ZoneConfigurator {
-	private static final String BALLOON = "balonik";
+public class AddWhiteBalloonListener implements ZoneConfigurator {
+	private static final String BALLOON = "biały balonik";
 
 	/**
 	 * Configure a zone.
@@ -26,7 +26,7 @@ public class AddBalloonListener implements ZoneConfigurator {
 		SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
 			@Override
 			public void onLoggedIn(final Player player) {
-				BalloonScroll scroll = (BalloonScroll) SingletonRepository.getEntityManager().getItem(BALLOON);
+				WhiteBalloonScroll scroll = (WhiteBalloonScroll) SingletonRepository.getEntityManager().getItem(BALLOON);
 				scroll.teleportBack(player);
 			}
 		});
