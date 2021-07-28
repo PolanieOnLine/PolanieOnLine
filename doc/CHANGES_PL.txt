@@ -3,6 +3,7 @@ Changelog
 1.22.2
 *świat*
 - Niektóre przedmioty otrzymały wartość "minimalne użycie" ze starego S2
+- Wprowadzono teleport, przez który mogą przejść osoby powyżej 250 poziomu w kierunku Azazela w kopalni wieliczki
 - (S2) Burmistrze nie dają punktów umiejętności po zakończonym zadaniu
 - (S2) Wprowadzono nowe modyfikatory dla lekkiego utruniednia: 5% więcej ATK/OBR oraz 20% więcej zdrowia u stworów
 
