@@ -6,6 +6,9 @@ Changelog
 - (S2) Burmistrze nie dają punktów umiejętności po zakończonym zadaniu
 - (S2) Wprowadzono nowe modyfikatory dla lekkiego utruniednia: 5% więcej ATK/OBR oraz 20% więcej zdrowia u stworów
 
+*naprawiono błędy*
+- Naprawiono "zrzucanie" graczy z chmur w zakopane
+
 
 1.22.1
 *świat*
