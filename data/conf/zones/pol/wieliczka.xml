@@ -368,7 +368,7 @@ Aktualne ceny u Zbigniewa:
 			<destination zone="-1_wieliczka_salt_mines_w" ref="azazel_1_exit" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
-				<parameter name="rejected">Postanowiłeś zawrócić, ponieważ wystraszyłeś się dziwnych odgłosów zza ciemnego tunelu.</parameter>
+				<parameter name="rejected">Postanowiłeś zawrócić, ponieważ wystraszyłeś się dziwnych odgłosów zza tego ciemnego tunelu.</parameter>
 			</implementation>
 			<attribute name="hidden" />
 		</portal>
@@ -376,7 +376,7 @@ Aktualne ceny u Zbigniewa:
 			<destination zone="-1_wieliczka_salt_mines_w" ref="azazel_2_exit" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
-				<parameter name="rejected">Postanowiłeś zawrócić, ponieważ wystraszyłeś się dziwnych odgłosów zza ciemnego tunelu.</parameter>
+				<parameter name="rejected">Postanowiłeś zawrócić, ponieważ wystraszyłeś się dziwnych odgłosów zza tego ciemnego tunelu.</parameter>
 			</implementation>
 			<attribute name="hidden" />
 		</portal>
