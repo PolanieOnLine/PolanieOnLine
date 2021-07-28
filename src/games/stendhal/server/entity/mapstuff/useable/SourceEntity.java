@@ -80,7 +80,7 @@ public class SourceEntity extends PlayerActivityEntity {
 			}
 		}
 
-		player.sendPrivateText("Potrzebujesz kilofa do wydobywania kamieni.");
+		player.sendPrivateText("Potrzebujesz kilofa do wydobywania minerału.");
 		return false;
 	}
 

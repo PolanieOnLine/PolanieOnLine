@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,16 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.entity.mapstuff.useable;
 
-
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
-import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ImageEffectEvent;
 import games.stendhal.server.events.SoundEvent;
 
 /**
@@ -36,14 +31,7 @@ import games.stendhal.server.events.SoundEvent;
  *
  * @author hendrik
  */
-public class CoalSource extends PlayerActivityEntity {
-	private static final Logger logger = Logger.getLogger(CoalSource.class);
-
-	/**
-	 * The equipment needed.
-	 */
-	private static final String NEEDED_EQUIPMENT = "kilof";
-
+public class CoalSource extends SourceEntity {
 	/**
 	 * The name of the item to be found.
 	 */
@@ -53,7 +41,6 @@ public class CoalSource extends PlayerActivityEntity {
 	 * Sound effects
 	 */
 	private final String startSound = "pick-metallic-1";
-	private final String successSound = "rocks-1";
 	private final int SOUND_RADIUS = 20;
 
 	/**
@@ -90,36 +77,6 @@ public class CoalSource extends PlayerActivityEntity {
 		return("kawałek węgla");
 	}
 
-
-	//
-	// PlayerActivityEntity
-	//
-
-	/**
-	 * Get the time it takes to perform this activity.
-	 *
-	 * @return The time to perform the activity (in seconds).
-	 */
-	@Override
-	protected int getDuration(Player player) {
-		return 7 + Rand.rand(4);
-	}
-
-	/**
-	 * Decides if the activity can be done.
-	 *
-	 * @return <code>true</code> if successful.
-	 */
-	@Override
-	protected boolean isPrepared(final Player player) {
-		if (player.isEquipped(NEEDED_EQUIPMENT)) {
-			return true;
-		}
-
-		player.sendPrivateText("Potrzebujesz kilofa, aby wydobyć węgiel.");
-		return false;
-	}
-
 	/**
 	 * Decides if the activity was successful.
 	 *
@@ -140,25 +97,11 @@ public class CoalSource extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onFinished(final Player player, final boolean successful) {
-		if (successful) {
-	        addEvent(new SoundEvent(successSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
-	        notifyWorldAboutChanges();
-
-			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
-
-			if (item != null) {
-				player.equipOrPutOnGround(item);
-				player.incMinedForItem(item.getName(), item.getQuantity());
-				player.sendPrivateText("Znalazłeś "
-						+ item.getTitle() + ".");
-			} else {
-				logger.error("could not find item: " + itemName);
-			}
-			setState(getState()- 1);
+	    setMiningXP(player, successful, itemName, 50);
+	    if (successful) {
+	    	setState(getState()- 1);
 			handleRespawn();
-		} else {
-			player.sendPrivateText("Nic nie znalazłeś.");
-		}
+	    }
 	}
 
 	/**
@@ -182,6 +125,8 @@ public class CoalSource extends PlayerActivityEntity {
 	protected void onStarted(final Player player) {
 		player.sendPrivateText("Rozpocząłeś wydobywanie węgla.");
         addEvent(new SoundEvent(startSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
+        notifyWorldAboutChanges();
+        addEvent(new ImageEffectEvent("mining", true));
         notifyWorldAboutChanges();
 	}
 
