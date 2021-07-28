@@ -364,18 +364,56 @@ Aktualne ceny u Zbigniewa:
 			</implementation>
 		</entity>
 
+		<portal x="80" y="57" ref="azazel_1_entrance">
+			<destination zone="-1_wieliczka_salt_mines_w" ref="azazel_1_exit" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Postanowiłeś zawrócić, ponieważ wystraszyłeś się dziwnych odgłosów zza ciemnego tunelu.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="81" y="57" ref="azazel_2_entrance">
+			<destination zone="-1_wieliczka_salt_mines_w" ref="azazel_2_exit" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
+				<parameter name="minimum-level">250</parameter>
+				<parameter name="rejected">Postanowiłeś zawrócić, ponieważ wystraszyłeś się dziwnych odgłosów zza ciemnego tunelu.</parameter>
+			</implementation>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="80" y="55" ref="azazel_1_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="81" y="55" ref="azazel_2_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
+		<portal x="80" y="56" ref="azazel_3_entrance">
+			<destination zone="-1_wieliczka_salt_mines_w" ref="azazel_3_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="81" y="56" ref="azazel_4_entrance">
+			<destination zone="-1_wieliczka_salt_mines_w" ref="azazel_4_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="80" y="58" ref="azazel_3_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+		<portal x="81" y="58" ref="azazel_4_exit">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
 		<portal x="100" y="43" ref="secret_1_entrance">
 			<destination zone="-1_wieliczka_salt_mines_w" ref="secret_1_exit"/>
-			<attribute name="hidden"/>
+			<attribute name="hidden" />
 		</portal>
 		<portal x="100" y="39" ref="secret_1_exit">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 		<portal x="100" y="40" ref="secret_2_entrance">
 			<destination zone="-1_wieliczka_salt_mines_w" ref="secret_2_exit"/>
-			<attribute name="hidden"/>
+			<attribute name="hidden" />
 		</portal>
-		<portal x="80" y="56" ref="secret_2_exit">
+		<portal x="100" y="44" ref="secret_2_exit">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 	</zone>
