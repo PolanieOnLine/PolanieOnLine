@@ -13,6 +13,10 @@ Changelog
 	- "Zaawansowany Kopacz"
 	- "Człowiek Miłosierny"
 	- "Aberratio Ictus"
+- Zwiększono ilość przyznawanych punktów za dane osiągnięcie odrodzenia
+
+*naprawiono błędy*
+- Naprawiono NullPointerException w opisie gracza po zmianie tytułu skryptem
 
 
 1.22.2
