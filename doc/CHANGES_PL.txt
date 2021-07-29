@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.23
+*świat*
+- Dodano nowe osiągnięcia: (8)
+	- "Człowiek Skała"
+	- "Płonące Ognisko"
+	- "Skrawek Lodu"
+	- "Nekromanta"
+	- "Wygodny Podróżnik"
+	- "Obeznanie z Kilofem"
+	- "Kilofioza"
+	- "Zaawansowany Kopacz"
+
+
 1.22.2
 *świat*
 - Niektóre przedmioty otrzymały wartość "minimalne użycie" ze starego S2
