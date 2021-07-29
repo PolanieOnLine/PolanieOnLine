@@ -41,6 +41,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_PRIVATE_DETECTIVE = "friend.quests.find";
 	public static final String ID_DRAGONS = "friend.quests.dragons";
 	public static final String ID_GOOD_SAMARITAN = "friend.karma.250";
+	public static final String ID_MERCIFUL = "friend.karma.2000";
+	public static final String ID_KILLER = "friend.playerkiller";
 	public static final String ID_STILL_BELIEVING = "friend.meet.seasonal";
 	public static final String ID_PET_FRIEND = "friend.pet.condition";
 
@@ -140,11 +142,34 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 				ID_GOOD_SAMARITAN, "Dobry Samarytanin", "Zdobył 250 karmy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
-			@Override
-			public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-				return player.getKarma()>250;
-			}
-		}));
+					@Override
+					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+						return player.getKarma()>250;
+					}
+				}
+		));
+
+		achievements.add(createAchievement(
+				ID_MERCIFUL, "Człowiek Miłosierny", "Zdobył 2000 karmy",
+				Achievement.HARD_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+						return player.getKarma()>2000;
+					}
+				}
+		));
+
+		achievements.add(createAchievement(
+				ID_KILLER, "Aberratio Ictus", "Zabił innego gracza",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+						return player.isBadBoy();
+					}
+				}
+		));
 
 		// meet Santa Claus, Easter Bunny and Guslarz
 		achievements.add(createAchievement(

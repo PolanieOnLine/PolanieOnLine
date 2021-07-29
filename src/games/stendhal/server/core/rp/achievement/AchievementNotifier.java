@@ -169,6 +169,10 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.EXPERIENCE_RATK);
 	}
 
+	public void onMiningChange(final Player player) {
+		getAndCheckAchievementsInCategory(player, Category.EXPERIENCE_MINING);
+	}
+
 	/**
 	 * checks all achievements for a player that should be checked when a player kills sth
 	 *
@@ -176,6 +180,7 @@ public final class AchievementNotifier {
 	 */
 	public void onKill(final Player player) {
 		getAndCheckAchievementsInCategory(player, Category.FIGHTING);
+		getAndCheckAchievementsInCategory(player, Category.FRIEND);
 	}
 
 	/**

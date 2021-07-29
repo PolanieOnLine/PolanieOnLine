@@ -66,6 +66,7 @@ public abstract class AbstractAchievementFactory {
 		list.add(new ExperienceAchievementFactory());
 		list.add(new ExperienceDEFAchievementFactory());
 		list.add(new ExperienceATKAchievementFactory());
+		list.add(new ExperienceMININGAchievementFactory());
 		if (Testing.COMBAT) {
 			list.add(new ExperienceRATKAchievementFactory());
 		}

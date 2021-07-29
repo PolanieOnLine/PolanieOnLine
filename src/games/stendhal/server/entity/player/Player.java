@@ -1648,7 +1648,8 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		final String awayMessage = getAwayMessage();
-		final String gender = SingletonRepository.getRuleProcessor().getPlayer(name).getGender();
+		final Player player = SingletonRepository.getRuleProcessor().getPlayer(name);
+		final String gender = player.getGender();
 		if (awayMessage != null) {
 			sb.append("\n" + name + " nie ma " + Grammar.genderVerb(gender, "go") + " teraz, ale " + Grammar.genderVerb(gender, "zostawił") + " wiadomość: ");
 			sb.append(awayMessage);
@@ -2229,6 +2230,7 @@ public class Player extends DressedEntity implements UseListener {
 
 	void setLastPlayerKill(final long milliseconds) {
 		put(LAST_PLAYER_KILL_TIME, milliseconds);
+		SingletonRepository.getAchievementNotifier().onKill(this);
 	}
 
 	public boolean isBadBoy() {
@@ -2249,7 +2251,6 @@ public class Player extends DressedEntity implements UseListener {
 
 	public void rehabilitate() {
 		remove(LAST_PLAYER_KILL_TIME);
-
 	}
 
 	@Override
