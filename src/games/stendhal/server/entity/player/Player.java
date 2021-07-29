@@ -1648,7 +1648,7 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		final String awayMessage = getAwayMessage();
-		final Player player = SingletonRepository.getRuleProcessor().getPlayer(name);
+		final Player player = SingletonRepository.getRuleProcessor().getPlayer(getName());
 		final String gender = player.getGender();
 		if (awayMessage != null) {
 			sb.append("\n" + name + " nie ma " + Grammar.genderVerb(gender, "go") + " teraz, ale " + Grammar.genderVerb(gender, "zostawił") + " wiadomość: ");
