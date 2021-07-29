@@ -11,6 +11,11 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 public class RebornAchievementFactory extends AbstractAchievementFactory {
 	private static final String QUEST_SLOT = "reset_level";
 
+	private static final int EASY_SCORE = 1000;
+	private static final int MEDIUM_SCORE = 2500;
+	private static final int HARD_SCORE = 5000;
+	private static final int LEGENDARY_SCORE = 7500;
+
 	public static final String ID_NEWBORN = "quest.special.reborn.1";
 	public static final String ID_NEW_ADVENTURE = "quest.special.reborn.2";
 	public static final String ID_COMING = "quest.special.reborn.3";
@@ -27,27 +32,27 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 		List<Achievement> achievements = new LinkedList<Achievement>();
 		achievements.add(createAchievement(
 				ID_NEWBORN, "Nowo Narodzony", "Narodził się na nowo",
-				Achievement.EASY_BASE_SCORE, true,
+				EASY_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, "done")));
 
 		achievements.add(createAchievement(
 				ID_NEW_ADVENTURE, "Nowy Ja, Nowa Przygoda", "Narodził się na nowo po raz drugi",
-				Achievement.MEDIUM_BASE_SCORE, true,
+				MEDIUM_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, "done;2")));
 
 		achievements.add(createAchievement(
 				ID_COMING, "Przygodo, Ruszam!", "Narodził się na nowo po raz trzeci",
-				Achievement.MEDIUM_BASE_SCORE, true,
+				MEDIUM_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, "done;3")));
 
 		achievements.add(createAchievement(
 				ID_REPLAY, "Poczwórna Powtórka", "Narodził się na nowo po raz czwarty",
-				Achievement.HARD_BASE_SCORE, true,
+				HARD_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, "done;4")));
 
 		achievements.add(createAchievement(
 				ID_NEW_HISTORY, "Tym Razem Historia się Nie Powtórzy", "Narodził się na nowo po raz ostatni",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				LEGENDARY_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, "done;5")));
 
 		return achievements;
