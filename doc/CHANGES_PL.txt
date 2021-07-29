@@ -2,7 +2,7 @@ Changelog
 ---------
 1.23
 *świat*
-- Dodano nowe osiągnięcia: (8)
+- Dodano nowe osiągnięcia: (10)
 	- "Człowiek Skała"
 	- "Płonące Ognisko"
 	- "Skrawek Lodu"
@@ -11,6 +11,8 @@ Changelog
 	- "Obeznanie z Kilofem"
 	- "Kilofioza"
 	- "Zaawansowany Kopacz"
+	- "Człowiek Miłosierny"
+	- "Aberratio Ictus"
 
 
 1.22.2
