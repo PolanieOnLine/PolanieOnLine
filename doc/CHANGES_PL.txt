@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.23
+*klient*
+- Dodano grafiki dla nowych kategorii osiągnięć
+
 *świat*
 - Dodano nowe osiągnięcia: (10)
 	- "Człowiek Skała"
