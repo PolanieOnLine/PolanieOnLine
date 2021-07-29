@@ -19,14 +19,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.StatLevelComparisonCondition;
 
-
 public class ExperienceATKAchievementFactory extends AbstractAchievementFactory {
-
-	@Override
-	protected Category getCategory() {
-		return Category.EXPERIENCE_ATK;
-	}
-
 	@Override
 	public Collection<Achievement> createAchievements() {
 		final List<Achievement> achievements = new LinkedList<>();
@@ -66,5 +59,10 @@ public class ExperienceATKAchievementFactory extends AbstractAchievementFactory 
 
 	private StatLevelComparisonCondition createComparison(final String level) {
 		return new StatLevelComparisonCondition("atk", ">=", Integer.parseInt(level));
+	}
+
+	@Override
+	protected Category getCategory() {
+		return Category.EXPERIENCE_ATK;
 	}
 }

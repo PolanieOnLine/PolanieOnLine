@@ -57,16 +57,15 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_DRAGONSLAYER = "fight.general.dragonsslayer";
 	public static final String ID_SERAFINS = "fight.general.serafins";
 	public static final String ID_DEATHS = "fight.general.deaths";
+	public static final String ID_NECROMANCER = "fight.general.necromancer";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
 			"szczur olbrzymi", "człekoszczur", "człekoszczurzyca", "archiszczur"
 	};
-
 	public static final String[] ENEMIES_BEARS = {
 			"niedźwiedź", "niedźwiedź grizli", "miś"
 	};
-
 	public static final String[] ENEMIES_DRAGONSLAYER = {
 			"szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok",
 			"czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny",
@@ -74,16 +73,13 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"dwugłowy lodowy smok", "lodowy smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski",
 			"purpurowy smok"
 	};
-
 	public static final String[] ENEMIES_SERAFINS = {
 			"serafin", "azazel"
 	};
-
 	public static final String[] ENEMIES_DEATHS = {
 			"śmierć", "czarna śmierć", "złota śmierć", "kostucha", "kostucha różowa", "kostucha wielka",
 			"kostucha różowa wielka", "kostucha złota wielka"
 	};
-
 	// enemies required for David vs. Goliath
 	public static final String[] ENEMIES_GIANTS = {
 			"olbrzym", "olbrzym starszy", "amazonka olbrzymia", "olbrzym mistrz", "czarny olbrzym",
@@ -91,36 +87,33 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"superczłowiek olbrzym", "lodowy olbrzym", "lodowy starszy olbrzym", "Dhohr Nuggetcutter",
 			"Lord Durin"
 	};
-
 	// enemies required for Heavenly Wrath
 	public static final String[] ENEMIES_ANGELS = {
 			"anioł", "archanioł", "anioł ciemności", "archanioł ciemności", "upadły anioł",
 			"aniołek"
 	};
-
 	// enemies required for Serenade the Siren
 	public static final String[] ENEMIES_MERMAIDS = {
 			"syrena ametystowa", "syrena szmaragdowa", "syrena rubinowa", "syrena szafirowa"
 	};
-
 	// enemies required for Deep Sea Fisherman
 	public static final String[] ENEMIES_DEEPSEA = {
 			"rekin", "kraken", "neo kraken"
 	};
-
 	// enemies required for Zombie Apocalypse
 	public static final String[] ENEMIES_ZOMBIES = {
 			"zombi", "krwawy zombi", "bezgłowy potwór", "szczur zombie"
 	};
-
 	// enemies required for Chicken Nuggets
 	public static final String[] ENEMIES_FOWL = {
 			"pisklak", "kogucik", "dodo", "kokoszka", "pingwin", "gołąb"
 	};
-
 	// enemies required for Pachyderm Mayhem
 	public static final String[] ENEMIES_PACHYDERM = {
 			"słoń", "słoń z kłami", "dziki słoń", "mamut włochaty"
+	};
+	public static final String[] ENEMIES_NECROMANCER = {
+			"gashadokuro", "książę szkieletów", "szkielet anioła"
 	};
 
 	@Override
@@ -267,6 +260,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z kłami, słoni musth oraz mamutów włochatych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_PACHYDERM)));
+
+		fightingAchievements.add(createAchievement(
+				ID_NECROMANCER, "Nekromanta", "Zabił po 50 gashadokuro, książę szkieletów oraz szkielet anioła",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_NECROMANCER)));
 
 		return fightingAchievements;
 	}

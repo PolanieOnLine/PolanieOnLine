@@ -19,14 +19,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.StatLevelComparisonCondition;
 
-
 public class ExperienceDEFAchievementFactory extends AbstractAchievementFactory {
-
-	@Override
-	protected Category getCategory() {
-		return Category.EXPERIENCE_DEF;
-	}
-
 	@Override
 	public Collection<Achievement> createAchievements() {
 		final List<Achievement> achievements = new LinkedList<>();
@@ -66,5 +59,10 @@ public class ExperienceDEFAchievementFactory extends AbstractAchievementFactory 
 
 	private StatLevelComparisonCondition createComparison(final String level) {
 		return new StatLevelComparisonCondition("def", ">=", Integer.parseInt(level));
+	}
+
+	@Override
+	protected Category getCategory() {
+		return Category.EXPERIENCE_DEF;
 	}
 }

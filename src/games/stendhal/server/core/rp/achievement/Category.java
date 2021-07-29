@@ -26,6 +26,8 @@ public enum Category {
 	EXPERIENCE_ATK,
 	/** ratk level */
 	EXPERIENCE_RATK,
+	/** mining level */
+	EXPERIENCE_MINING,
 	/** fighting and killing creatures */
 	FIGHTING,
 	/** solving quests */

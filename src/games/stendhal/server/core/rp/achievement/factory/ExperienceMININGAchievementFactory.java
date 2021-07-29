@@ -19,50 +19,38 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.StatLevelComparisonCondition;
 
-public class ExperienceRATKAchievementFactory extends AbstractAchievementFactory {
+public class ExperienceMININGAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
 		final List<Achievement> achievements = new LinkedList<>();
 
-		String level = "25";
+		String level = "20";
 		achievements.add(createAchievement(
-				"ratk.level.0" + level, "Początkujący Dystansowiec", "Osiągnął " + level + " poziom STR",
+				"mining.level.0" + level, "Obeznanie z Kilofem", "Osiągnął " + level + " poziom górnictwa",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
-		level = "50";
+		level = "40";
 		achievements.add(createAchievement(
-				"ratk.level.0" + level, "Strzelec", "Osiągnął " + level + " poziom STR",
+				"mining.level.0" + level, "Kilofioza", "Osiągnął " + level + " poziom górnictwa",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
-		level = "75";
+		level = "60";
 		achievements.add(createAchievement(
-				"ratk.level.0" + level, "Zaawansowany Strzelec", "Osiągnął " + level + " poziom STR",
+				"mining.level.0" + level, "Zaawansowany Kopacz", "Osiągnął " + level + " poziom górnictwa",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				createComparison(level)));
-
-		level = "100";
-		achievements.add(createAchievement(
-				"ratk.level." + level, "Ekspert Strzelnictwa", "Osiągnął " + level + " poziom STR",
-				Achievement.MEDIUM_BASE_SCORE, true,
-				createComparison(level)));
-
-		level = "150";
-		achievements.add(createAchievement(
-				"ratk.level." + level, "Mistrz Strzelnictwa", "Osiągnął " + level + " poziom STR",
-				Achievement.HARD_BASE_SCORE, true,
 				createComparison(level)));
 
 		return achievements;
 	}
 
 	private StatLevelComparisonCondition createComparison(final String level) {
-		return new StatLevelComparisonCondition("ratk", ">=", Integer.parseInt(level));
+		return new StatLevelComparisonCondition("mining", ">=", Integer.parseInt(level));
 	}
 
 	@Override
 	protected Category getCategory() {
-		return Category.EXPERIENCE_RATK;
+		return Category.EXPERIENCE_MINING;
 	}
 }

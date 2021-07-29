@@ -36,6 +36,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_CHOCOLATE = "buy.food.chocolate";
 	public static final String ID_LOVE_HOTDOGS = "buy.food.hotdogs";
 	public static final String ID_SANDWICHES = "buy.food.sandwiches";
+	public static final String ID_SCROLLS = "buy.scrolls";
 
 	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
 	public static final String ID_FISHSHOP = "sell.food.fishshop";
@@ -49,6 +50,12 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ITEMS_VANILLA_OR_CHOCOLATE = { "shake waniliowy", "shake czekoladowy" };
 	public static final String[] ITEMS_LOVE_HOTDOGS = { "hotdog", "hotdog z serem" };
 	public static final String[] ITEMS_SANDWICHES = { "kanapka", "kanapka z tuńczykiem" };
+	public static final String[] ITEMS_SCROLLS = {
+			"zwój ados", "zwój deniran", "zwój fado", "zwój gdański",
+			"zwój kalavan", "zwój kirdneh", "zwój krakowski", "zwój nalwor",
+			"zwój semos", "zwój tatrzański", "zwój wieliczka",
+			"bilet na mecz", "bilet turystyczny", "niezapisany zwój"
+	};
 
 	public static final String[] ITEMS_CHEESE_MERCHANT = { "ser" };
 	public static final String[] ITEMS_FISHSHOP = {
@@ -129,6 +136,11 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 						return items >= 1000;
 					}
 				}));
+
+		achievements.add(createAchievement(
+				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 różnych zwojów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new SoldNumberOfCondition(100, ITEMS_SCROLLS)));
 
 		achievements.add(createAchievement(
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
