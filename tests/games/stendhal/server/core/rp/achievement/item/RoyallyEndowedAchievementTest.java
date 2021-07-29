@@ -11,7 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.item;
 
-import static games.stendhal.server.core.rp.achievement.factory.ItemAchievementFactory.ID_ROYAL;
+import static games.stendhal.server.core.rp.achievement.factory.ItemSetsAchievementFactory.ID_ROYAL;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
