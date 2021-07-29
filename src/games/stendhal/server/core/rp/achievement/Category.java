@@ -40,6 +40,8 @@ public enum Category {
 	AGE,
 	/** looting items */
 	ITEM,
+	/** looting items (sets) */
+	ITEMSETS,
 	/** getting items */
 	OBTAIN,
 	/** buying/selling items */

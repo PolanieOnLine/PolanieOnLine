@@ -73,6 +73,7 @@ public abstract class AbstractAchievementFactory {
 		list.add(new FriendAchievementFactory());
 		list.add(new InteriorZoneAchievementFactory());
 		list.add(new ItemAchievementFactory());
+		list.add(new ItemSetsAchievementFactory());
 		list.add(new ObtainAchievementsFactory());
 		list.add(new OutsideZoneAchievementFactory());
 		list.add(new PetsWeightAchievementFactory());
