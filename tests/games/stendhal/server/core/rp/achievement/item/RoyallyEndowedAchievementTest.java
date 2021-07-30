@@ -37,8 +37,8 @@ public class RoyallyEndowedAchievementTest {
 	private Player player;
 
 	private final String[] ITEMS_ROYAL = {
-			"royal armor", "royal helmet", "royal cloak", "royal legs",
-			"royal boots", "royal shield"
+			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny",
+			"spodnie monarchistyczne", "buty monarchistyczne", "tarcza monarchistyczna"
 	};
 
 

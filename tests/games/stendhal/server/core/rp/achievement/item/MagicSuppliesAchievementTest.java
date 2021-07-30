@@ -37,8 +37,8 @@ public class MagicSuppliesAchievementTest {
 	private Player player;
 
 	private final String[] ITEMS_MAGIC = {
-			"magic plate armor", "magic chain helmet", "magic plate legs", "magic plate boots",
-			"magic cloak", "magic plate shield"
+			"magiczna zbroja płytowa", "magiczny hełm kolczy", "magiczny płaszcz",
+			"magiczne spodnie płytowe", "magiczne buty płytowe", "magiczna tarcza płytowa"
 	};
 
 
