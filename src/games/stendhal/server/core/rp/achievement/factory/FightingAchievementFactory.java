@@ -34,7 +34,6 @@ import games.stendhal.server.entity.player.Player;
  * @author madmetzger
  */
 public class FightingAchievementFactory extends AbstractAchievementFactory {
-
 	public static final String ID_RATS = "fight.general.rats";
 	public static final String ID_EXTERMINATOR = "fight.general.exterminator";
 	public static final String ID_DEER = "fight.general.deer";
@@ -58,6 +57,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SERAFINS = "fight.general.serafins";
 	public static final String ID_DEATHS = "fight.general.deaths";
 	public static final String ID_NECROMANCER = "fight.general.necromancer";
+	public static final String ID_KNIGHTS = "fight.general.knights";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -114,6 +114,10 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	};
 	public static final String[] ENEMIES_NECROMANCER = {
 			"gashadokuro", "książę szkieletów", "szkielet anioła"
+	};
+	public static final String[] ENEMIES_KNIGHTS = {
+			"rycerz szmaragdowy", "rycerz szafirowy", "rycerz karmazynowy",
+			"rycerz w złotej zbroi", "czarny rycerz", "rycerz na białym koniu"
 	};
 
 	@Override
@@ -189,7 +193,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 						}
 						return kills >= 1000;
 					}
-				}));
+				}
+		));
 
 		fightingAchievements.add(createAchievement(
 				ID_SERAFINS, "Serafiny mu Niestraszne", "Zabił po 10 serafinów i azazeli",
@@ -230,7 +235,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 						return kills >= 10000;
 					}
-				}));
+				}
+		));
 
 		fightingAchievements.add(createAchievement(
 				ID_DEEPSEA, "Głębinowy Rybak", "Zabił po 500 rekinów, krakenów oraz neo krakenów",
@@ -249,7 +255,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 						}
 						return kills >= 500;
 					}
-				}));
+				}
+		));
 
 		fightingAchievements.add(createAchievement(
 				ID_FOWL, "Nuggetsy z Kurczaka", "Zabił po 100 każdego rodzaju ptactwa",
@@ -265,6 +272,21 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_NECROMANCER, "Nekromanta", "Zabił po 50 gashadokuro, książę szkieletów oraz szkielet anioła",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_NECROMANCER)));
+
+		fightingAchievements.add(createAchievement(
+				ID_KNIGHTS, "Król Artur", "Zabił razem 2,500 różnych rycerzy",
+				Achievement.HARD_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String knight: ENEMIES_KNIGHTS) {
+							kills += player.getSoloKill(knight) + player.getSharedKill(knight);
+						}
+						return kills >= 2500;
+					}
+				}
+		));
 
 		return fightingAchievements;
 	}

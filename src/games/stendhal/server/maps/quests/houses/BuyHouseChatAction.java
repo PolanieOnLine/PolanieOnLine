@@ -17,8 +17,6 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.SlotIsFullException;
 
 final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
-
-
 	private int cost;
 
 	/**
@@ -34,7 +32,6 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 		final int number = sentence.getNumeral().getAmount();
 		// now check if the house they said is free
 		final String itemName = Integer.toString(number);
@@ -53,8 +50,7 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 
 			// it's available, so take money
 			if (player.isEquipped("money", cost)) {
-				final Item key = SingletonRepository.getEntityManager().getItem(
-																				"klucz do drzwi");
+				final Item key = SingletonRepository.getEntityManager().getItem("klucz do drzwi");
 
 				final String doorId = houseportal.getDoorId();
 
@@ -84,7 +80,7 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 				}
 
 			} else {
-				raiser.say("Nie masz wystarczająco dużo pieniędzy, aby kupić dom");
+				raiser.say("Nie masz wystarczająco dużo pieniędzy, aby kupić dom.");
 			}
 
 		} else {

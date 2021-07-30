@@ -152,7 +152,6 @@ public class HouseUtilities {
 	 * @return the chest in the house, or <code>null</code> if there is no
 	 * chest in the zone which the house portal leads to (Note, then, that chests should be on the 'ground floor')
 	 */
-
 	protected static StoredChest findChest(final HousePortal portal) {
 		final String zoneName = portal.getDestinationZone();
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);

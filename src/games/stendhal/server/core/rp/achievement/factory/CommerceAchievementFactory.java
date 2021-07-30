@@ -37,6 +37,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_LOVE_HOTDOGS = "buy.food.hotdogs";
 	public static final String ID_SANDWICHES = "buy.food.sandwiches";
 	public static final String ID_SCROLLS = "buy.scrolls";
+	public static final String ID_HOUSE = "buy.house";
 
 	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
 	public static final String ID_FISHSHOP = "sell.food.fishshop";
@@ -138,9 +139,20 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 różnych zwojów",
+				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 każdego rodzaju zwojów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new SoldNumberOfCondition(100, ITEMS_SCROLLS)));
+
+		achievements.add(createAchievement(
+				ID_HOUSE, "Nie ma to jak w Domu", "Zakupił pierwszy domek",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+						return player.hasQuest("house");
+					}
+				}
+		));
 
 		achievements.add(createAchievement(
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
