@@ -5,7 +5,7 @@ Changelog
 - Dodano grafiki dla nowych kategorii osiągnięć
 
 *świat*
-- Dodano nowe osiągnięcia: (10)
+- Dodano nowe osiągnięcia: (12)
 	- "Człowiek Skała"
 	- "Płonące Ognisko"
 	- "Skrawek Lodu"
@@ -16,6 +16,8 @@ Changelog
 	- "Zaawansowany Kopacz"
 	- "Człowiek Miłosierny"
 	- "Aberratio Ictus"
+	- "Król Artur"
+	- "Nie ma to jak w Domu"
 - Zwiększono ilość przyznawanych punktów za dane osiągnięcie odrodzenia
 
 *naprawiono błędy*
