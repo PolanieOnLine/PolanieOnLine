@@ -310,8 +310,8 @@ public class ZakopaneClouds extends AbstractQuest implements LoginListener {
 
 		npc.setDescription("Oto wielki i sławny Derwan.");
 		npc.setEntityClass("brownwizardnpc");
+		npc.setGender("M");
 		npc.setPosition(14, 10);
-		npc.initHP(1000);
 		zone.add(npc);
 	}
 

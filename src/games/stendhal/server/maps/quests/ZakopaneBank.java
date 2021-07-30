@@ -321,9 +321,9 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 
 		npc.setDescription("Oto strażnik skarbca, z którym nie powinieneś zadzierać.");
 		npc.setEntityClass("youngnpc");
+		npc.setGender("M");
 		npc.setPosition(35, 14);
 		npc.setDirection(Direction.LEFT);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 
