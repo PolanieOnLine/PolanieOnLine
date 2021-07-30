@@ -867,7 +867,6 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		onAction(ActionType.LOOK);
 	}
 
-
 	/**
 	 * Perform the default action unless it is not safe.
 	 *
@@ -907,16 +906,16 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			break;
 
 		case ADMIN_GAG:
-			j2DClient.get().setChatLine("/gag " + entity.getTitle() + " ");
+			j2DClient.get().setChatLine("/gag " + entity.getName() + " ");
 			break;
 
 		case ADMIN_JAIL:
-			j2DClient.get().setChatLine("/jail " + entity.getTitle() + " ");
+			j2DClient.get().setChatLine("/jail " + entity.getName() + " ");
 			break;
 
 		case ADMIN_ALTER:
 			if (type.equals("player")) {
-				j2DClient.get().setChatLine("/alter " + entity.getTitle() + " ");
+				j2DClient.get().setChatLine("/alter " + entity.getName() + " ");
 			} else if (type.equals("creature")){
 				j2DClient.get().setChatLine("/altercreature #" + id + " '" + entity.getTitle() + "';atk;def;hp;xp");
 			} else {
