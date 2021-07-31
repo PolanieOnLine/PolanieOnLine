@@ -27,8 +27,6 @@ import java.util.Map;
  * Then it should give a golden blade that is bound to the player.
  */
 public class Dragon implements ZoneConfigurator {
-
-
 	/**
 	 * Configure a zone.
 	 *

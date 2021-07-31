@@ -12,44 +12,31 @@
 // Based on ../games/stendhal/server/maps/ados/abandonedkeep/OrcKillGiantDwarfNPC.java
 package games.pol.server.maps.desert.blackriver;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-/**
- * Builds the orc kill diant dwarf NPC.
- *
- * @author Teiv
- */
 public class JozekNPC implements ZoneConfigurator {
-
-	//
-	// ZoneConfigurator
-	//
-
 	/**
 	 * Configure a zone.
 	 *
 	 * @param	zone		The zone to be configured.
 	 * @param	attributes	Configuration attributes.
 	 */
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
-
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC jozekNPC = new SpeakerNPC("Józek") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,20 +45,19 @@ public class JozekNPC implements ZoneConfigurator {
 				nodes.add(new Node(5, 5));
 				nodes.add(new Node(5, 2));
 				setPath(new FixedPath(nodes, true));
-
 			}
 
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj.");
-				addJob("Może chcesz #ulepszyć #'złotą ciupagę'? Mogę to dla Ciebie wykonać.");
+				addJob("Może chcesz #'ulepszyć złotą ciupagę'? Mogę to dla Ciebie wykonać.");
 				addReply(Arrays.asList("ulepsz", "ulepszyć", "złotą ciupagę"), "Potrzebnych jest mi kilka rzeczy, więc musisz wykonać #zadanie.");
 				addHelp("Zajmuję się ulepszaniem złotej ciupagi.");
 				addGoodbye("Życzę powodzenia.");
 			}
 		};
 
-		jozekNPC.setDescription("Oto Jóżek, który jest w stanie ulepszyć twoją złotą ciupagę.");
+		jozekNPC.setDescription("Oto Józek, który jest w stanie ulepszyć twoją złotą ciupagę.");
 		jozekNPC.setEntityClass("weaponsellernpc");
 		jozekNPC.setGender("M");
 		jozekNPC.setPosition(6, 2);

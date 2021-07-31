@@ -18,11 +18,6 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-/**
- * Builds an NPC to buy previously un bought armor.
- *
- * @author kymara
- */
 public class ZdzichuNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
@@ -37,16 +32,10 @@ public class ZdzichuNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jubiler Zdzichu") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj dzielny rycerzu!");
-				addJob("Jestem jubilerem na tych włościach. #Zadanie mam dla ciebie jeżeli okarze się, że jesteś godny zaufania.");
+				addJob("Jestem jubilerem na tych włościach. #Zadanie mam dla ciebie jeżeli okaże się, że jesteś godny zaufania.");
 				addHelp("Nie jesteś w stanie mi pomóc, więc odejdź.");
 				addGoodbye("Żegnam.");
 			}
@@ -56,7 +45,6 @@ public class ZdzichuNPC implements ZoneConfigurator {
 		npc.setEntityClass("blacksmithnpc");
 		npc.setGender("M");
 		npc.setPosition(10, 6);
-		npc.initHP(1000);
 		zone.add(npc);
 	}
 }

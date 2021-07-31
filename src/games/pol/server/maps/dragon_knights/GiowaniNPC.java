@@ -22,11 +22,6 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-/**
- * Builds an NPC to buy previously un bought armor.
- *
- * @author kymara
- */
 public class GiowaniNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
@@ -41,7 +36,6 @@ public class GiowaniNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Giowani") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,12 +52,12 @@ public class GiowaniNPC implements ZoneConfigurator {
 				addJob("Mów szybko czego chcesz bo pizze muszę zjeść.");
 				addHelp("Wojownik o pomoc prosi Giowaniego?");
 				addOffer("Tylko vende i vende, nic nie mam na sprzedaż.");
-				addQuest("Mama mija pedro pu.... nie zawracaj głowy, nie miej takiej miny.");
+				addQuest("Mama mija pedro pu... nie zawracaj głowy, nie miej takiej miny.");
 				addGoodbye("Arrivederci.");
 			}
 		};
 
-		npc.setDescription("Ten makaroniarz przybył z dalekiej Italii.");
+		npc.setDescription("Oto Giowani. Ten makaroniarz przybył z dalekiej Italii.");
 		npc.setEntityClass("recruiter3npc");
 		npc.setGender("M");
 		npc.setPosition(22, 16);

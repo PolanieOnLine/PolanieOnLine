@@ -18,11 +18,6 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-/**
- * Builds an NPC to buy previously un bought armor.
- *
- * @author kymara
- */
 public class MarianekNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
@@ -37,12 +32,6 @@ public class MarianekNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Marianek") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj dzielny rycerzu!");

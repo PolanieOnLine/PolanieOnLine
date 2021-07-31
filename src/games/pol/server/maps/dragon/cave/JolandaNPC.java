@@ -18,11 +18,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 
 import java.util.Map;
 
-/**
- * entwife located in 0_ados_mountain_n2_w2.
- */
 public class JolandaNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -36,12 +32,6 @@ public class JolandaNPC implements ZoneConfigurator {
 
 	private void buildjolanda(final StendhalRPZone zone) {
 		final SpeakerNPC jolanda = new SpeakerNPC("Jolanda") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj dzielny i przystojny wojowniku.");

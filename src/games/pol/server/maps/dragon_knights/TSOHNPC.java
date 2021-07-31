@@ -23,21 +23,13 @@ import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 
-/**
- * An old hero (original name: Hayunn Naratha) who players meet when they enter the semos guard house.
- *
- * @see games.stendhal.server.maps.quests.BeerForHayunn
- * @see games.stendhal.server.maps.quests.MeetHayunn
- */
 public class TSOHNPC extends SpeakerNPCFactory {
-
 	@Override
 	public void createDialog(final SpeakerNPC npc) {
 		// A little trick to make NPC remember if it has met
 		// player before and react accordingly
 		// NPC_name quest doesn't exist anywhere else neither is
 		// used for any other purpose
-
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new SetQuestAction("meet_tsoh", "start"));
 
