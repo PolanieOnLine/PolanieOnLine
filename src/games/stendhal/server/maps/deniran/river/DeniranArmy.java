@@ -19,7 +19,7 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SilentNPC;
 
-public class DeniranArmy implements ZoneConfigurator  {
+public class DeniranArmy implements ZoneConfigurator {
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPCs(zone);
@@ -52,7 +52,6 @@ public class DeniranArmy implements ZoneConfigurator  {
 				zone.add(npc);
 				npclist.add(npc);
 			}
-
 		}
 	};
 }
