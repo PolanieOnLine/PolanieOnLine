@@ -68,12 +68,12 @@
  </tileset>
  <layer id="1" name="0_floor" width="17" height="16">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACs2TzQnAMAhG7f4L9PfYdJ5s0G5SAwoixiq59PBIIPryYcgMAMsAK3IiZYBLOCbBjVRaeS95CM+he/7qYLTDqrFmkXXI3EzGYfVEcnz16Exejl52XROZhzUL6dWOyN1VeaLvkpmp96eKU9fON2R3OGjt1bXzF7DtTStABAAA
+   H4sIAAAAAAAACrvIwMBwcRBhRiT8ACr2AImNjB9CMT4zCNk3WMwgBWMLC3LwQzRMjl5y7KSWm4hRR6wbsdlLyFxiw4CccKIGXkYFM+YQkAcARVQg3EAEAAA=
   </data>
  </layer>
  <layer id="2" name="1_terrain" width="17" height="16">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGFyAE4i5gJibCLUyQCyHRZwHiIWAmI8IM+SBWBGHGaJEmqEExCpYxPmBWACIBdHEPYHYC4q9iTAfG/ABYl8o9iPTDH8gDoDiQCLUS5JpDzKQpoIZMFACxaMAO2ClgxkATNYafEAEAAA=
+   H4sIAAAAAAAACpvBwMAwkwI8C4iXAvEyCvByJDM4gZgLiLkZCAMZIJbDYgYPEAsBMR8RZsgDsSIOM0SJNEMJiFWwmMEPxAJALIim3hOIvaDYG00O3QxcwAeIfaHYj0wz/IE4AIoDiTBDEo9Z2AA2M6SpYAYMlEAxJWZQwx0DaQa+PMWKRx1IfjYQz8GD50LNwKUOJA8Azn9dN0AEAAA=
   </data>
  </layer>
  <layer id="3" name="2_object" width="17" height="16">

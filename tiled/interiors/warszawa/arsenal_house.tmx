@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="15" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="mury" tilewidth="32" tileheight="32" tilecount="26" columns="13">
+  <image source="../../tileset/pol/domki/wiezienie_sciany.png" width="416" height="64"/>
+ </tileset>
+ <tileset firstgid="27" name="floors_3" tilewidth="32" tileheight="32" tilecount="12" columns="6">
+  <image source="../../tileset/ground/indoor/floors_3.png" width="192" height="64"/>
+ </tileset>
+ <tileset firstgid="39" name="carpets" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/furniture/carpet/carpets.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="47" name="table/grey_plain" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/furniture/table/grey_plain.png" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="56" name="wooden_crates" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/item/pot/wooden_crates.png" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="62" name="crates" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/pot/crates.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="66" name="logic/collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="67" name="box" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/item/pot/box.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="68" name="chest_2" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/item/chest/chest_2.png" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="74" name="barrels_1" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/item/pot/barrels_1.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="82" name="weapons_for_walls" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="../../tileset/item/armor/weapons_for_walls.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="98" name="suit_of_armor2" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/armor/suit_of_armor2.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="102" name="metal_and_stone" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/item/statue/metal_and_stone.png" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="108" name="brown" tilewidth="32" tileheight="32" tilecount="5" columns="5">
+  <image source="../../tileset/ground/brown.png" width="160" height="32"/>
+ </tileset>
+ <tileset firstgid="113" name="swieczka_right" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/pol/oswietlenie/swieczka_right.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="117" name="swieczka_left" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/pol/oswietlenie/swieczka_left.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="121" name="miecze" tilewidth="32" tileheight="32" tilecount="24" columns="6">
+  <image source="../../tileset/pol/wyposazenie/miecze.png" width="192" height="128"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACsWSUQ7AIAhDOQtw/zNuH5q8dKua/awJUZTSSoz4F3lHjyjkOfLCuWLWJerZa8VVHtdGL8elRsfTi+P2S1CLfZyueube6c47zoWa9OGgc67wXh1X/a/0yFU9904FvXLmp545p9V/2nn4ip3WBYcM4t7AAwAA
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACuNgYGDgJANzAbEoEIuRgcWR9CIDByB2hLKtgVgfiA2A2BAqhk1vCgN2YATExkBsgkcvLmAKxGZAbE6GXnRArl4XPHozCeh1p8BeZyx6YRgfQI9fbiDmIVEvSD0vkjght/sj2YcOCOn1I1OvH5F6kcNCG4c4OoCFGQzzQvViE4cBAHkp3f/AAwAA
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgoBxUA3ENEDcAsR0Q2wNxIxA3UWBmLxBHAnEQEEeToT8GiOOAOJ4CN4yCUTDYAQAhL/Z8wAMAAA==
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGHiQRKa+UiLVFZJpPi1BGhl6Btq/uOwfjOELA0PRzaQAAEL2qIPAAwAA
+  </data>
+ </layer>
+ <layer id="5" name="4_roof_add" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBQMVQAAewDiOMADAAA=
+  </data>
+ </layer>
+ <layer id="6" name="objects" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBQMVQAAewDiOMADAAA=
+  </data>
+ </layer>
+ <layer id="7" name="collision" width="15" height="16" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACnNiYGBwGkCMC2BTh0uMkH5ceokFA6EXX1gRMoeUcCZGLzFmkBvPlOilZvoiVi+5aZxW+QcA4+tSTcADAAA=
+  </data>
+ </layer>
+ <layer id="8" name="protection" width="15" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAWjYBQMVQAAewDiOMADAAA=
+  </data>
+ </layer>
+</map>

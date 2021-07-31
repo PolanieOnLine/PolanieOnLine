@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="11" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="mury" tilewidth="32" tileheight="32" tilecount="26" columns="13">
+  <image source="../../tileset/pol/domki/wiezienie_sciany.png" width="416" height="64"/>
+ </tileset>
+ <tileset firstgid="27" name="carpets" tilewidth="32" tileheight="32" tilecount="8" columns="4">
+  <image source="../../tileset/furniture/carpet/carpets.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="35" name="floors_3" tilewidth="32" tileheight="32" tilecount="12" columns="6">
+  <image source="../../tileset/ground/indoor/floors_3.png" width="192" height="64"/>
+ </tileset>
+ <tileset firstgid="47" name="logic/collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="48" name="statua" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/pol/posagi/statua.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="52" name="swieczka_right" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/pol/oswietlenie/swieczka_right.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="56" name="swieczka_left" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/pol/oswietlenie/swieczka_left.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="60" name="wood_fire" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/pol/wyposazenie/wood_fire.png" width="64" height="64"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgoC3QAWJtINaC0tpIYrjUwtTr4FGLbhayHnzmaqPpxWauDpJZyGZjMxfZjfjci2wWzHxcbqA2AACigqLY5AEAAA==
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACuNgYGDgxIJVoBjG5wJiUSAWw4LloRjGF0dSiw9gU2tMglpSzB1KapHDUR6HODcQ8yBhXqhabOIAVptuxOQBAAA=
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgoBzYALEtkWrtgNieCnaOAuIBAFkgWKbkAQAA
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgoD0wJFKdNQ5xE2o5hMrAAoe4GV1dQRgAAML79iXkAQAA
+  </data>
+ </layer>
+ <layer id="5" name="4_roof_add" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAXDHQAARfTbmeQBAAA=
+  </data>
+ </layer>
+ <layer id="6" name="objects" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAXDHQAARfTbmeQBAAA=
+  </data>
+ </layer>
+ <layer id="7" name="collision" width="11" height="11" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACtNnYGDQpyFGB/pobHS12PTgUosLDHW12MKEEgwAS8aGcuQBAAA=
+  </data>
+ </layer>
+ <layer id="8" name="protection" width="11" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGAXDHQAARfTbmeQBAAA=
+  </data>
+ </layer>
+</map>

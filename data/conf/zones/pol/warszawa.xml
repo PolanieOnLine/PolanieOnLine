@@ -133,6 +133,8 @@
 
 	<!-- warszawa_e -->
 	<zone name="0_warszawa_e" level="0" x="513568" y="17408" file="Level 0/warszawa/e.tmx">
+		<configurator class-name="games.pol.server.maps.warszawa.castle.KnightNPC"/>
+		<configurator class-name="games.pol.server.maps.warszawa.castle.WarsawArmy"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -147,6 +149,18 @@
 
 		<portal x="42" y="66" ref="smith_entrance">
 			<destination zone="int_warszawa_blacksmith" ref="smith_exit"/>
+		</portal>
+
+		<portal x="48" y="69" ref="arsenal_entrance">
+			<destination zone="int_warszawa_arsenal" ref="arsenal_exit"/>
+		</portal>
+
+		<portal x="47" y="57" ref="tiny1_entrance">
+			<destination zone="int_warszawa_tiny_hut_1" ref="tiny1_exit"/>
+		</portal>
+
+		<portal x="72" y="67" ref="tiny2_entrance">
+			<destination zone="int_warszawa_tiny_hut_2" ref="tiny2_exit"/>
 		</portal>
 	</zone>
 
@@ -275,6 +289,27 @@
 
 		<portal x="9" y="14" ref="smith_exit">
 			<destination zone="0_warszawa_e" ref="smith_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Arsenal house -->
+	<zone name="int_warszawa_arsenal" file="interiors/warszawa/arsenal_house.tmx">
+		<portal x="7" y="14" ref="arsenal_exit">
+			<destination zone="0_warszawa_e" ref="arsenal_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Tiny hut 1 -->
+	<zone name="int_warszawa_tiny_hut_1" file="interiors/warszawa/tiny_hut1.tmx">
+		<portal x="5" y="9" ref="tiny1_exit">
+			<destination zone="0_warszawa_e" ref="tiny1_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- Tiny hut 2 -->
+	<zone name="int_warszawa_tiny_hut_2" file="interiors/warszawa/tiny_hut2.tmx">
+		<portal x="5" y="9" ref="tiny2_exit">
+			<destination zone="0_warszawa_e" ref="tiny2_entrance"/>
 		</portal>
 	</zone>
 
