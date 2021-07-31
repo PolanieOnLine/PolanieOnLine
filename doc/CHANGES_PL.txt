@@ -3,6 +3,7 @@ Changelog
 1.23
 *klient*
 - Dodano grafiki dla nowych kategorii osiągnięć
+- Poprawiono grafiki kapelusza oraz kapelusza góralskiego (outfit)
 
 *świat*
 - Dodano nowe osiągnięcia: (12)
