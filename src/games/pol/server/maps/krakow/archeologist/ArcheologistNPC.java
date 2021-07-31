@@ -25,7 +25,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author KarajuSs
  */
 public class ArcheologistNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -39,7 +38,6 @@ public class ArcheologistNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Amileusz") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
@@ -48,13 +46,14 @@ public class ArcheologistNPC implements ZoneConfigurator {
 				addOffer("Na chwilę obecną nie mam nic Tobie do zaoferowania!");
 				addGoodbye();
 			}
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.UP);
 			}
 		};
 
-		npc.setDescription("Oto archeolog Amileusz ubrany w swój ulubiony stary szlafrok.");
+		npc.setDescription("Oto archeolog Amileusz, który jest ubrany w swój ulubiony stary szlafrok.");
 		npc.setEntityClass("npc_archeologist");
 		npc.setGender("M");
 		npc.setPosition(10, 6);
