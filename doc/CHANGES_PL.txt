@@ -4,8 +4,18 @@ Changelog
 *klient*
 - Dodano grafiki dla nowych kategorii osiągnięć
 - Poprawiono grafiki kapelusza oraz kapelusza góralskiego (outfit)
+- Poprawiono grafikę NPC Malteis
 
 *świat*
+- Dodano nowych NPC: (2)
+	- Rycerz
+	- Armia rycerzy
+- Dodano nowe mapy: (3)
+	- int_warszawa_arsenal
+	- int_warszawa_tiny_hut_1
+	- int_warszawa_tiny_hut_2
+- Poprawiono mapy: (1)
+	- int_deniran_castle
 - Dodano nowe osiągnięcia: (12)
 	- "Człowiek Skała"
 	- "Płonące Ognisko"
