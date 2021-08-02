@@ -7,14 +7,17 @@ Changelog
 - Poprawiono grafikę NPC Malteis
 
 *świat*
-- Dodano nowych NPC: (2)
+- Dodano nowych NPC: (3)
+	- Książę
 	- Rycerz
 	- Armia rycerzy
+- Dodano nowe zadanie u Rycerza
 - Dodano nowe mapy: (3)
 	- int_warszawa_arsenal
 	- int_warszawa_tiny_hut_1
 	- int_warszawa_tiny_hut_2
-- Poprawiono mapy: (1)
+- Poprawiono mapy: (2)
+	- 0_tatry_dolina_mietusia
 	- int_deniran_castle
 - Dodano nowe osiągnięcia: (12)
 	- "Człowiek Skała"
