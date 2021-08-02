@@ -130,8 +130,7 @@ public class KillSpiders extends AbstractQuest {
 								&& player.hasKilled("pająk ptasznik")
 								&& player.hasKilled("królowa pająków")) {
 							raiser.say("Och dziękuję mój przyjacielu. Masz tutaj coś specjalnego mam to od Magów. Kto to był to nie wiem. Dla kogo to jajko było też nie wiem. Wiem tylko tyle, że Tobie może się przydać.");
-							final Item mythegg = SingletonRepository.getEntityManager()
-									.getItem("mityczne jajo");
+							final Item mythegg = SingletonRepository.getEntityManager().getItem("mityczne jajo");
 							mythegg.setBoundTo(player.getName());
 							player.equipOrPutOnGround(mythegg);
 							player.addKarma(5.0);
