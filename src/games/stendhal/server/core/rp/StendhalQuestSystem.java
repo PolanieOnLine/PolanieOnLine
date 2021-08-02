@@ -245,7 +245,11 @@ public class StendhalQuestSystem {
 		loadQuest(new ZamowienieStrazy());
 		loadQuest(new ZlotaCiupagaTrzyWasy());
 		/** 					**\
-		 *        WIELICZKA		 *
+		 *       WARSZAWA		 *
+		\**	                    **/
+		loadQuest(new KillMadGuards());
+		/** 					**\
+		 *       WIELICZKA		 *
 		\**	                    **/
 		loadQuest(new SaltForHerbert());
 		loadQuest(new WeeklyItemWieliczkaQuest());
