@@ -134,6 +134,7 @@
 	<!-- warszawa_e -->
 	<zone name="0_warszawa_e" level="0" x="513568" y="17408" file="Level 0/warszawa/e.tmx">
 		<configurator class-name="games.pol.server.maps.warszawa.castle.KnightNPC"/>
+		<configurator class-name="games.pol.server.maps.warszawa.castle.PrinceNPC"/>
 		<configurator class-name="games.pol.server.maps.warszawa.castle.WarsawArmy"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
