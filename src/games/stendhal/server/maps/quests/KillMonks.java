@@ -124,7 +124,7 @@ public class KillMonks extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Co za szkoda... Może kiedyśzmienisz zdanie i pomożesz smutnemu człowiekowi.",
+				"Co za szkoda... Może kiedyś zmienisz zdanie i pomożesz smutnemu człowiekowi.",
 				new MultipleActions(
 				        new SetQuestAction(QUEST_SLOT, 0, "rejected"),
 				        new DecreaseKarmaAction(5)));
