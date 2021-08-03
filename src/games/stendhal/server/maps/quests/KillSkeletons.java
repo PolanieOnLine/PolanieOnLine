@@ -137,7 +137,7 @@ public class KillSkeletons extends AbstractQuest {
 						money.setQuantity(Rand.roll1D100());
 						raiser.say("Widziałem jak pokonałeś te potwory! W ogóle ich się nie bałeś podczas boju. Tym razem wraz z mieszkańcami Zakopane zebraliśmy " + money.getQuantity() + " money na nagrodę. Dziękujemy za pomoc!");
 						player.equipOrPutOnGround(money);
-						player.addKarma(5.0);
+						player.addKarma(10);
 						player.addXP(1000);
 						player.setQuest(QUEST_SLOT, "killed;" + System.currentTimeMillis());
 		 			}

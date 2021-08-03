@@ -142,7 +142,7 @@ public class KillMadGuards extends AbstractQuest {
 						final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
 						money.setQuantity(100);
 						player.equipOrPutOnGround(money);
-						player.addKarma(5.0);
+						player.addKarma(20);
 						player.addXP(7500);
 						player.setQuest(QUEST_SLOT, "killed;" + System.currentTimeMillis());
 		 			}
