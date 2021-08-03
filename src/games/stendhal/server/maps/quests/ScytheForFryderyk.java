@@ -89,7 +89,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj, a moje plony zmarnieją... *sniff*",
+			"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj, a moje plony zmarnieją... *wącha*",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -138,7 +138,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Ktoś miał dzisiaj dużo szczęścia... *Apsik*.",
+			"Ktoś miał dzisiaj dużo szczęścia... *kichnięcie*.",
 			null);
 	}
 
