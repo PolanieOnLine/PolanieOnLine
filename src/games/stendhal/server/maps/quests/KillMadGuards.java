@@ -62,7 +62,7 @@ public class KillMadGuards extends AbstractQuest {
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						} else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-							final long delay = 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
+							final long delay = 1 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
 							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
 								raiser.say("W imieniu króla dziękuję za pomoc. Zbuntowana straż i rycerze mogą powrócić. Wróć za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
