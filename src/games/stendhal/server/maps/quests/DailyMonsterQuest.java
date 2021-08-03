@@ -407,7 +407,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 						new QuestNotCompletedCondition(QUEST_SLOT),
 				        new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
-				"Gratuluje! Pozwól mi podziekowac w imieniu mieszkanców Semos!",
+				"Gratuluje! Pozwól mi podziękować w imieniu mieszkanców Semos!",
 				new MultipleActions(actions));
 	}
 
