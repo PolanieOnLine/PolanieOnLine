@@ -23,12 +23,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author KarajuSs
  */
 public class TajemniczaOsobaNPC implements ZoneConfigurator {
-	/**
-	 * Configure a zone.
-	 *
-	 * @param	zone		The zone to be configured.
-	 * @param	attributes	Configuration attributes.
-	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildnpc(zone);
@@ -36,13 +30,13 @@ public class TajemniczaOsobaNPC implements ZoneConfigurator {
 
 	private void buildnpc(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Tajemnicza osoba") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Hmm?");
-				addJob("Niczym się zajmuję.");
-				addHelp("Może będziesz mógł mi w czymś pomóc.");
-				addGoodbye();
+				addJob("Niczym się nie zajmuję.");
+				addHelp("*szept* Może będziesz mógł mi w czymś pomóc.");
+				addOffer("*szept* Może będziesz mógł mi w czymś pomóc.");
+				addGoodbye("...");
 			}
 			
 			@Override
