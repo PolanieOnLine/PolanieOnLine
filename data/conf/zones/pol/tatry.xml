@@ -197,13 +197,13 @@
 			<attribute name="face">left</attribute>
 		</portal>
 
-		<!-- <portal x="96" y="74" ref="soltys_house_entrance">
-			<destination zone="int_tatry_kuznice_soltys_house_0" ref="entrance_soltys_house" />
+		<portal x="96" y="74" ref="soltys_house_entrance">
+			<destination zone="int_tatry_kuznice_soltys_house" ref="soltys_house_exit" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
-				<parameter name="key">klucz sołtysa</parameter>
+				<parameter name="key">wytrychy</parameter>
 				<parameter name="rejected">Drzwi są zamknięte.</parameter>
 			</implementation>
-		</portal> -->
+		</portal>
 
 		<portal x="79" y="102" ref="chapel_1_entrance">
 			<destination zone="int_tatry_kuznice_chapel" ref="chapel_1_exit"/>
@@ -553,6 +553,22 @@
 		<portal x="9" y="19" ref="chapel_2_exit">
 			<destination zone="0_tatry_kuznice" ref="chapel_2_entrance"/>
 			<attribute name="face">up</attribute>
+		</portal>
+	</zone>
+
+	<!-- chapel  -->
+	<zone name="int_tatry_kuznice_soltys_house" file="interiors/tatry/soltys_home.tmx">
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">creaky-door-1, creaky-door-2, window-close-1</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="volume">10</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="1" y="10" ref="soltys_house_exit">
+			<destination zone="0_tatry_kuznice" ref="soltys_house_entrance"/>
 		</portal>
 	</zone>
 
