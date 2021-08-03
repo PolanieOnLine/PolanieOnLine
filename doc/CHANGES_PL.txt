@@ -19,7 +19,8 @@ Changelog
 - Dodano nowe zadanie u Tadka
 - Dodano nowe zadanie u Doriana
 - Dodano nowe zadanie u Jasnisława
-- Dodano nowe mapy: (3)
+- Dodano nowe mapy: (4)
+	- int_tatry_kuznice_soltys_house
 	- int_warszawa_arsenal
 	- int_warszawa_tiny_hut_1
 	- int_warszawa_tiny_hut_2
