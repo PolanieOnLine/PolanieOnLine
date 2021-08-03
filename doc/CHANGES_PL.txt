@@ -3,11 +3,14 @@ Changelog
 1.23
 *klient*
 - Dodano nowe grafiki NPC
+- Dodano nową grafikę przedmiotu
 - Dodano grafiki dla nowych kategorii osiągnięć
 - Poprawiono grafiki kapelusza oraz kapelusza góralskiego (outfit)
 - Poprawiono grafikę NPC Malteisa, Adasia, Bogusia
 
 *świat*
+- Dodano nowe przedmioty: (1)
+	- wytrychy
 - Dodano nowych NPC: (5)
 	- Janisław
 	- Dorian
