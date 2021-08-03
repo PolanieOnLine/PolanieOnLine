@@ -8,7 +8,8 @@ Changelog
 - Poprawiono grafikę NPC Malteisa, Adasia, Bogusia
 
 *świat*
-- Dodano nowych NPC: (4)
+- Dodano nowych NPC: (5)
+	- Janisław
 	- Dorian
 	- Tadek
 	- Książę
@@ -17,6 +18,7 @@ Changelog
 - Dodano nowe zadanie u Rycerza
 - Dodano nowe zadanie u Tadka
 - Dodano nowe zadanie u Doriana
+- Dodano nowe zadanie u Jasnisława
 - Dodano nowe mapy: (3)
 	- int_warszawa_arsenal
 	- int_warszawa_tiny_hut_1
