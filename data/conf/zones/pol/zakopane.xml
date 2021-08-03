@@ -1821,6 +1821,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<zone name="int_zakopane_home" file="interiors/zakopane/home.tmx">
 		<configurator class-name="games.pol.server.maps.zakopane.home.AdasNPC"/>
 		<configurator class-name="games.pol.server.maps.zakopane.home.PietrekNPC"/>
+		<configurator class-name="games.pol.server.maps.zakopane.home.JanislawNPC"/>
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/home_xmas.tmx</parameter>
 		</attributes>

@@ -50,6 +50,15 @@ public class Rand {
 	}
 
 	/**
+	 * Simulates rolling a dice with 10 sides.
+	 *
+	 * @return A random number between 1 and 10, equally distributed.
+	 */
+	public static int roll1D10() {
+		return rand.nextInt(10) + 1;
+	}
+
+	/**
 	 * Simulates rolling a dice with 20 sides.
 	 *
 	 * @return A random number between 1 and 20, equally distributed.
