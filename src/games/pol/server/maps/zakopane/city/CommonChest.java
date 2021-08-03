@@ -11,12 +11,12 @@
  ***************************************************************************/
 package games.pol.server.maps.zakopane.city;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.chest.Chest;
-
-import java.util.Map;
 
 /**
  * @author Legolas
@@ -35,7 +35,6 @@ public class CommonChest implements ZoneConfigurator {
 	}
 
 	private void buildZakopaneCityAreaChest(final StendhalRPZone zone) {
-
 		final Chest chest = new Chest();
 		chest.setPosition(110, 45);
 		chest.add(SingletonRepository.getEntityManager().getItem("mieczyk"));
