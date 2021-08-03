@@ -42,6 +42,9 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.TimeUtil;
 import marauroa.common.Pair;
 
+/**
+ * @author KarajuSs
+ */
 public class KillMadGuards extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_madguards";
 	private final SpeakerNPC npc = npcs.get("Rycerz");

@@ -43,6 +43,9 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.TimeUtil;
 import marauroa.common.Pair;
 
+/**
+ * @author KarajuSs
+ */
 public class KillSkeletons extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_skeletons";
 	private final SpeakerNPC npc = npcs.get("Tadek");
