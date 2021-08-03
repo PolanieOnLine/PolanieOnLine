@@ -44,7 +44,7 @@ public class KnightNPC implements ZoneConfigurator {
 			public void createDialog() {
 				addGreeting();
 				addJob("Kiedyś zajmowałem się patrolowaniem, a teraz niestety próbuję ze swoim oddziałem odbić zamek.");
-				addHelp("Każda #pomoc się nada.");
+				addHelp("Każda #pomoc się nada. Potrzebuję pomocy w pewnym #zadaniu.");
 				addOffer("Zaoferować mogę #zadanie.");
 				addGoodbye();
 			}
