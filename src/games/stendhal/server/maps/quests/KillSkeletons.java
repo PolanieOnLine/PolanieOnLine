@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -129,9 +130,9 @@ public class KillSkeletons extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Widziałem jak pokonałeś te potwory! W ogóle ich się nie bałeś podczas boju. Zasłużyłeś na nagrodę!");
 						final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
-						money.setQuantity(25);
+						money.setQuantity(Rand.roll1D100());
+						raiser.say("Widziałem jak pokonałeś te potwory! W ogóle ich się nie bałeś podczas boju. Tym razem wraz z mieszkańcami Zakopane zebraliśmy " + money.getQuantity() + " money na nagrodę. Dziękujemy za pomoc!");
 						player.equipOrPutOnGround(money);
 						player.addKarma(5.0);
 						player.addXP(1000);
