@@ -193,6 +193,7 @@ public class StendhalQuestSystem {
 		loadQuest(new KillDragons());
 		loadQuest(new KillHerszt());
 		loadQuest(new KillMtElves());
+		loadQuest(new KillSkeletons());
 		loadQuest(new KolekcjonerRekawic());
 		loadQuest(new Labirynt());
 		loadQuest(new LearnAboutMining());
