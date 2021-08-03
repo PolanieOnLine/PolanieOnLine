@@ -49,7 +49,7 @@ public class TadekNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Tadek. Wygląda na wystraszonego z jakiegoś powodu.");
-		npc.setEntityClass("tadeusznpc");
+		npc.setEntityClass("npctadeusz");
 		npc.setGender("M");
 		npc.setPosition(106, 50);
 		npc.setDirection(Direction.DOWN);
