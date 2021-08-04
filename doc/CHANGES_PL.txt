@@ -4,7 +4,7 @@ Changelog
 *klient*
 - Dodano nowe grafiki NPC
 - Dodano nową grafikę przedmiotu
-- Dodano grafiki dla nowych kategorii osiągnięć
+- Dodano grafiki dla nowej kategorii osiągnięć
 - Poprawiono grafiki kapelusza oraz kapelusza góralskiego (outfit)
 - Poprawiono grafikę NPC Malteisa, Adasia, Bogusia
 
