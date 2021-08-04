@@ -21,15 +21,17 @@ Changelog
 - Dodano nowe zadanie u Rycerza
 - Dodano nowe zadanie u Tadka
 - Dodano nowe zadanie u Doriana
-- Dodano nowe zadanie u Jasnisława
+- Dodano nowe zadanie u Janisława
+- Dodano nowe zadanie u "Tajemniczej osoby"
 - Dodano nowe mapy: (4)
 	- int_tatry_kuznice_soltys_house
 	- int_warszawa_arsenal
 	- int_warszawa_tiny_hut_1
 	- int_warszawa_tiny_hut_2
-- Poprawiono mapy: (3)
+- Poprawiono mapy: (4)
 	- 0_koscielisko_nw
 	- 0_tatry_dolina_mietusia
+	- int_tatry_kuznice_hostel
 	- int_deniran_castle
 - Dodano nowe osiągnięcia: (12)
 	- "Człowiek Skała"
@@ -48,6 +50,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono NullPointerException w opisie gracza po zmianie tytułu skryptem
+- Naprawiono możliwość zapętlania zadania u Cadhesa
 
 
 1.22.2
