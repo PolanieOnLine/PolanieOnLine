@@ -28,9 +28,10 @@ Changelog
 	- int_warszawa_arsenal
 	- int_warszawa_tiny_hut_1
 	- int_warszawa_tiny_hut_2
-- Poprawiono mapy: (4)
+- Poprawiono mapy: (5)
 	- 0_koscielisko_nw
 	- 0_tatry_dolina_mietusia
+	- int_zakopane_tavern
 	- int_tatry_kuznice_hostel
 	- int_deniran_castle
 - Dodano nowe osiągnięcia: (12)
