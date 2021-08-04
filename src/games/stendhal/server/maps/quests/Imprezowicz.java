@@ -30,9 +30,9 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
@@ -43,7 +43,7 @@ public class Imprezowicz extends AbstractQuest {
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, 
-			new QuestNotCompletedCondition(QUEST_SLOT),
+			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED, 
 			"*hicks* Wisz trochu mi skoczyło si #'wino'. Cz mozes mi po ni skoczyć *hicks*?",
 			null);
@@ -83,14 +83,14 @@ public class Imprezowicz extends AbstractQuest {
 	private void prepareBringingStep() {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestActiveCondition(QUEST_SLOT),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("napój z winogron")),
 			ConversationStates.QUEST_ITEM_BROUGHT, 
 			"Hej! *hicks* Cy to wino jet dl mie? *hicks* *hicks*", null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestActiveCondition(QUEST_SLOT),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("napój z winogron"))),
 			ConversationStates.ATTENDING, 
 			"Hej, wciąż czekam na mje wino, pamintas? *hicks*",
