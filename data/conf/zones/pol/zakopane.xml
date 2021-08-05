@@ -45,6 +45,19 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1,rain=+1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
+
+		<configurator class-name="games.pol.server.maps.zakopane.littlevillage.GapcioNPC"/>
+
+		<entity x="98" y="122">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">buyskrzaty</parameter>
+				<parameter name="title">Sklep Gapcio – skup towaru</parameter>
+				<parameter name="seller">false</parameter>
+			</implementation>
+
+			<attribute name="class">default</attribute>
+		</entity>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>

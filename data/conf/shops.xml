@@ -775,6 +775,18 @@
 		<item name="lukrecja" price="75" />
 	</shop>
 
+	<!-- Gapcio kupuje: -->
+	<shop name="buyskrzaty" type="buys">
+		<item name="buty skórzane" price="15" />
+		<item name="proca" price="10" />
+		<item name="nożyk" price="15" />
+		<item name="puklerz" price="20" />
+		<item name="marchew" price="5" />
+		<item name="miód pitny" price="10" />
+		<item name="hełm nabijany ćwiekami" price="25" />
+		<item name="kapelusz leśniczego" price="15" />
+	</shop>
+
 	<!-- Wielkolud kupuje: -->
 	<shop name="buyrareitems" type="buys">
 		<item name="kierpce" price="45" />
