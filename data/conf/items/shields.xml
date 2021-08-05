@@ -49,7 +49,7 @@
 
 	<item name="puklerz">
 		<type class="shield" subclass="buckler" tileid="-1"/>
-		<description>Puklerz to najprostsza tarcza. Może ochronić cię przed mieczami i maczugami, ale na silniejszą broń lepiej jej nie wystawiać.</description>
+		<description>Oto puklerz, najprostsza tarcza. Może ochronić cię przed mieczami i maczugami, ale na silniejszą broń lepiej jej nie wystawiać.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
