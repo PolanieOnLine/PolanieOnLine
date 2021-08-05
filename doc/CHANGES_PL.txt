@@ -3,6 +3,7 @@ Changelog
 1.23
 *klient*
 - Dodano nowe grafiki NPC
+- Dodano nową grafikę stwora
 - Dodano nową grafikę przedmiotu
 - Dodano grafiki dla nowej kategorii osiągnięć
 - Poprawiono grafiki kapelusza oraz kapelusza góralskiego (outfit)
@@ -11,13 +12,17 @@ Changelog
 *świat*
 - Dodano nowe przedmioty: (1)
 	- wytrychy
+- Dodano nowe potwory: (1)
+	- skrzat leśny starszy strzelec
 - Dodano nowych NPC: (5)
+	- Gapcio
 	- Janisław
 	- Dorian
 	- Tadek
 	- Książę
 	- Rycerz
 	- Armia rycerzy
+- Dodano nowy sklep skupu u Gapcia
 - Dodano nowe zadanie u Rycerza
 - Dodano nowe zadanie u Tadka
 - Dodano nowe zadanie u Doriana
@@ -54,6 +59,9 @@ Changelog
 *naprawiono błędy*
 - Naprawiono NullPointerException w opisie gracza po zmianie tytułu skryptem
 - Naprawiono możliwość zapętlania zadania u Cadhesa
+- Poprawiono opis przedmiotu "puklerz"
+- Poprawiono dialogi u Karla oraz podczas kupowania / sprzedawania
+- Poprawiono niejaśność podczas zadania na zbieranie ziół leczniczych dla Carmen i Jadźki
 
 
 1.22.2
