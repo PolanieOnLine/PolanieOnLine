@@ -129,10 +129,10 @@ public class SellerAdder {
 	    					if (player.isBadBoy()) {
     							price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
     							
-    							builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to  ");
-								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName, "a"));
+    							builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
+								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
 							} else {
-								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName, "A"));
+								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
 	    					}
 
 	    					builder.append(" kosztuje ");

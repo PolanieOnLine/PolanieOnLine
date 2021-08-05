@@ -136,7 +136,7 @@ public class BuyerAdder {
 
 							if (price != 0) {
     							raiser.say(Grammar.quantityplnoun(res.getAmount(), chosenItemName, "")
-	    								+ " " + Grammar.isare(res.getAmount()) + "warty jest "
+	    								+ " " + Grammar.isare(res.getAmount()) + " warty jest "
 	    								+ price + ". Czy chcesz sprzedać "
     									+ Grammar.itthem(res.getAmount()) + "?");
 
