@@ -32,7 +32,7 @@
 
 	<creature name="skrzat leśny wojownik">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_wojownik" tileid="pol_skrzaty_lesne.png:1"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny wojownik. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="54"/>
 			<def value="11"/>
@@ -48,6 +48,8 @@
 			<item value="money" quantity="[1,14]" probability="100.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="50.0"/>
 			<item value="opieńka miodowa" quantity="[1,5]" probability="50.0"/>
+			<item value="nożyk" quantity="[1,1]" probability="1.0"/>
+			<item value="puklerz" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -60,7 +62,7 @@
 
 	<creature name="skrzat leśny bohater">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_bohater" tileid="pol_skrzaty_lesne.png:2"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny bohater. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="63"/>
 			<def value="12"/>
@@ -87,7 +89,7 @@
 
 	<creature name="skrzat leśny komandor">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_komandor" tileid="pol_skrzaty_lesne.png:3"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny komandor. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="70"/>
 			<def value="13"/>
@@ -100,8 +102,10 @@
 		<respawn value="915"/>
 		<corpse name="gnome"/>
 		<drops>
-			<item value="money" quantity="[1,21]" probability="100.0"/>
+			<item value="money" quantity="[1,14]" probability="100.0"/>
 			<item value="miód pitny" quantity="[1,1]" probability="90.0"/>
+			<item value="nożyk" quantity="[1,1]" probability="1.0"/>
+			<item value="puklerz" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -114,7 +118,7 @@
 
 	<creature name="skrzat leśny lider">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_lider" tileid="pol_skrzaty_lesne.png:4"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny lider. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="77"/>
 			<def value="15"/>
@@ -128,7 +132,7 @@
 		<corpse name="gnome"/>
 		<drops>
 			<item value="money" quantity="[1,17]" probability="100.0"/>
-			<item value="miód pitny" quantity="[1,1]" probability="99.0"/>
+			<item value="miód pitny" quantity="[1,1]" probability="90.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -141,7 +145,7 @@
 
 	<creature name="skrzat leśny starszy">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy" tileid="pol_skrzaty_lesne.png:5"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny starszy. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="83"/>
 			<def value="16"/>
@@ -154,8 +158,10 @@
 		<respawn value="931"/>
 		<corpse name="gnome"/>
 		<drops>
-			<item value="money" quantity="[9,39]" probability="100.0"/>
+			<item value="money" quantity="[1,24]" probability="100.0"/>
 			<item value="żyntyca" quantity="[1,1]" probability="50.0"/>
+			<item value="kapelusz leśniczego" quantity="[1,1]" probability="5.0"/>
+			<item value="buty skórzane" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -168,7 +174,7 @@
 
 	<creature name="skrzat leśny starszy komandor">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_komandor" tileid="pol_skrzaty_lesne.png:6"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny starszy komandor. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="90"/>
 			<def value="17"/>
@@ -181,8 +187,11 @@
 		<respawn value="941"/>
 		<corpse name="gnome"/>
 		<drops>
-			<item value="money" quantity="[9,21]" probability="100.0"/>
+			<item value="money" quantity="[1,16]" probability="100.0"/>
 			<item value="żyntyca" quantity="[1,1]" probability="75.0"/>
+			<item value="hełm nabijany ćwiekami" quantity="[1,1]" probability="5.0"/>
+			<item value="nożyk" quantity="[1,1]" probability="5.0"/>
+			<item value="puklerz" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -195,7 +204,7 @@
 
 	<creature name="skrzat leśny starszy wojownik">
 		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_wojownik" tileid="pol_skrzaty_lesne.png:7"/>
-		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<description>Oto skrzat leśny starszy wojownik. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="95"/>
 			<def value="17"/>
@@ -208,15 +217,52 @@
 		<respawn value="953"/>
 		<corpse name="gnome"/>
 		<drops>
-			<item value="money" quantity="[9,19]" probability="100.0"/>
-			<item value="żyntyca" quantity="[1,1]" probability="99.0"/>
-			<item value="miód pitny" quantity="[1,1]" probability="99.0"/>
+			<item value="money" quantity="[1,19]" probability="100.0"/>
+			<item value="żyntyca" quantity="[1,1]" probability="70.0"/>
+			<item value="miód pitny" quantity="[1,1]" probability="50.0"/>
+			<item value="kapelusz leśniczego" quantity="[1,1]" probability="10.0"/>
+			<item value="nożyk" quantity="[1,1]" probability="5.0"/>
+			<item value="puklerz" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
 			<profile name="coward"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="skrzat leśny starszy strzelec">
+		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_strzelec" tileid="pol_skrzaty_lesne.png:8"/>
+		<description>Oto skrzat leśny starszy strzelec. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
+		<attributes>
+			<atk value="87"/>
+			<def value="11"/>
+			<hp value="98"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="16"/>
+		<experience value="197"/>
+		<respawn value="937"/>
+		<corpse name="gnome"/>
+		<drops>
+			<item value="money" quantity="[1,14]" probability="100.0"/>
+			<item value="żyntyca" quantity="[1,2]" probability="50.0"/>
+			<item value="proca" quantity="[1,1]" probability="10.0"/>
+			<item value="kamyczek" quantity="[1,6]" probability="5.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="kamyczek" quantity="10000"/>
+			<slot name="rhand" item="proca" quantity="1"/>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="attack weakest"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
@@ -238,7 +284,7 @@
 		<respawn value="980"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[5,29]" probability="100.0"/>
+			<item value="money" quantity="[2,21]" probability="100.0"/>
 			<item value="złota kolczuga" quantity="[1,1]" probability="1.0"/>
 			<item value="zardzewiała zbroja płytowa" quantity="[1,1]" probability="15.0"/>
 			<item value="kość dla psa" quantity="[1,1]" probability="20.0"/>
