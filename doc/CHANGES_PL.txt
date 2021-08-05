@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.23.1
+*naprawiono błędy*
+- Naprawiono podwojone osiągnięcia
+
+
 1.23
 *klient*
 - Dodano nowe grafiki NPC
@@ -69,7 +74,7 @@ Changelog
 - Naprawiono możliwość zapętlania zadania u Cadhesa
 - Poprawiono opis przedmiotu "puklerz"
 - Poprawiono dialogi u Karla oraz podczas kupowania / sprzedawania
-- Poprawiono niejaśność podczas zadania na zbieranie ziół leczniczych dla Carmen i Jadźki
+- Poprawiono niejasność podczas zadania na zbieranie ziół leczniczych dla Carmen i Jadźki
 
 
 1.22.2
