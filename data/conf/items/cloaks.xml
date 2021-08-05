@@ -673,4 +673,24 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+	<item name="płaszcz barbarzyńcy">
+		<type class="cloak" subclass="barbarian_cloak" tileid="-1"/>
+		<description>Oto płaszcz barbarzyńcy. Noszony przez samego króla barbarzyńców!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="12"/>
+			<min_level value="45"/>
+		</attributes>
+		<weight value="4.0"/>
+		<value value="12345"/>
+		<susceptibility type="fire" value="1.1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>
