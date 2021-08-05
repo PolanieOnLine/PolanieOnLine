@@ -124,7 +124,7 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	private static final String[] BARB = {
 			"zbroja barbarzyńcy", "zbroja szamana barbarzyńców", "hełm barbarzyńcy",
 			"spodnie barbarzyńcy", "buty barbarzyńcy", "tarcza barbarzyńcy",
-			"pas barbarzyńcy"
+			"pas barbarzyńcy", "płaszcz barbarzyńcy"
 	};
 
 	private static final String[] DRAGON_CLOAKS = {
