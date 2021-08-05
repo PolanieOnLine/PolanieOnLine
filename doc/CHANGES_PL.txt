@@ -64,6 +64,7 @@ Changelog
 - Zmniejszono ilość money do zdobycia u niektórych potworów
 
 *naprawiono błędy*
+- (S2) Naprawiono zwiększoną szansę na drop
 - Naprawiono NullPointerException w opisie gracza po zmianie tytułu skryptem
 - Naprawiono możliwość zapętlania zadania u Cadhesa
 - Poprawiono opis przedmiotu "puklerz"
