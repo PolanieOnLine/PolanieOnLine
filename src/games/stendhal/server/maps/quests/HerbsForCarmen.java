@@ -198,8 +198,7 @@ public class HerbsForCarmen extends AbstractQuest {
 				new SayTextAction("Cudownie! Będę mogła wrócić do leczenia czcigodnych wojowników bez opłat! Dziękuję. Przyjmij ode mnie podarek za swoją pracę."),
 				new IncreaseXPAction(500),
 				new IncreaseKarmaAction(15),
-				new EquipItemAction("mały eliksir", 5)
-				);
+				new EquipItemAction("mały eliksir", 5));
 
 		/* add triggers for the item names */
 		final ItemCollection items = new ItemCollection();

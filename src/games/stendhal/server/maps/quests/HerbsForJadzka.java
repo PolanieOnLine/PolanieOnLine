@@ -198,8 +198,7 @@ public class HerbsForJadzka extends AbstractQuest {
 				new SayTextAction("Wspaniale! Znów mogę leczyć czcigodnych wojowników bez opłat! Dziękuję. Przyjmij ode mnie podarek za swoją pracę."),
 				new IncreaseXPAction(500),
 				new IncreaseKarmaAction(10),
-				new EquipItemAction("antidotum", 7)
-				);
+				new EquipItemAction("antidotum", 7));
 
 		/* add triggers for the item names */
 		final ItemCollection items = new ItemCollection();
