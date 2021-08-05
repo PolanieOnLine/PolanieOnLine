@@ -41,7 +41,7 @@ Changelog
 	- int_zakopane_tavern
 	- int_tatry_kuznice_hostel
 	- int_deniran_castle
-- Dodano nowe osiągnięcia: (15)
+- Dodano nowe osiągnięcia: (17)
 	- "Człowiek Skała"
 	- "Płonące Ognisko"
 	- "Skrawek Lodu"
@@ -57,6 +57,8 @@ Changelog
 	- "Gnominadia"
 	- "Skośne Czapeczki"
 	- "Pływanie w Dorszach"
+	- "Mały Barbarzyńca"
+	- "Pajęczaki"
 - Zwiększono ilość przyznawanych punktów za dane osiągnięcie odrodzenia
 - Zmniejszono ilość money do zdobycia u niektórych potworów
 
