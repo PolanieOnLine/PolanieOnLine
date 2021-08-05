@@ -64,6 +64,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2500, "szynka")));
 
+		itemAchievements.add(createAchievement(
+				"item.cod.1500", "Pływanie w Dorszach", "Zdobył 1,500 dorszy",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1500, "dorsz")));
+
 		return itemAchievements;
 	}
 
