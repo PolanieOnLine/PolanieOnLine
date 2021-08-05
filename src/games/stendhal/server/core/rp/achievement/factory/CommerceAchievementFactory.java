@@ -85,7 +85,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				new BoughtNumberOfCondition(COUNT_HAPPY_HOUR, ITEMS_HAPPY_HOUR)));
 
 		achievements.add(createAchievement(
-				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił razem 500 różnych eliksirów",
+				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił łącznie 500 różnych eliksirów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -111,7 +111,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 						new BoughtNumberOfCondition(50, "lukrecja"))));
 
 		achievements.add(createAchievement(
-				ID_LOVE_HOTDOGS, "Miłośnik Hotdogów", "Zakupił razem 500 różnych hotdogów",
+				ID_LOVE_HOTDOGS, "Miłośnik Hotdogów", "Zakupił łącznie 500 różnych hotdogów",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -125,7 +125,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_SANDWICHES, "Kanapkowicz", "Zakupił razem 1,000 różnych kanapek",
+				ID_SANDWICHES, "Kanapkowicz", "Zakupił łącznie 1,000 różnych kanapek",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -170,7 +170,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				new SoldNumberOfCondition(50, ITEMS_SKINS)));
 
 		achievements.add(createAchievement(
-				ID_FISHSHOP, "Działalność Rybacka", "Sprzedał razem 1,000 różnych ryb",
+				ID_FISHSHOP, "Działalność Rybacka", "Sprzedał łącznie 1,000 różnych ryb",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
