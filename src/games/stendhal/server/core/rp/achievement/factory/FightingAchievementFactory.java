@@ -58,6 +58,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_DEATHS = "fight.general.deaths";
 	public static final String ID_NECROMANCER = "fight.general.necromancer";
 	public static final String ID_KNIGHTS = "fight.general.knights";
+	public static final String ID_GNOMES = "fight.general.gnomes";
+	public static final String ID_GNOMES2 = "fight.general.skrzaty";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -118,6 +120,15 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ENEMIES_KNIGHTS = {
 			"rycerz szmaragdowy", "rycerz szafirowy", "rycerz karmazynowy",
 			"rycerz w złotej zbroi", "czarny rycerz", "rycerz na białym koniu"
+	};
+	public static final String[] ENEMIES_GNOMES = {
+			"gnom", "panna gnom", "gnom zwiadowca", "gnom kawalerzysta"
+	};
+	public static final String[] ENEMIES_GNOMES2 = {
+			"skrzat leśny", "skrzat leśny wojownik", "skrzat leśny bohater",
+			"skrzat leśny komandor", "skrzat leśny lider", "skrzat leśny starszy",
+			"skrzat leśny starszy komandor", "skrzat leśny starszy wojownik",
+			"skrzat leśny starszy strzelec"
 	};
 
 	@Override
@@ -182,7 +193,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new KilledSharedAllCreaturesCondition()));
 
 		fightingAchievements.add(createAchievement(
-				ID_DRAGONSLAYER, "Pogromca Smoków", "Zabił razem 1,000 różnych smoków",
+				ID_DRAGONSLAYER, "Pogromca Smoków", "Zabił łącznie 1,000 różnych smoków",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -244,7 +255,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition(500, ENEMIES_DEEPSEA)));
 
 		fightingAchievements.add(createAchievement(
-				ID_ZOMBIES, "Apokalipsa Zombi", "Zabił razem 500 różnych zombi",
+				ID_ZOMBIES, "Apokalipsa Zombi", "Zabił łącznie 500 różnych zombi",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -274,7 +285,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_NECROMANCER)));
 
 		fightingAchievements.add(createAchievement(
-				ID_KNIGHTS, "Król Artur", "Zabił razem 2,500 różnych rycerzy",
+				ID_KNIGHTS, "Król Artur", "Zabił łącznie 2,500 różnych rycerzy",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -284,6 +295,36 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 							kills += player.getSoloKill(knight) + player.getSharedKill(knight);
 						}
 						return kills >= 2500;
+					}
+				}
+		));
+
+		fightingAchievements.add(createAchievement(
+				ID_GNOMES, "Gnominadia", "Zabił łącznie 1,000 różnych gnomów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String knight: ENEMIES_GNOMES) {
+							kills += player.getSoloKill(knight) + player.getSharedKill(knight);
+						}
+						return kills >= 1000;
+					}
+				}
+		));
+
+		fightingAchievements.add(createAchievement(
+				ID_GNOMES2, "Skośne Czapeczki", "Zabił łącznie 1,000 różnych skrzatów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String knight: ENEMIES_GNOMES2) {
+							kills += player.getSoloKill(knight) + player.getSharedKill(knight);
+						}
+						return kills >= 1000;
 					}
 				}
 		));
