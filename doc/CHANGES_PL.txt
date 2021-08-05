@@ -55,6 +55,7 @@ Changelog
 	- "Król Artur"
 	- "Nie ma to jak w Domu"
 - Zwiększono ilość przyznawanych punktów za dane osiągnięcie odrodzenia
+- Zmniejszono ilość money do zdobycia u niektórych potworów
 
 *naprawiono błędy*
 - Naprawiono NullPointerException w opisie gracza po zmianie tytułu skryptem
