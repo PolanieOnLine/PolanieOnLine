@@ -27,8 +27,8 @@ import games.stendhal.server.entity.npc.condition.PlayerLootedNumberOfItemsCondi
 public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_RED = "item.set.red";
 	public static final String ID_BLUE = "item.set.blue";
-	public static final String ID_ELVISH = "item.set.wands";
-	public static final String ID_SHADOW = "item.set.elvish";
+	public static final String ID_ELVISH = "item.set.elvish";
+	public static final String ID_SHADOW = "item.set.shadow";
 	public static final String ID_CHAOS = "item.set.chaos";
 	public static final String ID_GOLDEN = "item.set.golden";
 	public static final String ID_BLACK = "item.set.black";
