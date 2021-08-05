@@ -341,9 +341,9 @@
 		<respawn value="15700"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
-			<item value="wielki eliksir" quantity="[2,6]" probability="40.0"/>
-			<item value="money" quantity="[80,1500]" probability="100.0"/>
+			<item value="money" quantity="[10,800]" probability="100.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="wielki eliksir" quantity="[2,6]" probability="40.0"/>
 			<item value="lodowa zbroja" quantity="[1,1]" probability="1.0"/>
 			<item value="lodowy młot bojowy" quantity="[1,1]" probability="1.0"/>
 			<item value="hełm lodowy" quantity="[1,1]" probability="0.5"/>

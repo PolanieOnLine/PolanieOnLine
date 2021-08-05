@@ -19,7 +19,7 @@
 		<respawn value="5000"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="money" quantity="[4,20]" probability="100.0"/>
 			<item value="krótki miecz" quantity="[1,1]" probability="5.0"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="5.0"/>
 			<item value="skórzane rękawice" quantity="[1,1]" probability="1.0"/>
@@ -53,7 +53,7 @@
 		<respawn value="5300"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[5,60]" probability="100.0"/>
+			<item value="money" quantity="[2,27]" probability="100.0"/>
 			<item value="miecz" quantity="[1,1]" probability="5.0"/>
 			<item value="złota kolczuga" quantity="[1,1]" probability="12.0"/>
 			<item value="skórzane rękawice" quantity="[1,1]" probability="1.5"/>
@@ -88,7 +88,7 @@
 		<respawn value="5400"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
+			<item value="money" quantity="[1,6]" probability="100.0"/>
 			<item value="skórzane wzmocnione rękawice" quantity="[1,1]" probability="1.0"/>
 			<item value="peleryna piracka" quantity="[1,1]" probability="0.2"/>
 		</drops>
@@ -122,7 +122,7 @@
 		<respawn value="5700"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[20,80]" probability="100.0"/>
+			<item value="money" quantity="[1,4]" probability="100.0"/>
 			<item value="tarcza płytowa" quantity="[1,1]" probability="2.0"/>
 			<item value="maczeta" quantity="[1,1]" probability="2.0"/>
 			<item value="hełm kolczy" quantity="[1,1]" probability="1.0"/>
@@ -159,7 +159,7 @@
 		<respawn value="5900"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,60]" probability="100.0"/>
+			<item value="money" quantity="[2,36]" probability="100.0"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="2.0"/>
 			<item value="skórzane twarde rękawice" quantity="[1,1]" probability="2.0"/>
 			<item value="sztylecik" quantity="[1,1]" probability="5.0"/>
@@ -194,7 +194,7 @@
 		<respawn value="6100"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[20,120]" probability="100.0"/>
+			<item value="money" quantity="[10,90]" probability="100.0"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="5.0"/>
 			<item value="spodnie kolcze" quantity="[1,1]" probability="2.0"/>
 			<item value="złota kolczuga" quantity="[1,1]" probability="8.0"/>
@@ -231,7 +231,7 @@
 		<respawn value="6400"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[5,20]" probability="100.0"/>
+			<item value="money" quantity="[1,20]" probability="100.0"/>
 			<item value="maczeta" quantity="[1,1]" probability="1.0"/>
 			<item value="katana" quantity="[1,1]" probability="5.0"/>
 			<item value="spodnie kolcze" quantity="[1,1]" probability="3.0"/>
@@ -412,7 +412,7 @@
 		<respawn value="8900"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[80,120]" probability="80.0"/>
+			<item value="money" quantity="[20,94]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
 			<item value="makrela" quantity="[1,4]" probability="20.0"/>
 			<item value="pstrąg" quantity="[1,3]" probability="20.0"/>
@@ -452,7 +452,7 @@
 		<respawn value="9000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[40,80]" probability="80.0"/>
+			<item value="money" quantity="[10,77]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[1,2]" probability="5.0"/>
 			<item value="strzała płonąca" quantity="[2,21]" probability="12.5"/>
@@ -492,7 +492,7 @@
 		<respawn value="9100"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[40,80]" probability="80.0"/>
+			<item value="money" quantity="[10,40]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,6]" probability="40.0"/>
 			<item value="peleryna lutinów" quantity="[1,1]" probability="0.04"/>
 		</drops>
@@ -561,7 +561,7 @@
 		<respawn value="11000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[80,200]" probability="80.0"/>
+			<item value="money" quantity="[30,140]" probability="80.0"/>
 			<item value="sztabka złota" quantity="[2,3]" probability="5.0"/>
 			<item value="żelazo" quantity="[2,6]" probability="7.0"/>
 			<item value="obsydian" quantity="[1,1]" probability="0.5"/>
@@ -598,7 +598,7 @@
 		<respawn value="10700"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[80,190]" probability="80.0"/>
+			<item value="money" quantity="[20,100]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[2,5]" probability="4.0"/>
 			<item value="rubin" quantity="[1,3]" probability="2.0"/>
@@ -781,7 +781,7 @@
 		<respawn value="14200"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[77,999]" probability="80.0"/>
+			<item value="money" quantity="[77,99]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="20.0"/>
 			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.1"/>
@@ -846,7 +846,7 @@
 		<respawn value="14800"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[60,140]" probability="80.0"/>
+			<item value="money" quantity="[1,49]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
 			<item value="lodowe spodnie" quantity="[1,1]" probability="0.5"/>
@@ -883,7 +883,7 @@
 		<respawn value="15700"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[80,100]" probability="80.0"/>
+			<item value="money" quantity="[50,87]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="strzała złota" quantity="[21,99]" probability="20.0"/>
 			<item value="strzała z mithrilu" quantity="[1,9]" probability="6.0"/>
@@ -1040,7 +1040,7 @@
 		<respawn value="19700"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[90,500]" probability="80.0"/>
+			<item value="money" quantity="[30,330]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[2,5]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[1,4]" probability="7.5"/>
 			<item value="sztabka mithrilu" quantity="[1,2]" probability="5.0"/>

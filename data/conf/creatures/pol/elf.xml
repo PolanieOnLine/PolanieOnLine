@@ -18,7 +18,7 @@
 		<respawn value="1110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[10,49]" probability="30.0"/>
+			<item value="money" quantity="[1,7]" probability="30.0"/>
 			<item value="pluszowy miś" quantity="[1,1]" probability="1.0"/>
 			<item value="orzech włoski" quantity="[1,2]" probability="5.0"/>
 		</drops>
@@ -80,7 +80,7 @@
 		<respawn value="1510"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[19,59]" probability="25.0"/>
+			<item value="money" quantity="[9,59]" probability="25.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.025"/>
 		</drops>
 		<equips/>
@@ -110,7 +110,7 @@
 		<respawn value="1610"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,39]" probability="20.0"/>
+			<item value="money" quantity="[9,39]" probability="20.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.5"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.2"/>
 		</drops>
@@ -141,7 +141,7 @@
 		<respawn value="1910"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[9,59]" probability="25.0"/>
 			<item value="skórzane wzmocnione rękawice" quantity="[1,1]" probability="30.0"/>
 			<item value="rękawice elfickie" quantity="[1,1]" probability="5.0"/>
 			<item value="miecz elficki" quantity="[1,1]" probability="0.5"/>
@@ -173,7 +173,7 @@
 		<respawn value="1810"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[9,49]" probability="25.0"/>
 			<item value="miecz elficki" quantity="[1,1]" probability="0.5"/>
 			<item value="rękawice elfickie" quantity="[1,1]" probability="1.0"/>
 			<item value="pas elficki" quantity="[1,1]" probability="0.2"/>
@@ -205,7 +205,7 @@
 		<respawn value="2110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[9,29]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="5.0"/>
 			<item value="magia ziemi" quantity="[1,15]" probability="30.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.5"/>
@@ -237,7 +237,7 @@
 		<respawn value="2010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[29,59]" probability="25.0"/>
+			<item value="money" quantity="[19,59]" probability="25.0"/>
 			<item value="bukłak z wodą" quantity="[1,1]" probability="45.0"/>
 			<item value="skórzane twarde rękawice" quantity="[1,1]" probability="2.5"/>
 			<item value="pas elficki" quantity="[1,1]" probability="0.5"/>
@@ -269,7 +269,7 @@
 		<respawn value="2010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[59,89]" probability="25.0"/>
+			<item value="money" quantity="[1,79]" probability="25.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="10.0"/>
 			<item value="magia ziemi" quantity="[1,59]" probability="50.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="0.05"/>
@@ -301,7 +301,7 @@
 		<respawn value="3010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[49,189]" probability="5.0"/>
+			<item value="money" quantity="[39,149]" probability="5.0"/>
 			<item value="magia ziemi" quantity="[11,99]" probability="80.0"/>
 			<item value="elficki naszyjnik" quantity="[1,1]" probability="1.0"/>
 		</drops>
@@ -332,7 +332,7 @@
 		<respawn value="3010"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[80,200]" probability="10.0"/>
+			<item value="money" quantity="[50,200]" probability="10.0"/>
 			<item value="magia ziemi" quantity="[1,15]" probability="100.0"/>
 		</drops>
 		<equips/>
@@ -362,7 +362,7 @@
 		<respawn value="3110"/>
 		<corpse name="human"/>
 		<drops>
-			<item value="money" quantity="[9,29]" probability="100.0"/>
+			<item value="money" quantity="[1,19]" probability="100.0"/>
 			<item value="rękawice płytowe" quantity="[1,1]" probability="0.25"/>
 			<item value="zbroja lazurowa" quantity="[1,1]" probability="0.05"/>
 		</drops>

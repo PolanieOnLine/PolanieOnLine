@@ -113,7 +113,6 @@
 		<respawn value="77777"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,22]" probability="100.0"/>
 			<item value="stek" quantity="[1,14]" probability="80.0"/>
 			<item value="piórko" quantity="[1,4]" probability="60.0"/>
 		</drops>
@@ -145,7 +144,7 @@
 		<respawn value="1630"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[1,30]" probability="100.0"/>
+			<item value="money" quantity="[1,11]" probability="100.0"/>
 			<item value="udko" quantity="[1,4]" probability="20.0"/>
 			<item value="piórko" quantity="[1,9]" probability="40.0"/>
 			<item value="płaszcz cieni" quantity="[1,1]" probability="0.25"/>
@@ -261,7 +260,7 @@
 		<respawn value="1818"/>
 		<corpse name="giant"/>
 		<drops>
-			<item value="money" quantity="[4,50]" probability="100.0"/>
+			<item value="money" quantity="[4,40]" probability="100.0"/>
 			<item value="mocna trucizna" quantity="[1,2]" probability="5.0"/>
 			<item value="tarcza mainiocyjska" quantity="[1,1]" probability="0.005"/>
 			<item value="jajo wielkanocne" quantity="[1,1]" probability="0.05"/>
@@ -294,9 +293,9 @@
 		<respawn value="21300"/>
 		<corpse name="giant"/>
 		<drops>
+			<item value="money" quantity="[100,600]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,4]" probability="100.0"/>
 			<item value="mocne antidotum" quantity="[1,3]" probability="80.0"/>
-			<item value="money" quantity="[140,600]" probability="100.0"/>
 			<item value="buty z zielonego potwora" quantity="[1,1]" probability="10.0"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="5.0"/>
 			<item value="ząb potwora" quantity="[1,1]" probability="5.0"/>
@@ -326,8 +325,8 @@
 		<respawn value="12345"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
+			<item value="money" quantity="[1,200]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,3]" probability="50.0"/>
-			<item value="money" quantity="[9,400]" probability="100.0"/>
 			<item value="rękawice cieni" quantity="[1,1]" probability="1.0"/>
 			<item value="miecz cieni" quantity="[1,1]" probability="5.0"/>
 		</drops>
