@@ -996,7 +996,7 @@ public abstract class RPEntity extends GuidedEntity {
 		setMiningInternal(mining, true);
 	}
 
-	private void setMiningInternal(final int mining, boolean notify) {
+	protected void setMiningInternal(final int mining, boolean notify) {
 		this.mining = mining;
 		put("mining", mining); // visible mining
 		if(notify) {

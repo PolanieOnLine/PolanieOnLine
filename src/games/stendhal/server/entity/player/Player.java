@@ -2397,6 +2397,18 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	@Override
+	protected void setMiningInternal(final int mining, final boolean notify) {
+		final int oldMining = getMining();
+		super.setMiningInternal(mining, notify);
+
+		if (oldMining < mining) {
+			AchievementNotifier.get().onMiningChange(this);
+			this.addEvent(new SoundEvent(SoundID.STAT_UP, SoundLayer.USER_INTERFACE));
+			this.notifyWorldAboutChanges();
+		}
+	}
+
+	@Override
 	protected void setRatkInternal(final int ratk, final boolean notify) {
 		final int oldRatk = getRatk();
 		super.setRatkInternal(ratk, notify);
