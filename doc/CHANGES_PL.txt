@@ -28,7 +28,9 @@ Changelog
 	- int_warszawa_arsenal
 	- int_warszawa_tiny_hut_1
 	- int_warszawa_tiny_hut_2
-- Poprawiono mapy: (5)
+- Poprawiono mapy: (7)
+	- 0_semos_mountain_nw2
+	- 0_nalwor_forest_ne2
 	- 0_koscielisko_nw
 	- 0_tatry_dolina_mietusia
 	- int_zakopane_tavern
