@@ -32,7 +32,7 @@ public class SaddlerNPC extends SpeakerNPCFactory {
 		npc.addReply("skóra zwierzęca",
 					"Polując na różne zwierzęta w końcu ją zdobędziesz.");
 		npc.addHelp("Wyprawiam skóry i szyje bukłaki. Powiedz tylko #'uszyj pusty bukłak'.");
-		npc.addGoodbye("Do widzenia");
+		npc.addGoodbye("Do widzenia.");
 
 		// Jenny mills flour if you bring her grain.
 		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();

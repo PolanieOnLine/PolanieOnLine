@@ -57,9 +57,9 @@ public class GazdzinaJadzkaNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting();
 				addJob("Moja niezwykła moc pomaga mi uleczyć rany.");
-				addHelp("Mogę Cię #uleczyć .");
+				addHelp("Mogę Cię #'uleczyć'.");
 				new FreeHealerAdder().addHealer(this, 0);
-				addGoodbye("Do widzenia");
+				addGoodbye("Do widzenia.");
 			}
 		};
 
