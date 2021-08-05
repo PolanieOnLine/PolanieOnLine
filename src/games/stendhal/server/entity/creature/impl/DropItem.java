@@ -22,7 +22,15 @@ public class DropItem {
 	public DropItem(final String name, final double probability, final int min, final int max) {
 		this.name = name;
 		if(Occasion.SECOND_WORLD) {
-			this.probability = probability * 1.05;
+			if (probability == 100) {
+				this.probability = probability;
+			} else {
+				if (probability * 1.5 > 100) {
+					this.probability = 100.0;
+				} else {
+					this.probability = probability * 1.5;
+				}
+			}
 		} else {
 			this.probability = probability;
 		}
@@ -33,7 +41,15 @@ public class DropItem {
 	public DropItem(final String name, final double probability, final int amount) {
 		this.name = name;
 		if(Occasion.SECOND_WORLD) {
-			this.probability = probability * 1.05;
+			if (probability == 100) {
+				this.probability = probability;
+			} else {
+				if (probability * 1.5 > 100) {
+					this.probability = 100.0;
+				} else {
+					this.probability = probability * 1.5;
+				}
+			}
 		} else {
 			this.probability = probability;
 		}
