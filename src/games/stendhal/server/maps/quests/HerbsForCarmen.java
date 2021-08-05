@@ -173,11 +173,11 @@ public class HerbsForCarmen extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj ponownie. Czy przyniosłeś zapasy ziół leczniczych?",
+				"Witaj ponownie. Czy przyniosłeś #zapasy ziół leczniczych?",
 				null);
 
 		/* player asks what exactly is missing (says ingredients) */
-		npc.add(ConversationStates.ATTENDING, "zapasy", null,
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("zapasy", "yes", "tak"), null,
 				ConversationStates.QUESTION_2, null,
 				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Masz coś ze sobą?"));
 

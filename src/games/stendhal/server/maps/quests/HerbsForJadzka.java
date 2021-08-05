@@ -177,7 +177,7 @@ public class HerbsForJadzka extends AbstractQuest {
 				null);
 
 		/* player asks what exactly is missing (says ingredients) */
-		npc.add(ConversationStates.ATTENDING, "zapasy", null,
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("zapasy", "yes", "tak"), null,
 				ConversationStates.QUESTION_2, null,
 				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz coś ze sobą?"));
 
