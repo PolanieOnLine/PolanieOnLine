@@ -4,14 +4,15 @@ Changelog
 *klient*
 - Dodano nowe grafiki NPC
 - Dodano nową grafikę stwora
-- Dodano nową grafikę przedmiotu
+- Dodano nowe grafiki przedmiotów
 - Dodano grafiki dla nowej kategorii osiągnięć
 - Poprawiono grafiki kapelusza oraz kapelusza góralskiego (outfit)
 - Poprawiono grafikę NPC Malteisa, Adasia, Bogusia
 
 *świat*
-- Dodano nowe przedmioty: (1)
+- Dodano nowe przedmioty: (2)
 	- wytrychy
+	- płaszcz barbarzyńcy
 - Dodano nowe potwory: (1)
 	- skrzat leśny starszy strzelec
 - Dodano nowych NPC: (7)
