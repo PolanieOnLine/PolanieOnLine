@@ -47,13 +47,11 @@ public class BogusNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Boguś") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
 				nodes.add(new Node(4, 4));
 				nodes.add(new Node(10, 4));
-				nodes.add(new Node(4, 4));
 				setPath(new FixedPath(nodes, true));
 			}
 
