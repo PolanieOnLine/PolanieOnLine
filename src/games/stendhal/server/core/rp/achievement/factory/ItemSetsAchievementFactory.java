@@ -44,6 +44,7 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_STONE = "item.set.stone";
 	public static final String ID_FIRE = "item.set.fire";
 	public static final String ID_ICE = "item.set.ice";
+	public static final String ID_BARB = "item.set.barb";
 
 	private static final String[] RED = {
 			"zbroja karmazynowa", "hełm karmazynowy", "płaszcz karmazynowy", "spodnie karmazynowe",
@@ -119,6 +120,11 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"lodowe spodnie", "lodowe buty", "lodowa tarcza",
 			"lodowe rękawice", "lodowy amulet", "lodowy pas",
 			"lodowa kusza", "lodowy młot bojowy", "miecz lodowy"
+	};
+	private static final String[] BARB = {
+			"zbroja barbarzyńcy", "zbroja szamana barbarzyńców", "hełm barbarzyńcy",
+			"spodnie barbarzyńcy", "buty barbarzyńcy", "tarcza barbarzyńcy",
+			"pas barbarzyńcy"
 	};
 
 	private static final String[] DRAGON_CLOAKS = {
@@ -218,6 +224,11 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 				ID_ICE, "Skrawek Lodu", "Zdobył cały lodowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, false,
 				new PlayerLootedNumberOfItemsCondition(1, ICE)));
+
+		itemSetAchievements.add(createAchievement(
+				ID_BARB, "Mały Barbarzyńca", "Zdobył cały barbarzyński zestaw",
+				Achievement.MEDIUM_BASE_SCORE, false,
+				new PlayerLootedNumberOfItemsCondition(1, BARB)));
 
 		itemSetAchievements.add(createAchievement(
 				ID_DRAGON_CLOAKS, "Pogromca Smoka", "Zdobył wszyskie smocze płaszcze",

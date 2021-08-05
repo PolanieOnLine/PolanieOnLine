@@ -60,6 +60,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_KNIGHTS = "fight.general.knights";
 	public static final String ID_GNOMES = "fight.general.gnomes";
 	public static final String ID_GNOMES2 = "fight.general.skrzaty";
+	public static final String ID_SPIDERS = "fight.general.spiders";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -129,6 +130,9 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"skrzat leśny komandor", "skrzat leśny lider", "skrzat leśny starszy",
 			"skrzat leśny starszy komandor", "skrzat leśny starszy wojownik",
 			"skrzat leśny starszy strzelec"
+	};
+	public static final String[] ENEMIES_SPIDERS = {
+			"pająk", "pająk ptasznik", "królowa pająków", "arachne"
 	};
 
 	@Override
@@ -328,6 +332,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 					}
 				}
 		));
+
+		fightingAchievements.add(createAchievement(
+				ID_SPIDERS, "Pajęczaki", "Zabił po 25 różnych pająków, w tym arachne",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(25, ENEMIES_SPIDERS)));
 
 		return fightingAchievements;
 	}
