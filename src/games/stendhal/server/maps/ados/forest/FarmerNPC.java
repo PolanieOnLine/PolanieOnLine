@@ -67,7 +67,7 @@ public class FarmerNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Heja! Miło Cię widzieć w naszym gospodarstwie.");
 				addJob("Och praca tutaj jest ciężka. Nawet nie myślę o tym, że mógłbyś mi pomóc.");
-				addOffer("Nasze mleko jest najlepsze. Zapytaj moją żonę #Philomena o mleko. Ja sprzedaję #'puste worki'");
+				addOffer("Nasze mleko jest najlepsze. Zapytaj moją żonę #Philomena o mleko. Ja sprzedaję #'puste worki'.");
 				addReply("Philomena","Ona jest w domku na południowy-zachód stąd.");
 				addHelp("Potrzebujesz pomocy? Mogę coś ci opowiedzieć o #sąsiedztwie.");
 				addReply(Arrays.asList("neighborhood.", "sąsiedztwie."),"Na północy znajduje się jaskinia z niedźwiedziami i innymi potworami. Jeżeli pójdziesz na północny-wschód " +
@@ -75,10 +75,10 @@ public class FarmerNPC implements ZoneConfigurator {
 						"wciąż tam mieszka? Chcesz wyruszyć na południowy-wschód? Cóż.. możesz tamtędy dojść do Ados, ale " +
 						"droga jest trochę trudniejsza.");
 				addQuest("Nie mam teraz czasu na takie rzeczy. Pracuję.. pracuję.. pracuję..");
-				addReply(Arrays.asList("empty sack", "puste worki"),"Oh mam tego mnóstwo na sprzedaż. Czy chcesz kupić #'pusty worek'.");
+				addReply(Arrays.asList("empty sack", "puste worki"),"Och, mam tego mnóstwo na sprzedaż. Czy chcesz kupić #'pusty worek'?");
                 final Map<String, Integer> offerings = new HashMap<String, Integer>();
                 offerings.put("pusty worek", 10);
-                new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
+                new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addGoodbye("Do widzenia, do widzenia. Bądź ostrożny.");
 			}
 		};
