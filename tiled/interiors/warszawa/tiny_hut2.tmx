@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="11" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="11" height="11" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="mury" tilewidth="32" tileheight="32" tilecount="26" columns="13">
   <image source="../../tileset/pol/domki/wiezienie_sciany.png" width="416" height="64"/>
  </tileset>
@@ -26,6 +26,9 @@
  </tileset>
  <tileset firstgid="64" name="barrels_1" tilewidth="32" tileheight="32" tilecount="8" columns="4">
   <image source="../../tileset/item/pot/barrels_1.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="72" name="pol_rycerze" tilewidth="32" tileheight="32" tilecount="9" columns="9">
+  <image source="../../tileset/logic/creature/pol_rycerze.png" width="288" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="11" height="11">
   <data encoding="base64" compression="gzip">
@@ -54,7 +57,7 @@
  </layer>
  <layer id="6" name="objects" width="11" height="11">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGAXDHQAARfTbmeQBAAA=
+   H4sIAAAAAAAACmNgGFzAZ6AdMAwBAL78dRzkAQAA
   </data>
  </layer>
  <layer id="7" name="collision" width="11" height="11" opacity="0.4">
