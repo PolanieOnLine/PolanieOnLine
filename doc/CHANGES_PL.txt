@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.23.1
+*świat*
+- Dodano spawn potworów w nowych pomieszczeniach
+
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
 
