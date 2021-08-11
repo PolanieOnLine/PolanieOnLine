@@ -21,7 +21,6 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.chest.Chest;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -29,7 +28,6 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
-import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -92,25 +90,28 @@ public class PrinceSupply extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(
 						new AndCondition(
-								new PlayerHasInfostringItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("cuha góralska", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("sztabka złota", QUEST_SLOT)))),
+								new PlayerHasInfostringItemWithHimCondition("kolczuga", QUEST_SLOT),
+								new PlayerHasInfostringItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
+								new PlayerHasInfostringItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
+								new PlayerHasInfostringItemWithHimCondition("hełm kolczy", QUEST_SLOT),
+								new PlayerHasInfostringItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
 			ConversationStates.ATTENDING, 
-			"Nie próbuj mnie oszukiwać! *szept* Wróć z tymi przedmiotami do mnie...",
+			"Masz wrócić do mnie z potrzebnym wyposażeniem!",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropInfostringItemAction("góralski kapelusz", QUEST_SLOT));
-		reward.add(new DropInfostringItemAction("cuha góralska", QUEST_SLOT));
-		reward.add(new DropItemAction("wytrychy"));
-		reward.add(new IncreaseXPAction(4000));
+		reward.add(new DropInfostringItemAction("kolczuga", QUEST_SLOT));
+		reward.add(new DropInfostringItemAction("zbroja płytowa", QUEST_SLOT));
+		reward.add(new DropInfostringItemAction("spodnie kolcze", QUEST_SLOT));
+		reward.add(new DropInfostringItemAction("hełm kolczy", QUEST_SLOT));
+		reward.add(new DropInfostringItemAction("buty kolcze", QUEST_SLOT));
+		reward.add(new IncreaseXPAction(9500));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new IncreaseKarmaAction(5));
+		reward.add(new IncreaseKarmaAction(15));
 		reward.add(
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					player.dropWithInfostring("sztabka złota", QUEST_SLOT, 15);
 					PrinceSupply.prepareChest();
 				}
 			});
@@ -120,36 +121,47 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
-					new PlayerHasInfostringItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("cuha góralska", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("sztabka złota", QUEST_SLOT)),
+					new PlayerHasInfostringItemWithHimCondition("kolczuga", QUEST_SLOT),
+					new PlayerHasInfostringItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
+					new PlayerHasInfostringItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
+					new PlayerHasInfostringItemWithHimCondition("hełm kolczy", QUEST_SLOT),
+					new PlayerHasInfostringItemWithHimCondition("buty kolcze", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Dzięki... Tym razem się przekona co to znaczy być okradzionym...",
+			"Dziękuję w imieniu całego królestwa...",
 			new MultipleActions(reward));
 	}
 
 	private static void prepareChest() {
-		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_tatry_kuznice_soltys_house");
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_arsenal");
 
 		final Chest chest = new Chest();
-		chest.setPosition(5, 23);
+		chest.setPosition(4, 2);
 		zone.add(chest);
 
 		try {
-			Item item = SingletonRepository.getEntityManager().getItem("góralski kapelusz");
+			Item item = SingletonRepository.getEntityManager().getItem("kolczuga");
 			item.setInfoString(QUEST_SLOT);
-			item.setDescription("Oto góralski kapelusz należący do garderoby Sołtysa.");
+			item.setDescription("Oto kolczuga należąca do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("cuha góralska");
+			item = SingletonRepository.getEntityManager().getItem("zbroja płytowa");
 			item.setInfoString(QUEST_SLOT);
-			item.setDescription("Oto cuha góralska należąca do garderoby Sołtysa.");
+			item.setDescription("Oto zbroja płytowa należąca do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("sztabka złota");
-			((StackableItem) item).setQuantity(15);
+			item = SingletonRepository.getEntityManager().getItem("spodnie kolcze");
 			item.setInfoString(QUEST_SLOT);
-			item.setDescription("Oto sztabki złota, które są własnością Sołtysa.");
+			item.setDescription("Oto spodnie kolcze należące do specjalnego wyposażenia armii Książęcej.");
+			chest.add(item);
+
+			item = SingletonRepository.getEntityManager().getItem("hełm kolczy");
+			item.setInfoString(QUEST_SLOT);
+			item.setDescription("Oto hełm kolczy należące do specjalnego wyposażenia armii Książęcej.");
+			chest.add(item);
+
+			item = SingletonRepository.getEntityManager().getItem("buty kolcze");
+			item.setInfoString(QUEST_SLOT);
+			item.setDescription("Oto buty kolcze należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 		} catch (SlotIsFullException e) {
 			logger.info("Could not add items to quest chest", e);
