@@ -252,6 +252,7 @@ public class StendhalQuestSystem {
 		 *       WARSZAWA		 *
 		\**	                    **/
 		loadQuest(new KillMadGuards());
+		loadQuest(new PrinceSupply());
 		/** 					**\
 		 *       WIELICZKA		 *
 		\**	                    **/

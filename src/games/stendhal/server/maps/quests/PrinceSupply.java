@@ -31,15 +31,20 @@ import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
+import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
+import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
+import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import marauroa.common.game.SlotIsFullException;
@@ -50,6 +55,8 @@ public class PrinceSupply extends AbstractQuest {
 	public static final String QUEST_SLOT = "prince_supply";
 	private final SpeakerNPC npc = npcs.get("Książę");
 
+	private static final int REQUIRED_MINUTES = 1440;
+
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, 
@@ -58,23 +65,36 @@ public class PrinceSupply extends AbstractQuest {
 			"Poszukuję osoby, która odbije część wyposażenia dla moich rycerzy. Jesteś chętny?",
 			null);
 
+		// player asks about quest which he has done already and he is allowed to repeat it
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
-			"Dziękuję, ale wykonałeś swoje zadanie.",
-			null);
-
-		npc.add(
+			new AndCondition(
+					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "done;")),
 			ConversationStates.QUEST_OFFERED,
+			"Moja armia musi być przygotowana na wygnanie buntowników z zamku! Odbijesz mi arsenał?",
+			null);
+		
+		// player asks about quest which he has done already but it is not time to repeat it
+		npc.add(ConversationStates.ATTENDING,
+			ConversationPhrases.QUEST_MESSAGES,
+			new AndCondition(
+				new NotCondition(
+					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "done;")),
+			ConversationStates.ATTENDING,
+			null,
+			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES,
+			"Musimy przeliczyć wyposażenie. Wróć do mnie w ciągu "));
+
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
 			"Wejdź do budynku z arsenałem, znajduje się obok kuźni kowala.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
@@ -106,7 +126,8 @@ public class PrinceSupply extends AbstractQuest {
 		reward.add(new DropInfostringItemAction("hełm kolczy", QUEST_SLOT));
 		reward.add(new DropInfostringItemAction("buty kolcze", QUEST_SLOT));
 		reward.add(new IncreaseXPAction(9500));
-		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
+		reward.add(new SetQuestAction(QUEST_SLOT, "done;"));
+		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 		reward.add(new IncreaseKarmaAction(15));
 		reward.add(
 			new ChatAction() {
@@ -171,8 +192,8 @@ public class PrinceSupply extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Włamanie",
-				"Tajemnicza osoba w tawernie w Kuźnicach potrzebuje w pewnej sprawie pomocy.",
+				"Odbicie Arsenału",
+				"Książęca armia musi odbić swój arsenał z rąk buntowników.",
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
@@ -185,16 +206,20 @@ public class PrinceSupply extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z tajemniczą osobą.");
+		res.add("Rozmawiałem z księciem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie dam się namówić na złe zamiary!");
+			res.add("Nie wykonam zadania księcia, ponieważ obawiam się, że zginę!");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Zgodziłem się włamać do domu sołtysa.");
+			res.add("Zgodziłem się na odzyskanie arsenał dla armii książecej.");
 		}
-		if ("done".equals(questState)) {
-			res.add("Przekazałem zawartość skrzynki tajemniczej osobie.");
+
+		if (isCompleted(player)) {
+			res.add("Przekazałem potrzebny arsenał Księciu.");
+		}
+		if(isRepeatable(player)){
+			res.add("Podejrzewam, że Książe przeliczył już wyposażenie armii i będzie znów potrzebował pomocy.");
 		}
 		return res;
 	}
@@ -206,16 +231,29 @@ public class PrinceSupply extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Włamanie";
+		return "Odbicie Arsenału";
 	}
 
 	@Override
 	public String getRegion() {
-		return Region.TATRY_MOUNTAIN;
+		return Region.WARSZAWA;
 	}
 
 	@Override
 	public String getNPCName() {
 		return npc.getName();
+	}
+
+	@Override
+	public boolean isCompleted(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return new AndCondition(
+				new QuestNotInStateCondition(QUEST_SLOT, "start"),
+				new QuestStartedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT, REQUIRED_MINUTES)).fire(player, null, null);
 	}
 }
