@@ -76,7 +76,13 @@ public class Burglary extends AbstractQuest {
 			"*szept* Weź te wytrychy. Włamiesz się do domu sołtysa. Tam powinna gdzieś znaleźć się skrzynka, potrzebuję jej zawartości.",
 			new MultipleActions(
 					new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", -5.0),
-					new EquipItemAction("wytrychy", 1, true)));
+					new EquipItemAction("wytrychy", 1, true),
+					new ChatAction() {
+						@Override
+						public void fire(Player player, Sentence sentence, EventRaiser npc) {
+							Burglary.prepareChest();
+						}
+					}));
 
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
