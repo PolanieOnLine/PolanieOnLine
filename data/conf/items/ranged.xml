@@ -194,6 +194,29 @@
 		</equipable>
 	</item>
 
+	<item name="lodowy łuk">
+		<type class="ranged" subclass="ice_bow" tileid="-1"/>
+		<description>Oto lodowy łuk, który jest całkowicie wykonany z kawałka lodu. Dłonie aż przymarzają do jego rękojeści.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="22" condition="!testing.combat"/>
+			<ratk value="22" condition="testing.combat"/>
+			<range value="4"/>
+			<min_level value="155"/>
+			<max_improves value="3"/>
+		</attributes>
+		<weight value="2.0"/>
+		<value value="14720"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 <!-- disabled
 	<item name="łuk treningowy">
 		<type class="ranged" subclass="training_bow" tileid="-1" />

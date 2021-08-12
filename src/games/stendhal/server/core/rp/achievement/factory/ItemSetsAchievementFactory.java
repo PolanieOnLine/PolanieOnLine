@@ -45,6 +45,8 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_FIRE = "item.set.fire";
 	public static final String ID_ICE = "item.set.ice";
 	public static final String ID_BARB = "item.set.barb";
+	public static final String ID_BOWS = "item.set.bows";
+	public static final String ID_CROSSBOW = "item.set.crossbow";
 
 	private static final String[] RED = {
 			"zbroja karmazynowa", "hełm karmazynowy", "płaszcz karmazynowy", "spodnie karmazynowe",
@@ -134,6 +136,13 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	private static final String[] WANDS = {
 			"różdżka", "trójząb Trzygłowa", "różdżka Strzyboga",
 			"różdżka Wołosa", "różdżka Swaroga", "różdżka Peruna"
+	};
+	private static final String[] BOWS = {
+			"drewniany łuk", "długi łuk", "klejony łuk", "lodowy łuk",
+			"łuk z mithrilu"
+	};
+	private static final String[] CROSSBOW = {
+			"kusza", "kusza łowcy", "lekka kusza", "lodowa kusza"
 	};
 
 	@Override
@@ -239,6 +248,16 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 				ID_WANDS, "Magiczny Zaklinacz", "Zdobył wszystkie różdżki",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, WANDS)));
+
+		itemSetAchievements.add(createAchievement(
+				ID_BOWS, "Napięta Cięciwa", "Zdobył wszystkie łuki",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1, BOWS)));
+
+		itemSetAchievements.add(createAchievement(
+				ID_CROSSBOW, "Kuszownik", "Zdobył wszystkie kusze",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1, CROSSBOW)));
 
 		return itemSetAchievements;
 	}
