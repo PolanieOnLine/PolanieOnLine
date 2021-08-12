@@ -3,9 +3,11 @@ Changelog
 1.23.1
 *świat*
 - Dodano spawn potworów w nowych pomieszczeniach
+- Dodano nowe zadanie u Księcia
 
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
+- Skrzynka w domku Sołtysa się resetuje po rozpoczęciu zadania u tajemniczej osoby
 
 
 1.23
