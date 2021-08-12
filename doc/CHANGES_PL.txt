@@ -1,9 +1,17 @@
 Changelog
 ---------
 1.23.1
+*klient*
+- Dodano nową grafikę przedmiotu
+
 *świat*
-- Dodano spawn potworów w nowych pomieszczeniach
+- Dodano nowy przedmiot: (1)
+	- lodowy łuk
 - Dodano nowe zadanie u Księcia
+- Dodano nowe osiągnięcia: (2)
+	- "Napięta Cięciwa"
+	- "Kuszownik"
+- Dodano spawn potworów w nowych pomieszczeniach
 
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
