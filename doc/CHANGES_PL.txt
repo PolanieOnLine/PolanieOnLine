@@ -2,11 +2,12 @@ Changelog
 ---------
 1.23.1
 *klient*
-- Dodano nową grafikę przedmiotu
+- Dodano nowe grafiki przedmiotów
 
 *świat*
-- Dodano nowy przedmiot: (1)
+- Dodano nowy przedmiot: (2)
 	- lodowy łuk
+	- kusza z mithrilu
 - Dodano nowe zadanie u Księcia
 - Dodano nowe osiągnięcia: (2)
 	- "Napięta Cięciwa"
