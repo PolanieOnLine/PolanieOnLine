@@ -13,6 +13,7 @@ Changelog
 	- "Napięta Cięciwa"
 	- "Kuszownik"
 - Dodano spawn potworów w nowych pomieszczeniach
+- Miecze, topory, siekiery... etc. nie będą wymagane do zdobycia osiągnięcia z danego zestawu
 
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
