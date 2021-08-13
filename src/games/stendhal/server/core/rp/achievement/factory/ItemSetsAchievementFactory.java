@@ -84,24 +84,24 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	};
 	private static final String[] MAINIO = {
 			"zbroja mainiocyjska", "hełm mainiocyjski", "płaszcz mainiocyjski", "spodnie mainiocyjskie",
-			"buty mainiocyjskie", "tarcza mainiocyjska", "rękawice mainiocyjskie"
+			"buty mainiocyjskie", "tarcza mainiocyjska", "rękawice mainiocyjskie", "miecz mainiocyjski"
 	};
 	private static final String[] XENO = {
 			"zbroja xenocyjska", "hełm xenocyjski", "płaszcz xenocyjski", "spodnie xenocyjskie",
 			"buty xenocyjskie", "tarcza xenocyjska", "miecz xenocyjski", "rękawice xenocyjskie"
 	};
 	private static final String[] GORALSKIE = {
-			"cuha góralska", "góralski gorset", "góralski kapelusz", "portki bukowe", "góralska spódnica",
-			"góralska biała spódnica", "chusta góralska", "kierpce", "korale", "pas zbójnicki",
-			"ciupaga"
+			"cuha góralska", "góralski gorset", "góralski kapelusz", "portki bukowe",
+			"góralska spódnica", "góralska biała spódnica", "chusta góralska", "kierpce",
+			"korale", "pas zbójnicki", "ciupaga"
 	};
 	private static final String[] VAMPIRE = {
 			"zbroja wampirza", "spodnie wampirze", "płaszcz wampirzy", "rękawice wampirze",
 			"buty wampirze", "pas wampirzy"
 	};
 	private static final String[] ROYAL = {
-			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny", "spodnie monarchistyczne",
-			"buty monarchistyczne", "tarcza monarchistyczna"
+			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny",
+			"spodnie monarchistyczne", "buty monarchistyczne", "tarcza monarchistyczna"
 	};
 	private static final String[] MAGIC = {
 			"magiczna zbroja płytowa", "magiczny hełm kolczy", "magiczny płaszcz",
@@ -121,7 +121,8 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"lodowa zbroja", "hełm lodowy", "lodowy płaszcz",
 			"lodowe spodnie", "lodowe buty", "lodowa tarcza",
 			"lodowe rękawice", "lodowy amulet", "lodowy pas",
-			"lodowa kusza", "lodowy młot bojowy", "miecz lodowy"
+			"lodowa kusza", "lodowy młot bojowy", "miecz lodowy",
+			"lodowy łuk"
 	};
 	private static final String[] BARB = {
 			"zbroja barbarzyńcy", "zbroja szamana barbarzyńców", "hełm barbarzyńcy",
