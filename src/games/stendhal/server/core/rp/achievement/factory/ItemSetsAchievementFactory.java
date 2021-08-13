@@ -49,55 +49,59 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_CROSSBOW = "item.set.crossbow";
 
 	private static final String[] RED = {
-			"zbroja karmazynowa", "hełm karmazynowy", "płaszcz karmazynowy", "spodnie karmazynowe",
-			"buty karmazynowe", "tarcza karmazynowa", "rękawice karmazynowe", "pas karmazynowy"
+			"zbroja karmazynowa", "hełm karmazynowy", "płaszcz karmazynowy",
+			"spodnie karmazynowe", "buty karmazynowe", "tarcza karmazynowa",
+			"rękawice karmazynowe", "pas karmazynowy"
 	};
 	private static final String[] BLUE = {
-			"zbroja lazurowa", "lazurowy hełm", "prążkowany płaszcz lazurowy", "spodnie lazurowe",
-			"buty lazurowe", "tarcza lazurowa", "rękawice lazurowe"
+			"zbroja lazurowa", "lazurowy hełm", "prążkowany płaszcz lazurowy",
+			"spodnie lazurowe", "buty lazurowe", "tarcza lazurowa",
+			"rękawice lazurowe"
 	};
 	private static final String[] ELVISH = {
-			"zbroja elficka", "kapelusz elficki", "płaszcz elficki", "spodnie elfickie", "buty elfickie",
-			"tarcza elficka", "miecz elficki", "elficki naszyjnik", "pas elficki", "rękawice elfickie"
+			"zbroja elficka", "kapelusz elficki", "płaszcz elficki",
+			"spodnie elfickie", "buty elfickie", "tarcza elficka",
+			"elficki naszyjnik", "pas elficki", "rękawice elfickie"
 	};
 	private static final String[] SHADOW = {
-			"zbroja cieni", "hełm cieni", "płaszcz cieni", "spodnie cieni", "buty cieni",
-			"tarcza cieni", "miecz cieni", "rękawice cieni", "pas cieni"
+			"zbroja cieni", "hełm cieni", "płaszcz cieni", "spodnie cieni",
+			"buty cieni", "tarcza cieni", "rękawice cieni", "pas cieni"
 	};
 	private static final String[] CHAOS = {
-			"zbroja chaosu", "hełm chaosu", "płaszcz chaosu", "spodnie chaosu", "buty chaosu",
-			"tarcza chaosu", "miecz chaosu", "topór chaosu", "młot chaosu"
+			"zbroja chaosu", "hełm chaosu", "płaszcz chaosu",
+			"spodnie chaosu", "buty chaosu", "tarcza chaosu"
 	};
 	private static final String[] GOLDEN = {
-			"złota zbroja", "złoty hełm", "złoty płaszcz", "złote spodnie", "złote buty",
-			"złota tarcza", "złota klinga", "złoty pyrlik", "złoty buzdygan", "złoty kiścień",
-			"złote rękawice", "złoty pas"
+			"złota zbroja", "złoty hełm", "złoty płaszcz", "złote spodnie",
+			"złote buty", "złota tarcza", "złote rękawice", "złoty pas"
 	};
 	private static final String[] BLACK = {
-			"czarna zbroja", "czarny hełm", "czarny płaszcz", "czarne spodnie", "czarne buty",
-			"czarna tarcza", "czarny miecz", "czarna halabarda", "czarny sztylet", "czarna kosa",
-			"czarne rękawice", "czarny pas"
+			"czarna zbroja", "czarny hełm", "czarny płaszcz", "czarne spodnie",
+			"czarne buty", "czarna tarcza", "czarne rękawice", "czarny pas"
 	};
 	private static final String[] MITHRIL = {
-			"zbroja z mithrilu", "hełm z mithrilu", "płaszcz z mithrilu", "spodnie z mithrilu",
-			"buty z mithrilu", "tarcza z mithrilu", "rękawice z mithrilu", "pas z mithrilu"
+			"zbroja z mithrilu", "hełm z mithrilu", "płaszcz z mithrilu",
+			"spodnie z mithrilu", "buty z mithrilu", "tarcza z mithrilu",
+			"rękawice z mithrilu", "pas z mithrilu"
 	};
 	private static final String[] MAINIO = {
-			"zbroja mainiocyjska", "hełm mainiocyjski", "płaszcz mainiocyjski", "spodnie mainiocyjskie",
-			"buty mainiocyjskie", "tarcza mainiocyjska", "rękawice mainiocyjskie", "miecz mainiocyjski"
+			"zbroja mainiocyjska", "hełm mainiocyjski", "płaszcz mainiocyjski",
+			"spodnie mainiocyjskie", "buty mainiocyjskie", "tarcza mainiocyjska",
+			"rękawice mainiocyjskie"
 	};
 	private static final String[] XENO = {
-			"zbroja xenocyjska", "hełm xenocyjski", "płaszcz xenocyjski", "spodnie xenocyjskie",
-			"buty xenocyjskie", "tarcza xenocyjska", "miecz xenocyjski", "rękawice xenocyjskie"
+			"zbroja xenocyjska", "hełm xenocyjski", "płaszcz xenocyjski",
+			"spodnie xenocyjskie", "buty xenocyjskie", "tarcza xenocyjska",
+			"rękawice xenocyjskie"
 	};
 	private static final String[] GORALSKIE = {
-			"cuha góralska", "góralski gorset", "góralski kapelusz", "portki bukowe",
-			"góralska spódnica", "góralska biała spódnica", "chusta góralska", "kierpce",
-			"korale", "pas zbójnicki", "ciupaga"
+			"cuha góralska", "góralski gorset", "góralski kapelusz",
+			"portki bukowe", "góralska spódnica", "góralska biała spódnica",
+			"chusta góralska", "kierpce", "korale", "pas zbójnicki"
 	};
 	private static final String[] VAMPIRE = {
-			"zbroja wampirza", "spodnie wampirze", "płaszcz wampirzy", "rękawice wampirze",
-			"buty wampirze", "pas wampirzy"
+			"zbroja wampirza", "spodnie wampirze", "płaszcz wampirzy",
+			"rękawice wampirze", "buty wampirze", "pas wampirzy"
 	};
 	private static final String[] ROYAL = {
 			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny",
@@ -115,14 +119,12 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	private static final String[] FIRE = {
 			"ognista zbroja", "ogniste spodnie", "ogniste buty",
 			"ognista tarcza", "ogniste rękawice", "ognisty amulet",
-			"ognisty pas", "miecz ognisty", "ognisty miecz demonów"
+			"ognisty pas"
 	};
 	private static final String[] ICE = {
 			"lodowa zbroja", "hełm lodowy", "lodowy płaszcz",
 			"lodowe spodnie", "lodowe buty", "lodowa tarcza",
-			"lodowe rękawice", "lodowy amulet", "lodowy pas",
-			"lodowa kusza", "lodowy młot bojowy", "miecz lodowy",
-			"lodowy łuk"
+			"lodowe rękawice", "lodowy amulet", "lodowy pas"
 	};
 	private static final String[] BARB = {
 			"zbroja barbarzyńcy", "zbroja szamana barbarzyńców", "hełm barbarzyńcy",
@@ -143,7 +145,8 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"łuk z mithrilu"
 	};
 	private static final String[] CROSSBOW = {
-			"kusza", "kusza łowcy", "lekka kusza", "lodowa kusza"
+			"lekka kusza", "kusza", "kusza łowcy", "lodowa kusza",
+			"kusza z mithrilu"
 	};
 
 	@Override
