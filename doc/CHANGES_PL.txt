@@ -14,6 +14,7 @@ Changelog
 	- "Kuszownik"
 - Dodano spawn potworów w nowych pomieszczeniach
 - Miecze, topory, siekiery... etc. nie będą wymagane do zdobycia osiągnięcia z danego zestawu
+- Serafiny oraz Azazele upuszczają więcej monet
 
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
