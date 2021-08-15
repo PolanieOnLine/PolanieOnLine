@@ -173,7 +173,6 @@ public class Burglary extends AbstractQuest {
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
-		prepareChest();
 	}
 
 	@Override
