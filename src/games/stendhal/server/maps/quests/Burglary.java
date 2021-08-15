@@ -80,7 +80,7 @@ public class Burglary extends AbstractQuest {
 					new ChatAction() {
 						@Override
 						public void fire(Player player, Sentence sentence, EventRaiser npc) {
-							Burglary.prepareChest(player);
+							Burglary.prepareChest();
 						}
 					}));
 
@@ -120,7 +120,7 @@ public class Burglary extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
 					player.dropWithInfostring("sztabka złota", QUEST_SLOT, 15);
-					Burglary.prepareChest(player);
+					Burglary.prepareChest();
 				}
 			});
 
@@ -137,7 +137,7 @@ public class Burglary extends AbstractQuest {
 			new MultipleActions(reward));
 	}
 
-	private static void prepareChest(Player player) {
+	private static void prepareChest() {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_tatry_kuznice_soltys_house");
 
 		final Chest chest = new Chest();
@@ -148,20 +148,17 @@ public class Burglary extends AbstractQuest {
 			Item item = SingletonRepository.getEntityManager().getItem("góralski kapelusz");
 			item.setInfoString(QUEST_SLOT);
 			item.setDescription("Oto góralski kapelusz należący do garderoby Sołtysa.");
-			item.setBoundTo(player.getName());
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("cuha góralska");
 			item.setInfoString(QUEST_SLOT);
 			item.setDescription("Oto cuha góralska należąca do garderoby Sołtysa.");
-			item.setBoundTo(player.getName());
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("sztabka złota");
 			((StackableItem) item).setQuantity(15);
 			item.setInfoString(QUEST_SLOT);
 			item.setDescription("Oto sztabki złota, które są własnością Sołtysa.");
-			item.setBoundTo(player.getName());
 			chest.add(item);
 		} catch (SlotIsFullException e) {
 			logger.info("Could not add items to quest chest", e);
