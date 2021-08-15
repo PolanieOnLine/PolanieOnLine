@@ -21,7 +21,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.mapstuff.chest.Chest;
+import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -162,7 +162,7 @@ public class PrinceSupply extends AbstractQuest {
 	private static void prepareChest() {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_arsenal");
 
-		final Chest chest = new Chest();
+		final StoredChest chest = new StoredChest();
 		chest.setPosition(4, 2);
 		zone.add(chest);
 
