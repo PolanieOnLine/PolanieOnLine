@@ -272,7 +272,7 @@ public abstract class UpdateConverter {
 		final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
 				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_gdansk", "spells",
-				"keyring", /*"portfolio", */ "trade", "pouch" };
+				"keyring", /*"portfolio", */ "trade", "pouch", "money" };
 
 		final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
 				"!visited", "skills", "!tutorial"};
@@ -406,11 +406,9 @@ public abstract class UpdateConverter {
 
 			// money pouch
 			if (KeyedSlotUtil.getKeyedSlot(object, "!features", "pouch") != null) {
-				object.put("features", "pouch");
-				object.put("pouch", object.getInt("money"));
+				object.put("features", "pouch", "");
 			}
 
-			object.removeSlot("money");
 			object.removeSlot("!features");
 		}
 		if (KeyedSlotUtil.getKeyedSlot(object, "!quests", "learn_karma") != null) {
@@ -438,7 +436,7 @@ public abstract class UpdateConverter {
 		transformVisitedSlot(object);
 
 		// port to POL1.17
-		if(!object.has("mining")){
+		if (!object.has("mining")){
 			object.put("mining", "10");
     		object.put("mining_xp", "0");
     	}
@@ -636,6 +634,23 @@ public abstract class UpdateConverter {
 			// Remove the old feature. After this the player won't be able to
 			// use the old style keyring, so everything would better be OK now.
 			player.setFeature("keyring", false);
+		}
+	}
+
+	public static void updateMoneyPouch(Player player) {
+		if (player.getFeature("pouch") == null) {
+			RPSlot oldSlot = player.getSlot("money");
+			RPSlot newSlot = player.getSlot("bag");
+
+			ArrayList<RPObject> contents = new ArrayList<RPObject>(oldSlot.size());
+			for (RPObject item : oldSlot) {
+				contents.add(item);
+			}
+			for (RPObject item : contents) {
+				oldSlot.remove(item.getID());
+				newSlot.add(item);
+			}
+			oldSlot.clear();
 		}
 	}
 

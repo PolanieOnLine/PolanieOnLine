@@ -104,6 +104,8 @@ public class PlayerTransformer implements Transformer {
 			UpdateConverter.updateKeyring(player);
 		}
 
+		UpdateConverter.updateMoneyPouch(player);
+
 		// update player with 'outfit_ext' attribute
 		if (!player.has("outfit_ext")) {
 			player.put("outfit_ext", new Outfit(player.get("outfit")).toString());
@@ -152,11 +154,10 @@ public class PlayerTransformer implements Transformer {
 	 *            Player
 	 */
 	void loadItemsIntoSlots(final Player player) {
-
 		// load items
 		final String[] slotsItems = { "bag", "rhand", "lhand", "neck", "head", "armor",
 				"legs", "feet", "finger", "fingerb", "glove", "cloak", "back", "pas", "belt",
-				"keyring", /*"portfolio",*/ "trade", "pouch" };
+				"keyring", /*"portfolio",*/ "trade", "pouch", "money" };
 
 		try {
 			for (final String slotName : slotsItems) {
@@ -165,6 +166,7 @@ public class PlayerTransformer implements Transformer {
 				}
 				final RPSlot slot = player.getSlot(slotName);
 				final PlayerSlot newSlot;
+
 				if (slotName.equals("keyring")) {
 					newSlot = new PlayerKeyringSlot(slotName);
 				/*
@@ -178,6 +180,7 @@ public class PlayerTransformer implements Transformer {
 				} else {
 					newSlot = new PlayerSlot(slotName);
 				}
+
 				loadSlotContent(player, slot, newSlot);
 			}
 
@@ -499,5 +502,4 @@ public class PlayerTransformer implements Transformer {
 		return StendhalRPAction.placeat(playerZone, animal, player.getX(),
 				player.getY());
 	}
-
 }
