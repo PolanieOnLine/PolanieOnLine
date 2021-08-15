@@ -66,7 +66,7 @@ public class OldFishermanNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("catch", "złapać"),"Hehe! Mam nadzieje, że będę mógł kiedyś dostarczyć trochę ryb na rynek...");
 				addOffer("Moje miejsca połowów na morzu są nawiedzane przez niebezpieczne #sztormy. Nie mogę tam teraz płynąć.");
 				addReply(Arrays.asList("storm", "sztormy"), "Duży sztorm prawie zniszczył moją łódź! Przykro mi przyjacielu. Nie mogę ci nic zaoferować w tym momencie...");
-				addGoodbye("Dozobaczenia przyjacielu! I uważaj na ten śliski grunt!");
+				addGoodbye("Do zobaczenia przyjacielu! I uważaj na ten śliski grunt!");
 			}
 		};
 

@@ -145,7 +145,7 @@ public class ElfPrincess extends AbstractQuest {
 							 new PlayerCanEquipItemCondition("orchidea"),
                              new TimePassedCondition(QUEST_SLOT, 1, DELAY)),
 			ConversationStates.IDLE,
-			"Witaj. Mój daleki wzrok powiedział mi, że potrzebujesz kwiatek dla pięknej dziewczyny. Oto on i dozobaczenia.",
+			"Witaj. Mój daleki wzrok powiedział mi, że potrzebujesz kwiatek dla pięknej dziewczyny. Oto on i do zobaczenia.",
 			new MultipleActions(new EquipItemAction("orchidea", 1, true),
                                 new SetQuestAction(QUEST_SLOT, 0, "got_flower"),
                                 new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
