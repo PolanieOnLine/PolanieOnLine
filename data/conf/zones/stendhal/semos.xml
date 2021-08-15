@@ -1353,9 +1353,26 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		</portal>
 
 		<portal x="21" y="80" ref="school_entrance">
-      <destination zone="int_semos_school_0" ref="exit" />
-      <attribute name="move.continuous" />
-    </portal>
+			<destination zone="int_semos_school_0" ref="exit" />
+			<attribute name="move.continuous" />
+		</portal>
+
+		<entity x="92" y="100">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Description"/>
+			<attribute name="text">
+Na cokole posągu znajduje się napis.
+Czytasz: "Te katakumby zostały zbudowane, aby pomieścić
+śmiertelne szczątki odważnych mężczyzn i dzielnych
+kobiet, którzy oddali swoje życie by ocalić nas.
+Nasz dług nigdy nie zostanie spłacony.
+Zasłużyli na naszą dozgonną wdzięczność.
+My, mieszkańcy Semos,
+nigdy nie zapomnimy ich poświęceń."
+			</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
 
 		<point-of-interest x="92" y="101">
 			<name>Katakumby Semos</name>

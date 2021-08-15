@@ -235,6 +235,33 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.MuseumCashierNPC" />
+
+		<!-- portals -->
+		<portal x="78" y="65" ref="tannery_entrance">
+			<destination zone="int_deniran_tannery" ref="entrance" />
+			<attribute name="move.continuous" />
+			<!-- <attribute name="resistance">0</attribute>-->
+		</portal>
+
+		<portal x="26" y="45" ref="deniran_museum_entrance">
+			<destination zone="int_deniran_museum" ref="entrance" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal">
+				<parameter name="condition">new QuestActiveCondition("museum_entrance_fee")</parameter>
+				<parameter name="action">new SetQuestAction("museum_entrance_fee", null)</parameter>
+				<parameter name="rejected">Drzwi są zamknięte. Może ten chłopak wie, jak się tam dostać.</parameter>
+			</implementation>	
+			<attribute name="move.continuous" />
+		</portal>
+
+		<entity x="28" y="46">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">
+DENIRAN MUZEUM POWIETRZA I PRZESTRZENI
+
+Opłata za wstęp to 10 money</attribute>
+		</entity>
 	</zone>
 
 	<zone name="0_deniran_river_s_e2" level="0" x="499488" y="500256" file="Level 0/deniran/river_s_e2.tmx">
@@ -1190,6 +1217,47 @@
 			<attribute name="move.continuous" />
 		</portal>
 	</zone>
+
+	<zone name="int_deniran_museum" file="interiors/deniran/museum.tmx">
+		<portal x="15" y="14" ref="entrance">
+			<destination zone="0_deniran_city_s_e2" ref="deniran_museum_entrance" />
+			<attribute name="move.continuous" />
+		</portal>
+
+		<entity x="0" y="0">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">ŁAŁ, tyle powietrza i przestrzeni. Czy to nie jest niesamowite?</parameter>
+				<parameter name="warnPlayer">true</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="2" y="2">
+			<implementation	class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="width">21</parameter>
+				<parameter name="height">12</parameter>
+				<parameter name="leaveMessage">Czy to nie było naprawdę imponujące doświadczenie?</parameter>
+				<parameter name="warnPlayer">true</parameter>
+			</implementation>
+		</entity>    
+	</zone>
+
+	<zone name="int_deniran_tannery" file="interiors/deniran/tannery.tmx">
+		<portal x="17" y="18" ref="entrance">
+			<destination zone="0_deniran_city_s_e2" ref="tannery_entrance" />
+			<attribute name="move.continuous" />
+			<!--<attribute name="resistance">0</attribute>-->
+		</portal>
+
+		<!-- NPCs -->
+		<!-- <configurator class-name="games.stendhal.server.maps.deniran.cityinterior.tannery.TannerNPC"/> -->
+
+		<entity x="24" y="9">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">Wykonywanie skórzanej nici: po prostu użyj obrotowego noża, aby pokroić skórę na cienkie paski (uwaga dla siebie: podziękuj Ernie za pożyczenie mi jej obrotowego noża, ponieważ ostatnio zgubiłem swój).</attribute>
+			<attribute name="class">book_red</attribute>
+		</entity>
+	</zone>		
 
 	<zone name="int_deniran_psychic_parlor" file="interiors/deniran/psychic_parlor.tmx">
 		<portal x="10" y="22" ref="entrance">
