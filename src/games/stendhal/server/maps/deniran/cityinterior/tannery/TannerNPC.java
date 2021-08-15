@@ -19,7 +19,6 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.constants.SkinColor;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -103,7 +102,6 @@ public class TannerNPC implements ZoneConfigurator {
 		tanner.setPosition(10, 8);
 		tanner.setDirection(Direction.UP);
 		tanner.setEntityClass("skinnernpc");
-		tanner.setOutfitColor("skin", SkinColor.DARK);
 
 		zone.add(tanner);
 	}
