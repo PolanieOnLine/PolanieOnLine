@@ -92,7 +92,14 @@ public class PrinceSupply extends AbstractQuest {
 			null,
 			ConversationStates.ATTENDING,
 			"Wejdź do budynku z arsenałem, znajduje się obok kuźni kowala.",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
+			new MultipleActions(
+				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", -5.0),
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						PrinceSupply.prepareChest();
+					}
+				}));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
@@ -197,7 +204,6 @@ public class PrinceSupply extends AbstractQuest {
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
-		prepareChest();
 	}
 
 	@Override
