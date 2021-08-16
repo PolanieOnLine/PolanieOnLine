@@ -26,7 +26,7 @@ public final class Constants {
 	public static final String[] CARRYING_SLOTS = {
 			"pouch", "bag", "portfolio", "keyring", "back", "belt", "neck",
 			"head", "cloak", "lhand", "armor", "rhand", "finger", "fingerb",
-			"glove", "pas", "legs", "feet", "money" };
+			"glove", "pas", "legs", "feet" };
 
 	/**
 	 * Modes that can be used for setting combat karma.

@@ -153,7 +153,7 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 				timer = new TimerStage1(player, true);
 				player.sendPrivateText("Ponieważ zostałeś złapany w Piekle bez "
 						+ "pozwolenia, strażnicy mogą być przygotowani "
-						+ "na twój powrót");
+						+ "na twój powrót.");
 				seconds = Rand.randExponential(SHORT_WAIT_TIME);
 			}
 			runningTimers.put(player, timer);

@@ -272,7 +272,7 @@ public abstract class UpdateConverter {
 		final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
 				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_gdansk", "spells",
-				"keyring", /*"portfolio", */ "trade", "pouch", "money" };
+				"keyring", /*"portfolio", */ "trade", "pouch", "vault" };
 
 		final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
 				"!visited", "skills", "!tutorial"};
@@ -571,13 +571,10 @@ public abstract class UpdateConverter {
 
 		// fix quest slots for kills quests.
 		fixKillQuestsSlots(player);
-
 		// fix DailyMonsterQuest slot
 		fixDailyMonsterQuestSlot(player);
-
 		// fix Maze
 		fixMazeQuestSlot(player);
-
 	}
 
 	/**
@@ -638,9 +635,11 @@ public abstract class UpdateConverter {
 	}
 
 	public static void updateMoneyPouch(Player player) {
-		if (player.getFeature("pouch") == null) {
+		if (player.hasSlot("money") && player.getFeature("pouch") == null) {
+			player.setFeature("pouch", true);
+
 			RPSlot oldSlot = player.getSlot("money");
-			RPSlot newSlot = player.getSlot("bag");
+			RPSlot newSlot = player.getSlot("pouch");
 
 			ArrayList<RPObject> contents = new ArrayList<RPObject>(oldSlot.size());
 			for (RPObject item : oldSlot) {
@@ -651,6 +650,7 @@ public abstract class UpdateConverter {
 				newSlot.add(item);
 			}
 			oldSlot.clear();
+			player.removeSlot(oldSlot.getName());
 		}
 	}
 
@@ -672,7 +672,6 @@ public abstract class UpdateConverter {
 		player.setQuest(QUEST_SLOT, 0, "start");
 		player.setQuest(QUEST_SLOT, 1, questSlot);
 		player.setQuest(QUEST_SLOT, 2, "0");
-
 	}
 
 	private static void fixDailyMonsterQuestSlot(final Player player) {
