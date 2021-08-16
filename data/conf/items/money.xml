@@ -13,7 +13,7 @@
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
-			<slot name="money"/>
+			<slot name="pouch"/>
 			<slot name="bag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>

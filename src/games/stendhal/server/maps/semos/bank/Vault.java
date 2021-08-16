@@ -45,7 +45,7 @@ public class Vault extends StendhalRPZone {
 		portal.setPosition(4, 8);
 		add(portal);
 
-		chest = new PersonalChest();
+		chest = new PersonalChest("vault");
 		chest.setPosition(4, 2);
 		add(chest);
 
@@ -110,29 +110,30 @@ public class Vault extends StendhalRPZone {
 						}
 
 						if (equippedToBag) {
-							message = Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
-									+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
-									+ "zwrócone do " + slotNamePL + ".";
+
+							message = Grammar.quantityplnoun(item.getQuantity(), item.getName())
+										+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
+										+ "zwrócone do " + slotNamePL + ".";
 
 							new GameEvent(player.getName(), "equip", item.getName(), "vault", slotName, Integer.toString(item.getQuantity())).raise();
 							// Make it look like a normal equip
 							new ItemLogger().equipAction(player, item, new String[] {"ground", zone.getName(), item.getX() + " " + item.getY()}, new String[] {"slot", player.getName(), slotName});
 						} else {
-							boolean equippedToBank = player.equip("bank", item);
+							boolean equippedToBank = player.equip("vault", item);
 							if (equippedToBank) {
-								message = Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
+								message =  Grammar.quantityplnoun(item.getQuantity(), item.getName())
 										+ ", które zostawiłeś na podłodze w skarbcu "+ Grammar.hashave(item.getQuantity())+" zostały automatycznie "
-										+ "zwrócone do twojej skrzyni w banku.";
+										+ "zwrócone do twojej prywatnej skrzyni w skarbcu.";
 
-								new GameEvent(player.getName(), "equip", item.getName(), "vault", "bank", Integer.toString(item.getQuantity())).raise();
+								new GameEvent(player.getName(), "equip", item.getName(), "vault", "vault", Integer.toString(item.getQuantity())).raise();
 								// Make it look like the player put it in the chest
 								new ItemLogger().equipAction(player, item, new String[] {"ground", zone.getName(), item.getX() + " " + item.getY()}, new String[] {"slot", "a bank chest", "content"});
 							} else {
 								// the player lost their items
-								message = Grammar.quantityplnoun(item.getQuantity(), item.getName(), "A")
-													+ ", które zostawiłeś na podłodze w skarbcu  "+ Grammar.hashave(item.getQuantity())+" wrzucono "
-													+ "ponieważ nie było miejsca w twojej "
-													+ "skrzyni w banku ani w plecaku.";
+								message = Grammar.quantityplnoun(item.getQuantity(), item.getName())
+										+ ", który zostawiłeś na podłodze w skarbcu " + Grammar.hashave(item.getQuantity()) + " został wyrzucony, "
+										+ "ponieważ nie było miejsca w twojej "
+										+ "skrzyni w banku, ani w plecaku.";
 
 								// the timeout method enters the zone and coords of item, this is useful we will know it was in vault
 								new ItemLogger().timeout(item);

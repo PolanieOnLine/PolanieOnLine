@@ -18,6 +18,8 @@ package games.stendhal.server.entity.slot;
  * @author hendrik
  */
 public enum Banks {
+	/** private vault. */
+	VAULT("vault"),
 	/** bank in Semos. */
 	SEMOS("bank"),
 	/** bank in Ados. */

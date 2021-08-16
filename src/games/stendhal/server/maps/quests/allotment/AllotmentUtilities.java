@@ -326,7 +326,7 @@ public class AllotmentUtilities implements TurnListener {
 								for (Player player : getPlayers(zoneName)) {
 									if (player.getArea().intersects(allotment.getArea())) {
 										player.teleport(getZone(zoneName), tracker.getX(), tracker.getY(), null, null);
-										player.sendPrivateText("Czas wynajęcia upłynoł. Zostaniesz usunięty z tej działki. Dziękuje za współpracę.");
+										player.sendPrivateText("Czas wynajęcia upłynął. Zostaniesz usunięty z tej działki. Dziękuje za współpracę.");
 									}
 
 									if (player.getName().equals(tracker.getPlayerName())) {

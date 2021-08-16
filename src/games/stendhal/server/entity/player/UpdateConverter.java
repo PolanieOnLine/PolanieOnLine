@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *					(C) Copyright 2003-2011 - Stendhal					   *
  ***************************************************************************
@@ -21,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.KeyedSlotUtil;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Outfit;
@@ -187,6 +187,7 @@ public abstract class UpdateConverter {
 					"Sergej Elos")));
 	}
 
+
 	/**
 	 * Update old item names to the current naming.
 	 *
@@ -271,7 +272,7 @@ public abstract class UpdateConverter {
 		final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
 				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_gdansk", "spells",
-				"keyring", "money", "trade" };
+				"keyring", /*"portfolio", */ "trade", "pouch", "vault" };
 
 		final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
 				"!visited", "skills", "!tutorial"};
@@ -332,7 +333,7 @@ public abstract class UpdateConverter {
 			object.put("def", "10");
 		}
 
-		if (!object.has("ratk_xp")) {
+		if (Testing.COMBAT && !object.has("ratk_xp")) {
 			object.put("ratk_xp", "0");
 		}
 
@@ -402,6 +403,12 @@ public abstract class UpdateConverter {
 				object.put("features", "portfolio", "");
 			}
 			*/
+
+			// money pouch
+			if (KeyedSlotUtil.getKeyedSlot(object, "!features", "pouch") != null) {
+				object.put("features", "pouch", "");
+			}
+
 			object.removeSlot("!features");
 		}
 		if (KeyedSlotUtil.getKeyedSlot(object, "!quests", "learn_karma") != null) {
@@ -429,7 +436,7 @@ public abstract class UpdateConverter {
 		transformVisitedSlot(object);
 
 		// port to POL1.17
-		if(!object.has("mining")){
+		if (!object.has("mining")){
 			object.put("mining", "10");
     		object.put("mining_xp", "0");
     	}
@@ -564,13 +571,10 @@ public abstract class UpdateConverter {
 
 		// fix quest slots for kills quests.
 		fixKillQuestsSlots(player);
-
 		// fix DailyMonsterQuest slot
 		fixDailyMonsterQuestSlot(player);
-
 		// fix Maze
 		fixMazeQuestSlot(player);
-
 	}
 
 	/**
@@ -630,6 +634,26 @@ public abstract class UpdateConverter {
 		}
 	}
 
+	public static void updateMoneyPouch(Player player) {
+		if (player.hasSlot("money") && player.getFeature("pouch") == null) {
+			player.setFeature("pouch", true);
+
+			RPSlot oldSlot = player.getSlot("money");
+			RPSlot newSlot = player.getSlot("pouch");
+
+			ArrayList<RPObject> contents = new ArrayList<RPObject>(oldSlot.size());
+			for (RPObject item : oldSlot) {
+				contents.add(item);
+			}
+			for (RPObject item : contents) {
+				oldSlot.remove(item.getID());
+				newSlot.add(item);
+			}
+			oldSlot.clear();
+			player.removeSlot(oldSlot.getName());
+		}
+	}
+
 	private static void fixMazeQuestSlot(Player player) {
 		final String QUEST_SLOT = "maze";
 
@@ -648,7 +672,6 @@ public abstract class UpdateConverter {
 		player.setQuest(QUEST_SLOT, 0, "start");
 		player.setQuest(QUEST_SLOT, 1, questSlot);
 		player.setQuest(QUEST_SLOT, 2, "0");
-
 	}
 
 	private static void fixDailyMonsterQuestSlot(final Player player) {
@@ -699,8 +722,8 @@ public abstract class UpdateConverter {
 		}
 	}
 
-	// FIXME: Remove?
-	 // update the name of a quest to the new spelling
+// FIXME: Remove?
+// update the name of a quest to the new spelling
 //	private static void renameQuestSlot(Player player, String oldName, String newName) {
 //		String questState = player.getQuest(oldName);
 //
