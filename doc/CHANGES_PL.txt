@@ -3,7 +3,7 @@ Changelog
 1.24
 *klient*
 - Dodano nowe grafiki przedmiotów
-- Dodano nowe grafiki NPC
+- Dodano nową grafikę NPC
 
 *świat*
 - Dodano nowego NPC: (2)
@@ -19,7 +19,7 @@ Changelog
 	- "Kuszownik"
 - Dodano spawn potworów w nowych pomieszczeniach
 - Dodano nowy slot na pieniądze (sakiewka), Garbarz Rawhide wykonuje sakiewkę na pieniądze
-- Usunięto stary slot na monety, pieniądze ze starego slotu przenoszone są do plecaka
+- Usunięto stary slot na monety, pieniądze ze starego slotu przenoszone są do nowej sakiewki
 - Miecze, topory, siekiery... etc. nie będą wymagane do zdobycia osiągnięcia z danego zestawu
 - Serafiny oraz Azazele upuszczają więcej monet
 
