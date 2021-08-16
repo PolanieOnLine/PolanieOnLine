@@ -1,11 +1,16 @@
 Changelog
 ---------
-1.23.1
+1.24
 *klient*
 - Dodano nowe grafiki przedmiotów
+- Dodano nowe grafiki NPC
 
 *świat*
-- Dodano nowy przedmiot: (2)
+- Dodano nowego NPC: (2)
+	- Iker
+	- Garbarz Rawhide
+- Dodano nowy przedmiot: (3)
+	- igła do skór
 	- lodowy łuk
 	- kusza z mithrilu
 - Dodano nowe zadanie u Księcia
@@ -13,12 +18,16 @@ Changelog
 	- "Napięta Cięciwa"
 	- "Kuszownik"
 - Dodano spawn potworów w nowych pomieszczeniach
+- Dodano nowy slot na pieniądze (sakiewka), Garbarz Rawhide wykonuje sakiewkę na pieniądze
+- Usunięto stary slot na monety, pieniądze ze starego slotu przenoszone są do plecaka
 - Miecze, topory, siekiery... etc. nie będą wymagane do zdobycia osiągnięcia z danego zestawu
 - Serafiny oraz Azazele upuszczają więcej monet
 
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
 - Skrzynka w domku Sołtysa się resetuje po rozpoczęciu zadania u tajemniczej osoby
+- Skrzynka w domku Sołtysa pojawi się dopiero po rozpoczęciu zadania
+- Gazda Bartek nie przyjmie skradzionej cuhy góralskiej ze skrzynki Sołtysa
 
 
 1.23
