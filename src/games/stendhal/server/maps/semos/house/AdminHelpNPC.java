@@ -52,7 +52,7 @@ public class AdminHelpNPC implements ZoneConfigurator {
 						ConversationStates.IDLE,
 						"Miłej zabawy!",
 						new TeleportAction("int_admin_playground", 20, 20, Direction.DOWN));
-			    add(ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 						"semos",
 						null,
 						ConversationStates.ATTENDING,
@@ -71,6 +71,36 @@ public class AdminHelpNPC implements ZoneConfigurator {
 						null,
 						new SayNPCNamesForUnstartedQuestsAction(Region.ADOS_CITY));
 			    add(ConversationStates.ATTENDING,
+						"zakopane",
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new SayNPCNamesForUnstartedQuestsAction(Region.ZAKOPANE_CITY));
+			    add(ConversationStates.ATTENDING,
+						"kraków",
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new SayNPCNamesForUnstartedQuestsAction(Region.KRAKOW_CITY));
+			    add(ConversationStates.ATTENDING,
+						"warszawa",
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new SayNPCNamesForUnstartedQuestsAction(Region.WARSZAWA));
+			    add(ConversationStates.ATTENDING,
+						"tatry",
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new SayNPCNamesForUnstartedQuestsAction(Region.TATRY_MOUNTAIN));
+			    add(ConversationStates.ATTENDING,
+						"gdańsk",
+						null,
+						ConversationStates.ATTENDING,
+						null,
+						new SayNPCNamesForUnstartedQuestsAction(Region.GDANSK_CITY));
+			    add(ConversationStates.ATTENDING,
 						"",
 						new TriggerIsNPCNameForUnstartedQuestCondition(Region.SEMOS_CITY),
 						ConversationStates.ATTENDING,
@@ -88,6 +118,36 @@ public class AdminHelpNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						null,
 						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.ADOS_CITY));
+			    add(ConversationStates.ATTENDING,
+						"",
+						new TriggerIsNPCNameForUnstartedQuestCondition(Region.ZAKOPANE_CITY),
+						ConversationStates.ATTENDING,
+						null,
+						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.ZAKOPANE_CITY));
+			    add(ConversationStates.ATTENDING,
+						"",
+						new TriggerIsNPCNameForUnstartedQuestCondition(Region.KRAKOW_CITY),
+						ConversationStates.ATTENDING,
+						null,
+						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.KRAKOW_CITY));
+			    add(ConversationStates.ATTENDING,
+						"",
+						new TriggerIsNPCNameForUnstartedQuestCondition(Region.WARSZAWA),
+						ConversationStates.ATTENDING,
+						null,
+						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.WARSZAWA));
+			    add(ConversationStates.ATTENDING,
+						"",
+						new TriggerIsNPCNameForUnstartedQuestCondition(Region.TATRY_MOUNTAIN),
+						ConversationStates.ATTENDING,
+						null,
+						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.TATRY_MOUNTAIN));
+			    add(ConversationStates.ATTENDING,
+						"",
+						new TriggerIsNPCNameForUnstartedQuestCondition(Region.GDANSK_CITY),
+						ConversationStates.ATTENDING,
+						null,
+						new SayUnstartedQuestDescriptionFromNPCNameAction(Region.GDANSK_CITY));
 				addGoodbye("Do widzenia, pamiętaj, aby dbać o siebie. Pij mleko.");
 			}
 
