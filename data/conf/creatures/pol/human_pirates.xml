@@ -624,7 +624,7 @@
 
 	<!-- START: truskull piraci -->
 
-	<creature name="pirat truskull">
+	<creature name="podziemny pirat">
 		<type class="pol/piraci_truskull" subclass="truskull_warrior" tileid="pol_piraci_truskull.png:0"/>
 		<description></description>
 		<attributes>
@@ -659,7 +659,7 @@
 		</ai>
 	</creature>
 
-	<creature name="kwatermistrz truskull">
+	<creature name="podziemny kwatermistrz">
 		<type class="pol/piraci_truskull" subclass="truskull_knight" tileid="pol_piraci_truskull.png:1"/>
 		<description></description>
 		<attributes>
@@ -697,7 +697,7 @@
 		</ai>
 	</creature>
 
-	<creature name="kapłan truskull">
+	<creature name="podziemny kapłan">
 		<type class="pol/piraci_truskull" subclass="truskull_priest" tileid="pol_piraci_truskull.png:2"/>
 		<description></description>
 		<attributes>
@@ -730,7 +730,7 @@
 		</ai>
 	</creature>
 
-	<creature name="komandor truskull">
+	<creature name="podziemny komandor">
 		<type class="pol/piraci_truskull" subclass="truskull_commander" tileid="pol_piraci_truskull.png:3"/>
 		<description></description>
 		<attributes>
@@ -766,7 +766,7 @@
 		</ai>
 	</creature>
 
-	<creature name="naukowiec truskull">
+	<creature name="podziemny naukowiec">
 		<type class="pol/piraci_truskull" subclass="truskull_scientist" tileid="pol_piraci_truskull.png:4"/>
 		<description></description>
 		<attributes>
@@ -801,7 +801,7 @@
 		</ai>
 	</creature>
 
-	<creature name="mutant truskull">
+	<creature name="podziemny mutant">
 		<type class="pol/piraci_truskull" subclass="truskull_mutant" tileid="pol_piraci_truskull.png:5"/>
 		<description></description>
 		<attributes>
@@ -831,7 +831,7 @@
 		</ai>
 	</creature>
 
-	<creature name="lodowy pirat truskull">
+	<creature name="podziemny pirat północny">
 		<type class="pol/piraci_truskull" subclass="truskull_ice_warrior" tileid="pol_piraci_truskull.png:6"/>
 		<description></description>
 		<attributes>
@@ -867,7 +867,7 @@
 		</ai>
 	</creature>
 	
-	<creature name="łucznik truskull">
+	<creature name="podziemny łucznik">
 		<type class="pol/piraci_truskull" subclass="truskull_archer" tileid="pol_piraci_truskull.png:7"/>
 		<description></description>
 		<attributes>
@@ -906,7 +906,7 @@
 		</ai>
 	</creature>
 
-	<creature name="elitarny łucznik truskull">
+	<creature name="podziemny elitarny łucznik">
 		<type class="pol/piraci_truskull" subclass="truskull_armed_archer" tileid="pol_piraci_truskull.png:8"/>
 		<description></description>
 		<attributes>
@@ -947,7 +947,7 @@
 		</ai>
 	</creature>
 
-	<creature name="czarnoksiężnik truskull">
+	<creature name="podziemny czarnoksiężnik">
 		<type class="pol/piraci_truskull" subclass="truskull_electro" tileid="pol_piraci_truskull.png:9"/>
 		<description></description>
 		<attributes>
@@ -989,7 +989,7 @@
 		</ai>
 	</creature>
 
-	<creature name="upadły duch truskull">
+	<creature name="podziemny upadły duch">
 		<type class="pol/piraci_truskull" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
 		<description></description>
 		<attributes>
@@ -1025,7 +1025,7 @@
 		</ai>
 	</creature>
 
-	<creature name="lord truskull">
+	<creature name="podziemny lord piratów">
 		<type class="pol/piraci_truskull" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
 		<description></description>
 		<attributes>
