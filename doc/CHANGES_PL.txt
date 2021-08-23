@@ -14,9 +14,10 @@ Changelog
 	- lodowy łuk
 	- kusza z mithrilu
 - Dodano nowe zadanie u Księcia
-- Dodano nowe osiągnięcia: (2)
+- Dodano nowe osiągnięcia: (3)
 	- "Napięta Cięciwa"
 	- "Kuszownik"
+	- "Mały Komplet Pierścionków"
 - Dodano spawn potworów w nowych pomieszczeniach
 - Dodano nowy slot na pieniądze (sakiewka), Garbarz Rawhide wykonuje sakiewkę na pieniądze
 - Usunięto stary slot na monety, pieniądze ze starego slotu przenoszone są do nowej sakiewki
@@ -28,6 +29,7 @@ Changelog
 - Skrzynka w domku Sołtysa się resetuje po rozpoczęciu zadania u tajemniczej osoby
 - Skrzynka w domku Sołtysa pojawi się dopiero po rozpoczęciu zadania
 - Gazda Bartek nie przyjmie skradzionej cuhy góralskiej ze skrzynki Sołtysa
+- Juhas poprawnie podaje nam czas kiedy dostanie kolejny bilet turystyczny
 
 
 1.23
