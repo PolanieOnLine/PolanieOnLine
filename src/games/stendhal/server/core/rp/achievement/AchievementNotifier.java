@@ -196,6 +196,7 @@ public final class AchievementNotifier {
 		getAndCheckAchievementsInCategory(player, Category.QUEST_ZAKOPANE_ITEMS);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_GDANSK_JEWELLERY);
 		getAndCheckAchievementsInCategory(player, Category.QUEST_KUZNICE_MONSTER);
+		getAndCheckAchievementsInCategory(player, Category.ITEM);
 		getAndCheckAchievementsInCategory(player, Category.FRIEND);
 		getAndCheckAchievementsInCategory(player, Category.OBTAIN);
 		getAndCheckAchievementsInCategory(player, Category.PRODUCTION);

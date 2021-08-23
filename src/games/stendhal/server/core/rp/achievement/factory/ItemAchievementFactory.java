@@ -17,7 +17,9 @@ import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
+import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.PlayerLootedNumberOfItemsCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 
 /**
  * Factory for item related achievements.
@@ -68,6 +70,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				"item.cod.1500", "Pływanie w Dorszach", "Zdobył 1,500 dorszy",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1500, "dorsz")));
+
+		itemAchievements.add(createAchievement(
+				"item.set.littlerings", "Mały Komplet Pierścionków", "Zdobył srebrny i złoty pierścień",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new AndCondition(new QuestCompletedCondition("zamowienie_strazy"), new QuestCompletedCondition("zloty_pierscien"))));
 
 		return itemAchievements;
 	}
