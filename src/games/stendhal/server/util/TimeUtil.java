@@ -181,7 +181,7 @@ public class TimeUtil {
 
 			sbuf.append(count);
 			sbuf.append(' ');
-			sbuf.append(Grammar.plnoun(count, "week"));
+			sbuf.append(Grammar.plnoun(count, "tydzień"));
 
 			appended = true;
 		}
@@ -198,7 +198,7 @@ public class TimeUtil {
 
 			sbuf.append(count);
 			sbuf.append(' ');
-			sbuf.append(Grammar.plnoun(count, "day"));
+			sbuf.append(Grammar.plnoun(count, "dzień"));
 		}
 		count = seconds / SECONDS_IN_HOUR;
 		if (count != 0) {
