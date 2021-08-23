@@ -86,7 +86,7 @@ public class BiletTurystyczny extends AbstractQuest {
 		// player returns after finishing the quest (it is repeatable) before
 		// the time as finished
 		npc.add(
-			ConversationStates.IDLE,
+			ConversationStates.ATTENDING,
 			Arrays.asList("bilet", "bilet turystyczny", "bilety"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStartedCondition(QUEST_SLOT),
