@@ -714,7 +714,6 @@
 		<drops>
 			<item value="money" quantity="[40,150]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[1,5]" probability="30.0"/>
-			<item value="sztabka mithrilu" quantity="[1,1]" probability="5.0"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips>
@@ -966,7 +965,6 @@
 			<item value="money" quantity="[99,300]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="magia mroku" quantity="[1,66]" probability="60.0"/>
-			<item value="sztabka mithrilu" quantity="[1,1]" probability="2.0"/>
 			<item value="czarne buty" quantity="[1,1]" probability="0.2"/>
 			<item value="czarny pas" quantity="[1,1]" probability="0.001"/>
 			<item value="czarna tarcza" quantity="[1,1]" probability="0.04"/>
@@ -1043,7 +1041,7 @@
 			<item value="money" quantity="[30,330]" probability="80.0"/>
 			<item value="wielki eliksir" quantity="[2,5]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[1,4]" probability="7.5"/>
-			<item value="sztabka mithrilu" quantity="[1,2]" probability="5.0"/>
+			<item value="sztabka mithrilu" quantity="[1,2]" probability="0.5"/>
 			<item value="peleryna truskull" quantity="[1,1]" probability="1.0"/>
 			<item value="czarne buty" quantity="[1,1]" probability="0.3"/>
 			<item value="czarna zbroja" quantity="[1,1]" probability="0.0025"/>
