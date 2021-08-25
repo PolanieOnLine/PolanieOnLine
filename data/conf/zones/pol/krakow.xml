@@ -14,6 +14,16 @@
 			<parameter name="weather">varying</parameter>
 		</attributes>
 
+		<entity x="64" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Północ: wybrzeże Gdańskie
+Wschód: Warszawa
+Południowy-Wschód: Kraków
+			</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-krolewskie-miasto2</parameter>
@@ -560,6 +570,16 @@
 			<parameter name="weather">varying</parameter>
 		</attributes>
 
+		<entity x="74" y="76">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">
+Północ: miasto Kraków
+Północny-zachód: strefa bagien
+Południe: tereny Tatrzańskie
+			</attribute>
+			<attribute name="class">signpost</attribute>
+		</entity>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-krolewskie-miasto1</parameter>
@@ -661,7 +681,7 @@ Oto publiczna strzelnica. Jest utrzymywana przez samego króla Polan. Przychodz�
 		<entity x="106" y="123">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">
-Północ: Miasto Kraków
+Północ: miasto Kraków
 Południe: Zakopane
 			</attribute>
 			<attribute name="class">signpost</attribute>
