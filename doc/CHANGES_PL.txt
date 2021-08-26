@@ -4,6 +4,7 @@ Changelog
 *klient*
 - Dodano nowe grafiki przedmiotów
 - Dodano nową grafikę NPC
+- Dodano nowe miejsce na eliksiry/magię w ekwipunku gracza
 
 *świat*
 - Dodano nowego NPC: (2)
@@ -23,6 +24,9 @@ Changelog
 - Usunięto stary slot na monety, pieniądze ze starego slotu przenoszone są do nowej sakiewki
 - Miecze, topory, siekiery... etc. nie będą wymagane do zdobycia osiągnięcia z danego zestawu
 - Serafiny oraz Azazele upuszczają więcej monet
+- Zmieniono nazwy potworów truskull na bardziej odpowiadające miejscu ich przebywania
+- Usunięto drop sztabki mithrilu u czarnoksiężnika truskull (podziemny czarnoksiężnik) oraz kapłana truskull (podziemny kapłan)
+- Zmniejszono szansę na zdobycie sztabki mithrilu u lorda truskull (podziemny lord)
 
 *naprawiono błędy*
 - Naprawiono podwojone osiągnięcia
