@@ -20,6 +20,7 @@
 			<slot name="ground"/>
 			<slot name="content"/>
 			<slot name="bag"/>
+			<slot name="magicbag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>
 			<slot name="rhand"/>
@@ -45,6 +46,7 @@
 			<slot name="ground"/>
 			<slot name="content"/>
 			<slot name="bag"/>
+			<slot name="magicbag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>
 			<slot name="rhand"/>
@@ -70,6 +72,7 @@
 			<slot name="ground"/>
 			<slot name="content"/>
 			<slot name="bag"/>
+			<slot name="magicbag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>
 			<slot name="rhand"/>
@@ -95,6 +98,7 @@
 			<slot name="ground"/>
 			<slot name="content"/>
 			<slot name="bag"/>
+			<slot name="magicbag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>
 			<slot name="rhand"/>
@@ -120,6 +124,7 @@
 			<slot name="ground"/>
 			<slot name="content"/>
 			<slot name="bag"/>
+			<slot name="magicbag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>
 			<slot name="rhand"/>
@@ -145,6 +150,7 @@
 			<slot name="ground"/>
 			<slot name="content"/>
 			<slot name="bag"/>
+			<slot name="magicbag"/>
 			<slot name="trade"/>
 			<slot name="lhand"/>
 			<slot name="rhand"/>

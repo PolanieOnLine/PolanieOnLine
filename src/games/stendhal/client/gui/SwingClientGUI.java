@@ -109,6 +109,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private SlotWindow inventory;
 	/** the Key ring panel. */
 	private KeyRing keyring;
+	private MagicBag magicbag;
 	//private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
@@ -245,6 +246,11 @@ class SwingClientGUI implements J2DClientGUI {
 		keyring.setAcceptedTypes(EntityMap.getClass("item", null, null));
 		containerPanel.addRepaintable(keyring);
 		userContext.addFeatureChangeListener(keyring);
+
+		magicbag = new MagicBag();
+		magicbag.setAcceptedTypes(EntityMap.getClass("item", null, null));
+		containerPanel.addRepaintable(magicbag);
+		userContext.addFeatureChangeListener(magicbag);
 
 		/*
 		portfolio = new Portfolio();
@@ -430,6 +436,7 @@ class SwingClientGUI implements J2DClientGUI {
 		 * revealed by feature change
 		 */
 		keyring.setVisible(false);
+		magicbag.setVisible(false);
 		//portfolio.setVisible(false);
 		spells.setVisible(false);
 	}
@@ -550,6 +557,7 @@ class SwingClientGUI implements J2DClientGUI {
 		this.user = user;
 		character.setPlayer(user);
 		keyring.setSlot(user, "keyring");
+		magicbag.setSlot(user, "magicbag");
 		//portfolio.setSlot(user, "portfolio");
 		spells.setSlot(user, "spells");
 		inventory.setSlot(user, "bag");

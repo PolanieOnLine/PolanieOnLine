@@ -103,6 +103,8 @@ public class InternalWindow extends JPanel implements ComponentPaintCache.Cachea
 			setTitle("Zwłoki");
 		} else if (title.equals("keyring")) {
 			setTitle("Rzemyk");
+		} else if (title.equals("magicbag")) {
+			setTitle("Magiczna torba");
 		} else {
 			setTitle(title);
 		}

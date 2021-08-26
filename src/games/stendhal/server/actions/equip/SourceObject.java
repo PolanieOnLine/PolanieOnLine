@@ -74,7 +74,7 @@ class SourceObject extends MoveableObject {
 		source = createSource(action, player);
 
 		if ((source.getEntity() != null) && source.getEntity().hasSlot("content") && (source.getEntity().getSlot("content").size() > 0)) {
-			player.sendPrivateText("Proszę opróżnij " + source.getEntityName() + " przed przeniesieniem");
+			player.sendPrivateText("Proszę opróżnij " + source.getEntityName() + " przed przeniesieniem.");
 			return invalidSource;
 		}
 
@@ -316,9 +316,14 @@ class SourceObject extends MoveableObject {
 	 * @return true if successful
 	 */
 	public boolean moveTo(final DestinationObject dest, final Player player) {
-		final String targetSlot = dest.getContentSlotName();
+		String targetSlot = dest.getContentSlotName();
 
 		if (!((EquipListener) item).canBeEquippedIn(targetSlot)) {
+			if (targetSlot.equals("keyring")) {
+				targetSlot = "rzemyku";
+			} else if (targetSlot.equals("magicbag")) {
+				targetSlot = "magicznej torby";
+			}
 			// give some feedback
 			player.sendPrivateText("Nie możesz wziąć " + item.getTitle() + " do " + targetSlot + ".");
 			logger.warn("tried to equip an entity into disallowed slot: " + item.getClass() + "; equip rejected");
@@ -381,7 +386,7 @@ class SourceObject extends MoveableObject {
 				return true;
 			} else {
 				logger.debug("distance check failed " + other.squaredDistance(checker));
-				player.sendPrivateText("Nie możesz sięgnąć tak daleko.");
+				player.sendPrivateText("Nie jesteś w stanie sięgnąć tak daleko.");
 			}
 		}
 
@@ -459,7 +464,7 @@ class SourceObject extends MoveableObject {
 			// Allow players always pick up their own items
 			if (!player.getName().equals(sourceItem.getBoundTo())) {
 				if (otherPlayer.getArea().intersects(sourceItem.getArea())) {
-					player.sendPrivateText("Nie możesz wziąć przedmiotów, które są pod innymi wojownikami");
+					player.sendPrivateText("Nie możesz wziąć przedmiotów, które znajdują się pod innymi wojownikami!");
 					return true;
 				}
 			}
