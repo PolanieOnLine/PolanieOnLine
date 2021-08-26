@@ -729,7 +729,7 @@
 		</ai>
 	</creature>
 
-	<creature name="podziemny komandor">
+	<creature name="podziemny herszt">
 		<type class="pol/piraci_truskull" subclass="truskull_commander" tileid="pol_piraci_truskull.png:3"/>
 		<description></description>
 		<attributes>
@@ -1023,7 +1023,7 @@
 		</ai>
 	</creature>
 
-	<creature name="podziemny lord piratów">
+	<creature name="podziemny lord">
 		<type class="pol/piraci_truskull" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
 		<description></description>
 		<attributes>
