@@ -75,7 +75,7 @@ public class MuseumCashierNPC implements ZoneConfigurator {
 	 			add(ConversationStates.ATTENDING,
 	 				Arrays.asList("parents","father","dad","mother","mom","rodzice","ojciec","tata","matka","mama"),
 	 				ConversationStates.ATTENDING,
-	 				"Rozmowa z rodzicami ci nie pomoże. Musisz porozmawiać z dyrektorem.",
+	 				"Rozmowa z rodzicami ci nie pomoże. Musisz porozmawiać z #dyrektorem.",
 	 				null
 		 		);
                 addReply(Arrays.asList("manager", "menedżer"),"Bardzo przepraszam, menedżer jest obecnie niedostępny.");
@@ -88,6 +88,12 @@ public class MuseumCashierNPC implements ZoneConfigurator {
             @Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
+			}
+
+            @Override
+			public void onRejectedAttackStart(RPEntity attacker) {
+            	say("!me krzyczy.");
+				say("Tatko! Tatko! Pomóż! Zostałem zaatakowany przez " + attacker.getName() + "!");
 			}
         };
 

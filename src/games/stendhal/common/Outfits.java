@@ -42,7 +42,7 @@ public class Outfits {
 	private static final List<Integer> FEMALE_BODIES = Arrays.asList(1, 2, 4, 5, 994, 996);
 
 	/** number of player selectable hats */
-	public static final int HAT_OUTFITS = 23;
+	public static final int HAT_OUTFITS = 24;
 
 	/** number of player selectable eyes */
 	public static final int EYES_OUTFITS = 19;

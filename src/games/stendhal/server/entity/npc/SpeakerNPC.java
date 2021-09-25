@@ -1044,4 +1044,13 @@ public class SpeakerNPC extends PassiveNPC {
 	public String getReply(final String trigger) {
 		return getReply(trigger, ConversationStates.ATTENDING, ExpressionType.UNKNOWN);
 	}
+
+	/**
+	 * someone tried to attack us
+	 * 
+	 * @param attacker
+	 */
+	public void onRejectedAttackStart(RPEntity attacker) {
+		say(attacker.getName() + ", jeśli chcesz zwrócić moją uwagę to powiedz #'cześć'.");
+	}
 }

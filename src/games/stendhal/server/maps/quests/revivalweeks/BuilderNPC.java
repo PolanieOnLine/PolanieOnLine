@@ -69,7 +69,7 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		chunkSize.put("pyrlik", 1);
 		hints.put("pyrlik", "Jestem pewien, że Xoderos w Semos sprzeda ci pyrlik.");
 		
-		required.put("nożyk", 1);
+		required.put("nożyk", 2);
 		chunkSize.put("nożyk", 1);
 		hints.put("nożyk", "Jestem pewien, że Xin Blanca w Semos sprzeda ci nożyk.");
 		
@@ -77,11 +77,11 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		chunkSize.put("latarenka", 1);
 		hints.put("latarenka", "Prawdopodobnie latarenkę możesz kupić od Jimbo w Deniran.");
 
-		required.put("polano", 100);
+		required.put("polano", 200);
 		chunkSize.put("polano", 10);
 		hints.put("polano", "Drewno możesz znaleźć w różnych lasach.");
 
-		required.put("sok z chmielu", 20);
+		required.put("sok z chmielu", 25);
 		chunkSize.put("sok z chmielu", 5);
 		hints.put("sok z chmielu", "Prawdopobodnie sok z chmielu znajdziesz w każdej tawernie.");
 
