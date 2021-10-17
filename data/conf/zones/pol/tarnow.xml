@@ -14,7 +14,14 @@
 		</attributes>
 	</zone>
 
-	<zone name="0_tarnow_city" level="0" x="514336" y="18048" file="Level 0/tarnow/city_s.tmx">
+	<zone name="0_tarnow_city" level="0" x="514336" y="18048" file="Level 0/tarnow/city.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_tarnow_plains" level="0" x="514336" y="18304" file="Level 0/tarnow/plains.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
