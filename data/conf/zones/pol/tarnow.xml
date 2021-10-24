@@ -7,21 +7,28 @@
 
 	<!-- Ground level -->
 
-	<zone name="0_tarnow_forest_sw" level="0" x="514080" y="18048" file="Level 0/tarnow/forest_sw.tmx">
+	<zone name="0_tarnow_forest_w" level="0" x="513952" y="18048" file="Level 0/tarnow/forest_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-	<zone name="0_tarnow_city" level="0" x="514336" y="18048" file="Level 0/tarnow/city.tmx">
+	<zone name="0_tarnow_forest_sw" level="0" x="513952" y="18176" file="Level 0/tarnow/forest_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-	<zone name="0_tarnow_plains" level="0" x="514336" y="18304" file="Level 0/tarnow/plains.tmx">
+	<zone name="0_tarnow_city" level="0" x="514080" y="18048" file="Level 0/tarnow/city.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_tarnow_plains" level="0" x="514080" y="18176" file="Level 0/tarnow/plains.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
