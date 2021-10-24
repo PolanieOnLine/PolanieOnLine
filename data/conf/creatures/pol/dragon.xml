@@ -26,6 +26,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="2.0"/>
 			<item value="pazur czarnego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -73,6 +74,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="2.0"/>
 			<item value="pazur arktycznego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -123,6 +125,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="2.0"/>
 			<item value="pazur czerwonego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra czerwonego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -171,6 +174,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="2.0"/>
 			<item value="pazur złotego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -218,6 +222,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="2.0"/>
 			<item value="pazur zielonego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra zielonego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -263,6 +268,7 @@
 			<item value="spodnie nabijane klejnotami" quantity="[1,1]" probability="1.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -304,6 +310,7 @@
 			<item value="spodnie pustynne" quantity="[1,1]" probability="10.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="2.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -339,6 +346,7 @@
 			<item value="kościany płaszcz smoczy" quantity="[1,1]" probability="2.0"/>
 			<item value="kość dla psa" quantity="[1,5]" probability="60.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -380,6 +388,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="10.0"/>
 			<item value="pazur arktycznego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="7.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -425,6 +434,7 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="10.0"/>
 			<item value="pazur czarnego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="25.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 			<slot name="rhand" item="złoty buzdygan"/>
@@ -469,6 +479,7 @@
 			<item value="pazur czarnego smoka" quantity="[1,1]" probability="1.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="10.0"/>
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -513,6 +524,7 @@
 			<item value="pazur złotego smoka" quantity="[1,1]" probability="1.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="5.5"/>
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

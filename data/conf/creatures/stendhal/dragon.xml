@@ -120,6 +120,7 @@
 			<item value="pazur zielonego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra zielonego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -156,6 +157,7 @@
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="kościany płaszcz smoczy" quantity="[1,1]" probability="2.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -203,6 +205,7 @@
 			<item value="zbroja lazurowa" quantity ="[1,1]" probability="7.0"/>
 			<item value="tarcza lazurowa" quantity ="[1,1]" probability ="4.5"/>
 			<item value="lazurowy hełm" quantity="[1,1]" probability="6.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -246,6 +249,7 @@
 			<item value="pazur czerwonego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra czerwonego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -289,6 +293,7 @@
 			<item value="pazur czarnego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="10.5"/>
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="25.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 			<slot name="rhand" item="dummy_melee_8"/>
@@ -334,6 +339,7 @@
 			<item value="diament" quantity="[1,1]" probability="2.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="2.5"/>
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="30.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -380,6 +386,7 @@
 			<item value="pazur niebieskiego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="7.5"/>
 			<item value="skóra niebieskiego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

@@ -23,6 +23,7 @@
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.3"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -61,6 +62,7 @@
 			<item value="money" quantity="[3,30]" probability="90.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="4.0"/>
 			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="0.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -99,6 +101,7 @@
 		<drops>
 			<item value="money" quantity="[3,30]" probability="90.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -132,6 +135,7 @@
 			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="15.0"/>
 			<item value="zbroja płytowa" quantity="[1,1]" probability="2.0"/>
 			<item value="pyrlik" quantity="[1,1]" probability="2.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

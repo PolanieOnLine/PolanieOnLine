@@ -150,6 +150,7 @@
 			<item value="szczupak" quantity="[1,1]" probability="30.0"/>
 			<item value="kieł niedźwiedzi" quantity="[1,1]" probability="5.0"/>
 			<item value="niedźwiedzie pazury" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -178,6 +179,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,5]" probability="80.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -207,6 +209,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,4]" probability="60.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -232,6 +235,7 @@
 		<corpse name="small_animal"/>
 		<drops>
 			<item value="mięso" quantity="[1,11]" probability="80.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -285,6 +289,7 @@
 			<item value="kieł tygrysi" quantity="[1,1]" probability="15.0"/>
 			<item value="pazury tygrysie" quantity="[1,1]" probability="25.0"/>
 			<item value="skóra białego tygrysa" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>

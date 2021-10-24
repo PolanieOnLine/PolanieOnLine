@@ -718,6 +718,7 @@
 			<item value="hełm elficki" quantity="[1,1]" probability="1.0" />
 			<item value="kapelusz elficki" quantity="[1,1]" probability="1.25" />
 			<item value="mały eliksir" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -758,6 +759,7 @@
 			<item value="bułat" quantity="[1,1]" probability="1.0"/>
 			<item value="pas elficki" quantity="[1,1]" probability="0.1"/>
 			<item value="mały eliksir" quantity="[1,1]" probability="17.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -839,6 +841,7 @@
 			<item value="tarcza elficka" quantity="[1,1]" probability="0.1"/>
 			<item value="pas elficki" quantity="[1,1]" probability="1.0"/>
 			<item value="mały eliksir" quantity="[1,1]" probability="26.5"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -992,6 +995,7 @@
 			<item value="lazurowy płaszcz elficki" quantity="[1,1]" probability="2.5"/>
 			<item value="miecz lodowy" quantity="[1,1]" probability="0.0050"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="1.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -1033,6 +1037,7 @@
 			<item value="pas elficki" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="0.5"/>
 			<item value="magia deszczu" quantity="[1,15]" probability="30.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

@@ -28,6 +28,7 @@
 			<item value="puklerz" quantity="[1,1]" probability="0.5"/>
 			<item value="mieczyk" quantity="[1,1]" probability="0.5"/>
 			<item value="koszula" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -67,6 +68,7 @@
 			<item value="buzdygan" quantity="[1,1]" probability="2.0"/>
 			<item value="drewniana tarcza" quantity="[1,1]" probability="1.0"/>
 			<item value="koszula" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -108,6 +110,7 @@
 			<item value="kiścień" quantity="[1,1]" probability="1.0"/>
 			<item value="krótki miecz" quantity="[1,1]" probability="1.0"/>
 			<item value="koszula" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

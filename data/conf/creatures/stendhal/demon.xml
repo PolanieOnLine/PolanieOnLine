@@ -21,6 +21,7 @@
 			<item value="antidotum" quantity="[1,2]" probability="30.0"/>
 			<item value="płaszcz mainiocyjski" quantity="[1,1]" probability="0.1"/>
 			<item value="pas mainiocyjski" quantity="[1,1]" probability="0.2"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -51,6 +52,7 @@
 			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="półtorak" quantity="[1,1]" probability="2.0"/>
 			<item value="czarny sztylet" quantity="[1,1]" probability="1.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -83,6 +85,7 @@
 			<item value="money" quantity="[5,53]" probability="100.0"/>
 			<item value="ognisty miecz demonów" quantity="[1,1]" probability="0.005"/>
 			<item value="miecz ognisty" quantity="[1,1]" probability="1.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -117,6 +120,7 @@
 			<item value="money" quantity="[5,95]" probability="100.0"/>
 			<item value="zbroja cieni" quantity="[1,1]" probability="0.6"/>
 			<item value="buty cieni" quantity="[1,1]" probability="0.7"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -148,6 +152,7 @@
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.002"/>
 			<item value="buty chaosu" quantity="[1,1]" probability="0.5"/>
 			<item value="czarna halabarda" quantity="[1,1]" probability="0.001"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -223,6 +228,7 @@
 		<drops>
 			<item value="money" quantity="[5,53]" probability="100.0"/>
 			<item value="eliksir" quantity="[1,2]" probability="30.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

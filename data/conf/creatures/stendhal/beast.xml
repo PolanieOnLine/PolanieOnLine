@@ -20,6 +20,7 @@
 		<corpse name="small_boneless"/>
 		<drops>
 			<item value="money" quantity="[2,10]" probability="90.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -49,6 +50,7 @@
 		<corpse name="small_boneless"/>
 		<drops>
 			<item value="money" quantity="[6,13]" probability="100.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -76,6 +78,7 @@
 		<drops>
 			<item value="money" quantity="[5,22]" probability="100.0"/>
 			<item value="eliksir" quantity="[1,1]" probability="30.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -107,6 +110,7 @@
 		<drops>
 			<item value="money" quantity="[2,10]" probability="90.0"/>
 			<item value="pierścień spokoju" quantity="[1,1]" probability="0.005"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -139,6 +143,7 @@
 		<drops>
 			<item value="money" quantity="[4,12]" probability="90.0"/>
 			<item value="buzdygan" quantity="[1,1]" probability="30.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -171,6 +176,7 @@
 			<item value="kolczuga" quantity="[1,1]" probability="3.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="0.05"/>
 			<item value="piernacz" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -206,6 +212,7 @@
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.4"/>
 			<item value="trucizna" quantity="[1,1]" probability="15.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>

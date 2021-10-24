@@ -24,6 +24,7 @@
 			<item value="pieczarka" quantity="[3,6]" probability="10.0"/>
 			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
 			<item value="puklerz" quantity="[1,1]" probability="5.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -58,6 +59,7 @@
 			<item value="antidotum" quantity="[1,1]" probability="10.0"/>
 			<item value="borowik" quantity="[1,10]" probability="10.0"/>
 			<item value="skórzana zbroja" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -97,6 +99,7 @@
 			<item value="buteleczka wody" quantity="[1,4]" probability="25.0"/>
 			<item value="butelka wody" quantity="[1,2]" probability="15.0"/>
 			<item value="proca" quantity="[1,1]" probability="10.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 			<slot name="rhand" item="sztylecik"/>
@@ -134,6 +137,7 @@
 			<item value="butelka wody" quantity="[1,2]" probability="15.0"/>
 			<item value="skóra zwierzęca" quantity="[1,1]" probability="6.0"/>
 			<item value="proca" quantity="[1,1]" probability="40.0"/>
+			<item value="straszna dynia" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
