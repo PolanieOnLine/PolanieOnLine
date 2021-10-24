@@ -1,5 +1,17 @@
 Changelog
 ---------
+1.24.5
+*klient*
+- Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
+
+*świat*
+- Dodano nowe mapy: (4)
+	- 0_tarnow_forest_sw
+	- 0_tarnow_forest_w
+	- 0_tarnow_city
+	- 0_tarnow_plains
+
+
 1.24
 *klient*
 - Dodano nowy kapelusz
