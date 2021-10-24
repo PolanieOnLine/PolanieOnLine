@@ -8,6 +8,13 @@ Changelog
 - Dodano nowe miejsce na eliksiry/magię w ekwipunku gracza
 
 *świat*
+- Dodano/poprawiono mapy:
+	- 0_dragon_knights_e *NOWE*
+	- 0_dragon_knights
+	- 0_dragon_knights_w
+	- 0_dragon_land_s
+	- 0_dragon_land_n
+	- 0_wieliczka_nw
 - Dodano nowego NPC: (2)
 	- Iker
 	- Garbarz Rawhide
