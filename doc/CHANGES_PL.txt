@@ -2,8 +2,9 @@ Changelog
 ---------
 1.24
 *klient*
-- Dodano nowe grafiki przedmiotów
+- Dodano nowy kapelusz
 - Dodano nową grafikę NPC
+- Dodano nowe grafiki przedmiotów
 - Dodano nowe miejsce na eliksiry/magię w ekwipunku gracza
 
 *świat*
