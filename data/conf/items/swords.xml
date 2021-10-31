@@ -741,9 +741,9 @@
 		<description>Oto wszechpotężny legendarny miecz ekskalibur. Miecz samego króla Artura, silny jak wszystko inne na ziemi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="111"/>
+			<atk value="96"/>
       		<rate value="7"/>
-	  		<lifesteal value="0.3"/>
+	  		<lifesteal value="0.2"/>
 	  		<max_improves value="4"/>
 		</attributes>
 		<damage type="light"/>
