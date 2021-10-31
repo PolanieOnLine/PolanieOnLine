@@ -742,9 +742,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="111"/>
-      		<rate value="4"/>
+      		<rate value="7"/>
 	  		<lifesteal value="0.3"/>
-	  		<max_improves value="3"/>
+	  		<max_improves value="4"/>
 		</attributes>
 		<damage type="light"/>
 		<equipable>
