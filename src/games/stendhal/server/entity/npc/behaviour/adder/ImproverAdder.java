@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.MathHelper;
+import games.stendhal.common.Rand;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
@@ -320,26 +322,29 @@ public class ImproverAdder {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser repairer) {
-				player.drop("money", currentUpgradeFee);
-
 				List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
 				Item toImprove = player.getFirstEquipped(currentUpgradingItem);
-
-				for (Item i : equipped) {
-					if (toImprove.isMaxImproved()
-							&& (i.getImprove() < toImprove.getImprove())) {
-						toImprove = i;
-					} else if (i.getImprove() > toImprove.getImprove()) {
-						toImprove = i;
+				if (isSuccessful(player, toImprove)) {
+					player.drop("money", currentUpgradeFee);
+	
+					for (Item i : equipped) {
+						if (toImprove.isMaxImproved()
+								&& (i.getImprove() < toImprove.getImprove())) {
+							toImprove = i;
+						} else if (i.getImprove() > toImprove.getImprove()) {
+							toImprove = i;
+						}
 					}
+	
+					if (hasItemToImprove()) {
+						toImprove.upgradeItem();
+					}
+	
+					repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
+					repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+				} else {
+					repairer.say("Przepraszam, lecz nie udało mi się udoskonalić twojego przedmiotu.");
 				}
-
-				if (hasItemToImprove()) {
-					toImprove.upgradeItem();
-				}
-
-				repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
-				repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 			}
 		};
 	}
@@ -374,6 +379,30 @@ public class ImproverAdder {
 				return foundMoreThanOne = true;
 			}
 		};
+	}
+
+	protected boolean isSuccessful(final Player player , final Item item) {
+		final int random = Rand.roll1D100();
+		return (random <= (getSuccessProbability(player, item) * 100));
+	}
+
+	private double getSuccessProbability(final Player player, final Item item) {
+		double probability;
+		if (item.getImprove() == 0) {
+			probability = 1.0;
+		} else if (item.getImprove() == 1) {
+			probability = 0.9;
+		} else if (item.getImprove() == 2) {
+			probability = 0.8;
+		} else if (item.getImprove() == 3) {
+			probability = 0.7;
+		} else if (item.getImprove() == 4) {
+			probability = 0.5;
+		} else {
+			probability = 0.2;
+		}
+
+		return probability + player.useKarma(0.1);
 	}
 
 	public class ImproverNPC extends SpeakerNPC {
