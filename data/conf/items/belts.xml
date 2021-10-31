@@ -52,6 +52,23 @@
 		</equipable>
 	</item>
 
+	<item name="pas karmazynowy">
+		<type class="belts" subclass="red_belt" tileid="-1"/>
+		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="3"/>
+		</attributes>
+		<susceptibility type="fire" value="0.9"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
 	<item name="lodowy pas">
 		<type class="belts" subclass="ice_belt" tileid="-1"/>
 		<description>Oto lodowy pas. Wykonany z prawdziwego lodu, wzmacniany magią. Sztywniejesz od tego mrozu.</description>
@@ -77,7 +94,7 @@
 		<description>Oto ognisty pas. Wykonany z żywego płomienia. Gdy go nosisz jest trochę gorąco, ale za to chroni przed mrozami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="-1"/>
+			<atk value="-2"/>
 			<def value="4"/>
 		</attributes>
 		<susceptibility type="fire" value="0.8"/>
@@ -110,23 +127,6 @@
 		</equipable>
 	</item>
 
-	<item name="pas karmazynowy">
-		<type class="belts" subclass="red_belt" tileid="-1"/>
-		<description>Oto pas karmazynowy. Klejnot daje ci większą ochronę.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<def value="4"/>
-		</attributes>
-		<susceptibility type="fire" value="0.9"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="pas"/>
-		</equipable>
-	</item>
-
 	<item name="pas lazurowy">
 		<type class="belts" subclass="blue_belt" tileid="-1"/>
 		<description></description>
@@ -145,7 +145,7 @@
 
 	<item name="pas barbarzyńcy">
 		<type class="belts" subclass="barbarian_belt" tileid="-1"/>
-		<description>Oto pas barbarzyńcy. Wykonany przez szamanów. Przeciwnik, który zbliży się, gdy go nosisz, zostanie zraniony przez jego kolce.</description>
+		<description>Oto pas barbarzyńcy. Przydatny na bliskie dystanse. Przeciwnik zbliżający się zostanie zraniony przez wystające kolce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
@@ -164,10 +164,10 @@
 
 	<item name="pas elficki">
 		<type class="belts" subclass="elvish_belt" tileid="-1"/>
-		<description>Oto pas elficki. Z jego rubinu czuć jakąś pradawną magię.</description>
+		<description>Oto pas elficki. Rubin umieszczony na pasku zaczyna drgać, gdy zbliża się mrok.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="6"/>
+			<def value="5"/>
 		</attributes>
 		<susceptibility type="earth" value="0.9"/>
 		<equipable>
@@ -197,10 +197,10 @@
 
 	<item name="pas cieni">
 		<type class="belts" subclass="shadow_belt" tileid="-1"/>
-		<description>Oto pas cieni. Ciężko odróżnić co to jest... Półmrok go skrywa.</description>
+		<description>Oto pas cieni. Półmrok sprawia, że przybiera wygląd paska od spodni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="6"/>
 		</attributes>
 		<susceptibility type="dark" value="0.8"/>
 		<susceptibility type="light" value="1.1"/>
@@ -215,11 +215,11 @@
 
 	<item name="pas kamienny">
 		<type class="belts" subclass="stone_belt" tileid="-1"/>
-		<description>Oto pas kamienny. Nie tylko zapewnia sporą obronę, ale również można wykorzystać kamienie do ataku...</description>
+		<description>Oto pas kamienny. Zapewnia ogromną ochronę w okolice pasa, lecz zmniejsza zwinność do robienia uników.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
-			<def value="7"/>
+			<atk value="-1"/>
+			<def value="6"/>
 		</attributes>
 		<susceptibility type="light" value="0.95"/>
 		<susceptibility type="dark" value="0.95"/>
@@ -239,23 +239,7 @@
 		<description>Oto pas chaosu. Jeden z tajemnic tego pasa to, że nie wiadomo kiedy i jak oraz przez kogo został wykonany...</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="8"/>
-		</attributes>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="pas"/>
-		</equipable>
-	</item>
-
-	<item name="pas krasnoludzki">
-		<type class="belts" subclass="dwarvish_belt" tileid="-1"/>
-		<description>Oto pas krasnoludzki. Wykonany został z porządnego materiału.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-			<def value="9"/>
+			<def value="7"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -271,9 +255,25 @@
 		<description>Oto pas wampirzy. Noszony przez samych wampirów, wygląda cudownie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="9"/>
+			<def value="7"/>
 		</attributes>
 		<susceptibility type="fire" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="pas"/>
+		</equipable>
+	</item>
+
+	<item name="pas krasnoludzki">
+		<type class="belts" subclass="dwarvish_belt" tileid="-1"/>
+		<description>Oto pas krasnoludzki. Wykonany został z porządnego materiału.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="8"/>
+		</attributes>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -288,7 +288,7 @@
 		<description>Oto złoty pas. Wykonany z czystego szlachetnego metalu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="10"/>
+			<def value="8"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
 		<susceptibility type="light" value="0.95"/>
@@ -306,7 +306,7 @@
 		<description>Oto pas olbrzymi. Znane jest jedynie pochodzenie tego pasa - pochodzi ono od gigantów i same jego rozmiary to udowadniają.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="10"/>
+			<def value="9"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -322,7 +322,7 @@
 		<description>Oto pas mainiocyjski. Zapewnia doskonałą ochronę osobie, która go nosi oraz wygląda niesamowicie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="11"/>
+			<def value="10"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -338,7 +338,7 @@
 		<description>Oto pas xenocyjski. Wykonany ze skóry z specyficznego stwora... wzmocniony nieco metalem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="12"/>
+			<def value="11"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -351,13 +351,12 @@
 
 	<item name="czarny pas">
 		<type class="belts" subclass="black_belt" tileid="-1"/>
-		<description>Oto czarny pas. Czujesz jak jego mrok wzmacnia twą siłę.</description>
+		<description>Oto czarny pas. Zanurzasz się w mroku, gdy nosisz go na sobie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
-			<def value="15"/>
+			<def value="14"/>
 		</attributes>
-		<susceptibility type="dark" value="0.9"/>
+		<susceptibility type="dark" value="0.8"/>
 		<susceptibility type="light" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
@@ -370,14 +369,13 @@
 
 	<item name="pas z mithrilu">
 		<type class="belts" subclass="mithril_belt" tileid="-1"/>
-		<description>Oto pas z mithrilu. Może cię ochronić przed ciemnością.</description>
+		<description>Oto pas z mithrilu. Światło odbijające może ochronić cię przed ciemnością.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
-			<def value="17"/>
+			<def value="16"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
-		<susceptibility type="light" value="0.9"/>
+		<susceptibility type="light" value="0.8"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

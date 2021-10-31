@@ -54,15 +54,15 @@
 
 	<item name="rękawice elfickie">
 		<type class="glove" subclass="elvish_gloves" tileid="-1"/>
-		<description>Oto rękawice elfickie. Wykonane z liści przez samych elfów, dzięki czemu są bardzo lekkie oraz posiadają magiczną aurę.</description>
+		<description>Oto rękawice elfickie. Wykonane z liści przez samych elfów, dzięki czemu są bardzo lekkie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
-			<def value="3"/>
-			<min_level value="20"/>
+			<def value="2"/>
+			<min_level value="15"/>
 		</attributes>
 		<susceptibility type="earth" value="0.9"/>
-		<susceptibility type="fire" value="1.1"/>
+		<susceptibility type="fire" value="1.2"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -77,7 +77,7 @@
 		<description>Oto rękawice karmazynowe. Nie będzie widać na nich twej krwi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<def value="3"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -93,9 +93,8 @@
 		<description>Oto kamienne rękawice. Wykonane ze solidnych kamieni co powoduje, że są bardzo ciężkie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
-			<def value="4"/>
-			<min_level value="40"/>
+			<def value="3"/>
+			<min_level value="30"/>
 		</attributes>
 		<susceptibility type="light" value="0.95"/>
 		<susceptibility type="dark" value="0.95"/>
@@ -135,7 +134,7 @@
 		<description>Oto rękawice lazurowe. Ich kolor może utrudniać walkę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="4"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -152,7 +151,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
-			<def value="5"/>
+			<def value="4"/>
 			<lifesteal value="0.05"/>
 			<min_level value="100"/>
 		</attributes>
@@ -172,7 +171,7 @@
 		<attributes>
 			<atk value="-3"/>
 			<def value="5"/>
-			<min_level value="35"/>
+			<min_level value="30"/>
 		</attributes>
 		<susceptibility type="ice" value="0.9"/>
 		<susceptibility type="fire" value="1.1"/>
@@ -192,7 +191,7 @@
 		<attributes>
 			<atk value="-3"/>
 			<def value="5"/>
-			<min_level value="35"/>
+			<min_level value="30"/>
 		</attributes>
 		<susceptibility type="fire" value="0.9"/>
 		<susceptibility type="ice" value="1.1"/>
@@ -210,7 +209,7 @@
 		<description></description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="6"/>
+			<def value="5"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -226,9 +225,7 @@
 		<description>Oto rękawice mainiocyjska. Są bardzo wytrzymałe, dzięki temu świetnie sprawują się w walce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="1"/>
 			<def value="6"/>
-			<min_level value="55"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -246,7 +243,7 @@
 		<attributes>
 			<def value="7"/>
 		</attributes>
-		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="dark" value="0.9"/>
 		<susceptibility type="light" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
@@ -280,7 +277,7 @@
 		<attributes>
 			<atk value="-1"/>
 			<def value="8"/>
-			<min_level value="100"/>
+			<min_level value="70"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -296,12 +293,12 @@
 		<description>Oto złote rękawice. Wykonane z drogocennego metalu dają dobrą ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="-2"/>
-			<def value="9"/>
-			<min_level value="110"/>
+			<atk value="2"/>
+			<def value="8"/>
+			<min_level value="105"/>
 		</attributes>
-		<susceptibility type="dark" value="1.1"/>
-		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="dark" value="1.2"/>
+		<susceptibility type="light" value="0.9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -316,11 +313,11 @@
 		<description>Oto czarne rękawice. Nie wiesz z czego są zrobione, ale dają świetną ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="2"/>
-			<def value="11"/>
-			<min_level value="150"/>
+			<atk value="-2"/>
+			<def value="9"/>
+			<min_level value="85"/>
 		</attributes>
-		<susceptibility type="dark" value="0.9"/>
+		<susceptibility type="dark" value="0.7"/>
 		<susceptibility type="light" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
@@ -337,7 +334,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="3"/>
-			<def value="14"/>
+			<def value="10"/>
 			<min_level value="250"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
@@ -357,7 +354,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
-			<def value="16"/>
+			<def value="12"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>

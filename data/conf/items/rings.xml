@@ -256,14 +256,12 @@
 
 	<item name="srebrny pierścień">
 		<type class="ring" subclass="silver-ring" tileid="-1"/>
-		<description></description>
+		<description>Oto srebrny pierścień. Może nadaży się okazja, gdy wykorzysta się jego potencjalną siłę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
-			<def value="2"/>
 		</attributes>
-		<susceptibility type="dark" value="0.8"/>
-		<susceptibility type="light" value="1.1"/>
+		<susceptibility type="dark" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -277,14 +275,13 @@
 
 	<item name="złoty pierścień">
 		<type class="ring" subclass="gold-ring" tileid="-1"/>
-		<description></description>
+		<description>Oto złoty pierścień. Czujesz się jak szlachcic, gdy go nosisz na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="2"/>
+			<atk value="1"/>
 			<def value="1"/>
 		</attributes>
-		<susceptibility type="dark" value="1.1"/>
-		<susceptibility type="light" value="0.8"/>
+		<susceptibility type="light" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -302,9 +299,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="2"/>
-			<def value="3"/>
 		</attributes>
-		<susceptibility type="dark" value="0.8"/>
+		<susceptibility type="dark" value="0.9"/>
 		<susceptibility type="light" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
@@ -319,11 +315,11 @@
 
 	<item name="pierścień z mithrilu">
 		<type class="ring" subclass="mithril_ring" tileid="-1"/>
-		<description>Oto pierścień z mithrilu. Został wykonany z bardzo wysoko-jakościowego materiału.</description>
+		<description>Oto pierścień z mithrilu. Jego blask chroni cię przed złem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="3"/>
-			<def value="2"/>
+			<atk value="2"/>
+			<def value="1"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
 		<susceptibility type="light" value="0.8"/>

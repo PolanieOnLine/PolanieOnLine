@@ -657,7 +657,7 @@
 		<description>Oto ciężka, kamienna tarcza. Stępi niemal każdy miecz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="2"/>
+			<atk value="-1"/>
 			<def value="25"/>
 			<min_level value="40"/>
 			<max_improves value="3"/>
