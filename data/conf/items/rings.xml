@@ -320,6 +320,7 @@
 		<attributes>
 			<atk value="2"/>
 			<def value="1"/>
+			<max_improves value="1"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
 		<susceptibility type="light" value="0.8"/>

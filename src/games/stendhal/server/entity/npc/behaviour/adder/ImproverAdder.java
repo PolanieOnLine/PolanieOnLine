@@ -201,7 +201,13 @@ public class ImproverAdder {
 
 					int atk = toImprove.getAttack();
 					int def = toImprove.getDefense();
-					currentUpgradeFee = (improves + 1) * ((atk + def) * 2500);
+					currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
+
+					// Special fee for special item
+					if (toImprove.getName().equals("pierścień z mithrilu")) {
+						currentUpgradeFee = 5000000;
+					}
+
 					/*
 					 * This condition is only used if someone didn't add the item to list in PlayerTransformer
 					 * if "max_improves" has been changed for item.
@@ -211,10 +217,16 @@ public class ImproverAdder {
 						currentUpgradeFee *= 0;
 					}
 
+					// Special answer for ring
+					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
+					if (toImprove.getName().equals("pierścień z mithrilu")) {
+						offerupgrade = "Czy jesteś pewien, aby udoskonalać #'"+currentUpgradingItem+"'? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
+					}
+
 					if (foundMoreThanOne) {
-						improver.say("Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?");
+						improver.say(offerupgrade);
 					} else {
-						improver.say("Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?");
+						improver.say(offerupgrade);
 					}
 				} else {
 					improver.say("Przedmiot #'"+currentUpgradingItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
