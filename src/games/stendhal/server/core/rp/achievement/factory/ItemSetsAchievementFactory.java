@@ -36,17 +36,17 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_MAINIO = "item.set.mainio";
 	public static final String ID_XENO = "item.set.xeno";
 	public static final String ID_GORALSKIE = "item.set.goralskie";
-	public static final String ID_DRAGON_CLOAKS = "item.set.dragon";
+	public static final String ID_DRAGON_CLOAKS = "item.set.dragonset";
 	public static final String ID_VAMPIRE = "item.set.wampirze";
 	public static final String ID_ROYAL = "item.set.royal";
 	public static final String ID_MAGIC = "item.set.magic";
 	public static final String ID_WANDS = "item.set.wands";
 	public static final String ID_STONE = "item.set.stone";
-	public static final String ID_FIRE = "item.set.fire";
-	public static final String ID_ICE = "item.set.ice";
-	public static final String ID_BARB = "item.set.barb";
-	public static final String ID_BOWS = "item.set.bows";
-	public static final String ID_CROSSBOW = "item.set.crossbow";
+	public static final String ID_FIRE = "item.set.fireset";
+	public static final String ID_ICE = "item.set.iceset";
+	public static final String ID_BARB = "item.set.barbset";
+	public static final String ID_BOWS = "item.set.bowsset";
+	public static final String ID_CROSSBOW = "item.set.crossbowset";
 
 	private static final String[] RED = {
 			"zbroja karmazynowa", "hełm karmazynowy", "płaszcz karmazynowy",
@@ -225,27 +225,27 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 
 		itemSetAchievements.add(createAchievement(
 				ID_STONE, "Człowiek Skała", "Zdobył cały kamienny zestaw",
-				Achievement.MEDIUM_BASE_SCORE, false,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, STONE)));
 
 		itemSetAchievements.add(createAchievement(
-				ID_FIRE, "Płonące Ognisko", "Zdobył cały ognisty zestaw",
-				Achievement.MEDIUM_BASE_SCORE, false,
+				ID_FIRE, "Zapałka", "Zdobył cały ognisty zestaw",
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, FIRE)));
 
 		itemSetAchievements.add(createAchievement(
 				ID_ICE, "Skrawek Lodu", "Zdobył cały lodowy zestaw",
-				Achievement.MEDIUM_BASE_SCORE, false,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ICE)));
 
 		itemSetAchievements.add(createAchievement(
 				ID_BARB, "Mały Barbarzyńca", "Zdobył cały barbarzyński zestaw",
-				Achievement.MEDIUM_BASE_SCORE, false,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BARB)));
 
 		itemSetAchievements.add(createAchievement(
 				ID_DRAGON_CLOAKS, "Pogromca Smoka", "Zdobył wszyskie smocze płaszcze",
-				Achievement.MEDIUM_BASE_SCORE, false,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, DRAGON_CLOAKS)));
 
 		itemSetAchievements.add(createAchievement(
