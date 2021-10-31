@@ -13,7 +13,7 @@ Changelog
 	- 0_tarnow_plains
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu
 - Pierścień z mithrilu można udoskonalić u kowala Tworzymira
-- Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom
+- Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom oraz ekskaliburowi
 
 
 1.24
