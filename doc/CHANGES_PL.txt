@@ -3,6 +3,7 @@ Changelog
 1.24.5
 *klient*
 - Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
+- Poprawiono wygląd parasola
 
 *świat*
 - Dodano nowe mapy: (4)
@@ -10,6 +11,8 @@ Changelog
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
 	- 0_tarnow_plains
+- Pierścień z mithrilu można udoskonalić u kowala Tworzymira
+- Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom
 
 
 1.24
