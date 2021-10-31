@@ -83,7 +83,7 @@ public class NineSwitchesGameBoard implements TurnListener {
 			if (user instanceof DressedEntity) {
 				npc.say("Gratulacje " + user.getName() + " wygrałeś! Proszę przyjmij ten balonik.");
 				final DressedEntity dressed = (DressedEntity) user;
-				final Outfit balloonOutfit = new Outfit(null, null, null, null, null, null, 1);
+				final Outfit balloonOutfit = new Outfit(null, null, null, null, null, null, null, null, 1);
 
 				// FIXME: temp hack to preserve original outfit
 				String outfit_org = null;
