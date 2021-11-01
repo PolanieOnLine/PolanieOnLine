@@ -3,7 +3,9 @@ Changelog
 1.24.5
 *klient*
 - Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
-- Poprawiono wygląd parasola
+- Dodano nową grafikę przedmiotu
+- Poprawiono grafiki przedmiotów: magiczne buty płytowe, rękawice płytowe
+- Poprawiono wygląd parasola, włosów
 
 *świat*
 - Dodano nowe mapy: (4)
@@ -11,9 +13,15 @@ Changelog
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
 	- 0_tarnow_plains
-- Dodano prawdopodobieństwo udoskonalenia przedmiotu
+- Dodano nowy przedmiot:
+	- magiczne rękawice płytowe
+- Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu można udoskonalić u kowala Tworzymira
+- Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
 - Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom oraz ekskaliburowi
+
+*naprawiono błędy*
+- Naprawiono wyświetlanie się osiągnięć w dzienniku z poprzednich wersji gry
 
 
 1.24
