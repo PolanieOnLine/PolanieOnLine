@@ -148,7 +148,7 @@
 			<def value="14"/>
 		</attributes>
 		<susceptibility type="light" value="0.8"/>
-		<susceptibility type="dark" value="1.35"/>
+		<susceptibility type="dark" value="1.2"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
