@@ -215,7 +215,7 @@
 
 	<item name="pas kamienny">
 		<type class="belts" subclass="stone_belt" tileid="-1"/>
-		<description>Oto pas kamienny. Zapewnia ogromną ochronę w okolice pasa, lecz zmniejsza zwinność do robienia uników.</description>
+		<description>Oto pas kamienny. Zapewnia ogromną ochronę w okolice pasa, ale zmniejsza zwinność.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="-1"/>
