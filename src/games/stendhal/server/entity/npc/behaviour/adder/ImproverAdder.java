@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
@@ -205,6 +204,10 @@ public class ImproverAdder {
 					int def = toImprove.getDefense();
 					currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
 
+					// Fee only for 1 upgrade
+					if (toImprove.getMaxImproves() == 1) {
+						currentUpgradeFee = (atk + def) * 59500;
+					}
 					// Special fee for special item
 					if (toImprove.getName().equals("pierścień z mithrilu")) {
 						currentUpgradeFee = 5000000;
