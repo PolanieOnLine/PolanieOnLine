@@ -16,9 +16,9 @@ Changelog
 - Dodano nowy przedmiot:
 	- magiczne rękawice płytowe
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
-- Pierścień z mithrilu można udoskonalić u kowala Tworzymira
+- Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
 - Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
-- Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom oraz ekskaliburowi
+- Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom, młotom oraz ekskaliburowi
 
 *naprawiono błędy*
 - Naprawiono wyświetlanie się osiągnięć w dzienniku z poprzednich wersji gry
