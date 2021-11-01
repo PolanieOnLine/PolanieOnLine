@@ -118,8 +118,6 @@
 			<def value="4"/>
 			<min_level value="25"/>
 		</attributes>
-		<susceptibility type="fire" value="0.9"/>
-		<susceptibility type="ice" value="0.9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -227,6 +225,29 @@
 		<attributes>
 			<def value="6"/>
 		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="magiczne rękawice płytowe">
+		<type class="glove" subclass="magic_plate_gloves" tileid="-1"/>
+		<description>Oto magiczne rękawice płytowe. Nasączone magią, co sprawia, że stały się lżejsze oraz zapewniają większą ochronę.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="-1"/>
+			<def value="6"/>
+			<min_level value="55"/>
+			<max_improves value="1"/>
+		</attributes>
+		<susceptibility type="fire" value="0.9"/>
+		<susceptibility type="ice" value="0.9"/>
+		<susceptibility type="dark" value="0.9"/>
+		<susceptibility type="light" value="0.9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
