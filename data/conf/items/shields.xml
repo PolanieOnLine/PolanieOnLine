@@ -664,10 +664,10 @@
 		</attributes>
 		<weight value="24.0"/>
 		<value value="96768"/>
-		<susceptibility type="light" value="0.9"/>
-		<susceptibility type="dark" value="0.9"/>
-		<susceptibility type="fire" value="0.9"/>
-		<susceptibility type="ice" value="0.9"/>
+		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
