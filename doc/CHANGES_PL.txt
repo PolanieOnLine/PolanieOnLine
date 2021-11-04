@@ -4,6 +4,7 @@ Changelog
 *klient*
 - Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
 - Dodano nową grafikę przedmiotu
+- Dodano nowe grafiki stworów
 - Poprawiono grafiki przedmiotów: magiczne buty płytowe, rękawice płytowe
 - Poprawiono wygląd parasola, włosów
 
@@ -15,6 +16,9 @@ Changelog
 	- 0_tarnow_plains
 - Dodano nowy przedmiot:
 	- magiczne rękawice płytowe
+- Dodano nowe bossy: (2)
+	- Lilth
+	- Cherubin
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
 - Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
@@ -22,6 +26,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono wyświetlanie się osiągnięć w dzienniku z poprzednich wersji gry
+- Naprawiono literówkę w nazwie stwora wymaganego do pokonania w zadaniu u Rycerza (Warszawa)
 
 
 1.24
