@@ -29,7 +29,9 @@ import java.util.List;
 
 final class ZakopaneHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in zakopane. */
+	private static final int PERCENTAGE = 10;
 	private static final int COST_ZAKOPANE = 500000;
+
 	private static final String WOJTEK_QUEST_SLOT = "gazda_wojtek_daily_item";
 	private static final String JADZKA_QUEST_SLOT = "herbs_for_jadzka";
 	private static final String ADAS_QUEST_SLOT = "pomoc_adasiowi";
@@ -111,10 +113,15 @@ final class ZakopaneHouseSeller extends HouseSellerNPCBase {
 			+ "naszym burmistrzu Wojtku i pani Jadzi, która pracuje w szpitalu.\n"
 			+ "Wspólnie wydadzą wiarygodną opinie.");
 
-		setDescription("To piewca ciepła domowego. Zapytaj czy ma dla ciebie ofertę.");
+		setDescription("Oto Domiesław, piewca ciepła domowego. Zapytaj czy ma dla ciebie ofertę.");
 		setEntityClass("estateagent2npc");
 		setPosition(24, 3);
 		initHP(100);
+	}
+
+	@Override
+	protected int getDeprecationPercentage() {
+		return ZakopaneHouseSeller.PERCENTAGE;
 	}
 
 	@Override

@@ -53,7 +53,7 @@ final class KalavanHouseseller extends HouseSellerNPCBase {
 			"Jak już wiesz koszt nowego domu wynosi "
 			+ getCost()
 			+ " money. Ale obawiam się, że nie mogę Ci sprzedać domu dopóki twoje obywatelstwo nie zostanie nadane przez Króla, którego znajdziesz "
-			+ " w zamku Kalavan na północ stąd. Spróbuj najpierw porozmawiać z jego córką, ona jest ... przyjazna.",
+			+ " w zamku Kalavan na północ stąd. Spróbuj najpierw porozmawiać z jego córką, ona jest... przyjazna.",
 			null);
 
 		// player is not old enough but they have doen princess quest
@@ -66,8 +66,8 @@ final class KalavanHouseseller extends HouseSellerNPCBase {
 			ConversationStates.ATTENDING,
 			"Koszt nowego domu wynosi "
 			+ getCost()
-			+ "money. Ale obawiam się, że nie mogę Ci jeszcze zaufać w kwestii kupna domu. Wróć gdy spędzisz tutaj ponad " 
-			+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " hours on Faiumoni.",
+			+ "money. Ale obawiam się, że nie mogę Ci jeszcze zaufać w kwesti kupna domu. Wróć gdy spędzisz tutaj ponad " 
+			+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin.",
 			null);
 
 		// player is eligible to buy a house

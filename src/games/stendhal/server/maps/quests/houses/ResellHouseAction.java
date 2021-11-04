@@ -1,6 +1,14 @@
-/**
- *
- */
+/***************************************************************************
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests.houses;
 
 import org.apache.log4j.Logger;
@@ -14,7 +22,6 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
 final class ResellHouseAction implements ChatAction {
-
 	private static final Logger logger = Logger.getLogger(ResellHouseAction.class);
 
 	private final int cost;
@@ -34,12 +41,10 @@ final class ResellHouseAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 		// we need to find out where this house is so we know how much to refund them
 		final String claimedHouse = player.getQuest(questSlot);
 
 		try {
-
 			final int id = Integer.parseInt(claimedHouse);
 			final HousePortal portal = HouseUtilities.getHousePortal(id);
 

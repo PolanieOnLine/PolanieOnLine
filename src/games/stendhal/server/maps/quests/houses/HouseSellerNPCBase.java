@@ -113,7 +113,7 @@ abstract class HouseSellerNPCBase extends SpeakerNPC {
 			new PlayerOwnsHouseCondition(),
 				ConversationStates.QUESTION_3,
 			"Miasto płaci "
-			+ Integer.toString(DEPRECIATION_PERCENTAGE)
+			+ Integer.toString(getDeprecationPercentage())
 			+ " procent ceny, którą zapłaciłeś za swój dom minus podatki. Powinieneś zapamiętać, aby przed sprzedażą zabrać z domu wszelkie przedmioty. Czy nadal chcesz sprzedać dom pośrednikowi?",
 			null);
 
@@ -130,7 +130,7 @@ abstract class HouseSellerNPCBase extends SpeakerNPC {
 			null,
 				ConversationStates.ATTENDING,
 			null,
-			new ResellHouseAction(getCost(), QUEST_SLOT, DEPRECIATION_PERCENTAGE, houseTax));
+			new ResellHouseAction(getCost(), QUEST_SLOT, getDeprecationPercentage(), houseTax));
 
 		// refused offer to resell a house
 		add(ConversationStates.QUESTION_3,
@@ -191,11 +191,16 @@ abstract class HouseSellerNPCBase extends SpeakerNPC {
 		addGoodbye("Do widzenia.");
 	}
 
+	protected int getDeprecationPercentage() {
+		return DEPRECIATION_PERCENTAGE;
+	}
+
 	protected abstract int getCost();
 
 	protected abstract int getLowestHouseNumber();
 	protected abstract int getHighestHouseNumber();
 }
+
 final class PlayerOwnsHouseCondition implements ChatCondition {
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
