@@ -83,7 +83,7 @@ public class KillMadGuards extends AbstractQuest {
 		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
 		toKill.put("strażnik", new Pair<Integer, Integer>(0,3));
 		toKill.put("strażnik grobli", new Pair<Integer, Integer>(0,1));
-		toKill.put("straznik bramy", new Pair<Integer, Integer>(0,2));
+		toKill.put("strażnik bramy", new Pair<Integer, Integer>(0,2));
 		toKill.put("rycerz na białym koniu", new Pair<Integer, Integer>(0,1));
 		toKill.put("rycerz szafirowy", new Pair<Integer, Integer>(0,1));
 		toKill.put("rycerz karmazynowy", new Pair<Integer, Integer>(0,1));
