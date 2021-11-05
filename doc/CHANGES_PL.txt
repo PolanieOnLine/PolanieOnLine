@@ -17,7 +17,7 @@ Changelog
 - Dodano nowy przedmiot:
 	- magiczne rękawice płytowe
 - Dodano nowe bossy: (2)
-	- Lilth
+	- Lilith
 	- Cherubin
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
