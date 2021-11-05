@@ -3437,22 +3437,11 @@ public abstract class RPEntity extends GuidedEntity {
 				if (weaponItem.has("lifesteal")) {
 					sumLifesteal += weaponItem.getAttack()
 							* weaponItem.getDouble("lifesteal");
-					if (!hasGloves() || !getGloves().has("lifesteal")) {
-						sumLifesteal += weaponItem.getAttack()
-								* weaponItem.getDouble("lifesteal");
-					} else if (getGloves().has("lifesteal")) {
-						sumLifesteal += weaponItem.getAttack()
-								* (weaponItem.getDouble("lifesteal") + getGloves().getDouble("lifesteal"));
-					}
-				} else if (!weaponItem.has("lifesteal")) {
-					sumLifesteal += 0;
-					if (!hasGloves() || !getGloves().has("lifesteal")) {
-						sumLifesteal += 0;
-					} else if (getGloves().has("lifesteal")) {
-						sumLifesteal += weaponItem.getAttack()
-								* getGloves().getDouble("lifesteal");
-					}
-				} else return;
+				}
+				if (hasGloves() && getGloves().has("lifesteal")) {
+					sumLifesteal += weaponItem.getAttack()
+							* getGloves().getDouble("lifesteal");
+				}
 			}
 		}
 
