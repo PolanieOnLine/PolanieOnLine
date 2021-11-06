@@ -627,6 +627,11 @@ public class Gornictwo extends AbstractQuest {
 	}
 
 	@Override
+	public String getNPCName() {
+		return npc.getName();
+	}
+
+	@Override
 	public String getRegion() {
 		return Region.ZAKOPANE_CITY;
 	}
