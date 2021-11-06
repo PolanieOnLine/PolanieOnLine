@@ -24,9 +24,14 @@ Changelog
 - Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
 - Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom, młotom oraz ekskaliburowi
 
+*kod*
+- Usprawniono zliczanie wartości lifesteal z broni oraz dodatkowego wyposażenia
+
 *naprawiono błędy*
 - Naprawiono wyświetlanie się osiągnięć w dzienniku z poprzednich wersji gry
 - Naprawiono literówkę w nazwie stwora wymaganego do pokonania w zadaniu u Rycerza (Warszawa)
+- Naprawiono leczenie się z broni z lifesteal'em
+- Naprawiono listę z potrzebującymi pomoc NPC
 
 
 1.24
