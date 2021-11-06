@@ -145,11 +145,6 @@ public class LearnAboutMining extends AbstractQuest {
 	}
 
 	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
-	}
-
-	@Override
 	public String getNPCName() {
 		return npc.getName();
 	}
