@@ -3,7 +3,7 @@ Changelog
 1.24.5
 *klient*
 - Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
-- Dodano nową grafikę przedmiotu
+- Dodano nowe grafiki przedmiotów
 - Dodano nowe grafiki stworów
 - Poprawiono grafiki przedmiotów: magiczne buty płytowe, rękawice płytowe
 - Poprawiono wygląd parasola, włosów
@@ -16,6 +16,7 @@ Changelog
 	- 0_tarnow_plains
 - Dodano nowy przedmiot:
 	- magiczne rękawice płytowe
+	- magiczny pas płytowy
 - Dodano nowe bossy: (2)
 	- Lilith
 	- Cherubin
