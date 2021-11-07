@@ -95,7 +95,7 @@ public class AdventureNPC implements ZoneConfigurator  {
 				// if we didn't manage to spawn NUMBER_OF_CREATURES they get a reduction
 				cost =  (int) (cost * ((float) numCreatures / (float) NUMBER_OF_CREATURES));
 				message = "Gereon: Mogę postawić dla Ciebie maksymalnie tylko " + numCreatures + " potworów w jaskini. Dlatego masz mniej, a #opłata wynosi tylko " + cost + " money. Powodzenia.";
-				logger.info("Tried too many times to place creatures in adventure island so less than the required number have been spawned");
+				logger.info("Tried too many times to place creatures in adventure cave so less than the required number have been spawned");
 			} else {
 				message = "Gereon: Wziąłem opłatę w wysokości " + cost + " money. Powodzenia.";
 			}
