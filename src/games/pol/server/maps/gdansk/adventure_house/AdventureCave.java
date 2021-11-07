@@ -35,25 +35,22 @@ public class AdventureCave extends StendhalRPZone {
 
 	/** how many creatures will be spawned.*/
 	protected static final int NUMBER_OF_CREATURES = 40;
-	private static final int MIN1_X = 4;
-	private static final int MIN1_Y = 3;
-	private static final int MAX1_X = 53;
-	private static final int MAX1_Y = 60;
+	private static final int MIN1_X = 7;
+	private static final int MIN1_Y = 4;
+	private static final int MAX1_X = 55;
+	private static final int MAX1_Y = 59;
 
 	/** max numbers of fails to place a creature before we just make the island as it is. */
-	private static final int ALLOWED_FAILS = 5;
+	private static final int ALLOWED_FAILS = 15;
 	/** The creatures spawned are between player level * ratio and player level. */
 	private static final double LEVEL_RATIO = 0.85;
 
 	private int numCreatures;
 
 
-	public AdventureCave(final String name, final StendhalRPZone zone,
-			final Player player) {
+	public AdventureCave(final String name, final StendhalRPZone zone, final Player player) {
 		super(name, zone);
-
 		init(player);
-
 	}
 
 	private void init(final Player player) {
