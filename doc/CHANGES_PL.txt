@@ -32,6 +32,8 @@ Changelog
 - Naprawiono literówkę w nazwie stwora wymaganego do pokonania w zadaniu u Rycerza (Warszawa)
 - Naprawiono leczenie się z broni z lifesteal'em
 - Naprawiono listę z potrzebującymi pomoc NPC
+- Poprawiono przestrzeń jaskini w Gdańsku (wyzwanie u npc Gereon)
+- Poprawiono ilość możliwych do wykonania błędnych prób podczas ich spawn'owania (wyzwanie u npc Gereon)
 
 
 1.24
