@@ -183,7 +183,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Jestem wszystkim, czego nie możesz kontrolować."/>
-				<noise state="idle follow fight" value="Precz stąd zanim spojrzę!"/>
+				<noise state="idle follow fight" value="Precz stąd nim spojrzę!"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="archer"/>
