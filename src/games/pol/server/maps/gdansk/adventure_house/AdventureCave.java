@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.pol.server.maps.gdansk.adventure_house;
+
+import java.awt.geom.Rectangle2D;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.Spot;
@@ -24,14 +28,8 @@ import games.stendhal.server.entity.mapstuff.portal.Teleporter;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.deathmatch.CreatureSpawner;
 
-import java.awt.geom.Rectangle2D;
-
-import org.apache.log4j.Logger;
-
 public class AdventureCave extends StendhalRPZone {
-
 	private static final Logger logger = Logger.getLogger(AdventureCave.class);
-
 
 	/** how many creatures will be spawned.*/
 	protected static final int NUMBER_OF_CREATURES = 40;
@@ -46,7 +44,6 @@ public class AdventureCave extends StendhalRPZone {
 	private static final double LEVEL_RATIO = 0.85;
 
 	private int numCreatures;
-
 
 	public AdventureCave(final String name, final StendhalRPZone zone, final Player player) {
 		super(name, zone);
@@ -104,14 +101,12 @@ public class AdventureCave extends StendhalRPZone {
 		}
 
 		@Override
-			public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX,
-								  final int newY) {
-				// ignore
-			}
+		public void onEntered(final ActiveEntity entity, final StendhalRPZone zone, final int newX, final int newY) {
+			// ignore
+		}
 
 		@Override
-		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
-							 final int oldY) {
+		public void onExited(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY) {
 			if (!(entity instanceof Player)) {
 				return;
 			}
@@ -120,30 +115,26 @@ public class AdventureCave extends StendhalRPZone {
 				// if they are relogging,
 				// they can enter back to the bank (not the default zone of PlayerRPClass).
 				// If they are scrolling out or walking out the portal it works as before.
-			    	entity.put("zoneid", "int_gdansk_adventure_house");
+			    entity.put("zoneid", "int_gdansk_adventure_house");
 			    // Use the correct position from the portal, so that the client
 			    // client gets the right coordinates - otherwise they get
 			    // overwritten by these, and the client disagrees with the server.
 				entity.put("x", returnX);
 				entity.put("y", returnY);
 
-					// start a turn notifier counting down to shut down the zone in 15 minutes
-					TurnNotifier.get().notifyInSeconds(15*60, new AdventureCaveRemover(zone));
+				// start a turn notifier counting down to shut down the zone in 15 minutes
+				TurnNotifier.get().notifyInSeconds(15*60, new AdventureCaveRemover(zone));
 			}
 		}
 
 		@Override
-		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX,
-							final int oldY, final int newX, final int newY) {
-
+		public void onMoved(final ActiveEntity entity, final StendhalRPZone zone, final int oldX, final int oldY, final int newX, final int newY) {
 			// ignore
 		}
 
 		@Override
-		public void beforeMove(ActiveEntity entity, StendhalRPZone zone,
-				int oldX, int oldY, int newX, int newY) {
+		public void beforeMove(ActiveEntity entity, StendhalRPZone zone, int oldX, int oldY, int newX, int newY) {
 			// does nothing, but is specified in the implemented interface
 		}
-
 	}
 }
