@@ -463,6 +463,10 @@ Południowy-Wschód: Kraków
 				<parameter name="volume">65</parameter>
 			</implementation>
 		</entity>
+		
+		<portal x="115" y="72" ref="krkwizard_entrance">
+			<destination zone="int_krakow_wizard_tower_0" ref="krkwizard_exit"/>
+		</portal>
 	</zone>
 
 	<!-- krakow_wisla_w -->
@@ -1885,6 +1889,130 @@ Południe: Zakopane
 		</portal>
 		<portal x="12" y="18" ref="hof_exit">
 			<destination zone="0_krakow_wawel_w" ref="hof_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_0" file="interiors/krakow/wizard_tower_0.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="11" y="4" ref="wizardtower_firstfloor_entrance">
+			<destination zone="int_krakow_wizard_tower_1" ref="wizardtower_firstfloor_exit"/>
+		</portal>
+
+		<portal x="11" y="26" ref="krkwizard_exit">
+			<destination zone="0_krakow_wawel_e2" ref="krkwizard_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+		<portal x="12" y="26" ref="krkwizard_exit">
+			<destination zone="0_krakow_wawel_e2" ref="krkwizard_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_1" file="interiors/krakow/wizard_tower_1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="11" y="4" ref="wizardtower_firstfloor_exit">
+			<destination zone="int_krakow_wizard_tower_0" ref="wizardtower_firstfloor_entrance"/>
+		</portal>
+		<portal x="12" y="4" ref="wizardtower_secondfloor_entrance">
+			<destination zone="int_krakow_wizard_tower_2" ref="wizardtower_secondfloor_exit"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_2" file="interiors/krakow/wizard_tower_2.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Czujesz się jakby ktoś Cię obserwował zza pleców.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="11" y="4" ref="wizardtower_thirdfloor_entrance">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_thirdfloor_exit"/>
+		</portal>
+		<portal x="12" y="4" ref="wizardtower_secondfloor_exit">
+			<destination zone="int_krakow_wizard_tower_1" ref="wizardtower_secondfloor_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_3" file="interiors/krakow/wizard_tower_3.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Czarownik wieży krzyczy: "Znalazłeś się na piętrze z wieloma drzwiami. Jeśli szukasz przejścia na kolejne piętro... NIE ZNAJDZIESZ JE!"</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="8" y="7">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Stojąc przed tymi drzwiami czujesz lekki przeciąg.</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="15" y="7">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Za tymi drzwiami słyszysz szum płynącej rzeki oraz szelest liści.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="8" y="6" ref="wizardtower_room1_entrance">
+			<destination zone="int_krakow_wizard_tower_room_1" ref="wizardtower_room1_exit"/>
+		</portal>
+		<portal x="15" y="6" ref="wizardtower_room2_entrance">
+			<destination zone="int_krakow_wizard_tower_room_2" ref="wizardtower_room2_exit"/>
+		</portal>
+
+		<portal x="11" y="4" ref="wizardtower_thirdfloor_exit">
+			<destination zone="int_krakow_wizard_tower_2" ref="wizardtower_thirdfloor_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_room_1" file="interiors/krakow/wizard_tower_room_1.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Wkraczając do tego zamkniętego pomieszczenia, zastanawiasz jak znalazły się tutaj chmury.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="8" y="26" ref="wizardtower_room1_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room1_entrance"/>
+		</portal>
+		<portal x="9" y="26" ref="wizardtower_room1_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room1_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_room_2" file="interiors/krakow/wizard_tower_room_2.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Wkraczając do tego zamkniętego pomieszczenia nie jesteś w stanie pojąć skąd i dokąd płynie ta rzeka.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="8" y="26" ref="wizardtower_room2_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room2_entrance"/>
+		</portal>
+		<portal x="9" y="26" ref="wizardtower_room2_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room2_entrance"/>
 		</portal>
 	</zone>
 
