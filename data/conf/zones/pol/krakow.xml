@@ -2021,6 +2021,10 @@ Południe: Zakopane
 
 	<zone name="int_krakow_wizard_tower_room_3" file="interiors/krakow/wizard_tower_room_3.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">softlight</parameter>
+			<parameter name="color">#0c4774</parameter>
+		</attributes>
 
 		<entity x="0" y="0">
 			<implementation
