@@ -460,4 +460,87 @@ Wyjście do #Zakopca!
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 	</zone>
+
+	<zone name="void_islands" file="interiors/abstract/void_islands.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">softlight</parameter>
+			<parameter name="color">#0c4774</parameter>
+		</attributes>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Skoczyłeś przez dziurę i wylądowałeś w jakieś pustce.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="67" y="18" ref="void_start">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
+		<portal x="119" y="80" ref="void_1_entrence">
+			<destination zone="void_islands" ref="void_1_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="43" y="21" ref="void_1_exit">
+			<destination zone="void_islands" ref="void_1_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+
+		<portal x="30" y="33" ref="void_2_entrence">
+			<destination zone="void_islands" ref="void_2_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="103" y="96" ref="void_2_exit">
+			<destination zone="void_islands" ref="void_2_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+
+		<portal x="88" y="107" ref="void_3_entrence">
+			<destination zone="void_islands" ref="void_3_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="77" y="35" ref="void_3_exit">
+			<destination zone="void_islands" ref="void_3_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+
+		<portal x="40" y="88" ref="void_4_entrence">
+			<destination zone="void_islands" ref="void_4_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="97" y="35" ref="void_4_exit">
+			<destination zone="void_islands" ref="void_4_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+
+		<portal x="41" y="94" ref="void_5_entrence">
+			<destination zone="void_islands" ref="void_5_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="29" y="99" ref="void_5_exit">
+			<destination zone="void_islands" ref="void_5_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+
+		<portal x="24" y="96" ref="void_6_entrence">
+			<destination zone="void_islands" ref="void_6_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="23" y="111" ref="void_6_exit">
+			<destination zone="void_islands" ref="void_6_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+
+		<portal x="13" y="103" ref="void_7_entrence">
+			<destination zone="void_islands" ref="void_7_exit"/>
+			<attribute name="hidden" />
+		</portal>
+		<portal x="53" y="73" ref="void_7_exit">
+			<destination zone="void_islands" ref="void_7_entrence"/>
+			<attribute name="hidden" />
+		</portal>
+	</zone>
 </zones>
