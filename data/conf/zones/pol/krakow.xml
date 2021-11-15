@@ -1924,8 +1924,7 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<entity x="0" y="0">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Czujesz się jakby ktoś Cię obserwował zza pleców.</parameter>
 			</implementation>
@@ -1943,24 +1942,21 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<entity x="0" y="0">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Czarownik wieży krzyczy: "Znalazłeś się na piętrze z wieloma drzwiami. Jeśli szukasz przejścia na kolejne piętro... NIE ZNAJDZIESZ JE!"</parameter>
 			</implementation>
 		</entity>
 
 		<!-- <entity x="8" y="7">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Stojąc przed tymi drzwiami czujesz lekki przeciąg.</parameter>
 			</implementation>
 		</entity>
 
 		<entity x="15" y="7">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Za tymi drzwiami słyszysz szum płynącej rzeki oraz szelest liści.</parameter>
 			</implementation>
@@ -1976,7 +1972,10 @@ Południe: Zakopane
 			<destination zone="int_krakow_wizard_tower_room_3" ref="wizardtower_room3_exit"/>
 		</portal>
 		<portal x="20" y="19" ref="wizardtower_room4_entrance">
-			<destination zone="int_krakow_wizard_tower_room_3" ref="wizardtower_room4_exit"/>
+			<destination zone="int_krakow_wizard_tower_room_4" ref="wizardtower_room4_exit"/>
+		</portal>
+		<portal x="15" y="24" ref="wizardtower_room5_entrance">
+			<destination zone="int_krakow_wizard_tower_room_5" ref="wizardtower_room5_exit"/>
 		</portal>
 
 		<portal x="11" y="4" ref="wizardtower_thirdfloor_exit">
@@ -1988,10 +1987,16 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<entity x="0" y="0">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Wkraczając do tego zamkniętego pomieszczenia, zastanawiasz jak znalazły się tutaj chmury.</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-1</parameter>
+				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
 
@@ -2005,10 +2010,12 @@ Południe: Zakopane
 
 	<zone name="int_krakow_wizard_tower_room_2" file="interiors/krakow/wizard_tower_room_2.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="weather">rain_heavy</parameter>
+		</attributes>
 
 		<entity x="0" y="0">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Wkraczając do tego zamkniętego pomieszczenia nie jesteś w stanie pojąć skąd i dokąd płynie ta rzeka.</parameter>
 			</implementation>
@@ -2030,8 +2037,7 @@ Południe: Zakopane
 		</attributes>
 
 		<entity x="0" y="0">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Wchodząc do tego pomieszczenia nie poczułeś nawet krzty dobrej magii.</parameter>
 			</implementation>
@@ -2131,11 +2137,18 @@ Południe: Zakopane
 		<attributes>
 			<parameter name="color_method">softlight</parameter>
 			<parameter name="color">#0099da</parameter>
+			<parameter name="weather">snow_heavy</parameter>
 		</attributes>
 
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">wind-2</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
 		<entity x="0" y="0">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
 				<parameter name="enterMessage">Przechodząc przez drzwi czujesz ogromny chłód.</parameter>
 			</implementation>
@@ -2146,6 +2159,27 @@ Południe: Zakopane
 		</portal>
 		<portal x="0" y="11" ref="wizardtower_room4_exit">
 			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room4_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_room_5" file="interiors/krakow/wizard_tower_room_5.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="weather">fog</parameter>
+		</attributes>
+
+		<entity x="0" y="0">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">W tym pomieszczeniu jest bardzo słaba widoczność. Czy to nie są schody przed oczami?</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="8" y="3" ref="wizardtower_room5_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room5_entrance"/>
+		</portal>
+		<portal x="9" y="3" ref="wizardtower_room5_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room5_entrance"/>
 		</portal>
 	</zone>
 
