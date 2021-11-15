@@ -1975,6 +1975,9 @@ Południe: Zakopane
 		<portal x="20" y="12" ref="wizardtower_room3_entrance">
 			<destination zone="int_krakow_wizard_tower_room_3" ref="wizardtower_room3_exit"/>
 		</portal>
+		<portal x="20" y="19" ref="wizardtower_room4_entrance">
+			<destination zone="int_krakow_wizard_tower_room_3" ref="wizardtower_room4_exit"/>
+		</portal>
 
 		<portal x="11" y="4" ref="wizardtower_thirdfloor_exit">
 			<destination zone="int_krakow_wizard_tower_2" ref="wizardtower_thirdfloor_entrance"/>
@@ -2120,6 +2123,29 @@ Południe: Zakopane
 		</portal>
 		<portal x="0" y="11" ref="wizardtower_room3_exit">
 			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room3_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_krakow_wizard_tower_room_4" file="interiors/krakow/wizard_tower_room_4.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">softlight</parameter>
+			<parameter name="color">#0099da</parameter>
+		</attributes>
+
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Przechodząc przez drzwi czujesz ogromny chłód.</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="0" y="10" ref="wizardtower_room4_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room4_entrance"/>
+		</portal>
+		<portal x="0" y="11" ref="wizardtower_room4_exit">
+			<destination zone="int_krakow_wizard_tower_3" ref="wizardtower_room4_entrance"/>
 		</portal>
 	</zone>
 
