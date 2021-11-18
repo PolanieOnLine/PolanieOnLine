@@ -26,7 +26,6 @@ import games.stendhal.server.entity.player.Player;
  * @author kymara
  */
 public class TwilightElixir extends Drink {
-
 	private static final Logger logger = Logger.getLogger(TwilightElixir.class);
 
 	/**
@@ -37,8 +36,7 @@ public class TwilightElixir extends Drink {
 	 * @param subclass
 	 * @param attributes
 	 */
-	public TwilightElixir(final String name, final String clazz, final String subclass,
-			final Map<String, String> attributes) {
+	public TwilightElixir(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 	}
 
@@ -52,10 +50,9 @@ public class TwilightElixir extends Drink {
 		super(item);
 	}
 
-	/*
+	/**
 	 * This is very nasty of us. We take away the message that HP = -1000 so player doesn't know.
 	 */
-
 	@Override
 	public String describe() {
 		String text = "Oto " + getTitle() + ".";
@@ -65,10 +62,9 @@ public class TwilightElixir extends Drink {
 		}
 
 		final String boundTo = getBoundTo();
-
 		if (boundTo != null) {
 			text = text + " Oto specjalna nagroda dla " + boundTo
-					+ ", która nie może być używana przez innych.";
+					+ ", która nie może być wykorzystana przez innych.";
 		}
 		return (text + stats);
 	}
@@ -85,7 +81,10 @@ public class TwilightElixir extends Drink {
 		public boolean onUsed(final RPEntity user) {
 		if (user instanceof Player) {
 			String extra = " ";
-				// then it's safe to cast user to player and use the player-only teleport and quest methods.
+			if (((Player) user).getHP() <= 1000) {
+				((Player) user).onDead(user);
+			}
+			// then it's safe to cast user to player and use the player-only teleport and quest methods.
 			if (((Player) user).isQuestInState("mithril_cloak", "twilight_zone")) {
 				StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("hell");
 				int x = 5;
@@ -108,6 +107,5 @@ public class TwilightElixir extends Drink {
 			logger.warn("some non player RPEntity just used a twilight elixir, which shouldn't be possible.");
 			return false;
 		}
-
 	}
 }
