@@ -81,7 +81,7 @@ public class TwilightElixir extends Drink {
 		public boolean onUsed(final RPEntity user) {
 		if (user instanceof Player) {
 			String extra = " ";
-			if (((Player) user).getHP() <= 1000) {
+			if (((Player) user).getHP() + getAmount() <= 0) {
 				((Player) user).onDead(user);
 			}
 			// then it's safe to cast user to player and use the player-only teleport and quest methods.
