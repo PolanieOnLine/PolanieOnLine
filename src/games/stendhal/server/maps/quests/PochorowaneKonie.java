@@ -21,14 +21,16 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropItemAction;
+import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -40,7 +42,8 @@ import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerCanEquipItemCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
@@ -51,6 +54,8 @@ import games.stendhal.server.maps.Region;
 
 public class PochorowaneKonie extends AbstractQuest {
 	private static final String QUEST_SLOT = "pochorowane_konie";
+
+	private static final String INFOSTRING_NOTE = "wyniki badań";
 
 	// Ilosc potrzebnych lekow
 	private static final int ILE_LEKOW = 2;
@@ -117,19 +122,31 @@ public class PochorowaneKonie extends AbstractQuest {
 	private void step2() {
 		final SpeakerNPC npc = npcs.get("Dr. Wojciech");
 
+		final ChatAction equipNoteAction = new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				final Item note = SingletonRepository.getEntityManager().getItem("karteczka");
+				note.setInfoString(INFOSTRING_NOTE);
+				note.setDescription("Oto " + INFOSTRING_NOTE + ". Na karteczce widnieją różne liczby, a niektóre z nich są kolorem czerwonym oznaczone.");
+				note.setBoundTo(player.getName());
+				player.equipOrPutOnGround(note);
+			}
+        };
+
 		npc.add(
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "start")),
 				ConversationStates.ATTENDING,
-				"O.. w końcu stajenny znalazł mi kogoś do pomocy! Słuchaj, tutaj nie ma co więcej mówić.. Proszę, oto wyniki badań tych koni. Zanieść je do #'Dr. Feelgood', bo mam pewne podejrzenia co to może być, ale lepiej się upewnić!",
-				new MultipleActions(new EquipItemAction("wyniki badań", 1, true), new SetQuestAction(QUEST_SLOT, "feelgood")));
-		
+				"Ooo... w końcu stajenny znalazł mi kogoś do pomocy! Słuchaj, tutaj nie ma co więcej mówić.. Proszę, oto wyniki badań tych koni. Zanieść je do #'Dr. Feelgood', bo mam pewne podejrzenia co to może być, ale lepiej się upewnić!",
+				new MultipleActions(equipNoteAction, new SetQuestAction(QUEST_SLOT, "feelgood")));
+
 		npc.add(
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood")),
 				ConversationStates.ATTENDING,
 				"Na co czekasz?! Idź do Dr. Feelgood! Szybko!",
@@ -140,8 +157,18 @@ public class PochorowaneKonie extends AbstractQuest {
 				null,
 				ConversationStates.ATTENDING,
 				"Dr. Feelgood znajduje się aktualnie w schronisku dla dzikich zwierząt w Ados.", null);
+
+		npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(
+						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE)),
+						new PlayerCanEquipItemCondition("karteczka"),
+						new QuestInStateCondition(QUEST_SLOT, "feelgood")),
+				ConversationStates.ATTENDING,
+				"Zgubiłeś wyniki? Cóż, napiszę jeszcze raz. Bądź tym razem ostrożniejszy.",
+				equipNoteAction);
 	}
-	
+
 	private void step3() {
 		final SpeakerNPC npc = npcs.get("Dr. Feelgood");
 
@@ -150,11 +177,11 @@ public class PochorowaneKonie extends AbstractQuest {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood"),
-						new PlayerHasItemWithHimCondition("wyniki badań")),
+						new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE)),
 				ConversationStates.ATTENDING,
-				"Dr. Wojciech już mnie wcześniej powiadomił, że przyjdzie pewny wojownik do mnie z wynikami.. Dobrze, daj mi je i poczekaj 10 minut. Za chwilę powiem Ci co to za choroba.",
+				"Och, weterynarz z tatrzańskiej krainy już mnie wcześniej powiadomił, iż pewny wojownik zjawi się z wynikami. Dobrze więc, przekaż mi dane i poczekaj 10 minut proszę. Po przeanalizowaniu powiem na co chorują.",
 				new MultipleActions(
-						new DropItemAction("wyniki badań"),
+						new DropInfostringItemAction("karteczka", INFOSTRING_NOTE),
 						new IncreaseXPAction(500),
 						new SetQuestAction(QUEST_SLOT, "wyniki;"),
 						new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
@@ -163,9 +190,9 @@ public class PochorowaneKonie extends AbstractQuest {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood"), 
-						new NotCondition(new PlayerHasItemWithHimCondition("wyniki badań"))),
+						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE))),
 				ConversationStates.ATTENDING,
-				"Hej! Dr. Wojciech mnie powiadomił wcześniej, że jakiś wojownik przyjdzie do mnie z wynikami badań i gdzie je masz?! Zgubiłeś je? Masz je poszukać!",
+				"Hej! Dr. Wojciech mnie powiadomił wcześniej, że jakiś wojownik zjawi się z wynikami badań, ale gdzie je masz?! Zgubiłeś je? Musisz to odnaleźć!",
 				null);
 	}
 	

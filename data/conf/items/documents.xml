@@ -220,9 +220,9 @@
 		</equipable>
 	</item>
 
-	<item name="zwój papieru">
-		<type class="documents" subclass="ice_scroll" tileid="-1"/>
-		<description>Oto zwój papieru.</description>
+	<item name="zwój pergaminu">
+		<type class="documents" subclass="scroll" tileid="-1"/>
+		<description>Oto zwinięty zwój pergaminu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<quantity value="1"/>
@@ -275,38 +275,4 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>-->
-
-	<item name="liścik do aptekarza">
-    <type class="documents" subclass="paper" tileid="-1"/>
-		<description>Oto liścik do aptekarza. To jest rekomendacja od Klaasa.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-		</attributes>
-		<weight value="0.01"/>
-		<value value="1"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="lhand" />
-			<slot name="rhand" />
-		</equipable>
-	</item>
-	
-	<item name="wyniki badań">
-    <type class="documents" subclass="paper" tileid="-1"/>
-		<description>Oto wyniki badań od Dr. Wojciecha. Trzeba je zanieść drugiemu weterynarzowi jakim jest Dr. Feelgood!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes>
-		</attributes>
-		<weight value="0.01"/>
-		<value value="1"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="lhand" />
-			<slot name="rhand" />
-		</equipable>
-	</item>
 </items>
