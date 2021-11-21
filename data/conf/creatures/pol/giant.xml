@@ -31,6 +31,7 @@
 				<noise state="idle follow fight" value="Oczyść buty nim wejdziesz w nasze progi."/>
 				<noise state="idle follow fight" value="Nauczę cię czci dla naszego sanktuarium."/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -60,6 +61,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -94,6 +96,7 @@
 				<noise state="idle follow fight" value="Czego tu szukasz śmiertelniku?"/>
 				<noise state="idle follow fight" value="Uciekaj stąd jeśli ci życie miłe!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -129,6 +132,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -160,6 +164,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -193,6 +198,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -226,6 +232,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -258,6 +265,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -298,6 +306,7 @@
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, to twa ostatnia chwila!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -331,6 +340,7 @@
 			<says>
 				<noise state="idle follow fight" value="Pogrzechoczę twoje żebra!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -366,6 +376,7 @@
 			<says>
 				<noise state="idle follow fight" value="Pękanie kości, to mój ulubiony dźwięk!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -400,6 +411,7 @@
 				<noise state="idle follow fight" value="Do twarzy mi w tym kolorze?"/>
 				<noise state="idle follow fight" value="Nie masz gustu, więc giń!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -434,6 +446,7 @@
 			<says>
 				<noise state="idle follow fight" value="Na proch cię zmielę!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -471,6 +484,7 @@
 				<noise state="idle follow fight" value="Złotko ty moje! Podejdź bliżej!"/>
 				<noise state="idle follow fight" value="Nie wszystko złoto, co się świeci!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="heal" params="15,50"/>

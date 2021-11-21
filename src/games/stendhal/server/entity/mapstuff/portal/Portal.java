@@ -242,7 +242,7 @@ public class Portal extends Entity implements UseListener {
 			if (!player.getZone().isMoveToAllowed()) {
 				player.sendPrivateText("Nie jest możliwe posługiwanie się myszką. Użyj klawiatury.");
 			} else if (player.hasStatus(StatusType.POISONED)) {
-				player.sendPrivateText("Trucizna zdezorientowała Ciebie i nie możesz normalnie się poruszać. Możesz iść wstecz i nie możesz zaplanować trasy.");
+				player.sendPrivateText("Trucizna zdezorientowała Ciebie i nie jesteś w stanie normalnie się poruszać. Możesz iść wstecz i nie możesz zaplanować trasy.");
 			} else {
 				final List<Node> path = Path.searchPath(player, this.getX(), this.getY());
 				player.setPath(new FixedPath(path, false));

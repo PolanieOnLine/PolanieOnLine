@@ -23,6 +23,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -51,6 +52,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -79,6 +81,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -138,6 +141,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -169,6 +173,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -200,6 +205,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -231,6 +237,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -263,6 +270,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

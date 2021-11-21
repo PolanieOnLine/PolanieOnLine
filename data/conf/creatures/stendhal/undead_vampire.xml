@@ -28,6 +28,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.5"/>
 			<profile name="human"/>
@@ -63,6 +64,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.8"/>
 			<profile name="human"/>
@@ -102,6 +104,7 @@
 			<says>
 				<sound value="laugh-evil-04"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="1"/>
 			<profile name="human"/>

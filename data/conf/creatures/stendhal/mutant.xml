@@ -26,6 +26,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,30"/>

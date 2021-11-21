@@ -33,6 +33,7 @@
 				<noise state="idle follow fight" value="Kruca-fuks! To jest napad!"/>
 				<sound value="pol-zbo_les"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -143,6 +144,7 @@
 				<noise state="idle follow fight" value="Nie ryzykuj!"/>
 				<sound value="pol-zbo_les_zwiadowca"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -219,6 +221,7 @@
 				<noise state="idle follow fight" value="Ten las to mój dom!"/>
 				<sound value="pol-banita"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -255,6 +258,7 @@
 				<noise state="idle follow fight" value="Nie wynoś drzewa z lasu!"/>
 				<sound value="pol-banita-gajowy"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -325,6 +329,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -381,6 +386,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -411,6 +417,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -472,6 +479,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

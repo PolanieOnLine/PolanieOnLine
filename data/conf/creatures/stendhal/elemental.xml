@@ -215,6 +215,7 @@
 			<says>
 				<noise state="idle follow fight" value="Zamrożę cię do szpiku kości."/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -294,6 +295,7 @@
 			<susceptibility type="fire" value="1.7"/>
 		</abilities>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>

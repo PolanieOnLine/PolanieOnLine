@@ -68,6 +68,7 @@ class StatusIconPanel extends JComponent {
         statusIDMap = new EnumMap<StatusID, JLabel>(StatusID.class);
         statusIDMap.put(StatusID.CONFUSE, createStatusIndicator("confuse"));
         statusIDMap.put(StatusID.POISON, createStatusIndicator("poison"));
+        statusIDMap.put(StatusID.INJURED, createStatusIndicator("injured"));
         statusIDMap.put(StatusID.SHOCK, createStatusIndicator("shock"));
         statusIDMap.put(StatusID.ZOMBIE, createStatusIndicator("zombie"));
         statusIDMap.put(StatusID.HEAVY, createStatusIndicator("heavy"));

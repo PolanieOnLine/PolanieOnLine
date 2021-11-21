@@ -75,6 +75,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	private static final Sprite confusedSprite;
 	private static final Sprite eatingSprite;
 	private static final Sprite poisonedSprite;
+	private static final Sprite bleedingSprite;
 	private static final Sprite shockedSprite;
 	private static final Sprite heavySprite;
 
@@ -144,6 +145,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		confusedSprite = st.getAnimatedSprite(st.getStatusSprite("confuse.png"), 200);
 		eatingSprite = st.getSprite("data/sprites/ideas/eat.png");
 		poisonedSprite = st.getAnimatedSprite(st.getStatusSprite("poison.png"), 100);
+		bleedingSprite = st.getAnimatedSprite(st.getStatusSprite("bleeding.png"), 100);
 		chokingSprite = st.getSprite("data/sprites/ideas/choking.png");
 		shockedSprite = st.getAnimatedSprite(st.getStatusSprite("shock.png"), 38, 200);
 		heavySprite = st.getAnimatedSprite(st.getStatusSprite("heavy.png"), 200);
@@ -187,6 +189,12 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 				HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE, StatusID.POISON);
 		poisonManager.setOffsets(10, -13);
 		addIconManager(poisonManager);
+
+		/* bleeding status */
+		StatusIconManager injuredManager = new StatusIconManager(RPEntity.PROP_BLEEDING, bleedingSprite,
+				HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE, StatusID.INJURED);
+		injuredManager.setOffsets(10, -13);
+		addIconManager(injuredManager);
 
 		/* shock status */
 		addIconManager(new StatusIconManager(RPEntity.PROP_SHOCK, shockedSprite,

@@ -112,6 +112,10 @@ public abstract class RPEntity extends AudibleEntity {
      */
     public static final Property PROP_POISONED = new Property();
     /**
+     * Bleeding property
+     */
+    public static final Property PROP_BLEEDING = new Property();
+    /**
      * Shock property
      */
     public static final Property PROP_SHOCK = new Property();
@@ -129,6 +133,7 @@ public abstract class RPEntity extends AudibleEntity {
         statusProp = new EnumMap<StatusID, Property>(StatusID.class);
         statusProp.put(StatusID.CONFUSE, PROP_CONFUSED);
         statusProp.put(StatusID.POISON, PROP_POISONED);
+        statusProp.put(StatusID.INJURED, PROP_BLEEDING);
         statusProp.put(StatusID.SHOCK, PROP_SHOCK);
         statusProp.put(StatusID.ZOMBIE, PROP_ZOMBIE);
         statusProp.put(StatusID.HEAVY, PROP_HEAVY);

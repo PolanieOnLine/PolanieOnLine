@@ -67,6 +67,10 @@ public class Rand {
 		return rand.nextInt(20) + 1;
 	}
 
+	public static int roll1D50() {
+		return rand.nextInt(50) + 1;
+	}
+
 	/**
 	 * Simulates rolling a dice with 100 sides.
 	 *

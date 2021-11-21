@@ -54,6 +54,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
+import games.stendhal.server.entity.status.BloodAttackerFactory;
 import games.stendhal.server.entity.status.PoisonAttackerFactory;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusAttackerFactory;
@@ -531,6 +532,11 @@ public class Creature extends NPC {
 			StatusAttacker poisoner = PoisonAttackerFactory.get(aiProfiles.get("poisonous"));
 			if (poisoner != null) {
 				this.addStatusAttacker(poisoner);
+			}
+
+			StatusAttacker injured = BloodAttackerFactory.get(aiProfiles.get("injured"));
+			if (injured != null) {
+				this.addStatusAttacker(injured);
 			}
 
 			String statusAttackerProfiles = aiProfiles.get("status_attackers");

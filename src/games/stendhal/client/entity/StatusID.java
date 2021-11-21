@@ -21,6 +21,7 @@ public enum StatusID {
 	// Statuses
 	CONFUSE("status_confuse"),
 	POISON("poisoned"),
+	INJURED("bleeding"),
 	SHOCK("status_shock"),
 	ZOMBIE("status_zombie"),
 	HEAVY("status_heavy");

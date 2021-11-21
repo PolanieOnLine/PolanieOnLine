@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
  * @author hendrik
  */
 public enum StatusType {
-
 	/** cannot walk straight */
 	CONFUSED(new ConfuseStatusHandler()),
 
@@ -30,6 +29,9 @@ public enum StatusType {
 
 	/** is consuming poison */
 	POISONED(new PoisonStatusHandler()),
+
+	/** is bleeding */
+	BLEEDING(new BleedingStatusHandler()),
 
 	/** cannot move */
 	SHOCKED(new ShockStatusHandler()),

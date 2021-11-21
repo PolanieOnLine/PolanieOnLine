@@ -46,6 +46,7 @@
 			<says>
 				<noise state="idle follow fight" value="Niech twa dusza powróci na ziemię!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -96,6 +97,7 @@
 			<says>
 				<noise state="idle follow fight" value="Syn ognia nie będzie się kłaniał synowi ziemi!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -141,6 +143,7 @@
 			<says>
 				<noise state="idle follow fight" value="Grzechy twej duszy ranią naszego Stwórcę!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -186,6 +189,7 @@
 				<noise state="idle follow fight" value="Jestem wszystkim, czego nie możesz kontrolować."/>
 				<noise state="idle follow fight" value="Precz stąd nim spojrzę!"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>

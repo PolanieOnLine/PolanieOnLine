@@ -226,6 +226,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="coward"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -258,6 +259,7 @@
 			<slot name="rhand" item="proca" quantity="1"/>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -522,6 +524,7 @@
 			<says>
 				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
@@ -557,6 +560,7 @@
 			<says>
 				<noise state="idle follow fight" value="Zawsze z humorem spoglądaj na... śmierć!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
@@ -593,6 +597,7 @@
 			<says>
 				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
@@ -661,6 +666,7 @@
 			<says>
 				<noise state="idle follow fight" value="Przekroczyłeś wrota piekieł!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -696,6 +702,7 @@
 			<says>
 				<noise state="idle follow fight" value="Nie wrócę do piekła! Nie!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -731,6 +738,7 @@
 			<says>
 				<noise state="idle follow fight" value="Krwią podpisałeś cyrograf! Pożegnaj się z bliskimi!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -767,6 +775,7 @@
 			<says>
 				<noise state="idle follow fight" value="Za twe grzechy za twe zbytki, chodź do piekła boś ty brzydki!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -864,6 +873,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -1034,6 +1044,7 @@
 		</drops>
 		<equips/>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -1070,6 +1081,7 @@
 			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
