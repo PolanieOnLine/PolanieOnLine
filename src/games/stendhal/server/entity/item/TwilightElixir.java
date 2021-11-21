@@ -78,7 +78,7 @@ public class TwilightElixir extends Drink {
 	 * this one first teleports the player  (if they are in quest slot twilight zone, to prevent abuse) before it poisons them.
 	 */
 	@Override
-		public boolean onUsed(final RPEntity user) {
+	public boolean onUsed(final RPEntity user) {
 		if (user instanceof Player) {
 			String extra = " ";
 			if (((Player) user).getHP() + getAmount() <= 0) {
