@@ -14,6 +14,7 @@ package games.stendhal.server.entity.npc.behaviour.impl;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.BleedingStatus;
 import games.stendhal.server.entity.status.PoisonStatus;
 
 /**
@@ -46,6 +47,7 @@ public class HealerBehaviour extends SellerBehaviour {
 	public void heal(final Player player) {
 		player.heal();
 		player.getStatusList().removeAll(PoisonStatus.class);
+		player.getStatusList().removeAll(BleedingStatus.class);
 		SingletonRepository.getRPWorld().modify(player);
 	}
 }
