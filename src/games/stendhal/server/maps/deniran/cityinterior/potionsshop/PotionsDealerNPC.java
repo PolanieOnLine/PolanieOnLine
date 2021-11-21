@@ -23,6 +23,7 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.Outfit;
+import games.stendhal.server.entity.mapstuff.sign.ShopSign;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -44,6 +45,7 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
+		buildSigns(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
@@ -131,9 +133,22 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 		npc.setPosition(nodes.get(0).getX(), nodes.get(0).getY());
 		npc.setPath(new FixedPath(nodes, true));
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.setOutfit(new Outfit("body=7,head=16,mouth=2,eyes=1,dress=29,mask=1,hair=20"));
+		npc.setOutfit(new Outfit("body=4,head=0,mouth=2,eyes=1,dress=29,mask=1,hair=20"));
 		npc.setGender("F");
 
 		zone.add(npc);
+	}
+
+	private void buildSigns(final StendhalRPZone zone) {
+		final ShopSign buys = new ShopSign("deniranpotionsbuy", "Sklepik Wandy (skupuje)", "Możesz sprzedać te rzeczy u Wandy.", false);
+		buys.setEntityClass("blackboard");
+		buys.setPosition(5, 6);
+
+		final ShopSign sells = new ShopSign("deniranpotionssell", "Sklepik Wandy (sprzedaje)", "Możesz kupić te rzeczy od Wandy.", false);
+		sells.setEntityClass("blackboard");
+		sells.setPosition(10, 6);
+
+		zone.add(buys);
+		zone.add(sells);
 	}
 }
