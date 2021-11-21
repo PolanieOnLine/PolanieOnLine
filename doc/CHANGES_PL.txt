@@ -31,7 +31,7 @@ Changelog
 - Dodano nowe bossy: (2)
 	- Lilith
 	- Cherubin
-- Dodano tablice z ofertami w sklepiku Wandy
+- Dodano książki z ofertami w sklepiku Wandy
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
 - Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
