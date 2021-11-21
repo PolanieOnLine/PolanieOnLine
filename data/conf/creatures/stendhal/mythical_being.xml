@@ -534,8 +534,8 @@
 		</drops>
 		<abilities>
 			<damage type="fire"/>
-			<susceptibility type="fire" value="1.2"/>
-			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="fire" value="0.8"/>
+			<susceptibility type="ice" value="1.2"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
@@ -566,8 +566,8 @@
 		</drops>
 		<abilities>
 			<damage type="ice"/>
-			<susceptibility type="ice" value="1.2"/>
-			<susceptibility type="fire" value="0.8"/>
+			<susceptibility type="fire" value="1.2"/>
+			<susceptibility type="ice" value="0.8"/>
 		</abilities>
 		<ai>
 			<profile name="brave"/>
