@@ -515,7 +515,7 @@
 	<item name="mały eliksir">
 		<type class="drink" subclass="minor_potion" tileid="-1"/>
 		<description>Oto mały eliksir. Nie jest to za wiele ale zawsze coś.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="50"/>
 			<frequency value="1"/>
@@ -611,7 +611,7 @@
 	<item name="eliksir">
 		<type class="drink" subclass="potion" tileid="-1"/>
 		<description>Oto eliksir. Wypij go w trakcie walki a pożyjesz dłużej.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="100"/>
 			<frequency value="1"/>
@@ -635,7 +635,7 @@
 	<item name="duży eliksir">
 		<type class="drink" subclass="greater_potion" tileid="-1"/>
 		<description>Oto duży eliksir, przydatny w walce.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="300"/>
 			<frequency value="1"/>
@@ -659,7 +659,7 @@
 	<item name="wielki eliksir">
 		<type class="drink" subclass="mega_potion" tileid="-1"/>
 		<description>Oto wielki eliksir. Silnie ulecza.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="800"/>
 			<frequency value="1"/>
@@ -683,7 +683,7 @@
 	<item name="eliksir miłości">
 		<type class="drink" subclass="love_potion" tileid="-1"/>
 		<description>Oto eliksir miłości. Wygląda na silny więc bądź ostrożny!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="400"/>
 			<frequency value="1"/>
@@ -754,7 +754,7 @@
 	<item name="gigantyczny eliksir">
 		<type class="drink" subclass="giant_potion" tileid="-1"/>
 		<description>Oto gigantyczny eliksir. Chyba postawi na nogi nawet umarłego!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="1600"/>
 			<frequency value="1"/>
@@ -893,7 +893,7 @@
 	<item name="smoczy eliksir">
 		<type class="drink" subclass="dragon_potion" tileid="-1"/>
 		<description>Oto smoczy eliksir. Sporządzany ze smoczej krwi.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="2400"/>
 			<frequency value="1"/>
@@ -917,7 +917,7 @@
 	<item name="duży smoczy eliksir">
 		<type class="drink" subclass="greater_dragon_potion" tileid="-1"/>
 		<description>Oto duży smoczy eliksir. Sporządzany ze smoczej krwi.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="3000"/>
 			<frequency value="1"/>
