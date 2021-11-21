@@ -80,7 +80,7 @@ public class ZombieStatusHandler implements StatusHandler<ZombieStatus> {
 		if (nextStatus != null) {
 			TurnNotifier.get().notifyInSeconds(60, new StatusRemover(statusList, nextStatus));
 		} else {
-			entity.sendPrivateText(NotificationType.SCENE_SETTING, "You are no longer zombified.");
+			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Nie jesteś już zombie.");
 			entity.remove("status_" + status.getName());
 		}
 	}

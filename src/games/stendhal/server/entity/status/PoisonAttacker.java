@@ -91,7 +91,7 @@ public class PoisonAttacker extends StatusAttacker {
 		if (roll <= actualProbability) {
 			if (target.getStatusList().inflictStatus((Status) getStatus().clone(), attacker)) {
 				new GameEvent(attacker.getName(), "poison", target.getName()).raise();
-				target.sendPrivateText(Grammar.genderVerb(target.getGender(), "Zostałeś") + " otruty przez " + attacker.getName() + ".");
+				target.sendPrivateText(Grammar.genderVerb(target.getGender(), "Zostałeś") + " " + Grammar.genderVerb(target.getGender(), "otruty") + " przez " + attacker.getName() + ".");
 			}
 		}
 	}
