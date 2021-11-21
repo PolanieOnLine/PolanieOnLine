@@ -141,11 +141,11 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 
 	private void buildSigns(final StendhalRPZone zone) {
 		final ShopSign buys = new ShopSign("deniranpotionsbuy", "Sklepik Wandy (skupuje)", "Możesz sprzedać te rzeczy u Wandy.", false);
-		buys.setEntityClass("blackboard");
+		buys.setEntityClass("book_blue");
 		buys.setPosition(5, 6);
 
 		final ShopSign sells = new ShopSign("deniranpotionssell", "Sklepik Wandy (sprzedaje)", "Możesz kupić te rzeczy od Wandy.", false);
-		sells.setEntityClass("blackboard");
+		sells.setEntityClass("book_red");
 		sells.setPosition(10, 6);
 
 		zone.add(buys);
