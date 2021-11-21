@@ -113,6 +113,7 @@
 				<sound value="evillaugh-3" />
 				<sound value="evillaugh-5" />
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -152,6 +153,7 @@
 				<sound value="evillaugh-3" />
 				<sound value="evillaugh-5" />
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -189,6 +191,7 @@
 				<sound value="evillaugh-3" />
 				<sound value="evillaugh-5" />
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -222,6 +225,7 @@
 			<says>
 				<sound value="gasha-yell-01"/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="heal" params="50,50"/>
@@ -257,6 +261,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>

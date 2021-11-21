@@ -59,6 +59,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -215,6 +216,7 @@
 			<says>
 				<noise state="idle follow fight" value="Wrogiem naszym Krasnoludy, ale zginie każdy, kto stanie nam na drodze!"/>
 			</says>
+			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -246,6 +248,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="attack weakest"/>
@@ -318,6 +321,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -423,6 +427,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -459,6 +464,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -492,6 +498,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -528,6 +535,7 @@
 			<says>
 				<noise state="idle follow fight" value="Nie nazywaj mnie przyjacielem."/>
 			</says>
+			<profile name="injured" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
@@ -631,6 +639,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -702,6 +711,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
