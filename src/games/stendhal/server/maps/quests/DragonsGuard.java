@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -109,8 +110,6 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 
 		private int counter = TIME;
 
-		// override equals
-
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -147,10 +146,6 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 			return true;
 		}
 
-		// override hash
-
-
-
 		@Override
 		public void onTurnReached(final int currentTurn) {
 			// check that the player is still in game and stop the timer
@@ -158,7 +153,6 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 			// Note that "player" always refers to the current player
 			// in order not to teleport the next player out too early,
 			// we have to compare it to the player who started this timer
-
 			final Player playerTemp = timerPlayer.get();
 
 			if (playerTemp != null) {
@@ -166,7 +160,8 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 
 				if (playerZone.equals(zone)) {
 					if (counter > 0) {
-						npc.say(playerTemp.getTitle() + " zostało Tobie "
+						int minutes = counter/60;
+						npc.say(playerTemp.getTitle() + ", " + Grammar.plnoun(minutes, "zostało") + " Tobie "
 								+ TimeUtil.timeUntil(counter) + ".");
 						counter = counter - 10 * 6;
 						SingletonRepository.getTurnNotifier().notifyInTurns(10 * 3 * 6, this);

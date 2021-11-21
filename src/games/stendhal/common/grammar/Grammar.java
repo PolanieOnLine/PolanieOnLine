@@ -404,7 +404,7 @@ public class Grammar {
 		} else if (enoun.equals("spodnie")) {
 			return enoun.substring(0, enoun.length() - 1) + postfix;
 
-		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę")) {
+		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę") || enoun.endsWith("ło")) {
 			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
 
 		} else if (enoun.endsWith("wy")) {
@@ -502,6 +502,8 @@ public class Grammar {
 			// now all the special cases
 		} else if (enoun.endsWith("pasów")) {
 			return enoun.substring(0, enoun.length() - 2) + postfix;
+		} else if (enoun.endsWith("tę") || enoun.endsWith("ło")) {
+			return enoun.substring(0, enoun.length() - 1) + "a" + postfix;
 		} else {
 			return enoun + postfix;
 		}
@@ -521,6 +523,11 @@ public class Grammar {
 		final String enoun = fullForm(noun);
 		if (quantity == 1) {
 			return singular(enoun);
+		} else if (quantity >= 5) {
+			if (enoun.endsWith("tę")) {
+				return enoun.substring(0, enoun.length() - 1);
+			}
+			return enoun;
 		} else {
 			return plural(noun);
 		}

@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -146,7 +147,8 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 
 				if ((playerZone.equals(zone)) || (playerZone.equals(zone_1))) {
 					if (counter > 0) {
-						npc.say(playerTemp.getTitle() + " zostało Tobie "
+						int minutes = counter/60;
+						npc.say(playerTemp.getTitle() + ", " + Grammar.plnoun(minutes, "zostało") + " Tobie "
 								+ TimeUtil.timeUntil(counter) + ".");
 						counter = counter - 10 * 6;
 						SingletonRepository.getTurnNotifier().notifyInTurns(10 * 3 * 6, this);
