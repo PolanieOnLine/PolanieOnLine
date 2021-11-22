@@ -142,6 +142,10 @@ public class TutorialNotifier {
 		process(player, TutorialEventType.FIRST_POISONED);
 	}
 
+	public static void bleeding(final Player player) {
+		process(player, TutorialEventType.FIRST_BLEEDING);
+	}
+
 	/**
 	 * a player who stayed another minute in game.
 	 *

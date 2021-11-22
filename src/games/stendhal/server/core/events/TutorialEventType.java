@@ -43,6 +43,8 @@ public enum TutorialEventType {
 			"Zostałeś oznaczony czerwoną czaszką ponieważ zabiłeś wojownika. Możesz spotkać osoby, które będą Cię obserwować. W celu usunięcia tego porozmawiaj z Io Flotto w świątyni w Semos."),
 	FIRST_POISONED(
 			"Zostałeś właśnie zatruty. Jeżeli nie wypiłeś trucizny to oznacza, że zostałeś zatruty przez potwora, który cię atakuje. Szybko zabij potwora ponieważ przy zatruciu twoje PZ z biegiem czasu maleje."),
+	FIRST_BLEEDING(
+			"Zostałeś mocno zraniony przez potwora, który cię atakuje. Musisz się go szybko pozbyć, ponieważ przez te rany się powoli wykrwawiasz. Wypij magiczny eliksir zdrowia lub udaj się do uzdrowicieli, aby zagoić rozległe rany."),
 	FIRST_PLAYER(
 			"Czy zauważyłeś postacie z nazwą w kolorze białym? Oznaczają one innych wojowników."),
 	FIRST_DEATH(
