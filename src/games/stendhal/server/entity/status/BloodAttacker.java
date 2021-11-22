@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.entity.status;
 
 import games.stendhal.common.Rand;
@@ -15,7 +26,7 @@ public class BloodAttacker extends StatusAttacker {
 	 * Third -regen
 	 */
 	public BloodAttacker(final int probability) {
-		super(new BleedingStatus(Rand.roll1D200(), Rand.roll1D20(), Rand.roll1D50()), probability);
+		super(new BleedingStatus(-(Rand.roll1D200()), Rand.roll1D20(), -(Rand.roll1D50())), probability);
 	}
 
 	@Override

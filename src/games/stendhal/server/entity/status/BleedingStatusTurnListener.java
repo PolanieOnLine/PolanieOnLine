@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2005-2013 - Faiumoni e. V.                 *
+ *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -45,13 +45,13 @@ public class BleedingStatusTurnListener implements TurnListener {
 		List<ConsumableStatus> toRemove = new LinkedList<ConsumableStatus>();
 		int sum = 0;
 		int amount = 0;
-		for (final BleedingStatus poison : toConsume) {
-			if (turn % poison.getFrecuency() == 0) {
-				if (poison.consumed()) {
-					toRemove.add(poison);
+		for (final BleedingStatus bleeding : toConsume) {
+			if (turn % bleeding.getFrecuency() == 0) {
+				if (bleeding.consumed()) {
+					toRemove.add(bleeding);
 				} else {
-					amount = poison.consume();
-					entity.damage(-amount, poison);
+					amount = bleeding.consume();
+					entity.damage(-amount, bleeding);
 					sum += amount;
 					entity.put(ATTRIBUTE_NAME, sum);
 				}
