@@ -10,7 +10,7 @@ Changelog
 - Poprawiono wygląd parasola, włosów
 
 *świat*
-- Dodano nowe mapy: (18)
+- Dodano nowe mapy: (19)
 	- void_islands
 	- int_dragon_wizard_tower_0
 	- int_dragon_wizard_tower_1
@@ -23,6 +23,7 @@ Changelog
 	- int_dragon_wizard_tower_room_5
 	- int_dragon_wizard_tower_room_6
 	- int_dragon_wizard_tower_room_7
+	- int_dragon_wizard_tower_room_8
 	- 0_dragon_land_nw
 	- 0_dragon_land_sw
 	- 0_tarnow_forest_sw
