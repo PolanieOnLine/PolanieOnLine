@@ -10,17 +10,21 @@ Changelog
 - Poprawiono wygląd parasola, włosów
 
 *świat*
-- Dodano nowe mapy: (14)
+- Dodano nowe mapy: (18)
 	- void_islands
-	- int_krakow_wizard_tower_0
-	- int_krakow_wizard_tower_1
-	- int_krakow_wizard_tower_2
-	- int_krakow_wizard_tower_3
-	- int_krakow_wizard_tower_room_1
-	- int_krakow_wizard_tower_room_2
-	- int_krakow_wizard_tower_room_3
-	- int_krakow_wizard_tower_room_4
-	- int_krakow_wizard_tower_room_5
+	- int_dragon_wizard_tower_0
+	- int_dragon_wizard_tower_1
+	- int_dragon_wizard_tower_2
+	- int_dragon_wizard_tower_3
+	- int_dragon_wizard_tower_room_1
+	- int_dragon_wizard_tower_room_2
+	- int_dragon_wizard_tower_room_3
+	- int_dragon_wizard_tower_room_4
+	- int_dragon_wizard_tower_room_5
+	- int_dragon_wizard_tower_room_6
+	- int_dragon_wizard_tower_room_7
+	- 0_dragon_land_nw
+	- 0_dragon_land_sw
 	- 0_tarnow_forest_sw
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
@@ -36,8 +40,11 @@ Changelog
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
 - Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
 - Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom, młotom oraz ekskaliburowi
+- Wprowadzono lekkie zmiany na mapach w Krakowie
+- Mapy z wcześniejszych wersji gry takie jak: 0_krakow_wisla_e2 & 0_krakow_wawel_e2 podzielono na pół przez co utworzyło nam dwa nowe regiony: 0_dragon_land_nw & 0_dragon_land_sw
 
 *kod*
+- Dodano wsparcie dla nowego statusu: krwawienie
 - Usprawniono zliczanie wartości lifesteal z broni oraz dodatkowego wyposażenia
 
 *naprawiono błędy*
@@ -46,6 +53,7 @@ Changelog
 - Poprawiono podatność na żywioły u niektórych centaurów
 - Poprawiono przestrzeń jaskini w Gdańsku (wyzwanie u npc Gereon)
 - Poprawiono ilość możliwych do wykonania błędnych prób podczas ich spawn'owania (wyzwanie u npc Gereon)
+- Poprawiono gramatykę u bankierów, którzy mówią ile jeszcze minut nam pozostało
 - Naprawiono wyświetlanie się osiągnięć w dzienniku z poprzednich wersji gry
 - Naprawiono literówkę w nazwie stwora wymaganego do pokonania w zadaniu u Rycerza (Warszawa)
 - Naprawiono leczenie się z broni z lifesteal'em
