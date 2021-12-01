@@ -388,6 +388,9 @@
 		<portal x="8" y="24" ref="wizardtower_room6_entrance">
 			<destination zone="int_dragon_wizard_tower_room_6" ref="wizardtower_room6_exit"/>
 		</portal>
+		<portal x="3" y="19" ref="wizardtower_room7_entrance">
+			<destination zone="int_dragon_wizard_tower_room_7" ref="wizardtower_room7_exit"/>
+		</portal>
 
 		<portal x="11" y="4" ref="wizardtower_thirdfloor_exit">
 			<destination zone="int_dragon_wizard_tower_2" ref="wizardtower_thirdfloor_entrance"/>
@@ -605,6 +608,14 @@
 		</portal>
 		<portal x="9" y="3" ref="wizardtower_room6_exit">
 			<destination zone="int_dragon_wizard_tower_3" ref="wizardtower_room6_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_wizard_tower_room_7" file="interiors/dragon/wizard_tower_room_7.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="29" y="10" ref="wizardtower_room7_exit">
+			<destination zone="int_dragon_wizard_tower_3" ref="wizardtower_room7_entrance"/>
 		</portal>
 	</zone>
 
