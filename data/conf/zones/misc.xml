@@ -542,5 +542,9 @@ Wyjście do #Zakopca!
 			<destination zone="void_islands" ref="void_7_entrence"/>
 			<attribute name="hidden" />
 		</portal>
+
+		<portal x="58" y="63" ref="wizardtower">
+			<destination zone="int_dragon_wizard_tower_4" ref="wizardtower_destination" />
+		</portal>
 	</zone>
 </zones>

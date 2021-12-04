@@ -630,6 +630,14 @@
 		</portal>
 	</zone>
 
+	<zone name="int_dragon_wizard_tower_4" file="interiors/dragon/wizard_tower_4.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="24" y="23" ref="wizardtower_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+		</portal>
+	</zone>
+
 	<!-- Level -1 -->
 
 	<zone name="-1_dragon_cave" level="-1" x="513824" y="18150" file="Level -1/dragon/cave.tmx">
