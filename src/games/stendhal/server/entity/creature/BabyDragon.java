@@ -133,7 +133,7 @@ public class BabyDragon extends Pet {
 	@Override
 	public void grow() {
 		if (owner != null) {
-			owner.sendPrivateText("Twój baby dragon wyrósła na purpurowego smoka.");
+			owner.sendPrivateText("Twój baby dragon wyrósł na purpurowego smoka.");
 		}
 
 		//get important info before anything happens to them.
