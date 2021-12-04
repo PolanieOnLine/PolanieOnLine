@@ -36,6 +36,11 @@ Changelog
 - Dodano nowe bossy: (2)
 	- Lilith
 	- Cherubin
+- Dodano nowe osiągnięcia: (4)
+	- "Grzybobranie"
+	- "Upragniona Nagroda"
+	- "Cenne Kamienie"
+	- "Pierwsza Pomoc"
 - Dodano książki z ofertami w sklepiku Wandy
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
