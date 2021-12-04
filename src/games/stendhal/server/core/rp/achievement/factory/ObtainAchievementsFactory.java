@@ -54,6 +54,10 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(100, "polano")));
 
+		achievements.add(createAchievement("obtain.funguy", "Grzybobranie", "Zebrał po 20 każdego rodzaju grzyba",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasHarvestedNumberOfItemsCondition(20, "pieczarka", "borowik", "muchomor")));
+
 		achievements.add(createAchievement("obtain.gornik", "Górnik z Krwi i Kości", "Wydobył 50 każdego rodzaju kamienia szlachetnego",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerMinedNumberOfItemsCondition(50, "bryłka złota", "bryłka mithrilu", "kryształ ametystu", "kryształ rubinu", "kryształ szafiru", "kryształ szmaragdu", "kryształ obsydianu", "kryształ diamentu")));

@@ -32,6 +32,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 
 	public static final String ID_HAPPY_HOUR = "buy.drink.alcohol";
 	public static final String ID_HEALTH_IMPORTANT = "buy.drink.potions";
+	public static final String ID_AID_KNOWLEDGE = "buy.drink.aidknowledge";
 	public static final String ID_VANILLA_OR_CHOCOLATE = "buy.drink.shakes";
 	public static final String ID_CHOCOLATE = "buy.food.chocolate";
 	public static final String ID_LOVE_HOTDOGS = "buy.food.hotdogs";
@@ -83,6 +84,20 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(COUNT_HAPPY_HOUR, ITEMS_HAPPY_HOUR)));
+
+		achievements.add(createAchievement(
+				ID_AID_KNOWLEDGE, "Pierwsza Pomoc", "Zakupił eliksir",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String potions: ITEMS_HEALTH_IMPORTANT) {
+							items += player.getQuantityOfBoughtItems(potions);
+						}
+						return items >= 1;
+					}
+				}));
 
 		achievements.add(createAchievement(
 				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił łącznie 500 różnych eliksirów",

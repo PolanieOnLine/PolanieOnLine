@@ -27,6 +27,10 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
  * @author madmetzger
  */
 public class ItemAchievementFactory extends AbstractAchievementFactory {
+	public static final String MONEY = "money";
+
+	public static final String[] ITEMS_JEWELLERY = { "ametyst", "diament", "obsydian", "rubin", "szafir", "szmaragd" };
+
 	@Override
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> itemAchievements = new LinkedList<Achievement>();
@@ -34,27 +38,27 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement(
 				"item.money.00000100", "Pierwsze Kieszonkowe", "Zdobył 100 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(100, "money")));
+				new PlayerLootedNumberOfItemsCondition(100, MONEY)));
 
 		itemAchievements.add(createAchievement(
 				"item.money.00010000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(10000, "money")));
+				new PlayerLootedNumberOfItemsCondition(10000, MONEY)));
 
 		itemAchievements.add(createAchievement(
 				"item.money.00100000", "Mała Fortuna", "Zdobył 100,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(100000, "money")));
+				new PlayerLootedNumberOfItemsCondition(100000, MONEY)));
 
 		itemAchievements.add(createAchievement(
 				"item.money.01000000", "Już Nie Potrzebujesz Więcej", "Zdobył 1,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(1000000, "money")));
+				new PlayerLootedNumberOfItemsCondition(1000000, MONEY)));
 
 		itemAchievements.add(createAchievement(
 				"item.money.10000000", "Wielka Kąpiel w Złocie", "Zdobył 10,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(10000000, "money")));
+				new PlayerLootedNumberOfItemsCondition(10000000, MONEY)));
 
 		itemAchievements.add(createAchievement(
 				"item.cheese.2000", "Serowy Czarodziej", "Zdobył 2,000 sera",
@@ -75,6 +79,16 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				"item.set.littlerings", "Mały Komplet Pierścionków", "Zdobył srebrny i złoty pierścień",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(new QuestCompletedCondition("zamowienie_strazy"), new QuestCompletedCondition("zloty_pierscien"))));
+
+		itemAchievements.add(createAchievement(
+				"item.goldenblade", "Upragniona Nagroda", "Zdobył złotą klingę",
+				Achievement.HARD_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1, "złota klinga")));
+
+		itemAchievements.add(createAchievement(
+				"item.jewellery", "Cenne Kamienie", "Zdobył 5 z każdego rodzaju drogocennych klejnotów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(5, ITEMS_JEWELLERY)));
 
 		return itemAchievements;
 	}
