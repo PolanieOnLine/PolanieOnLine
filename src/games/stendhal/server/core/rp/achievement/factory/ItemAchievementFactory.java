@@ -15,11 +15,15 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.PlayerLootedNumberOfItemsCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * Factory for item related achievements.
@@ -30,7 +34,19 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 	public static final String MONEY = "money";
 
 	public static final String[] ITEMS_JEWELLERY = { "ametyst", "diament", "obsydian", "rubin", "szafir", "szmaragd" };
-	public static final String[] ITEMS_MAGICSPELLS = { "magia deszczu", "magia mroku", "magia płomieni", "magia ziemi", "magia światła", "zaklęcie pustelnika" };
+	public static final String[] ITEMS_MAGICSPELLS = {
+			"magia deszczu", "magia mroku", "magia płomieni",
+			"magia ziemi", "magia światła", "zaklęcie pustelnika"
+	};
+	public static final String[] ITEMS_DRAGONCLAWS = {
+			"pazur arktycznego smoka", "pazur czarnego smoka", "pazur czerwonego smoka",
+			"pazur niebieskiego smoka", "pazur zielonego smoka", "pazur złotego smoka"
+	};
+	public static final String[] ITEMS_ANGELFEATHERS = {
+			"pióro anioła", "pióro archanioła", "pióro archanioła ciemności",
+			"pióro azazela", "pióro mrocznego anioła", "pióro serafina",
+			"pióro upadłego anioła"
+	};
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -100,6 +116,34 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				"item.magicspells", "Zaklinacz", "Zdobył po 1,000 z każdego rodzaju zaklęć",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000, ITEMS_MAGICSPELLS)));
+
+		itemAchievements.add(createAchievement(
+				"item.dragonclaws", "Smocza Wystawa", "Zdobył łącznie 10 różnych smoczych pazurów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String dragonclaws: ITEMS_DRAGONCLAWS) {
+							items += player.getQuantityOfBoughtItems(dragonclaws);
+						}
+						return items >= 10;
+					}
+				}));
+
+		itemAchievements.add(createAchievement(
+				"item.angelfeathers", "Anielskie Skrzydła", "Zdobył łącznie 1,000 różnych anielskich piór",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String dragonclaws: ITEMS_ANGELFEATHERS) {
+							items += player.getQuantityOfBoughtItems(dragonclaws);
+						}
+						return items >= 1000;
+					}
+				}));
 
 		return itemAchievements;
 	}
