@@ -2177,6 +2177,29 @@
 		</equipable>
 	</item>
 
+	<item name="gotowane ziemniaki">
+		<type class="food" subclass="potatoes_boiled" tileid="-1"/>
+		<description>Oto gotowane ziemniaki. Smak, którego nigdy nie zapomnisz! Tylko uważaj, są jeszcze gorące!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<attributes>
+			<amount value="30"/>
+			<frequency value="5"/>
+			<quantity value="1"/>
+			<regen value="4"/>
+			<menu value="Zjedz|Użyj"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="dwojaki">
 		<type class="food" subclass="dwojaki" tileid="-1"/>
 		<description>Oto dwojaki pełne gorących ukucianych gruli omaszczonych skwarkami i masłem. Jedz póki ciepłe!</description>
