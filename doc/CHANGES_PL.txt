@@ -37,7 +37,7 @@ Changelog
 - Dodano nowe bossy: (2)
 	- Lilith
 	- Cherubin
-- Dodano nowe osiągnięcia: (9)
+- Dodano nowe osiągnięcia: (18)
 	- "Grzybobranie"
 	- "Upragniona Nagroda"
 	- "Cenne Kamienie"
@@ -47,11 +47,21 @@ Changelog
 	- "Mały Chlebownik"
 	- "Słodkie Przekąski"
 	- "Wędzarka"
+	- "Hodowca Kapeluszników"
+	- "Zaklinacz"
+	- "Dostawca Pizzy"
+	- "Kulturalny Przybysz"
+	- "Piękne Ogrody"
+	- "Centralny Rynkowicz"
+	- "Ogrodnik"
+	- "Samotna Kraina"
+	- "Ogromne Jaskiniowce"
 - Dodano książki z ofertami w sklepiku Wandy
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
 - Przedmiot z możliwym tylko 1 udoskonaleniem będzie droższy w jego ulepszeniu od pozostałych
 - Zmieniono nieco statystyki niektórym przedmiotom takim jak: rękawicom, pasom, tarczom, pierścionkom, młotom oraz ekskaliburowi
+- Zmieniono nazewnictwo osiągnieć za odrodzenia na bardziej odpowiednie
 - Wprowadzono lekkie zmiany na mapach w Krakowie
 - Mapy z wcześniejszych wersji gry takie jak: 0_krakow_wisla_e2 & 0_krakow_wawel_e2 podzielono na pół przez co utworzyło nam dwa nowe regiony: 0_dragon_land_nw & 0_dragon_land_sw
 
@@ -71,6 +81,7 @@ Changelog
 - Naprawiono leczenie się z broni z lifesteal'em
 - Naprawiono listę z potrzebującymi pomoc NPC
 - Naprawiono błąd z nieśmiertelnością z wykorzystaniem eliksiru mroku
+- Naprawiono przyznawanie osiągnięć za wcześniejsze odrodzenia (w momencie prac konserwacyjnych gdy osiągniecia zostałyby usunięte, aby przyznać wszystkie na nowo)
 
 
 1.24
