@@ -6,6 +6,7 @@ import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
+import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 
 public class RebornAchievementFactory extends AbstractAchievementFactory {
@@ -31,27 +32,37 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		List<Achievement> achievements = new LinkedList<Achievement>();
 		achievements.add(createAchievement(
-				ID_NEWBORN, "Nowo Narodzony", "Narodził się na nowo",
+				ID_NEWBORN, "Nowa Przygoda", "Rozpoczął przygodę od nowa",
 				EASY_SCORE, true,
-				new QuestInStateCondition(QUEST_SLOT, "done")));
+				new OrCondition(new QuestInStateCondition(QUEST_SLOT, "done"),
+						new QuestInStateCondition(QUEST_SLOT, "done;2"),
+						new QuestInStateCondition(QUEST_SLOT, "done;3"),
+						new QuestInStateCondition(QUEST_SLOT, "done;4"),
+						new QuestInStateCondition(QUEST_SLOT, "done;5"))));
 
 		achievements.add(createAchievement(
-				ID_NEW_ADVENTURE, "Nowy Ja, Nowa Przygoda", "Narodził się na nowo po raz drugi",
+				ID_NEW_ADVENTURE, "Druga Szansa", "Rozpoczął przygodę drugi raz od nowa",
 				MEDIUM_SCORE, true,
-				new QuestInStateCondition(QUEST_SLOT, "done;2")));
+				new OrCondition(new QuestInStateCondition(QUEST_SLOT, "done;2"),
+						new QuestInStateCondition(QUEST_SLOT, "done;3"),
+						new QuestInStateCondition(QUEST_SLOT, "done;4"),
+						new QuestInStateCondition(QUEST_SLOT, "done;5"))));
 
 		achievements.add(createAchievement(
-				ID_COMING, "Przygodo, Ruszam!", "Narodził się na nowo po raz trzeci",
+				ID_COMING, "Nadchodzę", "Rozpoczął przygodę trzeci raz od nowa",
 				MEDIUM_SCORE, true,
-				new QuestInStateCondition(QUEST_SLOT, "done;3")));
+				new OrCondition(new QuestInStateCondition(QUEST_SLOT, "done;3"),
+						new QuestInStateCondition(QUEST_SLOT, "done;4"),
+						new QuestInStateCondition(QUEST_SLOT, "done;5"))));
 
 		achievements.add(createAchievement(
-				ID_REPLAY, "Poczwórna Powtórka", "Narodził się na nowo po raz czwarty",
+				ID_REPLAY, "Zdobywca Doświadczenia", "Rozpoczął przygodę czwarty raz od nowa",
 				HARD_SCORE, true,
-				new QuestInStateCondition(QUEST_SLOT, "done;4")));
+				new OrCondition(new QuestInStateCondition(QUEST_SLOT, "done;4"),
+						new QuestInStateCondition(QUEST_SLOT, "done;5"))));
 
 		achievements.add(createAchievement(
-				ID_NEW_HISTORY, "Tym Razem Historia się Nie Powtórzy", "Narodził się na nowo po raz ostatni",
+				ID_NEW_HISTORY, "Legendarny Wojownik", "Rozpoczął przygodę piąty raz od nowa",
 				LEGENDARY_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, "done;5")));
 
