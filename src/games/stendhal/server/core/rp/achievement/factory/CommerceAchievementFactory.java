@@ -39,6 +39,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SANDWICHES = "buy.food.sandwiches";
 	public static final String ID_SCROLLS = "buy.scrolls";
 	public static final String ID_HOUSE = "buy.house";
+	public static final String ID_ICECREAM = "buy.drink.icecream";
 
 	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
 	public static final String ID_FISHSHOP = "sell.food.fishshop";
@@ -168,6 +169,11 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 					}
 				}
 		));
+
+		achievements.add(createAchievement(
+				ID_ICECREAM, "Schłodzenie", "Zakupił 100 lodów",
+				Achievement.EASY_BASE_SCORE, true,
+				new BoughtNumberOfCondition(100, "lody")));
 
 		achievements.add(createAchievement(
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",

@@ -76,6 +76,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				new PlayerLootedNumberOfItemsCondition(1500, "dorsz")));
 
 		itemAchievements.add(createAchievement(
+				"item.sausage.2000", "Parówkowy Król", "Zdobył 2,000 kiełbasy wiejskiej",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(2000, "kiełbasa wiejska")));
+
+		itemAchievements.add(createAchievement(
 				"item.set.littlerings", "Mały Komplet Pierścionków", "Zdobył srebrny i złoty pierścień",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(new QuestCompletedCondition("zamowienie_strazy"), new QuestCompletedCondition("zloty_pierscien"))));

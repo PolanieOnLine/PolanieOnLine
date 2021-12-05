@@ -29,6 +29,8 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
  * @author kymara
  */
 public class ProductionAchievementFactory extends AbstractAchievementFactory {
+	private static final String[] ITEMS_SNACKS = { "tarta", "tarta z marchewką", "tarta z rybnym nadzieniem", "pączek", "jabłecznik", "ciasto z wiśniami" };
+	private static final String[] ITEMS_SMOKINGFOOD = { "mięso wędzone", "szynka wędzona", "wędzony dorsz", "wędzony pstrąg" };
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -86,6 +88,18 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(100, "kanapka")));
 
+		achievements.add(createAchievement("production.bread.500", "Mały Chlebownik", "Upiekł 500 bochenków chleba",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerProducedNumberOfItemsCondition(500, "chleb")));
+
+		achievements.add(createAchievement("production.sweetsnacks.200", "Słodkie Przekąski", "Upiekł po 200 różnych słodkich przekąsek",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerProducedNumberOfItemsCondition(200, ITEMS_SNACKS)));
+
+		achievements.add(createAchievement("production.smokingfood.50", "Wędzarka", "Uwędził po 50 różnego jedzenia",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerProducedNumberOfItemsCondition(50, ITEMS_SMOKINGFOOD)));
+
 		return achievements;
 	}
 
@@ -93,5 +107,4 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 	protected Category getCategory() {
 		return Category.PRODUCTION;
 	}
-
 }
