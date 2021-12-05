@@ -30,17 +30,23 @@ Changelog
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
 	- 0_tarnow_plains
-- Dodano nowy przedmiot:
+- Dodano nowy przedmiot: (3)
 	- magiczne rękawice płytowe
 	- magiczny pas płytowy
+	- gotowane ziemniaki
 - Dodano nowe bossy: (2)
 	- Lilith
 	- Cherubin
-- Dodano nowe osiągnięcia: (4)
+- Dodano nowe osiągnięcia: (9)
 	- "Grzybobranie"
 	- "Upragniona Nagroda"
 	- "Cenne Kamienie"
 	- "Pierwsza Pomoc"
+	- "Schłodzenie"
+	- "Parówkowy Król"
+	- "Mały Chlebownik"
+	- "Słodkie Przekąski"
+	- "Wędzarka"
 - Dodano książki z ofertami w sklepiku Wandy
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
