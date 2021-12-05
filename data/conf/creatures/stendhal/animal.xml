@@ -654,7 +654,7 @@
 		<type class="stendhal/animal" subclass="elephant_musth" tileid="animal.png:16"/>
 		<description>Oto dziki słoń. Jest bardzo agresywny i nieprzewidywalny.</description>
 		<attributes>
-			<atk value="248"/>
+			<atk value="218"/>
 			<def value="86"/>
 			<hp value="2250"/>
 			<speed value="0.8"/>

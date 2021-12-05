@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,12 +22,8 @@ import games.stendhal.server.entity.item.Item;
  * Base item creator (using a constructor).
  */
 abstract class AbstractItemCreator extends AbstractCreator<Item>{
+	private static final Logger logger = Logger.getLogger(AbstractItemCreator.class);
 
-	static final Logger logger = Logger.getLogger(AbstractItemCreator.class);
-
-	/**
-	 *
-	 */
 	final DefaultItem defaultItem;
 
 	public AbstractItemCreator(DefaultItem defaultItem, final Constructor< ? > construct) {
