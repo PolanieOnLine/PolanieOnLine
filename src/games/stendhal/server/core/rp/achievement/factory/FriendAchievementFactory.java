@@ -22,6 +22,7 @@ import games.stendhal.server.core.rp.achievement.condition.QuestWithPrefixComple
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasPetOrSheepCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
@@ -37,9 +38,10 @@ import games.stendhal.server.entity.player.Player;
 public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 	public static final String ID_CHILD_FRIEND = "friend.quests.children";
-	public static final String ID_BAD_DREAMS = "friend.quest.dreams";
 	public static final String ID_PRIVATE_DETECTIVE = "friend.quests.find";
 	public static final String ID_DRAGONS = "friend.quests.dragons";
+	public static final String ID_BAD_DREAMS = "friend.quest.dreams";
+	public static final String ID_PIZZA_DELIVERY = "friend.quest.pizza";
 	public static final String ID_GOOD_SAMARITAN = "friend.karma.250";
 	public static final String ID_MERCIFUL = "friend.karma.2000";
 	public static final String ID_KILLER = "friend.playerkiller";
@@ -150,7 +152,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		achievements.add(createAchievement(
-				ID_MERCIFUL, "Człowiek Miłosierny", "Zdobył 2000 karmy",
+				ID_MERCIFUL, "Człowiek Miłosierny", "Zdobył 2,000 karmy",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -184,6 +186,13 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 				ID_PET_FRIEND, "Mój Domowy Przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasPetOrSheepCondition()));
+
+		achievements.add(createAchievement(
+				ID_PIZZA_DELIVERY, "Dostawca Pizzy", "Rozwiózł pizze w krainie Faiumoni lub Prasłowiańskiej",
+				Achievement.EASY_BASE_SCORE, true,
+				new OrCondition(
+						new QuestCompletedCondition("pizza_delivery"),
+						new QuestCompletedCondition("dostawca_pizzy2"))));
 
 		return achievements;
 	}

@@ -30,6 +30,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 	public static final String MONEY = "money";
 
 	public static final String[] ITEMS_JEWELLERY = { "ametyst", "diament", "obsydian", "rubin", "szafir", "szmaragd" };
+	public static final String[] ITEMS_MAGICSPELLS = { "magia deszczu", "magia mroku", "magia płomieni", "magia ziemi", "magia światła", "zaklęcie pustelnika" };
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -94,6 +95,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				"item.jewellery", "Cenne Kamienie", "Zdobył 5 z każdego rodzaju drogocennych klejnotów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(5, ITEMS_JEWELLERY)));
+
+		itemAchievements.add(createAchievement(
+				"item.magicspells", "Zaklinacz", "Zdobył po 1,000 z każdego rodzaju zaklęć",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1000, ITEMS_MAGICSPELLS)));
 
 		return itemAchievements;
 	}

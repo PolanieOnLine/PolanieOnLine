@@ -50,9 +50,20 @@ public class InteriorZoneAchievementFactory extends AbstractAchievementFactory {
 
 		list.add(createAchievement(
 				"zone.interior.deniran", "Samotna Kraina", "Odwiedził wszystkie pomieszczenia w regionie Deniran",
-				Achievement.EASY_BASE_SCORE, false,
-				new PlayerVisitedZonesInRegionCondition("deniran", false, false)));
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerVisitedZonesInRegionCondition("deniran", Boolean.FALSE, Boolean.FALSE)));
+	
+		list.add(createAchievement(
+				"zone.interior.kirdneh", "Centralny Rynkowicz", "Odwiedził wszystkie pomieszczenia w regionie Kirdneh",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerVisitedZonesInRegionCondition("kirdneh", Boolean.FALSE, Boolean.FALSE)));
 
+		list.add(createAchievement(
+				"zone.interior.kalavan", "Ogrodnik", "Odwiedził wszystkie pomieszczenia w regionie Kalavan",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerVisitedZonesInRegionCondition("kalavan", Boolean.FALSE, Boolean.FALSE)));
+
+		// Prasłowiańskie
 		list.add(createAchievement(
 				"zone.interior.krakowcity", "Miasto Kraków", "Odwiedził wszystkie pomieszczenia w regionie Krakowa",
 				Achievement.MEDIUM_BASE_SCORE, true,

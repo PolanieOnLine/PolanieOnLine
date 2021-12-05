@@ -45,6 +45,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_FISHSHOP = "sell.food.fishshop";
 	public static final String ID_NAILS = "sell.item.nails";
 	public static final String ID_SKINS = "sell.item.skins";
+	public static final String ID_MUSHROOMS = "sell.item.mushrooms";
 
 	public static final int COUNT_HAPPY_HOUR = 100;
 
@@ -71,6 +72,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			"skóra niebieskiego smoka", "skóra zielonego smoka", "skóra złotego smoka",
 			"skóra tygrysa", "skóra lwa", "skóra białego tygrysa", "skóra zwierzęca"
 	};
+	public static final String[] ITEMS_MUSHROOMS = { "borowik", "pieczarka", "muchomor" };
 
 	@Override
 	protected Category getCategory() {
@@ -201,6 +203,20 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 							items += player.getQuantityOfSoldItems(fishes);
 						}
 						return items >= 1000;
+					}
+				}));
+
+		achievements.add(createAchievement(
+				ID_MUSHROOMS, "Hodowca Kapeluszników", "Sprzedał łącznie 2,000 różnych grzybów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String fishes: ITEMS_MUSHROOMS) {
+							items += player.getQuantityOfSoldItems(fishes);
+						}
+						return items >= 2000;
 					}
 				}));
 
