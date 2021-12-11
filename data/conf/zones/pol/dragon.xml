@@ -461,7 +461,7 @@
 		</entity>
 
 		<portal x="12" y="5" ref="void1">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -469,7 +469,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="13" y="5" ref="void2">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -477,7 +477,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="13" y="6" ref="void3">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -485,7 +485,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="15" y="14" ref="void4">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -493,7 +493,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="15" y="15" ref="void5">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -501,7 +501,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="15" y="16" ref="void6">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -509,7 +509,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="14" y="15" ref="void7">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -517,7 +517,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="14" y="16" ref="void8">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -525,7 +525,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="13" y="16" ref="void9">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
@@ -533,7 +533,7 @@
 			<attribute name="hidden" />
 		</portal>
 		<portal x="12" y="16" ref="void10">
-			<destination zone="void_islands" ref="void_start" />
+			<destination zone="1_void_islands" ref="void_start" />
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.LevelCheckingPortal">
 				<parameter name="minimum-level">250</parameter>
 				<parameter name="rejected">Uchroniłeś się przed upadkiem w wielką przepaść.</parameter>
