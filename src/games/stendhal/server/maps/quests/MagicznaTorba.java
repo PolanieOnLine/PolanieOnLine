@@ -16,11 +16,17 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.Direction;
+import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
+import games.stendhal.server.entity.npc.action.EnableFeatureAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -34,95 +40,109 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
 
-public class Imprezowicz extends AbstractQuest {
-	public static final String QUEST_SLOT = "wino_dla_imprezowicza";
-	private final SpeakerNPC npc = npcs.get("Cadhes");
+public class MagicznaTorba extends AbstractQuest {
+	public static final String QUEST_SLOT = "magic_bag";
+	private final SpeakerNPC npc = npcs.get("Wizariusz");
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, 
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED, 
-			"*hicks* Wisz trochu mi skoczyło si #'wino'. Cz mozes mi po ni skoczyć *hicks*?",
+			"W jednej z moich portali znajduje się lodowa krypta, a w niej zalęgły się lodowe stwory, jeden z nich zabrał mój cenny pergamin, który zawiera w sobie lodowe zaklęcia. Zwróciłbyś go do mnie?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
-			"*hicks* Dzikuję! *hicks*",
+			ConversationStates.IDLE, 
+			"Już pomogłeś mi wystarczająco, nie zawracaj mi teraz... jak wy to mówicie? a... gitary!",
 			null);
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add( ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Ja się *hicks* nigdiie nie *hicks* ruszam.",
+			"Dobrze... przeteleportuję cię do lodowej krypty gdy powiesz mi #teleportuj. Podczas teleportacji mogą występować bóle głowy, także miej to na uwadze!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
+		npc.add( ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
-			ConversationStates.ATTENDING,
-			"*hicks* OK. *hicks* Sam sobi pu ni pój *hicks* dę!",
+			ConversationStates.IDLE,
+			"No cóż... Żeganj!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			Arrays.asList("wino", "napój z winogron"),
+		npc.add( ConversationStates.ATTENDING,
+			Arrays.asList("teleportuj", "tp", "teleport"),
+			new QuestInStateCondition(QUEST_SLOT, "start"),
+			ConversationStates.ATTENDING,
 			null,
-			ConversationStates.QUEST_OFFERED,
-			"*hicks* Wy *hicks* starcy mi je *hicks* den kiliszek! Zrobis to da mne? *hicks*",
-			null);
+			new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+					final String zoneName = "-1_ice_vault";
+					final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
+					player.teleport(zone, 24, 14, Direction.DOWN, null);
+					player.notifyWorldAboutChanges();
+				}
+			});
 	}
 
 	private void prepareBringingStep() {
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
-					new PlayerHasItemWithHimCondition("napój z winogron")),
+					new PlayerHasItemWithHimCondition("lodowy zwój")),
 			ConversationStates.QUEST_ITEM_BROUGHT, 
-			"Hej! *hicks* Cy to wino jet dl mie? *hicks* *hicks*", null);
+			"Wyczuwam mój magiczny pergamin. Możesz mi go zwrócić?",
+			null);
 
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
-					new NotCondition(new PlayerHasItemWithHimCondition("napój z winogron"))),
+					new NotCondition(new PlayerHasItemWithHimCondition("lodowy zwój"))),
 			ConversationStates.ATTENDING, 
-			"Hej, wciąż czekam na mje wino, pamintas? *hicks*",
+			"Ach tak... To Ty, którego miałem przeteleportować po mój pergamin...",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("napój z winogron"));
-		reward.add(new IncreaseXPAction(650));
+		reward.add(new DropItemAction("lodowy zwój"));
+		reward.add(new IncreaseXPAction(5000));
+		reward.add(new IncreaseKarmaAction(5));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new IncreaseKarmaAction(10));
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
+		reward.add(new EnableFeatureAction("magicbag"));
+
+		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
+		reward2.add(new DropItemAction("lodowy zwój"));
+		reward2.add(new IncreaseXPAction(-10000));
+		reward2.add(new IncreaseKarmaAction(-20));
+		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
+		reward2.add(new EnableFeatureAction("magicbag"));
+
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
-			new PlayerHasItemWithHimCondition("napój z winogron"),
+			new PlayerHasItemWithHimCondition("lodowy zwój"),
 			ConversationStates.ATTENDING,
 			"*gul gul* Ach! Trafieś *hicks*!",
 			new MultipleActions(reward));
 
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES,
-			null,
+			new PlayerHasItemWithHimCondition("lodowy zwój"),
 			ConversationStates.ATTENDING,
-			"*hicks* Chya pamitas, że prosiem Cę o coś, prada? *hicks* Mógbym trazz napić si. *hicks*",
-			null);
+			"Jesteś absolutnie pewien, że nie chcesz mi go oddać? Cóż... wezmę go siłą...",
+			new MultipleActions(reward2));
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Imprezowicz",
-				"Cadhes jest spragniony i chce tylko jeden kieliszek wina.",
+				"Magiczna Torba",
+				"Wizariusz obiecał nagrodę, która może mnie zainteresować.",
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
@@ -134,20 +154,20 @@ public class Imprezowicz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Cadhesem.");
+		res.add("Rozmawiałem z Wizariuszem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie dam wina Cadhesowi.");
+			res.add("Nie zamierzam być pieskiem na posyłki...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Zgodziłem się przynieść napój z winogron Cadhesowi.");
+			res.add("Zgodziłem się zwrócić magiczny pergamin.");
 		}
-		if ("start".equals(questState) && player.isEquipped("napój z winogron")
+		if ("start".equals(questState) && player.isEquipped("lodowy zwój")
 				|| "done".equals(questState)) {
-			res.add("Mam wino dla Cadhesa.");
+			res.add("Mam pergamin dla Wizariusza.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Przekazałem kieliszek wina Cadhesowi.");
+			res.add("Zwróciłem zwój czarownikowi.");
 		}
 		return res;
 	}
@@ -159,14 +179,9 @@ public class Imprezowicz extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Imprezowicz";
+		return "Magiczna Torba";
 	}
 
-	@Override
-	public String getRegion() {
-		return Region.TATRY_MOUNTAIN;
-	}
-	
 	@Override
 	public String getNPCName() {
 		return npc.getName();

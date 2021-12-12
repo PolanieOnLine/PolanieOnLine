@@ -307,6 +307,10 @@
 			<destination zone="int_dragon_wizard_tower_1" ref="wizardtower_firstfloor_exit"/>
 		</portal>
 
+		<portal x="11" y="14" ref="wizardtower_exit_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+		</portal>
+
 		<portal x="11" y="26" ref="dwizard_exit">
 			<destination zone="0_dragon_land_nw" ref="dwizard_entrance"/>
 			<attribute name="move.continuous" />
@@ -397,6 +401,18 @@
 
 		<portal x="11" y="4" ref="wizardtower_thirdfloor_exit">
 			<destination zone="int_dragon_wizard_tower_2" ref="wizardtower_thirdfloor_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_dragon_wizard_tower_4" file="interiors/dragon/wizard_tower_4.tmx">
+		<configurator class-name="games.pol.server.maps.dragon.wizardtower.WizardNPC"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="24" y="23" ref="wizardtower_destination">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+		</portal>
+		<portal x="37" y="35" ref="wizardtower_exit">
+			<destination zone="int_dragon_wizard_tower_0" ref="wizardtower_exit_destination" />
 		</portal>
 	</zone>
 
@@ -627,14 +643,6 @@
 
 		<portal x="22" y="10" ref="wizardtower_room8_exit">
 			<destination zone="int_dragon_wizard_tower_3" ref="wizardtower_room8_entrance"/>
-		</portal>
-	</zone>
-
-	<zone name="int_dragon_wizard_tower_4" file="interiors/dragon/wizard_tower_4.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-
-		<portal x="24" y="23" ref="wizardtower_destination">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
 		</portal>
 	</zone>
 

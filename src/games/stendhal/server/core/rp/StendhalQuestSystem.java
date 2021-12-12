@@ -268,6 +268,10 @@ public class StendhalQuestSystem {
 		loadQuest(new PierscienMagnata());
 		loadQuest(new PierscienMieszczanina());
 		/** 					**\
+		 *         DRAGON		 *
+		\**	                    **/
+		loadQuest(new MagicznaTorba());
+		/** 					**\
 		 *         DESERT		 *
 		\**	                    **/
 		loadQuest(new ZlotaCiupagaJedenWas());

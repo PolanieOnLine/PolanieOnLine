@@ -9,19 +9,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.pol.server.maps.dragon.wizardtower.vault;
+package games.pol.server.maps.dragon.wizardtower;
+
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.SpeakerNPC;
 
 import java.util.Map;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.rule.EntityManager;
-import games.stendhal.server.entity.creature.Creature;
-import games.stendhal.server.entity.creature.ItemGuardCreature;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
-
-public class IceVaultCreature implements ZoneConfigurator {
+public class WizardNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
 	 *
@@ -30,14 +26,24 @@ public class IceVaultCreature implements ZoneConfigurator {
 	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildQuicksandArea(zone);
+		buildNPC(zone);
 	}
 
-	private void buildQuicksandArea(final StendhalRPZone zone) {
-		final EntityManager manager = SingletonRepository.getEntityManager();
-		final Creature creature = new ItemGuardCreature(manager.getCreature("lodowy starszy olbrzym"), "lodowy zwój", "magic_bag", "start");
-		final CreatureRespawnPoint point = new CreatureRespawnPoint(zone, 41, 22, creature, 1);
+	private void buildNPC(final StendhalRPZone zone) {
+		final SpeakerNPC npc = new SpeakerNPC("Wizariusz") {
+			@Override
+			protected void createDialog() {
+				addGreeting("Emm... Witaj? Skąd się tutaj wziąłeś młody wojowniku? Czyżby szukasz mojej #pomocy?");
+				addHelp("To jest nieco intrygujące, pomóż najpierw mi w pewnym małym #zadaniu, a ja przekażę Tobie coś bardzo wartościowego.");
+				addOffer("Będę miał dla Ciebie #zadanie.");
+				addGoodbye("Żegnaj wojowniku. Uważaj tylko na niższe piętra tej wieży!");
+			}
+		};
 
-		zone.add(point);
+		npc.setDescription("Oto Wizariusz. Wygląda na mądrego człowieka co nosi spiczastą czapkę na głowie.");
+		npc.setEntityClass("wizardnpc");
+		npc.setGender("M");
+		npc.setPosition(5, 41);
+		zone.add(npc);
 	}
 }
