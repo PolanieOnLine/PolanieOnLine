@@ -71,7 +71,7 @@ public class MagicznaTorba extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"No cóż... Żeganj!",
+			"No cóż... Żegnaj!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.add( ConversationStates.ATTENDING,
