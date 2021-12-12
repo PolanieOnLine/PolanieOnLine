@@ -127,7 +127,7 @@ public class MagicznaTorba extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new PlayerHasItemWithHimCondition("lodowy zwój"),
 			ConversationStates.ATTENDING,
-			"*gul gul* Ach! Trafieś *hicks*!",
+			"Dobra robota dzielny rycerzu! Takiej współpracy się właśnie spodziewałem, a oto Twoja nagroda.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
