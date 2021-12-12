@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.24.5
+1.25
 *klient*
 - Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
 - Dodano nowe grafiki przedmiotów
@@ -12,6 +12,7 @@ Changelog
 *świat*
 - Dodano nowe mapy: (19)
 	- void_islands
+	- ice_vault
 	- int_dragon_wizard_tower_0
 	- int_dragon_wizard_tower_1
 	- int_dragon_wizard_tower_2
@@ -30,6 +31,8 @@ Changelog
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
 	- 0_tarnow_plains
+- Dodano nowego NPC:
+	- Wizariusz
 - Dodano nowy przedmiot: (3)
 	- magiczne rękawice płytowe
 	- magiczny pas płytowy
@@ -58,6 +61,7 @@ Changelog
 	- "Ogromne Jaskiniowce"
 	- "Smocza Wystawa"
 	- "Anielskie Skrzydła"
+- Dodano nowego zadanie dla Wizariusza
 - Dodano książki z ofertami w sklepiku Wandy
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
