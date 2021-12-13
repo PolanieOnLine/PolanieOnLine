@@ -26,6 +26,10 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<portal x="84" y="46" ref="kitchen_entrance">
+			<destination zone="int_tarnow_kitchen" ref="kitchen_exit"/>
+		</portal>
 	</zone>
 
 	<zone name="0_tarnow_plains" level="0" x="514080" y="18176" file="Level 0/tarnow/plains.tmx">
@@ -36,6 +40,13 @@
 	</zone>
 
 	<!-- interiors -->
+
+	<zone name="int_tarnow_kitchen" file="interiors/tarnow/kitchen.tmx">
+		<configurator class-name="games.pol.server.maps.tarnow.kitchen.ChefNPC"/>
+		<portal x="10" y="14" ref="kitchen_exit">
+			<destination zone="0_tarnow_city" ref="kitchen_entrance"/>
+		</portal>
+	</zone>
 
 	<!-- Level -1 -->
 
