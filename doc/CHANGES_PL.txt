@@ -33,11 +33,11 @@ Changelog
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
 	- 0_tarnow_plains
-- Dodano nowego NPC: (3)
+- Dodano nowe NPC: (3)
 	- Wizariusz
 	- Robercik
 	- Szef Piotruś
-- Dodano nowy przedmiot: (3)
+- Dodano nowe przedmioty: (4)
 	- magiczne rękawice płytowe
 	- magiczny pas płytowy
 	- gotowane ziemniaki
@@ -520,7 +520,7 @@ Changelog
 
 *świat*
 - Dodano nowego NPC: Kowal Inpraf
-- Dodano nowe mapy: (19)
+- Dodano nowe mapy: (20)
 	- 0_krakow_swamp
 	- 0_krakow_swamp_nw
 	- 0_krakow_swamp_ne
@@ -541,7 +541,7 @@ Changelog
 	- 0_gdansk_forest_s3_w
 	- 0_gdansk_forest_s3_w2
 	- int_warszawa_blacksmith
-- Przerobiono mapy: (8)
+- Przerobiono mapy: (9)
 	- 0_gdansk_road_n
 	- 0_gdansk_road_s
 	- 0_dragon_land_n
