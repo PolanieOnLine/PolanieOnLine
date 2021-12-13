@@ -16,24 +16,18 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.Direction;
-import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
-import games.stendhal.server.entity.npc.action.EnableFeatureAction;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
@@ -41,108 +35,110 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
-public class MagicznaTorba extends AbstractQuest {
-	public static final String QUEST_SLOT = "magic_bag";
-	private final SpeakerNPC npc = npcs.get("Wizariusz");
+public class SmoczyAmulet extends AbstractQuest {
+	public static final String QUEST_SLOT = "dragon_amulet";
+	private final SpeakerNPC npc = npcs.get("Robercik");
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, 
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED, 
-			"W jednej z moich portali znajduje się lodowa krypta, a w niej zalęgły się lodowe stwory, jeden z nich zabrał mój cenny pergamin, który zawiera w sobie lodowe zaklęcia. Zwróciłbyś go do mnie?",
+			"Przynieś mi 3 różne smocze pazurki, a zrobię z nich naszyjnik dla Ciebie, który będzie cię chronił. Jesteś zainteresowany?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.IDLE, 
-			"Już pomogłeś mi wystarczająco, nie zawracaj mi teraz... jak wy to mówicie? a... gitary!",
+			ConversationStates.ATTENDING, 
+			"Już wykonałem dla Ciebie naszyjnik.",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dobrze... przeteleportuję cię do lodowej krypty gdy powiesz mi #teleportuj. Podczas teleportacji mogą występować bóle głowy, także miej to na uwadze!",
+			"Okej. Wróć do mnie z #'pazurem zielonego smoka', #'pazurem czerwonego smoka' oraz #'pazurem niebieskiego smoka' mówiąc mi #naszynik.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"No cóż... Żegnaj!",
+			"Może następnym razem się zdecydujesz.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("teleportuj", "tp", "teleport"),
+			Arrays.asList("pazurem zielonego smoka", "pazur zielonego smoka"),
 			new QuestInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING,
-			null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					final String zoneName = "-1_ice_vault";
-					final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
-					player.teleport(zone, 24, 14, Direction.DOWN, null);
-					player.notifyWorldAboutChanges();
-				}
-			});
+			ConversationStates.ATTENDING, 
+			"Zielony pazurek możesz złupić z zielonych smoków.",
+			null);
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("pazurem czerwonego smoka", "pazur czerwonego smoka"),
+			new QuestInStateCondition(QUEST_SLOT, "start"),
+			ConversationStates.ATTENDING, 
+			"Zielony pazurek możesz złupić z czerwonych smoków.",
+			null);
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("pazurem niebieskiego smoka", "pazur niebieskiego smoka"),
+			new QuestInStateCondition(QUEST_SLOT, "start"),
+			ConversationStates.ATTENDING, 
+			"Zielony pazurek możesz złupić z niebieskich smoków.",
+			null);
 	}
 
 	private void prepareBringingStep() {
-		npc.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"),
-					new PlayerHasItemWithHimCondition("lodowy zwój")),
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("necklace", "neck", "naszyjnik", "amulet", "przypomnij"),
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
+				new PlayerHasItemWithHimCondition("pazur zielonego smoka", 1),
+				new PlayerHasItemWithHimCondition("pazur czerwonego smoka", 1),
+				new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1)),
 			ConversationStates.QUEST_ITEM_BROUGHT, 
-			"Wyczuwam mój magiczny pergamin. Możesz mi go zwrócić?",
+			"Ooo... zdobyłeś pazurki. Chcesz, abym wykonał dla Ciebie ten naszyjnik?",
 			null);
 
-		npc.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"),
-					new NotCondition(new PlayerHasItemWithHimCondition("lodowy zwój"))),
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("necklace", "neck", "naszyjnik", "amulet", "przypomnij"),
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
+				new NotCondition(new AndCondition(
+					new PlayerHasItemWithHimCondition("pazur zielonego smoka", 1),
+					new PlayerHasItemWithHimCondition("pazur czerwonego smoka", 1),
+					new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1)))),
 			ConversationStates.ATTENDING, 
-			"Ach tak... To Ty, którego miałem przeteleportować po mój pergamin...",
+			"Wróć jak zdobędziesz już wszystkie pazurki, o które Cię poprosiłem.",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("lodowy zwój"));
+		reward.add(new DropItemAction("pazur zielonego smoka", 1));
+		reward.add(new DropItemAction("pazur czerwonego smoka", 1));
+		reward.add(new DropItemAction("pazur niebieskiego smoka", 1));
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(5));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new EnableFeatureAction("magicbag"));
-
-		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
-		reward2.add(new DropItemAction("lodowy zwój"));
-		reward2.add(new IncreaseXPAction(-10000));
-		reward2.add(new IncreaseKarmaAction(-20));
-		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward2.add(new EnableFeatureAction("magicbag"));
+		reward.add(new EquipItemAction("smocze pazury", 1, true));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
-			new PlayerHasItemWithHimCondition("lodowy zwój"),
+			null,
 			ConversationStates.ATTENDING,
-			"Dobra robota dzielny rycerzu! Takiej współpracy się właśnie spodziewałem, a oto Twoja nagroda.",
+			"Poczekaj chwilkę... Trochę sznurka przeciągnę.. ym.. No i proszę! Oto twój naszyjnik.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES,
-			new PlayerHasItemWithHimCondition("lodowy zwój"),
+			null,
 			ConversationStates.ATTENDING,
-			"Jesteś absolutnie pewien, że nie chcesz mi go oddać? Cóż... wezmę go siłą...",
-			new MultipleActions(reward2));
+			"Twoja decyzja.",
+			null);
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Magiczna Torba",
-				"Wizariusz obiecał nagrodę, która może mnie zainteresować.",
+				"Smoczy Amulet",
+				"Młody chłopiec wykona amulet, który będzie chronił przed złymi smokami.",
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
@@ -154,20 +150,16 @@ public class MagicznaTorba extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Wizariuszem.");
+		res.add("Rozmawiałem z Robercikiem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie zamierzam być pieskiem na posyłki...");
+			res.add("Nie potrzebuję jakiegoś amuletu...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Zgodziłem się zwrócić magiczny pergamin.");
-		}
-		if ("start".equals(questState) && player.isEquipped("lodowy zwój")
-				|| "done".equals(questState)) {
-			res.add("Mam pergamin dla Wizariusza.");
+			res.add("Zgodziłem się zebrać pazurki dla Robercika w zamian za amulet.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Zwróciłem zwój czarownikowi.");
+			res.add("Zaniosłem potrzebne smocze pazurki, a w zamian otrzymałem smoczy amulet.");
 		}
 		return res;
 	}
@@ -179,7 +171,7 @@ public class MagicznaTorba extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Magiczna Torba";
+		return "Smoczy Amulet";
 	}
 
 	@Override

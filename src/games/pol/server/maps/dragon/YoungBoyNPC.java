@@ -9,15 +9,17 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.pol.server.maps.dragon.wizardtower;
+package games.pol.server.maps.dragon;
 
 import java.util.Map;
 
+import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-public class WizardNPC implements ZoneConfigurator {
+public class YoungBoyNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
 	 *
@@ -30,20 +32,26 @@ public class WizardNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Wizariusz") {
+		final SpeakerNPC npc = new SpeakerNPC("Robercik") {
 			@Override
 			protected void createDialog() {
-				addGreeting("Emm... Witaj? Skąd się tutaj wziąłeś młody wojowniku? Czyżby szukasz mojej #pomocy?");
-				addHelp("To jest nieco intrygujące, pomóż najpierw mi w pewnym małym #zadaniu, a ja przekażę Tobie coś bardzo wartościowego.");
-				addOffer("Będę miał dla Ciebie #zadanie.");
-				addGoodbye("Żegnaj wojowniku. Uważaj tylko na niższe piętra tej wieży!");
+				addGreeting();
+				addHelp("Zapytaj się mnie o #zadanie.");
+				addOffer("Cudowny krajobraz tutaj jest, nieprawdaż?");
+				addGoodbye();
+			}
+
+			@Override
+			protected void onGoodbye(RPEntity player) {
+				setDirection(Direction.DOWN);
 			}
 		};
 
-		npc.setDescription("Oto Wizariusz. Wygląda na mądrego człowieka co nosi spiczastą czapkę na głowie.");
-		npc.setEntityClass("wizardnpc");
+		npc.setDescription("Oto Robercik. Siedzi sobie na ławeczce i wygląda jakby odpoczywał rozglądając się dookoła.");
+		npc.setOutfit(3, 24, 3, null, 3, null, null, 2, 0);
 		npc.setGender("M");
-		npc.setPosition(5, 41);
+		npc.setPosition(63, 31);
+		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}
 }

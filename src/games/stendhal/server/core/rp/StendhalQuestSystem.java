@@ -271,6 +271,10 @@ public class StendhalQuestSystem {
 		 *         DRAGON		 *
 		\**	                    **/
 		loadQuest(new MagicznaTorba());
+		loadQuest(new SmoczyAmulet());
+		if (Occasion.SECOND_WORLD) {
+			loadQuest(new DragonsGuard());
+		}
 		/** 					**\
 		 *         DESERT		 *
 		\**	                    **/
@@ -292,9 +296,6 @@ public class StendhalQuestSystem {
 		loadQuest(new MeetGuslarz());
 		loadQuest(new WhereDragon());
 		loadQuest(new KolekcjonerPasow());
-		if (Occasion.SECOND_WORLD) {
-			loadQuest(new DragonsGuard());
-		}
 
 		if (Occasion.CHRISTMAS) {
 			loadQuest(new GoodiesForRudolph());
