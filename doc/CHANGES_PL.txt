@@ -6,17 +6,19 @@ Changelog
 - Dodano nowe grafiki przedmiotów
 - Dodano nowe grafiki stworów
 - Dodano wiele nowych grafik dla nowych map
-- Poprawiono grafiki przedmiotów: magiczne buty płytowe, rękawice płytowe, zwój pergaminu
+- Poprawiono wiele grafik przedmiotów
 - Poprawiono wygląd parasola, włosów
 
 *świat*
-- Dodano nowe mapy: (19)
+- Dodano nowe mapy: (22)
 	- void_islands
 	- ice_vault
+	- int_tarnow_kitchen
 	- int_dragon_wizard_tower_0
 	- int_dragon_wizard_tower_1
 	- int_dragon_wizard_tower_2
 	- int_dragon_wizard_tower_3
+	- int_dragon_wizard_tower_4
 	- int_dragon_wizard_tower_room_1
 	- int_dragon_wizard_tower_room_2
 	- int_dragon_wizard_tower_room_3
@@ -31,12 +33,15 @@ Changelog
 	- 0_tarnow_forest_w
 	- 0_tarnow_city
 	- 0_tarnow_plains
-- Dodano nowego NPC:
+- Dodano nowego NPC: (3)
 	- Wizariusz
+	- Robercik
+	- Szef Piotruś
 - Dodano nowy przedmiot: (3)
 	- magiczne rękawice płytowe
 	- magiczny pas płytowy
 	- gotowane ziemniaki
+	- smocze pazury
 - Dodano nowe bossy: (2)
 	- Lilith
 	- Cherubin
@@ -61,7 +66,8 @@ Changelog
 	- "Ogromne Jaskiniowce"
 	- "Smocza Wystawa"
 	- "Anielskie Skrzydła"
-- Dodano nowego zadanie dla Wizariusza
+- Dodano nowe zadanie dla Wizariusza
+- Dodano nowe zadanie dla Robercika
 - Dodano książki z ofertami w sklepiku Wandy
 - Dodano prawdopodobieństwo udoskonalenia przedmiotu (szansa na niepowodzenie)
 - Pierścień z mithrilu oraz niektóre młoty można udoskonalić u kowala Tworzymira
