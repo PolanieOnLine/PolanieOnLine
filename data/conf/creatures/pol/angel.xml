@@ -136,7 +136,7 @@
 		</equips>
 		<abilities>
 			<damage type="light"/>
-			<susceptibility type="dark" value="1.35"/>
+			<susceptibility type="dark" value="1.2"/>
 			<susceptibility type="light" value="0.6"/>
 		</abilities>
 		<ai>
@@ -173,7 +173,7 @@
 			<item value="gigantyczny eliksir" quantity="[3,21]" probability="40.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="magia mroku" quantity="[11,99]" probability="100.0"/>
-			<item value="różdżka Peruna" quantity="[1,1]" probability="20.0"/>
+			<item value="różdżka Peruna" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia mroku" quantity="10000"/>
@@ -182,7 +182,7 @@
 		<abilities>
 			<damage type="light"/>
 			<susceptibility type="dark" value="0.6"/>
-			<susceptibility type="light" value="1.35"/>
+			<susceptibility type="light" value="1.2"/>
 		</abilities>
 		<ai>
 			<says>

@@ -113,6 +113,7 @@
 		<corpse name="giant_rocks"/>
 		<drops>
 			<item value="kamienie" quantity="[1,39]" probability="100.0"/>
+			<item value="hełm kamienny" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips/>
 		<ai>
