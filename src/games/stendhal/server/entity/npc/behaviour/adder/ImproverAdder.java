@@ -198,29 +198,8 @@ public class ImproverAdder {
 							toImprove = i;
 						}
 					}
-					int improves = toImprove.getImprove();
 
-					int atk = toImprove.getAttack();
-					int def = toImprove.getDefense();
-					currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
-
-					// Fee only for 1 upgrade
-					if (toImprove.getMaxImproves() == 1) {
-						currentUpgradeFee = (atk + def) * 59500;
-					}
-					// Special fee for special item
-					if (toImprove.getName().equals("pierścień z mithrilu")) {
-						currentUpgradeFee = 5000000;
-					}
-
-					/*
-					 * This condition is only used if someone didn't add the item to list in PlayerTransformer
-					 * if "max_improves" has been changed for item.
-					 */
-					if (toImprove.getImprove() > toImprove.getMaxImproves()) {
-						// Set fee to '0'.
-						currentUpgradeFee *= 0;
-					}
+					calculateFee(toImprove);
 
 					// Special answer for ring
 					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
@@ -243,6 +222,32 @@ public class ImproverAdder {
 				improver.setCurrentState(ConversationStates.ATTENDING);
 				return;
 			}
+		}
+	}
+
+	private void calculateFee(final Item item) {
+		int improves = item.getImprove();
+
+		int atk = item.getAttack();
+		int def = item.getDefense();
+		currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
+
+		// Fee only for 1 upgrade
+		if (item.getMaxImproves() == 1) {
+			currentUpgradeFee = (atk + def) * 59500;
+		}
+		// Special fee for special item
+		if (item.getName().equals("pierścień z mithrilu")) {
+			currentUpgradeFee = 5000000;
+		}
+
+		/*
+		 * This condition is only used if someone didn't add the item to list in PlayerTransformer
+		 * if "max_improves" has been changed for item.
+		 */
+		if (item.getImprove() > item.getMaxImproves()) {
+			// Set fee to '0'.
+			currentUpgradeFee *= 0;
 		}
 	}
 
