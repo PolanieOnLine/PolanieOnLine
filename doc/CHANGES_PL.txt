@@ -1,5 +1,12 @@
 Changelog
 ---------
+1.25.1
+*naprawiono błędy*
+- Poprawiono dialog ukończenia zadania u Wizariusza
+- Poprawiono odporności dla Lilith i Cherubina
+- Poprawiono drop przedmiotów: hełm kamienny, magiczny pas płytowy, magiczne rękawice płytowe oraz różdżka Peruna
+
+
 1.25
 *klient*
 - Dodano nową torbę z dodatkowymi slotami na magię/eliksiry
