@@ -53,9 +53,10 @@ public class MagicznaTorba extends AbstractQuest {
 			"W jednej z moich portali znajduje się lodowa krypta, a w niej zalęgły się lodowe stwory, jeden z nich zabrał mój cenny pergamin, który zawiera w sobie lodowe zaklęcia. Zwróciłbyś go do mnie?",
 			null);
 
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
+		npc.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestCompletedCondition(QUEST_SLOT)),
 			ConversationStates.IDLE, 
 			"Już pomogłeś mi wystarczająco, nie zawracaj mi teraz... jak wy to mówicie? a... gitary!",
 			null);
