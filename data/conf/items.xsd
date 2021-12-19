@@ -26,6 +26,7 @@
 			<element name="equipable" type="Q1:equipable"></element>
 		</sequence>
 		<attribute name="name" type="string" use="required"></attribute>
+		<attribute name="condition" type="string"></attribute>
 	</complexType>
 
 	<complexType name="typeType">
@@ -66,8 +67,6 @@
 			<element name="rate" type="Q1:attribute" minOccurs="0"/>
 			<element name="lifesteal" type="Q1:attribute" minOccurs="0"/>
 			<element name="persistent" type="Q1:attribute" minOccurs="0"/>
-			<element name="min_use" type="Q1:attribute" minOccurs="0"/>
-			<element name="min_level" type="Q1:attribute" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="life_support" type="Q1:attribute" minOccurs="0"/>
 			<element name="slot_name" type="Q1:attribute" minOccurs="0"/>
 			<element name="undroppableondeath" type="Q1:attribute" minOccurs="0"/>
@@ -75,7 +74,6 @@
 			<element name="slot_size" type="Q1:attribute" minOccurs="0"/>
 			<element name="menu" type="Q1:attribute" minOccurs="0"/>
 			<element name="durability" type="Q1:attribute" minOccurs="0" maxOccurs="1"/>
-			<element name="max_improves" type="Q1:attribute" minOccurs="0" maxOccurs="1"/>
 			<element name="status_resist" type="Q1:stresist" minOccurs="0" maxOccurs="unbounded" />
 			<element name="itemset" type="Q1:attribute" minOccurs="0"/>
 		</sequence>

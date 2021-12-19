@@ -149,7 +149,7 @@ class VisualSettings {
 
 		// blood
 		JCheckBox showBloodToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_BLOOD, true,
-				"Pokaż krew i zwłoki", "Pokazuje plamy krwi podczas uderzenia w walce i zwłoki.");
+				"Pokaż zawartość dla osób starszych", "Pokaż rozpryski krwi, zwłoki i postacie bez bielizny.");
 		page.add(showBloodToggle);
 		// Inform players that some images won-t update until after client is restarted.
 		// FIXME: Can't images be updated via map change?
@@ -158,7 +158,7 @@ class VisualSettings {
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Krew i zwłoki zostały " + tmp
+				String msg = "Zawartość dla osób starszych zostało " + tmp
 						+ ". Niektóre zmiany zaczną działać dopiero po ponownym uruchomieniu klienta.";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
@@ -167,7 +167,7 @@ class VisualSettings {
 
 		// show creature speech bubbles
 		JCheckBox showCreatureSpeechToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CREATURESPEECH, true,
-										"Pokaż dymki potworów", "Pokazuje dymki potworów w ekranie klienta");
+				"Pokaż dymki potworów", "Pokazuje dymki z tekstem potworów w ekranie klienta");
 		page.add(showCreatureSpeechToggle);
 		showCreatureSpeechToggle.addItemListener(new ItemListener() {
 			@Override

@@ -55,7 +55,8 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 
 	private static final List<String> NEEDEDITEMS = Arrays.asList(
 			"zbroja elficka", "spodnie elfickie", "buty elfickie", "miecz elficki",
-			"płaszcz elficki", "tarcza elficka");
+			"płaszcz elficki", "tarcza elficka", "kapelusz elficki", "rękawice elfickie",
+			"hełm elficki");
 
 	private BringListOfItemsQuestLogic bringItems;
 
@@ -209,7 +210,7 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 				ConversationPhrases.OFFER_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Jeżeli znajdziesz więcej elfiszów to będę wdzięczny gdybyś mógł mi je #sprzedać. Kupię elficką: zbroję, spodnie, buty, płaszcz lub miecz. Kupiłbym także miecz elfów ciemności jeżeli będziesz miał.",
+				"Jeżeli znajdziesz więcej elfiszów to będę wdzięczny gdybyś mógł mi je #sprzedać. Kupię elficką: zbroję, spodnie, buty, płaszcz, rękawice, miecz, hełm oraz kapelusz. Kupiłbym także miecz elfów ciemności jeżeli będziesz miał.",
 				null);
 
 
@@ -224,8 +225,8 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Zbroja Elficka",
-				"Lupos, elf Albinos, chce zdobyć więdzę o produkcji zbroi elfickiej. Pyta młodych podróżnych o przyniesienie kilku próbek.",
+				"Opancerzenie Elfickie",
+				"Lupos, elf Albinos, chce zdobyć więdzę o produkcji opancerzenia elfickiego. Pyta młodych podróżnych o przyniesienie kilku próbek.",
 				true);
 		offerSteps();
 		setupAbstractQuest();
@@ -243,7 +244,7 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 
 	@Override
 	public String getName() {
-		return "Zbroja Elficka";
+		return "Opancerzenie Elficka";
 	}
 
 	@Override

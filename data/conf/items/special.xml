@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="czterolistna koniczyna">
 		<type class="special" subclass="lucky_charm" tileid="-1"/>
@@ -174,6 +173,21 @@
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
+
+	<item name="płaszcz czerwonego kapturka">
+		<type class="cloak" subclass="brightred_cloak" tileid="-1"/>
+		<description>Oto płaszcz czerwonego kapturka. Pewna mała dziewczynka o imieniu Balbina o nim marzy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes/>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="cloak"/>
 			<slot name="bag"/>
 		</equipable>
 	</item>

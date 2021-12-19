@@ -208,7 +208,7 @@
 	<!-- START: imperial -->
 	<creature name="imperialny generał gigant">
 		<type class="stendhal/giant_human" subclass="imperial_general_giant" tileid="giant_human.png:8"/>
-		<description></description>
+		<description>Oto imperialny generał gigant. Czai się w zakamarkach jaskiń ze swoimi kompanami, aby cię zgładzić.</description>
 		<attributes>
 			<atk value="738"/>
 			<def value="100"/>
@@ -248,7 +248,7 @@
 	<!-- START: madaram -->
 	<creature name="kasarkutominubat">
 		<type class="stendhal/madaram" subclass="kasarkutominubat" tileid="madaram.png:0"/>
-		<description></description>
+		<description>Oto kasarkutominubat, istota nieznana wielu, niegdyś był ludzkim mistrzem miecza, a teraz przypomina potwora noszącą maskę z tysiąc niewinnych dusz na niej oraz ma ręce zakrwawione po wielu walkach.</description>
 		<attributes>
 			<atk value="606"/>
 			<def value="86"/>

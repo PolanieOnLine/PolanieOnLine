@@ -19,7 +19,6 @@
 		<respawn value="1200"/>
 		<corpse name="small_boneless"/>
 		<drops>
-			<item value="money" quantity="[2,10]" probability="90.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -48,7 +47,6 @@
 		<respawn value="1200"/>
 		<corpse name="small_boneless"/>
 		<drops>
-			<item value="money" quantity="[6,13]" probability="100.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -74,7 +72,6 @@
 		<respawn value="1230"/>
 		<corpse name="small_boneless"/>
 		<drops>
-			<item value="money" quantity="[5,22]" probability="100.0"/>
 			<item value="eliksir" quantity="[1,1]" probability="30.0"/>
 		</drops>
 		<equips>
@@ -105,7 +102,6 @@
 		<respawn value="1200"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[2,10]" probability="90.0"/>
 			<item value="pierścień spokoju" quantity="[1,1]" probability="0.005"/>
 		</drops>
 		<equips>
@@ -137,7 +133,6 @@
 		<respawn value="1200"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,12]" probability="90.0"/>
 			<item value="buzdygan" quantity="[1,1]" probability="30.0"/>
 		</drops>
 		<equips>
@@ -167,7 +162,6 @@
 		<respawn value="1210"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,17]" probability="90.0"/>
 			<item value="kolczuga" quantity="[1,1]" probability="3.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="0.05"/>
 			<item value="piernacz" quantity="[1,1]" probability="5.0"/>
@@ -201,7 +195,6 @@
 		<respawn value="1230"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,25]" probability="90.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="10.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="0.4"/>
@@ -274,7 +267,6 @@
 		<respawn value="1870"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[9,35]" probability="100.0"/>
 			<item value="jajo" quantity="[1,1]" probability="2.0"/>
 			<item value="trucizna" quantity="[1,1]" probability="5.0"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="1.5"/>
@@ -308,7 +300,6 @@
 		<respawn value="1610"/>
 		<corpse name="small_boneless"/>
 		<drops>
-			<item value="money" quantity="[5,50]" probability="100.0"/>
 			<item value="antidotum" quantity="[1,1]" probability="3.0"/>
 			<item value="pokolec" quantity="[1,3]" probability="10.0"/>
 		</drops>
@@ -337,7 +328,6 @@
 		<respawn value="3530"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
-			<item value="money" quantity="[5,40]" probability="100.0"/>
 			<item value="mocna trucizna" quantity="[1,2]" probability="5.0"/>
 			<item value="buty mainiocyjskie" quantity="[1,1]" probability="1.5"/>
 			<item value="nakrapiane jajo" quantity="[1,1]" probability="0.5"/>
@@ -372,7 +362,6 @@
 		<respawn value="3000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[20,110]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[1,2]" probability="80.0"/>
 			<item value="tarcza mainiocyjska" quantity="[1,1]" probability="1.5"/>
 			<item value="spodnie mainiocyjskie" quantity="[1,1]" probability="0.5"/>

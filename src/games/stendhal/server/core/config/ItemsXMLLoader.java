@@ -125,6 +125,22 @@ public final class ItemsXMLLoader extends DefaultHandler {
 	@Override
 	public void startElement(final String namespaceURI, final String lName, final String qName,
 			final Attributes attrs) {
+		// allow items or item attributes to be disabled with system properties
+		boolean conditionMet = true;
+		String condition = attrs.getValue("condition");
+		if (condition != null) {
+			if (condition.startsWith("!")) {
+				condition = new StringBuilder(condition).deleteCharAt(0).toString();
+				conditionMet = System.getProperty(condition) == null;
+			} else {
+				conditionMet = System.getProperty(condition) != null;
+			}
+		}
+
+		if (!conditionMet) {
+			return;
+		}
+
 		text = "";
 		if (qName.equals("item")) {
 			name = attrs.getValue("name");
@@ -154,32 +170,17 @@ public final class ItemsXMLLoader extends DefaultHandler {
 		} else if (qName.equals("attributes")) {
 			attributesTag = true;
 		} else if (attributesTag) {
-			boolean conditionMet = true;
-
-			// allow attributes to be disabled with system properties
-			String condition = attrs.getValue("condition");
-			if (condition != null) {
-				if (condition.startsWith("!")) {
-					condition = new StringBuilder(condition).deleteCharAt(0).toString();
-					conditionMet = System.getProperty(condition) == null;
-				} else {
-					conditionMet = System.getProperty(condition) != null;
-				}
-			}
-
-			if (conditionMet) {
-				if (qName.equals("status_resist")) {
-					this.resistances.put(attrs.getValue("type"), Double.valueOf(attrs.getValue("value")));
-					this.activeSlots = attrs.getValue("slots");
-				} else if (qName.equals("durability")) {
-					attributes.put(qName, attrs.getValue("value"));
-					attributes.put("uses", "0");
-				} else if (qName.equals("max_improves")) {
-					attributes.put(qName, attrs.getValue("value"));
-					attributes.put("improve", "0");
-				} else {
-					attributes.put(qName, attrs.getValue("value"));
-				}
+			if (qName.equals("status_resist")) {
+				this.resistances.put(attrs.getValue("type"), Double.valueOf(attrs.getValue("value")));
+				this.activeSlots = attrs.getValue("slots");
+			} else if (qName.equals("durability")) {
+				attributes.put(qName, attrs.getValue("value"));
+				attributes.put("uses", "0");
+			} else if (qName.equals("max_improves")) {
+				attributes.put(qName, attrs.getValue("value"));
+				attributes.put("improve", "0");
+			} else {
+				attributes.put(qName, attrs.getValue("value"));
 			}
 		} else if (qName.equals("damage")) {
 			damageType = attrs.getValue("type");

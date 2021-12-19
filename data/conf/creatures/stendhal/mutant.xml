@@ -17,7 +17,6 @@
 		<respawn value="1500"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="butelka wody" quantity="[1,3]" probability="10.0"/>
 			<item value="płaszcz kamienny" quantity="[1,1]" probability="0.5"/>
 			<item value="okoń" quantity="[1,1]" probability="1.0"/>
@@ -49,7 +48,6 @@
 		<respawn value="3200"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="hełm cieni" quantity="[1,1]" probability="0.6"/>
 			<item value="hełm chaosu" quantity="[1,1]" probability="0.2"/>
 			<item value="środek uspokajający" quantity="[2,4]" probability="8.0"/>
@@ -79,7 +77,6 @@
 		<respawn value="4000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[20,70]" probability="100.0"/>
 			<item value="miecz dwuręczny" quantity="[1,1]" probability="1.5"/>
 			<item value="płaszcz cieni" quantity="[1,1]" probability="0.4"/>
 			<item value="płaszcz chaosu" quantity="[1,1]" probability="0.1"/>
@@ -112,7 +109,6 @@
 		<respawn value="1300"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,30]" probability="100.0"/>
 			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="5.0"/>
 			<item value="zbroja płytowa" quantity="[1,1]" probability="0.5"/>
 			<item value="buty żelazne" quantity="[1,1]" probability="2.5"/>
@@ -143,7 +139,6 @@
 		<respawn value="1420"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[8,35]" probability="100.0"/>
 			<item value="zbroja płytowa" quantity="[1,1]" probability="7.0"/>
 			<item value="zbroja cieni" quantity="[1,1]" probability="0.0025"/>
 			<item value="czarny miecz" quantity="[1,1]" probability="0.0025"/>
@@ -201,7 +196,6 @@
 		<respawn value="2820"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[30,50]" probability="100.0"/>
 			<item value="pierścień spokoju" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>

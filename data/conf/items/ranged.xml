@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
 
 	<item name="proca">
 		<type class="ranged" subclass="slingshot" tileid="-1"/>
@@ -10,6 +9,7 @@
 			<atk value="4" condition="!testing.combat"/>
 			<ratk value="4" condition="testing.combat"/>
 			<range value="4"/>
+			<min_level condition="stendhal.testserver" value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="130"/>
@@ -240,8 +240,7 @@
 		</equipable>
 	</item>
 
-<!-- disabled
-	<item name="łuk treningowy">
+	<item name="łuk treningowy" condition="stendhal.testserver">
 		<type class="ranged" subclass="training_bow" tileid="-1" />
 		<description>Oto łuk treningowy. Lekki i łatwy w użyciu, lecz jego bardzo słabe wykonanie sprawia, że czujesz jak łamie się w twoich rękach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
@@ -251,6 +250,7 @@
 			<range value="3"/>
 			<rate value="1"/>
 			<durability value="1500"/>
+			<min_level value="0"/>
 		</attributes>
 		<weight value="0.5"/>
 		<value value="17280"/>
@@ -264,7 +264,7 @@
 		</equipable>
   	</item>
 
-	<item name="automatyczna kusza">
+	<item name="automatyczna kusza" condition="stendhal.testserver">
 		<type class="ranged" subclass="auto_crossbow" tileid="-1" />
 		<description>Oto ta automatyczna kusza pozwala na szybki ogień. Lecz jej słaba jakość wykonania sprawia jakby mogła złamać się w twych rękach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
@@ -274,6 +274,7 @@
 			<range value="3"/>
 			<rate value="1"/>
 			<durability value="800"/>
+			<min_level value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -285,7 +286,7 @@
 		</equipable>
 	</item>
 
-	<item name="automatyczna kusza A">
+	<item name="automatyczna kusza A" condition="stendhal.testserver">
 		<type class="ranged" subclass="auto_crossbow_a" tileid="-1" />
 		<description>Oto ta automatyczna kusza klasy A, pozwala na szybki ogień. Jest dość wytrzymała, ale nie jest przeznaczona do regularnej walki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
@@ -295,6 +296,7 @@
 			<range value="3"/>
 			<rate value="1"/>
 			<durability value="1400"/>
+			<min_level value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -306,7 +308,7 @@
 		</equipable>
 	</item>
 
-	<item name="automatyczna kusza A+">
+	<item name="automatyczna kusza A+" condition="stendhal.testserver">
 		<type class="ranged" subclass="auto_crossbow_aa" tileid="-1" />
 		<description>Oto ta automatyczna kusza klasy A+, pozwala na szybki ogień. Wykonana jest z wysokiej jakości materiałów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
@@ -316,6 +318,7 @@
 			<range value="3"/>
 			<rate value="1"/>
 			<durability value="3600"/>
+			<min_level value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -326,5 +329,4 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
--->
 </items>

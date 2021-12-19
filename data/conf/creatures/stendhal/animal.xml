@@ -735,7 +735,6 @@
 		<respawn value="17600"/>
 		<corpse name="animal_2x2" width="5" height="3"/>
 		<drops>
-			<item value="money" quantity="[100,300]" probability="70.0"/>
 			<item value="szynka" quantity="[5,15]" probability="5.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="hełm monarchistyczny" quantity="[1,1]" probability="0.03"/>
@@ -949,7 +948,6 @@
 		<respawn value="12000"/>
 		<corpse name="winged_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="szynka" quantity="[3,5]" probability="5.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 		</drops>
@@ -985,7 +983,6 @@
 		<respawn value="12000"/>
 		<corpse name="winged_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,50]" probability="100.0"/>
 			<item value="szynka" quantity="[5,8]" probability="5.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="miecz dwuręczny" quantity="[1,1]" probability="0.1"/>

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
 
 	<item name="skórzane rękawice">
 		<type class="glove" subclass="leather_gloves" tileid="-1"/>
@@ -8,6 +7,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<susceptibility type="fire" value="1.1"/>
 		<equipable>
@@ -25,6 +25,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="2"/>
+			<min_level condition="stendhal.testserver" value="1"/>
 		</attributes>
 		<susceptibility type="fire" value="1.1"/>
 		<equipable>
@@ -42,6 +43,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="3"/>
+			<min_level condition="stendhal.testserver" value="2"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -59,7 +61,7 @@
 		<attributes>
 			<atk value="1"/>
 			<def value="2"/>
-			<min_level value="15"/>
+			<min_level value="10"/>
 		</attributes>
 		<susceptibility type="earth" value="0.9"/>
 		<susceptibility type="fire" value="1.2"/>
@@ -78,6 +80,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="3"/>
+			<min_level condition="stendhal.testserver" value="2"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -96,10 +99,10 @@
 			<def value="3"/>
 			<min_level value="30"/>
 		</attributes>
-		<susceptibility type="light" value="0.95"/>
-		<susceptibility type="dark" value="0.95"/>
-		<susceptibility type="fire" value="0.95"/>
-		<susceptibility type="ice" value="0.95"/>
+		<susceptibility type="light" value="0.98"/>
+		<susceptibility type="dark" value="0.98"/>
+		<susceptibility type="fire" value="0.98"/>
+		<susceptibility type="ice" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -133,6 +136,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="4"/>
+			<min_level condition="stendhal.testserver" value="5"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -208,6 +212,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="5"/>
+			<min_level condition="stendhal.testserver" value="7"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -224,6 +229,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="6"/>
+			<min_level condition="stendhal.testserver" value="10"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -241,13 +247,13 @@
 		<attributes>
 			<atk value="-1"/>
 			<def value="6"/>
-			<min_level value="55"/>
+			<min_level value="40"/>
 			<max_improves value="1"/>
 		</attributes>
-		<susceptibility type="fire" value="0.9"/>
-		<susceptibility type="ice" value="0.9"/>
-		<susceptibility type="dark" value="0.9"/>
-		<susceptibility type="light" value="0.9"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="light" value="0.95"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -263,6 +269,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
+			<min_level condition="stendhal.testserver" value="20"/>
 		</attributes>
 		<susceptibility type="dark" value="0.9"/>
 		<susceptibility type="light" value="1.1"/>
@@ -281,6 +288,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
+			<min_level condition="stendhal.testserver" value="50"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -298,7 +306,7 @@
 		<attributes>
 			<atk value="-1"/>
 			<def value="8"/>
-			<min_level value="70"/>
+			<min_level value="40"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -316,7 +324,7 @@
 		<attributes>
 			<atk value="2"/>
 			<def value="8"/>
-			<min_level value="105"/>
+			<min_level value="100"/>
 		</attributes>
 		<susceptibility type="dark" value="1.2"/>
 		<susceptibility type="light" value="0.9"/>
@@ -336,7 +344,7 @@
 		<attributes>
 			<atk value="-2"/>
 			<def value="9"/>
-			<min_level value="85"/>
+			<min_level value="90"/>
 		</attributes>
 		<susceptibility type="dark" value="0.7"/>
 		<susceptibility type="light" value="1.1"/>
@@ -356,7 +364,7 @@
 		<attributes>
 			<atk value="3"/>
 			<def value="10"/>
-			<min_level value="250"/>
+			<min_level value="200"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
 		<susceptibility type="light" value="0.9"/>
@@ -376,6 +384,7 @@
 		<attributes>
 			<atk value="1"/>
 			<def value="12"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>

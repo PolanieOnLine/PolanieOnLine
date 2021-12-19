@@ -304,7 +304,7 @@
 
 	<creature name="upadły wysoki kapłan">
 		<type class="stendhal/undead" subclass="fallen_high_priest" tileid="undead_fallen.png:1"/>
-		<description></description>
+		<description>Oto upadły wysoki kapłan. Przejawia się w ciemnych miejscach opanowanych przez mroczną siłę na tym świecie.</description>
 		<attributes>
 			<atk value="619"/>
 			<def value="81"/>

@@ -1194,6 +1194,51 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 			<schema namespace="stendhal" file="${config_dir}/items.xsd" />
 			<fileset dir="data/conf/items">
 				<include name="*.xml"/>
+				<exclude name="armors.xml"/>
+				<exclude name="arrows.xml"/>
+				<exclude name="axes.xml"/>
+				<exclude name="belts.xml"/>
+				<exclude name="boots.xml"/>
+				<exclude name="cloaks.xml"/>
+				<exclude name="clubs.xml"/>
+				<exclude name="daggers.xml"/>
+				<exclude name="dummy_weapons.xml"/>
+				<exclude name="gloves.xml"/>
+				<exclude name="helmets.xml"/>
+				<exclude name="legs.xml"/>
+				<exclude name="magia.xml"/>
+				<exclude name="missiles.xml"/>
+				<exclude name="necklaces.xml"/>
+				<exclude name="ranged.xml"/>
+				<exclude name="rings.xml"/>
+				<exclude name="shields.xml"/>
+				<exclude name="swords.xml"/>
+				<exclude name="wand.xml"/>
+			</fileset>
+		</schemavalidate>
+		<schemavalidate>
+			<schema namespace="stendhal" file="${config_dir}/equipment.xsd" />
+			<fileset dir="data/conf/items">
+				<include name="armors.xml"/>
+				<include name="arrows.xml"/>
+				<include name="axes.xml"/>
+				<include name="belts.xml"/>
+				<include name="boots.xml"/>
+				<include name="cloaks.xml"/>
+				<include name="clubs.xml"/>
+				<include name="daggers.xml"/>
+				<include name="dummy_weapons.xml"/>
+				<include name="gloves.xml"/>
+				<include name="helmets.xml"/>
+				<include name="legs.xml"/>
+				<include name="magia.xml"/>
+				<include name="missiles.xml"/>
+				<include name="necklaces.xml"/>
+				<include name="ranged.xml"/>
+				<include name="rings.xml"/>
+				<include name="shields.xml"/>
+				<include name="swords.xml"/>
+				<include name="wand.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>

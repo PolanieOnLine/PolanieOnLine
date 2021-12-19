@@ -19,7 +19,6 @@
 		<respawn value="1500"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,70]" probability="100.0"/>
 			<item value="zbroja płytowa" quantity="[1,1]" probability="5.0"/>
 			<item value="hełm mainiocyjski" quantity="[1,1]" probability="0.1"/>
 			<item value="pas mainiocyjski" quantity="[1,1]" probability="0.2"/>
@@ -54,7 +53,6 @@
 		<respawn value="3000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[3,30]" probability="90.0"/>
 			<item value="spodnie mainiocyjskie" quantity="[1,1]" probability="1.5"/>
 			<item value="pas mainiocyjski" quantity="[1,1]" probability="0.5"/>
 		</drops>
@@ -125,7 +123,6 @@
 		<respawn value="1210"/>
 		<corpse name="tiny_humanoid"/>
 		<drops>
-			<item value="money" quantity="[3,7]" probability="90.0"/>
 			<item value="mufinka" quantity="[1,2]" probability="20.0"/>
 		</drops>
 		<equips>
@@ -190,7 +187,6 @@
 		<respawn value="1260"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[5,25]" probability="100.0"/>
 			<item value="zbroja płytowa" quantity="[1,1]" probability="0.5"/>
 			<item value="spodnie mainiocyjskie" quantity="[1,1]" probability="0.05"/>
 		</drops>
@@ -210,7 +206,7 @@
 
 	<creature name="błękitny mohiko">
 		<type class="stendhal/hybrid" subclass="blue_mohiko" tileid="hybrid.png:0"/>
-		<description></description>
+		<description>Oto błękitny mohiko. Brązowy kosmita z dużym niebieskim irokezem.</description>
 		<attributes>
 			<atk value="450"/>
 			<def value="50"/>

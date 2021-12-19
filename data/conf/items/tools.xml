@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="młynek">
 		<type class="tool" subclass="foodmill" tileid="-1"/>
@@ -256,11 +255,13 @@
 	</item>
 	<!-- END: Nowe kilofy -->
 
-	<item name="łopata">
+	<item name="łopata" condition="stendhal.testserver">
 		<type class="tool" subclass="shovel" tileid="-1"/>
 		<description>Oto łopata. Być może dzięki niej wykopiesz kiedyś skarb.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
-		<attributes/>
+		<implementation class-name="games.stendhal.server.entity.item.AreaUseItem"/>
+	    <attributes>
+			<menu value="Wykop|Użyj"/>
+	    </attributes>
 		<weight value="10.0"/>
 		<value value="1"/>
 		<equipable>

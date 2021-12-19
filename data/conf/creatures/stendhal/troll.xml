@@ -19,7 +19,6 @@
 		<respawn value="1200"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[6,13]" probability="100.0"/>
 			<item value="kolczuga" quantity="[1,1]" probability="1.0"/>
 			<item value="skórzany kirys" quantity="[1,1]" probability="10.0"/>
 			<item value="buty nabijane ćwiekami" quantity="[1,1]" probability="0.5"/>
@@ -63,7 +62,6 @@
 		<respawn value="1210"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[3,7]" probability="90.0"/>
 			<item value="kolczuga" quantity="[1,1]" probability="3.0"/>
 			<item value="spodnie kolcze" quantity="[1,1]" probability="2.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="0.05"/>
@@ -100,7 +98,6 @@
 		<respawn value="1230"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[3,17]" probability="90.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="3.0"/>
 			<item value="spodnie kolcze" quantity="[1,1]" probability="4.0"/>
 			<item value="kiścień" quantity="[1,1]" probability="30.0"/>
@@ -137,7 +134,6 @@
 		<respawn value="1870"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,30]" probability="100.0"/>
 			<item value="mięso" quantity="[1,5]" probability="10.5"/>
 			<item value="kropacz" quantity="[1,1]" probability="1.0"/>
 			<item value="zbroja barbarzyńcy" quantity="[1,1]" probability="5.5"/>

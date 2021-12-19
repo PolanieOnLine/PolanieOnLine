@@ -344,6 +344,7 @@
 		<item name="płaszcz elficki" price="400" />
 		<item name="zbroja elficka" price="400" />
 		<item name="kapelusz elficki" price="150" />
+		<item name="hełm elficki" price="300" />
 	</shop>
 
 	<!-- Vonda kupuje: -->

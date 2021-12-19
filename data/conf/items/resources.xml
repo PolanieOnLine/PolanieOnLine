@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="polano">
 		<type class="resource" subclass="wood" tileid="-1"/>
@@ -445,7 +444,7 @@
 		</equipable>
 	</item>
 
-	<item name="gadzie jajo">
+	<item name="gadzie jajo" condition="stendhal.testserver">
 		<type class="resource" subclass="green_egg" tileid="-1"/>
 		<description>Oto wartościowe gadzie jajo.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>

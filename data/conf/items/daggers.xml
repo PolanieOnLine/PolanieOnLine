@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
 
 	<item name="drewniany sztylecik">
 		<type class="dagger" subclass="wooden_dagger" tileid="-1"/>
@@ -10,6 +9,7 @@
 			<atk value="1"/>
 			<rate value="1"/>
 			<durability value="550"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
@@ -74,6 +74,7 @@
 		<attributes>
 			<atk value="8"/>
 			<rate value="3"/>
+			<min_level condition="stendhal.testserver" value="3"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="8533"/>
@@ -140,6 +141,7 @@
 		<attributes>
 			<atk value="7"/>
 			<rate value="3"/>
+			<min_level condition="stendhal.testserver" value="1"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5716"/>
@@ -160,7 +162,7 @@
 		<attributes>
 			<atk value="2"/>
 			<rate value="1"/>
-		<min_level value="50"/>
+			<min_level value="50"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="6250"/>
@@ -225,9 +227,9 @@
 		<description>Oto sztylet dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="7"/>
+			<atk value="4"/>
 			<rate value="2"/>
-			<min_level value="52"/>
+			<min_level value="100"/>
 			<max_improves value="5"/>
 		</attributes>
 		<weight value="0.2"/>
@@ -250,7 +252,8 @@
 		<attributes>
 			<atk value="15"/>
 			<rate value="5"/>
-			<lifesteal value="-0.1"/>
+			<lifesteal value="-0.04"/>
+			<min_level condition="stendhal.testserver" value="20"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
@@ -272,7 +275,7 @@
 			<atk value="8"/>
 			<def value="1"/>
 			<rate value="2"/>
-			<lifesteal value="-0.1"/>
+			<lifesteal value="-0.08"/>
 			<min_level value="68"/>
 		</attributes>
 		<weight value="0.2"/>
@@ -294,6 +297,7 @@
 		<attributes>
 			<atk value="3"/>
 			<rate value="3"/>
+			<min_level condition="stendhal.testserver" value="1"/>
 			<max_improves value="1"/>
 		</attributes>
 		<weight value="0.2"/>
@@ -310,12 +314,12 @@
 
 	<item name="sztylecik z mithrilu">
 		<type class="dagger" subclass="mithril_dagger" tileid="-1"/>
-		<description>Oto sztylecik z mithrilu. Jeden z najszybszych broni wykonanych przez krasnoludów... Wykorzystuje światło do uzdrawiania właściciela broni.</description>
+		<description>Oto sztylecik z mithrilu, posiadający moc uzdrawiającą posiadacza.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="8"/>
+			<atk value="6"/>
 			<rate value="1"/>
-			<lifesteal value="0.1"/>
+			<lifesteal value="0.05"/>
 			<min_level value="350"/>
 			<max_improves value="2"/>
 		</attributes>
@@ -339,7 +343,7 @@
 		<attributes>
 			<atk value="8"/>
 			<rate value="2"/>
-			<min_level value="60"/>
+			<min_level value="30"/>
 			<max_improves value="3"/>
 		</attributes>
 		<weight value="0.2"/>

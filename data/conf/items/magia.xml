@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
 
 	<item name="zaklęcie pustelnika">
 		<type class="magia" subclass="zaklecie" tileid="-1"/>
@@ -13,6 +12,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="80"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="160"/>
@@ -29,7 +29,7 @@
 
 	<item name="magia ziemi">
 		<type class="magia" subclass="mana_green" tileid="-1"/>
-		<description>Oto magia ziemi. Czar rzucony za jej pomocą ma moc odebierania życia!</description>
+		<description>Oto magia ziemi. Czar rzucony za jej pomocą ma moc odbierania życia!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="7" condition="!testing.combat"/>
@@ -38,6 +38,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="80"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -64,6 +65,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="100"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -90,6 +92,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="140"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -116,6 +119,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="200"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -142,6 +146,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="260"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="oliwa z oliwek">
 		<type class="drink" subclass="olive_oil" tileid="-1"/>
@@ -350,7 +349,7 @@
 		</equipable>
 	</item>
 
-	<item name="mana">
+	<item name="mana" condition="stendhal.testserver">
 		<type class="drink" subclass="mana" tileid="-1"/>
 		<description>Oto mana do stopniowego zwiększania twojej many.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
@@ -728,9 +727,9 @@
 	    </equipable>
 	  </item>
 
-	<!--<item name="święta woda">
+	<item name="woda święcona" condition="stendhal.testserver">
 		<type class="drink" subclass="holy_water" tileid="-1"/>
-		<description>Oto święta woda. Pobłogosław nią zombi.</description>
+		<description>Oto woda święcona. Pobłogosław nią zombi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="400"/>
@@ -749,7 +748,7 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item>-->
+	</item>
 
 	<item name="gigantyczny eliksir">
 		<type class="drink" subclass="giant_potion" tileid="-1"/>

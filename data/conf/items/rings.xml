@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
 
 	<!-- START: Invisibility Ring -->
 	<item name="pierścień niewidzialności">
@@ -9,6 +8,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.RingOfInvisibility"/>
 		<attributes>
 			<undroppableondeath value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -28,7 +28,8 @@
 		<description>Oto pierścień leczniczy. Może cię ochronić przed zatruciem gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="poisoned" value="0.25" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.25" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -46,7 +47,8 @@
 		<description>Oto pierścień antyjadowy. Posiada dobre właściwości chroniące przed zatruciem gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="poisoned" value="0.5" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.5" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -59,13 +61,13 @@
 		</equipable>
 	</item>
 
-	<!-- DISABLED
-	<item name="pierścień antytoksynowy">
+	<item name="pierścień antytoksynowy" condition="stendhal.testserver">
 		<type class="ring" subclass="antitoxin_ring" tileid="-1"/>
 		<description>Oto pierścień antytoksynowy. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="poisoned" value="0.75" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.75" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -77,14 +79,14 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
-	DISABLED -->
 
 	<item name="pierścień spokoju">
 		<type class="ring" subclass="placid_ring" tileid="-1"/>
 		<description>Oto pierścień spokoju. Może zmniejszać skutki szoku podczas noszenia go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="shocked" value="0.33" slots="finger;fingerb;" />
+			<status_resist type="shocked" value="0.33" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -102,7 +104,8 @@
 		<description>Oto zaizolowany pierścień, który ochroni ciebie przed zszokowaniem - wstrząsami. Musi być założony na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="shocked" value="0.66" slots="finger;fingerb;" />
+			<status_resist type="shocked" value="0.66" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -121,6 +124,7 @@
 		<description>Oto obrączka ślubna symbol miłości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.WeddingRing"/>
 		<attributes>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -138,6 +142,7 @@
 		<description>Oto pierścień zaręczynowy, symbol miłości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -158,6 +163,7 @@
 			<amount value="1"/>
 			<persistent value="1"/>
 			<undroppableondeath value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -173,14 +179,15 @@
 	<!-- START: Pierścienie klasowe -->
 	<item name="pierścień magnata">
 		<type class="ring" subclass="tsoh_ring" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="4"/>
 			<def value="4"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.33" slots="finger;fingerb;" />
-			<status_resist type="shocked" value="0.33" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.33" slots="finger;fingerb;"/>
+			<status_resist type="shocked" value="0.33" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -194,14 +201,15 @@
 
 	<item name="pierścień barona">
 		<type class="ring" subclass="edragons_clan_ring" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="3"/>
 			<def value="3"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.2" slots="finger;fingerb;" />
-			<status_resist type="shocked" value="0.1" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.2" slots="finger;fingerb;"/>
+			<status_resist type="shocked" value="0.1" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -215,13 +223,14 @@
 
 	<item name="pierścień rycerza">
 		<type class="ring" subclass="zrc_ring" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="2"/>
 			<def value="2"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.1" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.1" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -235,13 +244,14 @@
 
 	<item name="pierścień mieszczanina">
 		<type class="ring" subclass="zion_ring" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
 			<atk value="1"/>
 			<def value="1"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.05" slots="finger;fingerb;" />
+			<status_resist type="poisoned" value="0.05" slots="finger;fingerb;"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -260,6 +270,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<susceptibility type="dark" value="0.95"/>
 		<equipable>
@@ -280,6 +291,7 @@
 		<attributes>
 			<atk value="1"/>
 			<def value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<susceptibility type="light" value="0.95"/>
 		<equipable>
@@ -299,6 +311,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="2"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<susceptibility type="dark" value="0.9"/>
 		<susceptibility type="light" value="1.1"/>
@@ -320,6 +333,7 @@
 		<attributes>
 			<atk value="2"/>
 			<def value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 			<max_improves value="1"/>
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
@@ -337,10 +351,11 @@
 
 	<item name="pierścień skorupy żółwia">
 		<type class="ring" subclass="turtle_shell_ring" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -355,10 +370,11 @@
 
 	<item name="pierścień imperialny">
 		<type class="ring" subclass="imperial_ring" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -373,11 +389,12 @@
 
 	<item name="wzmocniony pierścień imperialny">
 		<type class="ring" subclass="imperial_ring_enhanced" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
 			<def value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<preview>5</preview>
 		<equipable>

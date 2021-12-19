@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
   	<!-- try to sort by affinity first, alphabetical order next -->
   	<item name="flaczki">
@@ -257,31 +256,6 @@
 			<slot name="trade" />
 		</equipable>
 	</item>
-
-	<!-- Removing crab meat
-	<item name="krabie mięso">
-		<type class="food" subclass="crab_meat" tileid="-1" />
-		<description>Oto krabie mięso. Jest go kawałek, ale jest przepyszne.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Food" />
-		<attributes>
-			<amount value="30" />
-			<frequency value="10" />
-			<quantity value="1" />
-			<regen value="5" />
-			<menu value="Zjedz|Użyj"/>
-		</attributes>
-		<weight value="0.1" />
-		<value value="2" />
-		<equipable>
-			<slot name="ground" />
-			<slot name="content" />
-			<slot name="lhand" />
-			<slot name="rhand" />
-			<slot name="bag" />
-			<slot name="trade" />
-		</equipable>
-	</item>
-	Removing crab meat -->
 
 	<item name="kukurydza">
 		<type class="food" subclass="corn" tileid="-1"/>

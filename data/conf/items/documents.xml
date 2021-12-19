@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 	
 	<!-- START: SCHEMATY -->
 
-	<item name="schemat na pierścień z mithrilu">
+	<item name="schemat na pierścień z mithrilu" condition="stendhal.testserver">
 		<type class="documents" subclass="scheme_full_mithril_ring" tileid="-1"/>
 		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -20,7 +19,7 @@
 	</item>
 
 	<!-- CZĘŚCI SCHEMATU NA PIERŚCIEŃ -->
-	<item name="pierwsza część schematu">
+	<item name="pierwsza część schematu" condition="stendhal.testserver">
 		<type class="documents" subclass="scheme1_mithril_ring" tileid="-1"/>
 		<description>Oto pierwsza część schematu na pierścień z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -35,7 +34,7 @@
 		</equipable>
 	</item>
 
-	<item name="druga część schematu">
+	<item name="druga część schematu" condition="stendhal.testserver">
 		<type class="documents" subclass="scheme2_mithril_ring" tileid="-1"/>
 		<description>Oto druga część schematu na pierścień z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -50,7 +49,7 @@
 		</equipable>
 	</item>
 
-	<item name="trzecia część schematu">
+	<item name="trzecia część schematu" condition="stendhal.testserver">
 		<type class="documents" subclass="scheme3_mithril_ring" tileid="-1"/>
 		<description>Oto trzecia część schematu na pierścień z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -65,7 +64,7 @@
 		</equipable>
 	</item>
 
-	<item name="czwarta część schematu">
+	<item name="czwarta część schematu" condition="stendhal.testserver">
 		<type class="documents" subclass="scheme4_mithril_ring" tileid="-1"/>
 		<description>Oto czwarta część schematu na pierścień z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -220,7 +219,7 @@
 		</equipable>
 	</item>
 
-	<item name="zwój pergaminu">
+	<item name="zwój pergaminu" condition="stendhal.testserver">
 		<type class="documents" subclass="scroll" tileid="-1"/>
 		<description>Oto zwinięty zwój pergaminu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -258,7 +257,7 @@
 		</equipable>
 	</item>
 
-	<!--<item name="receptura">
+	<item name="receptura" condition="stendhal.testserver">
 		<type class="documents" subclass="recipe" tileid="-1"/>
 		<description>Oto receptura gotowa do dostarczenia dla Imorgena. Znajdują się na niej nazwy składników do potężnej mikstury przeciwko wilkołakom. </description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -274,5 +273,5 @@
 			<slot name="lhand"/>
 			<slot name="rhand"/>
 		</equipable>
-	</item>-->
+	</item>
 </items>

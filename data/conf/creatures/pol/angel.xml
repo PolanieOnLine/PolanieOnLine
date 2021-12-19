@@ -111,8 +111,8 @@
 		<type class="pol/serafiny" subclass="cherubin" tileid="pol_serafiny.png:2"/>
 		<description/>
 		<attributes>
-			<atk value="23333"/>
-			<ratk value="23333"/>
+			<atk value="24444"/>
+			<ratk value="24444"/>
 			<def value="776"/>
 			<hp value="20000"/>
 			<speed value="1.0"/>
@@ -157,8 +157,8 @@
 		<type class="pol/serafiny" subclass="lilith" tileid="pol_serafiny.png:3"/>
 		<description/>
 		<attributes>
-			<atk value="26666"/>
-			<ratk value="26666"/>
+			<atk value="28888"/>
+			<ratk value="28888"/>
 			<def value="827"/>
 			<hp value="24000"/>
 			<speed value="1.0"/>

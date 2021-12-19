@@ -18,7 +18,6 @@
 		<respawn value="160000"/>
 		<corpse name="giant_humanoid" harmless="halo_large"/>
 		<drops>
-			<item value="money" quantity="[3000,30000]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[2,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="2.0"/>
@@ -68,7 +67,6 @@
 		<respawn value="100000"/>
 		<corpse name="giant_humanoid" harmless="halo_large"/>
 		<drops>
-			<item value="money" quantity="[5000,25000]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[2,5]" probability="50.0"/>
 			<item value="pióro archanioła ciemności" quantity="[1,1]" probability="80.0"/>
 			<item value="zupa" quantity="[2,4]" probability="50.0"/>
@@ -121,7 +119,6 @@
 		<respawn value="28000"/>
 		<corpse name="giant_humanoid" harmless="halo_large_red"/>
 		<drops>
-			<item value="money" quantity="[200,1000]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
 			<item value="czarna zbroja" quantity="[1,1]" probability="0.02"/>
@@ -163,7 +160,6 @@
 		<respawn value="3530"/>
 		<corpse name="humanoid" harmless="halo" />
 		<drops>
-			<item value="money" quantity="[30,60]" probability="100.0"/>
 			<item value="mufinka" quantity="[1,5]" probability="10.0"/>
 			<item value="niezapisany zwój" quantity="[1,2]" probability="5.0"/>
 			<item value="złoty płaszcz" quantity="[1,1]" probability="2.0"/>
@@ -208,7 +204,6 @@
 		<respawn value="36000"/>
 		<corpse name="giant_humanoid" harmless="halo_large"/>
 		<drops>
-			<item value="money" quantity="[300,3000]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,4]" probability="50.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
 			<item value="magiczna zbroja płytowa" quantity="[1,1]" probability="0.1"/>
@@ -241,7 +236,7 @@
 
 	<creature name="archanioł">
 		<type class="stendhal/angel" subclass="archangel" tileid="angel.png:3"/>
-		<description>Oto archanioł. Zabije cię jeśli natychmiast nie odejdziesz z nieba.</description>
+		<description>Oto archanioł. Jest to najbardziej przerażająca broń Niebios, zaciekła i absolutna siła pierwotnego stworzenia.</description>
 		<attributes>
 			<atk value="3455"/>
 			<ratk value="3455"/>
@@ -255,7 +250,6 @@
 		<respawn value="40000"/>
 		<corpse name="giant_humanoid" harmless="halo_large"/>
 		<drops>
-			<item value="money" quantity="[4000,9000]" probability="100.0"/>
 			<item value="wielki eliksir" quantity="[1,4]" probability="40.0"/>
 			<item value="pióro archanioła" quantity="[1,1]" probability="100.0"/>
 			<item value="zupa" quantity="[1,3]" probability="30.0"/>

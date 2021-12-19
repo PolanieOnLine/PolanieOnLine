@@ -19,7 +19,6 @@
 		<respawn value="1210"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,17]" probability="100.0"/>
 			<item value="kolczuga" quantity="[1,1]" probability="3.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="0.05"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="0.5"/>
@@ -54,7 +53,6 @@
 		<respawn value="1210"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,20]" probability="100.0"/>
 			<item value="włócznia" quantity="[5,20]" probability="40.0"/>
 			<item value="butelka wody" quantity="[1,2]" probability="35.0"/>
 		</drops>
@@ -88,7 +86,6 @@
 		<respawn value="1220"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,20]" probability="100.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="4.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="1.0"/>
 			<item value="złoty buzdygan" quantity="[1,1]" probability="8.0"/>
@@ -124,7 +121,6 @@
 		<respawn value="1220"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[6,22]" probability="100.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="3.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="0.3"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="2.0"/>
@@ -160,7 +156,6 @@
 		<respawn value="1240"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,25]" probability="100.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="9.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="0.2"/>
@@ -203,7 +198,6 @@
 		<respawn value="1640"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,17]" probability="100.0"/>
 			<item value="kropacz" quantity="[1,1]" probability="0.05"/>
 			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="0.005"/>
 			<item value="kamienna zbroja" quantity="[1,1]" probability="0.01"/>
@@ -237,7 +231,6 @@
 		<respawn value="1650"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[6,22]" probability="100.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="0.25"/>
 			<item value="buty cieni" quantity="[1,1]" probability="0.1"/>
 			<item value="kropacz" quantity="[1,1]" probability="0.5"/>
@@ -271,7 +264,6 @@
 		<respawn value="1690"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[4,20]" probability="100.0"/>
 			<item value="zbroja barbarzyńcy" quantity="[1,1]" probability="5.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="0.5"/>
 			<item value="buty cieni" quantity="[1,1]" probability="1.5"/>
@@ -305,7 +297,6 @@
 		<respawn value="1830"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,65]" probability="100.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="1.5"/>
 			<item value="zbroja cieni" quantity="[1,1]" probability="0.15"/>
 			<item value="buty cieni" quantity="[1,1]" probability="1.5"/>

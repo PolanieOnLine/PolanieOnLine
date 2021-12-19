@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
 
 	<item name="miecz zaczepny">
 		<type class="sword" subclass="biting_sword" tileid="-1"/>
@@ -380,6 +379,7 @@
 		<attributes>
 			<atk value="9"/>
 			<rate value="3"/>
+			<min_level condition="stendhal.testserver" value="4"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5716"/>
@@ -401,7 +401,7 @@
 			<atk value="12"/>
 			<def value="6"/>
 			<rate value="3"/>
-		<min_level value="80"/>
+			<min_level value="80"/>
 		</attributes>
 		<weight value="4.0"/>
 		<value value="33750"/>
@@ -443,6 +443,7 @@
 		<attributes>
 			<atk value="24"/>
 			<rate value="10"/>
+			<min_level condition="stendhal.testserver" value="10"/>
 			<max_improves value="8"/>
 		</attributes>
 		<weight value="4.0"/>
@@ -528,6 +529,7 @@
 		<attributes>
 			<atk value="11"/>
 			<rate value="4"/>
+			<min_level condition="stendhal.testserver" value="5"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="16637"/>
@@ -614,6 +616,7 @@
 		<attributes>
 			<atk value="17"/>
 			<rate value="6"/>
+			<min_level condition="stendhal.testserver" value="7"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
@@ -679,6 +682,7 @@
 		<attributes>
 			<atk value="21"/>
 			<rate value="5"/>
+			<min_level condition="stendhal.testserver" value="12"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
@@ -722,6 +726,7 @@
 		<attributes>
 			<atk value="35"/>
 			<rate value="6"/>
+			<min_level condition="stendhal.testserver" value="40"/>
 			<max_improves value="6"/>
 		</attributes>
 		<weight value="0.2"/>
@@ -744,6 +749,7 @@
 			<atk value="96"/>
       		<rate value="5"/>
 	  		<lifesteal value="0.2"/>
+	  		<min_level condition="stendhal.testserver" value="0"/>
 	  		<max_improves value="4"/>
 		</attributes>
 		<damage type="light"/>
@@ -765,6 +771,7 @@
 			<atk value="0"/>
 			<rate value="1"/>
 			<durability value="1500"/>
+			<min_level condition="stendhal.testserver" value="0"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="1"/>

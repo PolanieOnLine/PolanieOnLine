@@ -5,40 +5,39 @@
 	<!-- START: mermaids -->
 
 	<creature name="syrenka">
-			<type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
-			<description>Oto syrenka. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
-			<attributes>
-				<atk value="547"/>
-				<def value="76"/>
-				<hp value="680"/>
-				<speed value="1.0"/>
-				<size value="1,1"/>
-			</attributes>
-			<level value="76"/>
-			<experience value="5406"/>
-			<respawn value="2570"/>
-			<corpse name="humanoid"/>
-			<drops>
-				<item value="money" quantity="[10,50]" probability="100.0"/>
-				<item value="mocne antidotum" quantity="[1,3]" probability="70.0"/>
-				<item value="duży eliksir" quantity="[1,2]" probability="35.0"/>
-				<item value="czarna perła" quantity="[1,1]" probability="30.0"/>
-			</drops>
-			<equips>
-			</equips>
-			<ai>
-				<says>
-					<sound value="mermaid_song-01"/>
-					<sound value="mermaid_song-02"/>
-					<sound value="mermaid_song-03"/>
-					<sound value="mermaid_song-04"/>
-					<sound value="mermaid_song-05"/>
-				</says>
-				<profile name="offensive"/>
-				<profile name="human"/>
-				<profile name="heal" params="5,30"/>
-				<profile name="patrolling"/>
-			</ai>
+		<type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
+		<description>Oto syrenka. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
+		<attributes>
+			<atk value="547"/>
+			<def value="76"/>
+			<hp value="680"/>
+			<speed value="1.0"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="76"/>
+		<experience value="5406"/>
+		<respawn value="2570"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="mocne antidotum" quantity="[1,3]" probability="70.0"/>
+			<item value="duży eliksir" quantity="[1,2]" probability="35.0"/>
+			<item value="czarna perła" quantity="[1,1]" probability="30.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<sound value="mermaid_song-01"/>
+				<sound value="mermaid_song-02"/>
+				<sound value="mermaid_song-03"/>
+				<sound value="mermaid_song-04"/>
+				<sound value="mermaid_song-05"/>
+			</says>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="5,30"/>
+			<profile name="patrolling"/>
+		</ai>
 	</creature>
 
 	<creature name="syrena szmaragdowa">
@@ -58,7 +57,6 @@
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="szmaragd" quantity="[1,1]" probability="5.0"/>
-			<item value="money" quantity="[200,2000]" probability="100.0"/>
 			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
 			<item value="pierścień szmaragdowy" quantity="[1,1]" probability="0.01"/>
 			<item value="magiczna tarcza płytowa" quantity="[1,1]" probability="1.0"/>
@@ -100,7 +98,6 @@
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="ametyst" quantity="[1,1]" probability="5.0"/>
-			<item value="money" quantity="[200,2000]" probability="100.0"/>
 			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
 			<item value="hełm cieni" quantity="[1,1]" probability="2.0"/>
 			<item value="spodnie cieni" quantity="[1,1]" probability="1.0"/>
@@ -143,7 +140,6 @@
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="rubin" quantity="[1,1]" probability="5.0"/>
-			<item value="money" quantity="[200,2000]" probability="100.0"/>
 			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
 			<item value="piekielny sztylet" quantity="[1,1]" probability="0.01"/>
 			<item value="miecz ognisty" quantity="[1,1]" probability="1.0"/>
@@ -185,7 +181,6 @@
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
 			<item value="szafir" quantity="[1,1]" probability="5.0"/>
-			<item value="money" quantity="[200,2000]" probability="100.0"/>
 			<item value="mocne antidotum" quantity="[1,2]" probability="0.1"/>
 			<item value="zbroja lazurowa" quantity="[1,1]" probability="5.0"/>
 			<item value="pas lazurowy" quantity ="[1,1]" probability="1.5"/>
@@ -261,7 +256,6 @@
 		<respawn value="36000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
 			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.5"/>
@@ -289,7 +283,6 @@
 		<respawn value="40000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
 			<item value="pierścień skorupy żółwia" quantity="[1,1]" probability="0.5"/>
@@ -319,7 +312,6 @@
 		<respawn value="44000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
 			<item value="zbroja monarchistyczna" quantity="[1,1]" probability="0.5"/>
@@ -353,7 +345,6 @@
 		<respawn value="12096000"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="miecz lodowy" quantity="[1,1]" probability="20.0"/>
 			<item value="jabłko" quantity="[10,30]" probability="80.0"/>
@@ -384,7 +375,6 @@
 		<respawn value="7400"/>
 		<corpse name="animal"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="pierścień imperialny" quantity="[1,1]" probability="0.5"/>
 		</drops>
@@ -410,7 +400,6 @@
 		<respawn value="50000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="zbroja monarchistyczna" quantity="[1,1]" probability="0.5"/>
 			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
@@ -438,7 +427,6 @@
 		<respawn value="52000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="sztylet królewski" quantity="[1,1]" probability="0.5"/>
 			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.5"/>
@@ -466,7 +454,6 @@
 		<respawn value="54000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="sztylet królewski" quantity="[1,1]" probability="0.5"/>
 			<item value="hełm monarchistyczny" quantity="[1,1]" probability="0.5"/>
@@ -500,7 +487,6 @@
 		<!-- uh, should this one be an animal or humanoid? -->
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[10,100]" probability="70.0"/>
 			<item value="duży eliksir" quantity="[1,4]" probability="30.0"/>
 			<item value="włócznia" quantity="[20,40]" probability="30.0"/>
 			<item value="pierścień imperialny" quantity="[1,1]" probability="0.5"/>
@@ -528,7 +514,6 @@
 		<respawn value="14000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.5"/>
 		</drops>
@@ -560,7 +545,6 @@
 		<respawn value="15000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
 		</drops>
@@ -592,7 +576,6 @@
 		<respawn value="16000"/>
 		<corpse name="animal_2x2"/>
 		<drops>
-			<item value="money" quantity="[10,250]" probability="100.0"/>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
 			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.5"/>

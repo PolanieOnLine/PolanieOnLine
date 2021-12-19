@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal ../items.xsd ">
-	<!-- DISABLED
-    <item name="plecak">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
+
+    <item name="plecak" condition="stendhal.testserver">
 		<type class="container" subclass="backpack" tileid="-1"/>
 		<description>Oto plecak.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Container"/>
@@ -23,7 +22,7 @@
 		</equipable>
 	</item>
 
-	<item name="rzemyk">
+	<item name="rzemyk" condition="stendhal.testserver">
 		<type class="container" subclass="keyring" tileid="-1"/>
 		<description>Oto rzemyk.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Container"/>
@@ -40,7 +39,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-	-->
+
 	<item name="pusty worek">
 		<type class="container" subclass="empty_sack" tileid="-1"/>
 		<description>Oto pusty worek. Napełnij go, a będziesz mógł ustawić go pod ścianą.</description>
