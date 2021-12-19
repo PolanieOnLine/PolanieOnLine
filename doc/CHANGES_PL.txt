@@ -1,5 +1,24 @@
 Changelog
 ---------
+1.25.2
+*klient*
+- Dodano nowe włosy do wyboru (1)
+- Poprawiono grafiki przedmiotów
+- Poprawiono grafikę świątecznej czapki
+- Okno zwłok może się skalować
+
+*świat*
+- Dodano nowego NPC: (1)
+	- Claude Conteur
+- Dodano nowe przedmiot: (2)
+	- antyczny sztylet smoka
+	- sztylet wampirów
+- Dodano kapelusz elficki, hełm elficki oraz rękawice elfickie do wymaganych przedmiotów w zadaniu u Luposa
+- Dodano możliwość sprzedaży hełmu elfickiego w sklepiku u Luposa
+- Zmieniono statystyki sztyletów
+- Usunięto drop money dla niektórych potworów
+
+
 1.25.1
 *naprawiono błędy*
 - Poprawiono dialog ukończenia zadania u Wizariusza
