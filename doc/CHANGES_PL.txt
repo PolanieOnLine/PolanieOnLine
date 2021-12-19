@@ -15,7 +15,9 @@ Changelog
 	- sztylet wampirów
 - Dodano kapelusz elficki, hełm elficki oraz rękawice elfickie do wymaganych przedmiotów w zadaniu u Luposa
 - Dodano możliwość sprzedaży hełmu elfickiego w sklepiku u Luposa
-- Zmieniono statystyki sztyletów
+- Dodano możliwość ulepszenia każdej różdżki u kowala Tworzymira
+- Zmieniono statystyki sztyletów oraz wartości zasięgu dla wszystkich różdżek
+- Zmieniono nieco wartość ataku dla Lilith oraz Cherubina
 - Usunięto drop money dla niektórych potworów
 
 
