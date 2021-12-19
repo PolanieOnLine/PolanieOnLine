@@ -24,6 +24,7 @@
 			<item value="mocne antidotum" quantity="[1,2]" probability="50.0"/>
 			<item value="buty wampirze" quantity="[1,1]" probability="1.0"/>
 			<item value="pas wampirzy" quantity="[1,1]" probability="0.5"/>
+			<item value="sztylet wampirów" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips>
 		</equips>
@@ -60,6 +61,7 @@
 			<item value="zbroja wampirza" quantity="[1,1]" probability="0.75"/>
 			<item value="buty wampirze" quantity="[1,1]" probability="2.0"/>
 			<item value="pas wampirzy" quantity="[1,1]" probability="1.0"/>
+			<item value="sztylet wampirów" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>
@@ -97,6 +99,7 @@
 			<item value="tarcza wampirza" quantity="[1,1]" probability="0.4"/>
 			<item value="pas wampirzy" quantity="[1,1]" probability="1.5"/>
 			<item value="krwiopijca" quantity="[1,1]" probability="0.1"/>
+			<item value="sztylet wampirów" quantity="[1,1]" probability="0.2"/>
 		</drops>
 		<equips>
 		</equips>

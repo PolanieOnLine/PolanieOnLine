@@ -184,7 +184,7 @@
 		<attributes>
 			<atk value="4"/>
 			<rate value="1"/>
-			<min_level value="100"/>
+			<min_level value="60"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="6250"/>
@@ -227,10 +227,10 @@
 		<description>Oto sztylet dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="4"/>
-			<rate value="2"/>
+			<atk value="5"/>
+			<rate value="1"/>
 			<min_level value="100"/>
-			<max_improves value="5"/>
+			<max_improves value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="6250"/>
@@ -251,7 +251,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="15"/>
-			<rate value="5"/>
+			<rate value="4"/>
 			<lifesteal value="-0.04"/>
 			<min_level condition="stendhal.testserver" value="20"/>
 		</attributes>
@@ -349,6 +349,52 @@
 		<weight value="0.2"/>
 		<value value="12800"/>
 		<damage type="dark"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="antyczny sztylet smoka">
+		<type class="dagger" subclass="ancient_dragon_dagger" tileid="-1"/>
+		<description>Oto antyczny sztylet smoka. Stworzony ze smoczego pazura, lekki przez co można nim zadawać bardzo szybkie ciosy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="4"/>
+			<def value="2"/>
+			<rate value="2"/>
+			<min_level value="55"/>
+			<max_improves value="3"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="12345"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="sztylet wampirów">
+		<type class="dagger" subclass="ancient_dracula_dagger" tileid="-1"/>
+		<description>Oto sztylet wampirów. Wykorzystywany przez wampirów do szybkiego rozlewu krwi.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="6"/>
+			<rate value="3"/>
+			<lifesteal value="0.05"/>
+			<min_level value="65"/>
+			<max_improves value="2"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="12345"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

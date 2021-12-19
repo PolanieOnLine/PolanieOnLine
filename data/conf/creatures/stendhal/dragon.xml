@@ -28,6 +28,7 @@
 			<item value="pazur zielonego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra zielonego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="antyczny sztylet smoka" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -74,6 +75,7 @@
 			<item value="pazur czerwonego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
 			<item value="skóra czerwonego smoka" quantity="[1,1]" probability="5.0"/>
+			<item value="antyczny sztylet smoka" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
