@@ -349,7 +349,7 @@
 		</equipable>
 	</item>
 
-	<item name="mana" condition="stendhal.testserver">
+	<!-- <item name="mana" condition="stendhal.testserver">
 		<type class="drink" subclass="mana" tileid="-1"/>
 		<description>Oto mana do stopniowego zwiększania twojej many.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
@@ -370,7 +370,7 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item>
+	</item> -->
 
 	<item name="trucizna">
 		<type class="drink" subclass="poison" tileid="-1"/>
@@ -727,7 +727,7 @@
 	    </equipable>
 	  </item>
 
-	<item name="woda święcona" condition="stendhal.testserver">
+	<!-- <item name="woda święcona" condition="stendhal.testserver">
 		<type class="drink" subclass="holy_water" tileid="-1"/>
 		<description>Oto woda święcona. Pobłogosław nią zombi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
@@ -748,7 +748,7 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item>
+	</item> -->
 
 	<item name="gigantyczny eliksir">
 		<type class="drink" subclass="giant_potion" tileid="-1"/>

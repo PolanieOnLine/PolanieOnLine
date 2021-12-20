@@ -242,7 +242,7 @@
 		</equipable>
 	</item>
 
-	<item name="kij przywoływania nieumarłych" condition="stendhal.testserver">
+	<!-- <item name="kij przywoływania nieumarłych" condition="stendhal.testserver">
 		<type class="club" subclass="wizard_staff" tileid="-1"/>
 		<description>Oto niewymownie zmyślny kij przywoływania nieumarłych. Jeśli się wsłuchasz być może usłyszysz krzyk duszy poprzedniego właściciela.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NecroStaff"/>
@@ -262,7 +262,7 @@
 			<slot name="lhand"/>
 			<slot name="rhand"/>
 		</equipable>
-	</item>
+	</item> -->
 
 	<item name="rózga GM">
 		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>

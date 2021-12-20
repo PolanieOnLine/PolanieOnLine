@@ -240,7 +240,7 @@
 		</equipable>
 	</item>
 
-	<item name="łuk treningowy" condition="stendhal.testserver">
+	<!-- <item name="łuk treningowy" condition="stendhal.testserver">
 		<type class="ranged" subclass="training_bow" tileid="-1" />
 		<description>Oto łuk treningowy. Lekki i łatwy w użyciu, lecz jego bardzo słabe wykonanie sprawia, że czujesz jak łamie się w twoich rękach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
@@ -328,5 +328,5 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item>
+	</item> -->
 </items>

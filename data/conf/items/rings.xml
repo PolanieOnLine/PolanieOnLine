@@ -61,7 +61,7 @@
 		</equipable>
 	</item>
 
-	<item name="pierścień antytoksynowy" condition="stendhal.testserver">
+	<!-- <item name="pierścień antytoksynowy" condition="stendhal.testserver">
 		<type class="ring" subclass="antitoxin_ring" tileid="-1"/>
 		<description>Oto pierścień antytoksynowy. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
@@ -78,7 +78,7 @@
 			<slot name="fingerb"/>
 			<slot name="keyring"/>
 		</equipable>
-	</item>
+	</item> -->
 
 	<item name="pierścień spokoju">
 		<type class="ring" subclass="placid_ring" tileid="-1"/>

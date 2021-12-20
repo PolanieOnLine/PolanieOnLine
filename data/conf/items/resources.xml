@@ -444,7 +444,7 @@
 		</equipable>
 	</item>
 
-	<item name="gadzie jajo" condition="stendhal.testserver">
+	<!-- <item name="gadzie jajo" condition="stendhal.testserver">
 		<type class="resource" subclass="green_egg" tileid="-1"/>
 		<description>Oto wartościowe gadzie jajo.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
@@ -462,7 +462,7 @@
 			<slot name="lhand"/>
 			<slot name="rhand"/>
 		</equipable>
-	</item>
+	</item> -->
 
 	<item name="gruczoł przędzy">
 		<type class="resource" subclass="silkgland" tileid="-1"/>

@@ -50,7 +50,7 @@
 		</equipable>
 	</item>
 
-	<item name="strzałka" condition="stendhal.testserver">
+	<!-- <item name="strzałka" condition="stendhal.testserver">
 		<type class="missile" subclass="dart" tileid="-1"/>
 		<description>Oto strzałka. Musisz być blisko, żeby użyc jej jako broń.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
@@ -97,7 +97,7 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item>
+	</item> -->
 
 	<item name="shuriken">
 		<type class="missile" subclass="shuriken" tileid="-1"/>
