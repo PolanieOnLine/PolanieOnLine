@@ -1,5 +1,13 @@
 Changelog
 ---------
+1.25.3
+*klient*
+- Poprawiono grafiki niektórych NPC
+
+*naprawiono błędy*
+- Wyłączono testowe przedmioty z gry (m.in. eliksir mana pojawiający się zamiast mocnego antidotum)
+
+
 1.25.2
 *klient*
 - Dodano nowe włosy do wyboru (1)
