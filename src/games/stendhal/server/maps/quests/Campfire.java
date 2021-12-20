@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -76,6 +77,8 @@ public class Campfire extends AbstractQuest {
 	private final SpeakerNPC npc = npcs.get("Sally");
 
 	private static final int REQUIRED_WOOD = 10;
+	private static final int REWARDS = 10;
+
 	private static final int REQUIRED_MINUTES = 60;
 
 	private void prepareRequestingStep() {
@@ -177,6 +180,7 @@ public class Campfire extends AbstractQuest {
 		// player has wood and tells sally, yes, it is for her
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("polano", REQUIRED_WOOD));
+		reward.add(new EquipItemAction("węgiel drzewny", REWARDS));
 		reward.add(new IncreaseXPAction(50));
 		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT));
 		reward.add(new IncreaseKarmaAction(10));
@@ -189,9 +193,9 @@ public class Campfire extends AbstractQuest {
 				} else {
 					rewardClass = "szynka";
 				}
-				npc.say("Dziękuję! Weź trochę " + rewardClass + "!");
+				npc.say("Dziękuję! Weź trochę " + rewardClass + " oraz węgla drzewnego!");
 				final StackableItem reward = (StackableItem) SingletonRepository.getEntityManager().getItem(rewardClass);
-				reward.setQuantity(REQUIRED_WOOD);
+				reward.setQuantity(REWARDS);
 				player.equipOrPutOnGround(reward);
 				player.notifyWorldAboutChanges();
 			}
@@ -248,7 +252,7 @@ public class Campfire extends AbstractQuest {
 			res.add("Udało mi się zebrać 10 polan potrzebnych do rozpalenia ogniska.");
 		}
 		if (isCompleted(player)) {
-			res.add("Przekazałem drewno Sally. W zamian otrzymałem od niej trochę jedzenia na podróż.");
+			res.add("Przekazałem drewno Sally. W zamian otrzymałem od niej trochę jedzenia oraz węgla drzewnego na podróż.");
 		}
 		if(isRepeatable(player)){
 			res.add("Sally potrzebuje więcej drewna do ponownego rozpalenia ogniska.");
