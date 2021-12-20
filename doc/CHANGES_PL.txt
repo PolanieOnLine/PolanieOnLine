@@ -5,7 +5,7 @@ Changelog
 - Poprawiono grafiki niektórych NPC
 
 *naprawiono błędy*
-- Wyłączono testowe przedmioty z gry (m.in. eliksir mana pojawiający się zamiast mocnego antidotum)
+- Wyłączono testowe przedmioty z gry (m.in. eliksir many pojawiający się zamiast mocnego antidotum)
 
 
 1.25.2
