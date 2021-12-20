@@ -366,9 +366,9 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem, "") + " do ratusza w Wieliczce."));
+				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem) + " do ratusza w Wieliczce."));
 			} else {
-				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem, "a") + " dla burmistrza Wieliczki. Muszę to im zanieść."));
+				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem) + " dla burmistrza Wieliczki. Muszę to im zanieść."));
 			}
 		}
 		if (isRepeatable(player)) {
