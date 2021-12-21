@@ -9,8 +9,13 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
 public class AutoEquipItems {
-	final static String SLOT_POUCH = "pouch";
-	final static String SLOT_MAGICBAG = "magicbag";
+	private final static String SLOT_POUCH = "pouch";
+	private final static String SLOT_MAGICBAG = "magicbag";
+
+	private final String money = "money";
+	private final String[] potionsAndMagics = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir",
+			"gigantyczny eliksir", "eliksir miłości", "smoczy eliksir", "duży smoczy eliksir",
+			"magia ziemi", "magia deszczu", "magia płomieni", "magia mroku", "magia światła", "zaklęcie pustelnika" };
 
 	/**
 	 * Automatically moves items to the appropriate slot.
@@ -31,47 +36,75 @@ public class AutoEquipItems {
 
 		// try to move money to pouch by default
 		if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals(SLOT_POUCH)
-				&& source.getEntityName().equals("money")) {
+				&& source.getEntityName().equals(money)) {
 			// check if money can be moved to pouch
 			// XXX: this check should be changed if we switch to containers
-			if (player.getFeature("pouch") != null && player.hasSlot("pouch")) {
-				final boolean moneyInBag = player.isEquippedItemInSlot("bag", "money");
-				final boolean moneyInPouch = player.isEquippedItemInSlot(SLOT_POUCH, "money");
-				// stack on pouch
-				if (moneyInPouch || (!moneyInPouch && !moneyInBag)) {
-					action.put(EquipActionConsts.TARGET_SLOT, SLOT_POUCH);
-					if (action.has(Actions.TARGET_PATH)) {
-						action.put(Actions.TARGET_PATH,
-								Arrays.asList(player.get("id"), SLOT_POUCH));
-					}
-				}
-			}
+			itemMoveAction(player, action, SLOT_POUCH, money);
 		}
 
-		final String[] potionsAndMagics = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir",
-				"gigantyczny eliksir", "eliksir miłości", "smoczy eliksir", "duży smoczy eliksir",
-				"magia ziemi", "magia deszczu", "magia płomieni", "magia mroku", "magia światła", "zaklęcie pustelnika" };
-
+		// try to move potions and magics to magic bag by default
 		for (String item : potionsAndMagics) {
 			if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals(SLOT_MAGICBAG)
 					&& source.getEntityName().equals(item)) {
-				if (player.getFeature(SLOT_MAGICBAG) != null && player.hasSlot(SLOT_MAGICBAG)) {
-					final boolean itemsInBag = player.isEquippedItemInSlot("bag", item);
-					final boolean itemsInMagicBag = player.isEquippedItemInSlot(SLOT_MAGICBAG, item);
-					// stack on magicbag
-					if (itemsInMagicBag || (!itemsInMagicBag && !itemsInBag)) {
-						action.put(EquipActionConsts.TARGET_SLOT, SLOT_MAGICBAG);
-						if (action.has(Actions.TARGET_PATH)) {
-							action.put(Actions.TARGET_PATH, Arrays.asList(player.get("id"), SLOT_MAGICBAG));
-						}
-					} else {
-						action.put(EquipActionConsts.TARGET_SLOT, "bag");
-						if (action.has(Actions.TARGET_PATH)) {
-							action.put(Actions.TARGET_PATH, Arrays.asList(player.get("id"), "bag"));
-						}
-					}
-				}
+				itemMoveAction(player, action, SLOT_MAGICBAG, item);
 			}
+		}
+	}
+
+	/**
+	 * Move the item to slot.
+	 *
+	 * @param player
+	 * 				player
+	 * @param action
+	 * 				action
+	 * @param slot
+	 * 				slot
+	 * @param item
+	 * 				item
+	 */
+	void itemMoveAction(final Player player, final RPAction action, final String slot, final String item) {
+		if (player.getFeature(slot) != null && player.hasSlot(slot)) {
+			final boolean itemsInBag = player.isEquippedItemInSlot("bag", item);
+			final boolean itemsInSlot = player.isEquippedItemInSlot(slot, item);
+			// stack on slot
+			if (itemsInSlot || (!itemsInSlot && !itemsInBag)) {
+				targetSlot(player, action, slot);
+			} else {
+				targetSlot(player, action);
+			}
+		}
+	}
+
+	/**
+	 * Target action to move the item to the specified slot.
+	 * 
+	 * @param player
+	 * 				player
+	 * @param action
+	 * 				action
+	 * @param slot
+	 * 				slot
+	 */
+	void targetSlot(final Player player, final RPAction action, final String slot) {
+		action.put(EquipActionConsts.TARGET_SLOT, slot);
+		if (action.has(Actions.TARGET_PATH)) {
+			action.put(Actions.TARGET_PATH, Arrays.asList(player.get("id"), slot));
+		}
+	}
+
+	/**
+	 * Target action to move the item to bag.
+	 * 
+	 * @param player
+	 * 				player
+	 * @param action
+	 * 				action
+	 */
+	void targetSlot(final Player player, final RPAction action) {
+		action.put(EquipActionConsts.TARGET_SLOT, "bag");
+		if (action.has(Actions.TARGET_PATH)) {
+			action.put(Actions.TARGET_PATH, Arrays.asList(player.get("id"), "bag"));
 		}
 	}
 }
