@@ -174,11 +174,10 @@ public class WeaponsCollector2 extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						final List<String> needed = missingWeapons(player, true);
-						raiser.say("Oto "
-								+ Grammar.isare(needed.size())
-								+ " "
-								+ Grammar.quantityplnoun(needed.size(), "weapon", "a")
-								+ " w mojej nowej kolekcji wciąż brakuje: "
+						raiser.say("Brakuje mi "
+								+ Grammar.quantityplnoun(needed.size(), "broń")
+								+ " do mojej nowej kolekcji. "
+								+ Grammar.isare(needed.size()) + " to: "
 								+ Grammar.enumerateCollection(needed)
 								+ ". Czy masz coś takiego przy sobie?");
 					}

@@ -134,10 +134,9 @@ public class FishermansLicenseCollector extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					final List<String> needed = missingFish(player, true);
-					raiser.say("Oto " + Grammar.isare(needed.size())
-							+ " "
-							+ Grammar.quantityplnoun(needed.size(), "fish", "jeden")
-							+ " wciąż brakuje: "
+					raiser.say("Brakuje wciąż "
+							+ Grammar.quantityplnoun(needed.size(), "ryba")
+							+ Grammar.isare(needed.size()) + " to: "
 							+ Grammar.enumerateCollection(needed)
 							+ ". Czy masz przy sobie którąś z tych ryb?");
 				}

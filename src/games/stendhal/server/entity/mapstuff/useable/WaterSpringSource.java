@@ -169,7 +169,7 @@ public class WaterSpringSource extends PlayerActivityEntity {
 
 			player.equipOrPutOnGround(item);
 			player.sendPrivateText("Miałeś szczęście i napełniłeś "
-					+ Grammar.quantityplnoun(amount, itemName, "a")+ ".");
+					+ Grammar.quantityplnoun(amount, itemName)+ ".");
 
 		} else {
             this.addEvent(new SoundEvent(failSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));

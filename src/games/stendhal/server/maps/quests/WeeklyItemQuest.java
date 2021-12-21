@@ -541,9 +541,9 @@ public class WeeklyItemQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem, "") + " do muzeum w Kirdneh."));
+				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem) + " do muzeum w Kirdneh."));
 			} else {
-				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem, "a") + " dla muzeum w Kirdneh. Muszę to im zanieść."));
+				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem) + " dla muzeum w Kirdneh. Muszę to im zanieść."));
 			}
 		}
 		if (isRepeatable(player)) {

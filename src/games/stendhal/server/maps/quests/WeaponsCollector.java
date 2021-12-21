@@ -138,17 +138,17 @@ public class WeaponsCollector extends AbstractQuest implements BringListOfItemsQ
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Wciąż brakuje mi " + Grammar.isare(missingItems.size()) + " "
-				+ Grammar.quantityplnoun(missingItems.size(), "weapon", "a")
-				+ " w mojej kolekcji: "
+		return "Wciąż brakuje mi "
+				+ Grammar.quantityplnoun(missingItems.size(), "broń")
+				+ " do mojej kolekcji. " + Grammar.isare(missingItems.size()) + " to: "
 				+ Grammar.enumerateCollection(missingItems)
 				+ ". Czy masz coś ze sobą?";
 	}
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Brakuje mi " + Grammar.isare(missingItems.size()) + " "
-				+ Grammar.quantityplnoun(missingItems.size(), "weapon", "a")
-				+ " z mojej kolekcji: "
+		return "Brakuje mi "
+				+ Grammar.quantityplnoun(missingItems.size(), "broń")
+				+ " do mojej kolekcji. " + Grammar.isare(missingItems.size()) + " to: "
 				+ Grammar.enumerateCollection(missingItems)
 				+ ". Przyniesiesz mi je?";
 	}

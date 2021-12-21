@@ -70,7 +70,7 @@ public class AcceptOfferHandler extends OfferHandler {
 					if (o.hasItem()) {
 						setOffer(o);
 						int quantity = getQuantity(o.getItem());
-						npc.say("Czy chcesz kupić " + Grammar.quantityplnoun(quantity, o.getItem().getName(), "a") + " za " + o.getPrice() + " money?");
+						npc.say("Czy chcesz kupić " + Grammar.quantityplnoun(quantity, o.getItem().getName()) + " za " + o.getPrice() + " money?");
 						npc.setCurrentState(ConversationStates.BUY_PRICE_OFFERED);
 						return;
 					}
@@ -106,7 +106,7 @@ public class AcceptOfferHandler extends OfferHandler {
 				if (!m.contains(offer)) {
 					int quantity = getQuantity(offer.getItem());
 					npc.say("Przykro mi, ale " + Grammar.thatthose(quantity) + " "
-							+ Grammar.quantityplnoun(quantity, offer.getItem().getName(), "Ten")
+							+ Grammar.quantityplnoun(quantity, offer.getItem().getName())
 							+ " " + Grammar.isare(quantity)
 							+ " nie jest już na sprzedaż.");
 				} else {

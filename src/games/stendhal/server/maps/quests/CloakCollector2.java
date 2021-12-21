@@ -129,7 +129,7 @@ public class CloakCollector2 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
 						final List<String> needed2 = missingcloaks2(player, true);
 						entity.say("Brakuje "
-								+ Grammar.quantityplnoun(needed2.size(), "cloak", "a")
+								+ Grammar.quantityplnoun(needed2.size(), "płaszcz")
 								+ ". To jest "
 								+ Grammar.enumerateCollection(needed2)
 								+ ". Znajdziesz dla mnie?");
@@ -255,7 +255,7 @@ public class CloakCollector2 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
 						final List<String> needed2 = missingcloaks2(player, true);
 						entity.say("Chcę "
-								+ Grammar.quantityplnoun(needed2.size(), "cloak", "a")
+								+ Grammar.quantityplnoun(needed2.size(), "płaszcz")
 								+ ". To jest "
 								+ Grammar.enumerateCollection(needed2)
 								+ ". Przyniosłeś jakiś?");

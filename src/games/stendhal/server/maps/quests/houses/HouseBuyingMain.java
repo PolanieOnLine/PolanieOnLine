@@ -102,7 +102,7 @@ public class HouseBuyingMain {
 		if(playerHousePortal!=null) {
 			int unpaidPeriods = houseTax.getUnpaidTaxPeriods(player);
 			if (unpaidPeriods>0) {
-				hist.add("Zalegam z " + Grammar.quantityplnoun(unpaidPeriods, "month", "one") + " podatku.");
+				hist.add("Zalegam z " + Grammar.quantityplnoun(unpaidPeriods, "miesiąc") + " podatku.");
 			} else {
 				hist.add("Jestem na bieżąco z moimi płatnościami podatku za dom.");
 			}

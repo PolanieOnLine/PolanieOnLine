@@ -88,7 +88,7 @@ public class GoatFood extends PassiveEntityRespawnPoint {
 	@Override
 	public String describe() {
 		final String text = "Oto kępka "
-				+ Grammar.quantityplnoun(getAmount(), "traw.", "one")
+				+ Grammar.quantityplnoun(getAmount(), "traw.")
 				+ " Tylko kozy lubią tu się paść.";
 		return text;
 	}

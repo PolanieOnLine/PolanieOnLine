@@ -177,8 +177,7 @@ public class CloaksForBario extends AbstractQuest {
 								player.setQuest(QUEST_SLOT,
 										Integer.toString(toBring));
 								raiser.say("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję "
-										+ Grammar.quantityplnoun(toBring,
-												"cloak", "jeden") + ".");
+										+ Grammar.quantityplnoun(toBring, "płaszcz") + ".");
 
 							}
 						}));
@@ -228,7 +227,7 @@ public class CloaksForBario extends AbstractQuest {
 			res.add("Nie chcę pomagać Bario...");
 		} else if (!questState.equals("done")) {
 			int cloaks = MathHelper.parseIntDefault(player.getQuest(QUEST_SLOT),  REQUIRED_CLOAKS);
-			res.add("Muszę przynieść Bario " + Grammar.quantityplnoun(cloaks, "lazurowy płaszcz elficki", "one") + "." );
+			res.add("Muszę przynieść Bario " + Grammar.quantityplnoun(cloaks, "lazurowy płaszcz elficki") + "." );
 		} else {
 			res.add("Bario dał mi cenną złotą tarczę w zamian za płaszcze!");
 		}

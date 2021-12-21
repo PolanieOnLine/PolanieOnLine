@@ -569,43 +569,43 @@ public class GrammarTest {
 	 */
 	@Test
 	public void testFullForm() {
-		assertEquals("a sandwich", Grammar.quantityplnoun(1, "sandwich", "a"));
+		assertEquals("a sandwich", Grammar.quantityplnoun(1, "sandwich"));
 		assertEquals("2 sandwiches",
 			Grammar.quantityplnoun(2, "sandwich"));
-		assertEquals("a piece of ham", Grammar.quantityplnoun(1, "ham", "a"));
-		assertEquals("2 pieces of ham", Grammar.quantityplnoun(2, "ham", "a"));
+		assertEquals("a piece of ham", Grammar.quantityplnoun(1, "ham"));
+		assertEquals("2 pieces of ham", Grammar.quantityplnoun(2, "ham"));
 		assertEquals("a piece of cheese",
-			Grammar.quantityplnoun(1, "cheese", "a"));
+			Grammar.quantityplnoun(1, "cheese"));
 		assertEquals("2 pieces of cheese",
 			Grammar.quantityplnoun(2, "cheese"));
 		assertEquals("a loaf of bread",
-			Grammar.quantityplnoun(1, "bread", "a"));
+			Grammar.quantityplnoun(1, "bread"));
 		assertEquals("2 loaves of bread",
 			Grammar.quantityplnoun(2, "bread"));
 		assertEquals("1 #sandwich",
 			Grammar.quantityplnoun(1, "#sandwich"));
 		assertEquals("a #sandwich",
-			Grammar.quantityplnoun(1, "#sandwich", "a"));
+			Grammar.quantityplnoun(1, "#sandwich"));
 		assertEquals("A #sandwich",
-			Grammar.quantityplnoun(1, "#sandwich", "A"));
+			Grammar.quantityplnoun(1, "#sandwich"));
 		assertEquals("one #sandwich",
-			Grammar.quantityplnoun(1, "#sandwich", "one"));
+			Grammar.quantityplnoun(1, "#sandwich"));
 		assertEquals("#sandwich",
-			Grammar.quantityplnoun(1, "#sandwich", ""));
+			Grammar.quantityplnoun(1, "#sandwich"));
 		assertEquals("2 #sandwiches",
 			Grammar.quantityplnoun(2, "#sandwich"));
 		assertEquals("a piece of #ham",
-			Grammar.quantityplnoun(1, "#ham", "a"));
+			Grammar.quantityplnoun(1, "#ham"));
 		assertEquals("2 pieces of #ham",
-			Grammar.quantityplnoun(2, "#ham", "a"));
+			Grammar.quantityplnoun(2, "#ham"));
 		assertEquals("a piece of #cheese",
-			Grammar.quantityplnoun(1, "#cheese", "a"));
+			Grammar.quantityplnoun(1, "#cheese"));
 		assertEquals("2 pieces of #cheese",
-			Grammar.quantityplnoun(2, "#cheese", "a"));
+			Grammar.quantityplnoun(2, "#cheese"));
 		assertEquals("a loaf of #bread",
-			Grammar.quantityplnoun(1, "#bread", "a"));
+			Grammar.quantityplnoun(1, "#bread"));
 		assertEquals("2 loaves of #bread",
-			Grammar.quantityplnoun(2, "#bread", "a"));
+			Grammar.quantityplnoun(2, "#bread"));
 	}
 
 	/**
@@ -615,13 +615,13 @@ public class GrammarTest {
 	public void testQuantityPlNoun() {
 		int cnt = 0;
 		assertEquals("these 0 grilled steaks", Grammar.thisthese(cnt) + " " +
-				Grammar.quantityplnoun(cnt, "grilled steak", ""));
+				Grammar.quantityplnoun(cnt, "grilled steak"));
 		++cnt;
 		assertEquals("this grilled steak", Grammar.thisthese(cnt) + " " +
-				Grammar.quantityplnoun(cnt, "grilled steak", ""));
+				Grammar.quantityplnoun(cnt, "grilled steak"));
 		++cnt;
 		assertEquals("these 2 grilled steaks", Grammar.thisthese(cnt) + " " +
-				Grammar.quantityplnoun(cnt, "grilled steak", ""));
+				Grammar.quantityplnoun(cnt, "grilled steak"));
 	}
 
 	/**

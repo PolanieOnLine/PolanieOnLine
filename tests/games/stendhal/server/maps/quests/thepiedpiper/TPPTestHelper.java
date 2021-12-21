@@ -140,7 +140,7 @@ public class TPPTestHelper implements ITPPQuestConstants {
 				sb.append("and ");
 			}
 
-			sb.append(Grammar.quantityplnoun(kills, RAT_TYPES.get(i), "a"));
+			sb.append(Grammar.quantityplnoun(kills, RAT_TYPES.get(i)));
 			sb.append(", ");
 		}
 		return(sb.toString());

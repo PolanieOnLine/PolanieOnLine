@@ -164,14 +164,14 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic", "rękawice")
+		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic")
 				+ ". Są to " + Grammar.enumerateCollection(missingItems)
 				+ ". Dasz radę przynieść któreś z nich?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic", "rękawice")
+		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic")
 				+ ". Są to " + Grammar.enumerateCollection(missingItems)
 				+ ". Masz już przy sobie jakiś?";
 	}

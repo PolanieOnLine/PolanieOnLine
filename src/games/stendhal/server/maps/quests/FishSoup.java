@@ -178,7 +178,7 @@ public class FishSoup extends AbstractQuest {
 					final List<String> needed = missingFood(player, true);
 					npc.say("Potrzebuję "
 							+ Grammar.quantityplnoun(needed.size(),
-									"składników", "one")
+									"składników")
 							+ " nim ugotuję zupę: "
 							+ Grammar.enumerateCollection(needed)
 							+ ". Zbierzesz je?");
@@ -253,7 +253,7 @@ public class FishSoup extends AbstractQuest {
 					final List<String> needed = missingFood(player, true);
 					npc.say("Wciąż potrzebuję "
 							+ Grammar.quantityplnoun(needed.size(),
-									"składniki", "one") + ": "
+									"składniki") + ": "
 							+ Grammar.enumerateCollection(needed)
 							+ ". Przyniosłeś coś może?");
 				}
@@ -356,8 +356,7 @@ public class FishSoup extends AbstractQuest {
 		missing = missingFood(player, true);
 		if (missing.size() > 0) {
 			npc.say("Nie miałeś wszystkich składników, które potrzebuje. Wciąż potrzebuję "
-							+ Grammar.quantityplnoun(missing.size(),
-									"składniki", "one") + ": "
+							+ Grammar.quantityplnoun(missing.size(), "składników") + ": "
 							+ Grammar.enumerateCollection(missing)
 							+ ". Dostaniesz złą karmę jeżeli nadal będziesz popełniał błędy takie jak ten!");
 			// to fix bug [ 2517439 ]

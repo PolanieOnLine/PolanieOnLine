@@ -15,7 +15,7 @@ public class DetailsKillingsAction implements ChatAction, IRAQuestConstants {
 					  "jednego zbója.");
 			return;
 		}
-		final StringBuilder sb = new StringBuilder("Cóż od ostatniej nagrody zabiłeś ");
+		final StringBuilder sb = new StringBuilder("Cóż, od ostatniej nagrody zabiłeś ");
 		long moneys = 0;
 		int kills = 0;
 		for(int i=0; i<MONSTER_TYPES.size(); i++) {
@@ -31,13 +31,13 @@ public class DetailsKillingsAction implements ChatAction, IRAQuestConstants {
 				sb.append("i ");
 			}
 
-			sb.append(Grammar.quantityplnoun(kills, MONSTER_TYPES.get(i), ""));
+			sb.append(Grammar.quantityplnoun(kills, MONSTER_TYPES.get(i)));
 			sb.append(", ");
 			moneys = moneys + kills*MONSTER_REWARDS.get(i);
 		}
-		sb.append("cóż dam tobie ");
+		sb.append("więc dam Tobie ");
 		sb.append(moneys);
-		sb.append(" money jako #nagrodę za pracę.");
+		sb.append(" money jako #nagrodę za ciężką pracę.");
 		mayor.say(sb.toString());
 	}
 

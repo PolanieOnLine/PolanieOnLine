@@ -96,7 +96,7 @@ public class ProducerRegister {
 					String timeleft = behaviour.getApproximateRemainingTime(player);
 					// put all ongoing orders last
 					sb.append("\n" + npcName + " pracuje nad "
-							+ " " + Grammar.quantityplnoun(amount, product, "") + ". Będzie gotowy za " + timeleft + ".");
+							+ " " + Grammar.quantityplnoun(amount, product) + ". Będzie gotowy za " + timeleft + ".");
 				}
 			}
 		}
@@ -120,7 +120,7 @@ public class ProducerRegister {
 					String timeleft = behaviour.getApproximateRemainingTime(player);
 					// put all ongoing orders last
 					sb.append("\n" + npcName + " wciąż pracuje nad"
-							+ " " + Grammar.quantityplnoun(amount, product, "") + ". Będzie gotowy za " + timeleft + ".");
+							+ " " + Grammar.quantityplnoun(amount, product) + ". Będzie gotowy za " + timeleft + ".");
 				}
 			}
 		}
@@ -283,7 +283,7 @@ public class ProducerRegister {
 						String timeleft = behaviour.getApproximateRemainingTime(player);
 						// put all ongoing orders last
 						res.add("\n" + npcName + " pracuje nad"
-							+ " " + Grammar.quantityplnoun(amount, product, "") + ", który będzie gotowy za " + timeleft + ".");
+							+ " " + Grammar.quantityplnoun(amount, product) + ", który będzie gotowy za " + timeleft + ".");
 					}
 				}
 			}
@@ -308,7 +308,7 @@ public class ProducerRegister {
                         String timeleft = behaviour.getApproximateRemainingTime(player);
                         // put all ongoing orders last
 						res.add("\n" + npcName + " wciąż pracuje nad"
-							+ " " + Grammar.quantityplnoun(amount, product, "") + ", który będzie gotowy za " + timeleft + ".");
+							+ " " + Grammar.quantityplnoun(amount, product) + ", który będzie gotowy za " + timeleft + ".");
                     }
                 }
 			}

@@ -324,7 +324,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 
         if (getMaximalAmount(productName, player) < amount) {
             npc.say("Mogę zrobić "
-                    + Grammar.quantityplnoun(amount, productName, "")
+                    + Grammar.quantityplnoun(amount, productName)
                     + " jeśli przyniesiesz mi "
                     + getRequiredResourceNamesWithHashes(productName, amount) + ".");
             return false;
@@ -368,7 +368,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
             final long timeNow = new Date().getTime();
             player.setQuest(questSlot, amount + ";" + productName + ";" + timeNow);
             npc.say("Dobrze zrobię dla Ciebie "
-                    + Grammar.quantityplnoun(amount, productName, "")
+                    + Grammar.quantityplnoun(amount, productName)
                     + ", ale zajmie mi to trochę czasu. Wróć za "
                     + getApproximateRemainingTime(player) + ".");
             return true;
@@ -404,7 +404,7 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 			}
 
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto "
-					+ Grammar.quantityplnoun(numberOfProductItems, productName, "") + ".");
+					+ Grammar.quantityplnoun(numberOfProductItems, productName) + ".");
 			if (player.equipToInventoryOnly(products)) {
 				player.setQuest(questSlot, "done");
 				// give some XP as a little bonus for industrious workers

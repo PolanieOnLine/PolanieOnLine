@@ -180,8 +180,7 @@ public class Soup extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final List<String> needed = missingFood(player, true);
 					npc.say("Potrzebuję "
-							+ Grammar.quantityplnoun(needed.size(),
-									"składników", "jeden")
+							+ Grammar.quantityplnoun(needed.size(), "składników")
 							+ " nim zrobię zupę: "
 							+ Grammar.enumerateCollection(needed)
 							+ ". Uzbierasz to wszystko?");
@@ -249,8 +248,7 @@ public class Soup extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final List<String> needed = missingFood(player, true);
 					npc.say("Wciąż potrzebuję "
-							+ Grammar.quantityplnoun(needed.size(),
-									"składnik", "jeden") + ": "
+							+ Grammar.quantityplnoun(needed.size(), "składników") + ": "
 							+ Grammar.enumerateCollection(needed)
 							+ ". Przyniosłeś coś?");
 				}
@@ -362,8 +360,7 @@ public class Soup extends AbstractQuest {
 		missing = missingFood(player, true);
 		if (!missing.isEmpty()) {
 			npc.say("Nie masz wszystkich potrzebnych składników. Wciąż potrzebuję "
-							+ Grammar.quantityplnoun(missing.size(),
-									"składnika", "jeden") + ": "
+							+ Grammar.quantityplnoun(missing.size(), "składnika") + ": "
 							+ Grammar.enumerateCollection(missing)
 							+ ". Dostaniesz mało karmy jeżeli nadal będziesz popełniał takie błędy!");
 			// to fix bug [ 2517439 ]

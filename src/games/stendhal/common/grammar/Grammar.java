@@ -247,6 +247,8 @@ public class Grammar {
 			str = str.substring(5) + " book";
 		} else if (str.indexOf(" armor") > -1) {
 			str = addPrefixIfNotAlreadyThere(lowString, "suit of ", "suits of ");
+		} else if (str.startsWith("rękawic") || str.startsWith("spodni")) {
+			str = addPrefixIfNotAlreadyThere(lowString, "parę ", "par ");
 		} else {
 			str = replaceInternalByDisplayNames(PrefixManager.s_instance.fullForm(str, lowString));
 		}
@@ -260,8 +262,7 @@ public class Grammar {
 	 * @return fixed string
 	 */
 	public static String replaceInternalByDisplayNames(final String str) {
-		return str.
-			replace("icecream", "ice cream");
+		return str.replace("icecream", "ice cream");
 	}
 
 	/**
@@ -387,22 +388,25 @@ public class Grammar {
 
 		} else if (enoun.equals("money") || enoun.equals("kierpce") || enoun.equals("korale") || enoun.endsWith("ów")) {
 			return enoun;
-
-		} else if (enoun.equals("wojownik")) {
+		} else if (enoun.startsWith("rękawice") || enoun.equals("spodnie")) {
+			return enoun.substring(0, enoun.length() - 1) + postfix;
+		} else if (enoun.startsWith("magia")) {
+			return enoun.substring(0, enoun.length() - 1) + "i" + postfix;
+		} else if (enoun.startsWith("broń")) {
+			return enoun.substring(0, enoun.length() - 1) + "ni" + postfix;
+		} else if (enoun.startsWith("płaszcz")) {
+			return enoun + "y" + postfix;
+		} else if (enoun.equals("wojownik") || enoun.equals("przedmiot")) {
 			return enoun + "ów" + postfix;
-			
+		} else if (enoun.startsWith("sok")) {
+			return enoun + "i" + postfix;
+		} else if (enoun.equals("miecz")) {
+			return enoun + "e" + postfix;
+
 		} else if (enoun.equals("dzień")) {
 			return enoun.substring(0, enoun.length() - 1) + "ni" + postfix;
 		} else if (enoun.equals("tydzień")) {
 			return enoun.substring(0, enoun.length() - 5) + "godnie" + postfix;
-
-		} else if (enoun.startsWith("sok")) {
-			return enoun.substring(0, enoun.length()) + "i" + postfix;
-
-		} else if (enoun.equals("miecz")) {
-			return enoun + "e" + postfix;
-		} else if (enoun.equals("spodnie")) {
-			return enoun.substring(0, enoun.length() - 1) + postfix;
 
 		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę") || enoun.endsWith("ło")) {
 			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
@@ -491,7 +495,7 @@ public class Grammar {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
 
-			// first of all handle words which do not change
+		// first of all handle words which do not change
 		} else if (enoun.endsWith("money") || enoun.endsWith("dice")
 				|| enoun.endsWith("sheep") || enoun.endsWith("goat")
 				|| enoun.endsWith("legs") || enoun.endsWith("boots")
@@ -499,8 +503,10 @@ public class Grammar {
 				|| enoun.endsWith("kości do gry") || enoun.equals("jeleń")) {
 			return enoun + postfix;
 
-			// now all the special cases
-		} else if (enoun.endsWith("pasów")) {
+		// now all the special cases
+		} else if (enoun.startsWith("rękawice") || enoun.endsWith("czy")) {
+			return enoun.substring(0, enoun.length() - 1) + postfix;
+		} else if (enoun.endsWith("ów")) {
 			return enoun.substring(0, enoun.length() - 2) + postfix;
 		} else if (enoun.endsWith("tę") || enoun.endsWith("ło")) {
 			return enoun.substring(0, enoun.length() - 1) + "a" + postfix;
@@ -526,6 +532,11 @@ public class Grammar {
 		} else if (quantity >= 5) {
 			if (enoun.endsWith("tę")) {
 				return enoun.substring(0, enoun.length() - 1);
+			}
+			return enoun;
+		} else if (quantity <= 4) {
+			if (enoun.endsWith("czy")) {
+				return enoun.substring(0, enoun.length() - 1) + "e";
 			}
 			return enoun;
 		} else {
@@ -568,7 +579,12 @@ public class Grammar {
 	 */
 	public static String quantityplnoun(final int quantity, final String noun) {
 		final String end = plnoun(quantity, noun);
-		return Integer.toString(quantity) + " " + end;
+
+		if (quantity == 1) {
+			return end;
+		} else {
+			return Integer.toString(quantity) + " " + end;
+		}
 	}
 
 	/**
@@ -591,34 +607,6 @@ public class Grammar {
 		}
 
 		return quantityplnoun(quantity, noun);
-	}
-
-	/**
-	 * Returns either the plural or singular form of the given noun, depending
-	 * on the quantity; also prefixes the quantity. In case the quantity is exactly
-	 * 1, the specified prefix is used. Note: There is some additional magic to convert
-	 * "a" and "A" to "an" and "An" in case that is required by the noun.
-	 *
-	 * @param quantity
-	 *            The quantity to examine
-	 * @param noun
-	 *            The noun to examine
-	 * @param one replacement for "1".
-	 * @return Either "[quantity] [noun]" or "[quantity]" + plural("[noun]") as
-	 *         appropriate
-	 */
-	public static String quantityplnoun(final int quantity, final String noun, final String one) {
-		final String word = plnoun(quantity, noun);
-
-		if (quantity == 1) {
-			if (one.equals("")) {
-				return word;
-			} else {
-				return one;
-			}
-		} else {
-			return Integer.toString(quantity) + " " + word;
-		}
 	}
 
 	/**

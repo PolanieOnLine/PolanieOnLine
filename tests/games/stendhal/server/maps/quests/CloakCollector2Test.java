@@ -64,7 +64,7 @@ public class CloakCollector2Test {
 		final List<String> needed = missingCloaks(player);
 
 		return "It's missing "
-			+ Grammar.quantityplnoun(needed.size(), "cloak", "one")
+			+ Grammar.quantityplnoun(needed.size(), "cloak")
 			+ ". That's " + Grammar.enumerateCollection(needed)
 			+ ". Will you find them?";
 	}
@@ -72,7 +72,7 @@ public class CloakCollector2Test {
 	private static String stillWantedMessage(final Player player) {
 		final List<String> needed = missingCloaks(player);
 
-		return ("I want " + Grammar.quantityplnoun(needed.size(), "cloak", "a")
+		return ("I want " + Grammar.quantityplnoun(needed.size(), "cloak")
 			+ ". That's " + Grammar.enumerateCollection(needed)
 			+ ". Did you bring any?");
 	}

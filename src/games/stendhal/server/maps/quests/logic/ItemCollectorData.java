@@ -119,7 +119,7 @@ public class ItemCollectorData implements ItemCollectorSetters {
 	 * @see #bySaying(String)
 	 */
 	public String getAnswer() {
-		String neededItems = Grammar.quantityplnoun(stillNeededAmount, itemName, "a");
+		String neededItems = Grammar.quantityplnoun(stillNeededAmount, itemName);
 		return String.format(message, neededItems);
 	}
 }

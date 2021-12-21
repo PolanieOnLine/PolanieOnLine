@@ -72,7 +72,7 @@ public class PrepareOfferHandler {
 	public String buildTweetMessage(Item i, int q, int p) {
 		StringBuilder message = new StringBuilder();
 		message.append("Nowa oferta dla ");
-		message.append(Grammar.quantityplnoun(q, i.getName(), "a"));
+		message.append(Grammar.quantityplnoun(q, i.getName()));
 		message.append(" za ");
 		message.append(p);
 		message.append(" money. ");
@@ -168,7 +168,7 @@ public class PrepareOfferHandler {
 					setData(item, price, number);
 					StringBuilder msg = new StringBuilder();
 					msg.append("Czy chcesz sprzedać ");
-					msg.append(Grammar.quantityplnoun(number, itemName, "a"));
+					msg.append(Grammar.quantityplnoun(number, itemName));
 					msg.append(" za ");
 					if (number != 1) {
 						msg.append("łącznie ");
@@ -215,7 +215,7 @@ public class PrepareOfferHandler {
 					npc.say("Dodałem twoją ofertę do sprzedaży i pobrałem prowizję w wysokości "+ fee +" money.");
 					npc.setCurrentState(ConversationStates.ATTENDING);
 				} else {
-					npc.say("Nie masz " + Grammar.quantityplnoun(quantity, item.getName(), "a") + ".");
+					npc.say("Nie masz " + Grammar.quantityplnoun(quantity, item.getName()) + ".");
 				}
 				return;
 			}
@@ -245,7 +245,7 @@ public class PrepareOfferHandler {
 				message.append(price);
 				message.append(". ");
 				String messageNumberOfOffers = "W chwili obecnej masz "
-					+ Grammar.quantityplnoun(Integer.valueOf(shop.countOffersOfPlayer(player)),"ofert", "jeden") + ".";
+					+ Grammar.quantityplnoun(Integer.valueOf(shop.countOffersOfPlayer(player)),"ofert") + ".";
 				player.sendPrivateText(message.toString() + messageNumberOfOffers);
 				return true;
 			}

@@ -297,7 +297,7 @@ public class ElfPrincess extends AbstractQuest {
         }
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Zaniosłem już Księżniczce Tywysodze " + Grammar.quantityplnoun(repetitions, "cenny kwiat", "one") + ".");
+			res.add("Zaniosłem już Księżniczce Tywysodze " + Grammar.quantityplnoun(repetitions, "cenny kwiat") + ".");
 		}
 		return res;
 	}

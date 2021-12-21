@@ -251,10 +251,10 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
 				res.add(("Zostałem poproszony o przyniesienie "
-						+ Grammar.quantityplnoun(amount, questItem, "") + ", aby pomóc miastu Gdańsk. Nie mam tego jeszcze."));
+						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc miastu Gdańsk. Nie mam tego jeszcze."));
 			} else {
 				res.add(("Znalazłem "
-						+ Grammar.quantityplnoun(amount, questItem, "") + " do pomocy miastu Gdańsk i muszę je dostarczyć."));
+						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy miastu Gdańsk i muszę je dostarczyć."));
 			}
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);

@@ -313,7 +313,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 		if (getMaximalAmount(player) < amount) {
 			npc.say("Mogę zrobić "
-					+ Grammar.quantityplnoun(amount, getProductName(), "")
+					+ Grammar.quantityplnoun(amount, getProductName())
 					+ " jeżeli przyniesiesz mi "
 					+ getRequiredResourceNamesWithHashes(amount) + ".");
 			return false;
@@ -350,7 +350,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			final long timeNow = new Date().getTime();
 			player.setQuest(questSlot, res.getAmount() + ";" + getProductName() + ";" + timeNow);
 			npc.say("Dobrze zrobię dla Ciebie "
-					+ Grammar.quantityplnoun(res.getAmount(), getProductName(), "")
+					+ Grammar.quantityplnoun(res.getAmount(), getProductName())
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
 					+ getApproximateRemainingTime(player) + ".");
 			return true;
@@ -374,7 +374,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 		if (!isOrderReady(player)) {
 			npc.say("Witaj z powrotem! Wciąż zajmuje się twoim zleceniem "
-					+ Grammar.quantityplnoun(numberOfProductItems, getProductName(), "")
+					+ Grammar.quantityplnoun(numberOfProductItems, getProductName())
 					+ ". Wróć za "
 					+ getApproximateRemainingTime(player) + ", aby odebrać.");
 		} else {
@@ -389,8 +389,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 			if (player.equipToInventoryOnly(products)) {
 				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto "
-					+ Grammar.quantityplnoun(numberOfProductItems,
-							getProductName(), "") + ".");
+					+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + ".");
 				player.setQuest(questSlot, "done");
 				// give some XP as a little bonus for industrious workers
 				player.addXP(numberOfProductItems);

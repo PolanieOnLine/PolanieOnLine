@@ -84,7 +84,7 @@ public class SayRequiredItemAction implements ChatAction {
 			int amount = player.getRequiredItemQuantity(questname, index);
 
 			Map<String, String> substitutes = new HashMap<String, String>();
-			substitutes.put("item", Grammar.quantityplnoun(amount, itemname, "a"));
+			substitutes.put("item", Grammar.quantityplnoun(amount, itemname));
 			substitutes.put("#item", Grammar.quantityplnounWithHash(amount, itemname));
 			substitutes.put("the item", "the " + Grammar.plnoun(amount, itemname));
 

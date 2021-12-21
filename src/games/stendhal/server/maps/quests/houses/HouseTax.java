@@ -168,7 +168,7 @@ class HouseTax implements TurnListener {
 							+ Integer.toString(MAX_UNPAID_TAXES + 1) + "  miesięcy to twój dom zostanie sprzedany.";
 					}
 					notifyIfNeeded(owner, "Jesteś dłużny " +  Integer.toString(getTaxDebt(payments)) + " money za podatek od nieruchomości za "
-							+ Grammar.quantityplnoun(payments, "month", "one")
+							+ Grammar.quantityplnoun(payments, "miesiąc")
 							+ ". Możesz przyjść do ratusza w Ados, aby uregulować dług." + remainder);
 				}
 			}

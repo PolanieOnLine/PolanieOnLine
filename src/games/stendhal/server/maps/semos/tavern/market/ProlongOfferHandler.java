@@ -82,7 +82,7 @@ public class ProlongOfferHandler extends OfferHandler {
 
 						if (TradeCenterZoneConfigurator.getShopFromZone(player.getZone()).contains(o)) {
 							message.append("Twoja oferta na ");
-							message.append(Grammar.quantityplnoun(quantity, o.getItemName(), "jeden"));
+							message.append(Grammar.quantityplnoun(quantity, o.getItemName()));
 							message.append(" wygaśnie za ");
 							message.append(TimeUtil.approxTimeUntil((int) ((o.getTimestamp() - System.currentTimeMillis() + 1000 * OfferExpirer.TIME_TO_EXPIRING) / 1000)));
 							message.append(". Czy chcesz ją przedłużyć do ");
@@ -92,7 +92,7 @@ public class ProlongOfferHandler extends OfferHandler {
 							message.append(" money?");
 						} else {
 							message.append("Czy chcesz przedłużyć swoją ofertę na ");
-							message.append(Grammar.quantityplnoun(quantity, o.getItemName(), "jeden"));
+							message.append(Grammar.quantityplnoun(quantity, o.getItemName()));
 							message.append(" w cenie ");
 							message.append(o.getPrice());
 							message.append(" i podatek ");
@@ -139,7 +139,7 @@ public class ProlongOfferHandler extends OfferHandler {
 							quantity = getQuantity(o.getItem());
 						}
 						price += TradingUtility.calculateFee(player, o.getPrice()).intValue();
-						offerDesc.add(Grammar.quantityplnoun(quantity, o.getItemName(), "")
+						offerDesc.add(Grammar.quantityplnoun(quantity, o.getItemName())
 								+ " w cenie " + o.getPrice());
 					}
 					String total = numOffers > 1 ? "w sumie" : "";
@@ -224,7 +224,7 @@ public class ProlongOfferHandler extends OfferHandler {
 				if (offer.hasItem()) {
 					quantity = getQuantity(offer.getItem());
 				}
-				String offerDesc = Grammar.quantityplnoun(quantity, offer.getItemName(), "one");
+				String offerDesc = Grammar.quantityplnoun(quantity, offer.getItemName());
 
 				if (!offer.getOfferer().equals(player.getName())) {
 					// This should not be possible, but it does not hurt to check

@@ -165,14 +165,14 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów", "pas")
+		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów")
 				+ ". Jest to " + Grammar.enumerateCollection(missingItems)
 				+ ". Dasz radę przynieść któryś z nich?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów", "pas")
+		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów")
 				+ ". Jest to " + Grammar.enumerateCollection(missingItems)
 				+ ". Masz już przy sobie jakiś?";
 	}

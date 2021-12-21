@@ -402,7 +402,7 @@ public class Pizza extends AbstractQuest {
     			+ " do "
     			+ Grammar.quoteHash("#" + name)
     			+ " w ciągu "
-    			+ Grammar.quantityplnoun(data.expectedMinutes, "minute", "one")
+    			+ Grammar.quantityplnoun(data.expectedMinutes, "minut")
     			+ ". Powiedz \"pizza\", a "
     			+ name
 				+ " będzie wiedział, że ja Ciebie przysłałem. Aha załóż ten uniform i i nie upuść na ziemie " + data.flavor + "! Nasi klienci chcą świeżą.");

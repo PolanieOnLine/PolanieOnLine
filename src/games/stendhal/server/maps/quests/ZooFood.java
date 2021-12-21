@@ -256,9 +256,9 @@ public class ZooFood extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,1);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,1);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem, "a") + " dla zwierząt."));
+				res.add(String.format("Zostałem poproszony, aby przynieść " + Grammar.quantityplnoun(amount, questItem) + " dla zwierząt."));
 			} else {
-				res.add(String.format("Mam " +Grammar.quantityplnoun(amount, questItem, "a") + " dla zwierząt, muszę to zanieść do schroniska w Ados."));
+				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem) + " dla zwierząt, muszę to zanieść do schroniska w Ados."));
 			}
 		}
 		if (isCompleted(player)) {

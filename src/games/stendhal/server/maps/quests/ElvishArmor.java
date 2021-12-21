@@ -126,20 +126,20 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 	// this one not actually used here
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Słyszałem opisy "
-								+ Grammar.quantityplnoun(missingItems.size(), "item", "a")
-								+ " są to: "
+		return "Słyszałem pogłoski o "
+								+ Grammar.quantityplnoun(missingItems.size(), "przedmiocie")
+								+ ". Są to: "
 								+ Grammar.enumerateCollection(missingItems)
 								+ ". Przyniesiesz mi je?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Słyszałem opisy "
-								+ Grammar.quantityplnoun(missingItems.size(), "item", "a")
-								+ " są to: "
+		return "Słyszałem pogłoski o "
+								+ Grammar.quantityplnoun(missingItems.size(), "przedmiocie")
+								+ ". Są to: "
 								+ Grammar.enumerateCollection(missingItems)
-								+ ". Obrabowałeś kogoś?";
+								+ ". Czy coś już zdążyłeś zdobyć?";
 	}
 
 	@Override
@@ -152,7 +152,6 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 		return "Doskonała robota. Zrabowałeś coś jeszcze?";
 	}
 
-
 	@Override
 	public String respondToLastItemBrought() {
 		return "Zbadam to! Albino elfy mają dług wdzięczności wobec Ciebie.";
@@ -160,9 +159,7 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
-		return "Kłamca! Nie masz "
-										+ itemName
-										+ " ze sobą.";
+		return "Kłamca! Nie masz " + itemName + " ze sobą.";
 	}
 	@Override
 	public String respondToOfferOfNotMissingItem() {

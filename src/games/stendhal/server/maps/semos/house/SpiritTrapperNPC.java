@@ -116,13 +116,13 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 
                 		if (getMaximalAmount(productName, player) < amount) {
                 			npc.say("Mogę jedynie " + getProductionActivity() + " "
-                					+ Grammar.quantityplnoun(amount, productName, "a")
+                					+ Grammar.quantityplnoun(amount, productName)
                 					+ ", jeśli przyniesiesz mi "
                 					+ getRequiredResourceNamesWithHashes(productName, amount) + ".");
                 			return false;
                 		} else {
                 			res.setAmount(amount);
-                			npc.say(Grammar.quantityplnoun(amount, productName, "a")
+                			npc.say(Grammar.quantityplnoun(amount, productName)
                 					+ " za "
                 					+ getRequiredResourceNamesWithHashes(productName, amount) + ". "
                 					+ " Zgadzasz się?");
@@ -162,8 +162,7 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 
 				    			if (player.equipToInventoryOnly(products)) {
 				    				npc.say("Oto twoje " + Grammar.isare(numberOfProductItems)
-									+ Grammar.quantityplnoun(numberOfProductItems,
-											productName, "") + ".");
+									+ Grammar.quantityplnoun(numberOfProductItems, productName) + ".");
 
 				    				player.setQuest(getQuestSlot(), "done");
 				    				player.notifyWorldAboutChanges();
@@ -178,7 +177,7 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 				            } else {
 				            		npc.say("Okej, to zacznę robić "
 				                    + getProductionActivity() + " "
-				                    + Grammar.quantityplnoun(amount, productName, "a")
+				                    + Grammar.quantityplnoun(amount, productName)
 				                    + " dla ciebie, ale to zajmie trochę czasu. Proszę wróć za "
 				                    + getApproximateRemainingTime(player) + ".");
 				            		return true;

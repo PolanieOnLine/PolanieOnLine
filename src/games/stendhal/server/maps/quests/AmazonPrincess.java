@@ -147,7 +147,7 @@ public class AmazonPrincess extends AbstractQuest {
 							new EquipItemAction("tarta z rybnym nadzieniem", pieAmount, true).fire(player, sentence, npc);
 							npc.say("Dziękuję!! Proszę, weź " +
 									Grammar.thisthese(pieAmount) + " " +
-									Grammar.quantityplnoun(pieAmount, "tarta z rybnym nadzieniem", "") +
+									Grammar.quantityplnoun(pieAmount, "tarta z rybnym nadzieniem") +
 									" z mojej kuchni i pocałunek ode mnie.");
 							new SetQuestAndModifyKarmaAction(getSlotName(), "drinking;" + System.currentTimeMillis(), 15.0).fire(player, sentence, npc);
 						}

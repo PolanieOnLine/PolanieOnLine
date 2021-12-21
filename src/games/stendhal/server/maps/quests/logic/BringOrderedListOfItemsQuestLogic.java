@@ -124,7 +124,7 @@ public class BringOrderedListOfItemsQuestLogic {
 
 	private String neededItem(int neededAmount, String itemName, boolean withHash) {
 		if (!withHash) {
-			return Grammar.quantityplnoun(neededAmount, itemName, "a");
+			return Grammar.quantityplnoun(neededAmount, itemName);
 		} else {
 			return Grammar.quantityplnounWithHash(neededAmount, itemName);
 		}
