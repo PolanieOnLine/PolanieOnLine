@@ -1004,6 +1004,46 @@
 		</equipable>
 	</item>
 
+	<item name="pióro cherubina">
+		<type class="resource" subclass="pioro_cherubina" tileid="-1"/>
+		<description>Oto pióro cherubina. Gdy niesiesz je przy sobie czujesz jak otacza cię przyjazne ciepło.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="pióro lilith">
+		<type class="resource" subclass="pioro_lilith" tileid="-1"/>
+		<description>Oto pióro lilith. Gdy niesiesz je przy sobie czujesz jak zataczasz się powoli w mrok.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="bursztyn">
 		<type class="resource" subclass="bursztyn" tileid="-1"/>
 		<description>Oto drogocenny bursztyn. Można z niego zrobić ozdoby lub sprzedać.</description>
