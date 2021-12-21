@@ -11,27 +11,25 @@
  ***************************************************************************/
 package games.stendhal.server.actions.equip;
 
-import java.util.Arrays;
-
 import games.stendhal.common.EquipActionConsts;
-import games.stendhal.common.constants.Actions;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.equip.AutoEquipItems;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.Slots;
 import marauroa.common.game.RPAction;
 
 public class EquipAction extends EquipmentAction {
-
 	/**
-	 * registers "equip" action processor.
+	 * Registers "equip" action processor.
 	 */
 	public static void register() {
 		CommandCenter.register("equip", new EquipAction());
 	}
+
 	@Override
 	protected void execute(final Player player, final RPAction action, final SourceObject source) {
 		// get source and check it
@@ -53,30 +51,7 @@ public class EquipAction extends EquipmentAction {
 
 		}
 
-		final String targetPath = action.get(Actions.TARGET_PATH);
-		String targetSlot = null;
-		if (targetPath != null) {
-			targetSlot = targetPath.substring(targetPath.indexOf("\t") + 1, targetPath.indexOf("]"));
-		}
-
-		// try to move money to pouch by default
-		if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals("pouch")
-				&& source.getEntityName().equals("money")) {
-			// check if money can be moved to pouch
-			// XXX: this check should be changed if we switch to containers
-			if (player.getFeature("pouch") != null && player.hasSlot("pouch")) {
-				final boolean moneyInBag = player.isEquippedItemInSlot("bag", "money");
-				final boolean moneyInPouch = player.isEquippedItemInSlot("pouch", "money");
-				// stack on pouch
-				if (moneyInPouch || (!moneyInPouch && !moneyInBag)) {
-					action.put(EquipActionConsts.TARGET_SLOT, "pouch");
-					if (action.has(Actions.TARGET_PATH)) {
-						action.put(Actions.TARGET_PATH,
-								Arrays.asList(player.get("id"), "pouch"));
-					}
-				}
-			}
-		}
+		new AutoEquipItems(player, action, source);
 
 		logger.debug("Checking destination");
 		// get destination and check it

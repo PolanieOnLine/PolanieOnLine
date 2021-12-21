@@ -38,7 +38,7 @@ import marauroa.common.game.SlotOwner;
 /**
  * this encapsulates the equip/drop source.
  */
-class SourceObject extends MoveableObject {
+public class SourceObject extends MoveableObject {
 	private static InvalidSource invalidSource = new InvalidSource();
 	private static Logger logger = Logger.getLogger(SourceObject.class);
 	/** the item . */
@@ -520,7 +520,7 @@ class SourceObject extends MoveableObject {
 		return res;
 	}
 
-	String getEntityName() {
+	public String getEntityName() {
 		Entity entity1 = getEntity();
 		final String itemName;
 		if (entity1.has("name")) {
