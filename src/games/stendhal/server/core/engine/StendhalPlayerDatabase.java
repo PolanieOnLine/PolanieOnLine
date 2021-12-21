@@ -239,7 +239,7 @@ public class StendhalPlayerDatabase {
 			}
 		}
 		transaction.execute("DELETE FROM achievement WHERE identifier in ("
-				+ "'fight.general.darkangels', 'fight.general.angels')", null);
+				+ "'fight.general.darkangels')", null);
 
 		// pol1.10.1: add belts column
 		if (!transaction.doesColumnExist("character_stats", "pas")) {
