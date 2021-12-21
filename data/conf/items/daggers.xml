@@ -319,7 +319,7 @@
 		<attributes>
 			<atk value="6"/>
 			<rate value="1"/>
-			<lifesteal value="0.05"/>
+			<lifesteal value="0.02"/>
 			<min_level value="350"/>
 			<max_improves value="2"/>
 		</attributes>

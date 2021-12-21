@@ -55,8 +55,6 @@ class VisualSettings {
 	private static final String DEFAULT_STYLE = "Wood (domyślny)";
 	private static final String TRANSPARENCY_PROPERTY = "ui.transparency";
 
-	private static final String GAMESCREEN_CREATURESPEECH = "gamescreen.creaturespeech";
-
 	/** Containers that have components to be toggled */
 	//private JPanel colorsPanel;
 
@@ -77,7 +75,9 @@ class VisualSettings {
 	/** Property used for the decorative font. */
 	private static final String FONT_SIZE_PROPERTY = "ui.font_size";
 
+	private static final String GAMESCREEN_CREATURESPEECH = "gamescreen.creaturespeech";
 	private static final String GAMESCREEN_BLOOD = "gamescreen.blood";
+	private static final String GAMESCREEN_NONUDE = "gamescreen.nonude";
 
 	private static final String SCALE_SCREEN_PROPERTY = "ui.scale_screen";
 	/** Property used for toggling map coloring on. */
@@ -149,7 +149,7 @@ class VisualSettings {
 
 		// blood
 		JCheckBox showBloodToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_BLOOD, true,
-				"Pokaż zawartość dla osób starszych", "Pokaż rozpryski krwi, zwłoki i postacie bez bielizny.");
+				"Pokaż krew i zwłoki", "Pokazuje plamy krwi podczas uderzenia w walce i zwłoki.");
 		page.add(showBloodToggle);
 		// Inform players that some images won-t update until after client is restarted.
 		// FIXME: Can't images be updated via map change?
@@ -158,11 +158,24 @@ class VisualSettings {
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Zawartość dla osób starszych zostało " + tmp
+				String msg = "Krew i zwłoki zostały " + tmp
 						+ ". Niektóre zmiany zaczną działać dopiero po ponownym uruchomieniu klienta.";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
+		});
 
+		JCheckBox noNudeToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_NONUDE, true,
+				"Pokaż bieliznę", "\"Nagie\" postacie zostaną pokryte bielizną.");
+		page.add(noNudeToggle);
+		noNudeToggle.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+				String tmp = enabled ? "włączona" : "wyłączona";
+				String msg = "Bielizna została " + tmp
+						+ "Niektóre zmiany zaczną działać dopiero po zmianie mapy lub przelogowaniu się.";
+				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+			}
 		});
 
 		// show creature speech bubbles
@@ -180,8 +193,8 @@ class VisualSettings {
 			}
 		});
 
-		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY,
-				false, "Skaluj widok, aby pasował do okna", "<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
+		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY, false,
+				"Skaluj widok, aby pasował do okna", "<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
 		page.add(scaleScreenToggle);
 		scaleScreenToggle.addItemListener(new ItemListener() {
 			@Override
