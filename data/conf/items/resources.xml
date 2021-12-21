@@ -123,7 +123,7 @@
 
 	<item name="węgiel drzewny">
 		<type class="resource" subclass="charcoal" tileid="-1"/>
-		<description>Oto węgiel drzwny, składnik stali węglowej.</description>
+		<description>Oto węgiel drzewny, składnik stali węglowej.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
