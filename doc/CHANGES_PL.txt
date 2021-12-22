@@ -1,5 +1,26 @@
 Changelog
 ---------
+1.25.4
+*klient*
+- Dodano nowe grafiki przedmiotów
+
+*świat*
+- Dodano nowe przedmioty: (3)
+	- pióro cherubina
+	- pióro lilith
+	- węgiel drzewny
+- Dodano więcej przedmiotów do zdobycia z cherubina czy lilith
+- Sally nagradza nas dodatkowo węglem drzewnym
+
+*kod*
+- Gdy gracz posiada odblokowaną magiczną torbę to wszystkie eliksiry oraz magia będzie się tam automatycznie przenosić jeśli jest miejsce
+
+*naprawiono błędy*
+- Naprawiono gramatykę (m.in. u burmistrzów)
+- Naprawiono ciągle usuwające się osiągnięcie "Niebiański gniew" z bazy danych
+- Naprawiono *prawdopodobnie* rzadki błąd z nieistniejącym już slotem "money" (slot ten został zastąpiony przez nową sakiewkę)
+
+
 1.25.3
 *klient*
 - Poprawiono grafiki niektórych NPC
