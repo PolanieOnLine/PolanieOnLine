@@ -12,10 +12,10 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 public class RebornAchievementFactory extends AbstractAchievementFactory {
 	private static final String QUEST_SLOT = "reset_level";
 
-	private static final int EASY_SCORE = 1000;
-	private static final int MEDIUM_SCORE = 2500;
-	private static final int HARD_SCORE = 5000;
-	private static final int LEGENDARY_SCORE = 7500;
+	private static final int EASY_SCORE = 2500;
+	private static final int MEDIUM_SCORE = 5000;
+	private static final int HARD_SCORE = 7500;
+	private static final int LEGENDARY_SCORE = 10000;
 
 	public static final String ID_NEWBORN = "quest.special.reborn.1";
 	public static final String ID_NEW_ADVENTURE = "quest.special.reborn.2";
