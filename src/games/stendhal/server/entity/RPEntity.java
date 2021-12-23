@@ -496,19 +496,19 @@ public abstract class RPEntity extends GuidedEntity {
 			final int value = 300;
 			final int def_value = (value / 2);
 
-			if (player.isQuestInState(QUEST_SLOT, "done")) {
+			if (player.isQuestInState(QUEST_SLOT, "done;reborn_1")) {
 				effectiveAttackerLevel = getLevel() + 1 * value;
 				effectiveDefenderLevel = defender.getLevel() + 1 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;2")) {
+			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_2")) {
 				effectiveAttackerLevel = getLevel() + 2 * value;
 				effectiveDefenderLevel = defender.getLevel() + 2 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;3")) {
+			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_3")) {
 				effectiveAttackerLevel = getLevel() + 3 * value;
 				effectiveDefenderLevel = defender.getLevel() + 3 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;4")) {
+			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_4")) {
 				effectiveAttackerLevel = getLevel() + 4 * value;
 				effectiveDefenderLevel = defender.getLevel() + 4 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;5")) {
+			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_5")) {
 				effectiveAttackerLevel = getLevel() + 5 * value;
 				effectiveDefenderLevel = defender.getLevel() + 5 * def_value;
 			}

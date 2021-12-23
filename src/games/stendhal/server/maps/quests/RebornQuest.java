@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018-2021 - Stendhal                    *
+ *                 (C) Copyright 2018-2021 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -39,6 +39,14 @@ import games.stendhal.server.entity.player.Player;
 /**
  * Zadanie, które resetuje poziom graczowi z 597 na 0
  *
+ * I reset: + 1000 base_hp
+ * II reset: + 1000 base_hp
+ * III reset: + 1000 base_hp
+ * IV reset: + 1000 base_hp
+ * V reset: + 2000 base_hp
+ *
+ * Łącznie quest daje 6000 dodatkowego zdrowia.
+ *
  * @author KarajuSs 00:33:57 11-07-2018
  */
 
@@ -52,6 +60,7 @@ public class RebornQuest extends AbstractQuest {
 	/** WARTOŚCI DO ZRESETOWANIA **/
 	private static final int XP_TO_RESET = 0;
 	private static final int LEVEL_TO_RESET = 0;
+	private static final int BASEHP_TO_RESET = 5970;
 	/** TELEPORT **/
 	private static final String HOME = "int_zakopane_home";
 
@@ -60,18 +69,25 @@ public class RebornQuest extends AbstractQuest {
 	private final String POWITANIE_2 = "Abym mógła cofnąć Ciebie w czasie to musisz osiągnąć maksymalny poziom! Aktualnie twój poziom to: #";
 	private final String POWITANIE_3 = "Witaj ponownie. Przybyłeś znów, by narodzić się na nowo?";
 
-	private final String INFORMACJA_1 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz aktualne #'punkty zdrowia' już nie! Chcesz tego? (#'tak')";
+	private final String INFORMACJA_1 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz otrzymasz mały bonus do #zdrowia! Chcesz tego? (#'tak')";
 	private final String INFORMACJA_2 = "Proszę... Zastanów się jeszcze raz. Czy jesteś tego pewien? (#'tak')";
-	private final String INFORMACJA_3 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')";
+	private final String INFORMACJA_3 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej oraz otrzymasz mały bonus do #zdrowia! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')";
 
-	private final String INFORMACJA_4 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania' oraz #'umiejętności' już nie! Chcesz tego? (#'tak')";
-	private final String INFORMACJA_5 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej! Czy jesteś tego pewien? (#'tak')";
+	private final String INFORMACJA_4 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania' oraz #'umiejętności' już nie, jak i otrzymasz mały bonus do #zdrowia! Chcesz tego? (#'tak')";
+	private final String INFORMACJA_5 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej oraz otrzymasz mały bonus do #zdrowia! Czy jesteś tego pewien? (#'tak')";
 
 	private final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 	private final String NAGRODA = "Została zagięta Twoja teraźniejszość przez potężnego smoka czasu, #'Yereny'... abyś mógł przeżyć przygodę jeszcze raz... Podążaj nową ścieżką, którą sobie obierzesz...";
 	private final String UKONCZONE = "Wybacz... lecz nie czuję się za dobrze, aby ponownie użyć swej mocy...";
 	
 	private final String DODATKOWA_NAGRODA = NAGRODA + " Otrzymałeś również pamiątkę po swoich wcześniejszych podróżach!";
+
+	/** STATUS **/
+	private final static String DONE1 = "done;reborn_1";
+	private final static String DONE2 = "done;reborn_2";
+	private final static String DONE3 = "done;reborn_3";
+	private final static String DONE4 = "done;reborn_4";
+	private final static String DONE5 = "done;reborn_5";
 
 	private ChatAction Welcome() {
 		return new ChatAction() {
@@ -190,9 +206,11 @@ public class RebornQuest extends AbstractQuest {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
+								player.setHP((player.getHP() - BASEHP_TO_RESET) + 1000);
+								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
 	
 								// Ustaw zadanie na zakończone
-								player.setQuest(QUEST_SLOT, "done");
+								player.setQuest(QUEST_SLOT, DONE1);
 							}
 						}
 					}));
@@ -201,13 +219,13 @@ public class RebornQuest extends AbstractQuest {
 	private void second_attempt() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done"),
+				new QuestInStateCondition(QUEST_SLOT, DONE1),
 				ConversationStates.OFFERED_2_REBORN,
 				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_2_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done"),
+				new QuestInStateCondition(QUEST_SLOT, DONE1),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;2"));
@@ -227,26 +245,26 @@ public class RebornQuest extends AbstractQuest {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
-								player.setHP(player.getHP() - 3000);
-								player.setBaseHP(player.getBaseHP() - 3000);
-	
+								player.setHP((player.getHP() - BASEHP_TO_RESET) + 1000);
+								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
+
 								// Ustaw zadanie na zakończone
-								player.setQuest(QUEST_SLOT, "done;2");
+								player.setQuest(QUEST_SLOT, DONE2);
 							}
 						}
 					}));
 	}
-	
+
 	private void third_attempt() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				new QuestInStateCondition(QUEST_SLOT, DONE2),
 				ConversationStates.OFFERED_3_REBORN,
 				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_3_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;2"),
+				new QuestInStateCondition(QUEST_SLOT, DONE2),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;3"));
@@ -266,11 +284,11 @@ public class RebornQuest extends AbstractQuest {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
-								player.setHP(player.getHP() - 3000);
-								player.setBaseHP(player.getBaseHP() - 3000);
+								player.setHP((player.getHP() - BASEHP_TO_RESET) + 1000);
+								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
 	
 								// Ustaw zadanie na zakończone
-								player.setQuest(QUEST_SLOT, "done;3");
+								player.setQuest(QUEST_SLOT, DONE3);
 							}
 						}
 					}));
@@ -279,13 +297,13 @@ public class RebornQuest extends AbstractQuest {
 	private void fourth_attempt() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				new QuestInStateCondition(QUEST_SLOT, DONE3),
 				ConversationStates.OFFERED_4_REBORN,
 				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_4_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;3"),
+				new QuestInStateCondition(QUEST_SLOT, DONE3),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;4"));
@@ -305,15 +323,15 @@ public class RebornQuest extends AbstractQuest {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
-								player.setHP(player.getHP() - 3000);
-								player.setBaseHP(player.getBaseHP() - 3000);
+								player.setHP((player.getHP() - BASEHP_TO_RESET) + 1000);
+								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
 
 								final Item naszyjnik = SingletonRepository.getEntityManager().getItem("amulecik z mithrilu");
 								naszyjnik.setBoundTo(player.getName());
 								player.equipOrPutOnGround(naszyjnik);
 
 								// Ustaw zadanie na zakończone
-								player.setQuest(QUEST_SLOT, "done;4");
+								player.setQuest(QUEST_SLOT, DONE4);
 							}
 						}
 					}));
@@ -322,13 +340,13 @@ public class RebornQuest extends AbstractQuest {
 	private void fifth_attempt() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				new QuestInStateCondition(QUEST_SLOT, DONE4),
 				ConversationStates.OFFERED_5_REBORN,
 				null, Welcome());
 
 		npc.add(ConversationStates.OFFERED_5_REBORN,
 				ConversationPhrases.YES_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;4"),
+				new QuestInStateCondition(QUEST_SLOT, DONE4),
 				ConversationStates.INFORMATION_1,
 				INFORMACJA_4,
 				new SetQuestAction(QUEST_SLOT, "start;5"));
@@ -348,22 +366,22 @@ public class RebornQuest extends AbstractQuest {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
-								player.setHP(player.getHP() - 3000);
-								player.setBaseHP(player.getBaseHP() - 3000);
+								player.setHP((player.getHP() - BASEHP_TO_RESET) + 2000);
+								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 2000);
 
 								final Item excalibur = SingletonRepository.getEntityManager().getItem("ekskalibur");
 								excalibur.setBoundTo(player.getName());
 								player.equipOrPutOnGround(excalibur);
 
 								// Ustaw zadanie na zakończone
-								player.setQuest(QUEST_SLOT, "done;5");
+								player.setQuest(QUEST_SLOT, DONE5);
 							}
 						}
 					}));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestInStateCondition(QUEST_SLOT, "done;5"),
+				new QuestInStateCondition(QUEST_SLOT, DONE5),
 				ConversationStates.ATTENDING,
 				UKONCZONE,
 				null);
@@ -404,7 +422,7 @@ public class RebornQuest extends AbstractQuest {
 			return res;
 		}
 		res.add("Yerena cofnęła mój poziom i od teraz muszę na nowo zdobywać punkty doświadczenia!");
-		if ("done".equals(questState)) {
+		if ("done_reborn".equals(questState)) {
 			return res;
 		}
 

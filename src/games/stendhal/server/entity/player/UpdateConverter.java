@@ -580,6 +580,8 @@ public abstract class UpdateConverter {
 		fixDailyMonsterQuestSlot(player);
 		// fix Maze
 		fixMazeQuestSlot(player);
+		// fix base hp after changes in reborn quest
+		fixBaseHPAfterRebornQuest(player);
 	}
 
 	/**
@@ -656,6 +658,40 @@ public abstract class UpdateConverter {
 			}
 			oldSlot.clear();
 			player.removeSlot(oldSlot.getName());
+		}
+	}
+
+	private static void fixBaseHPAfterRebornQuest(Player player) {
+		final String QUEST_SLOT = "reset_level";
+
+		if(!player.hasQuest(QUEST_SLOT)) {
+			return;
+		}
+
+		if (player.isQuestInState(QUEST_SLOT, "done")) {
+			player.setBaseHP(player.getBaseHP() - 4970);
+			player.setHP(player.getBaseHP());
+			player.setQuest(QUEST_SLOT, "done;reborn_1");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "done;2")) {
+			player.setBaseHP(player.getBaseHP() - 6940);
+			player.setHP(player.getBaseHP());
+			player.setQuest(QUEST_SLOT, "done;reborn_2");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "done;3")) {
+			player.setBaseHP(player.getBaseHP() - 8910);
+			player.setHP(player.getBaseHP());
+			player.setQuest(QUEST_SLOT, "done;reborn_3");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "done;4")) {
+			player.setBaseHP(player.getBaseHP() - 10880);
+			player.setHP(player.getBaseHP());
+			player.setQuest(QUEST_SLOT, "done;reborn_4");
+		}
+		if (player.isQuestInState(QUEST_SLOT, "done;5")) {
+			player.setBaseHP(player.getBaseHP() - 11850);
+			player.setHP(player.getBaseHP());
+			player.setQuest(QUEST_SLOT, "done;reborn_5");
 		}
 	}
 
