@@ -514,6 +514,43 @@ public class Grammar {
 			return enoun + postfix;
 		}
 	}
+	
+	public static String singular(int quantity, String enoun) {
+		if (enoun == null) {
+			return null;
+		}
+		String postfix = "";
+		final int position = enoun.indexOf('+');
+		if (position != -1) {
+			postfix = enoun.substring(position - 1);
+			enoun = enoun.substring(0, position - 1);
+		}
+
+		// in "of"-phrases build only the singular of the first part
+		if (enoun.indexOf(of) > -1) {
+			return singular(enoun.substring(0, enoun.indexOf(of)))
+					+ enoun.substring(enoun.indexOf(of)) + postfix;
+
+		} else if (quantity >= 5) {
+			if (enoun.endsWith("tę")) {
+				return enoun.substring(0, enoun.length() - 1);
+			} else {
+				return enoun + postfix;
+			}
+
+		} else if (quantity <=4) {
+			if (enoun.endsWith("tę") || enoun.endsWith("ło")) {
+				return enoun.substring(0, enoun.length() - 1) + "y";
+			} else if (enoun.endsWith("czy")) {
+				return enoun.substring(0, enoun.length() - 1) + "e";
+			} else {
+				return enoun + postfix;
+			}
+
+		} else {
+			return enoun + postfix;
+		}
+	}
 
 	/**
 	 * Returns either the plural or singular form of the given noun, depending
@@ -527,18 +564,11 @@ public class Grammar {
 	 */
 	public static String plnoun(final int quantity, final String noun) {
 		final String enoun = fullForm(noun);
-		if (quantity == 1) {
+
+		if (quantity > 1) {
+			return singular(quantity, enoun);
+		} else if (quantity == 1) {
 			return singular(enoun);
-		} else if (quantity >= 5) {
-			if (enoun.endsWith("tę")) {
-				return enoun.substring(0, enoun.length() - 1);
-			}
-			return enoun;
-		} else if (quantity <= 4) {
-			if (enoun.endsWith("czy")) {
-				return enoun.substring(0, enoun.length() - 1) + "e";
-			}
-			return enoun;
 		} else {
 			return plural(noun);
 		}
