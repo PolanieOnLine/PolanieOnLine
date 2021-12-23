@@ -410,11 +410,11 @@
 		</ai>
 	</creature>
 
-	<creature name="czarne smoczysko">
-		<type class="pol/smoki" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
-		<description>Oto czarny smok. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
+	<creature name="zielone smoczysko">
+		<type class="pol/smoki" subclass="smok_zielony" tileid="pol_smoki.png:13"/>
+		<description>Oto zielone smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
-			<atk value="4195"/>
+			<atk value="4222"/>
 			<def value="165"/>
 			<hp value="3960"/>
 			<speed value="1.0"/>
@@ -422,6 +422,124 @@
 		</attributes>
 		<level value="300"/>
 		<experience value="333333"/>
+		<respawn value="24000"/>
+		<corpse name="dragon_6x6"/>
+		<drops>
+			<item value="gigantyczny eliksir" quantity="[1,1]" probability="50.0"/>
+			<item value="szmaragd" quantity="[1,4]" probability="0.001"/>
+			<item value="złote rękawice" quantity="[1,1]" probability="0.005"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="10.0"/>
+			<item value="pazur zielonego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="skóra zielonego smoka" quantity="[1,1]" probability="25.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="złoty buzdygan"/>
+		</equips>
+		<ai>
+			<says>
+				<sound value="pol-dragon-roaring"/>
+				<sound value="pol-dragon-taunt"/>
+				<sound value="roar-dragon-1" />
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="35,50"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="niebieskie smoczysko">
+		<type class="pol/smoki" subclass="smok_niebieski" tileid="pol_smoki.png:14"/>
+		<description>Oto niebieskie smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
+		<attributes>
+			<atk value="5333"/>
+			<def value="188"/>
+			<hp value="4960"/>
+			<speed value="1.0"/>
+			<size value="5,4"/>
+		</attributes>
+		<level value="350"/>
+		<experience value="444444"/>
+		<respawn value="24000"/>
+		<corpse name="dragon_6x6"/>
+		<drops>
+			<item value="gigantyczny eliksir" quantity="[1,1]" probability="50.0"/>
+			<item value="szafir" quantity="[1,4]" probability="0.001"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="10.0"/>
+			<item value="pazur niebieskiego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="skóra niebieskiego smoka" quantity="[1,1]" probability="25.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="złoty buzdygan"/>
+		</equips>
+		<ai>
+			<says>
+				<sound value="pol-dragon-roaring"/>
+				<sound value="pol-dragon-taunt"/>
+				<sound value="roar-dragon-1" />
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="50,40"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czerwone smoczysko">
+		<type class="pol/smoki" subclass="smok_czerwony" tileid="pol_smoki.png:15"/>
+		<description>Oto czerwone smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
+		<attributes>
+			<atk value="6444"/>
+			<def value="211"/>
+			<hp value="5960"/>
+			<speed value="1.0"/>
+			<size value="5,4"/>
+		</attributes>
+		<level value="400"/>
+		<experience value="555555"/>
+		<respawn value="24000"/>
+		<corpse name="dragon_6x6"/>
+		<drops>
+			<item value="gigantyczny eliksir" quantity="[1,1]" probability="50.0"/>
+			<item value="rubin" quantity="[1,4]" probability="0.001"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="10.0"/>
+			<item value="pazur czerwonego smoka" quantity="[1,1]" probability="0.05"/>
+			<item value="skóra czerwonego smoka" quantity="[1,1]" probability="25.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="złoty buzdygan"/>
+		</equips>
+		<ai>
+			<says>
+				<sound value="pol-dragon-roaring"/>
+				<sound value="pol-dragon-taunt"/>
+				<sound value="roar-dragon-1" />
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="70,35"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarne smoczysko">
+		<type class="pol/smoki" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
+		<description>Oto czarne smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
+		<attributes>
+			<atk value="7555"/>
+			<def value="244"/>
+			<hp value="6960"/>
+			<speed value="1.0"/>
+			<size value="5,4"/>
+		</attributes>
+		<level value="450"/>
+		<experience value="666666"/>
 		<respawn value="24000"/>
 		<corpse name="dragon_6x6"/>
 		<drops>
@@ -448,7 +566,7 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
-			<profile name="heal" params="35,50"/>
+			<profile name="heal" params="100,30"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
