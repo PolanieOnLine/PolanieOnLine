@@ -1,5 +1,29 @@
 Changelog
 ---------
+1.26
+*klient*
+- Dodano nowe grafiki potworów
+- Dodano nowy wygląd kursora
+- Dodano nową opcję w ustawieniach wizualnych klienta, aby zmienić na stary kursor
+
+*świat*
+- Dodano nowe potwory: (3)
+	- zielone smoczysko
+	- niebieskie smoczysko
+	- czerwone smoczysko
+- Zmieniono statystyki potwora "czarne smoczysko", aby był silniejszy od swoich odpowiedników
+- Zmieniono ilość otrzymywanego bonusu do zdrowia za każde odrodzenie (teraz maksymalnie 6,000 bonusu do zdrowia zamiast 17,850)
+
+*kod*
+- Ilość bazowego zdrowia dostosuje się automatycznie do każdego gracza, który wykonał odrodzenie
+
+*naprawiono błędy*
+- Naprawiono brakującą grafikę przedmiotu
+- Naprawiono przyznawanie osiągnięcia za złote ciupagi
+- Naprawiono przywracanie wcześniejszego wyglądu postaci po wypożyczeniu stroju
+- Poprawiono automatyczną gramatykę j. polskiego
+
+
 1.25.4
 *klient*
 - Dodano nowe grafiki przedmiotów
