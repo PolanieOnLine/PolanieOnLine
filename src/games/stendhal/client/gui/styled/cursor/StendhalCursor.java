@@ -19,24 +19,24 @@ import java.awt.Point;
  * @author hendrik
  */
 public enum StendhalCursor {
-	ACTIVITY("activity.png", new Point(1, 1)),
+	ACTIVITY("activity", new Point(1, 1)),
 // Gate2DView, PlantGrower
-	ATTACK("attack.png", new Point(1, 1)),
-	BAG("bag.png", new Point(1, 1)),
-	EMPTY_BAG("emptybag.png", new Point(1, 1)),
-	LOCKED_BAG("lockedbag.png", new Point(1, 1)),
-	HARVEST("harvest.png", new Point(1, 1)),
-	LOOK("look.png", new Point(1, 1)),
-	NORMAL("normal.png", new Point(1, 1)),
-	ITEM_EQUIP("itemequip.png", new Point(1, 1)),
-	ITEM_PICK_UP_FROM_SLOT("itempickupfromslot.png", new Point(1, 1)),
-	ITEM_USE("itemuse.png", new Point(1, 1)),
-	PORTAL("portal.png", new Point(1, 1)),
-	SPELLCASTING("usemagic.png", new Point(1,1)),
-	STOP("stop.png", new Point(1, 1)),
-	UNKNOWN("unknown.png", new Point(1, 1)),
-	WALK("walk.png", new Point(1, 1)),
-	WALK_BORDER("walkborder.png", new Point(1, 1));
+	ATTACK("attack", new Point(1, 1)),
+	BAG("bag", new Point(1, 1)),
+	EMPTY_BAG("emptybag", new Point(1, 1)),
+	LOCKED_BAG("lockedbag", new Point(1, 1)),
+	HARVEST("harvest", new Point(1, 1)),
+	LOOK("look", new Point(1, 1)),
+	NORMAL("normal", new Point(1, 1)),
+	ITEM_EQUIP("itemequip", new Point(1, 1)),
+	ITEM_PICK_UP_FROM_SLOT("itempickupfromslot", new Point(1, 1)),
+	ITEM_USE("itemuse", new Point(1, 1)),
+	PORTAL("portal", new Point(1, 1)),
+	SPELLCASTING("usemagic", new Point(1,1)),
+	STOP("stop", new Point(1, 1)),
+	UNKNOWN("unknown", new Point(1, 1)),
+	WALK("walk", new Point(1, 1)),
+	WALK_BORDER("walkborder", new Point(1, 1));
 
 	private String imageName;
 	private Point hotSpot;

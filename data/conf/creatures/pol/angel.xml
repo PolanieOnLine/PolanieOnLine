@@ -140,9 +140,10 @@
 			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
 		</equips>
 		<abilities>
-			<damage type="light"/>
-			<susceptibility type="dark" value="1.2"/>
-			<susceptibility type="light" value="0.6"/>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="1.2"/>
+			<susceptibility type="water" value="0.6"/>
+			<susceptibility type="fire" value="0.6"/>
 		</abilities>
 		<ai>
 			<says>
@@ -191,9 +192,10 @@
 			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
 		</equips>
 		<abilities>
-			<damage type="light"/>
-			<susceptibility type="dark" value="0.6"/>
-			<susceptibility type="light" value="1.2"/>
+			<damage type="fire"/>
+			<susceptibility type="water" value="0.6"/>
+			<susceptibility type="ice" value="0.6"/>
+			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
 			<says>

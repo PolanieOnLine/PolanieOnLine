@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
 
 /**
@@ -47,7 +48,12 @@ public class CursorRepository {
 	}
 
 	private Cursor loadCursor(StendhalCursor stendhalCursor) {
-		String imageName = "data/sprites/cursor/" + stendhalCursor.getImageName();
+		String cursorPath = "data/sprites/cursor/";
+		if (WtWindowManager.getInstance().getPropertyBoolean("gamescreen.cursorclassic", true)) {
+			cursorPath = cursorPath + "classic/";
+		}
+
+		String imageName = cursorPath + stendhalCursor.getImageName() + ".png";
 
 		// load image file
 		URL url = DataLoader.getResource(imageName);

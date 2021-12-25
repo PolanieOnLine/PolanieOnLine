@@ -78,6 +78,7 @@ class VisualSettings {
 	private static final String GAMESCREEN_CREATURESPEECH = "gamescreen.creaturespeech";
 	private static final String GAMESCREEN_BLOOD = "gamescreen.blood";
 	private static final String GAMESCREEN_NONUDE = "gamescreen.nonude";
+	private static final String GAMESCREEN_CURSORCLASSIC = "gamescreen.cursorclassic";
 
 	private static final String SCALE_SCREEN_PROPERTY = "ui.scale_screen";
 	/** Property used for toggling map coloring on. */
@@ -164,6 +165,7 @@ class VisualSettings {
 			}
 		});
 
+		// no nude
 		JCheckBox noNudeToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_NONUDE, true,
 				"Pokaż bieliznę", "\"Nagie\" postacie zostaną pokryte bielizną.");
 		page.add(noNudeToggle);
@@ -173,7 +175,22 @@ class VisualSettings {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączona" : "wyłączona";
 				String msg = "Bielizna została " + tmp
-						+ "Niektóre zmiany zaczną działać dopiero po zmianie mapy lub przelogowaniu się.";
+						+ ". Niektóre zmiany zaczną działać dopiero po zmianie mapy lub przelogowaniu się.";
+				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+			}
+		});
+
+		// classic cursor
+		JCheckBox cursorClassicToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CURSORCLASSIC, false,
+				"Pokaż klasyczny kursor", "Klasyczny wygląd kursora.");
+		page.add(cursorClassicToggle);
+		cursorClassicToggle.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+				String tmp = enabled ? "włączony" : "wyłączony";
+				String msg = "Klasyczny kursor został " + tmp
+						+ ". Zmiana wyglądu kursora zacznie działać dopiero po przelogowaniu się.";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});

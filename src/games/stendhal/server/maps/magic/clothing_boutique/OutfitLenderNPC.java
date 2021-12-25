@@ -118,6 +118,10 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 			    setPath(new FixedPath(nodes, true));
 			}
 
+			final List<String> skinLayerOutfits = Arrays.asList("koń", "klacz", "obcy", "statek", "duży statek");
+			final List<String> dressLayerOutfits = Arrays.asList("pomarańczowy", "zielone ubranie", "ogrodniczki",
+				"kombinezon", "strój królika", "suknia", "figlarz");
+
 			@Override
 			protected void createDialog() {
 				class SpecialOutfitChangerBehaviour extends OutfitChangerBehaviour {
@@ -140,6 +144,14 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 						} else {
 							player.setOutfit(outfit, true);
 						}
+
+						if (skinLayerOutfits.contains(outfitType)) {
+							player.unsetOutfitColor("skin");
+						}
+						if (dressLayerOutfits.contains(outfitType)) {
+							player.unsetOutfitColor("dress");
+						}
+
 						player.registerOutfitExpireTime(endurance);
 					}
 					// override transact agreed deal to only make the player rest to a normal outfit if they want a put on over type.

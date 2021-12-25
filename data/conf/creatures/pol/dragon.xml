@@ -30,8 +30,8 @@
 		<equips/>
 		<abilities>
 			<damage type="dark"/>
-			<susceptibility type="dark" value="0.8"/>
-			<susceptibility type="light" value="1.2"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
 			<says>
@@ -78,7 +78,7 @@
 		<equips/>
 		<abilities>
 			<damage type="ice"/>
-			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="ice" value="1.2"/>
 			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
@@ -129,8 +129,7 @@
 		<equips/>
 		<abilities>
 			<damage type="fire"/>
-			<susceptibility type="fire" value="0.8"/>
-			<susceptibility type="water" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
 			<says>
@@ -178,8 +177,8 @@
 		<equips/>
 		<abilities>
 			<damage type="light"/>
-			<susceptibility type="light" value="0.8"/>
-			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="light" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
 			<says>
@@ -226,7 +225,7 @@
 		<equips/>
 		<abilities>
 			<damage type="earth"/>
-			<susceptibility type="earth" value="0.8"/>
+			<susceptibility type="earth" value="1.2"/>
 			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
@@ -272,7 +271,7 @@
 		<equips/>
 		<abilities>
 			<damage type="ice"/>
-			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="ice" value="1.2"/>
 			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
@@ -312,6 +311,10 @@
 			<item value="skóra złotego smoka" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips/>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-taunt"/>
@@ -392,7 +395,7 @@
 		<equips/>
 		<abilities>
 			<damage type="ice"/>
-			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="ice" value="1.2"/>
 			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
@@ -435,6 +438,11 @@
 		<equips>
 			<slot name="rhand" item="złoty buzdygan"/>
 		</equips>
+		<abilities>
+			<damage type="earth"/>
+			<susceptibility type="earth" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-roaring"/>
@@ -474,6 +482,11 @@
 		<equips>
 			<slot name="rhand" item="złoty buzdygan"/>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+			<susceptibility type="water" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-roaring"/>
@@ -513,6 +526,11 @@
 		<equips>
 			<slot name="rhand" item="złoty buzdygan"/>
 		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="fire" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-roaring"/>
@@ -556,6 +574,11 @@
 		<equips>
 			<slot name="rhand" item="złoty buzdygan"/>
 		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-roaring"/>
@@ -599,6 +622,11 @@
 			<item value="skóra czarnego smoka" quantity="[1,1]" probability="10.0"/>
 		</drops>
 		<equips/>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-roaring"/>
@@ -645,6 +673,11 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="light" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-dragon-roaring"/>
@@ -689,6 +722,10 @@
 		<equips>
 			<slot name="rhand" item="ognisty miecz demonów" quantity="1"/>
 		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="RRRRRRRRRrrrrrrrrrrrrrrr"/>

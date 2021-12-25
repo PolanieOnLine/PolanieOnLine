@@ -114,6 +114,9 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 			    setPath(new FixedPath(nodes, true));
 			}
 
+			final List<String> skinLayerOutfits = Arrays.asList("fioletowy szlam", "zielony szlam", "czerwony szlam",
+					"niebieski szlam", "czarny kot", "biały kot", "piernikowy ludzik", "twarz cosia", "twarz goblina");
+
 			@Override
 			protected void createDialog() {
 				class SpecialOutfitChangerBehaviour extends OutfitChangerBehaviour {
@@ -136,6 +139,11 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 						} else {
 							player.setOutfit(outfit, true);
 						}
+
+						if (skinLayerOutfits.contains(outfitType)) {
+							player.unsetOutfitColor("skin");
+						}
+
 						player.registerOutfitExpireTime(endurance);
 					}
 					// override transact agreed deal to only make the player rest to a normal outfit if they want a put on over type.
