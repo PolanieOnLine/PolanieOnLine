@@ -375,6 +375,41 @@
 		</ai>
 	</creature>
 
+	<creature name="lodowa wieża">
+		<type class="pol/sniegowe" subclass="lodowa_wieza" tileid="pol_sniegowe.png:2"/>
+		<attributes>
+			<atk value="1450"/>
+			<def value="415"/>
+			<hp value="14365"/>
+			<speed value="0.2"/>
+			<size value="2,2"/>
+			<resistance value="100"/>
+			<visibility value="100"/>
+		</attributes>
+		<level value="250"/>
+		<experience value="16920"/>
+		<respawn value="16449"/>
+		<corpse name="snowball"/>
+		<drops>
+			<item value="bryła lodu" quantity="[10,20]" probability="100.0"/>
+		</drops>
+		<equips/>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.6"/>
+			<susceptibility type="fire" value="1.4"/>
+		</abilities>
+		<ai>
+			<says>
+				<sound value="pol-giant"/>
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+		</ai>
+	</creature>
+
 	<creature name="kula śnieżna">
 		<type class="pol/sniegowe" subclass="kula_sniezna" tileid="pol_sniegowe.png:0"/>
 		<attributes>
