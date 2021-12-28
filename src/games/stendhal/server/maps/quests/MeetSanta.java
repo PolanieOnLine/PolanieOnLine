@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -144,13 +145,22 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 		final int currentHat = origOutfit.getLayer("hat");
 		int santaHat = 999;
 		// unique Santa hats
-		if (currentHat == 4) {
+		if (currentHat == 4 || currentHat == 996) {
 			santaHat = 996;
-		} else if (currentHat == 5) {
+		} else if (currentHat == 5 || currentHat == 997) {
 			santaHat = 997;
 		}
 
+		final Map<String, String> colors = player.getOutfitColors();
 		player.setOutfit(new Outfit(null, null, null, null, null, null, null, santaHat, null).putOver(origOutfit), true);
+
+		// restore colors
+		if (colors != null) {
+			for (final String key : colors.keySet()) {
+				player.setOutfitColor(key, colors.get(key));
+			}
+		}
+
 		player.registerOutfitExpireTime(43200);
 	}
 
@@ -260,5 +270,4 @@ public class MeetSanta extends AbstractQuest implements LoginListener {
 	public String getNPCName() {
 		return "Święty Mikołaj";
 	}
-
 }

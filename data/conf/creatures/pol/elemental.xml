@@ -391,7 +391,12 @@
 		<respawn value="16449"/>
 		<corpse name="snowball"/>
 		<drops>
-			<item value="bryła lodu" quantity="[10,20]" probability="100.0"/>
+			<item value="bryła lodu" quantity="[1,30]" probability="100.0"/>
+			<item value="hełm lodowy" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="1.0"/>
+			<item value="miecz lodowy" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowy młot bojowy" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowy łuk" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<abilities>
@@ -430,6 +435,9 @@
 			<item value="bryła lodu" quantity="[1,2]" probability="20.0"/>
 		</drops>
 		<equips/>
+		<abilities>
+			<damage type="ice"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-snow"/>
@@ -459,6 +467,9 @@
 			<item value="bryła lodu" quantity="[10,20]" probability="100.0"/>
 		</drops>
 		<equips/>
+		<abilities>
+			<damage type="ice"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="pol-snow"/>

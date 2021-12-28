@@ -276,10 +276,10 @@
 			<item value="lodowy młot bojowy" quantity="[1,1]" probability="0.5"/>
 			<item value="hełm lodowy" quantity="[1,1]" probability="0.05"/>
 			<item value="lodowe rękawice" quantity="[1,1]" probability="0.05"/>
-			<item value="lodowa kusza" quantity="[1,1]" probability="0.5"/>
+			<item value="lodowa kusza" quantity="[1,1]" probability="0.25"/>
 			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.65"/>
 			<item value="lodowe spodnie" quantity="[1,1]" probability="1.0"/>
-			<item value="lodowy łuk" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowy łuk" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>

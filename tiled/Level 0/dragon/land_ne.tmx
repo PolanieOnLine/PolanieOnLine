@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="64" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="31" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="64" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="1">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="33" columns="3">
   <image source="../../tileset/ground/ground.png" trans="ffffff" width="96" height="352"/>
  </tileset>
@@ -51,52 +51,52 @@
  <tileset firstgid="354" name="tree_buk_las" tilewidth="32" tileheight="32" tilecount="42" columns="7">
   <image source="../../tileset/pol/natura/drzewa/tree_buk_las.png" width="224" height="192"/>
  </tileset>
- <layer id="21" name="0_floor" width="64" height="128">
+ <layer id="11" name="0_floor" width="64" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3DAQkAAAwEoeP7h16QKbhqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqvr8ATnMZ2sAgAAA
   </data>
  </layer>
- <layer id="22" name="1_terrain" width="64" height="128">
+ <layer id="12" name="1_terrain" width="64" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3Yyw6CMBAFUP7/x1y5MuIjUXdu/AkkabfyEBig5yQNXd4JnVJaVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0dY8OEOT8HZc06uAsS8p112leWu0l1Zu907PUXv/lFR2ASd2iA6xQiX1f4j7fat91/raXqKvuxyIp5mefG+4QHQBWZK174TE6wE7t+Uz0iQ4wkWsaY2353Jfvpsb8r3TVXcJ5Kd9vbXkN/GtI7afZUixnD+u6b78/Z01BA5wfkqoAgAAA
+   H4sIAAAAAAAACu3WMRIBQRRF0dkSOTklFtqA/ee6yyJ+cc+pmrwvr4fjAAAAAAAAAAAAAH7NefoAw07TBxh2Wc91+hCD9OvX31Xvfx/f38Dy/4D6BvTrL/d7B9qAfv3lfu9AG9CvX39Xvd9voA3o16+/S79+/V31fv+BbaDe7w7YQL3fHfAZbPV7UO93B2yg3u8O2IB+/eV+70Ab0K9ff5d+/fq79OvX36Vfv/6m13pu67lPH2TI/u4f63lOH2SI7du+7ffYvu1Xt7+V+919d7+6/U2//n/v/wD7TJk6AIAAAA==
   </data>
  </layer>
- <layer id="23" name="2_object" width="64" height="128">
+ <layer id="13" name="2_object" width="64" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3ZSwrCMBSG0XSt7sOqxWc3bQa9ULTgVPqfA5eMv6SBQFsDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfjkPrV2G73XPqnHq8+jz3Fj3Zqv51WfeYeunxOYyBTYX7drTaNeeRntW+/otm9Ke+H5PbC6JzYn3uiSed0k877Xkdv7DwfcHkY797o99Tsv/nzTX3nzrc1/eYGPgHpTaizfO/ur9AIAAAA==
+   H4sIAAAAAAAACu3Y0Q2AIBBEQWxc/qzbGIog+GYqUPduIY4BAAAAAAAAAAAA55nX7ifY646/f92Xf30Hnvj71+nANh2oA+t0YJsO1IF1OrBNB+rAOh3YJv82Z6AdqJN/m/zb5N8m/zZ3YDtQZwf8C62zA2sH6t/AWdimB5yFdXbADtS5B7TpQB1YpwPb5N8m/zb5t8m/Tf5t8m+Tf5v8qTL7VJl9qsx+m/ypMvv/9gLD4HR6AIAAAA==
   </data>
  </layer>
- <layer id="24" name="3_roof" width="64" height="128">
+ <layer id="14" name="3_roof" width="64" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3Zy0oDQRAF0ORb1U0UHxE1vv7d7oUwNIboJHZVps+FopZTN4eBgWzXq9Vjme2gO8MNkTvDDfz58+fPnz9//vz58+fPnz9//vz58+fPnz9//vz58+fPnz9//vz58+fPnz9//vz58+fPnz9//vz58+fPnz9//vz58+fPP8cN/Pnz58+fP3/+/Pnz58+fP3/+/Pnz58+fP3/+/Pnz58+fP3/+/Pkf2m9l3n/YGW77784fZfYl+saIztNkuPlU+7edl+g/p/tS/Od2X4L/Md3P3f/Y7ufsf4ruNRm6RHWvie4S2b0mQ6eo7jXRnSK712Totm//9Vt2TqI7RnSeZsTO00R3j+g8zWjebUbzbjNy95qRu9f08n8q85zwN+jp/5mk/0W547LMVafumfxr902Z6zI3nbpn8t80d43kf1+e/9DcNZL/S3n+rszrOub/n9sydwnege/sOnbP8g606emf4R1o8wWlsSbyAIAAAA==
+   H4sIAAAAAAAACu3YwQ6CMBCEYXhcPSke5PGFA7ESirtc2sz8k5hePDT9dtbEaRyG1/KZTM8e7tDy7OEO+OOPP/74448//vjjjz/++OOPP/74448//vjjjz/++OOPP/74448//vjjf/V8dnCHluds/gZr5k7u0uJ8mPu/R+8ObHHtwBrnDqzZOtD6Lvi39Xd8gzKOHdji2oEtrjsQf+8duI9bB8o4dqCM4w7E33sHHsWpA/u4dWAftx2IP/74+/4G1uLSgaM4deAoTjsQf/zxxx9//PH/9Xd4g7M4dKAWlw7U4tKBf1HvwFkcOnAWhw5EovwG0ajugUiU90AkynsgE8UORKPagWhUO5CNWgcyUexAJor/C+Gf91d6gytR6kA2ah3IRm0H4o8//vjjjz/++OOPP/74448//viXuS3fv3dw51b+arOf9Veb/Yy/4uxn/BVnP+OvOPtRf9XZj/qrzn7UX3X28ce/ltv4PVV3X8RfefYj/Veeffzx/wCd2uyjAIAAAA==
   </data>
  </layer>
- <layer id="25" name="4_roof_add" width="64" height="128">
+ <layer id="15" name="4_roof_add" width="64" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3TwQkAMAwDMWfhdv9fx0jB0gSGwwkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJvOJHe2V7BF/276d9Ofdj9+4AG8FKv0AIAAAA==
+   H4sIAAAAAAAACu3UAQ0AIAwEMbCLfwHIWOBaBSS3Zy0AAAAAAAAAAAB409nTL4BZNtCmP3U20KY/dTbQpj91NtCmf5v+1NlAm/5t+rfp36Y/dTZAnQ0A/gHqbIA6G2jTnzobaNO/Tf82/dv0b9O/Tf82/dv0b9OfKrdPldunyu236U+V22/7uf8FFxexmQCAAAA=
   </data>
  </layer>
- <layer id="26" name="objects" width="64" height="128">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3OMQEAAAgDoNnN/pmMsUNIQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH077QEA8N0BcYolzwCAAAA=
-  </data>
- </layer>
- <layer id="27" name="collision" width="64" height="128" opacity="0.4">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3TQQ6CMABEUe5/WM5gWNkFgUALQ9s3yduh9lddl2VZAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANh1tPTZ3mzeeyZ9zje+56Nn02d+q/3K3fSmZumzJ9t772+xdEOyvdf+lku3tGy/czfpnpbtI/efNdxduqu2vXbptkRzuXRnorncjM3lZm7fNmNzudHbzz539P6zfaG/9n5qX5vsr2nvpfvJ3/+d90+0P/n/76H9yf4rm71/mzv47wc2icKeAIAAAA==
-  </data>
- </layer>
- <layer id="28" name="protection" width="64" height="128">
+ <layer id="16" name="objects" width="64" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABim/B8BAIAAAA==
   </data>
  </layer>
- <layer id="29" name="blend_ground" width="64" height="128">
+ <layer id="17" name="collision" width="64" height="128" opacity="0.4">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3QwQ0AIAwDse4/bGdgBJ5BxJXuX2dnZiVJkiRJkiRJkiRJkiRJkiRJ0tPNAz/w8/Pzp/zNG/Dz8+f/SPtbN+Dn5+fnz/+S9jduwM/Pz8/Pz5//h58/6W/bgJ+/eQN+/uYNbpf+j58/6f99A37+5g34+fn5Wzfg5+fn5+fn5+fn5+fn5+fn5+f/1c7P32zn52+28/Pz99r5+fm7/Qduab7UAIAAAA==
+  </data>
+ </layer>
+ <layer id="18" name="protection" width="64" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABim/B8BAIAAAA==
   </data>
  </layer>
- <layer id="30" name="blend_roof" width="64" height="128">
+ <layer id="19" name="blend_ground" width="64" height="128">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABim/B8BAIAAAA==
+  </data>
+ </layer>
+ <layer id="20" name="blend_roof" width="64" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABim/B8BAIAAAA==
   </data>
