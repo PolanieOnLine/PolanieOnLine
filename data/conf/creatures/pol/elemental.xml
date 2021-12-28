@@ -5,6 +5,7 @@
 	<!-- START: kamienne -->
 	<creature name="kamień">
 		<type class="pol/kamienne" subclass="kamien" tileid="pol_kamienne.png:0"/>
+		<description>Oto niewielki kamień. Gdyby było takich więcej na wzgórzu, mogłaby spaść wielka lawina!</description>
 		<attributes>
 			<atk value="97"/>
 			<def value="97"/>
@@ -33,6 +34,7 @@
 
 	<creature name="wieża">
 		<type class="pol/kamienne" subclass="wieza" tileid="pol_kamienne.png:1"/>
+		<description/>
 		<attributes>
 			<atk value="750"/>
 			<def value="375"/>
@@ -71,6 +73,7 @@
 	<!-- START: kamienne wielkie -->
 	<creature name="głaz">
 		<type class="pol/kamienne_wielkie" subclass="glaz" tileid="pol_kamienne_wielkie.png:0"/>
+		<description>Oto głaz. Sturlał się ze zbocza góry, tocząc się nabiera powoli tempa!</description>
 		<attributes>
 			<atk value="140"/>
 			<def value="140"/>
@@ -99,6 +102,7 @@
 
 	<creature name="lawina kamienna">
 		<type class="pol/kamienne_wielkie" subclass="lawina_kamienna" tileid="pol_kamienne_wielkie.png:1"/>
+		<description>Oto lawina kamienna. Uważaj na spadające skały!</description>
 		<attributes>
 			<atk value="3000"/>
 			<def value="425"/>
@@ -130,6 +134,7 @@
 
 	<creature name="olbrzymia wieża">
 		<type class="pol/kamienne_wielkie" subclass="wieza_olbrzymia" tileid="pol_kamienne_wielkie.png:2"/>
+		<description/>
 		<attributes>
 			<atk value="2523"/>
 			<def value="750"/>
@@ -170,7 +175,7 @@
 	<!-- START: pasterze -->
 	<creature name="pasterz drzew">
 		<type class="pol/pasterze_drzew" subclass="pasterz_drzew" tileid="pol_pasterze_drzew.png:0"/>
-		<description></description>
+		<description/>
 		<attributes>
 			<atk value="919"/>
 			<def value="193"/>
@@ -285,6 +290,7 @@
 
 	<creature name="golem z lawy">
 		<type class="pol/ogniki" subclass="lava_golem" tileid="pol_ogniki.png:2"/>
+		<description>Oto golem z lawy, który powstał w samym sercu wulkanu.</description>
 		<attributes>
 			<atk value="199"/>
 			<def value="44"/>
@@ -360,6 +366,7 @@
 			<item value="lodowe buty" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
+			<slot name="rhand" item="lodowy młot bojowy" quantity="1"/>
 		</equips>
 		<abilities>
 			<damage type="ice"/>
@@ -377,6 +384,7 @@
 
 	<creature name="lodowa wieża">
 		<type class="pol/sniegowe" subclass="lodowa_wieza" tileid="pol_sniegowe.png:2"/>
+		<description>Oto lodowa wieża. Został rzucony potężny czar na tę strukturę przez co porusza się powoli w twoją stronę.</description>
 		<attributes>
 			<atk value="1450"/>
 			<def value="415"/>
@@ -417,6 +425,7 @@
 
 	<creature name="kula śnieżna">
 		<type class="pol/sniegowe" subclass="kula_sniezna" tileid="pol_sniegowe.png:0"/>
+		<description>Oto kula śnieżna, która stoczyła się z niewielkiego wzgórza.</description>
 		<attributes>
 			<atk value="200"/>
 			<def value="200"/>
@@ -450,6 +459,7 @@
 
 	<creature name="lawina">
 		<type class="pol/sniegowe" subclass="lawina" tileid="pol_sniegowe.png:1"/>
+		<description>Oto śnieżna lawina. W pasmach górskich trzeba zachować spokój, jeden nie przemyślany ruch, a wielka lawina z gór spadnie na głowę!</description>
 		<attributes>
 			<atk value="3000"/>
 			<def value="425"/>
