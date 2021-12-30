@@ -7,14 +7,14 @@
 
 	<!-- Ground level -->
 
-	<zone name="0_tarnow_forest_w" level="0" x="513952" y="18048" file="Level 0/tarnow/forest_w.tmx">
+	<zone name="0_tarnow_forest_w" level="0" x="514016" y="18048" file="Level 0/tarnow/forest_w.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
 	</zone>
 
-	<zone name="0_tarnow_forest_sw" level="0" x="513952" y="18176" file="Level 0/tarnow/forest_sw.tmx">
+	<zone name="0_tarnow_forest_sw" level="0" x="514016" y="18176" file="Level 0/tarnow/forest_sw.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -32,7 +32,14 @@
 		</portal>
 	</zone>
 
-	<zone name="0_tarnow_plains" level="0" x="514080" y="18176" file="Level 0/tarnow/plains.tmx">
+	<zone name="0_tarnow_plains_n" level="0" x="514080" y="17920" file="Level 0/tarnow/plains.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+	</zone>
+
+	<zone name="0_tarnow_plains_s" level="0" x="514080" y="18144" file="Level 0/tarnow/plains_s.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>

@@ -69,6 +69,22 @@
 		</portal>
 	</zone>
 
+	<zone name="0_dragon_land_ne" level="0" x="513952" y="18048" file="Level 0/dragon/land_ne.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
 	<zone name="0_dragon_land_sw" level="0" x="513760" y="18176" file="Level 0/dragon/land_sw.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
@@ -118,6 +134,22 @@
 		<portal x="67" y="60" ref="dragon_tunnel_2_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_2_exit"/>
 		</portal>
+	</zone>
+
+	<zone name="0_dragon_land_se" level="0" x="513952" y="18176" file="Level 0/dragon/land_se.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- interiors -->
