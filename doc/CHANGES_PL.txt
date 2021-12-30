@@ -21,8 +21,10 @@ Changelog
 	- 0_dragon_knights_e
 	- 0_tarnow_forest_sw
 	- 0_tarnow_city
+- Zaktualizowano niektórym potworom opisy
 - Zmieniono statystyki potwora "czarne smoczysko", aby był silniejszy od swoich odpowiedników
 - Zmieniono ilość otrzymywanego bonusu do zdrowia za każde odrodzenie (teraz maksymalnie 6,000 bonusu do zdrowia zamiast 17,850)
+- Zmieniono czas odrodzenia dla cherubina oraz lilith
 
 *kod*
 - Ilość bazowego zdrowia dostosuje się automatycznie do każdego gracza, który wykonał odrodzenie
