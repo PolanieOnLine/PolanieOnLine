@@ -727,83 +727,115 @@ sugarmill.png         geomac?; ???; ??? (committed by kymara: d36cebb)
 
 data/sprites/items/ammunition/
 
-mithril_arrow.png        KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-r_wooden_arrow.png       KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+mithril_arrow.png        KarajuSs; CC BY-SA 3.0; PolanieOnLine
+r_wooden_arrow.png       KarajuSs; CC BY-SA 3.0; PolanieOnLine
+
+data/sprites/items/armor/
+
+fire_armor.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+
+data/sprites/items/belts/
+
+barbarian_belt.png       KarajuSs; CC BY-SA 3.0; PolanieOnLine
+black_belt.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+blue_belt.png            KarajuSs; CC BY-SA 3.0; PolanieOnLine
+chain_belt.png           Clint Bellanger; CC BY-SA 3.0; http://opengameart.org/content/studded-belt
+chaos_belt.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+dwarvish_belt.png        KarajuSs; CC BY-SA 3.0; PolanieOnLine
+elvish_belt.png          KarajuSs; CC BY-SA 3.0; PolanieOnLine
+fire_belt.png            KarajuSs; CC BY-SA 3.0; PolanieOnLine
+giant_belt.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+golden_belt.png          KarajuSs; CC BY-SA 3.0; PolanieOnLine
+golden_chain_belt.png    Clint Bellanger, KarajuSs; CC BY-SA 3.0; http://opengameart.org/content/studded-belt, PolanieOnLine
+ice_belt.png             KarajuSs; CC BY-SA 3.0; PolanieOnLine
+killer_belt.png          KarajuSs; CC BY-SA 3.0; PolanieOnLine
+leather_belt.png         KarajuSs; CC BY-SA 3.0; PolanieOnLine
+magic_plate_belt.png     KarajuSs; CC BY-SA 3.0; PolanieOnLine
+mainio_belt.png          KarajuSs; CC BY-SA 3.0; PolanieOnLine
+mithril_belt.png         KarajuSs; CC BY-SA 3.0; PolanieOnLine
+r_leather_belt.png       KarajuSs; CC BY-SA 3.0; PolanieOnLine
+red_belt.png             KarajuSs; CC BY-SA 3.0; PolanieOnLine
+shadow_belt.png          KarajuSs; CC BY-SA 3.0; PolanieOnLine
+stone_belt.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+vampire_belt.png         KarajuSs; CC BY-SA 3.0; PolanieOnLine
+xeno_belt.png            KarajuSs; CC BY-SA 3.0; PolanieOnLine
+zbojniocki_belt.png      Tomko?; CC0?; PolskaOnLine
 
 data/sprites/items/box/
 
-brazowa_skrzynia.png     KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-srebrna_skrzynia.png     KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-zlota_skrzynia.png       KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+brazowa_skrzynia.png     KarajuSs; CC BY-SA 3.0; PolanieOnLine
+srebrna_skrzynia.png     KarajuSs; CC BY-SA 3.0; PolanieOnLine
+zlota_skrzynia.png       KarajuSs; CC BY-SA 3.0; PolanieOnLine
+
+data/sprites/items/boots/
+
+fire boots.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+ice_boots.png            KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/cloak/
 
-ice_cloak.*              KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-magic_cloak.*            KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+brightred_cloak.png      KarajuSs, ??; ??; ??
+ice_cloak.png            KarajuSs; CC BY-SA 3.0; PolanieOnLine
+magic_cloak.png          KarajuSs, ??; ??; ??
+barbarian_cloak.png      KarajuSs; CC BY-SA 3.0; PolanieOnLine
+killer_cloak.png         jednoreki, KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/drink/
 
-dragon_potion.png           KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-greater_dragon_potion.png   KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+dragon_potion.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+greater_dragon_potion.png   KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/food/
 
-tuna.png                  KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+tuna.png                  KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/glove/
 
-stone_gloves.png          KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-vampire_gloves.png        KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+elvish_gloves.png         KarajuSs; CC BY-SA 3.0; PolanieOnLine
+stone_gloves.png          KarajuSs; CC BY-SA 3.0; PolanieOnLine
+vampire_gloves.png        KarajuSs; CC BY-SA 3.0; PolanieOnLine
+killer_gloves.png         KarajuSs; CC BY-SA 3.0; PolanieOnLine
+vampire_gloves.png        KarajuSs; CC BY-SA 3.0; PolanieOnLine
+magic_plate_gloves.png    KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/helmet/
 
-desert_helmet.png         KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+desert_helmet.png         KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/necklace/
 
-fire_amulet.png           KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-ice_amulet.png            KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+fire_amulet.png           KarajuSs; CC BY-SA 3.0; PolanieOnLine
+ice_amulet.png            KarajuSs; CC BY-SA 3.0; PolanieOnLine
+
+data/sprites/items/ranged/
+
+ice_bow.png               KarajuSs; CC BY-SA 3.0; PolanieOnLine
+mithril_crossbow.png      KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/resource/
 
-copper_ore.*                  KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-copper_bar.*                  KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-pazur_arktycznego_smoka.png   KarajuSs; CC BY-SA 3.0; POL (PolskaOnLine)
-pioro_azazela.png             KarajuSs; CC BY-SA 3.0; POL (PolskaOnLine)
-pioro_mr_archaniola.png       KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-skora_arktycznego_smoka.png   KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+copper_ore.*                  KarajuSs; CC BY-SA 3.0; PolanieOnLine
+copper_bar.*                  KarajuSs; CC BY-SA 3.0; PolanieOnLine
+pazur_arktycznego_smoka.png   KarajuSs; CC BY-SA 3.0; PolskaOnLine
+pioro_azazela.png             KarajuSs; CC BY-SA 3.0; PolskaOnLine
+pioro_mr_archaniola.png       KarajuSs; CC BY-SA 3.0; PolanieOnLine
+skora_arktycznego_smoka.png   KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/relic/
 
-golden_amulet.png             KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-
-data/sprites/items/pas/
-
-pas_zbojecki.png                 Tomko?; CC0?; POL (PolskaOnLine)
-zwykly_skorzany_pas.png          KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-wzmocniony_skorzany_pas.png      KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-karmazynowy_pas.png              KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-zloty_kolczany_pas.png           Clint Bellanger, KarajuSs; CC BY-SA 3.0; http://opengameart.org/content/studded-belt, POL (PolanieOnLine)
-kolczany_pas.png                 Clint Bellanger; CC BY-SA 3.0; http://opengameart.org/content/studded-belt
-wampirzy_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-elficki_pas_z_rubinem.png        KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-zloty_pas.png                    KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-pas_z_mithrilu.png               KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-czarny_pas.png                   KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-olbrzymi_pas.png                 KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
-krasnoludzki_pas.png             KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+golden_amulet.png             KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/ring/
 
-black_ring.png             KarajuSs; CC BY-SA 3.0; POL (PolskaGRA)
+black_ring.png             KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/scroll/
 
-gdansk.png                 KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-zakopane.png               KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-wieliczka.png              KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
-grod_kraka.png             KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+gdansk.png                 KarajuSs; CC BY-SA 3.0; PolanieOnLine
+zakopane.png               KarajuSs; CC BY-SA 3.0; PolanieOnLine
+wieliczka.png              KarajuSs; CC BY-SA 3.0; PolanieOnLine
+grod_kraka.png             KarajuSs; CC BY-SA 3.0; PolanieOnLine
 
 data/sprites/items/sword/
 
-excalibur.png              KarajuSs; CC BY-SA 3.0; POL (PolanieOnLine)
+excalibur.png              KarajuSs; CC BY-SA 3.0; PolanieOnLine
