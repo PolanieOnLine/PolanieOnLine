@@ -3098,19 +3098,34 @@ public abstract class RPEntity extends GuidedEntity {
 		final StackableItem ammunition = getAmmunition();
 		final StackableItem magia = getMagia();
 		final StackableItem missiles = getMissileIfNotHoldingOtherWeapon();
+
+		return getWeaponRange(rangeWeapon, ammunition) | getWeaponRange(wandWeapon, magia) | getWeaponRange(missiles);
+	}
+
+	private int getWeaponRange(Item item, StackableItem amm) {
 		int maxRange;
-		if ((rangeWeapon != null) && (ammunition != null)
-				&& (ammunition.getQuantity() > 0)) {
-			maxRange = rangeWeapon.getInt("range") + ammunition.getInt("range");
-		} else if ((missiles != null) && (missiles.getQuantity() > 0)) {
-			maxRange = missiles.getInt("range");
-		} else if ((wandWeapon != null) && (magia != null)
-				&& (magia.getQuantity() > 0)) {
-			maxRange = wandWeapon.getInt("range") + magia.getInt("range");
+		if (item != null && amm !=null && amm.getQuantity() > 0) {
+			int itemRange = item.getInt("range");
+			if (item.isMaxImproved()) {
+				itemRange += 1;
+			}
+
+			maxRange = itemRange + amm.getInt("range");
 		} else {
-			// The entity doesn't hold the necessary distance weapons.
 			maxRange = 0;
 		}
+
+		return maxRange;
+	}
+
+	private int getWeaponRange(StackableItem amm) {
+		int maxRange;
+		if (amm !=null && amm.getQuantity() > 0) {
+			maxRange = amm.getInt("range");
+		} else {
+			maxRange = 0;
+		}
+
 		return maxRange;
 	}
 
