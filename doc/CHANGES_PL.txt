@@ -21,15 +21,19 @@ Changelog
 	- 0_dragon_knights_e
 	- 0_tarnow_forest_sw
 	- 0_tarnow_city
+- Dodano nowy profil dla potworów - "Boss" (mogą wyrzucić z siebie do 6 przedmiotów)
 - Zaktualizowano niektórym potworom opisy
 - Zmieniono statystyki potwora "czarne smoczysko", aby był silniejszy od swoich odpowiedników
 - Zmieniono ilość otrzymywanego bonusu do zdrowia za każde odrodzenie (teraz maksymalnie 6,000 bonusu do zdrowia zamiast 17,850)
 - Zmieniono czas odrodzenia dla cherubina oraz lilith
+- Zmieniono ilość bonusowego zdrowia za odrodzenia u Yereny
+- Zwiększono ilość ulepszeń dla niektórych różdżek
 
 *kod*
 - Ilość bazowego zdrowia dostosuje się automatycznie do każdego gracza, który wykonał odrodzenie
 
 *naprawiono błędy*
+- Naprawiono zasięg dla maksymalnie ulepszonych broni dystansowych
 - Naprawiono pozycję mapy 0_tarnow_plains_n
 - Naprawiono brakującą grafikę przedmiotu
 - Naprawiono przyznawanie osiągnięcia za złote ciupagi
