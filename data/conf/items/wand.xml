@@ -81,13 +81,13 @@
 		<description>Oto różdżka Wołosa co spadła z Nieba! Wielką moc ma, gdy magią władasz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="42" condition="!testing.combat"/>
-			<ratk value="42" condition="testing.combat"/>
+			<atk value="40" condition="!testing.combat"/>
+			<ratk value="40" condition="testing.combat"/>
 			<def value="5"/>
 			<range value="5"/>
 			<min_use value="180"/>
 			<min_level value="200"/>
-			<max_improves value="3"/>
+			<max_improves value="5"/>
 		</attributes>
 		<weight value="4.0"/>
 		<value value="49130"/>
@@ -106,13 +106,13 @@
 		<description>Oto różdżka Swaroga co upadła ze Słońca! Wielką moc ma, gdy magią władasz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="56" condition="!testing.combat"/>
-			<ratk value="56" condition="testing.combat"/>
+			<atk value="50" condition="!testing.combat"/>
+			<ratk value="50" condition="testing.combat"/>
 			<def value="6"/>
 			<range value="5"/>
 			<min_use value="250"/>
 			<min_level value="300"/>
-			<max_improves value="4"/>
+			<max_improves value="5"/>
 		</attributes>
 		<weight value="5.0"/>
 		<value value="49130"/>
