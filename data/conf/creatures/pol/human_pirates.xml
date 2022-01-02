@@ -251,6 +251,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -580,6 +581,7 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -1052,7 +1054,6 @@
 		</equips>
 		<ai>
 			<says>
-			
 				<noise state="idle follow fight" value="Chcesz poczuć największą siłę na tym świecie?"/>
 				<noise state="idle follow fight" value="Jasne... uciekaj ode mnie szczurze!"/>
 			</says>
@@ -1060,6 +1061,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 </creatures>

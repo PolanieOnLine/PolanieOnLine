@@ -1016,6 +1016,7 @@
 			<profile name="human"/>
 			<profile name="heal" params="10,60"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -1050,6 +1051,7 @@
 			<profile name="human"/>
 			<profile name="heal" params="10,60"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 

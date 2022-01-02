@@ -116,6 +116,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="30,50"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: misc -->

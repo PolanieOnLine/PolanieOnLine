@@ -654,13 +654,13 @@
 	<!-- Harley kupuje: -->
 	<shop name="buyanimalmaterials" type="buys">
 		<!--<item name="włókno" price="50" /> is this item obtainable? -->
-		<item name="skórzana nić" price="50" />
+		<item name="skórzana nić" price="125" />
 		<item name="truchło nietoperza" price="100" />
-		<item name="futro" price="250" />
+		<item name="futro" price="500" />
 		<item name="truchło wampira" price="700" />
 		<item name="gruczoł jadowy" price="800" />
 		<item name="gruczoł przędzy" price="1000" />
-		<item name="róg jednorożca" price="1100" />
+		<item name="róg jednorożca" price="2200" />
 		<item name="mityczne jajo" price="2500" />
 	</shop>
 

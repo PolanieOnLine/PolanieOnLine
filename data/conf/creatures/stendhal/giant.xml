@@ -34,6 +34,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="20,50"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: amazon -->
@@ -201,6 +202,7 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 			<profile name="strategy" params="archer,attack weakest,dual attack"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: human -->
@@ -275,6 +277,7 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
   <!-- END: madaram -->

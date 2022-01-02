@@ -711,13 +711,13 @@ public class Creature extends NPC {
 		for (final Item item : dropItemInstances) {
 			item.setFromCorpse(true);
 			corpse.add(item);
-			if (corpse.isFull()) {
+			if (corpse.isFull(isBoss())) {
 				break;
 			}
 		}
 
 		for (final Item item : createDroppedItems(SingletonRepository.getEntityManager())) {
-			if (!corpse.isFull()) {
+			if (!corpse.isFull(isBoss())) {
 				corpse.add(item);
 				item.setFromCorpse(true);
 			} else {
@@ -832,7 +832,14 @@ public class Creature extends NPC {
 	}
 
 	/**
-	 * Check if the creature has a "rare" profile, and thus should not appear in DeathMatch,
+	 * Check if the entity is a "boss". Bosses have higher capacity corpses.
+	 */
+	public boolean isBoss() {
+		return aiProfiles.containsKey("boss");
+	}
+
+	/**
+	 * Check if the creature has a rare profile, and thus should not appear in DeathMatch,
 	 * or the daily quest.
 	 *
 	 * @return true if the creature is rare, false otherwise

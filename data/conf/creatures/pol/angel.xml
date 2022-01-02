@@ -53,6 +53,7 @@
 			<profile name="heal" params="10,50"/>
 			<profile name="lifesteal" params="0.1"/>
 			<profile name="attack weakest"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -104,6 +105,7 @@
 			<profile name="heal" params="15,50"/>
 			<profile name="lifesteal" params="0.2"/>
 			<profile name="attack weakest"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -156,6 +158,7 @@
 			<profile name="heal" params="20,100"/>
 			<profile name="lifesteal" params="0.3"/>
 			<profile name="attack weakest"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -209,6 +212,7 @@
 			<profile name="heal" params="10,70"/>
 			<profile name="lifesteal" params="0.4"/>
 			<profile name="attack weakest"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: serafiny -->

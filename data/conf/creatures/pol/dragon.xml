@@ -641,6 +641,7 @@
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -692,6 +693,7 @@
 			<profile name="patrolling"/>
 			<profile name="active_idle"/>
 			<profile name="flying"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -738,6 +740,7 @@
 			<profile name="human"/>
 			<profile name="heal" params="30,50"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: smoki -->

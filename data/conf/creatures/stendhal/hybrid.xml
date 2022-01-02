@@ -33,6 +33,7 @@
 			<profile name="animal"/>
 			<profile name="poisonous" params="4,bardzo mocna trucizna"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -221,6 +222,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -673,6 +675,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="heal" params="15,50"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 

@@ -168,6 +168,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="rare"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: kamienne wielkie -->
@@ -379,6 +380,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="heal" params="10,75"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 

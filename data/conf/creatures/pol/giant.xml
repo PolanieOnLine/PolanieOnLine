@@ -35,6 +35,7 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -312,6 +313,7 @@
 			<profile name="offensive"/>
 			<profile name="heal" params="15,50"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 
@@ -490,6 +492,7 @@
 			<profile name="heal" params="15,50"/>
 			<profile name="lifesteal" params="0.05"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: zjawy wielkie-->
