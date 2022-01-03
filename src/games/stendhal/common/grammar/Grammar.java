@@ -249,6 +249,8 @@ public class Grammar {
 			str = addPrefixIfNotAlreadyThere(lowString, "suit of ", "suits of ");
 		} else if (str.startsWith("rękawic") || str.startsWith("spodni")) {
 			str = addPrefixIfNotAlreadyThere(lowString, "parę ", "par ");
+		} else if (str.startsWith("szynki") || str.startsWith("mięsa")) {
+			str = addPrefixIfNotAlreadyThere(lowString, "kawałek ", "kawałków ");
 		} else {
 			str = replaceInternalByDisplayNames(PrefixManager.s_instance.fullForm(str, lowString));
 		}
@@ -408,7 +410,7 @@ public class Grammar {
 		} else if (enoun.equals("tydzień")) {
 			return enoun.substring(0, enoun.length() - 5) + "godnie" + postfix;
 
-		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę") || enoun.endsWith("ło")) {
+		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę")) {
 			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
 
 		} else if (enoun.endsWith("wy")) {
@@ -514,7 +516,7 @@ public class Grammar {
 			return enoun + postfix;
 		}
 	}
-	
+
 	public static String singular(int quantity, String enoun) {
 		if (enoun == null) {
 			return null;
@@ -531,24 +533,33 @@ public class Grammar {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
 
-		} else if (quantity >= 5) {
-			if (enoun.endsWith("tę")) {
-				return enoun.substring(0, enoun.length() - 1);
+		} else if (enoun.endsWith("tę")) {
+			if (quantity >= 5) {
+				return enoun.substring(0, enoun.length() - 1) + postfix;
+			} else if (quantity <= 4) {
+				return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
 			} else {
-				return enoun + postfix;
+				return plural(enoun);
 			}
 
-		} else if (quantity <=4) {
-			if (enoun.endsWith("tę") || enoun.endsWith("ło")) {
-				return enoun.substring(0, enoun.length() - 1) + "y";
-			} else if (enoun.endsWith("czy")) {
-				return enoun.substring(0, enoun.length() - 1) + "e";
-			} else {
+		} else if (enoun.endsWith("ło")) {
+			if (quantity >= 5) {
 				return enoun + postfix;
+			} else if (quantity <= 4) {
+				return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
+			} else {
+				return plural(enoun);
+			}
+
+		} else if (enoun.endsWith("czy")) {
+			if (quantity <= 4) {
+				return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
+			} else {
+				return plural(enoun);
 			}
 
 		} else {
-			return enoun + postfix;
+			return plural(enoun);
 		}
 	}
 
@@ -565,12 +576,10 @@ public class Grammar {
 	public static String plnoun(final int quantity, final String noun) {
 		final String enoun = fullForm(noun);
 
-		if (quantity > 1) {
-			return singular(quantity, enoun);
-		} else if (quantity == 1) {
+		if (quantity == 1) {
 			return singular(enoun);
 		} else {
-			return plural(noun);
+			return singular(quantity, enoun);
 		}
 	}
 
