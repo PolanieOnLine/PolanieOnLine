@@ -296,7 +296,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getAttack() {
 		if (has("atk") && getDeterioration() <= MAX_DETERIORATION) {
-			if (hasAttrImprove()) {
+			if (hasMaxImproves()) {
 				return getInt("atk") + getImprove();
 			} else {
 				return getInt("atk");
@@ -314,7 +314,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getDefense() {
 		if (has("def") && getDeterioration() <= MAX_DETERIORATION) {
-			if (hasAttrImprove()) {
+			if (hasMaxImproves()) {
 				return getInt("def") + getImprove();
 			} else {
 				return getInt("def");
@@ -333,7 +333,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getRangedAttack() {
 		if (has("ratk") && getDeterioration() <= MAX_DETERIORATION) {
-			if (hasAttrImprove()) {
+			if (hasMaxImproves()) {
 				return getInt("ratk") + getImprove();
 			} else {
 				return getInt("ratk");
@@ -345,7 +345,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	public int getRange() {
 		if (has("range")) {
-			if (hasAttrImprove() && isMaxImproved()) {
+			if (hasMaxImproves() && isMaxImproved()) {
 				return getInt("range") + 1;
 			} else {
 				return getInt("range");
@@ -362,7 +362,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getAttackRate() {
 		if (has("rate")) {
-			if ((hasAttrImprove() && isMaxImproved()) && getInt("rate") > 2) {
+			if ((hasMaxImproves() && isMaxImproved()) && getInt("rate") > 2) {
 				return getInt("rate") - 1;
 			} else {
 				return getInt("rate");
@@ -773,7 +773,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (hasDescription()) {
 			text = getDescription();
 		}
-		if (hasAttrImprove()) {
+		if (hasMaxImproves()) {
 			text = text + " " + getImproveDescription();
 		}
 		// Highlight the item name
@@ -1017,12 +1017,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Improve the item.
+	 * Increase improve value of the item.
 	 * 
 	 * @return
 	 * 		<code>true</code> if item is not max improved.
 	 */
-	private int improveUp() {
+	private int increaseImproveValue() {
 		int improve = getImprove();
 		if (isMaxImproved()) {
 			return improve = getMaxImproves();
@@ -1041,18 +1041,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * 		<code>true</code> if the item has a possibility to be upgraded.
 	 */
 	public boolean isUpgradeable() {
-		return (hasAttrImprove() && getMaxImproves() > 0)
+		return (hasMaxImproves() && getMaxImproves() > 0)
 				&& (getMaxImproves() > getImprove());
-	}
-
-	/**
-	 * Checks the item if has "improve" attribute.
-	 *
-	 * @return
-	 * 		<code>true</code> if has "improve".
-	 */
-	private boolean hasImprove() {
-		return has("improve");
 	}
 
 	/**
@@ -1061,8 +1051,15 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return
 	 * 		<code>true</code> if has "max_improves".
 	 */
-	private boolean hasAttrImprove() {
+	private boolean hasMaxImproves() {
 		return has("max_improves");
+	}
+
+	/**
+	 * Set a improve value.
+	 */
+	public void setImprove(int improve) {
+		put("improve", improve); 
 	}
 
 	/**
@@ -1071,7 +1068,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return improve
 	 */
 	public int getImprove() {
-		if(hasImprove()) {
+		if(has("improve")) {
 			return getInt("improve");
 		}
 		return 0;
@@ -1083,14 +1080,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return max_improves
 	 */
 	public int getMaxImproves() {
-		if(hasAttrImprove()) {
+		if(hasMaxImproves()) {
 			return getInt("max_improves");
 		}
 		return 0;
-	}
-
-	public void setImprove(int improve) {
-		put("improve", improve); 
 	}
 
 	/**
@@ -1100,7 +1093,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * 		<code>true</code> if item cannot be improve any more.
 	 */
 	public boolean isMaxImproved() {
-		if (!hasAttrImprove()) {
+		if (!hasMaxImproves()) {
 			return false;
 		}
 
@@ -1132,7 +1125,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (getImprove() > getMaxImproves()) {
 			setImprove(getMaxImproves());
 		} else { 
-			setImprove(improveUp());
+			setImprove(increaseImproveValue());
 		}
 	}
 }
