@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -107,7 +108,7 @@ public class Campfire extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotStartedCondition(QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Cześć! Potrzebuję małej #przysługi ... ",
+			ConversationStates.ATTENDING, "Cześć! Potrzebuję małej #'przysługi'... ",
 			null);
 
 		// player who is rejected or 'done' but waiting to start again, returns
@@ -154,16 +155,16 @@ public class Campfire extends AbstractQuest {
 						new NotCondition(new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING, 
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT,REQUIRED_MINUTES,"Dziękuję, ale drewno, które mi ostatnio przyniosłeś wystarczy na"));
+				new SayTimeRemainingAction(QUEST_SLOT,REQUIRED_MINUTES,"Dziękuję, ale drewno, które mi ostatnio przyniosłeś wystarczy na "));
 
 		// player is willing to help
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dobrze." +
-			"Drewno możesz znaleźć w lesie na północ stąd." +
-			"Możesz również zaryzykować z bobrami w pobliżu rzeki na południe stąd." +
+			"Dobrze. " +
+			"Drewno możesz znaleźć w lesie na północ stąd. " +
+			"Możesz również zaryzykować z bobrami w pobliżu rzeki na południe stąd. " +
 			"Wróć, gdy będziesz mieć dziesięć polan!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
@@ -193,7 +194,7 @@ public class Campfire extends AbstractQuest {
 				} else {
 					rewardClass = "szynka";
 				}
-				npc.say("Dziękuję! Weź trochę " + rewardClass + " oraz węgla drzewnego!");
+				npc.say("Dziękuję! Weź trochę " + Grammar.plnoun(REWARDS, rewardClass) + " oraz węgla drzewnego!");
 				final StackableItem reward = (StackableItem) SingletonRepository.getEntityManager().getItem(rewardClass);
 				reward.setQuantity(REWARDS);
 				player.equipOrPutOnGround(reward);
