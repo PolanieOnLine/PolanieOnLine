@@ -4,8 +4,9 @@ Changelog
 *klient*
 - Dodano nowe grafiki potworów
 - Dodano nowy wygląd kursora
-- Dodano nową opcję w ustawieniach wizualnych klienta, aby zmienić na stary kursor
+- Dodano nową opcję w ustawieniach wizualnych klienta, aby móc zmienić na stary kursor
 - Poprawiono grafiki NPC
+- Poprawiono grafiki przedmiotów
 
 *świat*
 - Dodano nowe potwory: (4)
@@ -39,6 +40,7 @@ Changelog
 - Naprawiono przyznawanie osiągnięcia za złote ciupagi
 - Naprawiono przywracanie wcześniejszego wyglądu postaci po wypożyczeniu stroju
 - Poprawiono automatyczną gramatykę j. polskiego
+- Poprawiono kolizję w banku w Zakopane
 
 
 1.25.4
