@@ -67,7 +67,7 @@ if game:setZone(zoneName) then
 
 		if detail.path ~= nil then
 			npc:setPathAndPosition(detail.path, true)
-			npc:retracePath() -- make entities walk the path backwards when reaching end
+			npc:setRetracePath() -- make entities walk the path backwards when reaching end
 		else
 			npc:setPosition(detail.pos.x, detail.pos.y)
 			npc:setDirection(detail.dir)
