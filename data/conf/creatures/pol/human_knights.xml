@@ -147,6 +147,7 @@
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 

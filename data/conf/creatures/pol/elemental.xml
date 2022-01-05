@@ -167,7 +167,6 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
-			<profile name="rare"/>
 			<profile name="boss"/>
 		</ai>
 	</creature>

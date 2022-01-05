@@ -361,6 +361,7 @@
 			<profile name="heal" params="5,25"/>
 			<profile name="lifesteal" params="0.9"/>
 			<profile name="attack weakest"/>
+			<profile name="boss"/>
 		</ai>
 	</creature>
 	<!-- END: magowie -->
