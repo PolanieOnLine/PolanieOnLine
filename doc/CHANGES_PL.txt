@@ -5,6 +5,7 @@ Changelog
 - Dodano nowe grafiki potworów
 - Dodano nowy wygląd kursora
 - Dodano nową opcję w ustawieniach wizualnych klienta, aby móc zmienić na stary kursor
+- Dodano nowe włosy oraz strój do wyboru
 - Poprawiono grafiki NPC
 - Poprawiono grafiki przedmiotów
 
@@ -14,7 +15,8 @@ Changelog
 	- niebieskie smoczysko
 	- czerwone smoczysko
 	- lodowa wieża
-- Dodano nowe mapy: (3)
+- Dodano nowe mapy: (4)
+	- int_tarnow_tavern
 	- 0_tarnow_plains_s
 	- 0_dragon_land_ne
 	- 0_dragon_land_se
@@ -53,6 +55,7 @@ Changelog
 - Ilość bazowego zdrowia dostosuje się automatycznie do każdego gracza, który wykonał odrodzenie
 
 *naprawiono błędy*
+- Naprawiono możliwość usunięcia ciała z wyglądu postaci
 - Naprawiono zasięg dla maksymalnie ulepszonych broni dystansowych
 - Naprawiono pozycję mapy 0_tarnow_plains_n
 - Naprawiono brakującą grafikę przedmiotu
@@ -60,6 +63,7 @@ Changelog
 - Naprawiono przywracanie wcześniejszego wyglądu postaci po wypożyczeniu stroju
 - Poprawiono automatyczną gramatykę j. polskiego
 - Poprawiono kolizję w banku w Zakopane
+- Poprawiono opisy zadań na pierścienie klasowe
 
 
 1.25.4
