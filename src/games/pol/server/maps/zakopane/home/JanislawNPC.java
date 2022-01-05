@@ -33,6 +33,7 @@ public class JanislawNPC implements ZoneConfigurator {
 			}
 		};
 
+		npc.setDescription("Oto Janisław, który być może będzie miał specjalne wyzwanie dla głodnych przygód rycerzy.");
 		npc.setEntityClass("npcstarybaca");
 		npc.setGender("M");
 		npc.setDirection(Direction.RIGHT);
