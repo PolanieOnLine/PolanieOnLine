@@ -88,7 +88,6 @@ public class PierscienRycerza extends AbstractQuest {
 			ConversationStates.IDLE,
 			"Nie to nie.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
-
 	}
 
 	private void checkCollectingQuests() {
@@ -119,16 +118,16 @@ public class PierscienRycerza extends AbstractQuest {
 					ConversationStates.ATTENDING, "Pierścień zdobędziesz przynosząc mi potrzebne #przedmioty.",
 					new SetQuestAction(QUEST_SLOT, "przedmioty"));
 
-		final List<ChatAction> monetaactions = new LinkedList<ChatAction>();
-		monetaactions.add(new DropItemAction("żelazo",40));
-		monetaactions.add(new DropItemAction("sztabka złota",40));
-		monetaactions.add(new DropItemAction("bryłka mithrilu",30));
-		monetaactions.add(new DropItemAction("pierścień mieszczanina",1));
-		monetaactions.add(new DropItemAction("tarcza z czaszką",1));
-		monetaactions.add(new DropItemAction("spodnie elfickie",1));
-		monetaactions.add(new EquipItemAction("pierścień rycerza", 1, true));
-		monetaactions.add(new IncreaseXPAction(100000));
-		monetaactions.add(new SetQuestAction(QUEST_SLOT, "done"));
+		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new DropItemAction("żelazo",40));
+		reward.add(new DropItemAction("sztabka złota",40));
+		reward.add(new DropItemAction("bryłka mithrilu",30));
+		reward.add(new DropItemAction("pierścień mieszczanina",1));
+		reward.add(new DropItemAction("tarcza z czaszką",1));
+		reward.add(new DropItemAction("spodnie elfickie",1));
+		reward.add(new EquipItemAction("pierścień rycerza", 1, true));
+		reward.add(new IncreaseXPAction(100000));
+		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie","przedmioty"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
@@ -139,7 +138,7 @@ public class PierscienRycerza extends AbstractQuest {
 			new PlayerHasItemWithHimCondition("tarcza z czaszką",1),
 			new PlayerHasItemWithHimCondition("spodnie elfickie",1)),
 			ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto twój pierścień rycerza.",
-		new MultipleActions(monetaactions));
+		new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie", "przedmioty", "przypomnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
@@ -181,7 +180,7 @@ public class PierscienRycerza extends AbstractQuest {
 			}
 			final String questState = player.getQuest(QUEST_SLOT);
 			res.add("Spotkałem Edgarda na terenie Zakonu.");
-			res.add("zaproponował mi pierścień rycerza wzamian za parę rzeczy.");
+			res.add("Zaproponował mi pierścień rycerza wzamian za parę rzeczy.");
 			if ("rejected".equals(questState)) {
 				res.add("Nie potrzebny jest mi pierścień rycerza.");
 				return res;
@@ -189,7 +188,7 @@ public class PierscienRycerza extends AbstractQuest {
 			if ("start".equals(questState)) {
 				return res;
 			} 
-			res.add("Edgard poprosił abym mu dostarczył potrzebne przedmioty. Jeżeli nie będę pamiętał co mam przynieść mam powiedzieć przypomnij.");
+			res.add("Edgard poprosił abym dostarczył potrzebne przedmioty. Jeżeli nie będę pamiętał co mam przynieść mam powiedzieć przypomnij.");
 			if ("przedmioty".equals(questState)) {
 				return res;
 			} 

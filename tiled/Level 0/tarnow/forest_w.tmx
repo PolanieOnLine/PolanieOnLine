@@ -51,6 +51,9 @@
  <tileset firstgid="354" name="tree_buk_las" tilewidth="32" tileheight="32" tilecount="42" columns="7">
   <image source="../../tileset/pol/natura/drzewa/tree_buk_las.png" width="224" height="192"/>
  </tileset>
+ <tileset firstgid="396" name="animal" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
+ </tileset>
  <layer id="21" name="0_floor" width="64" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3DAQkAAAwEoeP7h16QKbhqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqvr8ATnMZ2sAgAAA
@@ -78,7 +81,7 @@
  </layer>
  <layer id="26" name="objects" width="64" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3OMQEAAAgDoNnN/pmMsUNIQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH077QEA8N0BcYolzwCAAAA=
+   H4sIAAAAAAAACu3YsQ0AIAgEQNzNFekd1dIFFENyN8EXJP8hAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACOOX4nAABuS/0OADRR+ZdYNhJNuV2AtzYj6B3KAIAAAA==
   </data>
  </layer>
  <layer id="27" name="collision" width="64" height="128" opacity="0.4">

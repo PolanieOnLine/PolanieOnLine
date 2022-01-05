@@ -158,17 +158,17 @@ public class PierscienBarona extends AbstractQuest {
 				ConversationStates.ATTENDING, "Widzę, że zadania masz zrobine. Teraz tylko spiszę listę brakujących #przedmiotów.",
 				new SetQuestAction(QUEST_SLOT, "lista" ));
 
-		final List<ChatAction> amuletactions = new LinkedList<ChatAction>();
-		amuletactions.add(new DropItemAction("pierścień rycerza",1));
-		amuletactions.add(new DropItemAction("ruda żelaza",100));
-		amuletactions.add(new DropItemAction("bryłka złota",150));
-		amuletactions.add(new DropItemAction("polano",200));
-		amuletactions.add(new DropItemAction("węgiel",100));
-		amuletactions.add(new DropItemAction("siarka",100));
-		amuletactions.add(new DropItemAction("sól",100));
-		amuletactions.add(new EquipItemAction("pierścień barona", 1, true));
-		amuletactions.add(new IncreaseXPAction(100000));
-		amuletactions.add(new SetQuestAction(QUEST_SLOT, "done"));
+		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new DropItemAction("pierścień rycerza",1));
+		reward.add(new DropItemAction("ruda żelaza",100));
+		reward.add(new DropItemAction("bryłka złota",150));
+		reward.add(new DropItemAction("polano",200));
+		reward.add(new DropItemAction("węgiel",100));
+		reward.add(new DropItemAction("siarka",100));
+		reward.add(new DropItemAction("sól",100));
+		reward.add(new EquipItemAction("pierścień barona", 1, true));
+		reward.add(new IncreaseXPAction(100000));
+		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmiotów", "przedmioty"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"lista"),
@@ -180,7 +180,7 @@ public class PierscienBarona extends AbstractQuest {
 				new PlayerHasItemWithHimCondition("siarka",100),
 				new PlayerHasItemWithHimCondition("sól",100)),
 				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto twój pierścień barona.",
-				new MultipleActions(amuletactions));
+				new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty","przedmiotów"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"lista"),
@@ -208,7 +208,7 @@ public class PierscienBarona extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Pierścień Barona",
-				"Uporaj się z wyzwaniami, które postawił przed tobą kowal Marianek.",
+				"Uporaj się z wyzwaniami, które postawił przed tobą potężny smok eDragon.",
 				true);
 
 		checkLevelHelm(); 
@@ -226,7 +226,7 @@ public class PierscienBarona extends AbstractQuest {
 			res.add("Spotkałem smoka eDragon.");
 			res.add("Zaproponował mi pierścień barona.");
 			if ("rejected".equals(questState)) {
-				res.add("Nie potrzebna mi jest pierścień..");
+				res.add("Nie potrzebny mi jest pierścień.");
 				return res;
 			} 
 			if ("start".equals(questState)) {

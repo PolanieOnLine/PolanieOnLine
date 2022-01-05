@@ -12,6 +12,33 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<entity x="41" y="108">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="61" y="123">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="25" y="123">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<zone name="0_tarnow_forest_sw" level="0" x="514016" y="18176" file="Level 0/tarnow/forest_sw.tmx">
@@ -19,6 +46,42 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<entity x="48" y="10">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="47" y="38">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="29" y="83">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="34" y="118">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<zone name="0_tarnow_city" level="0" x="514080" y="18048" file="Level 0/tarnow/city.tmx">
@@ -26,6 +89,115 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<entity x="53" y="90">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">Witamy w Tarnowie!</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="resistance">0</attribute>
+		</entity>
+
+		<entity x="54" y="90">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">Witamy w Tarnowie!</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="resistance">0</attribute>
+		</entity>
+
+		<entity x="66" y="56">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">kettle-1, bottle-2, trash-1, trash-21, trash-3, metal-can-1, drain-water-11, dishbreak-1, dishbreak-2, dishes-1, dishes-21, creaky-door-1, creaky-door-2, ice-cubes-1, glass-break-1, window-close-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="49" y="68">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="96" y="85">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="111" y="75">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="112" y="59">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="106" y="20">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="94" y="17">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="74" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="40" y="20">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="64" y="59">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="66" y="56" ref="tavern_entrance">
+			<destination zone="int_tarnow_tavern" ref="tavern_exit"/>
+		</portal>
 
 		<portal x="84" y="46" ref="kitchen_entrance">
 			<destination zone="int_tarnow_kitchen" ref="kitchen_exit"/>
@@ -44,9 +216,108 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<entity x="119" y="14">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
+			<attribute name="text">Ten pomnik przypomina głowę jakiegoś zwierzęcia.</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">3</attribute>
+		</entity>
+
+		<entity x="118" y="20">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="92" y="10">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+		
+		<entity x="27" y="18">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="112" y="19">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WellSource" />
+		</entity>
+		<entity x="113" y="19">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WellSource" />
+		</entity>
 	</zone>
 
 	<!-- interiors -->
+
+	<zone name="int_tarnow_tavern" file="interiors/tarnow/tavern.tmx">
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">kettle-1, bottle-2, trash-1, trash-21, trash-3, metal-can-1, drain-water-11, dishbreak-1, dishbreak-2, dishes-1, dishes-21, creaky-door-1, creaky-door-2, ice-cubes-1, glass-break-1, window-close-1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="7" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół z lepiącymi się plamami od starego piwa.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+
+		<entity x="12" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół z lepiącymi się plamami od starego piwa.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+
+		<entity x="19" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół z lepiącymi się plamami od starego piwa.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+
+		<entity x="5" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół z lepiącymi się plamami od starego piwa.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+
+		<entity x="9" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół z lepiącymi się plamami od starego piwa.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+
+		<entity x="15" y="3">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto stół z lepiącymi się plamami od starego piwa.</attribute>
+			<attribute name="width">1</attribute>
+			<attribute name="height">4</attribute>
+		</entity>
+
+		<portal x="15" y="17" ref="tavern_exit">
+			<destination zone="0_tarnow_city" ref="tavern_entrance"/>
+		</portal>
+	</zone>
 
 	<zone name="int_tarnow_kitchen" file="interiors/tarnow/kitchen.tmx">
 		<configurator class-name="games.pol.server.maps.tarnow.kitchen.ChefNPC"/>

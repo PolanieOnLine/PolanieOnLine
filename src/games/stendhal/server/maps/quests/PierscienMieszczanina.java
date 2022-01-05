@@ -40,7 +40,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
-	public class PierscienMieszczanina extends AbstractQuest {
+public class PierscienMieszczanina extends AbstractQuest {
 	private static final String QUEST_SLOT = "pierscien_mieszczanina";
 	private final SpeakerNPC npc = npcs.get("Marianek");
 
@@ -101,17 +101,17 @@ import games.stendhal.server.entity.player.Player;
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-							 new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
-							 new QuestNotStartedCondition(QUEST_SLOT)),
+					new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
+					new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Witaj przyjacielu. Mam dla Ciebie wyzwanie dzięki, któremu zdobędziesz #pierścień mieszczanina.",
 			null);
-			
+
 			npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("challenge", "pierścień", "pierscien"), 
-			new AndCondition( new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
-							 new QuestNotStartedCondition(QUEST_SLOT),
-							 new QuestNotCompletedCondition(ANDRZEJ_MAKE_ZLOTA_CIUPAGA_QUEST_SLOT)),
+			new AndCondition(new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
+					new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestNotCompletedCondition(ANDRZEJ_MAKE_ZLOTA_CIUPAGA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
 			"Wciąż masz zadanie do wykonania u kowala Andrzeja!",
 			null);
@@ -126,14 +126,14 @@ import games.stendhal.server.entity.player.Player;
 			ConversationStates.ATTENDING, "Aby zdobyć #pierścień musisz przynieść kilka przedmiotów.",
 			new SetQuestAction(QUEST_SLOT, "start" ));
 
-		final List<ChatAction> amuletactions = new LinkedList<ChatAction>();
-		amuletactions.add(new DropItemAction("money",200000));
-		amuletactions.add(new DropItemAction("ciupaga",1));
-		amuletactions.add(new DropItemAction("sztabka złota",50));
-		amuletactions.add(new DropItemAction("bryłka mithrilu",20));
-		amuletactions.add(new EquipItemAction("pierścień mieszczanina", 1, true));
-		amuletactions.add(new IncreaseXPAction(1000));
-		amuletactions.add(new SetQuestAction(QUEST_SLOT, "done"));
+		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new DropItemAction("money",200000));
+		reward.add(new DropItemAction("ciupaga",1));
+		reward.add(new DropItemAction("sztabka złota",50));
+		reward.add(new DropItemAction("bryłka mithrilu",20));
+		reward.add(new EquipItemAction("pierścień mieszczanina", 1, true));
+		reward.add(new IncreaseXPAction(1000));
+		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
 			new AndCondition(
@@ -143,7 +143,7 @@ import games.stendhal.server.entity.player.Player;
 					new PlayerHasItemWithHimCondition("sztabka złota",50),
 					new PlayerHasItemWithHimCondition("bryłka mithrilu",20)),
 			ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto nagroda pierścień mieszczanina.",
-			new MultipleActions(amuletactions));
+			new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
 			new AndCondition(

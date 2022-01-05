@@ -355,7 +355,7 @@
 		<level value="80"/>
 		<experience value="5920"/>
 		<respawn value="2820"/>
-		<blood name="green" />
+		<blood name="leafy" />
 		<corpse name="leafy_5x3" harmless="leafy_5x3" width="5" height="3" />
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
@@ -393,7 +393,7 @@
 		<level value="83"/>
 		<experience value="6540"/>
 		<respawn value="3010"/>
-		<blood name="green" />
+		<blood name="leafy" />
 		<corpse name="flora_ent" harmless="flora_ent" width="2" height="1"/>
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="30.0"/>
@@ -431,7 +431,7 @@
 		<level value="113"/>
 		<experience value="15000"/>
 		<respawn value="3200"/>
-		<blood name="green" />
+		<blood name="leafy" />
 		<corpse name="leafy_5x3" harmless="leafy_5x3" width="5" height="3"/>
 		<drops>
 			<item value="pieczarka" quantity="[1,6]" probability="50.0"/>

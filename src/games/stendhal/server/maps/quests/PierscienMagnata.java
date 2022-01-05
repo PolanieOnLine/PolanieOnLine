@@ -170,17 +170,17 @@ public class PierscienMagnata extends AbstractQuest {
 			ConversationStates.ATTENDING, "Aby zdobyć #pierścień musisz przynieść kilka przedmiotów.",
 			new SetQuestAction(QUEST_SLOT, "start" ));
 
-		final List<ChatAction> amuletactions = new LinkedList<ChatAction>();
-		amuletactions.add(new DropItemAction("sztabka srebra",70));
-		amuletactions.add(new DropItemAction("sztabka mithrilu",70));
-		amuletactions.add(new DropItemAction("sztabka złota",250)); 
-		amuletactions.add(new DropItemAction("bryłka mithrilu",100));
-		amuletactions.add(new DropItemAction("bryłka złota",200));
-		amuletactions.add(new DropItemAction("money",500000));
-		amuletactions.add(new DropItemAction("pierścień barona",1));
-		amuletactions.add(new EquipItemAction("pierścień magnata", 1, true));
-		amuletactions.add(new IncreaseXPAction(500000));
-		amuletactions.add(new SetQuestAction(QUEST_SLOT, "done"));
+		final List<ChatAction> reward = new LinkedList<ChatAction>();
+		reward.add(new DropItemAction("sztabka srebra",70));
+		reward.add(new DropItemAction("sztabka mithrilu",70));
+		reward.add(new DropItemAction("sztabka złota",250)); 
+		reward.add(new DropItemAction("bryłka mithrilu",100));
+		reward.add(new DropItemAction("bryłka złota",200));
+		reward.add(new DropItemAction("money",500000));
+		reward.add(new DropItemAction("pierścień barona",1));
+		reward.add(new EquipItemAction("pierścień magnata", 1, true));
+		reward.add(new IncreaseXPAction(500000));
+		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
 			new AndCondition(
@@ -193,7 +193,7 @@ public class PierscienMagnata extends AbstractQuest {
 					new PlayerHasItemWithHimCondition("money",500000),
 					new PlayerHasItemWithHimCondition("pierścień barona",1)),
 			ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto nagroda pierścień magnata.",
-			new MultipleActions(amuletactions));
+			new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
 			new AndCondition(
@@ -239,13 +239,13 @@ public class PierscienMagnata extends AbstractQuest {
 		res.add("Zaproponował mi pierścień magnata.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie potrzebna mi są błyskotki..");
+			res.add("Nie potrzebne mi są błyskotki.");
 			return res;
 		} 
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Zdzichu poprosił abym mu dostarczył mu parę żeczy. po zdobyciu ich mam mu powiedzieć: pierścień.");
+		res.add("Zdzichu poprosił abym mu dostarczył mu parę rzeczy. Gdy zdobędę te przedmioty mam mu powiedzieć: pierścień.");
 		if (questState.equals("start")) {
 			return res;
 		} 

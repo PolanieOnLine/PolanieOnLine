@@ -39,6 +39,9 @@
  <tileset firstgid="275" name="bushes" tilewidth="32" tileheight="32" tilecount="10" columns="5">
   <image source="../../tileset/plant/bush/bushes.png" trans="ffffff" width="160" height="64"/>
  </tileset>
+ <tileset firstgid="285" name="animal" tilewidth="32" tileheight="32" tilecount="32" columns="8">
+  <image source="../../tileset/logic/creature/animal.png" width="256" height="128"/>
+ </tileset>
  <layer id="21" name="0_floor" width="64" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3DAQkAAAwEoeP7h16QKbhqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqvr8ATnMZ2sAgAAA
@@ -66,7 +69,7 @@
  </layer>
  <layer id="26" name="objects" width="64" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABim/B8BAIAAAA==
+   H4sIAAAAAAAACu3b0QkAIAgFwFqm//Zfrg2CIggfdxP0IaaWrQEAv4z++wRAkimnAOHkOQAAACCd+Ucmb4IAAEASPQ4AAAAJ9LcA3PK/h6rELgDsuSsBAKAO9TsAAAAAUJl9hnPmwgAA8I76Gu4sAjgwHwCAAAA=
   </data>
  </layer>
  <layer id="27" name="collision" width="64" height="128" opacity="0.4">
