@@ -93,6 +93,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 		items.put("bełt stalowy",5);
 		items.put("bełt złoty",25);
 		items.put("bełt płonący",10);
+		items.put("bryła lodu",30);
 		items.put("siekierka",1);
 		items.put("ciupaga",1);
 		items.put("chusta góralska",1);
