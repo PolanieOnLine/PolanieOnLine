@@ -127,8 +127,7 @@ class VisualSettings {
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Efekty pogodowe zostały " + tmp
-						+ ".";
+				String msg = "Efekty pogodowe zostały " + tmp + ".";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
@@ -204,8 +203,7 @@ class VisualSettings {
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Dymki potworów zostały " + tmp
-						+ ".";
+				String msg = "Dymki potworów zostały " + tmp + ".";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
@@ -218,15 +216,14 @@ class VisualSettings {
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
-				String msg = "Skalowanie widoku gry zostało " + tmp
-						+ ".";
+				String msg = "Skalowanie widoku gry zostało " + tmp + ".";
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
 		// controller for setting visibility of HP br
-		final JCheckBox showHPBarToggle = SettingsComponentFactory.createSettingsToggle(HP_BAR_PROPERTY,
-				true, "Pokaż pasek zdrowia", "Pokazuje pasek reprezentujący aktualne zdrowie.");
+		final JCheckBox showHPBarToggle = SettingsComponentFactory.createSettingsToggle(HP_BAR_PROPERTY, true,
+				"Pokaż pasek zdrowia", "Pokazuje pasek reprezentujący aktualne zdrowie.");
 		showHPBarToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
