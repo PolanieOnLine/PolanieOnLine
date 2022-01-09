@@ -21,7 +21,7 @@ marauroa.rpobjectFactory["invisible_entity"] = marauroa.util.fromProto(marauroa.
 
 	isVisibleToAction: function(filter) {
 		return false;
-  },
+	},
 
 	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/walk.png) 1 3, auto";
@@ -34,3 +34,7 @@ marauroa.rpobjectFactory["looped_sound_source"] = marauroa.rpobjectFactory["invi
 marauroa.rpobjectFactory["tiled_entity"] = marauroa.rpobjectFactory["invisible_entity"];
 marauroa.rpobjectFactory["wall"] = marauroa.rpobjectFactory["invisible_entity"];
 marauroa.rpobjectFactory["blocktarget"] = marauroa.rpobjectFactory["invisible_entity"];
+
+marauroa.rpobjectFactory["flyover"] = marauroa.util.fromProto(marauroa.rpobjectFactory["invisible_entity"], {
+	// TODO:
+});

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -8,11 +8,13 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
+
 "use strict";
 
 var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 stendhal.ui = stendhal.ui || {};
+
 
 /**
  * slot name, slot size, object (a corpse or chest) or null for marauroa.me,
@@ -20,7 +22,7 @@ stendhal.ui = stendhal.ui || {};
  *
  * @constructor
  */
-stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix) {
+stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix, quickPickup, defaultImage) {
 	this.update = function() {
 		render();
 	};
@@ -40,7 +42,11 @@ stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix) {
 		}
 		for (var i = cnt; i < size; i++) {
 			var e = document.getElementById(slot + suffix + i);
-			e.style.backgroundImage = "none";
+			if (defaultImage) {
+				e.style.backgroundImage = "url(/data/gui/" + defaultImage + ")";
+			} else {
+				e.style.backgroundImage = "none";
+			}
 			e.textContent = "";
 			e.dataItem = null;
 		}
@@ -48,6 +54,11 @@ stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix) {
 
 	function onDragStart(e) {
 		var myobject = object || marauroa.me;
+		if (!myobject[slot]) {
+			e.preventDefault();
+			return;
+		}
+
 		var slotNumber = e.target.id.slice(slot.length + suffix.length);
 		var item = myobject[slot].getByIndex(slotNumber);
 		if (item) {
@@ -92,12 +103,12 @@ stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix) {
 		e.preventDefault();
 	}
 
-  function onContextMenu(e) {
+	function onContextMenu(e) {
 		e.preventDefault();
 	}
 
 	function isRightClick(e) {
-		if (+new Date() - timestampMouseDown > 300) {
+		if (+new Date() - stendhal.ui.timestampMouseDown > 300) {
 			return true;
 		}
 		if (e.which) {
@@ -108,21 +119,35 @@ stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix) {
 	}
 
 	function onMouseDown(e) {
-		timestampMouseDown = +new Date();
+		stendhal.ui.timestampMouseDown = +new Date();
 	}
 
 	function onMouseUp(e) {
-		if (e.target.dataItem) {
+		e.preventDefault();
+		let event = stendhal.ui.html.extractPosition(e);
+		if (event.target.dataItem) {
+			if (quickPickup) {
+				marauroa.clientFramework.sendAction({
+					type: "equip",
+					"source_path": event.target.dataItem.getIdPath(),
+					"target_path": "[" + marauroa.me["id"] + "\tbag]",
+					"clicked": "", // useful for changing default target in equip action
+					"zone": marauroa.currentZoneName
+				});
+				return;
+			}
+
 			if (isRightClick(e)) {
-				new stendhal.ui.Menu(e.target.dataItem, e.pageX - 50, e.pageY - 5);
+				new stendhal.ui.Menu(event.target.dataItem, event.pageX - 50, event.pageY - 5);
 			} else {
 				marauroa.clientFramework.sendAction({
 					type: "use",
-					"target_path": e.target.dataItem.getIdPath(),
+					"target_path": event.target.dataItem.getIdPath(),
 					"zone": marauroa.currentZoneName
 				});
 			}
 		}
+		document.getElementById("gamewindow").focus();
 	}
 
 	for (var i = 0; i < size; i++) {
@@ -131,43 +156,70 @@ stendhal.ui.ItemContainerWindow = function(slot, size, object, suffix) {
 		e.addEventListener("dragstart", onDragStart);
 		e.addEventListener("dragover", onDragOver);
 		e.addEventListener("drop", onDrop);
-    e.addEventListener("mousedown", onMouseDown);
+		e.addEventListener("mousedown", onMouseDown);
 		e.addEventListener("mouseup", onMouseUp);
+		e.addEventListener("touchstart", onMouseDown);
+		e.addEventListener("touchend", onMouseUp);
 		e.addEventListener("contextmenu", onContextMenu);
 	}
 };
 
+
 stendhal.ui.equip = {
-	slotNames: ["neck", "head", "cloak", "rhand", "armor", "lhand", "finger", "pas", "glove", "fingerb", "legs", "money", "feet", "bag", "keyring"],
-	slotSizes: [  1,      1,       1,      1,       1,        1,       1,       1,      1,        1,       1,       1,      1,      30,       8   ],
+	slotNames: ["head", "lhand", "rhand", "finger", "armor", "cloak", "legs", "feet", "pouch", "bag", "keyring", "portfolio"],
+	slotSizes: [   1,       1,      1,       1,        1,       1,       1,     1,       1,      12,       8,         9     ],
+	slotImages: ["slot-helmet.png", "slot-shield.png", "slot-weapon.png", "slot-ring.png", "slot-armor.png", "slot-cloak.png",
+		"slot-legs.png", "slot-boots.png", "slot-pouch.png", null, "slot-key.png", "slot-portfolio.png"],
 	counter: 0,
+
+	pouchVisible: false,
 
 	init: function() {
 		stendhal.ui.equip.inventory = [];
 		for (var i in this.slotNames) {
 			stendhal.ui.equip.inventory.push(
 				new stendhal.ui.ItemContainerWindow(
-					this.slotNames[i], this.slotSizes[i], null, ""));
+					this.slotNames[i], this.slotSizes[i], null, "", false, this.slotImages[i]));
 		}
+
+		// hide pouch by default
+		stendhal.ui.showPouch(false);
 	},
 
 	update: function() {
 		for (var i in this.inventory) {
 			stendhal.ui.equip.inventory[i].update();
 		}
+
+		if (!this.pouchVisible) {
+			var features = null
+			if (marauroa.me != null) {
+				features = marauroa.me["features"];
+			}
+
+			if (features != null) {
+				if (features["pouch"] != null) {
+					stendhal.ui.showPouch(true);
+				}
+			}
+		}
 	},
 
-	createInventoryWindow: function(slot, sizeX, sizeY, object, title) {
+	createInventoryWindow: function(slot, sizeX, sizeY, object, title, quickPickup) {
 		stendhal.ui.equip.counter++;
 		var suffix = "." + stendhal.ui.equip.counter + ".";
-		var html = "<div class=\"inventorypopup inventorypopup_" + sizeX + "\">";
+		var html = "<div class=\"inventorypopup inventorypopup_" + sizeX;
+		if (quickPickup) {
+			html += " quickPickup";
+		}
+		html += "\">";
 		for (var i = 0; i < sizeX * sizeY; i++) {
 			html += "<div id='" + slot + suffix + i + "' class='itemSlot'></div>";
 		}
 		html += "</div>";
 
 		var popup = new stendhal.ui.Popup(title, html, 160, 370);
-		var itemContainer = new stendhal.ui.ItemContainerWindow(slot, sizeX * sizeY, object, suffix);
+		var itemContainer = new stendhal.ui.ItemContainerWindow(slot, sizeX * sizeY, object, suffix, quickPickup, null);
 		stendhal.ui.equip.inventory.push(itemContainer);
 		itemContainer.update();
 		popup.onClose = function() {
@@ -176,5 +228,31 @@ stendhal.ui.equip = {
 		return popup;
 	}
 };
+
+stendhal.ui.showSlot = function(id, show) {
+	var slot = document.getElementById(id);
+	var prevState = slot.style.display;
+
+	if (show === true) {
+		slot.style.display = "block";
+	} else {
+		slot.style.display = "none";
+	}
+
+	return prevState != slot.style.display;
+};
+
+stendhal.ui.showPouch = function(show) {
+	if (stendhal.ui.showSlot("pouch0", show)) {
+		// resize the inventory window
+		var equip = document.getElementById("equipment");
+		if (show) {
+			equip.style.height = "200px";
+		} else {
+			equip.style.height = "160px";
+		}
+		pouchVisible = show;
+	}
+}
 
 stendhal.ui.equip.init();

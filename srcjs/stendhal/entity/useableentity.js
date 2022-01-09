@@ -4,10 +4,11 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Affero General Public License as        *
- *   published by the Free Software Foundation; either version 3 of the    * 
+ *   published by the Free Software Foundation; either version 3 of the    *
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
+
 "use strict";
 
 var marauroa = window.marauroa = window.marauroa || {};
@@ -29,7 +30,7 @@ marauroa.rpobjectFactory["useable_entity"] = marauroa.util.fromProto(marauroa.rp
 	set: function(key, value) {
 		marauroa.rpobjectFactory["entity"].set.apply(this, arguments);
 		if (key === "class" || key === "name") {
-			this.sprite.filename = "/data/sprites/" 
+			this.sprite.filename = "/data/sprites/"
 				+ this["class"] + "/" + this["_name"] + ".png";
 		}
 		if (key === "state") {
@@ -40,5 +41,7 @@ marauroa.rpobjectFactory["useable_entity"] = marauroa.util.fromProto(marauroa.rp
 	isVisibleToAction: function(filter) {
 		return true;
 	},
+
 });
+
 }());

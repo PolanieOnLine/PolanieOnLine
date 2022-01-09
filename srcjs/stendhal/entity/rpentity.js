@@ -14,6 +14,9 @@
 var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 
+// hair should not be drawn with hat indexes in this list
+stendhal.HATS_NO_HAIR = [3, 4, 13, 992, 993, 994, 996, 997];
+
 (function() {
 
 	var HEALTH_BAR_HEIGHT = 6;
@@ -54,9 +57,9 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 				this._target.onTargeted(this);
 			}
 		} else if (key === "away") {
-			this.addFloater("Zajęty", "#ffff00");
+			this.addFloater("Away", "#ffff00");
 		} else if (key === "grumpy") {
-			this.addFloater("Niedostępny", "#ffff00");
+			this.addFloater("Grumpy", "#ffff00");
 		} else if (key === "xp" && oldValue != undefined) {
 			this.onXPChanged(this[key] - oldValue);
 		}
@@ -67,9 +70,9 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 			this._target.onAttackStopped(this);
 			this._target = null;
 		} else if (key === "away") {
-			this.addFloater("Powrócił", "#ffff00");
+			this.addFloater("Back", "#ffff00");
 		} else if (key === "grumpy") {
-			this.addFloater("Dostępny", "#ffff00");
+			this.addFloater("Receptive", "#ffff00");
 		}
 		delete this[key];
 	},
@@ -91,7 +94,7 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 		if (!this["menu"]) {
 			if (marauroa.me._target === this) {
 				list.push({
-					title: "Przerwij atak",
+					title: "Stop attack",
 					action: function(entity) {
 						var action = {
 							"type": "stop",
@@ -103,17 +106,24 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 				});
 			} else if (this !== marauroa.me) {
 				list.push({
-					title: "Atakuj",
+					title: "Attack",
 					type: "attack"
 				});
 			}
 		}
 		if (this != marauroa.me) {
 			list.push({
-				title: "Popchnij",
+				title: "Push",
 				type: "push"
 			});
 		}
+	},
+
+	/**
+	 * retrieves the entity's visible title
+	 */
+	getTitle: function() {
+		return this["title"];
 	},
 
 	/**
@@ -125,10 +135,10 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 		}
 		if (marauroa.me.isInHearingRange(this)) {
 			if (text.match("^!me") == "!me") {
-				stendhal.ui.chatLog.addLine("emote", text.replace(/^!me/, this["title"]));
+				stendhal.ui.chatLog.addLine("emote", text.replace(/^!me/, this.getTitle()));
 			} else {
 				this.addSpeechBubble(text);
-				stendhal.ui.chatLog.addLine("normal", this["title"] + ": " + text);
+				stendhal.ui.chatLog.addLine("normal", this.getTitle() + ": " + text);
 			}
 		}
 	},
@@ -165,15 +175,40 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 	},
 
 	drawMultipartOutfit: function(ctx) {
-		const body = this.getOutfitPart("body", (this["outfit"] % 100));
-		const dress = this.getOutfitPart("dress", (Math.floor(this["outfit"]/100) % 100));
-		const head = this.getOutfitPart("head", (Math.floor(this["outfit"]/10000) % 100));
-		const hair = this.getOutfitPart("hair", (Math.floor(this["outfit"]/1000000) % 100));
-		const detail = this.getOutfitPart("detail", (Math.floor(this["outfit"]/100000000) % 100));
-    const images = [body, dress, head, hair, detail];
-		for (const img of images) {
-			if (img) {
-				this.drawSprite(ctx, img);
+		// layers in draw order
+		var layers = [];
+
+		var outfit = {};
+		if ("outfit_ext" in this) {
+			layers = ["body", "dress", "head", "mouth", "eyes", "mask", "hair", "hat", "detail"];
+
+			for (const part of this["outfit_ext"].split(",")) {
+				if (part.includes("=")) {
+					var tmp = part.split("=");
+					outfit[tmp[0]] = tmp[1];
+				}
+			}
+		} else {
+			layers = ["body", "dress", "head", "hair", "detail"];
+
+			outfit["body"] = this["outfit"] % 100;
+			outfit["dress"] = Math.floor(this["outfit"]/100) % 100;
+			outfit["head"] = Math.floor(this["outfit"]/10000) % 100;
+			outfit["hair"] = Math.floor(this["outfit"]/1000000) % 100;
+			outfit["detail"] = Math.floor(this["outfit"]/100000000) % 100;
+		}
+
+		for (const layer of layers) {
+			// hair is not drawn under certain hats/helmets
+			if (layer == "hair" && stendhal.HATS_NO_HAIR.includes(parseInt(outfit["hat"]))) {
+				continue;
+			}
+
+			if (layer in outfit) {
+				const img = this.getOutfitPart(layer, outfit[layer]);
+				if (img) {
+					this.drawSprite(ctx, img);
+				}
 			}
 		}
 	},
@@ -185,6 +220,10 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 	 * @param {Number} index
 	 */
 	getOutfitPart: function(part, index) {
+		if (index < 0) {
+			return null;
+		}
+
 		let n = index;
 		if (index < 10) {
 			n = "00" + index;
@@ -215,7 +254,7 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 		}
 		this.drawCombat(ctx);
 		var filename;
-		if (typeof(this["outfit"]) != "undefined") {
+		if (typeof(this["outfit"]) != "undefined" || typeof(this["outfit_ext"]) != "undefined") {
 			this.drawMultipartOutfit(ctx);
 		} else {
 			filename = "/data/sprites/" + this.spritePath + "/" + this["class"];
@@ -379,16 +418,17 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 			var nFrames = 3;
 			var nDirections = 4;
 			var yRow = this["dir"] - 1;
+			var frame = 1; // draw center column when idle
 			// Ents are a hack in Java client too
 			if (this["class"] == "ent") {
 				nFrames = 1;
 				nDirections = 2;
 				yRow = Math.floor((this["dir"] - 1) / 2);
+				frame = 0;
 			}
 			this["drawHeight"] = image.height / nDirections;
 			this["drawWidth"] = image.width / nFrames;
 			var drawX = ((this["width"] * 32) - this["drawWidth"]) / 2;
-			var frame = 0;
 			if (this["speed"] > 0 && nFrames != 1) {
 				var animLength = nFrames * 2 - 2;
 				// % Works normally with *floats* (just whose bright idea was
@@ -433,7 +473,7 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 	},
 
 	drawTitle: function(ctx, x, y) {
-		var title = this["title"];
+		var title = this.getTitle();
 		if (title == undefined) {
 			title = this["_name"];
 			if (title == undefined || title == "") {
@@ -481,10 +521,16 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 
 	onDamaged: function(source, damage) {
 		this.attackResult = this.createResultIcon("/data/sprites/combat/hitted.png");
+		var sounds = ["attack-melee-01", "attack-melee-02", "attack-melee-03", "attack-melee-04", "attack-melee-05", "attack-melee-06", "attack-melee-07"];
+		var index = Math.floor(Math.random() * Math.floor(sounds.length));
+		stendhal.ui.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	},
 
 	onBlocked: function(source) {
 		this.attackResult = this.createResultIcon("/data/sprites/combat/blocked.png");
+		var sounds = ["clang-metallic-1", "clang-dull-1"];
+		var index = Math.floor(Math.random() * Math.floor(sounds.length));
+		stendhal.ui.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	},
 
 	onMissed: function(source) {
@@ -502,10 +548,10 @@ marauroa.rpobjectFactory["rpentity"] = marauroa.util.fromProto(marauroa.rpobject
 	onXPChanged: function(change) {
 		if (change > 0) {
 			this.addFloater("+" + change, "#4169e1");
-			stendhal.ui.chatLog.addLine("significant_positive", this["title"] + " earns " + change + " experience points.");
+			stendhal.ui.chatLog.addLine("significant_positive", this.getTitle() + " earns " + change + " experience points.");
 		} else if (change < 0) {
 			this.addFloater(change.toString(), "#ff8f8f");
-			stendhal.ui.chatLog.addLine("significant_negative", this["title"] + " loses " + Math.abs(change) + " experience points.");
+			stendhal.ui.chatLog.addLine("significant_negative", this.getTitle() + " loses " + Math.abs(change) + " experience points.");
 		}
 	},
 

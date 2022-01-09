@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,7 +42,7 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 	 * Is this player an admin?
 	 */
 	isAdmin: function() {
-		return (typeof(this["adminlevel"]) !== "undefined" && this["adminlevel"] > 20);
+		return (typeof(this["adminlevel"]) !== "undefined" && this["adminlevel"] > 600);
 	},
 
 	buildActions: function(list) {
@@ -51,7 +51,7 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 		var isUnknown = (marauroa.me !== this) && ((marauroa.me["buddies"] == null) || !(playerName in marauroa.me["buddies"]));
 		if (isUnknown) {
 			list.push({
-				title: "Dodaj do znajomych",
+				title: "Add to buddies",
 				action: function(entity) {
 					var action = {
 						"type": "addbuddy",
@@ -65,7 +65,7 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 
 		if (this.isIgnored()) {
 			list.push({
-				title: "Usuń z ignorowanych",
+				title: "Remove ignore",
 				action: function(entity) {
 					var action = {
 						"type": "unignore",
@@ -75,9 +75,9 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 					marauroa.clientFramework.sendAction(action);
 				}
 			});
-		} else if (!isUnknown) {
+		} else if (isUnknown) {
 			list.push({
-				title: "Ignoruj",
+				title: "Ignore",
 				action: function(entity) {
 					var action = {
 						"type": "ignore",
@@ -88,16 +88,26 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 				}
 			});
 		}
-
 		if (marauroa.me === this) {
 			list.push({
-				title: "Zmień wygląd",
+				title: "Set outfit",
 				action: function(entity) {
 					new stendhal.ui.OutfitDialog();
 				}
 			});
+			list.push({
+				title: "Where",
+				action: function(entity) {
+					var action = {
+						"type": "where",
+						"target": playerName,
+					};
+					marauroa.clientFramework.sendAction(action);
+				}
+			})
 		}
 	/*
+
 		list.push({
 			title: "Trade",
 			type: "trade"
@@ -107,7 +117,7 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 	},
 
 	isIgnored: function() {
-		if (!marauroa.me["!ignore"]) {
+		if (!marauroa.me || !marauroa.me["!ignore"]) {
 			return false;
 		}
 		var temp = marauroa.me["!ignore"]._objects;
@@ -145,7 +155,7 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 		return (this.isAdmin()
 			|| ((Math.abs(this["x"] - entity["x"]) < 15)
 				&& (Math.abs(this["y"] - entity["y"]) < 15)));
-  },
+	},
 
 	getCursor: function(x, y) {
 		if (this.isVisibleToAction()) {
@@ -153,4 +163,5 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 		}
 		return "url(/data/sprites/cursor/walk.png) 1 3, auto";
 	}
+
 });

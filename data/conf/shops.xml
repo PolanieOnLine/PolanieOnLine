@@ -654,13 +654,13 @@
 	<!-- Harley kupuje: -->
 	<shop name="buyanimalmaterials" type="buys">
 		<!--<item name="włókno" price="50" /> is this item obtainable? -->
-		<item name="skórzana nić" price="125" />
-		<item name="truchło nietoperza" price="100" />
-		<item name="futro" price="500" />
-		<item name="truchło wampira" price="700" />
+		<item name="skórzana nić" price="7" />
+		<item name="truchło nietoperza" price="10" />
+		<item name="futro" price="25" />
+		<item name="truchło wampira" price="70" />
 		<item name="gruczoł jadowy" price="800" />
-		<item name="gruczoł przędzy" price="1000" />
-		<item name="róg jednorożca" price="2200" />
+		<item name="gruczoł przędzy" price="400" />
+		<item name="róg jednorożca" price="1500" />
 		<item name="mityczne jajo" price="2500" />
 	</shop>
 
@@ -691,6 +691,35 @@
 		<item name="zabójcza trucizna" price="1200" />
 		<item name="środek uspokajający" price="200" />
 		<item name="gruczoł jadowy" price="800" />
+	</shop>
+
+	<!-- Emeric: broker in Semos Plains that purchases misc. items at a low values -->
+	<shop name="brokermisc" type="buys">
+		<item name="mięso" price="5" />
+		<item name="szynka" price="10" />
+		<item name="pieczarka" price="8" />
+		<item name="borowik" price="15" />
+		<item name="muchomor" price="30" />
+		<item name="trucizna" price="20" />
+		<item name="mocna trucizna" price="30" />
+		<item name="arandula" price="2" />
+		<item name="kekik" price="8" />
+		<item name="sclaria" price="8" />
+		<item name="kokuda" price="50" />
+		<item name="mandragora" price="75" />
+		<item name="pułapka na gryzonie" price="25" />
+		<item name="czterolistna koniczyna" price="30" />
+		<item name="kolorowe kulki" price="40" />
+		<item name="czarna perłka" price="50" />
+		<item name="truchło nietoperza" price="5" />
+		<item name="zima zaklęta w kuli" price="75" />
+		<item name="truchło wampira" price="25" />
+		<item name="futro" price="12" />
+		<item name="szmaragd" price="125" />
+		<item name="szafir" price="210" />
+		<item name="rubin" price="300" />
+		<item name="obsydian" price="500" />
+		<item name="diament" price="400" />
 	</shop>
 
 	<!--
@@ -726,24 +755,26 @@
 		<item name="skóra białego tygrysa" price="52" />
 		<item name="skóra lwa" price="74" />
 		<item name="skóra xenocium" price="120" />
-		<item name="skóra zielonego smoka" price="1350" />
-		<item name="skóra niebieskiego smoka" price="2200" />
-		<item name="skóra arktycznego smoka" price="3500" />
-		<item name="skóra czerwonego smoka" price="4750" />
-		<item name="skóra czarnego smoka" price="5450" />
-		<item name="skóra złotego smoka" price="6800" />
+		<item name="skóra zielonego smoka" price="700" />
+		<item name="skóra czerwonego smoka" price="900" />
+		<item name="skóra niebieskiego smoka" price="1200" />
+		<item name="skóra arktycznego smoka" price="1400" />
+		<item name="skóra czarnego smoka" price="1900" />
+		<item name="skóra złotego smoka" price="2400" />
 	</shop>
 
 	<!-- Kelas kupuje: -->
 	<shop name="buypiora" type="buys">
 		<item name="piórko" price="4" />
-		<item name="pióro anioła" price="3500" />
-		<item name="pióro upadłego anioła" price="4700" />
-		<item name="pióro mrocznego anioła" price="5500" />
-		<item name="pióro archanioła" price="6500" />
-		<item name="pióro archanioła ciemności" price="8000" />
-		<item name="pióro serafina" price="16000" />
-		<item name="pióro azazela" price="20000" />
+		<item name="pióro anioła" price="2000" />
+		<item name="pióro upadłego anioła" price="2400" />
+		<item name="pióro mrocznego anioła" price="2600" />
+		<item name="pióro archanioła" price="4000" />
+		<item name="pióro archanioła ciemności" price="4400" />
+		<item name="pióro serafina" price="8000" />
+		<item name="pióro azazela" price="9000" />
+		<item name="pióro cherubina" price="11000" />
+		<item name="pióro lilith" price="14000" />
 	</shop>
 
 	<!-- Kibic sprzedaje: -->

@@ -33,6 +33,19 @@ marauroa.rpobjectFactory["item"] = marauroa.util.fromProto(marauroa.rpobjectFact
 		return true;
 	},
 
+	// default action for items on the ground is to pick them up
+	// do not require players to use drag & drop (as the classic client did)
+	// because drag & drop is difficult on mobile (especially if the page is zoomed)
+	getDefaultAction: function() {
+		return {
+			type: "equip",
+			"source_path": this.getIdPath(),
+			"target_path": "[" + marauroa.me["id"] + "\tbag]",
+			"clicked": "", // useful for changing default target in equip action
+			"zone": marauroa.currentZoneName
+		};
+	},
+
 	set: function(key, value) {
 		marauroa.rpobjectFactory["item"].proto.set.apply(this, arguments);
 		if (key === "class" || key === "subclass") {
@@ -59,18 +72,16 @@ marauroa.rpobjectFactory["item"] = marauroa.util.fromProto(marauroa.rpobjectFact
 			return "";
 		}
 		if (this["quantity"] > 10000000) {
-			return Math.floor(this["quantity"] / 1000000) + "M";
+			return Math.floor(this["quantity"] / 1000000) + "m";
 		}
 		if (this["quantity"] > 10000) {
-			return Math.floor(this["quantity"] / 1000) + "K";
+			return Math.floor(this["quantity"] / 1000) + "k";
 		}
 		return this["quantity"];
-  },
+	},
 
 	getCursor: function(x, y) {
-		if (this["menu"]) {
-			return "url(/data/sprites/cursor/activity.png) 1 3, auto";
-		}
-		return "url(/data/sprites/cursor/normal.png) 1 3, auto";
+		return "url(/data/sprites/cursor/itempickupfromslot.png) 1 3, auto";
 	}
+
 });

@@ -47,7 +47,8 @@ marauroa.rpobjectFactory["food"] = marauroa.util.fromProto(marauroa.rpobjectFact
 		return true;
 	},
 
-  getCursor: function(x, y) {
+	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/look.png) 1 3, auto";
 	}
+
 });

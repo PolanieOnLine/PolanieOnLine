@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -8,6 +8,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
+
 "use strict";
 
 var marauroa = window.marauroa = window.marauroa || {};
@@ -32,6 +33,10 @@ stendhal.ui.minimap = {
 	},
 
 	updateBasePosition: function() {
+		if (!marauroa.me)
+		{
+			return;
+		}
 		stendhal.ui.minimap.xOffset = 0;
 		stendhal.ui.minimap.yOffset = 0;
 
@@ -63,7 +68,10 @@ stendhal.ui.minimap = {
 	},
 
 	draw: function() {
-    if (marauroa.currentZoneName === stendhal.data.map.currentZoneName) {
+		if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
+			|| stendhal.data.map.currentZoneName === "int_vault"
+			|| stendhal.data.map.currentZoneName === "int_adventure_island") {
+
 			stendhal.ui.minimap.scale = 10;
 
 			stendhal.ui.minimap.zoneChange();
@@ -146,7 +154,7 @@ stendhal.ui.minimap = {
 
 		for (var i in marauroa.currentZone) {
 			var o = marauroa.currentZone[i];
-			if (typeof(o["x"]) != "undefined" && typeof(o["y"]) != "undefined" && (o.minimapShow || (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 20))) {
+			if (typeof(o["x"]) != "undefined" && typeof(o["y"]) != "undefined" && (o.minimapShow || (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600))) {
 				// not supported by IE <= 8
 				if (typeof(ctx.fillText) != "undefined") {
 //					stendhal.ui.minimap.ctx.fillText(o.id, o.x * stendhal.ui.minimap.scale, o.y * stendhal.ui.minimap.scale);
@@ -170,6 +178,11 @@ stendhal.ui.minimap = {
 					x: x.toString(),
 					y: y.toString()
 			};
+
+			if ("type" in e && e["type"] === "dblclick") {
+				action["double_click"] = "";
+			}
+
 			marauroa.clientFramework.sendAction(action);
 		}
 	}

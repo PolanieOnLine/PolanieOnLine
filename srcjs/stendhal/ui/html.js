@@ -19,8 +19,8 @@ stendhal.ui = stendhal.ui || {};
  */
 stendhal.ui.html = {
 	esc: function(msg){
-		return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace("\n", "<br>");
-  },
+		return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, "<br>");
+	},
 
 	extractKeyCode: function(event) {
 		if (event.which) {
@@ -28,5 +28,27 @@ stendhal.ui.html = {
 		} else {
 			return e.keyCode;
 		}
+	},
+
+	niceName: function(s) {
+		if (!s) {
+			return "";
+		}
+		let temp = s.replace(/_/g, " ").trim();
+		return temp.charAt(0).toUpperCase() + temp.slice(1);
+	},
+
+	extractPosition: function(event) {
+		if (event.changedTouches) {
+			var pos = {
+				pageX: Math.round(event.changedTouches[0].pageX),
+				pageY: Math.round(event.changedTouches[0].pageY),
+				target: event.changedTouches[0].target
+			}
+			pos.offsetX = pos.pageX - event.changedTouches[0].target.offsetLeft;
+			pos.offsetY = pos.pageY - event.changedTouches[0].target.offsetTop;
+			return pos;
+		}
+		return event;
 	}
 };

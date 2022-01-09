@@ -18,7 +18,7 @@ marauroa.rpobjectFactory["corpse"] = marauroa.util.fromProto(marauroa.rpobjectFa
 
 	minimapShow: false,
 	zIndex: 5500,
-  autoOpenedAlready: false,
+	autoOpenedAlready: false,
 
 	set: function(key, value) {
 		marauroa.rpobjectFactory["corpse"].proto.set.apply(this, arguments);
@@ -31,7 +31,7 @@ marauroa.rpobjectFactory["corpse"] = marauroa.util.fromProto(marauroa.rpobjectFa
 		}
 	},
 
-  createSlot: function(name) {
+	createSlot: function(name) {
 		var slot = marauroa.util.fromProto(marauroa.rpslotFactory["_default"], {
 			add: function(object) {
 				marauroa.rpslotFactory["_default"].add.apply(this, arguments);
@@ -65,16 +65,25 @@ marauroa.rpobjectFactory["corpse"] = marauroa.util.fromProto(marauroa.rpobjectFa
 
 	openCorpseInventory: function() {
 		if (!this.inventory || !this.inventory.popupdiv.parentNode) {
-			this.inventory = stendhal.ui.equip.createInventoryWindow("content", 2, 2, this, "Zwłoki");
-		}
-  },
+			let content_row = 2;
+			const content_col = 2;
+			if (this["content"]) {
+				if (this["content"]._objects.length > 4) {
+					content_row = 3;
+				}
+			}
 
-  autoOpenIfDesired: function() {
+			// FIXME: 3x2 corpses are shown as 6x1
+			this.inventory = stendhal.ui.equip.createInventoryWindow("content", content_row, content_col, this, "Corpse", true);
+		}
+	},
+
+	autoOpenIfDesired: function() {
 		if (!this.autoOpenedAlready) {
 			this.autoOpenedAlready = true;
 			if (marauroa.me && (this["corpse_owner"] == marauroa.me["_name"])) {
 
-				// TODO: for unknown reason, /data/sprites/items/undefined/undefined.png is requires without this delay
+				// TODO: for unknown reason, /data/sprites/items/undefined/undefined.png is requested without this delay
 				var that = this;
 				window.setTimeout(function() {
 					that.openCorpseInventory();
@@ -106,4 +115,5 @@ marauroa.rpobjectFactory["corpse"] = marauroa.util.fromProto(marauroa.rpobjectFa
 		}
 		return "url(/data/sprites/cursor/lockedbag.png) 1 3, auto";
 	}
+
 });

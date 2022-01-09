@@ -46,14 +46,14 @@ stendhal.ui.chatLog = {
 	},
 
 	formatLogEntry: function(message) {
-    if (!message) {
+		if (!message) {
 			return "";
 		}
 		var res = "";
 		var delims = [" ", ",", ".", "!", "?", ":", ";"];
 		var length = message.length;
-		var inHighlight = false, inUnderline = false, inAttention = false,
-			inHighlightQuote = false, inUnderlineQuote = false, inAttentionQuote = false;
+		var inHighlight = false, inUnderline = false,
+			inHighlightQuote = false, inUnderlineQuote = false;
 		for (var i = 0; i < length; i++) {
 			var c = message[i];
 
@@ -100,24 +100,6 @@ stendhal.ui.chatLog = {
 				inUnderline = true;
 				res += "<span class=\"logi\">";
 
-			} else if (c === "&") {
-				if (inAttention) {
-					res += c;
-					continue;
-				}
-				var n = message[i + 1];
-				if (n === "&") {
-					res += c;
-					i++;
-					continue;
-				}
-				if (n === "'") {
-					inAttentionQuote = true;
-					i++;
-				}
-				inAttention = true;
-				res += "<span class=\"loga\">";
-
 			// End Highlight and Underline?
 			} else if (c === "'") {
 				if (inUnderlineQuote) {
@@ -131,11 +113,6 @@ stendhal.ui.chatLog = {
 					inHighlightQuote = false;
 					res += "</span>";
 				}
-				if (inAttentionQuote) {
-					inAttention = false;
-					inAttentionQuote = false;
-					res += "</span>";
-				}
 
 			// HTML escape
 			} else if (c === "<") {
@@ -145,18 +122,13 @@ stendhal.ui.chatLog = {
 			} else if (delims.indexOf(c) > -1) {
 				var n = message[i + 1];
 				if (c === " " || n === " " || n == undefined) {
-					if (inUnderline && !inUnderlineQuote && !inHighlightQuote && !inAttentionQuote) {
+					if (inUnderline && !inUnderlineQuote && !inHighlightQuote) {
 						inUnderline = false;
 						res += "</span>" + c;
 						continue;
 					}
-					if (inHighlight && !inUnderlineQuote && !inHighlightQuote && !inAttentionQuote) {
+					if (inHighlight && !inUnderlineQuote && !inHighlightQuote) {
 						inHighlight = false;
-						res += "</span>" + c;
-						continue;
-					}
-					if (inAttention && !inUnderlineQuote && !inHighlightQuote && !inAttentionQuote) {
-						inAttention = false;
 						res += "</span>" + c;
 						continue;
 					}

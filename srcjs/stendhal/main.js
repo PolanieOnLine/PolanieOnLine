@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Stendhal                    *
+ *                   (C) Copyright 2003-2021 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,6 +17,7 @@ var stendhal = window.stendhal = window.stendhal || {};
 stendhal.main = {
 	errorCounter: 0,
 	zoneFile: null,
+	loaded: false,
 
 	onDataMap: function(data) {
 		var zoneinfo = {};
@@ -34,7 +35,7 @@ stendhal.main = {
 	registerMarauroaEventHandlers: function() {
 
 		marauroa.clientFramework.onDisconnect = function(reason, error){
-			stendhal.ui.chatLog.addLine("error", "Rozlaczono: " + error);
+			stendhal.ui.chatLog.addLine("error", "Disconnected: " + error);
 		};
 
 		marauroa.clientFramework.onLoginRequired = function() {
@@ -43,7 +44,7 @@ stendhal.main = {
 		};
 
 		marauroa.clientFramework.onLoginFailed = function(reason, text) {
-			alert("Nieudane logowanie. Najpierw zaloguj sie na stronie PolanieOnLine i upewnij sie, ze otworzysz klienta za pomocna odnosnika - https://-URL");
+			alert("Login failed. Please login on the Stendhal website first and make sure you open the client on an https://-URL");
 			marauroa.clientFramework.close();
 			document.getElementById("chatinput").disabled = true;
 			document.getElementById("chat").style.backgroundColor = "#AAA";
@@ -68,7 +69,7 @@ stendhal.main = {
 			marauroa.clientFramework.chooseCharacter(name);
 			var body = document.getElementById("body")
 			body.style.cursor = "auto";
-			stendhal.ui.chatLog.addLine("client", "Ladowanie swiata...");
+			stendhal.ui.chatLog.addLine("client", "Loading world...");
 		};
 
 
@@ -104,10 +105,32 @@ stendhal.main = {
 				stendhal.ui.buddyList.update();
 				stendhal.ui.equip.update();
 				stendhal.ui.stats.update();
+				if (!stendhal.main.loaded) {
+					stendhal.main.loaded = true;
+					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
+					setTimeout(function() {
+						document.getElementById("client").style.display = "block";
+						document.getElementById("loginpopup").style.display = "none";
+					}, 300);
+				}
 			}
 		}
 	},
 
+	toggleSound: function() {
+		stendhal.config.sound.play = !stendhal.config.sound.play;
+
+		stendhal.main.onSoundToggled();
+	},
+
+	onSoundToggled: function() {
+		var soundbutton = document.getElementById("soundbutton");
+		if (stendhal.config.sound.play) {
+			soundbutton.textContent = "🔊";
+		} else {
+			soundbutton.textContent = "🔇";
+		}
+	},
 
 	/**
 	 * registers global browser event handlers.
@@ -115,18 +138,23 @@ stendhal.main = {
 	registerBrowserEventHandlers: function() {
 		document.addEventListener("keydown", stendhal.ui.keyhandler.onKeyDown);
 		document.addEventListener("keyup", stendhal.ui.keyhandler.onKeyUp);
+		document.addEventListener("contextmenu", stendhal.main.preventContextMenu);
 
 		var gamewindow = document.getElementById("gamewindow");
 		gamewindow.setAttribute("draggable", true);
 		gamewindow.addEventListener("mousedown", stendhal.ui.gamewindow.onMouseDown);
-    gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
+		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown);
+		gamewindow.addEventListener("dblclick", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
+		gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
+		gamewindow.addEventListener("touchmove", stendhal.ui.gamewindow.onMouseMove);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);
 		gamewindow.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
 
 		var minimap = document.getElementById("minimap");
 		minimap.addEventListener("click", stendhal.ui.minimap.onClick);
+		minimap.addEventListener("dblclick", stendhal.ui.minimap.onClick);
 
 		var buddyList = document.getElementById("buddyList");
 		buddyList.addEventListener("mouseup", stendhal.ui.buddyList.onMouseUp);
@@ -135,17 +163,33 @@ stendhal.main = {
 		var menubutton = document.getElementById("menubutton");
 		menubutton.addEventListener("click", stendhal.ui.menu.onOpenAppMenu);
 
+		var soundbutton = document.getElementById("soundbutton");
+		soundbutton.addEventListener("click", stendhal.main.toggleSound);
+		// update button state
+		stendhal.main.onSoundToggled();
+
 		var chatinput = document.getElementById("chatinput");
 		chatinput.addEventListener("keydown", stendhal.ui.chatinput.onKeyDown);
 		chatinput.addEventListener("keypress", stendhal.ui.chatinput.onKeyPress);
+	},
+
+	devWarning: function() {
+		console.log("%c ", "padding: 30px; background: url(" + window.location.protocol + "://" + window.location.host + "/images/buttons/devtools-warning.png) no-repeat; color: #AF0");
+		console.log("%cIf someone told you, to copy and paste something here, it's a scam and will give them access to your account.", "color:#A00; background-color:#FFF; font-size:150%");
+		console.log("If you are a developer and curious about Stendhal, have a look at https://stendhalgame.org/development/introduction.html to get the source code. And perhaps, contribute a feature or a bugfix. ");
+		console.log(" ");
+		console.log(" ");
+		window["eval"] = undefined;
 	},
 
 	/**
 	 * starts the Stendhal web client and connects to the Stendhal server.
 	 */
 	startup: function() {
-		stendhal.ui.chatLog.addLine("error", "Jest to wczesny etap eksperymentalnego klienta internetowego. Aby moc zagrac w PolanieOnLine, prosimy o zainstalowanie oficjalnego klienta z https://polanieonline.eu.");
-		stendhal.ui.chatLog.addLine("client", "Klient zostal zaladowany. Laczenie sie z serwerem...");
+		stendhal.main.devWarning();
+
+		stendhal.ui.chatLog.addLine("error", "This is an early stage of an experimental web-based client. Please use the official client at https://stendhalgame.org to play Stendhal.");
+		stendhal.ui.chatLog.addLine("client", "Client loaded. Connecting...");
 
 		stendhal.main.registerMarauroaEventHandlers();
 		stendhal.main.registerBrowserEventHandlers();
@@ -182,6 +226,10 @@ stendhal.main = {
 			// ignore
 		}
 		return true;
+	},
+
+	preventContextMenu: function(event) {
+		event.preventDefault();
 	}
 }
 

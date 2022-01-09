@@ -132,33 +132,6 @@
 			</implementation>
 		</entity>
 
-		<entity x="111" y="75">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
-				<parameter name="min">30</parameter>
-				<parameter name="max">60</parameter>
-				<parameter name="radius">10</parameter>
-			</implementation>
-		</entity>
-
-		<entity x="112" y="59">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
-				<parameter name="min">30</parameter>
-				<parameter name="max">60</parameter>
-				<parameter name="radius">10</parameter>
-			</implementation>
-		</entity>
-
-		<entity x="106" y="20">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
-				<parameter name="min">30</parameter>
-				<parameter name="max">60</parameter>
-				<parameter name="radius">10</parameter>
-			</implementation>
-		</entity>
-
 		<entity x="94" y="17">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
@@ -195,11 +168,78 @@
 			</implementation>
 		</entity>
 
+		<entity x="83" y="80">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="71" y="77">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="67" y="76">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<entity x="74" y="85">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<entity x="78" y="82">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<entity x="88" y="81">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<entity x="88" y="85">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<entity x="46" y="70">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
+		<entity x="46" y="74">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto ładny drewniany stół.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+
 		<portal x="66" y="56" ref="tavern_entrance">
 			<destination zone="int_tarnow_tavern" ref="tavern_exit"/>
 		</portal>
 
-		<portal x="84" y="46" ref="kitchen_entrance">
+		<portal x="66" y="68" ref="kitchen_entrance">
 			<destination zone="int_tarnow_kitchen" ref="kitchen_exit"/>
 		</portal>
 	</zone>

@@ -27,18 +27,18 @@ stendhal.ui.menu = {
 
 		var actions = [
 			{
-				title: "Konto",
+				title: "Account",
 				children: [
 					{
-						title: "Zmień Hasło",
+						title: "Change Password",
 						action: "changepassword",
 					},
 					{
-						title: "Wybierz Postać",
+						title: "Select character",
 						action: "characterselector",
 					},
 					{
-						title: "Historia Logowania",
+						title: "Login History",
 						action: "loginhistory",
 					}
 				]
@@ -48,11 +48,11 @@ stendhal.ui.menu = {
 				title: "Tools",
 				children: [
 					{
-						title: "Zrzut ekranu",
+						title: "Take Screenshot",
 						action: "takescreenshot",
 					},
 					{
-						title: "Ustawienia",
+						title: "Settings",
 						action: "settings",
 					}
 				]
@@ -66,15 +66,15 @@ stendhal.ui.menu = {
 						action: "atlas",
 					},
 					{
-						title: "Wojownicy Online",
+						title: "Online Players",
 						action: "who",
 					},
 					{
-						title: "Aleja Sław",
+						title: "Hall of Fame",
 						action: "halloffame",
 					},
 					{
-						title: "Dziennik Zadań",
+						title: "Travel Log",
 						action: "progressstatus",
 					}
 				]
@@ -83,7 +83,7 @@ stendhal.ui.menu = {
 				title: "Help",
 				children: [
 					{
-						title: "Przewodnik",
+						title: "Manual",
 						action: "manual",
 					},
 					{
@@ -91,15 +91,15 @@ stendhal.ui.menu = {
 						action: "faq",
 					},
 					{
-						title: "Dla Początkujących",
+						title: "Beginners Guide",
 						action: "beginnersguide",
 					},
 					{
-						title: "List Komend",
+						title: "Commands",
 						action: "help",
 					},
 					{
-						title: "Regulamin",
+						title: "Rules",
 						action: "rules",
 					}
 				]
@@ -116,13 +116,14 @@ stendhal.ui.menu = {
 			content += "</div>";
 		}
 		content += "</div>";
-		this.popup = new stendhal.ui.Popup("Akcja", content, 150, e.pageY + 20);
+		this.popup = new stendhal.ui.Popup("Action", content, 150, e.pageY + 20);
 
 		this.popup.popupdiv.addEventListener("click", function(e) {
 			var cmd = e.target.id.substring(11);
 			that.popup.close();
-			console.log(cmd);
-			stendhal.slashActionRepository.execute("/" + cmd);
+			if (cmd) {
+				stendhal.slashActionRepository.execute("/" + cmd);
+			}
 		});
 
 		this.close = function() {

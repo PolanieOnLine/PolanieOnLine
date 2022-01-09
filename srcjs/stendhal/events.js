@@ -56,7 +56,7 @@ marauroa.rpeventFactory["global_visual_effect"] = marauroa.util.fromProto(maraur
 
 marauroa.rpeventFactory["group_change_event"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-    if (rpobject !== marauroa.me) {
+		if (rpobject !== marauroa.me) {
 			return;
 		}
 		stendhal.data.group.updateGroupStatus(this["members"], this["leader"], this["lootmode"]);
@@ -66,15 +66,15 @@ marauroa.rpeventFactory["group_change_event"] = marauroa.util.fromProto(marauroa
 
 marauroa.rpeventFactory["group_invite_event"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-    if (rpobject !== marauroa.me) {
+		if (rpobject !== marauroa.me) {
 			return;
 		}
 		if (this["expire"]) {
-			stendhal.ui.chatLog.addLine("normal", "Twoje zaproszenie do grupy " + this["leader"] + " wygasło.");
+			stendhal.ui.chatLog.addLine("normal", "Your group invite by " + this["leader"] + " has expired.");
 		} else {
-			stendhal.ui.chatLog.addLine("normal", "Zostałeś zaproszony przez " + this["leader"] + ", aby dołączyć do grupy.");
-			stendhal.ui.chatLog.addLine("normal", "Jeśli chcesz dołączyć, wpisz: /group join " + this["leader"]);
-			stendhal.ui.chatLog.addLine("normal", "Aby opuścić grupę w dowolnym momencie, wpisz: /group part " + this["leader"]);
+			stendhal.ui.chatLog.addLine("normal", "Your have been invited by " + this["leader"] + " to join a group.");
+			stendhal.ui.chatLog.addLine("normal", "To join, type: /group join " + this["leader"]);
+			stendhal.ui.chatLog.addLine("normal", "To leave the group at any time, type: /group part " + this["leader"]);
 		}
 	}
 });
@@ -141,7 +141,7 @@ marauroa.rpeventFactory["show_item_list"] = marauroa.util.fromProto(marauroa.rpe
 			stendhal.ui.chatLog.addLine("normal", this["caption"]);
 		}
 		if (this.hasOwnProperty("content")) {
-			stendhal.ui.chatLog.addLine("normal", "Przedmiot\t-\tCena\t-\tOpis");
+			stendhal.ui.chatLog.addLine("normal", "Item\t-\tPrice\t-\tDescription");
 			for (var obj in this["content"]) {
 				if (this["content"].hasOwnProperty(obj)) {
 					var slotObj = this["content"][obj];
@@ -162,28 +162,9 @@ marauroa.rpeventFactory["sound_event"] = marauroa.util.fromProto(marauroa.rpeven
 		if (this.hasOwnProperty("volume")) {
 			volume *= parseInt(this["volume"], 10) / 100;
 		}
-		// Further adjustments if the sound has a radius
-		if (this.hasOwnProperty("radius")) {
-			if (!marauroa.me || !rpobject || !rpobject["_x"]) {
-				// Can't calculate the distance yet. Ignore the sound.
-				return;
-			}
+		var radius = parseInt(this["radius"], 10);
 
-			var radius = parseInt(this["radius"], 10);
-			var xdist = marauroa.me["_x"] - rpobject["_x"];
-			var ydist = marauroa.me["_y"] - rpobject["_y"];
-			var dist2 = xdist * xdist + ydist * ydist;
-			if (dist2 > radius * radius) {
-				// Outside the specified radius
-				return;
-			}
-			// The sound api does not guarantee anything about how the volume
-			// works, so it does not matter much how we scale it.
-			volume *= Math.min(radius * radius / (dist2 * 20), 1);
-		}
-		if (stendhal.ui.sound) {
-			stendhal.ui.sound.playEffect(this["sound"], volume);
-		}
+		stendhal.ui.sound.playLocalizedEffect(rpobject["_x"], rpobject["_y"], radius, this["layer"], this["sound"], volume);
 	}
 });
 
@@ -215,3 +196,60 @@ marauroa.rpeventFactory["view_change"] = marauroa.util.fromProto(marauroa.rpeven
 	}
 });
 // Dummy comment to prevent accidental re-push of a rebase done into the wrong direction
+
+marauroa.rpeventFactory["bestiary"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
+	execute: function(rpobject) {
+		if (!this.hasOwnProperty("enemies")) {
+			// FIXME: proper logging of errors?
+			console.log("ERROR: event does not have \"enemies\" attribute");
+			return;
+		}
+
+		const title = "Bestiary";
+		var header = ["\"???\" = unknown"];
+
+		const hasRare = this["enemies"].includes("(rare)");
+		const hasAbnormal = this["enemies"].includes("(abnormal)");
+
+		// show explanation of "rare" & "abnormal" creatures in header
+		if (hasRare || hasAbnormal) {
+			var subheader = "";
+			if (!hasRare) {
+				subheader += "\"abnormal\"";
+			} else {
+				subheader += "\"rare\"";
+				if (hasAbnormal) {
+					subheader += " and \"abnormal\"";
+				}
+			}
+
+			header[1] = subheader + " creatures not required for achievements";
+		}
+
+		// spacing for clarity
+		header[2] = "------------------";
+
+		// FIXME: hack until a proper window is implemented
+		stendhal.ui.chatLog.addLine("normal", title + ":");
+		for (h of header) {
+			stendhal.ui.chatLog.addLine("normal", h);
+		}
+
+		const enemies = this["enemies"].split(";");
+		for (e of enemies) {
+			const info = e.split(",");
+			const name = info[0];
+			var solo = " ";
+			var shared = " ";
+			if (info[1] == "true") {
+				solo = "✔";
+			}
+			if (info[2] == "true") {
+				shared = "✔";
+			}
+
+			// FIXME: hack until a proper window is implemented
+			stendhal.ui.chatLog.addLine("normal", name + ":   solo [" + solo + "], shared [" + shared + "]");
+		}
+	}
+});

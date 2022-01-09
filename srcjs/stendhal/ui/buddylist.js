@@ -44,7 +44,13 @@ stendhal.ui.buddyList = {
 
 		var html = "";
 		for (var i = 0; i < buddies.length; i++) {
-			html += "<li class=" + buddies[i].status + ">" + stendhal.ui.html.esc(buddies[i].name) + "</li>";
+			html += "<li class=" + buddies[i].status + "><img src=\"";
+			if (buddies[i].status == "online") {
+				html += "/data/gui/buddy_online.png";
+			} else {
+				html += "/data/gui/buddy_offline.png";
+			}
+			html += "\"> " + stendhal.ui.html.esc(buddies[i].name) + "</li>";
 		}
 
 		if (stendhal.ui.buddyList.lastHtml !== html) {
@@ -112,19 +118,19 @@ stendhal.ui.buddyList = {
 	buildActions: function(actions) {
 		if (stendhal.ui.buddyList.current.className === "online") {
 			actions.push({
-				title: "Porozmawiaj",
+				title: "Talk",
 				action: function(entity) {
 					stendhal.ui.chatinput.setText("/msg "
-							+ stendhal.ui.buddyList.current.textContent
+							+ stendhal.ui.buddyList.current.textContent.trim()
 							+ " ");
 				}
 			});
 			actions.push({
-				title: "Gdzie",
+				title: "Where",
 				action: function(entity) {
 					var action = {
 						"type": "where",
-						"target": stendhal.ui.buddyList.current.textContent,
+						"target": stendhal.ui.buddyList.current.textContent.trim(),
 						"zone": marauroa.currentZoneName
 					};
 					marauroa.clientFramework.sendAction(action);
@@ -133,32 +139,42 @@ stendhal.ui.buddyList = {
 			// Invite
 		} else {
 			actions.push({
-				title: "Zostaw wiadomość",
+				title: "Leave Message",
 				action: function(entity) {
 					stendhal.ui.chatinput.setText("/storemessage "
-							+ stendhal.ui.buddyList.current.textContent
+							+ stendhal.ui.buddyList.current.textContent.trim()
 							+ " ");
 				}
 			});
 		}
 		actions.push({
-			title: "Usuń",
+			title: "Remove",
 			action: function(entity) {
 				var action = {
 					"type": "removebuddy",
-					"target": stendhal.ui.buddyList.current.textContent,
+					"target": stendhal.ui.buddyList.current.textContent.trim(),
 					"zone": marauroa.currentZoneName
 				};
 				marauroa.clientFramework.sendAction(action);
-				stendhal.ui.buddyList.removeBuddy(stendhal.ui.buddyList.current.textContent);
+				stendhal.ui.buddyList.removeBuddy(stendhal.ui.buddyList.current.textContent.trim());
 			}
 		});
 
 	},
 
 	onMouseUp: function(event) {
-		console.log(event);
-		stendhal.ui.buddyList.current = event.target;
-		new stendhal.ui.Menu(stendhal.ui.buddyList, event.pageX - 50, event.pageY - 5);
+
+		// get the <li> element. Ignore the click, if it was on the <ul> outside any <li>s.
+		stendhal.ui.buddyList.current = null;
+		if (event.target.tagName === "LI") {
+			stendhal.ui.buddyList.current = event.target;
+		} else if (event.target.tagName === "IMG") {
+			stendhal.ui.buddyList.current = event.target.parentElement;
+		}
+
+		if (stendhal.ui.buddyList.current) {
+			new stendhal.ui.Menu(stendhal.ui.buddyList,
+				Math.max(10, event.pageX - 50), event.pageY - 5);
+		}
 	}
 };

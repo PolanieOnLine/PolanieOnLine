@@ -11,9 +11,12 @@
 
 "use strict";
 
+var LandscapeRenderer = require("../../../build/ts/landscape/LandscapeRenderer").LandscapeRenderer;
+
 var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 stendhal.ui = stendhal.ui || {};
+
 
 /**
  * game window aka world view
@@ -29,7 +32,9 @@ stendhal.ui.gamewindow = {
 		var startTime = new Date().getTime();
 
 		if (marauroa.me && document.visibilityState === "visible") {
-      if (marauroa.currentZoneName === stendhal.data.map.currentZoneName) {
+			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
+				|| stendhal.data.map.currentZoneName === "int_vault"
+				|| stendhal.data.map.currentZoneName === "int_adventure_island") {
 				var canvas = document.getElementById("gamewindow");
 				this.targetTileWidth = 32;
 				this.targetTileHeight = 32;
@@ -44,18 +49,9 @@ stendhal.ui.gamewindow = {
 				var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
 				var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
 
-				for (var drawingLayer=0; drawingLayer < stendhal.data.map.layers.length; drawingLayer++) {
-					var name = stendhal.data.map.layerNames[drawingLayer];
-					if (name !== "protection" && name !== "collision" && name !== "objects"
-						&& name !== "blend_ground" && name !== "blend_roof") {
-						this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
-					}
-					if (name === "2_object") {
-						this.drawEntities();
-					}
-				}
+				stendhal.data.map.strategy.render(canvas, this, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
 
-        this.drawEntitiesTop();
+				this.drawEntitiesTop();
 				this.drawTextSprites();
 			}
 		}
@@ -72,7 +68,7 @@ stendhal.ui.gamewindow = {
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
-				let gid = layer[y * stendhal.data.map.numberOfXTiles + x];
+				let gid = layer[y * stendhal.data.map.zoneSizeX + x];
 				const flip = gid & 0xE0000000;
 				gid &= 0x1FFFFFFF;
 
@@ -206,26 +202,33 @@ stendhal.ui.gamewindow = {
 		var entity;
 		var startX;
 		var startY;
-		var timestampMouseDown;
 
 		function _onMouseDown(e) {
+			var pos = stendhal.ui.html.extractPosition(e);
 			if (stendhal.ui.globalpopup) {
 				stendhal.ui.globalpopup.close();
 			}
 
-			e.target.addEventListener("mousemove", onDrag);
-			e.target.addEventListener("mouseup", onMouseUp);
-			startX = e.offsetX;
-			startY = e.offsetY;
+			startX = pos.offsetX;
+			startY = pos.offsetY;
 
-			var x = e.offsetX + stendhal.ui.gamewindow.offsetX;
-			var y = e.offsetY + stendhal.ui.gamewindow.offsetY;
+			var x = pos.offsetX + stendhal.ui.gamewindow.offsetX;
+			var y = pos.offsetY + stendhal.ui.gamewindow.offsetY;
 			entity = stendhal.zone.entityAt(x, y);
-			timestampMouseDown = +new Date();
+			stendhal.ui.timestampMouseDown = +new Date();
+
+			if (e.type !== "dblclick") {
+				e.target.addEventListener("mousemove", onDrag);
+				e.target.addEventListener("mouseup", onMouseUp);
+				e.target.addEventListener("touchmove", onDrag);
+				e.target.addEventListener("touchend", onMouseUp);
+			} else if (entity == stendhal.zone.ground) {
+				entity.onclick(pos.offsetX, pos.offsetY, true);
+			}
 		}
 
 		function isRightClick(e) {
-			if (+new Date() - timestampMouseDown > 300) {
+			if (+new Date() - stendhal.ui.timestampMouseDown > 300) {
 				return true;
 			}
 			if (e.which) {
@@ -236,19 +239,23 @@ stendhal.ui.gamewindow = {
 		}
 
 		function onMouseUp(e) {
+			var pos = stendhal.ui.html.extractPosition(e);
 			if (isRightClick(e)) {
 				if (entity != stendhal.zone.ground) {
-					new stendhal.ui.Menu(entity, e.pageX - 50, e.pageY - 5);
+					new stendhal.ui.Menu(entity, pos.pageX - 50, pos.pageY - 5);
 				}
 			} else {
-				entity.onclick(e.offsetX, e.offsetY);
+				entity.onclick(pos.offsetX, pos.offsetY);
 			}
-			cleanUp(e);
+			cleanUp(pos);
+			pos.target.focus();
+			e.preventDefault();
 		}
 
 		function onDrag(e) {
-			var xDiff = startX - e.offsetX;
-			var yDiff = startY - e.offsetY;
+			var pos = stendhal.ui.html.extractPosition(e);
+			var xDiff = startX - pos.offsetX;
+			var yDiff = startY - pos.offsetY;
 			// It's not really a click if the mouse has moved too much.
 			if (xDiff * xDiff + yDiff * yDiff > 5) {
 				cleanUp(e);
@@ -259,22 +266,26 @@ stendhal.ui.gamewindow = {
 			entity = null;
 			e.target.removeEventListener("mouseup", onMouseUp);
 			e.target.removeEventListener("mousemove", onDrag);
+			e.target.removeEventListener("touchend", onMouseUp);
+			e.target.removeEventListener("touchmove", onDrag);
 		}
 
 		return _onMouseDown;
 	})(),
 
-  onMouseMove: function(e) {
-		var x = e.offsetX + stendhal.ui.gamewindow.offsetX;
-		var y = e.offsetY + stendhal.ui.gamewindow.offsetY;
+	onMouseMove: function(e) {
+		var pos = stendhal.ui.html.extractPosition(e);
+		var x = pos.offsetX + stendhal.ui.gamewindow.offsetX;
+		var y = pos.offsetY + stendhal.ui.gamewindow.offsetY;
 		var entity = stendhal.zone.entityAt(x, y);
 		document.getElementById("gamewindow").style.cursor = entity.getCursor(x, y);
 	},
 
 	// ***************** Drag and drop ******************
 	onDragStart: function(e) {
-		var draggedEntity = stendhal.zone.entityAt(e.offsetX + stendhal.ui.gamewindow.offsetX,
-				e.offsetY + stendhal.ui.gamewindow.offsetY);
+		var pos = stendhal.ui.html.extractPosition(e);
+		var draggedEntity = stendhal.zone.entityAt(pos.offsetX + stendhal.ui.gamewindow.offsetX,
+				pos.offsetY + stendhal.ui.gamewindow.offsetY);
 
 		var img = undefined;
 		if (draggedEntity.type === "item") {
@@ -300,12 +311,13 @@ stendhal.ui.gamewindow = {
 	},
 
 	onDrop: function(e) {
+		var pos = stendhal.ui.html.extractPosition(e);
 		var datastr = e.dataTransfer.getData("Text") || e.dataTransfer.getData("text/x-stendhal");
 		if (datastr) {
 			var data = JSON.parse(datastr);
 			var action = {
-				"x": Math.floor((e.offsetX + stendhal.ui.gamewindow.offsetX) / 32).toString(),
-				"y": Math.floor((e.offsetY + stendhal.ui.gamewindow.offsetY) / 32).toString(),
+				"x": Math.floor((pos.offsetX + stendhal.ui.gamewindow.offsetX) / 32).toString(),
+				"y": Math.floor((pos.offsetY + stendhal.ui.gamewindow.offsetY) / 32).toString(),
 				"zone" : data.zone
 			};
 			var id = data.path.substr(1, data.path.length - 2);
@@ -320,7 +332,7 @@ stendhal.ui.gamewindow = {
 
 			// if ctrl is pressed, we ask for the quantity
 			if (e.ctrlKey) {
-				new stendhal.ui.DropNumberDialog(action, e.pageX - 50, e.pageY - 25);
+				new stendhal.ui.DropNumberDialog(action, pos.pageX - 50, pos.pageY - 25);
 			} else {
 				marauroa.clientFramework.sendAction(action);
 			}
@@ -331,5 +343,6 @@ stendhal.ui.gamewindow = {
 
 	onContentMenu: function(e) {
 		e.preventDefault();
-  }
+	}
+
 };

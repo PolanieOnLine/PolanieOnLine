@@ -8,6 +8,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
+
 "use strict";
 
 var marauroa = window.marauroa = window.marauroa || {};
@@ -37,8 +38,10 @@ marauroa.rpobjectFactory["game_board"] = marauroa.util.fromProto(marauroa.rpobje
 		return false;
 	},
 
-  getCursor: function(x, y) {
+	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/walk.png) 1 3, auto";
 	}
+
 });
+
 }());

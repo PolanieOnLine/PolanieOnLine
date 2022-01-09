@@ -32,9 +32,12 @@ marauroa.rpobjectFactory["npc"] = marauroa.util.fromProto(marauroa.rpobjectFacto
 		if (typeof(this["unnamed"]) == "undefined") {
 			this.drawTitle(ctx, localX, localY);
 		}
-  },
+	},
 
 	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/look.png) 1 3, auto";
 	}
+
 });
+
+marauroa.rpobjectFactory["training_dummy"] = marauroa.rpobjectFactory["npc"];

@@ -34,7 +34,10 @@ marauroa.rpobjectFactory["sign"] = marauroa.util.fromProto(marauroa.rpobjectFact
 		return true;
 	},
 
-  getCursor: function(x, y) {
+	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/look.png) 1 3, auto";
 	}
 });
+
+marauroa.rpobjectFactory["blackboard"] = marauroa.rpobjectFactory["sign"];
+marauroa.rpobjectFactory["rented_sign"] = marauroa.rpobjectFactory["sign"];

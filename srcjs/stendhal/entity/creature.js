@@ -34,7 +34,8 @@ marauroa.rpobjectFactory["creature"] = marauroa.util.fromProto(marauroa.rpobject
 		this.addSpeechBubble(text);
 	},
 
-  getCursor: function(x, y) {
+	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/attack.png) 1 3, auto";
 	}
+
 });

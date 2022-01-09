@@ -84,7 +84,7 @@ stendhal.ui.travellog = {
 		html += "</div>"
 		html += "</div>";
 
-		var popup = new stendhal.ui.Popup("Dziennik Zadań", html, 160, 50);
+		var popup = new stendhal.ui.Popup("Travel Log", html, 160, 50);
 
 		progressTypeButtons = document.querySelectorAll(".progressTypeButton").forEach(function(button) {
 			button.addEventListener("click", function(e) {

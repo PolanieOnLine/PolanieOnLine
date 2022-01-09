@@ -2,8 +2,19 @@
 
 var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
-
 stendhal.ui = stendhal.ui || {};
+
+
+stendhal.ui.outfitCount = {
+	"hat": 14,
+	"hair": 48,
+	"mask": 9,
+	"eyes": 26,
+	"mouth": 5,
+	"head":  4,
+	"dress": 63,
+	"body": 3
+}
 
 stendhal.ui.OutfitDialog = function() {
 	if (stendhal.ui.OutfitDialog.instance != null) {
@@ -74,7 +85,7 @@ stendhal.ui.OutfitDialog = function() {
 		}
 
 		_getPartSprite(part, index, color = null) {
-			const fname = "/data/sprites/outfit/" + part + "/" + part + "_0" + indexString(index) + ".png";
+			const fname = "/data/sprites/outfit/" + part + "/" + part + "_" + indexString(index) + ".png";
 			if (color != null) {
 				return stendhal.data.sprites.getFilteredWithPromise(fname, "trueColor", color);
 			}
@@ -176,7 +187,6 @@ stendhal.ui.OutfitDialog = function() {
 		_drawGradientPart() {
 			if (this.enabled) {
 				const gradient = this.gradCtx.createLinearGradient(0, 0, this.baseImage.width, 0);
-
 				const stops = this._calculateGradientStops();
 				gradient.addColorStop(0, this._rgbToCssString(stops[0]));
 				gradient.addColorStop(0.5, this._rgbToCssString(stops[1]));
@@ -284,56 +294,56 @@ stendhal.ui.OutfitDialog = function() {
 		}
 
 		set color(rgb) {
-				if (rgb != null) {
-					this.enabled = true;
-					const hsl = stendhal.data.sprites.filter.rgb2hsl(stendhal.data.sprites.filter.splitrgb(rgb));
-					this.hX = hsl[2] * this.baseImage.width;
-					let bestDelta = Number.MAX_VALUE;
-					for (let i = 0; i < 4; i++) {
-						for (let j = 0; j < 4; j++) {
-							const hs = this._hsMap[i][j];
-							const hueDelta = hs[0] - hsl[0];
-							const satDelta = hs[1] - hsl[1];
-							const delta = (hueDelta * hueDelta) + (satDelta * satDelta);
-							if (delta < bestDelta) {
-								bestDelta = delta;
-								this._x = i;
-								this._y = j;
-							}
-						}
-					}
-				} else {
-					this.enabled = false;
-				}
-			}
-
-			_createColorMap() {
-				const hues = [0.05, 0.07, 0.09, 0.11];
-				const saturations = [0.70, 0.55, 0.40, 0.25];
-				const hsMap = [[],[],[],[]];
-				const colors = [[],[],[],[]];
+			if (rgb != null) {
+				this.enabled = true;
+				const hsl = stendhal.data.sprites.filter.rgb2hsl(stendhal.data.sprites.filter.splitrgb(rgb));
+				this.hX = hsl[2] * this.baseImage.width;
+				let bestDelta = Number.MAX_VALUE;
 				for (let i = 0; i < 4; i++) {
 					for (let j = 0; j < 4; j++) {
-						const hue = hues[j];
-						const sat = saturations[i];
-						hsMap[i].push([hue, sat]);
-						const color = stendhal.data.sprites.filter.hsl2rgb([hue, sat, 0.5]);
-						colors[i].push(color);
+						const hs = this._hsMap[i][j];
+						const hueDelta = hs[0] - hsl[0];
+						const satDelta = hs[1] - hsl[1];
+						const delta = (hueDelta * hueDelta) + (satDelta * satDelta);
+						if (delta < bestDelta) {
+							bestDelta = delta;
+							this._x = i;
+							this._y = j;
+						}
 					}
 				}
-				this._hsMap = hsMap;
-				this._colorMap = colors;
+			} else {
+				this.enabled = false;
 			}
+		}
 
-			_createBaseImage(width, height) {
-				this._createColorMap();
-				const img = document.createElement("canvas");
-				img.width  = width;
-				img.height = height;
-				const ctx = img.getContext("2d");
+		_createColorMap() {
+			const hues = [0.05, 0.07, 0.09, 0.11];
+			const saturations = [0.70, 0.55, 0.40, 0.25];
+			const hsMap = [[],[],[],[]];
+			const colors = [[],[],[],[]];
+			for (let i = 0; i < 4; i++) {
+				for (let j = 0; j < 4; j++) {
+					const hue = hues[j];
+					const sat = saturations[i];
+					hsMap[i].push([hue, sat]);
+					const color = stendhal.data.sprites.filter.hsl2rgb([hue, sat, 0.5]);
+					colors[i].push(color);
+				}
+			}
+			this._hsMap = hsMap;
+			this._colorMap = colors;
+		}
 
-				const blockWidth = width / 4;
-				const blockHeight = height / 4;
+		_createBaseImage(width, height) {
+			this._createColorMap();
+			const img = document.createElement("canvas");
+			img.width  = width;
+			img.height = height;
+			const ctx = img.getContext("2d");
+
+			const blockWidth = width / 4;
+			const blockHeight = height / 4;
 
 			for (let x = 0; x < 4; x++) {
 				for (let y = 0; y < 4; y++) {
@@ -361,6 +371,8 @@ stendhal.ui.OutfitDialog = function() {
 			this.ctx.strokeStyle = "white";
 			this.ctx.strokeRect(this.x * this._blockWidth, this.y * this._blockHeight, this._blockWidth, this._blockHeight);
 		}
+
+
 	}
 
 	const content = "<div class='background'>" +
@@ -371,6 +383,18 @@ stendhal.ui.OutfitDialog = function() {
 	"<button type='button' id='setoutfitprevhair'>&lt;</button>"+
 	"<canvas id='setoutfithaircanvas' width='48' height='64'></canvas>" +
 	"<button type='button' id='setoutfitnexthair'>&gt;</button>" +
+	"</div>" +
+
+	"<div class='horizontalgroup'>" +
+	"<button type='button' id='setoutfitpreveyes'>&lt;</button>" +
+	"<canvas id='setoutfiteyescanvas' width='48' height='64'></canvas>" +
+	"<button type='button' id='setoutfitnexteyes'>&gt;</button><br>" +
+	"</div>" +
+
+	"<div class='horizontalgroup'>" +
+	"<button type='button' id='setoutfitprevmouth'>&lt;</button>" +
+	"<canvas id='setoutfitmouthcanvas' width='48' height='64'></canvas>" +
+	"<button type='button' id='setoutfitnextmouth'>&gt;</button><br>" +
 	"</div>" +
 
 	"<div class='horizontalgroup'>" +
@@ -404,6 +428,15 @@ stendhal.ui.OutfitDialog = function() {
 
 	"<div class='verticalgroup'>" +
 	"<div class='horizontalgroup'>" +
+	"<input type='checkbox' id='setoutfiteyescolortoggle'>" +
+	"<label for='setoutfiteyescolortoggle'>Eyes color</label>" +
+	"</div>" +
+	"<canvas id='setoutfiteyescolorcanvas' width='80' height='52'></canvas>" +
+	"<canvas id='setoutfiteyescolorgradient' width='80' height='10'></canvas>" +
+	"</div>" +
+
+	"<div class='verticalgroup'>" +
+	"<div class='horizontalgroup'>" +
 	"<input type='checkbox' id='setoutfitskincolortoggle'>" +
 	"<label for='setoutfitskincolortoggle'>Skin color</label>" +
 	"</div>" +
@@ -421,44 +454,47 @@ stendhal.ui.OutfitDialog = function() {
 	"</div>" +
 	"</div>" + // color selectors
 
+	"<div class='verticalgroup'>" + // hat & mask part selectors
+
+	"<div class='horizontalgroup'>" +
+	"<button type='button' id='setoutfitprevhat'>&lt;</button>"+
+	"<canvas id='setoutfithatcanvas' width='48' height='64'></canvas>" +
+	"<button type='button' id='setoutfitnexthat'>&gt;</button>" +
+	"</div>" +
+
+	"<div class='horizontalgroup'>" +
+	"<button type='button' id='setoutfitprevmask'>&lt;</button>"+
+	"<canvas id='setoutfitmaskcanvas' width='48' height='64'></canvas>" +
+	"<button type='button' id='setoutfitnextmask'>&gt;</button>" +
+	"</div>" +
+
+	"</div>" + // hat & mask part selectors
+
 	"<div><canvas id='setoutfitcompositecanvas' width='48' height='64'></canvas></div>" +
 	"</div>" + // horizontal group
-	"<div align='right'><button type='button' id='setoutfitcancel'>Zamknij</button>" +
-	"<button type='button' id='setoutfitapply'>Zmień wygląd</button></div>" +
+	"<div align='right'><button type='button' id='setoutfitcancel'>Cancel</button>" +
+	"<button type='button' id='setoutfitapply'>Change Outfit</button></div>" +
 
 	"</div>"; //bg
 
 	function indexString(index) {
-		if (index < 10) {
-			return "0" + index;
+		if (index > -1 && index < 100) {
+			if (index < 10) {
+				return "00" + index;
+			} else {
+				return "0" + index;
+			}
 		}
 		return "" + index;
 	}
 
-	function makeSelector(part, partChanged) {
-		const outfit = marauroa.me["outfit"];
-		let outfitCount;
-		let divider;
-		switch (part) {
-			case "hair":
-				divider = 1000000;
-				outfitCount = 85;
-				break;
-			case "head":
-				divider = 10000;
-				outfitCount = 22;
-				break;
-			case "dress":
-				divider = 100;
-				outfitCount = 73;
-				break;
-			case "body":
-				divider = 1;
-				outfitCount = 28;
-				break;
+	function makeSelector(part, index, partChanged) {
+		// FIXME: selector should be showing a default if index is less than 0
+		if (index < 0 || index === undefined) {
+			index = 0;
 		}
-		const index = Math.floor(outfit/divider) % 100;
-		const selector = new PartSelector(part, index, outfitCount - 1, partChanged);
+
+		const selector = new PartSelector(part, index, stendhal.ui.outfitCount[part] - 1, partChanged);
 
 		document.getElementById("setoutfitprev" + part).addEventListener("click", function(e) {
 			selector.previous();
@@ -470,7 +506,8 @@ stendhal.ui.OutfitDialog = function() {
 
 		return selector;
 	}
- 	function drawComposite() {
+
+	function drawComposite() {
 		function draw(ctx, selector) {
 			const image = selector.image;
 			image.then((img) => ctx.drawImage(img, -48, -128));
@@ -479,25 +516,56 @@ stendhal.ui.OutfitDialog = function() {
 		const ctx = canvas.getContext("2d");
 		ctx.fillStyle = "white";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+		var drawHair = true;
+		// hair is not drawn under certain hats/helmets
+		if (stendhal.HATS_NO_HAIR !== null && stendhal.HATS_NO_HAIR !== undefined) {
+			drawHair = !stendhal.HATS_NO_HAIR.includes(parseInt(hatSelector.index));
+		}
+
 		draw(ctx, bodySelector);
-		draw(ctx, headSelector);
 		draw(ctx, dressSelector);
-		draw(ctx, hairSelector);
+		draw(ctx, headSelector);
+		draw(ctx, mouthSelector);
+		draw(ctx, eyesSelector);
+		draw(ctx, maskSelector);
+		if (drawHair) {
+			draw(ctx, hairSelector);
+		}
+		draw(ctx, hatSelector);
 	}
 
 	function partChanged() {
 		drawComposite();
 	}
- 	self.popup = new stendhal.ui.Popup("Zmień wygląd", content, 300, 200);
+
+	self.popup = new stendhal.ui.Popup("Set outfit", content, 300, 200);
 	self.popup.onClose = function(e) {
 		stendhal.ui.OutfitDialog.instance = null;
 	}
 	stendhal.ui.OutfitDialog.instance = self;
 
-	const hairSelector = makeSelector("hair", partChanged);
-	const headSelector = makeSelector("head", partChanged);
-	const bodySelector = makeSelector("body", partChanged);
-	const dressSelector = makeSelector("dress", partChanged);
+
+	let outfit = marauroa.me["outfit_ext_orig"];
+	if (outfit === undefined) {
+		outfit = marauroa.me["outfit_ext"];
+	}
+
+	let entries = outfit.split(",");
+	let currentOutfit = {};
+	for (let i = 0; i < entries.length; i++) {
+		 let entry = entries[i].split("=");
+		 currentOutfit[entry[0]] = entry[1];
+	}
+
+	const hatSelector = makeSelector("hat", currentOutfit["hat"], partChanged);
+	const hairSelector = makeSelector("hair", currentOutfit["hair"], partChanged);
+	const maskSelector = makeSelector("mask", currentOutfit["mask"], partChanged);
+	const eyesSelector = makeSelector("eyes", currentOutfit["eyes"], partChanged);
+	const mouthSelector = makeSelector("mouth", currentOutfit["mouth"], partChanged);
+	const headSelector = makeSelector("head", currentOutfit["head"], partChanged);
+	const bodySelector = makeSelector("body", currentOutfit["body"], partChanged);
+	const dressSelector = makeSelector("dress", currentOutfit["dress"], partChanged);
 
 	function initialColorValue(part) {
 		const colors = marauroa.me["outfit_colors"];
@@ -506,7 +574,13 @@ stendhal.ui.OutfitDialog = function() {
 			if (part === "body" || part === "head") {
 				colorName = "skin";
 			}
-			return colors[colorName];
+
+			let layer_color = colors[colorName + "_orig"];
+			if (layer_color === undefined) {
+				layer_color = colors[colorName];
+			}
+
+			return layer_color;
 		}
 		return null;
 	}
@@ -533,6 +607,7 @@ stendhal.ui.OutfitDialog = function() {
 	}
 
 	const hairColorSelector = createColorSelector(ColorSelector, "hair", hairSelector);
+	const eyesColorSelector = createColorSelector(ColorSelector, "eyes", eyesSelector);
 	const dressColorSelector = createColorSelector(ColorSelector, "dress", dressSelector);
 	const skinColorSelector = createColorSelector(PaletteColorSelector, "skin", headSelector, bodySelector);
 
@@ -542,16 +617,29 @@ stendhal.ui.OutfitDialog = function() {
 		self.popup.close();
 	});
 	document.getElementById("setoutfitapply").addEventListener("click", function(e) {
-		const outfitCode = hairSelector.index + headSelector.index +
-			dressSelector.index + bodySelector.index;
+		const outfitString =
+				"body=" + bodySelector.index.toString() + "," +
+				"dress=" + dressSelector.index.toString() + "," +
+				"head=" + headSelector.index.toString() + "," +
+				"mouth=" + mouthSelector.index.toString() + "," +
+				"eyes=" + eyesSelector.index.toString() + "," +
+				"mask=" + maskSelector.index.toString() + "," +
+				"hair=" + hairSelector.index.toString() + "," +
+				"hat=" + hatSelector.index.toString();
+
 		const action = {
-				"type": "outfit",
+				"type": "outfit_ext",
 				"zone": marauroa.currentZoneName,
-				"value": outfitCode
+				"value": outfitString
 		};
+
 		let color = hairColorSelector.color;
 		if (color != null) {
 			action["hair"] = color.toString();
+		}
+		color = eyesColorSelector.color;
+		if (color != null) {
+			action["eyes"] = color.toString();
 		}
 		color = dressColorSelector.color;
 		if (color != null) {

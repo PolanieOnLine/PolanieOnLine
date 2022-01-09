@@ -8,6 +8,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
+
 "use strict";
 
 var marauroa = window.marauroa = window.marauroa || {};
@@ -18,6 +19,9 @@ stendhal.ui = stendhal.ui || {};
  * @constructor
  */
 stendhal.ui.Popup = function(title, content, x, y) {
+
+	const closeSound = "click-1";
+
 	this.close = function() {
 		if (that.onClose) {
 			that.onClose.call(that);
@@ -29,12 +33,14 @@ stendhal.ui.Popup = function(title, content, x, y) {
 	};
 
 	function createTitleHtml() {
-		return "<div class='popuptitle'><div class='popuptitleclose'>X</div>" + stendhal.ui.html.esc(title) + "</div>";
+		return "<div class='popuptitle background'><div class='popuptitleclose'>X</div>" + stendhal.ui.html.esc(title) + "</div>";
 	}
 
 	function onClose(e) {
 		that.close();
 		e.preventDefault();
+
+		stendhal.ui.sound.playGlobalizedEffect(closeSound);
 	}
 
 	/**
@@ -65,6 +71,7 @@ stendhal.ui.Popup = function(title, content, x, y) {
 		window.removeEventListener("mouseup", onMouseUpDuringDrag, true);
 	}
 
+
 	var that = this;
 	var popupcontainer = document.getElementById("popupcontainer");
 	this.popupdiv = document.createElement('div');
@@ -82,6 +89,7 @@ stendhal.ui.Popup = function(title, content, x, y) {
 	popupcontainer.appendChild(this.popupdiv);
 }
 
+
 /**
  * @constructor
  */
@@ -93,15 +101,26 @@ stendhal.ui.Menu = function(entity, x, y) {
 	var actions = [];
 	var that = this;
 	entity.buildActions(actions);
-	if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 20) {
+	if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600) {
 		actions.push({
-			title: "(*) Zbadaj (inspect)",
+			title: "(*) Inspect",
 			action: function(entity) {
 				console.log(entity);
 			}
 		});
+		// FIXME: cannot destroy items equipped in player's inventory slots
 		actions.push({
-			title: "(*) Zmień (alter)",
+			title: "(*) Destroy",
+			action: function(entity) {
+				var action = {
+					"type": "destroy",
+					"target": "#" + entity["id"],
+				}
+				marauroa.clientFramework.sendAction(action);
+			}
+		});
+		actions.push({
+			title: "(*) Alter",
 			action: function(entity) {
 				stendhal.ui.chatinput.setText("/alter #"
 						+ entity["id"]
@@ -114,7 +133,7 @@ stendhal.ui.Menu = function(entity, x, y) {
 		content += "<button id=\"actionbutton." + i + "\">" + stendhal.ui.html.esc(actions[i].title) + "</button><br>";
 	}
 	content += "</div>";
-	this.popup = new stendhal.ui.Popup("Działanie", content, x, y);
+	this.popup = new stendhal.ui.Popup("Action", content, x, y);
 
 	this.popup.popupdiv.addEventListener("click", function(e) {
 		var i = e.target.id.substring(13);
@@ -132,7 +151,7 @@ stendhal.ui.Menu = function(entity, x, y) {
 					"target_path": entity.getIdPath(),
 					"zone": marauroa.currentZoneName
 				};
-        // for top level entities, include "target", which is required for example on attack-action
+				// for top level entities, include "target", which is required for example on attack-action
 				if ('[' + entity.id + ']' === entity.getIdPath()) {
 					action['target'] = '#' + entity.id;
 				}
@@ -175,9 +194,10 @@ stendhal.ui.DropNumberDialog = function(action, x, y) {
 		this.popup.close();
 		stendhal.ui.globalpopup = null;
 	}
-  document.getElementById("dropnumberdialogvalue").focus();
+	document.getElementById("dropnumberdialogvalue").focus();
 	stendhal.ui.globalpopup = this;
 }
+
 
 /**
  * @constructor
@@ -187,10 +207,10 @@ stendhal.ui.ImageViewer = function(title, caption, path) {
 		stendhal.ui.globalpopup.popup.close();
 	}
 
- 	var content = "<h3>" + stendhal.ui.html.esc(caption) + "</h3><img src=\"" + stendhal.ui.html.esc(path) + "\">";
+	var content = "<h3>" + stendhal.ui.html.esc(caption) + "</h3><img src=\"" + stendhal.ui.html.esc(path) + "\">";
 	this.popup = new stendhal.ui.Popup(title, content, 100, 50);
 
- 	this.close = function() {
+	this.close = function() {
 		this.popup.close();
 		stendhal.ui.globalpopup = null;
 	}

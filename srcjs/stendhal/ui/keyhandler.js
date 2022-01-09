@@ -8,6 +8,8 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
+
+
 "use strict";
 
 var marauroa = window.marauroa = window.marauroa || {};
@@ -54,15 +56,15 @@ stendhal.ui.keyhandler = {
 			var dir = stendhal.ui.keyhandler.extractDirectionFromKeyCode(code);
 			var action = {"type": type, "dir": ""+dir};
 			marauroa.clientFramework.sendAction(action);
-    } else {
-      // move focus to chat-input on keydown
+		} else {
+			// move focus to chat-input on keydown
 			// but don't do that for Ctrl+C, etc.
 			if (!event.altKey && !event.metaKey && !event.ctrlKey && event.key !== "Control") {
 				if (document.activeElement.localName !== "input") {
 					document.getElementById("chatinput").focus();
 				}
 			}
-    }
+		}
 	},
 
 	onKeyUp: function(e) {

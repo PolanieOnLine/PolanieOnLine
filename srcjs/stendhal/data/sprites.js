@@ -16,6 +16,9 @@ stendhal.data = stendhal.data || {};
 
 stendhal.data.sprites = {
 	get: function(filename) {
+		if (!filename) {
+			return {};
+		}
 		if (typeof(this[filename]) != "undefined") {
 			this[filename].counter++;
 			return this[filename];
@@ -94,7 +97,7 @@ stendhal.data.sprites = {
 	 * @param {number=} param
 	 */
 	getFiltered: function(fileName, filter, param) {
-    const img = this.get(fileName);
+		const img = this.get(fileName);
 		if (!img) {
 			return null;
 		}
@@ -154,6 +157,7 @@ stendhal.data.sprites = {
 			return filtered;
 		});
 	},
+
 
 	/** Image filters */
 	filter: {

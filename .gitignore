@@ -48,6 +48,8 @@ build_server_xmlconf
 /*.cert
 /*.csr
 /map.map
+/hs_err_*.log
+/node_modules/
 /buildtools/launch4j/polanieonline-starter.exe
 /src/games/stendhal/client/update/*.csr
 *.cmd

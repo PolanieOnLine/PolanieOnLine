@@ -40,9 +40,10 @@ marauroa.rpobjectFactory["domesticanimal"] = marauroa.util.fromProto(marauroa.rp
 		}
 	},
 
-  getCursor: function(x, y) {
+	getCursor: function(x, y) {
 		return "url(/data/sprites/cursor/look.png) 1 3, auto";
 	}
+
 });
 
 marauroa.rpobjectFactory["sheep"] = marauroa.util.fromProto(marauroa.rpobjectFactory["domesticanimal"], {
@@ -50,25 +51,9 @@ marauroa.rpobjectFactory["sheep"] = marauroa.util.fromProto(marauroa.rpobjectFac
 	largeWeight: 60
 });
 
-marauroa.rpobjectFactory["goat"] = marauroa.util.fromProto(marauroa.rpobjectFactory["domesticanimal"], {
-	imagePath: "/data/sprites/goat.png",
-	largeWeight: 60
-});
-
 marauroa.rpobjectFactory["cat"] = marauroa.util.fromProto(marauroa.rpobjectFactory["domesticanimal"], {
 	imagePath: "/data/sprites/cat.png",
 	largeWeight: 20
-});
-
-marauroa.rpobjectFactory["owczarek"] = marauroa.util.fromProto(marauroa.rpobjectFactory["domesticanimal"], {
-	imagePath: "/data/sprites/owczarek.png",
-	largeWeight: 20
-});
-
-marauroa.rpobjectFactory["owczarek_podhalanski"] = marauroa.util.fromProto(marauroa.rpobjectFactory["domesticanimal"], {
-	imagePath: "/data/sprites/owczarek_podhalanski.png",
-	largeWeight: 20,
-	title: "owczarek podhalanski"
 });
 
 marauroa.rpobjectFactory["baby_dragon"] = marauroa.util.fromProto(marauroa.rpobjectFactory["domesticanimal"], {

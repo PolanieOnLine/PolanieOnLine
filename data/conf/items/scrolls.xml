@@ -458,4 +458,25 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
+
+	<item name="zwój tarnów">
+    	<type class="scroll" subclass="tarnow" tileid="-1"/>
+    	<description>Oto zwój tarnów, który zabierze cię z powrotem do miasteczka Tarnów.</description>
+    	<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
+    	<attributes>
+			<infostring value="0_tarnow_city 50 72"/>
+      		<quantity value="1"/>
+    	</attributes>
+    	<weight value="0.01"/>
+		<value value="1000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
 </items>
