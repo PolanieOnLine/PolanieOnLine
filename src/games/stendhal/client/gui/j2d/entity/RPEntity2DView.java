@@ -677,9 +677,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 
 				custom_shadow = "data/sprites/";
 				if (entity instanceof Creature) {
-					custom_shadow += "monsters/stendhal/";
-				} else if (entity instanceof Creature) {
-					custom_shadow += "monsters/pol/";
+					custom_shadow += "monsters/";
 				} else if (entity instanceof NPC) {
 					custom_shadow += "npc/";
 				}
