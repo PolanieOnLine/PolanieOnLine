@@ -2,14 +2,17 @@ Changelog
 ---------
 1.26
 *klient*
-- Dodano nowe grafiki potworów
-- Dodano nowy wygląd kursora
+- Dodano nowe grafiki potworów & przedmiotów
 - Dodano nową opcję w ustawieniach wizualnych klienta, aby móc zmienić na stary kursor
 - Dodano nowe włosy oraz strój do wyboru
-- Poprawiono grafiki NPC
-- Poprawiono grafiki przedmiotów
+- Poprawiono grafiki NPC & przedmiotów
+- Poprawiono grafiki potworów:
+	- szczur, szczur jaskiniowy, krwiożerczy szczur, szczur zombie
+- Zmieniono wygląd kursorów
 
 *świat*
+- Dodano nowy przedmiot: (1)
+	- zwój tarnów
 - Dodano nowe potwory: (4)
 	- zielone smoczysko
 	- niebieskie smoczysko
@@ -44,7 +47,10 @@ Changelog
 	- xenocium
 	- czarownica z Aenye
 	- zbójnik górski herszt, zbójnik leśny zwiadowca, banita
+- Dodano bryłę lodu do listy wymaganych przedmiotów przez Gazdę Wojtka (burmistrza Zakopane)
+- Dodano możliwość sprzedania pióra cherubina & lilith u Kelasa
 - Zaktualizowano niektórym potworom opisy
+- Zaktualizowano cennik skupu u Kelasa i Bogusia
 - Zmieniono statystyki potwora "czarne smoczysko", aby był silniejszy od swoich odpowiedników
 - Zmieniono ilość otrzymywanego bonusu do zdrowia za każde odrodzenie (teraz maksymalnie 6,000 bonusu do zdrowia zamiast 17,850)
 - Zmieniono czas odrodzenia dla cherubina oraz lilith
