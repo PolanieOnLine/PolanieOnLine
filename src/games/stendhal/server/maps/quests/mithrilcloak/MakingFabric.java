@@ -76,7 +76,7 @@ class MakingFabric {
 	private void makeThreadStep() {
     	final SpeakerNPC npc = npcs.get("Vincento Price");
 		
-		npc.addReply("przędza","Bądź cicho. Dobrze? Utkam jedwabną nici pochodzącą z #'gruczołów przędzy' królowej pająków. Jeżeli chcesz, abym to zrobiła to powiedz #zrób.");
+		npc.addReply("przędza","Bądź cicho. Dobrze? Utkam jedwabną nici pochodzącą z #'gruczołów przędzy' królowej pająków. Jeżeli chcesz, abym to zrobił to powiedz #zrób.");
 		npc.addReply("gruczołów przędzy","Jak już powiedziałam pochodzą od królowa pająków."); 
 				
 		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
@@ -141,7 +141,7 @@ class MakingFabric {
 			 *            The player who wants to fetch the product
 			 */
 			@Override
-				public void giveProduct(final EventRaiser npc, final Player player) {
+			public void giveProduct(final EventRaiser npc, final Player player) {
 				final String orderString = player.getQuest(mithrilcloak.getQuestSlot());
 				final String[] order = orderString.split(";");
 				final int numberOfProductItems = Integer.parseInt(order[1]);
@@ -154,8 +154,8 @@ class MakingFabric {
 							+ getProductName()
 							+ ". Skończę za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
 				} else {
-					npc.say("Dałem Tobie "
-							+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + " dla mojego studenta Borisa Karlova. Zabierz je od niego.");
+					npc.say("Dałem "
+							+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + " mojemu uczniowi Borisa Karlova. Podejdź do niego i zabierz.");
 					player.notifyWorldAboutChanges();
 				}
 			}
@@ -172,7 +172,7 @@ class MakingFabric {
 					public void fireRequestOK(final ItemParserResult res, Player player, Sentence sentence, EventRaiser npc) {
 						// Find out how much items we shall produce.
 						if (res.getAmount() < 40) {
-							npc.say("Chcesz kilka? Nie będę marnowała na to czasu! Każdy przyzwoity kawałek materiału potrzebuje co najmniej 40 szpulek nici! Powinieneś powiedzieć #zrób #40.");
+							npc.say("Chcesz kilka? Nie będę marnował na to czasu! Każdy przyzwoity kawałek materiału potrzebuje co najmniej 40 szpulek nici! Powinieneś powiedzieć #zrób #40.");
 							return;
 						} else if (res.getAmount() > 1000) {
 							/*logger.warn("Decreasing very large amount of "

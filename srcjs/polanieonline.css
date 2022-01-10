@@ -1,37 +1,65 @@
-* { margin: 0 auto; padding: 0 auto; }
-body {font-family: "Arial"; background-image: url("../data/gui/panelwood120.jpg");}
-
-li.online {color: #0A0}
-li.offline {color: #A00}
-#buddyList {
-	border: 1px solid black;
-	width: 128px;
-	height: 250px;
-	float: left;
-	overflow:scroll;
+body {
+  font-family: "Arial";
+  padding: 0;
+  margin: 0;
 }
+
+.hidden {
+  display: none;
+}
+
+li.online {
+  color: #0A0
+}
+
+li.offline {
+  color: #AAA
+}
+
+#buddyList {
+  border: 1px solid black;
+  width: 128px;
+  height: 250px;
+  float: left;
+  overflow: scroll
+}
+
 #buddyList ul {
-	cursor: default;
-	list-style-type: none;
-	margin:0;
-	padding:0.1em;
+  cursor: default;
+  list-style-type: none;
+  margin: 0;
+  padding: 0.1em;
+}
+
+#menubutton {
+  width: 75%;
+}
+
+#soundbutton {
+  width: 20%;
+  padding: 0;
 }
 
 div.itemSlot {
-	width:32px;
-	height:32px;
-	background-repeat: no-repeat;
-	border: 1px solid black;
-	background-color:#CD853F;
-	float: left;
-	padding: 1px;
-	margin: 2px;
-	text-align: right;
-	color:#FFF;
-	font-weight: bold;
-	font-size:10px;
-	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+  border: 1px solid black;
+  background-color: #CCC;
+  float: left;
+  padding: 1px;
+  margin: 2px;
+  text-align: right;
+  color: #FFF;
+  font-weight: bold;
+  font-size: 10px;
+  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }
+
+div.quickPickup div.itemSlot {
+  cursor: url(/data/sprites/cursor/itempickupfromslot.png) 1 3, auto;
+}
+
 .equipment { position:relative; height:210px; border: 1px solid black; }
 /* Right panel */
 #neck0 {position:absolute; top:20px; left:7px}
@@ -48,163 +76,230 @@ div.itemSlot {
 #cloak0 {position:absolute; top:20px; left:84px}
 #lhand0 {position:absolute; top:60px; left:84px}
 #glove0 {position:absolute; top:100px; left:84px}
-#money0 {position:absolute; top:140px; left:84px}
-
+#pouch0 {position:absolute; top:140px; left:84px}
 
 #chat {
-	height: 75px; border: 1px solid #000; padding:0.5em;
-	overflow-y: scroll; word-wrap:break-word; display: block;
-	background:	#603000; color: #AAE5C1; font-weight: 500;
+  height: 190px;
+  border: 1px solid #000;
+  padding: 0.5em;
+  overflow-y: scroll;
+  word-wrap: break-word;
+  display: block;
+  color: #000;
+  background-color: #FFF;
 }
 
 #zoneinfo {
-	 color: #FFF;
-	 background-color: #000;
+  color: #FFF;
+  background-color: #000;
 }
 
 #stats {
-	border: 1px solid black;
-	cursor: default;
-	width: 125px;
-	float: left;
-	font-size: 0.8em;
-	white-space: pre;
-	padding: 0.1em;
-	color: white;
+  border: 1px solid black;
+  cursor: default;
+  width: 128px;
+  float: left;
+  font-size: 0.8em;
+  white-space: pre;
+  padding: 0.1em;
 }
 
-div.logerror {color: #F00}
-div.logprivmsg {color: #444}
-div.logclient {color: #888}
-div.logerror {color: #F00}
-div.loginformation {color: #ffc800}
-div.lognegative {color: #f00}
-div.lognormal {color: #FFF}
-div.logpositive {color: #0f0}
-div.loggroup {color: #633d8b}
-div.logemote {color: #633d8b}
-div.logresponse {color: #006400}
-div.logscene_setting {color: #572002}
-div.logsignificant_negative {color: #ff8f8f}
-div.logsignificant_positive {color: #4169e1}
-div.logtutorial {color: #ac00ac}
-div.logsupport {color: #ff7200}
-span.logh {color: #00F}
-span.logi {text-decoration: underline}
-span.loga {color: #D40000;text-decoration: underline}
+div.logerror { color: #F00 }
+div.logprivmsg { color: #444 }
+div.logclient { color: #888}
+div.logerror { color: #F00 }
+div.loginformation { color: #ffc800}
+div.lognegative { color: #f00}
+div.lognormal { color: #000}
+div.logpositive { color: #0f0}
+div.loggroup { color: #633d8b }
+div.logemote { color: #633d8b }
+div.logresponse { color: #006400 }
+div.logscene_setting { color: #572002 }
+div.logsignificant_negative { color: #ff8f8f }
+div.logsignificant_positive { color: #4169e1 }
+div.logtutorial { color: #ac00ac }
+div.logsupport { color: #ff7200 }
+
+span.logh {
+  color: #00F
+}
+
+span.logi {
+  text-decoration: underline
+}
 
 .actionmenu {
-	border: 1px solid #000; background-color:#FFF
+  border: 1px solid #000;
+  background-color: #FFF
 }
+
 .actionmenu button {
-	min-width: 5em;
-	width: 100%
+  min-width: 5em;
+  width: 100%
 }
 
-#leftColumn { float:left; width:130px}
-
-#minimap { border: 1px solid black; float: left }
-
-#gamewindow { float: left }
-
-#rightColumn { float: left; width: 186px }
-#equipmentborder { float: left; width:130px }
-
-#bag { border: 1px solid black; width: 180px; padding: 2px; float: left }
-#keyring { border: 1px solid black; width: 144px; padding: 2px; float: left }
-
-#chatinput { width:99.7% }
-
-.inventorypopup, .inventorypopup_2, .inventorypopup_6, .popuptitle {
-	background-image: url("../data/gui/panelwood120.jpg");
+#leftColumn {
+  float: left;
+  width: 130px
 }
+
+#minimap {
+  border: 1px solid black;
+  float: left
+}
+
+#gamewindow {
+  float: left
+}
+
+#rightColumn {
+  float: left;
+  width: 130px
+}
+
+#equipmentborder {
+  float: left;
+  width: 130px
+}
+
+#bag { border: 1px solid black; width: 120px; padding: 2px; float: left }
+#keyring { border: 1px solid black; width: 80px; padding: 2px; float: left }
+#portfolio { border: 1px solid black; width: 80px; padding: 2px; float: left }
+
+#chatinput {
+  width: 98%
+}
+
 .inventorypopup {
-	border: 1px solid black;
-	background-color: #FFF;
-	padding: 2px;
-	float: left;
-}
-.inventorypopup_2 {
-	width: 80px;
-}
-.inventorypopup_6 {
-	width: 217px;
-}
-.popupdiv {
-	border: 1px solid #000;
-	background-color: #FFF;
-}
-.popuptitle {
-	cursor: default;
-	background-color: #00A;
-	color: #FFF;
-	padding: 3px;
-	border: double 2px #825A26;
-}
-.popuptitleclose {
-	float:right
+  border: 1px solid black;
+  background-color: #FFF;
+  padding: 2px;
+  float: left
 }
 
-#dropnumberdialogvalue {
-	width: 4em;
+.inventorypopup_2 {
+  width: 80px;
+}
+
+.inventorypopup_5 {
+  width: 200px;
+}
+
+.popupdiv, .windowdiv {
+  x-border: 1px solid #000;
+  background-color: #FFF;
+  box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
+}
+
+.popuptitle, .windowtitlebar {
+  cursor: default;
+  padding: 3px;
+  border-bottom: 1px solid #777;
+}
+
+.popuptitleclose, .windowtitleclose {
+  float: right
+}
+
+.quantityselectorvalue {
+  width: 4em;
 }
 
 .unselectable {
-	-ms-user-select: none;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-/* SUWAK */
-::-webkit-scrollbar {
-  width: 9px;
-}
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 22px rgba(0,0,0,0.3);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-}
-::-webkit-scrollbar-corner {
-	opacity: 0;
+.background {
+  background: url(/data/gui/panelwood003.jpg);
+  color: #FFF;
 }
 
 .inlineblock {
-	display: inline-block;
-	vertical-align: top;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .menugroup {
-	color: #000;
-	background: #FFF;
-	text-align: center;
+  color: #000;
+  background: #FFF;
+  text-align: center;
 }
 
 .horizontalgroup {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .verticalgroup {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #travellogitems {
-	float: left;
-	width: 15em;
-	margin-right: 2em;
+  float: left;
+  width: 15em;
+  margin-right: 2em;
 }
 
 #travellogdetails {
-	color: #000;
-	width: 40em;
+  color: #000;
+  width: 40em;
 }
 
 #travellogdescription {
-	 font-style: italic
+  font-style: italic
+}
+
+.imageviewer h3 {
+	margin: 0;
+}
+
+#portfolio {
+	display: none;
+}
+
+#client {
+	display: none;
+}
+
+#loginpopup {
+	left: 15vw;
+	width: 70vw;
+	top: 30vh;
+	height: 20vh;
+	line-height: 10vh;
+	position: absolute;
+	z-index: 1000000;
+	color: #000;
+	text-align: center;
+	padding: 1em
+}
+
+.progressbar {
+	border: 1px solid #005;
+	line-height: 5Vh;
+}
+
+.progressbarvalue {
+	width: 100%;
+	background-color: #00A;
+	animation-duration: 600s;
+	animation-name: progressbar;
+	animation-timing-function: cubic-bezier(0, 0, 0.1, 1);
+	animation-iteration-count: infinite;
+}
+
+@keyframes progressbar {
+	from {
+		width: 0 
+	}
+
+	to {
+		width: 100%;
+	}
 }

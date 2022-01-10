@@ -203,7 +203,7 @@ public class ImproverAdder {
 
 					// Special answer for ring
 					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
-					if (toImprove.getName().equals("pierścień z mithrilu")) {
+					if (toImprove.getName().endsWith(" z mithrilu") && toImprove.getMaxImproves() == 1) {
 						offerupgrade = "Czy jesteś pewien, aby udoskonalać #'"+currentUpgradingItem+"'? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
 					}
 
@@ -237,7 +237,7 @@ public class ImproverAdder {
 			currentUpgradeFee = (atk + def) * 59500;
 		}
 		// Special fee for special item
-		if (item.getName().equals("pierścień z mithrilu")) {
+		if (item.getName().endsWith(" z mithrilu") && item.getMaxImproves() == 1) {
 			currentUpgradeFee = 5000000;
 		}
 

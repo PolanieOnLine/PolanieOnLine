@@ -250,9 +250,10 @@
 		<description>Oto para mieniących się butów z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="0"/>
 			<def value="18"/>
 			<min_level value="150"/>
-			<max_improves value="4"/>
+			<max_improves value="1"/>
 		</attributes>
 		<weight value="14.0"/>
 		<value value="53625"/>
@@ -296,10 +297,10 @@
 		</attributes>
 		<weight value="17.0"/>
 		<value value="23625"/>
-		<susceptibility type="fire" value="0.95"/>
-		<susceptibility type="ice" value="0.95"/>
-		<susceptibility type="dark" value="0.95"/>
-		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="fire" value="0.98"/>
+		<susceptibility type="ice" value="0.98"/>
+		<susceptibility type="dark" value="0.98"/>
+		<susceptibility type="light" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -362,8 +363,6 @@
 		</attributes>
 		<weight value="17.0"/>
 		<value value="7000"/>
-		<susceptibility type="light" value="0.95"/>
-		<susceptibility type="dark" value="0.95"/>
 		<susceptibility type="fire" value="0.95"/>
 		<susceptibility type="ice" value="0.95"/>
 		<equipable>

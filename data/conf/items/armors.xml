@@ -434,9 +434,10 @@
 		<description>Oto zbroja z mithrilu. To prawdziwa ręcznie robiona zbroja, poprostu niewiarygodna.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="0"/>
 			<def value="30"/>
 			<min_level value="300"/>
-			<max_improves value="4"/>
+			<max_improves value="1"/>
 		</attributes>
 		<weight value="42.0"/>
 		<value value="323032"/>

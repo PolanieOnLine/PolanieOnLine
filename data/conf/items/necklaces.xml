@@ -176,8 +176,10 @@
 		<description>Oto amulecik z mithrilu. Ciekawe, w której rzeczywistości został wykonany...</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="0"/>
 			<def value="14"/>
 			<min_level condition="stendhal.testserver" value="0"/>
+			<max_improves value="1"/>
 		</attributes>
 		<susceptibility type="light" value="0.8"/>
 		<susceptibility type="dark" value="1.2"/>

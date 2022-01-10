@@ -78,7 +78,7 @@ class InitialSteps {
 			ConversationStates.ATTENDING,
 			null,			
 			new MultipleActions(new SetQuestAction(mithrilcloak.getQuestSlot(), "machine;"),
-								new StartRecordingRandomItemCollectionAction(mithrilcloak.getQuestSlot(), 1, items, "Dziękuję! Aby naprawić potrzebuję [#item]. będę wdzięczna za Twoją pomoc.")));
+								new StartRecordingRandomItemCollectionAction(mithrilcloak.getQuestSlot(), 1, items, "Dziękuję! Aby naprawić potrzebuję [#item]. Będę wdzięczna za Twoją pomoc.")));
 		
 		// player said no they didn't want to help
 		npc.add(

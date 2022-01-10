@@ -787,8 +787,13 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 
 		if (has("atk")) {
-			stats.append("ATK: ");
-			stats.append(getAttack());
+			if (getAttack() == 0) {
+				stats.append("");
+			} else {
+				stats.append("ATK: ");
+				stats.append(getAttack());
+			}
+
 			// Show only special types
 			if (getDamageType() != Nature.CUT) {
 				stats.append(" [");

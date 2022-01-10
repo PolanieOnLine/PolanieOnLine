@@ -141,7 +141,7 @@ class GettingTools {
 
 		// player returns while hogart is making scissors or has made them
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("scissors", "magical", "zaczarowane nożyczki", "ida", "mithril", "cloak", "mithril cloak"),
+			Arrays.asList("scissors", "magical", "zaczarowane nożyczki", "nożyczki", "ida", "mithril", "cloak", "mithril cloak"),
 			new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "makingscissors;"),
 			ConversationStates.ATTENDING, null, new ChatAction() {
 				@Override

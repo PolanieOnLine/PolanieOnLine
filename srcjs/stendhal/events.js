@@ -42,7 +42,7 @@ marauroa.rpeventFactory["examine"] = marauroa.util.fromProto(marauroa.rpeventFac
 		if (rpobject !== marauroa.me) {
 			return;
 		}
-		new stendhal.ui.ImageViewer(this["title"], this["caption"], this["path"]);
+		ui.createSingletonFloatingWindow(this["title"], new ImageViewerDialog(this["caption"], this["path"]), 100, 50)
 	}
 });
 

@@ -249,14 +249,15 @@
 		<description>Oto para spodni z mithrilu. Na pewno dobrze będą ci służyć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="0"/>
 			<def value="20"/>
 			<min_level value="300"/>
-			<max_improves value="6"/>
+			<max_improves value="1"/>
 		</attributes>
 		<weight value="22.0"/>
 		<value value="53625"/>
 		<susceptibility type="light" value="0.8"/>
-		<susceptibility type="dark" value="1.2"/>
+		<susceptibility type="dark" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

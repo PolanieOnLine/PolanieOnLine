@@ -27,7 +27,6 @@ class AdminLevelAction extends AdministrationAction {
 
 	public static void register() {
 		CommandCenter.register(ADMINLEVEL, new AdminLevelAction(), 0);
-
 	}
 
 	@Override

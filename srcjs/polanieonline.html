@@ -1,6 +1,8 @@
+<!doctype html>
+<html>
 <!--
 /***************************************************************************
- *                   (C) Copyright 2014-2017 - Stendhal                    *
+ *                   (C) Copyright 2014-2020 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -10,14 +12,14 @@
  *                                                                         *
  ***************************************************************************/
 -->
-<!DOCTYPE html>
-<html>
 	<head>
-		<title>PolanieOnLine Alpha Client</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>PolanieOnLine Alpha Client</title>
 		<link rel="stylesheet" type="text/css" href="polanieonline.css">
 	</head>
-	<body id="body">
+
+	<body id="body" class="background">
+	<div id="client">
 		<div id="leftColumn" class="unselectable">
 			<canvas id="minimap" width="128" height="128"></canvas>
 			<div id="zoneinfo"></div>
@@ -26,10 +28,12 @@
 				<ul id="buddyListUL"></ul>
 			</div>
 		</div>
-		<canvas id="gamewindow" width="1027" height="512">Przepraszamy, ale te strony działają tylko na nowszych wersjach przeglądarek.</canvas>
-		<!-- EQ -->
+
+		<canvas id="gamewindow" width="640" height="480" tabindex="-1">Przepraszamy, ale te strony działają tylko na nowszych wersjach przeglądarek.</canvas>
+
 		<div id="rightColumn">
 			<button id="menubutton">▼&nbsp;&nbsp;Menu</button>
+			<button id="soundbutton">🔇</button>
 
 			<div id="equipmentborder">
 				<div id="equipment" class="equipment">
@@ -45,9 +49,10 @@
 					<div id="glove0" class="itemSlot"></div>
 					<div id="fingerb0" class="itemSlot"></div>
 					<div id="feet0" class="itemSlot"></div>
-					<div id="money0" class="itemSlot"></div>
+					<div id="pouch0" class="itemSlot"></div>
 				</div>
 			</div>
+
 			<!-- PLECAK -->
 			<div id="bag">
 				<div id="bag0" class="itemSlot"></div>
@@ -81,6 +86,7 @@
 				<div id="bag28" class="itemSlot"></div>
 				<div id="bag29" class="itemSlot"></div>
 			</div>
+
 			<!-- RZEMYK -->
 			<div id="keyring">
 				<div id="keyring0" class="itemSlot"></div>
@@ -91,6 +97,24 @@
 				<div id="keyring5" class="itemSlot"></div>
 				<div id="keyring6" class="itemSlot"></div>
 				<div id="keyring7" class="itemSlot"></div>
+				<div id="keyring8" class="itemSlot"></div>
+				<div id="keyring9" class="itemSlot"></div>
+				<div id="keyring10" class="itemSlot"></div>
+				<div id="keyring11" class="itemSlot"></div>
+			</div>
+
+			<!-- If you want to add more slots or remove some, you must just add/remove div blocks, like that.
+				Do not forget change number of slots in /stendhal/ui/itemcontainer.js! -->
+			<div id="portfolio">
+				<div id="portfolio0" class="itemSlot"></div>
+				<div id="portfolio1" class="itemSlot"></div>
+				<div id="portfolio2" class="itemSlot"></div>
+				<div id="portfolio3" class="itemSlot"></div>
+				<div id="portfolio4" class="itemSlot"></div>
+				<div id="portfolio5" class="itemSlot"></div>
+				<div id="portfolio6" class="itemSlot"></div>
+				<div id="portfolio7" class="itemSlot"></div>
+				<div id="portfolio8" class="itemSlot"></div>
 			</div>
 		</div>
 
@@ -98,6 +122,48 @@
 		<div id="chat"></div>
 
 		<div id="popupcontainer"></div>
+		</div>
+
+		<div id="loginpopup" class="popupdiv">
+			Rozpoczęto teleport między światami. Proszę trzymać się mocno.
+			<div class="progressbar"><div class="progressbarvalue">&nbsp;</div></div>
+		</div>
+
+		<template id="window-template">
+			<div class="windowdiv">
+				<div class='windowtitlebar background'>
+					<div class='windowtitleclose'>X</div>
+					<span class="windowtitle"></span>
+				</div>
+				<div class="windowcontent"></div>
+			</div>
+		</template>
+
+		<template id="applicationmenudialog-template">
+			<div class="actionmenu">
+			</div>
+		</template>
+
+		<template id="contextmenu-template">
+			<div class="contextmenu actionmenu">
+			</div>
+		</template>
+
+		<template id="dropquantityselectordialog-template">
+			<div>
+				<input type="number" min="0" value="1" class="quantityselectorvalue">
+				<button class="quantityselectorbutton">Drop</button>
+			</div>
+		</template>
+
+		<template id="imageviewer-template">
+			<div class="imageviewer background">
+				<h3></h3>
+				<img>
+			</div>
+		</template>
+
 		<script type="text/javascript" src="stendhal-compiled.js"></script>
 	</body>
+
 </html>

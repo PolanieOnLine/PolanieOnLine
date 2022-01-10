@@ -260,13 +260,14 @@
 		<description>Oto tarcza z mithrilu. Możesz być pewny, że będzie dla ciebie dobrą ochroną.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="1"/>
 			<def value="45"/>
 			<min_level value="250"/>
-			<max_improves value="5"/>
+			<max_improves value="1"/>
 		</attributes>
 		<weight value="30.0"/>
 		<value value="718616"/>
-		<susceptibility type="light" value="0.9"/>
+		<susceptibility type="light" value="0.8"/>
 		<susceptibility type="dark" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>

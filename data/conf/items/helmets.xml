@@ -379,13 +379,15 @@
 		<description>Oto hełm z mithrilu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<atk value="0"/>
 			<def value="29"/>
 			<min_level value="200"/>
+			<max_improves value="1"/>
 		</attributes>
 		<weight value="12.0"/>
 		<value value="323032"/>
 		<susceptibility type="light" value="0.8"/>
-		<susceptibility type="dark" value="1.3"/>
+		<susceptibility type="dark" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
