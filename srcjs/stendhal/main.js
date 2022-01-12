@@ -15,10 +15,17 @@ var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 
 var ui = require("../../build/ts/ui/UI").ui;
+var UIComponentEnum = require("../../build/ts/ui/UIComponentEnum").UIComponentEnum;
+var UserInterfaceFactory = require("../../build/ts/ui/UserInterfaceFactory").UserInterfaceFactory;
+
+var FloatingWindow = require("../../build/ts/ui/toolkit/FloatingWindow").FloatingWindow;
+
 var ActionContextMenu = require("../../build/ts/ui/dialog/ActionContextMenu").ActionContextMenu;
 var ApplicationMenuDialog = require("../../build/ts/ui/dialog/ApplicationMenuDialog").ApplicationMenuDialog;
 var DropQuantitySelectorDialog = require("../../build/ts/ui/dialog/DropQuantitySelectorDialog").DropQuantitySelectorDialog;
 var ImageViewerDialog = require("../../build/ts/ui/dialog/ImageViewerDialog").ImageViewerDialog;
+var OutfitDialog = require("../../build/ts/ui/dialog/outfit/OutfitDialog").OutfitDialog;
+
 
 stendhal.main = {
 	errorCounter: 0,
@@ -195,6 +202,8 @@ stendhal.main = {
 	 */
 	startup: function() {
 		stendhal.main.devWarning();
+
+		new UserInterfaceFactory().create();
 
 		stendhal.ui.chatLog.addLine("error", "This is an early stage of an experimental web-based client. Please use the official client at https://stendhalgame.org to play Stendhal.");
 		stendhal.ui.chatLog.addLine("client", "Client loaded. Connecting...");
