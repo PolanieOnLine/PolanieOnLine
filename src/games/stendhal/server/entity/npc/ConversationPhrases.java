@@ -34,7 +34,7 @@ public class ConversationPhrases {
 
 	public static final List<String> GREETING_MESSAGES = Arrays.asList("hi",
 			"hello", "hallo", "greetings", "hola", "witaj", "witam", "cześć", "czesc", "dzień dobry",
-			"dobry wieczór", "dzien dobry", "dobry wieczor");
+			"dobry wieczór", "dzien dobry", "dobry wieczor", "siema", "siemaneczko", "elo", "eluwina");
 
 	public static final List<String> JOB_MESSAGES = Arrays.asList("job", "work", "occupation",
 			"praca", "zajęcie", "zawód");
