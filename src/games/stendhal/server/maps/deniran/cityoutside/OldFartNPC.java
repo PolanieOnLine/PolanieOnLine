@@ -103,7 +103,7 @@ public class OldFartNPC implements ZoneConfigurator {
 		};
 		oldFart.setOutfit(0, 80, 0, 3, 6, 0, 46, 0, 0);
 		oldFart.setOutfitColor("dress", Color.GREEN);
-		oldFart.setDescription("Oto starszy mieszkaniec Deniran, odpoczywający na ławeczce.");
+		oldFart.setDescription("Oto Claude Conteur, starszy mieszkaniec Deniran, który odpoczywa na ławeczce.");
 		oldFart.setGender("M");
 		oldFart.setPosition(46, 11);
 		oldFart.setIdleDirection(Direction.DOWN);

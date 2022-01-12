@@ -1214,4 +1214,9 @@
 		<item name="karp" price="32" />
 		<item name="karp lustrzeń" price="44" />
 	</shop>
+
+	<!-- Klechdarz sprzedaje: -->
+	<shop name="tarnowscrollseller" type="sells">
+		<item name="zwój tarnów" price="350" />
+	</shop>
 </shops>

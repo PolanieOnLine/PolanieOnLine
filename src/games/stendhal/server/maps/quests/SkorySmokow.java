@@ -75,9 +75,9 @@ public class SkorySmokow extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			"Chcę, abyś zabił dla mnie smoki, a dokładnie:\n " +
 			"zielonego smoka,\n" +
-			" czerwonego smoka,\n" +
-			" błękitnego smoka.\n" +
-			" Musisz przynieść również mi ich skóry, potrzebuję je do mojej kolekcji.",
+			"czerwonego smoka,\n" +
+			"błękitnego smoka.\n" +
+			"Musisz przynieść również mi ich skóry, potrzebuję je do mojej kolekcji.",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -105,7 +105,6 @@ public class SkorySmokow extends AbstractQuest {
 	}
 
 	private void step_3(){
-
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 	    reward.add(new DropItemAction("skóra zielonego smoka", 1));
 		reward.add(new DropItemAction("skóra czerwonego smoka", 1));

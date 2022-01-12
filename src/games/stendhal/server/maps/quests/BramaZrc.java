@@ -86,11 +86,9 @@ public class BramaZrc extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 					raiser.say("Będę potrzebował kilku #rzeczy do mojego magazynu żywności.");
 					player.setQuest(QUEST_SLOT, "start");
 					player.addKarma(10);
-
 				}
 			});
 
