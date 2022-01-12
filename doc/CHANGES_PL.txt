@@ -2,7 +2,7 @@ Changelog
 ---------
 1.26
 *klient*
-- Dodano nowe grafiki potworów & przedmiotów
+- Dodano nowe grafiki potworów & przedmiotów & npc
 - Dodano nową opcję w ustawieniach wizualnych klienta, aby móc zmienić na stary kursor
 - Dodano nowe włosy oraz strój do wyboru
 - Poprawiono grafiki NPC & przedmiotów
@@ -11,6 +11,8 @@ Changelog
 - Zmieniono wygląd kursorów
 
 *świat*
+- Dodano nowego NPC: (1)
+	- Klechdarz
 - Dodano nowy przedmiot: (1)
 	- zwój tarnów
 - Dodano nowe potwory: (4)
@@ -55,6 +57,7 @@ Changelog
 - Zmieniono ilość otrzymywanego bonusu do zdrowia za każde odrodzenie (teraz maksymalnie 6,000 bonusu do zdrowia zamiast 17,850)
 - Zmieniono czas odrodzenia dla cherubina oraz lilith
 - Zmieniono ilość bonusowego zdrowia za odrodzenia u Yereny
+- Zmniejszono szansę na zdobycie mithrilowych przedmiotów z potworów
 - Zwiększono ilość ulepszeń dla niektórych różdżek
 
 *kod*
@@ -70,6 +73,7 @@ Changelog
 - Poprawiono automatyczną gramatykę j. polskiego
 - Poprawiono kolizję w banku w Zakopane
 - Poprawiono opisy zadań na pierścienie klasowe
+- Poprawiono gramatykę w zadaniu na płaszcz z mithrilu
 
 
 1.25.4
