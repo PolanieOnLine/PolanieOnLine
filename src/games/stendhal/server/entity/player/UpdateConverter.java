@@ -522,6 +522,16 @@ public abstract class UpdateConverter {
 		}
 	}
 
+	public static void updateImproveItemAttr(Item item) {
+		if (!item.hasMaxImproves()) {
+			return;
+		}
+
+		if (item.getImprove() > item.getMaxImproves()) {
+			item.setImprove(item.getMaxImproves());
+		}
+	}
+
 	/**
 	 * Update the quest slot to the current version.
 	 * @param player

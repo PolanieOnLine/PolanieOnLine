@@ -1056,7 +1056,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return
 	 * 		<code>true</code> if has "max_improves".
 	 */
-	private boolean hasMaxImproves() {
+	public boolean hasMaxImproves() {
 		return has("max_improves");
 	}
 

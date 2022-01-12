@@ -93,6 +93,7 @@ public class ItemTransformer {
 				}
 			}
 			UpdateConverter.updateItemAttributes(item);
+			UpdateConverter.updateImproveItemAttr(item);
 
 			// Contents, if the item has slot(s)
 			for (RPSlot slot : rpobject.slots()) {
