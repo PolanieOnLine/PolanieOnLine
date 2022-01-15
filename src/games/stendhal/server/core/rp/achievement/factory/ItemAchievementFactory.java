@@ -47,6 +47,9 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 			"pióro azazela", "pióro mrocznego anioła", "pióro serafina",
 			"pióro upadłego anioła"
 	};
+	public static final String[] ITEMS_HORNS = {
+			"róg demona", "róg jednorożca"
+	};
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -144,6 +147,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 						return items >= 1000;
 					}
 				}));
+
+		itemAchievements.add(createAchievement(
+				"item.horns", "Rogaty Władca", "Zdobył po 1,000 rogów demona i jednorożca",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(1000, ITEMS_HORNS)));
 
 		return itemAchievements;
 	}
