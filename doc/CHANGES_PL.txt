@@ -1,5 +1,13 @@
 Changelog
 ---------
+1.27
+*świat*
+- Dodano nowe osiągnięcie: (1)
+	- "Rogaty Władca"
+
+*naprawiono błędy*
+- Naprawiono, że NPC Tworzymir nie brał pieniędzy za nieudane ulepszenie
+
 1.26
 *klient*
 - Dodano nowe grafiki potworów & przedmiotów & npc
