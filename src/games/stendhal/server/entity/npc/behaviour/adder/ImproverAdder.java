@@ -332,9 +332,9 @@ public class ImproverAdder {
 			public void fire(final Player player, final Sentence sentence, final EventRaiser repairer) {
 				List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
 				Item toImprove = player.getFirstEquipped(currentUpgradingItem);
+				player.drop("money", currentUpgradeFee);
+
 				if (isSuccessful(player, toImprove)) {
-					player.drop("money", currentUpgradeFee);
-	
 					for (Item i : equipped) {
 						if (toImprove.isMaxImproved()
 								&& (i.getImprove() < toImprove.getImprove())) {
@@ -343,11 +343,11 @@ public class ImproverAdder {
 							toImprove = i;
 						}
 					}
-	
+
 					if (hasItemToImprove()) {
 						toImprove.upgradeItem();
 					}
-	
+
 					repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
 					repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 				} else {
