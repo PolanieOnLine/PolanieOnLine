@@ -149,9 +149,9 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		itemAchievements.add(createAchievement(
-				"item.horns", "Rogaty Władca", "Zdobył po 1,000 rogów demona i jednorożca",
+				"item.horns", "Rogaty Władca", "Zdobył po 200 rogów demona i jednorożca",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new PlayerLootedNumberOfItemsCondition(1000, ITEMS_HORNS)));
+				new PlayerLootedNumberOfItemsCondition(200, ITEMS_HORNS)));
 
 		return itemAchievements;
 	}
