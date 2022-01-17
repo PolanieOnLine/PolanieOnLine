@@ -91,8 +91,6 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 
 		private int counter = TIME;
 
-		// override equals
-
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -151,8 +149,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 						SingletonRepository.getTurnNotifier().notifyInTurns(10 * 3 * 6, this);
 					} else {
 						// teleport the player out
-						npc.say("Przepraszam " + playerTemp.getTitle()
-								+ ", ale twój czas dobiegł końca.");
+						npc.say("Przepraszam " + playerTemp.getTitle() + ", ale twój czas dobiegł końca.");
 						teleportAway(playerTemp);
 					}
 				}
@@ -163,14 +160,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 	private void createNPC() {
 		npc = new SpeakerNPC("Bankier Kazimierz") {
 			@Override
-			protected void createPath() {
-				// NPC doesn't move
-				setPath(null);
-			}
-
-			@Override
 			protected void createDialog() {
-
 				// has been here before
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
@@ -202,7 +192,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 								new QuestActiveCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						null,
-						new SayTextAction("Witaj w Banku w Zakopanem, [name]. Możesz wyjść wcześniej. Jeżeli chcesz to powiedz tylko #wyjście.."));
+						new SayTextAction("Witaj w Banku w Zakopanem, [name]. Możesz wyjść wcześniej. Jeżeli chcesz to powiedz tylko #'wyjście'."));
 
 				// hasn't got access to all banks yet
 				add(ConversationStates.IDLE,
@@ -239,14 +229,16 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 								ConversationStates.ATTENDING,
 								"Skrzynie banków Semos, Nalwor, Ados i Fado są po mojej prawej.",
 								new MultipleActions(
-										new DropItemAction("money", COST),
-										new TeleportAction(ZONE_NAME, 41, 15, Direction.DOWN),
-										new SetQuestAction(QUEST_SLOT, "start"),
-										new ChatAction() {
-											@Override
-											public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-												SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
-											}}));
+									new DropItemAction("money", COST),
+									new TeleportAction(ZONE_NAME, 41, 15, Direction.DOWN),
+									new SetQuestAction(QUEST_SLOT, "start"),
+									new ChatAction() {
+										@Override
+										public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+											SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
+										}
+									}
+								));
 
 				add(ConversationStates.ATTENDING,
 						ConversationPhrases.YES_MESSAGES,
@@ -285,7 +277,6 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 						"Wyjść gdzie?",
 						null);
 
-
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("leave", "wyjście", "wyjdź"),
 						new QuestActiveCondition(QUEST_SLOT),
@@ -293,14 +284,15 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 						"Dziękuję za skorzystanie z Banku w Zakopanem",
 						// we used to use teleportAway() here 
 						new MultipleActions(
-								new TeleportAction(ZONE_NAME, 34, 15, Direction.DOWN),
-								new SetQuestAction(QUEST_SLOT, "done"),
-								new ChatAction() {
-									@Override
-									public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-										SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
-									}}));
-
+							new TeleportAction(ZONE_NAME, 34, 15, Direction.DOWN),
+							new SetQuestAction(QUEST_SLOT, "done"),
+							new ChatAction() {
+								@Override
+								public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+									SingletonRepository.getTurnNotifier().dontNotify(new Timer(player));
+								}
+							}
+						));
 
 				addJob("Kontroluje dostęp do tej części banku. Bez #opłaty za wejście nie dostaniesz się dalej.");
 				addOffer("Sądzę, że oferowana usługa #podatkowa nie jest zbyt dużym dla Ciebie obciążeniem.");
@@ -321,7 +313,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 			}
 		};
 
-		npc.setDescription("Oto strażnik skarbca, z którym nie powinieneś zadzierać.");
+		npc.setDescription("Oto bankier Kazimierz. Strażnik skarbca, z którym nie powinieneś zadzierać.");
 		npc.setEntityClass("youngnpc");
 		npc.setGender("M");
 		npc.setPosition(35, 14);
@@ -351,18 +343,12 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 			final IRPZone playerZone = player.getZone();
 			if (playerZone.equals(zone)) {
 				player.teleport(zone, 32, 14, Direction.DOWN, player);
-
-				// complete the quest if it already started
-				if (player.hasQuest(QUEST_SLOT)) {
-					player.setQuest(QUEST_SLOT, "done");
-				}
 			} else if (playerZone.equals(zone_1)) {
 				player.teleport(zone_1, 28, 3, Direction.DOWN, player);
+			}
 
-				// complete the quest if it already started
-				if (player.hasQuest(QUEST_SLOT)) {
-					player.setQuest(QUEST_SLOT, "done");
-				}
+			if (player.hasQuest(QUEST_SLOT)) {
+				player.setQuest(QUEST_SLOT, "done");
 			}
 		}
 	}
@@ -371,7 +357,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 	public void addToWorld() {
 		fillQuestInfo(
 			"Bank Zakopane",
-			"Chcesz mieć dostęp do wszystkich skrzyń na raz? Skożystaj z piętra w banku zakopane.",
+			"Chcesz mieć dostęp do wszystkich skrzyń na raz? Skorzystaj z piętra w banku zakopane.",
 			false);
 
 		SingletonRepository.getLoginNotifier().addListener(this);
