@@ -4,9 +4,11 @@ Changelog
 *świat*
 - Dodano nowe osiągnięcie: (1)
 	- "Rogaty Władca"
+- Bankier Kazimierz nie będzie pytał się o wyjście z piętra po skończonym czasie
 
 *naprawiono błędy*
 - Naprawiono, że NPC Tworzymir nie brał pieniędzy za nieudane ulepszenie
+
 
 1.26
 *klient*
