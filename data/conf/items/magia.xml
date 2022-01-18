@@ -108,9 +108,9 @@
 		</equipable>
 	</item>
 
-	<item name="magia mroku">
-		<type class="magia" subclass="mana_black" tileid="-1"/>
-		<description>Oto magia mroku. Czar rzucony za jej pomocą zabija!</description>
+	<item name="magia lodu">
+		<type class="magia" subclass="mana_ice" tileid="-1"/>
+		<description>Oto magia lodu. Czar rzucony za jej pomocą sprowadzi wieczną zamieć!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="15" condition="!testing.combat"/>
@@ -120,6 +120,33 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level condition="stendhal.testserver" value="200"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="2160"/>
+		<damage type="ice"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="magicbag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
+	<item name="magia mroku">
+		<type class="magia" subclass="mana_black" tileid="-1"/>
+		<description>Oto magia mroku. Czar rzucony za jej pomocą zabija!</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk value="18" condition="!testing.combat"/>
+      		<ratk value="18" condition="testing.combat"/>
+			<def value="18"/>
+			<range value="0"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level condition="stendhal.testserver" value="260"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -140,13 +167,13 @@
 		<description>Oto magia światła. Czar rzucony za jej pomocą jest niezwyciężony!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="18" condition="!testing.combat"/>
-      		<ratk value="18" condition="testing.combat"/>
-			<def value="18"/>
+			<atk value="21" condition="!testing.combat"/>
+      		<ratk value="21" condition="testing.combat"/>
+			<def value="21"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
-			<min_level condition="stendhal.testserver" value="260"/>
+			<min_level condition="stendhal.testserver" value="320"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
