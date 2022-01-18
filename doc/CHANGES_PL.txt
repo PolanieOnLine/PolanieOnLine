@@ -2,11 +2,16 @@ Changelog
 ---------
 1.27
 *klient*
-- Dodano nową grafikę przedmiotu
+- Dodano nowe grafiki potworów & przedmiotów
 
 *świat*
 - Dodano nowy przedmiot: (1)
 	- magia lodu
+- Dodano nowe potwory: (4)
+	- pokutnik poranny
+	- pokutnik z gór
+	- uczeń czarnoksiężnika lodu
+	- czarnoksiężnik lodu
 - Dodano nowe osiągnięcie: (1)
 	- "Rogaty Władca"
 - Bankier Kazimierz nie będzie pytał się o wyjście z piętra po skończonym czasie
