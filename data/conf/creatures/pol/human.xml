@@ -158,7 +158,7 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="65"/>
-		<experience value="2360"/>
+		<experience value="1760"/>
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
@@ -209,6 +209,7 @@
 			<item value="lazurowy płaszcz elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,9]" probability="100.0"/>
+			<item value="magia lodu" quantity="[1,6]" probability="90.0"/>
 			<item value="zaklęcie pustelnika" quantity="[2,7]" probability="80.0"/>
 		</drops>
 		<equips>
@@ -233,6 +234,49 @@
 		</ai>
 	</creature>
 
+	<creature name="uczeń czarnoksiężnika lodu">
+		<type class="pol/magowie" subclass="mag_lodowy_uczen" tileid="pol_magowie.png:9"/>
+		<description></description>
+		<attributes>
+			<atk value="191"/>
+			<ratk value="191"/>
+			<def value="57"/>
+			<hp value="455"/>
+			<speed value="0.7"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="70"/>
+		<experience value="1960"/>
+		<respawn value="4320"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[1,20]" probability="100.0"/>
+			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.05"/>
+			<item value="różdżka Strzyboga" quantity="[1,1]" probability="0.5"/>
+			<item value="magia lodu" quantity="[1,14]" probability="100.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="strzała" quantity="10000"/>
+			<slot name="rhand" item="drewniany łuk" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.8"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Oj, ja cię nauczę sztuki magicznej!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,50"/>
+			<profile name="lifesteal" params="0.3"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
 	<creature name="uczeń czarnoksiężnika mroku">
 		<type class="pol/magowie" subclass="mag_czarny_uczen" tileid="pol_magowie.png:6"/>
 		<description>Oto uczeń czarnoksiężnika mroku. Wiele już posiadł wiedzy i umie ją wykorzystać.</description>
@@ -244,8 +288,8 @@
 			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="65"/>
-		<experience value="2360"/>
+		<level value="75"/>
+		<experience value="2760"/>
 		<respawn value="4320"/>
 		<corpse name="human"/>
 		<drops>
@@ -273,6 +317,49 @@
 			<profile name="heal" params="5,50"/>
 			<profile name="lifesteal" params="0.3"/>
 			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="czarnoksiężnik lodu">
+		<type class="pol/magowie" subclass="mag_lodowy_mistrz" tileid="pol_magowie.png:10"/>
+		<description></description>
+		<attributes>
+			<atk value="377"/>
+			<ratk value="377"/>
+			<def value="99"/>
+			<hp value="677"/>
+			<speed value="0.3"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="100"/>
+		<experience value="7960"/>
+		<respawn value="7320"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[10,30]" probability="100.0"/>
+			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
+			<item value="magia lodu" quantity="[1,22]" probability="75.0"/>
+			<item value="zaklęcie pustelnika" quantity="[1,9]" probability="80.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia lodu" quantity="10000"/>
+			<slot name="rhand" item="różdżka Swaroga" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.7"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Sztuki lodu nie łatwo się nauczyć!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,25"/>
+			<profile name="lifesteal" params="0.9"/>
+			<profile name="attack weakest"/>
 		</ai>
 	</creature>
 
