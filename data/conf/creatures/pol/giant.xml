@@ -196,6 +196,7 @@
 			<item value="lodowy łuk" quantity="[1,1]" probability="0.2"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="2.0"/>
 			<item value="magia deszczu" quantity="[4,19]" probability="17.0"/>
+			<item value="magia lodu" quantity="[8,27]" probability="20.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -229,7 +230,77 @@
 			<item value="lodowe spodnie" quantity="[1,1]" probability="0.05"/>
 			<item value="lodowe buty" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="7.5"/>
-			<item value="magia deszczu" quantity="[8,24]" probability="20.0"/>
+			<item value="magia deszczu" quantity="[8,24]" probability="10.0"/>
+			<item value="magia lodu" quantity="[9,37]" probability="25.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,25"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="pokutnik poranny">
+		<type class="pol/pokutniki" subclass="pit_pokutnik_zolty" tileid="pol_pokutniki.png:5"/>
+		<description/>
+		<attributes>
+			<atk value="440"/>
+			<def value="37"/>
+			<hp value="3300"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="145"/>
+		<experience value="25321"/>
+		<respawn value="10101"/>
+		<corpse name="giant_knight"/>
+		<drops>
+			<item value="money" quantity="[40,200]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
+			<item value="rękawice szmaragdowe" quantity="[1,1]" probability="1.0"/>
+			<item value="tarcza elficka" quantity="[1,1]" probability="5.0"/>
+			<item value="różdżka Wołosa" quantity="[1,1]" probability="12.5"/>
+			<item value="magia deszczu" quantity="[11,37]" probability="25.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="animal"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="5,25"/>
+			<profile name="attack weakest"/>
+		</ai>
+	</creature>
+
+	<creature name="pokutnik z gór">
+		<type class="pol/pokutniki" subclass="pit_pokutnik_jasnonieb" tileid="pol_pokutniki.png:6"/>
+		<description/>
+		<attributes>
+			<atk value="450"/>
+			<def value="38"/>
+			<hp value="3400"/>
+			<speed value="1.0"/>
+			<size value="2,2"/>
+		</attributes>
+		<level value="145"/>
+		<experience value="26321"/>
+		<respawn value="10101"/>
+		<corpse name="giant_knight"/>
+		<drops>
+			<item value="money" quantity="[40,220]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,3]" probability="80.0"/>
+			<item value="lodowa zbroja" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowe spodnie" quantity="[1,1]" probability="1.0"/>
+			<item value="lodowy płaszcz" quantity="[1,1]" probability="1.5"/>
+			<item value="lodowe rękawice" quantity="[1,1]" probability="2.0"/>
+			<item value="lodowe buty" quantity="[1,1]" probability="1.5"/>
+			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
+			<item value="magia lodu" quantity="[11,47]" probability="25.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -246,22 +317,22 @@
 		<type class="pol/pokutniki" subclass="pit_pokutnik_zielen" tileid="pol_pokutniki.png:4"/>
 		<description/>
 		<attributes>
-			<atk value="450"/>
-			<def value="37"/>
-			<hp value="3300"/>
+			<atk value="460"/>
+			<def value="39"/>
+			<hp value="3500"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>
 		<level value="150"/>
-		<experience value="25321"/>
+		<experience value="27321"/>
 		<respawn value="10101"/>
 		<corpse name="giant_knight"/>
 		<drops>
-			<item value="money" quantity="[50,200]" probability="100.0"/>
-			<item value="wielki eliksir" quantity="[1,2]" probability="80.0"/>
+			<item value="money" quantity="[40,240]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,3]" probability="80.0"/>
 			<item value="rękawice szmaragdowe" quantity="[1,1]" probability="2.0"/>
 			<item value="tarcza elficka" quantity="[1,1]" probability="10.0"/>
-			<item value="różdżka Wołosa" quantity="[1,1]" probability="12.5"/>
+			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
 			<item value="magia deszczu" quantity="[11,47]" probability="25.0"/>
 		</drops>
 		<equips/>
