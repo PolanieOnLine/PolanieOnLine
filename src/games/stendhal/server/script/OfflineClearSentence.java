@@ -11,11 +11,10 @@ import marauroa.common.game.RPObject;
  * @author madmetzger
  */
 public class OfflineClearSentence extends AbstractOfflineAction {
-
 	@Override
 	public boolean validateParameters(Player admin, List<String> args) {
 		if (args.size() != 1) {
-			admin.sendPrivateText("/script OfflineClearSentence.class <nazwa wojownika>");
+			admin.sendPrivateText("/script OfflineClearSentence.class <gracz>");
 			return false;
 		}
 		return true;
@@ -25,5 +24,4 @@ public class OfflineClearSentence extends AbstractOfflineAction {
 	public void process(Player admin, RPObject object, List<String> args) {
 		object.remove("sentence");
 	}
-
 }

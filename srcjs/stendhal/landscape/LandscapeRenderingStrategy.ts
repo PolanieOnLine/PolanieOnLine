@@ -14,7 +14,6 @@ import { LandscapeRenderer } from "./LandscapeRenderer";
 
 
 declare var stendhal: any;
-declare var ImagePreloader: any;
 
 export abstract class LandscapeRenderingStrategy {
 
@@ -43,11 +42,11 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 	public render(
 		canvas: HTMLCanvasElement, gamewindow: any,
 		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
-	
+
 		let landscapeRenderder = new LandscapeRenderer();
 		landscapeRenderder.drawLayer(
 			canvas,
-			stendhal.data.map.combinedTileset, 
+			stendhal.data.map.combinedTileset,
 			0,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 
@@ -55,41 +54,9 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 
 		landscapeRenderder.drawLayer(
 			canvas,
-			stendhal.data.map.combinedTileset, 
+			stendhal.data.map.combinedTileset,
 			1,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 	}
-	
-}
 
-
-export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
-
-	public onMapLoaded(_map: any): void {
-		// do nothing
-		console.log("Using IndividualTilesetRenderingStrategy.")
-	}
-
-	public onTilesetLoaded(): void {
-		new ImagePreloader(stendhal.data.map.tilesetFilenames, function() {
-			let body = document.getElementById("body")!;
-			body.style.cursor = "auto";
-		});
-	}
-
-	public render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, _targetTileWidth: number, _targetTileHeight: number): void {
-		for (var drawingLayer=0; drawingLayer < stendhal.data.map.layers.length; drawingLayer++) {
-			var name = stendhal.data.map.layerNames[drawingLayer];
-			if (name !== "protection" && name !== "collision" && name !== "objects"
-				&& name !== "blend_ground" && name !== "blend_roof") {
-				gamewindow.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
-			}
-			if (name === "2_object") {
-				gamewindow.drawEntities();
-			}
-		}
-
-	}
 }

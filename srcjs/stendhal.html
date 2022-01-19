@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<!--
+/***************************************************************************
+ *                   (C) Copyright 2014-2020 - Stendhal                    *
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation; either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
+-->
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Stendhal Alpha Client</title>
+		<link rel="stylesheet" type="text/css" href="stendhal.css">
+	</head>
+
+	<body id="body" class="background">
+	<div id="client">
+
+		<div id="topPanel"></div>
+
+
+		<div id="leftColumn" class="unselectable">
+			<canvas id="minimap" width="128" height="128"></canvas>
+			<div id="zoneinfo"></div>
+			<div id="stats"></div>
+			<div id="buddyList">
+				<ul id="buddyListUL"></ul>
+			</div>
+		</div>
+
+		<canvas id="gamewindow" width="640" height="480" tabindex="-1">Sorry, this pages only works in modern web browsers.</canvas>
+
+		<div id="rightColumn">
+			<button id="menubutton">▼&nbsp;&nbsp;Menu</button>
+			<button id="soundbutton">🔇</button>
+
+			<div id="equipmentborder">
+				<div id="equipment" class="equipment">
+					<div id="head0" class="itemSlot"></div>
+					<div id="lhand0" class="itemSlot"></div>
+					<div id="rhand0" class="itemSlot"></div>
+					<div id="finger0" class="itemSlot"></div>
+					<div id="armor0" class="itemSlot"></div>
+					<div id="cloak0" class="itemSlot"></div>
+					<div id="legs0" class="itemSlot"></div>
+					<div id="feet0" class="itemSlot"></div>
+					<div id="pouch0" class="itemSlot"></div>
+				</div>
+			</div>
+
+		</div>
+
+		<div id="bottomPanel">
+			<input id="chatinput" type="text" name="chatinput" autocomplete="off" autofocus>
+			<div id="chat"></div>
+		</div>
+
+		<div id="popupcontainer"></div>
+		</div>
+
+		<div id="loginpopup" class="popupdiv">
+			Cross world teleport initiated. Please hold tight.
+			<div class="progressbar"><div class="progressbarvalue">&nbsp;</div></div>
+		</div>
+
+		<template id="empty-template">
+		</template>
+
+		<template id="window-template">
+			<div class="windowdiv">
+				<div class='windowtitlebar background'>
+					<div class='windowtitleclose'>X</div>
+					<span class="windowtitle"></span>
+				</div>
+				<div class="windowcontent"></div>
+			</div>
+		</template>
+
+		<template id="iteminventory-template">
+			<div class="inventorypopup">
+			</div>
+		</template>
+
+		<template id="applicationmenudialog-template">
+			<div class="actionmenu">
+			</div>
+		</template>
+
+		<template id="contextmenu-template">
+			<div class="contextmenu actionmenu">
+			</div>
+		</template>
+
+		<template id="dropquantityselectordialog-template">
+			<div>
+				<input type="number" min="0" value="1" class="quantityselectorvalue">
+				<button class="quantityselectorbutton">Drop</button>
+			</div>
+		</template>
+
+		<template id="imageviewer-template">
+			<div class="imageviewer background">
+				<h3></h3>
+				<img>
+			</div>
+		</template>
+
+		<template id="travellogdialog-template">
+			<div class="tavellogpopup">
+				<div class="tavellogtabpanel">
+
+				</div>
+				<div>
+					<select class="travellogitems" size="20"></select>
+					<div class="travellogdetails"></div>
+				</div>
+			</div>
+		</template>
+
+		<template id="showfloatingwindow-template">
+			<button></button>
+		</template>
+
+		<template id="outfitdialog-template">
+			<div class="background">
+			<div class="horizontalgroup">
+
+				<!-- part selectors -->
+				<div class="verticalgroup">
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevhair">&lt;</button>
+				<canvas id="setoutfithaircanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnexthair">&gt;</button>
+				</div>
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitpreveyes">&lt;</button>
+				<canvas id="setoutfiteyescanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnexteyes">&gt;</button><br>
+				</div>
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevmouth">&lt;</button>
+				<canvas id="setoutfitmouthcanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnextmouth">&gt;</button><br>
+				</div>
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevhead">&lt;</button>
+				<canvas id="setoutfitheadcanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnexthead">&gt;</button><br>
+				</div>
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevbody">&lt;</button>
+				<canvas id="setoutfitbodycanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnextbody">&gt;</button><br>
+				</div>
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevdress">&lt;</button>
+				<canvas id="setoutfitdresscanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnextdress">&gt;</button>
+				</div>
+				</div>
+
+				<!-- color selectors -->
+				<div class="verticalgroup">
+				<div class="verticalgroup">
+				<div class="horizontalgroup">
+				<input type="checkbox" id="setoutfithaircolortoggle">
+				<label for="setoutfithaircolortoggle">Hair color</label>
+				</div>
+				<canvas id="setoutfithaircolorcanvas" width="80" height="52"></canvas>
+				<canvas id="setoutfithaircolorgradient" width="80" height="10"></canvas>
+				</div>
+
+				<div class="verticalgroup">
+				<div class="horizontalgroup">
+				<input type="checkbox" id="setoutfiteyescolortoggle">
+				<label for="setoutfiteyescolortoggle">Eyes color</label>
+				</div>
+				<canvas id="setoutfiteyescolorcanvas" width="80" height="52"></canvas>
+				<canvas id="setoutfiteyescolorgradient" width="80" height="10"></canvas>
+				</div>
+
+				<div class="verticalgroup">
+				<div class="horizontalgroup">
+				<input type="checkbox" id="setoutfitskincolortoggle">
+				<label for="setoutfitskincolortoggle">Skin color</label>
+				</div>
+				<canvas id="setoutfitskincolorcanvas" width="80" height="52"></canvas>
+				<canvas id="setoutfitskincolorgradient" width="80" height="10"></canvas>
+				</div>
+
+				<div class="verticalgroup">
+				<div class="horizontalgroup">
+				<input type="checkbox" id="setoutfitdresscolortoggle">
+				<label for="setoutfitdresscolortoggle">Dress color</label>
+				</div>
+				<canvas id="setoutfitdresscolorcanvas" width="80" height="52"></canvas>
+				<canvas id="setoutfitdresscolorgradient" width="80" height="10"></canvas>
+				</div>
+				</div>
+
+				<!-- hat & mask part selectors -->
+				<div class="verticalgroup"> 
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevhat">&lt;</button>
+				<canvas id="setoutfithatcanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnexthat">&gt;</button>
+				</div>
+
+				<div class="horizontalgroup">
+				<button type="button" id="setoutfitprevmask">&lt;</button>
+				<canvas id="setoutfitmaskcanvas" width="48" height="64"></canvas>
+				<button type="button" id="setoutfitnextmask">&gt;</button>
+				</div>
+
+				</div>
+
+				<!-- horizontal group -->
+				<div><canvas id="setoutfitcompositecanvas" width="48" height="64"></canvas></div>
+			</div>
+			<div align="right"><button type="button" id="setoutfitcancel">Cancel</button>
+			<button type="button" id="setoutfitapply">Change Outfit</button></div>
+			</div>
+		</template>
+
+		<script type="text/javascript" src="stendhal-compiled.js"></script>
+	</body>
+
+</html>

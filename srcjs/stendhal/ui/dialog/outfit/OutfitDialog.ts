@@ -9,7 +9,10 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../../toolkit/Compontent";
+import { Component } from "../../toolkit/Component";
+import { ui } from "../../UI";
+import { UIComponentEnum } from "../../UIComponentEnum";
+
 import { OutfitPartSelector } from "./OutfitPartSelector";
 import { OutfitColorSelector } from "./OutfitColorSelector";
 import { OutfitPaletteColorSelector } from "./OutfitPaletteColorSelector";
@@ -49,9 +52,12 @@ export class OutfitDialog extends Component {
 
 	constructor() {
 		super("outfitdialog-template");
+		ui.registerComponent(UIComponentEnum.OutfitDialog, this);
+
 		queueMicrotask( () => {
 			this.createDialog();
 		});
+
 	}
 	private createDialog() {
 		let outfit = marauroa.me["outfit_ext_orig"];
@@ -79,9 +85,9 @@ export class OutfitDialog extends Component {
 		this.eyesColorSelector = this.createColorSelector(OutfitColorSelector, "eyes", this.eyesSelector);
 		this.dressColorSelector = this.createColorSelector(OutfitColorSelector, "dress", this.dressSelector);
 		this.skinColorSelector = this.createColorSelector(OutfitPaletteColorSelector, "skin", this.headSelector, this.bodySelector);
-	
+
 		this.drawComposite();
-	
+
 		this.componentElement.querySelector("#setoutfitcancel")!.addEventListener("click", (event) => {
 			this.onCancel(event);
 		});
@@ -220,6 +226,10 @@ export class OutfitDialog extends Component {
 		});
 		selector.draw();
 		return selector;
+	}
+
+	public override onParentClose() {
+		ui.unregisterComponent(this);
 	}
 
 }

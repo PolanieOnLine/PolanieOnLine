@@ -695,31 +695,7 @@
 
 	<!-- Emeric: broker in Semos Plains that purchases misc. items at a low values -->
 	<shop name="brokermisc" type="buys">
-		<item name="mięso" price="5" />
-		<item name="szynka" price="10" />
-		<item name="pieczarka" price="8" />
-		<item name="borowik" price="15" />
-		<item name="muchomor" price="30" />
-		<item name="trucizna" price="20" />
-		<item name="mocna trucizna" price="30" />
-		<item name="arandula" price="2" />
-		<item name="kekik" price="8" />
-		<item name="sclaria" price="8" />
-		<item name="kokuda" price="50" />
-		<item name="mandragora" price="75" />
-		<item name="pułapka na gryzonie" price="25" />
-		<item name="czterolistna koniczyna" price="30" />
-		<item name="kolorowe kulki" price="40" />
-		<item name="czarna perłka" price="50" />
-		<item name="truchło nietoperza" price="5" />
-		<item name="zima zaklęta w kuli" price="75" />
-		<item name="truchło wampira" price="25" />
-		<item name="futro" price="12" />
-		<item name="szmaragd" price="125" />
-		<item name="szafir" price="210" />
-		<item name="rubin" price="300" />
-		<item name="obsydian" price="500" />
-		<item name="diament" price="400" />
+		<item name="futro" price="10" />
 	</shop>
 
 	<!--

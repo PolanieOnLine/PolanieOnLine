@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
@@ -25,6 +26,7 @@ import org.luaj.vm2.LuaValue;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -45,10 +47,12 @@ import games.stendhal.server.entity.npc.SilentNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
+
 /**
  * Exposes some entity classes & functions to Lua.
  */
 public class LuaEntityHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
 
 	public static final EntityManager manager = SingletonRepository.getEntityManager();
@@ -57,6 +61,7 @@ public class LuaEntityHelper {
 	private static final LuaActionHelper actionHelper = LuaActionHelper.get();
 
 	private static LuaEntityHelper instance;
+
 
 	/**
 	 * Retrieves the static instance.
@@ -413,6 +418,11 @@ public class LuaEntityHelper {
 
 	private class LuaSpeakerNPC extends SpeakerNPC implements LuaGuidedEntity {
 
+		private LuaFunction goodbyeAction;
+		private LuaFunction attackRejectedAction;
+		private boolean ignorePlayers = false;
+
+
 		public LuaSpeakerNPC(final String name) {
 			super(name);
 		}
@@ -510,9 +520,51 @@ public class LuaEntityHelper {
 		public void setPathAndPosition(LuaTable table, Boolean loop) {
 			LuaEntityHelper.setEntityPathAndPosition(this, table, loop);
 		}
+
+		@Override
+		public void onGoodbye(final RPEntity attending) {
+			if (goodbyeAction != null) {
+				SingletonRepository.getTurnNotifier().notifyInTurns(1, new TurnListener() {
+					@Override
+					public void onTurnReached(final int currentTurn) {
+						goodbyeAction.call();
+					}
+				});
+			}
+		}
+
+		public void onGoodbye(final LuaFunction action) {
+			goodbyeAction = action;
+		}
+
+		@Override
+		public void setAttending(final RPEntity rpentity) {
+			// workaround to prevent setIdea() being called
+			if (!ignorePlayers) {
+				super.setAttending(rpentity);
+			}
+		}
+
+		public void setIgnorePlayers(final boolean ignore) {
+			ignorePlayers = ignore;
+		}
+
+		@Override
+		public void onRejectedAttackStart(final RPEntity attacker) {
+			if (attackRejectedAction != null) {
+				attackRejectedAction.call(CoerceJavaToLua.coerce(attacker));
+			} else if (!ignorePlayers) {
+				super.onRejectedAttackStart(attacker);
+			}
+		}
+
+		public void setOnRejectedAttack(final LuaFunction action) {
+			attackRejectedAction = action;
+		}
 	}
 
 	private class LuaSilentNPC extends SilentNPC implements LuaGuidedEntity {
+
 		@Override
 		public void setPath(LuaTable table, Boolean loop) {
 			LuaEntityHelper.setEntityPath(this, table, loop);
@@ -522,5 +574,6 @@ public class LuaEntityHelper {
 		public void setPathAndPosition(LuaTable table, Boolean loop) {
 			LuaEntityHelper.setEntityPathAndPosition(this, table, loop);
 		}
+
 	}
 }

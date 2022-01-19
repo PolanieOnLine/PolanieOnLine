@@ -36,6 +36,7 @@
 	<property name="build_server" value="${buildroot}/build_server"/>
 	<property name="build_server_maps" value="${buildroot}/build_server_maps"/>
 	<property name="build_server_script" value="${buildroot}/build_server_script"/>
+	<property name="build_server_mods" value="${buildroot}/build_server_mods"/>
 	<property name="build_server_xmlconf" value="${buildroot}/build_server_xmlconf"/>
 
 	<property name="build_polanieonlinetools" value="${buildroot}/build_polanieonlinetools"/>
@@ -81,6 +82,23 @@
 		<format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss" />
 	</tstamp>
 
+
+	<!-- Android properties -->
+
+	<condition property="exclude.webview" value="true">
+		<and>
+			<not>
+				<isset property="env.ANDROID_SDK_ROOT" />
+			</not>
+			<not>
+				<available file="${user.dir}/android/local.properties" />
+			</not>
+		</and>
+	</condition>
+
+	<!-- END: Android properties -->
+
+
 	<target name="init">
 		<mkdir dir="${lib}"/>
 
@@ -100,6 +118,14 @@
 		<replaceregexp file="runserver.sh"
 			match="POL_VERSION ?= ?&quot;.*&quot;"
 			replace="POL_VERSION=&quot;${version}&quot;"
+			byline="true"/>
+		<replaceregexp file="android/app/build.gradle"
+			match="versionName .*"
+			replace="versionName &quot;${version.webview}&quot;"
+			byline="true"/>
+		<replaceregexp file="doc/Doxyfile"
+			match="^PROJECT_NUMBER .*$"
+			replace="PROJECT_NUMBER         = ${version}"
 			byline="true"/>
 		<!-- Update location of resources -->
 		<replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
@@ -147,9 +173,6 @@
 	</target>
 
 	<target name="clean">
-		<delete dir="${lib}" />
-		<delete dir="${build}/build_client_music_data"/>
-		<delete dir="${build}/build_client_sound_data"/>
 		<delete dir="${buildroot}" />
 		<delete dir="${build_cobertura}"/>
 		<delete dir="${build_cobertura_report}"/>
@@ -184,7 +207,6 @@
 				<pathelement path="libs/postman/pircbotx-2.0.1.jar"/>
 				<pathelement path="libs/postman/commons-lang3-3.2.1.jar"/>
 				<pathelement path="libs/postman/jwbf-2.0-SNAPSHOT.jar"/>
-				<pathelement path="libs/guava.jar"/>
 			</classpath>
 
 		</javac>
@@ -297,14 +319,12 @@
 		<copy todir="${build_server_xmlconf}/data/conf">
 			<fileset dir="data/conf">
 				<include name="creatures.xml"/>
-				<include name="creatures/pol/*.xml"/>
-				<include name="creatures/stendhal/*.xml"/>
+				<include name="creatures/*/*.xml"/>
 				<include name="items.xml"/>
 				<include name="items/*.xml"/>
 				<include name="zones.xml"/>
 				<include name="zones/*.xml"/>
-				<include name="zones/pol/*.xml"/>
-				<include name="zones/stendhal/*.xml"/>
+				<include name="zones/*/*.xml"/>
 				<include name="riddles.xml"/>
 				<include name="spells.xml" />
 				<include name="spells/*.xml" />
@@ -342,8 +362,15 @@
 		<!-- data Groovy & Lua scripts -->
 		<copy todir="${build_server_script}">
 			<fileset dir="data/script">
-				<include name="**/*.groovy"/>
-				<include name="**/*.lua"/>
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
+		<!-- Lua mods -->
+		<mkdir dir="${build_server_mods}"/>
+		<copy todir="${build_server_mods}">
+			<fileset dir="data/mods">
+				<include name="**/*"/>
 			</fileset>
 		</copy>
 
@@ -461,9 +488,9 @@
 		</javac>
 		<delete file="${src}/games/stendhal/client/StendhalBuild.java" quiet="true" failonerror="false" />
 
-		<!-- compile Starter.java for Java 1.6. So we will be able to
+		<!-- compile Starter.java for Java 1.7. So we will be able to
 		 display a dialogbox if running on an old Java Version -->
-		<javac srcdir="${src}" destdir="${build_client}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.6" target="1.6" deprecation="${javac.deprecation}" includeantruntime="false">
+		<javac srcdir="${src}" destdir="${build_client}" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.7" target="1.7" deprecation="${javac.deprecation}" includeantruntime="false">
 			<include name="games/stendhal/client/update/Starter.java"/>
 
 			<compilerarg value="-encoding"/>
@@ -565,6 +592,39 @@
 
 	</target>
 
+	<target name="client_android_build">
+		<condition property="cannot_build_webview_other">
+			<or>
+				<isset property="exclude.webview" />
+				<equals arg1="${os.win}" arg2="true" />
+			</or>
+		</condition>
+		<condition property="cannot_build_webview_win">
+			<or>
+				<isset property="exclude.webview" />
+				<equals arg1="${os.win}" arg2="false" />
+			</or>
+		</condition>
+
+		<echo
+			if:set="exclude.webview"
+			message="ANDROID_SDK_ROOT environment variable not set. Skipping Android WebView client build." />
+		<echo
+			unless:set="exclude.webview"
+			message="Building Android WebView client." />
+
+		<!-- use Unix shell script -->
+		<exec unless:set="cannot_build_webview_other" failonerror="true"
+				executable="${user.dir}/android/gradlew" dir="android/">
+			<arg value="build" />
+		</exec>
+
+		<!-- use Windows batch script -->
+		<exec unless:set="cannot_build_webview_win" failonerror="true"
+				executable="${user.dir}/android/gradlew.bat" dir="android/">
+			<arg value="build" />
+		</exec>
+	</target> <!-- client_android_build -->
 
 	<target name="signjar" unless="exclude.signing">
 		<signjar
@@ -596,15 +656,28 @@
 				<pathelement path="${tiled_jar}"/>
 				<pathelement path="libs/ant.jar"/>
 				<pathelement path="libs/jcurses.jar"/>
-				<pathelement path="libs/pircbot.jar"/>
+				<pathelement path="libs/postman/pircbotx-2.0.1.jar"/>
+				<pathelement path="libs/postman/commons-lang3-3.2.1.jar"/>
+				<pathelement path="libs/postman/jwbf-2.0-SNAPSHOT.jar"/>
 			</classpath>
 		</javadoc>
 	</target>
 
+	<target name="doxygen" description="Generate HTML API reference with Doxygen." depends="clean_doxygen">
+		<exec executable="doxygen">
+			<arg value="./doc/Doxyfile" />
+		</exec>
+	</target>
+
+	<target name="clean_doxygen" description="Delete generated HTML API reference.">
+		<delete dir="${buildroot}/doxygen" />
+	</target>
+
 	<target name="compile" depends="server_build, client_build, server_build" description="Generates JAR files for both client and server"/>
 
-	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a PolanieOnLine release"/>
-	<target name="dist_binary" depends="clean, dist_server_binary, dist_client_binary, dist_client_starter"/>
+	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a Stendhal release"/>
+
+	<target name="dist_binary" depends="clean, dist_server_binary, dist_client_binary, dist_client_starter, dist_client_android"/>
 
 	<target name="dist_server_binary" depends="server_build, compilejs">
 		<mkdir dir="${buildroot}/polanieonline-server-${version}"/>
@@ -612,8 +685,13 @@
 		<copy todir="${buildroot}/polanieonline-server-${version}/data/script">
 			<fileset dir="${buildroot}/build_server_script">
 				<include name="games/stendhal/server/script/**.*"/>
-				<include name="**/*.groovy"/>
-				<include name="**/*.lua"/>
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${buildroot}/polanieonline-server-${version}/data/mods">
+			<fileset dir="${build_server_mods}">
+				<include name="**/*"/>
 			</fileset>
 		</copy>
 
@@ -636,7 +714,10 @@
 			</fileset>
 		</copy>
 		<copy todir="${buildroot}/polanieonline-server-${version}/doc">
-			<fileset dir="doc"/>
+			<fileset dir="doc">
+				<exclude name="Doxyfile" />
+				<exclude name="doxygen/" />
+			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 
@@ -678,7 +759,10 @@
 			</fileset>
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}/doc">
-			<fileset dir="doc"/>
+			<fileset dir="doc">
+				<exclude name="Doxyfile" />
+				<exclude name="doxygen/" />
+			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 		<touch file="${buildroot}/polanieonline-${version}/log/polanieonline.txt" />
@@ -703,7 +787,10 @@
 			</fileset>
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}/doc">
-			<fileset dir="doc"/>
+			<fileset dir="doc">
+				<exclude name="Doxyfile" />
+				<exclude name="doxygen/" />
+			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 		<!-- <copy todir="${buildroot}/polanieonline-${version}" file="README.md"/> -->
@@ -713,6 +800,20 @@
 		</zip>
 		<delete dir="${buildroot}/polanieonline-${version}"/>
 	</target>
+
+	<target name="dist_client_android">
+		<echo
+			if:set="exclude.webview"
+			message="ANDROID_SDK_ROOT environment variable not set. Skipping Android WebView client build." />
+
+		<antcall unless:set="exclude.webview" target="client_android_build" />
+		<copy unless:set="exclude.webview" todir="${buildroot}" flatten="true">
+			<fileset dir="${buildroot}/build_android_client/outputs/apk/">
+				<include name="release/*.apk" />
+				<include name="debug/*.apk" />
+			</fileset>
+		</copy>
+	</target> <!-- dist_client_android -->
 
 	<target name="dist_source">
 		<mkdir dir="${buildroot}/polanieonline-${version}-src"/>
@@ -756,7 +857,9 @@
 			</fileset>
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}-src/doc">
-			<fileset dir="doc"/>
+			<fileset dir="doc">
+				<exclude name="doxygen/" />
+			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 
@@ -831,38 +934,7 @@
 			</fileset>
 		</maprenderer>
 	</target>
-
-	<!-- FIXME: should this depend on "rendermaps" to make sure we are using updated maps? -->
-	<target name="renderworldmap" description="Exports the world.tmx file to .png" depends="rendermaps">
-		<property name="pycmd" value="python3" if:true="${python3.present}"/>
-		<property name="pycmd" value="python" unless:true="${python3.present}" if:true="${python.present}"/>
-
-		<!-- embed area images with area name -->
-		<!-- FIXME: need to detect the Python "PIL" module to ensure script can run or
-				write Java class that can do this -->
-		<exec executable="${pycmd}" if:set="pycmd">
-			<arg value="./tiled/vampire_maplabel.py"/>
-			<arg value="-world"/>
-		</exec>
-
-		<!-- render world map after images have been embedded with map names -->
-		<!-- FIXME: this should be skipped if previous Python script was not run -->
-		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
-			<classpath>
-				<pathelement path="${build_polanieonlinetools}"/>
-				<pathelement path="${tiled_jar}"/>
-			</classpath>
-		</taskdef>
-		<maprenderer imagePath="${tiled}/world/" zoom="1.0">
-			<fileset dir="tiled/world">
-				<include name="world.tmx"/>
-			</fileset>
-		</maprenderer>
-
-		<!-- FIXME: should 'rendermaps' be called again to remove labels from individual images? -->
-	</target>
-
-	<target name="renderatlas" description="Generates the files for the Stendhal Atlas" depends="compile_polanieonlinetools">
+	<target name="renderatlas" description="Generates the files for the PolanieOnLine Atlas" depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
@@ -894,6 +966,35 @@
 				<exclude name="**/memory/**" />
 			</fileset>
 		</maprenderer>
+	</target>
+
+	<target name="renderworldmap" description="Exports the world.tmx file to .png" depends="rendermaps">
+		<property name="pycmd" value="python3" if:true="${python3.present}"/>
+		<property name="pycmd" value="python" unless:true="${python3.present}" if:true="${python.present}"/>
+
+		<!-- embed area images with area name -->
+		<!-- FIXME: need to detect the Python "PIL" module to ensure script can run or
+				write Java class that can do this -->
+		<exec executable="${pycmd}" if:set="pycmd">
+			<arg value="./tiled/vampire_maplabel.py"/>
+			<arg value="-world"/>
+		</exec>
+
+		<!-- render world map after images have been embedded with map names -->
+		<!-- FIXME: this should be skipped if previous Python script was not run -->
+		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
+			<classpath>
+				<pathelement path="${build_polanieonlinetools}"/>
+				<pathelement path="${tiled_jar}"/>
+			</classpath>
+		</taskdef>
+		<maprenderer imagePath="${tiled}/world/" zoom="1.0">
+			<fileset dir="tiled/world">
+				<include name="world.tmx"/>
+			</fileset>
+		</maprenderer>
+
+		<!-- FIXME: should 'rendermaps' be called again to remove labels from individual images? -->
 	</target>
 
 	<target name="updatemaps" description="Load and save TMX files to fix tilesets changes." depends="compile_polanieonlinetools">
@@ -980,7 +1081,7 @@
 			<arg value="srcjs/"/>
 			<arg value="data/"/>
 			<arg value="tiled/"/>
-			<arg value="java,xml,js,xsd,lua,py"/>
+			<arg value="java,xml,js,ts,xsd,lua,py"/>
 		</java>
 	</target>
 
@@ -988,7 +1089,7 @@
 	<target name="balance" description="runs enemy balancer" depends="compile_polanieonlinetools,server_build">
 		<java classname="games.stendhal.tools.BalanceRPGame">
 			<classpath>
-				<pathelement path="${build_stendhaltools}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="."/>
 				<pathelement path="${build_server}"/>
 				<pathelement path="${testsrc}"/>
@@ -997,7 +1098,8 @@
 				<pathelement path="${guava_jar}"/>
 				<pathelement path="${groovy_jar}"/>
 			</classpath>
-			<arg value="${creature}"/>
+			<arg line="${creature}"/>
+			<sysproperty key="showxp" value=""/>
 		</java>
 	</target>
 
@@ -1021,7 +1123,7 @@
 			<arg value="filename=testresults.xml" />
 			<arg value="-F" />
 			<arg value="file=@build/build_test_report/testresults-short.xml" />
-			<arg value="https://stendhalgame.org?id=content/scripts/cireport&amp;cikey=${env.cikey}&amp;buildnumber=${env.TRAVIS_BUILD_NUMBER}&amp;buildid=${env.TRAVIS_BUILD_ID}&amp;commit=${env.TRAVIS_COMMIT}&amp;commits=${env.TRAVIS_COMMIT_RANGE}&amp;slug=${env.TRAVIS_REPO_SLUG}&amp;pullrequest=${env.TRAVIS_PULL_REQUEST}&amp;branch=${env.TRAVIS_BRANCH}"/>
+			<arg value="https://polanieonline.eu?id=sites/scripts/cireport&amp;cikey=${env.cikey}&amp;buildnumber=${env.GITHUB_RUN_NUMBER}&amp;buildid=${env.GITHUB_RUN_ID}&amp;commit=${env.GITHUB_SHA}&amp;commits=${env.TRAVIS_COMMIT_RANGE}&amp;slug=${env.TRAVIS_REPO_SLUG}&amp;pullrequest=${env.GITHUB_HEAD_REF}&amp;branch=${env.GITHUB_REF_NAME}"/>
 		</exec>
 		<fail message="Test errors detected, check test results." if="test.error" />
 		<fail message="Test failure detected, check test results." if="test.failure" />
@@ -1051,6 +1153,7 @@
 				<pathelement path="${build_server}"/>
 				<pathelement path="${build_server_maps}"/>
 				<pathelement path="${build_server_script}"/>
+				<pathelement path="${build_server_mods}"/>
 				<pathelement path="${build_postman}"/>
 				<pathelement path="${marauroa_jar}"/>
 				<pathelement path="${log4j_jar}"/>
@@ -1091,7 +1194,7 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 	<target name="run_tests" description="Run tests">
 		<mkdir dir="${build_tests_report}"/>
 		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-			<classpath path="libs/jacoco/jacocoant.jar"/>
+			<classpath path="buildtools/jacoco/jacocoant.jar"/>
 		</taskdef>
 		<jacoco:coverage destfile="${build_tests_report}/jacoco.exec" append="false" includes="games.stendhal.*">
 			<junit fork="yes" forkmode="once" errorproperty="test.error" failureproperty="test.failure">
@@ -1103,6 +1206,7 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 					<pathelement path="${build_polanieonlinetools}"/>
 					<pathelement path="${build_polanieonlinetextclient}"/>
 					<pathelement path="${build_server_script}"/>
+					<pathelement path="${build_server_mods}"/>
 					<pathelement path="${build_postman}"/>
 					<pathelement path="${easymock_jar}"/>
 					<pathelement path="${easymockclassextension_jar}"/>
@@ -1281,6 +1385,7 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 	<target name="js-prepare-node">
 		<exec executable="npm${executable.suffix}" failonerror="true">
 			<arg value="install" />
+			<arg value="--no-save" />
 		</exec>
 	</target>
 
@@ -1304,11 +1409,11 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 		<property name="js-files-entity4"  value="srcjs/stendhal/entity/domesticanimal.js srcjs/stendhal/entity/npc.js srcjs/stendhal/entity/sign.js srcjs/stendhal/entity/growingspawner.js srcjs/stendhal/entity/item.js srcjs/stendhal/entity/door.js" />
 		<property name="js-files-entity5"  value="srcjs/stendhal/entity/useableentity.js srcjs/stendhal/entity/visibleentity.js srcjs/stendhal/entity/walkblocker.js srcjs/stendhal/entity/zone.js srcjs/stendhal/entity/ground.js" />
 		<property name="js-files-entity6"  value="" />
-		<property name="js-files-ui1"      value="srcjs/stendhal/ui/setdragimage-ie.js srcjs/stendhal/ui/buddylist.js srcjs/stendhal/ui/chatlog.js srcjs/stendhal/ui/gamewindow.js" />
-		<property name="js-files-ui2"      value="srcjs/stendhal/ui/html.js srcjs/stendhal/ui/minimap.js srcjs/stendhal/ui/keyhandler.js srcjs/stendhal/ui/sound.js srcjs/stendhal/ui/stats.js srcjs/stendhal/ui/chatinput.js" />
+		<property name="js-files-ui1"      value="srcjs/stendhal/ui/setdragimage-ie.js srcjs/stendhal/ui/gamewindow.js" />
+		<property name="js-files-ui2"      value="srcjs/stendhal/ui/html.js srcjs/stendhal/ui/keyhandler.js srcjs/stendhal/ui/sound.js" />
 		<property name="js-files-ui3"      value="" />
 		<property name="js-files-main1"    value="srcjs/stendhal/actions.js srcjs/stendhal/events.js" />
-		<property name="js-files-ui4"      value="srcjs/stendhal/ui/popup.js srcjs/stendhal/ui/itemcontainer.js srcjs/stendhal/ui/menu.js srcjs/stendhal/ui/outfitdialog.js srcjs/stendhal/ui/travellog.js srcjs/stendhal/ui/settings.js" />
+		<property name="js-files-ui4"      value="srcjs/stendhal/ui/popup.js srcjs/stendhal/ui/itemcontainer.js srcjs/stendhal/ui/settings.js" />
 		<property name="js-files-main2"    value="srcjs/stendhal/main.js" />
 		<property name="js-files-main3"    value="" />
 		<property name="js-files-ts"       value="build/ts/**/*.js" />

@@ -13,11 +13,10 @@ import games.stendhal.server.entity.player.Player;
  * @author madmetzger
  */
 public class DisableFeature extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		if (args == null || args.size() != 2) {
-			admin.sendPrivateText("Użycie DisableFeature: [wojownik] [właściwość]");
+			admin.sendPrivateText("Użycie DisableFeature: <gracz> <właściwość>");
 			return;
 		}
 		final String feature = args.get(1);
@@ -25,5 +24,4 @@ public class DisableFeature extends ScriptImpl {
 		final Player player = SingletonRepository.getRuleProcessor().getPlayer(name);
 		new DisableFeatureAction(feature).fire(player, null, null);
 	}
-
 }

@@ -11,6 +11,7 @@
 
 "use strict";
 
+var DebugAction = require("../../build/ts/action/DebugAction").DebugAction;
 var OpenWebsiteAction = require("../../build/ts/action/OpenWebsiteAction").OpenWebsiteAction;
 
 var stendhal = window.stendhal = window.stendhal || {};
@@ -210,12 +211,14 @@ stendhal.slashActionRepository = {
 
 	"clear": {
 		execute: function(type, params, remainder) {
-			stendhal.ui.chatLog.clear();
+			ui.get(UICommponentEnum.ChatLog).clear();
 			return true;
 		},
 		minParams: 0,
 		maxParams: 0
 	},
+
+	"debug": new DebugAction(),
 
 	"drop": {
 		execute: function(type, params, remainder) {
@@ -341,7 +344,7 @@ stendhal.slashActionRepository = {
 				"- /removedetail \tRemove the detail layer (e.g. balloon, umbrella, etc.) from character."
 			];
 			for (var i = 0; i < msg.length; i++) {
-				stendhal.ui.chatLog.addLine("info", msg[i]);
+				Chat.log("info", msg[i]);
 			}
 			return true;
 		},
@@ -460,7 +463,7 @@ stendhal.slashActionRepository = {
 			}
 
 			for (var i = 0; i < msg.length; i++) {
-				stendhal.ui.chatLog.addLine("info", msg[i]);
+				Chat.log("info", msg[i]);
 			}
 
 			return true;
@@ -604,7 +607,7 @@ stendhal.slashActionRepository = {
 			if (state == "on") {
 				action["move.continuous"] = "";
 			} else if (state != "off") {
-				stendhal.ui.chatLog.addLine("error", "Argument must be either \"on\" or \"off\".");
+				Chat.log("error", "Argument must be either \"on\" or \"off\".");
 				return false;
 			};
 
@@ -618,7 +621,7 @@ stendhal.slashActionRepository = {
 			}
 			msg += ".";
 
-			stendhal.ui.chatLog.addLine("info", msg);
+			Chat.log("info", msg);
 			return true;
 		},
 		minParams: 1,
@@ -941,7 +944,7 @@ stendhal.slashActionRepository = {
 			}
 
 			url += name + ".html";
-			stendhal.ui.chatLog.addLine("info", "Trying to open #" + url + " in your browser.");
+			Chat.log("info", "Trying to open #" + url + " in your browser.");
 			window.location = url;
 			return true;
 		},
@@ -1028,7 +1031,7 @@ stendhal.slashActionRepository = {
 			array.slice(action.maxParams);
 			return action.execute(name, array, remainder.trim());
 		} else {
-			stendhal.ui.chatLog.addLine("error", "Missing arguments. Try /help");
+			Chat.log("error", "Missing arguments. Try /help");
 			return false;
 		}
 	}

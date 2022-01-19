@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2022-2022 - Faiumoni e. V.                 *
+ *                   (C) Copyright 2022 - Faiumoni e. V.                   *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,25 +9,23 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Panel } from "./toolkit/Panel";
+import { ui } from "../ui/UI";
+import { UIComponentEnum } from "../ui/UIComponentEnum";
+import { ChatLogComponent } from "../ui/component/ChatLogComponent";
 
-import { UIComponentEnum } from "./UIComponentEnum";
-import { ui } from "./UI";
+/**
+ * chat logger
+ */
+export class Chat {
 
-export class UserInterfaceFactory {
-
-	public create() {
-		let topPanel = new Panel("topPanel");
-		ui.registerComponent(UIComponentEnum.LeftPanel, topPanel);
-		
-		let leftPanel = new Panel("leftColumn");
-		ui.registerComponent(UIComponentEnum.LeftPanel, leftPanel);
-
-		let rightPanel = new Panel("rightColumn");
-		ui.registerComponent(UIComponentEnum.RightPanel, rightPanel);
-
-		let bottomPanel = new Panel("bottomPanel");
-		ui.registerComponent(UIComponentEnum.BottomPanel, bottomPanel);
+	/**
+	 * adds a line to the chat log
+	 *
+	 * @param type type of message
+	 * @param message message to log
+	 */
+	public static log(type: string, message: string) {
+		(ui.get(UIComponentEnum.ChatLog) as ChatLogComponent).addLine(type, message);
 	}
 
 }

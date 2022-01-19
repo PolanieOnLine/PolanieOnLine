@@ -9,7 +9,10 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../toolkit/Compontent";
+import { ui} from "../UI";
+import { UIComponentEnum } from "../UIComponentEnum";
+import { Component } from "../toolkit/Component";
+import { ChatInputComponent } from "../component/ChatInputComponent";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -29,7 +32,7 @@ export class ActionContextMenu extends Component {
 		}
 		content += "</div>";
 		this.componentElement.innerHTML = content;
-	
+
 		this.componentElement.addEventListener("click", (event) => {
 			this.onClick(event);
 		});
@@ -57,7 +60,7 @@ export class ActionContextMenu extends Component {
 			this.executeFallbackAction(this.actions[i].type)
 		}
 	}
-	
+
 	private executeFallbackAction(type: string) {
 		let action: any = {
 			"type": type,
@@ -69,7 +72,7 @@ export class ActionContextMenu extends Component {
 			action['target'] = '#' + this.entity.id;
 		}
 		marauroa.clientFramework.sendAction(action);
-		
+
 	}
 
 	private gatherActions(){
@@ -96,7 +99,7 @@ export class ActionContextMenu extends Component {
 			actions.push({
 				title: "(*) Alter",
 				action: function(entity: any) {
-					stendhal.ui.chatinput.setText("/alter #"
+					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/alter #"
 							+ entity["id"]
 							+ " ");
 				}

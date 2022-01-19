@@ -23,7 +23,6 @@ import marauroa.common.game.RPObject;
  * @author hendrik
  */
 public class OfflineAdminlevel extends AbstractOfflineAction {
-
 	/**
 	 * validates the parameters, sends an error message, if something is wrong with them
 	 *
@@ -34,7 +33,7 @@ public class OfflineAdminlevel extends AbstractOfflineAction {
 	@Override
 	public boolean validateParameters(final Player admin, final List<String> args) {
 		if (args.size() != 2) {
-			admin.sendPrivateText("/script OfflineAdminlevel.class <wojownik> <nowypoziom>");
+			admin.sendPrivateText("/script OfflineAdminlevel.class <gracz> <nowy_poziom>");
 			return false;
 		}
 		return true;

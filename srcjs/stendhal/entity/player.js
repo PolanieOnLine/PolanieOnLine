@@ -33,9 +33,11 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 		if (marauroa.me !== this) {
 			return;
 		}
-		if (stendhal.ui.stats.keys.indexOf(key) > -1) {
-			stendhal.ui.stats.dirty = true;
-		}
+
+		queueMicrotask( () => {
+			ui.get(UIComponentEnum.PlayerStats).update(key);
+			ui.get(UIComponentEnum.Keyring).update();
+		});
 	},
 
 	/**
@@ -96,7 +98,6 @@ marauroa.rpobjectFactory["player"] = marauroa.util.fromProto(marauroa.rpobjectFa
 					if (!outfitDialog) {
 						outfitDialog = new OutfitDialog();
 						new FloatingWindow("Choose outfit", outfitDialog, 300, 50);
-						ui.registerComponent(UIComponentEnum.OutfitDialog, outfitDialog);
 					}
 				}
 			});

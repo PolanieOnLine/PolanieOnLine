@@ -14,11 +14,16 @@
 var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 
+var Chat = require("../../build/ts/util/Chat").Chat;
+
 var ui = require("../../build/ts/ui/UI").ui;
 var UIComponentEnum = require("../../build/ts/ui/UIComponentEnum").UIComponentEnum;
-var UserInterfaceFactory = require("../../build/ts/ui/UserInterfaceFactory").UserInterfaceFactory;
+var DesktopUserInterfaceFactory = require("../../build/ts/ui/factory/DesktopUserInterfaceFactory").DesktopUserInterfaceFactory;
 
 var FloatingWindow = require("../../build/ts/ui/toolkit/FloatingWindow").FloatingWindow;
+
+var ChatLogComponent = require("../../build/ts/ui/component/ChatLogComponent").ChatLogComponent;
+var ItemInventoryComponent = require("../../build/ts/ui/component/ItemInventoryComponent").ItemInventoryComponent;
 
 var ActionContextMenu = require("../../build/ts/ui/dialog/ActionContextMenu").ActionContextMenu;
 var ApplicationMenuDialog = require("../../build/ts/ui/dialog/ApplicationMenuDialog").ApplicationMenuDialog;
@@ -48,7 +53,7 @@ stendhal.main = {
 	registerMarauroaEventHandlers: function() {
 
 		marauroa.clientFramework.onDisconnect = function(reason, error){
-			stendhal.ui.chatLog.addLine("error", "Disconnected: " + error);
+			Chat.log("error", "Disconnected: " + error);
 		};
 
 		marauroa.clientFramework.onLoginRequired = function() {
@@ -82,7 +87,7 @@ stendhal.main = {
 			marauroa.clientFramework.chooseCharacter(name);
 			var body = document.getElementById("body")
 			body.style.cursor = "auto";
-			stendhal.ui.chatLog.addLine("client", "Loading world...");
+			Chat.log("client", "Loading world...");
 		};
 
 
@@ -114,10 +119,10 @@ stendhal.main = {
 		if (document.getElementById("gamewindow")) {
 			marauroa.perceptionListener.onPerceptionEnd = function(type, timestamp) {
 				stendhal.zone.sortEntities();
-				stendhal.ui.minimap.draw();
-				stendhal.ui.buddyList.update();
+				ui.get(UIComponentEnum.MiniMap).draw();
+				ui.get(UIComponentEnum.BuddyList).update();
 				stendhal.ui.equip.update();
-				stendhal.ui.stats.update();
+				ui.get(UIComponentEnum.PlayerEquipment).update();
 				if (!stendhal.main.loaded) {
 					stendhal.main.loaded = true;
 					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
@@ -165,14 +170,6 @@ stendhal.main = {
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);
 		gamewindow.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
 
-		var minimap = document.getElementById("minimap");
-		minimap.addEventListener("click", stendhal.ui.minimap.onClick);
-		minimap.addEventListener("dblclick", stendhal.ui.minimap.onClick);
-
-		var buddyList = document.getElementById("buddyList");
-		buddyList.addEventListener("mouseup", stendhal.ui.buddyList.onMouseUp);
-		buddyList.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
-
 		var menubutton = document.getElementById("menubutton");
 		menubutton.addEventListener("click", (event) => {
 			ui.createSingletonFloatingWindow("Menu", new ApplicationMenuDialog(), 150, event.pageY + 20)
@@ -182,10 +179,6 @@ stendhal.main = {
 		soundbutton.addEventListener("click", stendhal.main.toggleSound);
 		// update button state
 		stendhal.main.onSoundToggled();
-
-		var chatinput = document.getElementById("chatinput");
-		chatinput.addEventListener("keydown", stendhal.ui.chatinput.onKeyDown);
-		chatinput.addEventListener("keypress", stendhal.ui.chatinput.onKeyPress);
 	},
 
 	devWarning: function() {
@@ -203,10 +196,10 @@ stendhal.main = {
 	startup: function() {
 		stendhal.main.devWarning();
 
-		new UserInterfaceFactory().create();
+		new DesktopUserInterfaceFactory().create();
 
-		stendhal.ui.chatLog.addLine("error", "This is an early stage of an experimental web-based client. Please use the official client at https://stendhalgame.org to play Stendhal.");
-		stendhal.ui.chatLog.addLine("client", "Client loaded. Connecting...");
+		Chat.log("error", "This is an early stage of an experimental web-based client. Please use the official client at https://stendhalgame.org to play Stendhal.");
+		Chat.log("client", "Client loaded. Connecting...");
 
 		stendhal.main.registerMarauroaEventHandlers();
 		stendhal.main.registerBrowserEventHandlers();

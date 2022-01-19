@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,7 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui.j2d.entity;
 
-
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -38,9 +37,6 @@ import marauroa.common.game.RPAction;
  * @param <T> type of NPC
  */
 class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
-	/**
-	 * Log4J.
-	 */
 	private static final Logger logger = Logger.getLogger(NPC2DView.class);
 	/**
 	 * The idea property changed.
@@ -51,9 +47,7 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	 */
 	private Sprite ideaSprite;
 
-	//
-	// RPEntity2DView
-	//
+	private List<String> animatedSprites = Arrays.asList("love");
 
 	/**
 	 * Get the full directional animation tile set for this entity.
@@ -157,8 +151,13 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 			return null;
 		}
 
-		return SpriteStore.get().getSprite(
-				"data/sprites/ideas/" + idea + ".png");
+		final SpriteStore ss = SpriteStore.get();
+		Sprite ideaSprite = ss.getSprite("data/sprites/ideas/" + idea + ".png");
+		if (animatedSprites.contains(idea)) {
+			ideaSprite = ss.getAnimatedSprite(ideaSprite, 100);
+		}
+
+		return ideaSprite;
 	}
 
 	@Override

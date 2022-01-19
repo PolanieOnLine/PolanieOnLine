@@ -23,7 +23,6 @@ import games.stendhal.server.entity.player.Player;
  * Alters number of loots a player has for an item.
  */
 public class AlterLoot extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		super.execute(admin, args);
@@ -39,7 +38,7 @@ public class AlterLoot extends ScriptImpl {
 		// Admin did not input correct number of arguments
 		if (argc < 3) {
 			showUsage(admin);
-			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Zbyt mało argumentów");
+			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Zbyt mało argumentów.");
 			return;
 		}
 
@@ -51,7 +50,7 @@ public class AlterLoot extends ScriptImpl {
 
 		// Player does not exist
 		if (target == null) {
-			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Nie ma takiego gracza: " + player_name);
+			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Nie ma takiego gracza: " + player_name + ".");
 			return;
 		}
 
@@ -60,7 +59,7 @@ public class AlterLoot extends ScriptImpl {
 			new_count = Integer.parseInt(args.get(1));
 		} catch (NumberFormatException e) {
 			showUsage(admin);
-			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Argument <ilość> musi być wartością liczbową");
+			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Argument <ilość> musi być wartością liczbową.");
 			return;
 		}
 
@@ -70,13 +69,13 @@ public class AlterLoot extends ScriptImpl {
 
 		if (actual_count != new_count) {
 			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Próbowano ustawić liczbę łupów dla " + item + " do " + Integer.toString(new_count) + "."
-					+ " Aktualna wartość: " + Integer.toString(actual_count));
+					+ " Aktualna wartość: " + Integer.toString(actual_count) + ".");
 			return;
 		}
 
 		// Notify player of changes
-		target.sendPrivateText(NotificationType.SUPPORT, "Ilość zdobytych przedmiotów dla #'" + item + "' została zmieniono do "
-				+ Integer.toString(actual_count) + " przez " + admin.getTitle());
+		target.sendPrivateText(NotificationType.SUPPORT, "Ilość zdobytych przedmiotów dla #'" + item + "' została zmieniono do wartości "
+				+ Integer.toString(actual_count) + " przez " + admin.getTitle() + ".");
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class AlterLoot extends ScriptImpl {
 	private void showUsage(final Player admin) {
 		List<String> usage = Arrays.asList(
 				"\nUżyj:",
-				"    /script AlterLoot.class <wojownik> <ilość> <przedmiot>",
+				"    /script AlterLoot.class <gracz> <ilość> <przedmiot>",
 				"    /script AlterLoot.class !help",
 				"Argumenty:",
 				"    wojownik:\tGracz do modyfikacji.",

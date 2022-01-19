@@ -9,14 +9,14 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "./Compontent";
-import { ui } from "../UI";
+import { Component } from "./Component";
 
 declare var stendhal: any;
 
 export class FloatingWindow extends Component {
 
 	private readonly closeSound = "click-1";
+	private opened = true;
 
 	private onMouseMovedDuringDragListener: EventListener;
 	private onMouseUpDuringDragListener: EventListener;
@@ -53,6 +53,7 @@ export class FloatingWindow extends Component {
 		contentComponent.componentElement.addEventListener("close", (event) => {
 			this.onClose(event);
 		})
+		this.contentComponent.parentComponent = this;
 
 		// add window to DOM
 		let popupcontainer = document.getElementById("popupcontainer")!;
@@ -61,17 +62,20 @@ export class FloatingWindow extends Component {
 
 
 	public close() {
-		let popupcontainer = document.getElementById("popupcontainer")!;
-		if (popupcontainer.contains(this.componentElement)) {
-			popupcontainer.removeChild(this.componentElement);
-		}
-		ui.unregisterComponent(this.contentComponent);
+		stendhal.ui.sound.playGlobalizedEffect(this.closeSound);
+		this.componentElement.remove();
+		this.contentComponent.onParentClose();
+		this.opened = false;
+		this.contentComponent.parentComponent = undefined;
 	}
 
 	private onClose(event: Event) {
 		this.close();
 		event.preventDefault();
-		stendhal.ui.sound.playGlobalizedEffect(this.closeSound);
+	}
+
+	public isOpen() {
+		return this.opened;
 	}
 
 	/**

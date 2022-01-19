@@ -15,7 +15,7 @@ public class EnableFeature extends ScriptImpl {
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		if (args == null || args.size() != 2) {
-			admin.sendPrivateText("Użycie EnableFeature: [wojownik] [właściwość]");
+			admin.sendPrivateText("Użycie EnableFeature: <gracz> <właściwość>");
 			return;
 		}
 		final String feature = args.get(1);

@@ -9,9 +9,10 @@
  *                                                                         *
  ***************************************************************************/
 
-export class Component {
+export abstract class Component {
 
 	readonly componentElement!: HTMLElement;
+	public parentComponent?: Component;
 
 	constructor(id: string) {
 		let element = document.getElementById(id);
@@ -26,4 +27,8 @@ export class Component {
 
 		this.componentElement = element;
 	}
+
+	public onParentClose() {
+		// do nothing
+	};
 }
