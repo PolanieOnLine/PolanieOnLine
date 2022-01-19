@@ -3,6 +3,7 @@ Changelog
 1.27
 *klient*
 - Dodano nowe grafiki potworów & przedmiotów
+- Dodano nowe włosy & style par oczu do wyboru dla postaci
 
 *świat*
 - Dodano nowy przedmiot: (1)
@@ -17,6 +18,9 @@ Changelog
 - Bankier Kazimierz nie będzie pytał się o wyjście z piętra po skończonym czasie
 - Zmieniono ilość gigantycznych eliksirów wyrzucanych przez smoczyska
 - Zmieniono szansę na zdobycie niektórych lazurowych przedmiotów z błękitnego smoka
+
+*serwer*
+- Dodano nowy skrypt CheckLoot.class dla administratorów
 
 *naprawiono błędy*
 - Naprawiono, że NPC Tworzymir nie brał pieniędzy za nieudane ulepszenie
