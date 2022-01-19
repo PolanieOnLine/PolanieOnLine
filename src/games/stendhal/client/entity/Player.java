@@ -1,14 +1,13 @@
-/* $Id$ */
 /***************************************************************************
- *		      (C) Copyright 2003 - Marauroa		      *
+ *                     Copyright © 2020 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
- *									 *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.				   *
- *									 *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
  ***************************************************************************/
 package games.stendhal.client.entity;
 
@@ -18,17 +17,11 @@ import marauroa.common.game.RPObject;
 
 /** A Player entity. */
 public class Player extends RPEntity {
-	/**
-	 * Away property.
-	 */
+	// Away property.
 	public static final Property PROP_AWAY = new Property();
-	/**
-	 * Grumpy property.
-	 */
+	// Grumpy property.
 	public static final Property PROP_GRUMPY = new Property();
-	/**
-	 * Player killer property.
-	 */
+	// Player killer property.
 	public static final Property PROP_PLAYER_KILLER = new Property();
 
 	private static final String LAST_PLAYER_KILL_TIME = "last_player_kill_time";
@@ -51,9 +44,9 @@ public class Player extends RPEntity {
 		grumpy = null;
 	}
 
-	//
-	// Player
-	//
+	public boolean isBadBoy() {
+		return badboy;
+	}
 
 	/**
 	 * Determine if the player is away.
@@ -62,10 +55,6 @@ public class Player extends RPEntity {
 	 */
 	public boolean isAway() {
 		return (getAway() != null);
-	}
-
-	public boolean isBadBoy() {
-		return badboy;
 	}
 
 	/**
@@ -105,12 +94,6 @@ public class Player extends RPEntity {
 		return (grumpy != null);
 	}
 
-	/**
-	 * An away message was set/cleared.
-	 *
-	 * @param message
-	 *            The away message, or <code>null</code> if no-longer away.
-	 */
 	private void onGrumpy(final String message) {
 		// Filter out events about changing to same message
 		if (messageChanged(grumpy, message)) {
