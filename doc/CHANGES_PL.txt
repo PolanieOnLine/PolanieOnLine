@@ -4,6 +4,7 @@ Changelog
 *klient*
 - Dodano nowe grafiki potworów & przedmiotów
 - Dodano nowe włosy & style par oczu do wyboru dla postaci
+- Poprawiono grafiki: srebrny & złoty pierścień
 
 *świat*
 - Dodano nowe przedmioty: (2)
