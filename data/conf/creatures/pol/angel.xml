@@ -122,7 +122,7 @@
 		</attributes>
 		<level value="1100"/>
 		<experience value="1718000"/>
-		<respawn value="1440000"/>
+		<respawn value="380000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
 			<item value="money" quantity="[100,40000]" probability="100.0"/>
@@ -175,7 +175,7 @@
 		</attributes>
 		<level value="1210"/>
 		<experience value="1918000"/>
-		<respawn value="1880000"/>
+		<respawn value="380000"/>
 		<corpse name="giant_humanoid"/>
 		<drops>
 			<item value="money" quantity="[666,66666]" probability="100.0"/>
