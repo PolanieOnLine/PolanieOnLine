@@ -7,9 +7,10 @@ Changelog
 - Poprawiono grafiki: srebrny & złoty pierścień
 
 *świat*
-- Dodano nowe przedmioty: (2)
+- Dodano nowe przedmioty: (3)
 	- magia lodu
 	- hełm wampirzy
+	- pierścień życia
 - Dodano nowe potwory: (4)
 	- pokutnik poranny
 	- pokutnik z gór
