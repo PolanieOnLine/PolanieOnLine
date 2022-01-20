@@ -149,7 +149,7 @@
 
 	<item name="rękawice wampirze">
 		<type class="glove" subclass="vampire_gloves" tileid="-1"/>
-		<description>Oto krwiste wampirze rękawice. Wykonane z żelaza z krwi.</description>
+		<description>Oto krwiste rękawice wampirze. Wykonane z żelaza pochodzącego z krwi ofiar.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
@@ -379,7 +379,7 @@
 	
 	<item name="rękawice zabójcy">
 		<type class="glove" subclass="killer_gloves" tileid="-1"/>
-		<description>Oto rękawice zabójcy. Widać na nich nieco plamy krwi... Jesteś w stanie je założyć?</description>
+		<description>Oto rękawice zabójcy. Widać na nich plamy krwi ofiar... Odważysz się je założyć?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>

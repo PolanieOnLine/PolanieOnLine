@@ -101,7 +101,8 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	};
 	private static final String[] VAMPIRE = {
 			"zbroja wampirza", "spodnie wampirze", "płaszcz wampirzy",
-			"rękawice wampirze", "buty wampirze", "pas wampirzy"
+			"rękawice wampirze", "buty wampirze", "pas wampirzy",
+			"hełm wampirzy"
 	};
 	private static final String[] ROYAL = {
 			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny",

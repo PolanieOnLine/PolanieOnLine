@@ -477,7 +477,7 @@
 
 	<item name="hełm kamienny">
 		<type class="helmet" subclass="stone_helmet" tileid="-1"/>
-		<description>Oto ciężki kamienny hełm.</description>
+		<description>Oto ciężki hełm kamienny.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
@@ -566,6 +566,26 @@
 		<susceptibility type="ice" value="0.98"/>
 		<susceptibility type="dark" value="0.98"/>
 		<susceptibility type="light" value="0.98"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="head"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="hełm wampirzy">
+		<type class="helmet" subclass="vampire_helmet" tileid="-1"/>
+		<description>Oto hełm wampirzy. Zakładając go czujesz jak spływa po twoich policzkach krew.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="20"/>
+			<min_level value="105"/>
+		</attributes>
+		<weight value="15.0"/>
+		<value value="74536"/>
+		<susceptibility type="fire" value="0.9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
