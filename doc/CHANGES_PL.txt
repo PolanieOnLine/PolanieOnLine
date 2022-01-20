@@ -10,7 +10,7 @@ Changelog
 - Dodano nowe przedmioty: (3)
 	- magia lodu
 	- hełm wampirzy
-	- pierścień życia
+	- pierścień zdrowia
 - Dodano nowe potwory: (4)
 	- pokutnik poranny
 	- pokutnik z gór
