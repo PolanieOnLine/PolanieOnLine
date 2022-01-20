@@ -18,6 +18,7 @@ Changelog
 - Bankier Kazimierz nie będzie pytał się o wyjście z piętra po skończonym czasie
 - Zmieniono ilość gigantycznych eliksirów wyrzucanych przez smoczyska
 - Zmieniono szansę na zdobycie niektórych lazurowych przedmiotów z błękitnego smoka
+- Skrócono czas odrodzenia cherubina i lilith
 
 *serwer*
 - Dodano nowy skrypt CheckLoot.class dla administratorów
