@@ -407,4 +407,24 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
+
+	<item name="pierścień zdrowia">
+		<type class="ring" subclass="lifesteal_ring" tileid="-1"/>
+		<description/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<lifesteal value="0.01"/>
+			<min_level condition="stendhal.testserver" value="0"/>
+		</attributes>
+		<preview>5</preview>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
 </items>
