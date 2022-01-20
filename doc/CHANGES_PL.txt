@@ -6,8 +6,9 @@ Changelog
 - Dodano nowe włosy & style par oczu do wyboru dla postaci
 
 *świat*
-- Dodano nowy przedmiot: (1)
+- Dodano nowe przedmioty: (2)
 	- magia lodu
+	- hełm wampirzy
 - Dodano nowe potwory: (4)
 	- pokutnik poranny
 	- pokutnik z gór
