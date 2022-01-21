@@ -4,13 +4,18 @@ Changelog
 *klient*
 - Dodano nowe grafiki potworów & przedmiotów
 - Dodano nowe włosy & style par oczu do wyboru dla postaci
-- Poprawiono grafiki: srebrny & złoty pierścień
+- Poprawiono grafiki: srebrny & złoty & czarny pierścień
 
 *świat*
-- Dodano nowe przedmioty: (3)
+- Dodano nowego NPC: (1)
+	- Gosława
+- Dodano nową mapę: (1)
+	- int_tarnow_weaponshop
+- Dodano nowe przedmioty: (4)
 	- magia lodu
 	- hełm wampirzy
 	- pierścień zdrowia
+	- wzmocniony pierścień zdrowia
 - Dodano nowe potwory: (4)
 	- pokutnik poranny
 	- pokutnik z gór
