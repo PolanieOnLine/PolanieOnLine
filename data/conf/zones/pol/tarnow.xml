@@ -244,6 +244,10 @@
 		<portal x="66" y="68" ref="kitchen_entrance">
 			<destination zone="int_tarnow_kitchen" ref="kitchen_exit"/>
 		</portal>
+
+		<portal x="46" y="88" ref="weaponshop_entrance">
+			<destination zone="int_tarnow_weaponshop" ref="weaponshop_exit"/>
+		</portal>
 	</zone>
 
 	<zone name="0_tarnow_plains_n" level="0" x="514080" y="17920" file="Level 0/tarnow/plains.tmx">
@@ -365,6 +369,12 @@
 		<configurator class-name="games.pol.server.maps.tarnow.kitchen.ChefNPC"/>
 		<portal x="10" y="14" ref="kitchen_exit">
 			<destination zone="0_tarnow_city" ref="kitchen_entrance"/>
+		</portal>
+	</zone>
+
+	<zone name="int_tarnow_weaponshop" file="interiors/tarnow/weaponshop.tmx">
+		<portal x="12" y="18" ref="weaponshop_exit">
+			<destination zone="0_tarnow_city" ref="weaponshop_entrance"/>
 		</portal>
 	</zone>
 
