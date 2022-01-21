@@ -30,14 +30,33 @@ if game:setZone(zone_name) then
 	local w_name = "Emma"
 	local h_name = "Ari"
 
-	local wifeToBe = entities:createSpeakerNPC(w_name)
-	local husbandToBe = entities:createSpeakerNPC(h_name)
+	local wifeToBe = entities:create({
+		type = "SpeakerNPC",
+		name = w_name,
+		description = "Oto " .. w_name .. ". " .. w_name .. ", która wpatruje się w " .. h_name .. ".",
+		outfit = {
+			layers = "body=1,head=0,eyes=1,hair=23,dress=17",
+			colors = {eyes=0xdc143c, hair=0x8a2be2, dress=0x008080},
+		},
+		idea = "love",
+		pos = {75, 56},
+		idleDir = Direction.LEFT,
+	})
 
-	wifeToBe:setOutfit("body=1,head=0,eyes=1,hair=23,dress=17")
-	wifeToBe:setOutfitColor("eyes", 0xdc143c)
-	wifeToBe:setOutfitColor("hair", 0x8a2be2)
-	wifeToBe:setOutfitColor("dress", 0x008080)
-	wifeToBe:setIdea("love")
+	local husbandToBe = entities:create({
+		type = "SpeakerNPC",
+		name = h_name,
+		description = "Oto " .. h_name .. ". " .. h_name .. ", który wpatruje się w " .. w_name .. ".",
+		outfit = {
+			layers = "body=0,head=0,eyes=21,hair=49,dress=53",
+			colors = {eyes=0x89cff0, hair=0x0d98ba},
+		},
+		idea = "love",
+		pos = {74, 56},
+		idleDirection = Direction.RIGHT,
+		greeting = {text="Cześć."},
+	})
+
 	wifeToBe:setIgnorePlayers(true)
 	wifeToBe:setOnRejectedAttack(function(attacker)
 		if attacker ~= nil then
@@ -46,39 +65,23 @@ if game:setZone(zone_name) then
 			husbandToBe:say("Proszę... zostaw " .. w_name .. " w spokoju.")
 		end
 	end)
-	wifeToBe:setPosition(75, 56)
-	wifeToBe:setIdleDirection(Direction.LEFT)
 
-	--[[
-	wifeToBe:addGreeting("Cześć.")
-	wifeToBe:addGoodbye()
-	wifeToBe:onGoodbye(function()
-		wifeToBe:setIdea("love")
-	end)
-	]]
-
-	husbandToBe:setOutfit("body=0,head=0,eyes=21,hair=49,dress=53")
-	husbandToBe:setOutfitColor("eyes", 0x89cff0)
-	husbandToBe:setOutfitColor("hair", 0x0d98ba)
-	husbandToBe:setIdea("love")
-	husbandToBe:setPosition(74, 56)
-	husbandToBe:setIdleDirection(Direction.RIGHT)
-
-	husbandToBe:addGreeting("Cześć.")
 	husbandToBe:addGoodbye()
 	husbandToBe:onGoodbye(function()
 		print("husbandToBe:onGoodbye")
-		husbandToBe:setIdea("love")
-		--husbandToBe:setOutfitColor("hair", Color.GREEN)
-		--husbandToBe:put("idea", "love")
-		--husbandToBe:notifyWorldAboutChanges()
 	end)
 
-	wifeToBe:setDescription("Oto " .. w_name .. ". " .. w_name .. " spogląda na " .. h_name .. ".")
-	husbandToBe:setDescription("Oto " .. h_name .. ". " .. h_name .. " spogląda na " .. w_name .. ".")
+	local treeCarving = entities:create({
+		type = "Sign",
+		visible = false;
+		pos = {76, 54},
+		text = "Czytasz: \"" .. h_name .. " ❤ " .. w_name .. "\".",
+		description = "W drzewie zostało coś jest wyryte.",
+	})
 
 	game:add(wifeToBe)
 	game:add(husbandToBe)
+	game:add(treeCarving)
 else
 	logger:error("could not set zone: " .. zone_name)
 end

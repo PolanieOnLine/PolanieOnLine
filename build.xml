@@ -15,6 +15,9 @@
 	<condition property="exe.ext" value=".exe" else="">
 		<equals arg1="${os.win}" arg2="true"/>
 	</condition>
+	<condition property="executable.npm" value="npm.cmd" else="npm">
+		<equals arg1="${os.win}" arg2="true" />
+	</condition>
 
 	<!-- check for some executables -->
 	<available property="python.present" file="python${exe.ext}" filepath="${env.PATH}"/>
@@ -71,6 +74,11 @@
 			<available file="${build-archive}/polanieonline-${version.old}.zip"/>
 		</not>
 	</condition>
+	<condition property="exclude.webclient" value="true">
+		<not>
+			<available file="${executable.npm}" filepath="${env.PATH}"/>
+		</not>
+	</condition>
 
 	<!-- Windows fails to execute "ng" unless it is invoked as "ng.cmd" -->
 	<condition property="executable.suffix" value=".cmd">
@@ -123,7 +131,7 @@
 			match="versionName .*"
 			replace="versionName &quot;${version.webview}&quot;"
 			byline="true"/>
-		<replaceregexp file="doc/Doxyfile"
+		<replaceregexp file="buildtools/doxygen/Doxyfile"
 			match="^PROJECT_NUMBER .*$"
 			replace="PROJECT_NUMBER         = ${version}"
 			byline="true"/>
@@ -634,7 +642,7 @@
 			jar="${lib}/${client_starter_jarname}" />
 	</target>
 
-	<target name="docs" description="Build javadocs for fixed PolanieOnLine">
+	<target name="docs" description="Generate HTML API reference with javadoc." depends="clean_docs">
 		<javadoc packagenames="games.stendhal.*"
 		   defaultexcludes="yes"
 		   destdir="${docs}"
@@ -659,17 +667,23 @@
 				<pathelement path="libs/postman/pircbotx-2.0.1.jar"/>
 				<pathelement path="libs/postman/commons-lang3-3.2.1.jar"/>
 				<pathelement path="libs/postman/jwbf-2.0-SNAPSHOT.jar"/>
+				<pathelement path="${luaj_jar}"/>
+				<pathelement path="libs/json-simple-1.1.1.jar"/>
 			</classpath>
 		</javadoc>
 	</target>
 
+	<target name="clean_docs" description="Delete javadoc generated HTML API reference.">
+		<delete dir="${docs}" />
+	</target>
+
 	<target name="doxygen" description="Generate HTML API reference with Doxygen." depends="clean_doxygen">
 		<exec executable="doxygen">
-			<arg value="./doc/Doxyfile" />
+			<arg value="./buildtools/doxygen/Doxyfile" />
 		</exec>
 	</target>
 
-	<target name="clean_doxygen" description="Delete generated HTML API reference.">
+	<target name="clean_doxygen" description="Delete Doxygen generated HTML API reference.">
 		<delete dir="${buildroot}/doxygen" />
 	</target>
 
@@ -715,8 +729,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-server-${version}/doc">
 			<fileset dir="doc">
-				<exclude name="Doxyfile" />
-				<exclude name="doxygen/" />
+				<exclude name="scripting/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -760,8 +773,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}/doc">
 			<fileset dir="doc">
-				<exclude name="Doxyfile" />
-				<exclude name="doxygen/" />
+				<exclude name="scripting/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -788,8 +800,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}/doc">
 			<fileset dir="doc">
-				<exclude name="Doxyfile" />
-				<exclude name="doxygen/" />
+				<exclude name="scripting/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -858,7 +869,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}-src/doc">
 			<fileset dir="doc">
-				<exclude name="doxygen/" />
+				<exclude name="scripting/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -1355,7 +1366,13 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 		</schemavalidate>
 	</target>
 
-	<target name="compilejs" depends="js-prepare, js-invoke-compiler" />
+	<target name="compilejs">
+		<antcall target="js-prepare" unless:set="exclude.webclient" />
+		<antcall target="js-invoke-compiler" unless:set="exclude.webclient" />
+
+		<echo if:set="exclude.webclient" level="warning"
+			message="WARNING: Node.js is not installed, skipping web client build." />
+	</target>
 
 	<target name="js-prepare-marauroa">
 		<mkdir dir="build/js" />
