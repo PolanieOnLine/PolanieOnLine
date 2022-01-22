@@ -7,8 +7,9 @@ Changelog
 - Poprawiono grafiki: srebrny & złoty & czarny pierścień
 
 *świat*
-- Dodano nowego NPC: (1)
+- Dodano nowe NPC: (2)
 	- Gosława
+	- Częstogoj
 - Dodano nową mapę: (1)
 	- int_tarnow_weaponshop
 - Dodano nowe przedmioty: (4)
