@@ -48,6 +48,9 @@
  <tileset firstgid="161" name="door_s" tilewidth="32" tileheight="32" tilecount="6" columns="3">
   <image source="../../tileset/building/door/door_s.png" width="96" height="64"/>
  </tileset>
+ <tileset firstgid="167" name="protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/protection.png" width="64" height="32"/>
+ </tileset>
  <layer id="8" name="0_floor" width="25" height="20">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACt2T2wqEMAxEfTT+oJfd1f/w8u87BQtDoKY29cXCATFhpkmapnnXaU86+q5FPE9oaw+PRrhfDwYwFnhc1RdjAibwAV/DI6UX/q9gAzs4VG7w+IEZLIW9klOTEfKP8Tvz0PlCaA/24XjJzDulxXXonJJ5aI2UVqoXuXXcfWu198PiyiN396283DrE0Pe+XfbR77bWPPiu1r55emXtWY6H50glHY/HH20Vjz7QBwAA
@@ -78,9 +81,9 @@
    H4sIAAAAAAAACmtlYGBoHYYYG6CWPloAbHaQ41Zs5uGzg1puJmQHuWFLqT/IVTdQcT5qx+Cyg9S0QyifDuewIqSeFLPJsYMcQEn9Qq5eWmIAddJ5ztAHAAA=
   </data>
  </layer>
- <layer id="14" name="protection" width="25" height="20">
+ <layer id="14" name="protection" width="25" height="20" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGAWjYBSMglEwCkbBUAcARPTJAtAHAAA=
+   H4sIAAAAAAAAClvOwMCwfBSP4lE8ikfxKB7FQxoDAP/Xc27QBwAA
   </data>
  </layer>
 </map>
