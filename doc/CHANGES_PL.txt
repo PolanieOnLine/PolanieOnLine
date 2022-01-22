@@ -33,6 +33,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono, że NPC Tworzymir nie brał pieniędzy za nieudane ulepszenie
+- Naprawiono brakujących NPC w dojo Nalwor dla skrytobójców
 - Poprawiono kolizje oraz tekstury na mapach
 
 
