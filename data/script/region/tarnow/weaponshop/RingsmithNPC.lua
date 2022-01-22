@@ -27,7 +27,7 @@ local requirements = {
 	{"róg jednorożca", 25},
 	{"róg demona", 25},
 	{"bryłka złota", 50},
-	{"duży smoczy eliksir", 100},
+	{"duży smoczy eliksir", 75},
 	{"money", fee}, -- fee needs to be the last item in this list
 }
 
@@ -63,16 +63,14 @@ end
 
 if game:setZone(zone) then
 	ringsmith = entities:createSpeakerNPC("Gosława")
-	ringsmith:setOutfit("body=1,head=0,eyes=2,dress=52,hair=15")
+	ringsmith:setOutfit("body=1,head=0,eyes=2,dress=52,hair=45,hat=6")
 	ringsmith:setOutfitColor("eyes", 0x1f6521)
 	ringsmith:setOutfitColor("hair", Color.RED)
 
 	-- path
 	local nodes = {
-		{20, 3},
-		{15, 3},
-		{15, 5},
 		{10, 5},
+		{13, 5},
 	}
 	ringsmith:setPathAndPosition(nodes, true)
 
