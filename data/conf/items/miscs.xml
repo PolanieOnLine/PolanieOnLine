@@ -276,7 +276,7 @@
 		<description>Oto zima zaklęta w kuli.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<behavior class-name="games.stendhal.server.entity.item.behavior.MessagingUseBehavior">
-			<parameter name="public" value="!me potrząśnij zimą zaklętą w kuli."/>
+			<parameter name="public" value="!me potrząsnął zimą zaklętą w kuli."/>
 			<parameter name="private" value="Płatki śniegu wirują dookoła i miękko opadają na dno kuli śnieżnej."/>
 		</behavior>
 		<attributes>
