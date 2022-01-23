@@ -153,6 +153,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(200, ITEMS_HORNS)));
 
+		itemAchievements.add(createAchievement(
+				"item.potatoes", "Młoda Pyrka", "Zdobył 2000 ziemniaków",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(2000, "ziemniaki")));
+
 		return itemAchievements;
 	}
 
