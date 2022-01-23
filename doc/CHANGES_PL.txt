@@ -1,5 +1,15 @@
 Changelog
 ---------
+1.28
+*klient*
+- Poprawiono grafiki: zima zaklęta w kuli
+
+*świat*
+- Dodano nowe osiągnięcia: (2)
+	- "Młoda Pyrka"
+	- "Ziemniaczany Kociołek"
+
+
 1.27
 *klient*
 - Dodano nowe grafiki potworów & przedmiotów
