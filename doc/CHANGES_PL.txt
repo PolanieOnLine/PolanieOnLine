@@ -8,6 +8,10 @@ Changelog
 - Dodano nowe osiągnięcia: (2)
 	- "Młoda Pyrka"
 	- "Ziemniaczany Kociołek"
+- Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
+
+*naprawiono błędy*
+- Naprawiono kolejność ulepszania tego samego przedmiotu
 
 
 1.27
