@@ -201,16 +201,21 @@ public class ImproverAdder {
 
 					calculateFee(toImprove);
 
-					// Special answer for ring
-					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
+					String youWant = " Chcesz, abym udoskonalił to?";
+					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money.";
+					if (toImprove.getImprove() > 0) {
+						offerupgrade += " Szansa na powodzenie wynosi #'"+Integer.toString((int) (getSuccessProbability(player, toImprove) * 100))+"%'.";
+					}
+
+					// Special answer for mithril items
 					if (toImprove.getName().endsWith(" z mithrilu") && toImprove.getMaxImproves() == 1) {
-						offerupgrade = "Czy jesteś pewien, aby udoskonalać #'"+currentUpgradingItem+"'? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #'"+Integer.toString(currentUpgradeFee)+"' money. Chcesz, abym udoskonalił to?";
+						offerupgrade = "Czy jesteś pewien, aby udoskonalać #'"+currentUpgradingItem+"'? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #'"+Integer.toString(currentUpgradeFee)+"' money.";
 					}
 
 					if (foundMoreThanOne) {
-						improver.say(offerupgrade);
+						improver.say(offerupgrade + youWant);
 					} else {
-						improver.say(offerupgrade);
+						improver.say(offerupgrade + youWant);
 					}
 				} else {
 					improver.say("Przedmiot #'"+currentUpgradingItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
@@ -334,16 +339,16 @@ public class ImproverAdder {
 				Item toImprove = player.getFirstEquipped(currentUpgradingItem);
 				player.drop("money", currentUpgradeFee);
 
-				if (isSuccessful(player, toImprove)) {
-					for (Item i : equipped) {
-						if (toImprove.isMaxImproved()
-								&& (i.getImprove() < toImprove.getImprove())) {
-							toImprove = i;
-						} else if (i.getImprove() > toImprove.getImprove()) {
-							toImprove = i;
-						}
+				for (Item i : equipped) {
+					if (toImprove.isMaxImproved()
+							&& (i.getImprove() < toImprove.getImprove())) {
+						toImprove = i;
+					} else if (i.getImprove() > toImprove.getImprove()) {
+						toImprove = i;
 					}
+				}
 
+				if (isSuccessful(player, toImprove)) {
 					if (hasItemToImprove()) {
 						toImprove.upgradeItem();
 					}
