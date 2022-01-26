@@ -2,12 +2,19 @@ Changelog
 ---------
 1.28
 *klient*
-- Poprawiono grafiki: zima zaklęta w kuli
+- Poprawiono grafiki npc
+- Poprawiono grafiki przedmiotów: zima zaklęta w kuli, miód, lody, czarny pierścień
 
 *świat*
-- Dodano nowe osiągnięcia: (2)
+- Dodano nowe osiągnięcia: (7)
 	- "Młoda Pyrka"
 	- "Ziemniaczany Kociołek"
+	- "Zbędne Czary"
+	- "Wartość Złota"
+	- "Zrzut Śnieżek"
+	- "Życiowy Interes"
+	- "Koniec Strzelca"
+- Dodano możliwość sprzedania magii lodu u Mr. Manasa
 - Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
 
 *naprawiono błędy*
