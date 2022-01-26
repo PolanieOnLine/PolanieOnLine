@@ -46,6 +46,11 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_NAILS = "sell.item.nails";
 	public static final String ID_SKINS = "sell.item.skins";
 	public static final String ID_MUSHROOMS = "sell.item.mushrooms";
+	public static final String ID_MAGICS = "sell.item.magics";
+	public static final String ID_BARS = "sell.item.bars";
+	public static final String ID_SNOWBALLS = "sell.item.snowballs";
+	public static final String ID_SZCZERBIEC = "sell.item.szczerbiec";
+	public static final String ID_MARKSMAN = "sell.item.marksman";
 
 	public static final int COUNT_HAPPY_HOUR = 100;
 
@@ -58,7 +63,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			"zwój ados", "zwój deniran", "zwój fado", "zwój gdański",
 			"zwój kalavan", "zwój kirdneh", "zwój krakowski", "zwój nalwor",
 			"zwój semos", "zwój tatrzański", "zwój wieliczka",
-			"bilet na mecz", "bilet turystyczny", "niezapisany zwój"
+			"bilet na mecz", "bilet turystyczny", "niezapisany zwój",
+			"zwój tarnów"
 	};
 
 	public static final String[] ITEMS_CHEESE_MERCHANT = { "ser" };
@@ -73,6 +79,11 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			"skóra tygrysa", "skóra lwa", "skóra białego tygrysa", "skóra zwierzęca"
 	};
 	public static final String[] ITEMS_MUSHROOMS = { "borowik", "pieczarka", "muchomor" };
+	public static final String[] ITEMS_MAGICS = {
+			"magia ziemi", "magia płomieni", "magia deszczu",
+			"magia lodu", "magia mroku", "magia światła"
+	};
+	public static final String[] ITEMS_BARS = { "sztabka złota", "sztabka mithrilu" };
 
 	@Override
 	protected Category getCategory() {
@@ -213,12 +224,46 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 					@Override
 					public boolean fire(Player player, Sentence sentence, Entity npc) {
 						int items = 0;
-						for (final String fishes: ITEMS_MUSHROOMS) {
-							items += player.getQuantityOfSoldItems(fishes);
+						for (final String mushrooms: ITEMS_MUSHROOMS) {
+							items += player.getQuantityOfSoldItems(mushrooms);
 						}
 						return items >= 2000;
 					}
 				}));
+
+		achievements.add(createAchievement(
+				ID_MAGICS, "Zbędne Czary", "Sprzedał po 500 każdego rodzaju magii",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new SoldNumberOfCondition(500, ITEMS_MAGICS)));
+
+		achievements.add(createAchievement(
+				ID_BARS, "Wartość Złota", "Sprzedał łącznie 777 sztabek złota lub mithrilu",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int items = 0;
+						for (final String bars: ITEMS_BARS) {
+							items += player.getQuantityOfSoldItems(bars);
+						}
+						return items >= 777;
+					}
+				}));
+
+		achievements.add(createAchievement(
+				ID_SNOWBALLS, "Zrzut Śnieżek", "Sprzedał 1,000 śnieżek",
+				Achievement.EASY_BASE_SCORE, true,
+				new SoldNumberOfCondition(1000, "śnieżka")));
+
+		achievements.add(createAchievement(
+				ID_SZCZERBIEC, "Życiowy Interes", "Sprzedał szczerbiec",
+				Achievement.EASY_BASE_SCORE, true,
+				new SoldNumberOfCondition(1, "szczerbiec")));
+
+		achievements.add(createAchievement(
+				ID_MARKSMAN, "Koniec Strzelca", "Sprzedał łuk z mithrilu",
+				Achievement.EASY_BASE_SCORE, true,
+				new SoldNumberOfCondition(1, "łuk z mithrilu")));
 
 		return achievements;
 	}

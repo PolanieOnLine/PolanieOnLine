@@ -141,8 +141,8 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 					@Override
 					public boolean fire(Player player, Sentence sentence, Entity npc) {
 						int items = 0;
-						for (final String dragonclaws: ITEMS_ANGELFEATHERS) {
-							items += player.getQuantityOfBoughtItems(dragonclaws);
+						for (final String angel: ITEMS_ANGELFEATHERS) {
+							items += player.getQuantityOfBoughtItems(angel);
 						}
 						return items >= 1000;
 					}
@@ -154,7 +154,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				new PlayerLootedNumberOfItemsCondition(200, ITEMS_HORNS)));
 
 		itemAchievements.add(createAchievement(
-				"item.potatoes", "Młoda Pyrka", "Zdobył 2000 ziemniaków",
+				"item.potatoes", "Młoda Pyrka", "Zdobył 2,000 ziemniaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ziemniaki")));
 

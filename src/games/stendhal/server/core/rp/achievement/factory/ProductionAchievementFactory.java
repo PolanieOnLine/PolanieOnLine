@@ -76,7 +76,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(50, resources)));
 		
-		achievements.add(createAchievement("production.flour.1000", "Asystent Jenny", "Zrobił 1000 mąk",
+		achievements.add(createAchievement("production.flour.1000", "Asystent Jenny", "Zrobił 1,000 mąk",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(1000, "mąka")));
 
@@ -100,7 +100,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(50, ITEMS_SMOKINGFOOD)));
 
-		achievements.add(createAchievement("production.boiledpot.1000", "Ziemniaczany Kociołek", "Ugotował 1000 ziemniaków",
+		achievements.add(createAchievement("production.boiledpot.1000", "Ziemniaczany Kociołek", "Ugotował 1,000 ziemniaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(1000, "gotowane ziemniaki")));
 
