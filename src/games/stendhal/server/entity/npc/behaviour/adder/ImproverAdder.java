@@ -204,7 +204,7 @@ public class ImproverAdder {
 					String youWant = " Chcesz, abym udoskonalił to?";
 					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money.";
 					if (toImprove.getImprove() > 0) {
-						offerupgrade += " Szansa na powodzenie wynosi #'"+Integer.toString((int) (getSuccessProbability(player, toImprove) * 100))+"%'.";
+						offerupgrade += " Szansa na powodzenie wynosi około #'"+Integer.toString((int) (getSuccessProbability(player, toImprove) * 100))+"%'.";
 					}
 
 					// Special answer for mithril items
