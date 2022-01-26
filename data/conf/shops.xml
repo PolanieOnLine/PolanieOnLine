@@ -925,8 +925,9 @@
 		<item name="magia ziemi" price="3" />
 		<item name="magia płomieni" price="5" />
 		<item name="magia deszczu" price="7" />
-		<item name="magia mroku" price="9" />
-		<item name="magia światła" price="12" />
+		<item name="magia lodu" price="9" />
+		<item name="magia mroku" price="12" />
+		<item name="magia światła" price="15" />
 	</shop>
 
 	<!-- Winicjusz sprzedaje: -->
