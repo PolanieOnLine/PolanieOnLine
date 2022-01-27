@@ -6,7 +6,7 @@ Changelog
 - Poprawiono grafiki przedmiotów: zima zaklęta w kuli, miód, lody, czarny pierścień
 
 *świat*
-- Dodano nowe osiągnięcia: (7)
+- Dodano nowe osiągnięcia: (12)
 	- "Młoda Pyrka"
 	- "Ziemniaczany Kociołek"
 	- "Zbędne Czary"
@@ -14,7 +14,13 @@ Changelog
 	- "Zrzut Śnieżek"
 	- "Życiowy Interes"
 	- "Koniec Strzelca"
+	- "Zarys"
+	- "Inwestycja"
+	- "Wspaniała Różdżka"
+	- "Światłość"
+	- "Doskonałe Uzbrojenie"
 - Dodano możliwość sprzedania magii lodu u Mr. Manasa
+- Kowal Tworzymir odda 40% strat podczas nieudanego ulepszenia
 - Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
 
 *naprawiono błędy*
