@@ -253,6 +253,7 @@ public final class AchievementNotifier {
 	 */
 	public void onProduction(final Player player) {
 		getAndCheckAchievementsInCategory(player, Category.PRODUCTION);
+		getAndCheckAchievementsInCategory(player, Category.ITEMUPGRADES);
 	}
 
 	/**

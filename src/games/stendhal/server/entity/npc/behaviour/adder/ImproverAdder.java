@@ -15,6 +15,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -249,7 +250,6 @@ public class ImproverAdder {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 				String request = sentence.getTrimmedText();
 				if (improvePhrases.contains(request.toLowerCase())) {
 					improver.say("Powiedz mi tylko co chcesz udoskonalić.");
@@ -300,7 +300,6 @@ public class ImproverAdder {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 				String request = sentence.getTrimmedText();
 				if (checkPhrases.contains(request.toLowerCase())) {
 					improver.say("Powiedz mi tylko co chcesz sprawdzić.");
@@ -341,12 +340,16 @@ public class ImproverAdder {
 				if (isSuccessful(player, toImprove)) {
 					if (hasItemToImprove()) {
 						toImprove.upgradeItem();
+						player.incImprovedForPlayer(player.getName(), 1);
 					}
 
 					repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
 					repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 				} else {
-					repairer.say("Przepraszam, lecz nie udało mi się udoskonalić twojego przedmiotu. Trzymaj 30% rekompesaty za wcześniejszą stratę. Spróbuję następnym razem.");
+					repairer.say("Przepraszam, lecz nie udało mi się udoskonalić twojego przedmiotu. Spróbuję następnym razem ulepszyć twój przedmiot. Otrzymasz #'40%' rekompensaty za znaczną stratę.");
+					final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
+					money.setQuantity((int) (currentUpgradeFee * 0.4));
+					player.equipOrPutOnGround(money);
 				}
 			}
 		};

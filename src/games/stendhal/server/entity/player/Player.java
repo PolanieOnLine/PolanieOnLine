@@ -2618,6 +2618,10 @@ public class Player extends DressedEntity implements UseListener {
 		return itemCounter.getQuantityOfSoldItems(item);
 	}
 
+	public int getQuantityOfImprovedItems(final String player) {
+		return itemCounter.getQuantityOfImprovedItems(player);
+	}
+
 	/**
 	 * Increases the count of loots for the given item
 	 *
@@ -2707,6 +2711,12 @@ public class Player extends DressedEntity implements UseListener {
 		itemCounter.incBoughtForItem(name, quantity);
 		// check achievements in commerce category
 		AchievementNotifier.get().onTrade(this);
+	}
+
+	public void incImprovedForPlayer(String name, int quantity) {
+		itemCounter.incImprovedForPlayer(name, quantity);
+		// check achievements in commerce category
+		AchievementNotifier.get().onProduction(this);
 	}
 
 	/**

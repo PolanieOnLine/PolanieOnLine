@@ -25,9 +25,7 @@ import games.stendhal.server.entity.player.Player;
  * Checks if a player has bought a number of items.
  */
 public class BoughtNumberOfCondition implements ChatCondition {
-
 	final Map<String, Integer> itemList;
-
 
 	/**
 	 * Constructor to check a single item.
@@ -95,7 +93,6 @@ public class BoughtNumberOfCondition implements ChatCondition {
 
 		return true;
 	}
-
 
 	@Override
 	public String toString() {

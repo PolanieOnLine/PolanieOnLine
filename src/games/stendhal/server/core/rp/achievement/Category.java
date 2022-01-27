@@ -44,6 +44,8 @@ public enum Category {
 	ITEM,
 	/** looting items (sets) */
 	ITEMSETS,
+	/** upgraded items */
+	ITEMUPGRADES,
 	/** getting items */
 	OBTAIN,
 	/** buying/selling items */

@@ -29,7 +29,6 @@ import games.stendhal.server.entity.player.Player;
  * Factory for buying & selling items.
  */
 public class CommerceAchievementFactory extends AbstractAchievementFactory {
-
 	public static final String ID_HAPPY_HOUR = "buy.drink.alcohol";
 	public static final String ID_HEALTH_IMPORTANT = "buy.drink.potions";
 	public static final String ID_AID_KNOWLEDGE = "buy.drink.aidknowledge";

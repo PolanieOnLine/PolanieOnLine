@@ -29,6 +29,8 @@ public class PlayerLootedItemsHandler {
 
 	private final Map<String, Integer> sold;
 
+	private final Map<String, Integer> improved;
+
 	/**
 	 * Create a new PlayerLootedItemsHandler for a player
 	 *
@@ -43,6 +45,7 @@ public class PlayerLootedItemsHandler {
 		harvested = new HashMap<String, Integer>();
 		bought = new HashMap<String, Integer>();
 		sold = new HashMap<String, Integer>();
+		improved = new HashMap<String, Integer>();
 		if(player.hasMap(LOOTED_ITEMS)) {
 			for(String item : player.getMap(LOOTED_ITEMS).keySet()) {
 				if(item.contains("produced.")) {
@@ -63,8 +66,12 @@ public class PlayerLootedItemsHandler {
 				if(item.contains("sold.")) {
 					bought.put(item.replace("sold.", ""), player.getInt(LOOTED_ITEMS, item));
 				}
+				if(item.contains("improved.")) {
+					bought.put(item.replace("improved.", ""), player.getInt(LOOTED_ITEMS, item));
+				}
 				if(!item.contains("produced.") && !item.contains("obtained.") && !item.contains("mined.")
-						&& !item.contains("harvested.") && !item.contains("bought.") && !item.contains("sold.")) {
+						&& !item.contains("harvested.") && !item.contains("bought.") && !item.contains("sold.")
+						&& !item.contains("improved.")) {
 					looted.put(item, player.getInt(LOOTED_ITEMS, item));
 				}
 			}
@@ -114,7 +121,7 @@ public class PlayerLootedItemsHandler {
 	 * Retrieve the amount of much an item was bought by a player
 	 *
 	 * @param item
-	 * @return the harvested quantity
+	 * @return the bought quantity
 	 */
 	public int getQuantityOfBoughtItems(final String item) {
 		if (bought.containsKey(item)) {
@@ -125,9 +132,10 @@ public class PlayerLootedItemsHandler {
 	}
 
 	/**
+	 * Retrieve the amount of much an item was sold by a player
 	 *
 	 * @param item
-	 * @return
+	 * @return the sold quantity
 	 */
 	public int getQuantityOfSoldItems(final String item) {
 		if (sold.containsKey(item)) {
@@ -147,6 +155,14 @@ public class PlayerLootedItemsHandler {
 		if(mined.containsKey(item)) {
 			return mined.get(item);
 		}
+		return 0;
+	}
+
+	public int getQuantityOfImprovedItems(final String player) {
+		if (improved.containsKey(player)) {
+			return improved.get(player);
+		}
+
 		return 0;
 	}
 
@@ -217,6 +233,10 @@ public class PlayerLootedItemsHandler {
 	 */
 	public void incSoldForItem(String item, int count) {
 		handlePrefixedCounting(item, count, "sold.", sold);
+	}
+
+	public void incImprovedForPlayer(String player, int count) {
+		handlePrefixedCounting(player, count, "improved.", improved);
 	}
 
 	/**
