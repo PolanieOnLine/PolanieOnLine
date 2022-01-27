@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -28,20 +29,15 @@ public class ItemIsMaxImprovedCondition implements ChatCondition {
 
 	@Override
 	public boolean fire(Player player, Sentence sentence, Entity npc) {
-		boolean did = false;
 		for(final String entity : this.items) {
-			Item item = player.getFirstEquipped(entity);
-			if(item == null) {
+			final int actual = player.getQuantityOfImprovedItems(entity);
+			Item item = SingletonRepository.getEntityManager().getItem(entity);
+
+			if (actual != item.getMaxImproves()) {
 				return false;
 			}
-
-			if(item.isMaxImproved()) {
-				did = true;
-			} else {
-				did = false;
-			}
 		}
-		return did;
+		return true;
 	}
 
 	@Override
