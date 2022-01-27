@@ -33,7 +33,7 @@ public class ItemIsMaxImprovedCondition implements ChatCondition {
 			final int actual = player.getQuantityOfImprovedItems(entity);
 			Item item = SingletonRepository.getEntityManager().getItem(entity);
 
-			if (actual != item.getMaxImproves()) {
+			if (actual < item.getMaxImproves()) {
 				return false;
 			}
 		}
