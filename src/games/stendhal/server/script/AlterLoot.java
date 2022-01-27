@@ -89,7 +89,7 @@ public class AlterLoot extends ScriptImpl {
 				"    /script AlterLoot.class <gracz> <ilość> <przedmiot>",
 				"    /script AlterLoot.class !help",
 				"Argumenty:",
-				"    wojownik:\tGracz do modyfikacji.",
+				"    gracz:\tGracz do modyfikacji.",
 				"    ilość:\tWartość do zmiany ile się zdobyło łupu.",
 				"    przedmiot:\tNazwa przedmiotu.");
 		admin.sendPrivateText(NotificationType.CLIENT, String.join("\n", usage));
