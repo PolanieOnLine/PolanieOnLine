@@ -2554,6 +2554,10 @@ public class Player extends DressedEntity implements UseListener {
 		return itemCounter.getNumberOfLootsForItem(item);
 	}
 
+	public int getNumberOfImprovedForItem(String item) {
+		return itemCounter.getNumberOfImprovedForItem(item);
+	}
+
 	/**
 	 * Gets the amount a player as produced of an item
 	 *

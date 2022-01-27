@@ -91,6 +91,14 @@ public class PlayerLootedItemsHandler {
 		return 0;
 	}
 
+	public int getNumberOfImprovedForItem(String item) {
+		Integer improvedNumber = improved.get(item);
+		if(improvedNumber != null) {
+			return improvedNumber.intValue();
+		}
+		return 0;
+	}
+
 	/**
 	 * Retrieve the amount of much an item was produced by a player
 	 *
