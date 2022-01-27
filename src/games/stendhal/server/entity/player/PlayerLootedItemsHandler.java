@@ -158,9 +158,9 @@ public class PlayerLootedItemsHandler {
 		return 0;
 	}
 
-	public int getQuantityOfImprovedItems(final String player) {
-		if (improved.containsKey(player)) {
-			return improved.get(player);
+	public int getQuantityOfImprovedItems(final String entity) {
+		if (improved.containsKey(entity)) {
+			return improved.get(entity);
 		}
 
 		return 0;

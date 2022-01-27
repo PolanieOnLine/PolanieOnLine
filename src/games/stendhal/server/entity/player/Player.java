@@ -2618,8 +2618,8 @@ public class Player extends DressedEntity implements UseListener {
 		return itemCounter.getQuantityOfSoldItems(item);
 	}
 
-	public int getQuantityOfImprovedItems(final String player) {
-		return itemCounter.getQuantityOfImprovedItems(player);
+	public int getQuantityOfImprovedItems(final String entity) {
+		return itemCounter.getQuantityOfImprovedItems(entity);
 	}
 
 	/**
