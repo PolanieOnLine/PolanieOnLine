@@ -26,6 +26,9 @@ Changelog
 - Kowal Tworzymir odda 40% strat podczas nieudanego ulepszenia
 - Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
 
+*serwer*
+- Wprowadzono rejestrowanie ulepszonych przedmiotów u Kowala poprzez serwer
+
 *naprawiono błędy*
 - Naprawiono kolejność ulepszania tego samego przedmiotu
 
