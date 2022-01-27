@@ -27,6 +27,7 @@ Changelog
 - Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
 
 *serwer*
+- Dodano nowy skrypt AlterImprove.class dla administratorów
 - Wprowadzono rejestrowanie ulepszonych przedmiotów u Kowala poprzez serwer
 
 *naprawiono błędy*
