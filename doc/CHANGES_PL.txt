@@ -2,11 +2,12 @@ Changelog
 ---------
 1.28
 *klient*
+- Dodano nowe dźwięki dla wampirów
 - Poprawiono grafiki npc
-- Poprawiono grafiki przedmiotów: zima zaklęta w kuli, miód, lody, czarny pierścień
+- Poprawiono grafiki przedmiotów: zima zaklęta w kuli, miód, lody, czarny pierścień, magiczny pas płytowy
 
 *świat*
-- Dodano nowe osiągnięcia: (15)
+- Dodano nowe osiągnięcia: (19)
 	- "Młoda Pyrka"
 	- "Ziemniaczany Kociołek"
 	- "Zbędne Czary"
@@ -22,6 +23,11 @@ Changelog
 	- "Potężne i Szybkie"
 	- "Zabawa w Czarodzieja"
 	- "Jeszcze Bardziej Magicznie"
+	- "Opanowany przez Mrok"
+	- "Kamienna Broń"
+	- "Uzbrojenie Kosiarza"
+	- "Dusza Góralska"
+- Dodano możliwość ulepszenia czarnej kosy
 - Dodano możliwość sprzedania magii lodu u Mr. Manasa
 - Kowal Tworzymir odda 40% strat podczas nieudanego ulepszenia
 - Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
