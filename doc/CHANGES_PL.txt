@@ -7,7 +7,7 @@ Changelog
 - Poprawiono grafiki przedmiotów: zima zaklęta w kuli, miód, lody, czarny pierścień, magiczny pas płytowy
 
 *świat*
-- Dodano nowe osiągnięcia: (30)
+- Dodano nowe osiągnięcia: (31)
 	- "Młoda Pyrka"
 	- "Ziemniaczany Kociołek"
 	- "Zbędne Czary"
@@ -38,10 +38,12 @@ Changelog
 	- "Eskortnik w Deathmatchu"
 	- "Przy Zdrowych Zmysłach"
 	- "Handlarz Futer"
+	- "Deszcz Udek"
 - Dodano możliwość ulepszenia czarnej kosy
 - Dodano możliwość sprzedania magii lodu u Mr. Manasa
 - Kowal Tworzymir odda 40% strat podczas nieudanego ulepszenia
 - Kowal Tworzymir będzie mówił jaki jest % szans na udane ulepszenie przedmiotu po pierwszym udoskonaleniu
+- Obniżono wymóg dot. biletów turystycznych w osiągnięciu: "Wygodny Podróżnik"
 
 *serwer*
 - Dodano nowy skrypt AlterImprove.class dla administratorów
