@@ -62,8 +62,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			"zwój ados", "zwój deniran", "zwój fado", "zwój gdański",
 			"zwój kalavan", "zwój kirdneh", "zwój krakowski", "zwój nalwor",
 			"zwój semos", "zwój tatrzański", "zwój wieliczka",
-			"bilet na mecz", "bilet turystyczny", "niezapisany zwój",
-			"zwój tarnów"
+			"bilet na mecz", "niezapisany zwój", "zwój tarnów"
 	};
 
 	public static final String[] ITEMS_CHEESE_MERCHANT = { "ser" };
@@ -167,9 +166,11 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 każdego rodzaju zwojów",
+				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 każdego rodzaju zwojów oraz co najmniej 20 biletów turystycznych",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new SoldNumberOfCondition(100, ITEMS_SCROLLS)));
+				new AndCondition(
+						new SoldNumberOfCondition(100, ITEMS_SCROLLS),
+						new SoldNumberOfCondition("bilet turystyczny", 20))));
 
 		achievements.add(createAchievement(
 				ID_HOUSE, "Nie ma to jak w Domu", "Zakupił pierwszy domek",
