@@ -98,6 +98,7 @@
 			<atk value="42"/>
 			<rate value="6"/>
 			<min_level value="200"/>
+			<max_improves value="3"/>
 		</attributes>
 		<weight value="10.0"/>
 		<value value="617400"/>
