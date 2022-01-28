@@ -695,7 +695,9 @@
 
 	<!-- Emeric: broker in Semos Plains that purchases misc. items at a low values -->
 	<shop name="brokermisc" type="buys">
+		<item name="truchło nietoperza" price="5" />
 		<item name="futro" price="10" />
+		<item name="truchło wampira" price="25" />
 	</shop>
 
 	<!--
