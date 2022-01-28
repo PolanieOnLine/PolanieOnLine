@@ -7,7 +7,7 @@ Changelog
 - Poprawiono grafiki przedmiotów: zima zaklęta w kuli, miód, lody, czarny pierścień, magiczny pas płytowy
 
 *świat*
-- Dodano nowe osiągnięcia: (19)
+- Dodano nowe osiągnięcia: (30)
 	- "Młoda Pyrka"
 	- "Ziemniaczany Kociołek"
 	- "Zbędne Czary"
@@ -27,6 +27,17 @@ Changelog
 	- "Kamienna Broń"
 	- "Uzbrojenie Kosiarza"
 	- "Dusza Góralska"
+	- "Światłość czy Mrok"
+	- "Nowa Załoga"
+	- "Pachołek"
+	- "Gladiator"
+	- "Postrach Areny"
+	- "Bywalec Deathmatchu"
+	- "Król Deathmatchu"
+	- "Legenda Deathmatchu"
+	- "Eskortnik w Deathmatchu"
+	- "Przy Zdrowych Zmysłach"
+	- "Handlarz Futer"
 - Dodano możliwość ulepszenia czarnej kosy
 - Dodano możliwość sprzedania magii lodu u Mr. Manasa
 - Kowal Tworzymir odda 40% strat podczas nieudanego ulepszenia
