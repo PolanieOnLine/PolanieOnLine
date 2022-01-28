@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.commerce;
 
-import static games.stendhal.server.core.rp.achievement.factory.CommerceAchievementFactory.COUNT_HAPPY_HOUR;
 import static games.stendhal.server.core.rp.achievement.factory.CommerceAchievementFactory.ID_HAPPY_HOUR;
 import static games.stendhal.server.core.rp.achievement.factory.CommerceAchievementFactory.ITEMS_HAPPY_HOUR;
 import static org.junit.Assert.assertEquals;
@@ -68,7 +67,7 @@ public class HappyHourAchievementTest extends ZonePlayerAndNPCTestImpl {
 
 		final int priceBeer = 10;
 		final int priceWine = 15;
-		final int fullPrice = (priceBeer * COUNT_HAPPY_HOUR) + (priceWine * COUNT_HAPPY_HOUR);
+		final int fullPrice = (priceBeer * 100) + (priceWine * 100);
 
 		for (final String item: ITEMS_HAPPY_HOUR) {
 			assertFalse(player.isEquipped(item));
@@ -84,14 +83,14 @@ public class HappyHourAchievementTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
 		en.step(player, "buy 100 beer");
 		en.step(player, "yes");
-		assertTrue(player.isEquipped("beer", COUNT_HAPPY_HOUR));
+		assertTrue(player.isEquipped("beer", 100));
 		assertFalse(achievementReached());
 		en.step(player, "buy 100 wine");
 		en.step(player, "yes");
-		assertTrue(player.isEquipped("wine", COUNT_HAPPY_HOUR));
+		assertTrue(player.isEquipped("wine", 100));
 
 		for (final String item: ITEMS_HAPPY_HOUR) {
-			assertEquals(COUNT_HAPPY_HOUR, player.getQuantityOfBoughtItems(item));
+			assertEquals(100, player.getQuantityOfBoughtItems(item));
 		}
 
 		assertTrue(achievementReached());
