@@ -39,6 +39,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SCROLLS = "buy.scrolls";
 	public static final String ID_HOUSE = "buy.house";
 	public static final String ID_ICECREAM = "buy.drink.icecream";
+	public static final String ID_STAYING_SANE = "buy.drink.stayingsane";
 
 	public static final String ID_CHEESE_MERCHANT = "sell.food.cheese";
 	public static final String ID_FISHSHOP = "sell.food.fishshop";
@@ -50,8 +51,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SNOWBALLS = "sell.item.snowballs";
 	public static final String ID_SZCZERBIEC = "sell.item.szczerbiec";
 	public static final String ID_MARKSMAN = "sell.item.marksman";
-
-	public static final int COUNT_HAPPY_HOUR = 100;
+	public static final String ID_FURTRADER = "sell.item.furtrader";
 
 	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
 	public static final String[] ITEMS_HEALTH_IMPORTANT = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir" };
@@ -96,7 +96,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
-				new BoughtNumberOfCondition(COUNT_HAPPY_HOUR, ITEMS_HAPPY_HOUR)));
+				new BoughtNumberOfCondition(100, ITEMS_HAPPY_HOUR)));
 
 		achievements.add(createAchievement(
 				ID_AID_KNOWLEDGE, "Pierwsza Pomoc", "Zakupił eliksir",
@@ -135,8 +135,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				ID_CHOCOLATE, "Czekoladowy Raj", "Zakupił 200 tabliczek czekolady i 50 lukrecji",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
-						new BoughtNumberOfCondition(200, "tabliczka czekolady"),
-						new BoughtNumberOfCondition(50, "lukrecja"))));
+						new BoughtNumberOfCondition("tabliczka czekolady", 200),
+						new BoughtNumberOfCondition("lukrecja", 50))));
 
 		achievements.add(createAchievement(
 				ID_LOVE_HOTDOGS, "Miłośnik Hotdogów", "Zakupił łącznie 500 różnych hotdogów",
@@ -185,7 +185,15 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_ICECREAM, "Schłodzenie", "Zakupił 100 lodów",
 				Achievement.EASY_BASE_SCORE, true,
-				new BoughtNumberOfCondition(100, "lody")));
+				new BoughtNumberOfCondition("lody", 100)));
+
+		achievements.add(createAchievement(
+				ID_STAYING_SANE, "Przy Zdrowych Zmysłach", "Zakupił 1,000 eliksirów, 750 dużych eliksirów oraz 500 wielkich eliksirów",
+				Achievement.EASY_BASE_SCORE, true,
+				new AndCondition(
+						new BoughtNumberOfCondition("eliksir", 1000),
+						new BoughtNumberOfCondition("duży eliksir", 750),
+						new BoughtNumberOfCondition("wielki eliksir", 500))));
 
 		achievements.add(createAchievement(
 				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
@@ -252,17 +260,22 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_SNOWBALLS, "Zrzut Śnieżek", "Sprzedał 1,000 śnieżek",
 				Achievement.EASY_BASE_SCORE, true,
-				new SoldNumberOfCondition(1000, "śnieżka")));
+				new SoldNumberOfCondition("śnieżka", 1000)));
 
 		achievements.add(createAchievement(
 				ID_SZCZERBIEC, "Życiowy Interes", "Sprzedał szczerbiec",
 				Achievement.EASY_BASE_SCORE, true,
-				new SoldNumberOfCondition(1, "szczerbiec")));
+				new SoldNumberOfCondition("szczerbiec", 1)));
 
 		achievements.add(createAchievement(
 				ID_MARKSMAN, "Koniec Strzelca", "Sprzedał łuk z mithrilu",
 				Achievement.EASY_BASE_SCORE, true,
-				new SoldNumberOfCondition(1, "łuk z mithrilu")));
+				new SoldNumberOfCondition("łuk z mithrilu", 1)));
+		
+		achievements.add(createAchievement(
+				ID_FURTRADER, "Handlarz Futer", "Sprzedał 300 futer",
+				Achievement.EASY_BASE_SCORE, true,
+				new SoldNumberOfCondition("futro", 300)));
 
 		return achievements;
 	}

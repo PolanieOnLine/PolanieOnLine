@@ -61,6 +61,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_GNOMES = "fight.general.gnomes";
 	public static final String ID_GNOMES2 = "fight.general.skrzaty";
 	public static final String ID_SPIDERS = "fight.general.spiders";
+	public static final String ID_LIGHTORDARK = "fight.general.lightordark";
+	public static final String ID_PIRATES = "fight.general.pirates";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -134,6 +136,13 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ENEMIES_SPIDERS = {
 			"pająk", "pająk ptasznik", "królowa pająków", "arachne"
 	};
+	public static final String[] ENEMIES_LIGHTORDARK = {
+			"lilith", "cherubin"
+	};
+	public static final String[] ENEMIES_PIRATES = {
+			"pirat", "kamrat", "marynarz", "krwawy pirat",
+			"wilk morski", "kapitan piratów", "kwatermistrz"
+	};
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -172,9 +181,9 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_SAFARI, "Safari", "Zabił po 30 tygrysów, lwów i 50 słoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
-								new PlayerHasKilledNumberOfCreaturesCondition("tygrys", 30),
-								new PlayerHasKilledNumberOfCreaturesCondition("lew", 30),
-								new PlayerHasKilledNumberOfCreaturesCondition("słoń", 50))));
+						new PlayerHasKilledNumberOfCreaturesCondition("tygrys", 30),
+						new PlayerHasKilledNumberOfCreaturesCondition("lew", 30),
+						new PlayerHasKilledNumberOfCreaturesCondition("słoń", 50))));
 
 		fightingAchievements.add(createAchievement(
 				ID_ENTS, "Drwal", "Zabił po 10 drzewców, drzewcowych i uschłych drzewców",
@@ -234,7 +243,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		fightingAchievements.add(createAchievement(
 				ID_WEREWOLF, "Srebrny Pocisk", "Zabił 500 wilkołaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new PlayerHasKilledNumberOfCreaturesCondition(500, "wilkołak")));
+				new PlayerHasKilledNumberOfCreaturesCondition("wilkołak", 500)));
 
 		fightingAchievements.add(createAchievement(
 				ID_MERMAIDS, "Serenada Syren", "Zabił 10,000 klejnotowych rodzai syren",
@@ -279,7 +288,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_FOWL)));
 
 		fightingAchievements.add(createAchievement(
-				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z kłami, słoni musth oraz mamutów włochatych",
+				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z kłami, dzikich słoni oraz mamutów włochatych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_PACHYDERM)));
 
@@ -337,6 +346,26 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_SPIDERS, "Pajęczaki", "Zabił po 25 różnych pająków, w tym arachne",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(25, ENEMIES_SPIDERS)));
+
+		fightingAchievements.add(createAchievement(
+				ID_LIGHTORDARK, "Światłość czy Mrok", "Zabił cherubina i lilith",
+				Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(1, ENEMIES_LIGHTORDARK)));
+
+		fightingAchievements.add(createAchievement(
+				ID_PIRATES, "Nowa Załoga", "Zabił łącznie 1,000 piratów z wysp",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String pirates: ENEMIES_PIRATES) {
+							kills += player.getSoloKill(pirates) + player.getSharedKill(pirates);
+						}
+						return kills >= 1000;
+					}
+				}
+		));
 
 		return fightingAchievements;
 	}

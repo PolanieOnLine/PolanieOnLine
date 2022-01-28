@@ -48,20 +48,43 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		final List<Achievement> achievements = new LinkedList<Achievement>();
 
-		/*
 		// Ados Deathmatch
 		// disabled. Currently the wrong index is being checked (it would be index 6)
 		// and as per bug report https://sourceforge.net/tracker/?func=detail&aid=3148365&group_id=1111&atid=101111 the count is not saved anyway
 		achievements.add(createAchievement(
-				"quest.special.dm.025", "Gladiator", "Zawalczył 25 rund na deathmatchu",
+				"deathmatch.001", "Pachołek", "Zawalczył swoją pierwszą rundę na deathmatchu",
+				Achievement.EASY_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("deathmatch", 6, 0)));
+
+		achievements.add(createAchievement(
+				"deathmatch.025", "Gladiator", "Zawalczył 25 rund na deathmatchu",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("deathmatch", 6, 24)));
+
+		achievements.add(createAchievement(
+				"deathmatch.050", "Postrach Areny", "Zawalczył 50 rund na deathmatchu",
 				Achievement.HARD_BASE_SCORE, true,
-				new QuestStateGreaterThanCondition("deathmatch", 1, 24)));
-		*/
+				new QuestStateGreaterThanCondition("deathmatch", 6, 49)));
+
+		achievements.add(createAchievement(
+				"quest.deathmatch.frequenter", "Bywalec Deathmatchu", "Zdobył 20,000 punktów na arenie deathmatch",
+				Achievement.EASY_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("deathmatch_score", 0, 20000)));
 
 		achievements.add(createAchievement(
 				"quest.deathmatch", "Bohater Deathmatchu", "Zdobył 100,000 punktów na arenie deathmatch",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 100000)));
+
+		achievements.add(createAchievement(
+				"quest.deathmatch.king", "Król Deathmatchu", "Zdobył 500,000 punktów na arenie deathmatch",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("deathmatch_score", 0, 500000)));
+
+		achievements.add(createAchievement(
+				"quest.deathmatch.legend", "Legenda Deathmatchu", "Zdobył 1,000,000 punktów na arenie deathmatch",
+				Achievement.LEGENDARY_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("deathmatch_score", 0, 1000000)));
 
 		achievements.add(createAchievement(
 				ID_HELPER_25, "Pomocnik w Deathmatchu", "Wsparł innych graczy w 25 rundach deathmatchu",
@@ -75,7 +98,7 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_HELPER_100, "Eskortnik w Deathmatchu", "Wsparł innych graczy w 100 rundach deathmatchu",
-				Achievement.MEDIUM_BASE_SCORE, false,
+				Achievement.MEDIUM_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(100)));
 
 		return achievements;
