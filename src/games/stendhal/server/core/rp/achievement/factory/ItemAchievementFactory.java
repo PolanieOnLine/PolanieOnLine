@@ -158,6 +158,11 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ziemniaki")));
 
+		itemAchievements.add(createAchievement(
+				"item.chicken.2000", "Deszcz Udek", "Zdobył 2,000 udek",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerLootedNumberOfItemsCondition(2000, "udko")));
+
 		return itemAchievements;
 	}
 
