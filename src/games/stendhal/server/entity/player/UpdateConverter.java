@@ -784,7 +784,7 @@ public abstract class UpdateConverter {
 //		}
 //	}
 
-	 // update the name of a quest to the new spelling and accumulate the content
+	// update the name of a quest to the new spelling and accumulate the content
 	private static void migrateSumTimedQuestSlot(final Player player, final String oldName, final String newName) {
 		final String oldState = player.getQuest(oldName);
 
