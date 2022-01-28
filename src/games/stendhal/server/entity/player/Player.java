@@ -2717,8 +2717,8 @@ public class Player extends DressedEntity implements UseListener {
 		AchievementNotifier.get().onTrade(this);
 	}
 
-	public void incImprovedForPlayer(String name, int quantity) {
-		itemCounter.incImprovedForPlayer(name, quantity);
+	public void incImprovedForItem(String name, int quantity) {
+		itemCounter.incImprovedForItem(name, quantity);
 		// check achievements in commerce category
 		AchievementNotifier.get().onProduction(this);
 	}

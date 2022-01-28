@@ -341,9 +341,9 @@ public class ImproverAdder {
 					if (hasItemToImprove()) {
 						toImprove.upgradeItem();
 						// Sum amount of upgraded items
-						player.incImprovedForPlayer(player.getName(), 1);
+						player.incImprovedForItem(player.getName(), 1);
 						// Improve value for specified item
-						player.incImprovedForPlayer(toImprove.getName(), 1);
+						player.incImprovedForItem(toImprove.getName(), 1);
 					}
 
 					repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");

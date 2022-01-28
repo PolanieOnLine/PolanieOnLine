@@ -243,8 +243,8 @@ public class PlayerLootedItemsHandler {
 		handlePrefixedCounting(item, count, "sold.", sold);
 	}
 
-	public void incImprovedForPlayer(String player, int count) {
-		handlePrefixedCounting(player, count, "improved.", improved);
+	public void incImprovedForItem(String entity, int count) {
+		handlePrefixedCounting(entity, count, "improved.", improved);
 	}
 
 	/**

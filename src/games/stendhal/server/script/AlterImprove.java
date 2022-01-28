@@ -61,7 +61,7 @@ public class AlterImprove extends ScriptImpl {
 		}
 
 		final int diff = new_count - target.getNumberOfImprovedForItem(item);
-		target.incImprovedForPlayer(item, diff);
+		target.incImprovedForItem(item, diff);
 		final int actual_count = target.getNumberOfImprovedForItem(item);
 
 		if (actual_count != new_count) {
