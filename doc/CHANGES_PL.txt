@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.28
+1.27.5
 *klient*
 - Dodano nowe dźwięki dla wampirów
 - Poprawiono grafiki npc
