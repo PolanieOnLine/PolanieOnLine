@@ -63,6 +63,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SPIDERS = "fight.general.spiders";
 	public static final String ID_LIGHTORDARK = "fight.general.lightordark";
 	public static final String ID_PIRATES = "fight.general.pirates";
+	public static final String ID_MOUNTAINELVES = "fight.general.mountainelves";
+	public static final String ID_ELEMENTAL = "fight.general.elemental";
+	public static final String ID_BUTTERFLY = "fight.general.butterfly";
+	public static final String ID_TURTLE = "fight.general.turtle";
+	public static final String ID_SNAKE = "fight.general.snake";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -76,7 +81,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny",
 			"dwugłowy zielony smok", "dwugłowy czerwony smok", "dwugłowy niebieski smok", "dwugłowy czarny smok",
 			"dwugłowy lodowy smok", "lodowy smok", "latający czarny smok", "latający złoty smok", "Smok Wawelski",
-			"purpurowy smok"
+			"purpurowy smok", "czerwone smoczysko", "zielone smoczysko", "niebieskie smoczysko"
 	};
 	public static final String[] ENEMIES_SERAFINS = {
 			"serafin", "azazel"
@@ -143,6 +148,15 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"pirat", "kamrat", "marynarz", "krwawy pirat",
 			"wilk morski", "kapitan piratów", "kwatermistrz"
 	};
+	public static final String[] ENEMIES_MOUNTAINELVES = {
+			"elf górski maskotka", "elf górski służka", "elf górski dama", "elf górski strażniczka",
+			"elf górski lider", "elf górski wojownik", "elf górski czarownica", "elf górski kapłan",
+			"elf górski czarnoksiężnik", "elf górski królowa", "elf górski król", "elf górski lord"
+	};
+	public static final String[] ENEMIES_ELEMENTAL = {
+			"żywioł lodu", "żywioł ognia", "żywioł powietrza", "żywioł wody",
+			"żywioł ziemi", "żywioł ziemi", "żywioł nicości"
+	};
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -158,6 +172,16 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_EXTERMINATOR)));
 
 		fightingAchievements.add(createAchievement(
+				ID_BUTTERFLY, "Łowca Motyli", "Zabił 10 motyli",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition("motylek", 10)));
+
+		fightingAchievements.add(createAchievement(
+				ID_SNAKE, "Poskramiacz Węży", "Zabił 15 węży",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition("wąż", 15)));
+
+		fightingAchievements.add(createAchievement(
 				ID_DEER, "Łowca Jeleni", "Zabił 25 jeleni",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("jeleń", 25)));
@@ -166,6 +190,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_BOARS, "Łowca Dzików", "Zabił 50 dzików",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("dzik", 50)));
+
+		fightingAchievements.add(createAchievement(
+				ID_TURTLE, "Łowca Żółwich Skorupek", "Zabił 50 żółwi",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition("żółwik", 50)));
 
 		fightingAchievements.add(createAchievement(
 				ID_BEARS, "Łowca Niedźwiedzi", "Zabił po 25 niedźwiedzi grizli, niedźwiedzi i misi",
@@ -319,8 +348,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 					@Override
 					public boolean fire(Player player, Sentence sentence, Entity npc) {
 						int kills = 0;
-						for (final String knight: ENEMIES_GNOMES) {
-							kills += player.getSoloKill(knight) + player.getSharedKill(knight);
+						for (final String gnomes: ENEMIES_GNOMES) {
+							kills += player.getSoloKill(gnomes) + player.getSharedKill(gnomes);
 						}
 						return kills >= 1000;
 					}
@@ -334,8 +363,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 					@Override
 					public boolean fire(Player player, Sentence sentence, Entity npc) {
 						int kills = 0;
-						for (final String knight: ENEMIES_GNOMES2) {
-							kills += player.getSoloKill(knight) + player.getSharedKill(knight);
+						for (final String gnomes: ENEMIES_GNOMES2) {
+							kills += player.getSoloKill(gnomes) + player.getSharedKill(gnomes);
 						}
 						return kills >= 1000;
 					}
@@ -366,6 +395,26 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 					}
 				}
 		));
+
+		fightingAchievements.add(createAchievement(
+				ID_MOUNTAINELVES, "Spiczasty Gatunek", "Zabił łącznie 2,500 elfów górskich",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String elves: ENEMIES_MOUNTAINELVES) {
+							kills += player.getSoloKill(elves) + player.getSharedKill(elves);
+						}
+						return kills >= 2500;
+					}
+				}
+		));
+
+		fightingAchievements.add(createAchievement(
+				ID_ELEMENTAL, "Opanowane Żywioły", "Zabił po 150 różnych żywiołów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(150, ENEMIES_ELEMENTAL)));
 
 		return fightingAchievements;
 	}

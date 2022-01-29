@@ -199,9 +199,6 @@
 		<javac srcdir="${src}" destdir="${buildroot}/buildbot" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
 			<include name="net/sf/arianne/postman/*.java"/>
 			<include name="net/sf/arianne/postman/**/*.java"/>
-			<include name="games/stendhal/bot/package-info.java"/>
-			<include name="games/stendhal/bot/shouter/*.java"/>
-			<include name="games/stendhal/bot/core/*.java"/>
 
 			<compilerarg value="-encoding"/>
 			<compilerarg value="utf-8"/>
@@ -222,10 +219,6 @@
 			<fileset dir="${buildroot}/buildbot">
 				<include name="net/sf/arianne/postman/*"/>
 				<include name="net/sf/arianne/postman/**/*"/>
-
-				<include name="games/stendhal/bot/core/*"/>
-
-				<include name="games/stendhal/bot/shouter/*"/>
 			</fileset>
 			<manifest>
 				<attribute name="Main-Class" value="net.sf.arianne.postman.PostmanMain"/>
@@ -907,27 +900,6 @@
 		</javac>
 	</target>
 
-	<target name="compile_polanieonlinetextclient" description="compiles the PolanieOnLine text client ">
-		<mkdir dir="${build_polanieonlinetextclient}"/>
-
-		<javac srcdir="${src}" destdir="${build_polanieonlinetextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
-			<include name="games/stendhal/bot/textclient/*.java"/>
-			<compilerarg value="-encoding"/>
-			<compilerarg value="utf-8"/>
-			<compilerarg value="-Xlint:unchecked"/>
-
-			<classpath>
-				<pathelement path="${guava_jar}"/>
-				<pathelement path="${marauroa_jar}"/>
-				<pathelement path="${log4j_jar}"/>
-				<pathelement path="${groovy_jar}"/>
-				<pathelement path="${tiled_jar}"/>
-				<pathelement path="${jorbis_jar}"/>
-				<pathelement path="${swinglayout_jar}"/>
-			</classpath>
-		</javac>
-	</target>
-
 	<target name="rendermaps" description="Converts the *.tmx files to PNG images scaled 1:16" depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
@@ -1140,7 +1112,7 @@
 		<fail message="Test failure detected, check test results." if="test.failure" />
 	</target>
 
-	<target name="compile_tests" description="Compile all tests" depends="server_build, client_build, compile_polanieonlinetools, compile_polanieonlinetextclient, postman">
+	<target name="compile_tests" description="Compile all tests" depends="server_build, client_build, compile_polanieonlinetools, postman">
 		<mkdir dir="${build_tests}"/>
 
 		<copy todir="${build_tests}">

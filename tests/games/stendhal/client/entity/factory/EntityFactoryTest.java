@@ -18,7 +18,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import games.stendhal.bot.textclient.TextUI;
 import games.stendhal.client.GameObjects;
 import games.stendhal.client.entity.Blood;
 import games.stendhal.client.entity.Box;
@@ -72,7 +71,6 @@ public class EntityFactoryTest {
 		Log4J.init();
 		GameObjects.createInstance(null);
 		MockStendlRPWorld.get();
-		new TextUI();
 	}
 
 
