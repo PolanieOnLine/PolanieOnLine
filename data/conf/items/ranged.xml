@@ -211,7 +211,7 @@
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
-			<slot name="lhand"/>
+			<slot name="rhand"/>
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
