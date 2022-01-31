@@ -8,6 +8,9 @@ Changelog
 - Zmniejszono wymóg ilości dużych smoczych eliksirów na wzmocniony pierścień zdrowia
 - Zwiększono nieco ilość obrony u potwora: dziki słoń
 
+*serwer*
+- Dodano nowy skrypt AlterShop.class dla administratorów
+
 *naprawiono błędy*
 - Naprawiono osiągnięcia:
 	- "Wygodny Podróżnik"
