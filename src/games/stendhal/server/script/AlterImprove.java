@@ -71,7 +71,7 @@ public class AlterImprove extends ScriptImpl {
 		}
 
 		// Notify player of changes
-		target.sendPrivateText(NotificationType.SUPPORT, "Wartość ulepszenia dla przedmiotu #'" + item + "' została zmieniona do wartości "
+		target.sendPrivateText(NotificationType.SUPPORT, "Wartość ulepszenia dla #'" + item + "' została zmieniona do wartości "
 				+ Integer.toString(actual_count) + " przez " + admin.getTitle() + ".");
 	}
 

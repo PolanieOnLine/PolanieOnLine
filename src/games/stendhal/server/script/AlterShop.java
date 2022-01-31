@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018 - Stendhal                         *
+ *                   (C) Copyright 2022 - Stendhal                         *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,12 +19,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.player.Player;
  
-/**
- * Changes kill counts for player.
- *
- * @author AntumDeluge
- */
-public class AlterKills extends ScriptImpl {
+public class AlterShop extends ScriptImpl {
  	@Override
 	public void execute(final Player admin, final List<String> args) {
 		super.execute(admin, args);
@@ -45,10 +40,10 @@ public class AlterKills extends ScriptImpl {
 
  		final String player_name = args.get(0);
 		final Player target = SingletonRepository.getRuleProcessor().getPlayer(player_name);
-		final String kill_type = args.get(1).toLowerCase();
-		final int kill_count;
+		final String shop_type = args.get(1).toLowerCase();
+		final int shop_count;
 		// All remaining arguments are the enemy's name
-		final String enemy = String.join(" ", args.subList(3, args.size()));
+		final String item = String.join(" ", args.subList(3, args.size()));
 
 		// Player does not exist
 		if (target == null) {
@@ -58,28 +53,31 @@ public class AlterKills extends ScriptImpl {
 
 		// Admin tries to change kill count to string value
 		try {
-			kill_count = Integer.parseInt(args.get(2));
+			shop_count = Integer.parseInt(args.get(2));
 		} catch (NumberFormatException e) {
 			showUsage(admin);
 			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Argument 3 (liczba) musi być wartością całkowitą");
 			return;
 		}
 
- 		if (kill_type.equals("solo")) {
-			target.setSoloKillCount(enemy, kill_count);
-		} else if (kill_type.equals("shared")) {
-			target.setSharedKillCount(enemy, kill_count);
+ 		if (shop_type.equals("bought")) {
+ 			target.incBoughtForItem(item, shop_count);
+		} else if (shop_type.equals("sold")) {
+			target.incSoldForItem(item, shop_count);
 		} else {
-			// Admin inputs invalid kill type
 			showUsage(admin);
-			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Argument 2 (typ) musi być jeden: \"solo\" lub \"shared\"");
+			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Argument 2 (typ) musi być jeden: \"bought\" lub \"sold\"");
 			return;
 		}
  
  		// Notify player of changes
-		target.sendPrivateText(NotificationType.SUPPORT, "Twoja ilość zabójstw " + kill_type + " potworów o nazwie " + enemy + " została zmieniona do liczby "
-				+ Integer.toString(kill_count) + " przez " + admin.getTitle());
+		target.sendPrivateText(NotificationType.SUPPORT, "Twoja ilość przedmiotów o nazwie #'" + item + "' (typ: #'" + shop_type + "') została zmieniona do wartości "
+				+ Integer.toString(shop_count) + " przez " + admin.getTitle());
+
+		admin.sendPrivateText(NotificationType.SUPPORT, "Zmieniłeś wartość u gracza #'" + target.getName() + "' dla przedmiotu #'" + item + "' (typ: #'" + shop_type + "') do "
+				+ "liczby " + Integer.toString(shop_count) + ".");
 	}
+ 
  	/**
 	 * Shows help text.
 	 *
@@ -88,14 +86,14 @@ public class AlterKills extends ScriptImpl {
 	private void showUsage(final Player admin) {
 		List<String> usage = Arrays.asList(
 				"\nUżycie:",
-				"    /script AlterKills.class <gracz> <solo|shared> <liczba> <potworek>",
-				"    /script AlterKills.class !help",
+				"    /script AlterShop.class <gracz> <bought|sold> <liczba> <przedmiot>",
+				"    /script AlterShop.class !help",
 				"Args:",
-				"    gracz:\tGracz do modyfikacji.",
-				"    solo:\tZmiana pojedynczych zabójstw.",
-				"    shared:\tZmiana wspólnych zabójstw.",
-				"    liczba:\tLiczba zabójstw do zmiany.",
-				"    potworek:\tNazwa potwora.");
+				"    gracz:\t Gracz do modyfikacji.",
+				"    bought:\t Zmiana ilości kupionych przedmiotów.",
+				"    sold:\t Zmiana ilości sprzedanych przedmiotów.",
+				"    liczba:\t Wartość liczbowa do zmiany.",
+				"    przedmiot:\t Nazwa przedmiotu.");
 		admin.sendPrivateText(NotificationType.CLIENT, String.join("\n", usage));
 	}
 }
