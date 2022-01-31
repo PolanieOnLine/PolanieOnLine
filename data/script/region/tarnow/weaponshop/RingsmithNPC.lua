@@ -26,8 +26,8 @@ local requirements = {
 	{"pierścień zdrowia", 1},
 	{"róg jednorożca", 25},
 	{"róg demona", 25},
+	{"duży smoczy eliksir", 25},
 	{"bryłka złota", 50},
-	{"duży smoczy eliksir", 75},
 	{"money", fee}, -- fee needs to be the last item in this list
 }
 

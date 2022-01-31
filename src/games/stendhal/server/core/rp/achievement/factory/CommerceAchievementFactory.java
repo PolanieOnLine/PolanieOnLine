@@ -169,8 +169,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 każdego rodzaju zwojów oraz co najmniej 20 biletów turystycznych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
-						new SoldNumberOfCondition(100, ITEMS_SCROLLS),
-						new SoldNumberOfCondition("bilet turystyczny", 20))));
+						new BoughtNumberOfCondition(100, ITEMS_SCROLLS),
+						new BoughtNumberOfCondition("bilet turystyczny", 20))));
 
 		achievements.add(createAchievement(
 				ID_HOUSE, "Nie ma to jak w Domu", "Zakupił pierwszy domek",

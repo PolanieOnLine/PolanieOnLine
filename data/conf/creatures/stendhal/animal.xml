@@ -659,7 +659,7 @@
 		<description>Oto dziki słoń. Jest bardzo agresywny i nieprzewidywalny.</description>
 		<attributes>
 			<atk value="218"/>
-			<def value="86"/>
+			<def value="114"/>
 			<hp value="2250"/>
 			<speed value="0.8"/>
 			<size value="3,2"/>

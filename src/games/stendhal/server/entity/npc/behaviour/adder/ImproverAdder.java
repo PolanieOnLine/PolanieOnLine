@@ -193,7 +193,7 @@ public class ImproverAdder {
 						}
 					}
 
-					calculateFee(toImprove);
+					calculateFee(player, toImprove);
 
 					String youWant = " Chcesz, abym udoskonalił to?";
 					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money.";
@@ -220,20 +220,24 @@ public class ImproverAdder {
 		}
 	}
 
-	private void calculateFee(final Item item) {
+	private void calculateFee(final Player player, final Item item) {
 		int improves = item.getImprove();
 
 		int atk = item.getAttack();
 		int def = item.getDefense();
 		currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
 
-		// Fee only for 1 upgrade
-		if (item.getMaxImproves() == 1) {
-			currentUpgradeFee = (atk + def) * 59500;
+		// Fee only for items have 2 upgrades
+		if (item.getMaxImproves() <= 2) {
+			currentUpgradeFee = (improves + 1) * ((atk + def) * 17400);
 		}
 		// Special fee for special item
 		if (item.getName().endsWith(" z mithrilu") && item.getMaxImproves() == 1) {
 			currentUpgradeFee = 5000000;
+		}
+
+		if (player.isQuestCompleted("ciupaga_trzy_wasy")) {
+			currentUpgradeFee *= (int) (0.7);
 		}
 
 		/*

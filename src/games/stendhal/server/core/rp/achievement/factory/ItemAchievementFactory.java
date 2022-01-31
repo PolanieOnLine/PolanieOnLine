@@ -128,7 +128,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 					public boolean fire(Player player, Sentence sentence, Entity npc) {
 						int items = 0;
 						for (final String dragonclaws: ITEMS_DRAGONCLAWS) {
-							items += player.getQuantityOfBoughtItems(dragonclaws);
+							items += player.getNumberOfLootsForItem(dragonclaws);
 						}
 						return items >= 10;
 					}
@@ -142,7 +142,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 					public boolean fire(Player player, Sentence sentence, Entity npc) {
 						int items = 0;
 						for (final String angel: ITEMS_ANGELFEATHERS) {
-							items += player.getQuantityOfBoughtItems(angel);
+							items += player.getNumberOfLootsForItem(angel);
 						}
 						return items >= 1000;
 					}

@@ -19,8 +19,10 @@ import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.scroll.LastMinuteScroll;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -49,6 +51,7 @@ public class BiletTurystyczny extends AbstractQuest {
 	private static final int REQUIRED_LEVEL = 100;
 	// Money
 	private static final int REQUIRED_MONEY = 5000;
+	private static final String SCROLL = "bilet turystyczny";
 	// Time
 	private static final int REQUIRED_MINUTES = 60 * 12;
 
@@ -141,11 +144,13 @@ public class BiletTurystyczny extends AbstractQuest {
 				"W porządku oto twój bilet turystyczny. Gdy użyjesz to wrócisz za około 3 godziny. Jeśli będziesz chciał wcześniej wrócić to skorzystaj tam stan na herbie Zakopanego, który zabierze Ciebie z powrotem.",
 				new MultipleActions(
 						new DropItemAction("money", REQUIRED_MONEY),
-						new EquipItemAction("bilet turystyczny", 1, true),
+						new EquipItemAction(SCROLL, 1, true),
 						// this is still complicated and could probably be split out further
 						new ChatAction() {
 							@Override
 							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+								player.incBoughtForItem(SCROLL, 1);
+
 								if (player.hasQuest(QUEST_SLOT)) {
 									final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 									if (tokens.length == 4) {
@@ -157,13 +162,11 @@ public class BiletTurystyczny extends AbstractQuest {
 										// And they haven't taken beans since
 										player.setQuest(QUEST_SLOT, "bought;"
 												+ System.currentTimeMillis() + ";taken;-1");
-
 									}
 								} else {
 									// first time they bought beans here
 									player.setQuest(QUEST_SLOT, "bought;"
 											+ System.currentTimeMillis() + ";taken;-1");
-
 								}
 							}
 						}));
