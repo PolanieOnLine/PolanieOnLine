@@ -228,7 +228,8 @@ public class ImproverAdder {
 		currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
 
 		// Fee only for items have 2 upgrades
-		if (item.getMaxImproves() <= 2) {
+		if (item.getMaxImproves() == 1
+				|| (item.getMaxImproves() <= 2 && item.getName().equals("sztylecik z mithrilu"))) {
 			currentUpgradeFee = (improves + 1) * ((atk + def) * 17400);
 		}
 		// Special fee for special item
@@ -237,7 +238,7 @@ public class ImproverAdder {
 		}
 
 		if (player.isQuestCompleted("ciupaga_trzy_wasy")) {
-			currentUpgradeFee *= (int) (0.7);
+			currentUpgradeFee = (int) (currentUpgradeFee * 0.7);
 		}
 
 		/*
