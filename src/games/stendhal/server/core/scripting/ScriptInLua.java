@@ -41,6 +41,7 @@ import games.stendhal.server.core.scripting.lua.LuaQuestHelper;
 import games.stendhal.server.core.scripting.lua.LuaStringHelper;
 import games.stendhal.server.core.scripting.lua.LuaTableHelper;
 import games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource;
+import games.stendhal.server.entity.npc.CloneManager;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -68,12 +69,17 @@ public class ScriptInLua extends ScriptingSandbox {
 		luaScript = filename;
 	}
 
-	public static ScriptInLua getInstance() {
+	public static ScriptInLua get() {
 		if (instance == null) {
 			instance = new ScriptInLua();
 		}
 
 		return instance;
+	}
+
+	@Deprecated
+	public static ScriptInLua getInstance() {
+		return get();
 	}
 
 	/**
@@ -140,7 +146,7 @@ public class ScriptInLua extends ScriptingSandbox {
 		globals.load(new PackageLib());
 		globals.load(new LuajavaLib());
 
-		globals.set("game", CoerceJavaToLua.coerce(getInstance()));
+		globals.set("game", CoerceJavaToLua.coerce(get()));
 		globals.set("logger", CoerceJavaToLua.coerce(LuaLogger.get()));
 		globals.set("entities", CoerceJavaToLua.coerce(LuaEntityHelper.get()));
 		globals.set("properties", CoerceJavaToLua.coerce(LuaPropertiesHelper.get()));
@@ -150,6 +156,7 @@ public class ScriptInLua extends ScriptingSandbox {
 		globals.set("merchants", CoerceJavaToLua.coerce(LuaMerchantHelper.get()));
 		globals.set("arrays", CoerceJavaToLua.coerce(LuaArrayHelper.get()));
 		globals.set("grammar", CoerceJavaToLua.coerce(Grammar.get()));
+		globals.set("clones", CoerceJavaToLua.coerce(CloneManager.get()));
 
 		// initialize supplemental string & table functions
 		LuaStringHelper.get().init((LuaTable) globals.get("string"));

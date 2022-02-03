@@ -48,7 +48,7 @@ public class DeepInspect extends ScriptImpl {
 	public void execute(final Player admin, final List<String> args) {
 		super.execute(admin, args);
 		if ((args.size() != 2) || (!(args.get(0).equals("character") || args.get(0).equals("username")))) {
-			admin.sendPrivateText("użyj: {\"postać\" | \"nazwaużytkownika\"} <nazwa>.");
+			admin.sendPrivateText("użyj: {\"character\" | \"username\"} <nazwa>.");
 			admin.sendPrivateText("postać zrobi inspekcję dostępnej w grze postaci.");
 			admin.sendPrivateText("nazwa użytkownika zrobi inspekcję wszystkim postaciom należącym do tego konta czyli tym, które są powiązane w bazie danych.");
 			return;
@@ -166,7 +166,7 @@ public class DeepInspect extends ScriptImpl {
 			Player player = (Player) target;
 
 			// Produced items
-			sb.append("Production:\n   ");
+			sb.append("Produkcja:\n   ");
 			final ProducerRegister producerRegister = SingletonRepository.getProducerRegister();
 		    final List<String> produceList = new LinkedList<String>();
 
@@ -256,6 +256,37 @@ public class DeepInspect extends ScriptImpl {
 				itemCount = player.getQuantityOfHarvestedItems(item.getName());
 				if (itemCount > 0) {
 					sb.append("[" + item.getName() + "=" + Integer.toString(itemCount) + "]");
+				}
+			}
+
+			sb.append("\n");
+			admin.sendPrivateText(sb.toString());
+			sb.setLength(0);
+
+			// commerce: money spent & gained
+			sb.append("\nPurchases from NPCs:\n");
+			Map<String, String> commerceInfo = player.getMap("npc_purchases");
+			boolean addedCInfo = false;
+			if (commerceInfo != null) {
+				for (final String npcName: commerceInfo.keySet()) {
+					if (!addedCInfo) {
+						sb.append("    ");
+						addedCInfo = true;
+					}
+					sb.append("[" + npcName + ":" + commerceInfo.get(npcName) + "]");
+				}
+			}
+
+			sb.append("\n\nSales to NPCs:\n");
+			commerceInfo = player.getMap("npc_sales");
+			addedCInfo = false;
+			if (commerceInfo != null) {
+				for (final String npcName: commerceInfo.keySet()) {
+					if (!addedCInfo) {
+						sb.append("    ");
+						addedCInfo = true;
+					}
+					sb.append("[" + npcName + ":" + commerceInfo.get(npcName) + "]");
 				}
 			}
 

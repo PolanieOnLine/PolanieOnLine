@@ -316,6 +316,34 @@
 
 	<!-- Level -1 -->
 
+	<!-- warszawa_cave_nw -->
+	<zone name="-1_warszawa_cave_nw" level="-1" x="513312" y="17408" file="Level -1/warszawa/cave_nw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<!-- warszawa_cave_ne -->
+	<zone name="-1_warszawa_cave_ne" level="-1" x="513440" y="17408" file="Level -1/warszawa/cave_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<!-- warszawa_cave_sw -->
+	<zone name="-1_warszawa_cave_sw" level="-1" x="513312" y="17536" file="Level -1/warszawa/cave_sw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
+	<!-- warszawa_cave_se -->
+	<zone name="-1_warszawa_cave_se" level="-1" x="513440" y="17536" file="Level -1/warszawa/cave_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+	</zone>
+
 	<!-- Level -2 -->
 
 	<!-- Level -3 -->

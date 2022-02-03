@@ -463,7 +463,7 @@
 		<type class="pol/smoki" subclass="smok_niebieski" tileid="pol_smoki.png:14"/>
 		<description>Oto niebieskie smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
-			<atk value="5333"/>
+			<atk value="4777"/>
 			<def value="188"/>
 			<hp value="4960"/>
 			<speed value="1.0"/>
@@ -509,7 +509,7 @@
 		<type class="pol/smoki" subclass="smok_czerwony" tileid="pol_smoki.png:15"/>
 		<description>Oto czerwone smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
-			<atk value="6444"/>
+			<atk value="5444"/>
 			<def value="211"/>
 			<hp value="5960"/>
 			<speed value="1.0"/>
@@ -553,7 +553,7 @@
 		<type class="pol/smoki" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
 		<description>Oto czarne smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
-			<atk value="7555"/>
+			<atk value="5999"/>
 			<def value="244"/>
 			<hp value="6960"/>
 			<speed value="1.0"/>

@@ -99,6 +99,7 @@ public class SellerBehaviour extends MerchantBehaviour {
 				seller.say("Gratulacje! Oto twój "
 						+ Grammar.plnoun(amount, chosenItemName) + "!");
 				player.incBoughtForItem(chosenItemName, amount);
+				player.incCommerceTransaction(seller.getName(), price, false);
 				return true;
 			} else {
 				seller.say("Przepraszam, ale nie możesz wziąć "
