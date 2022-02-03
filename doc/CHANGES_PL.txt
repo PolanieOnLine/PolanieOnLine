@@ -1,5 +1,19 @@
 Changelog
 ---------
+1.28
+*świat*
+- Dodano nowe mapy: (4)
+	- -1_warszawa_cave_nw
+	- -1_warszawa_cave_ne
+	- -1_warszawa_cave_sw
+	- -1_warszawa_cave_se
+- Legendarny żywioł lodu wyrzuca magię lodu
+- Zmniejszono ilość ataku dla każdego smoczyska
+
+*naprawiono błędy*
+- Poprawiono kolizję oraz tekstury na niektórych mapach
+
+
 1.27.6
 *świat*
 - Dodano więcej możliwości napotkania nowych pokutników oraz czarnoksiężników lodu
