@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.28
+*klient*
+- Poprawiono kontrast przedmiotu: "czarne spodnie"
+
 *świat*
 - Dodano nowe mapy: (4)
 	- -1_warszawa_cave_nw
@@ -11,6 +14,7 @@ Changelog
 - Zmniejszono ilość ataku dla każdego smoczyska
 
 *naprawiono błędy*
+- Naprawiono osiągnięcie: "Centralny Rynkowicz"
 - Poprawiono kolizję oraz tekstury na niektórych mapach
 
 
