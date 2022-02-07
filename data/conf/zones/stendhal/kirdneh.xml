@@ -1252,7 +1252,8 @@
 
 	</zone>
 
-	<zone name="int_kirdneh_house_44" file="interiors/kirdneh/house_44.tmx">
+	<zone name="int_kirdneh_house_44" file="interiors/kirdneh/house_44.tmx"
+		accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator
 			class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
@@ -1665,7 +1666,6 @@
 	</zone>
 
 	<zone name="int_kirdneh_inn" file="interiors/kirdneh/inn.tmx">
-
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">

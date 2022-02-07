@@ -15,6 +15,7 @@ import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TEXT;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.actions.validator.StandardActionValidations;
 import games.stendhal.server.core.engine.GameEvent;
@@ -36,16 +37,16 @@ public class TellAction implements ActionListener {
 	 * @return full message
 	 */
 	private String createFullMessageText(String senderName, String receiverName, String text) {
+		Player sender = SingletonRepository.getRuleProcessor().getPlayer(senderName);
 		if (senderName.equals(receiverName)) {
-			return "Powiedziałeś do siebie: " + text;
+			return Grammar.genderVerb(sender.getGender(), "Powiedziałeś") + " do siebie: " + text;
 		} else {
-			return senderName + " powiedział Tobie: " + text;
+			return senderName + " " + Grammar.genderVerb(sender.getGender(), "powiedział") + " Tobie: " + text;
 		}
 	}
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-
 		if (!StandardActionValidations.PRIVATE_CHAT.validateAndInformPlayer(player, action)) {
 			return;
 		}
@@ -62,7 +63,7 @@ public class TellAction implements ActionListener {
 		receiver.sendPrivateText(NotificationType.PRIVMSG, message);
 
 		if (!senderName.equals(receiverName)) {
-			player.sendPrivateText(NotificationType.PRIVMSG, "Powiedziałeś " + receiverName + ": " + text);
+			player.sendPrivateText(NotificationType.PRIVMSG, Grammar.genderVerb(player.getGender(), "Powiedziałeś") + " " + receiverName + ": " + text);
 		}
 
 		receiver.setLastPrivateChatter(senderName);

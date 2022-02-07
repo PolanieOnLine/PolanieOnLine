@@ -52,11 +52,11 @@ public class SmokNPC implements ZoneConfigurator {
 				addGreeting("Witaj. Jam jest Panem wszystkich smoków.");
 				addJob("Może zrobisz dla mnie #zadanie?");
 				addHelp("W zamian za pomoc szepnę słówko do Krasnoluda, aby zrobił dla ciebie złotą ciupagę z dwoma wąsami.");
-				addGoodbye("Trzymaj się dzielnie");
+				addGoodbye("Trzymaj się dzielnie.");
 			}
 		};
 
-		smokNPC.setDescription("Oto Władca Smoków.");
+		smokNPC.setDescription("Oto Władca Smoków. Strzeże niebios przed złem.");
 		smokNPC.setEntityClass("npcsmok");
 		smokNPC.setGender("M");
 		smokNPC.setPosition(8, 6);
