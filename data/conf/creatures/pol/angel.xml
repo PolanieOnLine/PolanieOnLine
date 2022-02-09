@@ -129,13 +129,16 @@
 			<item value="gigantyczny eliksir" quantity="[2,14]" probability="40.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="pióro cherubina" quantity="[1,1]" probability="100.0"/>
-			<item value="magia światła" quantity="[11,99]" probability="100.0"/>
+			<item value="magia lodu" quantity="[11,222]" probability="100.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="5.0"/>
 			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="3.0"/>
 			<item value="srebrny sztylecik" quantity="[1,1]" probability="1.0"/>
 			<item value="zbroja z mithrilu" quantity="[1,1]" probability="0.7"/>
 			<item value="hełm z mithrilu" quantity="[1,1]" probability="1.0"/>
 			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.4"/>
+			<item value="kosa z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia światła" quantity="10000"/>
@@ -143,9 +146,9 @@
 		</equips>
 		<abilities>
 			<damage type="ice"/>
-			<susceptibility type="ice" value="1.2"/>
-			<susceptibility type="water" value="0.6"/>
-			<susceptibility type="fire" value="0.6"/>
+			<susceptibility type="ice" value="0.6"/>
+			<susceptibility type="water" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
 		</abilities>
 		<ai>
 			<says>
@@ -188,7 +191,10 @@
 			<item value="różdżka Peruna" quantity="[1,1]" probability="0.8"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="2.5"/>
 			<item value="piekielny sztylet" quantity="[1,1]" probability="4.0"/>
+			<item value="młot wulkanów" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna kosa" quantity="[1,1]" probability="1.0"/>
 			<item value="czarny pierścień" quantity="[1,1]" probability="1.0"/>
+			<item value="pierścień niewidzialności" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia mroku" quantity="10000"/>
@@ -196,9 +202,9 @@
 		</equips>
 		<abilities>
 			<damage type="fire"/>
-			<susceptibility type="water" value="0.6"/>
-			<susceptibility type="ice" value="0.6"/>
-			<susceptibility type="fire" value="1.2"/>
+			<susceptibility type="water" value="1.2"/>
+			<susceptibility type="ice" value="1.2"/>
+			<susceptibility type="fire" value="0.6"/>
 		</abilities>
 		<ai>
 			<says>

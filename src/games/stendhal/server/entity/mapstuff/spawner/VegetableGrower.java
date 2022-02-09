@@ -67,7 +67,10 @@ public class VegetableGrower extends GrowingPassiveEntityRespawnPoint implements
 	/**
 	 * Create a new VegetableGrower for an item.
 	 *
-	 * @param name item name
+	 * @param name
+	 * 			Item name
+	 * @param vegetableview
+	 * 			Item sprite-image name
 	 */
 	public VegetableGrower(final String name, final String vegetableview) {
 		super("items/grower/" + vegetableview + "_grower", "items/grower/" + vegetableview + " grower", "Pick", 1, 1, 1);
@@ -137,5 +140,4 @@ public class VegetableGrower extends GrowingPassiveEntityRespawnPoint implements
 		}
 		return false;
 	}
-
 }

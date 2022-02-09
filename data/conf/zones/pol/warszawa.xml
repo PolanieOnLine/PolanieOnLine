@@ -321,6 +321,13 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- warszawa_cave_ne -->
@@ -328,6 +335,13 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- warszawa_cave_sw -->
@@ -335,6 +349,13 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- warszawa_cave_se -->
@@ -342,6 +363,13 @@
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<!-- Level -2 -->
