@@ -215,6 +215,7 @@
 			<item value="leszcz" quantity="[1,1]" probability="5.0"/>
 			<item value="karp" quantity="[1,1]" probability="0.5"/>
 			<item value="karp lustrzeń" quantity="[1,1]" probability="0.05"/>
+			<item value="ziemniaki" quantity="[1,9]" probability="30.0"/>
 		</drops>
 		<equips/>
 		<ai>
