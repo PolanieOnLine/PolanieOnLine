@@ -3,6 +3,7 @@ Changelog
 1.28
 *klient*
 - Poprawiono kontrast przedmiotu: "czarne spodnie"
+- Poprawiono grafiki niektórych kapeluszy
 
 *świat*
 - Dodano nowe mapy: (4)
@@ -12,10 +13,12 @@ Changelog
 	- -1_warszawa_cave_se
 - Legendarny żywioł lodu wyrzuca magię lodu
 - Zmniejszono ilość ataku dla każdego smoczyska
+- Dodano więcej przedmiotów możliwych do zdobycia przez cherubina & lilith
 
 *naprawiono błędy*
 - Naprawiono osiągnięcie: "Centralny Rynkowicz"
 - Poprawiono kolizję oraz tekstury na niektórych mapach
+- Poprawiono odporności dla Lilith & Cherubina
 
 
 1.27.6
