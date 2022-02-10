@@ -36,12 +36,11 @@ import games.stendhal.server.util.TimeUtil;
  *
  */
 public final class KrakowFerry implements TurnListener {
+	/** The Singleton instance. */
+	private static KrakowFerry instance;
 
 	/** How much it costs to board the ferry. */
 	public static final int PRICE = 25;
-
-	/** The Singleton instance. */
-	private static KrakowFerry instance;
 
 	private Status current;
 
@@ -50,12 +49,6 @@ public final class KrakowFerry implements TurnListener {
 	 * departs, so that they can react accordingly, e.g. inform nearby players.
 	 */
 	private final List<IFerryListener> listeners;
-
-
-	private KrakowFerry() {
-		listeners = new LinkedList<IFerryListener>();
-		current = Status.ANCHORED_AT_WARSZAWA;
-	}
 
 	/**
 	 * @return The Singleton instance.
@@ -66,9 +59,17 @@ public final class KrakowFerry implements TurnListener {
 
 			// initiate the turn notification cycle
 			SingletonRepository.getTurnNotifier().notifyInSeconds(1, instance);
-
 		}
+
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private KrakowFerry() {
+		listeners = new LinkedList<IFerryListener>();
+		current = Status.ANCHORED_AT_WARSZAWA;
 	}
 
 	public Status getState() {

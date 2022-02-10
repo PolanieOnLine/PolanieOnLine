@@ -35,11 +35,9 @@ import games.stendhal.server.entity.player.Player;
  * Exposes ChatAction classes to Lua.
  */
 public class LuaActionHelper {
-
 	private static LuaLogger logger = LuaLogger.get();
-
+	/** The singleton instance. */
 	private static LuaActionHelper instance;
-
 
 	/**
 	 * Retrieves the static instance.
@@ -53,6 +51,13 @@ public class LuaActionHelper {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LuaActionHelper() {
+		// singleton
 	}
 
 	/**

@@ -47,19 +47,13 @@ import marauroa.server.game.db.DAORegister;
  * @author madmetzger
  */
 public final class AchievementNotifier {
-
 	private static final Logger logger = Logger.getLogger(AchievementNotifier.class);
-
+	/** The singleton instance. */
 	private static AchievementNotifier instance;
 
 	final private Map<Category, List<Achievement>> achievements;
 
 	final private Map<String, Integer> identifiersToIds;
-
-	private AchievementNotifier() {
-		achievements = new EnumMap<Category, List<Achievement>>(Category.class);
-		identifiersToIds = new HashMap<String, Integer>();
-	}
 
 	/**
 	 * singleton accessor method
@@ -67,12 +61,21 @@ public final class AchievementNotifier {
 	 * @return the AchievementNotifier
 	 */
 	public static AchievementNotifier get() {
-    	synchronized(AchievementNotifier.class) {
+		synchronized(AchievementNotifier.class) {
 			if(instance == null) {
 				instance = new AchievementNotifier();
 			}
     	}
+
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private AchievementNotifier() {
+		achievements = new EnumMap<Category, List<Achievement>>(Category.class);
+		identifiersToIds = new HashMap<String, Integer>();
 	}
 
 	/**

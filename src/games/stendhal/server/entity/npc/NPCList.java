@@ -25,10 +25,7 @@ import org.apache.log4j.Logger;
  */
 public class NPCList implements Iterable<SpeakerNPC> {
 	private static Logger logger = Logger.getLogger(NPCList.class);
-
-	/**
-	 * The Singleton instance.
-	 */
+	/** The singleton instance. */
 	private static NPCList instance;
 
 	private final Map<String, SpeakerNPC> contents;
@@ -40,15 +37,15 @@ public class NPCList implements Iterable<SpeakerNPC> {
 	 */
 	public static NPCList get() {
 		if (instance == null) {
-			new NPCList();
+			instance = new NPCList();
 		}
+
 		return instance;
 	}
 
 	protected NPCList() {
 		instance = this;
 		contents = new HashMap<String, SpeakerNPC>();
-
 	}
 
 	/**

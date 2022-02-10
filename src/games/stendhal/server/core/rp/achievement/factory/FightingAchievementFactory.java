@@ -154,8 +154,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"elf górski czarnoksiężnik", "elf górski królowa", "elf górski król", "elf górski lord"
 	};
 	public static final String[] ENEMIES_ELEMENTAL = {
-			"żywioł lodu", "żywioł ognia", "żywioł powietrza", "żywioł wody",
-			"żywioł ziemi", "żywioł ziemi", "żywioł nicości"
+			"żywioł lodu", "żywioł ognia", "żywioł powietrza",
+			"żywioł wody", "żywioł ziemi", "żywioł nicości"
 	};
 
 	@Override

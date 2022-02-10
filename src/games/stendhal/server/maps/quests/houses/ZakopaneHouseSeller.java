@@ -29,8 +29,8 @@ import java.util.List;
 
 final class ZakopaneHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in zakopane. */
-	private static final int PERCENTAGE = 10;
-	private static final int COST_ZAKOPANE = 500000;
+	private static final int PERCENTAGE = 30;
+	private static final int COST_ZAKOPANE = 170000;
 
 	private static final String WOJTEK_QUEST_SLOT = "gazda_wojtek_daily_item";
 	private static final String JADZKA_QUEST_SLOT = "herbs_for_jadzka";

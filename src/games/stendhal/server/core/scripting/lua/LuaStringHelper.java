@@ -26,11 +26,9 @@ import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
  * Adds some useful string function members to Lua "string" object.
  */
 public class LuaStringHelper {
-
 	private static final LuaLogger logger = LuaLogger.get();
-
+	/** The singleton instance. */
 	private static LuaStringHelper instance;
-
 
 	/**
 	 * Retrieves the static instance.
@@ -44,6 +42,13 @@ public class LuaStringHelper {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LuaStringHelper() {
+		// singleton
 	}
 
 	/**

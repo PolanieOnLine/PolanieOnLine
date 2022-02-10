@@ -27,7 +27,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
  */
 public class CloneManager {
 	private static final Logger logger = Logger.getLogger(CloneManager.class);
-
+	/** The singleton instance. */
 	private static CloneManager instance;
 
 	private static final Map<String, List<String>> clonedList = new HashMap<>();
@@ -57,6 +57,13 @@ public class CloneManager {
 	@Deprecated
 	public static CloneManager getInstance() {
 		return get();
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private CloneManager() {
+		// singleton
 	}
 
 	/**

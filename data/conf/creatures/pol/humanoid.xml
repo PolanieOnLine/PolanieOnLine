@@ -625,6 +625,7 @@
 			<item value="money" quantity="[1,40]" probability="100.0"/>
 			<item value="mocne antidotum" quantity="[1,9]" probability="20.0"/>
 			<item value="miecz cieni" quantity="[1,1]" probability="1.1"/>
+			<item value="magia mroku" quantity="[10,70]" probability="60.0"/>
 		</drops>
 		<equips/>
 		<ai>

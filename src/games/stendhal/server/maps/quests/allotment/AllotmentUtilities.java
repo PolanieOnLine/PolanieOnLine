@@ -19,6 +19,11 @@ import games.stendhal.server.entity.player.Player;
 
 public class AllotmentUtilities implements TurnListener {
 	/**
+	 * Singleton instance to return
+	 */
+	private static AllotmentUtilities instance;
+
+	/**
 	 * Name of the quest used for quest slot
 	 */
 	public static String QUEST_SLOT = "allotment_rental";
@@ -47,11 +52,6 @@ public class AllotmentUtilities implements TurnListener {
 	 * List of zones which have allotments that can be rented
 	 */
 	private static String[] zones = { "0_semos_mountain_w2" };
-
-	/**
-	 * Singleton instance to return
-	 */
-	private static AllotmentUtilities instance = null;
 
 	/**
 	 * Singleton getter

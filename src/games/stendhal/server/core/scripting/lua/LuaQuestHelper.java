@@ -31,14 +31,13 @@ import games.stendhal.server.maps.quests.SimpleQuestCreator;
  */
 public class LuaQuestHelper {
 	private static LuaLogger logger = LuaLogger.get();
+	/** The singleton instance. */
+	private static LuaQuestHelper instance;
 
 	private static StendhalQuestSystem questSystem = SingletonRepository.getStendhalQuestSystem();
 
 	// expose SimpleQuestCreator to Lua
 	public static final SimpleQuestCreator simple = SimpleQuestCreator.getInstance();
-
-	private static LuaQuestHelper instance;
-
 
 	/**
 	 * Retrieves the static instance.
@@ -52,6 +51,13 @@ public class LuaQuestHelper {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LuaQuestHelper() {
+		// singleton
 	}
 
 	/**

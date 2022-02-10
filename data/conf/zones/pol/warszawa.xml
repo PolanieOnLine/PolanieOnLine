@@ -47,6 +47,7 @@
 
 		<portal x="118" y="90" ref="entrance">
 			<destination zone="int_warszawa_eltefia_house" ref="exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="40" y="40" ref="warszawa_restart_life">
@@ -150,18 +151,22 @@
 
 		<portal x="42" y="66" ref="smith_entrance">
 			<destination zone="int_warszawa_blacksmith" ref="smith_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="48" y="69" ref="arsenal_entrance">
 			<destination zone="int_warszawa_arsenal" ref="arsenal_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="47" y="57" ref="tiny1_entrance">
 			<destination zone="int_warszawa_tiny_hut_1" ref="tiny1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="72" y="67" ref="tiny2_entrance">
 			<destination zone="int_warszawa_tiny_hut_2" ref="tiny2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -257,6 +262,7 @@
 
 		<portal x="8" y="18" ref="exit">
 			<destination zone="0_warszawa_w" ref="entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 	
@@ -290,6 +296,7 @@
 
 		<portal x="9" y="14" ref="smith_exit">
 			<destination zone="0_warszawa_e" ref="smith_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -297,6 +304,7 @@
 	<zone name="int_warszawa_arsenal" file="interiors/warszawa/arsenal_house.tmx">
 		<portal x="7" y="14" ref="arsenal_exit">
 			<destination zone="0_warszawa_e" ref="arsenal_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -304,6 +312,7 @@
 	<zone name="int_warszawa_tiny_hut_1" file="interiors/warszawa/tiny_hut1.tmx">
 		<portal x="5" y="9" ref="tiny1_exit">
 			<destination zone="0_warszawa_e" ref="tiny1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -311,6 +320,7 @@
 	<zone name="int_warszawa_tiny_hut_2" file="interiors/warszawa/tiny_hut2.tmx">
 		<portal x="5" y="9" ref="tiny2_exit">
 			<destination zone="0_warszawa_e" ref="tiny2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 

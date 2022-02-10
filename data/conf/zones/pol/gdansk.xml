@@ -65,14 +65,17 @@
 
 		<portal x="103" y="81" ref="gs_entrance">
 			<destination zone="int_gdansk_goldsmith" ref="gs_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="113" y="75" ref="bs_entrance">
 			<destination zone="int_gdansk_blacksmith" ref="bs_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="123" y="91" ref="bakery_entrance">
 			<destination zone="int_gdansk_bakery" ref="bakery_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- <portal x="69" y="30" ref="ship_entrance">
@@ -116,6 +119,7 @@
 
 		<portal x="114" y="49" ref="cottage_entrance">
 			<destination zone="int_gdansk_cottage_0" ref="cottage_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<point-of-interest x="41" y="124">
@@ -127,16 +131,20 @@
 
 		<portal x="41" y="124" ref="bank_entrance">
 			<destination zone="int_gdansk_bank" ref="bank_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="32" y="89" ref="museum_entrance_1">
 			<destination zone="int_gdansk_museum_0" ref="museum_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="33" y="89" ref="museum_entrance_2">
 			<destination zone="int_gdansk_museum_0" ref="museum_2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="34" y="89" ref="museum_entrance_3">
 			<destination zone="int_gdansk_museum_0" ref="museum_3_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- <portal x="99" y="87" ref="bar_entrance">
@@ -145,40 +153,50 @@
 
 		<portal x="3" y="97" ref="tv1_entrance">
 			<destination zone="int_gdansk_tavern_0" ref="tv1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="10" y="97" ref="tv2_entrance">
 			<destination zone="int_gdansk_tavern_0" ref="tv2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="13" y="79" ref="mieczyslaw_house_entrance">
 			<destination zone="int_gdansk_mieczyslaw_house_0" ref="mieczyslaw_house_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="15" y="117" ref="entrance">
 			<destination zone="int_gdansk_scibor_house_0" ref="exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="27" y="77" ref="s_entrance">
 			<destination zone="int_gdansk_storage_0" ref="s_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="6" y="102" ref="h_entrance">
 			<destination zone="int_gdansk_hostel" ref="h_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="43" y="105" ref="veg_entrance">
 			<destination zone="int_gdansk_vegetable_market" ref="veg_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="49" y="96" ref="meat_entrance">
 			<destination zone="int_gdansk_meat_market" ref="meat_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="99" y="91" ref="l1_entrance">
 			<destination zone="int_gdansk_library" ref="l1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="104" y="91" ref="l2_entrance">
 			<destination zone="int_gdansk_library" ref="l2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="81" y="40" ref="ps1_entrance">
@@ -240,10 +258,12 @@
 
 		<portal x="17" y="80" ref="kr_entrance">
 			<destination zone="int_gdansk_knight_room" ref="kr_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		
 		<portal x="75" y="80" ref="gr_entrance">
 			<destination zone="int_gdansk_greenhouse" ref="gr_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -302,10 +322,12 @@
 
 		<portal x="114" y="4" ref="ab_cottage_entrance">
 			<destination zone="int_gdansk_abandoned_cottage" ref="ab_cottage_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="121" y="11" ref="adh_entrance">
 			<destination zone="int_gdansk_adventure_house" ref="adh_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<entity x="12" y="96">
@@ -533,10 +555,12 @@
 
 		<portal x="18" y="109" ref="cavehut_entrance">
 			<destination zone="int_gdansk_cavehut" ref="cavehut_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="17" y="70" ref="cave_exit">
 			<destination zone="0_gdansk_forest_sw" ref="cave_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -593,9 +617,11 @@
 
 		<portal x="11" y="18" ref="kr_exit">
 			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="12" y="18" ref="kr_exit">
 			<destination zone="0_gdansk_city_ne" ref="kr_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -730,9 +756,11 @@
 
 		<portal x="20" y="14" ref="bank_exit">
 			<destination zone="0_gdansk_city_n" ref="bank_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="21" y="14" ref="bank_exit">
 			<destination zone="0_gdansk_city_n" ref="bank_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -742,19 +770,24 @@
 
 		<portal x="23" y="26" ref="museum_1_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="24" y="26" ref="museum_2_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="25" y="26" ref="museum_3_exit">
 			<destination zone="0_gdansk_city_n" ref="museum_entrance_3"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="41" y="1" ref="museum_1_entrance_1">
 			<destination zone="int_gdansk_museum_1" ref="museum_0_exit_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="42" y="1" ref="museum_1_entrance_2">
 			<destination zone="int_gdansk_museum_1" ref="museum_0_exit_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -762,9 +795,11 @@
 	<zone name="int_gdansk_museum_1" file="interiors/gdansk/int_museum_1.tmx">
 		<portal x="31" y="2" ref="museum_0_exit_1">
 			<destination zone="int_gdansk_museum_0" ref="museum_1_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="32" y="2" ref="museum_0_exit_2">
 			<destination zone="int_gdansk_museum_0" ref="museum_1_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -794,23 +829,24 @@
 		<entity x="18" y="12">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">Śliczny drewniany stolik.</attribute>
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
 		</entity>
 
 		<entity x="18" y="14">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">Śliczny drewniany stolik.</attribute>
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
 		</entity>
 
 		<entity x="18" y="16">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">Śliczny drewniany stolik.</attribute>
+			<attribute name="description">Oto śliczny drewniany stolik.</attribute>
 		</entity>
 
 		<portal x="10" y="19" ref="gs_exit">
 			<destination zone="0_gdansk_city_nw" ref="gs_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -864,6 +900,7 @@
 
 		<portal x="9" y="14" ref="bs_exit">
 			<destination zone="0_gdansk_city_nw" ref="bs_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -928,16 +965,20 @@
 
 		<portal x="6" y="19" ref="tv1_exit">
 			<destination zone="0_gdansk_city_n" ref="tv1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="7" y="19" ref="tv1_exit">
 			<destination zone="0_gdansk_city_n" ref="tv1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="34" y="19" ref="tv2_exit">
 			<destination zone="0_gdansk_city_n" ref="tv2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="35" y="19" ref="tv2_exit">
 			<destination zone="0_gdansk_city_n" ref="tv2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1056,6 +1097,7 @@
 
 		<portal x="41" y="9" ref="tvdown_exit">
 			<destination zone="int_gdansk_tavern_0" ref="tvdown_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1125,6 +1167,7 @@
 
 		<portal x="9" y="20" ref="cottage_exit">
 			<destination zone="0_gdansk_city_n" ref="cottage_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1241,9 +1284,11 @@
 
 		<portal x="17" y="20" ref="mieczyslaw_house_exit">
 			<destination zone="0_gdansk_city_n" ref="mieczyslaw_house_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="18" y="20" ref="mieczyslaw_house_exit">
 			<destination zone="0_gdansk_city_n" ref="mieczyslaw_house_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1327,6 +1372,7 @@
 
 		<portal x="26" y="14" ref="bakery_exit">
 			<destination zone="0_gdansk_city_nw" ref="bakery_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1334,9 +1380,11 @@
 	<zone name="int_gdansk_abandoned_cottage" file="interiors/gdansk/abandoned_cottage.tmx">
 		<portal x="11" y="16" ref="ab_cottage_exit">
 			<destination zone="0_gdansk_forest_w" ref="ab_cottage_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="12" y="16" ref="ab_cottage_exit">
 			<destination zone="0_gdansk_forest_w" ref="ab_cottage_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1363,9 +1411,10 @@
 
 		<portal x="18" y="18" ref="adh_exit">
 			<destination zone="0_gdansk_forest_w" ref="adh_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
-	
+
 	<!-- Scibor house 0 -->
 	<zone name="int_gdansk_scibor_house_0" file="interiors/gdansk/scibor_house_0.tmx">
 		<portal x="3" y="3" ref="up">
@@ -1373,6 +1422,7 @@
 		</portal>
 		<portal x="7" y="14" ref="exit">
 			<destination zone="0_gdansk_city_n" ref="entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 	<!-- Scibor house 1 -->
@@ -1381,7 +1431,7 @@
 			<destination zone="int_gdansk_scibor_house_0" ref="up"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Storage 0 -->
 	<zone name="int_gdansk_storage_0" file="interiors/gdansk/storage_0.tmx">
 		<portal x="16" y="2" ref="down">
@@ -1389,6 +1439,7 @@
 		</portal>
 		<portal x="9" y="14" ref="s_exit">
 			<destination zone="0_gdansk_city_n" ref="s_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 	<!-- Storage -1 -->
@@ -1397,14 +1448,15 @@
 			<destination zone="int_gdansk_storage_0" ref="down"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Hostel -->
 	<zone name="int_gdansk_hostel" file="interiors/gdansk/hostel.tmx">
 		<portal x="12" y="23" ref="h_exit">
 			<destination zone="0_gdansk_city_n" ref="h_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
-	
+
 	<!-- Meat market -->
 	<zone name="int_gdansk_meat_market" file="interiors/gdansk/meat_market.tmx">
 		<configurator class-name="games.pol.server.maps.gdansk.market.meatNPC"/>
@@ -1422,9 +1474,10 @@
 
 		<portal x="8" y="14" ref="meat_exit">
 			<destination zone="0_gdansk_city_n" ref="meat_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
-	
+
 	<!-- Vegetable market -->
 	<zone name="int_gdansk_vegetable_market" file="interiors/gdansk/veg_market.tmx">
 		<configurator class-name="games.pol.server.maps.gdansk.market.vegNPC"/>
@@ -1439,22 +1492,25 @@
 
 			<attribute name="class">blackboard</attribute>
 		</entity>
-		
+
 		<portal x="8" y="14" ref="veg_exit">
 			<destination zone="0_gdansk_city_n" ref="veg_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
-	
+
 	<!-- Library -->
 	<zone name="int_gdansk_library" file="interiors/gdansk/library.tmx">
 		<portal x="8" y="30" ref="l1_exit">
 			<destination zone="0_gdansk_city_n" ref="l1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="21" y="30" ref="l2_exit">
 			<destination zone="0_gdansk_city_n" ref="l2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
-	
+
 	<!-- Pirates ship -1 -->
 	<zone name="int_gdansk_pirates_ship_-1" file="interiors/gdansk/pirates_ship_-1.tmx">
 		<portal x="11" y="44" ref="ps1_exit">
@@ -1464,11 +1520,12 @@
 			<destination zone="0_gdansk_city_n" ref="ps2_entrance"/>
 		</portal>
 	</zone>
-	
+
 	<!-- Greenhouse -->
 	<zone name="int_gdansk_greenhouse" file="interiors/gdansk/greenhouse.tmx">
 		<portal x="7" y="19" ref="gr_exit">
 			<destination zone="0_gdansk_city_ne" ref="gr_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 </zones>

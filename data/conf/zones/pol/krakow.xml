@@ -185,32 +185,41 @@ Południowy-Wschód: Kraków
 
 		<portal x="64" y="63" ref="sukiennice_1_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="64" y="64" ref="sukiennice_2_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="64" y="65" ref="sukiennice_3_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_3_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="64" y="66" ref="sukiennice_4_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_4_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="76" y="63" ref="sukiennice_5_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_5_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="76" y="64" ref="sukiennice_6_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_6_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="76" y="65" ref="sukiennice_7_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_7_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="76" y="66" ref="sukiennice_8_entrance">
 			<destination zone="int_krakow_sukiennice" ref="sukiennice_8_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- Church -->
 		<portal x="104" y="47" ref="church_entrance">
 			<destination zone="int_krakow_church" ref="church_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<point-of-interest x="33" y="46">
@@ -222,31 +231,39 @@ Południowy-Wschód: Kraków
 		<!-- Bank -->
 		<portal x="33" y="46" ref="bank1_entrance">
 			<destination zone="int_krakow_bank_0" ref="bank1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="33" y="47" ref="bank2_entrance">
 			<destination zone="int_krakow_bank_0" ref="bank2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<!-- Bakery -->
 		<portal x="112" y="63" ref="bakery_entrance">
 			<destination zone="int_krakow_bakery" ref="bakery_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<!-- Blacksmith -->
 		<portal x="27" y="93" ref="bs1_entrance">
 			<destination zone="int_krakow_blacksmith" ref="bs1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="28" y="93" ref="bs2_entrance">
 			<destination zone="int_krakow_blacksmith" ref="bs2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<!-- Tavern -->
 		<portal x="80" y="28" ref="tavern1_entrance">
 			<destination zone="int_krakow_tavern" ref="tavern1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="75" y="28" ref="tavern2_entrance">
 			<destination zone="int_krakow_tavern" ref="tavern2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<!-- Vineyard house -->
 		<portal x="21" y="121" ref="vyh_entrance">
 			<destination zone="int_krakow_vineyard_house_0" ref="vyh_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<point-of-interest x="90" y="87">
@@ -283,6 +300,7 @@ Południowy-Wschód: Kraków
 		<!-- Archeologist house -->
 		<portal x="18" y="42" ref="ah_entrance">
 			<destination zone="int_krakow_archeologist_house" ref="ah_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -410,6 +428,7 @@ Południowy-Wschód: Kraków
 
 		<portal x="120" y="77" ref="hof_entrance">
 			<destination zone="int_krakow_halloffame" ref="hof_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="102" y="79" ref="brama_destination">
@@ -417,6 +436,7 @@ Południowy-Wschód: Kraków
 		</portal>
 		<portal x="102" y="80" ref="brama_exit">
 			<destination zone="0_krakow_wawel_w" ref="brama_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="103" y="81" ref="brama_entrance">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
@@ -482,6 +502,7 @@ Południowy-Wschód: Kraków
 
 		<portal x="74" y="52" ref="fisher_hut_entrance">
 			<destination zone="int_krakow_fisher_hut" ref="fisher_hut_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -557,6 +578,7 @@ Południowy-Wschód: Kraków
 
 		<portal x="63" y="51" ref="woodcutter_entrance">
 			<destination zone="int_krakow_woodcutter_hut" ref="woodcutter_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -604,6 +626,7 @@ Południe: tereny Tatrzańskie
 
 		<portal x="105" y="9" ref="saddler_entrance">
 			<destination zone="int_krakow_saddler_house" ref="saddler_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -869,9 +892,11 @@ Południe: Zakopane
 
 		<portal x="25" y="14" ref="bank1_exit">
 			<destination zone="0_krakow_rynek" ref="bank1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="25" y="15" ref="bank2_exit">
 			<destination zone="0_krakow_rynek" ref="bank2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- Keep creatures from blocking trading area -->
@@ -1314,6 +1339,7 @@ Południe: Zakopane
 
 		<portal x="26" y="14" ref="bakery_exit">
 			<destination zone="0_krakow_rynek" ref="bakery_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1348,9 +1374,11 @@ Południe: Zakopane
 
 		<portal x="15" y="14" ref="bs1_exit">
 			<destination zone="0_krakow_rynek" ref="bs1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="16" y="14" ref="bs2_exit">
 			<destination zone="0_krakow_rynek" ref="bs2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1435,15 +1463,19 @@ Południe: Zakopane
 
 		<portal x="12" y="23" ref="church_exit">
 			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="10" y="23" ref="church_exit">
 			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="11" y="23" ref="church_exit">
 			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="13" y="23" ref="church_exit">
 			<destination zone="0_krakow_rynek" ref="church_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1501,9 +1533,11 @@ Południe: Zakopane
 
 		<portal x="23" y="23" ref="tavern1_exit">
 			<destination zone="0_krakow_rynek" ref="tavern1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="13" y="23" ref="tavern2_exit">
 			<destination zone="0_krakow_rynek" ref="tavern2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1518,6 +1552,7 @@ Południe: Zakopane
 		</portal>
 		<portal x="15" y="30" ref="vyh_exit">
 			<destination zone="0_krakow_rynek" ref="vyh_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1568,6 +1603,7 @@ Południe: Zakopane
 
 		<portal x="18" y="16" ref="ah_exit">
 			<destination zone="0_krakow_e" ref="ah_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1584,6 +1620,7 @@ Południe: Zakopane
 
 		<portal x="7" y="14" ref="saddler_exit">
 			<destination zone="0_krakow_wisla_e" ref="saddler_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1780,27 +1817,35 @@ Południe: Zakopane
 
 		<portal x="0" y="22" ref="sukiennice_1_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_1_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="0" y="23" ref="sukiennice_2_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_2_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="0" y="24" ref="sukiennice_3_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_3_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="0" y="25" ref="sukiennice_4_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_4_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="31" y="22" ref="sukiennice_5_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_5_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="31" y="23" ref="sukiennice_6_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_6_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="31" y="24" ref="sukiennice_7_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_7_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="31" y="25" ref="sukiennice_8_exit">
 			<destination zone="0_krakow_rynek" ref="sukiennice_8_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1810,6 +1855,7 @@ Południe: Zakopane
 		<configurator class-name="games.pol.server.maps.krakow.woodcutter.WoodcutterNPC"/>
 		<portal x="7" y="14" ref="woodcutter_exit">
 			<destination zone="0_krakow_wisla" ref="woodcutter_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1818,6 +1864,7 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<portal x="7" y="14" ref="fisher_hut_exit">
 			<destination zone="0_krakow_wisla_w" ref="fisher_hut_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1882,9 +1929,11 @@ Południe: Zakopane
 
 		<portal x="13" y="18" ref="hof_exit">
 			<destination zone="0_krakow_wawel_w" ref="hof_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="12" y="18" ref="hof_exit">
 			<destination zone="0_krakow_wawel_w" ref="hof_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 

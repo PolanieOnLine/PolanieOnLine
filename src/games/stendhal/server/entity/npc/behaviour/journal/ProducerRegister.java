@@ -25,16 +25,23 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
 public class ProducerRegister {
-
+	/** The singleton instance. */
 	private static ProducerRegister instance;
 
 	private final List<Pair<String, ProducerBehaviour>> producers;
 	private final List<Pair<String, MultiProducerBehaviour>> multiproducers;
 
+	/**
+	 * Singleton access method.
+	 *
+	 * @return
+	 *     The static instance.
+	 */
 	public static ProducerRegister get() {
 		if (instance == null) {
-			new ProducerRegister();
+			instance = new ProducerRegister();
 		}
+
 		return instance;
 	}
 

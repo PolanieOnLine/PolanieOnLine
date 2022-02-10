@@ -34,12 +34,11 @@ import games.stendhal.server.util.TimeUtil;
  * 
  */
 public final class GdanskFerry implements TurnListener {
-
-	/** How much it costs to board the ferry. */
-	public static final int PRICE = 500;
-
 	/** The Singleton instance. */
 	private static GdanskFerry instance;
+
+	/** How much it costs to board the ferry. */
+	public static final int PRICE = 75;
 
 	private Status current;
 
@@ -48,12 +47,6 @@ public final class GdanskFerry implements TurnListener {
 	 * departs, so that they can react accordingly, e.g. inform nearby players.
 	 */
 	private final List<IFerryListener> listeners;
-
-
-	private GdanskFerry() {
-		listeners = new LinkedList<IFerryListener>();
-		current = Status.ANCHORED_AT_WARSZAWA;
-	}
 
 	/**
 	 * @return The Singleton instance.
@@ -64,9 +57,17 @@ public final class GdanskFerry implements TurnListener {
 
 			// initiate the turn notification cycle
 			SingletonRepository.getTurnNotifier().notifyInSeconds(1, instance);
-
 		}
+
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private GdanskFerry() {
+		listeners = new LinkedList<IFerryListener>();
+		current = Status.ANCHORED_AT_WARSZAWA;
 	}
 
 	public Status getState() {

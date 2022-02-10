@@ -28,11 +28,10 @@ import games.stendhal.server.core.pathfinder.Node;
  * Adds some useful function members to Lua "table" object.
  */
 public class LuaTableHelper {
-
+	/** The singleton instance. */
 	private static LuaTableHelper instance;
 
 	private static final LuaArrayHelper arrayHelper = LuaArrayHelper.get();
-
 
 	/**
 	 * Retrieves the static instance.
@@ -46,6 +45,13 @@ public class LuaTableHelper {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LuaTableHelper() {
+		// singleton
 	}
 
 	public void init(final LuaTable tableTable) {

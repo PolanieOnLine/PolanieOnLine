@@ -39,6 +39,7 @@
 
 		<portal x="100" y="83" ref="kowal_entrance">
 			<destination zone="int_wieliczka_blacksmith" ref="kowal_exit"/>
+			<attribute name="move.continuous" />
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
@@ -156,10 +157,12 @@
 
 		<portal x="69" y="55" ref="townhall_entrance">
 			<destination zone="int_wieliczka_townhall" ref="townhall_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="87" y="96" ref="sh_entrance">
 			<destination zone="int_wieliczka_scientist_house" ref="sh_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="65" y="85" ref="wieliczka_restart_life">
@@ -292,6 +295,7 @@
 
 		<portal x="2" y="10" ref="kowal_exit">
 			<destination zone="0_wieliczka_nw" ref="kowal_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -300,6 +304,7 @@
 
 		<portal x="12" y="13" ref="sh_exit">
 			<destination zone="0_wieliczka_c" ref="sh_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -331,7 +336,7 @@
 Aktualne ceny u Zbigniewa:
 
 #'zwój wieliczka'      250
-#'zwój krakowski'     550
+#'zwój krakowski'      550
 #'zwój tatrzański'     650
 #'niezapisany zwój'   2100
 				</attribute>
@@ -340,12 +345,15 @@ Aktualne ceny u Zbigniewa:
 
 		<portal x="15" y="46" ref="townhall_exit">
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="14" y="46" ref="townhall_exit">
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="16" y="46" ref="townhall_exit">
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -749,7 +757,7 @@ Aktualne ceny u Zbigniewa:
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
-		
+
 		<portal x="2" y="106" ref="dragon_cave_entrance">
 			<destination zone="-1_dragon_cave_s" ref="dragon_cave_exit"/>
 		</portal>

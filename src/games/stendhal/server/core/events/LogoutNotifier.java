@@ -26,19 +26,13 @@ import games.stendhal.server.entity.player.Player;
  * @author markus
  */
 public final class LogoutNotifier {
-
-	/** The Singleton instance. */
-	private static final LogoutNotifier instance = new LogoutNotifier();
+	/** The singleton instance. */
+	private static LogoutNotifier instance;
 
 	/**
 	 * Holds a list of all registered LoginListeners.
 	 */
 	private final List<LogoutListener> logoutListeners;
-
-	// singleton
-	private LogoutNotifier() {
-		logoutListeners = new ArrayList<>();
-	}
 
 	/**
 	 * Returns the LogoutNotifier instance.
@@ -46,7 +40,18 @@ public final class LogoutNotifier {
 	 * @return LogoutNotifier the Singleton instance
 	 */
 	public static LogoutNotifier get() {
+		if (instance == null) {
+			instance = new LogoutNotifier();
+		}
+
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LogoutNotifier() {
+		logoutListeners = new ArrayList<>();
 	}
 
 	/**

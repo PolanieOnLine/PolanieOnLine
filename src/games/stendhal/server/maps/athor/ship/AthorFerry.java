@@ -36,11 +36,11 @@ import games.stendhal.server.util.TimeUtil;
  *
  */
 public final class AthorFerry implements TurnListener {
-	/** How much it costs to board the ferry. */
-	public static final int PRICE = 25;
-
 	/** The Singleton instance. */
 	private static AthorFerry instance;
+
+	/** How much it costs to board the ferry. */
+	public static final int PRICE = 25;
 
 	private Status current;
 
@@ -49,11 +49,6 @@ public final class AthorFerry implements TurnListener {
 	 * departs, so that they can react accordingly, e.g. inform nearby players.
 	 */
 	private final List<IFerryListener> listeners;
-
-	private AthorFerry() {
-		listeners = new LinkedList<IFerryListener>();
-		current = Status.ANCHORED_AT_MAINLAND;
-	}
 
 	/**
 	 * @return The Singleton instance.
@@ -64,9 +59,17 @@ public final class AthorFerry implements TurnListener {
 
 			// initiate the turn notification cycle
 			SingletonRepository.getTurnNotifier().notifyInSeconds(1, instance);
-
 		}
+
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private AthorFerry() {
+		listeners = new LinkedList<IFerryListener>();
+		current = Status.ANCHORED_AT_MAINLAND;
 	}
 
 	public Status getState() {

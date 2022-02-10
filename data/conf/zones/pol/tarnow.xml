@@ -240,14 +240,17 @@
 
 		<portal x="66" y="56" ref="tavern_entrance">
 			<destination zone="int_tarnow_tavern" ref="tavern_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="66" y="68" ref="kitchen_entrance">
 			<destination zone="int_tarnow_kitchen" ref="kitchen_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="46" y="88" ref="weaponshop_entrance">
 			<destination zone="int_tarnow_weaponshop" ref="weaponshop_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -363,6 +366,7 @@
 
 		<portal x="15" y="17" ref="tavern_exit">
 			<destination zone="0_tarnow_city" ref="tavern_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -370,12 +374,14 @@
 		<configurator class-name="games.pol.server.maps.tarnow.kitchen.ChefNPC"/>
 		<portal x="10" y="14" ref="kitchen_exit">
 			<destination zone="0_tarnow_city" ref="kitchen_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
 	<zone name="int_tarnow_weaponshop" file="interiors/tarnow/weaponshop.tmx">
 		<portal x="12" y="18" ref="weaponshop_exit">
 			<destination zone="0_tarnow_city" ref="weaponshop_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 

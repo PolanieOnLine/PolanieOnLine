@@ -76,18 +76,17 @@ import marauroa.server.game.rp.RPServerManager;
  * @author hendrik
  */
 public class StendhalRPRuleProcessor implements IRPRuleProcessor {
+	/** The logger instance. */
+	private static final Logger logger = Logger.getLogger(StendhalRPRuleProcessor.class);
+	/** The Singleton instance. */
+	protected static StendhalRPRuleProcessor instance;
 
 	/** only log the first exception while reading welcome URL. */
 	private static boolean firstWelcomeException = true;
-	/** the logger instance. */
-	private static final Logger logger = Logger.getLogger(StendhalRPRuleProcessor.class);
 	/** list of super admins read from admins.list. */
 	private static Map<String, String> adminNames;
 	/** welcome message unless overwritten by an URL */
 	private static String welcomeMessage = "Witaj w #'PolanieOnLine'! Odwiedź stronę - #'polanieonline.eu'! \nPamiętaj, aby nikomu &'nie udostępniać' hasła do swojego konta! Jeżeli znalazłeś jakieś błędy w grze to zgłoś to nam do &'supportu'.";
-
-	/** The Singleton instance. */
-	protected static StendhalRPRuleProcessor instance;
 
 	private RPServerManager rpman;
 
@@ -107,15 +106,6 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 	private LinkedList<marauroa.server.game.rp.GameEvent> gameEvents = new LinkedList<>();
 
 	/**
-	 * creates a new StendhalRPRuleProcessor
-	 */
-	protected StendhalRPRuleProcessor() {
-		onlinePlayers = new PlayerList();
-		playersRmText = new LinkedList<Player>();
-		entityToKill = new LinkedList<Pair<RPEntity, Entity>>();
-	}
-
-	/**
 	 * gets the singleton instance of StendhalRPRuleProcessor
 	 *
 	 * @return StendhalRPRuleProcessor
@@ -129,7 +119,17 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 				AfkTimeouter.create();
 			}
 		}
+
 		return instance;
+	}
+
+	/**
+	 * creates a new StendhalRPRuleProcessor
+	 */
+	protected StendhalRPRuleProcessor() {
+		onlinePlayers = new PlayerList();
+		playersRmText = new LinkedList<Player>();
+		entityToKill = new LinkedList<Pair<RPEntity, Entity>>();
 	}
 
 	/**
@@ -165,6 +165,9 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 
 			/* initialize quests stored in cache */
 			questSystem.loadCachedQuests();
+
+			/* actions registered to be executed at end of server startup */
+			CachedActionManager.get().run();
 
 			final Configuration config = Configuration.getConfiguration();
 			try {

@@ -31,11 +31,9 @@ import games.stendhal.server.core.engine.StendhalRPWorld;
  * @author hendrik, daniel
  */
 public final class TurnNotifier {
-
 	private static Logger logger = Logger.getLogger(TurnNotifier.class);
-
-	/** The Singleton instance. */
-	private static final TurnNotifier INSTANCE = new TurnNotifier();
+	/** The singleton instance. */
+	private static TurnNotifier instance;
 
 	private int currentTurn = -1;
 
@@ -46,12 +44,8 @@ public final class TurnNotifier {
 	 */
 	private final Map<Integer, Set<TurnListener>> register = new HashMap<Integer, Set<TurnListener>>();
 
-	/** Used for multi-threading synchronization. * */
+	/** Used for multi-threading synchronization. */
 	private final Object sync = new Object();
-
-	private TurnNotifier() {
-		// singleton
-	}
 
 	/**
 	 * Return the TurnNotifier instance.
@@ -59,7 +53,18 @@ public final class TurnNotifier {
 	 * @return TurnNotifier the Singleton instance
 	 */
 	public static TurnNotifier get() {
-		return INSTANCE;
+		if (instance == null) {
+			instance = new TurnNotifier();
+		}
+
+		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private TurnNotifier() {
+		// singleton
 	}
 
 	/**

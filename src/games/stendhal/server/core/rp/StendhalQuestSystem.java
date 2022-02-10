@@ -28,20 +28,15 @@ import games.stendhal.server.maps.quests.antivenom_ring.AntivenomRing;
  * Loads and manages all quests.
  */
 public class StendhalQuestSystem {
-	private static final StendhalQuestSystem stendhalQuestSystem = new StendhalQuestSystem();
-
-	/** the logger instance. */
+	/** The logger instance. */
 	private static final Logger logger = Logger.getLogger(StendhalQuestSystem.class);
+	/** The singleton instance. */
+	private static StendhalQuestSystem instance;
 
 	private final static List<IQuest> quests = new LinkedList<IQuest>();
 
 	private final static List<IQuest> cached = new ArrayList<>();
 	private static boolean cacheLoaded = false;
-
-
-	private StendhalQuestSystem() {
-		// hide constructor, this is a Singleton
-	}
 
 	/**
 	 * gets the singleton instance of the StendhalQuestSystem
@@ -49,7 +44,18 @@ public class StendhalQuestSystem {
 	 * @return StendhalQuestSystem
 	 */
 	public static StendhalQuestSystem get() {
-		return stendhalQuestSystem;
+		if (instance == null) {
+			instance = new StendhalQuestSystem();
+		}
+
+		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private StendhalQuestSystem() {
+		// singleton
 	}
 
 	/**

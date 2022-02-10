@@ -13,10 +13,11 @@ import java.util.List;
  * @author ??? but thank you!
  */
 public class DarklightUpdater implements TurnListener {
+	/** The singleton instance. */
+	private static DarklightUpdater instance;
 	/** Time between checking if the color should be changed. Seconds. */
 	private static final int CHECK_INTERVAL = 61;
-	/** Singleton instance. */
-	private static final DarklightUpdater instance = new DarklightUpdater();
+
 	/** Color corresponding to the current time. */
 	Integer currentColor;
 
@@ -24,19 +25,25 @@ public class DarklightUpdater implements TurnListener {
 	private final List<ZoneAttributes> zones = new ArrayList<ZoneAttributes>();
 
 	/**
-	 * Create a new Darklight instance. Do not use this.
-	 */
-	private DarklightUpdater() {
-		onTurnReached(0);
-	}
-
-	/**
 	 * Get the Darklight instance.
 	 *
 	 * @return singleton instance
 	 */
 	public static DarklightUpdater get() {
+		if (instance == null) {
+			instance = new DarklightUpdater();
+		}
+
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 *
+	 * Create a new Daylight instance. Do not use this.
+	 */
+	private DarklightUpdater() {
+		onTurnReached(0);
 	}
 
 	/**

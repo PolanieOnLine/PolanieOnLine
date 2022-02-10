@@ -26,11 +26,9 @@ import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
  * Handles some conversion of Java arrays to Lua tables.
  */
 public class LuaArrayHelper {
-
 	private static LuaLogger logger = LuaLogger.get();
-
+	/** The singleton instance. */
 	private static LuaArrayHelper instance;
-
 
 	/**
 	 * Retrieves the static instance.
@@ -44,6 +42,13 @@ public class LuaArrayHelper {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LuaArrayHelper() {
+		// singleton
 	}
 
 	/**

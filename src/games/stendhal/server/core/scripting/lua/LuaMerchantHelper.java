@@ -32,15 +32,13 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
  * Exposes merchant handling classes & functions to Lua.
  */
 public class LuaMerchantHelper {
-
 	private static LuaLogger logger = LuaLogger.get();
+	/** The singleton instance. */
+	private static LuaMerchantHelper instance;
 
 	private final static EntityManager eManager = SingletonRepository.getEntityManager();
 
 	public static ShopList shops = ShopList.get();
-
-	private static LuaMerchantHelper instance;
-
 
 	/**
 	 * Retrieves the static instance.
@@ -54,6 +52,13 @@ public class LuaMerchantHelper {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Hidden singleton constructor.
+	 */
+	private LuaMerchantHelper() {
+		// singleton
 	}
 
 	/**

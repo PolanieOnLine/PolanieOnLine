@@ -141,10 +141,12 @@
 
 		<portal x="61" y="73" ref="hostel_entrance">
 			<destination zone="int_zakopane_hostel" ref="hostel_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="65" y="74" ref="tavern_entrance">
 			<destination zone="int_zakopane_tavern" ref="tavern_exit"/>
 			<attribute name="face">down</attribute>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -257,10 +259,12 @@
 
 		<portal x="76" y="118" ref="townhall_entrance">
 			<destination zone="int_zakopane_townhall" ref="townhall_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="87" y="65" ref="chapel_entrance_1">
 			<destination zone="int_zakopane_chapel" ref="chapel_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<point-of-interest x="94" y="58">
@@ -271,10 +275,12 @@
 		</point-of-interest>
 		<portal x="94" y="58" ref="catacombs_entrance">
 			<destination zone="-1_zakopane_catacombs" ref="catacombs_exit" />
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="124" y="88" ref="playroom_entrance">
 			<destination zone="int_zakopane_playroom" ref="playroom_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="58" y="5" ref="bt_exit">
@@ -297,6 +303,7 @@
 
 		<portal x="102" y="110" ref="shop_entrance">
 			<destination zone="int_zakopane_shop" ref="shop_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -373,9 +380,11 @@
 
 		<portal x="11" y="67" ref="trainstation_entrance_1">
 			<destination zone="int_zakopane_trainstation" ref="trainstation_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="13" y="67" ref="trainstation_entrance_2">
 			<destination zone="int_zakopane_trainstation" ref="trainstation_2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="30" y="117" ref="source_entrance">
@@ -478,16 +487,20 @@
 
 		<portal x="97" y="48" ref="church_entrance_1">
 			<destination zone="int_zakopane_church" ref="church_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="98" y="48" ref="church_entrance_2">
 			<destination zone="int_zakopane_church" ref="church_2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="78" y="56" ref="stable_entrance_1">
 			<destination zone="int_zakopane_stable" ref="stable_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="81" y="55" ref="stable_entrance_2">
 			<destination zone="int_zakopane_stable" ref="stable_2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -682,36 +695,46 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</portal>
 		<portal x="12" y="78" ref="mountain_entrance">
 			<destination zone="int_zakopane_mountain_room" ref="mountain_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="33" y="26" ref="home_entrance">
 			<destination zone="int_zakopane_home" ref="entrance_home"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="7" y="7" ref="blacksmith_entrance">
 			<destination zone="int_zakopane_blacksmith" ref="entrance_blacksmith"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="45" y="18" ref="postoffice_entrance_left">
 			<destination zone="int_zakopane_postoffice" ref="postoffice_left_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="46" y="18" ref="postoffice_entrance_right">
 			<destination zone="int_zakopane_postoffice" ref="postoffice_right_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="61" y="38" ref="football_entrance">
 			<destination zone="1_football_playground" ref="entrance_football"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="121" y="94" ref="sewing_entrance">
 			<destination zone="int_zakopane_sewing_house_0" ref="sewing_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- po zmianach -->
 		<portal x="51" y="49" ref="hospital_entrance_1">
 			<destination zone="int_zakopane_hospital" ref="hospital_1_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="52" y="49" ref="hospital_entrance_2">
 			<destination zone="int_zakopane_hospital" ref="hospital_2_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="52" y="50" ref="hospital_entrance_3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<point-of-interest x="102" y="42">
@@ -722,9 +745,11 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</point-of-interest>
 		<portal x="102" y="42" ref="bank_entrace_1">
 			<destination zone="int_zakopane_bank_0" ref="bank_exit_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="103" y="42" ref="bank_entrace_2">
 			<destination zone="int_zakopane_bank_0" ref="bank_exit_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -773,18 +798,22 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="45" y="41" ref="bakery_entrance">
 			<destination zone="int_zakopane_bakery" ref="entrance_bakery"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="54" y="58" ref="mill_entrance">
 			<destination zone="int_zakopane_mill_0" ref="entrance_mill"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="55" y="58" ref="mill_entrance_left">
 			<destination zone="int_zakopane_mill_0" ref="entrance_mill_left"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<!-- House seller -->
 		<portal x="96" y="86" ref="house_200_entrance">
 			<destination zone="int_zakopane_seller_house" ref="house_200_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<!-- Houses -->
 		<portal x="83" y="81" ref="house_201_entrance">
@@ -919,11 +948,13 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="30" y="94" ref="entrance">
 			<destination zone="int_zakopane_dobromir_house" ref="exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="39" y="101" ref="maisonette_entrance">
 			<destination zone="int_zakopane_maisonette_0" ref="entrance_maisonette"/>
 			<attribute name="face">left</attribute>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -932,6 +963,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<zone name="int_zakopane_dobromir_house" file="interiors/zakopane/house_dobromir.tmx">
 		<portal x="13" y="19" ref="exit">
 			<destination zone="0_zakopane_s_e2" ref="entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -982,6 +1014,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="26" y="14" ref="entrance_bakery">
 			<destination zone="0_zakopane_se" ref="bakery_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1156,9 +1189,11 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="29" y="18" ref="bank_exit_1">
 			<destination zone="0_zakopane_s" ref="bank_entrace_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="30" y="18" ref="bank_exit_2">
 			<destination zone="0_zakopane_s" ref="bank_entrace_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="45" y="15" ref="upstairs">
@@ -1187,7 +1222,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="2" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="8" y="2">
@@ -1202,7 +1237,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="8" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="14" y="2">
@@ -1217,7 +1252,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="14" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="20" y="2">
@@ -1232,7 +1267,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="20" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="2" y="15">
@@ -1247,7 +1282,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="2" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="8" y="15">
@@ -1262,7 +1297,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="8" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="14" y="15">
@@ -1277,7 +1312,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="14" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 		<entity x="20" y="15">
@@ -1292,7 +1327,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<entity x="20" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
 				<parameter name="width">2</parameter>
-				<parameter name="height">6</parameter>
+				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
 
@@ -1532,6 +1567,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="15" y="14" ref="entrance_blacksmith">
 			<destination zone="0_zakopane_s" ref="blacksmith_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1569,12 +1605,15 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="6" y="18" ref="hospital_1_exit">
 			<destination zone="0_zakopane_s" ref="hospital_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="7" y="18" ref="hospital_2_exit">
 			<destination zone="0_zakopane_s" ref="hospital_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="8" y="18" ref="hospital_3_exit">
 			<destination zone="0_zakopane_s" ref="hospital_entrance_3"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1594,9 +1633,11 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="12" y="23" ref="hostel_exit">
 			<destination zone="0_zakopane_ne" ref="hostel_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="13" y="23" ref="hostel_exit">
 			<destination zone="0_zakopane_ne" ref="hostel_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1606,6 +1647,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<portal x="5" y="10" ref="hut_exit">
 			<destination zone="-3_zakopane_mines" ref="hut_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1613,8 +1655,19 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<zone name="int_zakopane_seller_house" file="interiors/zakopane/house_200.tmx">
 		<configurator class-name="games.pol.server.maps.zakopane.house.AlicjaNPC"/>
 
+		<!-- Piano -->
+		<entity x="15" y="13">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
+				<parameter name="sound">piano-1</parameter>
+				<parameter name="radius">40</parameter>
+			</implementation>
+			<attribute name="width">2</attribute>
+			<attribute name="description">Oto piękne pianino. Może mógłbyś na nim zagrać.</attribute>
+		</entity>
+
 		<portal x="19" y="23" ref="house_200_exit">
 			<destination zone="0_zakopane_se" ref="house_200_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -1891,6 +1944,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 		<portal x="22" y="17" ref="entrance_home">
 			<destination zone="0_zakopane_s" ref="home_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="4" y="4" ref="zakopane_entrance_desert">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
@@ -1925,6 +1979,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<portal x="9" y="7" ref="entrance_mill">
 			<destination zone="0_zakopane_se" ref="mill_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="8" y="8" ref="entrance_mill_left">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
@@ -2052,6 +2107,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 		<portal x="40" y="25" ref="playroom_exit">
 			<destination zone="0_zakopane_c" ref="playroom_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2059,9 +2115,11 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 	<zone name="int_zakopane_postoffice" file="interiors/zakopane/postoffice.tmx">
 		<portal x="3" y="10" ref="postoffice_left_exit">
 			<destination zone="0_zakopane_s" ref="postoffice_entrance_left"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="4" y="10" ref="postoffice_right_exit">
 			<destination zone="0_zakopane_s" ref="postoffice_entrance_right"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2070,6 +2128,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 		<configurator class-name="games.pol.server.maps.zakopane.shop.StasekNPC"/>
 		<portal x="5" y="19" ref="shop_exit">
 			<destination zone="0_zakopane_c" ref="shop_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<entity x="8" y="7">
@@ -2100,9 +2159,11 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 		<portal x="5" y="30" ref="stable_1_exit">
 			<destination zone="0_zakopane_sw" ref="stable_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="17" y="26" ref="stable_2_exit">
 			<destination zone="0_zakopane_sw" ref="stable_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2127,6 +2188,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 		<portal x="12" y="17" ref="sewing_exit">
 			<destination zone="0_zakopane_s" ref="sewing_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2226,6 +2288,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 		<portal x="30" y="5" ref="tavern_exit">
 			<destination zone="0_zakopane_ne" ref="tavern_entrance"/>
 			<attribute name="face">left</attribute>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2244,15 +2307,19 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 		<portal x="10" y="23" ref="church_1_exit">
 			<destination zone="0_zakopane_sw" ref="church_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="11" y="23" ref="church_2_exit">
 			<destination zone="0_zakopane_sw" ref="church_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="12" y="23" ref="church_3_exit">
 			<destination zone="0_zakopane_sw" ref="church_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="13" y="23" ref="church_4_exit">
 			<destination zone="0_zakopane_sw" ref="church_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2260,6 +2327,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 	<zone name="int_zakopane_chapel" file="interiors/zakopane/chapel.tmx">
 		<portal x="7" y="14" ref="chapel_1_exit">
 			<destination zone="0_zakopane_c" ref="chapel_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2303,12 +2371,15 @@ Aktualne ceny u Gazdy Wojtka:
 
 		<portal x="15" y="46" ref="townhall_exit">
 			<destination zone="0_zakopane_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="14" y="46" ref="townhall_exit">
 			<destination zone="0_zakopane_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="16" y="46" ref="townhall_exit">
 			<destination zone="0_zakopane_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2316,9 +2387,11 @@ Aktualne ceny u Gazdy Wojtka:
 	<zone name="int_zakopane_trainstation" file="interiors/zakopane/trainstation.tmx">
 		<portal x="11" y="14" ref="trainstation_1_exit">
 			<destination zone="0_zakopane_e" ref="trainstation_entrance_1"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="21" y="14" ref="trainstation_2_exit">
 			<destination zone="0_zakopane_e" ref="trainstation_entrance_2"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2333,10 +2406,12 @@ Aktualne ceny u Gazdy Wojtka:
 		<portal x="4" y="1" ref="mountain_cave_entrance">
 			<destination zone="-1_zakopane_mountain_cave" ref="mountain_cave_exit"/>
 			<attribute name="face">down</attribute>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="4" y="13" ref="mountain_exit">
 			<destination zone="0_zakopane_s" ref="mountain_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2357,6 +2432,7 @@ Aktualne ceny u Gazdy Wojtka:
 		<portal x="10" y="1" ref="mountain_cave_exit">
 			<destination zone="int_zakopane_mountain_room" ref="mountain_cave_entrance"/>
 			<attribute name="face">down</attribute>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2387,6 +2463,7 @@ Aktualne ceny u Gazdy Wojtka:
 
 		<portal x="78" y="11" ref="underground_1_exit">
 			<destination zone="0_zakopane_se" ref="underground_1_enter"/>
+			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="1" y="123" ref="underground_2_enter">
@@ -2403,6 +2480,7 @@ Aktualne ceny u Gazdy Wojtka:
 		<portal x="27" y="10" ref="catacombs_exit">
 			<destination zone="0_zakopane_c" ref="catacombs_entrance"/>
 			<attribute name="face">left</attribute>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2494,6 +2572,7 @@ Aktualne ceny u Gazdy Wojtka:
 
 		<portal x="23" y="67" ref="hut_entrance">
 			<destination zone="int_zakopane_mines_hut" ref="hut_exit"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
@@ -2672,18 +2751,23 @@ Aktualne ceny u Gazdy Wojtka:
 
 		<portal x="31" y="47" ref="entrance_football">
 			<destination zone="0_zakopane_s" ref="football_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="29" y="47" ref="entrance_football">
 			<destination zone="0_zakopane_s" ref="football_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="30" y="47" ref="entrance_football">
 			<destination zone="0_zakopane_s" ref="football_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="32" y="47" ref="entrance_football">
 			<destination zone="0_zakopane_s" ref="football_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 		<portal x="33" y="47" ref="entrance_football">
 			<destination zone="0_zakopane_s" ref="football_entrance"/>
+			<attribute name="move.continuous" />
 		</portal>
 	</zone>
 
