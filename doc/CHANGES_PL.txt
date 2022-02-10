@@ -11,9 +11,12 @@ Changelog
 	- -1_warszawa_cave_ne
 	- -1_warszawa_cave_sw
 	- -1_warszawa_cave_se
-- Legendarny żywioł lodu wyrzuca magię lodu
+- Dodano nowe osiągnięcie: (1)
+	- "Determinacja"
+- Dodano więcej przedmiotów możliwych do zdobycia przez cherubina & lilith & żywioł nicości & legendarny żywioł lodu
 - Zmniejszono ilość ataku dla każdego smoczyska
-- Dodano więcej przedmiotów możliwych do zdobycia przez cherubina & lilith
+- Zmniejszono koszt z 500 do 75 money wejściówki na statek kursujący do Gdańska
+- Zmniejszono koszt z 500,000 do 170,000 money za zakup domku w Zakopane
 
 *naprawiono błędy*
 - Naprawiono osiągnięcie: "Centralny Rynkowicz"
