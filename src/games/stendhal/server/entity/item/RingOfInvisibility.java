@@ -26,18 +26,8 @@ import marauroa.common.game.SlotOwner;
  * @author KarajuSs
  */
 public class RingOfInvisibility extends Item {
-	/**
-	 * Creates a new invisibility ring and immediately sets
-	 * the player to be invisible to creatures.
-	 * 
-	 * @param name
-	 * @param clazz
-	 * @param subclass
-	 * @param attributes
-	 */
 	public RingOfInvisibility(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
-		setPersistent(true);
 	}
 
 	/**
