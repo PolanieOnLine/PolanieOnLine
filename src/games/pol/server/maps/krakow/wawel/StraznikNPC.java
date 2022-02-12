@@ -43,11 +43,6 @@ public class StraznikNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Strażnik") {
 
 			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
-			@Override
 			protected void createDialog() {
 				addGreeting("Witaj wędrowcze.");
 				addJob("Prowadzę spokojne życie. Pilnuje #wejścia na wawel. Mogę również Tobie przekazać od samego Króla Kraka kto potrzebuje #pomocy.");
@@ -55,7 +50,7 @@ public class StraznikNPC implements ZoneConfigurator {
 				addGoodbye();
 
 				// use a standard action to list the names of NPCs for quests which haven't been started in this region
-				addReply(ConversationPhrases.HELP_MESSAGES, null, new SayNPCNamesForUnstartedQuestsAction(regions));
+				addReply(ConversationPhrases.QUEST_MESSAGES, null, new SayNPCNamesForUnstartedQuestsAction(regions));
 				// if the player says an NPC name, describe the quest (same description as in the travel log)
 			    add(ConversationStates.ATTENDING,
 						"",

@@ -54,7 +54,7 @@ public class WegielNaOpal extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Witaj przyjacielu. Mam dla Ciebie pewne '#zlecenie'.",
+			"Witaj nieznajomy. Miałbym dla Ciebie pewne #'zlecenie'.",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -70,7 +70,7 @@ public class WegielNaOpal extends AbstractQuest {
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
 					 new OrCondition(new QuestNotCompletedCondition(FRYDERYK_QUEST_SLOT))),
 			ConversationStates.ATTENDING,
-			"Jeszcze nie tak prędko! Pomóż jeszcze Fryderykowi, a wtedy będę mógł Tobie zaufać.",
+			"Jeszcze nie tak prędko! Pomóż Fryderykowi, a wtedy będę mógł Tobie zaufać.",
 			null);
 	}
 
