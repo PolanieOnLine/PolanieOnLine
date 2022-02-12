@@ -333,7 +333,7 @@ public class StatusResistantItem extends SlotActivatedItem {
 		}
 
 		if (res.length() > 0) {
-			description = description + " Odporność na (" + res.toString().trim() + ").";
+			description = description + " ODPORNOŚĆ NA: (" + res.toString().trim() + ").";
 		}
 
 		return description;
