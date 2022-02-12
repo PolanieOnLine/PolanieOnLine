@@ -253,10 +253,6 @@
 			</implementation>
 		</entity>
 
-		<portal x="67" y="57" ref="zakopane_entrance">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
-		</portal>
-
 		<portal x="76" y="118" ref="townhall_entrance">
 			<destination zone="int_zakopane_townhall" ref="townhall_exit"/>
 			<attribute name="move.continuous" />

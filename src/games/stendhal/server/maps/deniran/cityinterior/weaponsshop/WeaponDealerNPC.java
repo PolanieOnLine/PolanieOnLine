@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.deniran.cityinterior.weaponsshop;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,8 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class WeaponDealerNPC implements ZoneConfigurator  {
+	private final ShopList shops = ShopList.get();
+
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -42,6 +43,8 @@ public class WeaponDealerNPC implements ZoneConfigurator  {
 				addGreeting("Witaj w miejscowej zbrojowni.");
 				addJob("Zajmuje się sprzedażą broni.");
 				addOffer("Sprawdź moje ceny na tablicach.");
+				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("deniranequipbuy")), false);
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("deniranequipsell")), false);
 				addGoodbye();
 			}
 	
@@ -53,30 +56,6 @@ public class WeaponDealerNPC implements ZoneConfigurator  {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
-
-		// buys
-		final Map<String, Integer> pricesBuy = new LinkedHashMap<String, Integer>() {{
-			put("kropacz", 1200);
-			put("magiczny płaszcz", 12000);
-		}};
-		new BuyerAdder().addBuyer(npc, new BuyerBehaviour(pricesBuy), false);
-
-		// sells
-		final Map<String, Integer> pricesSell = new LinkedHashMap<String, Integer>() {{
-			put("shuriken", 77);
-			put("płonący shuriken", 99);
-			put("włócznia", 110);
-		}};
-		new SellerAdder().addSeller(npc, new SellerBehaviour(pricesSell), false);
-
-		// add shops to the general shop list
-		final ShopList shops = ShopList.get();
-		for (final String key: pricesBuy.keySet()) {
-			shops.add("deniranequipbuy", key, pricesBuy.get(key));
-		}
-		for (final String key: pricesSell.keySet()) {
-			shops.add("deniranequipsell", key, pricesSell.get(key));
-		}
 
 		npc.setDescription("Oto D J Smith, sprzedawca broni.");
 		npc.setEntityClass("wellroundedguynpc");

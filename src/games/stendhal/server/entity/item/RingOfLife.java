@@ -14,6 +14,10 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
+import games.stendhal.common.NotificationType;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.player.Player;
+
 /**
  * A ring that protects from XP loss.
  */
@@ -82,5 +86,21 @@ public class RingOfLife extends Item {
 					+ " za wykonanie zadania, która nie może być używana przez innych.";
 		}
 		return text;
+	}
+
+	/**
+	 * Notify the player that it is not required to carry this ring
+	 * in the finger slot to get its benefits.
+	 */
+	@Override
+	public boolean onEquipped(final RPEntity entity, final String slot) {
+		if ((slot.equals("finger") || slot.equals("fingerb")) && entity instanceof Player) {
+			((Player) entity).sendPrivateText(NotificationType.INFORMATION,
+				"Aura pierścienia pozostaje niezmieniona, gdy przesuwasz go po palcu."
+				+ " Zdajesz sobie sprawę, że nawet nosząc go w plecaku lub w rzemyku"
+				+ " będziesz pod jego wpływem.");
+		}
+
+		return super.onEquipped(entity, slot);
 	}
 }

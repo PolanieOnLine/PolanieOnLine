@@ -1039,6 +1039,9 @@ public class Grammar {
 				return "jej";
 			}
 
+			if (word.endsWith("ąłeś")) {
+				return word.substring(0, word.length() - 4) + "ęłaś";
+			}
 			if (word.endsWith("eś")) {
 				return word.substring(0, word.length() - 2) + "aś";
 			}

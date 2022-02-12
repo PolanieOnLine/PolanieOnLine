@@ -13,19 +13,22 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
+import games.stendhal.common.NotificationType;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
+import marauroa.common.game.SlotOwner;
 
 /** 
  * If ring has been used by player, he will be invisible for monsters.
- * When a player attacks a creature, player become visible
+ * When a player attacks a creature, player become visible.
  *
  * @author KarajuSs
  */
 public class RingOfInvisibility extends Item {
 	/**
 	 * Creates a new invisibility ring and immediately sets
-	 * the player to be invisible to creatures
+	 * the player to be invisible to creatures.
 	 * 
 	 * @param name
 	 * @param clazz
@@ -52,48 +55,48 @@ public class RingOfInvisibility extends Item {
 	}
 
 	public static void setVisible(Player player, boolean setVisible) {
-		String on = "Założyłeś pierścień na palec! Używaj go mądrze!";
-		String off = "Zdjąłeś pierścień z palca i stałeś się widoczny!";
-		if (player.getGender() == "F") {
-			on = "Założyłaś pierścień na palec! Używaj go mądrze!";
-			off = "Zdjęłaś pierścień z palca i stałaś się widoczna!";
-		}
+		String on = Grammar.genderVerb(player.getGender(), "Założyłeś") + " pierścień na palec! Używaj go mądrze!";
+		String off = "Pierścień stracił swoją moc ponieważ został zdjęty z dłoni.";
 
 		if (setVisible == true) {
-			player.sendPrivateText(on);
+			player.sendPrivateText(NotificationType.EMOTE, on);
 
 			player.stopAttack();
 			player.setInvisible(setVisible);
 			player.setVisibility(50);
 		} else {
-			player.sendPrivateText(off);
+			player.sendPrivateText(NotificationType.ERROR, off);
 
 			player.setInvisible(setVisible);
 		  	player.setVisibility(100);
 		}
 	}
 
-	/**
-	 * Method that sets the player using the ring
-	 * to be invisible
-	 */
 	@Override
-	public boolean onUsed(final RPEntity entity) {
-		if ((entity instanceof Player)) {
-			return makeInvisible((Player) entity);
+	public boolean onEquipped(final RPEntity entity, final String slot) {
+		if ((slot.equals("finger") || slot.equals("fingerb")) && entity instanceof Player) {
+			setVisible((Player) entity, true);
 		}
-		return false;
+
+		return super.onEquipped(entity, slot);
 	}
 
-	private boolean makeInvisible(final Player player) {
-		if (isInvisible(player)) {
-			setVisible(player, false);
+	@Override
+	public boolean onUnequipped() {
+		super.onUnequipped();
 
-		  	return true;
-		} else {
-			setVisible(player, true);
-
-			return true;
+		SlotOwner owner = this.getContainerOwner();
+		if (owner == null) {
+			return false;
 		}
+
+		if (owner instanceof Player) {
+			if (isInvisible((Player) owner)) {
+				setVisible((Player) owner, false);
+
+			  	return true;
+			}
+		}
+		return false;
 	}
 }

@@ -14,6 +14,8 @@ package games.stendhal.server.actions.attack;
 import static games.stendhal.common.constants.Actions.ATTACK;
 import static games.stendhal.common.constants.Actions.TARGET;
 
+import games.stendhal.common.NotificationType;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -59,6 +61,7 @@ public class AttackAction implements ActionListener {
 						return;
 					}
 					RingOfInvisibility.setVisible(player, false);
+					player.sendPrivateText(NotificationType.ERROR, Grammar.genderVerb(player.getGender(), "Rozpocząłeś") + " atak także inne potwory odnalazły ciebie.");
 				}
 
 				StendhalRPAction.startAttack(player, (RPEntity) entity);

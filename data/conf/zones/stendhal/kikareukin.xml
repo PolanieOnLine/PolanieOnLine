@@ -178,9 +178,6 @@
 		<portal x="16" y="96" ref="entrance">
 			<destination zone="0_semos_mountain_n_w4" ref="kikareukin_entrance" />
 		</portal>
-		<portal x="67" y="77" ref="kikareukin_exit">
-			<destination zone="0_zakopane_c" ref="zakopane_entrance"/>
-		</portal>
 	</zone>
 
 

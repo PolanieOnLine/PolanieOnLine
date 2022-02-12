@@ -245,6 +245,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		addHard("buty xenocyjskie",1);
 
 		// cloak (hard difficulty)
+		addHard("magiczny płaszcz",1);
 		addHard("płaszcz mainiocyjski",1);
 		addHard("płaszcz xenocyjski",1);
 

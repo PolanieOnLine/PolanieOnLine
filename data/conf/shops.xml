@@ -700,6 +700,17 @@
 		<item name="truchło wampira" price="25" />
 	</shop>
 
+	<!-- D J Smith: Deniran weapons shop -->
+	<shop name="deniranequipbuy" type="buys">
+		<item name="kropacz" price="1200" />
+		<item name="magiczny płaszcz" price="12000" />
+	</shop>
+	<shop name="deniranequipsell" type="sells">
+		<item name="shuriken" price="77" />
+		<item name="płonący shuriken" price="99" />
+		<item name="włócznia" price="110" />
+	</shop>
+
 	<!--
 		Kraina Prasłowiańska
 	-->
