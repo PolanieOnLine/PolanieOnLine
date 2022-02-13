@@ -12,6 +12,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.piedpiper;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.MultiZonesFixedPathsList;
 import games.stendhal.server.core.pathfinder.RPZonePath;
@@ -19,13 +24,8 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.ActorNPC;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import games.stendhal.server.util.Observable;
+import games.stendhal.server.util.Observer;
 
 public class OutgoingPhase extends TPPQuest {
 	private final SpeakerNPC piedpiper = new SpeakerNPC("Pied Piper");

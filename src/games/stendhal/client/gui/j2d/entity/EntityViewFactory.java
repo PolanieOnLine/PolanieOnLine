@@ -83,7 +83,7 @@ public class EntityViewFactory {
 				}
 			}
 
-			final EntityView<IEntity> en = entityClass.newInstance();
+			final EntityView<IEntity> en = entityClass.getDeclaredConstructor().newInstance();
 			en.initialize(entity);
 
 			return en;

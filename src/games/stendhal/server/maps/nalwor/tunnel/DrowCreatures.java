@@ -14,8 +14,6 @@ package games.stendhal.server.maps.nalwor.tunnel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
@@ -26,6 +24,8 @@ import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.Area;
+import games.stendhal.server.util.Observable;
+import games.stendhal.server.util.Observer;
 
 /**
  * Configure Drow Tunnel -1 to include a Thing Creature who carries an amulet.

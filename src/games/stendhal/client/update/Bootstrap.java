@@ -50,7 +50,7 @@ public class Bootstrap {
 	 * saves modified boot properties to disk.
 	 *
 	 * @throws IOException
-	 *             if an IO-error occurs
+	 *			 if an IO-error occurs
 	 */
 	public void saveBootProp() throws IOException {
 		// only try to save it, if it was changed (so that we do not have to
@@ -103,7 +103,7 @@ public class Bootstrap {
 	 * @param firstPhase true, if this is the first phase before the updater is executed
 	 * @return ClassLoader object
 	 * @throws Exception
-	 *             if an unexpected error occurs
+	 *			 if an unexpected error occurs
 	 */
 	ClassLoader createClassloader(boolean includeUpdates, boolean firstPhase) throws Exception {
 		final List<URL> jarFiles = new LinkedList<URL>();
@@ -176,9 +176,9 @@ public class Bootstrap {
 		 * Creates a PrivilagedBoot object.
 		 *
 		 * @param className
-		 *            className to boot
+		 *			className to boot
 		 * @param args
-		 *            arguments for the main-method
+		 *			arguments for the main-method
 		 */
 		public PrivilegedBoot(final String className, final String[] args) {
 			this.className = className;
@@ -214,7 +214,7 @@ public class Bootstrap {
 				// start update handling
 				final Class< ? > clazz = classLoader.loadClass("games.stendhal.client.update.UpdateManager");
 				final Method method = clazz.getMethod("process", String.class, Properties.class, Boolean.class, ClassLoader.class);
-				method.invoke(clazz.newInstance(), jarFolder, bootProp, initialDownload, classLoader);
+				method.invoke(clazz.getDeclaredConstructor().newInstance(), jarFolder, bootProp, initialDownload, classLoader);
 			} catch (final SecurityException e) {
 				throw e;
 			} catch (final Exception e) {
@@ -286,10 +286,10 @@ public class Bootstrap {
 				if (keyStr.equals(ClientGameConfiguration.get("UPDATE_SIGNER_KEY"))) {
 					return true;
 				}
-                System.err.println("Skipping unknown signature: " + keyStr + " from " + cert);
-                if (cert instanceof X509Certificate) {
-                	System.err.println("   " + ((X509Certificate) cert).getSubjectDN());
-                }
+				System.err.println("Skipping unknown signature: " + keyStr + " from " + cert);
+				if (cert instanceof X509Certificate) {
+					System.err.println("   " + ((X509Certificate) cert).getSubjectX500Principal());
+				}
 
 			}
 			return false;
@@ -337,9 +337,9 @@ public class Bootstrap {
 	 * classpath.
 	 *
 	 * @param className
-	 *            name of class with "main"-method
+	 *			name of class with "main"-method
 	 * @param args
-	 *            command line arguments
+	 *			command line arguments
 	 */
 	public void boot(final String className, final String[] args) {
 		try {

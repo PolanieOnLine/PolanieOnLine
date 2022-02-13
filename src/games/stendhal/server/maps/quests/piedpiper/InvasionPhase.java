@@ -17,8 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
@@ -36,6 +34,8 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.Observable;
+import games.stendhal.server.util.Observer;
 
 public class InvasionPhase extends TPPQuest {
 

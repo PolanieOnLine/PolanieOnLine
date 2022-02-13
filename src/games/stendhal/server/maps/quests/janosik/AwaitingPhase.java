@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observer;
 
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.GoToPosition;
@@ -25,6 +24,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.interaction.NPCChatting;
 import games.stendhal.server.entity.npc.interaction.NPCFollowing;
+import games.stendhal.server.util.Observer;
 
 /**
  * Implementation of Pied Piper's initial actions (coming, chatting, going to work place)

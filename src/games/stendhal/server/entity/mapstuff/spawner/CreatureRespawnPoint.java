@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                      (C) Copyright 2003 - Marauroa                      *
  ***************************************************************************
@@ -14,7 +13,6 @@ package games.stendhal.server.entity.mapstuff.spawner;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +23,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.util.Observer;
 
 /**
  * RespawnPoints are points at which creatures can appear. Several creatures can

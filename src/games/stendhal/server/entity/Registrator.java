@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -12,25 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.entity;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import org.apache.log4j.Logger;
+
+import games.stendhal.server.util.Observable;
+import games.stendhal.server.util.Observer;
 
 /**
   * Wrapper for java Observable object.
   */
 public class Registrator extends Observable {
-
-	/**
-	 * mark Registrator object as changed.
-	 * Function was moved from protected (in java.util.Observable)
-	 * to public zone.
-	 */
-	public void setChanges() {
-		setChanged();
-	}
-
 	/**
 	 * registers observer for notifying
 	 * @param observer

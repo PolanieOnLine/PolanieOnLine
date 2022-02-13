@@ -15,8 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.MultiZonesFixedPathsList;
@@ -25,6 +23,8 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.ActorNPC;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.util.Observable;
+import games.stendhal.server.util.Observer;
 
 public class OutgoingPhase extends RAQuest {
 	private final SpeakerNPC knight = new SpeakerNPC("Rycerz");

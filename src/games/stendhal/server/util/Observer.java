@@ -9,33 +9,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests.janosik;
+package games.stendhal.server.util;
 
-import java.util.Arrays;
+//import java.beans.PropertyChangeListener;
 
-import games.stendhal.server.maps.quests.Janosik;
-import games.stendhal.server.util.Observable;
-import games.stendhal.server.util.Observer;
-
-/**
- * helper class for normal switching phase to next phase,
- * wrapper of observer around a function.
- *
- * @author yoriy
- */
-public final class PhaseSwitcher implements Observer {
-
-	private IRAQuest myphase;
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		myphase.phaseToNextPhase(
-				Janosik.getNextPhaseClass(Janosik.getPhase()),
-				Arrays.asList("normal switching"));
-	}
-
-	public PhaseSwitcher(IRAQuest phase) {
-		myphase = phase;
-	}
-
+public interface Observer {
+	abstract public void update(final Observable o, final Object arg);
 }
