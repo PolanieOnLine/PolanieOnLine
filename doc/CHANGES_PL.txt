@@ -11,7 +11,7 @@ Changelog
 	- -1_warszawa_cave_ne
 	- -1_warszawa_cave_sw
 	- -1_warszawa_cave_se
-- Dodano nowe osiągnięcie: (2)
+- Dodano nowe osiągnięcia: (2)
 	- "Determinacja"
 	- "Wspierający Społeczność"
 - Dodano więcej przedmiotów możliwych do zdobycia przez cherubina & lilith & żywioł nicości & legendarny żywioł lodu

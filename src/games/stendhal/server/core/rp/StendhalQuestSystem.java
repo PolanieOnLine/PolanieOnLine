@@ -381,6 +381,10 @@ public class StendhalQuestSystem {
 			return;
 		}
 
+		if (Occasion.MOREXP) {
+			logger.info("Parameter MOREXP has been loaded!");
+		}
+
 		cached.add(quest);
 	}
 

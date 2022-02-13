@@ -133,7 +133,6 @@ public class StoredChest extends Chest {
 	 * @return <code>true</code> if it should be called again.
 	 */
 	protected boolean chestCloser() {
-
 		if (getZone().getPlayers().size() > 0) {
 			// do nothing - people are still in the zone
 			return true;

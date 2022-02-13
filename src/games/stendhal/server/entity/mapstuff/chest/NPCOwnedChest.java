@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -25,7 +24,6 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public class NPCOwnedChest extends Chest {
-
 	private static Logger logger = Logger.getLogger(NPCOwnedChest.class);
 
 	private final SpeakerNPC npc;
@@ -45,10 +43,17 @@ public class NPCOwnedChest extends Chest {
 		if (user instanceof Player) {
 			final Player player = (Player) user;
 
-			if (player.nextTo(this)) {
-				npc.say("Hej " + user.getTitle() + ", to moja skrzynia!");
+			if (player.nextTo(this) && player.isEquipped("wytrychy")) {
+				if (isOpen()) {
+					close();
+				} else {
+					open();
+				}
+
+				notifyWorldAboutChanges();
 				return true;
 			} else {
+				npc.say("Hej " + user.getTitle() + ", to moja skrzynia!");
 				return false;
 			}
 		} else {
