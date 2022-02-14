@@ -272,7 +272,7 @@ public class SingletonRepository {
 	 * @return
 	 *     CloneManager instance.
 	 */
-	public static CloneManager getCloneManager() {
+	public CloneManager getCloneManager() {
 		return CloneManager.get();
 	}
 }

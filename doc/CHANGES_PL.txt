@@ -35,7 +35,7 @@ Changelog
 *świat*
 - Dodano więcej możliwości napotkania nowych pokutników oraz czarnoksiężników lodu
 - Wykonanie zadania na złotą ciupagę z trzema wąsami daje graczom zniżkę na ulepszanie przedmiotów do 30% u kowala Tworzymira
-- Zmniejszono ceny ulepszeń dla przedmiotów z maksymalnie dwoma udoskonaleniami u kowala Tworzymira
+- Zmieniono ceny ulepszeń dla przedmiotów z maksymalnie dwoma udoskonaleniami u kowala Tworzymira
 - Zmniejszono wymóg ilości dużych smoczych eliksirów na wzmocniony pierścień zdrowia
 - Zwiększono nieco ilość obrony u potwora: dziki słoń
 

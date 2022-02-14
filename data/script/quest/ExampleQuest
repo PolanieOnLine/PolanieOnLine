@@ -21,7 +21,7 @@
 local quest = quests.simple:create("apples_for_lua", "Jabłka dla Lua", "Lua")
 quest:setDescription("Lua jest głodna i chce zjeść troche jabłek.")
 quest:setReply(quests.simple.ID_REQUEST, "Jestem głodna. Przyniesiesz mi kilka jabłek?")
-quest:setReply(quests.simple.ID_ACCEPT, "Świetnie! Chciałabym 5 jabłem.")
+quest:setReply(quests.simple.ID_ACCEPT, "Świetnie! Chciałabym 5 jabłek.")
 quest:setReply(quests.simple.ID_REJECT, "Super! Nie potrzebuję więcej już pomocy.")
 quest:setReply(quests.simple.ID_REWARD, "Dziękuję bardzo!")
 quest:setVerboseReward(true) -- the default is "true", just showing here as an example

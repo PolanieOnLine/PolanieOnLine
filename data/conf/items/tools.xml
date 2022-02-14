@@ -258,9 +258,10 @@
 	<item name="łopata">
 		<type class="tool" subclass="shovel" tileid="-1"/>
 		<description>Oto łopata. Być może dzięki niej wykopiesz kiedyś skarb.</description>
-		<implementation class-name="games.stendhal.server.entity.item.AreaUseItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Shovel"/>
 	    <attributes>
 			<menu value="Wykop|Użyj"/>
+			<use_sound value="shovel_dig"/>
 	    </attributes>
 		<weight value="10.0"/>
 		<value value="1"/>

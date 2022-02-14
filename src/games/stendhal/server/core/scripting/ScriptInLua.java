@@ -30,6 +30,7 @@ import org.luaj.vm2.lib.jse.JseBaseLib;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.lib.jse.LuajavaLib;
 
+import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.lua.LuaActionHelper;
@@ -172,6 +173,7 @@ public class ScriptInLua extends ScriptingSandbox {
 		globals.set("grammar", CoerceJavaToLua.coerce(Grammar.get()));
 		globals.set("singletons", CoerceJavaToLua.coerce(singletons));
 		globals.set("clones", CoerceJavaToLua.coerce(singletons.getCloneManager()));
+		globals.set("random", CoerceJavaToLua.coerce(new Rand()));
 
 		// initialize supplemental string & table functions
 		LuaStringHelper.get().init((LuaTable) globals.get("string"));
