@@ -14,6 +14,7 @@ Changelog
 - Dodano nowe osiągnięcia: (2)
 	- "Determinacja"
 	- "Wspierający Społeczność"
+- Dodano nowe zadanie na rozszerzony rzemyk
 - Dodano więcej przedmiotów możliwych do zdobycia przez cherubina & lilith & żywioł nicości & legendarny żywioł lodu
 - Dodano informacje dot. szmaragdowego pierścienia dla tych, którzy założą go na palec
 - Dodano nowy przedmiot wymagany w muzeum Kirdneh: "magiczny płaszcz"
