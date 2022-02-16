@@ -1340,6 +1340,21 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 				<parameter name="height">4</parameter>
 			</implementation>
 		</entity>
+		<entity x="26" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_gdansk</parameter>
+			</implementation>
+		</entity>
+		<entity x="27" y="15">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker"/>
+			<attribute name="description">Oto pięknie ustawiony stół.</attribute>
+		</entity>
+		<entity x="26" y="12">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">2</parameter>
+				<parameter name="height">4</parameter>
+			</implementation>
+		</entity>
 
 		<portal x="44" y="14" ref="downstairs">
 			<destination zone="int_zakopane_bank_0" ref="upstairs"/>

@@ -36,30 +36,36 @@ local ring_locations = {
 	{49, 30},
 	{123, 3},
 	{115, 122},
-	{46, 106},
+	{49, 106},
 }
 
+local questNotStartedCondition = conditions:create("QuestNotStartedCondition", {quest_slot})
+local questCompletedCondition = conditions:create("QuestCompletedCondition", {quest_slot})
 local questActiveCondition = conditions:create("QuestActiveCondition", {quest_slot})
 local hasRingCondition = conditions:create("PlayerHasInfostringItemWithHimCondition", {
 	"pierścień zaręczynowy",
 	ring_infostring,
 })
 
-local hasKeyringCondition = function(player, sentence, npc)
+local hasKeyringCondition = conditions:create(function(player, sentence, npc)
 	return player:hasFeature("keyring")
-end
+end)
 
-local check = {
-	canStart = conditions:andC({
-		conditions:create("QuestNotStartedCondition", {quest_slot}),
-		conditions:create("QuestNotCompletedCondition", {quest_slot}),
-		conditions:create(hasKeyringCondition),
-	}),
-	questActive = questActiveCondition,
-	questCompleted = conditions:create("QuestCompletedCondition", {quest_slot}),
-	canReward = hasRingCondition,
-	cannotReward = conditions:notC(hasRingCondition),
-}
+--[[ FIXME: conditions:create is struggling with constructors that take varargs
+local visitedAthorCondition = conditions:create("PlayerVisitedZonesCondition", {
+	"0_athor_island",
+})
+]]
+local visitedAthorCondition = luajava.newInstance(
+	"games.stendhal.server.entity.npc.condition.PlayerVisitedZonesCondition",
+	{"0_athor_island"})
+
+local canStartCondition = conditions:andC({
+	questNotStartedCondition,
+	conditions:notC(questCompletedCondition),
+	hasKeyringCondition,
+	visitedAthorCondition,
+})
 
 local setQuestAction = function(player, sentence, npc)
 	player:addKarma(karmaAcceptReward)
@@ -111,9 +117,12 @@ local prepareRequestStep = function()
 		conditions:orC({
 			{
 				conditions:create("QuestNotStartedCondition", {quest_slot}),
-				conditions:notC(hasKeyringCondition),
+				conditions:orC({
+					conditions:notC(hasKeyringCondition),
+					conditions:notC(visitedAthorCondition),
+				}),
 			},
-			check.questCompleted,
+			questCompletedCondition,
 		}),
 		ConversationStates.ATTENDING,
 		"Cześć!",
@@ -132,11 +141,24 @@ local prepareRequestStep = function()
 			.. " wiedział więcej o rzemyku.",
 		nil)
 
+	-- player has not visited Athor
+	ari:add(
+		ConversationStates.ATTENDING,
+		ConversationPhrases.QUEST_MESSAGES,
+		{
+			conditions:create("QuestNotStartedCondition", {quest_slot}),
+			conditions:notC(visitedAthorCondition),
+		},
+		ConversationStates.ATTENDING,
+		"Myślę, że nie masz doświadczenia, aby mi pomóc. Może gdybyś"
+			.. " był bardziej zaznajomiony z wyspą Athor.",
+		nil)
+
 	-- player has keyring & can start quest
 	ari:add(
 		ConversationStates.IDLE,
 		ConversationPhrases.GREETING_MESSAGES,
-		check.canStart,
+		canStartCondition,
 		ConversationStates.ATTENDING,
 		"Hej! Wyglądasz jak doświadczony wojownik. Może mógłbyś mi pomóc z #zadaniem.",
 		nil)
@@ -144,7 +166,7 @@ local prepareRequestStep = function()
 	ari:add(
 		ConversationStates.ATTENDING,
 		ConversationPhrases.QUEST_MESSAGES,
-		check.canStart,
+		canStartCondition,
 		ConversationStates.QUEST_OFFERED,
 		"Straciłem mój pierścionek zaręczynowy i wstydzę się powiedzieć Emmie. Czy pomógłbyś mi?",
 		nil)
@@ -153,7 +175,7 @@ local prepareRequestStep = function()
 	ari:add(
 		ConversationStates.ATTENDING,
 		ConversationPhrases.QUEST_MESSAGES,
-		check.questCompleted,
+		questCompletedCondition,
 		ConversationStates.ATTENDING,
 		"Dziękuję, ale mam już wszystko, czego potrzebuję.",
 		nil)
@@ -161,7 +183,7 @@ local prepareRequestStep = function()
 	ari:add(
 		ConversationStates.ATTENDING,
 		ConversationPhrases.QUEST_MESSAGES,
-		check.questActive,
+		questActiveCondition,
 		ConversationStates.ATTENDING,
 		"Już pomagasz mi w poszukiwaniu mojego pierścionka zaręczynowego.",
 		nil)
@@ -189,7 +211,7 @@ local prepareBringStep = function()
 	ari:add(
 		ConversationStates.IDLE,
 		ConversationPhrases.GREETING_MESSAGES,
-		check.questActive,
+		questActiveCondition,
 		ConversationStates.QUESTION_1,
 		"Znalazłeś mój pierścionek? Jeśli jest coś, co mogę zrobić, aby #pomóc, daj mi znać.",
 		nil)
@@ -214,7 +236,7 @@ local prepareBringStep = function()
 	ari:add(
 		ConversationStates.QUESTION_1,
 		ConversationPhrases.YES_MESSAGES,
-		check.cannotReward,
+		conditions:notC(hasRingCondition),
 		ConversationStates.IDLE,
 		"Nie masz mojego pierścionka. Proszę, szukaj dalej.",
 		nil)
@@ -222,7 +244,7 @@ local prepareBringStep = function()
 	ari:add(
 		ConversationStates.QUESTION_1,
 		ConversationPhrases.YES_MESSAGES,
-		check.canReward,
+		hasRingCondition,
 		ConversationStates.IDLE,
 		"Dziękuję bardzo! W nagrodę daję ci ten rzemyk. Jest nieco większy od tego, którego już posiadasz.",
 		{

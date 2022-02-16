@@ -711,6 +711,12 @@
 		<item name="włócznia" price="110" />
 	</shop>
 
+	<!-- Balduin resell hand swords -->
+	<shop name="twohandswords" type="sells">
+		<item name="miecz leworęczny" price="250000" />
+		<item name="miecz praworęczny" price="250000" />
+	</shop>
+
 	<!--
 		Kraina Prasłowiańska
 	-->

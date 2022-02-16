@@ -645,7 +645,7 @@
 		<drops>
 			<item value="money" quantity="[40,120]" probability="80.0"/>
 			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
-			<item value="wielki eliksir" quantity="[1,2]" probability="60.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="65.0"/>
 			<item value="sztabka złota" quantity="[1,2]" probability="5.0"/>
 			<item value="peleryna truskull" quantity="[1,1]" probability="0.01"/>
 		</drops>
@@ -679,7 +679,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[40,80]" probability="80.0"/>
-			<item value="wielki eliksir" quantity="[2,4]" probability="20.0"/>
+			<item value="wielki eliksir" quantity="[2,4]" probability="25.0"/>
 			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.05"/>
 			<item value="czarne buty" quantity="[1,1]" probability="0.5"/>
@@ -717,7 +717,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[40,150]" probability="80.0"/>
-			<item value="wielki eliksir" quantity="[1,5]" probability="30.0"/>
+			<item value="wielki eliksir" quantity="[1,5]" probability="40.0"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips>
@@ -785,7 +785,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[77,99]" probability="80.0"/>
-			<item value="wielki eliksir" quantity="[1,2]" probability="20.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
 			<item value="czarny hełm" quantity="[1,1]" probability="0.1"/>
 		</drops>
@@ -850,6 +850,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[1,49]" probability="80.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="60.0"/>
 			<item value="napój z winogron" quantity="[3,10]" probability="40.0"/>
 			<item value="sztabka złota" quantity="[1,1]" probability="5.0"/>
 			<item value="lodowe spodnie" quantity="[1,1]" probability="0.5"/>
@@ -991,42 +992,6 @@
 		</ai>
 	</creature>
 
-	<creature name="podziemny upadły duch">
-		<type class="pol/piraci_truskull" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
-		<description></description>
-		<attributes>
-			<atk value="1970"/>
-			<def value="77"/>
-			<hp value="2135"/>
-			<speed value="0.9"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="187"/>
-		<experience value="37890"/>
-		<respawn value="18700"/>
-		<corpse name="humanoid"/>
-		<drops>
-			<item value="money" quantity="[4,21]" probability="80.0"/>
-			<item value="wielki eliksir" quantity="[1,2]" probability="50.0"/>
-			<item value="czarne spodnie" quantity="[1,1]" probability="0.2"/>
-			<item value="czarne buty" quantity="[1,1]" probability="0.2"/>
-			<item value="czarna tarcza" quantity="[1,1]" probability="0.001"/>
-			<item value="czarny pierścień" quantity="[1,1]" probability="0.0005"/>
-		</drops>
-		<equips>
-		</equips>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Mogę pożyczyć twoje ciało?"/>
-				<noise state="idle follow fight" value="Chętnie przejąłbym nad tobą kontrolę!"/>
-			</says>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
 	<creature name="podziemny lord">
 		<type class="pol/piraci_truskull" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
 		<description></description>
@@ -1064,6 +1029,43 @@
 			<profile name="human"/>
 			<profile name="patrolling"/>
 			<profile name="boss"/>
+		</ai>
+	</creature>
+
+	<creature name="podziemny upadły duch">
+		<type class="pol/piraci_truskull" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
+		<description></description>
+		<attributes>
+			<atk value="1970"/>
+			<def value="34"/>
+			<hp value="2135"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+			<visibility value="65"/>
+		</attributes>
+		<level value="187"/>
+		<experience value="37890"/>
+		<respawn value="18700"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[4,21]" probability="80.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="55.0"/>
+			<item value="czarne spodnie" quantity="[1,1]" probability="0.2"/>
+			<item value="czarne buty" quantity="[1,1]" probability="0.2"/>
+			<item value="czarna tarcza" quantity="[1,1]" probability="0.001"/>
+			<item value="czarny pierścień" quantity="[1,1]" probability="0.0005"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Mogę pożyczyć twoje ciało?"/>
+				<noise state="idle follow fight" value="Chętnie przejąłbym nad tobą kontrolę!"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
 		</ai>
 	</creature>
 </creatures>

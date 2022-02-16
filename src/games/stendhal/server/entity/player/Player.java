@@ -2765,6 +2765,26 @@ public class Player extends DressedEntity implements UseListener {
 		AchievementNotifier.get().onProduction(this);
 	}
 
+	public int getCommerceTransactionAmount(final String npcName, final boolean soldToNPC) {
+		int amount = 0;
+
+		try {
+			if (soldToNPC) {
+				if (has("npc_sales", npcName)) {
+					amount = Integer.parseInt(get("npc_sales", npcName));
+				}
+			} else {
+				if (has("npc_purchases", npcName)) {
+					amount = Integer.parseInt(get("npc_purchases", npcName));
+				}
+			}
+		} catch (final NumberFormatException e) {
+			logger.error(e, e);
+		}
+
+		return amount;
+	}
+
 	/**
 	 * Gets the recorded item stored in a substate of quest slot
 	 *

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="48" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="48" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="wooden_rectangular" tilewidth="32" tileheight="32" tilecount="9" columns="3">
   <image source="../../tileset/furniture/table/wooden_rectangular.png" trans="ff00ff" width="96" height="96"/>
  </tileset>
@@ -57,19 +57,22 @@
  <tileset firstgid="154" name="banner-krakow" tilewidth="32" tileheight="32" tilecount="2" columns="1">
   <image source="../../tileset/pol/wyposazenie/banner-krakow.png" width="32" height="64"/>
  </tileset>
+ <tileset firstgid="156" name="banner-gdansk" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <image source="../../tileset/pol/wyposazenie/banner-gdansk.png" width="32" height="64"/>
+ </tileset>
  <layer id="1" name="0_floor" width="48" height="18">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu2WMQoAIAzE+pT+Qv3/x+zi5misJx0OMoYSQTczB9diPTYgJt0d9F5M+5O3bxf81ftR96/+/+5fnV/xqP41+1fyz+iHfqu0/8le1Pup/0NuPzueIIuJNoANAAA=
+   H4sIAAAAAAAACu2WMQ4AIAgDeQq/QP//MVkc2ahQdSBpOl30JKqIKHDMZ/hMUEayK5B7ZzQ/8uztAD+7P+z83/+7/WfPXTi6+x/1LP5Hfff9mclf4U90z1lvFc2f6T+7P5X/h6h/fX8uAcbtvoANAAA=
   </data>
  </layer>
  <layer id="2" name="1_terrain" width="48" height="18">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACt2W2w6CMAyG6/FZvBHeBzXiAQKiGJX3j13YYrN0ZMb2Qpp8N1/W8VuEkQHAxmOLZIr+2zVDvTvkhJwtBbIX9lfkxtAGemOg+5fQ1xqphHxJ/B34eni9ifVJYD0t7rrO3+3ev/jS+pj8rje1Pg2sX0Xml/B0/k/kxdAFev2aIFNkFplHcv45chjgyPTSMjOfIwtkCZ97wOU3z1AD/bw6Ic/NnbsPQ/N3v4MWl79GLoRGyMfgemMr9P/5lxpjfv8MKYS9dv7aXsucl61dI+m18zvv3oeVgpeqmPPIzyPhpWqM8/e/xyphr5WfnjeNspfC7Z8D/02i6aUw+78Bc4lCKYANAAA=
+   H4sIAAAAAAAACt2W2w6CMAyG6/FZvBHeBzXiAQKiEJX3j13Y4rJ0ZEgZwSbfzZd1/BZhRACwM9gj0YC+65q23gNyQa6SBDky+zvyICgtvS7o+6fQ1BbJmHyq+Qroehq9gfSBZb1e1HWVr+TefXwqvUt+1RtKH1rWbxzzc3h9/i/kTVBbes2aIXNk4ZiHc/4xcmrhTPTqJWa+RFbIGr73gMovnqECmnnVTJ6aO3Uf2uavfodeVP4cuWkUTN4F1etatv/PVOof85tnSOLJc+XP5Z7ivCzlGh+eK7/y6n2YefSc+ZU3rzuk58w/1fmb32OZJ983v37eFCP5X847sU8M9DfJGL4rYp8PoXNTjoANAAA=
   </data>
  </layer>
  <layer id="3" name="2_object" width="48" height="18">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGNygi0h1RjjEDXCIm+EQ98VjRxUQVwNxDZFuAoFJJKgdrEB0oB0wChhUBtoBRADlgXYAEcAaSuPL50MVKA20A+gIZgDxzIF2xCgYBaNgRIGAgXYAjUAbDvFWHOKzcYi3EGFXDxFqYKCXBLX0AlNIUDuVgDwATEru+IANAAA=
+   H4sIAAAAAAAACmNgGNygi0h1RjjEDXCIm+EQ98VjRxUQVwNxDZFuAoFJJKgdrEB0oB0wChhUBtoBRADlgXYAEcAaSuPL50MVKA20A+gIZgDxzIF2xCgYBaNgRIGAgXYAjUAbDvFWHOKzcYi34BCfC8Q9JLkIAnrJ0EMrMIUMPVMJyAMATEU31oANAAA=
   </data>
  </layer>
  <layer id="4" name="3_roof" width="48" height="18">
