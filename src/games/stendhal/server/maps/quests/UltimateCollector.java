@@ -292,7 +292,7 @@ public class UltimateCollector extends AbstractQuest {
 		// player lost a sword & wants to buy a new one
 		npc.add(
 			ConversationStates.ATTENDING,
-			Arrays.asList("lost", "replace", "zgubiony", "stracony", "zamienić"),
+			Arrays.asList("lost", "replace", "zgubione", "stracony", "zamienić"),
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_3,
 			"Który miecz chcesz wymienić, #lewy czy #prawy?",
