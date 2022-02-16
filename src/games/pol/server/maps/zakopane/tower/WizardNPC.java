@@ -50,8 +50,8 @@ public class WizardNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj w wieży...");
-				addHelp("Mam dla Ciebie pewne #'zadanie'...");
-				addOffer("Mam dla Ciebie pewne #'zadanie'...");
+				addHelp("Miałbym dla Ciebie pewne #'zadanie'...");
+				addOffer("Miałbym dla Ciebie pewne #'zadanie'...");
 				addGoodbye();
 			}
 		};
