@@ -23,4 +23,8 @@ public class SettingsProperties {
 
 	/** Property for display HP bar. */
 	public static final String HP_BAR_PROPERTY =  "ui.hp_bar";
+
+	public static final String MSG_BLINK = "ui.msg_blink";
+
+	public static final String MSG_SOUND = "ui.msg_sound";
 }

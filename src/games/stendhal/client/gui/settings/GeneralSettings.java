@@ -13,6 +13,8 @@ package games.stendhal.client.gui.settings;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.DOUBLE_TAP_AUTOWALK_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_CONTINUOUS_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.MSG_BLINK;
+import static games.stendhal.client.gui.settings.SettingsProperties.MSG_SOUND;
 import static games.stendhal.common.Constants.KARMA_SETTINGS;
 import static games.stendhal.common.constants.General.COMBAT_KARMA;
 
@@ -145,6 +147,13 @@ class GeneralSettings {
 		});
 		page.add(moveContinuousToggle);
 
+		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(
+				MSG_BLINK, true, "Migaj przy wiadomości na kanale prywatnym", "Karta kanału czatu miga w wiadomości, gdy nie jest skoncentrowana");
+		page.add(msgBlinkToggle);
+
+		final JCheckBox msgSoundToggle = SettingsComponentFactory.createSettingsToggle(
+				MSG_SOUND, true, "Powiadomienie dźwiękowe o prywatnej wiadomości", "Odtwarzaj dźwięk dla kanału wiadomości osobistych, gdy nie jest skoncentrowany");
+		page.add(msgSoundToggle);
 
 		if (System.getProperty("stendhal.karmaconfig") != null) {
 			// combat karma
