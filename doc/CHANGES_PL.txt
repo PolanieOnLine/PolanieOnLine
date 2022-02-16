@@ -1,5 +1,17 @@
 Changelog
 ---------
+1.28.1
+*świat*
+- Dodano skrzynkę z Gdańska do piętra w Zakopane
+- Dodano możliwość odkupienia straconych mieczy leworęcznych & praworęcznych u Balduina
+
+*serwer*
+- Dodano nowy skrypt CheckShop.class dla administratorów
+
+*naprawiono błędy*
+- Poprawiono kolizję oraz tekstury na niektórych mapach
+
+
 1.28
 *klient*
 - Poprawiono kontrast przedmiotu: "czarne spodnie"
