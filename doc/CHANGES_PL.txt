@@ -1,6 +1,10 @@
 Changelog
 ---------
 1.28.1
+*klient*
+- Miganie zakładki kanału prywatnego można wyłączyć w ustawieniach
+- Można włączyć powiadomienia dźwiękowe o wiadomościach prywatnych
+
 *świat*
 - Dodano skrzynkę z Gdańska do piętra w Zakopane
 - Dodano możliwość odkupienia straconych mieczy leworęcznych & praworęcznych u Balduina
