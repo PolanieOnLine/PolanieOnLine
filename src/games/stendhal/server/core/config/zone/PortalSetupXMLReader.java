@@ -1,18 +1,9 @@
-/*
- * @(#) src/games/stendhal/server/config/zone/PortalSetupXMLReader.java
- *
- * $Id$
- */
-
 package games.stendhal.server.core.config.zone;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
-
-//
-//
 
 import games.stendhal.server.core.config.XMLUtil;
 
@@ -24,10 +15,6 @@ public class PortalSetupXMLReader extends EntitySetupXMLReader {
 	 * Logger.
 	 */
 	private static final Logger logger = Logger.getLogger(PortalSetupXMLReader.class);
-
-	//
-	// PortalSetupXMLReader
-	//
 
 	/**
 	 * Create a portal setup descriptor.
@@ -148,6 +135,11 @@ public class PortalSetupXMLReader extends EntitySetupXMLReader {
 			} else {
 				logger.error("Invalid 'replacing' value: " + s);
 			}
+		}
+
+		final Element associated = XMLUtil.getElement(element, "associated");
+		if (associated != null) {
+			desc.setAssociatedZones(associated.getAttribute("zones"));
 		}
 
 		return desc;

@@ -1,18 +1,12 @@
-/*
- * @(#) src/games/stendhal/server/config/zone/PortalSetupDescriptor.java
- *
- * $Id$
- */
-
 package games.stendhal.server.core.config.zone;
+
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 
-//
-//
-
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.EntityFactoryHelper;
+import games.stendhal.server.entity.mapstuff.portal.HousePortal;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 
 /**
@@ -33,6 +27,8 @@ public class PortalSetupDescriptor extends EntitySetupDescriptor {
 	 * The destination zone name (if any).
 	 */
 	protected String destinationZone;
+
+	protected String associatedZones;
 
 	/**
 	 * The named destination portal (if any).
@@ -129,9 +125,12 @@ public class PortalSetupDescriptor extends EntitySetupDescriptor {
 		this.replacing = replacing;
 	}
 
-	//
-	// SetupDescriptor
-	//
+	/**
+	 * For house portals.
+	 */
+	public void setAssociatedZones(final String zones) {
+		associatedZones = zones;
+	}
 
 	/**
 	 * Do appropriate zone setup.
@@ -168,6 +167,10 @@ public class PortalSetupDescriptor extends EntitySetupDescriptor {
 				portal.setDestination(getDestinationZone(), destIdentifier);
 			}
 
+			if (portal instanceof HousePortal && associatedZones != null) {
+				((HousePortal) portal).setAssociatedZones(associatedZones);
+			}
+
 			// Set facing direction for portal used as destination.
 			if (portal.has("face")) {
 				portal.setFaceDirection(portal.get("face"));
@@ -177,6 +180,16 @@ public class PortalSetupDescriptor extends EntitySetupDescriptor {
 			final Portal oportal = zone.getPortal(getX(), getY());
 			if (oportal != null) {
 				if (isReplacing()) {
+					// copy owner attributes from old portal
+					if (oportal instanceof HousePortal) {
+						for (final String attr: Arrays.asList(
+								"owner", "lock_number", "expires")) {
+							final String atocopy = ((HousePortal) oportal).get(attr);
+							if (atocopy != null) {
+								((HousePortal) portal).put(attr, atocopy);
+							}
+						}
+					}
 					logger.debug("Replacing portal: " + oportal);
 					zone.remove(oportal);
 				} else {

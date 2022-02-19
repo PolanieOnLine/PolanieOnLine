@@ -3401,6 +3401,9 @@ Moje wynagrodzenie:
 			<parameter name="height">1</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_50_1" />
+
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_50" />
@@ -3451,6 +3454,9 @@ Moje wynagrodzenie:
 			<parameter name="width">1</parameter>
 			<parameter name="height">1</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_ados_house_51_1" />
 
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
@@ -3504,6 +3510,9 @@ Moje wynagrodzenie:
 			<parameter name="height">2</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_52_1" />
+
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_52"/>
@@ -3519,7 +3528,6 @@ Moje wynagrodzenie:
 			<attribute name="description">Oto stolik na jedzenie i napoje.</attribute>
 			<attribute name="width">2</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_52_1" file="interiors/ados/house_52_1.tmx" accessible="false">
@@ -3529,7 +3537,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_52" ref="up"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_53" file="interiors/ados/house_53.tmx" accessible="false">
@@ -3545,6 +3552,9 @@ Moje wynagrodzenie:
 			<parameter name="height">1</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_53_1" />
+
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_53" />
@@ -3553,7 +3563,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="up">
 			<destination zone="int_ados_house_53_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_53_1" file="interiors/ados/house_53_1.tmx" accessible="false">
@@ -3563,7 +3572,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_53" ref="up" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_54" file="interiors/ados/house_54.tmx" accessible="false">
@@ -3578,6 +3586,9 @@ Moje wynagrodzenie:
 			<parameter name="width">2</parameter>
 			<parameter name="height">2</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_ados_house_54_1" />
 
 		<!-- Portals -->
 		<portal x="9" y="14" ref="in_left">
@@ -3603,7 +3614,6 @@ Moje wynagrodzenie:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
 			<attribute name="description">Oto stolik na jedzenie i napoje.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_54_1" file="interiors/ados/house_54_1.tmx" accessible="false">
@@ -3613,7 +3623,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_54" ref="up"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_55" file="interiors/ados/house_55.tmx" accessible="false">
@@ -3629,6 +3638,9 @@ Moje wynagrodzenie:
 			<parameter name="height">2</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_55_1" />
+
 		<!-- Portals -->
 		<portal x="9" y="14" ref="in_left">
 			<destination zone="0_ados_city_n" ref="house_55" />
@@ -3641,7 +3653,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="up">
 			<destination zone="int_ados_house_55_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_55_1" file="interiors/ados/house_55_1.tmx" accessible="false">
@@ -3667,7 +3678,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_55" ref="up" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_56" file="interiors/ados/house_56.tmx" accessible="false">
@@ -3683,6 +3693,9 @@ Moje wynagrodzenie:
 			<parameter name="height">2</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_56_1" />
+
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_56" />
 		</portal>
@@ -3690,7 +3703,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="up">
 			<destination zone="int_ados_house_56_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_56_1" file="interiors/ados/house_56_1.tmx" accessible="false">
@@ -3710,7 +3722,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_56" ref="up" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_57" file="interiors/ados/house_57.tmx" accessible="false">
@@ -3726,6 +3737,9 @@ Moje wynagrodzenie:
 			<parameter name="height">2</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_57_1" />
+
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_57" />
 		</portal>
@@ -3733,7 +3747,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="up">
 			<destination zone="int_ados_house_57_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_57_1" file="interiors/ados/house_57_1.tmx" accessible="false">
@@ -3752,7 +3765,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_57" ref="up"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_58" file="interiors/ados/house_58.tmx" accessible="false">
@@ -3779,6 +3791,9 @@ Moje wynagrodzenie:
 			<attribute name="description">Oto umywalka.</attribute>
 		</entity>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_58_1" />
+
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_58"/>
@@ -3793,7 +3808,6 @@ Moje wynagrodzenie:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
 			<attribute name="description">Oto stolik na jedzenie i napoje.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_58_1" file="interiors/ados/house_58_1.tmx" accessible="false">
@@ -3843,6 +3857,9 @@ Moje wynagrodzenie:
 			<attribute name="description">Oto umywalka.</attribute>
 		</entity>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_59_1" />
+
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_59" />
@@ -3858,7 +3875,6 @@ Moje wynagrodzenie:
 			<attribute name="description">Oto stolik na jedzenie i napoje.</attribute>
 			<attribute name="width">2</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_59_1" file="interiors/ados/house_59_1.tmx" accessible="false">
@@ -3868,7 +3884,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_59" ref="up" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_60" file="interiors/ados/house_60.tmx" accessible="false">
@@ -3883,6 +3898,9 @@ Moje wynagrodzenie:
 			<parameter name="width">1</parameter>
 			<parameter name="height">1</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_ados_house_60_1" />
 
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
@@ -3916,7 +3934,6 @@ Moje wynagrodzenie:
 			</implementation>
 			<attribute name="description">Oto umywalka.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_60_1" file="interiors/ados/house_60_1.tmx" accessible="false">
@@ -3926,7 +3943,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_60" ref="up"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_61" file="interiors/ados/house_61.tmx" accessible="false">
@@ -3935,6 +3951,9 @@ Moje wynagrodzenie:
 			<parameter name="x">5</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_ados_house_61_1" />
 
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
@@ -3968,7 +3987,6 @@ Moje wynagrodzenie:
 			</implementation>
 			<attribute name="description">Oto umywalka.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_61_1" file="interiors/ados/house_61_1.tmx" accessible="false">
@@ -3984,7 +4002,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_ados_house_61" ref="up"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_62" file="interiors/ados/house_62.tmx" accessible="false">
@@ -4000,6 +4017,9 @@ Moje wynagrodzenie:
 			<parameter name="height">1</parameter>
 		</configurator>
 
+		<!-- second floor -->
+		<associated zones="int_ados_house_62_1" />
+
 		<!-- Portals -->
 		<portal x="7" y="14" ref="in">
 			<destination zone="0_ados_city_n" ref="house_62" />
@@ -4008,7 +4028,6 @@ Moje wynagrodzenie:
 		<portal x="3" y="3" ref="up">
 			<destination zone="int_ados_house_62_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_62_1" file="interiors/ados/house_62_1.tmx" accessible="false">
@@ -4028,7 +4047,6 @@ Moje wynagrodzenie:
 			<attribute name="width">2</attribute>
 			<attribute name="description">Oto piękne pianino. Może mógłbyś na nim zagrać.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_63" file="interiors/ados/house_63.tmx" accessible="false">
@@ -4048,7 +4066,6 @@ Moje wynagrodzenie:
 		<portal x="21" y="17" ref="in">
 			<destination zone="0_ados_city" ref="house_63" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_64" file="interiors/ados/house_64.tmx" accessible="false">
@@ -4068,7 +4085,6 @@ Moje wynagrodzenie:
 		<portal x="21" y="17" ref="in">
 			<destination zone="0_ados_city" ref="house_64" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_65" file="interiors/ados/house_65.tmx" accessible="false">
@@ -4088,7 +4104,6 @@ Moje wynagrodzenie:
 		<portal x="21" y="18" ref="in">
 			<destination zone="0_ados_city" ref="house_65"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_66" file="interiors/ados/house_66.tmx" accessible="false">
@@ -4145,7 +4160,6 @@ Moje wynagrodzenie:
 			</implementation>
 			<attribute name="description">Oto umywalka.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_67" file="interiors/ados/house_67.tmx" accessible="false">
@@ -4165,7 +4179,6 @@ Moje wynagrodzenie:
 		<portal x="11" y="21" ref="in">
 			<destination zone="0_ados_city" ref="house_67" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_68" file="interiors/ados/house_68.tmx" accessible="false">
@@ -4179,7 +4192,6 @@ Moje wynagrodzenie:
 		<portal x="13" y="21" ref="in">
 			<destination zone="0_ados_city" ref="house_68"/>
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_house_69" file="interiors/ados/house_69.tmx" accessible="false">
@@ -4210,7 +4222,6 @@ Moje wynagrodzenie:
 			</implementation>
 			<attribute name="description">Oto umywalka.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_ados_house_70" file="interiors/ados/house_70.tmx" accessible="false">
@@ -4340,7 +4351,6 @@ Moje wynagrodzenie:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
 			<attribute name="description">Oto kosz na śmieci.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="0_ados_forest_w2" level="0" x="500256" y="500000" file="Level 0/ados/forest_w2.tmx">
@@ -4366,7 +4376,6 @@ Moje wynagrodzenie:
 			<destination zone="int_ados_farm_house" ref="in" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_farm_house" file="interiors/ados/farm_house.tmx">
@@ -4404,7 +4413,6 @@ Moje wynagrodzenie:
 		<portal x="22" y="14" ref="up">
 			<destination zone="int_ados_farm_house_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_ados_farm_house_1" file="interiors/ados/farm_house_1.tmx">

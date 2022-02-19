@@ -231,6 +231,11 @@ public final class ZonesXMLLoader {
 
 		zone.setPublicAccessible(desc.accessible);
 
+		final String az = desc.getAssociatedZones();
+		if (az != null) {
+			zone.setAssociatedZones(az);
+		}
+
 		SingletonRepository.getRPWorld().addRPZone(desc.getRegion(), zone);
 
 		try {
@@ -401,6 +406,8 @@ public final class ZonesXMLLoader {
 			} else if (tag.equals("title") || tag.equals("point-of-interest")) {
 				// Ignore
 				continue;
+			} else if (tag.equals("associated")) {
+				desc.setAssociatedZones(child.getAttribute("zones"));
 			} else {
 				logger.warn("Zone [" + name + "] has unknown element: " + tag);
 				continue;
@@ -489,6 +496,8 @@ public final class ZonesXMLLoader {
 		private String implementation;
 
 		private final boolean accessible;
+
+		private String associatedZones;
 
 		public ZoneDesc(final String name, final String file, final String region, final int level, final int x, final int y, final boolean accessible) {
 			this.name = name;
@@ -598,6 +607,14 @@ public final class ZonesXMLLoader {
 
 		public boolean isAccessible() {
 			return accessible;
+		}
+
+		public void setAssociatedZones(final String zones) {
+			associatedZones = zones;
+		}
+
+		public String getAssociatedZones() {
+			return associatedZones;
 		}
 	}
 }

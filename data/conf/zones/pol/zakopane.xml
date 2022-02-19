@@ -1702,6 +1702,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="x">8</parameter>
 			<parameter name="y">21</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_zakopane_house_201_1" />
+
 		<portal x="5" y="24" ref="house_201_exit">
 			<destination zone="0_zakopane_se" ref="house_201_entrance"/>
 		</portal>
@@ -1746,6 +1750,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="x">15</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_zakopane_house_204_1" />
+
 		<portal x="2" y="22" ref="house_204_gora">
 			<destination zone="int_zakopane_house_204_1" ref="house_204_dol"/>
 		</portal>
@@ -1794,6 +1802,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="x">6</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_zakopane_house_207_1" />
+
 		<portal x="7" y="13" ref="house_207_exit">
 			<destination zone="0_zakopane_se" ref="house_207_entrance"/>
 		</portal>
@@ -1815,6 +1827,10 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="x">2</parameter>
 			<parameter name="y">6</parameter>
 		</configurator>
+
+		<!-- second floor -->
+		<associated zones="int_zakopane_house_208_1" />
+
 		<portal x="9" y="18" ref="house_208_exit">
 			<destination zone="0_zakopane_se" ref="house_208_entrance"/>
 		</portal>
