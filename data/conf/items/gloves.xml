@@ -186,6 +186,24 @@
 		</equipable>
 	</item>
 
+	<item name="rękawice barbarzyńcy">
+		<type class="glove" subclass="barbarian_gloves" tileid="-1"/>
+		<description>Oto rękawice barbarzyńcy. Nosił je ktoś komu mocno pociły się dłonie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="1"/>
+			<def value="5"/>
+			<min_level value="35"/>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="glove"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
 	<item name="ogniste rękawice">
 		<type class="glove" subclass="fire_gloves" tileid="-1"/>
 		<description>Oto ogniste rękawice. Trochę w nich gorąco, ale dają poczucie bezpieczeństwa.</description>
