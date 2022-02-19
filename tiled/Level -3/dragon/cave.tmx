@@ -27,6 +27,9 @@
  <tileset firstgid="64" name="int_sandstone" tilewidth="32" tileheight="32" tilecount="15" columns="3">
   <image source="../../tileset/building/wall/int_sandstone.png" width="96" height="160"/>
  </tileset>
+ <tileset firstgid="79" name="portal" tilewidth="32" tileheight="32" tilecount="24" columns="8">
+  <image source="../../tileset/logic/portal.png" width="256" height="96"/>
+ </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3DAQ0AAAzDoPqYf58XckhYNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVd8/jMzLqwAAAQA=
@@ -39,7 +42,7 @@
  </layer>
  <layer id="3" name="2_object" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3OMQEAAAgDoBWyfz0j7NMHEpAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcGG+AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxQIGeTnkAAABAA==
+   H4sIAAAAAAAACu3OAQ0AAAgDIAtp/3i20O2DBFQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcKG/AyHmOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwRZxd5NhAAABAA==
   </data>
  </layer>
  <layer id="4" name="3_roof" width="128" height="128">
@@ -49,7 +52,7 @@
  </layer>
  <layer id="5" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3cyw2DMABEQQohyORADXwk+i8rJURIFmvwTAXvupcdBgAAAAAA4J9POgAAeIU5HQAAAAAvNKYDAAAAeLQlHQAA0ImSDgAAAAAAAAAAAAAAAC7z0Q9A0p4OAAAAAAAAqlrTAQDQiJIOAAAAALjZlg4A6Ng3HQDQmSkdAAAAAFBZSQcAAAA07kgHAAAA3bJHnuVMBwAAAAAAAEBFP02JnrEAAAEA
+   H4sIAAAAAAAACu3cuw3CQABEQReCrbMDajAguQj6L4YSnJzY+8xU8NJNdlkAAAAAAIA7azoAABjCng4AAACAAT3SAQAAAHTtmQ4AAJhESQcAAAAAAAAAAAAAAEP6pgNgcD76AUh6pwMAAAAAAICqznQAADSipAMAAAAA/uyVDgCY2JEOAJjMlg4AAAAAqKykAwAAABr3SQcAAADTskf6cqUDAAAAAAAAoKIf8RiA/gAAAQA=
   </data>
  </layer>
  <layer id="6" name="collision" width="128" height="128" opacity="0.33">
