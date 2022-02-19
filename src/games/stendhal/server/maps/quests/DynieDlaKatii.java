@@ -41,7 +41,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
 
 public class DynieDlaKatii extends AbstractQuest {
 	private static final String QUEST_SLOT = "dynie_dla_katii";
@@ -223,11 +222,6 @@ public class DynieDlaKatii extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return npc.getName();
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
 	}
 
 	@Override

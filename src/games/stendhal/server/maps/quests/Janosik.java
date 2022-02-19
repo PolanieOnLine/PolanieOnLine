@@ -22,7 +22,6 @@ import games.stendhal.common.Rand;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.janosik.AwaitingPhase;
 import games.stendhal.server.maps.quests.janosik.IRAQuest;
 import games.stendhal.server.maps.quests.janosik.IRAQuestConstants;
@@ -235,11 +234,6 @@ public class Janosik extends AbstractQuest implements IRAQuestConstants {
 
 	public static LinkedList<IRAQuest> getPhases() {
 		return phases;
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
 	}
 
 	public int getRemainingTurns() {
