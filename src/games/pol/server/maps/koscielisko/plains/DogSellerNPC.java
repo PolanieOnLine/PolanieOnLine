@@ -73,38 +73,39 @@ public class DogSellerNPC implements ZoneConfigurator {
 
 					@Override
 					public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
-						if (res.getAmount() > 1) {
+						final int count = res.getAmount();
+						if (count > 1) {
 							seller.say("Hmm... Nie sądzę, abyś mógł zaopiekować się więcej niż jednym owczarkiem naraz.");
 							return false;
 						} else if (player.hasPet()) {
 							say("Dlaczego nie upewnisz się i nie poszukasz zwierzątka, które już masz?");
 							return false;
 						} else {
-							if (!player.drop("money", getCharge(res,player))) {
+							final int charge = getCharge(res, player);
+							if (!player.drop("money", charge)) {
 								seller.say("Nie masz tyle pieniędzy.");
 								return false;
 							}
 							if (res.getChosenItemName().equals("owczarek podhalański")) {
-
 								seller.say("Proszę bardzo, mały owczarek podhalański! Twój owczarek żywi się udkiem, mięsem, szynką, kiełbasą swojską, stekiem, oscypek lub żyntycą. Ciesz się!");
+								updatePlayerTransactions(player, seller.getName(), res);
 
 								final OwczarekPodhalanski owczarek_podhalanski = new OwczarekPodhalanski(player);
 								Entity sellerEntity = seller.getEntity();
 								owczarek_podhalanski.setPosition(sellerEntity.getX(), sellerEntity.getY() + 1);
 
-								//player.setPet(owczarek);
 								player.setPet(owczarek_podhalanski);
 								player.notifyWorldAboutChanges();
 
 								return true;
 							} else {
 								seller.say("Proszę bardzo oto mały owczarek! Twój owczarek żywi się udkiem, mięsem, szynką, kiełbasą swojską, stekiem, oscypek lub żyntycą. Ciesz się!");
+								updatePlayerTransactions(player, seller.getName(), res);
 
 								final Owczarek owczarek = new Owczarek(player);
 								Entity sellerEntity = seller.getEntity();
 								owczarek.setPosition(sellerEntity.getX(), sellerEntity.getY() + 1);
 
-								//player.setPet(owczarek);
 								player.setPet(owczarek);
 								player.notifyWorldAboutChanges();
 

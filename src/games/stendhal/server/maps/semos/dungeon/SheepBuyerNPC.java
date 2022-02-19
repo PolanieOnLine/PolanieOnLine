@@ -95,6 +95,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 				} else {
 					seller.say("Hmm... wygląda smacznie! Weź to złoto!");
 					payPlayer(res, player);
+					updatePlayerTransactions(player, seller.getName(), res);
 
 					player.removeSheep(sheep);
 					player.notifyWorldAboutChanges();

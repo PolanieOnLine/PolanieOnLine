@@ -17,7 +17,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -96,14 +95,11 @@ public class SellerBehaviour extends MerchantBehaviour {
 		if (player.isEquipped("money", price)) {
 			if (player.equipToInventoryOnly(item)) {
 				player.drop("money", price);
-				seller.say("Gratulacje! Oto twój "
-						+ Grammar.plnoun(amount, chosenItemName) + "!");
-				player.incBoughtForItem(chosenItemName, amount);
-				player.incCommerceTransaction(seller.getName(), price, false);
+				updatePlayerTransactions(player, seller.getName(), res);
+				seller.say("Gratulacje! Oto twój " + chosenItemName + "!");
 				return true;
 			} else {
-				seller.say("Przepraszam, ale nie możesz wziąć "
-						+ Grammar.plnoun(amount, chosenItemName) + ".");
+				seller.say("Przepraszam, ale nie możesz wziąć " + chosenItemName + ".");
 				return false;
 			}
 		} else {
@@ -119,5 +115,21 @@ public class SellerBehaviour extends MerchantBehaviour {
 
 	public Item getAskedItem(final String askedItem) {
 		return getAskedItem(askedItem, null);
+	}
+
+	/**
+	 * Updates stored information about Player-NPC commerce transactions.
+	 *
+	 * @param player
+	 *     Player to be updated.
+	 * @param merchant
+	 *     Name of merchant involved in transaction.
+	 * @param res
+	 *     Information about the transaction.
+	 */
+	protected void updatePlayerTransactions(final Player player, final String merchant,
+			final ItemParserResult res) {
+		player.incBoughtForItem(res.getChosenItemName(), res.getAmount());
+		player.incCommerceTransaction(merchant, getCharge(res, player), false);
 	}
 }

@@ -52,6 +52,7 @@ public class DragonKeeperNPC implements ZoneConfigurator {
 								return false;
 							}
 							seller.say("Daj tutaj smoka do treningu! Powinien walczyć u twojego boku i #rosnąć.");
+							updatePlayerTransactions(player, seller.getName(), res);
 
 							final BabyDragon baby_dragon = new BabyDragon(player);
 							

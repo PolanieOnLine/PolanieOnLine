@@ -387,7 +387,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			put("Xoderos", 570); // 1 of each item
 			put("Barbarus", 400); // 1 pick
 			put("Jenny", 1000);
-			//put("Nishiya", 60); // 2 sheep (need to update so buying animals is supported)
+			put("Nishiya", 60); // 2 sheep (need to update so buying animals is supported)
 			put("Wrviliza", 200);
 			put("Sara Beth", 2500);
 			put("Laura", 2000);
@@ -397,6 +397,9 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			put("Ruarhi", 2000);
 			put("Trillium", 2500);
 			put("Carmen", 2000);
+			put("Stary Baca", 300); // 1 owczarek
+			put("Kajetan", 60); // 1 goat
+			put("Baca Zbyszek", 60); // 2 sheep
 
 			// excluded
 			put("Gulimo", 0);
@@ -410,6 +413,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			put("Felina", 0);
 			put("Caroline", 0); // only sells during Minetown weeks
 			put("Edward", 0);
+			put("Katia", 0); // only sells during Minetown weeks
 		}};
 
 		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {

@@ -65,15 +65,18 @@ public class SheepSellerNPC implements ZoneConfigurator {
 
 					@Override
 					public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
-						if (res.getAmount() > 1) {
+						final int count = res.getAmount();
+						if (count > 1) {
 							seller.say("Hmm... Nie sądzę, abyś mógł zaopiekować się więcej niż jedną owcą naraz.");
 							return false;
 						} else if (!player.hasSheep()) {
-							if (!player.drop("money", getCharge(res,player))) {
+							final int charge = getCharge(res, player);
+							if (!player.drop("money", charge)) {
 								seller.say("Nie masz tyle pieniędzy.");
 								return false;
 							}
 							seller.say("Proszę bardzo, oto miła, puszysta mała owieczka! Opiekuj się nią dobrze...");
+							updatePlayerTransactions(player, seller.getName(), res);
 
 							final Sheep sheep = new Sheep(player);
 							StendhalRPAction.placeat(seller.getZone(), sheep, seller.getX(), seller.getY() + 1);

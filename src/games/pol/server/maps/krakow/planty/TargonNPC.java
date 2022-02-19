@@ -241,6 +241,7 @@ public class TargonNPC implements ZoneConfigurator {
 				} else {
 					seller.say("Dziękuję! Oto twoje pieniądze.");
 					payPlayer(res, player);
+					updatePlayerTransactions(player, seller.getName(), res);
 					player.removeGoat(goat);
 
 					player.notifyWorldAboutChanges();

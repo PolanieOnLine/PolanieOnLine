@@ -128,8 +128,9 @@ public class KoboldBarmaidNPC implements ZoneConfigurator {
 						               	player.drop(requiredContainer, amount);
 							}
 							seller.say("Hau! Oto "
-									+ Grammar.isare(amount) + " your "
+									+ Grammar.isare(amount) + " twoje "
 									+ Grammar.plnoun(amount, chosenItemName) + "!");
+							updatePlayerTransactions(player, seller.getName(), res);
 							return true;
 						} else {
 							seller.say("Hau.. W tej chwili nie możesz dodać więcej "
