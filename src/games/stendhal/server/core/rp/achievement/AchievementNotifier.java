@@ -246,6 +246,7 @@ public final class AchievementNotifier {
 	 */
 	public void onItemLoot(final Player player) {
 		getAndCheckAchievementsInCategory(player, Category.ITEM);
+		getAndCheckAchievementsInCategory(player, Category.ITEMSETS);
 		getAndCheckAchievementsInCategory(player, Category.OBTAIN);
 	}
 
