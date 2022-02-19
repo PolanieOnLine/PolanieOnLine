@@ -1,5 +1,31 @@
 Changelog
 ---------
+1.28.5
+*klient*
+- Dodano nową grafikę przedmiotu
+- Poprawiono grafikę płaszcza barbarzyńcy
+
+*świat*
+- Dodano nowy przedmiot: (1)
+	- rękawice barbarzyńcy
+- Dodano nowe osiągnięcia: (3)
+	- "Warszawski Marszałek"
+	- "Chmurzasty Sen"
+	- "Badacz"
+- Dodano nową mapę: (1)
+	- -4_dragon_cave
+- Dodano możliwość zakupu warzywa por u Colina
+- Zwiększono podstawowy przelicznik wydobycia minerału z rudy dla osób, które zaliczyły egzamin na górnika
+
+*naprawiono błędy*
+- Naprawiono wyświetlanie się osiągnięć za zdobyty set przedmiotów z potworów
+- Naprawiono czas oczekiwania na złotą ciupagę
+- Naprawiono osiągnięcie 'Przyjaciel Zakopane'
+- Poprawiono tekstury na mapach
+- Poprawiono gramatykę niektórych zdań w zadaniach
+- Poprawiono szerokość okręgów dla smoków
+
+
 1.28.1
 *klient*
 - Miganie zakładki kanału prywatnego można wyłączyć w ustawieniach
