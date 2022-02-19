@@ -29,6 +29,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -79,7 +80,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 	private static final String GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT = "gazda_jedrzej_nagroda";
 
 	private static final int REQUIRED_WAIT_DAYS = 1;
-	private static final int REQUIRED_MINUTES = 360;
+	private static final int REQUIRED_HOURS = 6;
 
 	private static Logger logger = Logger.getLogger(ZlotaCiupaga.class);
 
@@ -180,35 +181,35 @@ public class ZlotaCiupaga extends AbstractQuest {
 	}
 
 	private void step_3() {
+		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
+
+		npc.add(ConversationStates.ATTENDING, 
+			Arrays.asList("ciupaga", "złota", "nagroda"),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "make;"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
+			ConversationStates.IDLE, 
+			null, 
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszaniem Twojej złotej ciupagi. Wróć za "));
+
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("ciupaga", "złota", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestStateStartsWithCondition(QUEST_SLOT, "make;")),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "make;"),
+					new TimePassedCondition(QUEST_SLOT, 1, delay)),
 			ConversationStates.IDLE, null, new ChatAction() {
-			@Override
-			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-				final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-				final long timeRemaining = Long.parseLong(tokens[1]) + delay
-						- System.currentTimeMillis();
-					
-				if (timeRemaining > 0L) {
-					raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
-						+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-						+ ", aby odebrać nagrodę. No chyba że chcesz abym odlał dla ciebie #żelazo.");
-					return;
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+					raiser.say("Warto było czekać. A oto złota ciupaga. Do widzenia!");
+					player.addXP(15000);
+					player.addKarma(25);
+					final Item zlotaCiupaga = SingletonRepository.getEntityManager().getItem("złota ciupaga");
+					zlotaCiupaga.setBoundTo(player.getName());
+					player.equipOrPutOnGround(zlotaCiupaga);
+					player.notifyWorldAboutChanges();
+					player.setQuest(QUEST_SLOT, "done" + ";" + System.currentTimeMillis());
 				}
-
-				raiser.say("Warto było czekać. A oto złota ciupaga. Do widzenia!");
-				player.addXP(15000);
-				player.addKarma(25);
-				final Item zlotaCiupaga = SingletonRepository.getEntityManager().getItem("złota ciupaga");
-				zlotaCiupaga.setBoundTo(player.getName());
-				player.equipOrPutOnGround(zlotaCiupaga);
-				player.notifyWorldAboutChanges();
-				player.setQuest(QUEST_SLOT, "done" + ";" + System.currentTimeMillis());
-			}
-		});
+			});
 	}
 
 	@Override
@@ -242,7 +243,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 		}
 		res.add("Dostarczyłem wszystkie potrzebne rzeczy Andrzejowi.");
 		if (questState.startsWith("make")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Wstąpię do Anrzeja po poją ciupagę. Hasło: ciupaga.");
 			} else {
 				res.add("Muszę poczekać 6 godzin. Tyle czasu zajmie Andrzejowi zrobienie ciupagi. Hasło: ciupaga.");
