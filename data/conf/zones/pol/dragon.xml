@@ -2074,6 +2074,20 @@ Uciekaj!</attribute>
 
 	<!-- Level -4 -->
 
+	<zone name="-4_dragon_cave" level="-4" x="513824" y="18176" file="Level -4/dragon/cave.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
 	<!-- Level -5 -->
 
 	<!-- Level -6 -->
