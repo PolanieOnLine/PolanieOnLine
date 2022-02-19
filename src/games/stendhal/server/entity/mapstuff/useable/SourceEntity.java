@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
@@ -20,6 +21,7 @@ public class SourceEntity extends PlayerActivityEntity {
 	 * The chance that prospecting is successful.
 	 */
 	private static final double FINDING_PROBABILITY = 0.02;
+	private static final double UPGRADED_FINDING_PROBABILITY = 0.06;
 
 	private final String startSound = "pickaxe_01";
 	private final String successSound = "rocks-1";
@@ -51,6 +53,7 @@ public class SourceEntity extends PlayerActivityEntity {
 
 		final String skill = player.getSkill("mining");
 		if (skill != null) {
+			probability = UPGRADED_FINDING_PROBABILITY;
 			probability = probability * (player.getMining()/5);
 		}
 
@@ -128,7 +131,7 @@ public class SourceEntity extends PlayerActivityEntity {
 					player.incMiningXP(xp);
 				}
 
-				player.sendPrivateText("Wydobyłeś " + item.getTitle() + ".");
+				player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Wydobyłeś") + " " + item.getTitle() + ".");
 			} else {
 				logger.error("could not find item: " + itemName);
 			}
@@ -136,7 +139,7 @@ public class SourceEntity extends PlayerActivityEntity {
 			if (skill != null) {
 				player.incMiningXP((xp) / 10);
 			}
-			player.sendPrivateText("Nic nie wydobyłeś.");
+			player.sendPrivateText("Nic nie " + Grammar.genderVerb(player.getGender(), "wydobyłeś") + ".");
 		}
 	}
 
@@ -177,6 +180,6 @@ public class SourceEntity extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
-		sendMessage(player, "Rozpocząłeś wydobywanie surowca.");
+		sendMessage(player, Grammar.genderVerb(player.getGender(), "Rozpocząłeś") + " wydobywanie surowca.");
 	}
 }
