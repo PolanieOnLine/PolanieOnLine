@@ -1382,7 +1382,7 @@ public abstract class RPEntity extends AudibleEntity {
 				fireChange(PROP_TITLE);
 			}
 		}
-		
+
 		if (changes.has("gender")) {
 			gender = changes.get("gender");
 		}

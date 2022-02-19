@@ -58,7 +58,7 @@ public class BuklakNPC implements ZoneConfigurator {
 				addGreeting("Witaj!");
 				addJob("Napełniam, pusty bukłak wodą powiedz tylko #nalej.");
 				addHelp("Nie dziękuję :) do pomocy mam swoich pomocników.");
-				addGoodbye("Trzymaj się");
+				addGoodbye("Trzymaj się.");
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("pusty bukłak", 1);

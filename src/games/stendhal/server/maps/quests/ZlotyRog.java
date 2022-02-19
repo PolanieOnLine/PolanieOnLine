@@ -65,7 +65,7 @@ public class ZlotyRog extends AbstractQuest {
 							if(player.getKarma()>=500) {
 								if(player.hasKilledSolo("archanioł")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Czyżbyś przyszedł po #'złoty róg' ?. Mój brat zna tajemnice ich wyrabiania. Jesteś zainteresowany?");
+										raiser.say("Czyżbyś przyszedł po #'złoty róg'?. Mój brat zna tajemnice ich wyrabiania. Jesteś zainteresowany?");
 									} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
 										final String[] waittokens = player.getQuest(QUEST_SLOT).split(";");
 										final long waitdelay = REQUIRED_WAIT_DAYS * MathHelper.MILLISECONDS_IN_ONE_DAY;

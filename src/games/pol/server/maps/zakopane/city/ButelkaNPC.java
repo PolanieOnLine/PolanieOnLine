@@ -58,7 +58,7 @@ public class ButelkaNPC implements ZoneConfigurator {
 				addGreeting("Witaj!");
 				addJob("Napełniam, butelkę wodą powiedz tylko #nalej.");
 				addHelp("Pomagamy Gerwazemu w napełnianiu butelek wodą.");
-				addGoodbye("Żegnaj, powodzenia");
+				addGoodbye("Żegnaj, powodzenia.");
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("butelka", 1);

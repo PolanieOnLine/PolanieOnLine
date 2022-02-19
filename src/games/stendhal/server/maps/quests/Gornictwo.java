@@ -436,7 +436,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("ruda platyny", 10)) {
-						raiser.say("Oh... tego surowca jeszcze nie miałem w swoim spisie, za to ci bardzo dziękuję! Następnie wykop dla mnie 20 bryłek mithrilu oraz 10 kryształów diamentu.");
+						raiser.say("Oh... tego surowca jeszcze nie miałem w swoim spisie, za to ci bardzo dziękuję! Następnie wykop dla mnie 20 bryłek mithrilu.");
 						player.drop("ruda platyny", 10);
 						player.incMiningXP(8000);
 						player.addXP(2500);
