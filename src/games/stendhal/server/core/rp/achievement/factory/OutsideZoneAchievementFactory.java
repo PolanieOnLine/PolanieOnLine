@@ -118,6 +118,10 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesCondition("int_afterlife", "hell", "int_koscielisko_jail", "7_kikareukin_clouds")));
 
+		list.add(createAchievement("zone.special.clouds", "Chmurzasty Sen", "Odwiedził chmury nad Zakopanem",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerVisitedZonesCondition("6_zakopane_clouds")));
+
 		return list;
 	}
 
