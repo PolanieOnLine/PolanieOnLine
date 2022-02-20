@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.28.5
+1.28.2
 *klient*
 - Dodano nową grafikę przedmiotu
 - Poprawiono grafikę płaszcza barbarzyńcy
