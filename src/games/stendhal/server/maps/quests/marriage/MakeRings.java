@@ -68,7 +68,7 @@ public class MakeRings {
 							// says you'll need a ring
 							npc.say("Potrzebuję "
 									+ REQUIRED_GOLD
-									+ " szatabek złota i "
+									+ " sztabek złota i "
 									+ REQUIRED_MONEY
 									+ " money, aby wykonać obrączkę ślubną dla twojej narzeczonej. Czy masz to?");
 						}
@@ -174,10 +174,9 @@ public class MakeRings {
 									+ REQUIRED_MINUTES
 									+ " minutę" + ", a będzie gotowa. Do widzenia.");
 							if (player.isQuestCompleted(marriage.getQuestSlot())) {
-								player.setQuest(marriage.getQuestSlot(), "forgingagain;"	+ System.currentTimeMillis());
+								player.setQuest(marriage.getQuestSlot(), "forgingagain;" + System.currentTimeMillis());
 							} else {
-								player.setQuest(marriage.getQuestSlot(), "forging;"
-												+ System.currentTimeMillis());
+								player.setQuest(marriage.getQuestSlot(), "forging;" + System.currentTimeMillis());
 							}
 							npc.setCurrentState(ConversationStates.IDLE);
 						} else {
@@ -202,11 +201,9 @@ public class MakeRings {
 				ConversationStates.ATTENDING,
 				"Gdy moja żona i ja mieliśmy wziąć ślub to poszliśmy do hotelu w Fado i wypożyczyliśmy specjalne ubrania. Przebieralnia jest po prawej stronie od wejścia. Idź tam i szukaj drewnianych drzwi. Powodzenia!",
 				null);
-
 	}
 
 	public void addToWorld() {
 		makeRingsStep();
 	}
-
 }

@@ -142,7 +142,7 @@ public class ClearQuestPierscien extends AbstractQuest {
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING, "Za cofnięcie zadania na płaszcz z mithrilu żądam konkretnej #zapłaty.",
-				new SetQuestAction(QUEST_SLOT, "plaszcz" ));
+				new SetQuestAction(QUEST_SLOT, "plaszcz"));
 
 		final List<ChatAction> plaszczactions = new LinkedList<ChatAction>();
 		plaszczactions.add(new DropItemAction("money",2000000));
@@ -171,7 +171,7 @@ public class ClearQuestPierscien extends AbstractQuest {
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING, "Za cofnięcie zadania na tarczę z mithrilu żądam konkretnej #zapłaty.",
-				new SetQuestAction(QUEST_SLOT, "tarcza" ));
+				new SetQuestAction(QUEST_SLOT, "tarcza"));
 
 		final List<ChatAction> tarczaactions = new LinkedList<ChatAction>();
 		tarczaactions.add(new DropItemAction("money",1500000));
@@ -200,7 +200,7 @@ public class ClearQuestPierscien extends AbstractQuest {
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień mieszczanina #żądam konkretnej zapłaty.",
-				new SetQuestAction(QUEST_SLOT, "mieszczanin" ));
+				new SetQuestAction(QUEST_SLOT, "mieszczanin"));
 
 		final List<ChatAction> mieszczaninactions = new LinkedList<ChatAction>();
 		mieszczaninactions.add(new DropItemAction("money",250000));
@@ -233,7 +233,7 @@ public class ClearQuestPierscien extends AbstractQuest {
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień rycerza żądam #zapłaty.",
-				new SetQuestAction(QUEST_SLOT, "rycerz" ));
+				new SetQuestAction(QUEST_SLOT, "rycerz"));
 
 		final List<ChatAction> rycerzactions = new LinkedList<ChatAction>();
 		rycerzactions.add(new DropItemAction("money",350000));
@@ -267,7 +267,7 @@ public class ClearQuestPierscien extends AbstractQuest {
 						new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień barona #opłata jest wysoka.",
-				new SetQuestAction(QUEST_SLOT, "baron" ));
+				new SetQuestAction(QUEST_SLOT, "baron"));
 
 		final List<ChatAction> baronactions = new LinkedList<ChatAction>();
 		baronactions.add(new DropItemAction("money",450000));

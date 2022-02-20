@@ -142,7 +142,7 @@ public class VampireSword extends AbstractQuest {
 	private void prepareGobletFillingStep() {
 		final SpeakerNPC npc = npcs.get("Markovich");
 
-		npc.addGoodbye("*kaszlnięcie* ... Do widzenia ... *kaszlnięcie*");
+		npc.addGoodbye("*kaszlnięcie* Do widzenia... *kaszlnięcie*");
 		npc.addReply(
 			Arrays.asList("blood", "truchło wampira", "truchło nietoperza", "krew"),
 			"Potrzebuję krwi. Mogę ją wziąć tylko z wnętrzności żywych lub martwych. Wymieszam krew dla Ciebie i napełnię twoją #czarę jeżeli pozwolisz mi się trochę napić. Powiedz #napełnij jak się zdecydujesz. Boję się potężnego #lorda.");
@@ -186,9 +186,9 @@ public class VampireSword extends AbstractQuest {
 					new KilledCondition("lord wampir"),
 					new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON)),
 			ConversationStates.IDLE,
-			"Przyniosłeś wszystko czego potrzebuję do wyrobienia Vampire sword. Wróć za "
+			"Przyniosłeś wszystko czego potrzebuję do wyrobienia krwiopijcy. Wróć za "
 			+ REQUIRED_MINUTES
-			+ " minutę" + ", a będzie gotowy",
+			+ " minutę, a będzie gotowy",
 			new MultipleActions(startforging));
 
 		// Player returned with goblet and had killed the vampire lord, so offer to forge the sword if iron is brought
@@ -199,7 +199,7 @@ public class VampireSword extends AbstractQuest {
 						new KilledCondition("lord wampir"),
 						new NotCondition(new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON))),
 				ConversationStates.QUEST_ITEM_BROUGHT,
-				"Stoczyłeś ciężkie boje, aby przynieść ten kielich. Użyję jego zawartość do wykucia ( #forge ) miecza zwanego krwiopijcą",
+				"Stoczyłeś ciężkie boje, aby przynieść ten kielich. Użyję jego zawartość do wykucia (#'forge') miecza zwanego krwiopijcą",
 				null);
 
 		// Player has only an empty goblet currently, remind to go to Catacombs
@@ -210,7 +210,7 @@ public class VampireSword extends AbstractQuest {
 					new NotCondition(new PlayerHasItemWithHimCondition("czara"))),
 			ConversationStates.IDLE,
 			"Zgubiłeś drogę? Katakumby są na północ od Semos." +
-			" Nie wracaj tutaj bez napełnionej czary! Do widzenia! ",
+			" Nie wracaj tutaj bez napełnionej czary! Do widzenia!",
 			null);
 
 		// Player has a goblet (somehow) but did not kill a vampire lord
@@ -236,7 +236,7 @@ public class VampireSword extends AbstractQuest {
 		// Player lost the empty goblet, wants another
 		npc.add(ConversationStates.QUESTION_1,
 			ConversationPhrases.YES_MESSAGES, null,
-			ConversationStates.IDLE, "Ty głupcze ..... Następnym razem bądź bardziej ostrożny. Do widzenia!",
+			ConversationStates.IDLE, "Ty głupcze... Następnym razem bądź bardziej ostrożny. Do widzenia!",
 			new EquipItemAction("pusta czara"));
 
 		// Player doesn't have the empty goblet but claims they don't need another.
@@ -253,8 +253,7 @@ public class VampireSword extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),
 				ConversationStates.IDLE, null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jeszcze nie wykułem miecza. Przyjdź za " +
-						""));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jeszcze nie wykułem miecza. Przyjdź za "));
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new IncreaseXPAction(5000));
@@ -268,7 +267,7 @@ public class VampireSword extends AbstractQuest {
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
 			ConversationStates.IDLE,
-			"Skończyłem wykuwanie Wampirzego Miecza. Zasłużyłeś na niego. Teraz wracam do pracy, Do widzenia!",
+			"Skończyłem wykuwanie krwiopijcy. Zasłużyłeś na niego. Teraz wracam do pracy, Do widzenia!",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
