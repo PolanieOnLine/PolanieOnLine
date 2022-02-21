@@ -1093,6 +1093,12 @@ public abstract class RPEntity extends AudibleEntity {
 			outfit_old = OUTFIT_UNSET;
 		}
 
+		if (object.has("gender")) {
+			gender = object.get("gender");
+		} else {
+			gender = null;
+		}
+
 		/*
 		 * eating and choking
 		 */
