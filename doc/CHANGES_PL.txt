@@ -19,6 +19,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono wyświetlanie się osiągnięć za zdobyty set przedmiotów z potworów
+- Naprawiono resetowanie zadań na pierścionki u npc eFuR
 - Naprawiono czas oczekiwania na złotą ciupagę
 - Naprawiono osiągnięcie 'Przyjaciel Zakopane'
 - Poprawiono tekstury na mapach
