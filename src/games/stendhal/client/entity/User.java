@@ -411,10 +411,10 @@ public class User extends Player {
 	}
 
 	private void notifyUserAboutPlayerOnlineChanges(RPObject changes) {
-			notifyUserAboutPlayerStatus(changes, "offline", " " + Grammar.genderVerb(getGender(), "opuścił") + " PolanieOnLine.");
-			notifyUserAboutPlayerStatus(changes, "online", " " + Grammar.genderVerb(getGender(), "zawitał") + " do PolanieOnLine.");
+		notifyUserAboutPlayerStatus(changes, "offline", " " + Grammar.genderVerb(getGender(), "opuścił") + " PolanieOnLine.");
+		notifyUserAboutPlayerStatus(changes, "online", " " + Grammar.genderVerb(getGender(), "zawitał") + " do PolanieOnLine.");
 	}
-	
+
 	private void notifyUserAboutPlayerStatus(RPObject changes, String status, String messageEnd) {
 		if (changes.has(status)) {
 			String[] players = changes.get(status).split(",");
