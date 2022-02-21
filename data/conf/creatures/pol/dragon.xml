@@ -267,6 +267,7 @@
 			<item value="lodowy pas" quantity="[1,1]" probability="0.5"/>
 			<item value="spodnie nabijane klejnotami" quantity="[1,1]" probability="1.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="0.5"/>
+			<item value="pazur arktycznego smoka" quantity="[1,1]" probability="0.05"/>
 			<item value="skóra arktycznego smoka" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips/>
