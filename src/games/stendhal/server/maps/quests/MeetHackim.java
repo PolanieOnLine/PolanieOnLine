@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -124,9 +125,9 @@ public class MeetHackim extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Hackim, bardzo miły pomocnik kowala Semos.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Hackim, bardzo miły pomocnik kowala Semos.");
 		if (isCompleted(player)) {
-			res.add("Wysłuchałem jego przydatnych informacji na temat Xin Blanca, faceta z tawerny Semos.");
+			res.add(Grammar.genderVerb(player.getGender(), "Wysłuchałem") + " jego przydatnych informacji na temat Xin Blanca, faceta z tawerny Semos.");
 		}
 		return res;
 	}

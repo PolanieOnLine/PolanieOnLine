@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -156,7 +157,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (player.hasQuest(QUEST_SLOT)) {
-			res.add("Spotkałem Fryderyka jakiś czas temu.");
+			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Fryderyka jakiś czas temu.");
 		}
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
@@ -165,10 +166,10 @@ public class ScytheForFryderyk extends AbstractQuest {
 		if ((player.isQuestInState(QUEST_SLOT, "start")
 				&& player.isEquipped("kosa"))
 				|| player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Znalazłem kosę.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " kosę.");
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Dostarczyłem kosę Fryderykowi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " kosę Fryderykowi.");
 		}
 		return res;
 	}

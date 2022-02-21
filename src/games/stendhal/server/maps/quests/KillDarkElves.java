@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -81,7 +82,7 @@ public class KillDarkElves extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Już Cię wysłałem, abyś zabił mroczne elfy w tunelu pod ukrytym pokojem. Przynieś mi stamtąd amulet od cosia.",
+				"Już Cię wysłałem, aby pozbyć się mrocznych elfów w tunelu pod ukrytym pokojem. Przynieś mi stamtąd amulet od cosia.",
 				null);
 
 
@@ -219,7 +220,7 @@ public class KillDarkElves extends AbstractQuest {
 			Arrays.asList("secret", "room", "sekretnego", "pokoju"),
 			null,
 			ConversationStates.ATTENDING,
-			"Pokój jest pod nami. Ma szary dach i twarz demona na drzwiach. Potrzebuję Ciebie, abyś zabił mroczne elfy i przyniósł mi amulet z mutanta coś.",
+			"Pokój jest pod nami. Ma szary dach i twarz demona na drzwiach. Potrzebuję Ciebie, aby pozbyć się mrocznych elfów i przyniósł mi amulet z mutanta coś.",
 			null);
 	}
 
@@ -235,7 +236,7 @@ public class KillDarkElves extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Zguba Mrocznych Elfów",
-				"Maerion lider elfów chce, abyś zabił mroczne elfy w sekretnym pokoju i odzyskał jego amulet.",
+				"Maerion lider elfów chce, aby pozbyć się mrocznych elfów w sekretnym pokoju i odzyskał jego amulet.",
 				false);
 		step_1();
 		step_2();
@@ -255,12 +256,12 @@ public class KillDarkElves extends AbstractQuest {
 			return history;
 		}
 		if ("done".equals(questState)) {
-			history.add("Zakończyłem zadanie Maeriona i dostałem emerald ring!");
+			history.add("Zakończyłem zadanie Maeriona i " + Grammar.genderVerb(player.getGender(), "dostałem") + " pierścień szmaragdowy!");
 			return history;
 		}
 
 		// we can be here only if player accepted this quest.
-		history.add("Zgodziłem się na pomoc Maerion.");
+		history.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się na pomoc Maerion.");
 
 		boolean ak=true;
 
@@ -270,19 +271,19 @@ public class KillDarkElves extends AbstractQuest {
 				final boolean sp = creatures.get(i).equals(player.getQuest(QUEST_SLOT, i+1));
 				ak = ak & sp;
 				if(!sp) {
-					history.add("Jeszcze nie zabiłem "+creatures.get(i)+" w sekretnym pokoju.");
+					history.add("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "zabiłem") + " "+creatures.get(i)+" w sekretnym pokoju.");
 				}
 			}
 			for(int i = 0; i<creatures.size();i++) {
 				final boolean sp = creatures.get(i).equals(player.getQuest(QUEST_SLOT, i+1));
 				if(sp) {
-					history.add("Zabiłem "+creatures.get(i)+" w sekretnym pokoju.");
+					history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " "+creatures.get(i)+" w sekretnym pokoju.");
 				}
 			}
 
 			// all killed
 			if (ak) {
-				history.add("Zabiłem wszystkie potwory.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie potwory.");
 			}
 		}
 
@@ -293,29 +294,29 @@ public class KillDarkElves extends AbstractQuest {
 			final boolean osp3 = player.hasKilled("coś");
 			// first add killed creatures
 			if (osp1) {
-				history.add("Zabiłem elf ciemności kapitan w sekretnym pokoju.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " elf ciemności kapitan w sekretnym pokoju.");
 			}
 			if (osp2) {
-				history.add("Zabiłem elf ciemności łucznik w sekretnym pokoju.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " elf ciemności łucznik w sekretnym pokoju.");
 			}
 			if (osp3) {
-				history.add("Zabiłem coś.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " coś.");
 			}
 
 			// now add non-killed
 			if (!osp1) {
-				history.add("Jeszcze nie zabiłem elf ciemności kapitan w sekretnym pokoju.");
+				history.add("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "zabiłem") + " elf ciemności kapitan w sekretnym pokoju.");
 			}
 			if (!osp2) {
-				history.add("Jeszcze nie zabiłem elf ciemności łucznik w sekretnym pokoju.");
+				history.add("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "zabiłem") + " elf ciemności łucznik w sekretnym pokoju.");
 			}
 			if (!osp3) {
-				history.add("Jeszcze nie zabiłem cosia.");
+				history.add("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "zabiłem") + " cosia.");
 			}
 
 			// all killed
 			if (osp1 && osp2 && osp3) {
-				history.add("Zabiłem wszystkie potwory.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie potwory.");
 				ak=true;
 			}
 		}

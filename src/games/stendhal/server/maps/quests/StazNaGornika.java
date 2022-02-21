@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.JokerExprMatcher;
@@ -245,15 +246,15 @@ public class StazNaGornika extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Bercika. Po zaliczeniu egzaminu na górnika, moje szanse na wydobycie kamieni zwiększą się.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Bercika. Po zaliczeniu egzaminu na górnika, moje szanse na wydobycie kamieni zwiększą się.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
 			if (remainingTimeToWait(player)>0) {
 				res.add("Jest zbyt wcześnie, aby spróbować ponownie, przystąpić do egzaminu.");
 			} else {
-				res.add("Minelo sporo czasu od oblania ostatniego egzaminu, mogę teraz spróbować ponownie.");
+				res.add("Minęło sporo czasu od oblania ostatniego egzaminu, mogę teraz spróbować ponownie.");
 			}
 		} else {
-			res.add("Egzamin zaliczyłem z wynikiem pozytywnym. Teraz moje szanse znalezienia kamieni szlachetnych są dużo większe.");
+			res.add("Egzamin " + Grammar.genderVerb(player.getGender(), "zaliczyłem") + " z wynikiem pozytywnym. Teraz moje szanse znalezienia kamieni szlachetnych są dużo większe.");
 		}
 		return res;
 	}

@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -273,7 +274,7 @@ public class ZlotyRog extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem się z Bartłomiejem w jaskiniach Zakopanego. Zaproponował mi złoty róg, który może zrobić jego brat.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Bartłomiejem w jaskiniach Zakopanego. Zaproponował mi złoty róg, który może zrobić jego brat.");
 		if (questState.equals("rejected")) {
 			res.add("Nie jestem muzykiem aby grać na tym rogu.");
 			return res;
@@ -281,11 +282,11 @@ public class ZlotyRog extends AbstractQuest {
 		if (questState.startsWith("start")) {
 			return res;
 		}
-		res.add("Bartłomiej kazał mi przynnieść kilka przedmiotów, które są potrzebne do tej pracy. Gdybym zapomniał co mam przynieść mam mu powiedzieć: przypomnij.");
+		res.add("Bartłomiej kazał mi przynnieść kilka przedmiotów, które są potrzebne do tej pracy. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
 		if ("przedmioty".equals(questState)) {
 			return res;
 		}
-		res.add("Dostarczyłem potrzebne przedmioty! Bartłomiej zaniósł je dla brata.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Bartłomiej zaniósł je dla brata.");
 		if (questState.startsWith("make")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
 				res.add("Złoty róg chyba jest już gotowy. Hasło: róg.");

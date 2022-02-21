@@ -461,7 +461,7 @@ public class ObsidianKnife extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Alrak w kuźni w Wofol.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Alrak w kuźni w Wofol.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomóc Alrakowi.");
@@ -472,7 +472,7 @@ public class ObsidianKnife extends AbstractQuest {
 			res.add("Muszę przynieść " + Grammar.quantityplnoun(REQUIRED_FOOD, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
 			return res;
 		}
-		res.add("Przyniosłem Alrakowi jedzenie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Alrakowi jedzenie.");
 		if (questState.equals("food_brought")) {
 			return res;
 		}
@@ -497,18 +497,18 @@ public class ObsidianKnife extends AbstractQuest {
 		&& !player.hasKilled("czarny smok")) {
 			return res;
 		}
-		res.add("Zabiłem czarnego smoka.");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czarnego smoka.");
 		if (questState.equals("knife_offered")
 				&& player.hasKilled("czarny smok")) {
 			return res;
 		}
-		res.add("Przyniosłem dorsza i obsydian.");
+		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " dorsza i obsydian.");
 		if (questState.equals("knife_offered")
 				&& player.isEquipped("obsydian")
 				&& player.isEquipped(FISH))  {
 			return res;
 		}
-		res.add("zaniosłem dorsza i obsydian do Alrak. Teraz wyrabia mój nóż.");
+		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " dorsza i obsydian do Alrak. Teraz wyrabia mój nóż.");
 		if (questState.startsWith("forging")) {
 			return res;
 		}

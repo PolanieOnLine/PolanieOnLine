@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.block.Block;
@@ -297,7 +298,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 			result.add("Doprowadziłem wystarczającą ilość wózków do stodoły. Mogę teraz powiedzieć Eheneumniraninowi, że skończyłem.");
 		}
 		if(createFinishedCondition().fire(player, null, null)) {
-			result.add("Pomogłem " + getNPCName() + " i dostałem swoją nagrodę.");
+			result.add("Pomogłem " + getNPCName() + " i " + Grammar.genderVerb(player.getGender(), "dostałem") + " swoją nagrodę.");
 		}
 		return result;
 	}

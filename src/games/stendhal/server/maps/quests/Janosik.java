@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.Player;
@@ -199,7 +200,7 @@ public class Janosik extends AbstractQuest implements IRAQuestConstants {
 			history.add("Pozbyłem się kilku zbójników napadających Zakopane i postaram się pozbyć ich więcej.");
 		}
 		if ("done".equals(questState)) {
-			history.add("Pozbyłem się kilku zbójników napadających Zakopane i otrzymałem nagrodę od Gazdy Wojtka!");
+			history.add("Pozbyłem się kilku zbójników napadających Zakopane i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " nagrodę od Gazdy Wojtka!");
 		}
 		return history;
  	}

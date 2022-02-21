@@ -1,5 +1,6 @@
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -82,7 +83,7 @@ public class HerbsForJynath extends AbstractQuest {
         } else if (!"done".equals(questState)) {
             questHistory.add("Potrzebuję zebrać zioła dla Jynath.");
         } else {
-        	questHistory.add("Przyniosłem zioła dla Jynath. Sądze, że użyje ich do sporządzenia mikstury.");
+        	questHistory.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " zioła dla Jynath. Sądze, że użyje ich do sporządzenia mikstury.");
         }
         return questHistory;
     }

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
@@ -153,22 +154,22 @@ public class PlinksToy extends AbstractQuest {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
 			if (player.isEquipped("pluszowy miś")) {
-				res.add("Plink opowiedział o misiu, którego mam ze sobą");
+				res.add("Plink opowiedział o misiu, którego mam ze sobą.");
 			}
 			return res;
 		}
-		res.add("Spotkałem Plinka");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Plinka.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie chcę szukać pluszowego misia Plinka");
+			res.add("Nie chcę szukać pluszowego misia Plinka.");
 			return res;
 		}
-		res.add("Nie chcę pomóc Plink w szukaniu jego misia");
+		res.add("Nie chcę pomóc Plink w szukaniu jego misia.");
 		if (player.isEquipped("pluszowy miś") || isCompleted(player)) {
-			res.add("Znalazłem pluszowego misia Plinka");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pluszowego misia Plinka.");
 		}
 		if (isCompleted(player)) {
-			res.add("Dałem Plinkowi jego misia.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " Plinkowi jego misia.");
 		}
 		return res;
 	}

@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -191,13 +192,13 @@ public class DzikiiWilki extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Mścisława tuż obok swojej farmy.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Mścisława tuż obok swojej farmy.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem farmerowi pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " farmerowi pomocy.");
 		return res;
 		}
-		res.add("Postanowiłem pomóc farmerowi Mścisławowi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc farmerowi Mścisławowi.");
 		if (("start".equals(questState) && player.hasKilled("wilk") && player.hasKilled("dzik") && player.hasKilled("lisicia")) || "done".equals(questState)) {
 			res.add("Okolice farmy Mścisława zostały oczyszczone od dzikich zwierząt.");
 		} else if(isRepeatable(player)){

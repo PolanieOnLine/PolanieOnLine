@@ -262,7 +262,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 								if (missing.isEmpty()) {
 									rewardPlayer(player);
 									entity.say("To niewiarygodne, mogę zobaczyć to z bliska? Wielkie dzięki! Mam dla Ciebie niespodziankę!\n"
-													+ "Oto spinka! Otrzymałem ją od swoich przodków, a teraz będzie należeć do Ciebie! Niech Ci dobrze służy.");
+													+ "Oto spinka! " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " ją od swoich przodków, a teraz będzie należeć do Ciebie! Niech Ci dobrze służy.");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item spinka = SingletonRepository.getEntityManager().getItem("spinka");
 									spinka.setBoundTo(player.getName());
@@ -356,7 +356,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 			if (!isCompleted(player)) {
 				res.add("Jestem na etapie gromadzenia przedmiotów dla Gazdy Bartka, potrzebuje jeszcze " + Grammar.enumerateCollection(missingitems3(player, false)) + ".");
 			} else {
-				res.add("Znalazłem wszystkie góralskie przedmioty, o które prosił Gazda Bartek, a on wynagrodził mnie przepięknie lśniącym naszyjnikiem jakim jest spinka.");
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " wszystkie góralskie przedmioty, o które prosił Gazda Bartek, a on wynagrodził mnie przepięknie lśniącym naszyjnikiem jakim jest spinka.");
 			}
 			return res;
 	}

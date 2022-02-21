@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -319,16 +320,16 @@ public class ChocolateForElisabeth extends AbstractQuest {
 			res.add("Mała Elisabeth potrzebuje tabliczkę czekolady.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start","mummy") && player.isEquipped("tabliczka czekolady") || isCompleted(player)) {
-			res.add("Znalazłem pyszną tabliczkę czekolady dla Elisabeth.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pyszną tabliczkę czekolady dla Elisabeth.");
 		}
         if ("mummy".equals(questState) || isCompleted(player)) {
-            res.add("Rozmawiałem z Carey, matką Elisabeth i zgodziła się, abym mógł dać jej córce tabliczkę czekolady.");
+            res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Carey, matką Elisabeth i zgodziła się, abym mógł dać jej córce tabliczkę czekolady.");
         }
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add("Przyniosłem trochę czekolady dla Elisabeth. Dała mi w zamian kwiatki. Może chciałaby więcej czekolady.");
+                res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " trochę czekolady dla Elisabeth. Dała mi w zamian kwiatki. Może chciałaby więcej czekolady.");
             } else {
-                res.add("Elisabeth je czekoladę, którą jej dałem, a w zamian otrzymałem piękne kwiaty.");
+                res.add("Elisabeth je czekoladę, którą jej dałem, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " piękne kwiaty.");
             }
 		}
 		return res;

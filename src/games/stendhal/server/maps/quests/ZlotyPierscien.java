@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -29,6 +30,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
@@ -38,7 +40,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.util.TimeUtil;
 
 /**
  * @author zekkeq
@@ -49,7 +50,7 @@ public class ZlotyPierscien extends AbstractQuest {
 
 	private static final String ZAMOWIENIE_STRAZY = "zamowienie_strazy";
 
-	private static final int REQUIRED_MINUTES = 60;
+	private static final int REQUIRED_HOURS = 1;
 
 	private static Logger logger = Logger.getLogger(ZlotyPierscien.class);
 
@@ -149,26 +150,26 @@ public class ZlotyPierscien extends AbstractQuest {
 	}
 
 	private void step_3() {
+		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
+
+		npc.add(ConversationStates.ATTENDING, 
+			Arrays.asList("pierścień", "złoty", "nagroda"),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
+			ConversationStates.IDLE, 
+			null, 
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad twoim pierścieniem. Wróć za "));
+
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("pierścień", "złoty", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;")),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new TimePassedCondition(QUEST_SLOT, 1, delay)),
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-					final long timeRemaining = Long.parseLong(tokens[1]) + delay
-							- System.currentTimeMillis();
-
-					if (timeRemaining > 0L) {
-						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
-							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-							+ ", aby odebrać nagrodę. No chyba, że chcesz abym #zrobił dla ciebie #bełty.");
-						return;
-					}
-
-					raiser.say("Chyba warto było czekać. A oto i piękny, błyszczący się złoty pierścień! Niech Ci służy...");
+					raiser.say("A oto i piękny, błyszczący się złoty pierścień! Niech Ci służy...");
 					player.addXP(55000);
 					player.addKarma(25);
 					final Item pierscien = SingletonRepository.getEntityManager().getItem("złoty pierścień");
@@ -198,19 +199,19 @@ public class ZlotyPierscien extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem się z Kowalem Wincentym.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Kowalem Wincentym.");
 		res.add("Kowal Wincenty może wykonać dla mnie złoty pierścień.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam robić złotego pierścienia.");
 			return res;
 		}
-		res.add("Udałem się do Kowala Wincenta w celu wykonania złotego pierścienia. Kazał mi przynnieść kilka przedmiotów. Gdybym zapomniał co mam przynieść mam mu powiedzieć: przypomnij.");
+		res.add(Grammar.genderVerb(player.getGender(), "Udałem") + " się do Kowala Wincenta w celu wykonania złotego pierścienia. Kazał mi przynnieść kilka przedmiotów. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Dostarczyłem potrzebne przedmioty! Kowal Wincenty zabrał się za wykuwanie pierścienia.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Kowal Wincenty zabrał się za wykuwanie pierścienia.");
 		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Kowal Wincenty skończył swoją robotę. Hasło: pierścień.");
 			} else {
 				res.add("Po pierścień mam zgłosić się za 1 godzinę. Hasło: pierścień.");

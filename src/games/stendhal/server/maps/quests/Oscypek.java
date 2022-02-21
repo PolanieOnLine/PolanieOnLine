@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.creature.Sheep;
@@ -359,8 +360,8 @@ public class Oscypek extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("W Zakopanem spotkałem Bace Zbyszka.");
-		res.add("Zaproponował mi abym został jego juhasem. Mam pilnować aby owca miała 100 wagi.");
+		res.add("W Zakopanem " + Grammar.genderVerb(player.getGender(), "spotkałem") + " Bace Zbyszka.");
+		res.add("Zaproponował mi, abym " + Grammar.genderVerb(player.getGender(), "został") + " jego juhasem. Mam pilnować, aby owca miała 100 wagi.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty pilnować owiec.");
 			return res;
@@ -392,16 +393,16 @@ public class Oscypek extends AbstractQuest {
 		if ("grudziarka_done".equals(questState)) {
 			return res;
 		}
-		res.add("Zaniosłem grudziarkę do Bacy Zbyszka. Mam mu jeszcze donieść drewna.");
+		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " grudziarkę do Bacy Zbyszka. Mam mu jeszcze donieść drewna.");
 		if ("drewno".equals(questState)) {
 			return res;
 		}
-		res.add("Przyniosłem drewno. Baca zajoł się wyrabianiem oscypków.");
+		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " drewno. Baca zajoł się wyrabianiem oscypków.");
 		if (questState.startsWith("oscypek")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam zgłosić się za 3 godziny do Bacy Zbyszka po nagrodę za moją pomoc.");
 				} else {
-				res.add("Dopiero za 3 godziny będę mógł odebrać ngrodę.");
+				res.add("Dopiero za 3 godziny będę " + Grammar.genderVerb(player.getGender(), "mógł") + " odebrać nagrodę.");
 			}
 			return res;
 		}

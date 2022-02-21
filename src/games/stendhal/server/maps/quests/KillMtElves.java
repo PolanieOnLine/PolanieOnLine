@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -135,14 +136,14 @@ public class KillMtElves extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Czarnoksiężnika w jakieś starej wieży.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Czarnoksiężnika w jakieś starej wieży.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Czarnoksiężnikowi pomocy.");
 		return res;
 		}
 		if ("done".equals(questState)) {
-			res.add("Zabiłem wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
 		}
 		return res;
 	}

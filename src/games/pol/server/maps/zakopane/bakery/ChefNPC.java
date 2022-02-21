@@ -80,7 +80,7 @@ public class ChefNPC implements ZoneConfigurator {
 				requiredResources, 4 * 60);
 
 		new ProducerAdder().addProducer(npc, behaviour,
-				"Witaj! Jakże miło, że zawitałeś do mojej piekarni. Przyszedłeś spróbować moich placków z marchewką? Mogę upiec jeden dla Ciebie.");
+				"Witaj w mojej piekarni! Chcesz spróbować moich placków z marchewką? Mogę upiec jeden dla Ciebie!");
 
 		npc.setEntityClass("chefnpc");
 		npc.setGender("M");

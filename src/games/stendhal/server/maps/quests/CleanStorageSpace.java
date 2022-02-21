@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -160,13 +161,13 @@ public class CleanStorageSpace extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Eonne w jej domu, blisko piekarni.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Eonne w jej domu, blisko piekarni.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam zamiaru pozbywać się potworów z jej piwnicy.");
 		return res;	
 		}
-		res.add("Obiecałem Eonnie zabić szczury i węże w piwnicy.");
+		res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + " Eonnie zabić szczury i węże w piwnicy.");
 		if ("start".equals(questState) && player.hasKilled("szczur") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż") || "done".equals(questState)) {
 		res.add("Wyczyściłem piwnicę Eonny z gryzoni i węży.");
 		}

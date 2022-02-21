@@ -38,7 +38,7 @@ public class JolandaNPC implements ZoneConfigurator {
 				addHelp("Pomóż mi. Zabij tego wstrętnego smoka, a #'złota klinga' będzie twoja!");
 				addReply("złota klinga", "Napadł mnie ten wstrętny smok i połknął mi ją. Jeżeli go pokonasz to w nagrodę będziesz mógł ją sobie zatrzymać.");
 				addOffer("Mam dla Ciebie #zadanie.");
-				addQuest("Szukałam rzadkiego ziela do mikstury, ale smok zablokował mi drogę do niego. Mam wielką prośbę do Ciebie, abyś zabił smoka, który zagrodził mi drogę. Jeżeli podejmiesz się tego to powiedz #zabiję.");
+				addQuest("Szukałam rzadkiego ziela do mikstury, ale smok zablokował mi drogę do niego. Mam wielką prośbę do Ciebie, aby pozbyć się smoka, który zagrodził mi drogę. Jeżeli podejmiesz się tego to powiedz #zabiję.");
 				addReply("zabiję", "Wspaniale! Idź i rozpraw się z nim. Tę wpaniałą #broń, którą zdobędziesz możesz zatrzymać jako nagrodę.");
 				addReply("broń", "Zaatakował mnie i połknął ją");
 				addGoodbye("Niech moc będzie z tobą mój wybawco.");

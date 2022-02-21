@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -105,7 +106,7 @@ public class McPeglegIOU extends AbstractQuest {
 				res.add("Henry dał mi karteczkę z imieniem McPegleg na jej temat.");
 			}
 			if (isCompleted(player)) {
-				res.add("McPegleg poznała karteczkę z jej imieniem - Dostałem za nią 250 money!");
+				res.add("McPegleg poznała karteczkę z jej imieniem - " + Grammar.genderVerb(player.getGender(), "dostałem") + " za nią 250 money!");
 			}
 			return res;
 	}

@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -198,9 +199,9 @@ public class CleanAthorsUnderground extends AbstractQuest {
 			if (!isCompleted(player)) {
 				res.add("W podziemiach Athor muszę zabić potwora z każdego rodzaju, aby John i Jane mieli miłe wakacje!");
 			} else if(isRepeatable(player)){
-				res.add("Minęło sporo czasu, gdy spotkałem Johna i Jane na wyspie Athor. Może wciąż potrzebują mojej pomocy.");
+				res.add("Minęło sporo czasu, gdy " + Grammar.genderVerb(player.getGender(), "spotkałem") + " Johna i Jane na wyspie Athor. Może wciąż potrzebują mojej pomocy.");
 			} else {
-				res.add("Zabiłem pare potworów, a John i Jane mogą w końcu cieszyć się swoimi wakacjami! Nie będą potrzebowali mojej pomocy przez kilka następnych dni.");
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pare potworów, a John i Jane mogą w końcu cieszyć się swoimi wakacjami! Nie będą potrzebowali mojej pomocy przez kilka następnych dni.");
 			}
 			return res;
 	}

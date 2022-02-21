@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -252,7 +253,7 @@ public class EggsForMarianne extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Marianne w okolic Deniran.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Marianne w okolic Deniran.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomagać Mariannie.");
@@ -260,10 +261,10 @@ public class EggsForMarianne extends AbstractQuest {
 		}
 		res.add("Chętnie pomogę biednej Mariannie w zdobyciu tuzin kurzyj jaj.");
 		if (player.isEquipped("egg", REQUIRED_EGGS) || isCompleted(player)) {
-			res.add("Znalazłem jajka dla Marianny");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " jajka dla Marianny");
 		}
 		if (isCompleted(player)) {
-			res.add("Zaniosłem Mariannie kurze jaja, a w zamian otrzymałem pięknego kwiatka.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " Mariannie kurze jaja, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " pięknego kwiatka.");
 		}
 		if(isRepeatable(player)){
 			res.add("Marianna znowu potrzebuje kurzych jaj.");

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -207,7 +208,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Rudolpha. Jest on Czerwononosym Reniferem biegającym w pobliżu Semos.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Rudolpha. Jest on Czerwononosym Reniferem biegającym w pobliżu Semos.");
 		final String questStateFull = player.getQuest(QUEST_SLOT);
 		final String[] parts = questStateFull.split(";");
 		final String questState = parts[0];
@@ -216,7 +217,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 			res.add("Zapytał mnie o znalezienie przysmaków dla niego, ale odrzuciłem jego prośbę.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "start", "done")) {
-			res.add("Przyrzekłem, że znajdę dla niego przysmaki ponieważ jest miłym reniferem.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " , że znajdę dla niego przysmaki ponieważ jest miłym reniferem.");
 		}
 		if ("start".equals(questState) && player.isEquipped("mech renifera", 5)  && player.isEquipped("marchew", 10) && player.isEquipped("jabłko", 10) || "done".equals(questState)) {
 			res.add("Mam wszystkie przysmaki, które zabiorę do Rudolpha.");
@@ -225,7 +226,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 			if (isRepeatable(player)) {
 				res.add("Minął rok kiedy ostatnio pomogłem Rudolphowi. Powinienem go zapytać czy znów nie potrzebuje mojej pomocy.");
 			} else {
-				res.add("Wziąłem przysmaki do Rudolpha. Jako podziękowanie otrzymałem trochę przysmaków. :)");
+				res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " przysmaki do Rudolpha. Jako podziękowanie " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " trochę przysmaków. :)");
 			}
 		}
 		return res;

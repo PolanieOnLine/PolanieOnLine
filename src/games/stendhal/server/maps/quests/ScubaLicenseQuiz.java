@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.JokerExprMatcher;
@@ -89,10 +90,10 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					if (!player.hasQuest(QUEST_SLOT)) {
-						npc.say("Cześć jestem w Faiumoni jedynym nauczycielem nurkowania. Jeżeli chcesz odkrywać wspaniał podwodny świat morski to potrzebujesz #licencji i #zbroi #akwalungowej.");
+						npc.say("Cześć jestem w krainie jedynym nauczycielem nurkowania. Jeżeli chcesz odkrywać wspaniały podwodny morski świat to potrzebujesz #licencji i #zbroi #akwalungowej.");
 					} else if (!player.isQuestCompleted(QUEST_SLOT)) {
 						final String name = player.getQuest(QUEST_SLOT);
-						npc.say("Wróciłeś! Wieżę, że studiowałeś i możesz odpowiedzieć na pytanie. " + name);
+						npc.say(Grammar.genderVerb(player.getGender(), "Wróciłeś") + "! Wierzę, że " + Grammar.genderVerb(player.getGender(), "studiowałeś") + " i możesz odpowiedzieć na pytanie. " + name);
 						npc.setCurrentState(ConversationStates.QUESTION_1);
 					} else {
 						npc.say("Witaj na pokładzie!");
@@ -112,7 +113,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, Arrays.asList("exam", "test", "egzamin")),
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Już zdałeś egzamin! Teraz znajdź dobre miejsce na odkrywanie oceanu.",
+				"Egzamin zaliczony! Teraz znajdź dobre miejsce na odkrywanie oceanu.",
 				null);
 
 		instructor.add(ConversationStates.ATTENDING,
@@ -124,7 +125,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 						final String name = player.getQuest(QUEST_SLOT);
-						npc.say("Wieżę, że studiowałeś i możesz odpowiedzieć na pytanie. " + name);
+						npc.say("Wierzę, że " + Grammar.genderVerb(player.getGender(), "studiowałeś") + " i możesz odpowiedzieć na pytanie. " + name);
 					}
 				});
 
@@ -200,11 +201,11 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Edwarda byłego nurka, który uczy inne osoby. Jeżeli zdam jego egzamin to dostanę licencję nurka.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Edwarda byłego nurka, który uczy inne osoby. Jeżeli zdam jego egzamin to dostanę licencję nurka.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
 			res.add("Pytanie na które muszę odpowiedzieć " + player.getQuest(QUEST_SLOT) + ".");
 		} else {
-			res.add("Zdałem egzamin Edwarda i dostałem licencję nurka.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zdałem") + " egzamin Edwarda i " + Grammar.genderVerb(player.getGender(), "dostałem") + " licencję nurka.");
 		}
 		return res;
 	}

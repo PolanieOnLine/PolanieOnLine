@@ -148,8 +148,8 @@ public class GuessKills extends AbstractQuest {
 		final String state = player.getQuest(QUEST_SLOT, 0);
 		final String time = player.getQuest(QUEST_SLOT, 1);
 		final String creature = player.getQuest(QUEST_SLOT, 2);
-		res.add("Spotkałem Crearid. Jest starszą panią w mieście Nalwor.");
-		res.add("Zapytała mnie, abym zgadł ile razy zabiłem potwora zwanego " + Grammar.pluralCreature(creature) + ".");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Crearid. Jest starszą panią w mieście Nalwor.");
+		res.add("Zapytała mnie, abym zgadł ile razy " + Grammar.genderVerb(player.getGender(), "zabiłem") + " potwora zwanego " + Grammar.pluralCreature(creature) + ".");
 
 
 		if ("1".equals(state)) {

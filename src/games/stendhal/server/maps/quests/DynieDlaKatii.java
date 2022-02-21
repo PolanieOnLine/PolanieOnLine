@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -184,7 +185,7 @@ public class DynieDlaKatii extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Poznałem Katie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Poznałem") + " Katie.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę zbierać dla niej dyń...");
@@ -192,11 +193,11 @@ public class DynieDlaKatii extends AbstractQuest {
 		}
 		res.add("Chcę pozbierać kilka dyń!");
 		if (player.isEquipped("straszna dynia", WYMAGANE_DYNIE) || isCompleted(player)) {
-			res.add("Zdobyłem straszne dynie dla Katii");
+			res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " straszne dynie dla Katii");
 		}
 		if (isCompleted(player)) {
-			res.add("Zaniosłem Katii dynie." +
-		             "W zamian otrzymałem tajemniczą srebrną skrzynkę.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " Katii dynie." +
+		             "W zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " tajemniczą srebrną skrzynkę.");
 		}
 		if(isRepeatable(player)){
 			res.add("Ponownie mogę poszukać kilku dyń dla Katii!");

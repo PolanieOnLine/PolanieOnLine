@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -231,7 +232,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem kowala Andrzeja w kuźni Zakopane.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " kowala Andrzeja w kuźni Zakopane.");
 		res.add("Kowal Andrzej zaproponował mi zrobienie złotej ciupagi.\n"+
 				"Zażądał za zrobienie złotej ciupagi: 1 ciupagę, 25 sztabek złota, 5 polan i 50000 money. Mam mu to wszystko razem dostarczyć.");
 		if ("rejected".equals(questState)) {
@@ -241,7 +242,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Dostarczyłem wszystkie potrzebne rzeczy Andrzejowi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " wszystkie potrzebne rzeczy Andrzejowi.");
 		if (questState.startsWith("make")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Wstąpię do Anrzeja po poją ciupagę. Hasło: ciupaga.");

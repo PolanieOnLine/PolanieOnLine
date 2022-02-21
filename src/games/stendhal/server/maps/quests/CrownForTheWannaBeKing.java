@@ -291,9 +291,9 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 			missingItems.addFromQuestStateString(questState);
 			res.add(Grammar.enumerateCollection(missingItems.toStringList()) + " są nadal potrzebne do korony.");
 		} else if ("reward".equals(questState)) {
-			res.add("Oddałem drogocenne kamienie do korony, a " + REWARD_NPC_NAME + " została poinformowana aby dać mi nagrodę.");
+			res.add(Grammar.genderVerb(player.getGender(), "Oddałem") + " drogocenne kamienie do korony, a " + REWARD_NPC_NAME + " została poinformowana aby dać mi nagrodę.");
 		} else {
-			res.add("Oddałem drogocenne kamienie do korony, a " + REWARD_NPC_NAME + " nagrodziła mnie, podnosząc moje zdolności ataku.");
+			res.add(Grammar.genderVerb(player.getGender(), "Oddałem") + " drogocenne kamienie do korony, a " + REWARD_NPC_NAME + " nagrodziła mnie, podnosząc moje zdolności ataku.");
 		}
 		return res;
 	}

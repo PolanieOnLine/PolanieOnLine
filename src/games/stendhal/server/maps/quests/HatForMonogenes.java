@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -159,7 +160,7 @@ public class HatForMonogenes extends AbstractQuest {
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (player.hasQuest(QUEST_SLOT)) {
-			res.add("Spotkałem Monogenes na wiosnę w wiosce Semos");
+			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Monogenes na wiosnę w wiosce Semos");
 		}
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
@@ -168,10 +169,10 @@ public class HatForMonogenes extends AbstractQuest {
 		if (player.isQuestInState(QUEST_SLOT, "start")
 				&& player.isEquipped("skórzany hełm")
 				|| player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Zdobyłem kapelusz.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " kapelusz.");
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Dałem kapelusz Monogenesowi i nagrodził mnie 10 pd.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " kapelusz Monogenesowi i nagrodził mnie 10 pd.");
 		}
 		return res;
 	}

@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Level;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.Entity;
@@ -323,13 +324,13 @@ public class SheepGrowing extends AbstractQuest {
 		
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Mówiłem Nishiyi, że mam teraz ważniejsze sprawy na głowie... może będę mieć na to czas później.");
+			res.add(Grammar.genderVerb(player.getGender(), "Mówiłem") + " Nishiyi, że mam teraz ważniejsze sprawy na głowie... może będę mieć na to czas później.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "handed_over", "done")) {
 			res.add("Obiecuję zaopiekować się jedną z jego owiec.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "handed_over", "done")) {
-			res.add("Przekazałem owcę, by podrosła, Sato. Powinienem wrócić teraz do Nishiyi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " owcę, by podrosła, Sato. Powinienem wrócić teraz do Nishiyi.");
 		}
 		if(questState.equals("done")) {
 			res.add("Wróciłem do sprzedawcy owiec. Nishiya był bardzo szczęśliwy, że mu pomogłem!");

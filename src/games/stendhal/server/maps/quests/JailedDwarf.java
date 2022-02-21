@@ -14,6 +14,7 @@ package games.stendhal.server.maps.quests;
 import java.util.ArrayList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -101,7 +102,7 @@ public class JailedDwarf extends AbstractQuest {
 			}
 			res.add("Muszę zdobyć klucz aby uwolnić Hunela.");
 			if (isCompleted(player)) {
-				res.add("Zabiłem króla Duergars i zdobyłem klucz do celi Hunela. Teraz jest zbyt przestraszony aby wyjść. Kupi każdą ilość zbroi. Biedny Hunel.");
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " króla Duergars i zdobyłem klucz do celi Hunela. Teraz jest zbyt przestraszony aby wyjść. Kupi każdą ilość zbroi. Biedny Hunel.");
 			}
 			return res;
 	}

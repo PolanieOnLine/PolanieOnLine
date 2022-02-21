@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -29,6 +30,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -39,14 +41,13 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.util.TimeUtil;
 
 public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 	private static final String QUEST_SLOT = "ciupaga_dwa_wasy";
 
 	private static final String KRASNOLUD_QUEST_SLOT = "krasnolud";
 
-	private static final int REQUIRED_MINUTES = 720;
+	private static final int REQUIRED_HOURS = 12;
 
 	private static Logger logger = Logger.getLogger(ZlotaCiupagaDwaWasy.class);
 
@@ -103,7 +104,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 
-					raiser.say("Sporo smoków zbuntowało się przeciwko mi. Chcę abyś zabił każdego z nich, którego spotkasz na swej drodze."
+					raiser.say("Sporo smoków zbuntowało się przeciwko mi. Chcę abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " każdego z nich, którego spotkasz na swej drodze."
 					+ " Dam ci też dobrą radę zbieraj ich pazury. Mój stary znajomy Krasnolud zbiera je. Słyszałem iż w zamian za nie "
 					+ "zrobi ci wspaniałą broń. Powiedz mu tylko moje #imie. Miłego polowania.");
 					player.setQuest(QUEST_SLOT, "start");
@@ -169,26 +170,25 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 
 	private void step_3() { 
 		final SpeakerNPC npc = npcs.get("Krasnolud");
+		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
+
+		npc.add(ConversationStates.ATTENDING, 
+			Arrays.asList("złota", "ciupaga", "nagroda"),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
+			ConversationStates.IDLE, 
+			null, 
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszeniem twojej złotej ciupagi. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("nagroda"),
+			Arrays.asList("złota", "ciupaga", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-			new QuestStateStartsWithCondition(QUEST_SLOT, "forging;")),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new TimePassedCondition(QUEST_SLOT, 1, delay)),
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-					final long timeRemaining = Long.parseLong(tokens[1]) + delay
-							- System.currentTimeMillis();
-
-					if (timeRemaining > 0L) {
-						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
-							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-							+ ", aby odebrać ciupagę.");
-						return;
-					}
-
 					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała!");
 					player.addXP(500000);
 					player.addKarma(100);
@@ -219,19 +219,19 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem się z Władcą Smoków.");
-		res.add("Poprosił mnie abym zabijał wszystkie smoki, które wejdą mi w drogę. Zdradził mi też tajemnice. Podobno Krasnalud ulepsza złote ciupagi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Władcą Smoków.");
+		res.add("Poprosił mnie abym " + Grammar.genderVerb(player.getGender(), "zabijał") + " wszystkie smoki, które wejdą mi w drogę. Zdradził mi też tajemnice. Podobno Krasnalud ulepsza złote ciupagi.");
 		if ("rejected".equals(questState)) {
 			res.add("Mam stracha przed smokami więc będę schodził im z drogi.");
 			return res;
 		}
-		res.add("Udałem się do Krasnoluda w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym zapomniał co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(Grammar.genderVerb(player.getGender(), "Udałem") + " się do Krasnoluda w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add("Dostarczyłem potrzebne przedmioty! Krasnal zabrał się za ulepszenie mojej ciupagi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Krasnal zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Krasnalud skończył moją ciupagę. Hasło: nagroda.");
 			} else {
 				res.add("Po ciupagę mam zgłosić się za 12 godzin. Hasło: nagroda.");

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -134,20 +135,20 @@ public class Imprezowicz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Cadhesem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Cadhesem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie dam wina Cadhesowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Zgodziłem się przynieść napój z winogron Cadhesowi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się przynieść napój z winogron Cadhesowi.");
 		}
 		if ("start".equals(questState) && player.isEquipped("napój z winogron")
 				|| "done".equals(questState)) {
 			res.add("Mam wino dla Cadhesa.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Przekazałem kieliszek wina Cadhesowi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " kieliszek wina Cadhesowi.");
 		}
 		return res;
 	}

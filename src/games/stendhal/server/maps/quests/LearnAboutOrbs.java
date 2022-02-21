@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -125,7 +126,7 @@ public class LearnAboutOrbs extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Ilisa w świątyni w Semos.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ilise w świątyni w Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("done")) {
 			res.add("Ilisa pokazała mi jak używać kul. Muszę uważać, ponieważ mogą mnie wysłać w inne niebezpieczne miejsce.");

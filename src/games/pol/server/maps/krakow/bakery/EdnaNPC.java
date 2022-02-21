@@ -66,7 +66,7 @@ public class EdnaNPC implements ZoneConfigurator {
 				final ProducerBehaviour behaviour = new ProducerBehaviour("edna_bake_bread",
 						Arrays.asList("bake", "upiecz"), "chleb", requiredResources, 7 * 60);
 				new ProducerAdder().addProducer(this, behaviour,
-						"Witaj! Jakże miło, że zawitałeś do naszej piekarni! Mogę dla ciebie upiec #'chleb'.");
+						"Witaj w naszej piekarni! Mogę dla ciebie upiec #'chleb'.");
 			}
 		};
 

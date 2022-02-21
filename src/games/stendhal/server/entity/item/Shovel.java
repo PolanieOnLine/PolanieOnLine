@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rule.EntityManager;
@@ -64,7 +65,7 @@ public class Shovel extends AreaUseItem {
 								ring.setBoundTo(player.getName());
 
 								player.equipOrPutOnGround(ring);
-								player.sendPrivateText("Znalazłeś pierścionek.");
+								player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Znalazłeś") + " pierścionek.");
 
 								// shift coordinates in case ring is lost & we need to access them again
 								player.setQuest(ring_quest_slot, "have_ring;" + slot[0] + ";" + slot[1]);

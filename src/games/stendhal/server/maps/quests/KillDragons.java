@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -1411,7 +1412,7 @@ public class KillDragons extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem Alicje w domku Zakopane.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Alicje w domku Zakopane.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty na walkę ze smokami.");
 			return res;
@@ -1420,7 +1421,7 @@ public class KillDragons extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem zielonego smoka i zaniosłem Alicji jego skóry!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " zielonego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji jego skóry!");
 		if (questState.startsWith("czas_szkielet")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: zielony.");
@@ -1437,7 +1438,7 @@ public class KillDragons extends AbstractQuest {
 		if ("szkielet".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem szkielet smoka i zaniosłem Alicji kości dla psa!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " szkielet smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji kości dla psa!");
 		if (questState.startsWith("czas_niebieski")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: szkielet");
@@ -1454,7 +1455,7 @@ public class KillDragons extends AbstractQuest {
 		if ("niebieski".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem błękitnego smoka i zaniosłem Alicji skóry niebieskiego smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " błękitnego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry niebieskiego smoka!");
 		if (questState.startsWith("czas_zgnily")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: niebieski.");
@@ -1471,7 +1472,7 @@ public class KillDragons extends AbstractQuest {
 		if ("zgnily".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem zgniły szkielet smoka i zaniosłem Alicji jego kości!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " zgniły szkielet smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji jego kości!");
 		if (questState.startsWith("czas_czerwony")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: zgnily.");
@@ -1488,7 +1489,7 @@ public class KillDragons extends AbstractQuest {
 		if ("czerwony".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem czerwonego smoka i zaniosłem Alicji skóry czerwonego smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czerwonego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry czerwonego smoka!");
 		if (questState.startsWith("czas_pustynny")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: czerwony.");
@@ -1505,7 +1506,7 @@ public class KillDragons extends AbstractQuest {
 		if ("pustynny".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem pustynnego smoka i zaniosłem Alicji skóry złotgo smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pustynnego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry złotgo smoka!");
 		if (questState.startsWith("czas_zloty")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: pustynny.");
@@ -1522,7 +1523,7 @@ public class KillDragons extends AbstractQuest {
 		if ("zloty".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem złotego smoka i zaniosłem Alicji skóry złotego smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " złotego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry złotego smoka!");
 		if (questState.startsWith("czas_dwa_niebieski")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: zloty.");
@@ -1539,7 +1540,7 @@ public class KillDragons extends AbstractQuest {
 		if ("dwa_niebieski".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem niebieskiego smoka i zaniosłem Alicji skóry!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " niebieskiego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry!");
 		if (questState.startsWith("czas_dwu_zielony")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: dwuglowy niebieski.");
@@ -1556,7 +1557,7 @@ public class KillDragons extends AbstractQuest {
 		if ("dwu_zielony".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem zielonego dwugłowego smoka i zaniosłem Alicji skóry!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " zielonego dwugłowego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry!");
 		if (questState.startsWith("czas_arktyczny")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: dwuglowy zielony.");
@@ -1573,7 +1574,7 @@ public class KillDragons extends AbstractQuest {
 		if ("arktyczny".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem arktycznego smoka i zaniosłem Alicji kły smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " arktycznego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji kły smoka!");
 		if (questState.startsWith("czas_dru_czerwony")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: arktyczny.");
@@ -1590,7 +1591,7 @@ public class KillDragons extends AbstractQuest {
 		if ("dru_czerwony".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem czerwonego dwugłowego smoka i zaniosłem Alicji skóry!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czerwonego dwugłowego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry!");
 		if (questState.startsWith("czas_czarny")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: dwuglowy czerwony.");
@@ -1607,7 +1608,7 @@ public class KillDragons extends AbstractQuest {
 		if ("czarny".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem czarnego smoka i zaniosłem Alicji skóry czarnego smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czarnego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry czarnego smoka!");
 		if (questState.startsWith("czas_dwuglowy_czarny")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: czarny.");
@@ -1624,7 +1625,7 @@ public class KillDragons extends AbstractQuest {
 		if ("dwuglowy_czarny".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem czarnego dwugłowego smoka i zaniosłem Alicji skóry czarnego smoka!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czarnego dwugłowego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji skóry czarnego smoka!");
 		if (questState.startsWith("czas_czar_latajacy")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: czarny dwuglowy.");
@@ -1641,7 +1642,7 @@ public class KillDragons extends AbstractQuest {
 		if ("czar_latajacy".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem czarnego latającego smoka i zaniosłem Alicji pazury!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czarnego latającego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji pazury!");
 		if (questState.startsWith("czas_latajacy_zloty")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: czarny latajacy.");
@@ -1658,7 +1659,7 @@ public class KillDragons extends AbstractQuest {
 		if ("latajacy_zloty".equals(questState)) {
 			return res;
 		}
-		res.add("Zabiłem złotego latającego smoka i zaniosłem Alicji jego pazur!");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " złotego latającego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Alicji jego pazur!");
 		if (questState.startsWith("czas_wawelski")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Odwiedzę Alicję, aby sprawdzić czy amulet zadziałał. Hasło: zloty latajacy.");
@@ -1675,7 +1676,7 @@ public class KillDragons extends AbstractQuest {
 		if ("wawelski".equals(questState)) {
 			return res;
 		}
-		res.add("Alicja może w końcu spać bez koszmarów. Za pomoc dostałem młot wulkanów, który należał do jej dziadka");
+		res.add("Alicja może w końcu spać bez koszmarów. Za pomoc " + Grammar.genderVerb(player.getGender(), "dostałem") + " młot wulkanów, który należał do jej dziadka");
 		if (isCompleted(player)) {
 			return res;
 		}

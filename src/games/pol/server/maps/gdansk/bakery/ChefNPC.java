@@ -105,7 +105,7 @@ public class ChefNPC implements ZoneConfigurator  {
 						requiredResources, 3 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj! Jakże miło, że zawitałeś do mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'.");
+				"Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!");
 			}};
 
 			npc.setDescription("Oto Ernest. Jego praca daje mu piękny zapach.");

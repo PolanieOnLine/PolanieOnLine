@@ -304,7 +304,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 				res.add(("Zostałem poproszony o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Zakopanemu. Nie mam tego jeszcze."));
 			} else {
-				res.add(("Znalazłem "
+				res.add((Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
 						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Zakopanemu i muszę je dostarczyć."));
 			}
 		}
@@ -314,9 +314,9 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-			res.add("Dostarczyłem ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add("Dostarczyłem ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.");
 		}
 		return res;
 	}

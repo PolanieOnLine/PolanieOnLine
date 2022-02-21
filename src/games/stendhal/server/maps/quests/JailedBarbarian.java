@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -296,7 +297,7 @@ public class JailedBarbarian extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Odnalazłem drogę do chaty Lorenza.");
+		res.add(Grammar.genderVerb(player.getGender(), "Odnalazłem") + " drogę do chaty Lorenza.");
 		res.add("Lorenz potrzebuje kosę, ale nie starą, aby ściąć kwiaty. Uważa je za brzydkie.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomóc Lorenzowi w  wycięciu kwiatów. Za cokolwiek skazany, założę się, że na to zasłużył.");
@@ -329,7 +330,7 @@ public class JailedBarbarian extends AbstractQuest {
 		if ("armor".equals(questState)) {
 			return res;
 		}
-		res.add("Przyniosłem Lorenzowi zbroje! Dał mi zrabowane złoto Princesin i zarobiłem dużo doświadczenia.");
+		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Lorenzowi zbroje! Dał mi zrabowane złoto Princesin i zarobiłem dużo doświadczenia.");
 		if (isCompleted(player)) {
 			return res;
 		}

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -193,7 +194,7 @@ public class MeetFryderyk extends AbstractQuest {
 				return res;
 			}
 			if (isCompleted(player)) {
-				res.add("Rozmawiałem z Fryderykiem i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
+				res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Fryderykiem i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
 			}
 			return res;
 	}

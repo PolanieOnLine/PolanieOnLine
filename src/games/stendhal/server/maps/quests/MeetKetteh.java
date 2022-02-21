@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -196,7 +197,7 @@ public class MeetKetteh extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Ketteh Wehoh w ratuszu w Semos.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ketteh Wehoh w ratuszu w Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("seen_naked".equals(questState)) {
 			res.add("Była w szoku i krzyczał na mnie, że nie powinienem biegać nago. Lepiej założe jakieś ubrania nim mnie znów zobaczy.");

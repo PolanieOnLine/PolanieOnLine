@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -179,21 +180,21 @@ public class PierscienMieszczanina extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem kowala Marianka.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " kowala Marianka.");
 		res.add("Zaproponował mi pierścień mieszczanina.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie potrzebna mi są błyskotki..");
+			res.add("Nie potrzebne mi są błyskotki..");
 			return res;
 		} 
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Kowal Marjanek poprosił abym mu dostarczył: 50 sztabek srebra, 50 sztabek mithrilu, 150 sztabek złota i 30 bryłek mithrilu. po zdobyciu tych żeczy mam mu powiedzieć: pierścień.");
+		res.add("Kowal Marianek poprosił, abym mu " + Grammar.genderVerb(player.getGender(), "dostarczył") + ": 50 sztabek srebra, 50 sztabek mithrilu, 150 sztabek złota i 30 bryłek mithrilu. po zdobyciu tych rzeczy mam mu powiedzieć: pierścień.");
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Kowal Marjanek był zadowolony z mojej postawy. W zamian dostałem pierścień mieszczanina.");
+		res.add("Kowal Marianek był zadowolony z mojej postawy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " pierścień mieszczanina.");
 
 		if (isCompleted(player)) {
 			return res;

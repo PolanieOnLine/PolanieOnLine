@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -190,7 +191,7 @@ public class MeetMonogenes extends AbstractQuest {
 				return res;
 			}
 			if (isCompleted(player)) {
-				res.add("Rozmawiałem z Monogenes i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
+				res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Monogenes i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
 			} 
 			return res;
 	}

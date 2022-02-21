@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -301,7 +302,7 @@ public class ImperialPrincess extends AbstractQuest {
 			res.add("Muszę powiedzieć Księżniczce Ylflii, że mam \" zioła \", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "recommended", "done")) {
-			res.add("Przyniosłem Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
 		}
 		if (questState.equals("done")) {
 			res.add("Król Cozart nadał mi obywatelstwo Kalavan.");

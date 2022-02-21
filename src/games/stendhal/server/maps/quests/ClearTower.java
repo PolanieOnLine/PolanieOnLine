@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -122,13 +123,13 @@ public class ClearTower extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Czarnoksiężnika w jakiejś starej wieży.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Czarnoksiężnika w jakiejś starej wieży.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Czarnoksiężnikowi pomocy.");
 		return res;
 		}
-		res.add("Postanowiłem pomóc Czarnoksiężnikowi w pozbyciu się zalęgłych potworów.");
+		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc Czarnoksiężnikowi w pozbyciu się zalęgłych potworów.");
 		if (("start".equals(questState) && player.hasKilled("starszy gargulec") && player.hasKilled("mroczny gargulec")
 				&& player.hasKilled("trujący gargulec") && player.hasKilled("gargulec")
 				&& player.hasKilled("nietoperz wampir") && player.hasKilled("nietoperz")

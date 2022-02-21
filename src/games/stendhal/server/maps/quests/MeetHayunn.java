@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -205,18 +206,18 @@ public class MeetHayunn extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Hayunn Naratha jest pierwszą osobą jaką kiedykolwiek spotkałem na tym świecie, kazał mi zabić szczura.");
+		res.add("Hayunn Naratha jest pierwszą osobą jaką kiedykolwiek " + Grammar.genderVerb(player.getGender(), "spotkałem") + " na tym świecie, kazał mi zabić szczura.");
 		if (player.getQuest(QUEST_SLOT, 0).equals("start") && new KilledForQuestCondition(QUEST_SLOT,1).fire(player, null, null)) {
-			res.add("Zabiłem tego szczura, powinienem wrócić i mu powiedzieć!");
+			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " tego szczura, powinienem wrócić i mu powiedzieć!");
 		}
 		if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
 			return res;
 		} 
-		res.add("Zabiłem szczura. Hayunn opowie mi teraz więcej o tym świecie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " szczura. Hayunn opowie mi teraz więcej o tym świecie.");
 		if ("killed".equals(questState)) {
 			return res;
 		} 
-		res.add("Hayunn dał mi trochę pieniędzy i kazał mi iść znaleźć Monogenes w Semos City. Dał mi też mapę.");
+		res.add("Hayunn dał mi trochę pieniędzy i kazał mi iść znaleźć Monogenes w mieście Semos. Dał mi też mapę.");
 		if ("taught".equals(questState)) {
 			return res;
 		} 

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
@@ -135,22 +136,22 @@ public class ZabawkaLeo extends AbstractQuest {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
 			if (player.isEquipped("pluszowy miś")) {
-				res.add("Leo opowiedział o zgubionym misiu, którego mam ze sobą");
+				res.add("Leo opowiedział o zgubionym misiu, którego mam ze sobą.");
 			}
 			return res;
 		}
-		res.add("Spotkałem Leo na placu zabaw");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Leo na placu zabaw.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie chcę szukać pluszowego misia Leo");
+			res.add("Nie chcę szukać pluszowego misia Leo.");
 			return res;
 		}
-		res.add("Nie chcę pomóc Leo w poszukaniu jego misia");
+		res.add("Nie chcę pomóc Leo w poszukaniu jego misia.");
 		if (player.isEquipped("pluszowy miś") || isCompleted(player)) {
-			res.add("Znalazłem pluszowego misia Leo");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pluszowego misia Leo.");
 		}
 		if (isCompleted(player)) {
-			res.add("Dałem Leo jego misia.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " Leo jego misia.");
 		}
 		return res;
 	}

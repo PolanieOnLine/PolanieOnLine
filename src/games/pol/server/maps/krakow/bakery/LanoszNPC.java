@@ -73,7 +73,7 @@ public class LanoszNPC implements ZoneConfigurator {
 		final ProducerBehaviour behaviour = new ProducerBehaviour("lanosz_make_sandwich",
 				Arrays.asList("make", "zrób"), "kanapka z tuńczykiem", requiredResources, 2 * 60);
 		new ProducerAdder().addProducer(npc, behaviour,
-				"Witaj! Jakże miło, że zawitałeś do naszej piekarni, gdzie robię #kanapki.");
+				"Witaj w naszej piekarni, gdzie robię #kanapki!");
 
 		npc.setDescription("Oto Lanosz. Mąż Edny, jest doskonałym piekarzem, a jego specjalnością są kanapki rybne, przygotowywane z miejscowych świeżych składników.");
 		npc.setEntityClass("chefnpc");

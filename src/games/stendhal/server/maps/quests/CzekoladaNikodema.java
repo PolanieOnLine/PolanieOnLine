@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -210,11 +211,11 @@ public class CzekoladaNikodema extends AbstractQuest {
 			res.add("Nikodem chce dostać tabliczkę czekolady.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("tabliczka czekolady") || isCompleted(player)) {
-			res.add("Znalazłem pyszną tabliczkę czekolady dla Nikodema.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pyszną tabliczkę czekolady dla Nikodema.");
 		}
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add("Przyniosłem trochę czekolady dla Nikodema. Może chciałby więcej czekolady.");
+                res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " trochę czekolady dla Nikodema. Może chciałby więcej czekolady.");
             } else {
                 res.add("Nikodem je czekoladę, którą mu dałem.");
             }

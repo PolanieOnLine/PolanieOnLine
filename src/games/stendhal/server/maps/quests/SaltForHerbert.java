@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -242,7 +243,7 @@ public class SaltForHerbert extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Poznałem Herberta.");
+		res.add(Grammar.genderVerb(player.getGender(), "Poznałem") + " Herberta.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomagać Herbertowi.");
@@ -250,10 +251,10 @@ public class SaltForHerbert extends AbstractQuest {
 		}
 		res.add("Chcę pomóc Herbertowi");
 		if (player.isEquipped("sól", REQUIRED_SALT) || isCompleted(player)) {
-			res.add("Wydobyłem potrzebną sól dla Herbarta");
+			res.add(Grammar.genderVerb(player.getGender(), "Wydobyłem") + " potrzebną sól dla Herbarta");
 		}
 		if (isCompleted(player)) {
-			res.add("Zaniosłem Herbertowi sól.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " Herbertowi sól.");
 		}
 		if(isRepeatable(player)){
 			res.add("Herbert znowu potrzebuje sól.");

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -251,7 +252,7 @@ public class PlaszczKapturka extends AbstractQuest {
 			}
 			return res;
 		}
-		res.add("Spotkałem Balbine wraz z przyjaciółmi w parku zabaw");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Balbine wraz z przyjaciółmi w parku zabaw");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Balbinie w sprawie płaszcza czarwonego kapturka");
@@ -271,7 +272,7 @@ public class PlaszczKapturka extends AbstractQuest {
 			res.add("Mam już płaszcz kapturka dla Balbiny");
 		}
 		if (isCompleted(player)) {
-			res.add("Przekazałem Balbinie jej wymarzony płaszcz czerwonego kapturka.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " Balbinie jej wymarzony płaszcz czerwonego kapturka.");
 		}
 		return res;
 	}

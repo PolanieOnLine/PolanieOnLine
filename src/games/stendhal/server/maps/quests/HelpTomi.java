@@ -14,6 +14,7 @@ package games.stendhal.server.maps.quests;
 import java.util.ArrayList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -163,7 +164,7 @@ public class HelpTomi extends AbstractQuest {
 			if (!"done".equals(questState)) {
 				final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
 				if (repetitions>1) {
-					res.add("Przekazałem dotychczas " + repetitions + " mieczy lodowych Tomiemu.");
+					res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " dotychczas " + repetitions + " mieczy lodowych Tomiemu.");
 				}
 			}
 		}

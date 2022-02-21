@@ -461,7 +461,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem się z burmistrzem  w Sakhs Semos Townhall");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z burmistrzem  w Sakhs Semos Townhall");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomóc Semos.");
@@ -474,10 +474,10 @@ public class DailyMonsterQuest extends AbstractQuest {
 					.fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add("Zostałem poproszony o zabicie" + creatureToKill
+				res.add("Zostałem poproszony o zabicie " + creatureToKill
 						+ ", aby pomóc Semos. Jeszcze go nie zabiłem.");
 			} else {
-				res.add("Zabiłem " + creatureToKill
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " " + creatureToKill
 						+ ", aby pomóc Semos.");
 			}
 		}
@@ -488,9 +488,9 @@ public class DailyMonsterQuest extends AbstractQuest {
 					- System.currentTimeMillis();
 
 			if (timeRemaining > 0L) {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie burmistrz i odebrałem nagrodę w ciągu 24 godzin.");
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie burmistrz i odebrałem nagrodę w ciągu 24 godzin.");
 			} else {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie burmistrz i teraz Semos znów potrzebuje mojej pomocy.");
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie burmistrz i teraz Semos znów potrzebuje mojej pomocy.");
 			}
 		}
 		// add to history how often player helped Semos so far

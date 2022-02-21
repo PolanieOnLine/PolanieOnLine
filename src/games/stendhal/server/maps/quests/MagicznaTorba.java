@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -155,20 +156,20 @@ public class MagicznaTorba extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Wizariuszem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Wizariuszem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam być pieskiem na posyłki...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Zgodziłem się zwrócić magiczny pergamin.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się zwrócić magiczny pergamin.");
 		}
 		if ("start".equals(questState) && player.isEquipped("lodowy zwój")
 				|| "done".equals(questState)) {
 			res.add("Mam pergamin dla Wizariusza.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Zwróciłem zwój czarownikowi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zwróciłem") + " zwój czarownikowi.");
 		}
 		return res;
 	}

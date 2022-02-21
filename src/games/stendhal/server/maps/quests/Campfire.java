@@ -242,7 +242,7 @@ public class Campfire extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Sally w swoim obozowisku.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Sally w swoim obozowisku.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę wesprzeć obozowiska drewnem.");
@@ -253,7 +253,7 @@ public class Campfire extends AbstractQuest {
 			res.add("Udało mi się zebrać 10 polan potrzebnych do rozpalenia ogniska.");
 		}
 		if (isCompleted(player)) {
-			res.add("Przekazałem drewno Sally. W zamian otrzymałem od niej trochę jedzenia oraz węgla drzewnego na podróż.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " drewno Sally. W zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " od niej trochę jedzenia oraz węgla drzewnego na podróż.");
 		}
 		if(isRepeatable(player)){
 			res.add("Sally potrzebuje więcej drewna do ponownego rozpalenia ogniska.");

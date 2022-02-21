@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -299,7 +300,7 @@ public class HelpKrasnolud extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem Krasnoluda w kuźni Zakopane.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Krasnoluda w kuźni Zakopane.");
 		res.add("Krasnolud poprosił mnie abym mu przyniósł lazurową zbroje od Wielkoluda.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty bawić się w posłańca.");
@@ -316,15 +317,15 @@ public class HelpKrasnolud extends AbstractQuest {
 		if ("kiel_smoka".equals(questState)) {
 			return res;
 		}
-		res.add("Przyniosłem Gulimo kły, niestety nie miał hełmu. Dał mi podpowiedź, że mogę go kupić u Hagnurk.");
+		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Gulimo kły, niestety nie miał hełmu. Dał mi podpowiedź, że mogę go kupić u Hagnurk.");
 		if ("helmet".equals(questState)) {
 			return res;
 		}
-		res.add("Zaniosłem hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
+		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
 		if ("armor".equals(questState)) {
 			return res;
 		}
-		res.add("Dostarczyłem wszystkie skóry Wielkoludowi w końcu dał mi lazurową zbroję dla Krasnoluda");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " wszystkie skóry Wielkoludowi w końcu dał mi lazurową zbroję dla Krasnoluda");
 		if ("gotarmor".equals(questState)) {
 			return res;
 		}

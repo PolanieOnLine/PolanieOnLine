@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -143,25 +144,25 @@ public class NaprawaLodzi extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-			res.add("Spotkałem pewnego rybaka o imieniu Tomasz, który chciałby wypłynąć w głębokie wody, ale nie może, ponieważ ma zepsutą łódź.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " pewnego rybaka o imieniu Tomasz, który chciałby wypłynąć w głębokie wody, ale nie może, ponieważ ma zepsutą łódź.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać rybakowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Obiecałem Tomaszowi, że przyniąsę wystarczająco dużo drewna, aby mógł naprawić swoją łódź.");
+			res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + " Tomaszowi, że przyniosę wystarczająco dużo drewna, aby mógł naprawić swoją łódź.");
 		}
 		if (questState.equals("start") && player.isEquipped("polano",
 				ILOSC_DREWNA)
 				|| questState.equals("done")) {
-			res.add("Mam już wystarczająco dużo drewna. Teraz musiałbym zanieść je do Tomasza.");
+			res.add("Mam już wystarczająco dużo drewna. Teraz muszę dostarczyć do Tomasza.");
 		}
 		if (questState.equals("start")
 				&& !player.isEquipped("polano", ILOSC_DREWNA)) {
-			res.add("Jeszcze nie zdobyłem wystarczająco dużo drewna dla rybaka.");
+			res.add("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "zdobyłem") + " wystarczająco dużo drewna dla rybaka.");
 		}
 		if (questState.equals("done")) {
-			res.add("Zaniosłem drewno rybakowi i w nagrodę od niego otrzymałem rzadkie ryby!");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " drewno rybakowi i w nagrodę od niego " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " rzadkie ryby!");
 		}
 		return res;
 	}

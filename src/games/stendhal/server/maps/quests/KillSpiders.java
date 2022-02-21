@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -76,7 +77,7 @@ public class KillSpiders extends AbstractQuest {
 							raiser.say("Byłeś kiedyś w szkolnej piwnicy? Odkąd studenci eksperymentowali to pokój jest pełen pająków i niektóre mogą być niebezpieczne! Czy mógłbyś mi pomóc z tym 'małym' problemem?");
 							raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 						}  else if (player.isQuestCompleted(QUEST_SLOT)) {
-							raiser.say("Już Cię wysłałem, abyś zabił wszystkie potwory w piwnicy!");
+							raiser.say("Już Cię wysłałem, abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " wszystkie potwory w piwnicy!");
 						}  else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 							final long delay = MathHelper.MILLISECONDS_IN_ONE_WEEK;
@@ -194,7 +195,7 @@ public class KillSpiders extends AbstractQuest {
 			return history;
 		}
 		if ("killed".equals(questState)) {
-			history.add("Zabiłem wszystkie pająki w piwnicy w szkole magów i dostałem mythical egg.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie pająki w piwnicy w szkole magów i " + Grammar.genderVerb(player.getGender(), "dostałem") + " mythical egg.");
 			return history;
 		}
 
@@ -206,16 +207,16 @@ public class KillSpiders extends AbstractQuest {
 		final boolean sp3 = "królowa pająków".equals(player.getQuest(QUEST_SLOT, 3));
 		final boolean sp = "start".equals(player.getQuest(QUEST_SLOT, 0));
 		if (sp1) {
-			history.add("Zabiłem pająka w piwnicy.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka w piwnicy.");
 		}
 		if (sp2) {
-			history.add("Zabiłem pająka ptasznika w piwnicy.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka ptasznika w piwnicy.");
 		}
 		if (sp3) {
-			history.add("Zabiłem królową pająków w piwnicy.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " królową pająków w piwnicy.");
 		}
 		if (sp1 && sp2 && sp3) {
-			history.add("Zabiłem wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebrać moją nagrodę.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebrać moją nagrodę.");
 		}
 
 		// here is support for old-style quest
@@ -224,16 +225,16 @@ public class KillSpiders extends AbstractQuest {
 			final boolean osp2 = player.hasKilled("pająk ptasznik");
 			final boolean osp3 = player.hasKilled("królowa pająków");
 			if (osp1) {
-				history.add("Zabiłem pająka w piwnicy.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka w piwnicy.");
 			}
 			if (osp2) {
-				history.add("Zabiłem pająka ptasznika w piwnicy.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka ptasznika w piwnicy.");
 			}
 			if (osp3) {
-				history.add("Zabiłem królową pająków w piwnicy.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " królową pająków w piwnicy.");
 			}
 			if (osp1 && osp2 && osp3) {
-				history.add("Zabiłem wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebra moją nagrodę.");
+				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebra moją nagrodę.");
 			}
 		}
 

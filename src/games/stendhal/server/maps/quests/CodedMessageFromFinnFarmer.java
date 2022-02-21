@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -287,7 +288,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem w Ados z chłopcem o imieniu Finn Farmer.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " w Ados z chłopcem o imieniu Finn Farmer.");
 		res.add("Finn poprosił mnie o przekazanie George'owi tajnej wiadomości. Mogę go spotkać niedaleko jego psa Tommy w parku Ados.");
 
 		final String questState = player.getQuest(QUEST_SLOT, 0);
@@ -296,7 +297,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 			return res;
 		}
 
-		res.add("Zgodziłem się na przekazanie wiadomości.");
+		res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się na przekazanie wiadomości.");
 		if (questState.equals("deliver_to_george")) {
 			return res;
 		}

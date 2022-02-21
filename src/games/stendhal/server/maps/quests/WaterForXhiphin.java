@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -246,13 +247,13 @@ public class WaterForXhiphin extends AbstractQuest {
 		res.add("Xhiphin Zohos jest spragniony od stania cały dzień w słońcu.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Powiedziałem Xhiphin Zohos, że nie przyniosę mu wody.");
+			res.add(Grammar.genderVerb(player.getGender(), "Powiedziałem") + " Xhiphin Zohos, że nie przyniosę mu wody.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
-			res.add("Zgodziłem się przynieść mu trochę wody, aby Xhiphin Zohos ugasił pragnienie.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się przynieść mu trochę wody, aby Xhiphin Zohos ugasił pragnienie.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("woda") && new NotCondition(new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING)).fire(player, null, null) || isCompleted(player)) {
-			res.add("Znalazłem źródło świeżej wody, ale nie jestem pewny czy jest bezpieczna do picia dla Xhiphina.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " źródło świeżej wody, ale nie jestem " + Grammar.genderVerb(player.getGender(), "pewny") + " czy jest bezpieczna do picia dla Xhiphina.");
 		}
 		if (new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING).fire(player, null, null) || isCompleted(player)) {
 			res.add("Stefan, szef w hotelu w Fado sprawdził wodę, którą zebrałem i jest czysta i zdatna do picia.");
@@ -260,9 +261,9 @@ public class WaterForXhiphin extends AbstractQuest {
 		// checked water was clean?
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add("Wziąłem wodę do Xhiphin Zohos jakiśczas temu.");
+                res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " wodę do Xhiphin Zohos jakiś czas temu.");
             } else {
-                res.add("Wziąłem wcześniej wodę do Xhiphin Zohos i otrzymałem od niego trochę mikstur.");
+                res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " wcześniej wodę do Xhiphin Zohos i " + Grammar.genderVerb(player.getGender(), "" + Grammar.genderVerb(player.getGender(), "otrzymałem") + "") + " od niego trochę mikstur.");
             }			
 		}
 		return res;

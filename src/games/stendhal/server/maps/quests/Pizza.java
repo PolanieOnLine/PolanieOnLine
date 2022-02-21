@@ -351,7 +351,7 @@ public class Pizza extends AbstractQuest {
 				100, 
 				// experience gain for delivery
 				175, 
-				"Dziękuję bardzo! Nareszcie dostałem lepsze jedzenie niż to które gotuje Laura. Weź te %d złota jako napiwek!",
+				"Dziękuję bardzo! Nareszcie mam lepsze jedzenie niż to, które gotuje Laura. Weź te %d złota jako napiwek!",
 				"Niedobrze. Jest zimna. Miałem nadzieje, że dostanę coś lepszego niż okrętowe jedzenie.",
 				10));
 
@@ -629,7 +629,7 @@ public class Pizza extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem Ernesta i zgodził się pomóc przy roznoszeniu pizzy.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ernesta i zgodził się pomóc przy roznoszeniu pizzy.");
 		if (!"done".equals(questState)) {
 			final String[] questData = questState.split(";");
 			final String customerName = questData[0];

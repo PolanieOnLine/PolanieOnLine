@@ -19,6 +19,7 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -324,7 +325,7 @@ public class TannerNPC implements ZoneConfigurator {
 					for (final String itemName: requiredItems.keySet()) {
 						final int quantity = requiredItems.get(itemName);
 						if (player.isEquipped(itemName, quantity)) {
-							res.add("Zdobyłem " + itemName + ".");
+							res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " " + itemName + ".");
 						} else {
 							res.add("Nadal muszę znaleźć " + Integer.toString(quantity) + " " + itemName);
 						}

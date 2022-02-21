@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -193,14 +194,14 @@ public class BringMagic extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Czarnoksiężnika w starej wieży w okolicy lasu.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Czarnoksiężnika w starej wieży w okolicy lasu.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Czarnoksiężnikowi pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Czarnoksiężnikowi pomocy.");
 		return res;
 		}
 		if ("done".equals(questState)) {
-			res.add("Za pomoc w zadaniach otrzymałem wspaniały magiczny hełm od Czarnoksiężnika.");
+			res.add("Za pomoc w zadaniach " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " wspaniały magiczny hełm od Czarnoksiężnika.");
 		}
 		return res;
 	}

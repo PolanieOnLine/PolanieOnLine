@@ -312,7 +312,7 @@ public class WeaponsCollector2 extends AbstractQuest {
 			if (!isCompleted(player)) {
 				res.add("Jestem na etapie gromadzenia broni dla Balduin, potrzebuje jeszcze " + Grammar.enumerateCollection(missingWeapons(player, false)) + ".");
 			} else {
-				res.add("Znalazłem wszystkie bronie, o które prosił Balduin a on mnie wynagrodził parą mieczy.");
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " wszystkie bronie, o które prosił Balduin a on mnie wynagrodził parą mieczy.");
 			}
 			return res;
 	}

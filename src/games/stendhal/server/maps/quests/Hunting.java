@@ -456,7 +456,7 @@ public class Hunting extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Janisława w domku Zakopanego.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Janisława w domku Zakopanego.");
 		final String questStateFull = player.getQuest(QUEST_SLOT);
 		final String[] parts = questStateFull.split(";");
 		final String questState = parts[0];
@@ -485,7 +485,7 @@ public class Hunting extends AbstractQuest {
 			res.add(howManyWereKilled(player, questState));
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add("Zabiłem ostatniego potwora o którego prosił mnie Janisław. Może znowu będzie miał dla mnie wyzwanie.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie Janisław. Może znowu będzie miał dla mnie wyzwanie.");
 		}
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
 		if (repetitions > 0) {

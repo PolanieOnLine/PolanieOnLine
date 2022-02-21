@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -150,16 +151,16 @@ public class SmoczyAmulet extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Robercikiem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Robercikiem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie potrzebuję jakiegoś amuletu...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Zgodziłem się zebrać pazurki dla Robercika w zamian za amulet.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się zebrać pazurki dla Robercika w zamian za amulet.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Zaniosłem potrzebne smocze pazurki, a w zamian otrzymałem smoczy amulet.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " potrzebne smocze pazurki, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " smoczy amulet.");
 		}
 		return res;
 	}

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -25,7 +26,6 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.Region;
 
 public class LearnAboutMining extends AbstractQuest {
 	private static final String QUEST_SLOT = "learn_mining";
@@ -126,7 +126,7 @@ public class LearnAboutMining extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Górnika w kopalni Zakopane, niedaleko chatki górniczej.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Górnika w kopalni Zakopane, niedaleko chatki górniczej.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("done")) {
 			res.add("Górnik opowiedział mi o kopaniu i o tym, że mogę wrócić, aby przypomnieć sobie jak to działa.");

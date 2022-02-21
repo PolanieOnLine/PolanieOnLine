@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -235,7 +236,7 @@ public class PierscienMagnata extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Jubilera Zdzicha.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " jubilera Zdzicha.");
 		res.add("Zaproponował mi pierścień magnata.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
@@ -245,11 +246,11 @@ public class PierscienMagnata extends AbstractQuest {
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Zdzichu poprosił abym mu dostarczył mu parę rzeczy. Gdy zdobędę te przedmioty mam mu powiedzieć: pierścień.");
+		res.add("Zdzichu poprosił, abym mu " + Grammar.genderVerb(player.getGender(), "dostarczył") + " mu parę rzeczy. Gdy zdobędę te przedmioty mam mu powiedzieć: pierścień.");
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Jubiler Zdzichu był zadowolony z mojej postawy. W zamian dostałem pierścień magnata.");
+		res.add("Jubiler Zdzichu był zadowolony z mojej postawy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " pierścień magnata.");
 
 		if (isCompleted(player)) {
 			return res;

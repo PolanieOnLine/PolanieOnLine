@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -182,7 +183,7 @@ public class BramaZrc extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem strażnika bram zakonu ZRC.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " strażnika bram zakonu ZRC.");
 		res.add("Cień poprosił mnie o uzupełnienie jego magazynów.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty pomagać Cieniowi...");
@@ -195,7 +196,7 @@ public class BramaZrc extends AbstractQuest {
 		if ("dostawca".equals(questState)) {
 			return res;
 		}
-		res.add(npc.getName() + " jest szczęśliwy z mojej pomocy. W zamian dostałem klucz do bram zakonu.");
+		res.add(npc.getName() + " jest szczęśliwy z mojej pomocy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " klucz do bram zakonu.");
 		if (isCompleted(player)) {
 			return res;
 		}

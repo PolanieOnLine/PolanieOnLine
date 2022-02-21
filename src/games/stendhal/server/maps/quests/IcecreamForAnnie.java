@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -299,14 +300,14 @@ public class IcecreamForAnnie extends AbstractQuest {
 			res.add("Mała Annie potrzebuje zimne lody.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start","mummy") && player.isEquipped("lody") || isCompleted(player)) {
-			res.add("Znalazłem smaczne lody dla Annie.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " smaczne lody dla Annie.");
 		}
         if ("mummy".equals(questState) || isCompleted(player)) {
-            res.add("Rozmawiałem z panią Jones, która zgodziła się i mogę przekazać lody dla jej córki.");
+            res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z panią Jones, która zgodziła się i mogę przekazać lody dla jej córki.");
         }
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add("Dałem lody do Annie, a w zamian dała mi prezent. Lubię prezenty!.");
+                res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " lody do Annie, a w zamian dała mi prezent. Lubię prezenty!.");
             } else {
                 res.add("Aktualnie dziewczynka jest zajęta jedzeniem lodów, które jej dałem.");
             }

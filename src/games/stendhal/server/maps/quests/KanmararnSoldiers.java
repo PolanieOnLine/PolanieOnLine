@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -462,7 +463,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem przerażonego żołnierza w Kanmararn City. Zapytał mnie, czy odnazał bym jego przyjaciół: Petera, Charlesa, i Toma.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " przerażonego żołnierza w Kanmararn City. Zapytał mnie, czy odnazał bym jego przyjaciół: Petera, Charlesa, i Toma.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie pomogę dla Henry.");
 			return res;
@@ -470,11 +471,11 @@ public class KanmararnSoldiers extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Niestety znalazłem tylko ich zwłoki Petera, Charlesa, i Toma. Henry był przerażony. Za fatygę dał mi mapę i jakąś karteczkę. Nie mam pojęcia po co mi to.");
+		res.add("Niestety " + Grammar.genderVerb(player.getGender(), "znalazłem") + " tylko ich zwłoki Petera, Charlesa, i Toma. Henry był przerażony. Za fatygę dał mi mapę i jakąś karteczkę. Nie mam pojęcia po co mi to.");
 		if ("map".equals(questState)) {
 			return res;
 		}
-		res.add("Poznałem sierżanta Jamesa i dałem mu mapę. On dał mi w zamian solidne buty mainiocyjskie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Poznałem") + " sierżanta Jamesa i " + Grammar.genderVerb(player.getGender(), "dałem") + " mu mapę. On dał mi w zamian solidne buty mainiocyjskie.");
 		if (isCompleted(player)) {
 			return res;
 		}

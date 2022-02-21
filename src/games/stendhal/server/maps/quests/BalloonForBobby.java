@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -265,7 +266,7 @@ public class BalloonForBobby extends AbstractQuest {
 				} else {
 					balloon = balloon + "ów";
 				}
- 				res.add("Znalazłem i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + npc.getName() + ".");
+ 				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + npc.getName() + ".");
 			}
 		}
 

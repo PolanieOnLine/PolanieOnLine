@@ -285,7 +285,7 @@ public class FindGhosts extends AbstractQuest {
 				return res;
 			}
 			if (!isCompleted(player)) {
-				res.add("Znalazłem " + missingNames(player).size() + " " + Grammar.plnoun(missingNames(player).size(), "ghost") + " aby powiedzieć Carenie.");
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " " + missingNames(player).size() + " " + Grammar.plnoun(missingNames(player).size(), "ghost") + " aby powiedzieć Carenie.");
 			} else {
 				res.add("Carena ucieszyła się, że są inne duchy na świecie. Za moje zaangażowanie podniosła moją żywotność.");
 			}

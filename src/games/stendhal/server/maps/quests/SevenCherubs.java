@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
@@ -67,13 +68,13 @@ public class SevenCherubs extends AbstractQuest {
 	private final HashMap<String, String> cherubsHistory = new HashMap<String,String>();
 
 	private void fillHistoryMap() {
-		cherubsHistory.put("Cherubiel", "Spotkałem Cherubiel w wiosce Semos.");
-		cherubsHistory.put("Ophaniel",  "Spotkałem Ophaniel nad rzeką Orril.");
-		cherubsHistory.put("Gabriel",   "Spotkałem Gabriel w mieście Nalwor.");
-		cherubsHistory.put("Raphael",   "Spotkałem Raphael pomiędzy rzeką Orril, a mostem do Fado.");
-		cherubsHistory.put("Zophiel",   "Spotkałem Zophiel na górze Semos.");
-		cherubsHistory.put("Azazel",    "Spotkałem Azazel na Ados Rock.");
-		cherubsHistory.put("Uriel",     "Spotkałem Uriel na górze Orril.");
+		cherubsHistory.put("Cherubiel", "Cherubiel przebywał w wiosce Semos.");
+		cherubsHistory.put("Ophaniel",  "Ophaniel przebywał nad rzeką Orril.");
+		cherubsHistory.put("Gabriel",   "Gabriel przebywał w mieście Nalwor.");
+		cherubsHistory.put("Raphael",   "Raphael przebywał pomiędzy rzeką Orril, a mostem do Fado.");
+		cherubsHistory.put("Zophiel",   "Zophiel przebywał na górze Semos.");
+		cherubsHistory.put("Azazel",    "Azazel przebywał na Ados Rock.");
+		cherubsHistory.put("Uriel",     "Uriel przebywał na górze Orril.");
 	}
 
 	static class CherubNPC extends SpeakerNPC {
@@ -122,7 +123,7 @@ public class SevenCherubs extends AbstractQuest {
 							if (left > -1) {
 								raiser.say("Poszukaj innych aniołków, aby dostać nagrodę!");
 							} else {
-								raiser.say("Szukałeś i znalazłeś wszystkie aniołki! W nagrodę dostałeś potężny artefakt.");
+								raiser.say(Grammar.genderVerb(player.getGender(), "Szukałeś") + " i " + Grammar.genderVerb(player.getGender(), "znalazłeś") + " wszystkie aniołki! W nagrodę " + Grammar.genderVerb(player.getGender(), "dostałeś") + " potężny artefakt.");
 							}
 						} else {
 							player.setQuest(QUEST_SLOT, npcDoneText + ";"
@@ -141,7 +142,7 @@ public class SevenCherubs extends AbstractQuest {
 									player.addXP((7 - left + 1) * 200);
 								}
 							} else {
-								raiser.say("Udowodniłeś, że jesteś w stanie nosić ten potężny artefakt!");
+								raiser.say(Grammar.genderVerb(player.getGender(), "Udowodniłeś") + ", że jesteś w stanie nosić ten potężny artefakt!");
 
 								/*
 								 * Proposal by Daniel Herding (mort): once
@@ -235,13 +236,13 @@ public class SevenCherubs extends AbstractQuest {
 				if (!cherub.trim().equals("")) {
 					if (first) {
 						first = false;
-						res.add("Zacząłem szukać siedmiu aniołków");
+						res.add(Grammar.genderVerb(player.getGender(), "Zacząłem") + " szukać siedmiu aniołków.");
 					}
 					res.add(cherubsHistory.get(cherub));
 				}
 			}
 			if (isCompleted(player)) {
-				res.add("Zrobione! Znalazłem je wszystkie!");
+				res.add("Zrobione! " + Grammar.genderVerb(player.getGender(), "Znalazłem") + " je wszystkie!");
 			}
 		}
 		return res;

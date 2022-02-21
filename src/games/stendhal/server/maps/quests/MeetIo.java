@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -158,7 +159,7 @@ public class MeetIo extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem telepatkę Io Flotto w świątyni Semos.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " telepatkę Io Flotto w świątyni Semos.");
 		if (isCompleted(player)) {
 			res.add("Io nauczyła mnie sześciu podstawowych zasad telepatii i przyrzekła przypomnieć mi jeżeli będę musiał odświeżyć moją wiedzę.");
 		}

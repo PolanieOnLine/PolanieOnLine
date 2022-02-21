@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
@@ -40,19 +41,19 @@ public class WhereDragon extends AbstractQuest {
 
 	private final HashMap<String, String> dragonHistory = new HashMap<String,String>();
 	private void fillHistoryMap() {
-		dragonHistory.put("Antithei",   "Spotkałem Antithei na Kościelisku.");
-		dragonHistory.put("Felcor",     "Spotkałem Felcor w Ados Caves.");
-		dragonHistory.put("Cinnabar",   "Spotkałem Cinnabar w Semos Mine.");
-		dragonHistory.put("Mentis",     "Spotkałem Mentis w Zakopane Mines.");
-		dragonHistory.put("Cornoctis",  "Spotkałem Cornoctis na Kalavan Forest.");
-		dragonHistory.put("Ketsurui",   "Spotkałem Ketsurui na Orril Mountain.");
-		dragonHistory.put("Adamantis",  "Spotkałem Adamantis na Athor Island.");
-		dragonHistory.put("Cruorordis", "Spotkałem Cruorordis koło Warszawy.");
-		dragonHistory.put("Hekate",     "Spotkałem Hekate na koscielisku Podzamcze.");
-		dragonHistory.put("Miles",      "Spotkałem Miles na Desert Pyramid.");
-		dragonHistory.put("Vircassis",  "Spotkałem Vircassis na Semos Mountain.");
-		dragonHistory.put("Decida",     "Spotkałem Decida w Krakow Cave.");
-		dragonHistory.put("Hikari",		"Spotkałem Hikari w Zakopane Mountain Room");
+		dragonHistory.put("Antithei",   "Antithei przebywał na Kościelisku.");
+		dragonHistory.put("Felcor",     "Felcor przebywał w Ados Caves.");
+		dragonHistory.put("Cinnabar",   "Cinnabar przebywał w Semos Mine.");
+		dragonHistory.put("Mentis",     "Mentis przebywał w Zakopane Mines.");
+		dragonHistory.put("Cornoctis",  "Cornoctis przebywał na Kalavan Forest.");
+		dragonHistory.put("Ketsurui",   "Ketsurui przebywał na Orril Mountain.");
+		dragonHistory.put("Adamantis",  "Adamantis przebywał na Athor Island.");
+		dragonHistory.put("Cruorordis", "Cruorordis przebywał koło Warszawy.");
+		dragonHistory.put("Hekate",     "Hekate przebywał na koscielisku Podzamcze.");
+		dragonHistory.put("Miles",      "Miles przebywał na Desert Pyramid.");
+		dragonHistory.put("Vircassis",  "Vircassis przebywał na Semos Mountain.");
+		dragonHistory.put("Decida",     "Decida przebywał w Krakow Cave.");
+		dragonHistory.put("Hikari",		"Hikari przebywał w Zakopane Mountain Room");
 	}
 
 	@Override
@@ -107,9 +108,9 @@ public class WhereDragon extends AbstractQuest {
 
 						if (list.contains(raiser.getName())) {
 							if (left > -1) {
-								raiser.say("Poszukaj innych smoków a zostaniesz wynagrodzony!");
+								raiser.say("Poszukaj innych smoków a zostaniesz " + Grammar.genderVerb(player.getGender(), "wynagrodzony") + "!");
 							} else {
-								raiser.say("Znalazłeś wszystkie smoki! Mam nadzieję, że jesteś zadowolony z nagrody ☺☺☺");
+								raiser.say(Grammar.genderVerb(player.getGender(), "Znalazłeś") + " wszystkie smoki! Mam nadzieję, że jesteś " + Grammar.genderVerb(player.getGender(), "zadowolony") + " z nagrody ☺☺☺");
 							}
 						} else {
 							player.setQuest(QUEST_SLOT, npcDoneText + ";"
@@ -118,7 +119,7 @@ public class WhereDragon extends AbstractQuest {
 							player.getStatusList().removeAll(PoisonStatus.class);
 
 							if (left > 0) {
-								raiser.say("Witaj! Mnie odnalazłeś ☺☺☺ Poszukaj jeszcze  "
+								raiser.say("Witaj! Mnie " + Grammar.genderVerb(player.getGender(), "odnalazłeś") + " ☺☺☺ Poszukaj jeszcze "
 												+ (13 - list.size())
 												+ " z moich braci. Żegnaj!");
 								if (raiser.getZone().getName().equals("0_kościelisko_e")) {
@@ -127,7 +128,7 @@ public class WhereDragon extends AbstractQuest {
 									player.addXP((13 - left + 1) * 500);
 								}
 							} else {
-								raiser.say("Udowodniłeś, że jesteś godny tej nagrody!");
+								raiser.say(Grammar.genderVerb(player.getGender(), "Udowodniłeś") + ", że jesteś " + Grammar.genderVerb(player.getGender(), "godny") + " tej nagrody!");
 
 								final String[] items = { "magiczna tarcza płytowa", "tarcza chaosu", "tarcza xenocyjska" };
 								final Item item = SingletonRepository.getEntityManager()
@@ -221,13 +222,13 @@ public class WhereDragon extends AbstractQuest {
 					res.add(dragon.toUpperCase());
 					if (first) {
 						first = false;
-						res.add("Podjąłem się znalezienia wszystkich smoków.");
+						res.add(Grammar.genderVerb(player.getGender(), "Podjąłem") + " się znalezienia wszystkich smoków.");
 					}
 					res.add(dragonHistory.get(dragon));
 				}
 			}
 			if (isCompleted(player)) {
-				res.add("Smoki znalazłem i dostałem nagrodę.");
+				res.add("Smoki " + Grammar.genderVerb(player.getGender(), "znalazłem") + " i " + Grammar.genderVerb(player.getGender(), "dostałem") + " nagrodę.");
 			}
 		}
 		return res;

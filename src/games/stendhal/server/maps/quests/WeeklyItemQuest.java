@@ -531,7 +531,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem kuratorkę muzeum Kirdneh, Hazel.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " kuratorkę muzeum Kirdneh, Hazel.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomagać muzeum w Kirdneh i stać się największym w kraju.");
@@ -542,21 +542,20 @@ public class WeeklyItemQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem) + " do muzeum w Kirdneh."));
+				res.add(String.format(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + ", aby przynieść " +Grammar.quantityplnoun(amount, questItem) + " do muzeum w Kirdneh."));
 			} else {
 				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem) + " dla muzeum w Kirdneh. Muszę to im zanieść."));
 			}
 		}
 		if (isRepeatable(player)) {
-			res.add("Zaniosłem wartościowy przedmiot do Hazela i muzeum zleciło mi znalezienie następnego.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " wartościowy przedmiot do Hazela i muzeum zleciło mi znalezienie następnego.");
 		} else if (isCompleted(player)) {
-			res.add("Pomogłem muzeum. Za 7 dni zajrze tam znów. Byś może potrzebować będą mojej pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " muzeum. Za 7 dni zajrze tam znów. Byś może potrzebować będą mojej pomocy.");
 		}
 		// add to history how often player helped Hazel so far
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Przyniosłem już "
-					+ Grammar.quantityplnoun(repetitions, "") + " eksponatów do muzeum.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " już " + repetitions + " eksponatów do muzeum.");
 		}
 
 		return res;

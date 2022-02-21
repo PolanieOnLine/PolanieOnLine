@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -142,13 +143,13 @@ public class RosaBasementRats extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem barmankę w Gdańskiej karczmie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " barmankę w Gdańskiej karczmie.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Rosie pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Rosie pomocy.");
 		return res;
 		}
-		res.add("Postanowiłem pomóc w oczyszczaniu piwnicy.");
+		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc w oczyszczaniu piwnicy.");
 		if (("start".equals(questState) && player.hasKilled("rat") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
 			res.add("Piwnica została oczyszczona z gryzoni i węży.");
 		}

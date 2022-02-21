@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -152,15 +153,15 @@ public class NewsFromHackim extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-				res.add("Hackim asystent kowala chce abym zaniósł tajną wiadomość do Xin Blanca w tawernie Semos.");
+				res.add("Hackim asystent kowala chce, abym " + Grammar.genderVerb(player.getGender(), "dostarczył") + " tajną wiadomość do Xin Blanca w tawernie Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("QUEST_REJECTED");
 			return res;
 		}
-			res.add("To zadanie było zbyt niebespieczne dla mnie i nie chciałem zrobić niczego nielegalnego.");
+			res.add("To zadanie było zbyt niebezpieczne dla mnie i nie " + Grammar.genderVerb(player.getGender(), "chciałem") + " zrobić niczego nielegalnego.");
 		if (isCompleted(player)) {
-			res.add("Dostarczyłem wiadomości do Xin Blanca. W zamian dostałem spodnie.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " wiadomości do Xin Blanca. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " spodnie.");
 		}
 		return res;
 	}

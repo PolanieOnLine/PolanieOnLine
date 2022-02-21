@@ -454,7 +454,7 @@ public class DailyItemQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem burmistrza Mayor Chalmers w Ratuszu Ados");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " burmistrza Mayor Chalmers w Ratuszu Ados");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chę pomóc Ados.");
@@ -469,7 +469,7 @@ public class DailyItemQuest extends AbstractQuest {
 				res.add("Zostałem poproszony o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Ados. Nie mam tego jeszcze.");
 			} else {
-				res.add("Znalazłem "
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
 						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Ados i muszę je dostarczyć.");
 			}
 		}
@@ -479,9 +479,9 @@ public class DailyItemQuest extends AbstractQuest {
 					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-            res.add("Dostarczyłem ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.");
+            res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add("Dostarczyłem ostatni przedmiot do burmistrza i odebrałem moją nagrodę w ciągu 24 godzin.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do burmistrza i odebrałem moją nagrodę w ciągu 24 godzin.");
 		}
 		return res;
 	}

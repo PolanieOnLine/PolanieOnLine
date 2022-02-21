@@ -245,7 +245,7 @@ public class ZooFood extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Katinkę w zoo");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Katinkę w zoo");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie mam czasu na zwierzęta i ich problemy z jedzeniem");

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -154,19 +155,19 @@ public class ClubOfThorns extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem się z orczym szamanem w Kotoch.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z orczym szamanem w Kotoch.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę nikogo zabijać dla Szamana Orków.");
 		}
 		if (questState.startsWith("start") || questState.equals("done")) {
-			res.add("Jako wyzwanie mam zabić szefa górskich orków oraz jego świtę. Dostałem klucz do więzienia.");
+			res.add("Jako wyzwanie mam zabić szefa górskich orków oraz jego świtę. " + Grammar.genderVerb(player.getGender(), "dostałem") + " klucz do więzienia.");
 		}
 		if (questState.startsWith("start") && (new KilledForQuestCondition(QUEST_SLOT, 1)).fire(player,null,null) || questState.equals("done")) {
-			res.add("Zabiłem szefa górskich orków w więzieniu Kotoch.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " szefa górskich orków w więzieniu Kotoch.");
 		}
 		if (questState.equals("done")) {
-			res.add("Powiedziałem Szamanowi o wykonaniu zadania, a w zamian otrzymałem potężną maczugę cierniową.");
+			res.add(Grammar.genderVerb(player.getGender(), "Powiedziałem") + " Szamanowi o wykonaniu zadania, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " potężną maczugę cierniową.");
 		}
 		return res;
 	}

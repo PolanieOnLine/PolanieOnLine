@@ -547,14 +547,14 @@ public class Gornictwo extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Górnikiem w kopalni pod Zakopcem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Górnikiem w kopalni pod Zakopcem.");
 
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę brudzić swych rąk w kopalniach.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Postanowiłem pomóc Górnikowi uzupełnić informacje w swojej książce o minerałach.");
+			res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc Górnikowi uzupełnić informacje w swojej książce o minerałach.");
 		}
 
 		if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
@@ -610,7 +610,7 @@ public class Gornictwo extends AbstractQuest {
 		}
 
 		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add("Wykopałem oraz przyniosłem wszystko o co poprosił mnie Górnik. W nagrodę otrzymałem kilof obsydianowy.");
+			res.add("Wykopałem oraz przyniosłem wszystko o co poprosił mnie Górnik. W nagrodę " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " kilof obsydianowy.");
 		}
 
 		return res;

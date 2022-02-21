@@ -97,7 +97,7 @@ public class ChefNPC implements ZoneConfigurator  {
 						requiredResources, 3 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj! Jakże miło, że zawitałeś do mojej piekarni, gdzie robię ciasto o zamorskiej nazwie #pizza oraz #kanapki.");
+				"Witaj w mojej piekarni, gdzie robię ciasto o zamorskiej nazwie #pizza oraz #kanapki!");
 			}
 		};
 

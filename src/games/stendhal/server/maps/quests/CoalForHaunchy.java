@@ -209,13 +209,13 @@ public class CoalForHaunchy extends AbstractQuest {
 			res.add("Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem " + npc.getName() + ", że pomogę mu zdobyć węgiel do grilla.");
 		}
 		if ("start".equals(questState) && player.isEquipped("węgiel",25) || isCompleted(player)) {
-			res.add("Znalazłem 25 kawałków węgla dla " + npc.getName() + ". Sądzę, że się ucieszy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " 25 kawałków węgla dla " + npc.getName() + ". Sądzę, że się ucieszy.");
 		}
 		if (isCompleted(player)) {
 			if (isRepeatable(player)) {
-				res.add("Wziąłem 25 kawałków węgla do " + npc.getName() + ", ale założe się to mało i będze potrzebował więcej. Może wezmę więcej pszynych steków z grilla.");
+				res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " 25 kawałków węgla do " + npc.getName() + ", ale założe się to mało i będze potrzebował więcej. Może wezmę więcej pszynych steków z grilla.");
 			} else {
-				res.add(npc.getName() + " był zadowolony, gdy dałem mu węgiel. Ma go teraz wystarczająco dużo. W zamian otrzymałem od niego kilka pysznych steków jakich w życiu nie jadłem!");
+				res.add(npc.getName() + " był zadowolony, gdy dałem mu węgiel. Ma go teraz wystarczająco dużo. W zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " od niego kilka pysznych steków jakich w życiu nie jadłem!");
 			}			
 		}
 		return res;

@@ -154,7 +154,7 @@ class MakingFabric {
 							+ getProductName()
 							+ ". Skończę za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
 				} else {
-					npc.say("Dałem "
+					npc.say(Grammar.genderVerb(player.getGender(), "Dałem") + " "
 							+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + " mojemu uczniowi Borisa Karlova. Podejdź do niego i zabierz.");
 					player.notifyWorldAboutChanges();
 				}

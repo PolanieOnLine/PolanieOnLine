@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.Player;
@@ -231,10 +232,10 @@ import games.stendhal.server.maps.quests.piedpiper.TPPQuestHelperFunctions;
 		}
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rats".equals(questState)) {
-			history.add("Zabiłem już kilka szczurów atakujących Ados i postaram się zabić ich więcej.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " już kilka szczurów atakujących Ados i postaram się zabić ich więcej.");
 		}
 		if ("done".equals(questState)) {
-			history.add("Zabiłem już kilka szczurów atakujących Ados i otrzymałem nagrodę od Mayora Chalmersa!");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " już kilka szczurów atakujących Ados i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " nagrodę od Mayora Chalmersa!");
 		}
 		return history;
  	}

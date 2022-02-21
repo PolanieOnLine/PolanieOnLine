@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -29,6 +30,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
@@ -38,7 +40,6 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.util.TimeUtil;
 
 /**
  * @author zekkeq
@@ -52,7 +53,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	private static final String FRIEND_3 = "gloves_collector";
 	private static final String FRIEND_4 = "krolewski_plaszcz";
 
-	private static final int REQUIRED_MINUTES = 1440;
+	private static final int REQUIRED_HOURS = 24;
 
 	private static Logger logger = Logger.getLogger(ZlotaCiupagaTrzyWasy.class);
 
@@ -214,26 +215,26 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	}
 
 	private void step_3() { 
-		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("ciupaga", "złota", "nagroda"),
+		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
+
+		npc.add(ConversationStates.ATTENDING, 
+			Arrays.asList("złota", "ciupaga", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;")),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
+			ConversationStates.IDLE, 
+			null, 
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszeniem twojej złotej ciupagi. Wróć za "));
+
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("złota", "ciupaga", "nagroda"),
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
+					new TimePassedCondition(QUEST_SLOT, 1, delay)),
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
-					final long timeRemaining = Long.parseLong(tokens[1]) + delay
-							- System.currentTimeMillis();
-						
-					if (timeRemaining > 0L) {
-						raiser.say("Wciąż pracuje nad twoim zleceniem. Wróć za "
-							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L))
-							+ ", aby odebrać nagrodę. No chyba że chcesz abym zrobił dla ciebie złote strzały.");
-						return;
-					}
-
-					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała?");
+					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała?!");
 					player.addXP(1000000);
 					player.addKarma(200);
 					final Item zlotaCiupagaZTrzemaWasami = SingletonRepository.getEntityManager().getItem("złota ciupaga z trzema wąsami");
@@ -263,19 +264,19 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem się z Hadrinem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Hadrinem.");
 		res.add("Hadrin może ulepszyć moją złotą ciupagę.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam ulepszać swej złotej ciupagi.");
 			return res;
 		}
-		res.add("Udałem się do Hadrina w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym zapomniał co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(Grammar.genderVerb(player.getGender(), "Udałem") + " się do Hadrina w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add("Dostarczyłem potrzebne przedmioty! Hadrin zabrał się za ulepszenie mojej ciupagi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Hadrin zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Hadrin skończył moją ciupagę. Hasło: nagroda.");
 			} else {
 				res.add("Po ciupagę mam zgłosić się za 24 godzin. Hasło: nagroda.");

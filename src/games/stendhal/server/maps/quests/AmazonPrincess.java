@@ -193,13 +193,13 @@ public class AmazonPrincess extends AbstractQuest {
 			res.add("Księżniczka jest spragniona, obiecałem jej egzotyczny napój. Powinienem jej powiedzieć, #napój gdy go zdobędę.");
 		}
 		if ("start".equals(questState) && player.isEquipped("napój z oliwką") || isCompleted(player)) {
-			res.add("Znalazłem napój z oliwką dla księżniczki.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " napój z oliwką dla księżniczki.");
 		}
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add("Dostarczyłem napój dla księżniczki, ale założę się, że jest gotowa na następny. Może będę miał więcej tart z rybą.");
+                res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " napój dla księżniczki, ale założę się, że jest gotowa na następny. Może będę miał więcej tart z rybą.");
             } else {
-                res.add("Księżniczka Esclara uwielbia napój z oliwką, dostarczyłem go jej. Dostałem tartę z nadzieniem rybnym i pocałunek!!");
+                res.add("Księżniczka Esclara uwielbia napój z oliwką, dostarczyłem go jej. " + Grammar.genderVerb(player.getGender(), "dostałem") + " tartę z nadzieniem rybnym i pocałunek!!");
             }
 		}
 		return res;

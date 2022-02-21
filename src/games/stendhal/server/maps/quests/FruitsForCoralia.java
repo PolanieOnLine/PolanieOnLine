@@ -308,7 +308,7 @@ public class FruitsForCoralia extends AbstractQuest {
 			res.add("Mnięło trochę czasu odkąd przyniosłem Coralii świeże owoce do jej kapelusza. Ciekaw jestem czy już zeschły?");
 		} else {
 			// not (currently) repeatable
-			res.add("Przyniosłem Coralii owoce, których potrzebowała do swojego kapelusza, a ona zastąpiła nimi stare, które utraciły blask.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Coralii owoce, których potrzebowała do swojego kapelusza, a ona zastąpiła nimi stare, które utraciły blask.");
 		}
 		return res;
 	}

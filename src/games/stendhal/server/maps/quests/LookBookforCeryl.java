@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -222,7 +223,7 @@ public class LookBookforCeryl extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Ceryl w bibliotece, jest tam bibliotekarzem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ceryl w bibliotece, jest tam bibliotekarzem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę szukać książki.");
@@ -232,13 +233,13 @@ public class LookBookforCeryl extends AbstractQuest {
 		}
 		if (questState.equals("jynath") && player.isEquipped("księga czarna")
 				|| questState.equals("done")) {
-			res.add("Rozmawiałem z Jynath i mam książkę.");
+			res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Jynath i mam książkę.");
 		}
 		if (questState.equals("jynath") && !player.isEquipped("księga czarna")) {
 			res.add("Nie mam książki od Jynath.");
 		}
 		if (questState.equals("done")) {
-			res.add("Zwróciłem książkę Cerylowi i dostałem nagrodę.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zwróciłem") + " książkę Cerylowi i " + Grammar.genderVerb(player.getGender(), "dostałem") + " nagrodę.");
 		}
 		return res;
 	}

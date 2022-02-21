@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -166,7 +167,7 @@ public class SkorySmokow extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Aligerna w chatce na plaży w Gdańsku.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Aligerna w chatce na plaży w Gdańsku.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Aligern'owi.");
@@ -179,7 +180,7 @@ public class SkorySmokow extends AbstractQuest {
 			res.add("Posiadam wszystkie zebrane skóry.");
 		}
 		if (questState.equals("done")) {
-			res.add("Zabiłem smoki jak i zaniosłem potrzebne Aligern'owi skóry smoków. W podzięce dał mi swój klucz. Powiedział, że służy on do otwarcia drzwi, które znadują się po prawej stronie i dalej można zejść do jego Wielkiego Mistrza.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " smoki jak i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " potrzebne Aligern'owi skóry smoków. W podzięce dał mi swój klucz. Powiedział, że służy on do otwarcia drzwi, które znadują się po prawej stronie i dalej można zejść do jego Wielkiego Mistrza.");
 		}
 		return res;
 	}

@@ -1032,8 +1032,14 @@ public class Grammar {
 			if (word.equals("mógł")) {
 				return "mogła";
 			}
+			if (word.equals("mógłbym")) {
+				return "mogłabym";
+			}
 			if (word.equals("powinieneś")) {
 				return "powinnaś";
+			}
+			if (word.equals("powinienem")) {
+				return "powinnam";
 			}
 			if (word.equals("go")) {
 				return "jej";
@@ -1060,6 +1066,9 @@ public class Grammar {
 			if (word.endsWith("ął")) {
 				return word.substring(0, word.length() - 2) + "ęła";
 			}
+			if (word.endsWith("łem")) {
+				return word.substring(0, word.length() - 2) + "am";
+			}
 
 			return word + "a";
 		}
@@ -1068,7 +1077,7 @@ public class Grammar {
 
 	public static String genderNouns(String noun, final String word) {
 		if (noun.endsWith("zwiadowca") || noun.endsWith("kawalerzysta") || noun.endsWith("morderca")
-				|| noun.equals("mefisto") || noun.startsWith("szkielet")) {
+				|| noun.equals("mefisto") || noun.startsWith("szkielet") || noun.startsWith("zgniły")) {
 			return word;
 		}
 

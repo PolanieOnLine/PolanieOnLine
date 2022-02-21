@@ -263,7 +263,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 			if (!isCompleted(player)) {
 				res.add("Jestem na etapie gromadzenia przedmiotów dla Gazdy Bartka, potrzebuje jeszcze " + Grammar.enumerateCollection(missingGoral(player, false)) + ".");
 			} else {
-				res.add("Znalazłem wszystkie góralskie przedmioty, o które prosił Gazda Bartek, a on wynagrodził mnie przepięknym pasem zbójeckim.");
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " wszystkie góralskie przedmioty, o które prosił Gazda Bartek, a on wynagrodził mnie przepięknym pasem zbójeckim.");
 			}
 			return res;
 	}

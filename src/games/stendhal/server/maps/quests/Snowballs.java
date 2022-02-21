@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -234,18 +235,18 @@ public class Snowballs extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Poszedłem do jaskiń lodowych i spotkałem się z Panem Yeti.");
+		res.add(Grammar.genderVerb(player.getGender(), "Poszedłem") + " do jaskiń lodowych i " + Grammar.genderVerb(player.getGender(), "spotkałem") + " się z Panem Yeti.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chciałem tym razem pomóc Mr. Yeti, a on nazłość wysłał mnie w daleką podróż...");
 			return res;
 		}
-		res.add("Mr. Yeti poprosił mnie, abym zebrał dla niego trochę śnieżek. Obiecałem mu to.");
+		res.add("Mr. Yeti poprosił mnie, abym zebrał dla niego trochę śnieżek. " + Grammar.genderVerb(player.getGender(), "Obiecałem") + " mu to.");
 		if ((player.isEquipped("śnieżka", REQUIRED_SNOWBALLS)) || isCompleted(player)) {
-			res.add("Znalazłem trochę śnieżek, gdy zabiłem kilku lodowych golemów. ");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " trochę śnieżek, gdy " + Grammar.genderVerb(player.getGender(), "zabiłem") + " kilku lodowych golemów.");
 		}
 		if (isCompleted(player)) {
-			res.add("Sprawiłem, że Pan Yeti poczuł się szczęśliwy, gdy dałem mu śnieżki, o które prosił.");
+			res.add(Grammar.genderVerb(player.getGender(), "Sprawiłem") + ", że Pan Yeti poczuł się szczęśliwy, gdy " + Grammar.genderVerb(player.getGender(), "dałem") + " mu śnieżki, o które prosił.");
 		}
 		if(isRepeatable(player)){
 			res.add("Pan Yeti potrzebuje śnieżek ponownie!");

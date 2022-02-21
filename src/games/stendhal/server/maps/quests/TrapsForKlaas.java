@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
@@ -296,19 +297,19 @@ public class TrapsForKlaas extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Klaasem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Klaasem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę mieć nic do czynienia z gryzoniami.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Przyrzekłem zdobyć " + REQUIRED_TRAPS + " pułapki na gryzonie i dostarczyć je Klaasowi.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " zdobyć " + REQUIRED_TRAPS + " pułapki na gryzonie i dostarczyć je Klaasowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add("Dałem pułapki na gryzonie Klaasowi. Zdobyłem trochę doświadczenia i antidota.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " pułapki na gryzonie Klaasowi. " + Grammar.genderVerb(player.getGender(), "Zdobyłem") + " trochę doświadczenia i antidota.");
 		}
 		if (isRepeatable(player)) {
-		    res.add("Powinienem sprawdzić czy Klaas znów nie potrzebuje mojej pomocy.");
+		    res.add(Grammar.genderVerb(player.getGender(), "Powinienem") + " sprawdzić czy Klaas znów nie potrzebuje mojej pomocy.");
 		}
 		return res;
 	}

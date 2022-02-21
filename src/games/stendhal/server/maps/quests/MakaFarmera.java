@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -162,25 +163,25 @@ public class MakaFarmera extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-			res.add("Spotkałem farmera o imieniu Bruno, który znajduje się na plantacji zboża.");
+			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " farmera o imieniu Bruno, który znajduje się na plantacji zboża.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać farmerowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "aisha", "done")) {
-			res.add("Obiecałem Bruno, że zaniosę zapasy mąki do krakowskiej piekarni");
+			res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + " Bruno, że zaniosę zapasy mąki do krakowskiej piekarni");
 		}
 		if (questState.equals("aisha") && player.isEquipped("mąka",
 				ILOSC_MAKI)
 				|| questState.equals("done")) {
-			res.add("Otrzymałem od Aishy zapasy mąki i teraz muszę zanieść to do Edny.");
+			res.add("" + Grammar.genderVerb(player.getGender(), "otrzymałem") + " od Aishy zapasy mąki i teraz muszę zanieść to do Edny.");
 		}
 		if (questState.equals("aisha")
 				&& !player.isEquipped("mąka", ILOSC_MAKI)) {
 			res.add("O nie! Zgubiłem całą mąkę, którą miałem przynieść Ednie!");
 		}
 		if (questState.equals("done")) {
-			res.add("Zaniosłem zapasy do piekarni oraz zostałem pochwalony przez Edne.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " zapasy do piekarni oraz zostałem pochwalony przez Edne.");
 		}
 		return res;
 	}

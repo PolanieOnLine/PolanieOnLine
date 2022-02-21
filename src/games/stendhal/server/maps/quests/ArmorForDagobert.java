@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -182,19 +183,19 @@ public class ArmorForDagobert extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Dagobert. Jest konsultantem w banku w Semos.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Dagobert. Jest konsultantem w banku w Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego proźbę.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Przyrzekłem, że znajdę dla niego skórzany kirys ponieważ został okradziony.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " , że znajdę dla niego skórzany kirys ponieważ został okradziony.");
 		}
 		if ("start".equals(questState) && (player.isEquipped("skórzany kirys") || player.isEquipped("skórzany kirys z naramiennikami")) || "done".equals(questState)) {
-			res.add("Znalazłem skórzany kirys i zabiorę go do Dagoberta.");
+			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " skórzany kirys i zabiorę go do Dagoberta.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Wziąłem skórzany kirys do Dagoberta. Podziękował i dał mi nagrodę.");
+			res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " skórzany kirys do Dagoberta. Podziękował i dał mi nagrodę.");
 		}
 		return res;
 	}

@@ -172,7 +172,7 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Zguba Dhohr Nuggetcutter",
-				"Ork Zogfang, który pilnuje wejścia do Abandonded Keep i chce abyś zabił pozostałe w tym obszarze krasnale.",
+				"Ork Zogfang, który pilnuje wejścia do Abandonded Keep i chce aby pozbyć się pozostałych w tym obszarze krasnali.",
 				false);
 		step_1();
 		step_2();

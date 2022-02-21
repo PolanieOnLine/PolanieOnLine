@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -376,7 +377,7 @@ public class Ratownik extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem ratownika Mariusza na obrzeżach Zakopanego");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " ratownika Mariusza na obrzeżach Zakopanego");
 		res.add("Ratownik Mariusz poprosił mnie abym poszukał Juhasa. Ktoś zaginął w górach i muszą zorganizować akcję ratowniczą. Podobno widziano go u starego Bacy.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam czasu na szukanie Juhasa..");
@@ -385,15 +386,15 @@ public class Ratownik extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Znalazłem starego Bacę ale niestety Juhasa tam nie było. Poradził mi abym udał sie do Brzezdoma.");
+		res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " starego Bacę ale niestety Juhasa tam nie było. Poradził mi abym udał sie do Brzezdoma.");
 		if ("krok_brzezdom".equals(questState)) {
 			return res;
 		}
-		res.add("Odnalazłem Brzezdoma. Niestety Juhasa tam też nie było. Dostałem typ abym udał się do gospody w Zakopanem i spytał Jagny o niego.");
+		res.add(Grammar.genderVerb(player.getGender(), "Odnalazłem") + " Brzezdoma. Niestety Juhasa tam też nie było. " + Grammar.genderVerb(player.getGender(), "Dostałem") + " typ abym " + Grammar.genderVerb(player.getGender(), "udał") + " się do gospody w Zakopanem i " + Grammar.genderVerb(player.getGender(), "spytał") + " Jagny o niego.");
 		if ("krok_jagna".equals(questState)) {
 			return res;
 		}
-		res.add("Do gospody dotarłem zbyt puźno. Jagna powiedziała mi aby iść do Wielkoluda. Podobno tam udał się Juhas.");
+		res.add("Do gospody " + Grammar.genderVerb(player.getGender(), "dotarłem") + " zbyt puźno. Jagna powiedziała mi aby iść do Wielkoluda. Podobno tam udał się Juhas.");
 		if ("krok_wielkolud".equals(questState)) {
 			return res;
 		}
@@ -401,15 +402,15 @@ public class Ratownik extends AbstractQuest {
 		if ("krok_szpital".equals(questState)) {
 			return res;
 		}
-		res.add("Boguś był pierwszą osobą, którą spotkałem w szpitalu. Odesłał mnie do Gażdziny Jadźki.");
+		res.add("Boguś był pierwszą osobą, którą " + Grammar.genderVerb(player.getGender(), "spotkałem") + " w szpitalu. Odesłał mnie do Gaździny Jadźki.");
 		if ("krok_szpital".equals(questState)) {
 			return res;
 		}
-		res.add("Gaździna Jadźka poinformowała mnie, że obrażenia Juhasa nie były duże. Opatrzyła mu rany a ten udał się do gaździny Marysiki.");
+		res.add("Gaździna Jadźka poinformowała mnie, że obrażenia Juhasa nie były duże. Opatrzyła mu rany a ten udał się do gaździny Maryśki.");
 		if ("krok_zielarka".equals(questState)) {
 			return res;
 		}
-		res.add("Juhas u gaździny Marysiki był krótko, udał się do Bacy Zbyszka..");
+		res.add("Juhas u gaździny Maryśki był krótko, udał się do Bacy Zbyszka.");
 		if ("krok_maryska".equals(questState)) {
 			return res;
 		}
@@ -425,7 +426,7 @@ public class Ratownik extends AbstractQuest {
 		if ("krok_fryderyk".equals(questState)) {
 			return res;
 		}
-		res.add("No i znalazłem Juhasa. Niestety ten był niedysponowany. Muszę wrócić do ratownika Mariusza i mu o tym powiedzieć.");
+		res.add("No i " + Grammar.genderVerb(player.getGender(), "znalazłem") + " Juhasa. Niestety ten był niedysponowany. Muszę wrócić do ratownika Mariusza i mu o tym powiedzieć.");
 		if ("krok_mariusz".equals(questState)) {
 			return res;
 		}

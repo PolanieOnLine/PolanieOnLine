@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -256,20 +257,20 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem się z Józkiem.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Józkiem.");
 		res.add("Zaproponował mi ulepszenie złotej ciupagi.");
 		if ("rejected".equals(questState)) {
-			res.add("Józek wymaga zbyt wiele za ulepszenie złotej ciupagi. Nie zgodziłem się na jego propozycje.");
+			res.add("Józek wymaga zbyt wiele za ulepszenie złotej ciupagi. Nie " + Grammar.genderVerb(player.getGender(), "zgodziłem") + " się na jego propozycje.");
 			return res;
 		}
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Józek kazał mi przynnieść kilka przedmiotów, które są potrzebne. Gdybym zapomniał co mam przynieść mam mu powiedzieć: przypomnij.");
+		res.add("Józek kazał mi przynnieść kilka przedmiotów, które są potrzebne. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
 		if ("przedmioty".equals(questState)) {
 			return res;
 		}
-		res.add("Dostarczyłem potrzebne przedmioty! Józek zabrał się za ulepszenie mojej ciupagi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Józek zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Mogę iść do Józka i sprawdzić czy już ulepszył moją ciupagę. Hasło: nagroda.");

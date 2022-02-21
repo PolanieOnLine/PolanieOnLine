@@ -238,7 +238,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Mieczysława w Gdańsku");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Mieczysława w Gdańsku");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie pomogę miastu Gdańsk.");
@@ -253,7 +253,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 				res.add(("Zostałem poproszony o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc miastu Gdańsk. Nie mam tego jeszcze."));
 			} else {
-				res.add(("Znalazłem "
+				res.add((Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
 						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy miastu Gdańsk i muszę je dostarczyć."));
 			}
 		}
@@ -263,9 +263,9 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-			res.add("Dostarczyłem ostatni przedmiot do Mieczysława i teraz Zakopane znów potrzebuje zapasów.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Zakopane znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add("Dostarczyłem ostatni przedmiot do Mieczysław i odebrałem moją nagrodę w ciągu ostatnich 48 godzin.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysław i odebrałem moją nagrodę w ciągu ostatnich 48 godzin.");
 		}
 		return res;
 	}

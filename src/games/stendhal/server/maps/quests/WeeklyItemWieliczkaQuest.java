@@ -224,16 +224,16 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))),
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Już otrzymałeś zadanie, aby przynieść [item]"
-						+ ". Powiedz #zakończone jeżeli zdobędziesz już ten przedmiot."));
+				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie, aby przynieść [item]"
+						+ ". Powiedz #zakończone jeśli zdobędziesz już ten przedmiot."));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new TimePassedCondition(QUEST_SLOT,1,expireDelay)),
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Już otrzymałeś zadanie, aby przynieść [item]"
-						+ ". Powiedz #zakończone jeżeli będziesz miał [item] ze sobą. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej."));
+				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie, aby przynieść [item]"
+						+ ". Powiedz #zakończone jeśli zdobędziesz [item]. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej."));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
@@ -355,7 +355,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem burmistrza Zbigniewa w ratuszu w Wieliczce.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " burmistrza Zbigniewa w ratuszu w Wieliczce.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomagać burmistrzowi w Wieliczce.");
@@ -366,20 +366,19 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format("Zostałem poproszony, aby przynieść " +Grammar.quantityplnoun(amount, questItem) + " do ratusza w Wieliczce."));
+				res.add(String.format(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + ", aby przynieść " + Grammar.quantityplnoun(amount, questItem) + " do ratusza w Wieliczce."));
 			} else {
 				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem) + " dla burmistrza Wieliczki. Muszę to im zanieść."));
 			}
 		}
 		if (isRepeatable(player)) {
-			res.add("Zaniosłem wartościowy przedmiot do Zbigniewa i burmistrz zlecił mi znalezienie następnego.");
+			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " wartościowy przedmiot do Zbigniewa i burmistrz zlecił mi znalezienie następnego.");
 		} else if (isCompleted(player)) {
-			res.add("Pomogłem Wieliczce. Za 7 dni zajrze tam znów. Być może potrzebować będą mojej pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Wieliczce. Za 7 dni zajrze tam znów. Być może potrzebować będą mojej pomocy.");
 		}
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Przyniosłem już "
-					+ Grammar.quantityplnoun(repetitions, "") + " wartościowych przedmiotów do ratusza w Wieliczce.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " już " + repetitions + " wartościowych przedmiotów do ratusza w Wieliczce.");
 		}
 
 		return res;

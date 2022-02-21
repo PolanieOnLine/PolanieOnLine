@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -411,13 +412,13 @@ public class RebornQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem smoka Yerena w jaskini, w domku na górze Zakopane.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " smoka Yerena w jaskini, w domku na górze Zakopane.");
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Odmówiłem cofnięcia się w czasie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " cofnięcia się w czasie.");
 		if ("rejected".equals(questState)) {
 			return res;
 		}
-		res.add("Postanowiłem wysłuchać smoka Yerena i cofnąć się w czasie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " wysłuchać smoka Yerena i cofnąć się w czasie.");
 		if ("start".equals(questState)) {
 			return res;
 		}

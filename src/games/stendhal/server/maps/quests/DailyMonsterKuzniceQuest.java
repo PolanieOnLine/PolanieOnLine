@@ -441,7 +441,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem się z sołtysem w dzielnicy Zakopanego, Kuźnicach");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z sołtysem w dzielnicy Zakopanego, Kuźnicach");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomóc Kuźnicom.");
@@ -454,10 +454,10 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 					.fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add("Zostałem poproszony o zabicie" + creatureToKill
+				res.add("Zostałem poproszony o zabicie " + creatureToKill
 						+ ", aby pomóc Kuźnicom. Jeszcze go nie zabiłem.");
 			} else {
-				res.add("Zabiłem " + creatureToKill
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " " + creatureToKill
 						+ ", aby pomóc Kuźnicom.");
 			}
 		}
@@ -468,9 +468,9 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 					- System.currentTimeMillis();
 
 			if (timeRemaining > 0L) {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie sołtys i odebrałem nagrodę w ciągu 24 godzin.");
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie sołtys i odebrałem nagrodę w ciągu 48 godzin.");
 			} else {
-				res.add("Zabiłem ostatniego potwora o którego prosił mnie sołtys i teraz Kuźnice znów potrzebuje mojej pomocy.");
+				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie sołtys i teraz Kuźnice znów potrzebuje mojej pomocy.");
 			}
 		}
 		// add to history how often player helped Semos so far

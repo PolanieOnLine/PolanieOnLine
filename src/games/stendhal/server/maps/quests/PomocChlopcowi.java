@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -158,13 +159,13 @@ public class PomocChlopcowi extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Adasia w domku.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Adasia w domku.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add("Odmówiłem Adasiowi pomocy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Adasiowi pomocy.");
 		return res;
 		}
-		res.add("Postanowiłem pomóc Adasiowi.");
+		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc Adasiowi.");
 		if (("start".equals(questState) && player.hasKilled("rat") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
 			res.add("Piwnica została oczyszczona z gryzoni i węży.");
 		}

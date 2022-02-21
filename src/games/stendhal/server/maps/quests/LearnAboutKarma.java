@@ -14,6 +14,7 @@ package games.stendhal.server.maps.quests;
 import java.util.ArrayList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -167,7 +168,7 @@ public class LearnAboutKarma extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Sarzina w domku w Fado i zapytałem ją o zadanie.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Sarzina w domku w Fado i zapytałem ją o zadanie.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("done")) {
 			res.add("Sarzina opowiedziała mi o karmie i o tym, że mogę wrócić, aby przypomnieć sobie jak to działa.");

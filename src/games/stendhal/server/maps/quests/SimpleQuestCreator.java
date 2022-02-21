@@ -530,12 +530,12 @@ public class SimpleQuestCreator {
 			} else if (questState[0].equals("start")) {
 				res.add(getNPCName() + " chce, abym zdobył " + Integer.toString(quantityToCollect) + " " + Grammar.plnoun(quantityToCollect, itemToCollect) + ".");
 				if (player.isEquipped(itemToCollect, quantityToCollect)) {
-					res.add("Zdobyłem już to, o co mnie poproszono dla " + getNPCName() + ".");
+					res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " już to, o co mnie poproszono dla " + getNPCName() + ".");
 				} else {
 					res.add("Nie znalazłem jeszcze tego, czego potrzebuje.");
 				}
 			} else if (questState[0].equals("done")) {
-				res.add("Znalazłem " + Integer.toString(quantityToCollect) + " " + itemToCollect + " dla " + getNPCName() + ".");
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " " + Integer.toString(quantityToCollect) + " " + itemToCollect + " dla " + getNPCName() + ".");
 
 				if (isRepeatable()) {
 					final int completions = getCompletedCount(player);

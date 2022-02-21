@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -216,25 +217,25 @@ public class TakeGoldforGrafindle extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-				res.add("Poszłem do banku w Nalwor i spotkałem Grafindle.");
+		res.add(Grammar.genderVerb(player.getGender(), "Poszedłem") + " do banku w Nalwor i " + Grammar.genderVerb(player.getGender(), "spotkałem") + " Grafindle.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Odpowiedzialność za sztabki była dla mnie zbyt wysoka, więc byłem zmuszony odrzucić prośbę Grafindle. ");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "lorithien", "done")) {
-			res.add("Ponieważ jestem osobą godną zaufania, obiecałem przynieść Grafindle złoto od Lorithien.");
+			res.add("Ponieważ jestem osobą godną zaufania, " + Grammar.genderVerb(player.getGender(), "obiecałem") + " przynieść Grafindle złoto od Lorithien.");
 		}
 		if (questState.equals("lorithien") && player.isEquipped("sztabka złota",
 				GOLD_AMOUNT)
 				|| questState.equals("done")) {
-			res.add("Udało się! Zebrałem sztabki, których potrzebuje Grafindle.");
+			res.add("Udało się! " + Grammar.genderVerb(player.getGender(), "Zebrałem") + " sztabki, których potrzebuje Grafindle.");
 		}
 		if (questState.equals("lorithien")
 				&& !player.isEquipped("sztabka złota", GOLD_AMOUNT)) {
-			res.add("O nie! Zgubiłem złote sztabki, które miałem przynieść Grafindle!");
+			res.add("O nie! " + Grammar.genderVerb(player.getGender(), "Zgubiłem") + " złote sztabki, które " + Grammar.genderVerb(player.getGender(), "miałem") + " przynieść Grafindle!");
 		}
 		if (questState.equals("done")) {
-			res.add("Dałem złote sztabki Grafindle, a on wynagrodził mnie - dostałem klucz do pokoju klienta banku Nalwor.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " złote sztabki Grafindle, a on wynagrodził mnie - " + Grammar.genderVerb(player.getGender(), "dostałem") + " klucz do pokoju klienta banku Nalwor.");
 		}
 		return res;
 	}

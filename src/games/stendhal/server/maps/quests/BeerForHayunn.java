@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -183,7 +184,7 @@ public class BeerForHayunn extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Rozmawiałem z Hayunn.");
+		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Hayunn.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę dać soku z chmielu dla Hayunn.");
@@ -196,7 +197,7 @@ public class BeerForHayunn extends AbstractQuest {
 			res.add("Mam sok z chmielu.");
 		}
 		if ("done".equals(questState)) {
-			res.add("Dałem sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 500 pd.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 500 pd.");
 		}
 		return res;
 	}

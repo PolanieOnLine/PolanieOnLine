@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -326,7 +327,7 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Spotkałem Brzezdoma na łąkach Kościeliska.");
+		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Brzezdoma na łąkach Kościeliska.");
 		res.add("Nurtuje go pytanie kto dał pas i kierpce Janosikowi. Mam mu też przynieść kierpce.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam głowy do zagadek, może innym razem.");
@@ -335,31 +336,31 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add("Odpowiedziałem Brzedomowi na pytanie, dostarczyłem też kierpce. Starego Bace nurtuje pytanie kogo spotkał juhas Kuba. Mam do niego iść z odpowiedzią.");
+		res.add(Grammar.genderVerb(player.getGender(), "Odpowiedziałem") + " Brzedomowi na pytanie, dostarczyłem też kierpce. Starego Bace nurtuje pytanie kogo spotkał juhas Kuba. Mam do niego iść z odpowiedzią.");
 		if ("baca".equals(questState)) {
 			return res;
 		} 
-		res.add("Stary baca poprosił mnie abym poszedł do kowala Andrzeja i powiedział mu jaki jest najwiekrzy szczyt w Tatrach.");
+		res.add("Stary baca poprosił mnie, abym " + Grammar.genderVerb(player.getGender(), "spotkał") + " się z kowalem Andrzejem i powiedział mu jaki jest największy szczyt w Tatrach.");
 		if ("gerlach".equals(questState)) {
 			return res;
 		}
-		res.add("Kowal Andrzej kazał mi zanieść Marynie gorset i powiedziec imie i nazwisko lub pseudonim najwiekrzego bajkopisarza Podhala.");
+		res.add("Kowal Andrzej kazał mi zanieść Marynie gorset i powiedziec imie i nazwisko lub pseudonim największego bajkopisarza Podhala.");
 		if ("gorset".equals(questState)) {
 			return res;
 		}
-		res.add("Maryna poprosiła mnie abym znalazł odpowiedź na pytanie 'dlaczego w Zakopanym nie rośnie kapusta'. Odpowiedzi mam udzielić Bogusiowi.");
+		res.add("Maryna poprosiła mnie abym " + Grammar.genderVerb(player.getGender(), "znalazł") + " odpowiedź na pytanie 'dlaczego w Zakopanym nie rośnie kapusta'. Odpowiedzi mam udzielić Bogusiowi.");
 		if ("kapusta".equals(questState)) {
 			return res;
 		}
-		res.add("Boguś Kazał mi iść do Edgarda. Znajdę go na ziemiach ZRC. Mam mu powiedzieć imie odpowiednika Zeusa w wierzeniach słowiańskich.");
+		res.add("Boguś kazał mi iść do Edgarda. Znajdę go na ziemiach ZRC. Mam mu powiedzieć imie odpowiednika Zeusa w wierzeniach słowiańskich.");
 		if ("bogowie".equals(questState)) {
 			return res;
 		}
-		res.add("Edgart kazał zdoobyć mi czarną zbroję i zanieść ją do Bercika.");
+		res.add("Edgart kazał zdobyć mi czarną zbroję i zanieść ją do Bercika.");
 		if ("armor".equals(questState)) {
 			return res;
 		}
-		res.add("Dostałem od Bercika za zbroje sztabki złota.");
+		res.add(Grammar.genderVerb(player.getGender(), "Dostałem") + " od Bercika za zbroje sztabki złota.");
 		if (isCompleted(player)) {
 			return res;
 		}

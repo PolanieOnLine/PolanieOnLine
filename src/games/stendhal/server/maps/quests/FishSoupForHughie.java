@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -227,7 +228,7 @@ public class FishSoupForHughie extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Anastasia poprosiła mnie, żebym przyniósł zupę rybną dla jej syna, Hughiego.");
+		res.add("Anastasia poprosiła mnie, żebym " + Grammar.genderVerb(player.getGender(), "przyniósł") + "  zupę rybną dla jej syna, Hughiego.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chce pomóc dla Hughiego.");
