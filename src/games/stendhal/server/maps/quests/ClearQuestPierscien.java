@@ -30,6 +30,7 @@ import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
@@ -49,7 +50,9 @@ public class ClearQuestPierscien extends AbstractQuest {
 	private static final String MITHRIL_CLOAK_QUEST_SLOT = "mithril_cloak";
 	private static final String MITHRILSHIELD_QUEST_SLOT = "mithrilshield_quest";
 
-	private static Logger logger = Logger.getLogger(PierscienBarona.class);
+	private static final String LAST = "Jeśli wszystko już posiadasz powiedz mi #'cofnij'.";
+
+	private static Logger logger = Logger.getLogger(ClearQuestPierscien.class);
 
 	private void checkLevelHelm() {
 		npc.add(ConversationStates.ATTENDING,
@@ -61,13 +64,13 @@ public class ClearQuestPierscien extends AbstractQuest {
 					if (player.isBadBoy()){ 
 						raiser.say("Z twej ręki zginął rycerz! Nie masz tu czego szukać, pozbądź się piętna czaszki. A teraz precz mi z oczu!");
 					} else {
-						if (player.isQuestCompleted(PIERSCIEN_MIESZCZANINA_QUEST_SLOT)) {
+						if (player.isQuestCompleted(PIERSCIEN_MIESZCZANINA_QUEST_SLOT) || player.isQuestCompleted(PIERSCIEN_RYCERZA_QUEST_SLOT) || player.isQuestCompleted(PIERSCIEN_BARONA_QUEST_SLOT) || player.isQuestCompleted(PIERSCIEN_MAGNATA_QUEST_SLOT)) {
 							if (player.getLevel() >= 150) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-									raiser.say("Jestem w stanie wyzerować twój stan zadania na pierścień #mieszczanina #rycerza #barona #magnata lub na #płaszcz z mithrilu oraz #tarczę. Który stan zadania mam wyzerować?");
+									raiser.say("Jestem w stanie wyzerować twój stan zadania na pierścień #'mieszczanina', #'rycerza', #'barona', #magnata lub na #płaszcz z mithrilu oraz #tarczę. Który stan zadania mam wyzerować?");
 								}
 							} else {
-								npc.say("Nie rozmawiam z nikim kto nie jest przynajmniej mieszczaninem. Wróć gdy zdobędziesz 150 lvl.");
+								npc.say("Nie rozmawiam z nikim kto nie jest przynajmniej mieszczaninem. Wróć gdy zdobędziesz 150 poziom.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
@@ -77,59 +80,59 @@ public class ClearQuestPierscien extends AbstractQuest {
 					}
 				}
 			});
-	} 
+	}
 
 	private void checkCollectingQuests() {
 		npc.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-					 new QuestNotStartedCondition(QUEST_SLOT)),
+			new AndCondition(
+					new OrCondition(
+						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
+						new QuestCompletedCondition(PIERSCIEN_RYCERZA_QUEST_SLOT),
+						new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
+						new QuestCompletedCondition(PIERSCIEN_MAGNATA_QUEST_SLOT)),
+					new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Witaj przyjacielu. Cofam zadania na pierścień: #mieszczanina, #rycerza, #barona, #magnata lub na #płaszcz oraz #tarczę z mithrilu. Które z zadań mam wyzerować?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("rycerza"),
-			new AndCondition(new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-					 new QuestNotStartedCondition(QUEST_SLOT),
-					 new QuestNotCompletedCondition(PIERSCIEN_RYCERZA_QUEST_SLOT)),
+			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestNotCompletedCondition(PIERSCIEN_RYCERZA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
 			"Jak mam ci cofnąć zadanie na pierścień rycerza, jeżeli nie masz go zrobionego!!!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("barona"),
-			new AndCondition(new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-					 new QuestNotStartedCondition(QUEST_SLOT),
-					 new QuestNotCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT)),
+			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestNotCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
 			"Jak mam ci cofnąć zadanie na pierścień barona, jeżeli nie masz go zrobionego!!!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("magnata"),
-			new AndCondition(new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-					 new QuestNotStartedCondition(QUEST_SLOT),
-					 new QuestNotCompletedCondition(PIERSCIEN_MAGNATA_QUEST_SLOT)),
+			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestNotCompletedCondition(PIERSCIEN_MAGNATA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
 			"Jak mam ci cofnąć zadanie na pierścień magnata, jeżeli nie masz go zrobionego!!!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("płaszcz"),
-			new AndCondition(new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-					 new QuestNotStartedCondition(QUEST_SLOT),
-					 new QuestNotCompletedCondition(MITHRIL_CLOAK_QUEST_SLOT)),
+			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestNotCompletedCondition(MITHRIL_CLOAK_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
 			"Jak mam ci cofnąć zadanie na płaszcz z mithrilu, jeżeli nie masz go zrobionego!!!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("tarcze", "tarcza","tarczę"),
-			new AndCondition(new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-					 new QuestNotStartedCondition(QUEST_SLOT),
-					 new QuestNotCompletedCondition(MITHRILSHIELD_QUEST_SLOT)),
+			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
+					new QuestNotCompletedCondition(MITHRILSHIELD_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
 			"Jak mam ci cofnąć zadanie na tarczę z mithrilu, jeżeli nie masz go zrobionego!!!",
 			null);
@@ -138,28 +141,27 @@ public class ClearQuestPierscien extends AbstractQuest {
 	private void requestItem() {
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("płaszcz"),
-				new AndCondition( 
-						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, "Za cofnięcie zadania na płaszcz z mithrilu żądam konkretnej #zapłaty.",
+				new QuestNotStartedCondition(QUEST_SLOT),
+				ConversationStates.ATTENDING, "Za cofnięcie zadania na płaszcz z mithrilu żądam konkretnej #zapłaty." + LAST,
 				new SetQuestAction(QUEST_SLOT, "plaszcz"));
 
 		final List<ChatAction> plaszczactions = new LinkedList<ChatAction>();
 		plaszczactions.add(new DropItemAction("money",2000000));
 		plaszczactions.add(new IncreaseXPAction(1000));
-		plaszczactions.add(new SetQuestAction(MITHRIL_CLOAK_QUEST_SLOT, "rejected"));
-		plaszczactions.add(new SetQuestAction(QUEST_SLOT, "rejected"));
+		plaszczactions.add(new SetQuestAction(MITHRIL_CLOAK_QUEST_SLOT, null));
+		plaszczactions.add(new SetQuestAction(QUEST_SLOT, null));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("plaszcz","cofnij","płaszcz"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"plaszcz"),
-				new PlayerHasItemWithHimCondition("money",2000000)),
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT,"plaszcz"),
+						new PlayerHasItemWithHimCondition("money",2000000)),
 				ConversationStates.ATTENDING, "Widzę, że dogadaliśmy się, zadanie na płaszcz z mithrilu zostało wyzerowane.",
 				new MultipleActions(plaszczactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("zapłaty","zaplaty"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"plaszcz"),
-								 new NotCondition(
-								 new AndCondition(new PlayerHasItemWithHimCondition("money",2000000)))),
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT,"plaszcz"),
+						new NotCondition(new PlayerHasItemWithHimCondition("money",2000000))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
 									+"#'2000000 money'\n"
 									+"Przyjmuje zapłatę w całości, nie na raty!!!\n"
@@ -167,17 +169,15 @@ public class ClearQuestPierscien extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("tarcza", "tarcze"),
-				new AndCondition( 
-						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
-						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, "Za cofnięcie zadania na tarczę z mithrilu żądam konkretnej #zapłaty.",
+				new QuestNotStartedCondition(QUEST_SLOT),
+				ConversationStates.ATTENDING, "Za cofnięcie zadania na tarczę z mithrilu żądam konkretnej #zapłaty." + LAST,
 				new SetQuestAction(QUEST_SLOT, "tarcza"));
 
 		final List<ChatAction> tarczaactions = new LinkedList<ChatAction>();
 		tarczaactions.add(new DropItemAction("money",1500000));
 		tarczaactions.add(new IncreaseXPAction(1000));
-		tarczaactions.add(new SetQuestAction(MITHRILSHIELD_QUEST_SLOT, "rejected"));
-		tarczaactions.add(new SetQuestAction(QUEST_SLOT, "rejected"));
+		tarczaactions.add(new SetQuestAction(MITHRILSHIELD_QUEST_SLOT, null));
+		tarczaactions.add(new SetQuestAction(QUEST_SLOT, null));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("tarcza","tarcze","cofnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"tarcza"),
@@ -199,28 +199,28 @@ public class ClearQuestPierscien extends AbstractQuest {
 				new AndCondition( 
 						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień mieszczanina #żądam konkretnej zapłaty.",
+				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień mieszczanina #żądam konkretnej zapłaty." + LAST,
 				new SetQuestAction(QUEST_SLOT, "mieszczanin"));
 
 		final List<ChatAction> mieszczaninactions = new LinkedList<ChatAction>();
 		mieszczaninactions.add(new DropItemAction("money",250000));
 		mieszczaninactions.add(new DropItemAction("sztabka złota",30));
 		mieszczaninactions.add(new IncreaseXPAction(1000));
-		mieszczaninactions.add(new SetQuestAction(PIERSCIEN_MIESZCZANINA_QUEST_SLOT, "rejected"));
-		mieszczaninactions.add(new SetQuestAction(QUEST_SLOT, "rejected"));
+		mieszczaninactions.add(new SetQuestAction(PIERSCIEN_MIESZCZANINA_QUEST_SLOT, null));
+		mieszczaninactions.add(new SetQuestAction(QUEST_SLOT, null));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("mieszczanin","cofnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"mieszczanin"),
-				new PlayerHasItemWithHimCondition("money",250000),
-				new PlayerHasItemWithHimCondition("sztabka złota",30)),
+						new PlayerHasItemWithHimCondition("money",250000),
+						new PlayerHasItemWithHimCondition("sztabka złota",30)),
 				ConversationStates.ATTENDING, "Widzę, że dogadaliśmy się, zadanie na pierścień mieszczanina zostało wyzerowane.",
 				new MultipleActions(mieszczaninactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("żądam","zadam"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"mieszczanin"),
-								 new NotCondition(
-								 new AndCondition(new PlayerHasItemWithHimCondition("money",250000),
-												  new PlayerHasItemWithHimCondition("sztabka złota",30)))),
+						new NotCondition(
+						new AndCondition(new PlayerHasItemWithHimCondition("money",250000),
+								new PlayerHasItemWithHimCondition("sztabka złota",30)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
 									+"#'250 000 money'\n"
 									+"#'30 sztabek złota'\n"
@@ -229,18 +229,18 @@ public class ClearQuestPierscien extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("rycerza"),
-				new AndCondition( 
-						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
+				new AndCondition(
+						new QuestCompletedCondition(PIERSCIEN_RYCERZA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień rycerza żądam #zapłaty.",
+				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień rycerza żądam #zapłaty." + LAST,
 				new SetQuestAction(QUEST_SLOT, "rycerz"));
 
 		final List<ChatAction> rycerzactions = new LinkedList<ChatAction>();
 		rycerzactions.add(new DropItemAction("money",350000));
 		rycerzactions.add(new DropItemAction("sztabka złota",50));
 		rycerzactions.add(new IncreaseXPAction(1000));
-		rycerzactions.add(new SetQuestAction(PIERSCIEN_RYCERZA_QUEST_SLOT, "rejected"));
-		rycerzactions.add(new SetQuestAction(QUEST_SLOT, "rejected"));
+		rycerzactions.add(new SetQuestAction(PIERSCIEN_RYCERZA_QUEST_SLOT, null));
+		rycerzactions.add(new SetQuestAction(QUEST_SLOT, null));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("rycerz","cofnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"rycerz"),
@@ -251,9 +251,9 @@ public class ClearQuestPierscien extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("zapłaty","zaplaty"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"rycerz"),
-								 new NotCondition(
-								 new AndCondition(new PlayerHasItemWithHimCondition("money",350000),
-												  new PlayerHasItemWithHimCondition("sztabka złota",50)))),
+						new NotCondition(
+						new AndCondition(new PlayerHasItemWithHimCondition("money",350000),
+								new PlayerHasItemWithHimCondition("sztabka złota",50)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
 									+"#'350 000 money'\n"
 									+"#'50 sztabek złota'\n"
@@ -263,18 +263,17 @@ public class ClearQuestPierscien extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("barona"),
 				new AndCondition( 
-						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień barona #opłata jest wysoka.",
+				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień barona #opłata jest wysoka." + LAST,
 				new SetQuestAction(QUEST_SLOT, "baron"));
 
 		final List<ChatAction> baronactions = new LinkedList<ChatAction>();
 		baronactions.add(new DropItemAction("money",450000));
 		baronactions.add(new DropItemAction("sztabka złota",70));
 		baronactions.add(new IncreaseXPAction(1000));
-		baronactions.add(new SetQuestAction(PIERSCIEN_BARONA_QUEST_SLOT, "rejected"));
-		baronactions.add(new SetQuestAction(QUEST_SLOT, "rejected"));
+		baronactions.add(new SetQuestAction(PIERSCIEN_BARONA_QUEST_SLOT, null));
+		baronactions.add(new SetQuestAction(QUEST_SLOT, null));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("baron","cofnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"baron"),
@@ -297,18 +296,17 @@ public class ClearQuestPierscien extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("magnata"),
 				new AndCondition( 
-						new QuestCompletedCondition(PIERSCIEN_MIESZCZANINA_QUEST_SLOT),
 						new QuestCompletedCondition(PIERSCIEN_MAGNATA_QUEST_SLOT),
 						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień magnata #cenię się wysoko.",
-				new SetQuestAction(QUEST_SLOT, "magnat" ));
+				ConversationStates.ATTENDING, "Za cofnięcie zadania na pierścień magnata #cenię się wysoko." + LAST,
+				new SetQuestAction(QUEST_SLOT, "magnat"));
 
 		final List<ChatAction> magnatactions = new LinkedList<ChatAction>();
 		magnatactions.add(new DropItemAction("money",600000));
 		magnatactions.add(new DropItemAction("sztabka złota",100));
 		magnatactions.add(new IncreaseXPAction(1000));
-		magnatactions.add(new SetQuestAction(PIERSCIEN_MAGNATA_QUEST_SLOT, "rejected"));
-		magnatactions.add(new SetQuestAction(QUEST_SLOT, "rejected"));
+		magnatactions.add(new SetQuestAction(PIERSCIEN_MAGNATA_QUEST_SLOT, null));
+		magnatactions.add(new SetQuestAction(QUEST_SLOT, null));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("magnat","cofnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"magnat"),
@@ -319,9 +317,9 @@ public class ClearQuestPierscien extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("cenię","cenie"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"magnat"),
-								 new NotCondition(
-								 new AndCondition(new PlayerHasItemWithHimCondition("money",600000),
-												  new PlayerHasItemWithHimCondition("sztabka złota",100)))),
+						new NotCondition(
+						new AndCondition(new PlayerHasItemWithHimCondition("money",600000),
+								new PlayerHasItemWithHimCondition("sztabka złota",100)))),
 				ConversationStates.ATTENDING, "Musisz mi zapłacić:\n"
 									+"#'600 000 money'\n"
 									+"#'100 sztabek złota'\n"
