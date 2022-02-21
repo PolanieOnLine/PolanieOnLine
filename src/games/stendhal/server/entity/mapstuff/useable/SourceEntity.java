@@ -21,7 +21,7 @@ public class SourceEntity extends PlayerActivityEntity {
 	 * The chance that prospecting is successful.
 	 */
 	private static final double FINDING_PROBABILITY = 0.02;
-	private static final double UPGRADED_FINDING_PROBABILITY = 0.06;
+	private static final double UPGRADED_FINDING_PROBABILITY = 0.035;
 
 	private final String startSound = "pickaxe_01";
 	private final String successSound = "rocks-1";
