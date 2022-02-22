@@ -325,7 +325,7 @@ public class Hunting extends AbstractQuest {
 				final int start = Level.getXP(player.getLevel());
 				final int next = Level.getXP(player.getLevel() + 1);
 
-				if (player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 19) {
+				if (player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 10) {
 					int reward = (int) ((next - start) / 6);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
@@ -351,7 +351,8 @@ public class Hunting extends AbstractQuest {
 						money.setQuantity(Rand.roll1D2000());
 					}
 					player.equipOrPutOnGround(money);
-				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 19 && player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 34) {
+					player.notifyWorldAboutChanges();
+				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 10 && player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 34) {
 					int reward = (int) ((next - start) / 5);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
@@ -368,6 +369,7 @@ public class Hunting extends AbstractQuest {
 						goldenbar.setQuantity(Rand.roll1D20());
 					}
 					player.equipOrPutOnGround(goldenbar);
+					player.notifyWorldAboutChanges();
 				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 34) {
 					int reward = (int) ((next - start) / 4);
 					if (player.getLevel() >= Level.maxLevel()) {
@@ -378,13 +380,17 @@ public class Hunting extends AbstractQuest {
 					player.addXP(reward);
 					player.addKarma(15);
 
+					final StackableItem goldenbar = (StackableItem) SingletonRepository.getEntityManager().getItem("sztabka złota");
 					final StackableItem mithrilbar = (StackableItem) SingletonRepository.getEntityManager().getItem("sztabka mithrilu");
+					goldenbar.setQuantity(Rand.roll1D20());
 					if (player.getLevel() < 90) {
 						mithrilbar.setQuantity(Rand.roll1D3());
 					} else {
 						mithrilbar.setQuantity(Rand.roll1D6());
 					}
+					player.equipOrPutOnGround(goldenbar);
 					player.equipOrPutOnGround(mithrilbar);
+					player.notifyWorldAboutChanges();
 				}
 			}
 		});
