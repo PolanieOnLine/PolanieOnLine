@@ -9,6 +9,8 @@ Changelog
 	- pierścień powrotu
 - Dodano nowego NPC: (1)
 	- Benio
+- Dodano nowe osiągnięcie: (1)
+	- "Łowca Nagród"
 - Dodano możliwość skupu barbarzyńskich przedmiotów u Benia
 - Dodano możliwość zdobycia pazura arktycznego smoka z lodowego smoka
 - Zmniejszono ilość do pokonania potworów u Janisława podczas polowania
