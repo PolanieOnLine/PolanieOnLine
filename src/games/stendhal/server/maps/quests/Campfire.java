@@ -84,22 +84,22 @@ public class Campfire extends AbstractQuest {
 
 	private void prepareRequestingStep() {
 		// player returns with the promised wood
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD)),
-			ConversationStates.QUEST_ITEM_BROUGHT, 
+			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Witaj znowu! Masz te 10 polan, o które wcześniej Cię pytałam?",
 			null);
 
 		//player returns without promised wood
-		npc.add(ConversationStates.IDLE, 
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 		    new	AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Już wróciłeś? Nie zapomnij, że obiecałeś mi zebrać dziesięć polan dla mnie!",
 			null);
 
