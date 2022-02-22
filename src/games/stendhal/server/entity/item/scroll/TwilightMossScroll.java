@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -19,7 +18,6 @@ import java.util.Map;
  * after which it will teleport player to a random location in ida's sewing room.
  */
 public class TwilightMossScroll extends TimedTeleportScroll {
-
 	/**
 	 * Creates a new timed marked TwilightMossScroll scroll.
 	 *
@@ -45,7 +43,7 @@ public class TwilightMossScroll extends TimedTeleportScroll {
 
 	@Override
 	protected String getBeforeReturnMessage() {
-		return "Mrok słabnie ...";
+		return "Mrok słabnie...";
 	}
 
 	@Override

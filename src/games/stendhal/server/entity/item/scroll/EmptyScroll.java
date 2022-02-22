@@ -22,9 +22,6 @@ import games.stendhal.server.entity.player.Player;
  * Represents an empty/unmarked teleport scroll.
  */
 public class EmptyScroll extends Scroll {
-
-	// private static final Logger logger = Logger.getLogger(EmptyScroll.class);
-
 	/**
 	 * Creates a new empty scroll.
 	 *
@@ -59,10 +56,8 @@ public class EmptyScroll extends Scroll {
 		final StendhalRPZone zone = player.getZone();
 
 		if (zone.isTeleportInAllowed(player.getX(), player.getY())) {
-			final Item markedScroll = SingletonRepository.getEntityManager().getItem(
-					"zwój zapisany");
-			markedScroll.setInfoString(player.getID().getZoneID() + " "
-					+ player.getX() + " " + player.getY());
+			final Item markedScroll = SingletonRepository.getEntityManager().getItem("zwój zapisany");
+			markedScroll.setInfoString(player.getID().getZoneID() + " " + player.getX() + " " + player.getY());
 			player.equipOrPutOnGround(markedScroll);
 			return true;
 		} else {
