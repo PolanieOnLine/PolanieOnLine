@@ -11,8 +11,11 @@ Changelog
 	- Benio
 - Dodano możliwość skupu barbarzyńskich przedmiotów u Benia
 - Dodano możliwość zdobycia pazura arktycznego smoka z lodowego smoka
+- Zmniejszono ilość do pokonania potworów u Janisława podczas polowania
+- Zmieniono wymóg zabicia czarnego smoczyska na zielone smoczysko w zadaniu u Cienia
 
 *naprawiono błędy*
+- Naprawiono zadanie na polowanie u Janisława
 - Poprawiono gramatykę opisów zadań w dzienniku
 
 
