@@ -44,6 +44,10 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 		questAchievements.add(createAchievement("quest.special.maze", "Kierunkowskaz", "Ukończył labirynt", 
 				Achievement.EASY_BASE_SCORE, true, new QuestStateGreaterThanCondition("maze", 2, 0)));
 
+		// Hunting
+		questAchievements.add(createAchievement("quest.special.hunter", "Łowca Nagród", "Ukończył polowania Janisława 10 razy", 
+				Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("hunting", 2, 9)));
+
 		// have completed all quests in Semos City?
 		questAchievements.add(createAchievement("quest.special.semos", "Przyjaciel Semos", "Ukończył wszystkie zadania w mieście Semos",
 				Achievement.MEDIUM_BASE_SCORE, true, new QuestsInRegionCompletedCondition(Region.SEMOS_CITY)));
