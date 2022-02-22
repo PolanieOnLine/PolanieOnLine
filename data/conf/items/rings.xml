@@ -22,6 +22,28 @@
 	</item>
 	<!-- END: Invisibility Ring -->
 
+	<!-- START: Teleportation Ring -->
+	<item name="pierścień powrotu">
+		<type class="ring" subclass="ametyst-ring" tileid="-1"/>
+		<description>Oto pierścień powrotu. Kamień potrafiący zapisać aktualne miejsce pobytu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.RingOfTeleportation"/>
+		<attributes>
+			<amount value="0"/>
+			<undroppableondeath value="1"/>
+			<min_level condition="stendhal.testserver" value="0"/>
+		</attributes>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="fingerb"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+	<!-- END: Teleportation Ring -->
+
 	<!-- START: Status Protection -->
 	<item name="pierścień leczniczy">
 		<type class="ring" subclass="medicinal_ring" tileid="-1"/>

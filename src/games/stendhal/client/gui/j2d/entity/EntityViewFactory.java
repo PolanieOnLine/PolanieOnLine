@@ -207,6 +207,7 @@ public class EntityViewFactory {
 
 		register("item", "ring", null, Ring2DView.class);
 		register("item", "ring", "emerald-ring", BreakableRing2DView.class);
+		register("item", "ring", "ametyst-ring", TeleportationRing2DView.class);
 		register("item", "ring", "wedding", UseableRing2DView.class);
 
 		register("useable_entity", null, null, UseableEntity2DView.class);
