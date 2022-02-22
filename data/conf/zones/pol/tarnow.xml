@@ -259,6 +259,18 @@
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<configurator class-name="games.pol.server.maps.tarnow.plains.BarbarianShopKeeperNPC"/>
+
+		<entity x="83" y="71">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+				<parameter name="shop">barbarianshopkeeper</parameter>
+				<parameter name="title">Sklep Benia – skup towaru</parameter>
+				<parameter name="seller">false</parameter>
+			</implementation>
+
+			<attribute name="class">blackboard</attribute>
+		</entity>
 	</zone>
 
 	<zone name="0_tarnow_plains_s" level="0" x="514080" y="18144" file="Level 0/tarnow/plains_s.tmx">

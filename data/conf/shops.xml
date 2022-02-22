@@ -1216,4 +1216,18 @@
 	<shop name="tarnowscrollseller" type="sells">
 		<item name="zwój tarnów" price="350" />
 	</shop>
+
+	<!-- Benio skupuje: -->
+	<shop name="barbarianshopkeeper" type="buys">
+		<item name="młot bojowy" price="270" />
+		<item name="buty barbarzyńcy" price="420" />
+		<item name="hełm barbarzyńcy" price="610" />
+		<item name="spodnie barbarzyńcy" price="870" />
+		<item name="rękawice barbarzyńcy" price="1250" />
+		<item name="pas barbarzyńcy" price="1750" />
+		<item name="płaszcz barbarzyńcy" price="2400" />
+		<item name="zbroja barbarzyńcy" price="5000" />
+		<item name="tarcza barbarzyńcy" price="8000" />
+		<item name="zbroja szamana barbarzyńców" price="12000" />
+	</shop>
 </shops>
