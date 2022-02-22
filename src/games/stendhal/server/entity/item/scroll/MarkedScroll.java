@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TeleportNotifier;
@@ -90,8 +91,8 @@ public class MarkedScroll extends TeleportScroll {
 							+ " to Semos instead");
 				} else {
 					if (player.getKeyedSlot("!visited", zoneName) == null) {
-						player.sendPrivateText("Słyszałeś wiele opowieści o miejscu, do którego chcesz się przenieść "
-								+ "nie możesz się skoncentrować ponieważ nigdy tam nie byłeś.");
+						player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
+								+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + Grammar.genderVerb(player.getGender(), "byłeś") + ".");
 						return false;
 					} else {
 					        zone = temp;

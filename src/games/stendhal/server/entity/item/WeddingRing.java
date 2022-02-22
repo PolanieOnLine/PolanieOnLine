@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -126,22 +127,21 @@ public class WeddingRing extends Item {
 	private boolean teleportToSpouse(final Player player) {
 		// don't allow use if on the ground
 		if (!isContained()) {
-			player.sendPrivateText("Powinieneś podnieść swój zaręczynowy pierścien, by go użyć..");
+			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść swoją obrączkę ślubną, by go użyć...");
 			return false;
 		}
 
 		// check if pets and sheep are near
 		if (!player.isZoneChangeAllowed()) {
-			player.sendPrivateText("Powiedziano Tobie, abyś pilnował zwierzątka?");
+			player.sendPrivateText("Powiedziano Tobie, abyś " + Grammar.genderVerb(player.getGender(), "pilnował") + " swoje zwierzątka?");
 			return false;
 		}
 
 		final String spouseName = getInfoString();
 
 		if (spouseName == null) {
-			player.sendPrivateText("Oto obrączka ślubna, która jeszcze nie została wygrawerowana imieniem kochanej osoby.");
-			logger.debug(player.getName()
-					+ "tried to use a wedding ring without a spouse name engraving.");
+			player.sendPrivateText("Oto obrączka ślubna, która jeszcze nie została wygrawerowana imieniem ukochanej osoby.");
+			logger.debug(player.getName() + "tried to use a wedding ring without a spouse name engraving.");
 			return false;
 		}
 
@@ -159,14 +159,15 @@ public class WeddingRing extends Item {
 
 			if (weddingRing.getInfoString() == null) {
 				// divorced with ring and engaged again
-				player.sendPrivateText("Przepraszam, ale "
-						+ spouseName
-						+ " rozwiódł się z tobą i jest teraz zaręczony z kimś innym.");
+				player.sendPrivateText("Przepraszam, ale " + spouseName
+						+ Grammar.genderVerb(spouse.getGender(), "rozwiódł")
+						+ " się z tobą i jest teraz zaręczony z kimś innym.");
 				return false;
 			} else if (!(weddingRing.getInfoString().equals(player.getName()))) {
 				// divorced and remarried
 				player.sendPrivateText("Przepraszam, ale " + spouseName
-						+ " rozwiódł się z tobą i jest teraz zaręczony z kimś innym.");
+						+ Grammar.genderVerb(spouse.getGender(), "rozwiódł")
+						+ " się z tobą i jest teraz zaręczony z kimś innym.");
 
 				return false;
 			}
@@ -180,7 +181,9 @@ public class WeddingRing extends Item {
 
 		final int secondsNeeded = getLastUsed() + getCoolingPeriod(player, spouse) - (int) (System.currentTimeMillis() / 1000);
 		if (secondsNeeded > 0) {
-			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. Myślałeś, że będzie gotowy w ciągu " 
+			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. " 
+					+ Grammar.genderVerb(player.getGender(), "Myślałeś")
+					+ ", że będzie gotowy w ciągu " 
 					+ TimeUtil.approxTimeUntil(secondsNeeded) + ".");
 
 			return false;
@@ -203,8 +206,8 @@ public class WeddingRing extends Item {
 		final String zoneName = destinationZone.getName();
 		// check if player has visited zone before
 		if (player.getKeyedSlot("!visited", zoneName) == null) {
-			player.sendPrivateText("Domyślam się, że słyszałeś wiele plotek o miejscu docelowym. "
-								+ "Nie możesz dołączyć do " + spouseName + " ponieważ znajduje się w nieznany dla Ciebie miejscu.");
+			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Słyszałeś") + " wiele plotek o miejscu docelowym. "
+					+ "Nie możesz dołączyć do " + spouseName + " ponieważ znajduje się w nieznany dla Ciebie miejscu.");
 			return false;
 		}
 
@@ -296,7 +299,7 @@ public class WeddingRing extends Item {
 				for (final Player player : zone.getPlayers()) {
 					if (player.nextTo(container)) {
 						player.sendPrivateText(NotificationType.SCENE_SETTING,
-						"Błyska światło, gdy obrączka ślubna zaczyna się rozpadać w zetknięciu magii.");
+						"Błyska światło, gdy obrączka ślubna zaczyna się rozpadać w zetknięciu z magią.");
 					}
 				}
 			}

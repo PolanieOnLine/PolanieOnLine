@@ -4,6 +4,7 @@
 package games.stendhal.server.entity.item.scroll;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
@@ -56,7 +57,7 @@ public class MagicznyScroll extends TimedTeleportScroll {
 				// player used the scroll within the last DELAY hours
 				// so are not allowed to go yet. but don't reset the last time taken.
 				// the private text doesn't get sent because events are lost on zone change. (marauroa bug)
-				player.sendPrivateText("Pochorowałeś się od nadużywania magi.");
+				player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Pochorowałeś") + " się od nadużywania magii.");
 				this.removeOne();
 				final Item sick = SingletonRepository.getEntityManager().getItem("wymioty");
 				player.getZone().add(sick);
@@ -70,7 +71,7 @@ public class MagicznyScroll extends TimedTeleportScroll {
 		} else {
 			// players can only buy magiczny scroll fon Ozo who stores the time bought in quest slot
 			// so if they didn't have the quest slot they got the scroll ''illegally''
-			player.sendPrivateText("To był podejżany zwój. Następnym razem kupuj od Ozo.");
+			player.sendPrivateText("To był podejrzany zwój. Następnym razem kupuj od Ozo.");
 			this.removeOne();
 			final Item sick = SingletonRepository.getEntityManager().getItem("wymioty");
 			player.getZone().add(sick);
@@ -86,7 +87,6 @@ public class MagicznyScroll extends TimedTeleportScroll {
 
 	@Override
 	protected String getAfterReturnMessage() {
-		return "Uff... żyjesz."
-				+ " To było dziwne doświadczenie.";
+		return "Uff... żyjesz. To było dziwne doświadczenie.";
 	}
 }

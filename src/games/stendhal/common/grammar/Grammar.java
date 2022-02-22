@@ -1054,6 +1054,9 @@ public class Grammar {
 			if (word.endsWith("ósł")) {
 				return word.substring(0, word.length() - 3) + "osła";
 			}
+			if (word.endsWith("ódł")) {
+				return word.substring(0, word.length() - 3) + "odła";
+			}
 			if (word.endsWith("ego")) {
 				return word.substring(0, word.length() - 3) + "ą";
 			}
