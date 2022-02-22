@@ -58,15 +58,15 @@ public class BramaZrc extends AbstractQuest {
 					} else {
 						if (player.isQuestCompleted(ARMOR_DAGOBERT_QUEST_SLOT)) {
 							if (player.getLevel() >= 150) {
-								if (player.hasKilledSolo("czarne smoczysko")) {
+								if (player.hasKilledSolo("zielone smoczysko")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Czyżbyś chciał przekroczyć bramy Zakonu Rycerzy Cienia poznać to co nie poznane? Jesteś zainteresowany?");
+										raiser.say("Czyżbyś " + Grammar.genderVerb(player.getGender(), "chciał") + " przekroczyć bramy Zakonu Rycerzy Cienia poznać to co nie poznane? Jesteś zainteresowany?");
 									} else if (player.isQuestCompleted(QUEST_SLOT)) {
 										raiser.say("Och! Ponownie przybyłeś do mnie. Niestety mamy już stałego dostawce żywności i twoja pomoc jest zbędna.");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
-									npc.say("Rozmawiam tylko z osobami, które wykazały się w walce zabijając samodzielnie czarne smoczysko.");
+									npc.say("Rozmawiam tylko z osobami, które wykazały się w walce zabijając samodzielnie zielone smoczysko.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
@@ -159,7 +159,7 @@ public class BramaZrc extends AbstractQuest {
 							 new PlayerHasItemWithHimCondition("lody",5),
 							 new PlayerHasItemWithHimCondition("butelka wody",10)),
 			ConversationStates.ATTENDING, "Wspaniale! Nasza spiżarnia jest teraz pełna. W nagrodę weź ten klucz." +
-										  " Nikt ci nie powiedział, że my musimy jeść aby żyć. Widzę, że nie znasz się jeszcze na duchach i zjawach." +
+										  " Nikt ci nie powiedział, że my musimy jeść, aby żyć. Widzę, że nie znasz się jeszcze na duchach i zjawach." +
 										  " Idź do zamku, aby posiąść wiedzę i mądrość Pradawnych o tym co widzialne i niewidzialne." +
 										  " Bramy do niego od teraz stoją dla ciebie otworem!",
 			new MultipleActions(cienactions));
@@ -192,7 +192,7 @@ public class BramaZrc extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add(npc.getName() + " poprosił abym mu dostarczył: 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
+		res.add(npc.getName() + " poprosił, abym mu " + Grammar.genderVerb(player.getGender(), "dostarczył") + ": 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
 		if ("dostawca".equals(questState)) {
 			return res;
 		}
