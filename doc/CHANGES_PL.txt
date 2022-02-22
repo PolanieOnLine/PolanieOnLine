@@ -1,5 +1,21 @@
 Changelog
 ---------
+1.28.3
+*klient*
+- Dodano nową grafikę przedmiotu
+
+*świat*
+- Dodano nowy przedmiot: (1)
+	- pierścień powrotu
+- Dodano nowego NPC: (1)
+	- Benio
+- Dodano możliwość skupu barbarzyńskich przedmiotów u Benia
+- Dodano możliwość zdobycia pazura arktycznego smoka z lodowego smoka
+
+*naprawiono błędy*
+- Poprawiono gramatykę opisów zadań w dzienniku
+
+
 1.28.2
 *klient*
 - Dodano nową grafikę przedmiotu
