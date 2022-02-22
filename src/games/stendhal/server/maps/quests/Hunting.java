@@ -28,6 +28,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.LevelBasedComparator;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -54,7 +55,7 @@ public class Hunting extends AbstractQuest {
 	private static final String QUEST_SLOT = "hunting";
 	private final SpeakerNPC npc = npcs.get("Janisław");
 
-	private static Logger logger = Logger.getLogger("Hunting");
+	private static final Logger logger = Logger.getLogger(Hunting.class);
 
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
@@ -98,8 +99,8 @@ public class Hunting extends AbstractQuest {
 						String[] split = tokens[0].split(",");
 						previousCreature = split[0];
 					}
-					//questLast = tokens[1];
-					questCount = tokens[1];
+					questLast = tokens[1];
+					questCount = tokens[2];
 				}
 
 				refreshCreaturesList(previousCreature);
@@ -116,8 +117,7 @@ public class Hunting extends AbstractQuest {
 
 				String creatureName = pickedCreature.getName();
 
-
-				int randomKillCount = Rand.roll1D100();
+				int randomKillCount = Rand.roll1D50();
 				String count;
 				if (randomKillCount == 1) {
 					count = " sztuki";
@@ -245,17 +245,15 @@ public class Hunting extends AbstractQuest {
 		// player asking for quest when he have active non-expired quest
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
-						new NotCondition(
-								new OrCondition(
-										new QuestNotStartedCondition(QUEST_SLOT),
-										new QuestCompletedCondition(QUEST_SLOT)))),
+				new AndCondition(new NotCondition(new OrCondition(
+						new QuestNotStartedCondition(QUEST_SLOT),
+						new QuestCompletedCondition(QUEST_SLOT)))),
 				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
-						npc.say("Już dostałeś zadanie na upolowanie " +
+						npc.say("Już " + Grammar.genderVerb(player.getGender(), "dostałeś") + " zadanie na upolowanie " +
 								player.getQuest(QUEST_SLOT,0).split(",")[0] +
 								" w ilości " +
 								player.getQuest(QUEST_SLOT,0).split(",")[2] +
@@ -320,14 +318,15 @@ public class Hunting extends AbstractQuest {
 				});
 
 		final List<ChatAction> rewards = new LinkedList<ChatAction>();
-		rewards.add(new IncrementQuestAction(QUEST_SLOT, 1, 1));
+		rewards.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
 		rewards.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		rewards.add(new ChatAction() {
 			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
-				if (player.getNumberOfRepetitions(QUEST_SLOT, 1) <= 19) {
-					final int start = Level.getXP(player.getLevel());
-					final int next = Level.getXP(player.getLevel() + 1);
+				final int start = Level.getXP(player.getLevel());
+				final int next = Level.getXP(player.getLevel() + 1);
+
+				if (player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 19) {
 					int reward = (int) ((next - start) / 6);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
@@ -336,6 +335,13 @@ public class Hunting extends AbstractQuest {
 					}
 					player.addXP(reward);
 					player.addKarma(5);
+
+					if (player.getNumberOfRepetitions(QUEST_SLOT, 2) == 10) {
+						final Item specialRing = SingletonRepository.getEntityManager().getItem("pierścień powrotu");
+						specialRing.setBoundTo(player.getName());
+						player.equipOrPutOnGround(specialRing);
+						player.notifyWorldAboutChanges();
+					}
 
 					final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
 					if (player.getLevel() < 10) {
@@ -346,9 +352,7 @@ public class Hunting extends AbstractQuest {
 						money.setQuantity(Rand.roll1D2000());
 					}
 					player.equipOrPutOnGround(money);
-				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 1) > 19 && player.getNumberOfRepetitions(QUEST_SLOT, 1) <= 34) {
-					final int start = Level.getXP(player.getLevel());
-					final int next = Level.getXP(player.getLevel() + 1);
+				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 19 && player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 34) {
 					int reward = (int) ((next - start) / 5);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
@@ -365,9 +369,7 @@ public class Hunting extends AbstractQuest {
 						goldenbar.setQuantity(Rand.roll1D20());
 					}
 					player.equipOrPutOnGround(goldenbar);
-				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 1) > 34) {
-					final int start = Level.getXP(player.getLevel());
-					final int next = Level.getXP(player.getLevel() + 1);
+				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 34) {
 					int reward = (int) ((next - start) / 4);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
@@ -394,9 +396,7 @@ public class Hunting extends AbstractQuest {
 				new AndCondition(
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
-				        new KilledForQuestCondition(QUEST_SLOT, 0),
-					new NotCondition(
-							new QuestStateGreaterThanCondition("hunting", 1, 19))),
+				        new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
 				"Gratuluje! Zasłużyłeś na odpowiednią nagrodę!",
 				new MultipleActions(rewards));
@@ -472,25 +472,25 @@ public class Hunting extends AbstractQuest {
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			final String creatureCountToKill = getCountCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add("Zostałem poproszony o upolowanie " + creatureToKill + " w ilości " + creatureCountToKill
+				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o upolowanie " + creatureToKill + " w ilości " + creatureCountToKill
 						+ ". Jeszcze mi się nie udało.");
 			} else {
-				res.add("Upolowałem wszystkie " + creatureToKill
-						+ ".");
+				res.add(Grammar.genderVerb(player.getGender(), "Upolowałem") + " wszystkie " + creatureToKill + ".");
 			}
-		}
-		if (formatted) {
-			res.addAll(howManyWereKilledFormatted(player, questState));
-		} else {
-			res.add(howManyWereKilled(player, questState));
+
+			if (formatted) {
+				res.addAll(howManyWereKilledFormatted(player, questState));
+			} else {
+				res.add(howManyWereKilled(player, questState));
+			}
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie Janisław. Może znowu będzie miał dla mnie wyzwanie.");
 		}
-		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
+		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Pomogłem Janisławowi "
-					+ Grammar.quantityplnounCreature(repetitions, "razy") + " do tej pory.");
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Janisławowi "
+					+ Grammar.quantityplnounCreature(repetitions, "raz") + " do tej pory.");
 		}
 		return res;
 	}
