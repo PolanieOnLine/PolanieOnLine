@@ -260,7 +260,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
 			res.add("Pomogłem miastu Gdańsk z dostawami "
-					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
+					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Zakopane znów potrzebuje zapasów.");

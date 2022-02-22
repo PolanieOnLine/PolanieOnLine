@@ -476,7 +476,7 @@ public class DailyItemQuest extends AbstractQuest {
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
 			res.add("Pomogłem Ados z dostawami "
-					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
+					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
             res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.");

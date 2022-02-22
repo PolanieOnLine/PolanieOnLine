@@ -497,7 +497,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
 			res.add("pomogłem Semos "
-					+ Grammar.quantityplnounCreature(repetitions, "razy") + " do tej pory.");
+					+ Grammar.quantityplnounCreature(repetitions, "raz") + " do tej pory.");
 		}
 		return res;
 	}
