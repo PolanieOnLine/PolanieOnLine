@@ -1044,6 +1044,9 @@ public class Grammar {
 			if (word.equals("go")) {
 				return "jej";
 			}
+			if (word.equals("narzeczonego")) {
+				return "narzeczonej";
+			}
 
 			if (word.endsWith("ąłeś")) {
 				return word.substring(0, word.length() - 4) + "ęłaś";

@@ -13,6 +13,7 @@
 package games.stendhal.server.maps.quests.marriage;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -142,11 +143,11 @@ public class MakeRings {
 								"obrączka ślubna");
 						weddingRing.setBoundTo(player.getName());
 						if (player.getQuest(marriage.getQuestSlot()).startsWith("forgingagain")) {
-							npc.say("Skończyłem pracę nad następną obrączką ślubną. Następnym razem bądź ostrożniejszy!");
+							npc.say("Skończyłem pracę nad następną obrączką ślubną. Następnym razem bądź " + Grammar.genderVerb(player.getGender(), "ostrożniejszy") + "!");
 							weddingRing.setInfoString(player.getQuest(marriage.getSpouseQuestSlot()));
 							player.setQuest(marriage.getQuestSlot(), "done");
 						} else {
-							npc.say("Zostałem poproszony, aby przekazać, że obrączka ślubna dla twojej narzeczonej jest już skończona! Upewnij się, że jedna jest dla Ciebie! *psst* jeszcze mała rada ( #hint ) na dzień ślubu ...");
+							npc.say(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + ", aby przekazać, że obrączka ślubna dla twojej " + Grammar.genderVerb(player.getGender(), "narzeczonego") + " jest już skończona! Upewnij się, że jedna jest dla Ciebie! *psst* Jeszcze mała #rada na dzień ślubu...");
 							player.setQuest(marriage.getQuestSlot(), "engaged_with_ring");
 							player.addXP(500);
 						}
@@ -170,9 +171,9 @@ public class MakeRings {
 								&& (player.isEquipped("money", REQUIRED_MONEY))) {
 							player.drop("sztabka złota", REQUIRED_GOLD);
 							player.drop("money", REQUIRED_MONEY);
-							npc.say("Dobrze wróć za "
+							npc.say("Dobrze, wróć za "
 									+ REQUIRED_MINUTES
-									+ " minutę" + ", a będzie gotowa. Do widzenia.");
+									+ " minut, a będzie gotowa. Do widzenia.");
 							if (player.isQuestCompleted(marriage.getQuestSlot())) {
 								player.setQuest(marriage.getQuestSlot(), "forgingagain;" + System.currentTimeMillis());
 							} else {
@@ -181,7 +182,7 @@ public class MakeRings {
 							npc.setCurrentState(ConversationStates.IDLE);
 						} else {
 							// player said they had the money and/or gold but they lied
-							npc.say("Wróć, gdy będziesz miał pieniądze i złoto.");
+							npc.say("Wróć, gdy będziesz " + Grammar.genderVerb(player.getGender(), "miał") + " pieniądze i złoto.");
 						}
 					}
 				});
@@ -196,7 +197,7 @@ public class MakeRings {
 
 		// Just a little hint about getting dressed for the wedding.
 		npc.add(ConversationStates.INFORMATION_2,
-				Arrays.asList("dressed", "hint", "dress", "ubrana", "podpowiedź", "sukienka"),
+				Arrays.asList("dressed", "hint", "dress", "ubrana", "podpowiedź", "sukienka", "rada"),
 				null,
 				ConversationStates.ATTENDING,
 				"Gdy moja żona i ja mieliśmy wziąć ślub to poszliśmy do hotelu w Fado i wypożyczyliśmy specjalne ubrania. Przebieralnia jest po prawej stronie od wejścia. Idź tam i szukaj drewnianych drzwi. Powodzenia!",

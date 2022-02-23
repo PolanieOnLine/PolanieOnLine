@@ -301,7 +301,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(("Zostałem poproszony o przyniesienie "
+				res.add((Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Zakopanemu. Nie mam tego jeszcze."));
 			} else {
 				res.add((Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
@@ -310,7 +310,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Pomogłem Zakopanemu z dostawami "
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Zakopanemu z dostawami "
 					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {

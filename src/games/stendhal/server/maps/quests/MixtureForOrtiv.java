@@ -247,7 +247,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 			missingItems.addFromQuestStateString(questState);
 			res.add("Wciąż muszę przynieść dla Ortiv " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
 		} else {
-			res.add("Pomogłem dla Ortiv. Teraz może spać bezpiecznie w swoim łóżku. On nagrodził mnie podniesieniem XP i sztyletem mordercy.");
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " dla Ortiv. Teraz może spać bezpiecznie w swoim łóżku. On nagrodził mnie podniesieniem XP i sztyletem mordercy.");
 		}
 		return res;
 	}

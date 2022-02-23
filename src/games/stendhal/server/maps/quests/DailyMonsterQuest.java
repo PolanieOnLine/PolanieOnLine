@@ -474,7 +474,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 					.fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add("Zostałem poproszony o zabicie " + creatureToKill
+				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o zabicie " + creatureToKill
 						+ ", aby pomóc Semos. Jeszcze go nie zabiłem.");
 			} else {
 				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " " + creatureToKill
@@ -496,7 +496,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 		// add to history how often player helped Semos so far
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("pomogłem Semos "
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Semos "
 					+ Grammar.quantityplnounCreature(repetitions, "raz") + " do tej pory.");
 		}
 		return res;

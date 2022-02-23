@@ -466,7 +466,7 @@ public class DailyItemQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add("Zostałem poproszony o przyniesienie "
+				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Ados. Nie mam tego jeszcze.");
 			} else {
 				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
@@ -475,7 +475,7 @@ public class DailyItemQuest extends AbstractQuest {
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add("Pomogłem Ados z dostawami "
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Ados z dostawami "
 					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
