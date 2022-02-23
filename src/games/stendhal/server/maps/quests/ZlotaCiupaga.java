@@ -96,7 +96,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 						if(player.getLevel() >= 100) {
 							if(player.getKarma() >=100) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-									raiser.say("Jakiś czas temu zrobiłem złotą ciupagę. Mogę zrobić ją dla Ciebie. Jesteś zainteresowany?");
+									raiser.say("Jakiś czas temu zrobiłem złotą ciupagę. Mogę zrobić ją dla Ciebie. Jesteś " + Grammar.genderVerb(player.getGender(), "zainteresowany") + "?");
 								} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
 									final String[] waittokens = player.getQuest(QUEST_SLOT).split(";");
 									final long waitdelay = REQUIRED_WAIT_DAYS * MathHelper.MILLISECONDS_IN_ONE_DAY;
@@ -112,7 +112,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Nie jesteś godny, aby dzierżyć tak wspaniałą broń. Popracuj nad dobrymi uczynkami. Twoja karma musi być minimum 100.");
+								npc.say("Nie jesteś " + Grammar.genderVerb(player.getGender(), "godny") + ", aby dzierżyć tak wspaniałą broń. Popracuj nad dobrymi uczynkami. Twoja karma musi być minimum 100.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
@@ -120,7 +120,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Nie zdobyłeś uznania u Gazdy Jędrzeja.");
+						npc.say("Nie " + Grammar.genderVerb(player.getGender(), "zdobyłeś") + " uznania u Gazdy Jędrzeja.");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}

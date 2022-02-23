@@ -40,7 +40,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -89,7 +89,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -139,7 +139,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -188,7 +188,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -236,7 +236,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -281,7 +281,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -322,7 +322,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -357,7 +357,7 @@
 			<says>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="injured" params="2"/>
+			<profile name="injured" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -406,7 +406,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1" />
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="injured" params="4"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>

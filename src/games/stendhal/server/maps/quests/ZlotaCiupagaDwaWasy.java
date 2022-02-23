@@ -65,17 +65,17 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 							if(player.getKarma() >= 1000) {
 								if(player.hasKilled("serafin")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Musisz być dzielnym wojownikiem skoro dotarłeś aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+										raiser.say("Musisz być dzielnym wojownikiem skoro " + Grammar.genderVerb(player.getGender(), "dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
 									} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
 										if (player.isQuestCompleted(QUEST_SLOT)) {
 											raiser.say("Jestem bardzo wdzięczny za pomoc. Moje smoki w końcu mnie słuchają.");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										} else {
-											raiser.say("Dlaczego zawracasz mi głowę skoro nie ukończyłeś zadania?");
+											raiser.say("Dlaczego zawracasz mi głowę skoro nie " + Grammar.genderVerb(player.getGender(), "ukończyłeś") + " zadania?");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("zbroja;")) {
-										raiser.say("Dlaczego zawracasz mi głowę skoro nie ukończyłeś zadania u Krasnoluda?");
+										raiser.say("Dlaczego zawracasz mi głowę skoro nie " + Grammar.genderVerb(player.getGender(), "ukończyłeś") + " zadania u Krasnoluda?");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
@@ -83,11 +83,11 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Twoja karma jest zbyt słaba aby podołać temu zadaniu. Postaraj się aby była 1000 lub więcej");
+								npc.say("Twoja karma jest zbyt słaba aby podołać temu zadaniu. Postaraj się, aby była 1000 lub więcej");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 250 lvl.");
+							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 250 poziom.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
@@ -103,10 +103,9 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-
 					raiser.say("Sporo smoków zbuntowało się przeciwko mi. Chcę abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " każdego z nich, którego spotkasz na swej drodze."
-					+ " Dam ci też dobrą radę zbieraj ich pazury. Mój stary znajomy Krasnolud zbiera je. Słyszałem iż w zamian za nie "
-					+ "zrobi ci wspaniałą broń. Powiedz mu tylko moje #imie. Miłego polowania.");
+							+ " Dam ci też dobrą radę zbieraj ich pazury. Mój stary znajomy Krasnolud zbiera je. Słyszałem iż w zamian za nie "
+							+ "zrobi ci wspaniałą broń. Powiedz mu tylko moje #imie. Miłego polowania.");
 					player.setQuest(QUEST_SLOT, "start");
 					player.addKarma(10);
 

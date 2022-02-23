@@ -72,14 +72,14 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 										if(player.getKarma() >= 2000) {
 											if(player.hasKilled("azazel")) {
 												if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-													raiser.say("Musisz być dzielnym wojownikiem skoro dotarłeś aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+													raiser.say("Musisz być dzielnym wojownikiem skoro " + Grammar.genderVerb(player.getGender(), "dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
 												} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
 													raiser.say("Już się Ciebie pytałem czy chcesz ulepszyć złotą ciupagę!");
 												} else if (player.isQuestCompleted(QUEST_SLOT)) {
 													raiser.say("Już ulepszyłem dla Ciebie złotą ciupagę.");
 													raiser.setCurrentState(ConversationStates.ATTENDING);
 												} else {
-													raiser.say("Dlaczego zawracasz mi głowę skoro nie ukończyłeś zadania?");
+													raiser.say("Dlaczego zawracasz mi głowę skoro nie " + Grammar.genderVerb(player.getGender(), "ukończyłeś") + " zadania?");
 													raiser.setCurrentState(ConversationStates.ATTENDING);
 												}
 											} else {
@@ -87,7 +87,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 												raiser.setCurrentState(ConversationStates.ATTENDING);
 											}
 										} else {
-											npc.say("Twoja karma jest zbyt słaba aby podołać temu zadaniu. Postaraj się aby była 2000 lub więcej");
+											npc.say("Twoja karma jest zbyt słaba aby podołać temu zadaniu. Postaraj się, aby była 2000 lub więcej!");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										}
 									} else {

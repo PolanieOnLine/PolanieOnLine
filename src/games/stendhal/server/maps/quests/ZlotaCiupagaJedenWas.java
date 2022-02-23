@@ -99,7 +99,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 							if(player.getKarma()>=200) {
 								if(player.hasKilledSolo("złota śmierć")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Jesteś zainteresowany ulepszeniem złotej ciupagi? Mogę ją dla ciebie ulepszyć. Jesteś zainteresowany?");
+										raiser.say("Jesteś " + Grammar.genderVerb(player.getGender(), "zainteresowany") + " ulepszeniem złotej ciupagi? Mogę ją dla ciebie ulepszyć.");
 									} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
 										raiser.say("Już się Ciebie pytałem czy chcesz #ulepszyć złotą ciupagę!");
 									} else if (player.isQuestCompleted(QUEST_SLOT)) {
@@ -109,7 +109,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 										if (waittimeRemaining > 0L) {
 											raiser.say("Jestem zmęczony. Powróć za " + TimeUtil.approxTimeUntil((int) (waittimeRemaining / 1000L)) + ".");
 										} else {
-											raiser.say("Przyszedłeś, aby ulepszyć złotą ciupagę?");
+											raiser.say(Grammar.genderVerb(player.getGender(), "Przyszedłeś") + ", aby ulepszyć złotą ciupagę?");
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("przedmioty")) {
@@ -121,7 +121,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Nie jesteś godny, aby dzierżyć tak wspaniałą broń. Popracuj nad dobrymi uczynkami. Twoja karma musi być minimum 200.");
+								npc.say("Nie jesteś " + Grammar.genderVerb(player.getGender(), "godny") + ", aby dzierżyć tak wspaniałą broń. Popracuj nad dobrymi uczynkami. Twoja karma musi być minimum 200.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
@@ -129,7 +129,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Widzę, że nie pomogłeś Wielkoludowi. Wróć i pomóż mu, inaczej nie mamy o czym rozmawiać");
+						npc.say("Widzę, że nie " + Grammar.genderVerb(player.getGender(), "pomogłeś") + " Wielkoludowi. Wróć i pomóż mu, inaczej nie mamy o czym rozmawiać!");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}

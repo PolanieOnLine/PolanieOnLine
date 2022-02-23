@@ -74,7 +74,7 @@ public class ZlotyRog extends AbstractQuest {
 										if (waittimeRemaining > 0L) {
 											raiser.say("Mój brat musi odpocząć. Wróć za " + TimeUtil.approxTimeUntil((int) (waittimeRemaining / 1000L)) + ".");
 										} else {
-											raiser.say("Przyszedłeś po kolejny #'złoty róg'?");
+											raiser.say(Grammar.genderVerb(player.getGender(), "Przyszedłeś") + " po kolejny #'złoty róg'?");
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("make;")) {

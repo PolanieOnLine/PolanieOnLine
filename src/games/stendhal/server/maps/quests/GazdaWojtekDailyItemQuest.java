@@ -155,7 +155,6 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 
 	private ChatAction startQuestAction() {
 		// common place to get the start quest actions as we can both starts it and abort and start again
-
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT,0,items,"Zakopane potrzebuje zapasów. Zdobądź [item]"
 				+ " i powiedz #załatwione, gdy przyniesiesz."));
@@ -170,7 +169,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Już dostałeś zadanie by przynieść [item]"
+				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie by dostarczyć [item]"
 						+ ". Powiedz #załatwione jeżeli przyniesiesz!"));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
@@ -238,9 +237,8 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 								 new NotCondition(new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0))),
 				ConversationStates.ATTENDING, 
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Jeszcze nie przyniosłeś [item]"
+				new SayRequiredItemAction(QUEST_SLOT,0,"Jeszcze nie masz [item]"
 						+ ". Idź i zdobądź, a wtedy wróć i powiedz #załatwione jak skończysz."));
-
 	}
 
 	private void abortQuest() {
@@ -289,7 +287,7 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Napotkałem się na Gazdę Wojtka w ratuszu Zakopane.");
+		res.add(Grammar.genderVerb(player.getGender(), "Napotkałem") + " się na Gazdę Wojtka w ratuszu Zakopane.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie pomogę gaździe oraz mieszkańcom Zakopane.");
@@ -301,17 +299,17 @@ public class GazdaWojtekDailyItemQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add((Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
-						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Zakopanemu. Nie mam tego jeszcze."));
+				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
+						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Zakopanemu. Nie mam tego jeszcze.");
 			} else {
-				res.add((Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
-						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Zakopanemu i muszę je dostarczyć."));
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
+						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Zakopanemu i muszę je dostarczyć.");
 			}
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
 			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Zakopanemu z dostawami "
-					+ Grammar.quantityplnoun(repetitions, "razy") + " do tej pory.");
+					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.");
