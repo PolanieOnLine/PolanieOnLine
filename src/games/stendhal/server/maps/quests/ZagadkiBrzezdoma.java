@@ -252,7 +252,7 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 	private void step7() {
 		final SpeakerNPC npc = npcs.get("Edgard");
 
-		npc.add(ConversationStates.ATTENDING,  "perun",
+		npc.add(ConversationStates.ATTENDING, "perun",
 				new QuestInStateCondition(QUEST_SLOT, "bogowie"),
 				ConversationStates.ATTENDING, null,
 				new ChatAction() {
@@ -276,7 +276,7 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					player.drop("czarna zbroja");
-					 final StackableItem gold = (StackableItem) SingletonRepository.getEntityManager().getItem("sztabka złota");
+					final StackableItem gold = (StackableItem) SingletonRepository.getEntityManager().getItem("sztabka złota");
 					final int goldamount = 30;
 					gold.setQuantity(goldamount);
 					player.equipOrPutOnGround(gold);
