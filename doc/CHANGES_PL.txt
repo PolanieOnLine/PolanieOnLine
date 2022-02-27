@@ -1,5 +1,15 @@
 Changelog
 ---------
+1.28.4
+*świat*
+- Zmniejszono % prawdopodobieństwa uzyskania krwawienia przez smoki i anioły
+
+*naprawiono błędy*
+- Naprawiono przenoszenie przedmiotów do magicznej torby
+- Poprawiono gramatykę w opisach zadań w dzienniku
+- Poprawiono kolizję i tekstury na mapach
+
+
 1.28.3
 *klient*
 - Dodano nową grafikę przedmiotu
