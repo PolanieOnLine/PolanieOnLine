@@ -7,6 +7,7 @@ import games.stendhal.common.constants.Actions;
 import games.stendhal.server.actions.equip.SourceObject;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
+import marauroa.common.game.RPSlot;
 
 public class AutoEquipItems {
 	private final static String SLOT_POUCH = "pouch";
@@ -15,7 +16,8 @@ public class AutoEquipItems {
 	private final String money = "money";
 	private final String[] potionsAndMagics = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir",
 			"gigantyczny eliksir", "eliksir miłości", "smoczy eliksir", "duży smoczy eliksir",
-			"magia ziemi", "magia deszczu", "magia płomieni", "magia mroku", "magia światła", "zaklęcie pustelnika" };
+			"magia ziemi", "magia deszczu", "magia płomieni", "magia lodu", "magia mroku", "magia światła",
+			"zaklęcie pustelnika" };
 
 	/**
 	 * Automatically moves items to the appropriate slot.
@@ -46,7 +48,12 @@ public class AutoEquipItems {
 		for (String item : potionsAndMagics) {
 			if (action.has(EquipActionConsts.CLICKED) && targetSlot != null && !targetSlot.equals(SLOT_MAGICBAG)
 					&& source.getEntityName().equals(item)) {
-				itemMoveAction(player, action, SLOT_MAGICBAG, item);
+				RPSlot slot = player.getSlot(SLOT_MAGICBAG);
+				if (!slot.isFull() || player.isEquippedItemInSlot(SLOT_MAGICBAG, item)) {
+					itemMoveAction(player, action, SLOT_MAGICBAG, item);
+				} else {
+					itemMoveAction(player, action, "bag", item);
+				}
 			}
 		}
 	}
