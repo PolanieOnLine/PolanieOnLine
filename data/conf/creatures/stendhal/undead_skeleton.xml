@@ -201,7 +201,7 @@
 
 	<creature name="gashadokuro">
 		<type class="stendhal/undead" subclass="gashadokuro" tileid="undead_skeleton.png:5"/>
-		<description>Gigantyczna sylwetka zrobiona z kości zwana jako gashadokuro. Składa się z kości konających ludzi.</description>
+		<description>Oto gigantyczna sylwetka zrobiona z kości zwana jako gashadokuro. Składa się z kości konających ludzi.</description>
 		<attributes>
 			<atk value="6000"/>
 			<def value="371"/>
@@ -212,7 +212,7 @@
 		<level value="500"/>
 		<experience value="750000"/>
 		<respawn value="300000"/>
-		<corpse name="giant_bone" harmless="giant_bone" width="6" height="6"/>
+		<corpse name="giant_bone_4x4" harmless="giant_bone_4x4" width="4" height="4"/>
 		<drops>
 			<item value="money" quantity="[5000,30000]" probability="100.0"/>
 			<item value="kij z czaszką" quantity="[1,1]" probability="3.0"/>
