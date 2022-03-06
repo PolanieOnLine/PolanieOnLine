@@ -212,7 +212,7 @@ public class HungryJoshua extends AbstractQuest {
 			reward.add(new CreateSlotAction(ImmutableList.of("belt", "back")));
 			reward.add(new EquipItemAction("keyring", 1, true));
 		} else {
-			reward.add(new EnableFeatureAction("keyring"));
+			reward.add(new EnableFeatureAction("keyring", "6 2"));
 		}
 
 		/* Complete the quest */

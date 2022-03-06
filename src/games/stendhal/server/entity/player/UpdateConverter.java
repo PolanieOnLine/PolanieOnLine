@@ -445,6 +445,17 @@ public abstract class UpdateConverter {
 			object.put("mining", "10");
     		object.put("mining_xp", "0");
     	}
+
+		// port to 1.39: keyring size
+		String keyring = object.get("features", "keyring");
+		String keyring_ext = object.get("features", "keyring_ext");
+		if (keyring != null && keyring.equals("")) {
+			object.put("features", "keyring", "6 2");
+		}
+		if (keyring_ext != null) {
+			object.put("features", "keyring", "6 3");
+			object.remove("keyring_ext");
+		}
 	}
 
 	/**

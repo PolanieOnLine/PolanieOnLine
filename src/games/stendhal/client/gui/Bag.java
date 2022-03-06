@@ -11,38 +11,20 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import javax.swing.SwingUtilities;
-
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.listener.FeatureChangeListener;
 
 /**
- * A key ring.
+ * A bag.
  */
 @SuppressWarnings("serial")
-class KeyRing extends SlotWindow implements FeatureChangeListener {
+class Bag extends SlotWindow implements FeatureChangeListener {
 	/**
-	 * Create a key ring.
+	 * Create a bag
 	 */
-	public KeyRing() {
-		// Remember if you change these numbers change also a number in
-		// src/games/stendhal/server/entity/RPEntity.java
-		super("keyring", 6, 2);
-		// A panel window; forbid closing
+	public Bag() {
+		super("bag", 6, 6);
 		setCloseable(false);
-	}
-
-	/**
-	 * A feature was disabled.
-	 *
-	 * @param name
-	 *            The name of the feature.
-	 */
-	@Override
-	public void featureDisabled(final String name) {
-		if (name.equals("keyring")) {
-			setVisible(false);
-		}
 	}
 
 	/**
@@ -55,22 +37,21 @@ class KeyRing extends SlotWindow implements FeatureChangeListener {
 	 */
 	@Override
 	public void featureEnabled(final String name, String value) {
-		if (name.equals("keyring")) {
-			if (value.equals("")) {
-				value = "6 2";
-			}
-			String[] values = value.split(" ");
-			setSlotsLayout(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
-			setAcceptedTypes(EntityMap.getClass("item", null, null));
-
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if(!isVisible()) {
-						setVisible(true);
-					}
-				}
-			});
+		if (!name.equals("bag")) {
+			return;
 		}
+
+		if (value.equals("")) {
+			value = "6 6";
+		}
+		String[] values = value.split(" ");
+		setSlotsLayout(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
+		setAcceptedTypes(EntityMap.getClass("item", null, null));
+	}
+
+	@Override
+	public void featureDisabled(String name) {
+		setSlotsLayout(6, 6);
+		setAcceptedTypes(EntityMap.getClass("item", null, null));
 	}
 }
