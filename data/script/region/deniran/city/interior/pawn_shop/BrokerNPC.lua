@@ -34,6 +34,17 @@ local function initNPC()
 	broker:addQuest("Cóż... Nie mam teraz nic, w czym mógłbyś mi pomóc.")
 	broker:addOffer("Sprawdź na tablicy listę przedmiotów, które skupuję.")
 
+	broker:add(
+		ConversationStates.ATTENDING,
+		{ "golden blade", "złota klinga" },
+		nil,
+		ConversationStates.ATTENDING,
+		nil,
+		function(player, sentence, raiser)
+			broker:say("To nie przypadek kolego. Ta rzecz nie opuszcza mojego wzroku.")
+			broker:say("!me surowo patrzy na ciebie w górę i w dół.")
+		end)
+
 	game:add(broker)
 end
 
