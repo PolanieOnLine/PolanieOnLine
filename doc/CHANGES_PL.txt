@@ -1,12 +1,26 @@
 Changelog
 ---------
-1.28.4
+1.28.5
+*klient*
+- Dodano nowe grafiki
+- Poprawiono grafiki niektórych NPC
+
 *świat*
+- Dodano nowe osiągnięcia: (3)
+	- "Odstraszacz Much"
+	- "Czeluści Piekieł"
+	- "Piekielne Pomioty"
+- Dodano ogłoszenia, gdy gracz rozpocznie walkę na arenie DM w Ados
+- Dodano możliwość zdobycia wielkiego eliksiru ze smoka arktycznego
+- Zmieniono ilość otrzymywanego doświadczenia za smoka arktycznego
 - Zmniejszono % prawdopodobieństwa uzyskania krwawienia przez smoki i anioły
+- Zmniejszono wymóg dla osiągnięć: "Serenada Syren" & "Spiczasty Gatunek"
 
 *naprawiono błędy*
+- Naprawiono spamiące wiadomości w wieży na dragon landzie
 - Naprawiono przenoszenie przedmiotów do magicznej torby
 - Poprawiono gramatykę w opisach zadań w dzienniku
+- Poprawiono zwłoki potwora Gashadokuro oraz smoka arktycznego
 - Poprawiono kolizję i tekstury na mapach
 
 
