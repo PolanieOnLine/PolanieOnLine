@@ -274,6 +274,11 @@ public class KillMonks extends AbstractQuest {
 	}
 
 	@Override
+	public int getMinLevel() {
+		return 27; // level of monk
+	}
+
+	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 				 new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_WEEK*2)).fire(player,null, null);

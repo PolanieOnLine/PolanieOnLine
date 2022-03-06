@@ -227,6 +227,11 @@ public class CleanAthorsUnderground extends AbstractQuest {
 	}
 
 	@Override
+	public int getMinLevel() {
+		return 70; // level of blue dragon
+	}
+
+	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
 				 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)).fire(player,null, null);
