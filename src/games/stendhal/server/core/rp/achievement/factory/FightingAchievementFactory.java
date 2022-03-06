@@ -71,6 +71,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SNAKE = "fight.general.snake";
 	public static final String ID_BALROG = "fight.general.balrog";
 	public static final String ID_MEFISTO = "fight.general.mefisto";
+	public static final String ID_LAWINY = "fight.general.lawiny";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -162,6 +163,9 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	};
 	public static final String[] ENEMIES_MEFISTO = {
 			"zapomniany diabeł", "mefisto", "belzebub"
+	};
+	public static final String[] ENEMIES_LAWINY = {
+			"lawina", "lawina kamienna"
 	};
 
 	@Override
@@ -436,6 +440,21 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_MEFISTO, "Piekielne Pomioty", "Zabił po 100 belzebubów, mefisto oraz zapomnianych diabłów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_MEFISTO)));
+
+		fightingAchievements.add(createAchievement(
+				ID_LAWINY, "Bezpieczna Trasa", "Zabił łącznie 1,000 różnych lawin",
+				Achievement.HARD_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String lawiny: ENEMIES_LAWINY) {
+							kills += player.getSoloKill(lawiny) + player.getSharedKill(lawiny);
+						}
+						return kills >= 1000;
+					}
+				}
+		));
 
 		return fightingAchievements;
 	}
