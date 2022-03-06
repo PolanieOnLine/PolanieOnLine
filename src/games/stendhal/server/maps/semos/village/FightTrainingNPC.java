@@ -37,7 +37,8 @@ public class FightTrainingNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Rochar-Zith, stojący w tym miejscu nieruchomo, wpatrując się w horyzont.");
-		npc.setEntityClass("jailedbarbariannpc");
+		npc.setOutfit("body=0,head=0,eyes=27,dress=36");
+		npc.setOutfitColor("dress", 0x4b5320);
 		npc.setGender("M");
 		npc.setPosition(23, 30);
 		zone.add(npc);
