@@ -6,10 +6,11 @@ Changelog
 - Poprawiono grafiki niektórych NPC
 
 *świat*
-- Dodano nowe osiągnięcia: (3)
+- Dodano nowe osiągnięcia: (4)
 	- "Odstraszacz Much"
 	- "Czeluści Piekieł"
 	- "Piekielne Pomioty"
+	- "Bezpieczna Trasa"
 - Dodano ogłoszenia, gdy gracz rozpocznie walkę na arenie DM w Ados
 - Dodano możliwość zdobycia wielkiego eliksiru ze smoka arktycznego
 - Zmieniono ilość otrzymywanego doświadczenia za smoka arktycznego
