@@ -370,20 +370,21 @@
 
 	<creature name="smok arktyczny">
 		<type class="pol/smoki" subclass="smok_arktyczny" tileid="pol_smoki.png:5"/>
-		<description/>
+		<description>Oto smok arktyczny. Jeden ze smoków, który mrozi krew i kości żywej istoty, nawet ze znacznej odległości od niego czujesz ogromnie obniżoną temperaturę.</description>
 		<attributes>
 			<atk value="3659"/>
 			<def value="77"/>
 			<hp value="3960"/>
 			<speed value="1.0"/>
-			<size value="6,5"/>
+			<size value="5,4"/>
 		</attributes>
 		<level value="222"/>
-		<experience value="110000"/>
+		<experience value="222222"/>
 		<respawn value="23456"/>
 		<corpse name="huger_animal"/>
 		<drops>
-			<item value="money" quantity="[1,2000]" probability="100.0"/>
+			<item value="money" quantity="[1,2222]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,3]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[1,5]" probability="70.0"/>
 			<item value="obsydian" quantity="[1,1]" probability="0.0001"/>
 			<item value="biały balonik" quantity="[1,1]" probability="7.0"/>
