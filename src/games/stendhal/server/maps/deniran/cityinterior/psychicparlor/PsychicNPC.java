@@ -157,7 +157,7 @@ public class PsychicNPC implements ZoneConfigurator {
 					calculateFee(player);
 				}
 
-				npc.say("Informacja o " + requestedEnemy.getName() + " będzie kosztować " + currentFee + ". Czy chciałbyś zapłacić?");
+				npc.say("Informacja o " + requestedEnemy.getName() + " będzie kosztować " + currentFee + ". Czy " + Grammar.genderVerb(player.getGender(), "chciałbyś") + " zapłacić?");
 			}
 		};
 
@@ -183,7 +183,7 @@ public class PsychicNPC implements ZoneConfigurator {
 				final int sharedKills = player.getSharedKill(enemyName);
 				final int totalKills = soloKills + sharedKills;
 
-				final StringBuilder sb = new StringBuilder(player.getName() + ", zabiłeś w sumie " + totalKills + " ");
+				final StringBuilder sb = new StringBuilder(player.getName() + ", " + Grammar.genderVerb(player.getGender(), "zabiłeś") + " w sumie " + totalKills + " ");
 
 				if (totalKills == 1) {
 					sb.append(enemyName);
@@ -193,9 +193,9 @@ public class PsychicNPC implements ZoneConfigurator {
 
 				sb.append(". ");
 				if (soloKills == 0) {
-					sb.append("Nie pokonałeś ani jednego");
+					sb.append("Nie " + Grammar.genderVerb(player.getGender(), "pokonałeś") + " ani jednego");
 				} else {
-					sb.append("Pokonałeś " + soloKills);
+					sb.append(Grammar.genderVerb(player.getGender(), "Pokonałeś") + " " + soloKills);
 				}
 				sb.append(" w pojedynkę oraz ");
 

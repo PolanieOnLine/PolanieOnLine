@@ -65,7 +65,7 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 	private void buildTradeCenterAdvisor(StendhalRPZone zone) {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 3);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
-		speaker.setDescription("Harold jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
+		speaker.setDescription("Oto Harold. Wyglądający na przyjaznego faceta, który czeka na utworzenie oferty od ciebie...");
 		speaker.setEntityClass("tradecenteradvisornpc");
 		speaker.setOutfit(3, 34, 1, null, 0, null, 5, null, 0);
 		speaker.setGender("M");

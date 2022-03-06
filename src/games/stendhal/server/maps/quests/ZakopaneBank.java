@@ -134,7 +134,6 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 			// Note that "player" always refers to the current player
 			// in order not to teleport the next player out too early,
 			// we have to compare it to the player who started this timer
-
 			final Player playerTemp = timerPlayer.get();
 
 			if (playerTemp != null) {
@@ -281,7 +280,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 						Arrays.asList("leave", "wyjście", "wyjdź"),
 						new QuestActiveCondition(QUEST_SLOT),
 						ConversationStates.ATTENDING,
-						"Dziękuję za skorzystanie z Banku w Zakopanem",
+						"Dziękuję za skorzystanie z Banku w Zakopanem.",
 						// we used to use teleportAway() here 
 						new MultipleActions(
 							new TeleportAction(ZONE_NAME, 34, 15, Direction.DOWN),

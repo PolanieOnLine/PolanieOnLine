@@ -263,7 +263,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Zakopane znów potrzebuje zapasów.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Gdańsk znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
 			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysław i odebrałem moją nagrodę w ciągu ostatnich 48 godzin.");
 		}
@@ -275,11 +275,6 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		return "Dzienne Zadanie w Gdańsku";
 	}
 
-	@Override
-	public int getMinLevel() {
-		return 0;
-	}
-	
 	@Override
 	public String getRegion() {
 		return Region.GDANSK_CITY;
@@ -298,6 +293,6 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-								new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
+					new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }
