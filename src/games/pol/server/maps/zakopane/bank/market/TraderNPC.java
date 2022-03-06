@@ -22,10 +22,8 @@ import games.stendhal.server.maps.semos.tavern.market.TradeCenterZoneConfigurato
  * adds a market to a zone
  *
  * @author madmetzger
- *
  */
 public class TraderNPC extends TradeCenterZoneConfigurator {
-
 	private static final String TRADE_ADVISOR_NAME = "Radzimir";
 
 	private static final int COORDINATE_X = 40;
@@ -39,7 +37,7 @@ public class TraderNPC extends TradeCenterZoneConfigurator {
 	private void buildTradeCenterAdvisor(StendhalRPZone zone) {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 5);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
-		speaker.setDescription("Radzimir jest przyjaznym facetem, który czeka na utworzenie oferty od ciebie...");
+		speaker.setDescription("Oto Radzimir. Wyglądający na przyjaznego faceta, który czeka na utworzenie oferty od ciebie...");
 		speaker.setEntityClass("npc_straganiarz");
 		speaker.setGender("M");
 		zone.add(speaker);
