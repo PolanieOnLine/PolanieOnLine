@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,7 +13,6 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
-import games.stendhal.common.NotificationType;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 
@@ -95,7 +93,7 @@ public class RingOfLife extends Item {
 	@Override
 	public boolean onEquipped(final RPEntity entity, final String slot) {
 		if ((slot.equals("finger") || slot.equals("fingerb")) && entity instanceof Player) {
-			((Player) entity).sendPrivateText(NotificationType.INFORMATION,
+			((Player) entity).sendPrivateText(
 				"Aura pierścienia pozostaje niezmieniona, gdy przesuwasz go po palcu."
 				+ " Zdajesz sobie sprawę, że nawet nosząc go w plecaku lub w rzemyku"
 				+ " będziesz pod jego wpływem.");
