@@ -66,8 +66,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_MOUNTAINELVES = "fight.general.mountainelves";
 	public static final String ID_ELEMENTAL = "fight.general.elemental";
 	public static final String ID_BUTTERFLY = "fight.general.butterfly";
+	public static final String ID_FLY = "fight.general.fly";
 	public static final String ID_TURTLE = "fight.general.turtle";
 	public static final String ID_SNAKE = "fight.general.snake";
+	public static final String ID_BALROG = "fight.general.balrog";
+	public static final String ID_MEFISTO = "fight.general.mefisto";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -157,6 +160,9 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 			"żywioł lodu", "żywioł ognia", "żywioł powietrza",
 			"żywioł wody", "żywioł ziemi", "żywioł nicości"
 	};
+	public static final String[] ENEMIES_MEFISTO = {
+			"zapomniany diabeł", "mefisto", "belzebub"
+	};
 
 	@Override
 	public Collection<Achievement> createAchievements() {
@@ -175,6 +181,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_BUTTERFLY, "Łowca Motyli", "Zabił 10 motyli",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("motylek", 10)));
+
+		fightingAchievements.add(createAchievement(
+				ID_FLY, "Odstraszacz Much", "Zabił 25 chmar much",
+				Achievement.EASY_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition("chmara much", 25)));
 
 		fightingAchievements.add(createAchievement(
 				ID_SNAKE, "Poskramiacz Węży", "Zabił 15 węży",
@@ -275,7 +286,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition("wilkołak", 500)));
 
 		fightingAchievements.add(createAchievement(
-				ID_MERMAIDS, "Serenada Syren", "Zabił 10,000 klejnotowych rodzai syren",
+				ID_MERMAIDS, "Serenada Syren", "Zabił 5,000 klejnotowych rodzai syren",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -286,7 +297,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 							kills += player.getSoloKill(mermaid) + player.getSharedKill(mermaid);
 						}
 
-						return kills >= 10000;
+						return kills >= 5000;
 					}
 				}
 		));
@@ -397,7 +408,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		fightingAchievements.add(createAchievement(
-				ID_MOUNTAINELVES, "Spiczasty Gatunek", "Zabił łącznie 2,500 elfów górskich",
+				ID_MOUNTAINELVES, "Spiczasty Gatunek", "Zabił łącznie 1,500 elfów górskich",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -406,7 +417,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 						for (final String elves: ENEMIES_MOUNTAINELVES) {
 							kills += player.getSoloKill(elves) + player.getSharedKill(elves);
 						}
-						return kills >= 2500;
+						return kills >= 1500;
 					}
 				}
 		));
@@ -415,6 +426,16 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				ID_ELEMENTAL, "Opanowane Żywioły", "Zabił po 150 różnych żywiołów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(150, ENEMIES_ELEMENTAL)));
+
+		fightingAchievements.add(createAchievement(
+				ID_BALROG, "Czeluści Piekieł", "Zabił 100 balrogów",
+				Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(100, "balrog")));
+
+		fightingAchievements.add(createAchievement(
+				ID_MEFISTO, "Piekielne Pomioty", "Zabił po 100 belzebubów, mefisto oraz zapomnianych diabłów",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_MEFISTO)));
 
 		return fightingAchievements;
 	}
