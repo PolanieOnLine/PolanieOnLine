@@ -152,5 +152,4 @@ public class ScriptInJava extends ScriptingSandbox {
 
 		super.unload(admin, args);
 	}
-
 }

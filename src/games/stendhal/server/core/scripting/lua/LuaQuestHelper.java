@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
@@ -73,6 +74,18 @@ public class LuaQuestHelper {
 	/**
 	 * Creates a new quest instance.
 	 *
+	 * @param slotName
+	 *     The slot identifier.
+	 * @return
+	 *     New LuaQuest instance.
+	 */
+	public LuaQuest create(final String slotName) {
+		return new LuaQuest(slotName);
+	}
+
+	/**
+	 * Creates a new quest instance.
+	 *
 	 * @param name
 	 * 		The quest name.
 	 * @param slotName
@@ -84,6 +97,22 @@ public class LuaQuestHelper {
 	 */
 	public LuaQuest create(final String slotName, final String name) {
 		return new LuaQuest(slotName, name);
+	}
+
+	/**
+	 * Creates a new quest instance.
+	 *
+	 * @param slotName
+	 *     The slot identifier.
+	 * @param name
+	 *     Reader friendly name.
+	 * @param desc
+	 *     Quest description.
+	 * @return
+	 *     New LuaQuest instance.
+	 */
+	public LuaQuest create(final String slotName, final String name, final String desc) {
+		return new LuaQuest(slotName, name, desc);
 	}
 
 	/**
@@ -315,23 +344,60 @@ public class LuaQuestHelper {
 		public LuaFunction repeatableCheck = null;
 		public LuaFunction completedCheck = null;
 
+		/**
+		 * Creates a new quest.
+		 */
 		private LuaQuest() {
-			questInfo.setSuggestedMinLevel(minLevel);
-			questInfo.setRepeatable(false);
+			init();
 		}
 
 		/**
+		 * Creates a new quest.
+		 *     The slot identifier.
+		 */
+		private LuaQuest(final String slotName) {
+			setSlotName(slotName);
+
+			init();
+		}
+
+		/**
+		 * Creates a new quest.
 		 *
-		 * @param name
-		 * 		The quest name.
 		 * @param slotName
-		 * 		The slot identifier.
-		 * @param minLevel
-		 * 		Recommended minimum level.
+		 *     The slot identifier.
+		 * @param name
+		 *     Reader friendly name.
 		 */
 		private LuaQuest(final String slotName, final String name) {
 			setSlotName(slotName);
 			setName(name);
+
+			init();
+		}
+
+		/**
+		 * Creates a new quest.
+		 *
+		 * @param slotName
+		 *     The slot identifier.
+		 * @param name
+		 *     Reader friendly name.
+		 * @param desc
+		 *     Quest description.
+		 */
+		private LuaQuest(final String slotName, final String name, final String desc) {
+			setSlotName(slotName);
+			setName(name);
+			setDescription(desc);
+
+			init();
+		}
+
+		/**
+		 * Initializes default QuestInfo attributes.
+		 */
+		private void init() {
 			questInfo.setSuggestedMinLevel(minLevel);
 			questInfo.setRepeatable(false);
 		}
@@ -375,8 +441,6 @@ public class LuaQuestHelper {
 
 		@Override
 		public String getName() {
-			//return questInfo.getName();
-
 			final StringBuilder sb = new StringBuilder();
 			final char[] name = getOriginalName().toCharArray();
 			boolean titleCase = true;
@@ -418,11 +482,11 @@ public class LuaQuestHelper {
 				return ret;
 			}
 
-			final LuaValue result = history.call();
+			final LuaValue result = history.call(CoerceJavaToLua.coerce(player));
 			if (result.istable()) {
-				for (final LuaValue lv: result.checktable().keys()) {
-					if (lv.isstring()) {
-						ret.add(lv.tojstring());
+				for (final LuaValue key: result.checktable().keys()) {
+					if (key.isstring()) {
+						ret.add(result.get(key.checkint()).tojstring());
 					}
 				}
 			}
@@ -437,11 +501,11 @@ public class LuaQuestHelper {
 			}
 
 			final List<String> ret = new LinkedList<>();
-			final LuaValue result = history.call();
+			final LuaValue result = history.call(CoerceJavaToLua.coerce(player));
 			if (result.istable()) {
-				for (final LuaValue lv: result.checktable().keys()) {
-					if (lv.isstring()) {
-						ret.add(lv.tojstring());
+				for (final LuaValue key: result.checktable().keys()) {
+					if (key.isstring()) {
+						ret.add(result.get(key.checkint()).tojstring());
 					}
 				}
 			}

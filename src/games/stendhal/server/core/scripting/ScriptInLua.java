@@ -33,15 +33,8 @@ import org.luaj.vm2.lib.jse.LuajavaLib;
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.scripting.lua.LuaActionHelper;
-import games.stendhal.server.core.scripting.lua.LuaArrayHelper;
-import games.stendhal.server.core.scripting.lua.LuaConditionHelper;
-import games.stendhal.server.core.scripting.lua.LuaEntityHelper;
-import games.stendhal.server.core.scripting.lua.LuaMerchantHelper;
-import games.stendhal.server.core.scripting.lua.LuaPropertiesHelper;
-import games.stendhal.server.core.scripting.lua.LuaQuestHelper;
-import games.stendhal.server.core.scripting.lua.LuaStringHelper;
-import games.stendhal.server.core.scripting.lua.LuaTableHelper;
+import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.scripting.lua.*;
 import games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource;
 import games.stendhal.server.entity.player.Player;
 
@@ -265,6 +258,23 @@ public class ScriptInLua extends ScriptingSandbox {
 		setMusic(filename, new LuaTable());
 	}
 
+	/**
+	 * Executes a function after a specified number of turns.
+	 *
+	 * FIXME: how to invoke with parameters
+	 *
+	 * @param turns
+	 *     Number of turns to wait.
+	 * @param func
+	 *     The function to be executed.
+	 */
+	public void runAfter(final int turns, final LuaFunction func) {
+		SingletonRepository.getTurnNotifier().notifyInTurns(turns, new TurnListener() {
+			public void onTurnReached(final int currentTurn) {
+				func.call();
+			}
+		});
+	}
 
 	/**
 	 * Handles logging from Lua.
