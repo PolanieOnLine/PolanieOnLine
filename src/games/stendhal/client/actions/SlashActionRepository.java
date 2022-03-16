@@ -94,6 +94,7 @@ public class SlashActionRepository {
 		actions.put("travellog", new TravelLogAction());
 		actions.put(Actions.ACHIEVEMENTLOG, new AchievementLogAction());
 		actions.put(Actions.BESTIARY, new BestiaryAction());
+		actions.put(Actions.DROPPEDLIST, new ItemLogAction());
 
 		actions.put("quit", new QuitAction());
 

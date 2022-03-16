@@ -202,6 +202,8 @@ public final class Actions {
 
 	public final static String BESTIARY = "bestiary";
 
+	public final static String DROPPEDLIST = "droppeditemlist";
+
 	public static final String ACHIEVEMENTLOG = "achievementlog";
 
 	private Actions() {

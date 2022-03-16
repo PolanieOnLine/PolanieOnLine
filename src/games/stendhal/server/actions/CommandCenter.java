@@ -110,6 +110,7 @@ public class CommandCenter {
 		FaceAction.register();
 		ForsakeAction.register();
 		GroupManagementAction.register();
+		ItemLogAction.register();
 		KnockAction.register();
 		LanguageAction.register();
 		ListProducersAction.register();
