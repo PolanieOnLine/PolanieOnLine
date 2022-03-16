@@ -56,7 +56,7 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 		startConversation();
 
 		askForFoodList();
-		checkReply("chleb", BREAD_DESCRIPTION);
+		checkReply("bread", BREAD_DESCRIPTION);
 		checkReply("sandwich", SANDWICH_DESCRIPTION);
 		checkReply("sandwich.", SANDWICH_DESCRIPTION);
 

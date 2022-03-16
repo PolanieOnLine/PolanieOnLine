@@ -14,6 +14,7 @@ import games.stendhal.server.maps.MockStendlRPWorld;
 
 @RunWith(Parameterized.class)
 public class StendhalRPZoneTest {
+
 	private String zoneName;
 	private String expectedZoneDescription;
 

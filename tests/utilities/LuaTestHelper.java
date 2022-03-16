@@ -24,6 +24,7 @@ import games.stendhal.server.maps.MockStendlRPWorld;
 
 
 public class LuaTestHelper {
+
 	protected static StendhalRPWorld world;
 	protected static MockStendhalRPRuleProcessor mrp;
 	protected static StendhalQuestSystem qs;
@@ -31,6 +32,7 @@ public class LuaTestHelper {
 
 	protected StendhalRPZone zone;
 	protected Player player;
+
 
 	@BeforeClass
 	public static void setUpBeforeClass() {

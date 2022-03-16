@@ -57,6 +57,7 @@ import games.stendhal.client.World;
 import games.stendhal.client.Zone;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.actions.SlashActionRepository;
+import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.buddies.BuddyPanelController;
@@ -130,9 +131,10 @@ class SwingClientGUI implements J2DClientGUI {
 		pane.setLayout(new FreePlacementLayout());
 
 		// Create the main game screen
-		screen = new GameScreen(client);
+		screen = GameScreen.get(client);
 		GameScreen.setDefaultScreen(screen);
-		screenController = new ScreenController(screen);
+		// initialize the screen controller
+		screenController = ScreenController.get(screen);
 		pane.addComponentListener(new GameScreenResizer(screen));
 
 		// ... and put it on the ground layer of the pane
@@ -617,10 +619,18 @@ class SwingClientGUI implements J2DClientGUI {
 		screen.addAchievementBox(title, description, category);
 	}
 
+	@Deprecated
 	@Override
 	public void addGameScreenText(double x, double y, String text,
 			NotificationType type, boolean isTalking) {
 		screenController.addText(x, y, text, type, isTalking);
+	}
+
+	@Deprecated
+	@Override
+	public void addGameScreenText(final Entity entity, final String text,
+			final NotificationType type, final boolean isTalking) {
+		screenController.addText(entity, text, type, isTalking);
 	}
 
 	@Override

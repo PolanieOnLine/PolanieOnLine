@@ -116,7 +116,7 @@ public class OracleNPC implements ZoneConfigurator {
 		npc.setEntityClass("oracle2npc");
 		npc.setGender("F");
 		npc.setPosition(62, 86);
-		npc.setShadowStyle("floating");
+		npc.setShadowStyle("48x64_floating");
 		zone.add(npc);
 	}
 }

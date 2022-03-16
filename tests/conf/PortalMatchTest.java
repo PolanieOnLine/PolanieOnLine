@@ -46,21 +46,8 @@ public class PortalMatchTest {
 			final DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 			final File directory = new File("data/conf/zones/");
-			final File directory_pol = new File("data/conf/zones/pol/");
-			final File directory_std = new File("data/conf/zones/stendhal/");
 			final File[] files = directory.listFiles(new FileFilter() {
-				@Override
-				public boolean accept(final File file) {
-					return file.getName().endsWith("xml");
-				}
-			});
-			final File[] files_pol = directory_pol.listFiles(new FileFilter() {
-				@Override
-				public boolean accept(final File file) {
-					return file.getName().endsWith("xml");
-				}
-			});
-			final File[] files_std = directory_std.listFiles(new FileFilter() {
+
 				@Override
 				public boolean accept(final File file) {
 					return file.getName().endsWith("xml");
@@ -68,21 +55,9 @@ public class PortalMatchTest {
 			});
 
 			assertThat(files, notNullValue());
-			assertThat(files_pol, notNullValue());
-			assertThat(files_std, notNullValue());
 			assertThat("files should not be empty", files.length, not((is(0))));
-			assertThat("files should not be empty", files_pol.length, not((is(0))));
-			assertThat("files should not be empty", files_std.length, not((is(0))));
 			for (final File f : files) {
 				final Document doc = docBuilder.parse(f);
-				portals.addAll(proceedDocument(doc));
-			}
-			for (final File fp : files_pol) {
-				final Document doc = docBuilder.parse(fp);
-				portals.addAll(proceedDocument(doc));
-			}
-			for (final File fs : files_std) {
-				final Document doc = docBuilder.parse(fs);
 				portals.addAll(proceedDocument(doc));
 			}
 

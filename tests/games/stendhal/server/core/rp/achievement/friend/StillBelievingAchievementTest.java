@@ -129,6 +129,7 @@ public class StillBelievingAchievementTest extends ZonePlayerAndNPCTestImpl {
 	}
 
 	private void doQuestSanta() {
+
 		final SpeakerNPC santa = npcs.get("Santa");
 		assertNotNull(santa);
 

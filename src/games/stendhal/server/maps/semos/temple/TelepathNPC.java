@@ -159,7 +159,7 @@ public class TelepathNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Io Flotto. Widzi ciebie.");
 		npc.setEntityClass("floattingladynpc");
-		npc.setShadowStyle("floating");
+		npc.setShadowStyle("48x64_floating");
 		npc.setGender("F");
 		npc.setPosition(8, 19);
 		zone.add(npc);

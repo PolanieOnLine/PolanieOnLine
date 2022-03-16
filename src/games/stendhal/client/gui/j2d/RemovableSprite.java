@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +14,9 @@ package games.stendhal.client.gui.j2d;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import games.stendhal.client.entity.Entity;
 import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.GameScreenSpriteHelper;
 
 /**
  * Container sprite for texboxes etc. Keeps track of the time when the sprite
@@ -28,9 +29,11 @@ import games.stendhal.client.sprite.Sprite;
 public class RemovableSprite implements Comparable<RemovableSprite> {
 	public static final long STANDARD_PERSISTENCE_TIME = 5000;
 
-	private final int x;
+	private int x;
+	private int y;
 
-	private final int y;
+	// entity that sprite will follow
+	private Entity owner;
 
 	private final Sprite sprite;
 	/** Time after which the sprite should be removed. */
@@ -38,21 +41,59 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	/** Importance of the message to keep it above others. */
 	private int priority;
 
+	private static GameScreenSpriteHelper gsHelper;
+
 	/**
-	 * Create a new text object.
+	 * Creates a new text object.
 	 *
 	 * @param sprite
-	 * @param x x coordinate relative to the game screen
-	 * @param y y coordinate relative to the game screen
-	 * @param persistTime life time of the text object in milliseconds, or
-	 * 	0 for <code>STANDARD_PERSISTENCE_TIME</code>
+	 * @param x
+	 *     X coordinate relative to the game screen.
+	 * @param y
+	 *     Y coordinate relative to the game screen.
+	 * @param persistTime
+	 *     Lifetime of the text object in milliseconds, or 0 for
+	 *     <code>STANDARD_PERSISTENCE_TIME</code>.
 	 */
 	public RemovableSprite(final Sprite sprite, final int x, final int y,
 			final long persistTime) {
+		gsHelper = GameScreenSpriteHelper.get();
+
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
 
+		setPersistTime(persistTime);
+	}
+
+	/**
+	 * Creates a new text object.
+	 *
+	 * @param sprite
+	 * @param entity
+	 *     Entity that sprite will follow on screen.
+	 * @param persistTime
+	 *     Lifetime of the text object in milliseconds, or 0 for
+	 *     <code>STANDARD_PERSISTENCE_TIME</code>.
+	 */
+	public RemovableSprite(final Sprite sprite, final Entity entity,
+			final long persistTime) {
+		gsHelper = GameScreenSpriteHelper.get();
+
+		this.sprite = sprite;
+		this.owner = entity;
+
+		setPersistTime(persistTime);
+	}
+
+	/**
+	 * Sets the time the entity will remain on screen.
+	 *
+	 * @param persistTime
+	 *     Lifetime of the text object in milliseconds, or 0 for
+	 *     <code>STANDARD_PERSISTENCE_TIME</code>.
+	 */
+	private void setPersistTime(final long persistTime) {
 		if (persistTime == 0) {
 			removeTime = System.currentTimeMillis() + STANDARD_PERSISTENCE_TIME;
 		} else {
@@ -66,7 +107,33 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 * @param g graphics
 	 */
 	public void draw(final Graphics g) {
+		if (owner != null) {
+			drawAttached(g);
+			return;
+		}
+
 		sprite.draw(g, x, y);
+	}
+
+	/**
+	 * Draw the contained sprite following entity.
+	 *
+	 * @param g
+	 *     Graphics.
+	 */
+	private void drawAttached(final Graphics g) {
+		int sx = gsHelper.convertWorldXToScaledScreen(owner.getX() + owner.getWidth());
+		int sy = gsHelper.convertWorldYToScaledScreen(owner.getY());
+
+		// Point alignment: left, bottom
+		sy -= sprite.getHeight();
+
+		sx = gsHelper.keepSpriteOnMapX(sprite, sx);
+		sy = gsHelper.keepSpriteOnMapY(sprite, sy);
+		// FIXME: not working to place a new bubble below previous one
+		sy = gsHelper.findFreeTextBoxPosition(sprite, sx, sy);
+
+		sprite.draw(g, sx, sy);
 	}
 
 	/**
@@ -75,6 +142,11 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 * @return sprite area
 	 */
 	public Rectangle getArea() {
+		if (owner != null) {
+			return new Rectangle((int) owner.getX(), (int) owner.getY(), sprite.getWidth(),
+				sprite.getHeight());
+		}
+
 		return new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
 	}
 
@@ -84,6 +156,10 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 * @return x coordinate
 	 */
 	public int getX() {
+		if (owner != null) {
+			owner.getX();
+		}
+
 		return x;
 	}
 
@@ -93,6 +169,10 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 * @return y coordinate
 	 */
 	public int getY() {
+		if (owner != null) {
+			owner.getY();
+		}
+
 		return y;
 	}
 

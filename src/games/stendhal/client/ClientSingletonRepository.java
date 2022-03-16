@@ -12,12 +12,13 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import games.stendhal.client.gui.ScreenController;
 import games.stendhal.client.gui.UserInterface;
 import games.stendhal.client.sound.facade.SoundSystemFacade;
 import marauroa.client.ClientFramework;
 
 /**
- * keeps instances of singletons that may depend on the context
+ * Keeps instances of singletons that may depend on the context
  *
  * @author hendrik
  */
@@ -27,7 +28,7 @@ public class ClientSingletonRepository {
 	private static UserInterface userInterface;
 
 	/**
-	 * gets the ClientFramework
+	 * Gets the ClientFramework
 	 *
 	 * @return ClientFramework
 	 */
@@ -37,7 +38,7 @@ public class ClientSingletonRepository {
 
 
 	/**
-	 * sets the ClientFramework
+	 * Sets the ClientFramework
 	 *
 	 * @param clientFramework ClientFramework
 	 */
@@ -47,7 +48,7 @@ public class ClientSingletonRepository {
 
 
 	/**
-	 * gets the user interface
+	 * Gets the user interface
 	 *
 	 * @return UserInterface
 	 */
@@ -56,7 +57,7 @@ public class ClientSingletonRepository {
 	}
 
 	/**
-	 * sets the user interface
+	 * Sets the user interface
 	 *
 	 * @param userInterface UserInterface
 	 */
@@ -65,7 +66,17 @@ public class ClientSingletonRepository {
 	}
 
 	/**
-	 * gets the sound system
+	 * Gets the screen controller.
+	 *
+	 * @return
+	 *     ScreenController instance.
+	 */
+	public static ScreenController getScreenController() {
+		return ScreenController.get();
+	}
+
+	/**
+	 * Gets the sound system
 	 *
 	 * @return SoundSystemFacade
 	 */

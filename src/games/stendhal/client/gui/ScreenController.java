@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,6 +16,7 @@ import java.awt.Color;
 import javax.swing.SwingUtilities;
 
 import games.stendhal.client.GameScreen;
+import games.stendhal.client.entity.Entity;
 import games.stendhal.client.gui.j2d.BackgroundPainter;
 import games.stendhal.client.gui.j2d.TextBoxFactory;
 import games.stendhal.client.listener.PositionChangeListener;
@@ -26,7 +27,10 @@ import games.stendhal.common.NotificationType;
  * A controller for isolating the out-of event dispatch thread calls to the game
  * screen.
  */
-class ScreenController implements PositionChangeListener {
+public class ScreenController implements PositionChangeListener {
+	/** Singleton instance. */
+	private static ScreenController instance;
+
 	/** The maximum width of text in text boxes, speech bubbles and similar. */
 	private static final int BUBBLE_TEXT_WIDTH = 340;
 
@@ -45,44 +49,123 @@ class ScreenController implements PositionChangeListener {
 	private TextBoxFactory textBoxFactory;
 
 	/**
+	 * Retreives the static singleton instance.
+	 *
+	 * @param screen
+	 *     Controlled screen.
+	 * @return
+	 *     ScreenController instance.
+	 */
+	public static ScreenController get(final GameScreen screen) {
+		if (instance == null) {
+			instance = new ScreenController(screen);
+		}
+
+		return instance;
+	}
+
+	/**
+	 * Retreives the static singleton instance.
+	 *
+	 * @return
+	 *     ScreenController instance.
+	 */
+	public static ScreenController get() {
+		return instance;
+	}
+
+	/**
 	 * Create a new ScreenController.
 	 *
-	 * @param screen controlled screen
+	 * @param screen
+	 *     Controlled screen.
 	 */
-	ScreenController(GameScreen screen) {
+	private ScreenController(final GameScreen screen) {
 		this.screen = screen;
 	}
+
 	/**
-	 * Adds a text bubble at a give position of the specified type. For
+	 * Adds a stationary text bubble that does not follow any entity.
+	 *
+	 * @param sprite
+	 *     Text sprite to be drawn.
+	 * @param textLength
+	 *     Text length.
+	 * @param priority
+	 *     The importance of a message to keep it above others.
+	 */
+	private void addStaticText(final Sprite sprite, final int textLength,
+			final int priority) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				screen.addStaticText(sprite, textLength, priority);
+			}
+		});
+	}
+
+	/**
+	 * Adds a text bubble at a given position of the specified type. For
 	 * non-talking boxes the coordinates are ignored, and the box is attached
 	 * to the bottom of the screen.
 	 *
-	 * @param x The screen X coordinate.
-	 * @param y The screen Y coordinate.
-	 * @param text The textual content
-	 * @param type The notificationType
-	 * @param isTalking Is it a talking text bubble
+	 * @param x
+	 *     The screen X coordinate.
+	 * @param y
+	 *     The screen Y coordinate.
+	 * @param text
+	 *     The text to be displayed.
+	 * @param type
+	 *     The notification type.
+	 * @param isTalking
+	 *     <code>true</code> if the text is related to an entity that is talking.
 	 * @see games.stendhal.common.NotificationType
 	 */
-	void addText(final double x, final double y, final String text, final NotificationType type,
+	public void addText(final double x, final double y, final String text, final NotificationType type,
 			final boolean isTalking) {
 		// createTextBox is thread safe, the rest is not
 		final Sprite sprite = createTextBox(text, type, isTalking);
 		final int textLength = text.length();
 
 		if (!isTalking) {
-			final int priority = getPriority(type);
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					screen.addStaticText(sprite, textLength, priority);
-				}
-			});
+			addStaticText(sprite, textLength, getPriority(type));
 		} else {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					screen.addTextBox(sprite, x, y, textLength);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Adds a text bubble of the specified type that follows an entity. For
+	 * non-talking boxes entity is ignored, and the box is attached to the
+	 * bottom of the screen.
+	 *
+	 * @param entity
+	 *     The entity to which the text follows.
+	 * @param text
+	 *     The text to be displayed.
+	 * @param type
+	 *     The notification type.
+	 * @param isTalking
+	 *     <code>true</code> if the text is related to an entity that is talking.
+	 */
+	public void addText(final Entity entity, final String text, final NotificationType type,
+			final boolean isTalking) {
+		// createTextBox is thread safe, the rest is not
+		final Sprite sprite = createTextBox(text, type, isTalking);
+		final int textLength = text.length();
+
+		if (!isTalking) {
+			addStaticText(sprite, textLength, getPriority(type));
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					screen.addTextBox(sprite, entity, textLength);
 				}
 			});
 		}
@@ -151,11 +234,12 @@ class ScreenController implements PositionChangeListener {
 			return getTextFactory().createFancyTextBox(text, type.getColor(),
 					BUBBLE_TEXT_WIDTH, 45, 6, 6, 6, painter);
 		}
-		if (isTalking) {
-			return getTextFactory().createTextBox(text, BUBBLE_TEXT_WIDTH, type.getColor(), Color.white, isTalking);
-		} else {
-			return getTextFactory().createTextBox(text, BUBBLE_TEXT_WIDTH, type.getColor(), new Color(60, 30, 0), isTalking);
+		Color color = Color.white;;
+		if (!isTalking) {
+			color = new Color(60, 30, 0);
 		}
+
+		return getTextFactory().createTextBox(text, BUBBLE_TEXT_WIDTH, type.getColor(), color, isTalking);
 	}
 
 

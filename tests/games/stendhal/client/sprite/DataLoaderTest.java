@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                 (C) Copyright 2012-2022 Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,19 +9,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.common;
+package games.stendhal.client.sprite;
 
-/**
- * Constants about slots
- */
-public final class Constants {
-	/**
-	 * All the slots considered to be "with" the entity. Listed in priority
-	 * order (i.e. bag first).
-	 */
-	// TODO: let the slots decide that themselves
-	public static final String[] CARRYING_SLOTS = {
-			"pouch", "bag", "magicbag", "portfolio", "keyring", "back", "belt", "neck",
-			"head", "cloak", "lhand", "armor", "rhand", "finger", "fingerb",
-			"glove", "pas", "legs", "feet" };
+import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+
+public class DataLoaderTest {
+
+	@Test
+	public void testNormalizeFilenames() {
+		assertThat(DataLoader.normalizeFilenames("data/signs/document.png"), equalTo("data/signs/document.png"));
+		assertThat(DataLoader.normalizeFilenames("/data/signs/document.png"), equalTo("data/signs/document.png"));
+		assertThat(DataLoader.normalizeFilenames("data/signs/../items/document.png"), equalTo("data/items/document.png"));
+	}
+
 }

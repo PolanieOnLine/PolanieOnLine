@@ -94,7 +94,7 @@ public class EntityViewFactoryTest {
 
 
 		assertEquals(EntityViewFactory.getViewClass("item", "club", "wizard_staff"),  UseableItem2DView.class);
-        assertEquals(EntityViewFactory.getViewClass("item", "misc", "nasionka"), UseableItem2DView.class);
+        assertEquals(EntityViewFactory.getViewClass("item", "misc", "seed"), UseableItem2DView.class);
 
 		assertEquals(EntityViewFactory.getViewClass("item", "scroll", null),  UseableItem2DView.class);
 

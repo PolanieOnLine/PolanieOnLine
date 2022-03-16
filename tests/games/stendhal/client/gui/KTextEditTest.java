@@ -28,15 +28,15 @@ public class KTextEditTest {
 		KTextEdit ed = new KTextEdit();
 		Pattern p = (ed.new LinkListener()).whitelist;
 		assertFalse(p.matcher("justsomething").matches());
-		assertTrue(p.matcher("http://polanieonline.eu").matches());
-		assertTrue(p.matcher("http://polanieonline.eu/").matches());
-		assertTrue(p.matcher("https://polanieonline.eu").matches());
-		assertTrue(p.matcher("https://polanieonline.eu/").matches());
-		assertFalse(p.matcher("polanieonline.eu").matches());
-		assertTrue(p.matcher("https://polanieonline.eu/player-guide/ask-for-help.html").matches());
-		assertFalse(p.matcher("https://polanieonline.eu.com").matches());
-		assertFalse(p.matcher("https://polanieonline.eu.com/").matches());
-		assertFalse(p.matcher("https://polanieonline.eu.com/trojan.html").matches());
-		assertFalse("Line break within URL", p.matcher("https://polanieonline.eu/player-guide\n/ask-for-help.html").matches());
+		assertTrue(p.matcher("http://stendhalgame.org").matches());
+		assertTrue(p.matcher("http://stendhalgame.org/").matches());
+		assertTrue(p.matcher("https://stendhalgame.org").matches());
+		assertTrue(p.matcher("https://stendhalgame.org/").matches());
+		assertFalse(p.matcher("stendhalgame.org").matches());
+		assertTrue(p.matcher("https://stendhalgame.org/player-guide/ask-for-help.html").matches());
+		assertFalse(p.matcher("https://stendhalgame.org.com").matches());
+		assertFalse(p.matcher("https://stendhalgame.org.com/").matches());
+		assertFalse(p.matcher("https://stendhalgame.org.com/trojan.html").matches());
+		assertFalse("Line break within URL", p.matcher("https://stendhalgame.org/player-guide\n/ask-for-help.html").matches());
 	}
 }

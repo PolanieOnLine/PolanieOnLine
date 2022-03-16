@@ -72,18 +72,18 @@ public class WrapActionTest {
 		final WrapAction wrap = new WrapAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 
-		PlayerTestHelper.equipWithItem(player, "eliksir");
+		PlayerTestHelper.equipWithItem(player, "potion");
 
 		final RPAction action = new RPAction();
 		action.put("type", "wrap");
-		action.put("target", "eliksir");
+		action.put("target", "potion");
 		wrap.onAction(player, action);
-		assertTrue(player.isEquipped("prezent"));
-		final Present present = (Present) player.getFirstEquipped("prezent");
+		assertTrue(player.isEquipped("present"));
+		final Present present = (Present) player.getFirstEquipped("present");
 		assertNotNull(present);
-		assertThat(present.getInfoString(), is("eliksir"));
+		assertThat(present.getInfoString(), is("potion"));
 		present.onUsed(player);
-		assertTrue(player.isEquipped("eliksir"));
+		assertTrue(player.isEquipped("potion"));
 	}
 
 	/**
@@ -95,19 +95,19 @@ public class WrapActionTest {
 		final WrapAction wrap = new WrapAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 
-		PlayerTestHelper.equipWithItem(player, "duży eliksir");
+		PlayerTestHelper.equipWithItem(player, "greater potion");
 
 		final RPAction action = new RPAction();
 		action.put("type", "wrap");
-		action.put("target", "duży");
-		action.put("args", "eliksir");
+		action.put("target", "greater");
+		action.put("args", "potion");
 		wrap.onAction(player, action);
-		assertTrue(player.isEquipped("prezent"));
-		final Present present = (Present) player.getFirstEquipped("prezent");
+		assertTrue(player.isEquipped("present"));
+		final Present present = (Present) player.getFirstEquipped("present");
 		assertNotNull(present);
-		assertThat(present.getInfoString(), is("duży eliksir"));
+		assertThat(present.getInfoString(), is("greater potion"));
 		present.onUsed(player);
-		assertTrue(player.isEquipped("duży eliksir"));
+		assertTrue(player.isEquipped("greater potion"));
 	}
 
 	/**
@@ -118,19 +118,19 @@ public class WrapActionTest {
 		final WrapAction wrap = new WrapAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 
-		PlayerTestHelper.equipWithItem(player, "tarcza z mithrilu");
+		PlayerTestHelper.equipWithItem(player, "mithril shield");
 
 		final RPAction action = new RPAction();
 		action.put("type", "wrap");
-		action.put("target", "tarcza");
-		action.put("args", "z mithrilu");
+		action.put("target", "mithril");
+		action.put("args", "shield");
 		wrap.onAction(player, action);
-		assertTrue(player.isEquipped("prezent"));
-		final Present present = (Present) player.getFirstEquipped("prezent");
+		assertTrue(player.isEquipped("present"));
+		final Present present = (Present) player.getFirstEquipped("present");
 		assertNotNull(present);
-		assertThat(present.getInfoString(), is("tarcza z mithrilu"));
+		assertThat(present.getInfoString(), is("mithril shield"));
 		present.onUsed(player);
-		assertTrue(player.isEquipped("tarcza z mithrilu"));
+		assertTrue(player.isEquipped("mithril shield"));
 	}
 
 }

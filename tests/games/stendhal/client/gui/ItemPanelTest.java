@@ -43,7 +43,7 @@ public class ItemPanelTest {
 		assertEquals("Default cursor", dummy.getCursor(), panel.getCursor());
 
 		// Check adding an item to the slot
-		RPObject obj = ItemTestHelper.createItem("pierścień zaręczynowy");
+		RPObject obj = ItemTestHelper.createItem("wedding ring");
 		IEntity item = EntityFactory.createEntity(obj);
 		/*
 		 * Set a dummy owner for the panel to simulate something not owned by

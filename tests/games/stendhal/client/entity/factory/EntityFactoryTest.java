@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -120,7 +119,7 @@ public class EntityFactoryTest {
 
 	@Test
 	public final void seed() {
-		final RPObject rp = new MockRPObject("item", "misc", "nasionka");
+		final RPObject rp = new MockRPObject("item", "misc", "seed");
 		final IEntity en = EntityFactory.createEntity(rp);
 		assertNotNull("entity should be created", en);
 		assertEquals("we should have created a Useableitem by now", UseableItem.class, en

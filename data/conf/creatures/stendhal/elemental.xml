@@ -348,7 +348,7 @@
 	<!-- START: wood -->
 
 	<creature name="drzewiec">
-		<type class="stendhal/ent" subclass="treant" tileid="ent.png:2"/>
+		<type class="stendhal/ent" subclass="treant" shadow="ent" tileid="ent.png:2"/>
 		<description>Oto drzewiec. Najpierw pomyślałeś, że to drzewo, ale po chwili okazało się, że się porusza!</description>
 		<attributes>
 			<atk value="588"/>
@@ -386,7 +386,7 @@
 	</creature>
 
 	<creature name="uschły drzewiec">
-		<type class="stendhal/ent" subclass="old_ent" tileid="ent.png:1"/>
+		<type class="stendhal/ent" subclass="old_ent" shadow="ent" tileid="ent.png:1"/>
 		<description>Oto uschły drzewiec. Wiele lat widział i wiele przeżył nawałnic. Widzisz jak jest stary bo opadły z niego liście, a i niejedna gałąź już się złamała.</description>
 		<attributes>
 			<atk value="573"/>
@@ -424,7 +424,7 @@
 	</creature>
 
 	<creature name="drzewcowa">
-		<type class="stendhal/ent" subclass="entwife" tileid="ent.png:3"/>
+		<type class="stendhal/ent" subclass="entwife" shadow="ent" tileid="ent.png:3"/>
 		<description>Oto żona drzewca. Jest mocniejsza i żyje w grupach w starodawnym lesie.</description>
 		<attributes>
 			<atk value="719"/>

@@ -65,7 +65,7 @@ public class TeacherNPC implements ZoneConfigurator {
 		npc.setDescription("Oto Esolte Vietta, wiedźma latająca na miotle. Wygląda na to, że robi pokaz dla grupy uczniów.");
 		npc.setEntityClass("witch3npc");
 		npc.setGender("F");
-		npc.setShadowStyle("floating");
+		npc.setShadowStyle("48x64_floating");
 		npc.setPosition(29, 19);
 		npc.setSounds(Arrays.asList("witch-cackle-1"));
 		zone.add(npc);

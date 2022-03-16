@@ -15,8 +15,6 @@ import static games.stendhal.client.gui.settings.SettingsProperties.DOUBLE_TAP_A
 import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_CONTINUOUS_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.MSG_BLINK;
 import static games.stendhal.client.gui.settings.SettingsProperties.MSG_SOUND;
-import static games.stendhal.common.Constants.KARMA_SETTINGS;
-import static games.stendhal.common.constants.General.COMBAT_KARMA;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -27,15 +25,11 @@ import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.ClientSingletonRepository;
-import games.stendhal.client.StendhalClient;
 import games.stendhal.client.actions.MoveContinuousAction;
-import games.stendhal.client.actions.SetCombatKarmaAction;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.layout.SBoxLayout;
@@ -45,7 +39,6 @@ import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.NotificationType;
-import marauroa.common.game.RPObject;
 
 /**
  * Page for general settings.
@@ -155,11 +148,6 @@ class GeneralSettings {
 				MSG_SOUND, true, "Powiadomienie dźwiękowe o prywatnej wiadomości", "Odtwarzaj dźwięk dla kanału wiadomości osobistych, gdy nie jest skoncentrowany");
 		page.add(msgSoundToggle);
 
-		if (System.getProperty("stendhal.karmaconfig") != null) {
-			// combat karma
-			page.add(createCombatKarmaSelector());
-		}
-
 		// Client dimensions
 		JComponent clientSizeBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		TitledBorder titleB = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
@@ -221,75 +209,5 @@ class GeneralSettings {
 	private void resetClientDimensions() {
 		j2DClient clientFrame = j2DClient.get();
 		clientFrame.resetClientDimensions();
-	}
-
-	/**
-	 * Creates a drop-down selector for setting battle karma mode.
-	 */
-	private JComponent createCombatKarmaSelector() {
-		int pad = SBoxLayout.COMMON_PADDING;
- 		final JLabel selectorLabel = new JLabel("Tryb wykorzystywania karmy w walce:");
-
- 		final JComboBox<String> selector = new JComboBox<>();
-		for (final String mode : KARMA_SETTINGS) {
-			selector.addItem(mode);
-		}
-
-		final RPObject player = StendhalClient.get().getPlayer();
-
-		// use player attribute if available to set combat karma mode
-		final String currentMode;
-		if (player.has(COMBAT_KARMA) && KARMA_SETTINGS.contains(player.get(COMBAT_KARMA))) {
-			currentMode = player.get(COMBAT_KARMA);
-		} else {
-			currentMode = KARMA_SETTINGS.get(1);
-		}
-		selector.setSelectedItem(currentMode);
-
-		selector.addActionListener(new ActionListener() {
-			/**
-			 * Sends action to the server.
-			 */
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new SetCombatKarmaAction().sendAction(selector.getSelectedItem().toString());
-			}
-		});
-
-		WtWindowManager.getInstance().registerSettingChangeListener("combat.karma",
-				new SettingChangeListener() {
-			/**
-			 * Updates the GUI when setting is changed via slash command.
-			 */
-			@Override
-			public void changed(final String newValue) {
-				selector.setSelectedItem(newValue);
-			}
-		});
-
-		final JComponent karmaBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		final JComponent karmaHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-
-		karmaHBox.add(selectorLabel);
-		karmaHBox.add(selector);
-
-		// tooltip info
-		final String[][] tooltipData = {
-				{"Nigdy", KARMA_SETTINGS.get(0), "Karma nigdy nie zostanie użyta."},
-				{"Normalny (domyślnie)", KARMA_SETTINGS.get(1), "Karma jest używana w walce z silniejszymi przeciwnikami."},
-				{"Zawsze", KARMA_SETTINGS.get(2), "Karma jest używana niezależnie od tego, jak silny lub słaby jest przeciwnik."}
-		};
-
-		final StringBuilder descr = new StringBuilder();
-		descr.append("Karma może być używana w walce, aby dać lekką przewagę. Może pomóc na trzy sposoby:");
-		descr.append("<br>1) Zwiększa siłę ataku.");
-		descr.append("<br>2) Zwiększa obronę.");
-		descr.append("<br>3) Zwiększa szanse na trafienie wroga.");
-		descr.append("<br><br>Poniższe trzy ustawienia określają, kiedy karma jest używana w walce:");
-		karmaHBox.setToolTipText(ConvenienceMapper.createTooltip(descr.toString(), tooltipData));
-
-		karmaBox.add(karmaHBox);
-
-		return karmaBox;
 	}
 }

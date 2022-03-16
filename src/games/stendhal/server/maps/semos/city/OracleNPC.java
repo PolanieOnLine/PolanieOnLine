@@ -90,7 +90,7 @@ public class OracleNPC implements ZoneConfigurator {
 
 		npc.setDescription("Oto Periwinkle. Wygląda na senną i roztargnioną.");
 		npc.setEntityClass("oracle1npc");
-		npc.setShadowStyle("floating");
+		npc.setShadowStyle("48x64_floating");
 		npc.setGender("F");
 		npc.setPosition(2, 29);
 		zone.add(npc);

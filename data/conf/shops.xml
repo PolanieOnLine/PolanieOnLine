@@ -668,6 +668,16 @@
 	<shop name="denirankingsell" type="sells">
 		<item name="zwój deniran" price="800" />
 	</shop>
+	<!-- Król Edward kupuje: -->
+	<shop name="denirankingbuy" type="buys">
+		<item name="buty monarchistyczne" price="8000" />
+		<item name="hełm monarchistyczny" price="13000" />
+		<item name="sztylet królewski" price="100000" />
+		<item name="płaszcz monarchistyczny" price="18000" />
+		<item name="spodnie monarchistyczne" price="38000" />
+		<item name="zbroja monarchistyczna" price="58000" />
+		<item name="tarcza monarchistyczna" price="73000" />
+	</shop>
 
 	<!-- Wanda sprzedaje: -->
 	<shop name="deniranpotionssell" type="sells">

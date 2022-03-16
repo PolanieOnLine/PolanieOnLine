@@ -13,7 +13,6 @@ package games.stendhal.server.entity.player;
 
 import static games.stendhal.common.constants.Actions.AUTOWALK;
 import static games.stendhal.common.constants.Actions.MOVE_CONTINUOUS;
-import static games.stendhal.common.constants.General.COMBAT_KARMA;
 import static games.stendhal.server.entity.player.PlayerLootedItemsHandler.LOOTED_ITEMS;
 
 import games.stendhal.common.constants.Events;
@@ -46,6 +45,7 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.TRADE_STATE_CHANGE, Definition.PRIVATE);
 		player.addRPEvent(Events.REACHED_ACHIEVEMENT, Definition.PRIVATE);
 		player.addRPEvent(Events.BESTIARY, Definition.PRIVATE);
+		player.addRPEvent(Events.DROPPEDLIST, Definition.PRIVATE);
 
 		player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
 
@@ -57,12 +57,6 @@ public class PlayerRPClass {
 		/* Player movement. */
 		player.addAttribute(AUTOWALK, Type.FLAG, Definition.VOLATILE);
 		player.addAttribute(MOVE_CONTINUOUS, Type.FLAG, Definition.VOLATILE);
-
-		/* setting for using karma during combat */
-		if (System.getProperty("stendhal.karmaconfig") != null) {
-			// TODO: If it is decided that such a feature was acceptable, we should aim for a better name and location for setting variables
-			player.addAttribute(COMBAT_KARMA, Type.STRING, Definition.PRIVATE);
-		}
 
 		// Use this for admin menus and usage.
 		player.addAttribute("admin", Type.FLAG);

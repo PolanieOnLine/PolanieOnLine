@@ -267,6 +267,8 @@ public abstract class RPEntity extends AudibleEntity {
 	private boolean castShadow = true;
 	private String shadowStyle;
 
+	private static final boolean testclient = System.getProperty("stendhal.testclient") != null;
+
 	/** Possible attack results. */
 	public enum Resolution {
 		HIT,
@@ -928,7 +930,7 @@ public abstract class RPEntity extends AudibleEntity {
 
 		// Scene settings messages should not disturb playing, just create some atmosphere
 		if (type != NotificationType.SCENE_SETTING) {
-			ClientSingletonRepository.getUserInterface().addGameScreenText(
+			ClientSingletonRepository.getScreenController().addText(
 					getX() + (getWidth() / 2.0), getY(),
 					text.replace("|", ""), type, false);
 		}
@@ -982,9 +984,16 @@ public abstract class RPEntity extends AudibleEntity {
 
 			text = trimText(text);
 
-			ClientSingletonRepository.getUserInterface().addGameScreenText(
-					getX() + getWidth(), getY(), text,
-					NotificationType.NORMALBLACK, true);
+			if (testclient) {
+				// add stationary speech bubble
+				ClientSingletonRepository.getScreenController().addText(
+						getX() + getWidth(), getY(), text,
+						NotificationType.NORMALBLACK, true);
+			} else {
+				// add speech bubble that follows entity
+				ClientSingletonRepository.getScreenController().addText(
+					this, text, NotificationType.NORMALBLACK, true);
+			}
 		}
 	}
 
@@ -1573,7 +1582,7 @@ public abstract class RPEntity extends AudibleEntity {
 			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(text,
 					NotificationType.SIGNIFICANT_POSITIVE));
 
-			ClientSingletonRepository.getUserInterface().addGameScreenText(
+			ClientSingletonRepository.getScreenController().addText(
 					getX() + (getWidth() / 2.0), getY(),
 					text, NotificationType.SIGNIFICANT_POSITIVE, false);
 		}
@@ -1715,6 +1724,6 @@ public abstract class RPEntity extends AudibleEntity {
 			return null;
 		}
 
-		return "data/sprites/shadow/shadow-" + shadowStyle + ".png";
+		return "data/sprites/shadow/" + shadowStyle + ".png";
 	}
 }

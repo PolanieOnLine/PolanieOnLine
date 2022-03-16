@@ -167,6 +167,7 @@ local prepareRequestStep = function()
 		ConversationPhrases.QUEST_MESSAGES,
 		{
 			questNotStartedCondition,
+			minLevelCondition,
 			conditions:notC(hasKeyringCondition),
 		},
 		ConversationStates.ATTENDING,
@@ -180,6 +181,8 @@ local prepareRequestStep = function()
 		ConversationPhrases.QUEST_MESSAGES,
 		{
 			questNotStartedCondition,
+			minLevelCondition,
+			hasKeyringCondition,
 			conditions:notC(visitedAthorCondition),
 		},
 		ConversationStates.ATTENDING,

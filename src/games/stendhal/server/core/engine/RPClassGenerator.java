@@ -15,6 +15,7 @@ package games.stendhal.server.core.engine;
 import games.stendhal.common.constants.Events;
 import games.stendhal.server.entity.ActiveEntity;
 import games.stendhal.server.entity.Blood;
+import games.stendhal.server.entity.CombatEntity;
 import games.stendhal.server.entity.DressedEntity;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -116,6 +117,9 @@ public class RPClassGenerator {
 		// Entity sub-classes
 		if (!RPClass.hasRPClass("active_entity")) {
 			ActiveEntity.generateRPClass();
+		}
+		if (!RPClass.hasRPClass(CombatEntity.RPCLASS_NAME)) {
+			CombatEntity.generateRPClass();
 		}
 		if (!RPClass.hasRPClass("area")) {
 			AreaEntity.generateRPClass();

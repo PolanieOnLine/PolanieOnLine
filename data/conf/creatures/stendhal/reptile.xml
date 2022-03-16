@@ -135,7 +135,7 @@
 	</creature>
 
 	<creature name="kaiman">
-		<type class="stendhal/reptile" subclass="caiman" tileid="reptile.png:4"/>
+		<type class="stendhal/reptile" subclass="caiman" shadow="caiman" tileid="reptile.png:4"/>
 		<description>Oto kaiman. Kryją się nad wodą.</description>
 		<attributes>
 			<atk value="49"/>
@@ -170,7 +170,7 @@
 	</creature>
 
 	<creature name="krokodyl">
-		<type class="stendhal/reptile" subclass="crocodile" tileid="reptile.png:5"/>
+		<type class="stendhal/reptile" subclass="crocodile" shadow="crocodile" tileid="reptile.png:5"/>
 		<description>Oto krokodyl. Nagle wyskakuje na brzeg z rzek i jezior.</description>
 		<attributes>
 			<atk value="172"/>

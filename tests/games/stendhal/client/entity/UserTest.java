@@ -66,8 +66,12 @@ public class UserTest {
 			}
 
 			@Override
-			public void addGameScreenText(double x, double y, String text, NotificationType type, boolean isTalking) {
-			}
+			public void addGameScreenText(double x, double y, String text,
+				NotificationType type, boolean isTalking) {}
+
+			@Override
+			public void addGameScreenText(final Entity entity, final String text,
+				final NotificationType type, final boolean isTalking) {}
 
 			@Override
 			public SoundSystemFacade getSoundSystemFacade() {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2018 - Faiumoni e.V.                  *
+ *                (C) Copyright 2003-2022 - Faiumoni e.V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,6 +17,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.NotificationType;
@@ -25,8 +26,12 @@ import marauroa.common.game.RPObject;
 public interface J2DClientGUI {
 	void addDialog(Component dialog);
 	void addAchievementBox(String title, String description, String category);
+	@Deprecated
 	void addGameScreenText(double x, double y, String text, NotificationType type,
-			boolean isTalking);
+		boolean isTalking);
+	@Deprecated
+	void addGameScreenText(final Entity entity, final String text,
+		final NotificationType type, final boolean isTalking);
 	void afterPainting();
 	void beforePainting();
 	void chooseOutfit();
