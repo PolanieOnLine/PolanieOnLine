@@ -41,7 +41,7 @@ public class ShopsXMLLoader extends DefaultHandler {
 
 	private String shopName;
 	private Map<String, Integer> items;
-	private boolean seller = true;
+	//private boolean seller = true;
 
 	/**
 	 * Singleton access method.
@@ -110,7 +110,7 @@ public class ShopsXMLLoader extends DefaultHandler {
 			items = new LinkedHashMap<>();
 
 			shopName = attrs.getValue("name");
-			seller = attrs.getValue("type").equals("sells");
+			//seller = attrs.getValue("type").equals("sells");
 		} else if (qName.equals("item")) {
 			items.put(attrs.getValue("name"), Integer.parseInt(attrs.getValue("price")));
 		}

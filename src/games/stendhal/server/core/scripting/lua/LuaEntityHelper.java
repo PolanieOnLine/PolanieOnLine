@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                     Copyright © 2022 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,10 +18,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.GameEvent;
@@ -51,7 +51,6 @@ import games.stendhal.server.entity.npc.SilentNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
-
 /**
  * Exposes some entity classes & functions to Lua.
  */
@@ -65,7 +64,6 @@ public class LuaEntityHelper {
 
 	private static final LuaConditionHelper conditionHelper = LuaConditionHelper.get();
 	private static final LuaActionHelper actionHelper = LuaActionHelper.get();
-	private static final LuaTableHelper tableHelper = LuaTableHelper.get();
 
 	/**
 	 * Retrieves the static instance.
@@ -229,10 +227,6 @@ public class LuaEntityHelper {
 			}
 
 			npc.setPath(tableToPath((LuaTable) l_path.get("nodes"), loop));
-			/*
-			npc.setPath(tableHelper.pairsToNodes(
-				new FixedPath(l_path.get("nodes").checktable())), loop);
-			*/
 
 			final LuaValue l_retrace = l_path.get("retrace");
 			if (!l_retrace.isnil() && l_retrace.checkboolean()) {
@@ -1012,6 +1006,7 @@ public class LuaEntityHelper {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		public void setIgnorePlayers(final boolean ignore) {
 			ignorePlayers = ignore;
 		}

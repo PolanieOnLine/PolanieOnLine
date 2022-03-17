@@ -10,9 +10,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.common.math;
-
-import games.stendhal.common.memory.Field;
+package games.stendhal.client.sound;
 
 /**
  * Signal processing algorithms.

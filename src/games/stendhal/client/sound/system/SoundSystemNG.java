@@ -24,10 +24,10 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.sound.Dsp;
+import games.stendhal.client.sound.Field;
 import games.stendhal.client.sound.facade.Time;
-import games.stendhal.common.math.Dsp;
 import games.stendhal.common.math.Numeric;
-import games.stendhal.common.memory.Field;
 
 /**
  * Thread to manage sound output.

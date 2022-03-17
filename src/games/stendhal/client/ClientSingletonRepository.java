@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,7 +22,6 @@ import marauroa.client.ClientFramework;
  * @author hendrik
  */
 public class ClientSingletonRepository {
-
 	private static ClientFramework clientFramework;
 	private static UserInterface userInterface;
 
