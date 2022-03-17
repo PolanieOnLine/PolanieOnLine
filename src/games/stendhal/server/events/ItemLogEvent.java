@@ -23,8 +23,6 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
-//import games.stendhal.server.entity.creature.Creature;
-//import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -58,37 +56,25 @@ public class ItemLogEvent extends RPEvent {
 		final EntityManager em = SingletonRepository.getEntityManager();
 
 		int itemCount = 0;
-		for (final DefaultItem i1 : em.getDefaultItems()) {
-			/*for (final Creature c : em.getCreatures()) {
-				List<Item> droppables = c.getDroppables();
-				if (droppables.isEmpty()) {
-					return;
-				}
+		for (final DefaultItem i : em.getDefaultItems()) {
+			items.add(i);
 
-				for (Item i2 : droppables) {
-					if (i1.getName() == i2.getName()) {
-						items.add(i2);
-					}
-				}
-			}*/
-			items.add(i1);
-			itemCount = player.getNumberOfLootsForItem(i1.getItemName());
+			itemCount = player.getNumberOfLootsForItem(i.getItemName());
 			if (itemCount > 0) {
-				dropped.add(i1.getItemName());
+				dropped.add(i.getItemName());
 			}
 		}
 
 		// sort alphabetically
 		final Comparator<DefaultItem> sorter = new Comparator<DefaultItem>() {
 			@Override
-			public int compare(final DefaultItem c1, final DefaultItem c2) {
-				return (c1.getItemName().toLowerCase().compareTo(c2.getItemName().toLowerCase()));
+			public int compare(final DefaultItem i1, final DefaultItem i2) {
+				return (i1.getItemName().toLowerCase().compareTo(i2.getItemName().toLowerCase()));
 			}
 		};
 		Collections.sort(items, sorter);
 
 		formatted.append(getFormattedString(items));
-
 		put("dropped_items", formatted.toString());
 	}
 
