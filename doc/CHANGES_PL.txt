@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.29
+*klient*
+- Dodano nowy dziennik ze spisem zdobytych lub nie przedmiotów
+- Dymki tekstowe poruszają się wraz z postacią
+- Poprawiono grafiki przedmiotów & potworów
+
+*świat*
+- Dodano nowy przedmiot: (1)
+	- wykrywacz metali
+- Dodano możliwość wypożyczenia nowego przedmiotu w lobardzie w Deniran
+- Dodano minimalny poziom dla zadania na zagubiony pierścionek zaręczynowy
+
+
 1.28.5
 *klient*
 - Dodano nowe grafiki
