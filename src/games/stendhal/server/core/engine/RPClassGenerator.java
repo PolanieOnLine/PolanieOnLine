@@ -78,6 +78,7 @@ import games.stendhal.server.events.GroupChangeEvent;
 import games.stendhal.server.events.GroupInviteEvent;
 import games.stendhal.server.events.HealedEvent;
 import games.stendhal.server.events.ImageEffectEvent;
+import games.stendhal.server.events.ItemLogEvent;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
 import games.stendhal.server.events.PrivateTextEvent;
@@ -357,6 +358,10 @@ public class RPClassGenerator {
 
 		if (!RPClass.hasRPClass(Events.BESTIARY)) {
 			BestiaryEvent.generateRPClass();
+		}
+
+		if (!RPClass.hasRPClass(Events.DROPPEDLIST)) {
+			ItemLogEvent.generateRPClass();
 		}
 
 		if (!RPClass.hasRPClass(Events.OUTFIT_LIST)) {
