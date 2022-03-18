@@ -37,6 +37,33 @@ public class ItemLogEvent extends RPEvent {
 	private final List<DefaultItem> items;
 	private final List<String> dropped;
 
+	private final String[] itemClasses = { "armor", "ammunition", "axe", "belts",
+			"boots", "cloak", "club", "dagger", "drink", "glove", "helmet",
+			"jewellery", "legs", "magia", "missile", "money", "necklace",
+			"ranged", "resource", "shield", "sword", "wand" };
+
+	private final String[] itemExNames = { "ciupaga startowa", "złota ciupaga", "złota ciupaga z wąsem",
+			"złota ciupaga z dwoma wąsami", "złota ciupaga z trzema wąsami", "amulecik z mithrilu",
+			"ekskalibur", "strzała lodowa", "strzała mroku", "strzała ognia", "strzała światła",
+			"antyjad", "eliksir mroku", "ekstrakt litworowy", "jad kobry", "smoczy eliksir", "duży smoczy eliksir",
+			"eliksir miłości", "mocna nalewka litworowa", "nalewka litworowa", "sok jabłkowy", "zupa grzybowa", "zupa rybna",
+			"zdobyczy hełm", "kryształ ametystu", "kryształ diamentu", "kryształ obsydianu", "kryształ rubinu", "wymioty",
+			"dummy_ranged", "dummy_melee_8", "grudziarka", "koński włos", "olejek", "przędza", "przędza jedwabna", "przędza z mithrilu",
+			"puciera", "ruda cieni", "ruda miedzi", "ruda platyny", "ruda srebra", "ruda żelaza", "siarka", "sukno z mithrilu",
+			"sztabka cieni", "sztabka miedzi", "sztabka platyny", "sztabka srebra", "sól", "trzcina cukrowa", "wełna", "wosk pszczeli",
+			"wypchany baran", "węgiel", "węgiel drzewny", "złote jajo", "świeca", "tarcza jaśniejąca", "miecz leworęczny", "miecz praworęczny",
+			"miecz treningowy", "zwój czyszczący", "amulecik", "smocze pazury", "rózga GM" };
+	private final String[] neededItemNames = { "banan", "borowik", "błazenek", "cebula", "cytryna", "czosnek", "dorsz", "duży ser", "dynia",
+			"straszna dynia", "fasola pinto", "flaczki", "jabłko", "jabłko niezgody", "jajo", "jajo wielkanocne", "kalafior", "kanapka",
+			"kapusta pekińska", "karp", "karp lustrzeń", "kiełbasa", "kiść winogron", "leszcz", "makrela", "marchew", "mięso", "szynka",
+			"mufinka", "nakrapiane jajo", "okoń", "opieńka miodowa", "orzech włoski", "oscypek", "palia alpejska", "pieczarka", "pomarańcza",
+			"pomidor", "por", "pstrąg", "płotka", "rzepa", "rzodkiewka", "ser", "stek", "szczupak", "szpinak", "tabliczka czekolady", "tarta",
+			"tarta z rybnym nadzieniem", "truskawka", "udko", "wisienka", "zielone jabłusko", "ziemniaki", "babka lekarska", "mięta", "pokrzywa",
+			"pluszowy miś", "pióro herszta hordy zbójeckiej", "róg demona", "róg jednorożca", "serce olbrzyma", "truchło nietoperza",
+			"truchło wampira", "zima zaklęta w kuli", "czarny pierścień", "pierścień imperialny", "pierścień leczniczy", "pierścień niewidzialności",
+			"pierścień skorupy żółwia", "pierścień spokoju", "pierścień szmaragdowy", "pierścień z mithrilu", "pierścień zdrowia", "zaizolowany pierścień",
+			"balonik", "biały balonik", "zwój semos", "niezapisany zwój", "zwój ados", "zwój deniran", "zwój fado", "zwój nalwor" };
+
 	public static void generateRPClass() {
 		try {
 			final RPClass rpclass = new RPClass(DROPPEDLIST);
@@ -57,7 +84,21 @@ public class ItemLogEvent extends RPEvent {
 
 		int itemCount = 0;
 		for (final DefaultItem i : em.getDefaultItems()) {
-			items.add(i);
+			for (final String classes : itemClasses) {
+				if (i.getItemClass().equals(classes)) {
+					items.add(i);
+				}
+			}
+			for (final String name : neededItemNames) {
+				if (i.getItemName().equals(name)) {
+					items.add(i);
+				}
+			}
+			for (final String exName : itemExNames) {
+				if (i.getItemName().equals(exName)) {
+					items.remove(i);
+				}
+			}
 
 			itemCount = player.getNumberOfLootsForItem(i.getItemName());
 			if (itemCount > 0) {
