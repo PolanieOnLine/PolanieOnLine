@@ -90,6 +90,9 @@
 		</equips>
 		<ai>
 			<says>
+				<text state="idle follow fight" value="Sssssssssss!"/>
+				<text state="idle follow fight" value="ssSsssSssss!"/>
+				<text state="idle follow fight" value="Hisss!"/>
 				<sound value="snake-cobra-1"/>
 				<sound value="snake-cobra-2"/>
 			</says>
@@ -123,6 +126,9 @@
 		</equips>
 		<ai>
 			<says>
+				<text state="idle follow fight" value="Sssssssssss!"/>
+				<text state="idle follow fight" value="ssSsssSssss!"/>
+				<text state="idle follow fight" value="Hisss!"/>
 				<sound value="snake-cobra-1" />
 				<sound value="snake-cobra-2" />
 			</says>

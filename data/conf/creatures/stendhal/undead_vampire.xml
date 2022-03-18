@@ -112,6 +112,7 @@
 		</equips>
 		<ai>
 			<says>
+				<text state="idle follow fight" value="Wypiję twoją krew!"/>
 				<sound value="laugh-evil-04"/>
 			</says>
 			<profile name="injured" params="5"/>
