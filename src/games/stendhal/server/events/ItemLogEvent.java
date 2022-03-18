@@ -84,6 +84,11 @@ public class ItemLogEvent extends RPEvent {
 
 		int itemCount = 0;
 		for (final DefaultItem i : em.getDefaultItems()) {
+			itemCount = player.getNumberOfLootsForItem(i.getItemName());
+			if (itemCount > 0) {
+				dropped.add(i.getItemName());
+			}
+
 			for (final String classes : itemClasses) {
 				if (i.getItemClass().equals(classes)) {
 					items.add(i);
@@ -99,27 +104,29 @@ public class ItemLogEvent extends RPEvent {
 					items.remove(i);
 				}
 			}
-
-			itemCount = player.getNumberOfLootsForItem(i.getItemName());
-			if (itemCount > 0) {
-				dropped.add(i.getItemName());
-			}
 		}
 
 		// sort alphabetically
-		final Comparator<DefaultItem> sorter = new Comparator<DefaultItem>() {
+		final Comparator<DefaultItem> sortNames = new Comparator<DefaultItem>() {
 			@Override
 			public int compare(final DefaultItem i1, final DefaultItem i2) {
 				return (i1.getItemName().toLowerCase().compareTo(i2.getItemName().toLowerCase()));
 			}
 		};
-		Collections.sort(items, sorter);
+		//final Comparator<DefaultItem> sortClasses = new Comparator<DefaultItem>() {
+		//	@Override
+		//	public int compare(final DefaultItem i1, final DefaultItem i2) {
+		//		return (i1.getItemClass().toLowerCase().compareTo(i2.getItemClass().toLowerCase()));
+		//	}
+		//};
+		Collections.sort(items, sortNames);
+		//Collections.sort(items, sortClasses);
 
-		formatted.append(getFormattedString(items));
+		formatted.append(getFormattedString(items, player));
 		put("dropped_items", formatted.toString());
 	}
 
-	private String getFormattedString(final List<DefaultItem> items) {
+	private String getFormattedString(final List<DefaultItem> items, final Player player) {
 		final StringBuilder sb = new StringBuilder();
 		final int itemCount = items.size();
 		int idx = 0;
@@ -132,12 +139,13 @@ public class ItemLogEvent extends RPEvent {
 				looted = true;
 			}
 
-			// hide the names of creatures not killed by player
 			//if (!looted) {
 			//	name = "???";
 			//}
 
-			sb.append(name + "," + looted.toString());
+			int itemDropCount = 0;
+			itemDropCount = player.getNumberOfLootsForItem(name);
+			sb.append(name + "," + looted.toString() + "," + itemDropCount);
 			if (idx != itemCount - 1) {
 				sb.append(";");
 			}

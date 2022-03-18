@@ -50,7 +50,6 @@ public class ItemLogEvent extends Event<RPEntity> {
 				public void prepareView(final Dimension maxSize) {
 					Dimension screenSize = GameScreen.get().getSize();
 					int maxPreferredWidth = screenSize.width - 180;
-					final StringBuilder headerText = new StringBuilder("\"???\" = niepoznane");
 					JLabel header = new JLabel();
 					header.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 					add(header, BorderLayout.NORTH);
@@ -67,6 +66,8 @@ public class ItemLogEvent extends Event<RPEntity> {
 					r.setHorizontalAlignment(SwingConstants.CENTER);
 
 					col = table.getColumnModel().getColumn(1);
+					col.setCellRenderer(r);
+					col = table.getColumnModel().getColumn(2);
 					col.setCellRenderer(r);
 
 					HeaderRenderer hr = new HeaderRenderer();
@@ -91,14 +92,11 @@ public class ItemLogEvent extends Event<RPEntity> {
 					viewPort.getComponent().setBackground(table.getBackground());
 					add(viewPort.getComponent(), BorderLayout.CENTER);
 
-					header.setText("<html><div width=" + (maxPreferredWidth
-							- 10) + ">" + headerText.toString() + "</div></html>");
-
 					setVisible(true);
 				}
 
 				private JTable createTable() {
-					final String[] columnNames = { "Nazwa przedmiotu", "Zdobyto" };
+					final String[] columnNames = { "Nazwa przedmiotu", "Ile sztuk", "Zdobyto" };
 
 					final List<String> items = Arrays.asList(event.get("dropped_items").split(";"));
 
@@ -113,15 +111,20 @@ public class ItemLogEvent extends Event<RPEntity> {
 				}
 
 				private Object[] createDataRow(final String[] item) {
-					final Object[] rval = new Object[3];
+					final Object[] rval = new Object[4];
 
 					final String name = item[0];
+					final String itemDropCount = item[2];
 
 					rval[0] = name;
 					rval[1] = "";
+					rval[2] = "";
 
+					if (Integer.parseInt(itemDropCount) > 0) {
+						rval[1] = itemDropCount;
+					}
 					if (item[1].equals("true")) {
-						rval[1] = "✔";
+						rval[2] = "✔";
 					}
 
 					return rval;
@@ -165,7 +168,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 				}
 			};
 
-			new ImageViewWindow("Dziennik Przedmiotów", panel);
+			new ImageViewWindow("Spis Przedmiotów", panel);
 		} else {
 			logger.warn("Could not create item log: Event does not have \"dropped_items\" attribute");
 		}
