@@ -431,7 +431,7 @@ public class Hunting extends AbstractQuest {
 		}
 
 		List<String> entries = new ArrayList<>();
-		entries.add("Upolowałem: <tally>" + killed + count + "</tally>");
+		entries.add(Grammar.genderVerb(player.getGender(), "Upolowałem") + ": <tally>" + killed + count + "</tally>");
 		return entries;
 	}
 
