@@ -12,17 +12,21 @@
 package games.stendhal.client.events;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -34,6 +38,8 @@ import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.imageviewer.ImageViewWindow;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
 import games.stendhal.client.gui.imageviewer.ViewPanel;
+import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.sprite.SpriteStore;
 
 public class ItemLogEvent extends Event<RPEntity> {
 	// logger instance
@@ -59,15 +65,17 @@ public class ItemLogEvent extends Event<RPEntity> {
 					table.setEnabled(false);
 					table.setFillsViewportHeight(true);
 					table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-					TableColumn col = table.getColumnModel().getColumn(0);
+					TableColumn col = table.getColumnModel().getColumn(1);
 					col.setCellRenderer(new DefaultTableCellRenderer());
 
 					DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 					r.setHorizontalAlignment(SwingConstants.CENTER);
 
-					col = table.getColumnModel().getColumn(1);
-					col.setCellRenderer(r);
+					col = table.getColumnModel().getColumn(0);
+					col.setCellRenderer(new SpriteCellRenderer());
 					col = table.getColumnModel().getColumn(2);
+					col.setCellRenderer(r);
+					col = table.getColumnModel().getColumn(3);
 					col.setCellRenderer(r);
 
 					HeaderRenderer hr = new HeaderRenderer();
@@ -96,7 +104,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 				}
 
 				private JTable createTable() {
-					final String[] columnNames = { "Nazwa przedmiotu", "Ile sztuk", "Zdobyto" };
+					final String[] columnNames = { "#" ,"Nazwa przedmiotu", "Ile sztuk", "Zdobyto" };
 
 					final List<String> items = Arrays.asList(event.get("dropped_items").split(";"));
 
@@ -115,19 +123,41 @@ public class ItemLogEvent extends Event<RPEntity> {
 
 					final String name = item[0];
 					final String itemDropCount = item[2];
+					final String clazz = item[3];
+					final String subclazz = item[4];
 
-					rval[0] = name;
-					rval[1] = "";
-					rval[2] = "";
-
-					if (Integer.parseInt(itemDropCount) > 0) {
-						rval[1] = itemDropCount;
-					}
+					boolean dropped = false;
 					if (item[1].equals("true")) {
-						rval[2] = "✔";
+						dropped = true;
+					}
+
+					rval[0] = getItemImage(clazz, subclazz, dropped);
+					rval[1] = name;
+					rval[2] = "";
+					rval[3] = "";
+
+					if (dropped) {
+						rval[2] = itemDropCount;
+						rval[3] = "✔";
 					}
 
 					return rval;
+				}
+
+				private Sprite getItemImage(String clazz, String subclazz, boolean dropped) {
+					String imagePath = "/data/sprites/items/" + clazz + "/" + subclazz + ".png";
+
+					Sprite sprite;
+					sprite = SpriteStore.get().getColoredSprite("/data/gui/bag.png", Color.LIGHT_GRAY);
+					if (dropped) {
+						sprite = SpriteStore.get().getSprite(imagePath);
+					}
+
+					if (sprite.getWidth() > sprite.getHeight()) {
+						sprite = SpriteStore.get().getAnimatedSprite(sprite, 100);
+					}
+
+					return sprite;
 				}
 
 				/**
@@ -164,6 +194,40 @@ public class ItemLogEvent extends Event<RPEntity> {
 						}
 
 						table.setRowHeight(row, rowHeight);
+					}
+				}
+
+				@SuppressWarnings("serial")
+				class SpriteCellRenderer extends JComponent implements TableCellRenderer {
+					private Sprite sprite;
+
+					@Override
+					public Component getTableCellRendererComponent(JTable table, Object color,
+							boolean isSelected, boolean hasFocus, int row, int col) {
+						Object obj = table.getValueAt(row, col);
+						if (obj instanceof Sprite) {
+							sprite = (Sprite) obj;
+						} else {
+							sprite = null;
+						}
+						return this;
+					}
+
+					@Override
+					public Dimension getPreferredSize() {
+						Dimension d = new Dimension();
+						if (sprite != null) {
+							d.width = sprite.getWidth() + 2 * PAD;
+							d.height = sprite.getHeight() + 2 * PAD;
+						}
+						return d;
+					}
+
+					@Override
+					protected void paintComponent(Graphics g) {
+						if (sprite != null) {
+							sprite.draw(g, (getWidth() - sprite.getWidth()) / 2, (getHeight() - sprite.getHeight()) / 2);
+						}
 					}
 				}
 			};

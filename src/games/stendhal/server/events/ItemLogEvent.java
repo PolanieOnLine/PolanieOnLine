@@ -145,7 +145,7 @@ public class ItemLogEvent extends RPEvent {
 
 			int itemDropCount = 0;
 			itemDropCount = player.getNumberOfLootsForItem(name);
-			sb.append(name + "," + looted.toString() + "," + itemDropCount);
+			sb.append(name + "," + looted.toString() + "," + itemDropCount + "," + item.getItemClass() + "," + item.getItemSubclass());
 			if (idx != itemCount - 1) {
 				sb.append(";");
 			}
