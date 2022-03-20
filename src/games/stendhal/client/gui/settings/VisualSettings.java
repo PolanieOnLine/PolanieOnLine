@@ -286,13 +286,13 @@ class VisualSettings {
 	 */
 	private JComponent createTransparencySelector() {
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		JLabel label = new JLabel("Transparency mode:");
+		JLabel label = new JLabel("Tryb przezroczystości:");
 		row.add(label);
 		final JComboBox<String> selector = new JComboBox<>();
 		final String[][] data = {
 				{"Automatyczny (domyślny)", "auto", "Odpowiedni tryb jest wybierany automatycznie w zależności od szybkości systemu."},
-				{"Pełna przeźroczystość", "translucent", "Będzie używał półprzeźroczystych obrazów o ile to możliwe. Może to spowolnić system."},
-				{"Prosta przeźroczystość", "bitmask", "Użyje prostej przeźroczystości tam gdzie obraz jest w pełni przeźroczysty lub całkowicie nieprzeźroczysty. <P>Użyj tego ustawienia na starszych komputerach jeśli gra nie odpowiada."}
+				{"Pełna przezroczystość", "translucent", "Będzie używał półprzezroczystych obrazów o ile to możliwe. Może to spowolnić system."},
+				{"Prosta przezroczystość", "bitmask", "Użyje prostej przezroczystości tam gdzie obraz jest w pełni przezroczysty lub całkowicie nieprzezroczysty. <P>Użyj tego ustawienia na starszych komputerach jeśli gra nie odpowiada."}
 		};
 
 		// Convenience mapping for getting the data rows from either short or
