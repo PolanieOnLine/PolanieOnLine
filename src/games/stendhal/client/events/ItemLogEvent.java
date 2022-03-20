@@ -20,9 +20,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -56,9 +54,6 @@ public class ItemLogEvent extends Event<RPEntity> {
 				public void prepareView(final Dimension maxSize) {
 					Dimension screenSize = GameScreen.get().getSize();
 					int maxPreferredWidth = screenSize.width - 180;
-					JLabel header = new JLabel();
-					header.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
-					add(header, BorderLayout.NORTH);
 
 					final JTable table = createTable();
 					// Prevents selection
