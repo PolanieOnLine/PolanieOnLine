@@ -52,7 +52,7 @@ public class ItemLogEvent extends RPEvent {
 			"puciera", "ruda cieni", "ruda miedzi", "ruda platyny", "ruda srebra", "ruda żelaza", "siarka", "sukno z mithrilu",
 			"sztabka cieni", "sztabka miedzi", "sztabka platyny", "sztabka srebra", "sól", "trzcina cukrowa", "wełna", "wosk pszczeli",
 			"wypchany baran", "węgiel", "węgiel drzewny", "złote jajo", "świeca", "tarcza jaśniejąca", "miecz leworęczny", "miecz praworęczny",
-			"miecz treningowy", "zwój czyszczący", "amulecik", "smocze pazury", "rózga GM" };
+			"miecz treningowy", "zwój czyszczący", "amulecik", "smocze pazury", "rózga GM", "filiżanka herbaty", "obsydianowy saks" };
 	private final String[] neededItemNames = { "banan", "borowik", "błazenek", "cebula", "cytryna", "czosnek", "dorsz", "duży ser", "dynia",
 			"straszna dynia", "fasola pinto", "flaczki", "jabłko", "jabłko niezgody", "jajo", "jajo wielkanocne", "kalafior", "kanapka",
 			"kapusta pekińska", "karp", "karp lustrzeń", "kiełbasa", "kiść winogron", "leszcz", "makrela", "marchew", "mięso", "szynka",
