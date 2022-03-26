@@ -64,7 +64,7 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-	
+
 	<item name="brązowa skrzynia">
 		<type class="box" subclass="brazowa_skrzynia" tileid="-1"/>
 		<description>Oto brązowa skrzynia. Otwórz ją.</description>
@@ -81,7 +81,7 @@
 			<slot name="bag"/>
 		</equipable>
 	</item>
-	
+
 	<item name="srebrna skrzynia">
 		<type class="box" subclass="srebrna_skrzynia" tileid="-1"/>
 		<description>Oto srebrna skrzynia. Otwórz ją.</description>
@@ -98,7 +98,7 @@
 			<slot name="bag"/>
 		</equipable>
 	</item>
-	
+
 	<item name="złota skrzynia">
 		<type class="box" subclass="zlota_skrzynia" tileid="-1"/>
 		<description>Oto złota skrzynia. Otwórz ją.</description>
