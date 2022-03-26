@@ -395,7 +395,7 @@ public class User extends Player {
 		super.onHealed(amount);
 
 		String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
-		notifyUser(getTitle() + " " + Grammar.genderVerb(getGender(), "odzyskał") + " " + pointDesc + ".", NotificationType.HEAL);
+		notifyUser(getTitle() + " odzyskał " + pointDesc + ".", NotificationType.HEAL);
 	}
 
 	private void notifyUser(String message, NotificationType type) {
@@ -403,8 +403,8 @@ public class User extends Player {
 	}
 
 	private void notifyUserAboutPlayerOnlineChanges(RPObject changes) {
-		notifyUserAboutPlayerStatus(changes, "offline", " " + Grammar.genderVerb(getGender(), "opuścił") + " PolanieOnLine.");
-		notifyUserAboutPlayerStatus(changes, "online", " " + Grammar.genderVerb(getGender(), "zawitał") + " do PolanieOnLine.");
+		notifyUserAboutPlayerStatus(changes, "offline", " opuścił PolanieOnLine.");
+		notifyUserAboutPlayerStatus(changes, "online", " zawitał do PolanieOnLine.");
 	}
 
 	private void notifyUserAboutPlayerStatus(RPObject changes, String status, String messageEnd) {
