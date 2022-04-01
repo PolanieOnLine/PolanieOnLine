@@ -80,9 +80,8 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"czarne buty", "czarna tarcza", "czarne rękawice", "czarny pas"
 	};
 	private static final String[] MITHRIL = {
-			"zbroja z mithrilu", "hełm z mithrilu", "płaszcz z mithrilu",
-			"spodnie z mithrilu", "buty z mithrilu", "tarcza z mithrilu",
-			"rękawice z mithrilu", "pas z mithrilu"
+			"zbroja z mithrilu", "hełm z mithrilu", "spodnie z mithrilu",
+			"rękawice z mithrilu", "pas z mithrilu", "buty z mithrilu"
 	};
 	private static final String[] MAINIO = {
 			"zbroja mainiocyjska", "hełm mainiocyjski", "płaszcz mainiocyjski",
