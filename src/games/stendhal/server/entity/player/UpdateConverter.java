@@ -603,6 +603,8 @@ public abstract class UpdateConverter {
 		fixMazeQuestSlot(player);
 		// fix base hp after changes in reborn quest
 		fixBaseHPAfterRebornQuest(player);
+		// fix mad guards quest
+		fixKillMadGuardsQuest(player);
 	}
 
 	/**
@@ -757,6 +759,29 @@ public abstract class UpdateConverter {
 
 		// now fix player's quest slot
 		player.setQuest(QUEST_SLOT, 0, player.getQuest(QUEST_SLOT, 0)+",0,1,0,0");
+	}
+
+	private static void fixKillMadGuardsQuest(final Player player) {
+		final String QUEST_SLOT = "kill_madguards";
+
+		// if player didnt started quest, exiting
+		if(!player.hasQuest(QUEST_SLOT)) {
+			return;
+		}
+
+		final String questInfo = player.getQuest(QUEST_SLOT, 0);
+		final String questInfo1 = player.getQuest(QUEST_SLOT, 1);
+
+		// if player completed quest, exiting
+		if(questInfo.equals("killed")) {
+			return;
+		}
+		if(!Arrays.asList(questInfo1.split(",")).contains("straznik bramy")) {
+			return;
+		}
+
+		// now remove quest from player
+		player.setQuest(QUEST_SLOT, null);
 	}
 
 	/**
