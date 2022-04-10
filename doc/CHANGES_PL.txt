@@ -1,5 +1,14 @@
 Changelog
 ---------
+1.30
+*naprawiono błędy*
+- Naprawiono zadanie, które zostało wcześniej przyjęte przez graczy u NPC Rycerza w Warszawie
+- Naprawiono osiągnięcia:
+	- "Przejdź na Jasną Stronę"
+	- "Nowa Przygoda"
+- Usunięto przedmioty z listy w dzienniku, których nie da się zdobyć z potworów
+
+
 1.29
 *klient*
 - Dodano nowy dziennik ze spisem zdobytych lub nie przedmiotów
