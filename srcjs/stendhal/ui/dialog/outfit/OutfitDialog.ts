@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../../toolkit/Component";
+import { DialogContentComponent } from "../../toolkit/DialogContentComponent";
 import { ui } from "../../UI";
 import { UIComponentEnum } from "../../UIComponentEnum";
 
@@ -17,15 +17,15 @@ import { OutfitPartSelector } from "./OutfitPartSelector";
 import { OutfitColorSelector } from "./OutfitColorSelector";
 import { OutfitPaletteColorSelector } from "./OutfitPaletteColorSelector";
 
-
 declare var marauroa: any;
 declare var stendhal: any;
+
 
 stendhal.ui.outfitCount = {
 	"hat": 14,
 	"hair": 48,
 	"mask": 9,
-	"eyes": 26,
+	"eyes": 27,
 	"mouth": 5,
 	"head":  4,
 	"dress": 63,
@@ -35,7 +35,7 @@ stendhal.ui.outfitCount = {
 /**
  * a dialog to choose an outfit from
  */
-export class OutfitDialog extends Component {
+export class OutfitDialog extends DialogContentComponent {
 	private hatSelector!: OutfitPartSelector;
 	private hairSelector!: OutfitPartSelector;
 	private maskSelector!: OutfitPartSelector;
@@ -57,8 +57,12 @@ export class OutfitDialog extends Component {
 		queueMicrotask( () => {
 			this.createDialog();
 		});
-
 	}
+
+	public override getConfigId(): string {
+		return "outfit";
+	}
+
 	private createDialog() {
 		let outfit = marauroa.me["outfit_ext_orig"];
 		if (outfit === undefined) {

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -151,7 +150,6 @@ public enum ActionType {
 	ADMIN_VIEW_NPC_TRANSITIONS("npctransitions", "(*)Pokaż przejścia"),
 	KNOCK("knock", "Zapukaj"),
 	INVITE("group_management", "Zaproś") {
-
 		@Override
 		public RPAction fillTargetInfo(IEntity entity) {
 			// invite action needs to add additional parameters to the RPAction
@@ -160,12 +158,10 @@ public enum ActionType {
 			a.put("params", entity.getName());
 			return a;
 		}
-
 	},
 	WALK_START("walk", "Chódź"),
 	WALK_STOP("walk", "Stój"),
 	CHALLENGE("challenge", "Wyzwanie") {
-
 		@Override
 		public RPAction fillTargetInfo(IEntity entity) {
 			RPAction a = super.fillTargetInfo(entity);
@@ -174,10 +170,8 @@ public enum ActionType {
 			a.put("target", entity.getName());
 			return a;
 		}
-
 	},
 	ACCEPT_CHALLENGE("challenge", "Zaakceptuj") {
-
 		@Override
 		public RPAction fillTargetInfo(IEntity entity) {
 			RPAction a = super.fillTargetInfo(entity);
@@ -186,7 +180,17 @@ public enum ActionType {
 			a.put("target", entity.getName());
 			return a;
 		}
-
+	},
+	MARK_ALL("markscroll", "Zapisz wszystkie") {
+		@Override
+		public RPAction fillTargetInfo(final IEntity entity) {
+			// Servers older than v1.40 don't support the "quantity" attribute.
+			// This should still work but only mark one scroll.
+			final RPAction a = super.fillTargetInfo(entity);
+			a.put("type", "markscroll");
+			a.put("quantity", entity.getRPObject().get("quantity"));
+			return a;
+		}
 	};
 
 	/**

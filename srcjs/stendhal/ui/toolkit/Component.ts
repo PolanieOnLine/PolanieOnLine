@@ -9,10 +9,15 @@
  *                                                                         *
  ***************************************************************************/
 
+declare let stendhal: any;
+
+
 export abstract class Component {
 
 	readonly componentElement!: HTMLElement;
 	public parentComponent?: Component;
+	public cid?: string;
+
 
 	constructor(id: string) {
 		let element = document.getElementById(id);
@@ -31,4 +36,33 @@ export abstract class Component {
 	public onParentClose() {
 		// do nothing
 	};
+
+	public onMoved() {
+		// do nothing
+	};
+
+	public refresh() {
+		// inheriting classes can override
+	};
+
+	/**
+	 * Sets value for configuration to identify this component.
+	 *
+	 * @param cid
+	 *     The string identifier.
+	 */
+	public setConfigId(cid: string) {
+		this.cid = cid;
+	}
+
+	/**
+	 * Retrieves the string identifier for this component. If
+	 * an identifier is not set, an empty string is returned.
+	 *
+	 * @return
+	 *     String identifier.
+	 */
+	public getConfigId(): string {
+		return this.cid || "";
+	}
 }

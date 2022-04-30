@@ -43,6 +43,9 @@ public class MarkedScroll extends TeleportScroll {
 	public MarkedScroll(final String name, final String clazz, final String subclass,
 			final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
+
+		this.applyDestInfo();
+		this.update();
 	}
 
 	/**
@@ -53,6 +56,9 @@ public class MarkedScroll extends TeleportScroll {
 	 */
 	public MarkedScroll(final MarkedScroll item) {
 		super(item);
+
+		this.applyDestInfo();
+		this.update();
 	}
 
 	/**
@@ -85,7 +91,7 @@ public class MarkedScroll extends TeleportScroll {
 				if (temp == null) {
 					// invalid zone (the scroll may have been marked in an
 					// old version and the zone was removed)
-					player.sendPrivateText("Z dziwnych powodów zwój nie przeniósł mnie tam gdzie chciałem.");
+					player.sendPrivateText("Z dziwnych powodów zwój nie przeniósł mnie tam gdzie " + Grammar.genderVerb(player.getGender(), "chciałem") + ".");
 					logger.warn("marked scroll to unknown zone " + infostring
 							+ " teleported " + player.getName()
 							+ " to Semos instead");
@@ -123,5 +129,20 @@ public class MarkedScroll extends TeleportScroll {
 			text += " Pod spodem widnieje napis: " + infostring;
 		}
 		return (text);
+	}
+
+	@Override
+	public void setInfoString(final String infostring) {
+		super.setInfoString(infostring);
+		this.applyDestInfo();
+	}
+
+	public void applyDestInfo() {
+		if (this.has("infostring")) {
+			final String[] infos = this.get("infostring").split(" ");
+			if (infos.length > 2) {
+				this.put("dest", infos[0] + "," + infos[1] + "," + infos[2]);
+			}
+		}
 	}
 }

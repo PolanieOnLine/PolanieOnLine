@@ -90,6 +90,12 @@
 		<format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss" />
 	</tstamp>
 
+	<condition property="doxygen.fix_urls" value="true">
+		<and>
+			<equals arg1="${python.present}" arg2="true"/>
+			<available file="buildtools/doxygen/fix_urls.py"/>
+		</and>
+	</condition>
 
 	<!-- Android properties -->
 
@@ -126,10 +132,6 @@
 		<replaceregexp file="runserver.sh"
 			match="POL_VERSION ?= ?&quot;.*&quot;"
 			replace="POL_VERSION=&quot;${version}&quot;"
-			byline="true"/>
-		<replaceregexp file="android/app/build.gradle"
-			match="versionName .*"
-			replace="versionName &quot;${version.webview}&quot;"
 			byline="true"/>
 		<replaceregexp file="buildtools/doxygen/Doxyfile"
 			match="^PROJECT_NUMBER .*$"
@@ -185,6 +187,7 @@
 		<delete dir="${build_cobertura}"/>
 		<delete dir="${build_cobertura_report}"/>
 		<delete file="cobertura.ser" />
+		<delete dir="android/app/build/" />
 		<delete>
 					<fileset dir=".">
 						<include name="TEST-*.xml"/>
@@ -398,6 +401,7 @@
 			<fileset file="${marauroa_jar}"/>
 			<fileset file="${log4j_jar}"/>
 			<fileset file="${jorbis_jar}"/>
+			<fileset file="${jsonsimple_jar}"/>
 		</copy>
 
 		<chmod file="run_clnt/lib/${client_jarname}" perm="+x"/>
@@ -485,6 +489,7 @@
 				<pathelement path="${marauroa_jar}"/>
 				<pathelement path="${log4j_jar}"/>
 				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${jsonsimple_jar}"/>
 			</classpath>
 		</javac>
 		<delete file="${src}/games/stendhal/client/StendhalBuild.java" quiet="true" failonerror="false" />
@@ -512,7 +517,7 @@
 				<attribute name="Application-Name" value="PolanieOnLine" />
 				<attribute name="Application-Library-Allowable-Codebase"  value="http://game-polanieonline.sourceforge.net https://polanieonline.eu *" />
 				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
-				<attribute name="Class-path" value="."/>
+				<attribute name="Class-path" value=". lib/${jsonsimple_jarname}"/>
 				<attribute name="Permissions" value="all-permissions"/>
 				<attribute name="Codebase" value="*"/>
 				<attribute name="Trusted-Library" value="true" />
@@ -552,6 +557,10 @@
 			</fileset>
 		</copy>
 
+		<copy todir="${build_client_data}/data/font">
+			<fileset dir="data/font"/>
+		</copy>
+
 		<copy todir="${build_client_data}/data/gui">
 			<fileset dir="${data}">
 				<exclude name="paneldrock009.jpg"/>
@@ -565,6 +574,7 @@
 				<exclude name="**/*.psd" />
 				<exclude name="**/*.xcf" />
 				<exclude name="**/*.xcf.*" />
+				<exclude name="**/*.svg" />
 			</fileset>
 		</copy>
 
@@ -594,19 +604,6 @@
 	</target>
 
 	<target name="client_android_build">
-		<condition property="cannot_build_webview_other">
-			<or>
-				<isset property="exclude.webview" />
-				<equals arg1="${os.win}" arg2="true" />
-			</or>
-		</condition>
-		<condition property="cannot_build_webview_win">
-			<or>
-				<isset property="exclude.webview" />
-				<equals arg1="${os.win}" arg2="false" />
-			</or>
-		</condition>
-
 		<echo
 			if:set="exclude.webview"
 			message="ANDROID_SDK_ROOT environment variable not set. Skipping Android WebView client build." />
@@ -614,18 +611,37 @@
 			unless:set="exclude.webview"
 			message="Building Android WebView client." />
 
-		<property name="android.build" value="assembleRelease" />
+		<condition property="gradlew" value="${user.dir}/android/gradlew.bat">
+			<os family="windows" />
+		</condition>
+		<property name="gradlew" value="${user.dir}/android/gradlew" />
 
-		<!-- use Unix shell script -->
-		<exec unless:set="cannot_build_webview_other" failonerror="true"
-				executable="${user.dir}/android/gradlew" dir="android/">
-			<arg value="${android.build}" />
-		</exec>
+		<property name="android.build" value="assembleDebug" />
 
-		<!-- use Windows batch script -->
-		<exec unless:set="cannot_build_webview_win" failonerror="true"
-				executable="${user.dir}/android/gradlew.bat" dir="android/">
-			<arg value="${android.build}" />
+		<condition property="android.build_wout_rev">
+			<and>
+				<not>
+					<isset property="android.rev" />
+				</not>
+				<not>
+					<isset property="gradle.params" />
+				</not>
+			</and>
+		</condition>
+		<condition property="android.build_w_rev">
+			<and>
+				<isset property="android.rev" />
+				<not>
+					<isset property="gradle.params" />
+				</not>
+			</and>
+		</condition>
+
+		<exec unless:set="exclude.webview" failonerror="true"
+				executable="${gradlew}" dir="android/">
+			<arg if:set="gradle.params" line="${gradle.params}" />
+			<arg if:set="android.build_wout_rev" value="${android.build}" />
+			<arg if:set="android.build_w_rev" line="-Pandroid.rev=${android.rev} ${android.build}" />
 		</exec>
 	</target> <!-- client_android_build -->
 
@@ -640,15 +656,21 @@
 	</target>
 
 	<target name="docs" description="Generate HTML API reference with javadoc." depends="clean_docs">
-		<javadoc packagenames="games.stendhal.*"
+		<condition property="include.marauroa" value="true">
+			<available file="../marauroa/src/" type="dir"/>
+		</condition>
+
+		<javadoc packagenames="games.stendhal.*,marauroa.*"
 		   defaultexcludes="yes"
 		   destdir="${docs}"
 		   author="true"
 		   encoding="UTF-8"
 		   version="true"
 		   use="true"
-		   windowtitle="PolanieOnLine API Documentation Version: ${version}"
-		   sourcepath="${src}">
+		   windowtitle="Stendhal API Documentation Version: ${version}">
+			<!-- include marauroa source if available -->
+			<sourcepath path="../marauroa/src/" if:true="${include.marauroa}"/>
+			<sourcepath path="${src}"/>
 			<classpath>
 				<pathelement path="${guava_jar}"/>
 				<pathelement path="${groovy_jar}"/>
@@ -666,6 +688,7 @@
 				<pathelement path="libs/postman/jwbf-2.0-SNAPSHOT.jar"/>
 				<pathelement path="${luaj_jar}"/>
 				<pathelement path="libs/json-simple-1.1.1.jar"/>
+				<pathelement path="../marauroa/libs/*" if:true="${include.marauroa}"/>
 			</classpath>
 		</javadoc>
 	</target>
@@ -674,9 +697,32 @@
 		<delete dir="${docs}" />
 	</target>
 
+	<target name="mkdocs" description="Generate HTML reference." depends="clean_mkdocs">
+		<!-- call "docs" to include javadocs -->
+
+		<echo unless:true="${python.present}"
+			message="Python unavailable, cannot run mkdocs" />
+
+		<!--<antcall if:true="${python.present}" target="docs"/>-->
+		<exec if:true="${python.present}" failonerror="true"
+			executable="python" dir="./buildtools/mkdocs/">
+			<arg value="-u" />
+			<arg value="build.py" />
+		</exec>
+	</target> <!-- mkdocs -->
+
+	<target name="clean_mkdocs">
+		<delete dir="${buildroot}/mkdocs/" />
+	</target>
+
 	<target name="doxygen" description="Generate HTML API reference with Doxygen." depends="clean_doxygen">
-		<exec executable="doxygen">
+		<exec executable="doxygen" failonerror="true">
 			<arg value="./buildtools/doxygen/Doxyfile" />
+		</exec>
+
+		<!-- Doxygen 1.9.3 has some issues with tags files URLs -->
+		<exec if:set="doxygen.fix_urls" executable="python">
+			<arg value="./buildtools/doxygen/fix_urls.py"/>
 		</exec>
 	</target>
 
@@ -726,7 +772,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-server-${version}/doc">
 			<fileset dir="doc">
-				<exclude name="scripting/"/>
+				<exclude name="mkdocs/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -759,6 +805,7 @@
 		<copy tofile="${buildroot}/polanieonline-${version}/lib/log4j.jar" file="${log4j_jar}"/>
 		<copy tofile="${buildroot}/polanieonline-${version}/lib/marauroa.jar" file="${marauroa_jar}"/>
 		<copy tofile="${buildroot}/polanieonline-${version}/lib/jorbis.jar" file="${jorbis_jar}"/>
+		<copy tofile="${buildroot}/polanieonline-${version}/lib/${jsonsimple_jarname}" file="${jsonsimple_jar}"/>
 		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline-sound-data.jar" file="${lib}/${client_sound_data}"/>
 		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline-music-data.jar" file="${lib}/${client_music_data}"/>
 		<copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline-data.jar" file="${lib}/${client_data}"/>
@@ -770,7 +817,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}/doc">
 			<fileset dir="doc">
-				<exclude name="scripting/"/>
+				<exclude name="mkdocs/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -797,7 +844,7 @@
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}/doc">
 			<fileset dir="doc">
-				<exclude name="scripting/"/>
+				<exclude name="mkdocs/"/>
 			</fileset>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
@@ -866,9 +913,7 @@
 			</fileset>
 		</copy>
 		<copy todir="${buildroot}/polanieonline-${version}-src/doc">
-			<fileset dir="doc">
-				<exclude name="scripting/"/>
-			</fileset>
+			<fileset dir="doc"/>
 			<fileset dir="." includes="LICENSE.txt"/>
 		</copy>
 
@@ -1062,16 +1107,34 @@
 	<target name="cleanwhitespace" description="cleans whitespace in source and other specified file types" depends="compile_polanieonlinetools">
 		<java classname="games.stendhal.tools.CleanWhitespace">
 			<classpath>
-				<pathelement path="${build_polanieonlinetools}"/>
+				<pathelement path="${build_polanieonlinetools}" />
 			</classpath>
-			<arg value="src/"/>
-			<arg value="tests/"/>
-			<arg value="srcjs/"/>
-			<arg value="data/"/>
-			<arg value="tiled/"/>
-			<arg value="java,xml,js,ts,xsd,lua,py"/>
+			<arg value="src/" />
+			<arg value="tests/" />
+			<arg value="android/app/src/" />
+			<arg value="java,xml,lua" />
 		</java>
-	</target>
+
+		<java classname="games.stendhal.tools.CleanWhitespace">
+			<classpath>
+				<pathelement path="${build_polanieonlinetools}" />
+			</classpath>
+			<arg value="srcjs/" />
+			<arg value="js,ts,css" />
+		</java>
+
+		<java classname="games.stendhal.tools.CleanWhitespace">
+			<classpath>
+				<pathelement path="${build_polanieonlinetools}" />
+			</classpath>
+			<arg value="data/" />
+			<arg value="tiled/" />
+			<arg value="xml,xsd,lua,py" />
+		</java>
+
+	</target> <!-- cleanwhitespace -->
+
+	<target name="clean_whitespace" depends="cleanwhitespace" />
 
 	<!-- USAGE: ant balance -Dcreature="<creature_name>" -->
 	<target name="balance" description="runs enemy balancer" depends="compile_polanieonlinetools,server_build">
@@ -1388,26 +1451,22 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 			<arg value="tsc" />
 		</exec>
 
-		<property name="js-debug"          value="--debug --formatting=PRETTY_PRINT --create_source_map srcjs/stendhal-compiled.js.map --source_map_include_content" />
+		<property name="js-debug"          value="--debug --formatting=PRETTY_PRINT --create_source_map srcjs/polanieonline-compiled.js.map --source_map_include_content" />
 
 		<property name="js-files-license"  value="srcjs/stendhal/license.js" />
 		<property name="js-files-marauroa" value="build/js/marauroa.js build/js/client-framework.js build/js/message-factory.js build/js/perception.js build/js/rpfactory.js build/js/inflate.js build/js/deserializer.js" />
 		<property name="js-files-config"   value="srcjs/stendhal/config.js build/js/build.js" />
 		<property name="js-files-lib1"     value="srcjs/jsxgraph-util.js" />
 		<property name="js-files-lib2"     value="" />
-		<property name="js-files-data1"    value="srcjs/stendhal/data/cache.js srcjs/stendhal/data/cstatus.js srcjs/stendhal/data/group.js srcjs/stendhal/data/map.js srcjs/stendhal/data/sha3.js srcjs/stendhal/data/sprites.js" />
+		<property name="js-files-data1"    value="srcjs/stendhal/data/cache.js srcjs/stendhal/data/cstatus.js srcjs/stendhal/data/group.js srcjs/stendhal/data/map.js srcjs/stendhal/data/sha3.js srcjs/stendhal/data/sprites.js  srcjs/stendhal/data/emoji.js srcjs/stendhal/data/tileset/animation.js" />
 		<property name="js-files-data2"    value="" />
-		<property name="js-files-entity1"  value="srcjs/stendhal/entity/entity.js srcjs/stendhal/entity/unknown.js srcjs/stendhal/entity/blood.js srcjs/stendhal/entity/corpse.js" />
-		<property name="js-files-entity2"  value="srcjs/stendhal/entity/chest.js srcjs/stendhal/entity/food.js srcjs/stendhal/entity/gate.js srcjs/stendhal/entity/invisibleentity.js srcjs/stendhal/entity/item.js srcjs/stendhal/entity/portal.js" />
-		<property name="js-files-entity3"  value="srcjs/stendhal/entity/activeentity.js srcjs/stendhal/entity/gameboard.js srcjs/stendhal/entity/rpentity.js srcjs/stendhal/entity/player.js srcjs/stendhal/entity/creature.js" />
-		<property name="js-files-entity4"  value="srcjs/stendhal/entity/domesticanimal.js srcjs/stendhal/entity/npc.js srcjs/stendhal/entity/sign.js srcjs/stendhal/entity/growingspawner.js srcjs/stendhal/entity/item.js srcjs/stendhal/entity/door.js" />
-		<property name="js-files-entity5"  value="srcjs/stendhal/entity/useableentity.js srcjs/stendhal/entity/visibleentity.js srcjs/stendhal/entity/walkblocker.js srcjs/stendhal/entity/zone.js srcjs/stendhal/entity/ground.js" />
+		<property name="js-files-entity5"  value="srcjs/stendhal/entity/zone.js srcjs/stendhal/entity/ground.js" />
 		<property name="js-files-entity6"  value="" />
-		<property name="js-files-ui1"      value="srcjs/stendhal/ui/setdragimage-ie.js srcjs/stendhal/ui/gamewindow.js" />
-		<property name="js-files-ui2"      value="srcjs/stendhal/ui/html.js srcjs/stendhal/ui/keyhandler.js srcjs/stendhal/ui/sound.js" />
+		<property name="js-files-ui1"      value="srcjs/stendhal/ui/gamewindow.js srcjs/stendhal/ui/html.js srcjs/stendhal/ui/keyhandler.js" />
+		<property name="js-files-ui2"      value="srcjs/stendhal/ui/sound.js srcjs/stendhal/ui/touch.js" />
 		<property name="js-files-ui3"      value="" />
 		<property name="js-files-main1"    value="srcjs/stendhal/actions.js srcjs/stendhal/events.js" />
-		<property name="js-files-ui4"      value="srcjs/stendhal/ui/popup.js srcjs/stendhal/ui/itemcontainer.js srcjs/stendhal/ui/settings.js" />
+		<property name="js-files-ui4"      value="srcjs/stendhal/ui/itemcontainer.js srcjs/stendhal/ui/settings.js" />
 		<property name="js-files-main2"    value="srcjs/stendhal/main.js" />
 		<property name="js-files-main3"    value="" />
 		<property name="js-files-ts"       value="build/ts/**/*.js" />
@@ -1434,10 +1493,6 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 			<arg line="${js-files-lib2}" />
 			<arg line="${js-files-data1}" />
 			<arg line="${js-files-data2}" />
-			<arg line="${js-files-entity1}" />
-			<arg line="${js-files-entity2}" />
-			<arg line="${js-files-entity3}" />
-			<arg line="${js-files-entity4}" />
 			<arg line="${js-files-entity5}" />
 			<arg line="${js-files-entity6}" />
 			<arg line="${js-files-ui1}" />

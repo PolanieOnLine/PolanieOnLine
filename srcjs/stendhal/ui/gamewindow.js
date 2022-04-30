@@ -11,10 +11,15 @@
 
 "use strict";
 
+var ui = require("../../../build/ts/ui/UI").ui;
+var UIComponentEnum = require("../../../build/ts/ui/UIComponentEnum").UIComponentEnum;
 
 var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 stendhal.ui = stendhal.ui || {};
+
+/** Represents an item being transferred from one container slot to another. */
+stendhal.ui.heldItem = undefined;
 
 
 /**
@@ -26,6 +31,8 @@ stendhal.ui.gamewindow = {
 	offsetY: 0,
 	timeStamp: Date.now(),
 	textSprites: [],
+	notifSprites: [],
+	emojiSprites: {},
 
 	draw: function() {
 		var startTime = new Date().getTime();
@@ -33,7 +40,8 @@ stendhal.ui.gamewindow = {
 		if (marauroa.me && document.visibilityState === "visible") {
 			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
 				|| stendhal.data.map.currentZoneName === "int_vault"
-				|| stendhal.data.map.currentZoneName === "int_adventure_island") {
+				|| stendhal.data.map.currentZoneName === "int_adventure_island"
+				|| stendhal.data.map.currentZoneName === "tutorial_island") {
 				var canvas = document.getElementById("gamewindow");
 				this.targetTileWidth = 32;
 				this.targetTileHeight = 32;
@@ -51,7 +59,13 @@ stendhal.ui.gamewindow = {
 				stendhal.data.map.strategy.render(canvas, this, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
 
 				this.drawEntitiesTop();
+				this.drawEmojiSprites();
 				this.drawTextSprites();
+				this.drawTextSprites(this.notifSprites);
+				// redraw inventory sprites
+				// FIXME: animations don't begin until zone change or item moved
+				stendhal.ui.equip.update();
+				ui.get(UIComponentEnum.PlayerEquipment).update();
 			}
 		}
 		setTimeout(function() {
@@ -77,19 +91,45 @@ stendhal.ui.gamewindow = {
 	drawEntitiesTop: function() {
 		var i;
 		for (i in stendhal.zone.entities) {
-			if (typeof(stendhal.zone.entities[i].drawTop) != "undefined") {
-				stendhal.zone.entities[i].drawTop(this.ctx);
+			const entity = stendhal.zone.entities[i];
+			if (typeof(entity.setStatusBarOffset) !== "undefined") {
+				entity.setStatusBarOffset();
+			}
+			if (typeof(entity.drawTop) != "undefined") {
+				entity.drawTop(this.ctx);
 			}
 		}
 	},
 
-	drawTextSprites: function(ctx) {
-		for (var i = 0; i < this.textSprites.length; i++) {
-			var sprite = this.textSprites[i];
+	drawTextSprites: function(sgroup=this.textSprites) {
+		for (var i = 0; i < sgroup.length; i++) {
+			var sprite = sgroup[i];
 			var remove = sprite.draw(this.ctx);
 			if (remove) {
-				this.textSprites.splice(i, 1);
+				sgroup.splice(i, 1);
 				i--;
+			}
+		}
+	},
+
+	/**
+	 * Adds a sprite to be drawn on screen.
+	 *
+	 * @param owner
+	 *     Entity the sprite is attached to.
+	 * @param sprite
+	 *     Sprite definition.
+	 */
+	addEmojiSprite: function(owner, sprite) {
+		this.emojiSprites[owner] = sprite;
+	},
+
+	drawEmojiSprites: function() {
+		for (const owner of Object.keys(this.emojiSprites)) {
+			const sprite = this.emojiSprites[owner];
+			const remove = sprite.draw(this.ctx);
+			if (remove) {
+				delete this.emojiSprites[owner];
 			}
 		}
 	},
@@ -118,6 +158,49 @@ stendhal.ui.gamewindow = {
 		this.textSprites.push(sprite);
 	},
 
+	addNotifSprite: function(sprite) {
+		this.notifSprites.push(sprite);
+	},
+
+	removeNotifSprite: function(sprite) {
+		const idx = this.notifSprites.indexOf(sprite);
+		if (idx > -1) {
+			this.notifSprites.splice(idx, 1);
+		}
+	},
+
+	/**
+	 * Checks if a notification sprite is drawn on top of all others.
+	 *
+	 * @param sprite
+	 *     Sprite to be checked.
+	 * @return
+	 *     <code>true</code> if sprite is most recently added to client.
+	 */
+	isTopNotification: function(sprite) {
+		return this.notifSprites.indexOf(sprite) + 1 == this.notifSprites.length;
+	},
+
+	/**
+	 * Adds a notification bubble to window.
+	 *
+	 * @param cat
+	 *     Achievement categroy.
+	 * @param title
+	 *     Achievement title.
+	 * @param desc
+	 *     Achievement description.
+	 */
+	addAchievementNotif: function(cat, title, desc) {
+		const msg = "Achievement: " + title + ": \"" + desc + "\"";
+
+		// for now we will just create a notification bubble & add line to chat log
+		if (marauroa.me) {
+			marauroa.me.addNotificationBubble("server", msg);
+		}
+		ui.get(UIComponentEnum.ChatLog).addLine("server", msg);
+	},
+
 	// Mouse click handling
 	onMouseDown: (function() {
 		var entity;
@@ -125,6 +208,12 @@ stendhal.ui.gamewindow = {
 		var startY;
 
 		function _onMouseDown(e) {
+			// close action menu if open
+			if (stendhal.ui.actionContextMenu.isOpen() && !this.isRightClick(e)) {
+				stendhal.ui.actionContextMenu.close(true);
+				return;
+			}
+
 			var pos = stendhal.ui.html.extractPosition(e);
 			if (stendhal.ui.globalpopup) {
 				stendhal.ui.globalpopup.close();
@@ -163,7 +252,8 @@ stendhal.ui.gamewindow = {
 			var pos = stendhal.ui.html.extractPosition(e);
 			if (isRightClick(e)) {
 				if (entity != stendhal.zone.ground) {
-					ui.createSingletonFloatingWindow("Action", new ActionContextMenu(entity), pos.pageX - 50, pos.pageY - 5);
+					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+						new ActionContextMenu(entity), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
 				entity.onclick(pos.offsetX, pos.offsetY);
@@ -202,6 +292,40 @@ stendhal.ui.gamewindow = {
 		document.getElementById("gamewindow").style.cursor = entity.getCursor(x, y);
 	},
 
+	/**
+	 * Changes character facing direction dependent on direction
+	 * of wheel scroll.
+	 */
+	onMouseWheel: function(e) {
+		if (marauroa.me) {
+			e.preventDefault();
+
+			// previous event may have changed type to string
+			const currentDir = parseInt(marauroa.me["dir"], 10);
+			let newDir = null;
+
+			if (typeof(currentDir) === "number") {
+				if (e.deltaY >= 100) {
+					// clockwise
+					newDir = currentDir + 1;
+					if (newDir > 4) {
+						newDir = 1;
+					}
+				} else if (e.deltaY <= -100) {
+					// counter-clockwise
+					newDir = currentDir - 1;
+					if (newDir < 1) {
+						newDir = 4;
+					}
+				}
+			}
+
+			if (newDir != null) {
+				marauroa.clientFramework.sendAction({"type": "face", "dir": ""+newDir});
+			}
+		}
+	},
+
 	// ***************** Drag and drop ******************
 	onDragStart: function(e) {
 		var pos = stendhal.ui.html.extractPosition(e);
@@ -211,45 +335,52 @@ stendhal.ui.gamewindow = {
 		var img = undefined;
 		if (draggedEntity.type === "item") {
 			img = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(draggedEntity.sprite.filename), 32, 32);
+			stendhal.ui.heldItem = {
+				path: draggedEntity.getIdPath(),
+				zone: marauroa.currentZoneName
+			}
 		} else if (draggedEntity.type === "corpse") {
 			img = stendhal.data.sprites.get(draggedEntity.sprite.filename);
 		} else {
 			e.preventDefault();
 			return;
 		}
-		window.event = e; // required by setDragImage polyfil
-		e.dataTransfer.setDragImage(img, 0, 0);
-		e.dataTransfer.setData("Text", JSON.stringify({
-			path: draggedEntity.getIdPath(),
-			zone: marauroa.currentZoneName
-		}));
+
+		if (e.dataTransfer) {
+			window.event = e; // required by setDragImage polyfil
+			e.dataTransfer.setDragImage(img, 0, 0);
+		}
 	},
 
 	onDragOver: function(e) {
 		e.preventDefault(); // Necessary. Allows us to drop.
-		e.dataTransfer.dropEffect = "move";
+		if (e.dataTransfer) {
+			e.dataTransfer.dropEffect = "move";
+		}
 		return false;
 	},
 
 	onDrop: function(e) {
 		var pos = stendhal.ui.html.extractPosition(e);
-		var datastr = e.dataTransfer.getData("Text") || e.dataTransfer.getData("text/x-stendhal");
-		if (datastr) {
-			var data = JSON.parse(datastr);
+		if (stendhal.ui.heldItem) {
 			var action = {
 				"x": Math.floor((pos.offsetX + stendhal.ui.gamewindow.offsetX) / 32).toString(),
 				"y": Math.floor((pos.offsetY + stendhal.ui.gamewindow.offsetY) / 32).toString(),
-				"zone" : data.zone
-			};
-			var id = data.path.substr(1, data.path.length - 2);
+				"zone": stendhal.ui.heldItem.zone
+			}
+
+			var id = stendhal.ui.heldItem.path.substr(1, stendhal.ui.heldItem.path.length - 2);
 			var drop = /\t/.test(id);
 			if (drop) {
 				action["type"] = "drop";
-				action["source_path"] = data.path;
+				action["source_path"] = stendhal.ui.heldItem.path;
 			} else {
 				action["type"] = "displace";
 				action["baseitem"] = id;
 			}
+
+			// item was dropped
+			stendhal.ui.heldItem = undefined;
 
 			// if ctrl is pressed, we ask for the quantity
 			if (e.ctrlKey) {
@@ -262,8 +393,151 @@ stendhal.ui.gamewindow = {
 		e.preventDefault();
 	},
 
+	onTouchStart: function(e) {
+		e.preventDefault();
+		stendhal.ui.touch.timestampTouchStart = +new Date();
+	},
+
+	onTouchEnd: function(e) {
+		e.preventDefault();
+		stendhal.ui.touch.timestampTouchEnd = +new Date();
+		if (stendhal.ui.heldItem) {
+			this.onDrop(e);
+		} else {
+			this.onMouseUp(e);
+		}
+	},
+
+	onTouchMove: function(e) {
+		if (stendhal.ui.heldItem) {
+			this.onDragOver(e);
+		} else {
+			this.onDragStart(e);
+		}
+	},
+
 	onContentMenu: function(e) {
 		e.preventDefault();
-	}
+	},
 
+	/**
+	 * Creates a screenshot of game screen to download.
+	 */
+	createScreenshot: function() {
+		Chat.log("client", "creating screenshot ...");
+		const uri = this.ctx.canvas.toDataURL("image/png");
+
+		const d = new Date();
+		const ts = {
+			yyyy: d.getFullYear() + "",
+			mm: (d.getMonth() + 1) + "",
+			dd: d.getDate() + "",
+			HH: d.getHours() + "",
+			MM: d.getMinutes() + "",
+			SS: d.getSeconds() + "",
+			ms: d.getMilliseconds() + ""
+		};
+
+		for (let o of [ts.mm, ts.dd, ts.HH, ts.MM, ts.SS]) {
+			if (o.length < 2) {
+				o = "0" + o;
+			}
+		}
+		while (ts.ms.length < 3) {
+			ts.ms = "0" + ts.ms;
+		}
+
+		const filename = "screenshot_" + ts.yyyy + ts.mm
+				+ ts.dd + "." + ts.HH + "." + ts.MM + "."
+				+ ts.SS + "." + ts.ms + ".png";
+
+		const anchor = document.createElement("a");
+		anchor.download = filename;
+		anchor.target = "_blank";
+		anchor.href = uri;
+		anchor.click();
+	}
+};
+
+
+/**
+ * Representation of an internal dialog window.
+ */
+stendhal.ui.dialogHandler = {
+	content: null,
+
+	/**
+	 * Makes a copy.
+	 *
+	 * @return
+	 *     New stendhal.ui.dialogHandler.
+	 */
+	copy: function() {
+		let newObject = Object.assign({}, stendhal.ui.dialogHandler);
+		// remove copying functionality
+		delete newObject.copy;
+
+		return newObject;
+	},
+
+	/**
+	 * Sets the dialog window content.
+	 *
+	 * @param c
+	 *     The FloatingWindow instance to be set.
+	 */
+	set: function(c) {
+		if (!(c instanceof FloatingWindow)) {
+			console.error("cannot set dialogHandler content to \""
+				+ typeof(c) + "\", must be FloatingWindow instance");
+			return;
+		}
+
+		// make sure this is closed before opening again
+		if (this.isOpen()) {
+			this.close();
+		}
+
+		this.content = c;
+	},
+
+	/**
+	 * Sets the content to <code>null</code>.
+	 */
+	unset: function() {
+		this.content = null;
+	},
+
+	/**
+	 * Retrieves the window.
+	 *
+	 * @return
+	 *     FloatingWindow instance or <code>null</code> if not set.
+	 */
+	get: function() {
+		return this.content;
+	},
+
+	/**
+	 * Checks if the action context menu is open.
+	 *
+	 * @return
+	 *     The FloatingWindow open state.
+	 */
+	isOpen: function() {
+		return this.content != null && this.content.isOpen();
+	},
+
+	/**
+	 * Closes the dialog window.
+	 *
+	 * @param unset
+	 *     If <code>true</code>, resets content to <code>null</code>.
+	 */
+	close: function(unset=false) {
+		this.content.close();
+		if (unset) {
+			this.content = null;
+		}
+	}
 };

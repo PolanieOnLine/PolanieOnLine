@@ -1,5 +1,10 @@
+
+:root {
+  --text-color-online: #0a0;
+  --text-color-offline: #aaa;
+}
+
 body {
-  font-family: "Arial";
   padding: 0;
   margin: 0;
 }
@@ -9,23 +14,27 @@ body {
 }
 
 li.online {
-  color: #0A0
+  color: var(--text-color-online);
 }
 
 li.offline {
-  color: #AAA
+  color: var(--text-color-offline);
+}
+
+ul.uniform {
+  list-style-position: outside;
+  margin-left: -23px;
 }
 
 #buddyList {
   border: 1px solid black;
   width: 128px;
-  height: 250px;
+  height: 175px;
   float: left;
-  overflow: scroll
+  overflow: auto;
 }
 
 #buddyList ul {
-  cursor: default;
   list-style-type: none;
   margin: 0;
   padding: 0.1em;
@@ -89,7 +98,6 @@ div.quickPickup div.itemSlot {
 
 #stats {
   border: 1px solid black;
-  cursor: default;
   width: 128px;
   float: left;
   font-size: 0.8em;
@@ -114,6 +122,11 @@ div.logsignificant_positive { color: #4169e1 }
 div.logtutorial { color: #ac00ac }
 div.logsupport { color: #ff7200 }
 
+span.logtimestamp {
+  font-size: 8pt;
+  color: gray;
+}
+
 span.logh {
   color: #00F
 }
@@ -122,9 +135,19 @@ span.logi {
   text-decoration: underline
 }
 
+div.logcolL {
+  float: left;
+  min-width: 2.5em;
+  height: 100%;
+  white-space: pre;
+}
+
+div.logcolR {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .actionmenu {
-  border: 1px solid #000;
-  background-color: #FFF
 }
 
 .actionmenu button {
@@ -190,13 +213,21 @@ span.logi {
 }
 
 .popuptitle, .windowtitlebar {
-  cursor: default;
   padding: 3px;
   border-bottom: 1px solid #777;
+  border: 1px solid #000000;
 }
 
 .popuptitleclose, .windowtitleclose {
-  float: right
+  float: right;
+  border: 1px solid #000000;
+  height: 100%;
+  width: 1.1em;
+  text-align: center;
+}
+
+.popuptitleclose:hover, .windowtitleclose:hover {
+  background-color: #ffffff2a;
 }
 
 .quantityselectorvalue {
@@ -237,19 +268,34 @@ span.logi {
   flex-direction: column;
 }
 
+.tavellogtabpanel {
+}
+
+.tlog_hlayout {
+  width: 40em;
+  height: 25em;
+}
+
+.tlog_rpane {
+  float: top;
+  height: 100%;
+  margin-left: 15em;
+  overflow-y: auto;
+}
+
 .travellogitems {
   float: left;
   width: 15em;
-  margin-right: 2em;
+  margin-top: 1em;
 }
 
 .travellogdetails {
-  color: #000;
-  width: 40em;
+  float: left;
+  margin-top: 1em;
 }
 
 .travellogdescription {
-  font-style: italic
+  font-style: italic;
 }
 
 .imageviewer h3 {
@@ -277,6 +323,44 @@ span.logi {
 	padding: 1em
 }
 
+.shopsign {
+  min-width: 35em;
+  max-width: 40em;
+  height: 23em;
+  overflow-y: auto;
+}
+
+.shopcaption {
+}
+
+.shoplist {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.shoprow {
+  width: 100%;
+  height: 3em;
+}
+
+.shopcol {
+  float: left;
+  border-style: solid;
+  border-width: 1px;
+  height: 100%;
+}
+
+.shopcolr {
+  flex: 1;
+}
+
+.bestiary {
+  min-width: 35em;
+  height: 23em;
+  overflow-y: scroll;
+}
+
 .progressbar {
 	border: 1px solid #005;
 	line-height: 5Vh;
@@ -293,10 +377,98 @@ span.logi {
 
 @keyframes progressbar {
 	from {
-		width: 0 
+		width: 0
 	}
 
 	to {
 		width: 100%;
 	}
+}
+
+.dialogcontents {
+  padding: 9px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.dialogbuttons {
+  margin-left: auto;
+  margin-right: 0px;
+}
+
+.checksetting {
+  margin-left: 0px;
+  margin-right: auto;
+}
+
+.vgroupcol {
+  margin-bottom:auto;
+  margin-top:0px;
+}
+
+.vgroupcolr {
+  margin-bottom: auto;
+  margin-top: 0px;
+  padding-left: 15px;
+}
+
+.btnleft {
+  margin-right: 5px;
+}
+
+.tally {
+  font-family: Tally;
+}
+
+@font-face {
+  font-family: Amaranth;
+  src: url("/data/font/Amaranth-Regular.ttf");
+}
+@font-face {
+  font-family: Amaranth;
+  src: url("/data/font/Amaranth-Italic.ttf");
+  font-style: italic;
+}
+@font-face {
+  font-family: Amaranth;
+  src: url("/data/font/Amaranth-Bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: Amaranth;
+  src: url("/data/font/Amaranth-BoldItalic.ttf");
+  font-style: italic;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Black Chancery;
+  src: url("/data/font/BlackChancery.ttf");
+}
+
+@font-face {
+  font-family: Carlito;
+  src: url("/data/font/Carlito-Regular.ttf");
+}
+@font-face {
+  font-family: Carlito;
+  src: url("/data/font/Carlito-Italic.ttf");
+  font-style: italic;
+}
+@font-face {
+  font-family: Carlito;
+  src: url("/data/font/Carlito-Bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: Carlito;
+  src: url("/data/font/Carlito-BoldItalic.ttf");
+  font-style: italic;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Tally;
+  src: url("/data/font/Tally.ttf");
 }

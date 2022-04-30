@@ -46,12 +46,10 @@ stendhal.main = {
 		// Object { file: "Level 0/semos/city_easter.tmx", danger_level: "0.036429932929822995", zoneid: "", readable_name: "Semos city", id: "-1", color_method: "multiply" }
 	},
 
-
 	/**
 	 * register marauroa event handlers.
 	 */
 	registerMarauroaEventHandlers: function() {
-
 		marauroa.clientFramework.onDisconnect = function(reason, error){
 			Chat.log("error", "Disconnected: " + error);
 		};
@@ -69,23 +67,28 @@ stendhal.main = {
 		};
 
 		marauroa.clientFramework.onAvailableCharacterDetails = function(characters) {
-			var name = null;
+			let name = null;
 			if (window.location.hash) {
 				name = window.location.hash.substring(1);
+				stendhal.config.character = name;
 			} else {
-				name = marauroa.util.first(characters)["a"]["name"];
-				var admin = 0;
-				for (var i in characters) {
-					if (characters.hasOwnProperty(i)) {
-						if (characters[i]["a"]["adminlevel"] > admin) {
-							admin = characters[i]["a"]["adminlevel"];
-							name = characters[i]["a"]["name"];
+				name = stendhal.config.character;
+
+				if (name == null || typeof(name) === "undefined" || name === "") {
+					name = marauroa.util.first(characters)["a"]["name"];
+					var admin = 0;
+					for (var i in characters) {
+						if (characters.hasOwnProperty(i)) {
+							if (characters[i]["a"]["adminlevel"] > admin) {
+								admin = characters[i]["a"]["adminlevel"];
+								name = characters[i]["a"]["name"];
+							}
 						}
 					}
 				}
 			}
 			marauroa.clientFramework.chooseCharacter(name);
-			var body = document.getElementById("body")
+			var body = document.getElementById("body");
 			body.style.cursor = "auto";
 			Chat.log("client", "Loading world...");
 		};
@@ -136,14 +139,13 @@ stendhal.main = {
 	},
 
 	toggleSound: function() {
-		stendhal.config.sound.play = !stendhal.config.sound.play;
-
+		stendhal.config.set("ui.sound", !stendhal.config.getBoolean("ui.sound"));
 		stendhal.main.onSoundToggled();
 	},
 
 	onSoundToggled: function() {
 		var soundbutton = document.getElementById("soundbutton");
-		if (stendhal.config.sound.play) {
+		if (stendhal.config.getBoolean("ui.sound")) {
 			soundbutton.textContent = "🔊";
 		} else {
 			soundbutton.textContent = "🔇";
@@ -158,21 +160,29 @@ stendhal.main = {
 		document.addEventListener("keyup", stendhal.ui.keyhandler.onKeyUp);
 		document.addEventListener("contextmenu", stendhal.main.preventContextMenu);
 
+		document.getElementById("body").addEventListener("mouseenter", stendhal.main.onMouseEnter);
+
 		var gamewindow = document.getElementById("gamewindow");
 		gamewindow.setAttribute("draggable", true);
 		gamewindow.addEventListener("mousedown", stendhal.ui.gamewindow.onMouseDown);
-		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dblclick", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
 		gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
-		gamewindow.addEventListener("touchmove", stendhal.ui.gamewindow.onMouseMove);
+		//gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onTouchStart);
+		//gamewindow.addEventListener("touchend", stendhal.ui.gamewindow.onTouchEnd);
+		//gamewindow.addEventListener("touchmove", stendhal.ui.gamewindow.onTouchMove);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);
 		gamewindow.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
+		gamewindow.addEventListener("wheel", stendhal.ui.gamewindow.onMouseWheel);
 
 		var menubutton = document.getElementById("menubutton");
 		menubutton.addEventListener("click", (event) => {
-			ui.createSingletonFloatingWindow("Menu", new ApplicationMenuDialog(), 150, event.pageY + 20)
+			const dialogState = stendhal.config.dialogstates["menu"];
+			const menuContent = new ApplicationMenuDialog();
+			const menuFrame = ui.createSingletonFloatingWindow(
+					"Menu", menuContent, dialogState.x, dialogState.y);
+			menuContent.setFrame(menuFrame);
 		});
 
 		var soundbutton = document.getElementById("soundbutton");
@@ -196,6 +206,16 @@ stendhal.main = {
 	startup: function() {
 		stendhal.main.devWarning();
 
+		stendhal.config.init(new URL(document.location).searchParams);
+
+		// update user interface after config is loaded
+		stendhal.config.refreshTheme();
+		document.getElementById("body").style.setProperty("font-family", stendhal.config.get("ui.font.body"));
+
+		// cache tileset animations
+		// FIXME: how to wait for animations to finish loading?
+		stendhal.data.tileset.loadAnimations();
+
 		new DesktopUserInterfaceFactory().create();
 
 		Chat.log("error", "This is an early stage of an experimental web-based client. Please use the official client at https://stendhalgame.org to play Stendhal.");
@@ -205,8 +225,44 @@ stendhal.main = {
 		stendhal.main.registerBrowserEventHandlers();
 		marauroa.clientFramework.connect(null, null);
 
+		if (stendhal.ui.dialogHandler) {
+			stendhal.ui.actionContextMenu = stendhal.ui.dialogHandler.copy();
+			stendhal.ui.globalInternalWindow = stendhal.ui.dialogHandler.copy();
+		} else {
+			console.error("stendhal.ui.dialogHandler not found, some dialogs may not function");
+		}
+
 		if (document.getElementById("gamewindow")) {
 			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
+		}
+
+		// attributes to set after connection made
+		if (stendhal.config.getBoolean("input.movecont")) {
+			const socket = marauroa.clientFramework.socket;
+			let tries = 0;
+
+			function checkConnection() {
+				setTimeout(function() {
+					tries++;
+					if (socket.readyState === WebSocket.OPEN) {
+						marauroa.clientFramework.sendAction({
+							"type": "move.continuous",
+							"move.continuous": ""
+						});
+						return;
+					}
+
+					if (tries > 5) {
+						console.warn("could not set \"move.continuous\" attribute,"
+								+ " gave up after " + tries + " tries");
+						return;
+					}
+
+					checkConnection();
+				}, 3000);
+			}
+
+			checkConnection();
 		}
 	},
 
@@ -240,6 +296,11 @@ stendhal.main = {
 
 	preventContextMenu: function(event) {
 		event.preventDefault();
+	},
+
+	onMouseEnter: function(e) {
+		// use Stendhal's built-in cursor for entire page
+		e.target.style.cursor = "url(/data/sprites/cursor/normal.png) 1 3, auto";
 	}
 }
 

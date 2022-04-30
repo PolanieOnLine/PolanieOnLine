@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2003 - Marauroa                      *
+ *                   (C) Copyright 2003-2022 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,7 +34,6 @@ import games.stendhal.server.core.events.ZoneNotifier;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.group.Group;
-import games.stendhal.server.core.rp.pvp.PlayerVsPlayerChallengeManager;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.DomesticAnimal;
@@ -54,7 +53,7 @@ import marauroa.server.game.db.DAORegister;
 import marauroa.server.game.rp.RPServerManager;
 
 /**
- * fighting and player teleport support
+ * Fighting and player teleport support.
  */
 public class StendhalRPAction {
 	/** the logger instance. */
@@ -66,32 +65,33 @@ public class StendhalRPAction {
 	 * a least square fit of players equally strong to an actual player killer.
 	 */
 	private static final double STRENGTH_STATS_MULTIPLIER = 0.73;
+
 	/**
 	 * Maximum strength ratio where it is still acceptable to attack another
 	 * player otherwise than in a self defense situation.
 	 */
 	private static final double ACCEPTABLE_STRENGTH_RATIO = 0.75;
 
-	/** server manager. */
+	/** Server manager. */
 	private static RPServerManager rpman;
 
 	/**
-	 * initializes the StendhalRPAction
+	 * Initializes the StendhalRPAction.
 	 *
-	 * @param rpMan RPServerManager
+	 * @param rpMan
+	 *     RPServerManager.
 	 */
 	public static void initialize(final RPServerManager rpMan) {
 		StendhalRPAction.rpman = rpMan;
 	}
 
-
 	/**
 	 * Do logic for starting an attack on an entity.
 	 *
 	 * @param player
-	 *            The player wanting to attack.
+	 *     The player wanting to attack.
 	 * @param victim
-	 *            The target of attack.
+	 *     The target of attack.
 	 */
 	public static void startAttack(final Player player, final RPEntity victim) {
 		// Player's can't attack themselves
@@ -104,12 +104,15 @@ public class StendhalRPAction {
 			return;
 		}
 
+		final String pName = player.getName();
+		final String vName = victim.getName();
+
 		// Disable attacking NPCS that are created as not attackable.
 		if (!victim.isAttackable()) {
 			if ((victim instanceof SpeakerNPC)) {
 				((SpeakerNPC) victim).onRejectedAttackStart(player);
 			}
-			logger.info("REJECTED. " + player.getName() + " is attacking " + victim.getName());
+			logger.info("REJECTED. " + pName + " is attacking " + vName);
 			return;
 		}
 
@@ -121,28 +124,20 @@ public class StendhalRPAction {
 			// sheep) who are inside a protection area. Also prevent attacking
 			// from such an area, in name of fairness
 			if (zone.isInProtectionArea(victim) || (zone.isInProtectionArea(player))) {
-				logger.info("REJECTED. " + victim.getName()
-						+ " is protected by zone");
-
-				final String name = getNiceVictimName(victim);
+				logger.info("REJECTED. " + vName + " is protected by zone");
 
 				player.sendPrivateText("Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania "
-						+ name + ".");
+						+ getNiceVictimName(victim) + ".");
 				return;
 			}
 
 			if (victim instanceof Player) {
 				// if challenges system property is set, use challenge manager instead.
 				if (System.getProperty("stendhal.pvpchallenge") != null) {
-					PlayerVsPlayerChallengeManager cm = SingletonRepository.getChallengeManager();
-					boolean activeChallenge = cm.playersHaveActiveChallenge(player, (Player) victim);
-					if(!activeChallenge) {
-						StringBuilder msgBuilder = new StringBuilder();
-						msgBuilder.append("Nie możesz atakować, ");
-						msgBuilder.append("chyba że ");
-						msgBuilder.append(victim.getName());
-						msgBuilder.append(" zaakceptował twoje wyzwanie.");
-						player.sendPrivateText(msgBuilder.toString());
+					if(!SingletonRepository.getChallengeManager()
+							.playersHaveActiveChallenge(player, (Player) victim)) {
+						player.sendPrivateText("Nie możesz atakować, chyba że "
+								+ vName + " zaakceptował twoje wyzwanie.");
 						return;
 					}
 				}
@@ -155,17 +150,18 @@ public class StendhalRPAction {
 				// Only allow owners, if there is one, to attack the pet
 				final Player owner = ((DomesticAnimal) victim).getOwner();
 				if ((owner != null) && (owner != player)) {
-					player.sendPrivateText("Biedny " + getNiceVictimName(victim) + " zbyt dużo do zabicia.");
+					player.sendPrivateText("Za bardzo żal ci " + getNiceVictimName(victim) + ", by go zabić.");
 
 					return;
 				}
 			}
 
-			logger.info(player.getName() + " is attacking " + victim.getName());
+			logger.info(pName + " is attacking " + vName);
 		}
 
-		StendhalKillLogDAO killLog = DAORegister.get().get(StendhalKillLogDAO.class);
-		new GameEvent(player.getName(), "attack", victim.getName(), killLog.entityToType(player), killLog.entityToType(victim)).raise();
+		final StendhalKillLogDAO killLog = DAORegister.get().get(StendhalKillLogDAO.class);
+		new GameEvent(pName, "attack", vName, killLog.entityToType(player),
+				killLog.entityToType(victim)).raise();
 
 		player.setTarget(victim);
 		player.faceToward(victim);
@@ -174,21 +170,24 @@ public class StendhalRPAction {
 	}
 
 	/**
-	 * checks whether a player may attack another player
+	 * Checks whether a player may attack another player.
 	 *
-	 * @param attacker attacker
-	 * @param victim   victim
-	 * @return true, if the attack is acceptable
+	 * @param attacker
+	 *     Player attempting attack.
+	 * @param victim
+	 *     Player being targeted.
+	 * @return
+	 *     <code>true</code> if the attack is acceptable.
 	 */
 	private static boolean mayAttackPlayer(final Player attacker, final Player victim) {
 
-		// is the victim is of similar strength
+		// is the victim of similar strength
 		if (victimIsStrongEnough(attacker, victim)) {
 			return true;
 		}
 
 		// allow self defence
-		RPEntity victimsTarget = victim.getAttackTarget();
+		final RPEntity victimsTarget = victim.getAttackTarget();
 		if ((victimsTarget == null) || !(victimsTarget instanceof Player)) {
 			return false;
 		}
@@ -197,7 +196,7 @@ public class StendhalRPAction {
 		}
 
 		// allow defence of group members
-		Group group = SingletonRepository.getGroupManager().getGroup(victimsTarget.getName());
+		final Group group = SingletonRepository.getGroupManager().getGroup(victimsTarget.getName());
 		if (group == null) {
 			return false;
 		}
@@ -208,26 +207,30 @@ public class StendhalRPAction {
 	/**
 	 * Check that the victim has high enough level compared to the attacker.
 	 *
-	 * @param player The player trying to attack
-	 * @param victim The entity being attacked
-	 * @return <code>true</code> if the victim is strong enough to allow
-	 *  the attack to happen, <code>false</code> otherwise.
+	 * @param player
+	 *     The player trying to attack.
+	 * @param victim
+	 *     The entity being attacked.
+	 * @return
+	 *     <code>true</code> if the victim is strong enough to allow
+	 *     the attack to happen, <code>false</code> otherwise.
 	 */
 	private static boolean victimIsStrongEnough(final Player player, final Player victim) {
-		return getPlayerStrength(victim) >= ACCEPTABLE_STRENGTH_RATIO * getPlayerStrength(player);
+		return getPlayerStrength(victim) >= ACCEPTABLE_STRENGTH_RATIO
+				* getPlayerStrength(player);
 	}
 
 	/**
 	 * Get the relative strength of a player, ignoring equipment.
 	 *
 	 * @param player
-	 * @return player strength
+	 *     Subject being analyzed.
+	 * @return
+	 *     Player strength.
 	 */
 	private static double getPlayerStrength(final Player player) {
-		int combatSum;
-		combatSum = player.getAtk() + player.getDef();
-
-		return STRENGTH_STATS_MULTIPLIER * combatSum + player.getLevel();
+		return STRENGTH_STATS_MULTIPLIER * (player.getAtk() + player.getDef())
+				+ player.getLevel();
 	}
 
 	/**
@@ -261,11 +264,13 @@ public class StendhalRPAction {
 
 	/**
 	 * Lets the attacker try to attack the defender.
-	 * @param player
 	 *
+	 * @param player
+	 *     The attacker.
 	 * @param defender
-	 *            The defending RPEntity.
-	 * @return true iff the attacker has done damage to the defender.
+	 *     The defending RPEntity.
+	 * @return
+	 *     <code>true</code> if the attacker has done damage to the defender.
 	 *
 	 */
 	public static boolean playerAttack(final Player player, final RPEntity defender) {
@@ -280,8 +285,6 @@ public class StendhalRPAction {
 
 			return false;
 		}
-
-		final boolean usesTrainingDummy = defender instanceof TrainingDummy;
 
 		defender.rememberAttacker(player);
 		if (defender instanceof Player) {
@@ -316,13 +319,14 @@ public class StendhalRPAction {
 		}
 
 		// Weapon for the purpose of attack image
-		Item attackWeapon = player.getWeapon();
+		final Item attackWeapon = player.getWeapon();
 		String weaponClass = null;
 		if (attackWeapon != null) {
 			weaponClass = attackWeapon.getWeaponType();
 		}
 
 		final boolean beaten;
+		final boolean usesTrainingDummy = defender instanceof TrainingDummy;
 		if (usesTrainingDummy) {
 			/* training dummies can always be hit except in cases of using a
 			 * ranged weapon against a melee-only dummy
@@ -405,7 +409,7 @@ public class StendhalRPAction {
 			}
 
 			//deteriorate weapons of attacker
-			for (Item weapon : weapons) {
+			for (final Item weapon: weapons) {
 				weapon.deteriorate(player);
 
 				if (weapon instanceof BreakableItem) {
@@ -416,8 +420,8 @@ public class StendhalRPAction {
 				}
 			}
 
-			//randomly choose one defensive item to deteriorate
-			List<Item> defenseItems = defender.getDefenseItems();
+			// randomly choose one defensive item to deteriorate
+			final List<Item> defenseItems = defender.getDefenseItems();
 			if(!defenseItems.isEmpty()) {
 				final Item equip = Rand.rand(defenseItems);
 				equip.deteriorate(defender);
@@ -458,10 +462,12 @@ public class StendhalRPAction {
 
 					final String event = breakable.getName() + " się zepsuł";
 
-					new GameEvent(player.getName(), event, "Used " + Integer.toString(breakable.getUses()) + " times (durability: " + Integer.toString(breakable.getDurability()) + ")").raise();
+					new GameEvent(player.getName(), event, "Used " + breakable.getUses()
+							+ " times (durability: " + breakable.getDurability() + ")").raise();
 					player.sendPrivateText("Twój przedmiot " + event + "!");
 				} else {
-					logger.error("Could not remove BreakableItem \"" + breakable.getName() + "\" with ID " + breakable.getID().toString());
+					logger.error("Could not remove BreakableItem \"" + breakable.getName()
+							+ "\" with ID " + breakable.getID().toString());
 				}
 			}
 		}
@@ -470,9 +476,10 @@ public class StendhalRPAction {
 	}
 
 	/**
-	 * Remove an used up missile from an attacking player.
+	 * Remove a used up missile from an attacking player.
 	 *
-	 * @param player The player to remove the projectile from
+	 * @param player
+	 *     The player to remove the projectile from.
 	 */
 	private static void useMissile(Player player) {
 		// Get the projectile that will be thrown/shot.
@@ -494,27 +501,29 @@ public class StendhalRPAction {
 	}
 
 	/**
-	 * send the content of the zone the player is in to the client.
+	 * Send the content of the zone the player is in to the client.
 	 *
-	 * @param player player
+	 * @param player
+	 *     Player for whom content is sent.
 	 */
 	public static void transferContent(final Player player) {
-		final StendhalRPZone zone = player.getZone();
-		transferContent(player, zone.getContents());
+		transferContent(player, player.getZone().getContents());
 	}
 
-
 	private static DataProvider dataProvider = new DataProvider();
+
 	/**
-	 * transfers arbritary content
+	 * Transfers arbritary content.
 	 *
-	 * @param player   player
-	 * @param contents content
+	 * @param player
+	 *     Player for whom content is sent.
+	 * @param contents
+	 *     Content being sent.
 	 */
-	public static void transferContent(Player player, List<TransferContent> contents) {
+	public static void transferContent(final Player player, final List<TransferContent> contents) {
 		if (rpman != null) {
-			List<TransferContent> allContent = new LinkedList<TransferContent>(contents);
-			List<TransferContent> temp = dataProvider.getData(player.getClientVersion());
+			final List<TransferContent> allContent = new LinkedList<TransferContent>(contents);
+			final List<TransferContent> temp = dataProvider.getData(player.getClientVersion());
 			if (temp != null) {
 				allContent.addAll(temp);
 			}
@@ -525,14 +534,14 @@ public class StendhalRPAction {
 	}
 
 	/**
-	 * Change an entity's zone based on it's global world coordinates.
+	 * Change an entity's zone based on its global world coordinates.
 	 *
 	 * @param entity
-	 *            The entity changing zones.
+	 *     The entity changing zones.
 	 * @param x
-	 *            The entity's old zone X coordinate.
+	 *     The entity's old zone X coordinate.
 	 * @param y
-	 *            The entity's old zone Y coordinate.
+	 *     The entity's old zone Y coordinate.
 	 */
 	public static void decideChangeZone(final Entity entity, final int x, final int y) {
 		final StendhalRPZone origin = entity.getZone();
@@ -570,17 +579,18 @@ public class StendhalRPAction {
 	 * entity from any existing zone and add it to the target zone if needed.
 	 *
 	 * @param zone
-	 *            zone to place the entity in
+	 *     Zone to place the entity in.
 	 * @param entity
-	 *            the entity to place
+	 *     The entity to place.
 	 * @param x
-	 *            x
+	 *     Zone X coordinate.
 	 * @param y
-	 *            y
-	 * @return true, if it was possible to place the entity, false otherwise
+	 *     Zone Y coordinate.
+	 * @return
+	 *     <code>true</code> if it was possible to place the entity, false otherwise.
 	 */
-	public static boolean placeat(final StendhalRPZone zone, final Entity entity, final int x,
-			final int y) {
+	public static boolean placeat(final StendhalRPZone zone, final Entity entity,
+			final int x, final int y) {
 		return placeat(zone, entity, x, y, null);
 	}
 
@@ -598,27 +608,30 @@ public class StendhalRPAction {
 	 * needed.
 	 *
 	 * @param zone
-	 *            zone to place the entity in
+	 *     Zone to place the entity in.
 	 * @param entity
-	 *            the entity to place
+	 *     The entity to place.
 	 * @param x
-	 *            x
+	 *     Zone X coordinate.
 	 * @param y
-	 *            y
+	 *     Zone Y coordinate.
 	 * @param allowedArea
-	 *            only search within this area for a possible new position
-	 * @return true, if it was possible to place the entity, false otherwise
+	 *     If not <code>null</code>, only search within this area for a possible
+	 *     new position.
+	 * @return
+	 *     <code>true</code> if it was possible to place the entity, false otherwise.
 	 */
-	public static boolean placeat(final StendhalRPZone zone, final Entity entity, int x,
-			int y, final Shape allowedArea) {
+	public static boolean placeat(final StendhalRPZone zone, final Entity entity,
+			int x, int y, final Shape allowedArea) {
 		if (zone == null) {
 			return false;
 		}
 
-		// check in case of players that that they are still in game
-		// because the entity is added to the world again otherwise.
+		Player player = null;
 		if (entity instanceof Player) {
-			final Player player = (Player) entity;
+			player = (Player) entity;
+			// check in case of players that are still in game because the entity
+			// is added to the world again otherwise.
 			if (player.isDisconnected()) {
 				return true;
 			}
@@ -626,14 +639,15 @@ public class StendhalRPAction {
 
 		if (zone.collides(entity, x, y)) {
 			boolean checkPath = true;
-			if (zone.collides(entity, x, y, false) && (entity instanceof Player)) {
+			if (zone.collides(entity, x, y, false) && (player != null)) {
 				// Trying to place a player on a spot with a real collision
 				// (not caused by objects). Can happen with teleport.
 				// Try to put him anywhere possible without checking the path.
 				checkPath = false;
 			}
 
-			final Point newLocation = findLocation(zone, entity, allowedArea, x, y, checkPath);
+			final Point newLocation = findLocation(zone, entity, allowedArea,
+					x, y, checkPath);
 
 			if (newLocation == null) {
 				logger.info("Unable to place " + entity.getTitle() + " at "
@@ -669,12 +683,9 @@ public class StendhalRPAction {
 		// Remove from old zone (if any) during zone change
 		if (oldZone != null) {
 			// Player specific pre-remove handling
-			if (entity instanceof Player) {
-				final Player player = (Player) entity;
-
+			if (player != null) {
 				// Remove and remember dependents
 				sheep = player.getSheep();
-
 				if (sheep != null) {
 					sheep.clearPath();
 					sheep.stop();
@@ -683,7 +694,6 @@ public class StendhalRPAction {
 				}
 
 				goat = player.getGoat();
-
 				if (goat != null) {
 					goat.clearPath();
 					goat.stop();
@@ -692,7 +702,6 @@ public class StendhalRPAction {
 				}
 
 				pet = player.getPet();
-
 				if (pet != null) {
 					pet.clearPath();
 					pet.stop();
@@ -715,9 +724,7 @@ public class StendhalRPAction {
 		}
 
 		// Player specific post-change handling
-		if (entity instanceof Player) {
-			final Player player = (Player) entity;
-
+		if (player != null) {
 			//  Move and re-add removed dependents
 			if (sheep != null) {
 				if (placePet(zone, player, sheep)) {
@@ -725,7 +732,7 @@ public class StendhalRPAction {
 					sheep.setOwner(player);
 				} else {
 					// Didn't fit?
-					player.sendPrivateText("Wygląda na to, że twoja owca zginęła, gdy wpadłeś w tarapaty.");
+					player.sendPrivateText("Wygląda na to, że twoja owca zwiała, gdy wpadłeś w tarapaty.");
 				}
 			}
 
@@ -735,7 +742,7 @@ public class StendhalRPAction {
 					goat.setOwner(player);
 				} else {
 					// Didn't fit?
-					player.sendPrivateText("Wygląda na to, że twoja koza zginęła, gdy wpadłeś w tarapaty.");
+					player.sendPrivateText("Wygląda na to, że twoja koza zwiała, gdy wpadłeś w tarapaty.");
 				}
 			}
 
@@ -745,7 +752,7 @@ public class StendhalRPAction {
 					pet.setOwner(player);
 				} else {
 					// Didn't fit?
-					player.sendPrivateText("Wygląda na to, że twoje zwierzątko zginęło, gdy wpadłeś w tarapaty.");
+					player.sendPrivateText("Wygląda na to, że twoje zwierzątko zwiało, gdy wpadłeś w tarapaty.");
 				}
 			}
 
@@ -775,15 +782,25 @@ public class StendhalRPAction {
 
 	/**
 	 * Finds a new place for entity.
-	 * @param zone zone to place the entity in
-	 * @param entity the entity to place
-	 * @param allowedArea only search within this area for a possible new position,
-	 * 	or null if the whole normal search area should be used
-	 * @param x the x coordinate of the search center
-	 * @param y the y coordinate of the search center
-	 * @param checkPath if true, check that there's a valid path to the center
 	 *
-	 * @return location of the new placement, or null if no suitable place was found
+	 * @param zone
+	 *     Zone to place the entity in.
+	 * @param entity
+	 *     The entity to place.
+	 * @param allowedArea
+	 *     Only search within this area for a possible new position,
+	 *     or <code>null</code> if the whole normal search area should
+	 *     be used.
+	 * @param x
+	 *     The x coordinate of the search center.
+	 * @param y
+	 *     The y coordinate of the search center.
+	 * @param checkPath
+	 *     If <code>true</code>, check that there's a valid path to the
+	 *     center.
+	 * @return
+	 *     Location of the new placement, or <code>null</code> if no
+	 *     suitable place was found.
 	 */
 	private static Point findLocation(final StendhalRPZone zone, final Entity entity,
 			final Shape allowedArea, final int x, final int y, final boolean checkPath) {
@@ -862,17 +879,28 @@ public class StendhalRPAction {
 	/**
 	 * Checks if a new placement for an entity is valid.
 	 *
-	 * @param zone the zone where the entity should be placed
-	 * @param entity the entity to place
-	 * @param allowedArea if specified, restrict placement within this area
-	 * @param oldX the x coordinate from where the entity was displaced
-	 * @param oldY the y coordinate from where the entity was displaced
-	 * @param newX the x coordinate of the new placement
-	 * @param newY the y coordinate of the new placement
-	 * @param checkPath if true, check that there is a path from <code>(newX, newY)</code>
-	 * to <code>(oldX, oldY)</code>
-	 *
-	 * @return true if placing is possible, false otherwise
+	 * @param zone
+	 *     Zone to place the entity in.
+	 * @param entity
+	 *     The entity to place.
+	 * @param allowedArea
+	 *     Only search within this area for a possible new position,
+	 *     or <code>null</code> if the whole normal search area should
+	 *     be used.
+	 * @param oldX
+	 *     The X coordinate from where the entity was displaced.
+	 * @param oldY
+	 *     The Y coordinate from where the entity was displaced.
+	 * @param newX
+	 *     The X coordinate of the new placement.
+	 * @param newY
+	 *     The Y coordinate of the new placement.
+	 * @param checkPath
+	 *     If <code>true</code>, check that there is a path from
+	 *     <code>(newX, newY)</code> to <code>(oldX, oldY)</code>.
+	 * @return
+	 *     <code>true</code> if placing is possible,
+	 *     <code>false</code> otherwise.
 	 */
 	private static boolean isValidPlacement(final StendhalRPZone zone, final Entity entity,
 			final Shape allowedArea, final int oldX, final int oldY,
@@ -907,6 +935,7 @@ public class StendhalRPAction {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -916,10 +945,14 @@ public class StendhalRPAction {
 	 * path to the player.
 	 *
 	 * @param zone
+	 *     Zone to place the entity in.
 	 * @param player
+	 *     Pet owner.
 	 * @param pet
-	 * @return <code>true</code> if the pet could be placed properly, false
-	 * 	otherwise
+	 *     The entity to place.
+	 * @return
+	 *     <code>true</code> if the pet could be placed properly,
+	 *     <code>false</code> otherwise.
 	 */
 	private static boolean placePet(final StendhalRPZone zone, final Player player,
 			final Entity pet) {
@@ -930,9 +963,10 @@ public class StendhalRPAction {
 				return true;
 			}
 		}
+
 		// Failed to find a path from the new location. Just try to find
 		// some location with a path to the player
-		Point p = findLocation(zone, pet, null, player.getX(), player.getY(), true);
+		final Point p = findLocation(zone, pet, null, player.getX(), player.getY(), true);
 		if (p != null) {
 			return placeat(zone, pet, p.x, p.y);
 		}

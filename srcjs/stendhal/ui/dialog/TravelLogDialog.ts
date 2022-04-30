@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../toolkit/Component";
+import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
 
@@ -19,12 +19,13 @@ declare var stendhal: any;
 /**
  * a dialog to display images
  */
-export class TravelLogDialog extends Component {
+export class TravelLogDialog extends DialogContentComponent {
 	private currentProgressType = "";
 
 	constructor(dataItems: string[]) {
 		super("travellogdialog-template");
 		ui.registerComponent(UIComponentEnum.TravelLogDialog, this);
+		this.refresh();
 
 		this.createHtml(dataItems);
 
@@ -37,6 +38,13 @@ export class TravelLogDialog extends Component {
 		marauroa.clientFramework.sendAction(action);
 	};
 
+	public override refresh() {
+		this.componentElement.style.setProperty("font-family", stendhal.config.get("ui.font.tlog"));
+	}
+
+	public override getConfigId(): string {
+		return "travellog";
+	}
 
 	private createHtml(dataItems: string[]) {
 		let buttons = "";
@@ -60,6 +68,9 @@ export class TravelLogDialog extends Component {
 
 
 	private onProgressTypeButtonClick(event: Event) {
+		// clear details when changing category
+		this.refreshDetails();
+
 		this.currentProgressType = (event.target as HTMLElement).id;
 		var action = {
 			"type":           "progressstatus",
@@ -106,14 +117,50 @@ export class TravelLogDialog extends Component {
 		if (progressType !== this.currentProgressType) {
 			return;
 		}
-		var html = "<h3>" + stendhal.ui.html.esc(selectedItem) + "</h3>";
-		html += "<p id=\"travellogdescription\">" + stendhal.ui.html.esc(description) + "</p>";
-		html += "<ul>";
+
+		const detailsSpan = document.createElement("span");
+
+		detailsSpan.innerHTML = "<h3>" + stendhal.ui.html.esc(selectedItem) + "</h3>"
+				+ "<p id=\"travellogdescription\">"
+				+ stendhal.ui.html.esc(description) + "</p>";
+
+		const ul = document.createElement("ul");
+		ul.className = "uniform";
+
 		for (var i = 0; i < dataItems.length; i++) {
-			html += "<li>" + stendhal.ui.html.esc(dataItems[i]);
+			let content = []
+			let html = stendhal.ui.html.esc(dataItems[i], ["em", "tally"]);
+			if (html.includes("<tally>") && html.includes("</tally>")) {
+				 content = stendhal.ui.html.formatTallyMarks(html);
+			} else {
+				content.push(html);
+			}
+
+			const li = document.createElement("li");
+			li.className = "uniform";
+			li.innerHTML = content[0];
+			if (content[1]) {
+				li.appendChild(content[1]);
+
+				if (content[2]) {
+					li.innerHTML += content[2];
+				}
+			}
+
+			ul.appendChild(li);
 		}
-		html += "</ul>";
-		this.componentElement.querySelector(".travellogdetails")!.innerHTML = html;
+
+		detailsSpan.appendChild(ul);
+		this.refreshDetails("", detailsSpan);
+	}
+
+	private refreshDetails(html: string="", newDetails?: HTMLElement) {
+		const details = this.componentElement.querySelector(".travellogdetails")!;
+		details.innerHTML = html;
+
+		if (newDetails) {
+			details.appendChild(newDetails);
+		}
 	}
 
 	public override onParentClose() {

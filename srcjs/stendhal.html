@@ -71,6 +71,10 @@
 		<template id="empty-template">
 		</template>
 
+		<template id="empty-div-template">
+			<div></div>
+		</template>
+
 		<template id="window-template">
 			<div class="windowdiv">
 				<div class='windowtitlebar background'>
@@ -115,15 +119,63 @@
 				<div class="tavellogtabpanel">
 
 				</div>
-				<div>
+				<div class="tlog_hlayout">
 					<select class="travellogitems" size="20"></select>
-					<div class="travellogdetails"></div>
+					<div class="tlog_rpane">
+						<div class="travellogdetails"></div>
+					</div>
 				</div>
 			</div>
 		</template>
 
 		<template id="showfloatingwindow-template">
 			<button></button>
+		</template>
+
+		<template id="settingsdialog-template">
+			<div>
+			<div class="verticalgroup">
+
+			<div class="horizontalgroup">
+			<div id="settings_panel1" class="verticalgroup vgroupcol">
+				<label class="checksetting"><input type="checkbox" id="chk_light">Light effects</label>
+				<label class="checksetting"><input type="checkbox" id="chk_weather">Weather</label>
+				<label class="checksetting"><input type="checkbox" id="chk_blood">Blood</label>
+				<label class="checksetting"><input type="checkbox" id="chk_nonude">Cover naked entities</label>
+				<label class="checksetting"><input type="checkbox" id="chk_shadows">Shadows</label>
+				<label class="checksetting"><input type="checkbox" id="chk_speechcr">Creature speech bubbles</label>
+			</div>
+			<div id="settings_panel2" class="verticalgroup vgroupcol">
+				<label class="checksetting"><input type="checkbox" id="chk_dblclick">Double-click items</label>
+				<label class="checksetting"><input type="checkbox" id="chk_movecont">Continuous movement</label>
+			</div>
+			<div id="settings_panel3" class="verticalgroup vgroupcolr">
+				<div>
+					<label for="selecttheme">Theme:</label>
+					<select id="selecttheme"></select>
+				</div>
+				<div>
+					<label for="selfontbody">Main font:</label>
+					<select id="selfontbody"></select>
+				</div>
+				<div>
+					<label for="selfontchat">Chat log font:</label>
+					<select id="selfontchat"></select>
+				</div>
+				<div>
+					<label for="selfonttlog">Travel log font:</label>
+					<select id="selfonttlog"></select>
+				</div>
+			</div>
+			</div>
+
+			<div class="horizontalgroup dialogbuttons">
+				<button id="btn_config_reload" class="btnleft">Reload</button>
+				<button id="btn_config_close">Close</button>
+			</div>
+
+			</div>
+			</div>
 		</template>
 
 		<template id="outfitdialog-template">
@@ -209,7 +261,7 @@
 				</div>
 
 				<!-- hat & mask part selectors -->
-				<div class="verticalgroup"> 
+				<div class="verticalgroup">
 
 				<div class="horizontalgroup">
 				<button type="button" id="setoutfitprevhat">&lt;</button>
@@ -231,7 +283,7 @@
 			<div align="right"><button type="button" id="setoutfitcancel">Cancel</button>
 			<button type="button" id="setoutfitapply">Change Outfit</button></div>
 			</div>
-		</template>
+		</template> <!-- outfitdialog-template -->
 
 		<script type="text/javascript" src="stendhal-compiled.js"></script>
 	</body>

@@ -9,7 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
+import { ui } from "../UI";
 import { Component } from "../toolkit/Component";
+import { MenuItem } from "../../action/MenuItem";
+import { UIComponentEnum } from "../UIComponentEnum";
+
+declare var stendhal: any;
 
 
 /**
@@ -19,12 +24,27 @@ export class ChatLogComponent extends Component {
 
 	constructor() {
 		super("chat");
+		this.refresh();
+
+		this.componentElement.addEventListener("contextmenu", (evt: MouseEvent) => {
+			this.onContextMenu(evt)
+		});
 	}
 
 
-	public addLine(type: string, message: string) {
-		let chatElement = this.componentElement;
-		let date = new Date();
+	public override refresh() {
+		this.componentElement.style.setProperty("font-family", stendhal.config.get("ui.font.chat"));
+	}
+
+
+	/**
+	 * Generates a timestamp.
+	 *
+	 * @return
+	 *     Timestamp formatted <code>HTMLSpanElement</code> element.
+	 */
+	private createTimestamp(): HTMLSpanElement {
+		const date = new Date();
 		let time = "" + date.getHours() + ":";
 		if (date.getHours() < 10) {
 			time = "0" + time;
@@ -34,16 +54,113 @@ export class ChatLogComponent extends Component {
 		}
 		time = time + date.getMinutes();
 
-		let div = document.createElement("div");
-		div.className = "log" + type;
-		div.innerHTML = "[" + time + "] " + this.formatLogEntry(message);
+		const timestamp = document.createElement("span");
+		timestamp.className = "logtimestamp";
+		timestamp.innerHTML = "[" + time + "]";
 
-		let isAtBottom = (chatElement.scrollHeight - chatElement.clientHeight) === chatElement.scrollTop;
-		chatElement.appendChild(div);
+		return timestamp;
+	}
+
+
+	private add(row: HTMLDivElement) {
+		const chatElement = this.componentElement;
+		const isAtBottom = (chatElement.scrollHeight - chatElement.clientHeight) === chatElement.scrollTop;
+		chatElement.appendChild(row);
 
 		if (isAtBottom) {
 			chatElement.scrollTop = chatElement.scrollHeight;
 		}
+	}
+
+
+	/**
+	 * Adds a line of text.
+	 *
+	 * @param type
+	 *     Message type.
+	 * @param message
+	 *     Text to be added.
+	 * @param orator
+	 *     Name of entity making the expression (default: <code>undefined</code>).
+	 * @param timestamp
+	 *     If <code>false</code>, suppresses prepending message with timestamp.
+	 */
+	public addLine(type: string, message: string, orator?: string, timestamp=true) {
+		if (orator) {
+			message = orator + ": " + message;
+		}
+
+		const lcol = document.createElement("div");
+		lcol.className = "logcolL";
+		if (timestamp) {
+			lcol.appendChild(this.createTimestamp());
+		} else {
+			// add whitespace to preserve margin of right column
+			lcol.innerHTML = " ";
+		}
+
+		const rcol = document.createElement("div");
+		rcol.className = "logcolR log" + type;
+		rcol.innerHTML += this.formatLogEntry(message);
+
+		const row = document.createElement("div");
+		row.className = "logrow";
+		row.appendChild(lcol);
+		row.appendChild(rcol);
+
+		this.add(row);
+	}
+
+
+	/**
+	 * Adds multiple lines of text.
+	 *
+	 * @param type
+	 *     Message type.
+	 * @param messages
+	 *     Texts to be added.
+	 * @param orator
+	 *     Name of entity making the expression (default: <code>undefined</code>).
+	 */
+	public addLines(type: string, messages: string[], orator?: string) {
+		let stamped = false;
+		for (const line of messages) {
+			if (!stamped) {
+				this.addLine(type, line, orator);
+				stamped = true;
+			} else {
+				this.addLine(type, line, orator, false);
+			}
+		}
+	}
+
+
+	/**
+	 * Adds a line displaying an emoji image.
+	 *
+	 * @param emoji
+	 *     Emoji image sprite.
+	 * @param orator
+	 *     Name of entity making the expression (default: <code>undefined</code>).
+	 */
+	public addEmojiLine(emoji: HTMLImageElement, orator?: string) {
+		const lcol = document.createElement("div");
+		lcol.className = "logcolL";
+		lcol.appendChild(this.createTimestamp());
+
+		const rcol = document.createElement("div");
+		rcol.className = "logcolR lognormal";
+		if (orator) {
+			rcol.innerHTML += orator + ": ";
+		}
+		rcol.appendChild(emoji);
+
+		const row = document.createElement("div");
+		row.className = "logrow";
+		row.appendChild(lcol);
+		row.appendChild(rcol);
+
+		this.add(row);
 	}
 
 
@@ -159,4 +276,127 @@ export class ChatLogComponent extends Component {
 		this.componentElement.innerHTML = "";
 	}
 
+
+	public copyToClipboard() {
+		if (!navigator || !navigator.clipboard) {
+			console.warn("copying to clipboard not supported by this browser");
+			return;
+		}
+
+		const lines = [];
+		const children = this.componentElement.children;
+		for (let idx = 0; idx < children.length; idx++) {
+			const row = children[idx];
+			let text = row.children[0].innerHTML.trim() + " ";
+			if (text.trim() === "") {
+				text = "    ";
+			}
+			text = this.plainText(text + row.children[1].innerHTML,
+					["span", "div"]);
+			lines.push(text.replace("&lt;", "<").replace("&gt;", ">"));
+		}
+
+		if (lines.length > 0) {
+			navigator.clipboard.writeText(lines.join("\n"));
+		}
+	}
+
+	/**
+	 * Removes HTML tag formatting from a string.
+	 *
+	 * @param msg
+	 *     Message to format.
+	 * @param tags
+	 *     Only remove listed tags.
+	 * @return
+	 *     Formatted message.
+	 */
+	private plainText(msg: string, tags: string[]|undefined=undefined): string {
+		if (!tags) {
+			msg = msg.replace(/<.*?>/g, "");
+		} else {
+			for (const tag of tags) {
+				msg = msg.replace(new RegExp("<" + tag + ".*?>", "g"), "")
+						.replace(new RegExp("</" + tag + ">", "g"), "");
+			}
+		}
+
+		return msg;
+	}
+
+
+	private onContextMenu(evt: MouseEvent) {
+		evt.preventDefault();
+		evt.stopPropagation();
+
+		if (stendhal.ui.actionContextMenu.isOpen()) {
+			stendhal.ui.actionContextMenu.close();
+		}
+
+		// setting "log" to "this" here doesn't work
+		const log = ui.get(UIComponentEnum.ChatLog) as ChatLogComponent;
+		const options = [
+			{
+				title: "Clear",
+				action: function() {log.clear();}
+			}
+		] as MenuItem[];
+
+		if (navigator && navigator.clipboard) {
+			options.unshift({
+				title: "Copy",
+				action: function() {log.copyToClipboard();}
+			});
+		}
+
+		const pos = stendhal.ui.html.extractPosition(evt);
+		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+				new LogContextMenu(options), pos.pageX - 50, pos.pageY - 5));
+	}
+}
+
+
+class LogContextMenu extends Component {
+
+	options!: MenuItem[];
+
+	constructor(options: MenuItem[]) {
+		super("contextmenu-template");
+		this.options = options;
+
+		let content = "<div class=\"actionmenu\">";
+		for (let i = 0; i < this.options.length; i++) {
+			content += "<button id=\"actionbutton." + i + "\">" + stendhal.ui.html.esc(this.options[i].title) + "</button><br>";
+		}
+		content += "</div>";
+		this.componentElement.innerHTML = content;
+
+		this.componentElement.addEventListener("click", (evt) => {
+			this.onClick(evt);
+		});
+	}
+
+	private onClick(evt: Event) {
+		let iStr = (evt.target as HTMLElement).getAttribute("id")?.substring(13);
+		if (iStr === undefined || iStr === "") {
+			return;
+		}
+		let i = parseInt(iStr);
+		if (i < 0) {
+			return;
+		}
+
+		this.componentElement.dispatchEvent(new Event("close"));
+
+		if (i >= this.options.length) {
+			throw new Error("actions index is larger than number of actions");
+		}
+
+		const action = this.options[i].action;
+		if (action) {
+			action();
+		} else {
+			console.error("chat log context menu action failed");
+		}
+	}
 }

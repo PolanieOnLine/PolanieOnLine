@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../toolkit/Component";
+import { ThemedComponent } from "../toolkit/ThemedComponent";
 import { ItemContainerImplementation } from "./ItemContainerImplementation";
 
 declare var stendhal: any;
@@ -17,13 +17,14 @@ declare var stendhal: any;
 /**
  * handles an item inventory
  */
-export class ItemInventoryComponent extends Component {
+export class ItemInventoryComponent extends ThemedComponent {
 
 	private static counter = 0;
 	protected itemContainerImplementation!: ItemContainerImplementation;
 	protected suffix;
+	private oldSizeX = 0;
 
-	constructor(object: any, slot: string, sizeX: number, sizeY: number, quickPickup: boolean, defaultImage?: string) {
+	constructor(object: any, private slot: string, sizeX: number, sizeY: number, quickPickup: boolean, defaultImage?: string) {
 		super("iteminventory-template");
 
 		ItemInventoryComponent.counter++;
@@ -34,11 +35,7 @@ export class ItemInventoryComponent extends Component {
 		}
 
 		// TODO: rewrite ItemContainerImplementation not to depend on unique ids (aka suffix)
-		let html = "";
-		for (let i = 0; i < sizeX * sizeY; i++) {
-			html += "<div id='" + slot + this.suffix + i + "' class='itemSlot'></div>";
-		}
-		this.componentElement.innerHTML = html;
+		this.setSize(sizeX, sizeY);
 
 		// ItemContainerImplementation uses document.getElementById, so our parent windows must be added to the DOM first.
 		queueMicrotask(() => {
@@ -47,6 +44,17 @@ export class ItemInventoryComponent extends Component {
 		});
 	}
 
+	setSize(sizeX: number, sizeY: number) {
+		this.componentElement.classList.remove("inventorypopup_" + this.oldSizeX);
+		this.componentElement.classList.add("inventorypopup_" + sizeX);
+		this.oldSizeX = sizeX;
+
+		let html = "";
+		for (let i = 0; i < sizeX * sizeY; i++) {
+			html += "<div id='" + this.slot + this.suffix + i + "' class='itemSlot'></div>";
+		}
+		this.componentElement.innerHTML = html;
+	}
 
 	update() {
 		this.itemContainerImplementation.update();

@@ -46,6 +46,12 @@ stendhal.ui.keyhandler = {
 		var code = stendhal.ui.html.extractKeyCode(event);
 
 		if (code >= 37 && code <= 40) {
+
+			// disable scrolling via arrow keys
+			if (event.target.tagName === "BODY" || event.target.tagName === "CANVAS") {
+				event.preventDefault();
+			}
+
 			// if this is a repeated event, stop further processing
 			if (stendhal.ui.keyhandler.pressedKeys.indexOf(code) > -1) {
 				return;
@@ -56,6 +62,13 @@ stendhal.ui.keyhandler = {
 			var dir = stendhal.ui.keyhandler.extractDirectionFromKeyCode(code);
 			var action = {"type": type, "dir": ""+dir};
 			marauroa.clientFramework.sendAction(action);
+
+			// stop walking if keypress in direction of current movement
+			if (marauroa.me && marauroa.me.autoWalkEnabled()) {
+				if (parseInt(marauroa.me["dir"], 10) === dir) {
+					marauroa.clientFramework.sendAction({"type": "walk"});
+				}
+			}
 		} else {
 			// move focus to chat-input on keydown
 			// but don't do that for Ctrl+C, etc.

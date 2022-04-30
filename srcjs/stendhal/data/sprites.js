@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,31 +15,67 @@ var stendhal = window.stendhal = window.stendhal || {};
 stendhal.data = stendhal.data || {};
 
 stendhal.data.sprites = {
+
+	knownBrokenUrls: {},
+	images: {},
+	knownShadows: {
+		"24x32": true,
+		"32x32": true,
+		"32x48": true,
+		"32x48_long": true,
+		"48x64": true,
+		"48x64_float": true,
+		"64x48": true,
+		"64x64": true,
+		"64x85": true,
+		"64x96": true,
+		"76x64": true,
+		"81x96": true,
+		"96x96": true,
+		"96x128": true,
+		"128x96": true,
+		"128x170": true,
+		"144x128": true,
+		"168x224": true,
+		"192x192": true,
+		"192x192_float": true,
+		"192x256": true,
+		"320x440": true,
+		"ent": true
+	},
+
 	get: function(filename) {
 		if (!filename) {
 			return {};
 		}
-		if (typeof(this[filename]) != "undefined") {
-			this[filename].counter++;
-			return this[filename];
+		if (filename.indexOf("undefined") > -1) {
+			if (!stendhal.data.sprites.knownBrokenUrls[filename]) {
+				console.log("Broken image path: ", filename, new Error());
+			}
+			stendhal.data.sprites.knownBrokenUrls[filename] = true;
+			return {};
+		}
+		if (stendhal.data.sprites.images[filename]) {
+			stendhal.data.sprites.images[filename].counter++;
+			return stendhal.data.sprites.images[filename];
 		}
 		var temp = new Image;
 		temp.counter = 0;
 		temp.src = filename;
-		this[filename] = temp;
+		stendhal.data.sprites.images[filename] = temp;
 		return temp;
 	},
 
 	getWithPromise: function(filename) {
 		return new Promise((resolve) => {
-			if (typeof(this[filename]) != "undefined") {
-				this[filename].counter++;
-				resolve(this[filename]);
+			if (typeof(stendhal.data.sprites.images[filename]) != "undefined") {
+				stendhal.data.sprites.images[filename].counter++;
+				resolve(stendhal.data.sprites.images[filename]);
 			}
 
 			const image = new Image();
 			image.counter = 0;
-			this[filename] = image;
+			stendhal.data.sprites.images[filename] = image;
 			image.onload = () => resolve(image);
 			image.src = filename;
 		});
@@ -48,13 +84,13 @@ stendhal.data.sprites = {
 	/** deletes all objects that have not been accessed since this method was called last time */
 	// TODO: call clean on map change
 	clean: function() {
-		for (var i in this) {
+		for (var i in stendhal.data.sprites.images) {
 			console.log(typeof(i));
 			if (typeof(i) == "Image") {
-				if (this[i].counter > 0) {
-					this[i].counter = 0;
+				if (stendhal.data.sprites.images[i].counter > 0) {
+					stendhal.data.sprites.images[i].counter--;
 				} else {
-					delete(this[i]);
+					delete(stendhal.data.sprites.images[i]);
 				}
 			}
 		}
@@ -97,18 +133,15 @@ stendhal.data.sprites = {
 	 * @param {number=} param
 	 */
 	getFiltered: function(fileName, filter, param) {
-		const img = this.get(fileName);
-		if (!img) {
-			return null;
-		}
+		const img = stendhal.data.sprites.get(fileName);
 		let filterFn;
 		if (typeof(filter) === "undefined"
 			|| !(filterFn = stendhal.data.sprites.filter[filter])
-			|| img.width === 0 || img.height === 0) {
+			|| !img.complete || img.width === 0 || img.height === 0) {
 			return img;
 		}
 		const filteredName = fileName + " " + filter + " " + param;
-		let filtered = this[filteredName];
+		let filtered = stendhal.data.sprites.images[filteredName];
 		if (typeof(filtered) === "undefined") {
 			const canvas = document.createElement("canvas");
 			canvas.width  = img.width;
@@ -119,7 +152,7 @@ stendhal.data.sprites = {
 			const data = imgData.data;
 			filterFn(data, param);
 			ctx.putImageData(imgData, 0, 0);
-			this[filteredName] = filtered = canvas;
+			stendhal.data.sprites.images[filteredName] = filtered = canvas;
 		}
 
 		return filtered;
@@ -131,16 +164,16 @@ stendhal.data.sprites = {
 	 * @param {number=} param
 	 */
 	getFilteredWithPromise: function(fileName, filter, param) {
-		const imgPromise = this.getWithPromise(fileName);
+		const imgPromise = stendhal.data.sprites.getWithPromise(fileName);
 		return imgPromise.then(function (img) {
 			let filterFn;
 			if (typeof(filter) === "undefined"
 				|| !(filterFn = stendhal.data.sprites.filter[filter])
-				|| img.width === 0 || img.height === 0) {
+				|| !img.complete || img.width === 0 || img.height === 0) {
 				return img;
 			}
 			const filteredName = fileName + " " + filter + " " + param;
-			let filtered = this[filteredName];
+			let filtered = stendhal.data.sprites.images[filteredName];
 			if (typeof(filtered) === "undefined") {
 				const canvas = document.createElement("canvas");
 				canvas.width  = img.width;
@@ -151,7 +184,7 @@ stendhal.data.sprites = {
 				const data = imgData.data;
 				filterFn(data, param);
 				ctx.putImageData(imgData, 0, 0);
-				this[filteredName] = filtered = canvas;
+				stendhal.data.sprites.images[filteredName] = filtered = canvas;
 			}
 
 			return filtered;
@@ -261,9 +294,9 @@ stendhal.data.sprites = {
 				}
 				tmp2 = 2 * l - tmp1;
 
-				var rf = this.hue2rgb(this.limitHue(h + 1/3), tmp2, tmp1);
-				var gf = this.hue2rgb(this.limitHue(h), tmp2, tmp1);
-				var bf = this.hue2rgb(this.limitHue(h - 1/3), tmp2, tmp1);
+				var rf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h + 1/3), tmp2, tmp1);
+				var gf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h), tmp2, tmp1);
+				var bf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h - 1/3), tmp2, tmp1);
 
 				r = Math.floor(255 * rf) & 0xff;
 				g = Math.floor(255 * gf) & 0xff;
@@ -306,6 +339,36 @@ stendhal.data.sprites = {
 			return res;
 		}
 	},
+
+	/**
+	 * Retrieves a shadow sprite if the style is available.
+	 *
+	 * @param shadowStyle
+	 *     Style of shadow to get from cache.
+	 * @return
+	 *     Image sprite or <code>undefined</code>.
+	 */
+	getShadow: function(shadowStyle) {
+		if (this.knownShadows[shadowStyle]) {
+			const img = new Image();
+			img.src = "/data/sprites/shadow/" + shadowStyle + ".png";
+			return img;
+		}
+
+		return undefined;
+	},
+
+	/**
+	 * Checks if there is a "safe" image available for sprite.
+	 *
+	 * @param filename
+	 *     The sprite image base file path.
+	 * @return
+	 *     <code>true</code> if a known safe image is available.
+	 */
+	hasSafeImage: function(filename) {
+		return this.knownSafeSprites[filename] == true;
+	}
 }
 
 // *** Image filters. Prevent the closure compiler from mangling the names. ***
@@ -326,5 +389,19 @@ stendhal.data.sprites.filter['trueColor'] = function(data, color) {
 		data[i] = resultRgb[0];
 		data[i+1] = resultRgb[1];
 		data[i+2] = resultRgb[2];
+	}
+}
+
+// alternatives for known images that may be considered violent or mature
+stendhal.data.sprites.knownSafeSprites = {
+	"/data/sprites/monsters/huge_animal/thing": true,
+	"/data/sprites/monsters/mutant/imperial_mutant": true,
+	"/data/sprites/monsters/undead/bloody_zombie": true,
+	"/data/sprites/npc/deadmannpc": true
+}
+
+stendhal.data.sprites.animations = {
+	idea: {
+		"love": {delay: 100, offsetX: 24, offsetY: -8}
 	}
 }

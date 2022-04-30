@@ -58,6 +58,6 @@ public class EntityViewCommandList extends CommandList {
 			LOGGER.error("Unknown command: '" + command + "'");
 			return;
 		}
-		view.onAction(ActionType.getbyRep(command));
+		view.onAction(action);
 	}
 }

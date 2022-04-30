@@ -193,6 +193,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.scroll.EmptyScroll"/>
 		<attributes>
 			<quantity value="1"/>
+			<menu value="Zapisz|Użyj"/>
 		</attributes>
 		<weight value="0.01"/>
 		<value value="4000"/>

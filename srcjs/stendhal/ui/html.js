@@ -18,8 +18,15 @@ stendhal.ui = stendhal.ui || {};
  * HTML code manipulation.
  */
 stendhal.ui.html = {
-	esc: function(msg){
-		return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, "<br>");
+	esc: function(msg, filter=[]){
+		msg = msg.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, "<br>");
+		// restore filtered tags
+		for (const tag of filter) {
+			msg = msg.replace("&lt;" + tag + "&gt;", "<" + tag + ">")
+					.replace("&lt;/" + tag + "&gt;", "</" + tag + ">");
+		}
+
+		return msg;
 	},
 
 	extractKeyCode: function(event) {
@@ -50,5 +57,37 @@ stendhal.ui.html = {
 			return pos;
 		}
 		return event;
+	},
+
+	formatTallyMarks: function(line) {
+		let tmp = line.split("<tally>");
+		const pre = tmp[0];
+		tmp = tmp[1].split("</tally>");
+		const post = tmp[1];
+		const count = parseInt(tmp[0].trim(), 10);
+
+		let tallyString = "";
+		if (count > 0) {
+			let t = 0
+			for (let idx = 0; idx < count; idx++) {
+				t++
+				if (t == 5) {
+					tallyString += "5";
+					t = 0;
+				}
+			}
+
+			if (t > 0) {
+				tallyString += t;
+			}
+		} else {
+			tallyString = "0";
+		}
+
+		const tally = document.createElement("span");
+		tally.className = "tally";
+		tally.textContent = tallyString;
+
+		return [pre, tally, post];
 	}
 };

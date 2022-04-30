@@ -16,8 +16,10 @@ var stendhal = window.stendhal = window.stendhal || {};
 
 var ExamineEvent = require("../../build/ts/event/ExamineEvent").ExamineEvent;
 var ProgressStatusEvent = require("../../build/ts/event/ProgressStatusEvent").ProgressStatusEvent;
+var SoundId = require("../../build/ts/util/SoundId").SoundId;
 var ui = require("../../build/ts/ui/UI").ui;
 var UIComponentEnum = require("../../build/ts/ui/UIComponentEnum").UIComponentEnum;
+var DialogContentComponent = require("../../build/ts/ui/toolkit/DialogContentComponent").DialogContentComponent;
 
 marauroa.rpeventFactory["attack"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(entity) {
@@ -36,7 +38,7 @@ marauroa.rpeventFactory["attack"] = marauroa.util.fromProto(marauroa.rpeventFact
 		} else {
 			target.onMissed(entity);
 		}
-		entity.onAttackPerformed(this["type"], this.hasOwnProperty("ranged"));
+		entity.onAttackPerformed(parseInt(this["type"], 10), this.hasOwnProperty("ranged"));
 	}
 });
 
@@ -101,7 +103,14 @@ marauroa.rpeventFactory["player_logged_out"] = marauroa.util.fromProto(marauroa.
 
 marauroa.rpeventFactory["private_text"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-		Chat.log(this["texttype"].toLowerCase(), this["text"]);
+		const ttype = this["texttype"].toLowerCase();
+		const msg = this["text"].replace("\r\n", "\n").replace("\r", "\n");
+
+		if (ttype === "server" && msg.includes("\n")) {
+			Chat.log(ttype, msg.split("\n"));
+		} else {
+			Chat.log(ttype, msg);
+		}
 	}
 });
 
@@ -110,32 +119,126 @@ marauroa.rpeventFactory["progress_status_event"] = new ProgressStatusEvent();
 
 marauroa.rpeventFactory["reached_achievement"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-		// TODO: new ReachedAchievementEvent();
+		stendhal.ui.gamewindow.addAchievementNotif(this["category"], this["title"], this["description"]);
 	}
 });
 
 
 marauroa.rpeventFactory["show_item_list"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
+		let title = "Items";
+		let caption = "";
+		let items = [];
+
 		if (this.hasOwnProperty("title")) {
-			Chat.log("normal", this["title"]);
+			title = this["title"];
 		}
 		if (this.hasOwnProperty("caption")) {
-			Chat.log("normal", this["caption"]);
+			caption = this["caption"];
 		}
 		if (this.hasOwnProperty("content")) {
-			Chat.log("normal", "Item\t-\tPrice\t-\tDescription");
 			for (var obj in this["content"]) {
 				if (this["content"].hasOwnProperty(obj)) {
 					var slotObj = this["content"][obj];
 					var data = this["content"][obj]["a"];
-					Chat.log("normal", data["subclass"] + "\t"
-							+ data["price"] + "\t" + data["description_info"]);
+					const i = {
+						clazz: data["class"],
+						subclass: data["subclass"],
+						img: data["class"] + "/" + data["subclass"] + ".png",
+						price: data["price"],
+						desc: data["description_info"]
+					}
+
+					// seller shops prefix prices with "-"
+					if (i.price.startsWith("-")) {
+						i.price = i.price.substr(1);
+					}
+					items.push(i);
 				}
 			}
 		}
+
+		const content = new DialogContentComponent("empty-div-template");
+		content.componentElement.classList.add("shopsign");
+		const captionElement = document.createElement("div");
+		captionElement.className = "horizontalgroup shopcaption";
+		captionElement.textContent = caption + "\nItem\t-\tPrice\t-\tDescription";
+		content.componentElement.appendChild(captionElement);
+		const itemList = document.createElement("div");
+		itemList.className = "shoplist";
+		content.componentElement.appendChild(itemList);
+
+		// TODO: organize in columns & show item sprites
+		for (const i of items) {
+			const row = document.createElement("div");
+			row.className = "horizontalgroup shoprow";
+			const img = document.createElement("div");
+			img.className = "shopcol";
+			img.appendChild(stendhal.data.sprites.get("/data/sprites/items/" + i.img));
+			row.appendChild(img);
+			const price = document.createElement("div");
+			price.className = "shopcol";
+			price.textContent = i.price;
+			row.appendChild(price);
+			const desc = document.createElement("div");
+			desc.className = "shopcol shopcolr";
+			desc.textContent = i.desc;
+			row.appendChild(desc);
+			itemList.appendChild(row);
+		}
+
+		stendhal.ui.globalInternalWindow.set(
+				ui.createSingletonFloatingWindow(title, content, 20, 20));
 	}
 });
+
+
+marauroa.rpeventFactory["show_outfit_list"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
+	execute: function(rpobject) {
+		let title = "Outfits";
+		let caption = "";
+		let outfits = [];
+
+		if (this.hasOwnProperty("title")) {
+			title = this["title"];
+		}
+		if (this.hasOwnProperty("caption")) {
+			caption = this["caption"];
+		}
+		if (this.hasOwnProperty("outfits")) {
+			for (let o of this["outfits"].split(":")) {
+				o = o.split(";");
+				if (o.length > 2) {
+					outfits.push([o[0], o[1], o[2]]);
+				}
+			}
+		}
+		if (this.hasOwnProperty("show_base")) {
+			//Chat.log("normal", this["show_base"]);
+		}
+
+		const content = new DialogContentComponent("empty-div-template");
+		content.componentElement.classList.add("shopsign");
+		const captionElement = document.createElement("div");
+		captionElement.className = "horizontalgroup shopcaption";
+		captionElement.textContent = caption;
+		content.componentElement.appendChild(captionElement);
+		const itemList = document.createElement("div");
+		itemList.className = "shoplist";
+		content.componentElement.appendChild(itemList);
+
+		// TODO: organize in columns & show outfit sprites
+		for (const o of outfits) {
+			const row = document.createElement("div");
+			row.className = "horizontalgroup shoprow";
+			row.textContent = o[0] + ": " + o[2];
+			itemList.appendChild(row);
+		}
+
+		stendhal.ui.globalInternalWindow.set(
+				ui.createSingletonFloatingWindow(title, content, 20, 20));
+	}
+})
 
 
 marauroa.rpeventFactory["sound_event"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
@@ -147,7 +250,13 @@ marauroa.rpeventFactory["sound_event"] = marauroa.util.fromProto(marauroa.rpeven
 		}
 		var radius = parseInt(this["radius"], 10);
 
-		stendhal.ui.sound.playLocalizedEffect(rpobject["_x"], rpobject["_y"], radius, this["layer"], this["sound"], volume);
+		let sound = this["sound"];
+		const sound_id = this["sound_id"];
+		if (sound_id) {
+			sound = SoundId[sound_id];
+		}
+
+		stendhal.ui.sound.playLocalizedEffect(rpobject["_x"], rpobject["_y"], radius, this["layer"], sound, volume);
 	}
 });
 
@@ -188,15 +297,13 @@ marauroa.rpeventFactory["bestiary"] = marauroa.util.fromProto(marauroa.rpeventFa
 			return;
 		}
 
-		const title = "Bestiary";
-		var header = ["\"???\" = unknown"];
-
+		const header = ["Bestiary:", "\"???\" = unknown"];
 		const hasRare = this["enemies"].includes("(rare)");
 		const hasAbnormal = this["enemies"].includes("(abnormal)");
 
 		// show explanation of "rare" & "abnormal" creatures in header
 		if (hasRare || hasAbnormal) {
-			var subheader = "";
+			let subheader = "";
 			if (!hasRare) {
 				subheader += "\"abnormal\"";
 			} else {
@@ -209,21 +316,12 @@ marauroa.rpeventFactory["bestiary"] = marauroa.util.fromProto(marauroa.rpeventFa
 			header[1] = subheader + " creatures not required for achievements";
 		}
 
-		// spacing for clarity
-		header[2] = "------------------";
-
-		// FIXME: hack until a proper window is implemented
-		Chat.log("normal", title + ":");
-		for (h of header) {
-			Chat.log("normal", h);
-		}
-
-		const enemies = this["enemies"].split(";");
-		for (e of enemies) {
+		const enemies = [];
+		for (e of this["enemies"].split(";")) {
 			const info = e.split(",");
 			const name = info[0];
-			var solo = " ";
-			var shared = " ";
+			let solo = " ";
+			let shared = " ";
 			if (info[1] == "true") {
 				solo = "✔";
 			}
@@ -231,8 +329,24 @@ marauroa.rpeventFactory["bestiary"] = marauroa.util.fromProto(marauroa.rpeventFa
 				shared = "✔";
 			}
 
-			// FIXME: hack until a proper window is implemented
-			Chat.log("normal", name + ":   solo [" + solo + "], shared [" + shared + "]");
+			enemies.push(name + ":   solo [" + solo + "], shared [" + shared + "]");
 		}
+
+		// TODO: clean up columns & add borders
+
+		const content = new DialogContentComponent("empty-div-template");
+		content.setConfigId("bestiary");
+		content.componentElement.classList.add("bestiary");
+
+		for (const enemy of enemies) {
+			const line = document.createElement("div");
+			line.className = "horizontalgroup";
+			line.style.padding = "5px";
+			line.textContent = enemy;
+			content.componentElement.appendChild(line);
+		}
+
+		stendhal.ui.globalInternalWindow.set(ui.createSingletonFloatingWindow(header.join(" "),
+				content, 20, 20));
 	}
 });
