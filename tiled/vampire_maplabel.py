@@ -4,7 +4,6 @@
 """
 This script is used to create the world map with labeled zone names.
 It adds labels and borders around the small zone images.
-
 To create the labeled world map:
   * Update from CVS
   * Open a command line
@@ -64,7 +63,7 @@ def do_label(fname):
 	# label
 	draw = ImageDraw.Draw(img, 'RGBA')
 	draw.fontmode = "0" # set to "1" to disable anti-aliasing (not documented in PIL module)
-	font = ImageFont.truetype('Carlito-Bold.ttf', 12)
+	font = ImageFont.truetype('../data/font/Carlito-Bold.ttf', 12)
 	draw.text((6, 6), label, (  0,   0,   0, 255),font=font)
 	draw.text((5, 5), label, (255, 255, 255, 255),font=font)
 
