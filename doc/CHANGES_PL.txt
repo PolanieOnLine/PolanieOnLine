@@ -1,6 +1,13 @@
 Changelog
 ---------
 1.30
+*klient*
+- Poprawiono grafiki przedmiotów & NPC
+
+*świat*
+- Dodano możliwość zapisania od razu wszystkich niezapisanych zwoi w plecaku gracza
+- Dodano możliwość skupu monarchistycznych przedmiotów u Króla Edwarda
+
 *naprawiono błędy*
 - Naprawiono zadanie, które zostało wcześniej przyjęte przez graczy u NPC Rycerza w Warszawie
 - Naprawiono osiągnięcia:
