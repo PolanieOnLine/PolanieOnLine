@@ -1,5 +1,10 @@
 Changelog
 ---------
+1.31
+*naprawiono błędy*
+- Naprawiono atak trzymanych dwóch mieczy (praworęczny & leworęczny)
+
+
 1.30
 *klient*
 - Dodano dymek z opisem miejsca zapisanego na zwoju po najechaniu na niego myszką
