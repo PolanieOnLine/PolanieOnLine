@@ -2518,13 +2518,13 @@ public abstract class RPEntity extends CombatEntity {
 			weapons.add(weaponItem);
 
 			// pair weapons
-			if (weaponItem.getName().startsWith("l hand ")) {
+			if (weaponItem.getName().endsWith(" leworęczny")) {
 				// check if there is a matching right-hand weapon in
 				// the other hand.
 				final String rpclass = weaponItem.getItemClass();
 				weaponItem = getEquippedItemClass("rhand", rpclass);
 				if ((weaponItem != null)
-						&& (weaponItem.getName().startsWith("r hand "))) {
+						&& (weaponItem.getName().endsWith(" praworęczny"))) {
 					weapons.add(weaponItem);
 				} else {
 					// You can't use a left-hand weapon without the matching
@@ -2534,7 +2534,7 @@ public abstract class RPEntity extends CombatEntity {
 			} else {
 				// You can't hold a right-hand weapon with your left hand, for
 				// ergonomic reasons ;)
-				if (weaponItem.getName().startsWith("r hand ")) {
+				if (weaponItem.getName().endsWith(" praworęczny")) {
 					weapons.clear();
 				}
 			}
