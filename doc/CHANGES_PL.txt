@@ -2,6 +2,7 @@ Changelog
 ---------
 1.30
 *klient*
+- Dodano dymek z opisem miejsca zapisanego na zwoju po najechaniu na niego myszką
 - Poprawiono grafiki przedmiotów & NPC
 
 *świat*
