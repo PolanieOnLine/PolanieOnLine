@@ -2223,7 +2223,8 @@ public class Player extends DressedEntity implements UseListener {
 	/**
 	 * Returns the time the player last did a player kill.
 	 *
-	 * @return time in milliseconds
+	 * @return
+	 *     <code>time</code> in milliseconds.
 	 */
 	public long getLastPlayerKillTime() {
 		if (has(LAST_PLAYER_KILL_TIME)) {
@@ -2261,7 +2262,7 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * gets the PlayerChatBucket
+	 * Gets the PlayerChatBucket.
 	 *
 	 * @return PlayerChatBucket
 	 */
@@ -2271,9 +2272,16 @@ public class Player extends DressedEntity implements UseListener {
 
 	@Override
 	public Nature getDamageType() {
-		// Use the damage type of arrows, if the player is shooting with them
+		// Use the damage type of arrows, if the player is shooting with them.
 		if (getRangeWeapon() != null) {
 			Item missile = getAmmunition();
+			if (missile != null) {
+				return missile.getDamageType();
+			}
+		}
+		// Use the damage type of magic spells, if the player is shooting with them.
+		if (getWandWeapon() != null) {
+			Item missile = getMagicSpells();
 			if (missile != null) {
 				return missile.getDamageType();
 			}
@@ -2289,9 +2297,9 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	protected double getSusceptibility(Nature type) {
 		double sus = 1.0;
-		/*
-		 * check weapon and shield separately, so that holding 2 resistant
-		 * shields does not help
+		/**
+		 * Check weapon and shield separately, so that holding 2 resistant
+		 * shields does not help.
 		 */
 		Item weapon = getWeapon();
 		if (weapon != null) {
@@ -2314,13 +2322,14 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * adds a buddy to the player's buddy list
+	 * Adds a buddy to the player's buddy list.
 	 *
 	 * @param name
-	 *            the name of the buddy
+	 *     The name of the buddy.
 	 * @param online
-	 *            if the player is online
-	 * @return true if the buddy has been added
+	 *     If the player is online.
+	 * @return
+	 *     <code>true</code> if the buddy has been added.
 	 */
 	public boolean addBuddy(String name, boolean online) {
 		boolean isNew = !hasMap("buddies")
@@ -2332,11 +2341,12 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * removes a buddy to the player's buddy list
+	 * Removes a buddy to the player's buddy list.
 	 *
 	 * @param name
-	 *            the name of the buddy
-	 * @return true if a buddy was removed
+	 *     The name of the buddy.
+	 * @return
+	 *     <code>true</code> if a buddy was removed.
 	 */
 	public boolean removeBuddy(String name) {
 		return remove("buddies", name) != null;
@@ -2404,7 +2414,7 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * Adds the identifier of an achievement to the reached achievements
+	 * Adds the identifier of an achievement to the reached achievements.
 	 *
 	 * @param identifier
 	 */
@@ -2421,20 +2431,22 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * checks if the achievements of this player object are already loaded
+	 * Checks if the achievements of this player object are already loaded.
 	 *
-	 * @return true, if the achievement set is loaded, false otherwise
+	 * @return
+	 *     <code>true</code>, if the achievement set is loaded, false otherwise.
 	 */
 	public boolean arePlayerAchievementsLoaded() {
 		return reachedAchievements != null;
 	}
 
 	/**
-	 * Checks if a player has reached the achievement with the given identifier
+	 * Checks if a player has reached the achievement with the given identifier.
 	 *
 	 * @param identifier
-	 * @return true if player had reached the achievement with the given
-	 *         identifier
+	 * @return
+	 *      <code>true</code> if player had reached the achievement with the given
+	 *		identifier.
 	 */
 	public boolean hasReachedAchievement(String identifier) {
 		if (getAchievements() != null) {

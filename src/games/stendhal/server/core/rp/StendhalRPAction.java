@@ -487,7 +487,7 @@ public class StendhalRPAction {
 		if (player.getRangeWeapon() != null) {
 			projectilesItem = player.getAmmunition();
 		} if (player.getWandWeapon() != null) {
-			projectilesItem = player.getMagia();
+			projectilesItem = player.getMagicSpells();
 		}
 		if (projectilesItem == null) {
 			// no arrows... but maybe a spear?

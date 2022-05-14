@@ -2496,7 +2496,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *         left hand.
 	 */
 	public Item getWeapon() {
-		final String[] weaponsClasses = {"club", "sword", "dagger", "axe", "ranged", "missile", "wand", "magia"};
+		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand", "magia" };
 
 		for (final String weaponClass : weaponsClasses) {
 			final String[] slots = { "lhand", "rhand" };
@@ -2592,7 +2592,7 @@ public abstract class RPEntity extends CombatEntity {
 		return null;
 	}
 
-	public StackableItem getMagia() {
+	public StackableItem getMagicSpells() {
 		final String[] slots = { "lhand", "rhand" };
 
 		for (final String slot : slots) {
@@ -2888,12 +2888,12 @@ public abstract class RPEntity extends CombatEntity {
 	private float getMagicAmmoAtk() {
 		float magicammo = 0;
 
-		final StackableItem magiaItem = getMagia();
-		if (magiaItem != null) {
+		final StackableItem magicSpells = getMagicSpells();
+		if (magicSpells != null) {
 			if (Testing.COMBAT) {
-				magicammo = magiaItem.getRangedAttack();
+				magicammo = magicSpells.getRangedAttack();
 			} else {
-				magicammo = magiaItem.getAttack();
+				magicammo = magicSpells.getAttack();
 			}
 		}
 
@@ -3079,32 +3079,31 @@ public abstract class RPEntity extends CombatEntity {
 		final Item rangeWeapon = getRangeWeapon();
 		final Item wandWeapon = getWandWeapon();
 		final StackableItem ammunition = getAmmunition();
-		final StackableItem magia = getMagia();
+		final StackableItem magicspells = getMagicSpells();
 		final StackableItem missiles = getMissileIfNotHoldingOtherWeapon();
 
-		return getWeaponRange(rangeWeapon, ammunition) | getWeaponRange(wandWeapon, magia) | getWeaponRange(missiles);
+		return getWeaponRange(rangeWeapon, ammunition) | getWeaponRange(wandWeapon, magicspells) | getWeaponRange(null, missiles);
 	}
 
 	private int getWeaponRange(Item item, StackableItem amm) {
 		int maxRange;
-		if (item != null && amm !=null && amm.getQuantity() > 0) {
+		if (item == null) {
+			if (amm != null && amm.getQuantity() > 0) {
+				maxRange = amm.getInt("range");
+			} else {
+				maxRange = 0;
+			}
+
+			return maxRange;
+		}
+
+		if (item != null && amm != null && amm.getQuantity() > 0) {
 			int itemRange = item.getInt("range");
 			if (item.isMaxImproved()) {
 				itemRange += 1;
 			}
 
 			maxRange = itemRange + amm.getInt("range");
-		} else {
-			maxRange = 0;
-		}
-
-		return maxRange;
-	}
-
-	private int getWeaponRange(StackableItem amm) {
-		int maxRange;
-		if (amm !=null && amm.getQuantity() > 0) {
-			maxRange = amm.getInt("range");
 		} else {
 			maxRange = 0;
 		}
