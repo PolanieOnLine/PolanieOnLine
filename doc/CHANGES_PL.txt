@@ -3,6 +3,7 @@ Changelog
 1.31
 *naprawiono błędy*
 - Naprawiono atak trzymanych dwóch mieczy (praworęczny & leworęczny)
+- Naprawiono atakowanie odpowiednim żywiołem korzystając z magicznych zaklęć oraz różdżek
 
 
 1.30
