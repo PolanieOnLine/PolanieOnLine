@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -73,5 +72,9 @@ public class IncreaseKarmaAction implements ChatAction {
 			return false;
 		}
 		return true;
+	}
+
+	public static ChatAction increaseKarma(double amount) {
+		return new IncreaseKarmaAction(amount);
 	}
 }

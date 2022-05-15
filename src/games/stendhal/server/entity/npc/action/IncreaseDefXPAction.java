@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,41 +20,38 @@ import games.stendhal.server.entity.player.Player;
 
 /**
  * Increases DEF XP (quest reward).
- * @author Szygolek
- * 		@edited by KarajuSs
- * This script is based on another script already created by Arianne RPG developers. Thanks! Author: Szygolek * 
  */
 @Dev(category=Category.STATS, label="DefXP+")
 public class IncreaseDefXPAction implements ChatAction {
 
-	private final int def_xpDiff;
+	private final int defXpDiff;
 
 	/**
 	 * Creates a new IncreaseDefXPAction.
 	 *
-	 * @param def_xpdiff
+	 * @param defXpDiff
 	 *            amount of def xp to add (in quests)
 	 */
-	public IncreaseDefXPAction(final int def_xpDiff) {
-		this.def_xpDiff = def_xpDiff;
+	public IncreaseDefXPAction(final int defXpDiff) {
+		this.defXpDiff = defXpDiff;
 	}
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		player.setDefXP(def_xpDiff + player.getDefXP());
+		player.setDefXP(defXpDiff + player.getDefXP());
 		player.notifyWorldAboutChanges();
 	}
 
 	@Override
 	public String toString() {
-		return "IncreaseDefXP <" + def_xpDiff + ">";
+		return "IncreaseDefXP <" + defXpDiff + ">";
 	}
 
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + def_xpDiff;
+		result = PRIME * result + defXpDiff;
 		return result;
 	}
 
@@ -70,10 +67,11 @@ public class IncreaseDefXPAction implements ChatAction {
 			return false;
 		}
 		final IncreaseDefXPAction other = (IncreaseDefXPAction) obj;
-		if (def_xpDiff != other.def_xpDiff) {
-			return false;
-		}
-		return true;
+
+		return defXpDiff == other.defXpDiff;
 	}
 
+	public static ChatAction increaseDefXP(int defXpDiff) {
+		return new IncreaseDefXPAction(defXpDiff);
+	}
 }

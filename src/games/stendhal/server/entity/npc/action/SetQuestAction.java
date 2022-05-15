@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -92,5 +91,9 @@ public class SetQuestAction implements ChatAction {
 		return (index == other.index)
 			&& questname.equals(other.questname)
 			&& Objects.equal(state, other.state);
+	}
+
+	public static ChatAction setQuest(String questSlot, String state) {
+		return new SetQuestAction(questSlot, state);
 	}
 }

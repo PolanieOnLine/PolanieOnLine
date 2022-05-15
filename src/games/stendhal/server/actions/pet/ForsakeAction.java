@@ -45,7 +45,6 @@ public class ForsakeAction implements ActionListener {
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-
 		if (action.has(SPECIES)) {
 			final String species = action.get(SPECIES);
 
@@ -63,6 +62,7 @@ public class ForsakeAction implements ActionListener {
 				} else {
 					logger.error("sheep not found in disown action: " + action.toString());
 				}
+
 			} else if (species.equals(GOAT)) {
 				final Goat goat = player.getGoat();
 
@@ -77,6 +77,7 @@ public class ForsakeAction implements ActionListener {
 				} else {
 					logger.error("goat not found in disown action: " + action.toString());
 				}
+
 			} else if (species.equals(PET)) {
 				final Pet pet = player.getPet();
 
@@ -93,5 +94,6 @@ public class ForsakeAction implements ActionListener {
 				}
 			}
 		}
+		player.notifyWorldAboutChanges();
 	}
 }

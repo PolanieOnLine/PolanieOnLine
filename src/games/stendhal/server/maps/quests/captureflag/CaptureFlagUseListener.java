@@ -79,13 +79,13 @@ public class CaptureFlagUseListener implements UseListener {
 
 		if (projectiles == null) {
 
-			Item          bow    = sender.getRangeWeapon();
+			Item bow = sender.getRangeWeapon();
 
 			if (bow == null) {
 				return "not-equipped";
 			}
 
-			projectiles = sender.getAmmunition();
+			projectiles = sender.getAmmunition("ammunition");
 
 			if (projectiles == null) {
 				return "not-equipped";

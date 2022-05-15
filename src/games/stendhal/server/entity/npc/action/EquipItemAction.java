@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -150,4 +149,11 @@ public class EquipItemAction implements ChatAction {
 		return bind == other.bind;
 	}
 
+	public static ChatAction equipItem(String itemName) {
+		return new EquipItemAction(itemName);
+	}
+
+	public static ChatAction equipBoundItem(String itemName) {
+		return new EquipItemAction(itemName, 1, true);
+	}
 }

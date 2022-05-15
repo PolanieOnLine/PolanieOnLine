@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,22 +22,21 @@ import games.stendhal.server.entity.player.Player;
 
 /**
  * Created a new Increases ATK XP Dependent on level.
- * 
- * @author KarajuSs
  */
 @Dev(category=Category.STATS, label="AtkXP+")
 public class IncreaseAtkXPDependentOnLevelAction implements ChatAction {
 
-	private final double atk_xpDiff;
+	private final double atkXpDiff;
 	private final double karmabonus;
+
 	/**
 	 * Creates a new IncreaseAtkXPDependentOnLevelAction.
 	 *
-	 * @param atk_xpDiff - player will get 1/xpDiff of difference between his and next levels xp amount.
+	 * @param atkXpDiff - player will get 1/atkXpDiff of difference between his and next levels xp amount.
 	 * @param karmabonus - amount of karma to add instead atk_xp if player have max level
 	 */
-	public IncreaseAtkXPDependentOnLevelAction(final double atk_xpDiff, final double karmabonus) {
-		this.atk_xpDiff = atk_xpDiff;
+	public IncreaseAtkXPDependentOnLevelAction(final double atkXpDiff, final double karmabonus) {
+		this.atkXpDiff = atkXpDiff;
 		this.karmabonus = karmabonus;
 	}
 
@@ -47,10 +46,10 @@ public class IncreaseAtkXPDependentOnLevelAction implements ChatAction {
 		final int next = Level.getXP(player.getLevel() + 1);
 		if(!Occasion.SECOND_WORLD) {
 			if (player.getAtk() < 110) {
-				int reward = (int) ((next - start) / (atk_xpDiff) / 20);
+				int reward = (int) ((next - start) / (atkXpDiff) / 20);
 				player.setAtkXP(reward + player.getAtkXP());
 			} else {
-				int reward = (int) ((next - start) / (atk_xpDiff) / 60);
+				int reward = (int) ((next - start) / (atkXpDiff) / 60);
 				player.setAtkXP(reward + player.getAtkXP());
 			}
 		}
@@ -59,14 +58,14 @@ public class IncreaseAtkXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public String toString() {
-		return "IncreaseAtkXPDependentOnLevel <" + atk_xpDiff + "," + karmabonus + ">";
+		return "IncreaseAtkXPDependentOnLevel <" + atkXpDiff + "," + karmabonus + ">";
 	}
 
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + (int)(atk_xpDiff);
+		result = PRIME * result + (int)(atkXpDiff);
 		return result;
 	}
 
@@ -82,10 +81,7 @@ public class IncreaseAtkXPDependentOnLevelAction implements ChatAction {
 			return false;
 		}
 		final IncreaseAtkXPDependentOnLevelAction other = (IncreaseAtkXPDependentOnLevelAction) obj;
-		if (atk_xpDiff != other.atk_xpDiff) {
-			return false;
-		}
-		return true;
-	}
 
+		return atkXpDiff == other.atkXpDiff;
+	}
 }

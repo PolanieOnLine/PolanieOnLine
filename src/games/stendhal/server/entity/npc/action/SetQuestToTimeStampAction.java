@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -83,5 +82,9 @@ public class SetQuestToTimeStampAction implements ChatAction {
 		SetQuestToTimeStampAction other = (SetQuestToTimeStampAction) obj;
 		return (index == other.index)
 			&& questname.equals(other.questname);
+	}
+
+	public static ChatAction setQuestToTimestamp(String questName, int index) {
+		return new SetQuestToTimeStampAction(questName, index);
 	}
 }

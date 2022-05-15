@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -165,5 +164,9 @@ public class SayTimeRemainingAction implements ChatAction {
 			&& (delay == other.delay)
 			&& questname.equals(other.questname)
 			&& message.equals(other.message);
+	}
+
+	public static ChatAction sayTimeRemaining(String questName, int index, int delay, String message) {
+		return new SayTimeRemainingAction(questName, index, delay, message);
 	}
 }

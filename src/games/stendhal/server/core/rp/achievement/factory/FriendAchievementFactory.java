@@ -99,7 +99,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 		// quests about finding people
 		achievements.add(createAchievement(
-				ID_PRIVATE_DETECTIVE, "Prywatny Detektyw", "Znalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",
+				ID_PRIVATE_DETECTIVE, "Prywatny Detektyw", "Odnalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Rat Children (Agnus)
@@ -118,11 +118,14 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 								final int left = 7 - done.length;
 								return left < 0;
 							}
-						})));
+						},
+						// Jef, Kirdneh
+						new QuestCompletedCondition("find_jefs_mom")
+					)));
 
 		// quests about finding dragons
 		achievements.add(createAchievement(
-				ID_DRAGONS, "Przyjaciel Smoków", "Znalazł wszystkie ukrywające się smoki",
+				ID_DRAGONS, "Przyjaciel Smoków", "Odnalazł wszystkie ukrywające się smoki",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Meet Dragons

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -80,10 +79,7 @@ public class IncreaseXPDependentOnLevelAction implements ChatAction {
 			return false;
 		}
 		final IncreaseXPDependentOnLevelAction other = (IncreaseXPDependentOnLevelAction) obj;
-		if (xpDiff != other.xpDiff) {
-			return false;
-		}
-		return true;
-	}
 
+		return xpDiff == other.xpDiff;
+	}
 }

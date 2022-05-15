@@ -22,22 +22,21 @@ import games.stendhal.server.entity.player.Player;
 
 /**
  * Created a new Increases RATK XP Dependent on level.
- * 
- * @author zekkeq
  */
 @Dev(category=Category.STATS, label="RatkXP+")
 public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 
-	private final double ratk_xpDiff;
+	private final double ratkXpDiff;
 	private final double karmabonus;
+
 	/**
 	 * Creates a new IncreaseRatkXPDependentOnLevelAction.
 	 *
-	 * @param atk_xpDiff - player will get 1/xpDiff of difference between his and next levels xp amount.
+	 * @param ratkXpDiff - player will get 1/ratkXpDiff of difference between his and next levels xp amount.
 	 * @param karmabonus - amount of karma to add instead ratk_xp if player have max level
 	 */
-	public IncreaseRatkXPDependentOnLevelAction(final double ratk_xpDiff, final double karmabonus) {
-		this.ratk_xpDiff = ratk_xpDiff;
+	public IncreaseRatkXPDependentOnLevelAction(final double ratkXpDiff, final double karmabonus) {
+		this.ratkXpDiff = ratkXpDiff;
 		this.karmabonus = karmabonus;
 	}
 
@@ -47,10 +46,10 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 		final int next = Level.getXP(player.getLevel() + 1);
 		if(Testing.COMBAT) {
 			if (player.getRatk() < 90) {
-				int reward = (int) ((next - start) / (ratk_xpDiff) / 20);
+				int reward = (int) ((next - start) / (ratkXpDiff) / 20);
 				player.setRatkXP(reward + player.getRatkXP());
 			} else {
-				int reward = (int) ((next - start) / (ratk_xpDiff) / 60);
+				int reward = (int) ((next - start) / (ratkXpDiff) / 60);
 				player.setRatkXP(reward + player.getRatkXP());
 			}
 		}
@@ -59,14 +58,14 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public String toString() {
-		return "IncreaseRatkXPDependentOnLevel <" + ratk_xpDiff + "," + karmabonus + ">";
+		return "IncreaseRatkXPDependentOnLevel <" + ratkXpDiff + "," + karmabonus + ">";
 	}
 
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + (int)(ratk_xpDiff);
+		result = PRIME * result + (int)(ratkXpDiff);
 		return result;
 	}
 
@@ -82,10 +81,7 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 			return false;
 		}
 		final IncreaseRatkXPDependentOnLevelAction other = (IncreaseRatkXPDependentOnLevelAction) obj;
-		if (ratk_xpDiff != other.ratk_xpDiff) {
-			return false;
-		}
-		return true;
-	}
 
+		return ratkXpDiff == other.ratkXpDiff;
+	}
 }

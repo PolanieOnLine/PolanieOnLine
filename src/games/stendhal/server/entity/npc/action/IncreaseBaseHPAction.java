@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,34 +24,34 @@ import games.stendhal.server.entity.player.Player;
 @Dev(category=Category.STATS, label="BaseHP+")
 public class IncreaseBaseHPAction implements ChatAction {
 
-	private final int basehpDiff;
+	private final int baseHpDiff;
 
 	/**
 	 * Creates a new IncreaseBaseHPAction.
 	 *
-	 * @param basehpDiff
+	 * @param baseHpDiff
 	 *            amount of basehp to add
 	 */
-	public IncreaseBaseHPAction(final int basehpDiff) {
-		this.basehpDiff = basehpDiff;
+	public IncreaseBaseHPAction(final int baseHpDiff) {
+		this.baseHpDiff = baseHpDiff;
 	}
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		player.setBaseHP(basehpDiff + player.getBaseHP());
+		player.setBaseHP(baseHpDiff + player.getBaseHP());
 		player.notifyWorldAboutChanges();
 	}
 
 	@Override
 	public String toString() {
-		return "IncreaseBaseHP <" + basehpDiff + ">";
+		return "IncreaseBaseHP <" + baseHpDiff + ">";
 	}
 
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + basehpDiff;
+		result = PRIME * result + baseHpDiff;
 		return result;
 	}
 
@@ -68,10 +67,11 @@ public class IncreaseBaseHPAction implements ChatAction {
 			return false;
 		}
 		final IncreaseBaseHPAction other = (IncreaseBaseHPAction) obj;
-		if (basehpDiff != other.basehpDiff) {
-			return false;
-		}
-		return true;
+
+		return baseHpDiff == other.baseHpDiff;
 	}
 
+	public static ChatAction increaseBaseHP(int baseHpDiff) {
+		return new IncreaseBaseHPAction(baseHpDiff);
+	}
 }

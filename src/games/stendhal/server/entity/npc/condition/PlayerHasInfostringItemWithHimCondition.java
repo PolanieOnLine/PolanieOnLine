@@ -61,7 +61,7 @@ public class PlayerHasInfostringItemWithHimCondition implements ChatCondition {
 
 	@Override
 	public String toString() {
-		return "wojownik posiada przedmiot <" + itemName + "> z opisem <" + infostring + ">";
+		return "player has item <" + itemName + "> with infostring <" + infostring + ">";
 	}
 
 	@Override

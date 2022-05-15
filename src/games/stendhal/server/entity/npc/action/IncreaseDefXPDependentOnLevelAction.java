@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,23 +22,21 @@ import games.stendhal.server.entity.player.Player;
 
 /**
  * Created a new Increases DEF XP Dependent on level.
- *
- * @author KarajuSs
  */
 @Dev(category=Category.STATS, label="DefXP+")
 public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 
-	private final double def_xpDiff;
+	private final double defXpDiff;
 	private final double karmabonus;
 
 	/**
 	 * Creates a new IncreaseDefXPDependentOnLevelAction.
 	 *
-	 * @param def_xpDiff - player will get 1/xpDiff of difference between his and next levels xp amount.
+	 * @param defXpDiff - player will get 1/defXpDiff of difference between his and next levels xp amount.
 	 * @param karmabonus - amount of karma to add instead def_xp if player have max level
 	 */
-	public IncreaseDefXPDependentOnLevelAction(final double def_xpDiff, final double karmabonus) {
-		this.def_xpDiff = def_xpDiff;
+	public IncreaseDefXPDependentOnLevelAction(final double defXpDiff, final double karmabonus) {
+		this.defXpDiff = defXpDiff;
 		this.karmabonus = karmabonus;
 	}
 
@@ -48,10 +46,10 @@ public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 		final int next = Level.getXP(player.getLevel() + 1);
 		if(!Occasion.SECOND_WORLD) {
 			if (player.getDef() < 140) {
-				int reward = (int) ((next - start) / (def_xpDiff) / 20);
+				int reward = (int) ((next - start) / (defXpDiff) / 20);
 				player.setDefXP(reward + player.getDefXP());
 			} else {
-				int reward = (int) ((next - start) / (def_xpDiff) / 60);
+				int reward = (int) ((next - start) / (defXpDiff) / 60);
 				player.setDefXP(reward + player.getDefXP());
 			}
 		}
@@ -60,14 +58,14 @@ public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public String toString() {
-		return "IncreaseDefXPDependentOnLevel <" + def_xpDiff + "," + karmabonus + ">";
+		return "IncreaseDefXPDependentOnLevel <" + defXpDiff + "," + karmabonus + ">";
 	}
 
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + (int)(def_xpDiff);
+		result = PRIME * result + (int)(defXpDiff);
 		return result;
 	}
 
@@ -83,10 +81,7 @@ public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 			return false;
 		}
 		final IncreaseDefXPDependentOnLevelAction other = (IncreaseDefXPDependentOnLevelAction) obj;
-		if (def_xpDiff != other.def_xpDiff) {
-			return false;
-		}
-		return true;
-	}
 
+		return defXpDiff == other.defXpDiff;
+	}
 }

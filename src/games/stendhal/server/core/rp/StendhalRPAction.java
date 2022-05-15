@@ -485,9 +485,10 @@ public class StendhalRPAction {
 		// Get the projectile that will be thrown/shot.
 		StackableItem projectilesItem = null;
 		if (player.getRangeWeapon() != null) {
-			projectilesItem = player.getAmmunition();
-		} if (player.getWandWeapon() != null) {
-			projectilesItem = player.getMagicSpells();
+			projectilesItem = player.getAmmunition("ammunition");
+		}
+		if (player.getWandWeapon() != null) {
+			projectilesItem = player.getAmmunition("magia");
 		}
 		if (projectilesItem == null) {
 			// no arrows... but maybe a spear?
@@ -764,7 +765,7 @@ public class StendhalRPAction {
 					final String source = oldZone.getName();
 					final String destination = zone.getName();
 
-					new GameEvent(player.getName(), "change zone", destination).raise();
+					new GameEvent(player.getName(), "change zone", destination, source).raise();
 
 					TutorialNotifier.zoneChange(player, source, destination);
 					ZoneNotifier.zoneChange(player, source, destination);

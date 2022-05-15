@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -68,10 +67,11 @@ public class IncreaseXPAction implements ChatAction {
 			return false;
 		}
 		final IncreaseXPAction other = (IncreaseXPAction) obj;
-		if (xpDiff != other.xpDiff) {
-			return false;
-		}
-		return true;
+
+		return xpDiff == other.xpDiff;
 	}
 
+	public static ChatAction increaseXP(int xpDiff) {
+		return new IncreaseXPAction(xpDiff);
+	}
 }
