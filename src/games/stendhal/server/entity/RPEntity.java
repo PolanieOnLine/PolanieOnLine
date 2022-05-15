@@ -2552,21 +2552,20 @@ public abstract class RPEntity extends CombatEntity {
 	 *         one in its left hand.
 	 */
 	public Item getRangeWeapon() {
-		for (final Item weapon : getWeapons()) {
-			if (weapon.isOfClass("ranged")) {
-				return weapon;
-			}
-		}
-
-		return null;
+		return getRangeWeapon("ranged");
 	}
 
 	public Item getWandWeapon() {
+		return getRangeWeapon("wand");
+	}
+
+	private Item getRangeWeapon(String weaponType) {
 		for (final Item weapon : getWeapons()) {
-			if (weapon.isOfClass("wand")) {
+			if (weapon.isOfClass(weaponType)) {
 				return weapon;
 			}
 		}
+
 		return null;
 	}
 
@@ -2578,30 +2577,17 @@ public abstract class RPEntity extends CombatEntity {
 	 *         If the entity has ammunition in each hand, returns the ammunition
 	 *         in its left hand.
 	 */
-	public StackableItem getAmmunition() {
+	public StackableItem getAmmunition(String ammoType) {
 		final String[] slots = { "lhand", "rhand" };
 
 		for (final String slot : slots) {
 			final StackableItem item = (StackableItem) getEquippedItemClass(
-					slot, "ammunition");
+					slot, ammoType);
 			if (item != null) {
 				return item;
 			}
 		}
 
-		return null;
-	}
-
-	public StackableItem getMagicSpells() {
-		final String[] slots = { "lhand", "rhand" };
-
-		for (final String slot : slots) {
-			final StackableItem item = (StackableItem) getEquippedItemClass(
-					slot, "magia");
-			if (item != null) {
-				return item;
-			}
-		}
 		return null;
 	}
 
@@ -2815,9 +2801,10 @@ public abstract class RPEntity extends CombatEntity {
 		// calculate ammo when not using RATK stat
 		if (!Testing.COMBAT && weapons.size() > 0) {
 			if (getWeapons().get(0).isOfClass("ranged")) {
-				weapon += getAmmoAtk();
-			} else if (getWeapons().get(0).isOfClass("wand")) {
-				weapon += getMagicAmmoAtk();
+				weapon += getAmmoAtk("ammunition");
+			}
+			if (getWeapons().get(0).isOfClass("wand")) {
+				weapon += getAmmoAtk("magia");
 			}
 		}
 
@@ -2858,9 +2845,10 @@ public abstract class RPEntity extends CombatEntity {
 			ratk += held.getRangedAttack();
 
 			if (held.isOfClass("ranged")) {
-				ratk += getAmmoAtk();
-			} else if (held.isOfClass("wand")) {
-				ratk += getMagicAmmoAtk();
+				ratk += getAmmoAtk("ammunition");
+			}
+			if (held.isOfClass("wand")) {
+				ratk += getAmmoAtk("magia");
 			}
 		}
 
@@ -2870,10 +2858,10 @@ public abstract class RPEntity extends CombatEntity {
 	/**
 	 * Retrieves ATK or RATK (depending on testing.combat system property) value of equipped ammunition.
 	 */
-	private float getAmmoAtk() {
+	private float getAmmoAtk(String ammoType) {
 		float ammo = 0;
 
-		final StackableItem ammoItem = getAmmunition();
+		final StackableItem ammoItem = getAmmunition(ammoType);
 		if (ammoItem != null) {
 			if (Testing.COMBAT) {
 				ammo = ammoItem.getRangedAttack();
@@ -2883,21 +2871,6 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		return ammo;
-	}
-
-	private float getMagicAmmoAtk() {
-		float magicammo = 0;
-
-		final StackableItem magicSpells = getMagicSpells();
-		if (magicSpells != null) {
-			if (Testing.COMBAT) {
-				magicammo = magicSpells.getRangedAttack();
-			} else {
-				magicammo = magicSpells.getAttack();
-			}
-		}
-
-		return magicammo;
 	}
 
 	public float getItemDef() {
@@ -3078,11 +3051,11 @@ public abstract class RPEntity extends CombatEntity {
 	public int getMaxRangeForArcher() {
 		final Item rangeWeapon = getRangeWeapon();
 		final Item wandWeapon = getWandWeapon();
-		final StackableItem ammunition = getAmmunition();
-		final StackableItem magicspells = getMagicSpells();
+		final StackableItem ammunition = getAmmunition("ammunition");
+		final StackableItem magicSpells = getAmmunition("magia");
 		final StackableItem missiles = getMissileIfNotHoldingOtherWeapon();
 
-		return getWeaponRange(rangeWeapon, ammunition) | getWeaponRange(wandWeapon, magicspells) | getWeaponRange(null, missiles);
+		return getWeaponRange(rangeWeapon, ammunition) | getWeaponRange(wandWeapon, magicSpells) | getWeaponRange(null, missiles);
 	}
 
 	private int getWeaponRange(Item item, StackableItem amm) {
