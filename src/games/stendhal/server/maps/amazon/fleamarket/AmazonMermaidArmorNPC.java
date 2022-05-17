@@ -87,7 +87,7 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 		};
 
 		mermaid.setDescription("Oto Nicklesworth. Czyż syreny nie są piękne?");
-		mermaid.setEntityClass("marmaidnpc");
+		mermaid.setEntityClass("mermaidnpc");
 		mermaid.setGender("F");
 		mermaid.setPosition(8, 92);
 		zone.add(mermaid);

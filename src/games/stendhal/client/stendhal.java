@@ -83,7 +83,7 @@ public final class stendhal {
 	/** Display sizes optimized for different screen resolutions */
 	private static final List<Dimension> displaySizes = new ArrayList<Dimension>(3);
 	public static final Integer SIZE_INDEX = 0;
-	public static final Integer SIZE_INDEX_LARGE = 1;
+	public static final Integer SIZE_INDEX_LARGE = 2;
 	public static final Integer SIZE_INDEX_WIDE = 2;
 	public static final Integer DISPLAY_SIZE_INDEX = SIZE_INDEX_LARGE;
 
@@ -168,9 +168,9 @@ public final class stendhal {
 	 */
 	private static void initUsableDisplaySizes() {
 		// Optimized display dimensions for display resolutions
-		displaySizes.add(new Dimension(640, 480)); // Smaller 4:3 (1024x768 and smaller)
-		displaySizes.add(new Dimension(800, 600)); // Larger 4:3 (1280x1024)
-		displaySizes.add(new Dimension(864, 486)); // Larger 16:9 (1366x768 and larger)
+		displaySizes.add(new Dimension(800, 600)); // Smaller 4:3 (1024x768 and smaller)
+		displaySizes.add(new Dimension(864, 600)); // Larger 4:3 (1280x1024)
+		displaySizes.add(new Dimension(928, 644)); // Larger 16:9 (1366x768 and larger)
 	}
 
 	/**

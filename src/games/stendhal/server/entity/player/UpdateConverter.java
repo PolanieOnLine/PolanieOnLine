@@ -605,6 +605,8 @@ public abstract class UpdateConverter {
 		fixBaseHPAfterRebornQuest(player);
 		// fix mad guards quest
 		fixKillMadGuardsQuest(player);
+
+		fixQuestDoneState(player);
 	}
 
 	/**
@@ -858,6 +860,14 @@ public abstract class UpdateConverter {
 
 			player.setQuest(newName, questState);
 			player.removeQuest(oldName);
+		}
+	}
+
+	private static void fixQuestDoneState(Player player) {
+		String quest = "kill_gnomes";
+		String value = player.getQuest(quest, 0);
+		if (value != null && value.equals("killed")) {
+			player.setQuest(quest, 0, "done");
 		}
 	}
 }

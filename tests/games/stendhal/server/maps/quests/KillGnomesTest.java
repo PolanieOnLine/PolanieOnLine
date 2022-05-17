@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,6 +24,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.semos.plains.MillerNPC;
 import utilities.PlayerTestHelper;
@@ -36,7 +36,7 @@ import utilities.QuestHelper;
  * @author IschBing, hendrik
  */
 public class KillGnomesTest {
-	private static final String QUEST_VALUE_STARTED = "start;cavalryman gnome,0,1,0,0,gnome,0,1,0,0,infantry gnome,0,1,0,0";
+	private static final String QUEST_VALUE_STARTED = "start;gnom kawalerzysta,0,1,0,0,gnom,0,1,0,0,gnom zwiadowca,0,1,0,0";
 
 	private Player player = null;
 	private SpeakerNPC npc = null;
@@ -48,7 +48,7 @@ public class KillGnomesTest {
 		QuestHelper.setUpBeforeClass();
 		final StendhalRPZone zone = new StendhalRPZone("admin_test");
 		new MillerNPC().configureZone(zone, null);
-		AbstractQuest quest = new KillGnomes();
+		AbstractQuest quest = new BuiltQuest(new KillGnomes().story());
 		questSlot = quest.getSlotName();
 		quest.addToWorld();
 	}
@@ -79,7 +79,7 @@ public class KillGnomesTest {
 		assertEquals("Excellent. You'll find the gnomes camped out, north west of Semos. Make sure you kill some of the ringleaders, too, at least one infantryman and one cavalryman.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye.", getReply(npc));
-		assertThat(player.getQuest(questSlot), equalTo(QUEST_VALUE_STARTED));
+		assertThat(player.getQuest(questSlot, 0), equalTo("start"));
 	}
 
 
@@ -107,18 +107,16 @@ public class KillGnomesTest {
 		player.setQuest(questSlot, QUEST_VALUE_STARTED);
 
 		// kill gnomes
-		player.setSoloKill("gnome");
-		player.setSoloKill("infantry gnome");
-		player.setSoloKill("cavalryman gnome");
+		player.setSoloKill("gnom");
+		player.setSoloKill("gnom zwiadowca");
+		player.setSoloKill("gnom kawalerzysta");
 
 		// complete quest
 		en.step(player, "hi");
-		assertEquals("Greetings! I am Jenny, the local miller. If you bring me some #grain, I can #mill it into flour for you.", getReply(npc));
-		en.step(player, "done");
 		assertEquals("I see you have killed the gnomes as I asked. I hope they will stay away from the carrots for a while! Please take these potions as a reward.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Bye.", getReply(npc));
-		assertThat(player.getQuest(questSlot, 0), equalTo("killed"));
+		assertThat(player.getQuest(questSlot, 0), equalTo("done"));
 	}
 
 
@@ -127,7 +125,7 @@ public class KillGnomesTest {
 	 */
 	@Test
 	public void askForQuestAgain() {
-		player.setQuest(questSlot, "killed;" + System.currentTimeMillis());
+		player.setQuest(questSlot, "done;" + System.currentTimeMillis());
 
 		// ask for quest again
 		en.step(player, "hi");
