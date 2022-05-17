@@ -2,13 +2,14 @@ Changelog
 ---------
 1.31
 *klient*
+- Zwiększono przestrzeń głównego ekranu gry
 - Poprawiono grafiki strzał & npc
 
 *świat*
 - Adventure Island gwarantuje spawn potwora z dziennego zadania w Semos
 
 *naprawiono błędy*
-- Naprawiono atak trzymanych dwóch mieczy (praworęczny & leworęczny)
+- Naprawiono sumowanie ataku trzymanych dwóch mieczy jednocześnie (praworęczny & leworęczny)
 - Naprawiono atakowanie odpowiednim żywiołem korzystając z magicznych zaklęć oraz różdżek
 
 
