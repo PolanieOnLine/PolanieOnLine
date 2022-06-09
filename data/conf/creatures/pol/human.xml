@@ -104,7 +104,7 @@
 
 	<creature name="pustelnik">
 		<type class="pol/magowie" subclass="mag_pustelnik" tileid="pol_magowie.png:3"/>
-		<description>Widzisz pustelnika. Nie zakłócaj jego medytacji.</description>
+		<description>Oto pustelnik. Nie zakłócaj jego medytacji.</description>
 		<attributes>
 			<atk value="221"/>
 			<ratk value="221"/>

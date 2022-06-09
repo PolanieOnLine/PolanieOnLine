@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,37 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
-import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
-import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
-import games.stendhal.server.entity.npc.condition.TimePassedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
-import marauroa.common.Pair;
 
 /**
  * QUEST: Clean Athors underground
@@ -58,7 +35,7 @@ import marauroa.common.Pair;
  *
  *
  * REWARD:<ul>
- * <li> 80000 XP
+ * <li> 20000 XP
  * <li> 10 greater potion
  * <li> Karma: 11 total (10 + 1)
  * </ul>
@@ -67,178 +44,59 @@ import marauroa.common.Pair;
  *
  * @author Vanessa Julius, idea by anoyyou
  */
-public class CleanAthorsUnderground extends AbstractQuest {
-	private static final String QUEST_SLOT = "clean_athors_underground";
-	private final SpeakerNPC npc = npcs.get("John");
-
-	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_HOUR * 24 * 7;
-
-	private void step_1() {
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED,
-				"Moja żona Jane i ja jesteśmy na wakacjach na wyspie Athor. #Niestety nie możemy zwiedzić całej wyspy ponieważ okropne #potwory uniemożliwiają nam to za każdym razem. Możesz nam pomóc zabijając parę z nich, aby uprzyjemnić nam wakacje?",
-				null);
-
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
-				Arrays.asList("Unfortunately", "Niestety"),
-				null,
-				ConversationStates.QUEST_OFFERED,
-				"Tak niestety. Chcieliśmy spedzić wspaniale czas, ale jedyne co zrobiliśmy to spędziliśmy czas na plaży.",
-				null);
-
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
-				Arrays.asList("creatures", "potwory", "potworów"),
-				null,
-				ConversationStates.QUEST_OFFERED,
-				"Chcemy zwiedzić pierwszą część podziemi, która wygląda na bardzo interesującą, ale te okropne coś tam rzucają się na nas, nawet mumie!",
-				null);
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)), new QuestStateStartsWithCondition(QUEST_SLOT, "killed")),
-				ConversationStates.ATTENDING,
-				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, WEEK_IN_MINUTES, "Te #potwory nie wrócą szybko i dzięki temu możemy zobaczyć wspaniałe miejsca. Wróć za"));
-
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
-						 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)),
-				ConversationStates.QUEST_OFFERED,
-				"Te #potwory wróciły od tamtego czasu, gdy nam pomogłeś. Możesz znów nam pomóc?",
-				null);
-
-		final Map<String, Pair<Integer, Integer>> toKill = new TreeMap<String, Pair<Integer, Integer>>();
-		toKill.put("mumia", new Pair<Integer, Integer>(0,1));
-		toKill.put("mumia królewska", new Pair<Integer, Integer>(0,1));
-		toKill.put("mnich",new Pair<Integer, Integer>(0,1));
-		toKill.put("mnich ciemności",new Pair<Integer, Integer>(0,1));
-		toKill.put("nietoperz",new Pair<Integer, Integer>(0,1));
-		toKill.put("brązowy glut",new Pair<Integer, Integer>(0,1));
-		toKill.put("zielony glut",new Pair<Integer, Integer>(0,1));
-		toKill.put("czarny glut",new Pair<Integer, Integer>(0,1));
-		toKill.put("minotaur",new Pair<Integer, Integer>(0,1));
-		toKill.put("błękitny smok",new Pair<Integer, Integer>(0,1));
-		toKill.put("kamienny golem",new Pair<Integer, Integer>(0,1));
-
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-		actions.add(new SetQuestAction(QUEST_SLOT, "start"));
-		actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
-
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Cudownie! Nie możemy się doczekać na twój powrót. Zabij po jednym z tych potworów w podziemiach wyspy Athor. Założe się, że dostaniesz je wszystkie!",
-				new MultipleActions(actions));
-
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Oh nie ważne. W takim razie pójdziemy dalej się opalać. Nie dlatego, że jesteśmy zmęczeni tym...",
-				new SetQuestAction(QUEST_SLOT, "rejected"));
-	}
-
-	private void step_2() {
-		/* Player has to kill the creatures*/
-	}
-
-	private void step_3() {
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-	    actions.add(new EquipItemAction("wielki eliksir", 20));
-		actions.add(new IncreaseXPAction(80000));
-		actions.add(new SetQuestAction(QUEST_SLOT, "killed;1"));
-		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		actions.add(new IncreaseKarmaAction(10.0));
-
-		LinkedList<String> triggers = new LinkedList<String>();
-		triggers.addAll(ConversationPhrases.FINISH_MESSAGES);
-		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);
-		npc.add(ConversationStates.ATTENDING,
-				triggers,
-				new AndCondition(
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-						new KilledForQuestCondition(QUEST_SLOT, 1)),
-				ConversationStates.ATTENDING,
-				"Wspaniale! Jak widzę zabiłeś te okropne potwory! Mam nadzieję, że nie wrócą zbyt szybko, bo nie będziemy mieli szansy na zwiedzenie paru miejsc."  + " Proszę weż te duże eliksiry jako nagrodę za twoją pomoc.",
-				new MultipleActions(actions));
-
-		npc.add(ConversationStates.ATTENDING,
-				triggers,
-				new AndCondition(
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.ATTENDING,
-				"Proszę uwolnij te wspaniałe miejsca od tych okropnych potworów!",
-				null);
-	}
-
+public class CleanAthorsUnderground implements QuestManuscript {
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Posprzątanie Podziemia Athor",
-				"John i jego żona Jane chcą zwiedzić podziemia Athor podczas swoich wakacji, ale niestety nie mogą.",
-				false);
-		step_1();
-		step_2();
-		step_3();
-	}
+	public QuestBuilder<?> story() {
+		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
 
-	@Override
-	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			if (!isCompleted(player)) {
-				res.add("W podziemiach Athor muszę zabić potwora z każdego rodzaju, aby John i Jane mieli miłe wakacje!");
-			} else if(isRepeatable(player)){
-				res.add("Minęło sporo czasu, gdy " + Grammar.genderVerb(player.getGender(), "spotkałem") + " Johna i Jane na wyspie Athor. Może wciąż potrzebują mojej pomocy.");
-			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pare potworów, a John i Jane mogą w końcu cieszyć się swoimi wakacjami! Nie będą potrzebowali mojej pomocy przez kilka następnych dni.");
-			}
-			return res;
-	}
+		quest.info()
+			.name("Sprzątanie Podziemia Athor")
+			.description("John i jego żona Jane chcą zwiedzić podziemia Athor podczas swoich wakacji, ale niestety nie mogą.")
+			.internalName("clean_athors_underground")
+			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_WEEK)
+			.minLevel(70)
+			.region(Region.ATHOR_ISLAND)
+			.questGiverNpc("John");
 
-	@Override
-	public String getName() {
-		return "Posprzątanie Podziemia Athor";
-	}
+		quest.history()
+			.whenNpcWasMet("Poznałem Johna na wyspie Athor.")
+			.whenQuestWasRejected("Nie zamierzam zabijać stworzeń atakujących podziemia pod wyspą Athor.")
+			.whenQuestWasAccepted("Muszę zabić po jednym z każdej istoty z podziemia Athor, aby pomóc Johnowi i Jane spędzić miłe wakacje!")
+			.whenTaskWasCompleted("Zabiłem kilka stworzeń i powinienem wrócić do Johna.")
+			.whenQuestWasCompleted("John i Jane w końcu mogą cieszyć się wakacjami!")
+			.whenQuestCanBeRepeated("Minęło trochę czasu odkąd odwiedziłem Johna i Jane na wyspie Athor. Może teraz znowu potrzebują mojej pomocy.");
 
-	@Override
-	public String getNPCName() {
-		return npc.getName();
-	}
+		quest.offer()
+			.respondToRequest("Moja żona Jane i ja jesteśmy na wakacjach na wyspie Athor. #Niestety nie możemy zwiedzić całej wyspy ponieważ "
+					+ "okropne #potwory uniemożliwiają nam to za każdym razem. Możesz nam pomóc zabijając parę z nich, aby uprzyjemnić nam wakacje?")
+			.respondToUnrepeatableRequest("Te #potwory nie wrócą szybko i dzięki temu możemy zobaczyć wspaniałe miejsca.")
+			.respondToRepeatedRequest("Te #potwory wróciły od tamtego czasu, gdy nam pomogłeś. Możesz znów nam pomóc?")
+			.respondToAccept("Cudownie! Nie możemy się doczekać na twój powrót. Zabij po jednym z tych potworów w podziemiach wyspy Athor. Założe się, że dostaniesz je wszystkie!")
+			.respondToReject("Och, nie ważne. W takim razie pójdziemy dalej się opalać. Nie dlatego, że już jesteśmy zmęczeni tym...")
+			.respondTo("unfortunately", "niestety").saying("Tak, niestety. Chcieliśmy spedzić wspaniale czas, ale jedyne co zrobiliśmy to spędziliśmy czas na plaży.")
+			.respondTo("creatures", "potwory", "potworów").saying("Chcemy zwiedzić pierwszą część podziemi, która wygląda na bardzo interesującą, ale te okropne coś tam rzucają się na nas, nawet mumie! Pomożesz?")
+			.remind("Proszę uwolnij te wspaniałe miejsca od tych okropnych potworów!");
 
-	@Override
-	public String getRegion() {
-		return Region.ATHOR_ISLAND;
-	}
+		quest.task()
+			.requestKill(1, "mumia")
+			.requestKill(1, "mumia królewska")
+			.requestKill(1, "mnich")
+			.requestKill(1, "mnich ciemności")
+			.requestKill(1, "nietoperz")
+			.requestKill(1, "brązowy glut")
+			.requestKill(1, "zielony glut")
+			.requestKill(1, "czarny glut")
+			.requestKill(1, "minotaur")
+			.requestKill(1, "błękitny smok")
+			.requestKill(1, "kamienny golem");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+		quest.complete()
+			.greet("Wspaniale! Jak widzę zabiłeś te okropne potwory! Mam nadzieję, że nie wrócą zbyt szybko, bo nie będziemy mieli szansy na zwiedzenie paru miejsc."
+					+ " Proszę, przyjmij te wielkie eliksiry w nagrodę za swoją pomoc.")
+			.rewardWith(new IncreaseXPAction(20000))
+			.rewardWith(new IncreaseKarmaAction(10.0))
+			.rewardWith(new EquipItemAction("wielki eliksir", 10));
 
-	@Override
-	public int getMinLevel() {
-		return 70; // level of blue dragon
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
-				 new TimePassedCondition(QUEST_SLOT, 1, WEEK_IN_MINUTES)).fire(player,null, null);
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
+		return quest;
 	}
 }

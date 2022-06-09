@@ -66,7 +66,7 @@ public class AdasNPC implements ZoneConfigurator {
 		npc.setEntityClass("npcdzieckogoralskie");
 		npc.setGender("M");
 		npc.setPosition(6, 3);
-		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
+		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);
 	}
 }

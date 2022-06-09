@@ -2195,7 +2195,7 @@ public class Player extends DressedEntity implements UseListener {
 
 	@Override
 	protected void applyDefXP(final RPEntity entity) {
-		if (getsFightXpFrom(entity)) {
+		if (getsDefXpFrom(entity)) {
 			incDefXP();
 		}
 	}
@@ -3124,5 +3124,33 @@ public class Player extends DressedEntity implements UseListener {
 		}
 		String[] values = value.split(" ");
 		return Integer.parseInt(values[0]) * Integer.parseInt(values[1]);
+	}
+
+	/**
+	 * This hack doubles the chance that a player can hit an enemy
+	 * to make the game feel more fair. However, in order to avoid
+	 * drastic changes to the game's balance, we need to reduce
+	 * the amount of damage done by players. See:
+	 *     Player.damageDone.
+	 */
+	@Override
+	protected int calculateRiskForCanHit(final int roll, final int defenderDEF,
+			final int attackerATK) {
+		if (!games.stendhal.common.constants.Testing.TESTSERVER) {
+			return super.calculateRiskForCanHit(roll, defenderDEF, attackerATK);
+		}
+
+		// use 30 as multiple for players instead of 20
+		return ((int) Math.round(HIT_CHANCE_MULTIPLIER * 1.5)) * attackerATK - roll * defenderDEF;
+	}
+
+	@Override
+	public int damageDone(final RPEntity defender, double attackingWeaponsValue, Nature damageType) {
+		if (!games.stendhal.common.constants.Testing.TESTSERVER) {
+			return super.damageDone(defender, attackingWeaponsValue, damageType);
+		}
+
+		// compensate for player increased chance of hit
+		return (int) Math.round(super.damageDone(defender, attackingWeaponsValue, damageType) / 1.5);
 	}
 }

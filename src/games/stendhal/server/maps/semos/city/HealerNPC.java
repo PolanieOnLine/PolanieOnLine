@@ -61,7 +61,7 @@ public class HealerNPC implements ZoneConfigurator {
 		npc.setEntityClass("welcomernpc");
 		npc.setGender("F");
 		npc.setPosition(5, 46);
-		npc.setSounds(Arrays.asList("giggle-1", "giggle-2", "giggle-female-01", "giggle-female-02"));
+		npc.setSounds(Arrays.asList("giggle-female-01", "giggle-female-02"));
 		zone.add(npc);
 	}
 }

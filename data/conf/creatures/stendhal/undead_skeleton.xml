@@ -33,9 +33,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci! Nie przejdziesz!"/>
-				<sound value="bones-1" />
-				<sound value="evillaugh-3" />
-				<sound value="evillaugh-5" />
+				<sound value="bones-1"/>
+				<sound value="bones-2"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -69,7 +70,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, tatuś mnie ocali!"/>
-				<sound value="bones-2" />
+				<sound value="bones-2"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -109,9 +110,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, nie zabijesz mnie!"/>
-				<sound value="bones-1" />
-				<sound value="evillaugh-3" />
-				<sound value="evillaugh-5" />
+				<sound value="bones-1"/>
+				<sound value="bones-2"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -149,9 +151,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, nie przeżyjesz!"/>
-				<sound value="bones-1" />
-				<sound value="evillaugh-3" />
-				<sound value="evillaugh-5" />
+				<sound value="bones-1"/>
+				<sound value="bones-2"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -187,9 +190,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, nie obrabujesz mnie!"/>
-				<sound value="bones-1" />
-				<sound value="evillaugh-3" />
-				<sound value="evillaugh-5" />
+				<sound value="bones-1"/>
+				<sound value="bones-2"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>

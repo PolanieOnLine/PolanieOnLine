@@ -296,6 +296,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, nie zabijesz w nas ducha!"/>
+				<sound value="bones-1"/>
+				<sound value="bones-2"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -326,6 +330,9 @@
 		</drops>
 		<equips/>
 		<ai>
+			<says>
+				<sound value="striga-laugh-01"/>
+			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -358,7 +365,7 @@
 		<equips/>
 		<ai>
 			<says>
-				<sound value="evillaugh-5"/>
+				<sound value="striga-laugh-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -393,7 +400,7 @@
 		<equips/>
 		<ai>
 			<says>
-				<sound value="evillaugh-5"/>
+				<sound value="striga-laugh-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -427,6 +434,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Zbłądziłeś rycerzu? Wyprowadzę cię stąd..."/>
+				<sound value="ghost-02"/>
+				<sound value="ghost-03"/>
+				<sound value="striga-laugh-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -458,6 +468,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Przebacz Brunhildo!"/>
+				<sound value="ghost-02"/>
+				<sound value="ghost-03"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -490,6 +502,8 @@
 			<says>
 				<noise state="idle follow fight" value="Nie przebaczę!"/>
 				<noise state="idle follow fight" value="Nigdy nie przebaczę!"/>
+				<sound value="ghost-02"/>
+				<sound value="ghost-03"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -523,6 +537,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
+				<sound value="laugh-evil-02"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
@@ -559,6 +574,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Zawsze z humorem spoglądaj na... śmierć!"/>
+				<sound value="laugh-evil-02"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="offensive"/>
@@ -596,6 +612,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
+				<sound value="laugh-evil-02"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="offensive"/>

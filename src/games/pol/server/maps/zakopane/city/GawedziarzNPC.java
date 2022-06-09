@@ -290,7 +290,7 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 		npc.setEntityClass("npcstaryprzewodnik");
 		npc.setGender("M");
 		npc.setPosition(35, 46);
-		npc.setSounds(Arrays.asList("laugh-2"));
+		npc.setSounds(Arrays.asList("laugh-old-man-02"));
 		zone.add(npc);
 	}
 

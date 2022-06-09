@@ -60,7 +60,7 @@ public class KittensNPC implements ZoneConfigurator {
         final SilentNPC k2 = new Kitten();
 
         k2.setPosition(20, 15);
-        k2.setDescription("Oto relaksujący kotek.");
+        k2.setDescription("Oto relaksujący się kotek.");
         k2.setEntityClass("animal/kitten");
         k2.setDirection(Direction.DOWN);
         k2.setSounds(Arrays.asList("kitten-purr-1", "kitten-mew-1"));

@@ -25,14 +25,14 @@
 
 		<entity x="127" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="radius">128</parameter>
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wind-1</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">50</parameter>
@@ -70,14 +70,14 @@
 
 		<entity x="127" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="radius">128</parameter>
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
 		<entity x="66" y="62">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">18</parameter>
 				<parameter name="volume">20</parameter>
 			</implementation>
@@ -101,14 +101,14 @@
 
 		<entity x="127" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="radius">128</parameter>
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wind-1</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">50</parameter>
@@ -171,14 +171,14 @@
 
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="radius">128</parameter>
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wind-1</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">50</parameter>
@@ -302,7 +302,7 @@
 		</attributes>
 		<entity x="1" y="1">
 			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
@@ -379,7 +379,7 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
@@ -483,7 +483,7 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
@@ -520,7 +520,7 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
@@ -557,7 +557,7 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>
@@ -594,7 +594,7 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>

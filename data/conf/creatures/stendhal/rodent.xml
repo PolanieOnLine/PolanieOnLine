@@ -56,8 +56,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Pisk! Piiiisk!"/>
-				<sound value="rats-2"/>
-				<sound value="rats-41"/>
+				<sound value="rat-squeak-01"/>
+				<sound value="rat-squeak-02"/>
+				<sound value="rat-squeak-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -88,8 +89,9 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="rats-2"/>
-				<sound value="rats-41"/>
+				<sound value="rat-squeak-01"/>
+				<sound value="rat-squeak-02"/>
+				<sound value="rat-squeak-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -121,8 +123,9 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="rats-2"/>
-				<sound value="rats-41"/>
+				<sound value="rat-squeak-01"/>
+				<sound value="rat-squeak-02"/>
+				<sound value="rat-squeak-03"/>
 			</says>
 			<profile name="poisonous" params="5,mocna trucizna"/>
 			<profile name="brave"/>
@@ -156,6 +159,9 @@
 			<says>
 				<noise state="idle follow fight" value="SZREEEK!!"/>
 				<noise state="idle follow fight" value="SZAAAAAAA!!"/>
+				<sound value="rat-squeak-01"/>
+				<sound value="rat-squeak-02"/>
+				<sound value="rat-squeak-03"/>
 			</says>
 			<profile name="poisonous" params="5,śmiertelna trucizna"/>
 			<profile name="brave"/>
@@ -185,7 +191,10 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="rats-1"/>
+				<sound value="rat-squeak-01"/>
+				<sound value="rat-squeak-02"/>
+				<sound value="rat-squeak-03"/>
+				<sound value="rat-angry-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -216,8 +225,9 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="bobcat-1"/>
-				<sound value="leopard-11"/>
+				<sound value="rat-angry-02"/>
+				<sound value="giantrat-growl-01"/>
+				<sound value="giantrat-growl-02"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="animal"/>

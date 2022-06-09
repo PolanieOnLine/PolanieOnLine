@@ -295,11 +295,7 @@ public class j2DClient implements UserInterface {
 	private SoundGroup initSoundSystem() {
 		SoundGroup group = getSoundSystemFacade().getGroup(SoundLayer.USER_INTERFACE.groupName);
 		group.loadSound("harp-1", "harp-1.ogg", SoundFileType.OGG, false);
-		group.loadSound("click-4", "click-4.ogg", SoundFileType.OGG, false);
-		group.loadSound("click-5", "click-5.ogg", SoundFileType.OGG, false);
-		group.loadSound("click-6", "click-6.ogg", SoundFileType.OGG, false);
-		group.loadSound("click-8", "click-8.ogg", SoundFileType.OGG, false);
-		group.loadSound("click-10", "click-10.ogg", SoundFileType.OGG, false);
+		group.loadSound("gui-window-fold", "gui-window-fold.ogg", SoundFileType.OGG, false);
 		return group;
 	}
 

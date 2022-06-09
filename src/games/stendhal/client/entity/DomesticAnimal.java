@@ -61,7 +61,7 @@ public abstract class DomesticAnimal extends NPC {
 	public void initialize(final RPObject object) {
 		super.initialize(object);
 
-		addSounds(SoundLayer.CREATURE_NOISE.groupName, "eat", "eat-1");
+		addSounds(SoundLayer.CREATURE_NOISE.groupName, "eat", "eat-01");
 
 		/*
 		 * Weight

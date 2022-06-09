@@ -34,7 +34,7 @@
 
 	<creature name="oko">
 		<type class="stendhal/beholder" subclass="beholder" tileid="beholder.png:0"/>
-		<description>Widzisz oko, ale ono widzi cię doskonale, więc nie schowasz się przed nim.</description>
+		<description>Oto oko, które widzi cię doskonale, więc nie schowasz się przed nim.</description>
 		<attributes>
 			<atk value="126"/>
 			<def value="20"/>
@@ -59,7 +59,7 @@
 
 	<creature name="oko starsze">
 		<type class="stendhal/beholder" subclass="elder_beholder" tileid="beholder.png:1"/>
-		<description>Widzisz oko starsze. Przeraźliwie patrzy się na ciebie.</description>
+		<description>Oto oko starsze. Przeraźliwie patrzy się na ciebie.</description>
 		<attributes>
 			<atk value="172"/>
 			<def value="53"/>
@@ -108,9 +108,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="hyena-1"/>
-				<sound value="hyena-2"/>
-				<sound value="hyena-3"/>
+				<sound value="loop-grind-stone-1"/>
+				<sound value="gargoyle-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -139,7 +138,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="loop-grind-stone-1" />
+				<sound value="loop-grind-stone-1"/>
+				<sound value="gargoyle-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -170,9 +170,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="hyena-1"/>
-				<sound value="hyena-2"/>
-				<sound value="hyena-3"/>
+				<sound value="loop-grind-stone-1"/>
+				<sound value="gargoyle-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -204,9 +203,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="hyena-1"/>
-				<sound value="hyena-2"/>
-				<sound value="hyena-3"/>
+				<sound value="loop-grind-stone-1"/>
+				<sound value="gargoyle-01"/>
 			</says>
 			<profile name="poisonous" params="15,trucizna"/>
 			<profile name="brave"/>

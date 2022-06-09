@@ -425,7 +425,7 @@
 		<!-- Ambiance on dock -->
 		<entity x="78" y="49">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">ambiance/water-sloshing-1</parameter>
+				<parameter name="sound">loop/water-sloshing-01</parameter>
 				<parameter name="radius">13</parameter>
 				<parameter name="volume">100</parameter>
 			</implementation>
@@ -581,10 +581,10 @@
 		<entity x="18" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">water-4</parameter>
+				<parameter name="sound">water-faucet-1</parameter>
 				<parameter name="radius">50</parameter>
 			</implementation>
-			<attribute name="description">Oto umywalka do umycia rąk.</attribute>
+			<attribute name="description">Oto zlew do mycia rąk.</attribute>
 			<attribute name="width">1</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
@@ -790,7 +790,7 @@
 		<entity x="5" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -842,7 +842,7 @@
 		<entity x="4" y="14">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1093,7 +1093,7 @@
 		<entity x="10" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1153,7 +1153,7 @@
 		<entity x="11" y="2">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1218,7 +1218,7 @@
 		<entity x="4" y="14">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1276,7 +1276,7 @@
 		<entity x="18" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1475,7 +1475,7 @@
 		<entity x="3" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1541,7 +1541,7 @@
 		<entity x="15" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1645,7 +1645,7 @@
 		<entity x="15" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1783,7 +1783,7 @@
 		<entity x="3" y="13">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1841,7 +1841,7 @@
 		<entity x="3" y="13">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1899,7 +1899,7 @@
 		<entity x="3" y="13">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1957,7 +1957,7 @@
 		<entity x="3" y="13">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -2009,7 +2009,7 @@
 		<entity x="24" y="24">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -2067,7 +2067,7 @@
 		<entity x="24" y="24">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>

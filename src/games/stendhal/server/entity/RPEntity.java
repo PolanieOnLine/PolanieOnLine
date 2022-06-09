@@ -15,10 +15,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.WeakHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,7 +51,6 @@ import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
-import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
 import games.stendhal.server.entity.slot.Slots;
@@ -73,6 +70,9 @@ import marauroa.server.game.Statistics;
 import marauroa.server.game.db.DAORegister;
 
 public abstract class RPEntity extends CombatEntity {
+	/** The logger instance. */
+	private static final Logger logger = Logger.getLogger(RPEntity.class);
+
 	/**
 	 * The title attribute name.
 	 */
@@ -89,17 +89,9 @@ public abstract class RPEntity extends CombatEntity {
 	private static final float NECKLACE_DEF_MULTIPLIER = 1.0f;
 	private static final float GLOVE_DEF_MULTIPLIER = 1.5f;
 	private static final float BELT_DEF_MULTIPLIER = 1.0f;
-
-	/**
-	 * To prevent players from gaining attack and defense experience by fighting
-	 * against very weak creatures, they only gain atk and def xp for so many
-	 * turns after they have actually been damaged by the enemy. //
-	 */
-	private static final int TURNS_WHILE_FIGHT_XP_INCREASES = 12;
-
-	/** the logger instance. */
-	private static final Logger logger = Logger.getLogger(RPEntity.class);
 	private static Statistics stats;
+
+	protected static final int HIT_CHANCE_MULTIPLIER = 20;
 
 	private String name;
 	protected int atk;
@@ -126,14 +118,7 @@ public abstract class RPEntity extends CombatEntity {
 	protected ImmutableList<StatusAttacker> statusAttackers = ImmutableList.of();
 	/** a list of current statuses */
 	protected StatusList statusList;
-	/**
-	 * Maps each enemy which has recently damaged this RPEntity to the turn when
-	 * the last damage has occurred.
-	 *
-	 * You only get ATK and DEF experience by fighting against a creature that
-	 * is in this list.
-	 */
-	private final Map<RPEntity, Integer> enemiesThatGiveFightXP;
+
 	/** List of all enemies that are currently attacking this entity. */
 	private final List<Entity> attackSources;
 	/** the enemy that is currently attacked by this entity. */
@@ -203,7 +188,6 @@ public abstract class RPEntity extends CombatEntity {
 		super(object);
 		attackSources = new ArrayList<>();
 		damageReceived = new CounterMap<>(true);
-		enemiesThatGiveFightXP = new WeakHashMap<>();
 		totalDamageReceived = 0;
 	}
 
@@ -211,7 +195,6 @@ public abstract class RPEntity extends CombatEntity {
 		super();
 		attackSources = new ArrayList<>();
 		damageReceived = new CounterMap<>(true);
-		enemiesThatGiveFightXP = new WeakHashMap<>();
 		totalDamageReceived = 0;
 	}
 
@@ -479,7 +462,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * @return The number of hitpoints that the target should lose. 0 if the
 	 *         attack was completely blocked by the defender.
 	 */
-	int damageDone(RPEntity defender, double attackingWeaponsValue, Nature damageType,
+	protected int damageDone(RPEntity defender, double attackingWeaponsValue, Nature damageType,
 			boolean isRanged, int maxRange) {
 		// Don't start from 0 to mitigate weird behaviour at very low levels
 		int effectiveAttackerLevel = getLevel() + 5;
@@ -1275,25 +1258,6 @@ public abstract class RPEntity extends CombatEntity {
 
 			attackTarget = null;
 		}
-	}
-
-	public boolean getsFightXpFrom(final RPEntity enemy) {
-		if (enemy instanceof TrainingDummy) {
-			// training dummies always give fight XP
-			return true;
-		}
-
-		final Integer turnWhenLastDamaged = enemiesThatGiveFightXP.get(enemy);
-		if (turnWhenLastDamaged == null) {
-			return false;
-		}
-		final int currentTurn = SingletonRepository.getRuleProcessor()
-				.getTurn();
-		if (currentTurn - turnWhenLastDamaged > TURNS_WHILE_FIGHT_XP_INCREASES) {
-			enemiesThatGiveFightXP.remove(enemy);
-			return false;
-		}
-		return true;
 	}
 
 	public void stopAttacking(final Entity attacker) {
@@ -3195,9 +3159,9 @@ public abstract class RPEntity extends CombatEntity {
 		return risk > 0;
 	}
 
-	int calculateRiskForCanHit(final int roll, final int defenderDEF,
+	protected int calculateRiskForCanHit(final int roll, final int defenderDEF,
 			final int attackerATK) {
-		return 20 * attackerATK - roll * defenderDEF;
+		return HIT_CHANCE_MULTIPLIER * attackerATK - roll * defenderDEF;
 	}
 
 	/**

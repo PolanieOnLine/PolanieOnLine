@@ -48,4 +48,7 @@ public class Testing {
 	/** Testing switch for quests **/
 	public static final boolean QUEST =
 			(System.getProperty("testing.quest") != null);
+
+	/** Switch for when test server is enabled. */
+	public static final boolean TESTSERVER = System.getProperty("stendhal.testserver") != null;
 }

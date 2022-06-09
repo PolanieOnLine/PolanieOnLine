@@ -34,8 +34,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Mmmm! Idzie mięsko!" />
-				<sound value="saur-3" />
-				<sound value="saur-4" />
+				<sound value="goblin-01"/>
+				<sound value="goblin-burp-01"/>
+				<sound value="goblin-laugh-01"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -73,8 +74,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Czas na śniadanko!" />
-				<sound value="saur-3" />
-				<sound value="saur-4" />
+				<sound value="goblin-01"/>
+				<sound value="goblin-burp-01"/>
+				<sound value="goblin-laugh-01"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -113,8 +115,9 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="saur-3" />
-				<sound value="saur-4" />
+				<sound value="goblin-01"/>
+				<sound value="goblin-burp-01"/>
+				<sound value="goblin-laugh-01"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>

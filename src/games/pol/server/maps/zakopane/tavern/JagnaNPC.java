@@ -66,7 +66,7 @@ public class JagnaNPC implements ZoneConfigurator {
 		jagna.setGender("F");
 		jagna.setPosition(25, 3);
 		jagna.setDirection(Direction.DOWN);
-		jagna.setSounds(Arrays.asList("hiccup-1", "hiccup-2", "hiccup-3"));
+		jagna.setSounds(Arrays.asList("hiccup-01"));
 		zone.add(jagna);
 	}
 }

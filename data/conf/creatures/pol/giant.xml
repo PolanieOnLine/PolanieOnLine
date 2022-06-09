@@ -377,6 +377,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Powiadam ci, to twa ostatnia chwila!"/>
+				<sound value="bones-1"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -412,6 +415,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Pogrzechoczę twoje żebra!"/>
+				<sound value="bones-1"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -448,6 +454,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Pękanie kości, to mój ulubiony dźwięk!"/>
+				<sound value="bones-1"/>
+				<sound value="skeleton-laugh-01"/>
+				<sound value="skeleton-laugh-02"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -483,6 +492,7 @@
 			<says>
 				<noise state="idle follow fight" value="Do twarzy mi w tym kolorze?"/>
 				<noise state="idle follow fight" value="Nie masz gustu, więc giń!"/>
+				<sound value="laugh-evil-01"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -518,6 +528,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Na proch cię zmielę!"/>
+				<sound value="laugh-evil-01"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -556,6 +567,7 @@
 			<says>
 				<noise state="idle follow fight" value="Złotko ty moje! Podejdź bliżej!"/>
 				<noise state="idle follow fight" value="Nie wszystko złoto, co się świeci!"/>
+				<sound value="laugh-evil-01"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>

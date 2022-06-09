@@ -328,7 +328,7 @@
 		</entity>
 		<entity x="7" y="9">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">60</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">15</parameter>
@@ -337,7 +337,7 @@
 		</entity>
 		<entity x="10" y="26">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">coins-01, window-close-1</parameter>
 				<parameter name="min">60</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">15</parameter>

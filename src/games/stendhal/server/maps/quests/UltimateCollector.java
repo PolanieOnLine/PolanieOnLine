@@ -168,17 +168,32 @@ public class UltimateCollector extends AbstractQuest {
 
 	private void requestItem() {
 		final Map<String,Integer> items = new HashMap<String, Integer>();
-		// the numbers are based on depo's metric for rarity (bigger number = more rare) which may be out of date https://sourceforge.net/tracker/?func=detail&aid=2066597&group_id=1111&atid=973767
-		// nothing rarer than a demon fire sword, and not included items which are quest rewards elsewhere
-		items.put("nihonto",1); // 5169
-		items.put("magiczny topór obosieczny",1); // 1010
-		items.put("miecz cesarski",1); // 2393
-		items.put("topór Durina",1); // 4331
-		items.put("młot wulkanów",1); // 4474
-		items.put("miecz xenocyjski",1); // 1347
-		items.put("czarna kosa",1); // 3918 (pretty sure this is rarer now but a lot of old ones about to buy)
-		items.put("sztylet chaosu",1); // 1691
-		items.put("czarny miecz",1); // 6285
+
+		/* Updated 2022-05-22
+		 *
+		 * Rarity calculations (lower means more rare):
+		 *   (spawn count * drop rate * (1 / respawn)) * 1000 + (spawn count * drop rate * (1 / respawn)) * 1000 ...
+		 *
+		 * See: https://stendhalgame.org/wiki/StendhalItemsDropScoring
+		 *   Current most rare: 0.09 (black scythe)
+		 *   Current least rare: 2.0 (chaos dagger)
+		 *
+		 * Items given as rewards from quests or otherwise acquirable via
+		 * methods other than creature drops should not be included.
+		 */
+		items.put("nihonto",1); // 1.39
+		items.put("magiczny topór obosieczny",1); // 1.72
+		items.put("miecz cesarski",1); // 0.33
+		items.put("topór Durina",1); // 0.39
+		items.put("młot wulkanów",1); // 0.18
+		items.put("miecz xenocyjski",1); // 0.67
+		items.put("czarna kosa",1); // 0.09
+		items.put("sztylet chaosu",1); // 2.0
+		items.put("czarny miecz",1); // 0.15
+		items.put("złota klinga orków",1); // 0.09
+		items.put("lodowy młot bojowy",1); // 0.15
+		items.put("miecz orków",1); // 0.86
+		items.put("czarna halabarda",1); // 0.12
 
 		// If all quests are completed, ask for an item
 		npc.add(ConversationStates.ATTENDING,

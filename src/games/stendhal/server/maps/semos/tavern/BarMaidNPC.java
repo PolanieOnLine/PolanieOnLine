@@ -94,7 +94,7 @@ public class BarMaidNPC implements ZoneConfigurator {
 		margaret.setEntityClass("tavernbarmaidnpc");
 		margaret.setGender("F");
 		margaret.setPosition(11, 4);
-		margaret.setSounds(Arrays.asList("hiccup-01", "hiccup-1", "hiccup-2", "hiccup-3"));
+		margaret.setSounds(Arrays.asList("hiccup-01"));
 		zone.add(margaret);
 	}
 }

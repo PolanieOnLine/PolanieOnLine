@@ -96,6 +96,7 @@ public class SimulateCombat {
 	private static boolean fair = false;
 	private static boolean boss = false;
 	private static boolean all = false;
+	private static boolean verbose = false;
 
 	private static EntityManager em;
 	private static List<DefaultCreature> creatures;
@@ -178,7 +179,8 @@ public class SimulateCombat {
 			+ "\n\t--fair:       Gives player weapon with atk 5 & no other equipment (overrides --barehanded & assumes --noboost)."
 			+ "\n\t--boss:       Denotes enemy is boss type (currently doesn't affect anything)."
 			+ "\n\t--all:        Runs simulation for each predefined creature. If names are"
-				+ " supplied, only those creatures will be simulated.");
+				+ " supplied, only those creatures will be simulated."
+			+ "\n\t--verbose|-v  Output detailed round info.");
 	}
 
 	private static void showUsageErrorAndExit(final String msg, final int err) {
@@ -289,6 +291,8 @@ public class SimulateCombat {
 				boss = true;
 			} else if (st.equals("--all")) {
 				all = true;
+			} else if (st.equals("--verbose") || st.equals("-v")) {
+				verbose = true;
 			} else {
 				if (all) {
 					filtered_creatures.add(st);
@@ -417,7 +421,7 @@ public class SimulateCombat {
 	private static void runSimulation() {
 		if (!all) {
 			if (creature_name != null) {
-				System.out.println("\nRunning simulation for " + creature_name + " ...");
+				System.out.println("\nRunning simulation for " + creature_name + " (" + rounds + " rounds) ...");
 			} else {
 				System.out.println("\nRunning simulation ...");
 			}
@@ -441,8 +445,8 @@ public class SimulateCombat {
 				winner = "enemy";
 			}
 
-			// don't output detailed round info for full simulation of all defined creatures
-			if (!all) {
+			// output detailed round info
+			if (verbose) {
 				System.out.println("\nRound " + (ridx+1) + "/" + rounds + " winner: " + winner
 					+ "\n  player HP: " + playerHP + "\n  enemy  HP: " + enemyHP);
 			}

@@ -37,8 +37,8 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
-				<sound value="wings-flap-large-1" />
+				<sound value="roar-dragon-1"/>
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -86,8 +86,8 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
-				<sound value="wings-flap-large-1" />
+				<sound value="roar-dragon-1"/>
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -136,8 +136,8 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
-				<sound value="wings-flap-large-1" />
+				<sound value="roar-dragon-1"/>
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -185,8 +185,8 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
-				<sound value="wings-flap-large-1" />
+				<sound value="roar-dragon-1"/>
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -233,8 +233,8 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
-				<sound value="wings-flap-large-1" />
+				<sound value="roar-dragon-1"/>
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="2"/>
 			<profile name="brave"/>
@@ -279,7 +279,7 @@
 		<ai>
 			<says>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-large-1" />
+				<sound value="roar-large-1"/>
 			</says>
 			<profile name="injured" params="1"/>
 			<profile name="brave"/>
@@ -320,7 +320,7 @@
 		<ai>
 			<says>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-large-1" />
+				<sound value="roar-large-1"/>
 			</says>
 			<profile name="injured" params="1"/>
 			<profile name="brave"/>
@@ -355,7 +355,7 @@
 		<equips/>
 		<ai>
 			<says>
-				<sound value="roar-large-1" />
+				<sound value="roar-large-1"/>
 			</says>
 			<profile name="injured" params="1"/>
 			<profile name="brave"/>
@@ -405,7 +405,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
+				<sound value="roar-dragon-1"/>
 			</says>
 			<profile name="injured" params="4"/>
 			<profile name="brave"/>
@@ -450,7 +450,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
+				<sound value="roar-dragon-1"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -496,7 +496,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
+				<sound value="roar-dragon-1"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -540,7 +540,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
+				<sound value="roar-dragon-1"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -588,7 +588,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="roar-dragon-1" />
+				<sound value="roar-dragon-1"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -636,7 +636,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="wings-flap-large-1" />
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>
@@ -688,7 +688,7 @@
 			<says>
 				<sound value="pol-dragon-roaring"/>
 				<sound value="pol-dragon-taunt"/>
-				<sound value="wings-flap-large-1" />
+				<sound value="wings-flap-large-1"/>
 			</says>
 			<profile name="injured" params="5"/>
 			<profile name="brave"/>

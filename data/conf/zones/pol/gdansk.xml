@@ -105,7 +105,7 @@
 
 		<entity x="41" y="125">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">50</parameter>
@@ -517,7 +517,7 @@
 
 		<entity x="23" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">water-2, wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">1</parameter>
 				<parameter name="radius">10</parameter>
@@ -525,7 +525,7 @@
 		</entity>
 		<entity x="30" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">water-3, wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">1</parameter>
 				<parameter name="radius">10</parameter>
@@ -533,7 +533,7 @@
 		</entity>
 		<entity x="16" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">2</parameter>
 				<parameter name="radius">8</parameter>
@@ -630,7 +630,7 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="11" y="7">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">60</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">15</parameter>
@@ -820,7 +820,7 @@
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">60</parameter>
 				<parameter name="max">120</parameter>
 			</implementation>
@@ -1256,7 +1256,7 @@
 		<entity x="33" y="7">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">5</parameter>
 				<parameter name="max">30</parameter>
 				<parameter name="radius">6</parameter>
@@ -1357,7 +1357,7 @@
 
 		<entity x="13" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">4</parameter>
 				<parameter name="volume">20</parameter>
 			</implementation>

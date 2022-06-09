@@ -404,4 +404,48 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
+
+	<item name="sztylet leworęczny">
+		<type class="dagger" subclass="l_hand_dagger" tileid="-1"/>
+		<description>Oto sztylet leworęczny. Musi zostać użyty wraz z praworęcznym sztyletem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="5"/>
+			<def value="2"/>
+			<rate value="2"/>
+			<min_level value="50"/>
+			<max_improves value="1"/>
+		</attributes>
+		<weight value="0.2"/>
+		<value value="11750"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
+
+	<item name="sztylet praworęczny">
+		<type class="dagger" subclass="r_hand_dagger" tileid="-1"/>
+		<description>Oto sztylet praworęczny. Musi zostać użyty wraz z leworęcznym sztyletem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="5"/>
+			<def value="2"/>
+			<rate value="2"/>
+			<min_level value="50"/>
+			<max_improves value="1"/>
+		</attributes>
+		<weight value="0.2"/>
+		<value value="11750"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>

@@ -26,8 +26,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Uuuuuuuuu!"/>
-				<sound value="ghost-1"/>
-				<sound value="ghost-2"/>
+				<sound value="ghost-01"/>
+				<sound value="ghost-02"/>
+				<sound value="ghost-03"/>
+				<sound value="ghost-04"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="coward"/>
@@ -63,7 +65,7 @@
 			<says>
 				<noise state="idle follow fight" value="Sąd Ostateczny już blisko!"/>
 				<noise state="idle follow fight" value="Oh, mój tyś jest, mój!"/>
-				<sound value="laugh-evil-3"/>
+				<sound value="laugh-evil-02"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -106,7 +108,7 @@
 			<says>
 				<noise state="idle follow fight" value="Nadszedł dzień twej śmierci!"/>
 				<noise state="idle follow fight" value="Pożegnaj się z tym światem!"/>
-				<sound value="laugh-evil-1"/>
+				<sound value="laugh-evil-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -152,7 +154,7 @@
 			<says>
 				<noise state="idle follow fight" value="Będziesz śnił o mnie tej nocy..."/>
 				<noise state="idle follow fight" value="Zapłacisz za swą chciwość!"/>
-				<sound value="laugh-evil-1"/>
+				<sound value="laugh-evil-01"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="animal"/>

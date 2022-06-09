@@ -55,57 +55,57 @@
 		</portal>
 
 		<entity x="15" y="31">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">10</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="30" y="31">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">10</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="30" y="39">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">10</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="15" y="39">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">10</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">10</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="22" y="25">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="22" y="48">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">8</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">8</parameter>
+			</implementation>
 		</entity>
 
 	</zone>
@@ -125,7 +125,7 @@
 		<!-- Ambiance on dock -->
 		<entity x="89" y="48">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">ambiance/water-sloshing-1</parameter>
+				<parameter name="sound">loop/water-sloshing-01</parameter>
 				<parameter name="radius">7</parameter>
 				<parameter name="volume">100</parameter>
 			</implementation>
@@ -134,21 +134,21 @@
 		<!-- table around palms -->
 		<entity x="109" y="62">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">You see a nice clean table for resting your holiday drinks on.</attribute>
+			<attribute name="description">Widzisz ładny, czysty stół, na którym możesz odstawić napój.</attribute>
 			<attribute name="width">4</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
 
 		<entity x="112" y="69">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">You see a nice clean table for resting your holiday drinks on.</attribute>
+			<attribute name="description">Widzisz ładny, czysty stół, na którym możesz odstawić napój.</attribute>
 			<attribute name="width">4</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
 
 		<entity x="103" y="74">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
-			<attribute name="description">You see a nice clean table for resting your holiday drinks on.</attribute>
+			<attribute name="description">Widzisz ładny, czysty stół, na którym możesz odstawić napój.</attribute>
 			<attribute name="width">4</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
@@ -322,7 +322,7 @@
 		<!-- Ambiance on dock -->
 		<entity x="15" y="90">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">ambiance/water-sloshing-1</parameter>
+				<parameter name="sound">loop/water-sloshing-01</parameter>
 				<parameter name="radius">9</parameter>
 				<parameter name="volume">100</parameter>
 			</implementation>
@@ -463,10 +463,10 @@
 
 		<entity x="13" y="10">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">water-4</parameter>
+				<parameter name="sound">water-faucet-1</parameter>
 				<parameter name="radius">50</parameter>
 			</implementation>
-			<attribute name="description">Oto umywalka do umycia rąk.</attribute>
+			<attribute name="description">Oto zlew do mycia rąk.</attribute>
 			<attribute name="width">1</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
@@ -509,7 +509,7 @@
 		<!-- whirpool -->
 		<entity x="11" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -519,7 +519,7 @@
 
 		<entity x="12" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -582,10 +582,10 @@
 
 		<entity x="5" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">water-4</parameter>
+				<parameter name="sound">water-faucet-1</parameter>
 				<parameter name="radius">50</parameter>
 			</implementation>
-			<attribute name="description">Oto umywalka do umycia rąk.</attribute>
+			<attribute name="description">Oto zlew do mycia rąk.</attribute>
 			<attribute name="width">1</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
@@ -601,7 +601,7 @@
 		<!-- whirpool -->
 		<entity x="3" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -611,7 +611,7 @@
 
 		<entity x="4" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -664,10 +664,10 @@
 		<!-- Interactive sounds -->
 		<entity x="10" y="10">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">water-4</parameter>
+				<parameter name="sound">water-faucet-1</parameter>
 				<parameter name="radius">50</parameter>
 			</implementation>
-			<attribute name="description">Oto umywalka do umycia rąk.</attribute>
+			<attribute name="description">Oto zlew do mycia rąk.</attribute>
 			<attribute name="width">1</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
@@ -675,7 +675,7 @@
 		<!-- whirpool -->
 		<entity x="10" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -685,7 +685,7 @@
 
 		<entity x="11" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -718,7 +718,7 @@
 		<!-- whirpool -->
 		<entity x="11" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -728,7 +728,7 @@
 
 		<entity x="12" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -813,7 +813,7 @@
 		<!-- whirpool -->
 		<entity x="3" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -823,7 +823,7 @@
 
 		<entity x="4" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -859,7 +859,7 @@
 		<!-- whirpool -->
 		<entity x="3" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -869,7 +869,7 @@
 
 		<entity x="4" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -902,7 +902,7 @@
 		<!-- whirpool -->
 		<entity x="2" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -913,7 +913,7 @@
 		<!-- Music/Ambiance -->
 		<entity x="3" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -923,7 +923,7 @@
 
 		<entity x="4" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -933,7 +933,7 @@
 
 		<entity x="5" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -1017,7 +1017,7 @@
 		<!-- whirpool -->
 		<entity x="4" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -1027,7 +1027,7 @@
 
 		<entity x="5" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>
@@ -1144,102 +1144,102 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<!-- Music/Ambiance -->
 		<entity x="18" y="35">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">2</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">2</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="22" y="50">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="14" y="38">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="31" y="38">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="28" y="45">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="17" y="45">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="14" y="25">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="31" y="25">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">5</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">5</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="14" y="32">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">3</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">3</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="31" y="32">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">2</parameter>
-			<parameter name="radius">4</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">2</parameter>
+				<parameter name="radius">4</parameter>
+			</implementation>
 		</entity>
 
 		<entity x="22" y="25">
-		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2, wave-11</parameter>
-			<parameter name="min">1</parameter>
-			<parameter name="max">1</parameter>
-			<parameter name="radius">8</parameter>
-		</implementation>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">8</parameter>
+			</implementation>
 		</entity>
 
 		<!-- Creaking ship -->
@@ -1321,7 +1321,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="22" y="47">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">4</parameter>
@@ -1330,7 +1330,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="19" y="45">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">4</parameter>
@@ -1339,7 +1339,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="26" y="45">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">4</parameter>
@@ -1348,7 +1348,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="16" y="42">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">3</parameter>
@@ -1357,7 +1357,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="29" y="42">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">3</parameter>
@@ -1366,7 +1366,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="7" y="37">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">15</parameter>
@@ -1375,7 +1375,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="38" y="37">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">15</parameter>
@@ -1384,7 +1384,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="13" y="29">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">5</parameter>
@@ -1393,7 +1393,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="32" y="29">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">5</parameter>
@@ -1402,7 +1402,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 
 		<entity x="22" y="23">
 		<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-			<parameter name="sound">water-2</parameter>
+			<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 			<parameter name="min">1</parameter>
 			<parameter name="max">1</parameter>
 			<parameter name="radius">10</parameter>
@@ -1442,7 +1442,7 @@ Gdy jest remis to dostajesz z powrotem swoją stawkę. Jeżeli wygrasz dostajesz
 		<!-- whirpool -->
 		<entity x="31" y="40">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">wave-11</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">4</parameter>
 				<parameter name="radius">1</parameter>

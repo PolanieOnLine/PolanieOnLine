@@ -67,7 +67,7 @@ public class FryderykNPC implements ZoneConfigurator {
 		npc.setEntityClass("paulnpc");
 		npc.setGender("M");
 		npc.setPosition(21, 8);
-		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-male-01"));
+		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);
 	}
 }

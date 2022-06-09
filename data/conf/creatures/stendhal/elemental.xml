@@ -373,9 +373,9 @@
 		</abilities>
 		<ai>
 			<says>
-				<sound value="snap-branch-1" />
-				<sound value="creak-tree-2" />
-				<sound value="shake-leaves-1" />
+				<sound value="snap-branch-1"/>
+				<sound value="creak-tree-2"/>
+				<sound value="shake-leaves-1"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -412,8 +412,8 @@
 		</abilities>
 		<ai>
 			<says>
-				<sound value="snap-branch-1" />
-				<sound value="creak-tree-2" />
+				<sound value="snap-branch-1"/>
+				<sound value="creak-tree-2"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -455,9 +455,9 @@
 		</abilities>
 		<ai>
 			<says>
-				<sound value="snap-branch-1" />
-				<sound value="creak-tree-2" />
-				<sound value="shake-leaves-1" />
+				<sound value="snap-branch-1"/>
+				<sound value="creak-tree-2"/>
+				<sound value="shake-leaves-1"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>

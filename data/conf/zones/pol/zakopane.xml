@@ -22,7 +22,7 @@
 		</entity>
 		<entity x="85" y="45">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, pol-bird_kukulka</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, pol-bird_kukulka</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">20</parameter>
@@ -30,7 +30,7 @@
 		</entity>
 		<entity x="40" y="75">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, pol-bird_kukulka</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, pol-bird_kukulka</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">20</parameter>
@@ -66,7 +66,7 @@
 		</entity>
 		<entity x="110" y="10">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, pol-growl</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, pol-growl</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">20</parameter>
@@ -82,7 +82,7 @@
 		</entity>
 		<entity x="40" y="75">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">20</parameter>
@@ -119,7 +119,7 @@
 		</entity>
 		<entity x="78" y="52">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">15</parameter>
 				<parameter name="volume">20</parameter>
 			</implementation>
@@ -240,14 +240,14 @@
 		</entity>
 		<entity x="65" y="30">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-1</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="radius">45</parameter>
 				<parameter name="volume">10</parameter>
 			</implementation>
 		</entity>
 		<entity x="111" y="111">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">10</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
@@ -333,14 +333,14 @@
 		</entity>
 		<entity x="34" y="110">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">2</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
 		<entity x="21" y="100">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">3</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
@@ -432,7 +432,7 @@
 		</entity>
 		<entity x="25" y="5">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">bird-1b, bird-2b, bird-3b, chicken-1</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, chicken-1</parameter>
 				<parameter name="min">10</parameter>
 				<parameter name="max">45</parameter>
 				<parameter name="radius">15</parameter>
@@ -547,7 +547,7 @@
 		</entity>
 		<entity x="48" y="113">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">sheep-2, sheep-3, kettle-1, water-4, eat-1, creaky-door-1, creaky-door-2</parameter>
+				<parameter name="sound">sheep-02, sheep-03, kettle-1, water-faucet-1, eat-01, creaky-door-1, creaky-door-2</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">50</parameter>
@@ -556,7 +556,7 @@
 		</entity>
 		<entity x="103" y="43">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">50</parameter>
@@ -765,13 +765,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
-		<entity x="54" y="58">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">creak-1</parameter>
-				<parameter name="radius">4</parameter>
-				<parameter name="volume">25</parameter>
-			</implementation>
-		</entity>
 		<entity x="115" y="105">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-hawk2, pol-hawk1</parameter>
@@ -989,7 +982,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.pol.server.maps.zakopane.house.CelinaNPC"/>
 		<entity x="3" y="9">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="min">10</parameter>
 				<parameter name="max">15</parameter>
 				<parameter name="radius">6</parameter>
@@ -1024,7 +1017,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</attributes>
 		<entity x="11" y="7">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">60</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="radius">15</parameter>
@@ -1212,7 +1205,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">creaky-door-1, creaky-door-2, coins-1, coins-2, window-close-1</parameter>
+				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
 				<parameter name="min">60</parameter>
 				<parameter name="max">120</parameter>
 				<parameter name="volume">5</parameter>
@@ -1621,7 +1614,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</entity>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">bottle-2, dishes-1, dishes-21, eat-1</parameter>
+				<parameter name="sound">bottle-2, dishes-1, dishes-21, eat-01</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="volume">50</parameter>
@@ -1683,7 +1676,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<!-- Piano -->
 		<entity x="15" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>

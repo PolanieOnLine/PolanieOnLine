@@ -260,6 +260,9 @@
 		<equips>
 		</equips>
 		<ai>
+			<says>
+				<sound value="imp-laugh-01"/>
+			</says>
 			<profile name="poisonous" params="15,trucizna"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>

@@ -35,7 +35,7 @@ public class LittleGirlNPC implements ZoneConfigurator {
 			public void createDialog() {
 				addGreeting("Witaj nieznajomy!");
 				addHelp("Może nie mogę Tobie pomóc, ale ty... możesz pomóc mi!");
-				addJob("Pomagam mojej mamie.");
+				addJob("Pomagam swojej mamie.");
 				addOffer("Potrzebuję kilka kurzych jajek");
 				addGoodbye("Żegnaj, nieznajomy!");
 				// All further behaviours are defined in appropriate quest class.
@@ -52,6 +52,9 @@ public class LittleGirlNPC implements ZoneConfigurator {
 		npc.setGender("F");
 		npc.setPosition(89, 54);
 		npc.setDirection(Direction.LEFT);
+		npc.setSounds(new String[] {
+				"npc/hum_child_01", "npc/hum_child_02", "npc/sigh_child_01",
+				"npc/sigh_child_02", "npc/yawn_child_01"});
 		zone.add(npc);
 	}
 }

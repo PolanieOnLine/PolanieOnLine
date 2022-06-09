@@ -7,7 +7,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="2" condition="!testing.combat"/>
-      		<ratk value="2" condition="testing.combat"/>
+			<ratk value="2" condition="testing.combat"/>
 			<range value="1"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -31,7 +31,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="1" condition="!testing.combat"/>
-      		<ratk value="1" condition="testing.combat"/>
+			<ratk value="1" condition="testing.combat"/>
 			<range value="2"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -54,7 +54,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="2" condition="!testing.combat"/>
-      		<ratk value="2" condition="testing.combat"/>
+			<ratk value="2" condition="testing.combat"/>
 			<range value="2"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -77,7 +77,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="3" condition="!testing.combat"/>
-      		<ratk value="3" condition="testing.combat"/>
+			<ratk value="3" condition="testing.combat"/>
 			<range value="2"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -100,7 +100,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="4" condition="!testing.combat"/>
-      		<ratk value="4" condition="testing.combat"/>
+			<ratk value="4" condition="testing.combat"/>
 			<range value="3"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -123,7 +123,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
-      		<ratk value="6" condition="testing.combat"/>
+			<ratk value="6" condition="testing.combat"/>
 			<range value="4"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -147,7 +147,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
-      		<ratk value="6" condition="testing.combat"/>
+			<ratk value="6" condition="testing.combat"/>
 			<range value="4"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -171,7 +171,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
-      		<ratk value="6" condition="testing.combat"/>
+			<ratk value="6" condition="testing.combat"/>
 			<range value="4"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -195,7 +195,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
-      		<ratk value="6" condition="testing.combat"/>
+			<ratk value="6" condition="testing.combat"/>
 			<range value="4"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -219,7 +219,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
-      		<ratk value="6" condition="testing.combat"/>
+			<ratk value="6" condition="testing.combat"/>
 			<range value="4"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -243,7 +243,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="7" condition="!testing.combat"/>
-      		<ratk value="7" condition="testing.combat"/>
+			<ratk value="7" condition="testing.combat"/>
 			<range value="5"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -267,7 +267,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="4" condition="!testing.combat"/>
-      		<ratk value="4" condition="testing.combat"/>
+			<ratk value="4" condition="testing.combat"/>
 			<range value="2"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -290,7 +290,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="5" condition="!testing.combat"/>
-      		<ratk value="5" condition="testing.combat"/>
+			<ratk value="5" condition="testing.combat"/>
 			<range value="3"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -313,7 +313,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
-      		<ratk value="6" condition="testing.combat"/>
+			<ratk value="6" condition="testing.combat"/>
 			<range value="4"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -336,7 +336,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="7" condition="!testing.combat"/>
-      		<ratk value="7" condition="testing.combat"/>
+			<ratk value="7" condition="testing.combat"/>
 			<range value="5"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -353,4 +353,30 @@
 			<slot name="lhand"/>
 		</equipable>
 	</item>
+
+	<!-- FIXME: need to implement status attacks for weapons
+	<item name="zatruta strzała">
+		<type class="ammunition" subclass="poison_arrow" tileid="-1"/>
+		<description>Oto zatruta strzała. Końcówka została nasączona trucizną.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk condition="!testing.combat" value="1"/>
+			<ratk condition="testing.combat" value="1"/>
+			<range value="2"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level value="0"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="50"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+-->
 </items>

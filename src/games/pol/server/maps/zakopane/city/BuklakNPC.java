@@ -56,8 +56,8 @@ public class BuklakNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj!");
-				addJob("Napełniam, pusty bukłak wodą powiedz tylko #nalej.");
-				addHelp("Nie dziękuję :) do pomocy mam swoich pomocników.");
+				addJob("Napełniam, pusty bukłak wodą, powiedz mi tylko #nalej.");
+				addHelp("Nie, dziękuję. Do pomocy mam swoich pomocników.");
 				addGoodbye("Trzymaj się.");
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
@@ -68,14 +68,14 @@ public class BuklakNPC implements ZoneConfigurator {
 						Arrays.asList("fill", "nalej"), "bukłak z wodą", requiredResources, 3 * 5);
 
 				new ProducerAdder().addProducer(this, behaviour,
-					"Pozdrawiam! Jeżeli przyniesiesz mi #pusty #bukłak to naleję do niego wody ze źródełka. Powiedz tylko #nalej.");
+					"Pozdrawiam! Jeżeli przyniesiesz mi #'pusty bukłak' to naleję do niego wody ze źródełka. Powiedz tylko #nalej.");
 				addReply("pusty bukłak",
-						"Koło Wisły w krainie Kraka mieszka rymarz on ci zrobi pusty bukłak.");
+						"Koło Wisły w krainie Kraka mieszka rymarz, on ci może wykonać pusty bukłak.");
 			}
 		};
 
 		npc.setDescription("Oto nosiwoda Gerwazy. Być może napełni trochę źródlanej wody.");
-		npc.setEntityClass("npcgazda");
+		npc.setEntityClass("npcgazda2");
 		npc.setGender("M");
 		npc.setPosition(31, 107);
 		zone.add(npc);

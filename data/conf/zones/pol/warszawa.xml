@@ -23,14 +23,14 @@
 
 		<entity x="125" y="30">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">20</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>
@@ -38,7 +38,7 @@
 		</entity>
 		<entity x="30" y="35">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">chicken-1</parameter>
+				<parameter name="sound">chicken-01</parameter>
 				<parameter name="min">10</parameter>
 				<parameter name="max">45</parameter>
 				<parameter name="radius">10</parameter>
@@ -103,7 +103,7 @@
 
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">20</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>
@@ -111,21 +111,21 @@
 		</entity>
 		<entity x="10" y="45">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="40" y="80">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="65" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
@@ -199,7 +199,7 @@
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">20</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>
@@ -207,7 +207,7 @@
 		</entity>
 		<entity x="31" y="103">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">treecreak-1, creak-1</parameter>
+				<parameter name="sound">bird-woodpecker-01</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">75</parameter>
 				<parameter name="radius">20</parameter>
@@ -232,7 +232,7 @@
 
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">blackbird-11, blackbird-6b, blackbird-7b, blackbird-8b, bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03, bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">20</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>
@@ -240,14 +240,14 @@
 		</entity>
 		<entity x="80" y="15">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="100" y="65">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">water-2</parameter>
+				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>

@@ -125,7 +125,7 @@
 	</creature>
 
 	<creature name="mutant ciemności">
-		<type class="stendhal/mutant" subclass="blacky" tileid="mutant.png:0"/>
+		<type class="stendhal/mutant" subclass="dark_mutant" tileid="mutant.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="325"/>

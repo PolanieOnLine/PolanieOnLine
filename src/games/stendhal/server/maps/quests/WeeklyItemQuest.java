@@ -124,150 +124,139 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private static void buildItemsMap() {
-		// levels 0-50
+		/* Comments depict drop scoring (See: https://stendhalgame.org/wiki/StendhalItemsDropScoring)
+		 * followed by lowest level creature that drops.
+		 *
+		 * Nothing below a certain score that is not obtainable by purchase
+		 * or other repeatable means should be added.
+		 *
+		 * Current most rare not obtainable by other means: 0.097 (magic plate armor)
+		 *
+		 * Difficulty:
+		 * - easy:   levels 0-50
+		 * - medium: levels 51-150
+		 * - hard:   levels 151+
+		 */
 
-		// armor (easy difficulty)
-		addEasy("zbroja cieni",1);
-		addEasy("kamienna zbroja",1);
+		// armor (easy)
+		addEasy("zbroja cieni",1); // 450.59, 35 (purchasable)
+		addEasy("kamienna zbroja",1); // 53.63, 41
+		// armor (medium)
+		addMed("zbroja barbarzyńcy",1); // 400.95, 37
+		addMed("zbroja krasnoludzka",1); // 163.15, 15
+		addMed("złota zbroja",1); // 536.32, 30
+		addMed("magiczna zbroja płytowa",1); // 0.097, 90 (maybe too rare, remove?)
+		// armor (hard)
+		addHard("zbroja chaosu",1); // 4.45, 70
+		addHard("lodowa zbroja",1); // 3.38, 45
+		addHard("zbroja mainiocyjska",1); // 1.33, 250
+		addHard("zbroja xenocyjska",1); // 2.0, 170
 
-		// boots (easy difficulty)
-		addEasy("złote buty",1);
-		addEasy("buty żelazne",1);
-		addEasy("buty kamienne",1);
+		// axe (medium)
+		addMed("złoty topór obosieczny",1); // 19.21, 60
 
-		// cloak (easy difficulty)
-		addEasy("prążkowany płaszcz lazurowy",1);
+		// boots (easy)
+		addEasy("złote buty",1); // 89.09, 25
+		addEasy("buty żelazne",1); // 315.17, 15
+		addEasy("buty kamienne",1); // 374.07, 32
+		// boots (medium)
+		addMed("buty chaosu",1); // 347.15, 62
+		addMed("buty mainiocyjskie",1); // 6.99, 28
+		addMed("buty cieni",1); // 248.78, 41 (purchasable)
+		// boots (hard)
+		addHard("buty xenocyjskie",1); // 3.33, 170
 
-		// club (easy difficulty)
-		addEasy("kij z czaszką",1);
-		addEasy("kropacz",1);
+		// cloak (easy)
+		addEasy("prążkowany płaszcz lazurowy",1); // 39.38, 26 (purchasable)
+		// cloak (medium)
+		addMed("lazurowy płaszcz smoczy",1); // 42.19, 70
+		addMed("płaszcz chaosu",1); // 200.67, 74
+		addMed("złoty płaszcz",1); // 71.0, 70
+		addMed("magiczny płaszcz",1); // 20.76, 114
+		addMed("karmazynowy płaszcz smoczy",1); // 13.86, 125
+		addMed("płaszcz cieni",1); // 93.14, 61 (purchasable)
+		// cloak (hard)
+		addHard("płaszcz mainiocyjski",1); // 5.16, 44
+		addHard("płaszcz xenocyjski",1); // 2.0, 170
 
-		// drink (easy difficulty)
-		addEasy("wielki eliksir",5);
-		addEasy("zupa rybna",3);
+		// club (easy)
+		addEasy("kij z czaszką",1); // 81.22, 15
+		addEasy("kropacz",1); // 86.57, 16
 
-		// special (easy difficulty)
-		addEasy("czterolistna koniczyna",1);
+		// drink (easy)
+		addEasy("wielki eliksir",5); // 1357.34, 51 (purchasable)
+		addEasy("zupa rybna",3); // n/a, n/a (producable)
 
-		// shield (easy difficulty)
-		addEasy("szmaragdowa tarcza smocza",1);
-		addEasy("tarcza cieni",1);
+		// helmet (medium)
+		addMed("złoty hełm",1); // 80.9, 30
+		addMed("złoty hełm wikingów",1); // 25.98, 58
+		addMed("hełm mainiocyjski",1); // 3.47, 37
+		addMed("hełm cieni",1); // 27.26, 52 (purchasable)
+		// helmet (hard)
+		addHard("hełm chaosu",1); // 44.16, 75
 
-		// sword (easy difficulty)
-		addEasy("sztylet mroku",1);
-		addEasy("miecz demonów",1);
+		// jewellery (medium)
+		addMed("diament",1); // 20.13, 48
+		// jewellery (hard)
+		addHard("obsydian",1); // 4.17, 200
 
-		// levels 51-150
+		// legs (medium)
+		addMed("spodnie chaosu",1); // 123.2, 85
+		addMed("spodnie krasnoludzkie",1); // 6.13, 67
+		addMed("złote spodnie",1); // 53.80, 25
+		addMed("spodnie mainiocyjskie",1); // 13.97, 20
+		addMed("spodnie cieni",1); // 49.19, 55
+		// legs (hard)
+		addHard("spodnie xenocyjskie",1); // 2.0, 170
 
-		// armor (medium difficulty)
-		addMed("zbroja barbarzyńcy",1);
-		addMed("zbroja krasnoludzka",1);
-		addMed("złota zbroja",1);
-		addMed("magiczna zbroja płytowa",1);
+		// misc (medium)
+		addMed("serce olbrzyma",5); // 2409.75, 110
+		addMed("gruczoł jadowy",1); // 55.56, 120
+		// misc (hard)
+		addHard("róg jednorożca", 5); // 398.33, 250
 
-		// axe (medium difficulty)
-		addMed("złoty topór obosieczny",1);
-
-		// boots (medium difficulty)
-		addMed("buty chaosu",1);
-		addMed("buty mainiocyjskie",1);
-		addMed("buty cieni",1);
-
-		// cloak (medium difficulty)
-		addMed("lazurowy płaszcz smoczy",1);
-		addMed("płaszcz chaosu",1);
-		addMed("złoty płaszcz",1);
-		addMed("karmazynowy płaszcz smoczy",1);
-		addMed("płaszcz cieni",1);
-
-		// helmet (medium difficulty)
-		addMed("złoty hełm",1);
-		addMed("złoty hełm wikingów",1);
-		addMed("hełm mainiocyjski",1);
-		addMed("hełm cieni",1);
-
-		// jewellery (medium difficulty)
-		addMed("diament",1);
-
-		// legs (medium difficulty)
-		addMed("spodnie chaosu",1);
-		addMed("spodnie krasnoludzkie",1);
-		addMed("złote spodnie",1);
-		addMed("spodnie mainiocyjskie",1);
-		addMed("spodnie cieni",1);
-
-		// misc (medium difficulty)
-		addMed("serce olbrzyma",5);
-		addMed("gruczoł jadowy",1);
-		
-		// resource (medium difficulty)
-		addMed("sztabka mithrilu",1);
-		addMed("bryłka mithrilu",1);
-		addMed("gruczoł przędzy",7);
+		// resource (medium)
+		addMed("sztabka mithrilu",1); // 0.0006, 90 (producable)
+		addMed("bryłka mithrilu",1); // 0.16, 90 (harvestable)
+		addMed("gruczoł przędzy",7); // 522.79, 110
 
 		// ring (medium difficulty)
-		addMed("pierścień leczniczy", 1);
+		addMed("pierścień leczniczy", 1); // 78.26, 73
 
-		// special (medium difficulty)
-		addMed("mityczne jajo",1);
+		// special (easy)
+		addEasy("czterolistna koniczyna",1); // 76.37, 9
+		// special (medium)
+		addMed("mityczne jajo",1); // n/a, n/a (quest reward)
 
-		// shield (medium difficulty)
-		addMed("tarcza chaosu",1);
-		addMed("złota tarcza",1);
-		addMed("magiczna tarcza płytowa",1);
-		addMed("tarcza mainiocyjska",1);
+		// shield (easy)
+		addEasy("szmaragdowa tarcza smocza",1); // 11.3, 50
+		addEasy("tarcza cieni",1); // 113.19, 36 (purchasable)
+		// shield (medium)
+		addMed("tarcza chaosu",1); // 165.18, 75
+		addMed("złota tarcza",1); // 21.2, 48
+		addMed("magiczna tarcza płytowa",1); // 23.31, 41
+		addMed("tarcza mainiocyjska",1); // 9.33, 102
+		// shield (hard)
+		addHard("tarcza xenocyjska",1); // 1.33, 170
 
-		// sword (medium difficulty)
-		addMed("sztylet mordercy",1);
-		addMed("pogromca",1);
-		addMed("miecz chaosu",1);
-		addMed("miecz elfów ciemności",1);
-		addMed("miecz ognisty",1);
-		addMed("półtorak",1);
-		addMed("miecz lodowy",1);
-		addMed("czarny sztylet",1);
+		// sword (easy)
+		addEasy("sztylet mroku",1); // 6.95, 50 (acquired from well)
+		addEasy("miecz demonów",1); // 33.73, 42
+		// sword (medium)
+		addMed("sztylet mordercy",1); // 235.12, 40
+		addMed("pogromca",1); // 2.26, 69
+		addMed("miecz chaosu",1); // 120.58, 43
+		addMed("miecz elfów ciemności",1); // 8.04, 58
+		addMed("miecz ognisty",1); // 78.51, 50
+		addMed("półtorak",1); // 29.99, 52
+		addMed("piekielny sztylet",1); // 1.46, 42 (purchasable)
+		addMed("miecz lodowy",1); // 3.28, 45
+		addMed("czarny sztylet",1); // 30.9, 39
+		// sword (hard)
+		addHard("miecz nieśmiertelnych",1); // 0.17, 230
 
-		// tool (medium difficulty)
-		addMed("zwój czyszczący", 1);
-
-		// levels 151+
-		
-		// armor (hard difficulty)
-		addHard("zbroja chaosu",1);
-		addHard("lodowa zbroja",1);
-		addHard("zbroja mainiocyjska",1);
-		addHard("zbroja xenocyjska",1);
-
-		// axe (hard difficulty)
-		addHard("magiczny topór obosieczny",1);
-
-		// boots (hard difficulty)
-		addHard("buty xenocyjskie",1);
-
-		// cloak (hard difficulty)
-		addHard("magiczny płaszcz",1);
-		addHard("płaszcz mainiocyjski",1);
-		addHard("płaszcz xenocyjski",1);
-
-		// helmet (hard difficulty)
-		addHard("hełm chaosu",1);
-
-		// jewellery (hard difficulty)
-		addHard("obsydian",1);
-
-		// legs (hard difficulty)
-		addHard("spodnie xenocyjskie",1);
-
-		// misc (hard difficulty)
-		addHard("róg jednorożca", 5);
-
-		// shield (hard difficulty)
-		addHard("tarcza xenocyjska",1);
-
-		// sword (hard difficulty)
-		addHard("piekielny sztylet",1);
-		addHard("miecz nieśmiertelnych",1);
-		addHard("miecz xenocyjski",1);
+		// tool (medium)
+		addMed("zwój czyszczący", 1); // 18.05, 55
 
 		// add "easy" items to "medium" list
 		for (final String key: items_easy.keySet()) {

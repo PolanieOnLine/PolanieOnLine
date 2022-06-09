@@ -395,7 +395,7 @@
 
 	<item name="miecz leworęczny">
 		<type class="sword" subclass="l_hand_sword" tileid="-1"/>
-		<description>Oto miecz leworęczny. Musi być użyty z praworęcznym mieczem.</description>
+		<description>Oto miecz leworęczny. Musi zostać użyty wraz z praworęcznym mieczem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="12"/>
@@ -482,13 +482,13 @@
 
 	<item name="miecz praworęczny">
 		<type class="sword" subclass="r_hand_sword" tileid="-1"/>
-		<description>Oto miecz praworęczny. Musi być użyty razem z leworęcznym mieczem.</description>
+		<description>Oto miecz praworęczny. Musi zostać użyty wraz z leworęcznym mieczem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="12"/>
 			<def value="6"/>
 			<rate value="3"/>
-		<min_level value="80"/>
+			<min_level value="80"/>
 		</attributes>
 		<weight value="4.0"/>
 		<value value="33750"/>

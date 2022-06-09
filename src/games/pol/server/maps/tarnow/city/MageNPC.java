@@ -83,7 +83,7 @@ public class MageNPC implements ZoneConfigurator {
                 	new MultipleActions(
                 		new DropItemAction("magia ziemi", currentFee),
                 		new EquipItemAction("magia lodu", exchangeValue),
-                		new PlaySoundAction("coins-1")
+                		new PlaySoundAction("coins-01")
                 	)
 			 	);
 

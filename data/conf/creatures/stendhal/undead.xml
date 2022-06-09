@@ -28,11 +28,11 @@
 		</equips>
 		<ai>
 			<says>
-				<noise state="idle follow fight" value="Hauuuu!"/>
-				<noise state="fight" value="Grr!"/>
-				<sound value="dog-snarl-1" />
-				<sound value="dog-snarl-2" />
-				<sound value="dog-angry-low-1" />
+				<noise state="idle follow fight" value="HaUuuu!"/>
+				<noise state="fight" value="Grrrr!"/>
+				<sound value="dog-snarl-1"/>
+				<sound value="dog-snarl-2"/>
+				<sound value="dog-angry-low-1"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>

@@ -50,7 +50,7 @@ public class TadekNPC implements ZoneConfigurator {
 		npc.setGender("M");
 		npc.setPosition(106, 50);
 		npc.setDirection(Direction.DOWN);
-		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-male-01"));
+		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);
 	}
 }

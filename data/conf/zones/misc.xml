@@ -362,7 +362,7 @@ Idź dalej, a wrócisz do krainy, w której żyjesz...
 		<entity x="42" y="56">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">bird-1b, bird-2b, bird-3b</parameter>
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
 				<parameter name="min">5</parameter>
 				<parameter name="max">10</parameter>
 				<parameter name="radius">4</parameter>
@@ -371,7 +371,7 @@ Idź dalej, a wrócisz do krainy, w której żyjesz...
 		<entity x="56" y="56">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 				<parameter name="radius">4</parameter>
 			</implementation>
@@ -558,7 +558,7 @@ Wyjście do #Zakopca!
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">wind-2</parameter>
+				<parameter name="sound">loop/wind-01</parameter>
 				<parameter name="volume">40</parameter>
 			</implementation>
 		</entity>

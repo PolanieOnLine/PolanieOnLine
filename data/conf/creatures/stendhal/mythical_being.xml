@@ -207,7 +207,7 @@
 	</creature>
 
 	<!-- END: mermaids -->
-	
+
 	<!-- START: unicorn -->
 
 	<creature name="jednorożec">
@@ -516,6 +516,7 @@
 		<drops>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.5"/>
+			<item value="strzała ognia" quantity="[3,22]" probability="36.0"/>
 		</drops>
 		<abilities>
 			<damage type="fire"/>
@@ -547,6 +548,7 @@
 		<drops>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
+			<item value="strzała lodowa" quantity="[3,22]" probability="36.0"/>
 		</drops>
 		<abilities>
 			<damage type="ice"/>
@@ -579,6 +581,7 @@
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="buty monarchistyczne" quantity="[1,1]" probability="0.5"/>
 			<item value="spodnie monarchistyczne" quantity="[1,1]" probability="0.5"/>
+			<item value="strzała płonąca" quantity="[3,22]" probability="36.0"/>
 		</drops>
 		<ai>
 			<profile name="brave"/>

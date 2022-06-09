@@ -191,7 +191,7 @@ public class SheepBuyerNPC implements ZoneConfigurator {
 		npc.setGender("M");
 		npc.setPosition(40, 45);
 		npc.setCollisionAction(CollisionAction.STOP);
-		npc.setSounds(Arrays.asList("hiccup-01", "hiccup-1", "sneeze-male-01", "sneeze-1"));
+		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);
 	}
 

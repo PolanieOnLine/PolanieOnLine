@@ -53,6 +53,7 @@ import games.stendhal.server.entity.player.Player;
 
 public class RebornQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "reset_level";
+	private static final String EXTRA_REWARD = "reborn_extra_reward";
 	/** LOGGER **/
 	private static Logger logger = Logger.getLogger(RebornQuest.class);
 	/** NPC **/
@@ -277,7 +278,7 @@ public class RebornQuest extends AbstractQuest {
 				null,
 				new MultipleActions(
 					new TeleportAction(HOME, 11, 4, Direction.DOWN),
-					new SendPrivateMessageAction(NAGRODA),
+					new SendPrivateMessageAction(DODATKOWA_NAGRODA),
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -287,9 +288,19 @@ public class RebornQuest extends AbstractQuest {
 								player.setLevel(LEVEL_TO_RESET);
 								player.setHP((player.getHP() - BASEHP_TO_RESET) + 1000);
 								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
+
+								if (player.getQuest(EXTRA_REWARD + "3") == null) {
+									final Item ldagger = SingletonRepository.getEntityManager().getItem("sztylet leworęczny");
+									final Item rdagger = SingletonRepository.getEntityManager().getItem("sztylet praworęczny");
+									ldagger.setBoundTo(player.getName());
+									rdagger.setBoundTo(player.getName());
+									player.equipOrPutOnGround(ldagger);
+									player.equipOrPutOnGround(rdagger);
+								}
 	
 								// Ustaw zadanie na zakończone
 								player.setQuest(QUEST_SLOT, DONE3);
+								player.setQuest(EXTRA_REWARD + "3", "done");
 							}
 						}
 					}));
@@ -327,12 +338,15 @@ public class RebornQuest extends AbstractQuest {
 								player.setHP((player.getHP() - BASEHP_TO_RESET) + 1000);
 								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
 
-								final Item naszyjnik = SingletonRepository.getEntityManager().getItem("amulecik z mithrilu");
-								naszyjnik.setBoundTo(player.getName());
-								player.equipOrPutOnGround(naszyjnik);
+								if (player.getQuest(EXTRA_REWARD + "4") == null) {
+									final Item naszyjnik = SingletonRepository.getEntityManager().getItem("amulecik z mithrilu");
+									naszyjnik.setBoundTo(player.getName());
+									player.equipOrPutOnGround(naszyjnik);
+								}
 
 								// Ustaw zadanie na zakończone
 								player.setQuest(QUEST_SLOT, DONE4);
+								player.setQuest(EXTRA_REWARD + "4", "done");
 							}
 						}
 					}));
@@ -370,12 +384,15 @@ public class RebornQuest extends AbstractQuest {
 								player.setHP((player.getHP() - BASEHP_TO_RESET) + 2000);
 								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 2000);
 
-								final Item excalibur = SingletonRepository.getEntityManager().getItem("ekskalibur");
-								excalibur.setBoundTo(player.getName());
-								player.equipOrPutOnGround(excalibur);
+								if (player.getQuest(EXTRA_REWARD + "5") == null) {
+									final Item excalibur = SingletonRepository.getEntityManager().getItem("ekskalibur");
+									excalibur.setBoundTo(player.getName());
+									player.equipOrPutOnGround(excalibur);
+								}
 
 								// Ustaw zadanie na zakończone
 								player.setQuest(QUEST_SLOT, DONE5);
+								player.setQuest(EXTRA_REWARD + "5", "done");
 							}
 						}
 					}));

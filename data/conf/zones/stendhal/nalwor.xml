@@ -374,7 +374,7 @@ poniżej średniej.
 		<entity x="23" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -436,7 +436,7 @@ poniżej średniej.
 		<entity x="9" y="20">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -491,7 +491,7 @@ poniżej średniej.
 		<entity x="6" y="8">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -531,7 +531,7 @@ poniżej średniej.
 		<entity x="5" y="20">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.PlaySoundEntity">
-				<parameter name="sound">piano-1</parameter>
+				<parameter name="sound">piano-01</parameter>
 				<parameter name="radius">40</parameter>
 			</implementation>
 			<attribute name="width">2</attribute>
@@ -1044,7 +1044,7 @@ kupić 100 niezapisany zwój
 		<entity x="87" y="83">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">water-5</parameter>
+				<parameter name="sound">loop/river-01</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">1</parameter>
 				<parameter name="radius">25</parameter>
@@ -1133,7 +1133,7 @@ kupić 100 niezapisany zwój
 		<!-- Ambiance on fishing dock -->
 		<entity x="56" y="60">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
-				<parameter name="sound">ambiance/water-sloshing-1</parameter>
+				<parameter name="sound">loop/water-sloshing-01</parameter>
 				<parameter name="radius">6</parameter>
 				<parameter name="volume">100</parameter>
 			</implementation>

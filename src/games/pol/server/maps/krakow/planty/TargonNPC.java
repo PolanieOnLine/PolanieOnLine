@@ -202,7 +202,7 @@ public class TargonNPC implements ZoneConfigurator {
 		npc.setEntityClass("buyernpc");
 		npc.setGender("M");
 		npc.setPosition(98, 32);
-		npc.setSounds(Arrays.asList("hiccup-1", "sneeze-1"));
+		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));
 		zone.add(npc);
 	}
 

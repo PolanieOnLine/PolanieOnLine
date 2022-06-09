@@ -88,7 +88,7 @@ if game:setZone(zone) then
 		actions:create("SetQuestToTimeStampAction", {questSlot}),
 		actions:create("SayTimeRemainingAction", {questSlot, waitTime, "Okej, Biorę się za pracę. Proszę wróć za ",
 			"Przypomnij mi mówiąc #pierścień."}),
-		actions:create("PlaySoundAction", {"coins-1"}),
+		actions:create("PlaySoundAction", {"coins-01"}),
 	}
 
 	for _, item in ipairs(requirements) do

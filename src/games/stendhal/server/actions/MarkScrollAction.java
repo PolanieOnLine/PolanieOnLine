@@ -26,18 +26,18 @@ public class MarkScrollAction implements ActionListener {
 			if (zone.isTeleportInAllowed(x, y)) {
 				player.drop("niezapisany zwój", count);
 
-				String infostring = zone.getName() + " " + x + " " + y;
-
 				final MarkedScroll scroll = (MarkedScroll)
 						SingletonRepository.getEntityManager().getItem("zwój zapisany");
 				scroll.setQuantity(count);
-				scroll.setInfoString(infostring);
 
 				// add a description if the player wanted one
 				if (action.has(TARGET)) {
 					String description = action.get(TARGET) + " " + action.get("args");
 					scroll.setDescription("Oto zwój zapisany przez " + player.getName() + ". Napis głosi: \""+ description +"\". ");
 				}
+
+				// set infostring after description
+				scroll.setInfoString(zone.getName() + " " + x + " " + y);
 
 				player.equipOrPutOnGround(scroll);
 			} else {

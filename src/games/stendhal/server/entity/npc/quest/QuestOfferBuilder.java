@@ -43,7 +43,7 @@ public class QuestOfferBuilder {
 	private String respondToRepeatedRequest = null;
 	private String respondToAccept = "Dziękuję!";
 	private String respondToReject = "Och. To niezbyt dobrze.";
-	private String remind = "Proszę dotrzymaj swojej obietnicy.";
+	private String remind = "Proszę, dotrzymaj swojej obietnicy.";
 	private double rejectionKarmaPenalty = 2.0;
 	private List<String> lastRespondTo = null;
 	private Map<List<String>, String> additionalReplies = new HashMap<>();

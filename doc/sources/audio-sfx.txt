@@ -46,7 +46,7 @@ click-6.ogg              ???; ???; free sound pack
 click-8.ogg              ???; ???; free sound pack
 click-clack-1.*          satrebor; CC0; http://www.freesound.org/people/satrebor/sounds/113218/
 clock-1.*                Jordan Irwin (AntumDeluge); CC0; https://opengameart.org/node/16323
-coins-1.ogg              ???; ???; free sound pack
+coins-01.ogg              ???; ???; free sound pack
 cork-pop-1.*             fryzu82; CC0; http://www.freesound.org/people/fryzu82/sounds/142325/
 cough-11.ogg             ???; ???; free sound pack
 cough-2.ogg              ???; ???; free sound pack
@@ -167,7 +167,7 @@ panda-1.*                ???; ???; free sound pack
 panda-2.ogg              ???; ???; free sound pack
 penguin-1.*              Bidone; CC0; http://www.freesound.org/people/Bidone/sounds/66150/
 penguin-2.*              Bidone; CC0; http://www.freesound.org/people/Bidone/sounds/66150/
-piano-1.*                public domain
+piano-01.*                public domain
 pick-metallic-1.*        qubodup; CC0; http://freesound.org/people/qubodup/sounds/182821/
 pig-1.ogg                ???; ???; free sound pack
 pig-2.ogg                ???; ???; free sound pack
@@ -227,13 +227,13 @@ undead-2.ogg             Jordan Irwin (AntumDeluge); CC0; https://opengameart.or
 undead-3.ogg             Jordan Irwin (AntumDeluge); CC0; https://opengameart.org/node/81246
 undead-4.ogg             Jordan Irwin (AntumDeluge); CC0; https://opengameart.org/node/81246
 undead-5.*               ArriGD; CC0; http://www.freesound.org/people/ArriGD/sounds/144005/
-water-2.ogg              ???; ???; free sound pack
-water-3.ogg              ???; ???; free sound pack
-water-4.ogg              ???; ???; free sound pack
-water-5.ogg              Storyteller; GPL
+water-slosh-01, water-slosh-03.ogg              ???; ???; free sound pack
+water-slosh-01, water-slosh-02, water-slosh-03.ogg              ???; ???; free sound pack
+water-faucet-1.ogg              ???; ???; free sound pack
+loop/river-01.ogg              Storyteller; GPL
 water-faucet-1.*         ???; public domain; http://www.pdsounds.org/sounds/faucet_water_into_sink
-wave-11.ogg              ???; ???; free sound pack
-wind-2.ogg               ???; ???; free sound pack
+water-slosh-01, water-slosh-03.ogg              ???; ???; free sound pack
+loop/wind-01.ogg               ???; ???; free sound pack
 window-close-1.ogg       ???; ???; free sound pack
 wings-flap-large-1.*     dave.des/; CC0; http://freesound.org/people/dave.des/sounds/127197/
 witch-cackle-1.ogg       Jordan Irwin (AntumDeluge); CC0; https://opengameart.org/node/81248

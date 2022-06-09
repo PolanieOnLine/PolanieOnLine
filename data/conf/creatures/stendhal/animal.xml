@@ -26,8 +26,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="klik-klak-klik"/>
-				<sound value="click-clack-1" />
-				<sound value="click-1" />
+				<sound value="click-clack-1"/>
+				<sound value="click-1"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -124,7 +124,7 @@
 				<noise state="idle follow fight" value="kwik"/>
 				<noise state="idle follow fight" value="kwik kwik"/>
 				<noise state="idle follow fight" value="chrum chrum"/>
-				<sound value="pig-3" />
+				<sound value="pig-squeal-01"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
@@ -189,10 +189,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Aooooooouuhhh!!"/>
-				<sound value="bark-1"/>
-				<sound value="howl-5"/>
-				<sound value="howl-2"/>
-				<sound value="howl-11"/>
+				<sound value="wolf-howl-01"/>
+				<sound value="wolf-howl-02"/>
+				<sound value="wolf-growl-01"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -203,7 +202,7 @@
 
 	<creature name="dzik">
 		<type class="stendhal/animal" subclass="boar" tileid="animal.png:4"/>
-		<description>Dzik jest dziki, dzik jest zły, dzik ma bardzo ostre kły...</description>
+		<description>Oto dzik. Dzik jest dziki, dzik jest zły, dzik ma bardzo ostre kły...</description>
 		<attributes>
 			<atk value="53"/>
 			<def value="7"/>
@@ -224,8 +223,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Kwiik!"/>
-				<sound value="pig-1"/>
-				<sound value="pig-2"/>
+				<sound value="pig-snort-01"/>
+				<sound value="pig-squeal-01"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -256,6 +255,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="MUUUUUU!!!"/>
+				<sound value="cow-2"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -289,7 +289,7 @@
 				<noise state="idle follow fight" value="Muuuu	muuuuuuu"/>
 				<noise state="idle follow fight" value="muuuuu"/>
 				<sound value="cow-1"/>
-				<sound value="cowbell-1" />
+				<sound value="cowbell-1"/>
 			</says>
 			<profile name="animal"/>
 		</ai>
@@ -343,8 +343,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="goat-1" />
-				<sound value="goat-2" />
+				<sound value="goat-1"/>
+				<sound value="goat-2"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -375,8 +375,11 @@
 			<says>
 				<noise state="idle follow fight" value="ihaaaaaahaa"/>
 				<noise state="idle follow fight" value="*patataj, patataj*"/>
-				<sound value="horse-1" />
-				<sound value="horse-2" />
+				<sound value="horse-whinny-01"/>
+				<sound value="horse-whinny-02"/>
+				<sound value="horse-snort-01"/>
+				<sound value="horse-snort-02"/>
+				<sound value="pol-horse"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
@@ -409,9 +412,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Uuuu Uuuu Aaa Aaaa!"/>
-				<sound value="monkey-1" />
-				<sound value="monkey-2" />
-				<sound value="monkey-3" />
+				<sound value="monkey-1"/>
+				<sound value="monkey-2"/>
+				<sound value="monkey-3"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -473,8 +476,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Beeeeee"/>
-				<sound value="sheep-4" />
-				<sound value="sheep-5" />
+				<sound value="sheep-01"/>
+				<sound value="sheep-02"/>
+				<sound value="sheep-03"/>
+				<sound value="sheep-04"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -504,8 +509,11 @@
 			<says>
 				<noise state="idle follow fight" value="niiihhaaa"/>
 				<noise state="idle follow fight" value="*patataj, patataj*"/>
-				<sound value="horse-1" />
-				<sound value="horse-2" />
+				<sound value="horse-whinny-01"/>
+				<sound value="horse-whinny-02"/>
+				<sound value="horse-snort-01"/>
+				<sound value="horse-snort-02"/>
+				<sound value="pol-horse"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="patrolling"/>
@@ -514,7 +522,7 @@
 
 	<creature name="wilk">
 		<type class="stendhal/animal" subclass="wolf" tileid="animal.png:20"/>
-		<description>Oto wilk. Jest dziki i wygłodniały.</description>
+		<description>Oto wilk. Jest dziki i strasznie wygłodniały!</description>
 		<attributes>
 			<atk value="46"/>
 			<def value="9"/>
@@ -538,10 +546,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="AUUUuuuuu!!"/>
-				<sound value="bark-1"/>
-				<sound value="howl-5"/>
-				<sound value="howl-2"/>
-				<sound value="howl-11"/>
+				<sound value="wolf-howl-01"/>
+				<sound value="wolf-howl-02"/>
+				<sound value="wolf-growl-01"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -575,9 +582,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Rrraar!"/>
-				<sound value="bear-1"/>
-				<sound value="bear-2"/>
-				<sound value="bear-3"/>
+				<sound value="bear-01"/>
+				<sound value="bear-02"/>
+				<sound value="bear-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -610,8 +617,10 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Raaaarrrr!"/>
-				<sound value="lion-1"/>
-				<sound value="lion-2"/>
+				<sound value="lion-snarl-01"/>
+				<sound value="lion-snarl-02"/>
+				<sound value="lion-roar-01"/>
+				<sound value="lion-roar-02"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -643,10 +652,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="UUUUUUFFFZZZZ!!!"/>
-				<sound value="elephant-1" />
-				<sound value="elephant-2" />
-				<sound value="elephant-3" />
-				<sound value="elephant-rumble-1" />
+				<sound value="elephant-1"/>
+				<sound value="elephant-2"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="coward"/>
@@ -678,10 +685,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="UUUUUUFFFZZZZ!!!"/>
-				<sound value="elephant-1" />
-				<sound value="elephant-2" />
-				<sound value="elephant-3" />
-				<sound value="elephant-rumble-1" />
+				<sound value="elephant-1"/>
+				<sound value="elephant-2"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="animal"/>
@@ -713,10 +718,8 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="UUUUUUFFFZZZZ!!!"/>
-				<sound value="elephant-1" />
-				<sound value="elephant-2" />
-				<sound value="elephant-3" />
-				<sound value="elephant-rumble-1" />
+				<sound value="elephant-1"/>
+				<sound value="elephant-2"/>
 			</says>
 			<profile name="offensive"/>
 			<profile name="animal"/>
@@ -747,8 +750,10 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="elephant-1" />
-				<sound value="elephant-2" />
+				<sound value="elephant-1"/>
+				<sound value="elephant-2"/>
+				<sound value="elephant-3"/>
+				<sound value="elephant-rumble-1"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -783,9 +788,12 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Mraaaauu!"/>
-				<sound value="tiger-1" />
-				<sound value="tiger-2" />
-				<sound value="pol-tiger"/>
+				<sound value="tiger-roar-01"/>
+				<sound value="tiger-roar-02"/>
+				<sound value="tiger-snarl-01"/>
+				<sound value="tiger-snarl-02"/>
+				<sound value="tiger-snarl-03"/>
+				<sound value="tiger-snarl-04"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -819,9 +827,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="RRRRRAAAARR!"/>
-				<sound value="bear-1"/>
-				<sound value="bear-2"/>
-				<sound value="bear-3"/>
+				<sound value="bear-01"/>
+				<sound value="bear-02"/>
+				<sound value="bear-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -855,9 +863,9 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="bear-1"/>
-				<sound value="bear-2"/>
-				<sound value="bear-3"/>
+				<sound value="bear-01"/>
+				<sound value="bear-02"/>
+				<sound value="bear-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>

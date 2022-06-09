@@ -126,6 +126,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Rrraar!"/>
+				<sound value="bear-01"/>
+				<sound value="bear-02"/>
+				<sound value="bear-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -159,6 +162,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="BBBRRRRRRR!!"/>
+				<sound value="bear-01"/>
+				<sound value="bear-02"/>
+				<sound value="bear-03"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -189,6 +195,12 @@
 			<says>
 				<noise state="idle follow fight" value="Hauuuu! Hauuu!"/>
 				<noise state="idle follow fight" value="Wrrrrr!"/>
+				<sound value="dog-bark-01"/>
+				<sound value="dog-howl-01"/>
+				<sound value="dog-howl-02"/>
+				<sound value="dog-howl-03"/>
+				<sound value="dog-howl-04"/>
+				<sound value="wolf-growl-01"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -298,6 +310,12 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Rrraar!"/>
+				<sound value="tiger-roar-01"/>
+				<sound value="tiger-roar-02"/>
+				<sound value="tiger-snarl-01"/>
+				<sound value="tiger-snarl-02"/>
+				<sound value="tiger-snarl-03"/>
+				<sound value="tiger-snarl-04"/>
 				<sound value="pol-tiger"/>
 			</says>
 			<profile name="animal"/>
@@ -513,6 +531,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Piii! Pii!"/>
+				<sound value="mouse-2"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -544,6 +563,7 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Piiiij! Piij!"/>
+				<sound value="mouse-2"/>
 			</says>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -846,6 +866,8 @@
 		<equips/>
 		<ai>
 			<says>
+				<sound value="bird-pigeon-1"/>
+				<sound value="bird-pigeon-flap-1"/>
 				<sound value="pol-bird_pigeon"/>
 			</says>
 			<profile name="coward"/>
@@ -982,6 +1004,8 @@
 		<equips/>
 		<ai>
 			<says>
+				<sound value="pol-hawk1"/>
+				<sound value="pol-hawk2"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="animal"/>

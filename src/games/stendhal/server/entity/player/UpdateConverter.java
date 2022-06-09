@@ -607,6 +607,8 @@ public abstract class UpdateConverter {
 		fixKillMadGuardsQuest(player);
 
 		fixQuestDoneState(player);
+
+		fixNewQuestRewards(player);
 	}
 
 	/**
@@ -868,6 +870,41 @@ public abstract class UpdateConverter {
 		String value = player.getQuest(quest, 0);
 		if (value != null && value.equals("killed")) {
 			player.setQuest(quest, 0, "done");
+		}
+	}
+
+	private static void fixNewQuestRewards(Player player) {
+		String questSlot = "reset_level";
+		String[] extraRewardSlots = { "reborn_extra_reward3", "reborn_extra_reward4", "reborn_extra_reward5" };
+		boolean getQuestState3 = player.getQuest(questSlot).equals("done;reborn_3");
+		boolean getQuestState4 = player.getQuest(questSlot).equals("done;reborn_4");
+		boolean getQuestState5 = player.getQuest(questSlot).equals("done;reborn_5");
+
+		for (String extraRewardSlot : extraRewardSlots) {
+			String getRewardQuest = player.getQuest(extraRewardSlot);
+
+			if ((getQuestState3 || getQuestState4 || getQuestState5)) {
+				if (extraRewardSlot == "reborn_extra_reward3" && getRewardQuest == null) {
+					final Item ldagger = SingletonRepository.getEntityManager().getItem("sztylet leworęczny");
+					final Item rdagger = SingletonRepository.getEntityManager().getItem("sztylet praworęczny");
+					ldagger.setBoundTo(player.getName());
+					rdagger.setBoundTo(player.getName());
+					player.equipOrPutOnGround(ldagger);
+					player.equipOrPutOnGround(rdagger);
+
+					player.setQuest(extraRewardSlot, 0, "done");
+				}
+			}
+			if ((getQuestState4 || getQuestState5)) {
+				if (extraRewardSlot == "reborn_extra_reward4" && getRewardQuest == null) {
+					player.setQuest(extraRewardSlot, 0, "done");
+				}
+			}
+			if (getQuestState5) {
+				if (extraRewardSlot == "reborn_extra_reward5" && getRewardQuest == null) {
+					player.setQuest(extraRewardSlot, 0, "done");
+				}
+			}
 		}
 	}
 }

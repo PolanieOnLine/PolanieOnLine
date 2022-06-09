@@ -129,7 +129,7 @@ public class KajetanNPC implements ZoneConfigurator {
 		npc.setEntityClass("seller3npc");
 		npc.setGender("M");
 		npc.setPosition(103, 110);
-		npc.setSounds(Arrays.asList("cough-11", "cough-2", "cough-3"));
+		npc.setSounds(Arrays.asList("cough-male-01", "cough-male-02", "cough-male-03"));
 		zone.add(npc);
 	}
 }

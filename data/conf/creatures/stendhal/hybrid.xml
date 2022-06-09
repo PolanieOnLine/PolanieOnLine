@@ -67,8 +67,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="mutant-frog-1" />
-				<sound value="mutant-frog-2" />
+				<sound value="mutant-frog-1"/>
+				<sound value="mutant-frog-2"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -102,8 +102,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="mutant-frog-1" />
-				<sound value="mutant-frog-2" />
+				<sound value="mutant-frog-1"/>
+				<sound value="mutant-frog-2"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -138,8 +138,8 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="mutant-frog-1" />
-				<sound value="mutant-frog-2" />
+				<sound value="mutant-frog-1"/>
+				<sound value="mutant-frog-2"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -176,9 +176,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Nigdy się stąd nie wydostaniesz!"/>
-				<sound value="monster-11" />
-				<sound value="monster-12" />
-				<sound value="monster-14" />
+				<sound value="monster-11"/>
+				<sound value="monster-12"/>
+				<sound value="monster-14"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -214,9 +214,9 @@
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Jam jest królem tych włości!"/>
-				<sound value="monster-1" />
-				<sound value="monster-2" />
-				<sound value="monster-16" />
+				<sound value="monster-1"/>
+				<sound value="monster-2"/>
+				<sound value="monster-16"/>
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -251,14 +251,13 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="scream-fem-2" />
-				<sound value="rattlesnake-1" />
-				<sound value="snake-2" />
-				<sound value="naga_hiss-01" />
-		        <sound value="naga_hiss-02" />
-		        <sound value="naga_hiss-03" />
-		        <sound value="naga_hiss-04" />
-		        <sound value="naga_hiss-05" />
+				<sound value="scream-fem-2"/>
+				<sound value="rattlesnake-1"/>
+				<sound value="naga_hiss-01"/>
+		        <sound value="naga_hiss-02"/>
+		        <sound value="naga_hiss-03"/>
+		        <sound value="naga_hiss-04"/>
+		        <sound value="naga_hiss-05"/>
 			</says>
 			<profile name="poisonous" params="5,mocna trucizna"/>
 			<profile name="brave"/>
@@ -290,13 +289,13 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="scream-fem-2" />
-				<sound value="rattlesnake-1" />
-				<sound value="naga_hiss-01" />
-		        <sound value="naga_hiss-02" />
-		        <sound value="naga_hiss-03" />
-		        <sound value="naga_hiss-04" />
-		        <sound value="naga_hiss-05" />
+				<sound value="scream-fem-2"/>
+				<sound value="rattlesnake-1"/>
+				<sound value="naga_hiss-01"/>
+		        <sound value="naga_hiss-02"/>
+		        <sound value="naga_hiss-03"/>
+		        <sound value="naga_hiss-04"/>
+		        <sound value="naga_hiss-05"/>
 			</says>
 			<profile name="poisonous" params="5,mocna trucizna"/>
 			<profile name="brave"/>
@@ -330,13 +329,13 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="scream-fem-2" />
-				<sound value="rattlesnake-1" />
-				<sound value="naga_hiss-01" />
-		        <sound value="naga_hiss-02" />
-		        <sound value="naga_hiss-03" />
-		        <sound value="naga_hiss-04" />
-		        <sound value="naga_hiss-05" />
+				<sound value="scream-fem-2"/>
+				<sound value="rattlesnake-1"/>
+				<sound value="naga_hiss-01"/>
+		        <sound value="naga_hiss-02"/>
+		        <sound value="naga_hiss-03"/>
+		        <sound value="naga_hiss-04"/>
+		        <sound value="naga_hiss-05"/>
 			</says>
 			<profile name="poisonous" params="5,mocna trucizna"/>
 			<profile name="brave"/>
@@ -367,10 +366,9 @@
 		</equips>
 		<ai>
 			<says>
-				<sound value="scream-fem-2" />
-				<sound value="rattlesnake-1" />
-				<sound value="lamia_hiss-01" />
-        		<sound value="lamia_hiss-02" />
+				<sound value="rattlesnake-1"/>
+				<sound value="lamia_hiss-01"/>
+        		<sound value="lamia_hiss-02"/>
 			</says>
 			<profile name="poisonous" params="5,mocna trucizna"/>
 			<profile name="brave"/>
