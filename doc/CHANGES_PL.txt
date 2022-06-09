@@ -3,14 +3,32 @@ Changelog
 1.31
 *klient*
 - Zwiększono przestrzeń głównego ekranu gry
-- Poprawiono grafiki strzał & npc
+- Zaktualizowano dźwięki potworów / natury / npc
+- Poprawiono grafiki przedmiotów / npc / potworów
 
 *świat*
+- Dodano nowe przedmioty: (2)
+	- sztylet leworęczny
+	- sztylet praworęczny
+- Dodano nowego NPC: (1)
+	- John Smith
+- Dodano nowego potwora: (1)
+	- złoty ork
+- Dodano możliwość zdobycia strzał żywiołów z dużych centaurów
+- Dodano nową nagrodę w postaci przedmiotów dla osób, którzy zresetowali poziom trzeci raz
+- Dodano nowe przedmioty wymagane do ostatniego zadania na największego kolekcjonera broni u Balduina
+- Usunięto przedmioty z cotygodniowego zadania w muzeum kirdneh wymagane do zadania u Balduina
 - Adventure Island gwarantuje spawn potwora z dziennego zadania w Semos
+- Doświadczenie ataku nalicza się za udane lub zablokowane trafienia, niezależnie od tego, czy ostatnio otrzymano obrażenia
+- Nieudane trafienia już nienagradzają doświadczeniem ataku
+
+*kod*
+- Nagrody w postaci przedmiotów za reset poziomu można od teraz odebrać tylko jeden raz
 
 *naprawiono błędy*
 - Naprawiono sumowanie ataku trzymanych dwóch mieczy jednocześnie (praworęczny & leworęczny)
 - Naprawiono atakowanie odpowiednim żywiołem korzystając z magicznych zaklęć oraz różdżek
+- Naprawiono niedokładne podpowiedzi miejsc na zapisanych zwojach
 
 
 1.30
