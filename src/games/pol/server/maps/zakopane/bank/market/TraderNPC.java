@@ -38,7 +38,7 @@ public class TraderNPC extends TradeCenterZoneConfigurator {
 		SpeakerNPC speaker = new MarketManagerNPC(TRADE_ADVISOR_NAME, 5);
 		speaker.setPosition(COORDINATE_X,COORDINATE_Y);
 		speaker.setDescription("Oto Radzimir. Wyglądający na przyjaznego faceta, który czeka na utworzenie oferty od ciebie...");
-		speaker.setEntityClass("npc_straganiarz");
+		speaker.setEntityClass("npcstraganiarz");
 		speaker.setGender("M");
 		zone.add(speaker);
 	}
