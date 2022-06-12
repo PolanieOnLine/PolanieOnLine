@@ -17,12 +17,21 @@ Changelog
 - Dodano możliwość zdobycia strzał żywiołów z dużych centaurów
 - Dodano nową nagrodę w postaci przedmiotów dla osób, którzy zresetowali poziom trzeci raz
 - Dodano nowe przedmioty wymagane do ostatniego zadania na największego kolekcjonera broni u Balduina
+- Dodano nowe przedmioty wymagane w cotygodniowym zadaniu w Wieliczce
+- Dodano nowe przedmioty wymagane w codziennym zadaniu w Gdańsku
 - Usunięto przedmioty z cotygodniowego zadania w muzeum kirdneh wymagane do zadania u Balduina
 - Adventure Island gwarantuje spawn potwora z dziennego zadania w Semos
 - Doświadczenie ataku nalicza się za udane lub zablokowane trafienia, niezależnie od tego, czy ostatnio otrzymano obrażenia
 - Nieudane trafienia już nienagradzają doświadczeniem ataku
+- Podczas walki szansa na trafienie gracza wzrasta o 50%
+- Obrażenia zadawane przez gracza są zmniejszone o 50%, aby zrekompensować zwiększoną szansę na trafienie
+- Zwoje przywołania mogą być używane na arenie deathmatch
+- Zmieniono czas oczekiwania na kolejne zadanie w Wieliczce z 3 do 7 dni
+- Zmieniono czas oczekiwania na kolejne zadanie w Kuźnicach z 2 do 1 dnia
+- Zmieniono czas oczekiwania na kolejne zadanie w Gdańsku z 2 do 1 dnia
 
 *kod*
+- Dodano nowy skrypt ExecuteCreatureSpawn.class dla administratorów
 - Nagrody w postaci przedmiotów za reset poziomu można od teraz odebrać tylko jeden raz
 
 *naprawiono błędy*
