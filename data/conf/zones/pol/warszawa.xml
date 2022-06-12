@@ -110,21 +110,21 @@
 			</implementation>
 		</entity>
 		<entity x="10" y="45">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="40" y="80">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="65" y="127">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
@@ -239,14 +239,14 @@
 			</implementation>
 		</entity>
 		<entity x="80" y="15">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>
 			</implementation>
 		</entity>
 		<entity x="100" y="65">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">25</parameter>
 				<parameter name="volume">30</parameter>

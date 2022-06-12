@@ -99,8 +99,8 @@ public class WeeklyItemQuest extends AbstractQuest {
 	private static final int delay = MathHelper.MINUTES_IN_ONE_WEEK;
 
 	/**
-	 * All items which are hard enough to find but not tooo hard and not in Daily quest. If you want to do
-	 * it better, go ahead. *
+	 * All items which are hard enough to find but not too hard and not in Daily quest. If you want to do
+	 * it better, go ahead.
 	 */
 	private static final Map<String, Integer> items_easy = new HashMap<String, Integer>();
 	private static final Map<String, Integer> items_med = new HashMap<String, Integer>();
@@ -220,6 +220,8 @@ public class WeeklyItemQuest extends AbstractQuest {
 		addMed("bryłka mithrilu",1); // 0.16, 90 (harvestable)
 		addMed("gruczoł przędzy",7); // 522.79, 110
 
+		// ring (easy)
+		addEasy("pierścień zaręczynowy", 1); // purchasable
 		// ring (medium difficulty)
 		addMed("pierścień leczniczy", 1); // 78.26, 73
 
@@ -270,8 +272,8 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private static void addEasy(final String item, final int quant) {
-		if (DailyItemQuest.utilizes(item)) {
-			logger.warn("Not adding item already utilized in DailyItemQuest: " + item);
+		if (DailyItemQuest.utilizes(item) && DailyItemZakopaneQuest.utilizes(item) && DailyItemGdanskQuest.utilizes(item)) {
+			logger.warn("Not adding item already utilized in DailyItemQuest, DailyItemZakopaneQuest & DailyItemGdanskQuest: " + item);
 			return;
 		}
 
@@ -279,8 +281,8 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private static void addMed(final String item, final int quant) {
-		if (DailyItemQuest.utilizes(item)) {
-			logger.warn("Not adding item already utilized in DailyItemQuest: " + item);
+		if (DailyItemQuest.utilizes(item) && DailyItemZakopaneQuest.utilizes(item) && DailyItemGdanskQuest.utilizes(item)) {
+			logger.warn("Not adding item already utilized in DailyItemQuest, DailyItemZakopaneQuest & DailyItemGdanskQuest: " + item);
 			return;
 		}
 
@@ -288,8 +290,8 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private static void addHard(final String item, final int quant) {
-		if (DailyItemQuest.utilizes(item)) {
-			logger.warn("Not adding item already utilized in DailyItemQuest: " + item);
+		if (DailyItemQuest.utilizes(item) && DailyItemZakopaneQuest.utilizes(item) && DailyItemGdanskQuest.utilizes(item)) {
+			logger.warn("Not adding item already utilized in DailyItemQuest, DailyItemZakopaneQuest & DailyItemGdanskQuest: " + item);
 			return;
 		}
 

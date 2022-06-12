@@ -118,7 +118,7 @@
 			</implementation>
 		</entity>
 		<entity x="78" y="52">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">15</parameter>
 				<parameter name="volume">20</parameter>
@@ -246,7 +246,7 @@
 			</implementation>
 		</entity>
 		<entity x="111" y="111">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">10</parameter>
 				<parameter name="volume">30</parameter>
@@ -332,14 +332,14 @@
 			</implementation>
 		</entity>
 		<entity x="34" y="110">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">2</parameter>
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
 		<entity x="21" y="100">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">3</parameter>
 				<parameter name="volume">15</parameter>
@@ -2534,7 +2534,7 @@ Aktualne ceny u Gazdy Wojtka:
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>
@@ -2581,7 +2581,7 @@ Aktualne ceny u Gazdy Wojtka:
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>

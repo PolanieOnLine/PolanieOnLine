@@ -1356,7 +1356,7 @@
 		</entity>
 
 		<entity x="13" y="2">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">4</parameter>
 				<parameter name="volume">20</parameter>

@@ -60,13 +60,29 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily_kuznice_kill_monster";
 	private final SpeakerNPC npc = npcs.get("Sołtys");
 
-	private final static int delay = 2 * MathHelper.MINUTES_IN_ONE_DAY;
+	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
 
 	private static Logger logger = Logger.getLogger("DailyMonsterKuzniceQuest");
 
+	private static DailyMonsterKuzniceQuest instance;
+
 	/** All creatures, sorted by level. */
 	private static List<Creature> sortedcreatures;
+
+	/**
+	 * Get the static instance.
+	 *
+	 * @return
+	 * 		DailyMonsterKuzniceQuest
+	 */
+	public static DailyMonsterKuzniceQuest getInstance() {
+		if (instance == null) {
+			instance = new DailyMonsterKuzniceQuest();
+		}
+
+		return instance;
+	}
 
 	private static void refreshCreaturesList(final String excludedCreature) {
 		final Collection<Creature> creatures = SingletonRepository.getEntityManager().getCreatures();

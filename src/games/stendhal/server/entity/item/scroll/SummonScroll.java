@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.item.scroll;
 
+import static games.stendhal.server.maps.ados.wall.Deathmatch.playerInArena;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,7 +33,6 @@ import games.stendhal.server.entity.player.Player;
  * Represents a creature summon scroll.
  */
 public class SummonScroll extends Scroll {
-
 	private static final int MAX_ZONE_NPCS = 50;
 
 	private static final Logger logger = Logger.getLogger(SummonScroll.class);
@@ -70,7 +71,7 @@ public class SummonScroll extends Scroll {
 	protected boolean useScroll(final Player player) {
 		final StendhalRPZone zone = player.getZone();
 
-		if (zone.isInProtectionArea(player)) {
+		if (zone.isInProtectionArea(player) && !playerInArena(player)) {
 			player.sendPrivateText("Aura ochronna w tym obszarze blokuje działanie zwoju!");
 			return false;
 		}

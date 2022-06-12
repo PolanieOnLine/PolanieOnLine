@@ -462,7 +462,7 @@ kopalnia węgla!
 		</entity>
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">pol-stones1, pol-mines, pol-stones2, pol-mines, hammer-1, pol-mines</parameter>
+				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">64</parameter>

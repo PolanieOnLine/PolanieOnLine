@@ -617,7 +617,7 @@ Południe: tereny Tatrzańskie
 			</implementation>
 		</entity>
 		<entity x="40" y="80">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
 				<parameter name="radius">40</parameter>
 				<parameter name="volume">30</parameter>
@@ -2010,8 +2010,7 @@ Południe: Zakopane
 			</implementation>
 		</entity>
 		<entity x="63" y="106">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">1</parameter>
@@ -2020,8 +2019,7 @@ Południe: Zakopane
 			</implementation>
 		</entity>
 		<entity x="92" y="94">
-			<implementation
-				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
 				<parameter name="min">1</parameter>
 				<parameter name="max">1</parameter>

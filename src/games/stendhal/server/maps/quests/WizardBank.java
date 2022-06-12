@@ -241,17 +241,17 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 						new AndCondition(
 								new PlayerHasItemWithHimCondition("money", COST),
 								new QuestNotActiveCondition(QUEST_SLOT)),
-								ConversationStates.ATTENDING,
-								"Skrzynie banków Semos, Nalwor i Fado są po mojej prawej. Skrzynie banków z Ados i twojej przyjaciółki Zary są po mojej lewej. Jeżeli skończyłeś przed czasem to powiedz #wyjście.",
-								new MultipleActions(
-										new DropItemAction("money", COST),
-										new TeleportAction(ZONE_NAME, 10, 10, Direction.DOWN),
-										new SetQuestAction(QUEST_SLOT, "start"),
-										new ChatAction() {
-											@Override
-											public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-												SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
-											}}));
+						ConversationStates.IDLE,
+						"Skrzynie banków Semos, Nalwor i Fado są po mojej prawej. Skrzynie banków z Deniran i Ados oraz twojej przyjaciółki Zary są po mojej lewej. Jeżeli skończyłeś przed czasem to powiedz #wyjście.",
+						new MultipleActions(
+								new DropItemAction("money", COST),
+								new TeleportAction(ZONE_NAME, 10, 10, Direction.DOWN),
+								new SetQuestAction(QUEST_SLOT, "start"),
+								new ChatAction() {
+									@Override
+									public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+										SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
+									}}));
 
 				add(ConversationStates.ATTENDING,
 						ConversationPhrases.YES_MESSAGES,
@@ -294,7 +294,7 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("leave", "wyjście", "wyjdź"),
 						new QuestActiveCondition(QUEST_SLOT),
-						ConversationStates.ATTENDING,
+						ConversationStates.IDLE,
 						"Dziękuję za skorzystanie z Banku Czarodzieja",
 						// we used to use teleportAway() here
 						new MultipleActions(
@@ -327,8 +327,10 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 
 		npc.setDescription("Oto czarodziej, z którym nie powinieneś zadzierać.");
 		npc.setEntityClass("brownwizardnpc");
+		npc.setGender("M");
 		npc.setPosition(15, 10);
 		npc.initHP(100);
+		npc.setIdleDirection(Direction.DOWN);
 		zone.add(npc);
 	}
 

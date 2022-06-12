@@ -194,7 +194,7 @@ public class StendhalQuestSystem {
 		\**	                    **/
 		loadQuest(new BringMagic());
 		loadQuest(new ClearTower());
-		loadQuest(new GazdaWojtekDailyItemQuest());
+		loadQuest(new DailyItemZakopaneQuest());
 		loadQuest(new Gornictwo());
 		loadQuest(new HelpKrasnolud());
 		loadQuest(new HerbsForJadzka());
@@ -292,7 +292,7 @@ public class StendhalQuestSystem {
 		\**	                    **/
 		loadQuest(new BilliardGame());
 		loadQuest(new SkorySmokow());
-		loadQuest(new DailyMuseumGdanskQuest());
+		loadQuest(new DailyItemGdanskQuest());
 		loadQuest(new DzikiiWilki());
 		loadQuest(new Pizza());
 		loadQuest(new ProsbyWiedzmy());

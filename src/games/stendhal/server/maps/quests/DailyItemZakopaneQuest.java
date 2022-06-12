@@ -19,7 +19,6 @@ import java.util.Map;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.Occasion;
-import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -29,7 +28,6 @@ import games.stendhal.server.entity.npc.action.DropRecordedItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseAtkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseDefXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
-import games.stendhal.server.entity.npc.action.IncreaseRatkXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPDependentOnLevelAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -50,15 +48,37 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-public class DailyMuseumGdanskQuest extends AbstractQuest {
-	private static final String QUEST_SLOT = "daily_museum_gdansk_quest";
-	private final SpeakerNPC npc = npcs.get("Mieczysław");
+/**
+ * QUEST: Daily Gazda Wojtek Item Fetch Quest.
+ * <p>
+ * PARTICIPANTS:
+ * <li> Mayor of Zakopane
+ * <li> some items
+ * <p>
+ * STEPS:
+ * <li> talk to Mayor of Zakopane to get a quest to fetch an item
+ * <li> bring the item to the mayor
+ * <li> if you cannot bring it in one week he offers you the chance to fetch
+ * another instead
+ * <p>
+ * REWARD:
+ * <li> xp 
+ * <li> 10 Karma
+ * <p>
+ * REPETITIONS:
+ * <li> once a day
+ */
+public class DailyItemZakopaneQuest extends AbstractQuest {
+	private static final String QUEST_SLOT = "gazda_wojtek_daily_item";
+	private final SpeakerNPC npc = npcs.get("Gazda Wojtek");
 
 	/** How long until the player can give up and start another quest */
 	private static final int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK; 
 
 	/** How often the quest may be repeated */
-	private static final int delay = 2*MathHelper.MINUTES_IN_ONE_DAY; 
+	private static final int delay = MathHelper.MINUTES_IN_ONE_DAY;
+
+	private static DailyItemZakopaneQuest instance;
 
 	/**
 	 * All items which are possible/easy enough to find. If you want to do
@@ -67,42 +87,139 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	 */
 	private static Map<String,Integer> items;
 
+	/**
+	 * Get the static instance.
+	 *
+	 * @return
+	 * 		DailyItemZakopaneQuest
+	 */
+	public static DailyItemZakopaneQuest getInstance() {
+		if (instance == null) {
+			instance = new DailyItemZakopaneQuest();
+		}
+
+		return instance;
+	}
+
 	private static void buildItemsMap() {
 		items = new HashMap<String, Integer>();
-		items.put("szmaragd",5);
-		items.put("szafir",5);
-		items.put("rubin",5);
-		items.put("ametyst",5);
-		items.put("szmaragd",10);
-		items.put("szafir",10);
-		items.put("rubin",10);
-		items.put("ametyst",10);
-		items.put("diament",3);
-		items.put("bursztyn",5);
-		items.put("sztabka złota",5);
-		items.put("sztabka złota",10);
-		items.put("żelazo",10);
-		items.put("żelazo",15);
-		items.put("sztabka mithrilu",3);
-		items.put("bryłka złota",10);
+
+		// ammunition
+		items.put("bełt",10);
+		items.put("bełt stalowy",5);
+		items.put("bełt złoty",25);
+		items.put("bełt płonący",10);
+
+		// armor
+		items.put("cuha góralska",1);
+		items.put("góralski gorset",1);
+		items.put("zardzewiała zbroja płytowa",1);
+
+		// axe
+		items.put("ciupaga",1);
+		items.put("siekierka",1);
+
+		// boots
+		items.put("kierpce",1);
+
+		// cloaks
+		items.put("chusta góralska",1);
+
+		// containers
+		items.put("pusty bukłak",5);
+
+		// drinks
+		items.put("buteleczka wody",20);
+		items.put("butelka wody",15);
+		items.put("bukłak z wodą",10);
+		items.put("miód pitny",5);
+
+		// food
+		items.put("kiełbasa wiejska",10);
+		items.put("opieńka miodowa",10);
+		items.put("ziemniaki",10);
+		items.put("oscypek",5);
+		
+		// helmet
+		items.put("hełm barbarzyńcy",1);
+		items.put("góralski kapelusz",1);
+
+		// legs
+		items.put("góralska biała spódnica",1);
+		items.put("góralska spódnica",1);
+		items.put("portki bukowe",1);
+
+		// misc
+		items.put("pióro herszta hordy zbójeckiej",5);
+
+		// resource
+		items.put("bryła lodu",30);
+		items.put("skóra lwa",2);
+		items.put("skóra tygrysa",3);
+		items.put("skóra zwierzęca",10);
+		items.put("skóra białego tygrysa",10);
+		items.put("skóra xenocium",2);
+		items.put("kość dla psa",20);
 		items.put("ruda srebra",10);
-		items.put("sztabka srebra",5);
-		items.put("obsydian",3);
-		items.put("ruda żelaza",10);
-		items.put("czarna perła",3);
-		items.put("bryłka mithrilu",5);
+		items.put("sztabka srebra",1);
+		items.put("sól",10);
+		items.put("siarka",10);
+		items.put("węgiel",10);
+		items.put("kryształ ametystu",10);
 		items.put("kryształ szmaragdu",10);
 		items.put("kryształ szafiru",10);
 		items.put("kryształ rubinu",10);
-		items.put("kryształ ametystu",10);
-		items.put("węgiel",25);
+		items.put("kryształ obsydianu",10);
+		items.put("kieł wilczy",20);
+		items.put("kieł tygrysi",10);
+		items.put("kieł niedźwiedzi",15);
+		items.put("pazury wilcze",10);
+		items.put("pazury tygrysie",10);
+		items.put("niedźwiedzie pazury",10);
+		items.put("piórko",30);
+
+		// special
+		items.put("piłka",1);
+
+		// shield
+		items.put("polska tarcza drewniana",1);
+		items.put("polska tarcza kolcza",1);
+		items.put("polska tarcza lekka",1);
+		items.put("polska płytowa tarcza",1);
+		items.put("tarcza królewska",1);
+
+		// gloves
+		items.put("skórzane rękawice",1);
+		items.put("skórzane wzmocnione rękawice",1);
+
+		// magic
+		items.put("magia płomieni",10);
+		items.put("magia ziemi",10);
+		items.put("magia deszczu",10);
+		items.put("magia mroku",5);
+		items.put("magia światła",5);
+
+		// wand
+		items.put("różdżka",1);
+		items.put("różdżka Strzyboga",1);
+	}
+
+	/**
+	 * For other quests to check if an item is already utilized in this one.
+	 *
+	 * @param item
+	 * 		<code>String</code> name of the item.
+	 * @return
+	 * 		<code>true</code> if the item is found in the list, <code>false</code>
+	 */
+	public static boolean utilizes(final String item) {
+		return items.containsKey(item);
 	}
 
 	private ChatAction startQuestAction() {
 		// common place to get the start quest actions as we can both starts it and abort and start again
-
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
-		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT,0,items,"Gdańsk potrzebuje zapasów. Zdobądź [item]"
+		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT,0,items,"Zakopane potrzebuje zapasów. Zdobądź [item]"
 				+ " i powiedz #załatwione, gdy przyniesiesz."));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 		
@@ -115,7 +232,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Już dostałeś zadanie by przynieść [item]"
+				new SayRequiredItemAction(QUEST_SLOT,0,"Już masz zadanie by dostarczyć [item]"
 						+ ". Powiedz #załatwione jeżeli przyniesiesz!"));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
@@ -131,7 +248,7 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,delay))), 
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT,1, delay, "Możesz dostać tylko jedno zadanie na 2 dni. Proszę wróć za"));
+				new SayTimeRemainingAction(QUEST_SLOT,1, delay, "Możesz dostać tylko jedno zadanie dziennie. Proszę wróć za"));
 
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new OrCondition(new QuestNotStartedCondition(QUEST_SLOT),
@@ -162,22 +279,19 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 		actions.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
 		actions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
-		actions.add(new IncreaseXPDependentOnLevelAction(6, 70.0));
+		actions.add(new IncreaseXPDependentOnLevelAction(6, 97.0));
 		if (!Occasion.SECOND_WORLD) {
-			actions.add(new IncreaseAtkXPDependentOnLevelAction(6, 70.0));
-			actions.add(new IncreaseDefXPDependentOnLevelAction(6, 70.0));
+			actions.add(new IncreaseAtkXPDependentOnLevelAction(6, 97.0));
+			actions.add(new IncreaseDefXPDependentOnLevelAction(6, 97.0));
 		}
-		if (Testing.COMBAT) {
-			actions.add(new IncreaseRatkXPDependentOnLevelAction(6, 70.0));
-		}
-		actions.add(new IncreaseKarmaAction(15.0));
+		actions.add(new IncreaseKarmaAction(20.0));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0)),
 				ConversationStates.ATTENDING, 
-				"Dobra robota! Pozwól sobie podziękować w imieniu obywateli Gdańska! W nagrodę dostałeś punkty umiejętności ataku i obrony.",
+				"Dobra robota! Pozwól sobie podziękować w imieniu obywateli Zakopanego!",
 				new MultipleActions(actions));
 
 		npc.add(ConversationStates.ATTENDING,
@@ -186,9 +300,8 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 								 new NotCondition(new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT,0))),
 				ConversationStates.ATTENDING, 
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Jeszcze nie przyniosłeś [item]"
+				new SayRequiredItemAction(QUEST_SLOT,0,"Jeszcze nie masz [item]"
 						+ ". Idź i zdobądź, a wtedy wróć i powiedz #załatwione jak skończysz."));
-
 	}
 
 	private void abortQuest() {
@@ -215,15 +328,14 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Obawiam się, że jeszcze nie dałem tobie #zadania.", 
 				null);
-
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-		"Dzienne Zadanie w Gdańsku",
-		"Mieczysław potrzebuje dostaw towaru do Gdańska.",
-		true);
+				"Dzienne Zadanie Gazdy Wojtka",
+				"Gazda Wojtek potrzebuje dostaw towaru do Zakopanego.",
+				true);
 
 		buildItemsMap();
 
@@ -238,51 +350,36 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Mieczysława w Gdańsku");
+		res.add(Grammar.genderVerb(player.getGender(), "Napotkałem") + " się na Gazdę Wojtka w ratuszu Zakopane.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie pomogę miastu Gdańsk.");
+			res.add("Nie pomogę gaździe oraz mieszkańcom Zakopane.");
 			return res;
 		}
 
-		res.add("Chcę pomóc mieszkańcom Gdańska.");
+		res.add("Bardzo chętnie poświęcę swój drogocenny czas, aby pomóc mieszkańcom Zakopanego.");
 		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add((Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
-						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc miastu Gdańsk. Nie mam tego jeszcze."));
+				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
+						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Zakopanemu. Nie mam tego jeszcze.");
 			} else {
-				res.add((Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
-						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy miastu Gdańsk i muszę je dostarczyć."));
+				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
+						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Zakopanemu i muszę je dostarczyć.");
 			}
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " miastu Gdańsk z dostawami "
+			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Zakopanemu z dostawami "
 					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Gdańsk znów potrzebuje zapasów.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysław i odebrałem moją nagrodę w ciągu ostatnich 48 godzin.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.");
 		}
 		return res;
-	}
-
-	@Override
-	public String getName() {
-		return "Dzienne Zadanie w Gdańsku";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.GDANSK_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
 	}
 
 	@Override
@@ -291,8 +388,29 @@ public class DailyMuseumGdanskQuest extends AbstractQuest {
 	}
 
 	@Override
+	public String getName() {
+		return "Dzienne Zadanie w Zakopane";
+	}
+
+	@Override
+	public int getMinLevel() {
+		return 0;
+	}
+
+	@Override
+	public String getRegion() {
+		return Region.ZAKOPANE_CITY;
+	}
+
+	@Override
+	public String getNPCName() {
+		return npc.getName();
+	}
+
+	@Override
 	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
-					new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
+		return new AndCondition(
+				new QuestCompletedCondition(QUEST_SLOT),
+				new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
 	}
 }

@@ -225,19 +225,18 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 						new AndCondition(
 								new PlayerHasItemWithHimCondition("money", COST), 
 								new QuestNotActiveCondition(QUEST_SLOT)),
-								ConversationStates.ATTENDING,
-								"Skrzynie banków Semos, Nalwor, Ados i Fado są po mojej prawej.",
-								new MultipleActions(
-									new DropItemAction("money", COST),
-									new TeleportAction(ZONE_NAME, 41, 15, Direction.DOWN),
-									new SetQuestAction(QUEST_SLOT, "start"),
-									new ChatAction() {
-										@Override
-										public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-											SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
-										}
+						ConversationStates.IDLE,
+						"Skrzynie banków Semos, Nalwor, Ados i Fado są zaraz na piętrze.",
+						new MultipleActions(
+								new DropItemAction("money", COST),
+								new TeleportAction(ZONE_NAME, 41, 15, Direction.DOWN),
+								new SetQuestAction(QUEST_SLOT, "start"),
+								new ChatAction() {
+									@Override
+									public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+										SingletonRepository.getTurnNotifier().notifyInTurns(0, new Timer(player));
 									}
-								));
+								}));
 
 				add(ConversationStates.ATTENDING,
 						ConversationPhrases.YES_MESSAGES,
@@ -279,7 +278,7 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("leave", "wyjście", "wyjdź"),
 						new QuestActiveCondition(QUEST_SLOT),
-						ConversationStates.ATTENDING,
+						ConversationStates.IDLE,
 						"Dziękuję za skorzystanie z Banku w Zakopanem.",
 						// we used to use teleportAway() here 
 						new MultipleActions(
