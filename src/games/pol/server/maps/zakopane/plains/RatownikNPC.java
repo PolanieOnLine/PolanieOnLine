@@ -58,7 +58,7 @@ public class RatownikNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("npcratownik");
+		npc.setEntityClass("man_006_npc");
 		npc.setGender("M");
 		npc.setPosition(108, 11);
 		zone.add(npc);
