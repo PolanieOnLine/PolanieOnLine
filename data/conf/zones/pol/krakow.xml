@@ -1484,7 +1484,7 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.pol.server.maps.krakow.tavern.BarmankaNPC"/>
 		<configurator class-name="games.pol.server.maps.krakow.tavern.KarczmarkaNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.tavern.MrManasNPC"/>
+		<configurator class-name="games.pol.server.maps.krakow.tavern.KuglarzNPC"/>
 		<configurator class-name="games.pol.server.maps.krakow.tavern.MerchandNPC"/>
 
 		<entity x="1" y="1">

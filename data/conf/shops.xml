@@ -949,7 +949,7 @@
 		<item name="bułat" price="80" />
 	</shop>
 
-	<!-- Mr. Manas kupuje: -->
+	<!-- Jan Kuglarz kupuje: -->
 	<shop name="buymanas" type="buys">
 		<item name="magia ziemi" price="3" />
 		<item name="magia płomieni" price="5" />

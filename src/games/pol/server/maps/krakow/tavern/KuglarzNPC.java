@@ -26,7 +26,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 /**
  * @author KarajuSs
  */
-public class MrManasNPC implements ZoneConfigurator {
+public class KuglarzNPC implements ZoneConfigurator {
 	private final ShopList shops = SingletonRepository.getShopList();
 
 	/**
@@ -41,24 +41,24 @@ public class MrManasNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Mr. Manas") {
-
+		final SpeakerNPC npc = new SpeakerNPC("Jan Kuglarz") {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Kiedyś chciałem zostać czarodziejem, ale nie mam do tego talentu.. Dlatego staram się nie poddawać w tej kwesti!");
-				addOffer("Skupię od Ciebie #'magię ziemi', #'magię płomieni', #'magię deszczu', #'magię światła' oraz #'magię mroku'.");
+				addJob("Kiedyś chciałem zostać czarodziejem, ale okazało się, że nie mam do tego talentu... Dlatego też staram się wgłębiać tajniki magii!");
+				addOffer("Skupię od Ciebie #'magię ziemi', #'magię płomieni', #'magię deszczu', #'magię lodu', #'magię światła' oraz #'magię mroku'.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buymanas")), false);
 				addGoodbye("Nie zapomnij dostarczyć dla mnie magii!");
 			}
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.UP);
 			}
 		};
 
-		npc.setDescription("Oto Mr. Manas. Kiedyś chciał zostać czarodziejem, jednak okazało się, że nie ma do tego talentu. Lecz nie przestał interesować się magią.");
-		npc.setEntityClass("npcmanas");
+		npc.setDescription("Oto Jan Kuglarz. Wygląda na osobę, która interesuje się magią.");
+		npc.setEntityClass("npcmagik");
 		npc.setGender("M");
 		npc.setPosition(12, 13);
 		npc.setDirection(Direction.UP);
