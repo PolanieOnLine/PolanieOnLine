@@ -26,6 +26,7 @@ Changelog
 - Podczas walki szansa na trafienie gracza wzrasta o 50%
 - Obrażenia zadawane przez gracza są zmniejszone o 50%, aby zrekompensować zwiększoną szansę na trafienie
 - Zwoje przywołania mogą być używane na arenie deathmatch
+- Zmieniono nazwę NPC z Mr. Manas na Jan Kuglarz
 - Zmieniono czas oczekiwania na kolejne zadanie w Wieliczce z 3 do 7 dni
 - Zmieniono czas oczekiwania na kolejne zadanie w Kuźnicach z 2 do 1 dnia
 - Zmieniono czas oczekiwania na kolejne zadanie w Gdańsku z 2 do 1 dnia
