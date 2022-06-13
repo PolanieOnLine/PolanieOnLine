@@ -29,6 +29,7 @@ Changelog
 - Zmieniono czas oczekiwania na kolejne zadanie w Wieliczce z 3 do 7 dni
 - Zmieniono czas oczekiwania na kolejne zadanie w Kuźnicach z 2 do 1 dnia
 - Zmieniono czas oczekiwania na kolejne zadanie w Gdańsku z 2 do 1 dnia
+- Wymagania dot. ilości przedmiotów do zaniesienia w Gdańsku będzie losowa
 
 *kod*
 - Dodano nowy skrypt ExecuteCreatureSpawn.class dla administratorów
