@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,8 +20,6 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
- * Build a NPC
- *
  * @author KarajuSs
  */
 public class ArcheologistNPC implements ZoneConfigurator {
@@ -54,7 +52,7 @@ public class ArcheologistNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto archeolog Amileusz, który jest ubrany w swój ulubiony stary szlafrok.");
-		npc.setEntityClass("npc_archeologist");
+		npc.setEntityClass("npcarcheolog");
 		npc.setGender("M");
 		npc.setPosition(10, 6);
 		npc.setDirection(Direction.UP);

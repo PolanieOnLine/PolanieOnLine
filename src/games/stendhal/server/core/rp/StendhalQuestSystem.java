@@ -302,7 +302,7 @@ public class StendhalQuestSystem {
 		\**	                    **/
 		loadQuest(new BiletTurystyczny());
 		loadQuest(new MeetGuslarz());
-		loadQuest(new WhereDragon());
+		loadQuest(new FindDragons());
 		loadQuest(new KolekcjonerPasow());
 
 		if (Occasion.CHRISTMAS) {

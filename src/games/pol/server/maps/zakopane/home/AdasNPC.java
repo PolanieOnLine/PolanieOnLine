@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -63,7 +63,7 @@ public class AdasNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto mały chłopiec o imieniu Adam. Jest nieco czymś przygnębiony.");
-		npc.setEntityClass("npcdzieckogoralskie");
+		npc.setEntityClass("npcdziecko1");
 		npc.setGender("M");
 		npc.setPosition(6, 3);
 		npc.setSounds(Arrays.asList("hiccup-01", "sneeze-male-01"));

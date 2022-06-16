@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,14 +13,12 @@ package games.pol.server.maps.zakopane.house;
 
 import java.util.Map;
 
-import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
- * @author zekkeq
+ * @author KarajuSs
  */
 public class CelinaNPC implements ZoneConfigurator {
 	/**
@@ -36,7 +34,6 @@ public class CelinaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Celina") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("*kaszel* Ugh.. Cz..Cześć. *kaszel*");
@@ -44,18 +41,12 @@ public class CelinaNPC implements ZoneConfigurator {
 				addHelp("Ta *kaszel* tko obiecał przynieść dla mnie lekarstwo... *kaszel*");
 				addGoodbye("Miło było Cię poznać. *kaszel*");
 			}
-
-			@Override
-			protected void onGoodbye(RPEntity player) {
-				setDirection(Direction.DOWN);
-			}
 		};
 
 		npc.setDescription("Oto Celina. Jest bardzo chora.");
-		npc.setEntityClass("npc_choredziecko");
+		npc.setEntityClass("npcdzieckochore");
 		npc.setGender("F");
 		npc.setPosition(19, 2);
-		npc.setDirection(Direction.DOWN);
 		npc.initHP(50);
 		zone.add(npc);
 	}

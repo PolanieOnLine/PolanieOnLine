@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -61,7 +61,7 @@ public class DorianNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Dorian. Jest strasznie smutny i wygląda jakby czegoś chyba szukał.");
-		npc.setEntityClass("npcdorian");
+		npc.setEntityClass("npcdziecko2");
 		npc.setGender("M");
 		npc.setPosition(92, 7);
 		zone.add(npc);

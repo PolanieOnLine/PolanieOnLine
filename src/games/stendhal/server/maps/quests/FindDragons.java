@@ -36,7 +36,7 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.PoisonStatus;
 
-public class WhereDragon extends AbstractQuest {
+public class FindDragons extends AbstractQuest {
 	private static final String QUEST_SLOT = "where_dragon";
 
 	private final HashMap<String, String> dragonHistory = new HashMap<String,String>();
@@ -71,7 +71,7 @@ public class WhereDragon extends AbstractQuest {
 		public DragonNPC(final String name, final int x, final int y) {
 			super(name);
 
-			setEntityClass("dragonNPC");
+			setEntityClass("dragon1npc");
 			setPosition(x, y);
 			setCollisionAction(CollisionAction.REROUTE);
 			initHP(100);

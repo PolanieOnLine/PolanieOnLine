@@ -53,7 +53,7 @@ public class eFuRNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setEntityClass("npcsmok");
+		npc.setEntityClass("dragon3npc");
 		npc.setGender("M");
 		npc.setPosition(8, 141);
 		zone.add(npc);

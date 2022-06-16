@@ -57,7 +57,7 @@ public class SmokNPC implements ZoneConfigurator {
 		};
 
 		smokNPC.setDescription("Oto Władca Smoków. Strzeże niebios przed złem.");
-		smokNPC.setEntityClass("npcsmok");
+		smokNPC.setEntityClass("dragon3npc");
 		smokNPC.setGender("M");
 		smokNPC.setPosition(8, 6);
 		smokNPC.initHP(5000);

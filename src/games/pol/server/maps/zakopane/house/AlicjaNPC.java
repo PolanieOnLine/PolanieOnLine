@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,7 +38,6 @@ public class AlicjaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Alicja") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -71,7 +70,7 @@ public class AlicjaNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Alicja, córka Domiesława. Wygląda na strasznie zmęczoną.");
-		npc.setEntityClass("npcdziewczynka");
+		npc.setEntityClass("npcdziecko3");
 		npc.setGender("F");
 		npc.setPosition(3, 15);
 		zone.add(npc);

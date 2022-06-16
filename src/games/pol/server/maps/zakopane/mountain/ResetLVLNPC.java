@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,11 +22,8 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
- * Tworzy NPC o nazwie Yerena
- * 
  * @author KarajuSs 00:34:21 11-07-2018
  */
-
 public class ResetLVLNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
@@ -37,14 +34,12 @@ public class ResetLVLNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Yerena") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -63,7 +58,7 @@ public class ResetLVLNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Yerena. Smok, który włada czasem.");
-		npc.setEntityClass("npcsmok");
+		npc.setEntityClass("dragon3npc");
 		npc.setGender("F");
 		npc.setPosition(16, 18);
 		zone.add(npc);
