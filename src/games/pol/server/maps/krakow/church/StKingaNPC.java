@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -40,7 +40,6 @@ public class StKingaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("St Kinga") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -61,7 +60,7 @@ public class StKingaNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto St Kinga. Jest mnichem i zajmuje się leczeniem ran u dzielnych wojowników.");
-		npc.setEntityClass("npckinga");
+		npc.setEntityClass("npcst2");
 		npc.setGender("F");
 		npc.setPosition(37, 4);
 		zone.add(npc);

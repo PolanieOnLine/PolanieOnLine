@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -44,7 +44,6 @@ public class StJacekNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("St Jacek") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -67,7 +66,7 @@ public class StJacekNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto St Jacek. Jest mnichem i zajmuje się z sprzedażą eliksirów.");
-		npc.setEntityClass("npcjacek");
+		npc.setEntityClass("npcst1");
 		npc.setGender("M");
 		npc.setPosition(35, 16);
 		zone.add(npc);
