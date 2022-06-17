@@ -31,6 +31,7 @@ Changelog
 - Zmieniono czas oczekiwania na kolejne zadanie w Kuźnicach z 2 do 1 dnia
 - Zmieniono czas oczekiwania na kolejne zadanie w Gdańsku z 2 do 1 dnia
 - Wymagania dot. ilości przedmiotów do zaniesienia w Gdańsku będzie losowa
+- Gracze z czaszką atakują dwa razy wolniej
 
 *kod*
 - Dodano nowy skrypt ExecuteCreatureSpawn.class dla administratorów
@@ -40,6 +41,7 @@ Changelog
 - Naprawiono sumowanie ataku trzymanych dwóch mieczy jednocześnie (praworęczny & leworęczny)
 - Naprawiono atakowanie odpowiednim żywiołem korzystając z magicznych zaklęć oraz różdżek
 - Naprawiono niedokładne podpowiedzi miejsc na zapisanych zwojach
+- Naprawiono refundacje za sprzedaż domków u różnych sprzedawców
 
 
 1.30
