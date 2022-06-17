@@ -1872,8 +1872,12 @@ public class Player extends DressedEntity implements UseListener {
 		applyMovement();
 
 		final int turn = SingletonRepository.getRuleProcessor().getTurn();
-
-		if (isAttacking() && turn % getAttackRate() == 0) {
+		
+		int attackRate = getAttackRate();
+		if (isBadBoy()) {
+			attackRate = getAttackRate() * 2;
+		}
+		if (isAttacking() && turn % attackRate == 0) {
 			RPEntity attackTarget = getAttackTarget();
 
 			// Face target if player is not moving
