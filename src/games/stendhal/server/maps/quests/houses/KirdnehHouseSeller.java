@@ -27,7 +27,7 @@ import games.stendhal.server.entity.npc.condition.TextHasNumberCondition;
 
 final class KirdnehHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in kirdneh. */
-	private static final int COST_KIRDNEH = 120000;
+	public static final int COST_KIRDNEH = 120000;
 	private static final String KIRDNEH_QUEST_SLOT = "weekly_item";
 
 	KirdnehHouseSeller(final String name, final String location, final HouseTax houseTax) {

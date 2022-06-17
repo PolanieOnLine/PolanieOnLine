@@ -24,12 +24,9 @@ import games.stendhal.server.entity.player.Player;
 final class ResellHouseAction implements ChatAction {
 	private static final Logger logger = Logger.getLogger(ResellHouseAction.class);
 
-	private final int cost;
-
+	private int cost;
 	private final String questSlot;
-
 	private final int depreciationPercentage;
-
 	private final HouseTax houseTax;
 
 	ResellHouseAction(final int cost, final String questSlot, final int deprecationPercentage, final HouseTax houseTax) {
@@ -47,7 +44,19 @@ final class ResellHouseAction implements ChatAction {
 		try {
 			final int id = Integer.parseInt(claimedHouse);
 			final HousePortal portal = HouseUtilities.getHousePortal(id);
-
+			// Kirdneh
+			if (id > 25 && id < 50) {
+				cost = KirdnehHouseSeller.COST_KIRDNEH;
+			// Ados
+			} else if(id > 49 && id < 78) {
+				cost = AdosHouseSeller.COST_ADOS;
+			// Zakopane
+			} else if (id > 200 && id < 216) {
+				cost = ZakopaneHouseSeller.COST_ZAKOPANE;
+			// Rest
+			} else {
+				cost = 100000;
+			}
 			final int refund = (cost * depreciationPercentage) / 100 - houseTax.getTaxDebt(portal);
 
 			final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");

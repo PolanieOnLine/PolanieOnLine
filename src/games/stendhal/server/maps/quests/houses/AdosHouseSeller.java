@@ -29,7 +29,8 @@ import games.stendhal.server.entity.npc.condition.TextHasNumberCondition;
 
 final class AdosHouseSeller extends HouseSellerNPCBase {
 	/** Cost to buy house in ados. */
-	private static final int COST_ADOS = 120000;
+	public static final int COST_ADOS = 120000;
+
 	private static final String ANNA_QUEST_SLOT = "toys_collector";
 	private static final String KEYRING_QUEST_SLOT = "hungry_joshua";
 	private static final String GHOSTS_QUEST_SLOT = "find_ghosts";
