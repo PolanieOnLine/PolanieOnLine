@@ -373,6 +373,11 @@ public class StendhalRPAction {
 			}
 
 			if (didDamage && !usesTrainingDummy) {
+				final boolean victimIsPlayer = defender instanceof Player;
+				if (victimIsPlayer && player.isBadBoy()) {
+					player.onDamaged(player, damage);
+				}
+
 				// limit damage to target HP
 				damage = Math.min(damage, defender.getHP());
 				player.handleLifesteal(player, weapons, damage);
