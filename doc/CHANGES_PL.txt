@@ -32,6 +32,7 @@ Changelog
 - Zmieniono czas oczekiwania na kolejne zadanie w Gdańsku z 2 do 1 dnia
 - Wymagania dot. ilości przedmiotów do zaniesienia w Gdańsku będzie losowa
 - Gracze z czaszką atakują dwa razy wolniej
+- Gracze z czaszką podczas atakowania innego gracza będą samodzielnie się okaleczać
 
 *kod*
 - Dodano nowy skrypt ExecuteCreatureSpawn.class dla administratorów
@@ -42,6 +43,7 @@ Changelog
 - Naprawiono atakowanie odpowiednim żywiołem korzystając z magicznych zaklęć oraz różdżek
 - Naprawiono niedokładne podpowiedzi miejsc na zapisanych zwojach
 - Naprawiono refundacje za sprzedaż domków u różnych sprzedawców
+- Naprawiono czcionke przy ekranie startowym
 
 
 1.30
