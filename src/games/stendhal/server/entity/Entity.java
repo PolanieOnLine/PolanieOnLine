@@ -308,7 +308,6 @@ public abstract class Entity extends RPObject implements Killer {
 		return ((getResistance() * entity.getResistance()) / 100);
 	}
 
-
 	/**
 	 * Determine if this is an obstacle for another entity.
 	 *
@@ -370,6 +369,7 @@ public abstract class Entity extends RPObject implements Killer {
 		if (yDistance < 0) {
 			yDistance = 0;
 		}
+
 		return xDistance * xDistance + yDistance * yDistance;
 	}
 
@@ -387,17 +387,13 @@ public abstract class Entity extends RPObject implements Killer {
 	 * @return double representing the squared distance
 	 */
 	public final double squaredDistance(final int x, final int y) {
-
-
 		final double otherMiddleX = x + 0.5;
 		final double otherMiddleY = y + 0.5;
-
 
 		final Rectangle2D thisArea = getArea();
 
 		final double thisMiddleX = thisArea.getCenterX();
 		final double thisMiddleY = thisArea.getCenterY();
-
 
 		double xDistance = Math.abs(otherMiddleX - thisMiddleX) - (area.getWidth() + 1) / 2;
 		double yDistance = Math.abs(otherMiddleY - thisMiddleY) - (area.getHeight() + 1) / 2;
@@ -408,6 +404,7 @@ public abstract class Entity extends RPObject implements Killer {
 		if (yDistance < 0) {
 			yDistance = 0;
 		}
+
 		return xDistance * xDistance + yDistance * yDistance;
 	}
 
