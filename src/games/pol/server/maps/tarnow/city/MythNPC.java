@@ -124,7 +124,7 @@ public class MythNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto stary klechdarz. Może opowie nam jakąś historyjkę.");
-		npc.setEntityClass("npc_kapturnik");
+		npc.setEntityClass("npcstaryklecha");
 		npc.setGender("M");
 		npc.setPosition(38, 76);
 		zone.add(npc);

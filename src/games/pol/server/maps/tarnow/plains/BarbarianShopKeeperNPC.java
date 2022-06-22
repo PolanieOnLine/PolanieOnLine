@@ -66,7 +66,7 @@ public class BarbarianShopKeeperNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Benio. Lubi się przebierać.");
-		npc.setEntityClass("barbarianshopkeeper");
+		npc.setEntityClass("barbarianshopkeepernpc");
 		npc.setGender("M");
 		npc.setPosition(86, 70);
 		zone.add(npc);

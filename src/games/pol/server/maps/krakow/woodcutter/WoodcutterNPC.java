@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,27 +11,18 @@
  ***************************************************************************/
 package games.pol.server.maps.krakow.woodcutter;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.core.pathfinder.FixedPath;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Builds the reaper in hell.
- * Remaining behaviour will be in games.stendhal.server.maps.quests.SolveRiddles
- * @author kymara
- */
-public class WoodcutterNPC implements ZoneConfigurator {
-	//
-	// ZoneConfigurator
-	//
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.SpeakerNPC;
 
+public class WoodcutterNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
 	 *
@@ -47,7 +38,6 @@ public class WoodcutterNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Drwal") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
