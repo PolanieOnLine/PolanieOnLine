@@ -341,7 +341,7 @@
 
 	<!-- START: sniegowe -->
 	<creature name="lodowy starszy olbrzym">
-		<type class="pol/olbrzymy" subclass="lodowy_starszy_olbrzym" tileid="pol_olbrzymy.png:3"/>
+		<type class="giant_human" subclass="lodowy_starszy_olbrzym" tileid="pol_olbrzymy.png:3"/>
 		<description>Oto lodowy starszy olbrzym. Jego skóra pokryta jest szadzią, a jego oddech jest niczym mroźny powiew północnego wiatru.</description>
 		<attributes>
 			<atk value="1836"/>

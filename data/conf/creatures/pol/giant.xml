@@ -4,7 +4,7 @@
 
 	<!-- START: olbrzymy -->
 	<creature name="superczłowiek olbrzym">
-		<type class="pol/olbrzymy" subclass="superczlowiek_gigant" tileid="pol_olbrzymy.png:0"/>
+		<type class="giant_human" subclass="superczlowiek_gigant" tileid="pol_olbrzymy.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="1884"/>
@@ -40,7 +40,7 @@
 	</creature>
 
 	<creature name="mega mag">
-		<type class="pol/olbrzymy" subclass="mega_mag" tileid="pol_olbrzymy.png:1"/>
+		<type class="giant_human" subclass="mega_mag" tileid="pol_olbrzymy.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="1483"/>
@@ -72,7 +72,7 @@
 	</creature>
 
 	<creature name="gigantyczna lili">
-		<type class="pol/olbrzymy" subclass="gigantyczna_lili" tileid="pol_olbrzymy.png:2"/>
+		<type class="giant_human" subclass="gigantyczna_lili" tileid="pol_olbrzymy.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="1750"/>
