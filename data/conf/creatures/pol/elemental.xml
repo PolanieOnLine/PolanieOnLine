@@ -174,7 +174,7 @@
 
 	<!-- START: pasterze -->
 	<creature name="pasterz drzew">
-		<type class="pol/pasterze_drzew" subclass="pasterz_drzew" tileid="pol_pasterze_drzew.png:0"/>
+		<type class="ent" subclass="pasterz_drzew" tileid="pol_pasterze_drzew.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="919"/>
