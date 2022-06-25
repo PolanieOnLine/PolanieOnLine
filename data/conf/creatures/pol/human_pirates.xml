@@ -629,7 +629,7 @@
 	<!-- START: truskull piraci -->
 
 	<creature name="podziemny pirat">
-		<type class="pol/piraci_truskull" subclass="truskull_warrior" tileid="pol_piraci_truskull.png:0"/>
+		<type class="human" subclass="truskull_warrior" tileid="pol_piraci_truskull.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="700"/>
@@ -664,7 +664,7 @@
 	</creature>
 
 	<creature name="podziemny kwatermistrz">
-		<type class="pol/piraci_truskull" subclass="truskull_knight" tileid="pol_piraci_truskull.png:1"/>
+		<type class="human" subclass="truskull_knight" tileid="pol_piraci_truskull.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="740"/>
@@ -702,7 +702,7 @@
 	</creature>
 
 	<creature name="podziemny kapłan">
-		<type class="pol/piraci_truskull" subclass="truskull_priest" tileid="pol_piraci_truskull.png:2"/>
+		<type class="human" subclass="truskull_priest" tileid="pol_piraci_truskull.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="500"/>
@@ -734,7 +734,7 @@
 	</creature>
 
 	<creature name="podziemny herszt">
-		<type class="pol/piraci_truskull" subclass="truskull_commander" tileid="pol_piraci_truskull.png:3"/>
+		<type class="human" subclass="truskull_commander" tileid="pol_piraci_truskull.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="800"/>
@@ -770,7 +770,7 @@
 	</creature>
 
 	<creature name="podziemny naukowiec">
-		<type class="pol/piraci_truskull" subclass="truskull_scientist" tileid="pol_piraci_truskull.png:4"/>
+		<type class="human" subclass="truskull_scientist" tileid="pol_piraci_truskull.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="755"/>
@@ -805,7 +805,7 @@
 	</creature>
 
 	<creature name="podziemny mutant">
-		<type class="pol/piraci_truskull" subclass="truskull_mutant" tileid="pol_piraci_truskull.png:5"/>
+		<type class="human" subclass="truskull_mutant" tileid="pol_piraci_truskull.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="790"/>
@@ -835,7 +835,7 @@
 	</creature>
 
 	<creature name="podziemny pirat północny">
-		<type class="pol/piraci_truskull" subclass="truskull_ice_warrior" tileid="pol_piraci_truskull.png:6"/>
+		<type class="human" subclass="truskull_ice_warrior" tileid="pol_piraci_truskull.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="990"/>
@@ -872,7 +872,7 @@
 	</creature>
 	
 	<creature name="podziemny łucznik">
-		<type class="pol/piraci_truskull" subclass="truskull_archer" tileid="pol_piraci_truskull.png:7"/>
+		<type class="human" subclass="truskull_archer" tileid="pol_piraci_truskull.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="1200"/>
@@ -911,7 +911,7 @@
 	</creature>
 
 	<creature name="podziemny elitarny łucznik">
-		<type class="pol/piraci_truskull" subclass="truskull_armed_archer" tileid="pol_piraci_truskull.png:8"/>
+		<type class="human" subclass="truskull_armed_archer" tileid="pol_piraci_truskull.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="1400"/>
@@ -952,7 +952,7 @@
 	</creature>
 
 	<creature name="podziemny czarnoksiężnik">
-		<type class="pol/piraci_truskull" subclass="truskull_electro" tileid="pol_piraci_truskull.png:9"/>
+		<type class="human" subclass="truskull_electro" tileid="pol_piraci_truskull.png:9"/>
 		<description></description>
 		<attributes>
 			<atk value="1800"/>
@@ -993,7 +993,7 @@
 	</creature>
 
 	<creature name="podziemny lord">
-		<type class="pol/piraci_truskull" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
+		<type class="human" subclass="truskull_overlord" tileid="pol_piraci_truskull.png:11"/>
 		<description></description>
 		<attributes>
 			<atk value="2200"/>
@@ -1033,7 +1033,7 @@
 	</creature>
 
 	<creature name="podziemny upadły duch">
-		<type class="pol/piraci_truskull" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
+		<type class="human" subclass="truskull_ghost_angel" tileid="pol_piraci_truskull.png:10"/>
 		<description></description>
 		<attributes>
 			<atk value="1970"/>
