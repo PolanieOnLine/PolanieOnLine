@@ -4,7 +4,7 @@
 
 	<!-- START: smoki -->
 	<creature name="dwugłowy czarny smok">
-		<type class="pol/smoki" subclass="smok_dwuglowy_czarny" tileid="pol_smoki.png:0"/>
+		<type class="dragon" subclass="smok_dwuglowy_czarny" tileid="pol_smoki.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="3666"/>
@@ -52,7 +52,7 @@
 	</creature>
 
 	<creature name="dwugłowy lodowy smok">
-		<type class="pol/smoki" subclass="smok_dwuglowy_lodowy" tileid="pol_smoki.png:10"/>
+		<type class="dragon" subclass="smok_dwuglowy_lodowy" tileid="pol_smoki.png:10"/>
 		<description/>
 		<attributes>
 			<atk value="3211"/>
@@ -101,7 +101,7 @@
 	</creature>
 
 	<creature name="dwugłowy czerwony smok">
-		<type class="pol/smoki" subclass="smok_dwuglowy_czerwony" tileid="pol_smoki.png:1"/>
+		<type class="dragon" subclass="smok_dwuglowy_czerwony" tileid="pol_smoki.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="2951"/>
@@ -151,7 +151,7 @@
 	</creature>
 
 	<creature name="dwugłowy złoty smok">
-		<type class="pol/smoki" subclass="smok_dwuglowy_zloty" tileid="pol_smoki.png:12"/>
+		<type class="dragon" subclass="smok_dwuglowy_zloty" tileid="pol_smoki.png:12"/>
 		<description/>
 		<attributes>
 			<atk value="2631"/>
@@ -200,7 +200,7 @@
 	</creature>
 
 	<creature name="dwugłowy zielony smok">
-		<type class="pol/smoki" subclass="smok_dwuglowy_zielony" tileid="pol_smoki.png:2"/>
+		<type class="dragon" subclass="smok_dwuglowy_zielony" tileid="pol_smoki.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="2171"/>
@@ -248,7 +248,7 @@
 	</creature>
 
 	<creature name="lodowy smok">
-		<type class="pol/smoki" subclass="smok_lodowy" tileid="pol_smoki.png:11"/>
+		<type class="dragon" subclass="smok_lodowy" tileid="pol_smoki.png:11"/>
 		<description/>
 		<attributes>
 			<atk value="613"/>
@@ -291,7 +291,7 @@
 	</creature>
 
 	<creature name="pustynny smok">
-		<type class="pol/smoki" subclass="smok_pustynny" tileid="pol_smoki.png:3"/>
+		<type class="dragon" subclass="smok_pustynny" tileid="pol_smoki.png:3"/>
 		<description/>
 		<attributes>
 			<atk value="546"/>
@@ -332,7 +332,7 @@
 	</creature>
 
 	<creature name="zgniły szkielet smoka">
-		<type class="pol/smoki" subclass="smok_zgnily_szkielet" tileid="pol_smoki.png:4"/>
+		<type class="dragon" subclass="smok_zgnily_szkielet" tileid="pol_smoki.png:4"/>
 		<description/>
 		<attributes>
 			<atk value="487"/>
@@ -369,7 +369,7 @@
 	</creature>
 
 	<creature name="smok arktyczny">
-		<type class="pol/smoki" subclass="smok_arktyczny" tileid="pol_smoki.png:5"/>
+		<type class="dragon" subclass="smok_arktyczny" tileid="pol_smoki.png:5"/>
 		<description>Oto smok arktyczny. Jeden ze smoków, który mrozi krew i kości żywej istoty, nawet ze znacznej odległości od niego czujesz ogromnie obniżoną temperaturę.</description>
 		<attributes>
 			<atk value="3659"/>
@@ -417,7 +417,7 @@
 	</creature>
 
 	<creature name="zielone smoczysko">
-		<type class="pol/smoki" subclass="smok_zielony" tileid="pol_smoki.png:13"/>
+		<type class="dragon" subclass="smok_zielony" tileid="pol_smoki.png:13"/>
 		<description>Oto zielone smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
 			<atk value="4222"/>
@@ -462,7 +462,7 @@
 	</creature>
 
 	<creature name="niebieskie smoczysko">
-		<type class="pol/smoki" subclass="smok_niebieski" tileid="pol_smoki.png:14"/>
+		<type class="dragon" subclass="smok_niebieski" tileid="pol_smoki.png:14"/>
 		<description>Oto niebieskie smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
 			<atk value="4777"/>
@@ -508,7 +508,7 @@
 	</creature>
 
 	<creature name="czerwone smoczysko">
-		<type class="pol/smoki" subclass="smok_czerwony" tileid="pol_smoki.png:15"/>
+		<type class="dragon" subclass="smok_czerwony" tileid="pol_smoki.png:15"/>
 		<description>Oto czerwone smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
 			<atk value="5444"/>
@@ -552,7 +552,7 @@
 	</creature>
 
 	<creature name="czarne smoczysko">
-		<type class="pol/smoki" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
+		<type class="dragon" subclass="smok_czarny" tileid="pol_smoki.png:6"/>
 		<description>Oto czarne smoczysko. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
 			<atk value="5999"/>
@@ -600,7 +600,7 @@
 	</creature>
 
 	<creature name="latający czarny smok">
-		<type class="pol/smoki" subclass="latajacy_czarny_smok" tileid="pol_smoki.png:7"/>
+		<type class="dragon" subclass="latajacy_czarny_smok" tileid="pol_smoki.png:7"/>
 		<description/>
 		<attributes>
 			<atk value="3300"/>
@@ -651,7 +651,7 @@
 	</creature>
 
 	<creature name="latający złoty smok">
-		<type class="pol/smoki" subclass="latajacy_zloty_smok" tileid="pol_smoki.png:8"/>
+		<type class="dragon" subclass="latajacy_zloty_smok" tileid="pol_smoki.png:8"/>
 		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
 		<attributes>
 			<atk value="4000"/>
@@ -703,7 +703,7 @@
 	</creature>
 
 	<creature name="Smok Wawelski">
-		<type class="pol/smoki" subclass="smok_wawelski" tileid="pol_smoki.png:9"/>
+		<type class="dragon" subclass="smok_wawelski" tileid="pol_smoki.png:9"/>
 		<description/>
 		<attributes>
 			<atk value="22222"/>
