@@ -259,7 +259,7 @@
 	<!-- START: lutin piraci -->
 
 	<creature name="lutin bandyta">
-		<type class="pol/piraci_lutin" subclass="lutin_bandit" tileid="pol_piraci_lutin.png:0"/>
+		<type class="human" subclass="lutin_bandit" tileid="pol_piraci_lutin.png:0"/>
 		<description>Oto lutin bandyta. Razem ze swoimi kompanami popełnia wiele przestępstw, aby zdobyć więcej pieniędzy lub rzadkie wartościowe przedmioty.</description>
 		<attributes>
 			<atk value="480"/>
@@ -295,7 +295,7 @@
 	</creature>
 
 	<creature name="lutin piratka">
-		<type class="pol/piraci_lutin" subclass="lutin_girl" tileid="pol_piraci_lutin.png:1"/>
+		<type class="human" subclass="lutin_girl" tileid="pol_piraci_lutin.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="540"/>
@@ -327,7 +327,7 @@
 	</creature>
 
 	<creature name="lutin korsarz">
-		<type class="pol/piraci_lutin" subclass="lutin_outlaw" tileid="pol_piraci_lutin.png:2"/>
+		<type class="human" subclass="lutin_outlaw" tileid="pol_piraci_lutin.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="600"/>
@@ -363,7 +363,7 @@
 	</creature>
 
 	<creature name="lutin przemytnik">
-		<type class="pol/piraci_lutin" subclass="lutin_wench" tileid="pol_piraci_lutin.png:3"/>
+		<type class="human" subclass="lutin_wench" tileid="pol_piraci_lutin.png:3"/>
 		<description>Oto przemytnik. Nie chcesz wiedzieć co przemyca... Może się dowiesz? Pamiętaj o ostrzeżeniu, że obserwuje każdy twój ruch. Będzie walczył o zachowanie swoich sekretów!</description>
 		<attributes>
 			<atk value="620"/>
@@ -400,7 +400,7 @@
 	</creature>
 
 	<creature name="lutin kucharz">
-		<type class="pol/piraci_lutin" subclass="lutin_chieftain" tileid="pol_piraci_lutin.png:4"/>
+		<type class="human" subclass="lutin_chieftain" tileid="pol_piraci_lutin.png:4"/>
 		<description>Oto kucharz bractwa lutinów. Rum dodaje praktycznie do każdej przygotowywanej przez niego potrawy...</description>
 		<attributes>
 			<atk value="640"/>
@@ -440,7 +440,7 @@
 	</creature>
 
 	<creature name="lutin łucznik">
-		<type class="pol/piraci_lutin" subclass="lutin_bowman" tileid="pol_piraci_lutin.png:5"/>
+		<type class="human" subclass="lutin_bowman" tileid="pol_piraci_lutin.png:5"/>
 		<description>Oto lutin łucznik. Uważaj na jego strzały! Prawdopodobnie wykorzystuje truciznę na swych grotach...</description>
 		<attributes>
 			<atk value="650"/>
@@ -481,7 +481,7 @@
 	</creature>
 
 	<creature name="lutin ochroniaż">
-		<type class="pol/piraci_lutin" subclass="lutin_guard" tileid="pol_piraci_lutin.png:6"/>
+		<type class="human" subclass="lutin_guard" tileid="pol_piraci_lutin.png:6"/>
 		<description>Oto lutin ochroniaż. Za wszelką cenę będzie chronił swój skarb!</description>
 		<attributes>
 			<atk value="670"/>
@@ -514,7 +514,7 @@
 	</creature>
 
 	<creature name="kapitan lutinów">
-		<type class="pol/piraci_lutin" subclass="lutin_king" tileid="pol_piraci_lutin.png:7"/>
+		<type class="human" subclass="lutin_king" tileid="pol_piraci_lutin.png:7"/>
 		<description>Oto kapitan lutinów. Lepiej zachowaj ostrożność! Jeden błąd i zwoła swą kompanię.</description>
 		<attributes>
 			<atk value="790"/>
@@ -550,7 +550,7 @@
 	</creature>
 
 	<creature name="diabelski pirat">
-		<type class="pol/piraci_lutin" subclass="lutin_demon" tileid="pol_piraci_lutin.png:8"/>
+		<type class="human" subclass="lutin_demon" tileid="pol_piraci_lutin.png:8"/>
 		<description>Oto diabelski pirat. Nawet wśród swych kompanów niesie grozę oraz strach... Nie chciałbyś wiedzieć co robi uwiezionym na statku...</description>
 		<attributes>
 			<atk value="800"/>
@@ -588,7 +588,7 @@
 	</creature>
 
 	<creature name="lider piratów">
-		<type class="pol/piraci_lutin" subclass="lutin_lider" tileid="pol_piraci_lutin.png:9"/>
+		<type class="human" subclass="lutin_lider" tileid="pol_piraci_lutin.png:9"/>
 		<description>Oto lider piratów. Jest jednym z najbardziej docenianych piratów z bractwa lutinów. Nie chcesz go spotkać na swej drodze...</description>
 		<attributes>
 			<atk value="790"/>
