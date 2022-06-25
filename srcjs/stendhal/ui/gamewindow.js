@@ -62,8 +62,13 @@ stendhal.ui.gamewindow = {
 				this.drawEmojiSprites();
 				this.drawTextSprites();
 				this.drawTextSprites(this.notifSprites);
+
+				if (stendhal.ui.touch.held) {
+					// draw a representation of a item "held" via touch input
+					stendhal.ui.touch.drawHeld(this.ctx);
+				}
+
 				// redraw inventory sprites
-				// FIXME: animations don't begin until zone change or item moved
 				stendhal.ui.equip.update();
 				ui.get(UIComponentEnum.PlayerEquipment).update();
 			}
@@ -329,18 +334,27 @@ stendhal.ui.gamewindow = {
 	// ***************** Drag and drop ******************
 	onDragStart: function(e) {
 		var pos = stendhal.ui.html.extractPosition(e);
-		var draggedEntity = stendhal.zone.entityAt(pos.offsetX + stendhal.ui.gamewindow.offsetX,
-				pos.offsetY + stendhal.ui.gamewindow.offsetY);
+		let draggedEntity;
+		for (const obj of stendhal.zone.getEntitiesAt(pos.offsetX + stendhal.ui.gamewindow.offsetX,
+				pos.offsetY + stendhal.ui.gamewindow.offsetY)) {
+			if (obj.isDraggable()) {
+				draggedEntity = obj;
+			}
+		}
 
 		var img = undefined;
-		if (draggedEntity.type === "item") {
+		if (draggedEntity && draggedEntity.type === "item") {
 			img = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(draggedEntity.sprite.filename), 32, 32);
 			stendhal.ui.heldItem = {
 				path: draggedEntity.getIdPath(),
 				zone: marauroa.currentZoneName
 			}
-		} else if (draggedEntity.type === "corpse") {
+		} else if (draggedEntity && draggedEntity.type === "corpse") {
 			img = stendhal.data.sprites.get(draggedEntity.sprite.filename);
+			stendhal.ui.heldItem = {
+				path: draggedEntity.getIdPath(),
+				zone: marauroa.currentZoneName
+			}
 		} else {
 			e.preventDefault();
 			return;
@@ -393,26 +407,13 @@ stendhal.ui.gamewindow = {
 		e.preventDefault();
 	},
 
-	onTouchStart: function(e) {
-		e.preventDefault();
-		stendhal.ui.touch.timestampTouchStart = +new Date();
-	},
-
 	onTouchEnd: function(e) {
-		e.preventDefault();
-		stendhal.ui.touch.timestampTouchEnd = +new Date();
-		if (stendhal.ui.heldItem) {
-			this.onDrop(e);
-		} else {
-			this.onMouseUp(e);
-		}
-	},
+		if (stendhal.ui.touch.held) {
+			// don't call this.onMouseUp
+			e.preventDefault();
 
-	onTouchMove: function(e) {
-		if (stendhal.ui.heldItem) {
-			this.onDragOver(e);
-		} else {
-			this.onDragStart(e);
+			stendhal.ui.gamewindow.onDrop(e);
+			stendhal.ui.touch.unsetHeldItem();
 		}
 	},
 
@@ -429,26 +430,21 @@ stendhal.ui.gamewindow = {
 
 		const d = new Date();
 		const ts = {
-			yyyy: d.getFullYear() + "",
-			mm: (d.getMonth() + 1) + "",
-			dd: d.getDate() + "",
-			HH: d.getHours() + "",
-			MM: d.getMinutes() + "",
-			SS: d.getSeconds() + "",
-			ms: d.getMilliseconds() + ""
+			yyyy: "" + d.getFullYear(),
+			mm: ("00" + (d.getMonth() + 1)).slice(-2),
+			dd: ("00" + d.getDate()).slice(-2),
+			HH: ("00" + d.getHours()).slice(-2),
+			MM: ("00" + d.getMinutes()).slice(-2),
+			SS: ("00" + d.getSeconds()).slice(-2),
+			ms: "" + d.getMilliseconds()
 		};
 
-		for (let o of [ts.mm, ts.dd, ts.HH, ts.MM, ts.SS]) {
-			if (o.length < 2) {
-				o = "0" + o;
-			}
-		}
 		while (ts.ms.length < 3) {
 			ts.ms = "0" + ts.ms;
 		}
 
-		const filename = "screenshot_" + ts.yyyy + ts.mm
-				+ ts.dd + "." + ts.HH + "." + ts.MM + "."
+		const filename = "stendhal_" + ts.yyyy + ts.mm
+				+ ts.dd + "_" + ts.HH + "." + ts.MM + "."
 				+ ts.SS + "." + ts.ms + ".png";
 
 		const anchor = document.createElement("a");

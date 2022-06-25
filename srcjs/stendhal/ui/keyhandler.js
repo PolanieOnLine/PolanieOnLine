@@ -16,6 +16,14 @@ var marauroa = window.marauroa = window.marauroa || {};
 var stendhal = window.stendhal = window.stendhal || {};
 stendhal.ui = stendhal.ui || {};
 
+
+stendhal.ui.keycode = {
+	left: 37,
+	up: 38,
+	right: 39,
+	down: 40
+}
+
 /**
  * handling of key presses and releases
  */
@@ -23,9 +31,13 @@ stendhal.ui.keyhandler = {
 	pressedKeys: [],
 
 	extractMoveOrFaceActionFromEvent: function(event) {
-		if (event.shiftKey) {
+		if (event.ctrlKey) {
+			event.preventDefault(); // don't move chat input caret
 			return "face";
+		} else if (event.shiftKey) {
+			return null;
 		}
+
 		return "move";
 	},
 
@@ -45,7 +57,7 @@ stendhal.ui.keyhandler = {
 		}
 		var code = stendhal.ui.html.extractKeyCode(event);
 
-		if (code >= 37 && code <= 40) {
+		if (code >= stendhal.ui.keycode.left && code <= stendhal.ui.keycode.down) {
 
 			// disable scrolling via arrow keys
 			if (event.target.tagName === "BODY" || event.target.tagName === "CANVAS") {
@@ -59,6 +71,9 @@ stendhal.ui.keyhandler = {
 			stendhal.ui.keyhandler.pressedKeys.push(code);
 
 			var type = stendhal.ui.keyhandler.extractMoveOrFaceActionFromEvent(event);
+			if (!type) {
+				return;
+			}
 			var dir = stendhal.ui.keyhandler.extractDirectionFromKeyCode(code);
 			var action = {"type": type, "dir": ""+dir};
 			marauroa.clientFramework.sendAction(action);
@@ -87,7 +102,7 @@ stendhal.ui.keyhandler = {
 		}
 		var code = stendhal.ui.html.extractKeyCode(event);
 
-		if (code >= 37 && code <= 40) {
+		if (code >= stendhal.ui.keycode.left && code <= stendhal.ui.keycode.down) {
 			var code = stendhal.ui.html.extractKeyCode(event);
 			var i = stendhal.ui.keyhandler.pressedKeys.indexOf(code);
 			if (i > -1) {
@@ -100,6 +115,9 @@ stendhal.ui.keyhandler = {
 			if (stendhal.ui.keyhandler.pressedKeys.length > 0) {
 				code = stendhal.ui.keyhandler.pressedKeys[0];
 				var type = stendhal.ui.keyhandler.extractMoveOrFaceActionFromEvent(event);
+				if (!type) {
+					return;
+				}
 				var dir = stendhal.ui.keyhandler.extractDirectionFromKeyCode(code);
 				var action = {"type": type, "dir": ""+dir};
 				marauroa.clientFramework.sendAction(action);

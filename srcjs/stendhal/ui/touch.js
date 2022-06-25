@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright 2003-2022 © - Stendhal                     *
+ *                    Copyright © 2003-2022 - Stendhal                     *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,33 +20,60 @@ stendhal.ui.touch = {
 	timestampTouchStart: 0,
 	timestampTouchEnd: 0,
 
-	toMouseEvent: function(evt, type, drag=false) {
-		const touch = evt.changedTouches[0] || evt.targetTouches[0] || evt.touches[0];
-		const def = {
-				"screenX": touch.screenX, "screenY": touch.screenY,
-				"clientX": touch.clientX, "clientY": touch.clientY,
-				"ctrlKey": evt.ctrlKey, "shiftKey": evt.shiftKey,
-				"altKey": evt.altKey, "metaKey": evt.metaKey
-		};
-
-		if (drag) {
-			return new DragEvent(type, def);
-		}
-		return new MouseEvent(type, def);
+	/**
+	 * Sets timestamp when touch applied.
+	 */
+	onTouchStart: function() {
+		stendhal.ui.touch.timestampTouchStart = +new Date();
 	},
 
-	toDragEvent: function(evt, type) {
-		return this.toMouseEvent(evt, type, true);
+	/**
+	 * Sets timestamp when touch released.
+	 */
+	onTouchEnd: function() {
+		stendhal.ui.touch.timestampTouchEnd = +new Date();
 	},
 
-	dispatchConverted: function(srcEvt, newEvt) {
-		const target = stendhal.ui.html.extractPosition(srcEvt).target;
-		if (target) {
-			target.dispatchEvent(newEvt);
-		}
-	},
-
+	/**
+	 * Checks if a touch event represents a long touch after release.
+	 */
 	isLongTouch: function() {
-		return (this.timestampTouchEnd - this.timestampTouchStart > this.longTouchDuration);
+		return (stendhal.ui.touch.timestampTouchEnd - stendhal.ui.touch.timestampTouchStart
+				> stendhal.ui.touch.longTouchDuration);
+	},
+
+	/**
+	 * Sets information for a held item representation.
+	 *
+	 * @param img
+	 *     Sprite <code>Image</code> to be drawn.
+	 */
+	setHeldItem: function(img) {
+		stendhal.ui.touch.held = {
+			image: img,
+			offsetX: document.getElementById("gamewindow").offsetWidth - 32,
+			offsetY: 0
+		}
+	},
+
+	/**
+	 * Clears information for a held item representation.
+	 */
+	unsetHeldItem: function() {
+		stendhal.ui.touch.held = undefined;
+	},
+
+	/**
+	 * Draws representation of a held item.
+	 *
+	 * @param ctx
+	 *     Canvas context where representation is drawn.
+	 */
+	drawHeld: function(ctx) {
+		ctx.globalAlpha = 0.5;
+		ctx.drawImage(stendhal.ui.touch.held.image,
+				stendhal.ui.touch.held.offsetX + stendhal.ui.gamewindow.offsetX,
+				stendhal.ui.touch.held.offsetY + stendhal.ui.gamewindow.offsetY);
+		ctx.globalAlpha = 1.0;
 	}
 }

@@ -65,4 +65,32 @@ export class RPObject {
 	init() {
 		// do nothing
 	}
+
+	/**
+	 * Retrieves object width.
+	 */
+	public getWidth(): number {
+		return this["width"] || 1;
+	}
+
+	/**
+	 * Retrieves object height.
+	 */
+	public getHeight(): number {
+		return this["height"] || 1;
+	}
+
+	/**
+	 * Checks if this object is nested.
+	 */
+	public isContained(): boolean {
+		return this._parent !== undefined;
+	}
+
+	/**
+	 * Retrieves the parent object.
+	 */
+	public getContainer(): RPObject {
+		return <RPObject> this._parent;
+	}
 }

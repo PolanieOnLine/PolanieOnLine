@@ -5,28 +5,33 @@ plugins {
 android {
 	compileSdk 32
 
+	def buildDate = new Date().format("yyyyMMdd")
+
+	def appVer
+	if (project.hasProperty("android.ver") && project["android.ver"]) {
+		appVer = project["android.ver"]
+	} else {
+		appVer = "${buildDate}"
+	}
+
+	if (project.hasProperty("android.rev") && project["android.rev"]) {
+		appVer += "-" + project["android.rev"]
+	}
+
+	def outputName = "polanieonline-webview-${appVer}"
+
 	defaultConfig {
-		applicationId "stendhal.client"
+		applicationId "org.arianne.stendhal.client"
 		minSdk 21
 		targetSdk 32
 		versionCode 1
-		versionName "0.0.6"
-		setProperty("archivesBaseName", "polanieonline-webview-${versionName}")
+		versionName "${appVer}"
+		setProperty("archivesBaseName", "${outputName}")
 		setProperty("buildDir", "${projectDir}/../../build/build_android_client")
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 		targetSdkVersion 32
 		minSdkVersion 21
-	}
-
-	signingConfigs {
-		androiddebug {
-			// set this to the location of android debug.keystore file (usually ~/.android/debug.keystore)
-			storeFile file(System.getenv("HOME") + "/.android/debug.keystore")
-			keyAlias "androiddebugkey"
-			storePassword "android"
-			keyPassword "android"
-		}
 	}
 
 	buildTypes {
@@ -36,8 +41,19 @@ android {
 		}
 
 		prerelease {
-			debuggable true
-			signingConfig signingConfigs.androiddebug
+			versionNameSuffix "-pre"
+			signingConfig signingConfigs.debug
+		}
+
+		debug {
+			applicationIdSuffix ".debug"
+			versionNameSuffix "-debug"
+		}
+	}
+
+	buildTypes.all { type ->
+		if (!type.name.equals("debug")) {
+			sourceSets[type.name].java { srcDirs "src/shared/java/" }
 		}
 	}
 
@@ -51,26 +67,13 @@ android {
 	lintOptions {
 		abortOnError false
 	}
-
-	/*
-	// custom output filename
-	applicationVariants.all { variant ->
-		def apkName = "polanieonline-webview-${versionName}"
-		if (variant.buildType.name == "debug") {
-			apkName += "-DEBUG"
-		}
-		variant.outputs.all {
-			outputFileName = apkName + ".apk"
-		}
-	}
-	*/
 }
 
 dependencies {
-
 	implementation 'androidx.appcompat:appcompat:1.4.1'
 	implementation 'com.google.android.material:material:1.4.0'
-	testImplementation 'junit:junit:4.+'
-	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+	//testImplementation 'junit:junit:4.+'
+	//androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+	//androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+	implementation files('../../libs/marauroa-client-only.jar')
 }

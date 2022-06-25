@@ -10,10 +10,16 @@
  ***************************************************************************/
 
 import { RPEntity } from "./RPEntity";
+import { MenuItem} from "../action/MenuItem";
 
+import { Color } from "../util/Color";
+
+declare var marauroa: any;
 declare var stendhal: any;
 
 export class DomesticAnimal extends RPEntity {
+
+	override minimapStyle = Color.DOMESTICANIMAL;
 
 	override drawMain(ctx: CanvasRenderingContext2D) {
 		if (!this.imagePath && this["_rpclass"]) {
@@ -50,6 +56,42 @@ export class DomesticAnimal extends RPEntity {
 
 	override getCursor(_x: number, _y: number) {
 		return "url(/data/sprites/cursor/look.png) 1 3, auto";
+	}
+
+	override buildActions(list: MenuItem[]) {
+		let species = "pet";
+		if (this["_rpclass"] === "sheep") {
+			species = "sheep"
+		}
+		let playerOwned = marauroa.me[species];
+		if (!playerOwned) {
+			list.push({
+				title: "Own",
+				action: function(_entity: any) {
+					let action = {
+						"type": "own",
+						"zone": marauroa.currentZoneName,
+						"target": "#" + _entity["id"]
+					};
+					marauroa.clientFramework.sendAction(action);
+				}
+			});
+		}
+		if (playerOwned === this["id"]) {
+			list.push({
+				title: "Leave",
+				action: function(_entity: any) {
+					let action = {
+						"type": "forsake",
+						"zone": marauroa.currentZoneName,
+						"species": species,
+						"target": "#" + _entity["id"]
+					};
+					marauroa.clientFramework.sendAction(action);
+				}
+			});
+		}
+		super.buildActions(list);
 	}
 
 }

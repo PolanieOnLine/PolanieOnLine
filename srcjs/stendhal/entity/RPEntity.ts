@@ -21,8 +21,6 @@ import { TextSprite } from "../sprite/TextSprite";
 declare var marauroa: any;
 declare var stendhal: any;
 
-// hair should not be drawn with hat indexes in this list
-stendhal.HATS_NO_HAIR = [3, 4, 13, 992, 993, 994, 996, 997];
 var HEALTH_BAR_HEIGHT = 6;
 
 
@@ -200,8 +198,10 @@ export class RPEntity extends ActiveEntity {
 	 *     Message type.
 	 * @param text
 	 *     Text to display.
+	 * @param profile
+	 *     Filename of NPC profile image to display with message.
 	 */
-	addNotificationBubble(mtype: string, text: string) {
+	addNotificationBubble(mtype: string, text: string, profile?: string) {
 		const linewrap = 30;
 		const wordbreak = 60;
 		const lines: string[] = [];
@@ -229,10 +229,18 @@ export class RPEntity extends ActiveEntity {
 		const lcount = lines.length;
 		let spriteCtx: CanvasRenderingContext2D|null = null;
 
+		let pimg
+		if (profile) {
+			pimg = stendhal.data.sprites.getAreaOf(
+				stendhal.data.sprites.get("data/sprites/npc/" + profile + ".png"),
+				48, 48, 48, 128);
+		}
+
 		stendhal.ui.gamewindow.addNotifSprite({
 			timeStamp: Date.now(),
 			entity: this,
 			lmargin: 4,
+			profile: pimg,
 			draw: function(ctx: CanvasRenderingContext2D) {
 				const screenArea = document.getElementById("gamewindow")!.getBoundingClientRect();
 				const screenTop = stendhal.ui.gamewindow.offsetY;
@@ -262,7 +270,14 @@ export class RPEntity extends ActiveEntity {
 				ctx.font = fontsize + "px sans-serif";
 				ctx.fillStyle = "#ffffff";
 				ctx.strokeStyle = "#000000";
-				this.entity.drawSpeechBubble(ctx, x, y, width, height);
+
+				if (this.profile) {
+					ctx.drawImage(this.profile, x - 48, y - 16);
+					this.entity.drawSpeechBubbleRounded(ctx, x, y - 15, width, height);
+				} else {
+					this.entity.drawSpeechBubble(ctx, x, y, width, height);
+				}
+
 				ctx.fillStyle = NotificationType[mtype] || "#000000";
 
 				let sy = y;
@@ -363,14 +378,14 @@ export class RPEntity extends ActiveEntity {
 		ctx.quadraticCurveTo(x + width, y, x + width, y + arc);
 		ctx.lineTo(x + width, y + height - arc);
 		ctx.quadraticCurveTo(x + width, y + height, x + width - arc, y + height);
-		ctx.lineTo(x + 8, y + height);
-
-		// tail
-		ctx.lineTo(x - 3, y + height + 5);
-		ctx.lineTo(x + 2, y + height);
-
 		ctx.lineTo(x + arc, y + height);
 		ctx.quadraticCurveTo(x, y + height, x, y + height - arc);
+		ctx.lineTo(x, y + 8);
+
+		// tail
+		ctx.lineTo(x - 8, y + 11);
+		ctx.lineTo(x, y + 3);
+
 		ctx.lineTo(x, y + arc);
 		ctx.quadraticCurveTo(x, y, x + arc, y);
 		ctx.stroke();
@@ -420,19 +435,29 @@ export class RPEntity extends ActiveEntity {
 			}
 		}
 
+		const ocanvas = document.createElement("canvas");
+		let octx
 		for (const layer of layers) {
 			// hair is not drawn under certain hats/helmets
-			if (layer == "hair" && stendhal.HATS_NO_HAIR.includes(parseInt(outfit["hat"]))) {
+			if (layer == "hair" && !stendhal.data.outfit.drawHair(parseInt(outfit["hat"], 10))) {
 				continue;
 			}
 
-			if (layer in outfit) {
-				const img = this.getOutfitPart(layer, outfit[layer]);
-				if (img) {
-					this.drawSpriteImage(ctx, img);
+			const lsprite = this.getOutfitPart(layer, outfit[layer]);
+			if (lsprite) {
+				if (!octx) {
+					ocanvas.width = lsprite.width;
+					ocanvas.height = lsprite.height;
+					octx = ocanvas.getContext("2d")!;
 				}
+
+				octx.drawImage(lsprite, 0, 0);
 			}
 		}
+
+		const osprite = new Image();
+		osprite.src = ocanvas.toDataURL("image/png");
+		this.drawSpriteImage(ctx, osprite);
 	}
 
 	/**

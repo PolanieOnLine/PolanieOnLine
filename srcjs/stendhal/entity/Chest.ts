@@ -12,7 +12,9 @@
 import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
 
-import { Entity } from "./Entity";
+import { PopupInventory } from "./PopupInventory";
+
+import { Color } from "../util/Color";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -31,7 +33,11 @@ let CLOSED_SPRITE = {
 	width: 32
 };
 
-export class Chest extends Entity {
+export class Chest extends PopupInventory {
+
+	override minimapShow = true;
+	override minimapStyle = Color.CHEST;
+
 	override zIndex = 5000;
 	sprite = CLOSED_SPRITE;
 	open = false;
@@ -84,7 +90,7 @@ export class Chest extends Entity {
 		if (!this.inventory || !this.inventory.isOpen()) {
 			const dstate = stendhal.config.dialogstates["chest"];
 			const invComponent = new ItemInventoryComponent(this,
-					"content", 5, 6, false, undefined);
+					"content", 5, 6, stendhal.config.getBoolean("action.chest.quickpickup"), undefined);
 			invComponent.setConfigId("chest");
 
 			this.inventory = new FloatingWindow("Chest", invComponent,
@@ -92,27 +98,10 @@ export class Chest extends Entity {
 		}
 	}
 
-	closeInventoryWindow() {
+	override closeInventoryWindow() {
 		if (this.inventory && this.inventory.isOpen()) {
 			this.inventory.close();
 			this.inventory = undefined;
-		}
-	}
-
-	override draw(ctx: CanvasRenderingContext2D) {
-		super.draw(ctx);
-
-		this.checkDistance();
-	}
-
-	private checkDistance() {
-		if (marauroa.me) {
-			const xDist = Math.abs(this["x"] - marauroa.me["x"]);
-			const yDist = Math.abs(this["y"] - marauroa.me["y"]);
-
-			if (xDist > 4 || yDist > 4) {
-				this.closeInventoryWindow();
-			}
 		}
 	}
 
