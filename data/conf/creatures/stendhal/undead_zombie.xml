@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="krwawy zombi">
-		<type class="stendhal/undead" subclass="bloody_zombie" tileid="undead_zombie.png:0"/>
+		<type class="undead" subclass="bloody_zombie" tileid="undead_zombie.png:0"/>
 		<description>Oto krwawy zombi. Czy zauważyłeś, że z jego ciała leje się krew?</description>
 		<attributes>
 			<atk value="182"/>
@@ -41,7 +41,7 @@
 	</creature>
 
 	<creature name="zombi">
-		<type class="stendhal/undead" subclass="zombie" tileid="undead_zombie.png:1"/>
+		<type class="undead" subclass="zombie" tileid="undead_zombie.png:1"/>
 		<description>Oto zombi. Budzi się tylko, aby dokonać zemsty. Poruszaj się cicho.</description>
 		<attributes>
 			<atk value="202"/>
@@ -77,7 +77,7 @@
 	</creature>
 
 	<creature name="bezgłowy potwór">
-		<type class="stendhal/undead" subclass="headless_monster" tileid="undead_zombie.png:2"/>
+		<type class="undead" subclass="headless_monster" tileid="undead_zombie.png:2"/>
 		<description>Oto bezgłowy potwór. Jak może usłyszeć, że się zbliżacie?</description>
 		<attributes>
 			<atk value="221"/>
@@ -108,7 +108,7 @@
 	</creature>
 
 	<creature name="cuchnący zombi">
-		<type class="stendhal/undead" subclass="rotten_zombie" tileid="undead_zombie.png:3"/>
+		<type class="undead" subclass="rotten_zombie" tileid="undead_zombie.png:3"/>
 		<description>Oto cuchnący i gnijący zombi. Robi ci się niedobrze na sam widok jego gnijącej skóry zwisającej płatami z pogniłych resztek wystających kości.</description>
 		<attributes>
 			<atk value="256"/>
@@ -148,7 +148,7 @@
 
 	<!-- Disabled until future review
 	<creature name="myling">
-		<type class="stendhal/undead" subclass="myling" tileid="undead_zombie.png:4"/>
+		<type class="undead" subclass="myling" tileid="undead_zombie.png:4"/>
 		<description>Oto myling, który wędruje w poszukiwaniu osoby, która mogłaby mu wyprawić stosowny pogrzeb.</description>
 		<attributes>
 			<atk value="1153"/>

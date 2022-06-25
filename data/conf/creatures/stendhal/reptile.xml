@@ -4,7 +4,7 @@
 
 	<!-- START: reptile -->
 	<creature name="żmija">
-		<type class="stendhal/reptile" subclass="grass_snake" tileid="reptile.png:0"/>
+		<type class="reptile" subclass="grass_snake" tileid="reptile.png:0"/>
 		<description>Oto żmija. Może cię boleśnie ukąsić.</description>
 		<attributes>
 			<atk value="68"/>
@@ -40,7 +40,7 @@
 	</creature>
 
 	<creature name="wąż">
-		<type class="stendhal/reptile" subclass="snake" tileid="reptile.png:1"/>
+		<type class="reptile" subclass="snake" tileid="reptile.png:1"/>
 		<description>Oto wąż. Wychodzi z kniei by boleśnie ukąsić.</description>
 		<attributes>
 			<atk value="67"/>
@@ -76,7 +76,7 @@
 	</creature>
 
 	<creature name="kobra">
-		<type class="stendhal/reptile" subclass="cobra" tileid="reptile.png:2"/>
+		<type class="reptile" subclass="cobra" tileid="reptile.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="631"/>
@@ -112,7 +112,7 @@
 	</creature>
 
 	<creature name="kobra królewska">
-		<type class="stendhal/reptile" subclass="king_cobra" tileid="reptile.png:3"/>
+		<type class="reptile" subclass="king_cobra" tileid="reptile.png:3"/>
 		<description>Oto kobra królewska, która jest niezwykle jadowita.</description>
 		<attributes>
 			<atk value="750"/>
@@ -149,7 +149,7 @@
 	</creature>
 
 	<creature name="kaiman">
-		<type class="stendhal/reptile" subclass="caiman" shadow="caiman" tileid="reptile.png:4"/>
+		<type class="reptile" subclass="caiman" shadow="caiman" tileid="reptile.png:4"/>
 		<description>Oto kaiman. Kryją się nad wodą.</description>
 		<attributes>
 			<atk value="49"/>
@@ -184,7 +184,7 @@
 	</creature>
 
 	<creature name="krokodyl">
-		<type class="stendhal/reptile" subclass="crocodile" shadow="crocodile" tileid="reptile.png:5"/>
+		<type class="reptile" subclass="crocodile" shadow="crocodile" tileid="reptile.png:5"/>
 		<description>Oto krokodyl. Nagle wyskakuje na brzeg z rzek i jezior.</description>
 		<attributes>
 			<atk value="172"/>
@@ -217,7 +217,7 @@
 	</creature>
 
 	<creature name="żółwik">
-		<type class="stendhal/reptile" subclass="turtle" tileid="reptile.png:6"/>
+		<type class="reptile" subclass="turtle" tileid="reptile.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="99"/>

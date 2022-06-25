@@ -4,7 +4,7 @@
 
 	<!-- START: amazon -->
 	<creature name="amazonka olbrzymia">
-		<type class="stendhal/amazon" subclass="amazoness_giant" tileid="amazon.png:10"/>
+		<type class="amazon" subclass="amazoness_giant" tileid="amazon.png:10"/>
 		<description>Oto amazonka olbrzymia. Wygląda pięknie lecz niech cię to nie zwiedzie!</description>
 		<attributes>
 			<atk value="974"/>
@@ -41,7 +41,7 @@
 
 	<!-- START: human -->
 	<creature name="olbrzym">
-		<type class="stendhal/giant_human" subclass="giant" tileid="giant_human.png:1"/>
+		<type class="giant_human" subclass="giant" tileid="giant_human.png:1"/>
 		<description>Oto olbrzym. Jego fizyczne proporcje i jego nadludzka siła przyprawiają cię o gęsią skórkę.</description>
 		<attributes>
 			<atk value="703"/>
@@ -78,7 +78,7 @@
 	</creature>
 
 	<creature name="olbrzym starszy">
-		<type class="stendhal/giant_human" subclass="giant_elder" tileid="giant_human.png:0"/>
+		<type class="giant_human" subclass="giant_elder" tileid="giant_human.png:0"/>
 		<description>Oto olbrzym starszy. Od wielu lat żyje samotnie i ukrywa się przed ludźmi! Teraz jest starszy i postanowił zerwać z ukrywaniem, aby zobaczyć w życiu coś więcej.</description>
 		<attributes>
 			<atk value="826"/>
@@ -118,7 +118,7 @@
 	</creature>
 
 	<creature name="olbrzym mistrz">
-		<type class="stendhal/giant_human" subclass="master_giant" tileid="giant_human.png:9"/>
+		<type class="giant_human" subclass="master_giant" tileid="giant_human.png:9"/>
 		<description>Oto olbrzym mistrz. Jego krew jest głośno pompowana do jego serca.</description>
 		<attributes>
 			<atk value="850"/>
@@ -157,7 +157,7 @@
 	</creature>
 
 	<creature name="czarny olbrzym">
-		<type class="stendhal/giant_human" subclass="black_giant" tileid="giant_human.png:3"/>
+		<type class="giant_human" subclass="black_giant" tileid="giant_human.png:3"/>
 		<description>Oto czarny olbrzym. Jego zbroja i miecz zadają mocne ciosy. Bądź gotowy!</description>
 		<attributes>
 			<atk value="1154"/>
@@ -209,7 +209,7 @@
 
 	<!-- START: imperial -->
 	<creature name="imperialny generał gigant">
-		<type class="stendhal/giant_human" subclass="imperial_general_giant" tileid="giant_human.png:8"/>
+		<type class="giant_human" subclass="imperial_general_giant" tileid="giant_human.png:8"/>
 		<description>Oto imperialny generał gigant. Czai się w zakamarkach jaskiń ze swoimi kompanami, aby cię zgładzić.</description>
 		<attributes>
 			<atk value="738"/>
@@ -249,7 +249,7 @@
 
 	<!-- START: madaram -->
 	<creature name="kasarkutominubat">
-		<type class="stendhal/madaram" subclass="kasarkutominubat" tileid="madaram.png:0"/>
+		<type class="madaram" subclass="kasarkutominubat" tileid="madaram.png:0"/>
 		<description>Oto kasarkutominubat, istota nieznana wielu, niegdyś był ludzkim mistrzem miecza, a teraz przypomina potwora noszącą maskę z tysiąc niewinnych dusz na niej oraz ma ręce zakrwawione po wielu walkach.</description>
 		<attributes>
 			<atk value="606"/>

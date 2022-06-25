@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="kobieta kot">
-		<type class="stendhal/mutant" subclass="cat_woman" tileid="mutant.png:5"/>
+		<type class="mutant" subclass="cat_woman" tileid="mutant.png:5"/>
 		<description>Oto kobieta kot. Jest zwinna, cicha, szybka i ostra więc skoncentruj się i nie daj się pociąć!</description>
 		<attributes>
 			<atk value="329"/>
@@ -34,7 +34,7 @@
 	</creature>
 
 	<creature name="eksperyment imperium">
-		<type class="stendhal/mutant" subclass="imperial_experiment" tileid="mutant.png:4"/>
+		<type class="mutant" subclass="imperial_experiment" tileid="mutant.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="572"/>
@@ -63,7 +63,7 @@
 	</creature>
 
 	<creature name="mutant imperium">
-		<type class="stendhal/mutant" subclass="imperial_mutant" tileid="mutant.png:3"/>
+		<type class="mutant" subclass="imperial_mutant" tileid="mutant.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="633"/>
@@ -95,7 +95,7 @@
 	</creature>
 
 	<creature name="świetlisty potwór">
-		<type class="stendhal/mutant" subclass="glow_monster" tileid="mutant.png:1"/>
+		<type class="mutant" subclass="glow_monster" tileid="mutant.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="242"/>
@@ -125,7 +125,7 @@
 	</creature>
 
 	<creature name="mutant ciemności">
-		<type class="stendhal/mutant" subclass="dark_mutant" tileid="mutant.png:0"/>
+		<type class="mutant" subclass="dark_mutant" tileid="mutant.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="325"/>
@@ -156,7 +156,7 @@
 	</creature>
 
 	<creature name="trujący grzybek">
-		<type class="stendhal/mutant" subclass="poison_shroom_small" tileid="mutant.png:6"/>
+		<type class="mutant" subclass="poison_shroom_small" tileid="mutant.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="234"/>
@@ -182,7 +182,7 @@
 	</creature>
 
 	<creature name="wilkołak">
-		<type class="stendhal/mutant" subclass="werewolf" tileid="mutant.png:2"/>
+		<type class="mutant" subclass="werewolf" tileid="mutant.png:2"/>
 		<description>Oto wilkołak. Zazwyczaj jest człowiekiem, ale dziś przy pełni księżyca zamienił się w niebezpieczną bestię!</description>
 		<attributes>
 			<atk value="584"/>

@@ -12,7 +12,7 @@
 	<!-- START: chaos -->
 
 	<creature name="pionek chaos">
-		<type class="stendhal/chaos" subclass="chaos_soldier" tileid="chess.png:0"/>
+		<type class="chaos" subclass="chaos_soldier" tileid="chess.png:0"/>
 		<hidden/>
 		<description>Oto figura pionka do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -37,7 +37,7 @@
 	</creature>
 
 	<creature name="wieża chaos">
-		<type class="stendhal/chaos" subclass="chaos_commander" tileid="chess.png:1"/>
+		<type class="chaos" subclass="chaos_commander" tileid="chess.png:1"/>
 		<hidden/>
 		<description>Oto figura wieży do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -62,7 +62,7 @@
 	</creature>
 
 	<creature name="rycerz chaos">
-		<type class="stendhal/chaos" subclass="chaos_dragonrider" tileid="chess.png:2"/>
+		<type class="chaos" subclass="chaos_dragonrider" tileid="chess.png:2"/>
 		<hidden/>
 		<description>Oto figura konia do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -87,7 +87,7 @@
 	</creature>
 
 	<creature name="goniec chaos">
-		<type class="stendhal/chaos" subclass="chaos_sorceror" tileid="chess.png:3"/>
+		<type class="chaos" subclass="chaos_sorceror" tileid="chess.png:3"/>
 		<hidden/>
 		<description>Oto figura gońca do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -112,7 +112,7 @@
 	</creature>
 
 	<creature name="król chaos">
-		<type class="stendhal/chaos" subclass="chaos_lord" tileid="chess.png:4"/>
+		<type class="chaos" subclass="chaos_lord" tileid="chess.png:4"/>
 		<hidden/>
 		<description>Oto figura króla do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -137,7 +137,7 @@
 	</creature>
 
 	<creature name="królowa chaos">
-		<type class="stendhal/chaos" subclass="chaos_overlord" tileid="chess.png:5"/>
+		<type class="chaos" subclass="chaos_overlord" tileid="chess.png:5"/>
 		<hidden/>
 		<description>Oto figura królowej do szachów. Nie otrzymasz nagrody jeśli ją zabijesz.</description>
 		<attributes>
@@ -165,7 +165,7 @@
 	<!-- START: madaram -->
 
 	<creature name="pionek madaram">
-		<type class="stendhal/madaram" subclass="madaram_peasant" tileid="chess.png:6"/>
+		<type class="madaram" subclass="madaram_peasant" tileid="chess.png:6"/>
 		<hidden />
 		<description>Oto figura pionka do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -190,7 +190,7 @@
 	</creature>
 
 	<creature name="wieża madaram">
-		<type class="stendhal/madaram" subclass="madaram_axeman" tileid="chess.png:7"/>
+		<type class="madaram" subclass="madaram_axeman" tileid="chess.png:7"/>
 		<hidden/>
 		<description>Oto figura wieży do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -215,7 +215,7 @@
 	</creature>
 
 	<creature name="rycerz madaram">
-		<type class="stendhal/madaram" subclass="madaram_cavalry" tileid="chess.png:8"/>
+		<type class="madaram" subclass="madaram_cavalry" tileid="chess.png:8"/>
 		<hidden/>
 		<description>Oto figura konia do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -240,7 +240,7 @@
 	</creature>
 
 	<creature name="goniec madaram">
-		<type class="stendhal/madaram" subclass="madaram_healer" tileid="chess.png:9"/>
+		<type class="madaram" subclass="madaram_healer" tileid="chess.png:9"/>
 		<hidden/>
 		<description>Oto figura gońca do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -265,7 +265,7 @@
 	</creature>
 
 	<creature name="król madaram">
-		<type class="stendhal/madaram" subclass="madaram_buster_blader" tileid="chess.png:10"/>
+		<type class="madaram" subclass="madaram_buster_blader" tileid="chess.png:10"/>
 		<hidden/>
 		<description>Oto figura króla do szachów. Nie otrzymasz nagrody jeśli go zabijesz.</description>
 		<attributes>
@@ -290,7 +290,7 @@
 	</creature>
 
 	<creature name="królowa madaram">
-		<type class="stendhal/madaram" subclass="madaram_queen" tileid="chess.png:11"/>
+		<type class="madaram" subclass="madaram_queen" tileid="chess.png:11"/>
 		<hidden/>
 		<description>Oto figura królowej do szachów. Nie otrzymasz nagrody jeśli ją zabijesz.</description>
 		<attributes>

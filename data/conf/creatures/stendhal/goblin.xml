@@ -5,7 +5,7 @@
 	<!-- START: goblin -->
 
 	<creature name="goblin">
-		<type class="stendhal/goblin" subclass="goblin" tileid="goblin.png:0"/>
+		<type class="goblin" subclass="goblin" tileid="goblin.png:0"/>
 		<description>Oto goblin. Jest naprawdę złym i psotliwym stworzeniem.</description>
 		<attributes>
 			<atk value="88"/>
@@ -45,7 +45,7 @@
 	</creature>
 
 	<creature name="goblin weteran">
-		<type class="stendhal/goblin" subclass="veteran_goblin" tileid="goblin.png:2"/>
+		<type class="goblin" subclass="veteran_goblin" tileid="goblin.png:2"/>
 		<description>Oto goblin weteran. Podstarzały wojownik...</description>
 		<attributes>
 			<atk value="106"/>
@@ -85,7 +85,7 @@
 	</creature>
 
 	<creature name="goblin żołnierz">
-		<type class="stendhal/goblin" subclass="soldier_goblin" tileid="goblin.png:1"/>
+		<type class="goblin" subclass="soldier_goblin" tileid="goblin.png:1"/>
 		<description>Oto goblin żołnierz. Jest młody ale doświadczony w boju.</description>
 		<attributes>
 			<atk value="127"/>

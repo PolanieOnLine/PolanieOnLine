@@ -5,7 +5,7 @@
   <!-- START: northpole-->
 
   <creature name="elf george">
-    <type class="stendhal/northpole" subclass="northpole_george" tileid="northpole.png:4"></type>
+    <type class="northpole" subclass="northpole_george" tileid="northpole.png:4"></type>
     <description>You see a poor elf builder who can hardly keep it together with all the nasty little brats running around and making such a racket. Please help him out by getting rid of all those pesky little things.</description>
     <attributes>
       <atk value="40" />
@@ -34,7 +34,7 @@
   </creature>
 
   <creature name="elf russell">
-    <type class="stendhal/northpole" subclass="northpole_russell" tileid="northpole.png:7"></type>
+    <type class="northpole" subclass="northpole_russell" tileid="northpole.png:7"></type>
     <description>You see another poor elf builder who is having a hard time keeping it together with all the nasty little brats running around and making suck a racket. Please help him out by getting rid of all those pesky little things.</description>
     <attributes>
       <atk value="40" />
@@ -64,7 +64,7 @@
   </creature>
 
   <creature name="elf thomas">
-    <type class="stendhal/northpole" subclass="northpole_thomas" tileid="northpole.png:9"/>
+    <type class="northpole" subclass="northpole_thomas" tileid="northpole.png:9"/>
     <description>You see a bright, cheery holiday elf who is trying to remember that all kids are angels and can do no wrong.</description>
     <attributes>
       <atk value="40" />
@@ -93,7 +93,7 @@
   </creature>
 
   <creature name="elf andy">
-    <type class="stendhal/northpole" subclass="northpole_andy" tileid="northpole.png:0"/>
+    <type class="northpole" subclass="northpole_andy" tileid="northpole.png:0"/>
     <description>You see a little sugar-fueled demon that is wrecking havoc wherever he goes, because he helped steal all of Kris Kringle's candy for his stockings, and has spent hours eating it.</description>
     <attributes>
       <atk value="40" />
@@ -126,7 +126,7 @@
   </creature>
 
   <creature name="elf arthur">
-    <type class="stendhal/northpole" subclass="northpole_arthur" tileid="northpole.png:1"/>
+    <type class="northpole" subclass="northpole_arthur" tileid="northpole.png:1"/>
   	<description>You see someone who is close to having a sugar coma from all the candy he has eaten.</description>
   	<attributes>
       <atk value="40" />
@@ -159,7 +159,7 @@
   </creature>
 
   <creature name="elf mark">
-    <type class="stendhal/northpole" subclass="northpole_mark" tileid="northpole.png:5"/>
+    <type class="northpole" subclass="northpole_mark" tileid="northpole.png:5"/>
   	<description>You see someone who wants you to help him steal MORE candy.</description>
   	<attributes>
       <atk value="40" />
@@ -192,7 +192,7 @@
   </creature>
 
   <creature name="elf penny">
-    <type class="stendhal/northpole" subclass="northpole_penny" tileid="northpole.png:6"/>
+    <type class="northpole" subclass="northpole_penny" tileid="northpole.png:6"/>
     <description>You see a little bully. Be careful, she is coming for you.</description>
   	<attributes>
       <atk value="40" />
@@ -225,7 +225,7 @@
   </creature>
 
   <creature name="elf scott">
-    <type class="stendhal/northpole" subclass="northpole_scott" tileid="northpole.png:8"/>
+    <type class="northpole" subclass="northpole_scott" tileid="northpole.png:8"/>
     <description>You see a rather obnoxious little kid who has had way too much candy.</description>
   	<attributes>
       <atk value="40" />
@@ -258,7 +258,7 @@
   </creature>
 
   <creature name="elf dorothy">
-  	<type class="stendhal/northpole" subclass="northpole_dorothy" tileid="northpole.png:2"/>
+  	<type class="northpole" subclass="northpole_dorothy" tileid="northpole.png:2"/>
   	<description>You see a skater that is barely able too stay on her feet. Nothing fancy.</description>
   	<attributes>
       <atk value="40" />
@@ -290,7 +290,7 @@
   </creature>
 
   <creature name="elf eloise">
-    <type class="stendhal/northpole" subclass="northpole_eloise" tileid="northpole.png:3"/>
+    <type class="northpole" subclass="northpole_eloise" tileid="northpole.png:3"/>
     <description>You see a graceful skater.</description>
     <attributes>
       <atk value="40" />

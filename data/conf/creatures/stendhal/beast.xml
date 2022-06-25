@@ -5,7 +5,7 @@
 	<!-- START: beholder -->
 
 	<creature name="oczko">
-		<type class="stendhal/beholder" subclass="young_beholder" tileid="beholder.png:2"/>
+		<type class="beholder" subclass="young_beholder" tileid="beholder.png:2"/>
 		<description>Oto oczko. Wszędzie cię wypatrzy!</description>
 		<attributes>
 			<atk value="96"/>
@@ -33,7 +33,7 @@
 	</creature>
 
 	<creature name="oko">
-		<type class="stendhal/beholder" subclass="beholder" tileid="beholder.png:0"/>
+		<type class="beholder" subclass="beholder" tileid="beholder.png:0"/>
 		<description>Oto oko, które widzi cię doskonale, więc nie schowasz się przed nim.</description>
 		<attributes>
 			<atk value="126"/>
@@ -58,7 +58,7 @@
 	</creature>
 
 	<creature name="oko starsze">
-		<type class="stendhal/beholder" subclass="elder_beholder" tileid="beholder.png:1"/>
+		<type class="beholder" subclass="elder_beholder" tileid="beholder.png:1"/>
 		<description>Oto oko starsze. Przeraźliwie patrzy się na ciebie.</description>
 		<attributes>
 			<atk value="172"/>
@@ -88,7 +88,7 @@
 	<!-- START: gargoyle -->
 
 	<creature name="gargulec">
-		<type class="stendhal/gargoyle" subclass="gargoyle" tileid="gargoyle.png:2"/>
+		<type class="gargoyle" subclass="gargoyle" tileid="gargoyle.png:2"/>
 		<description>Oto gargulec. Niby jak posąg, ale żywy!</description>
 		<attributes>
 			<atk value="98"/>
@@ -118,7 +118,7 @@
 	</creature>
 
 	<creature name="starszy gargulec">
-		<type class="stendhal/gargoyle" subclass="elder_gargoyle" tileid="gargoyle.png:1"/>
+		<type class="gargoyle" subclass="elder_gargoyle" tileid="gargoyle.png:1"/>
 		<description>Oto starszy gargulec. Wyjątkowo mądre stworzenie.</description>
 		<attributes>
 			<atk value="114"/>
@@ -148,7 +148,7 @@
 	</creature>
 
 	<creature name="mroczny gargulec">
-		<type class="stendhal/gargoyle" subclass="dark_gargoyle" tileid="gargoyle.png:0"/>
+		<type class="gargoyle" subclass="dark_gargoyle" tileid="gargoyle.png:0"/>
 		<description>Oto mroczny gargulec. Czy czujesz przed nim strach?</description>
 		<attributes>
 			<atk value="134"/>
@@ -180,7 +180,7 @@
 	</creature>
 
 	<creature name="trujący gargulec">
-		<type class="stendhal/gargoyle" subclass="venom_gargoyle" tileid="gargoyle.png:3"/>
+		<type class="gargoyle" subclass="venom_gargoyle" tileid="gargoyle.png:3"/>
 		<description>Oto trujący gargulec. Odrażający i niebezpieczny.</description>
 		<attributes>
 			<atk value="188"/>
@@ -219,7 +219,7 @@
 	<!-- START: misc -->
 
 	<creature name="naśladowca">
-		<type class="stendhal/hybrid" subclass="mimic_idle" tileid="hybrid.png:14"/>
+		<type class="hybrid" subclass="mimic_idle" tileid="hybrid.png:14"/>
 		<description>Oto naśladowca. Jego zawartość może być inna od tego czego się spodziewasz.</description>
 		<attributes>
 			<atk value="240"/>
@@ -251,7 +251,7 @@
 	</creature>
 
 	<creature name="smrodliwy">
-		<type class="stendhal/hybrid" subclass="snarfkin" tileid="hybrid.png:11"/>
+		<type class="hybrid" subclass="snarfkin" tileid="hybrid.png:11"/>
 		<description>Oto smrodliwy ulubione zwierzątko czarodziei. Uważaj jego pazury są trujące!</description>
 		<attributes>
 			<atk value="472"/>
@@ -284,7 +284,7 @@
 	<!-- START: mutant -->
 
 	<creature name="googon">
-		<type class="stendhal/hybrid" subclass="googon" tileid="hybrid.png:10"/>
+		<type class="hybrid" subclass="googon" tileid="hybrid.png:10"/>
 		<description>Oto googon - dziwny stwór z najgorszych czeluści tego świata... Uważaj! Ten stwór jest świetnym zabójcą.</description>
 		<attributes>
 			<atk value="430"/>
@@ -312,7 +312,7 @@
 	</creature>
 
 	<creature name="zielony potwór">
-		<type class="stendhal/hybrid" subclass="grobble_monster" tileid="hybrid.png:12"/>
+		<type class="hybrid" subclass="grobble_monster" tileid="hybrid.png:12"/>
 		<description>Oto zielony potwór. Możesz spotkać go pod łóżkiem, w szafie lub w najciemniejszych koszmarach.</description>
 		<attributes>
 			<atk value="609"/>
@@ -346,7 +346,7 @@
 	</creature>
 
 	<creature name="latający glutek">
-		<type class="stendhal/hybrid" subclass="winged_blurble" tileid="hybrid.png:5"/>
+		<type class="hybrid" subclass="winged_blurble" tileid="hybrid.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="666"/>
@@ -379,7 +379,7 @@
 	</creature>
 
 	<creature name="coś">
-		<type class="stendhal/huge_animal" subclass="thing" tileid="huge_animal.png:8"/>
+		<type class="huge_animal" subclass="thing" tileid="huge_animal.png:8"/>
 		<description>Oto coś. Niby nic, ale czymś jednak jest. Być może ludzkim mutantem lub może potworem z innego świata.</description>
 		<attributes>
 			<atk value="977"/>

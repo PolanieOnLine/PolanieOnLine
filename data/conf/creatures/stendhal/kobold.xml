@@ -4,7 +4,7 @@
 
 	<!-- START: kobold -->
 	<creature name="kobold">
-		<type class="stendhal/kobold" subclass="kobold" tileid="kobold.png:1"/>
+		<type class="kobold" subclass="kobold" tileid="kobold.png:1"/>
 		<description>Oto kobold. We wsi gadają, że to mityczny duch.</description>
 		<attributes>
 			<atk value="80"/>
@@ -48,7 +48,7 @@
 	</creature>
 
 	<creature name="kobold żołnierz">
-		<type class="stendhal/kobold" subclass="soldier_kobold" tileid="kobold.png:3"/>
+		<type class="kobold" subclass="soldier_kobold" tileid="kobold.png:3"/>
 		<description>Oto kobold żołnierz. Broni zaciekle swego króla.</description>
 		<attributes>
 			<atk value="93"/>
@@ -92,7 +92,7 @@
 	</creature>
 
 	<creature name="kobold łucznik">
-		<type class="stendhal/kobold" subclass="archer_kobold" tileid="kobold.png:0"/>
+		<type class="kobold" subclass="archer_kobold" tileid="kobold.png:0"/>
 		<description>Oto kobold łucznik, który trzyma się z daleka od napastnika.</description>
 		<attributes>
 			<atk value="94"/>
@@ -137,7 +137,7 @@
 	</creature>
 
 	<creature name="kobold weteran">
-		<type class="stendhal/kobold" subclass="veteran_kobold" tileid="kobold.png:4"/>
+		<type class="kobold" subclass="veteran_kobold" tileid="kobold.png:4"/>
 		<description>Oto kobold weteran. Nieźle włada bronią.</description>
 		<attributes>
 			<atk value="113"/>
@@ -182,7 +182,7 @@
 	</creature>
 
 	<creature name="kobold lider">
-		<type class="stendhal/kobold" subclass="leader_kobold" tileid="kobold.png:2"/>
+		<type class="kobold" subclass="leader_kobold" tileid="kobold.png:2"/>
 		<description>Oto kobold lider. Jeden z wielkich wojowników.</description>
 		<attributes>
 			<atk value="139"/>
@@ -227,7 +227,7 @@
 	</creature>
 
 	<creature name="kobold olbrzymi">
-		<type class="stendhal/kobold" subclass="giant_kobold" tileid="kobold.png:5"/>
+		<type class="kobold" subclass="giant_kobold" tileid="kobold.png:5"/>
 		<description>Oto kobold olbrzymi. Choć jest zabawny to nie jest świadomy swej siły. Kiedy zaproponuje przytulenie to najjlepiej jest odrzucić jego szczodrą ofertę.</description>
 		<attributes>
 			<atk value="440"/>

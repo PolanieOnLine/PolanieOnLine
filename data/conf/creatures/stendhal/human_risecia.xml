@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="risecia zbir">
-		<type class="stendhal/human" subclass="risecia_thug" tileid="human_risecia.png:1"/>
+		<type class="human" subclass="risecia_thug" tileid="human_risecia.png:1"/>
 		<description>Oto risecia zbir. Trzymaj się od niego z daleka!</description>
 		<attributes>
 			<atk value="152"/>
@@ -39,7 +39,7 @@
 	</creature>
 
 	<creature name="risecia łucznik">
-		<type class="stendhal/human" subclass="risecia_archer" tileid="human_risecia.png:0"/>
+		<type class="human" subclass="risecia_archer" tileid="human_risecia.png:0"/>
 		<description>Oto risecia łucznik. Jeden z wielu, którzy bronią swego dowódcę.</description>
 		<attributes>
 			<atk value="159"/>
@@ -74,7 +74,7 @@
 	</creature>
 
 	<creature name="risecia z klingą">
-		<type class="stendhal/human" subclass="risecia_swordsman" tileid="human_risecia.png:2"/>
+		<type class="human" subclass="risecia_swordsman" tileid="human_risecia.png:2"/>
 		<description>Oto risecia z klingą. Jego ostrze miecza zetnie Twoją głowę!</description>
 		<attributes>
 			<atk value="194"/>
@@ -107,7 +107,7 @@
 	</creature>
 
 	<creature name="Falatheen szef Risecia">
-		<type class="stendhal/human" subclass="risecia_leader" tileid="human_risecia.png:3"/>
+		<type class="human" subclass="risecia_leader" tileid="human_risecia.png:3"/>
 		<description>Oto Falatheen szef Risecia. Nie chce zginąć! Jego mali wojownicy chronią go przed napastnikami.</description>
 		<attributes>
 			<atk value="209"/>

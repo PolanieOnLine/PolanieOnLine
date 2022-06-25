@@ -4,7 +4,7 @@
 
 	<!-- START: slime -->
 	<creature name="zielony glut">
-		<type class="stendhal/slime" subclass="green_slime" tileid="slime.png:0"/>
+		<type class="slime" subclass="green_slime" tileid="slime.png:0"/>
 		<description>Oto zielony glut, kleisty i błyszczący.</description>
 		<attributes>
 			<atk value="114"/>
@@ -33,7 +33,7 @@
 	</creature>
 
 	<creature name="brązowy glut">
-		<type class="stendhal/slime" subclass="brown_slime" tileid="slime.png:1"/>
+		<type class="slime" subclass="brown_slime" tileid="slime.png:1"/>
 		<description>Oto brązowy glut. Obleśny i głodny.</description>
 		<attributes>
 			<atk value="184"/>
@@ -62,7 +62,7 @@
 	</creature>
 
 	<creature name="czarny glut">
-		<type class="stendhal/slime" subclass="black_slime" tileid="slime.png:2"/>
+		<type class="slime" subclass="black_slime" tileid="slime.png:2"/>
 		<description>Oto czarny glut. Za nim kleisty ślad.</description>
 		<attributes>
 			<atk value="250"/>
@@ -91,7 +91,7 @@
 	</creature>
 
 	<creature name="glut z zaświatów">
-		<type class="stendhal/slime" subclass="twilight_slime" tileid="slime.png:3"/>
+		<type class="slime" subclass="twilight_slime" tileid="slime.png:3"/>
 		<description>Oto glut z zaświatów. Czemu zmierza w twoją stronę? Uciekaj!</description>
 		<attributes>
 			<atk value="718"/>

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="żołnierz chaosu">
-		<type class="stendhal/chaos" subclass="chaos_soldier" tileid="chaos.png:4"/>
+		<type class="chaos" subclass="chaos_soldier" tileid="chaos.png:4"/>
 		<description>Oto żołnierz chaosu. Żołnierze chaosu są sługami zła. Zabicie ciebie jest jednym z ich niecnych planów.</description>
 		<attributes>
 			<atk value="543"/>
@@ -37,7 +37,7 @@
 	</creature>
 
 	<creature name="wojownik chaosu">
-		<type class="stendhal/chaos" subclass="chaos_warrior" tileid="chaos.png:5"/>
+		<type class="chaos" subclass="chaos_warrior" tileid="chaos.png:5"/>
 		<description>Oto wojownik chaosu. Ten potwór chaosu walczy z wielkim ostrzem służącym do zabijania wrogów.</description>
 		<attributes>
 			<atk value="604"/>
@@ -75,7 +75,7 @@
 	</creature>
 
 	<creature name="komandor chaosu">
-		<type class="stendhal/chaos" subclass="chaos_commander" tileid="chaos.png:0"/>
+		<type class="chaos" subclass="chaos_commander" tileid="chaos.png:0"/>
 		<description>Oto komandor chaosu, który pracuje nad złowieszczymi planami. Powinieneś się nim zająć nim dopełni osiągnie swoje cele.</description>
 		<attributes>
 			<atk value="654"/>
@@ -114,7 +114,7 @@
 	</creature>
 
 	<creature name="czarnoksiężnik chaosu">
-		<type class="stendhal/chaos" subclass="chaos_sorceror" tileid="chaos.png:6"/>
+		<type class="chaos" subclass="chaos_sorceror" tileid="chaos.png:6"/>
 		<description>Oto czarnoksiężnik chaosu. Czarnoksiężnicy chaosu rzucają ciemne zaklęcia na ciebie jeśli nie jesteś im posłuszny.</description>
 		<attributes>
 			<atk value="670"/>
@@ -151,7 +151,7 @@
 	</creature>
 
 	<creature name="jeździec smoków chaosu">
-		<type class="stendhal/chaos" subclass="chaos_dragonrider" tileid="chaos.png:1"/>
+		<type class="chaos" subclass="chaos_dragonrider" tileid="chaos.png:1"/>
 		<description>Ten jeździec smoków chaosu jest świetnie wyszkolony i potrafi dosiąść każdego smoka. Zwinny jest także w walce wręcz.</description>
 		<attributes>
 			<atk value="706"/>
@@ -183,7 +183,7 @@
 	</creature>
 
 	<creature name="lord chaosu">
-		<type class="stendhal/chaos" subclass="chaos_lord" tileid="chaos.png:2"/>
+		<type class="chaos" subclass="chaos_lord" tileid="chaos.png:2"/>
 		<description>Oto lord chaosu jest jednym z najsilniejszych potworów chaosu w Faiumoni. Powinieneś się przygotować przed walką z nim.</description>
 		<attributes>
 			<atk value="807"/>
@@ -222,7 +222,7 @@
 	</creature>
 
 	<creature name="chaosu lord wywyższony">
-		<type class="stendhal/chaos" subclass="chaos_overlord" tileid="chaos.png:3"/>
+		<type class="chaos" subclass="chaos_overlord" tileid="chaos.png:3"/>
 		<description>Oto chaosu lord wywyższony. Jest twórcą diabelskich planów i wydaje rozkazy wszystkim chaotycznym potworom, które istnieją.</description>
 		<attributes>
 			<atk value="1042"/>

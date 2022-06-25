@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="duch">
-		<type class="stendhal/undead" subclass="ghost" shadow="none" tileid="undead_specter.png:0"/>
+		<type class="undead" subclass="ghost" shadow="none" tileid="undead_specter.png:0"/>
 		<description>Widzisz ducha! Bój się.</description>
 		<attributes>
 			<atk value="171"/>
@@ -39,7 +39,7 @@
 	</creature>
 
 	<creature name="śmierć">
-		<type class="stendhal/undead" subclass="death" tileid="undead_specter.png:3"/>
+		<type class="undead" subclass="death" tileid="undead_specter.png:3"/>
 		<description>Oto śmierć. Masz na tyle odwagi, aby stanąć z nią twarzą w twarz? Dziś nie ma nastroju na targo z twoją duszą.</description>
 		<attributes>
 			<atk value="283"/>
@@ -74,7 +74,7 @@
 	</creature>
 
 	<creature name="czarna śmierć">
-		<type class="stendhal/undead" subclass="black_death" shadow="none" tileid="undead_specter.png:4"/>
+		<type class="undead" subclass="black_death" shadow="none" tileid="undead_specter.png:4"/>
 		<description>Oto czarna śmierć. Swą kosą wytnie twą duszę i zaniesie ją za rzekę, gdzie pozostanie do nadejścia dnia sądu.</description>
 		<attributes>
 			<atk value="3451"/>
@@ -122,7 +122,7 @@
 	</creature>
 
 	<creature name="złota śmierć">
-		<type class="stendhal/undead" subclass="golden_death" shadow="none" tileid="undead_specter.png:5"/>
+		<type class="undead" subclass="golden_death" shadow="none" tileid="undead_specter.png:5"/>
 		<description>Oto złota śmierć. Jest tu aby zabrać twą duszę i zapłacić nią za twoje winy.</description>
 		<attributes>
 			<atk value="3968"/>
@@ -168,7 +168,7 @@
 	</creature>
 
 	<creature name="niewidoczny człowiek">
-		<type class="stendhal/undead" subclass="invisible_man" tileid="undead_specter.png:1"/>
+		<type class="undead" subclass="invisible_man" tileid="undead_specter.png:1"/>
 		<description>Nic nie widzisz. Może gdy się przypatrzysz miejscu skąd padają ciosy zauważysz kontur człowieka!</description>
 		<attributes>
 			<atk value="367"/>
@@ -201,7 +201,7 @@
 	</creature>
 
 	<creature name="żywa zbroja">
-		<type class="stendhal/undead" subclass="incorporeal_armor" tileid="undead_specter.png:2"/>
+		<type class="undead" subclass="incorporeal_armor" tileid="undead_specter.png:2"/>
 		<description>Oto zbroja. Nieźle cię zaskoczyło, że porusza się sama w twoją stronę, bo nikogo w niej nie widać.</description>
 		<attributes>
 			<atk value="565"/>

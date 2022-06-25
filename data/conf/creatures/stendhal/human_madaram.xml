@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="madaram łucznik">
-		<type class="stendhal/madaram" subclass="madaram_archer" tileid="madaram.png:1"/>
+		<type class="madaram" subclass="madaram_archer" tileid="madaram.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="332"/>
@@ -37,7 +37,7 @@
 	</creature>
 
 	<creature name="madaram wieśniak">
-		<type class="stendhal/madaram" subclass="madaram_peasant" tileid="madaram.png:7"/>
+		<type class="madaram" subclass="madaram_peasant" tileid="madaram.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="357"/>
@@ -66,7 +66,7 @@
 	</creature>
 
 	<creature name="madaram komandos">
-		<type class="stendhal/madaram" subclass="madaram_trooper" tileid="madaram.png:11"/>
+		<type class="madaram" subclass="madaram_trooper" tileid="madaram.png:11"/>
 		<description></description>
 		<attributes>
 			<atk value="370"/>
@@ -95,7 +95,7 @@
 	</creature>
 
 	<creature name="madaram żołnierz">
-		<type class="stendhal/madaram" subclass="madaram_soldier" tileid="madaram.png:9"/>
+		<type class="madaram" subclass="madaram_soldier" tileid="madaram.png:9"/>
 		<description></description>
 		<attributes>
 			<atk value="400"/>
@@ -124,7 +124,7 @@
 	</creature>
 
 	<creature name="madaram znachor">
-		<type class="stendhal/madaram" subclass="madaram_healer" tileid="madaram.png:5"/>
+		<type class="madaram" subclass="madaram_healer" tileid="madaram.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="425"/>
@@ -154,7 +154,7 @@
 	</creature>
 
 	<creature name="madaram z toporem">
-		<type class="stendhal/madaram" subclass="madaram_axeman" tileid="madaram.png:2"/>
+		<type class="madaram" subclass="madaram_axeman" tileid="madaram.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="438"/>
@@ -183,7 +183,7 @@
 	</creature>
 
 	<creature name="madaram królowa">
-		<type class="stendhal/madaram" subclass="madaram_queen" tileid="madaram.png:8"/>
+		<type class="madaram" subclass="madaram_queen" tileid="madaram.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="440"/>
@@ -214,7 +214,7 @@
 	</creature>
 
 	<creature name="madaram bohater">
-		<type class="stendhal/madaram" subclass="madaram_hero" tileid="madaram.png:6"/>
+		<type class="madaram" subclass="madaram_hero" tileid="madaram.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="453"/>
@@ -244,7 +244,7 @@
 	</creature>
 
 	<creature name="madaram wietrzny wędrowca">
-		<type class="stendhal/madaram" subclass="madaram_windwalker" tileid="madaram.png:12"/>
+		<type class="madaram" subclass="madaram_windwalker" tileid="madaram.png:12"/>
 		<description></description>
 		<attributes>
 			<atk value="460"/>
@@ -274,7 +274,7 @@
 	</creature>
 
 	<creature name="madaram kawalerzysta">
-		<type class="stendhal/madaram" subclass="madaram_cavalry" tileid="madaram.png:4"/>
+		<type class="madaram" subclass="madaram_cavalry" tileid="madaram.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="469"/>
@@ -305,7 +305,7 @@
 	</creature>
 
 	<creature name="madaram myśliwy">
-		<type class="stendhal/madaram" subclass="madaram_stalker" tileid="madaram.png:10"/>
+		<type class="madaram" subclass="madaram_stalker" tileid="madaram.png:10"/>
 		<description></description>
 		<attributes>
 			<atk value="497"/>
@@ -335,7 +335,7 @@
 	</creature>
 
 	<creature name="madaram łamacz mieczy">
-		<type class="stendhal/madaram" subclass="madaram_buster_blader" tileid="madaram.png:3"/>
+		<type class="madaram" subclass="madaram_buster_blader" tileid="madaram.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="497"/>

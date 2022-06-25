@@ -4,7 +4,7 @@
 
 	<!-- START: albino elf -->
 	<creature name="elf albinos rycerz">
-		<type class="stendhal/albino_elf" subclass="albino_elf_swordsman" tileid="albino_elf.png:4"/>
+		<type class="albino_elf" subclass="albino_elf_swordsman" tileid="albino_elf.png:4"/>
 		<description>Oto elf albinos rycerz, który jest profesjonalistą w posługiwaniu się mieczem. Może cię zaatakować od tyłu w mgnieniu oka.</description>
 		<attributes>
 			<atk value="330"/>
@@ -36,7 +36,7 @@
 	</creature>
 
 	<creature name="elf albinos łucznik">
-		<type class="stendhal/albino_elf" subclass="albino_elf_archer" tileid="albino_elf.png:0"/>
+		<type class="albino_elf" subclass="albino_elf_archer" tileid="albino_elf.png:0"/>
 		<description>Oto elf albinos łucznik. Jego bystre oko potrafi trafić w pszczołę ze 100 metrów.</description>
 		<attributes>
 			<atk value="345"/>
@@ -71,7 +71,7 @@
 	</creature>
 
 	<creature name="elf albinos magik">
-		<type class="stendhal/albino_elf" subclass="albino_elf_magician" tileid="albino_elf.png:2"/>
+		<type class="albino_elf" subclass="albino_elf_magician" tileid="albino_elf.png:2"/>
 		<description>Oto elf albinos magik. ZNa wszystkie sekrety magii. Lepiej nie pozwól mu uwolnić jego całej mocy!</description>
 		<attributes>
 			<atk value="432"/>
@@ -103,7 +103,7 @@
 	</creature>
 
 	<creature name="elf albinos królowa">
-		<type class="stendhal/albino_elf" subclass="albino_elf_queen" tileid="albino_elf.png:3"/>
+		<type class="albino_elf" subclass="albino_elf_queen" tileid="albino_elf.png:3"/>
 		<description>Oto elf albinos królowa. Jest matką rasy elfów albinosów i zrobi wszystko, aby ją ochronić.</description>
 		<attributes>
 			<atk value="454"/>
@@ -133,7 +133,7 @@
 	</creature>
 
 	<creature name="elf albinos król">
-		<type class="stendhal/albino_elf" subclass="albino_elf_king" tileid="albino_elf.png:1"/>
+		<type class="albino_elf" subclass="albino_elf_king" tileid="albino_elf.png:1"/>
 		<description>Oto elf albinos król. Jest ojcem elfów albinosów i wygrał wiele walk ze swoją poteżną armią elfów albinosów.</description>
 		<attributes>
 			<atk value="461"/>
@@ -167,7 +167,7 @@
 
 	<!-- START: dark elf -->
 	<creature name="elf mikrus">
-		<type class="stendhal/dark_elf" subclass="baby_drow" tileid="dark_elf.png:10"/>
+		<type class="dark_elf" subclass="baby_drow" tileid="dark_elf.png:10"/>
 		<description>Oto elf mikrus. Powinieneś wiedzieć, że dzieci mrocznych elfów są całkiem silne i inteligentne. Nie myśl, że możesz je łatwo pokonać!</description>
 		<attributes>
 			<atk value="374"/>
@@ -198,7 +198,7 @@
 	</creature>
 
 	<creature name="elf ciemności łucznik">
-		<type class="stendhal/dark_elf" subclass="dark_elf_archer" tileid="dark_elf.png:0"/>
+		<type class="dark_elf" subclass="dark_elf_archer" tileid="dark_elf.png:0"/>
 		<description>Oto elf ciemności łucznik. Ciemni elfowie łucznicy strzelają bezbłędnie co może być fatalne w skutkach dla tych co ośmielą się stanąć przeciwko nim.</description>
 		<attributes>
 			<atk value="385"/>
@@ -235,7 +235,7 @@
 	</creature>
 
 	<creature name="elf ciemności">
-		<type class="stendhal/dark_elf" subclass="dark_elf" tileid="dark_elf.png:6"/>
+		<type class="dark_elf" subclass="dark_elf" tileid="dark_elf.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="433"/>
@@ -267,7 +267,7 @@
 	</creature>
 
 	<creature name="elf ciemności łucznik elitarny">
-		<type class="stendhal/dark_elf" subclass="dark_elf_elite_archer" tileid="dark_elf.png:2"/>
+		<type class="dark_elf" subclass="dark_elf_elite_archer" tileid="dark_elf.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="432"/>
@@ -303,7 +303,7 @@
 	</creature>
 
 	<creature name="elf ciemności kapitan">
-		<type class="stendhal/dark_elf" subclass="dark_elf_captain" tileid="dark_elf.png:1"/>
+		<type class="dark_elf" subclass="dark_elf_captain" tileid="dark_elf.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="465"/>
@@ -339,7 +339,7 @@
 	</creature>
 
 	<creature name="elf ciemności rycerz">
-		<type class="stendhal/dark_elf" subclass="dark_elf_knight" tileid="dark_elf.png:4"/>
+		<type class="dark_elf" subclass="dark_elf_knight" tileid="dark_elf.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="494"/>
@@ -375,7 +375,7 @@
 	</creature>
 
 	<creature name="elf ciemności generał">
-		<type class="stendhal/dark_elf" subclass="dark_elf_general" tileid="dark_elf.png:3"/>
+		<type class="dark_elf" subclass="dark_elf_general" tileid="dark_elf.png:3"/>
 		<description>Oto Elf Ciemności Generał. Jest dowódcą oddziałów zła Jaskiń Nalwor przeciwko intruzom.</description>
 		<attributes>
 			<atk value="515"/>
@@ -413,7 +413,7 @@
 	</creature>
 
 	<creature name="elf ciemności czarownik">
-		<type class="stendhal/dark_elf" subclass="dark_elf_wizard" tileid="dark_elf.png:9"/>
+		<type class="dark_elf" subclass="dark_elf_wizard" tileid="dark_elf.png:9"/>
 		<description>Elf ciemności czarownik jest bardzo potężny i niebezpieczny. Specjalizują się w ciemnej magii.</description>
 		<attributes>
 			<atk value="615"/>
@@ -457,7 +457,7 @@
 	</creature>
 
 	<creature name="elf ciemności królewicz">
-		<type class="stendhal/dark_elf" subclass="dark_elf_viceroy" tileid="dark_elf.png:8"/>
+		<type class="dark_elf" subclass="dark_elf_viceroy" tileid="dark_elf.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="663"/>
@@ -494,7 +494,7 @@
 	</creature>
 
 	<creature name="elf ciemności komandos">
-		<type class="stendhal/dark_elf" subclass="dark_elf_ranger" tileid="dark_elf.png:11"/>
+		<type class="dark_elf" subclass="dark_elf_ranger" tileid="dark_elf.png:11"/>
 		<description></description>
 		<attributes>
 			<atk value="688"/>
@@ -534,7 +534,7 @@
 	</creature>
 
 	<creature name="elf ciemności czarnoksiężnik">
-		<type class="stendhal/dark_elf" subclass="dark_elf_sacerdotist" tileid="dark_elf.png:7"/>
+		<type class="dark_elf" subclass="dark_elf_sacerdotist" tileid="dark_elf.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="479"/>
@@ -575,7 +575,7 @@
 	</creature>
 
 	<creature name="elf ciemności admirał">
-		<type class="stendhal/dark_elf" subclass="dark_elf_admiral" tileid="dark_elf.png:13"/>
+		<type class="dark_elf" subclass="dark_elf_admiral" tileid="dark_elf.png:13"/>
 		<description></description>
 		<attributes>
 			<atk value="809"/>
@@ -611,7 +611,7 @@
 	</creature>
 
 	<creature name="elf ciemności mistrz">
-		<type class="stendhal/dark_elf" subclass="dark_elf_master" tileid="dark_elf.png:12"/>
+		<type class="dark_elf" subclass="dark_elf_master" tileid="dark_elf.png:12"/>
 		<description>Oto elf ciemności mistrz. Strzeż się jego umiejętności posługiwania się magią i mieczem!</description>
 		<attributes>
 			<atk value="838"/>
@@ -653,7 +653,7 @@
 	</creature>
 
 	<creature name="elf ciemności matrona">
-		<type class="stendhal/dark_elf" subclass="dark_elf_matronmother" tileid="dark_elf.png:5"/>
+		<type class="dark_elf" subclass="dark_elf_matronmother" tileid="dark_elf.png:5"/>
 		<description>Ciemna i spowita, ta matriarcha rządzi swoim klanem delikatnym dotykiem i ostrymi kłami. Ekspert od jadów i trucizn, nigdy nie chciałbyś odwrócić się od niej.</description>
 		<attributes>
 			<atk value="869"/>
@@ -699,7 +699,7 @@
 
 	<!-- START: elf -->
 	<creature name="elf">
-		<type class="stendhal/elf" subclass="elf" tileid="elf.png:3"/>
+		<type class="elf" subclass="elf" tileid="elf.png:3"/>
 		<description>Oto elf. Kocha las i życie w pokoju.</description>
 		<attributes>
 			<atk value="159"/>
@@ -739,7 +739,7 @@
 	</creature>
 
 	<creature name="elf milicjant">
-		<type class="stendhal/elf" subclass="militia_elf" tileid="elf.png:6"/>
+		<type class="elf" subclass="militia_elf" tileid="elf.png:6"/>
 		<description>Oto elf milicjant. Oni ciężko trenują, aby ciebie pokonać!</description>
 		<attributes>
 			<atk value="170"/>
@@ -780,7 +780,7 @@
 	</creature>
 
 	<creature name="elf łucznik">
-		<type class="stendhal/elf" subclass="archer_elf" tileid="elf.png:0"/>
+		<type class="elf" subclass="archer_elf" tileid="elf.png:0"/>
 		<description>Oto elf łucznik. Mogą zadać sporo obrażeń za pomocą strzał.</description>
 		<attributes>
 			<atk value="178"/>
@@ -821,7 +821,7 @@
 	</creature>
 
 	<creature name="elf żołnierz">
-		<type class="stendhal/elf" subclass="soldier_elf" tileid="elf.png:7"/>
+		<type class="elf" subclass="soldier_elf" tileid="elf.png:7"/>
 		<description>Oto elf żołnierz. Dobry znajomy elfa milicjanta.</description>
 		<attributes>
 			<atk value="184"/>
@@ -862,7 +862,7 @@
 	</creature>
 
 		<creature name="panna elf">
-		<type class="stendhal/elf" subclass="mage_elf" tileid="elf.png:5"/>
+		<type class="elf" subclass="mage_elf" tileid="elf.png:5"/>
 		<description>Oto panna elf. Kiedy w ciszy stoi nieopodal lasu przepełnia ją magia.</description>
 		<attributes>
 			<atk value="218"/>
@@ -900,7 +900,7 @@
 	</creature>
 
 	<creature name="elf komandor">
-		<type class="stendhal/elf" subclass="commander_elf" tileid="elf.png:2"/>
+		<type class="elf" subclass="commander_elf" tileid="elf.png:2"/>
 		<description>Oto elf komandor. Ma kontrole nad armią elfów.</description>
 		<attributes>
 			<atk value="271"/>
@@ -942,7 +942,7 @@
 	</creature>
 
 	<creature name="pani elf">
-		<type class="stendhal/elf" subclass="archmage_elf" tileid="elf.png:1"/>
+		<type class="elf" subclass="archmage_elf" tileid="elf.png:1"/>
 		<description>Oto pani elf. Jest piękna.</description>
 		<attributes>
 			<atk value="256"/>
@@ -982,7 +982,7 @@
 	</creature>
 
 	<creature name="elf czarnoksiężnik">
-		<type class="stendhal/elf" subclass="elf_sacerdotist" tileid="elf.png:4"/>
+		<type class="elf" subclass="elf_sacerdotist" tileid="elf.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="380"/>
@@ -1018,7 +1018,7 @@
 	</creature>
 
 	<creature name="elf czarownik">
-		<type class="stendhal/elf" subclass="elf_wizard" tileid="elf.png:9"/>
+		<type class="elf" subclass="elf_wizard" tileid="elf.png:9"/>
 		<description>Oto elf czarownik. Jest bardzo mądrym elfem, który zna prawie każdy rodzaj magii. Lubi używać zaklęć natury, aby każdy kwiatek był bujny, a potwór silny. Używa magii także do własnej obrony jeżeli musi.</description>
 		<attributes>
 			<atk value="400"/>
@@ -1058,7 +1058,7 @@
 	</creature>
 
 	<creature name="elf ochroniarz">
-		<type class="stendhal/elf" subclass="elf_bodyguard" tileid="elf.png:8"/>
+		<type class="elf" subclass="elf_bodyguard" tileid="elf.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="403"/>

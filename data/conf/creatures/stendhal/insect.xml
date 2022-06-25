@@ -5,7 +5,7 @@
 	<!-- START: insect -->
 
 	<creature name="mały skarabeusz">
-		<type class="stendhal/insect" subclass="scarab_tiny" tileid="insect.png:1"/>
+		<type class="insect" subclass="scarab_tiny" tileid="insect.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="182"/>
@@ -27,7 +27,7 @@
 	</creature>
 <!-- disabled
 	<creature name="skarabeusz">
-		<type class="stendhal/insect" subclass="scarab" tileid="insect.png:2"/>
+		<type class="insect" subclass="scarab" tileid="insect.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="1"/>
@@ -49,7 +49,7 @@
 	</creature>
 
 	<creature name="karmazynowy skarabeusz">
-		<type class="stendhal/insect" subclass="scarab_red" tileid="insect.png:3"/>
+		<type class="insect" subclass="scarab_red" tileid="insect.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="1"/>
@@ -72,7 +72,7 @@
 	-->
 
 	<creature name="wodny skarabeusz">
-		<type class="stendhal/insect" subclass="scarab_blue" tileid="insect.png:4"/>
+		<type class="insect" subclass="scarab_blue" tileid="insect.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="358"/>
@@ -97,7 +97,7 @@
 	</creature>
 
 	<creature name="zabójcza pszczoła">
-		<type class="stendhal/insect" subclass="killer_bee" tileid="insect.png:0"/>
+		<type class="insect" subclass="killer_bee" tileid="insect.png:0"/>
 		<description>Oto zabójcza pszczoła, która po urządleniu zabije cię na śmierć!</description>
 		<attributes>
 			<atk value="170"/>

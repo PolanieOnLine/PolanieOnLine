@@ -5,7 +5,7 @@
 	<!-- START: duergar -->
 
 	<creature name="duergar">
-		<type class="stendhal/dwarf" subclass="duergar" tileid="dwarf_duergar.png:6"/>
+		<type class="dwarf" subclass="duergar" tileid="dwarf_duergar.png:6"/>
 		<description>Oto duergar. Jest bliskim krewnym krasneli, ale jego krew jest skażona złem.</description>
 		<attributes>
 			<atk value="278"/>
@@ -35,7 +35,7 @@
 	</creature>
 
 	<creature name="duergar z toporem">
-		<type class="stendhal/dwarf" subclass="duergar_axe" tileid="dwarf_duergar.png:0"/>
+		<type class="dwarf" subclass="duergar_axe" tileid="dwarf_duergar.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="298"/>
@@ -67,7 +67,7 @@
 	</creature>
 
 	<creature name="duergar starszy">
-		<type class="stendhal/dwarf" subclass="duergar_elder" tileid="dwarf_duergar.png:2"/>
+		<type class="dwarf" subclass="duergar_elder" tileid="dwarf_duergar.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="325"/>
@@ -94,7 +94,7 @@
 	</creature>
 
 	<creature name="duergar elitarny">
-		<type class="stendhal/dwarf" subclass="duergar_elite" tileid="dwarf_duergar.png:3"/>
+		<type class="dwarf" subclass="duergar_elite" tileid="dwarf_duergar.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="354"/>
@@ -123,7 +123,7 @@
 	</creature>
 
 	<creature name="duergar bohater">
-		<type class="stendhal/dwarf" subclass="duergar_hero" tileid="dwarf_duergar.png:4"/>
+		<type class="dwarf" subclass="duergar_hero" tileid="dwarf_duergar.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="378"/>
@@ -156,7 +156,7 @@
 	</creature>
 
 	<creature name="duergar czarownik">
-		<type class="stendhal/dwarf" subclass="duergar_wizard" tileid="dwarf_duergar.png:7"/>
+		<type class="dwarf" subclass="duergar_wizard" tileid="dwarf_duergar.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="413"/>
@@ -187,7 +187,7 @@
 	</creature>
 
 	<creature name="czarny duergar">
-		<type class="stendhal/dwarf" subclass="duergar_black" tileid="dwarf_duergar.png:1"/>
+		<type class="dwarf" subclass="duergar_black" tileid="dwarf_duergar.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="473"/>
@@ -224,7 +224,7 @@
 	</creature>
 
 	<creature name="duergar król">
-		<type class="stendhal/dwarf" subclass="duergar_king" tileid="dwarf_duergar.png:5"/>
+		<type class="dwarf" subclass="duergar_king" tileid="dwarf_duergar.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="593"/>
@@ -260,7 +260,7 @@
 	<!-- START: dwarf -->
 
 	<creature name="krasnal">
-		<type class="stendhal/dwarf" subclass="dwarf" tileid="dwarf.png:1"/>
+		<type class="dwarf" subclass="dwarf" tileid="dwarf.png:1"/>
 		<description>Oto krasnal. Ten zamiast siedzieć w altance idzie szukać w kopalni złota.</description>
 		<attributes>
 			<atk value="168"/>
@@ -294,7 +294,7 @@
 	</creature>
 
 	<creature name="krasnal strażnik">
-		<type class="stendhal/dwarf" subclass="dwarf_guardian" tileid="dwarf.png:0"/>
+		<type class="dwarf" subclass="dwarf_guardian" tileid="dwarf.png:0"/>
 		<description>Oto krasnal strażnik. Oni szykują obronę przed ludźmi.</description>
 		<attributes>
 			<atk value="200"/>
@@ -330,7 +330,7 @@
 	</creature>
 
 	<creature name="krasnal starszy">
-		<type class="stendhal/dwarf" subclass="elder_dwarf" tileid="dwarf.png:2"/>
+		<type class="dwarf" subclass="elder_dwarf" tileid="dwarf.png:2"/>
 		<description>Oto krasnal starszy. Silny wojownik zmęczony walką.</description>
 		<attributes>
 			<atk value="214"/>
@@ -365,7 +365,7 @@
 	</creature>
 
 	<creature name="krasnal bohater">
-		<type class="stendhal/dwarf" subclass="hero_dwarf" tileid="dwarf.png:3"/>
+		<type class="dwarf" subclass="hero_dwarf" tileid="dwarf.png:3"/>
 		<description>Oto bohaterski krasnal. Jest starym wojownikiem, który swą sławę zdobył w licznych potyczkach a znany jest z siły i brutalności.</description>
 		<attributes>
 			<atk value="244"/>
@@ -399,7 +399,7 @@
 	</creature>
 
 	<creature name="krasnal lider">
-		<type class="stendhal/dwarf" subclass="leader_dwarf" tileid="dwarf.png:4"/>
+		<type class="dwarf" subclass="leader_dwarf" tileid="dwarf.png:4"/>
 		<description>Oto lider krasnali. Oto najpotężniejszy krasnal z plemienia i cieszy się sławą wśród swych ziomków.</description>
 		<attributes>
 			<atk value="311"/>
@@ -440,7 +440,7 @@
 	<!-- START: giant dwarf -->
 
 	<creature name="gigantyczny krasnal">
-		<type class="stendhal/dwarf" subclass="giant_dwarf" tileid="dwarf.png:5"/>
+		<type class="dwarf" subclass="giant_dwarf" tileid="dwarf.png:5"/>
 		<description>Oto gigantyczny krasnolud. Cieżko mu żyć pomiędzy innymi krasnalami, gdyż z powodu jego wzrostu nie uważają go za jednego ze swoich. Mimo tego w głębi swojego wielkiego serca wciąż jest krasnoludem, który będzie do ostatniego tchu walczył z wrogiem!</description>
 		<attributes>
 			<atk value="616"/>
@@ -475,7 +475,7 @@
 	</creature>
 
 	<creature name="Dhohr Nuggetcutter">
-		<type class="stendhal/dwarf" subclass="giant_dwarf" tileid="dwarf.png:6"/>
+		<type class="dwarf" subclass="giant_dwarf" tileid="dwarf.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="619"/>
@@ -510,7 +510,7 @@
 	</creature>
 
 	<creature name="Lord Durin">
-		<type class="stendhal/dwarf" subclass="lord_durin" tileid="dwarf.png:7"/>
+		<type class="dwarf" subclass="lord_durin" tileid="dwarf.png:7"/>
 		<description>Oto potężny Lord Durin, starożytny krasnolud, który prowadził niezliczoną ilość bitew.</description>
 		<attributes>
 			<atk value="2855"/>
@@ -550,7 +550,7 @@
 	<!-- START: mountain dwarf -->
 
 	<creature name="górski krasnal">
-		<type class="stendhal/dwarf" subclass="dwarf" tileid="mountain_dwarf.png:1"/>
+		<type class="dwarf" subclass="dwarf" tileid="mountain_dwarf.png:1"/>
 		<description>Oto górski krasnal miłujący się w ziemi, kamieniach i skałach. Głęboko w czeluściach górskich jaskiń słychać tępy odgłos kilofa, którym wydobywa rudę złota i żelaza.</description>
 		<attributes>
 			<atk value="437"/>
@@ -583,7 +583,7 @@
 	</creature>
 
 	<creature name="górski krasnal strażnik">
-		<type class="stendhal/dwarf" subclass="dwarf_guardian" tileid="mountain_dwarf.png:0"/>
+		<type class="dwarf" subclass="dwarf_guardian" tileid="mountain_dwarf.png:0"/>
 		<description>Oto górski krasnal strażnik. Wypatruje wrogów i strzeże gór w czasie gdy inne krasnale pracują.</description>
 		<attributes>
 			<atk value="461"/>
@@ -615,7 +615,7 @@
 	</creature>
 
 	<creature name="górski starszy krasnal">
-		<type class="stendhal/dwarf" subclass="elder_dwarf" tileid="mountain_dwarf.png:2"/>
+		<type class="dwarf" subclass="elder_dwarf" tileid="mountain_dwarf.png:2"/>
 		<description>Oto górski starszy krasnal. Przez wiele lat pracował w najgłębszej kopalni i znalazł wiele złota i rud. Niedługo nie będzie miał siły by pracować, ale póki co wciąż jest silnym krasnoludem.</description>
 		<attributes>
 			<atk value="484"/>
@@ -651,7 +651,7 @@
 	</creature>
 
 	<creature name="górski krasnal bohater">
-		<type class="stendhal/dwarf" subclass="hero_dwarf" tileid="mountain_dwarf.png:3"/>
+		<type class="dwarf" subclass="hero_dwarf" tileid="mountain_dwarf.png:3"/>
 		<description>Oto górski krasnal bohater. Wielu z krasnoludów sławi jego imię! Był członkiem grupy, która odkryła wielką żyłę złota!</description>
 		<attributes>
 			<atk value="503"/>
@@ -685,7 +685,7 @@
 	</creature>
 
 	<creature name="górski krasnal lider">
-		<type class="stendhal/dwarf" subclass="leader_dwarf" tileid="mountain_dwarf.png:4"/>
+		<type class="dwarf" subclass="leader_dwarf" tileid="mountain_dwarf.png:4"/>
 		<description>Oto górski krasnal lider. Nadzoruje górskie krasnale przy pracy, ale także gdy stają do walki. Sam również podejmuje walkę, gdy wymagają tego okoliczności!</description>
 		<attributes>
 			<atk value="560"/>

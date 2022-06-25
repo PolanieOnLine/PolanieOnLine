@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="mściciel">
-		<type class="stendhal/hybrid" subclass="violet_avenger" tileid="hybrid.png:8"/>
+		<type class="hybrid" subclass="violet_avenger" tileid="hybrid.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="368"/>
@@ -31,7 +31,7 @@
 	</creature>
 
 	<creature name="diabelska królowa">
-		<type class="stendhal/undead" subclass="devil_queen" tileid="undead.png:4"/>
+		<type class="undead" subclass="devil_queen" tileid="undead.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="423"/>
@@ -64,7 +64,7 @@
 	</creature>
 
 	<creature name="demon">
-		<type class="stendhal/demon" subclass="demon" tileid="demon.png:4"/>
+		<type class="demon" subclass="demon" tileid="demon.png:4"/>
 		<description>Oto demon. Jest uosobieniem zła</description>
 		<attributes>
 			<atk value="591"/>
@@ -97,7 +97,7 @@
 	</creature>
 
 	<creature name="imperialny sługa demonów">
-		<type class="stendhal/demon" subclass="imperial_demon_servant" tileid="demon.png:3"/>
+		<type class="demon" subclass="imperial_demon_servant" tileid="demon.png:3"/>
 		<description>Oto imperialny sługa demonów, który wypełnia rozkazy swoich demonicznych lordów.</description>
 		<attributes>
 			<atk value="587"/>
@@ -125,7 +125,7 @@
 	</creature>
 
 	<creature name="imperialny lord demonów">
-		<type class="stendhal/demon" subclass="imperial_demon_lord" tileid="demon.png:2"/>
+		<type class="demon" subclass="imperial_demon_lord" tileid="demon.png:2"/>
 		<description>Oto imperialny lord demonów. Posiada rangę generała. W piekle jest niewielu z taką rangą</description>
 		<attributes>
 			<atk value="676"/>
@@ -156,7 +156,7 @@
 	</creature>
 
 	<creature name="balrog">
-		<type class="stendhal/mythical_animal" subclass="balrog" tileid="enormous_creature.png:0"/>
+		<type class="mythical_animal" subclass="balrog" tileid="enormous_creature.png:0"/>
 		<description>Oto ogromny balrog. Ciosy wymierza wolno, ale straszliwie bolesne.</description>
 		<attributes>
 			<atk value="7557"/>
@@ -204,7 +204,7 @@
 	</creature>
 
 	<creature name="czart">
-		<type class="stendhal/demon" subclass="imp" tileid="demon.png:0"/>
+		<type class="demon" subclass="imp" tileid="demon.png:0"/>
 		<description>Oto czart. Może i wygląda na milutkiego, ale nie zapominaj, że to jeden ze sługusów diabła!</description>
 		<attributes>
 			<atk value="495"/>
@@ -237,7 +237,7 @@
 	</creature>
 
 	<creature name="uskrzydlony błękitny czart">
-		<type class="stendhal/demon" subclass="winged_blue_imp" tileid="demon.png:1"/>
+		<type class="demon" subclass="winged_blue_imp" tileid="demon.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="515"/>
@@ -272,7 +272,7 @@
 	</creature>
 
 	<creature name="demon wody">
-		<type class="stendhal/demon" subclass="water_demon" tileid="demon.png:5"/>
+		<type class="demon" subclass="water_demon" tileid="demon.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="735"/>
@@ -303,7 +303,7 @@
 
 <!-- disabled
 	<creature name="demon ognia">
-		<type class="stendhal/demon" subclass="fire_demon" tileid="demon.png:6"/>
+		<type class="demon" subclass="fire_demon" tileid="demon.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="874"/>

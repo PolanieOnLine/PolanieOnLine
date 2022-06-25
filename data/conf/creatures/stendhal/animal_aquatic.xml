@@ -5,7 +5,7 @@
 	<!-- START: cephalopod -->
 
 	<creature name="kraken">
-		<type class="stendhal/huge_animal" subclass="kraken" tileid="huge_animal.png:13"/>
+		<type class="huge_animal" subclass="kraken" tileid="huge_animal.png:13"/>
 		<description>Oto Kraken z głębi morza!</description>
 		<attributes>
 			<atk value="887"/>
@@ -40,7 +40,7 @@
 	</creature>
 
 	<creature name="neo kraken">
-		<type class="stendhal/huge_animal" subclass="kraken_neo" tileid="huge_animal.png:0"/>
+		<type class="huge_animal" subclass="kraken_neo" tileid="huge_animal.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="992"/>
@@ -79,7 +79,7 @@
 	<!-- START: fish -->
 
 	<creature name="rekin">
-		<type class="stendhal/giant_animal" subclass="shark" tileid="giant_animal.png:2"/>
+		<type class="giant_animal" subclass="shark" tileid="giant_animal.png:2"/>
 		<description>Rekin! Najlepiej poruszać się ostrożnie.</description>
 		<attributes>
 			<atk value="340"/>

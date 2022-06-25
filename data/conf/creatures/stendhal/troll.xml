@@ -5,7 +5,7 @@
 	<!-- START: cyclops -->
 
 	<creature name="cyklop">
-		<type class="stendhal/giant" subclass="cyclops" tileid="troll.png:3"/>
+		<type class="giant" subclass="cyclops" tileid="troll.png:3"/>
 		<description>Oto cyklop. Widzi cię on nieco gorzej, bo ma jedno oko.</description>
 		<attributes>
 			<atk value="125"/>
@@ -47,7 +47,7 @@
   	<!-- START: troll -->
 
 	<creature name="trol">
-		<type class="stendhal/troll" subclass="troll" tileid="troll.png:0"/>
+		<type class="troll" subclass="troll" tileid="troll.png:0"/>
 		<description>Oto trol. Uważaj, bo jesteś na jego ziemi.</description>
 		<attributes>
 			<atk value="135"/>
@@ -82,7 +82,7 @@
 	</creature>
 
 	<creature name="czerwony trol">
-		<type class="stendhal/troll" subclass="red_troll" tileid="troll.png:2"/>
+		<type class="troll" subclass="red_troll" tileid="troll.png:2"/>
 		<description>Oto czerwony trol. Bucha wściekłością.</description>
 		<attributes>
 			<atk value="190"/>
@@ -117,7 +117,7 @@
 	</creature>
 
 	<creature name="trol jaskiniowy">
-		<type class="stendhal/troll" subclass="cave_troll" tileid="troll.png:1"/>
+		<type class="troll" subclass="cave_troll" tileid="troll.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="474"/>

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="mithrilbourgh żołnierz">
-		<type class="stendhal/human" subclass="mithril_common" tileid="human_soldier.png:2"/>
+		<type class="human" subclass="mithril_common" tileid="human_soldier.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="490"/>
@@ -33,7 +33,7 @@
 	</creature>
 
 	<creature name="mithrilbourgh łucznik">
-		<type class="stendhal/human" subclass="mithril_archer" tileid="human_soldier.png:0"/>
+		<type class="human" subclass="mithril_archer" tileid="human_soldier.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="487"/>
@@ -67,7 +67,7 @@
 	</creature>
 
 	<creature name="rycerz mithrilbourgh">
-		<type class="stendhal/human" subclass="mithril_knight" tileid="human_soldier.png:5"/>
+		<type class="human" subclass="mithril_knight" tileid="human_soldier.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="523"/>
@@ -99,7 +99,7 @@
 	</creature>
 
 	<creature name="elitarny łucznik mithrilbourgh">
-		<type class="stendhal/human" subclass="mithril_elite_archer" tileid="human_soldier.png:3"/>
+		<type class="human" subclass="mithril_elite_archer" tileid="human_soldier.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="500"/>
@@ -135,7 +135,7 @@
 	</creature>
 
 	<creature name="sierżant mithrilbourgh">
-		<type class="stendhal/human" subclass="mithril_sergeant" tileid="human_soldier.png:7"/>
+		<type class="human" subclass="mithril_sergeant" tileid="human_soldier.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="547"/>
@@ -166,7 +166,7 @@
 	</creature>
 
 	<creature name="porucznik mithrilbourgh">
-		<type class="stendhal/human" subclass="mithril_lieutenant" tileid="human_soldier.png:6"/>
+		<type class="human" subclass="mithril_lieutenant" tileid="human_soldier.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="577"/>
@@ -197,7 +197,7 @@
 	</creature>
 
 	<creature name="pułkownik mithrilbourgh">
-		<type class="stendhal/human" subclass="mithril_colonel" tileid="human_soldier.png:1"/>
+		<type class="human" subclass="mithril_colonel" tileid="human_soldier.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="610"/>
@@ -227,7 +227,7 @@
 	</creature>
 
 	<creature name="czarodziej mithrilbourgh">
-		<type class="stendhal/human" subclass="mithril_wizard" tileid="human_soldier.png:8"/>
+		<type class="human" subclass="mithril_wizard" tileid="human_soldier.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="634"/>
@@ -262,7 +262,7 @@
 	</creature>
 
 	<creature name="mithrilbourgh generał">
-		<type class="stendhal/human" subclass="mithril_general" tileid="human_soldier.png:4"/>
+		<type class="human" subclass="mithril_general" tileid="human_soldier.png:4"/>
 		<description>Oto mithrilbourgh generał. Niektórzy nazywają go sokolim okiem. Rzucił wzrokiem z murów miasta i zobaczył cię z bardzo daleka, że się zbliżasz.</description>
 		<attributes>
 			<atk value="624"/>

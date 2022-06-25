@@ -4,7 +4,7 @@
 
 	<!-- START: kalavan -->
 	<creature name="gospodyni z kalavan">
-		<type class="stendhal/human" subclass="kalavan_housewife" tileid="human_kalavan.png:2"/>
+		<type class="human" subclass="kalavan_housewife" tileid="human_kalavan.png:2"/>
 		<description>Oto gospodyni z kalavan. Mieszka w mieście Kalavan i jest bardzo zła na wrednych ludzi, którzy chcą ukraść jej jedzenie z kuchni i zniszczyć jej piękny ogród!</description>
 		<attributes>
 			<atk value="274"/>
@@ -34,7 +34,7 @@
 	</creature>
 
 	<creature name="kmieć z kalavan">
-		<type class="stendhal/human" subclass="kalavan_peasant" tileid="human_kalavan.png:3"/>
+		<type class="human" subclass="kalavan_peasant" tileid="human_kalavan.png:3"/>
 		<description>Oto kmieć z kalavan. Pracuje na polach w pobliżu miasta Kalavan. Jak tylko usłyszał o obcych w mieście to czym prędzej wrócił do miasta, aby pomóc mieszkańcom w walce z wrogami!</description>
 		<attributes>
 			<atk value="296"/>
@@ -65,7 +65,7 @@
 	</creature>
 
 	<creature name="mądralińska z kalavan">
-		<type class="stendhal/human" subclass="kalavan_wisewoman" tileid="human_kalavan.png:4"/>
+		<type class="human" subclass="kalavan_wisewoman" tileid="human_kalavan.png:4"/>
 		<description>Oto mądralińska z kalavan. Zazwyczaj siedzi w swoim małym pokoju i robi ręczne robótki, ale teraz potrzebuje wrażeń!</description>
 		<attributes>
 			<atk value="301"/>
@@ -99,7 +99,7 @@
 	</creature>
 
 	<creature name="mieszkaniec kalavan">
-		<type class="stendhal/human" subclass="kalavan_citizen" tileid="human_kalavan.png:1"/>
+		<type class="human" subclass="kalavan_citizen" tileid="human_kalavan.png:1"/>
 		<description>Oto mieszkaniec kalavan. Mieszka w mieście Kalavan i chroni je przed najeźdźcami!</description>
 		<attributes>
 			<atk value="310"/>
@@ -130,7 +130,7 @@
 
 	<!-- START: monk -->
 	<creature name="mnich">
-		<type class="stendhal/human" subclass="monk" tileid="human.png:4"/>
+		<type class="human" subclass="monk" tileid="human.png:4"/>
 		<description>Oto mnich. Mnichowie są bardzo spokojni i pokojowi. Żyją samotnie między sobą, ale nie lubią być niepokojeni przez innych.</description>
 		<attributes>
 			<atk value="261"/>
@@ -173,7 +173,7 @@
 	</creature>
 
 	<creature name="mnich ciemności">
-		<type class="stendhal/human" subclass="darkmonk" tileid="human.png:2"/>
+		<type class="human" subclass="darkmonk" tileid="human.png:2"/>
 		<description>Oto mnich ciemności. Mnichowie ciemności mogą kontrolować ciemne moce i zrobią wszystko, aby usunąć ciebie z ich drogi!</description>
 		<attributes>
 			<atk value="334"/>
@@ -211,7 +211,7 @@
 	</creature>
 
 	<creature name="diabelski mnich">
-		<type class="stendhal/undead" subclass="devil_monk" tileid="undead_fallen.png:8"/>
+		<type class="undead" subclass="devil_monk" tileid="undead_fallen.png:8"/>
 		<description>Oto diabelski mnich. Jest wyznawcą diabelskiego kultu odprawiającego mroczne obrzędy.</description>
 		<attributes>
 			<atk value="1089"/>
@@ -254,7 +254,7 @@
 
 	<!-- START: wizard -->
 	<creature name="mała wiedźma">
-		<type class="stendhal/human" subclass="littlewitch" tileid="human_little.png:0"/>
+		<type class="human" subclass="littlewitch" tileid="human_little.png:0"/>
 		<description>Oto mała wiedźma. Są małymi złymi dziewczynkami, które są bardzo niebezpieczne.</description>
 		<attributes>
 			<atk value="246"/>
@@ -286,7 +286,7 @@
 	</creature>
 
 	<creature name="mały czarodziej">
-		<type class="stendhal/human" subclass="littlewizard" tileid="human_little.png:1"/>
+		<type class="human" subclass="littlewizard" tileid="human_little.png:1"/>
 		<description>Oto mały czarodziej. Jeszcze nie urósł ale już rzuca mocne zaklęcia.</description>
 		<attributes>
 			<atk value="266"/>

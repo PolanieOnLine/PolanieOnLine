@@ -4,7 +4,7 @@
 
 	<!-- START: chaos -->
 	<creature name="jeździec chaosu na zielonym smoku">
-		<type class="stendhal/huge_animal" subclass="chaos_green_dragonrider" tileid="huge_animal.png:3"/>
+		<type class="huge_animal" subclass="chaos_green_dragonrider" tileid="huge_animal.png:3"/>
 		<description>Oto jeździec chaosu na zielonym smoku. Nie myl go z normalnym zielonym smokiem, który jest kontrolowany przez tajmeniczego maga siedzącego na jego grzbiecie.</description>
 		<attributes>
 			<atk value="1867"/>
@@ -52,7 +52,7 @@
 	</creature>
 
 	<creature name="jeździec chaosu na czerwonym smoku">
-		<type class="stendhal/huge_animal" subclass="chaos_red_dragonrider" tileid="huge_animal.png:11"/>
+		<type class="huge_animal" subclass="chaos_red_dragonrider" tileid="huge_animal.png:11"/>
 		<description>Oto jeździec chaosu na czerwonym smoku. Może wygląda na czerwonego smoka, ale mag siedzący na jego grzbiecie daje mu dużo więcej siły.</description>
 		<attributes>
 			<atk value="2044"/>
@@ -100,7 +100,7 @@
 
 	<!-- START: dragon -->
 	<creature name="zielony smok">
-		<type class="stendhal/dragon" subclass="green_dragon" tileid="dragon.png:0"/>
+		<type class="dragon" subclass="green_dragon" tileid="dragon.png:0"/>
 		<description>Oto zielony smok. Jego skrzydła są zbyt małe by unieść go w powietrze, ale i tak wygląda potężnie, a jego zielonkawa skóra wydaje się go całkiem dobrze bronić.</description>
 		<attributes>
 			<atk value="803"/>
@@ -142,7 +142,7 @@
 	</creature>
 
 	<creature name="szkielet smoka">
-		<type class="stendhal/dragon" subclass="bone_dragon" tileid="dragon.png:3"/>
+		<type class="dragon" subclass="bone_dragon" tileid="dragon.png:3"/>
 		<description>Oto szkielet smoka. Zostało kiedyś powiedziane, że są potwory z wystarczającą siłą woli życia. Ich duszę nadal trzymają się życia nawet, gdy ich ciała i krew zawiodły je. Oto dowód życia.</description>
 		<attributes>
 			<atk value="1435"/>
@@ -184,7 +184,7 @@
 	</creature>
 
 	<creature name="błękitny smok">
-		<type class="stendhal/dragon" subclass="blue_dragon" tileid="dragon.png:1"/>
+		<type class="dragon" subclass="blue_dragon" tileid="dragon.png:1"/>
 		<description>Oto błękitny smok. Ma śliczną niebieskawą skórę pięknie połyskującą w słońcu. Nie zapomniej jednak, że ma też szczęki, a w nich ostre zęby!</description>
 		<attributes>
 			<atk value="1511"/>
@@ -230,7 +230,7 @@
 	</creature>
 
 	<creature name="czerwony smok">
-		<type class="stendhal/dragon" subclass="red_dragon" tileid="dragon.png:2"/>
+		<type class="dragon" subclass="red_dragon" tileid="dragon.png:2"/>
 		<description>Oto czerwony smok. Ze zmaragdowymi ślepiami może widzieć w ciemnościach. Czerwone łuski służa mu do odbijania światła w celu oślepienia przeciwnika. Łuski dodają mu urody i są cieżkie do zdobycia z tak dzikiej bestii.</description>
 		<attributes>
 			<atk value="1777"/>
@@ -274,7 +274,7 @@
 	</creature>
 
 	<creature name="czarny smok">
-		<type class="stendhal/dragon" subclass="black_dragon" tileid="dragon.png:4"/>
+		<type class="dragon" subclass="black_dragon" tileid="dragon.png:4"/>
 		<description>Oto czarny smok. Jeśli się wyciszysz poczujesz jego głębokie drżenie w swoich trzewiach.</description>
 		<attributes>
 			<atk value="3227"/>
@@ -323,7 +323,7 @@
 
 	<!-- START: flying -->
 	<creature name="złoty smok">
-		<type class="stendhal/dragon" subclass="flying_golden_dragon" tileid="dragon.png:5"/>
+		<type class="dragon" subclass="flying_golden_dragon" tileid="dragon.png:5"/>
 		<description>Oto latający złoty smok. Gdy rozpościera swe skrzydła przechodzi cię dreszcz... ten mityczny potwór wygląda na potężnego!</description>
 		<attributes>
 			<atk value="837"/>
@@ -369,7 +369,7 @@
 	</creature>
 
 	<creature name="dwugłowy niebieski smok">
-		<type class="stendhal/dragon" subclass="twin_head_dragon" tileid="dragon.png:6"/>
+		<type class="dragon" subclass="twin_head_dragon" tileid="dragon.png:6"/>
 		<description>Oto dwugłowy niebieski smok. Dwugłowe wpatrują się w Ciebie swoimi czterema ślepiami!</description>
 		<attributes>
 			<atk value="1836"/>
@@ -416,7 +416,7 @@
 	</creature>
 
 	<creature name="purpurowy smok">
-		<type class="stendhal/dragon" subclass="rysin_dragon" tileid="dragon.png:7"/>
+		<type class="dragon" subclass="rysin_dragon" tileid="dragon.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="1350"/>

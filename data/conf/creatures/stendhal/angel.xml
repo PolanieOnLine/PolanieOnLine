@@ -4,7 +4,7 @@
 
 	<!-- START: dark -->
 	<creature name="anioł ciemności">
-		<type class="stendhal/angel" subclass="dark_angel" tileid="angel.png:2"/>
+		<type class="angel" subclass="dark_angel" tileid="angel.png:2"/>
 		<description>Oto anioł ciemności. Jest silnym złym aniołem, który teraz ukrywa się w mroku.</description>
 		<attributes>
 			<atk value="4755"/>
@@ -54,7 +54,7 @@
 	</creature>
 
 	<creature name="archanioł ciemności">
-		<type class="stendhal/angel" subclass="dark_archangel" tileid="angel.png:4"/>
+		<type class="angel" subclass="dark_archangel" tileid="angel.png:4"/>
 		<description>Oto archanioł ciemności. Po upadku z nieba jej dusza stała się ciemna jak ona sama.</description>
 		<attributes>
 			<atk value="4700"/>
@@ -109,7 +109,7 @@
 
 	<!-- START: fallen -->
 	<creature name="upadły anioł">
-		<type class="stendhal/angel" subclass="fallen_angel" tileid="angel.png:5"/>
+		<type class="angel" subclass="fallen_angel" tileid="angel.png:5"/>
 		<description>Oto upadły anioł. Gdy odwrócił się od bogów, spadł z niebios.</description>
 		<attributes>
 			<atk value="2120"/>
@@ -152,7 +152,7 @@
 
 	<!-- START: light -->
 	<creature name="aniołek">
-		<type class="stendhal/angel" subclass="baby_angel" tileid="angel.png:0"/>
+		<type class="angel" subclass="baby_angel" tileid="angel.png:0"/>
 		<description>Oto aniołek. Dostanie kiedyś szanse na dorośnięcie?</description>
 		<attributes>
 			<atk value="628"/>
@@ -197,7 +197,7 @@
 	</creature>
 
 	<creature name="anioł">
-		<type class="stendhal/angel" subclass="angel" tileid="angel.png:1"/>
+		<type class="angel" subclass="angel" tileid="angel.png:1"/>
 		<description>Oto anioł. Swym płomiennym mieczem broni wstępu do niebios.</description>
 		<attributes>
 			<atk value="3187"/>
@@ -244,7 +244,7 @@
 	</creature>
 
 	<creature name="archanioł">
-		<type class="stendhal/angel" subclass="archangel" tileid="angel.png:3"/>
+		<type class="angel" subclass="archangel" tileid="angel.png:3"/>
 		<description>Oto archanioł. Jest to najbardziej przerażająca broń Niebios, zaciekła i absolutna siła pierwotnego stworzenia.</description>
 		<attributes>
 			<atk value="3455"/>

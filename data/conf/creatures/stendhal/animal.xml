@@ -5,7 +5,7 @@
 	<!-- START: crustacean -->
 
 	<creature name="krab">
-		<type class="stendhal/animal" subclass="crab" tileid="animal.png:8"/>
+		<type class="animal" subclass="crab" tileid="animal.png:8"/>
 		<description>Oto krab co wydostał się z piasku. Uważaj na jego szczypce.</description>
 		<attributes>
 			<atk value="8"/>
@@ -40,7 +40,7 @@
 	<!-- START: mammal -->
 
 	<creature name="jeleń" condition="!stendhal.christmas">
-		<type class="stendhal/animal" subclass="deer" tileid="animal.png:9"/>
+		<type class="animal" subclass="deer" tileid="animal.png:9"/>
 		<description>Oto jeleń. Nie musisz się go bać.</description>
 		<attributes>
 			<atk value="8"/>
@@ -69,7 +69,7 @@
 	</creature>
 
 	<creature name="renifer" condition="stendhal.christmas">
-		<type class="stendhal/animal" subclass="reindeer" tileid="animal.png:9"/>
+		<type class="animal" subclass="reindeer" tileid="animal.png:9"/>
 		<description>Z gęstwiny lasu wybiegł renifer. Ciekaw jestem czy jest specjalnym pomocnikiem św. Mikołaja.</description>
 		<attributes>
 			<atk value="8"/>
@@ -98,7 +98,7 @@
 	</creature>
 
 	<creature name="prosiak">
-		<type class="stendhal/farm_animal" subclass="piglet" tileid="farm_animal.png:9"/>
+		<type class="farm_animal" subclass="piglet" tileid="farm_animal.png:9"/>
 		<description>Oto prosię umorusane w błocie.</description>
 		<attributes>
 			<atk value="31"/>
@@ -132,7 +132,7 @@
 	</creature>
 
 	<creature name="miś">
-		<type class="stendhal/animal" subclass="babybear" tileid="animal.png:21"/>
+		<type class="animal" subclass="babybear" tileid="animal.png:21"/>
 		<description>Oto miś, mały miś, gryzie dzieci nie od dziś.</description>
 		<attributes>
 			<atk value="48"/>
@@ -163,7 +163,7 @@
 	</creature>
 
 	<creature name="wielki zły wilk">
-		<type class="stendhal/animal" subclass="wolf" tileid="animal.png:26"/>
+		<type class="animal" subclass="wolf" tileid="animal.png:26"/>
 		<description>Oto wielki zły wilk, który jest dziki i bardzo głodny!</description>
 		<attributes>
 			<atk value="46"/>
@@ -201,7 +201,7 @@
 	</creature>
 
 	<creature name="dzik">
-		<type class="stendhal/animal" subclass="boar" tileid="animal.png:4"/>
+		<type class="animal" subclass="boar" tileid="animal.png:4"/>
 		<description>Oto dzik. Dzik jest dziki, dzik jest zły, dzik ma bardzo ostre kły...</description>
 		<attributes>
 			<atk value="53"/>
@@ -233,7 +233,7 @@
 	</creature>
 
 	<creature name="byk">
-		<type class="stendhal/farm_animal" subclass="bull" tileid="farm_animal.png:1"/>
+		<type class="farm_animal" subclass="bull" tileid="farm_animal.png:1"/>
 		<description>Oto byk! Lepiej zmykaj!</description>
 		<attributes>
 			<atk value="47"/>
@@ -264,7 +264,7 @@
 	</creature>
 
 	<creature name="krowa">
-		<type class="stendhal/farm_animal" subclass="cow" tileid="farm_animal.png:3"/>
+		<type class="farm_animal" subclass="cow" tileid="farm_animal.png:3"/>
 		<description>Oto krowa. Daje pyszne mleko.</description>
 		<attributes>
 			<atk value="51"/>
@@ -296,7 +296,7 @@
 	</creature>
 
 	<creature name="lisica">
-		<type class="stendhal/animal" subclass="fox" tileid="animal.png:24"/>
+		<type class="animal" subclass="fox" tileid="animal.png:24"/>
 		<description>Oto lisica. Coraz mniej ich w lasach.</description>
 		<attributes>
 			<atk value="55"/>
@@ -323,7 +323,7 @@
 	</creature>
 
 	<creature name="koza">
-		<type class="stendhal/farm_animal" subclass="goat" tileid="farm_animal.png:4"/>
+		<type class="farm_animal" subclass="goat" tileid="farm_animal.png:4"/>
 		<description>Oto koza. Jest zdziczała bo zamieszkuje góry.</description>
 		<attributes>
 			<atk value="52"/>
@@ -353,7 +353,7 @@
 	</creature>
 
 	<creature name="gniady koń">
-		<type class="stendhal/farm_animal" subclass="horse" tileid="farm_animal.png:7"/>
+		<type class="farm_animal" subclass="horse" tileid="farm_animal.png:7"/>
 		<description>Oto koń. Nie ujeździsz go z pewnością.</description>
 		<attributes>
 			<atk value="48"/>
@@ -387,7 +387,7 @@
 	</creature>
 
 	<creature name="małpa">
-		<type class="stendhal/animal" subclass="monkey" tileid="animal.png:15"/>
+		<type class="animal" subclass="monkey" tileid="animal.png:15"/>
 		<description>Oto małpa. Masz dla niej banana?</description>
 		<attributes>
 			<atk value="55"/>
@@ -423,7 +423,7 @@
 	</creature>
 
 	<creature name="panda">
-		<type class="stendhal/animal" subclass="pandabear" tileid="animal.png:22"/>
+		<type class="animal" subclass="pandabear" tileid="animal.png:22"/>
 		<description>Oto panda. W tych czasach to najliczniejsze zwierzę z odległego wschodniego kraju.</description>
 		<attributes>
 			<atk value="48"/>
@@ -455,7 +455,7 @@
 	</creature>
 
 	<creature name="baran">
-		<type class="stendhal/farm_animal" subclass="ram" tileid="farm_animal.png:10"/>
+		<type class="farm_animal" subclass="ram" tileid="farm_animal.png:10"/>
 		<description>Oto baran. Oby nie wziął cię na rogi.</description>
 		<attributes>
 			<atk value="52"/>
@@ -487,7 +487,7 @@
 	</creature>
 
 	<creature name="siwy koń">
-		<type class="stendhal/farm_animal" subclass="white_horse" tileid="farm_animal.png:11"/>
+		<type class="farm_animal" subclass="white_horse" tileid="farm_animal.png:11"/>
 		<description>Oto biały koń. Lubią paść się z innymi na łące.</description>
 		<attributes>
 			<atk value="50"/>
@@ -521,7 +521,7 @@
 	</creature>
 
 	<creature name="wilk">
-		<type class="stendhal/animal" subclass="wolf" tileid="animal.png:20"/>
+		<type class="animal" subclass="wolf" tileid="animal.png:20"/>
 		<description>Oto wilk. Jest dziki i strasznie wygłodniały!</description>
 		<attributes>
 			<atk value="46"/>
@@ -557,7 +557,7 @@
 	</creature>
 
 	<creature name="niedźwiedź">
-		<type class="stendhal/animal" subclass="bear" tileid="animal.png:1"/>
+		<type class="animal" subclass="bear" tileid="animal.png:1"/>
 		<description>Oto niedźwiedź. Pewnie zbudziłeś go z zimowego snu.</description>
 		<attributes>
 			<atk value="80"/>
@@ -593,7 +593,7 @@
 	</creature>
 
 	<creature name="lew">
-		<type class="stendhal/animal" subclass="lion" tileid="animal.png:14"/>
+		<type class="animal" subclass="lion" tileid="animal.png:14"/>
 		<description>Oto lew. Jest naprawdę groźny kiedy jest głodny.</description>
 		<attributes>
 			<atk value="80"/>
@@ -629,7 +629,7 @@
 	</creature>
 
 	<creature name="słoń">
-		<type class="stendhal/animal" subclass="elephant" tileid="animal.png:11"/>
+		<type class="animal" subclass="elephant" tileid="animal.png:11"/>
 		<description>Oto słoń. Wielkie zwierzę i niebezpieczne. Czy na pewno chcesz go zaatakować?</description>
 		<attributes>
 			<atk value="73"/>
@@ -662,7 +662,7 @@
 	</creature>
 
 	<creature name="dziki słoń">
-		<type class="stendhal/animal" subclass="elephant_musth" tileid="animal.png:16"/>
+		<type class="animal" subclass="elephant_musth" tileid="animal.png:16"/>
 		<description>Oto dziki słoń. Jest bardzo agresywny i nieprzewidywalny.</description>
 		<attributes>
 			<atk value="218"/>
@@ -695,7 +695,7 @@
 	</creature>
 
 	<creature name="słoń z kłami">
-		<type class="stendhal/animal" subclass="elephant_bull" tileid="animal.png:12"/>
+		<type class="animal" subclass="elephant_bull" tileid="animal.png:12"/>
 		<description>Oto agresywny słoń z kłami. Ogromne zwierzę z dużą ilością szynki i mięsa. Czy na pewno chcesz go zaatakować?</description>
 		<attributes>
 			<atk value="150"/>
@@ -728,7 +728,7 @@
 	</creature>
 
 	<creature name="mamut włochaty">
-		<type class="stendhal/animal" subclass="woolly_mammoth" tileid="animal.png:7"/>
+		<type class="animal" subclass="woolly_mammoth" tileid="animal.png:7"/>
 		<description></description>
 		<attributes>
 			<atk value="690"/>
@@ -762,7 +762,7 @@
 	</creature>
 
 	<creature name="tygrys">
-		<type class="stendhal/animal" subclass="tiger" tileid="animal.png:19"/>
+		<type class="animal" subclass="tiger" tileid="animal.png:19"/>
 		<description>Oto tygrys co ludzkim mięsem nie pogardzi.</description>
 		<attributes>
 			<atk value="88"/>
@@ -802,7 +802,7 @@
 	</creature>
 
 	<creature name="niedźwiedź grizli">
-		<type class="stendhal/animal" subclass="black_bear" tileid="animal.png:2"/>
+		<type class="animal" subclass="black_bear" tileid="animal.png:2"/>
 		<description>Oto potężny niedźwiedź grizli. Tylko niektóre udają się na zimowy sen.</description>
 		<attributes>
 			<atk value="119"/>
@@ -838,7 +838,7 @@
 	</creature>
 
 	<creature name="niedźwiedź biały">
-		<type class="stendhal/animal" subclass="polar_bear" tileid="animal.png:3"/>
+		<type class="animal" subclass="polar_bear" tileid="animal.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="225"/>
@@ -876,7 +876,7 @@
 	<!-- END: mammal -->
 
 	<creature name="nietoperz">
-		<type class="stendhal/animal" subclass="bat" tileid="animal.png:0"/>
+		<type class="animal" subclass="bat" tileid="animal.png:0"/>
 		<description>Oto nietoperz. W myślach powtarzasz: Ja sem netoperek.</description>
 		<attributes>
 			<atk value="36"/>
@@ -910,7 +910,7 @@
 	</creature>
 
 	<creature name="nietoperz wampir">
-		<type class="stendhal/animal" subclass="killer_bat" tileid="animal.png:13"/>
+		<type class="animal" subclass="killer_bat" tileid="animal.png:13"/>
 		<description>Oto nietoperz wampir, który wyssa z ciebie krew!</description>
 		<attributes>
 			<atk value="104"/>
@@ -945,7 +945,7 @@
 	</creature>
 
 	<creature name="nietoperz olbrzymi">
-		<type class="stendhal/animal" subclass="bat_giant" tileid="animal.png:5"/>
+		<type class="animal" subclass="bat_giant" tileid="animal.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="700"/>
@@ -980,7 +980,7 @@
 	</creature>
 	
 	<creature name="nietoperz olbrzymi wampir">
-		<type class="stendhal/animal" subclass="bat_giant_red" tileid="animal.png:6"/>
+		<type class="animal" subclass="bat_giant_red" tileid="animal.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="752"/>

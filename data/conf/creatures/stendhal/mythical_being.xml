@@ -5,7 +5,7 @@
 	<!-- START: mermaids -->
 
 	<creature name="syrenka">
-		<type class="stendhal/mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
+		<type class="mythical_being" subclass="mermaid" tileid="mythical_being.png:7"/>
 		<description>Oto syrenka. Te istoty wolą własne towarzystwo i nie są zbyt szczęśliwi widząc cię tutaj.</description>
 		<attributes>
 			<atk value="547"/>
@@ -41,7 +41,7 @@
 	</creature>
 
 	<creature name="syrena szmaragdowa">
-		<type class="stendhal/mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
+		<type class="mythical_being" subclass="emerald_mermaid" tileid="mythical_being.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="1120"/>
@@ -82,7 +82,7 @@
 	</creature>
 
 	<creature name="syrena ametystowa">
-		<type class="stendhal/mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
+		<type class="mythical_being" subclass="amethyst_mermaid" tileid="mythical_being.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="1120"/>
@@ -124,7 +124,7 @@
 	</creature>
 
 	<creature name="syrena rubinowa">
-		<type class="stendhal/mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
+		<type class="mythical_being" subclass="ruby_mermaid" tileid="mythical_being.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="1120"/>
@@ -165,7 +165,7 @@
 	</creature>
 
 	<creature name="syrena szafirowa">
-		<type class="stendhal/mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
+		<type class="mythical_being" subclass="sapphire_mermaid" tileid="mythical_being.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="1120"/>
@@ -211,7 +211,7 @@
 	<!-- START: unicorn -->
 
 	<creature name="jednorożec">
-		<type class="stendhal/mythical_being" subclass="unicorn" tileid="mythical_being.png:1"/>
+		<type class="mythical_being" subclass="unicorn" tileid="mythical_being.png:1"/>
 		<description>Oto jednorożec. Powszechnie uznawany za mit.</description>
 		<attributes>
 			<atk value="308"/>
@@ -242,7 +242,7 @@
 	</creature>
 
 	<creature name="jednorożec biały">
-		<type class="stendhal/mythical_being" subclass="unicorn_white" tileid="mythical_being.png:8"/>
+		<type class="mythical_being" subclass="unicorn_white" tileid="mythical_being.png:8"/>
 		<description></description>
 		<attributes>
 			<atk value="801"/>
@@ -269,7 +269,7 @@
 	</creature>
 
 	<creature name="jednorożec czarny">
-		<type class="stendhal/mythical_being" subclass="unicorn_black" tileid="mythical_being.png:9"/>
+		<type class="mythical_being" subclass="unicorn_black" tileid="mythical_being.png:9"/>
 		<description></description>
 		<attributes>
 			<atk value="821"/>
@@ -298,7 +298,7 @@
 	</creature>
 
 	<creature name="jednorożec złoty">
-		<type class="stendhal/mythical_being" subclass="unicorn_gold" tileid="mythical_being.png:10"/>
+		<type class="mythical_being" subclass="unicorn_gold" tileid="mythical_being.png:10"/>
 		<description></description>
 		<attributes>
 			<atk value="865"/>
@@ -330,7 +330,7 @@
 	<!-- START: pegasus -->
 
 	<creature name="pegaz">
-		<type class="stendhal/mythical_being" subclass="pegasus" tileid="mythical_being.png:2"/>
+		<type class="mythical_being" subclass="pegasus" tileid="mythical_being.png:2"/>
 		<description>Oto Pegaz - uskrzydlony koń. Imię jego - Błyskawica i miota strzałami Peruna.</description>
 		<attributes>
 			<atk value="1590"/>
@@ -361,7 +361,7 @@
 	</creature>
 
 	<creature name="mały pegaz">
-		<type class="stendhal/mythical_being" subclass="pegasus_baby" tileid="mythical_being.png:11"/>
+		<type class="mythical_being" subclass="pegasus_baby" tileid="mythical_being.png:11"/>
 		<description></description>
 		<attributes>
 			<atk value="427"/>
@@ -386,7 +386,7 @@
 	</creature>
 
 	<creature name="pegaz brązowy">
-		<type class="stendhal/mythical_being" subclass="pegasus_bronze" tileid="mythical_being.png:12"/>
+		<type class="mythical_being" subclass="pegasus_bronze" tileid="mythical_being.png:12"/>
 		<description></description>
 		<attributes>
 			<atk value="870"/>
@@ -413,7 +413,7 @@
 	</creature>
 
 	<creature name="pegaz kościsty">
-		<type class="stendhal/mythical_being" subclass="pegasus_ivory" tileid="mythical_being.png:13"/>
+		<type class="mythical_being" subclass="pegasus_ivory" tileid="mythical_being.png:13"/>
 		<description></description>
 		<attributes>
 			<atk value="895"/>
@@ -440,7 +440,7 @@
 	</creature>
 
 	<creature name="pegaz hebanowy">
-		<type class="stendhal/mythical_being" subclass="pegasus_ebony" tileid="mythical_being.png:14"/>
+		<type class="mythical_being" subclass="pegasus_ebony" tileid="mythical_being.png:14"/>
 		<description></description>
 		<attributes>
 			<atk value="1001"/>
@@ -471,7 +471,7 @@
 	<!-- START: centaur -->
 
 	<creature name="centaur">
-		<type class="stendhal/mythical_being" subclass="centaur" tileid="mythical_being.png:0"/>
+		<type class="mythical_being" subclass="centaur" tileid="mythical_being.png:0"/>
 		<description>Oto nobliwy cenatur. Jest w połowie człowiekiem, a w połowie koniem. Wygląda groźnie lecz zapewne mu podołasz.</description>
 		<attributes>
 			<atk value="849"/>
@@ -500,7 +500,7 @@
 	</creature>
 
 	<creature name="centaur słoneczny">
-		<type class="stendhal/mythical_being" subclass="centaur_solar" tileid="mythical_being.png:15"/>
+		<type class="mythical_being" subclass="centaur_solar" tileid="mythical_being.png:15"/>
 		<description></description>
 		<attributes>
 			<atk value="893"/>
@@ -532,7 +532,7 @@
 	</creature>
 
 	<creature name="centaur lodowy">
-		<type class="stendhal/mythical_being" subclass="centaur_glacier" tileid="mythical_being.png:16"/>
+		<type class="mythical_being" subclass="centaur_glacier" tileid="mythical_being.png:16"/>
 		<description></description>
 		<attributes>
 			<atk value="899"/>
@@ -564,7 +564,7 @@
 	</creature>
 
 	<creature name="król centaurów">
-		<type class="stendhal/mythical_being" subclass="centaur_king" tileid="mythical_being.png:17"/>
+		<type class="mythical_being" subclass="centaur_king" tileid="mythical_being.png:17"/>
 		<description></description>
 		<attributes>
 			<atk value="920"/>

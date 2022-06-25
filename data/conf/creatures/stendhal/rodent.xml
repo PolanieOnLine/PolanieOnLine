@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="mysz domowa">
-		<type class="stendhal/rodent" subclass="mouse" tileid="rodent.png:5"/>
+		<type class="rodent" subclass="mouse" tileid="rodent.png:5"/>
 		<description>Oto mysz domowa i wygląda na bardzo wygłodzoną.</description>
 		<attributes>
 			<atk value="8"/>
@@ -33,7 +33,7 @@
 	</creature>
 
 	<creature name="szczur">
-		<type class="stendhal/rodent" subclass="rat" tileid="rodent.png:1"/>
+		<type class="rodent" subclass="rat" tileid="rodent.png:1"/>
 		<description>Oto szczur. Wygląda na wyjątkowo wygłodzonego.</description>
 		<attributes>
 			<atk value="8"/>
@@ -68,7 +68,7 @@
 	</creature>
 
 	<creature name="szczur jaskiniowy">
-		<type class="stendhal/rodent" subclass="caverat" tileid="rodent.png:0"/>
+		<type class="rodent" subclass="caverat" tileid="rodent.png:0"/>
 		<description>Oto szczur jaskiniowy. Jest brudny i chowa się w podziemiach.</description>
 		<attributes>
 			<atk value="34"/>
@@ -101,7 +101,7 @@
 	</creature>
 
 	<creature name="wściekły szczur">
-		<type class="stendhal/rodent" subclass="venomrat" tileid="rodent.png:3"/>
+		<type class="rodent" subclass="venomrat" tileid="rodent.png:3"/>
 		<description>Oto szczur. Wygląda na chorego.</description>
 		<attributes>
 			<atk value="89"/>
@@ -136,7 +136,7 @@
 	</creature>
 
 	<creature name="szczur zombie">
-		<type class="stendhal/rodent" subclass="zombierat" tileid="rodent.png:4"/>
+		<type class="rodent" subclass="zombierat" tileid="rodent.png:4"/>
 		<description>Oto nienasycony szczur zombie. Raczej cię nie lubi.</description>
 		<attributes>
 			<atk value="105"/>
@@ -171,7 +171,7 @@
 	</creature>
 
 	<creature name="krwiożerczy szczur">
-		<type class="stendhal/rodent" subclass="razorrat" tileid="rodent.png:2"/>
+		<type class="rodent" subclass="razorrat" tileid="rodent.png:2"/>
 		<description>Oto krwiożerczy szczur. Wydaje okropne dźwięki.</description>
 		<attributes>
 			<atk value="119"/>
@@ -204,7 +204,7 @@
 	</creature>
 
 	<creature name="szczur olbrzymi">
-		<type class="stendhal/rodent" subclass="giantrat" tileid="rodent.png:6"/>
+		<type class="rodent" subclass="giantrat" tileid="rodent.png:6"/>
 		<description>Oto szczur olbrzymi. Chyba komuś nie udał się eksperyment.</description>
 		<attributes>
 			<atk value="173"/>
@@ -238,7 +238,7 @@
 	</creature>
 
 	<creature name="bóbr">
-		<type class="stendhal/rodent" subclass="beaver" tileid="rodent.png:7"/>
+		<type class="rodent" subclass="beaver" tileid="rodent.png:7"/>
 		<description>Oto bóbr. Najlepszy budowniczy wśród zwierząt.</description>
 		<attributes>
 			<atk value="53"/>

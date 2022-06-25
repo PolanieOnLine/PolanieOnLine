@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="mumia">
-		<type class="stendhal/mummy" subclass="mummy" tileid="mummy.png:0"/>
+		<type class="mummy" subclass="mummy" tileid="mummy.png:0"/>
 		<description>Widzisz mumię egipską. Chyba uciekła z sarkofagu.</description>
 		<attributes>
 			<atk value="154"/>
@@ -36,7 +36,7 @@
 	</creature>
 
 	<creature name="mumia królewska">
-		<type class="stendhal/mummy" subclass="royal_mummy" tileid="mummy.png:1"/>
+		<type class="mummy" subclass="royal_mummy" tileid="mummy.png:1"/>
 		<description>Oto mumia królewska. Zastanawiasz się co trzyma królewską duszę od zaznania pokoju.</description>
 		<attributes>
 			<atk value="250"/>

@@ -5,7 +5,7 @@
 	<!-- START: arachnid -->
 
 	<creature name="arachne">
-		<type class="stendhal/hybrid" subclass="arachne" tileid="hybrid.png:13"/>
+		<type class="hybrid" subclass="arachne" tileid="hybrid.png:13"/>
 		<description>Oto Arachne, w połowie kobieta - w połowie pająk. Każdą z kończyn może zadawać głębokie rany, które natychmiast toczyć zacznie zaraza.</description>
 		<attributes>
 			<atk value="666"/>
@@ -42,7 +42,7 @@
 	<!-- START: frogman -->
 
 	<creature name="żabiczłek">
-		<type class="stendhal/frogman" subclass="frogman" tileid="frogman.png:1"/>
+		<type class="frogman" subclass="frogman" tileid="frogman.png:1"/>
 		<description>Oto żabiczłek, mieszkaniec jeziora.</description>
 		<attributes>
 			<atk value="171"/>
@@ -78,7 +78,7 @@
 	</creature>
 
 	<creature name="żabiczłek elitarny">
-		<type class="stendhal/frogman" subclass="caped_frogman" tileid="frogman.png:0"/>
+		<type class="frogman" subclass="caped_frogman" tileid="frogman.png:0"/>
 		<description>Oto żabiczłek elitarny. Jego wielkie oczy przyprawiają ciebie o dreszcze!</description>
 		<attributes>
 			<atk value="257"/>
@@ -113,7 +113,7 @@
 	</creature>
 
 	<creature name="żabiczłek czarodziej">
-		<type class="stendhal/frogman" subclass="wizard_frogman" tileid="frogman.png:2"/>
+		<type class="frogman" subclass="wizard_frogman" tileid="frogman.png:2"/>
     <description>Oto żabiczłek czarodziej. Jego różdżka i magiczny płaszcz świadczą o jego mądrości i mocy.</description>
 		<attributes>
 			<atk value="305"/>
@@ -152,7 +152,7 @@
 	<!-- START: minotaur -->
 
 	<creature name="minotaur">
-		<type class="stendhal/minotaur" subclass="minotaur" tileid="minotaur.png:1"/>
+		<type class="minotaur" subclass="minotaur" tileid="minotaur.png:1"/>
 		<description>Oto minotaur. Wydostał się jakoś ze swojej samotni i biega wściekły!</description>
 		<attributes>
 			<atk value="373"/>
@@ -188,7 +188,7 @@
 	</creature>
 
 	<creature name="król minotaur">
-		<type class="stendhal/minotaur" subclass="mino_king" tileid="minotaur.png:0"/>
+		<type class="minotaur" subclass="mino_king" tileid="minotaur.png:0"/>
 		<description>Oto król minotaur. Jest wściekły z tego powodu, że nie może uciec ze swojego labiryntu...</description>
 		<attributes>
 			<atk value="481"/>
@@ -231,7 +231,7 @@
 	<!-- START: naga -->
 
 	<creature name="syrena">
-		<type class="stendhal/mutant" subclass="naga" tileid="naga.png:2"/>
+		<type class="mutant" subclass="naga" tileid="naga.png:2"/>
 		<description>Oto syrena. Czeka na nieostrożne ofiary, aby obdarować je zabójczym pocałunkiem.</description>
 		<attributes>
 			<atk value="536"/>
@@ -268,7 +268,7 @@
 	</creature>
 
 	<creature name="wysoka syrena">
-		<type class="stendhal/mutant" subclass="high_naga" tileid="naga.png:1"/>
+		<type class="mutant" subclass="high_naga" tileid="naga.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="587"/>
@@ -306,7 +306,7 @@
 	</creature>
 
 	<creature name="uzbrojona syrena">
-		<type class="stendhal/mutant" subclass="armed_naga" tileid="naga.png:0"/>
+		<type class="mutant" subclass="armed_naga" tileid="naga.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="617"/>
@@ -346,7 +346,7 @@
 	</creature>
 
 	<creature name="lamia">
-		<type class="stendhal/mutant" subclass="lamia" tileid="naga.png:3"/>
+		<type class="mutant" subclass="lamia" tileid="naga.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="719"/>
@@ -383,7 +383,7 @@
 	<!-- START: ratfolk -->
 
 	<creature name="człekoszczur">
-		<type class="stendhal/ratfolk" subclass="ratman" tileid="ratfolk.png:1"/>
+		<type class="ratfolk" subclass="ratman" tileid="ratfolk.png:1"/>
 		<description>Oto człekoszczur. Wygląda jak mutant z zamierzchłych czasów.</description>
 		<attributes>
 			<atk value="171"/>
@@ -422,7 +422,7 @@
 	</creature>
 
 	<creature name="człekoszczurzyca">
-		<type class="stendhal/ratfolk" subclass="ratwoman" tileid="ratfolk.png:2"/>
+		<type class="ratfolk" subclass="ratwoman" tileid="ratfolk.png:2"/>
 		<description>Oto człekoszczurzyca. Wygląda jak mutant z zamierzchłych czasów.</description>
 		<attributes>
 			<atk value="170"/>
@@ -459,7 +459,7 @@
 	</creature>
 
 	<creature name="archiszczur">
-		<type class="stendhal/ratfolk" subclass="archrat" tileid="ratfolk.png:0"/>
+		<type class="ratfolk" subclass="archrat" tileid="ratfolk.png:0"/>
 		<description>Oto archiszczur. Będziesz rozproszony przez jego aurę. Uważaj...</description>
 		<attributes>
 			<atk value="229"/>
@@ -501,7 +501,7 @@
 	<!-- START: sheepman -->
 
 	<creature name="turoń">
-		<type class="stendhal/sheepman" subclass="sheepman" tileid="sheepman.png:3"/>
+		<type class="sheepman" subclass="sheepman" tileid="sheepman.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="245"/>
@@ -536,7 +536,7 @@
 	</creature>
 
 	<creature name="turoń uzbrojony">
-		<type class="stendhal/sheepman" subclass="armored_sheepman" tileid="sheepman.png:0"/>
+		<type class="sheepman" subclass="armored_sheepman" tileid="sheepman.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="287"/>
@@ -570,7 +570,7 @@
 	</creature>
 
 	<creature name="starszy turoń">
-		<type class="stendhal/sheepman" subclass="elder_sheepman" tileid="sheepman.png:1"/>
+		<type class="sheepman" subclass="elder_sheepman" tileid="sheepman.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="326"/>
@@ -603,7 +603,7 @@
 	</creature>
 
 	<creature name="turoń elitarny">
-		<type class="stendhal/sheepman" subclass="elite_sheepman" tileid="sheepman.png:2"/>
+		<type class="sheepman" subclass="elite_sheepman" tileid="sheepman.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="373"/>
@@ -641,7 +641,7 @@
 	<!-- START: xeno -->
 
 	<creature name="xenocium">
-		<type class="stendhal/hybrid" subclass="xenocium" tileid="hybrid.png:6"/>
+		<type class="hybrid" subclass="xenocium" tileid="hybrid.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="953"/>

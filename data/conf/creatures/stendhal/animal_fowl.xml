@@ -4,7 +4,7 @@
 
 	<!-- START: fowl -->
 	<creature name="pisklak">
-		<type class="stendhal/fowl" subclass="chick" tileid="fowl.png:0"/>
+		<type class="fowl" subclass="chick" tileid="fowl.png:0"/>
 		<description>Oto pisklę. Woli nie oddalać się od kokoszki.</description>
 		<attributes>
 			<atk value="32"/>
@@ -36,7 +36,7 @@
 	</creature>
 
 	<creature name="kogucik">
-		<type class="stendhal/fowl" subclass="chicken" tileid="fowl.png:1"/>
+		<type class="fowl" subclass="chicken" tileid="fowl.png:1"/>
 		<description>Oto dorodny kogucik. W sam raz na rosół.</description>
 		<attributes>
 			<atk value="32"/>
@@ -69,7 +69,7 @@
 	</creature>
 
 	<creature name="dodo">
-		<type class="stendhal/fowl" subclass="dodo_bird" tileid="fowl.png:3"/>
+		<type class="fowl" subclass="dodo_bird" tileid="fowl.png:3"/>
 		<description>Oto ptak dodo. Nie są czasem gatunkiem wymarłym?</description>
 		<attributes>
 			<atk value="57"/>
@@ -100,7 +100,7 @@
 	</creature>
 
 	<creature name="kokoszka">
-		<type class="stendhal/fowl" subclass="hen" tileid="fowl.png:2"/>
+		<type class="fowl" subclass="hen" tileid="fowl.png:2"/>
 		<description>Oto kokoszka. Zrani cię jeśli zbliżysz się do jej piskląt.</description>
 		<attributes>
 			<atk value="29"/>
@@ -132,7 +132,7 @@
 	</creature>
 
 	<creature name="pingwin">
-		<type class="stendhal/fowl" subclass="penguin" tileid="fowl.png:5"/>
+		<type class="fowl" subclass="penguin" tileid="fowl.png:5"/>
 		<description>Oto mały i głupiutki pingwin.</description>
 		<attributes>
 			<atk value="36"/>
@@ -165,7 +165,7 @@
 	</creature>
 
 	<creature name="gołąb">
-		<type class="stendhal/fowl" subclass="pigeon" tileid="fowl.png:4"/>
+		<type class="fowl" subclass="pigeon" tileid="fowl.png:4"/>
 		<description>Oto gołąb. Uwielbia jeść nasionka.</description>
 		<attributes>
 			<atk value="36"/>

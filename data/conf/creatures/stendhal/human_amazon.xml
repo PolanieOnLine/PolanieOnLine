@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="amazonka łucznik">
-		<type class="stendhal/amazon" subclass="amazoness_archer" tileid="amazon.png:1"/>
+		<type class="amazon" subclass="amazoness_archer" tileid="amazon.png:1"/>
 		<description>Oto amazonka łucznik. Świetnie posługuje się łukiem, a jej strzały są bardzo niebezpieczne, gdy wystrzeli je w Twoim kierunku!</description>
 		<attributes>
 			<atk value="448"/>
@@ -38,7 +38,7 @@
 	</creature>
 
 	<creature name="amazonka łucznik komandor">
-		<type class="stendhal/amazon" subclass="amazoness_archer_commander" tileid="amazon.png:0"/>
+		<type class="amazon" subclass="amazoness_archer_commander" tileid="amazon.png:0"/>
 		<description>Oto amazonka łucznik komandor. Jest dowódcą amazońskich łuczniczek. Jej umiejętności strzeleckie są niesamowite, a jej strzały przebijają wszystko.</description>
 		<attributes>
 			<atk value="518"/>
@@ -73,7 +73,7 @@
 	</creature>
 
 	<creature name="amazonka ochroniarz">
-		<type class="stendhal/amazon" subclass="amazoness_bodyguard" tileid="amazon.png:2"/>
+		<type class="amazon" subclass="amazoness_bodyguard" tileid="amazon.png:2"/>
 		<description>Oto amazonka ochroniarz, która gwarantuje bezpieczeństwo mieszkańców na wyspie amazonek.</description>
 		<attributes>
 			<atk value="548"/>
@@ -100,7 +100,7 @@
 	</creature>
 
 	<creature name="amazonka strażniczka wybrzeża">
-		<type class="stendhal/amazon" subclass="amazoness_coastguard" tileid="amazon.png:3"/>
+		<type class="amazon" subclass="amazoness_coastguard" tileid="amazon.png:3"/>
 		<description>Oto amazonka strażniczka wybrzeża. Chroni wybrzeża wyspy Amazonek przed intruzami. Nie jest szczęśliwa, gdy biegasz po jej wyspie.</description>
 		<attributes>
 			<atk value="509"/>
@@ -129,7 +129,7 @@
 	</creature>
 
 	<creature name="amazonka mistrzyni strażniczek">
-		<type class="stendhal/amazon" subclass="amazoness_coastguard_master" tileid="amazon.png:9"/>
+		<type class="amazon" subclass="amazoness_coastguard_master" tileid="amazon.png:9"/>
 		<description>Oto amazonka mistrzyni strażniczek. Jeśli są kobietami to te w niebieskich włosach nie powinny być lekceważone.</description>
 		<attributes>
 			<atk value="569"/>
@@ -160,7 +160,7 @@
 	</creature>
 
 	<creature name="amazonka komandor">
-		<type class="stendhal/amazon" subclass="amazoness_commander" tileid="amazon.png:4"/>
+		<type class="amazon" subclass="amazoness_commander" tileid="amazon.png:4"/>
 		<description>Oto amazonka komandor, która specjalizuje się w eliminowaniu obcych, którzy mieli czelność wkroczyć na jej wyspę.</description>
 		<attributes>
 			<atk value="566"/>
@@ -189,7 +189,7 @@
 	</creature>
 
 	<creature name="amazonka elitarna strażniczka">
-		<type class="stendhal/amazon" subclass="amazoness_elite_coastguard" tileid="amazon.png:5"/>
+		<type class="amazon" subclass="amazoness_elite_coastguard" tileid="amazon.png:5"/>
 		<description>Oto amazonka elitarna strażniczka. Gdy jest na służbie ochrony wyspy to chciałbyś zostać w domu.</description>
 		<attributes>
 			<atk value="538"/>
@@ -219,7 +219,7 @@
 	</creature>
 
 	<creature name="amazonka łowca">
-		<type class="stendhal/amazon" subclass="amazoness_hunter" tileid="amazon.png:6"/>
+		<type class="amazon" subclass="amazoness_hunter" tileid="amazon.png:6"/>
 		<description>Oto amazonka łowca. Przedziera się przez gąszcza lasu polując na zwierzęta. Nie lubi jak ktoś poluje na jej terenie!</description>
 		<attributes>
 			<atk value="484"/>
@@ -250,7 +250,7 @@
 	</creature>
 
 	<creature name="amazonka zwiadowca">
-		<type class="stendhal/amazon" subclass="amazoness_vigilance" tileid="amazon.png:8"/>
+		<type class="amazon" subclass="amazoness_vigilance" tileid="amazon.png:8"/>
 		<description>Oto amazonka zwiadowca. Ma wyczulone zmysły, więc bądź bardzo cicho aby cię nie usłyszała!</description>
 		<attributes>
 			<atk value="629"/>
@@ -280,7 +280,7 @@
 	</creature>
 
 	<creature name="amazonka imperator">
-		<type class="stendhal/amazon" subclass="amazoness_imperator" tileid="amazon.png:7"/>
+		<type class="amazon" subclass="amazoness_imperator" tileid="amazon.png:7"/>
 		<description>Oto amazonka imperator. Jest imperatorem wyspy amazonek, którą rządzi od dekad i nie powzwoli łatwo tobie przejść.</description>
 		<attributes>
 			<atk value="687"/>

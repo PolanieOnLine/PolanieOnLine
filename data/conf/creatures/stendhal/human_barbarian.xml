@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="barbarzyńca">
-		<type class="stendhal/human" subclass="barbarian" tileid="human_barbarian.png:3"/>
+		<type class="human" subclass="barbarian" tileid="human_barbarian.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="350"/>
@@ -36,7 +36,7 @@
 	</creature>
 
 	<creature name="barbarzyńca wilczur">
-		<type class="stendhal/human" subclass="barbarian_wolf" tileid="human_barbarian.png:5"/>
+		<type class="human" subclass="barbarian_wolf" tileid="human_barbarian.png:5"/>
 		<description></description>
 		<attributes>
 			<atk value="365"/>
@@ -70,7 +70,7 @@
 	</creature>
 
 	<creature name="barbarzyńca elitarny">
-		<type class="stendhal/human" subclass="barbarian_elite" tileid="human_barbarian.png:1"/>
+		<type class="human" subclass="barbarian_elite" tileid="human_barbarian.png:1"/>
 		<description></description>
 		<attributes>
 			<atk value="413"/>
@@ -107,7 +107,7 @@
 	</creature>
 
 	<creature name="barbarzyńca kapłan">
-		<type class="stendhal/human" subclass="barbarian_priest" tileid="human_barbarian.png:4"/>
+		<type class="human" subclass="barbarian_priest" tileid="human_barbarian.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="425"/>
@@ -141,7 +141,7 @@
 	</creature>
 
 	<creature name="barbarzyńca szaman">
-		<type class="stendhal/human" subclass="barbarian_chaman" tileid="human_barbarian.png:0"/>
+		<type class="human" subclass="barbarian_chaman" tileid="human_barbarian.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="449"/>
@@ -178,7 +178,7 @@
 	</creature>
 
 	<creature name="barbarzyńca lider">
-		<type class="stendhal/human" subclass="barbarian_leader" tileid="human_barbarian.png:2"/>
+		<type class="human" subclass="barbarian_leader" tileid="human_barbarian.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="492"/>
@@ -215,7 +215,7 @@
 	</creature>
 
 	<creature name="król barbarzyńca">
-		<type class="stendhal/human" subclass="barbarian_king" tileid="human_barbarian.png:6"/>
+		<type class="human" subclass="barbarian_king" tileid="human_barbarian.png:6"/>
 		<description></description>
 		<attributes>
 			<atk value="531"/>

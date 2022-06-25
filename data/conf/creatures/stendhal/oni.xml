@@ -4,7 +4,7 @@
 
 	<!-- START: oni -->
 	<creature name="oni wojownik">
-		<type class="stendhal/oni" subclass="oni_warrior" tileid="oni.png:0"/>
+		<type class="oni" subclass="oni_warrior" tileid="oni.png:0"/>
 		<description>Oto oni wojownik. Jego fioletowy kolor skóry nie powinien uśpić twojej czujności!</description>
 		<attributes>
 			<atk value="499"/>
@@ -33,7 +33,7 @@
 	</creature>
 
 	<creature name="oni łucznik">
-		<type class="stendhal/oni" subclass="oni_archer" tileid="oni.png:1"/>
+		<type class="oni" subclass="oni_archer" tileid="oni.png:1"/>
 		<description>Oto oni łucznik. Jego strzały będą wszędzie cię ścigać, aby chronić jego królową!</description>
 		<attributes>
 			<atk value="511"/>
@@ -66,7 +66,7 @@
 	</creature>
 
 	<creature name="oni kapłan">
-		<type class="stendhal/oni" subclass="oni_priest" tileid="oni.png:2"/>
+		<type class="oni" subclass="oni_priest" tileid="oni.png:2"/>
 		<description>Oto oni kapłan mówiący dziwne zaklęcia.</description>
 		<attributes>
 			<atk value="547"/>
@@ -96,7 +96,7 @@
 	</creature>
 
 	<creature name="oni król">
-		<type class="stendhal/oni" subclass="oni_king" tileid="oni.png:3"/>
+		<type class="oni" subclass="oni_king" tileid="oni.png:3"/>
 		<description>Oto oni król. Jego władza w królestwie pozwala na dowodzenie odważnymi oddziałami oni.</description>
 		<attributes>
 			<atk value="714"/>
@@ -127,7 +127,7 @@
 	</creature>
 
 	<creature name="oni królowa">
-		<type class="stendhal/oni" subclass="oni_queen" tileid="oni.png:4"/>
+		<type class="oni" subclass="oni_queen" tileid="oni.png:4"/>
 		<description>Oto oni królowa. Wspiera swojego męża i trzyma  pieczę nad królestwem, gdy on zajmuje się podbojem nowych ziem i walką na polach bitewnych.</description>
 		<attributes>
 			<atk value="737"/>

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="panna wampir">
-		<type class="stendhal/vampire" subclass="vampire_lord_bride" tileid="vampire.png:0"/>
+		<type class="vampire" subclass="vampire_lord_bride" tileid="vampire.png:0"/>
 		<description>Oto panna wampir. Została wskrzeszona z zmarłych przez nikczemnego lorda wampira.</description>
 		<attributes>
 			<atk value="186"/>
@@ -43,7 +43,7 @@
 	</creature>
 
 	<creature name="wampirzyca">
-		<type class="stendhal/vampire" subclass="vampirette" tileid="vampire.png:4"/>
+		<type class="vampire" subclass="vampirette" tileid="vampire.png:4"/>
 		<description>Oto wampirzyca. Strzeż się jej ostrych zębów! Chce wyssać twoją krew i zmienić ciebie w wampira!</description>
 		<attributes>
 			<atk value="353"/>
@@ -83,7 +83,7 @@
 	</creature>
 
 	<creature name="lord wampir">
-		<type class="stendhal/vampire" subclass="vampire_lord" tileid="vampire.png:2"/>
+		<type class="vampire" subclass="vampire_lord" tileid="vampire.png:2"/>
 		<description>Oto lord wampir. Strzeż się, bo chodzi mu tylko o twoją krew!</description>
 		<attributes>
 			<atk value="497"/>

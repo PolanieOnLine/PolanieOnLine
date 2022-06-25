@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="kanibalska">
-		<type class="stendhal/human" subclass="cannibalwoman" tileid="human_cannibal.png:1"/>
+		<type class="human" subclass="cannibalwoman" tileid="human_cannibal.png:1"/>
 		<description>Oto pani kanibalska. Chce przyrządzić zupę z Twoich kości!</description>
 		<attributes>
 			<atk value="244"/>
@@ -39,7 +39,7 @@
 	</creature>
 
 	<creature name="kanibal">
-		<type class="stendhal/human" subclass="cannibal" tileid="human_cannibal.png:0"/>
+		<type class="human" subclass="cannibal" tileid="human_cannibal.png:0"/>
 		<description>Oto kanibal. Chce cię złapać by ugotować i zjeść! Bezsensownie jest krzyczeć, że jesteś niesmaczny, lepiej stań z nim do walki lub uciekaj!</description>
 		<attributes>
 			<atk value="281"/>
@@ -73,7 +73,7 @@
 	</creature>
 
 	<creature name="starszy kanibal">
-		<type class="stendhal/human" subclass="elder_cannibal" tileid="human_cannibal.png:2"/>
+		<type class="human" subclass="elder_cannibal" tileid="human_cannibal.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="315"/>
@@ -106,7 +106,7 @@
 	</creature>
 
 	<creature name="wojownik kanibal">
-		<type class="stendhal/human" subclass="cannibal_warrior" tileid="human_cannibal.png:3"/>
+		<type class="human" subclass="cannibal_warrior" tileid="human_cannibal.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="321"/>

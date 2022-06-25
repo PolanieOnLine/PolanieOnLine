@@ -4,7 +4,7 @@
 
 	<!-- START: animal -->
 	<creature name="duch psa">
-		<type class="stendhal/undead" subclass="ghosthound" tileid="undead.png:13"/>
+		<type class="undead" subclass="ghosthound" tileid="undead.png:13"/>
 		<description>Dostrzegając kudłaty kształt i błyszczące złe spojrzenie to przypominasz sobie wszystkie opowieści grozy o duchu psa!</description>
 		<attributes>
 			<atk value="320"/>
@@ -45,7 +45,7 @@
 
 	<!-- START: misc -->
 	<creature name="rycerz śmierci">
-		<type class="stendhal/undead" subclass="death_knight" tileid="undead.png:1"/>
+		<type class="undead" subclass="death_knight" tileid="undead.png:1"/>
 		<description>Oto rycerz śmierci. Niegdyś walczył w wielu turniejach, w których jedynym zadaniem było zabić każdego przeciwnika.</description>
 		<attributes>
 			<atk value="421"/>
@@ -80,7 +80,7 @@
 	</creature>
 
 	<creature name="necrosophia">
-		<type class="stendhal/hybrid" subclass="necrosophia" tileid="hybrid.png:7"/>
+		<type class="hybrid" subclass="necrosophia" tileid="hybrid.png:7"/>
 		<description>Oto Necrosophia. Jest mocną bestią. Spali cię na popiół, gdy jesteś zdezorientowany przez magiczne fasolki.</description>
 		<attributes>
 			<atk value="1292"/>
@@ -123,7 +123,7 @@
 
 	<!-- START: specter -->
 	<creature name="zielona zjawa">
-		<type class="stendhal/undead" subclass="green_phantom" tileid="undead.png:12"/>
+		<type class="undead" subclass="green_phantom" tileid="undead.png:12"/>
 		<attributes>
 			<atk value="462"/>
 			<def value="65"/>

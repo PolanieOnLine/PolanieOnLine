@@ -5,7 +5,7 @@
 	<!-- START: aruthon -->
 
 	<creature name="hybryda aruthon">
-		<type class="stendhal/hybrid" subclass="robot_aruthon" tileid="hybrid.png:4"/>
+		<type class="hybrid" subclass="robot_aruthon" tileid="hybrid.png:4"/>
 		<description></description>
 		<attributes>
 			<atk value="330"/>
@@ -39,7 +39,7 @@
 	</creature>
 
 	<creature name="mroczny aruthon">
-		<type class="stendhal/hybrid" subclass="dark_aruthon" tileid="hybrid.png:2"/>
+		<type class="hybrid" subclass="dark_aruthon" tileid="hybrid.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="583"/>
@@ -81,7 +81,7 @@
 	<!-- START: fairy -->
 
 	<creature name="karzełek jadeitowy">
-		<type class="stendhal/fairy" subclass="leprechaun" tileid="fairy.png:2"/>
+		<type class="fairy" subclass="leprechaun" tileid="fairy.png:2"/>
 		<description>Oto karzełek jadeitowy. Być może przyniesie ci szczęście.</description>
 		<attributes>
 			<atk value="126"/>
@@ -114,7 +114,7 @@
 	</creature>
 
 	<creature name="mała wróżka">
-		<type class="stendhal/fairy" subclass="littlefairy" tileid="fairy.png:3"/>
+		<type class="fairy" subclass="littlefairy" tileid="fairy.png:3"/>
 		<description>Oto mała wróżka. Jest przyjazna i miła.</description>
 		<attributes>
 			<atk value="143"/>
@@ -140,7 +140,7 @@
 	</creature>
 
 	<creature name="karzełek amarantowy">
-		<type class="stendhal/fairy" subclass="clurichaun" tileid="fairy.png:1"/>
+		<type class="fairy" subclass="clurichaun" tileid="fairy.png:1"/>
 		<description>Oto karzełek amarantowy. Jest bogaty, ale nie dowiesz się, gdzie schował swoje złoto.</description>
 		<attributes>
 			<atk value="152"/>
@@ -178,7 +178,7 @@
 	<!-- START: misc -->
 
 	<creature name="brain ahouga">
-		<type class="stendhal/hybrid" subclass="brain_ahouga" tileid="hybrid.png:1"/>
+		<type class="hybrid" subclass="brain_ahouga" tileid="hybrid.png:1"/>
 		<description>Oto brain ahouga. Bardzo dziwny potwór żyjący tylko w snach!</description>
 		<attributes>
 			<atk value="207"/>
@@ -210,7 +210,7 @@
 	<!-- START: mohiko -->
 
 	<creature name="błękitny mohiko">
-		<type class="stendhal/hybrid" subclass="blue_mohiko" tileid="hybrid.png:0"/>
+		<type class="hybrid" subclass="blue_mohiko" tileid="hybrid.png:0"/>
 		<description>Oto błękitny mohiko. Brązowy kosmita z dużym niebieskim irokezem.</description>
 		<attributes>
 			<atk value="450"/>
@@ -246,7 +246,7 @@
 	<!-- START: roohako -->
 
 	<creature name="czerwony roohako">
-		<type class="stendhal/hybrid" subclass="red_roohako" tileid="hybrid.png:3"/>
+		<type class="hybrid" subclass="red_roohako" tileid="hybrid.png:3"/>
 		<description>Oto czerwony roohako. Przychodzi po ciebe w twoich najgłębszych snach.</description>
 		<attributes>
 			<atk value="271"/>

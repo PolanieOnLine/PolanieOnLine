@@ -5,7 +5,7 @@
 	<!-- START: air -->
 
 	<creature name="żywioł powietrza">
-		<type class="stendhal/elemental" subclass="air_elemental" tileid="elemental.png:4"/>
+		<type class="elemental" subclass="air_elemental" tileid="elemental.png:4"/>
 		<description>Oto żywioł powietrza dzięki któremu czujesz rzeźki powiew na swoim czole.</description>
 		<attributes>
 			<atk value="409"/>
@@ -34,7 +34,7 @@
 	</creature>
 
 	<creature name="dżin">
-		<type class="stendhal/elemental" subclass="djinn" tileid="elemental.png:0"/>
+		<type class="elemental" subclass="djinn" tileid="elemental.png:0"/>
 		<description>Oto dżin. Nie jest uwięziony w lampie ani butelce, a to znaczy, że ktoś wydał mu rozkaz by rozprawić się z tobą.</description>
 		<attributes>
 			<atk value="460"/>
@@ -71,7 +71,7 @@
 	<!-- START: earth -->
 
 	<creature name="nimfa">
-		<type class="stendhal/elemental" subclass="nymph" tileid="elemental.png:6"/>
+		<type class="elemental" subclass="nymph" tileid="elemental.png:6"/>
 		<description>Oto kochająca naturę nimfa. Patrząc na nią zakłócasz jej kąpiel słoneczną i kontemlowanie śpiewu ptaków. Może lepiej zostaw ją w spokoju.</description>
 		<attributes>
 			<atk value="368"/>
@@ -103,7 +103,7 @@
 	</creature>
 
 	<creature name="żywioł ziemi">
-		<type class="stendhal/elemental" subclass="earth_elemental" tileid="elemental.png:1"/>
+		<type class="elemental" subclass="earth_elemental" tileid="elemental.png:1"/>
 		<description>Oto żywioł ziemi. Ziemia trzęsie się, gdy się po niej przechadza.</description>
 		<attributes>
 			<atk value="407"/>
@@ -136,7 +136,7 @@
 	<!-- START: fire -->
 
 	<creature name="żywioł ognia">
-		<type class="stendhal/elemental" subclass="fire_elemental" tileid="elemental.png:2"/>
+		<type class="elemental" subclass="fire_elemental" tileid="elemental.png:2"/>
 		<description>Oto żywioł ognia od którego bije gorąc. </description>
 		<attributes>
 			<atk value="411"/>
@@ -178,7 +178,7 @@
 	<!-- START: ice -->
 
 	<creature name="legendarny żywioł lodu">
-		<type class="stendhal/elemental_legendary" subclass="elemental_legendary_ice" tileid="elemental.png:8"/>
+		<type class="elemental_legendary" subclass="elemental_legendary_ice" tileid="elemental.png:8"/>
 		<description>Oto legendarny żywioł lodu...</description>
 		<attributes>
 			<atk value="7900"/>
@@ -222,7 +222,7 @@
 	</creature>
 
 	<creature name="żywioł lodu">
-		<type class="stendhal/elemental" subclass="ice_elemental" tileid="elemental.png:5"/>
+		<type class="elemental" subclass="ice_elemental" tileid="elemental.png:5"/>
 		<description>Oto żywioł lodu, który powoduje, że przechodzą cię ciarki na plecach.</description>
 		<attributes>
 			<atk value="400"/>
@@ -259,7 +259,7 @@
 	</creature>
 
 	<creature name="lodowy olbrzym">
-		<type class="stendhal/giant_human" subclass="ice_giant" tileid="giant_human.png:2"/>
+		<type class="giant_human" subclass="ice_giant" tileid="giant_human.png:2"/>
 		<description>Oto lodowy olbrzym. Jego skóra pokryta jest szadzią, a jego oddech jest niczym mroźny powiew północnego wiatru.</description>
 		<attributes>
 			<atk value="934"/>
@@ -307,7 +307,7 @@
 	<!-- START: water -->
 
 	<creature name="żywioł wody">
-		<type class="stendhal/elemental" subclass="water_elemental" tileid="elemental.png:3"/>
+		<type class="elemental" subclass="water_elemental" tileid="elemental.png:3"/>
 		<description>Oto żywioł wody, który składa się z wody i różnych innych płynów.</description>
 		<attributes>
 			<atk value="403"/>
@@ -348,7 +348,7 @@
 	<!-- START: wood -->
 
 	<creature name="drzewiec">
-		<type class="stendhal/ent" subclass="treant" shadow="ent" tileid="ent.png:2"/>
+		<type class="ent" subclass="treant" shadow="ent" tileid="ent.png:2"/>
 		<description>Oto drzewiec. Najpierw pomyślałeś, że to drzewo, ale po chwili okazało się, że się porusza!</description>
 		<attributes>
 			<atk value="588"/>
@@ -386,7 +386,7 @@
 	</creature>
 
 	<creature name="uschły drzewiec">
-		<type class="stendhal/ent" subclass="old_ent" shadow="ent" tileid="ent.png:1"/>
+		<type class="ent" subclass="old_ent" shadow="ent" tileid="ent.png:1"/>
 		<description>Oto uschły drzewiec. Wiele lat widział i wiele przeżył nawałnic. Widzisz jak jest stary bo opadły z niego liście, a i niejedna gałąź już się złamała.</description>
 		<attributes>
 			<atk value="573"/>
@@ -424,7 +424,7 @@
 	</creature>
 
 	<creature name="drzewcowa">
-		<type class="stendhal/ent" subclass="entwife" shadow="ent" tileid="ent.png:3"/>
+		<type class="ent" subclass="entwife" shadow="ent" tileid="ent.png:3"/>
 		<description>Oto żona drzewca. Jest mocniejsza i żyje w grupach w starodawnym lesie.</description>
 		<attributes>
 			<atk value="719"/>

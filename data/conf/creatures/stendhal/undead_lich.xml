@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="licho">
-		<type class="stendhal/undead" subclass="lich" tileid="undead_fallen.png:7"/>
+		<type class="undead" subclass="lich" tileid="undead_fallen.png:7"/>
 		<description>Oto licho obleczone w karmazyn. Twór zesłany na wieczną tułaczkę.</description>
 		<attributes>
 			<atk value="468"/>
@@ -37,7 +37,7 @@
 	</creature>
 
 	<creature name="martwe licho">
-		<type class="stendhal/undead" subclass="dead_lich" tileid="undead_fallen.png:0"/>
+		<type class="undead" subclass="dead_lich" tileid="undead_fallen.png:0"/>
 		<description>Oto martwe licho ze swoim wielkim, zielonym i ciężkim płaszczem. Także jest martwy i kocisty, który szuka zemsty za przedwczesne zejście. Poza tym zawsze szybko powraca i jest bezwzględny!</description>
 		<attributes>
 			<atk value="582"/>
@@ -70,7 +70,7 @@
 	</creature>
 
 	<creature name="wysokie licho">
-		<type class="stendhal/undead" subclass="high_lich" tileid="undead_fallen.png:4"/>
+		<type class="undead" subclass="high_lich" tileid="undead_fallen.png:4"/>
 		<description>Oto przerażające wysokie licho, które gotowe jest na poszlachtowanie ciebie na wiele magicznych sposobów.</description>
 		<attributes>
 			<atk value="693"/>

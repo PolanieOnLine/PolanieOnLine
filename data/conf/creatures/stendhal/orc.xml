@@ -5,7 +5,7 @@
 	<!-- START: orc -->
 
 	<creature name="ork">
-		<type class="stendhal/orc" subclass="orc" tileid="orc.png:2"/>
+		<type class="orc" subclass="orc" tileid="orc.png:2"/>
 		<description>Oto ork, który jest głośny i głupawy.</description>
 		<attributes>
 			<atk value="122"/>
@@ -40,7 +40,7 @@
 	</creature>
 
 	<creature name="ork włócznik">
-		<type class="stendhal/orc" subclass="orc_spearman" tileid="orc.png:4"/>
+		<type class="orc" subclass="orc_spearman" tileid="orc.png:4"/>
 		<description>Oto ork włócznik. Szybko uciekaj, bo jego włócznia przeszyje cię na wylot.</description>
 		<attributes>
 			<atk value="128"/>
@@ -77,7 +77,7 @@
 	</creature>
 
 	<creature name="ork łowca">
-		<type class="stendhal/orc" subclass="orc_hunter" tileid="orc.png:1"/>
+		<type class="orc" subclass="orc_hunter" tileid="orc.png:1"/>
 		<description>Oto ork łowca. Szuka cię od dawna.</description>
 		<attributes>
 			<atk value="140"/>
@@ -114,7 +114,7 @@
 	</creature>
 
 	<creature name="ork wojownik">
-		<type class="stendhal/orc" subclass="orc_warrior" tileid="orc.png:3"/>
+		<type class="orc" subclass="orc_warrior" tileid="orc.png:3"/>
 		<description>Oto ork wojownik. Nie lubi biegać za tobą po górach.</description>
 		<attributes>
 			<atk value="149"/>
@@ -151,7 +151,7 @@
 	</creature>
 
 	<creature name="szef orków">
-		<type class="stendhal/orc" subclass="orc_chief" tileid="orc.png:0"/>
+		<type class="orc" subclass="orc_chief" tileid="orc.png:0"/>
 		<description>Oto szef orków. Jest zbyt zajęty, aby zwrócić na ciebie uwagę!</description>
 		<attributes>
 			<atk value="180"/>
@@ -195,7 +195,7 @@
 	<!-- START: mountain orc -->
 
 	<creature name="górski ork">
-		<type class="stendhal/orc" subclass="mountain_orc" tileid="mountain_orc.png:2"/>
+		<type class="orc" subclass="mountain_orc" tileid="mountain_orc.png:2"/>
 		<description>Oto górski ork. Niezbyt przebiegły, ale jego wytrzymałość, smród i krzyki wciąż mogą cię przytłoczyć!</description>
 		<attributes>
 			<atk value="352"/>
@@ -230,7 +230,7 @@
 	</creature>
 
 	<creature name="górski ork wojownik">
-		<type class="stendhal/orc" subclass="orc_warrior" tileid="mountain_orc.png:3"/>
+		<type class="orc" subclass="orc_warrior" tileid="mountain_orc.png:3"/>
 		<description>Oto górski ork wojownik. Niezbyt przebiegły, ale nie należy lekceważyć jego siły i smrodu!</description>
 		<attributes>
 			<atk value="377"/>
@@ -265,7 +265,7 @@
 	</creature>
 
 	<creature name="górski ork łowca">
-		<type class="stendhal/orc" subclass="orc_hunter" tileid="mountain_orc.png:1"/>
+		<type class="orc" subclass="orc_hunter" tileid="mountain_orc.png:1"/>
 		<description>Oto górski ork łowca. On szuka surowego mięsa... Możesz być jego następnym lunchem!</description>
 		<attributes>
 			<atk value="411"/>
@@ -300,7 +300,7 @@
 	</creature>
 
 	<creature name="szef górskich orków">
-		<type class="stendhal/orc" subclass="orc_chief" tileid="mountain_orc.png:0"/>
+		<type class="orc" subclass="orc_chief" tileid="mountain_orc.png:0"/>
 		<description>Oto szef górskich orków. Jest dumny, głośny i cuchnie jak tysiąc orków razem...</description>
 		<attributes>
 			<atk value="474"/>

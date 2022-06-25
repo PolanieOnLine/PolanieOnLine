@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="lodowy golem">
-		<type class="stendhal/golem" subclass="ice_golem" tileid="golem.png:2"/>
+		<type class="golem" subclass="ice_golem" tileid="golem.png:2"/>
 		<description>Oto lodowy golem. Lodowe golemy są żywiołami z lodu. Powinieneś uważać na ich lodowe pięści, bo mogą tobie zaszkodzić.</description>
 		<attributes>
 			<atk value="381"/>
@@ -40,7 +40,7 @@
 	</creature>
 
 	<creature name="kamienny golem">
-		<type class="stendhal/golem" subclass="stone_golem" tileid="golem.png:0"/>
+		<type class="golem" subclass="stone_golem" tileid="golem.png:0"/>
 		<description>Oto kamienny golem, który istnieje tylko, aby chronić. Co ma chronić i ma zrobić, gdy nie ma już celu?</description>
 		<attributes>
 			<atk value="297"/>
@@ -79,7 +79,7 @@
 	</creature>
 
 	<creature name="krasnal golem">
-		<type class="stendhal/golem" subclass="dwarf_golem" tileid="golem.png:3"/>
+		<type class="golem" subclass="dwarf_golem" tileid="golem.png:3"/>
 		<description>Oto krasnal golem. Niegdyś krasnal, dziś przemieniony w głaz przez starożytne siły. By ocalić przyjaciół inne krasnale z kamieni ułożyły golema! Od tego czasu mieszka on z nimi.</description>
 		<attributes>
 			<atk value="939"/>
@@ -110,7 +110,7 @@
 	</creature>
 
 	<creature name="drewniany golem">
-		<type class="stendhal/golem" subclass="wooden_golem" tileid="golem.png:1"/>
+		<type class="golem" subclass="wooden_golem" tileid="golem.png:1"/>
 		<description>Oto drewniany golem. Zwój ze starodawnym napisem na jego głowie powoduje, że potrafi chodzić.</description>
 		<attributes>
 			<atk value="251"/>

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="szkielet">
-		<type class="stendhal/undead" subclass="skeleton" tileid="undead_skeleton.png:0"/>
+		<type class="undead" subclass="skeleton" tileid="undead_skeleton.png:0"/>
 		<description>Oto szkielet co wyszedł z grobu szukać zemsty.</description>
 		<attributes>
 			<atk value="98"/>
@@ -46,7 +46,7 @@
 	</creature>
 
 	<creature name="szkielecik">
-		<type class="stendhal/undead" subclass="tiny_skelly" tileid="undead_skeleton.png:1"/>
+		<type class="undead" subclass="tiny_skelly" tileid="undead_skeleton.png:1"/>
 		<description>Oto szkielecik. Chociaż mały, jest wyjątkowo złośliwy. Uważaj na jego truciznę.</description>
 		<attributes>
 			<atk value="173"/>
@@ -81,7 +81,7 @@
 	</creature>
 
 	<creature name="szkielet waleczny">
-		<type class="stendhal/undead" subclass="warrior_skeleton" tileid="undead_skeleton.png:2"/>
+		<type class="undead" subclass="warrior_skeleton" tileid="undead_skeleton.png:2"/>
 		<description>Oto szkielet waleczny. Jest normalnym szkieletem tyle, że z tarczą!</description>
 		<attributes>
 			<atk value="233"/>
@@ -124,7 +124,7 @@
 	</creature>
 
 	<creature name="szkielet starszy">
-		<type class="stendhal/undead" subclass="elder_skeleton" tileid="undead_skeleton.png:3"/>
+		<type class="undead" subclass="elder_skeleton" tileid="undead_skeleton.png:3"/>
 		<description>Oto szkielet starszy. Jest już stary i na pewno wie wiele co wyróżnia go od reszty mściwych szieletów, które zmarły w młodym wieku.</description>
 		<attributes>
 			<atk value="253"/>
@@ -165,7 +165,7 @@
 	</creature>
 
 	<creature name="demoniczny szkielet">
-		<type class="stendhal/undead" subclass="demon_skeleton" tileid="undead_skeleton.png:4"/>
+		<type class="undead" subclass="demon_skeleton" tileid="undead_skeleton.png:4"/>
 		<description>Oto demoniczny szkielet. Demoniczne szkielety przyszły z podziemnego świata i chcą zapanować nad światem. Powinieneś je zabić nim będzie za późno!</description>
 		<attributes>
 			<atk value="316"/>
@@ -204,7 +204,7 @@
 	</creature>
 
 	<creature name="gashadokuro">
-		<type class="stendhal/undead" subclass="gashadokuro" tileid="undead_skeleton.png:5"/>
+		<type class="undead" subclass="gashadokuro" tileid="undead_skeleton.png:5"/>
 		<description>Oto gigantyczna sylwetka zrobiona z kości zwana jako gashadokuro. Składa się z kości konających ludzi.</description>
 		<attributes>
 			<atk value="6000"/>
@@ -241,7 +241,7 @@
 	<!-- START: fallen -->
 
 	<creature name="upadły wojownik">
-		<type class="stendhal/undead" subclass="fallen_warrior" tileid="undead_fallen.png:3"/>
+		<type class="undead" subclass="fallen_warrior" tileid="undead_fallen.png:3"/>
 		<description></description>
 		<attributes>
 			<atk value="438"/>
@@ -275,7 +275,7 @@
 	</creature>
 
 	<creature name="upadły kapłan">
-		<type class="stendhal/undead" subclass="fallen_priest" tileid="undead_fallen.png:2"/>
+		<type class="undead" subclass="fallen_priest" tileid="undead_fallen.png:2"/>
 		<description>Oto upadły kapłan. Kiedyś był zwykłym kapłanem do momentu, gdy ciemne moce zawładnęły nim i skierowały na ciemną stronę.</description>
 		<attributes>
 			<atk value="546"/>
@@ -308,7 +308,7 @@
 	</creature>
 
 	<creature name="upadły wysoki kapłan">
-		<type class="stendhal/undead" subclass="fallen_high_priest" tileid="undead_fallen.png:1"/>
+		<type class="undead" subclass="fallen_high_priest" tileid="undead_fallen.png:1"/>
 		<description>Oto upadły wysoki kapłan. Przejawia się w ciemnych miejscach opanowanych przez mroczną siłę na tym świecie.</description>
 		<attributes>
 			<atk value="619"/>

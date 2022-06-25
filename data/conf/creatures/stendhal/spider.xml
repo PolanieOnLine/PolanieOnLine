@@ -4,7 +4,7 @@
 
 	<!-- START: arachnid -->
 	<creature name="pająk">
-		<type class="stendhal/spider" subclass="spider" tileid="spider.png:0"/>
+		<type class="spider" subclass="spider" tileid="spider.png:0"/>
 		<description>Oto pająk, który wytwarza ogromną pajęczynę, aby złapać cię w pułapkę!</description>
 		<attributes>
 			<atk value="213"/>
@@ -28,7 +28,7 @@
 	</creature>
 
 	<creature name="pająk ptasznik">
-		<type class="stendhal/spider" subclass="poisonous_spider" tileid="spider.png:1"/>
+		<type class="spider" subclass="poisonous_spider" tileid="spider.png:1"/>
 		<description>Oto pająk ptasznik! Powiadają, że jego trucizna wpierw cię osłabi, a potem może uśmiercić!</description>
 		<attributes>
 			<atk value="244"/>
@@ -57,7 +57,7 @@
 	</creature>
 
 	<creature name="królowa pająków">
-		<type class="stendhal/spider" subclass="giant_spider" tileid="spider.png:2"/>
+		<type class="spider" subclass="giant_spider" tileid="spider.png:2"/>
 		<description>Oto królowa pająków. Jej kończyny są długie i bardzo niebezpieczne.</description>
 		<attributes>
 			<atk value="709"/>
