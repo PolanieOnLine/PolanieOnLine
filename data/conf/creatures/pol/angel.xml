@@ -4,7 +4,7 @@
 
 	<!-- START: serafiny -->
 	<creature name="serafin">
-		<type class="pol/serafiny" subclass="serafin" tileid="pol_serafiny.png:0"/>
+		<type class="angel" subclass="serafin" tileid="pol_serafiny.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="8888"/>
@@ -58,7 +58,7 @@
 	</creature>
 
 	<creature name="azazel">
-		<type class="pol/serafiny" subclass="azazel" tileid="pol_serafiny.png:1"/>
+		<type class="angel" subclass="azazel" tileid="pol_serafiny.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="12222"/>
@@ -110,7 +110,7 @@
 	</creature>
 
 	<creature name="cherubin">
-		<type class="pol/serafiny" subclass="cherubin" tileid="pol_serafiny.png:2"/>
+		<type class="angel" subclass="cherubin" tileid="pol_serafiny.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="24444"/>
@@ -166,7 +166,7 @@
 	</creature>
 
 	<creature name="lilith">
-		<type class="pol/serafiny" subclass="lilith" tileid="pol_serafiny.png:3"/>
+		<type class="angel" subclass="lilith" tileid="pol_serafiny.png:3"/>
 		<description/>
 		<attributes>
 			<atk value="28888"/>
