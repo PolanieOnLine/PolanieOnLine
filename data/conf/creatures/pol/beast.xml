@@ -4,7 +4,7 @@
 
 	<!-- START: mutanty -->
 	<creature name="dziub dziub">
-		<type class="pol/mutanty" subclass="dziub_dziub" tileid="pol_mutanty.png:0"/>
+		<type class="mutant" subclass="dziub_dziub" tileid="pol_mutanty.png:0"/>
 		<description>Oto Dziub-Dziub. Właśnie do zobaczyłeś, więc nie zadawaj głupich pytań.</description>
 		<attributes>
 			<atk value="44"/>
@@ -34,7 +34,7 @@
 	</creature>
 
 	<creature name="wilczykruk">
-		<type class="pol/mutanty" subclass="wilczykruk" tileid="pol_mutanty.png:1"/>
+		<type class="mutant" subclass="wilczykruk" tileid="pol_mutanty.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="166"/>
@@ -69,7 +69,7 @@
 	</creature>
 
 	<creature name="cerber">
-		<type class="pol/mutanty" subclass="cerber" tileid="pol_mutanty.png:2"/>
+		<type class="mutant" subclass="cerber" tileid="pol_mutanty.png:2"/>
 		<description>Oto cerber - strażnik ogni piekielnych. Jego wzrok wypala piętno na twej duszy.</description>
 		<attributes>
 			<atk value="586"/>
@@ -99,7 +99,7 @@
 	</creature>
 	
 	<creature name="gryf">
-		<type class="pol/mutanty" subclass="gryf" tileid="pol_mutanty.png:5"/>
+		<type class="mutant" subclass="gryf" tileid="pol_mutanty.png:5"/>
 		<description>Oto mityczny gryf. Lubi polować na duże zwierzyny.</description>
 		<attributes>
 			<atk value="600"/>
@@ -130,7 +130,7 @@
 	</creature>
 	
 	<creature name="harpia">
-		<type class="pol/mutanty" subclass="harpia" tileid="pol_mutanty.png:6"/>
+		<type class="mutant" subclass="harpia" tileid="pol_mutanty.png:6"/>
 		<description>Oto harpia. Stwory te są bardzo złośliwe, okrutne i brutalne...</description>
 		<attributes>
 			<atk value="444"/>
@@ -161,7 +161,7 @@
 	</creature>
 
 	<creature name="zółty glut">
-		<type class="pol/mutanty" subclass="yellow_slime" tileid="pol_mutanty.png:3"/>
+		<type class="mutant" subclass="yellow_slime" tileid="pol_mutanty.png:3"/>
 		<description>Oto żółty glut. Za nim kleisty ślad.</description>
 		<attributes>
 			<atk value="350"/>
@@ -187,7 +187,7 @@
 	</creature>
 
 	<creature name="czerwony glut">
-		<type class="pol/mutanty" subclass="red_slime" tileid="pol_mutanty.png:4"/>
+		<type class="mutant" subclass="red_slime" tileid="pol_mutanty.png:4"/>
 		<description>Oto czerwony glut. Za nim kleisty ślad.</description>
 		<attributes>
 			<atk value="390"/>
@@ -215,7 +215,7 @@
 
 	<!-- START: mutanty wielkie -->
 	<creature name="Jožin z lesa">
-		<type class="pol/mutanty_wielkie" subclass="jozin_z_lesa" tileid="pol_mutanty_wielkie.png:0"/>
+		<type class="mutant" subclass="jozin_z_lesa" tileid="pol_mutanty_wielkie.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="415"/>
@@ -256,7 +256,7 @@
 	</creature>
 
 	<creature name="Jožin z bažin">
-		<type class="pol/mutanty_wielkie" subclass="jozin_z_bazin" tileid="pol_mutanty_wielkie.png:1"/>
+		<type class="mutant" subclass="jozin_z_bazin" tileid="pol_mutanty_wielkie.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="415"/>
@@ -296,7 +296,7 @@
 	</creature>
 
 	<creature name="coś niszczącego">
-		<type class="pol/mutanty_wielkie" subclass="easer_thing" tileid="pol_mutanty_wielkie.png:3"/>
+		<type class="mutant" subclass="easer_thing" tileid="pol_mutanty_wielkie.png:3"/>
 		<description/>
 		<attributes>
 			<atk value="804"/>
@@ -329,7 +329,7 @@
 	</creature>
 
 	<creature name="gigantyczne monstrum">
-		<type class="pol/mutanty_wielkie" subclass="ae_monstrum_gigant" tileid="pol_mutanty_wielkie.png:2"/>
+		<type class="mutant" subclass="ae_monstrum_gigant" tileid="pol_mutanty_wielkie.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="1632"/>
