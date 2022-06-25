@@ -3,7 +3,7 @@
 	xsi:schemaLocation="stendhal ../../creatures.xsd ">
 
 	<creature name="rycerz szafirowy">
-		<type class="pol/rycerze" subclass="rycerz_blekitny" tileid="pol_rycerze.png:0"/>
+		<type class="human" subclass="rycerz_blekitny" tileid="pol_rycerze.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="556"/>
@@ -32,7 +32,7 @@
 	</creature>
 
 	<creature name="rycerz karmazynowy">
-		<type class="pol/rycerze" subclass="rycerz_karmazynowy" tileid="pol_rycerze.png:1"/>
+		<type class="human" subclass="rycerz_karmazynowy" tileid="pol_rycerze.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="576"/>
@@ -61,7 +61,7 @@
 	</creature>
 
 	<creature name="rycerz szmaragdowy">
-		<type class="pol/rycerze" subclass="rycerz_szmaragdowy" tileid="pol_rycerze.png:2"/>
+		<type class="human" subclass="rycerz_szmaragdowy" tileid="pol_rycerze.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="536"/>
@@ -90,7 +90,7 @@
 	</creature>
 
 	<creature name="rycerz w złotej zbroi">
-		<type class="pol/rycerze" subclass="rycerz_zloty" tileid="pol_rycerze.png:3"/>
+		<type class="human" subclass="rycerz_zloty" tileid="pol_rycerze.png:3"/>
 		<description/>
 		<attributes>
 			<atk value="616"/>
@@ -118,7 +118,7 @@
 	</creature>
 
 	<creature name="czarny rycerz">
-		<type class="pol/rycerze" subclass="czarny_rycerz" tileid="pol_rycerze.png:4"/>
+		<type class="human" subclass="czarny_rycerz" tileid="pol_rycerze.png:4"/>
 		<description/>
 		<attributes>
 			<atk value="600"/>
@@ -152,7 +152,7 @@
 	</creature>
 
 	<creature name="strażnik">
-		<type class="pol/rycerze" subclass="straznik" tileid="pol_rycerze.png:5"/>
+		<type class="human" subclass="straznik" tileid="pol_rycerze.png:5"/>
 		<description/>
 		<attributes>
 			<atk value="400"/>
@@ -184,7 +184,7 @@
 	</creature>
 
 	<creature name="strażnik grobli">
-		<type class="pol/rycerze" subclass="straznik_grobli" tileid="pol_rycerze.png:6"/>
+		<type class="human" subclass="straznik_grobli" tileid="pol_rycerze.png:6"/>
 		<description/>
 		<attributes>
 			<atk value="475"/>
@@ -216,7 +216,7 @@
 	</creature>
 
 	<creature name="strażnik bramy">
-		<type class="pol/rycerze" subclass="straznik_bramy" tileid="pol_rycerze.png:7"/>
+		<type class="human" subclass="straznik_bramy" tileid="pol_rycerze.png:7"/>
 		<description/>
 		<attributes>
 			<atk value="550"/>
@@ -248,7 +248,7 @@
 	</creature>
 
 	<creature name="rycerz na białym koniu">
-		<type class="pol/rycerze" subclass="straznik_na_koniu" tileid="pol_rycerze.png:8"/>
+		<type class="human" subclass="straznik_na_koniu" tileid="pol_rycerze.png:8"/>
 		<description/>
 		<attributes>
 			<atk value="1374"/>
