@@ -5,7 +5,7 @@
 	<!-- START: zbojnicy lesni -->
 
 	<creature name="zbójnik leśny">
-		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_mlodszy" tileid="pol_zbojnicy_lesni.png:0"/>
+		<type class="human" subclass="zbojnik_lesny_mlodszy" tileid="pol_zbojnicy_lesni.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="185"/>
@@ -42,7 +42,7 @@
 	</creature>
 
 	<creature name="zbójnik leśny oszust">
-		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_oszust" tileid="pol_zbojnicy_lesni.png:1"/>
+		<type class="human" subclass="zbojnik_lesny_oszust" tileid="pol_zbojnicy_lesni.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="299"/>
@@ -76,7 +76,7 @@
 	</creature>
 
 	<creature name="zbójnik leśny starszy">
-		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_starszy" tileid="pol_zbojnicy_lesni.png:2"/>
+		<type class="human" subclass="zbojnik_lesny_starszy" tileid="pol_zbojnicy_lesni.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="205"/>
@@ -113,7 +113,7 @@
 	</creature>
 
 	<creature name="zbójnik leśny zwiadowca">
-		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_zwiadowca" tileid="pol_zbojnicy_lesni.png:3"/>
+		<type class="human" subclass="zbojnik_lesny_zwiadowca" tileid="pol_zbojnicy_lesni.png:3"/>
 		<description/>
 		<attributes>
 			<atk value="225"/>
@@ -154,7 +154,7 @@
 	</creature>
 
 	<creature name="zbójnik leśny tchórzliwy">
-		<type class="pol/zbojnicy_lesni" subclass="zbojnik_lesny_tchorzliwy" tileid="pol_zbojnicy_lesni.png:4"/>
+		<type class="human" subclass="zbojnik_lesny_tchorzliwy" tileid="pol_zbojnicy_lesni.png:4"/>
 		<description/>
 		<attributes>
 			<atk value="185"/>
@@ -190,7 +190,7 @@
 	</creature>
 
 	<creature name="banita">
-		<type class="pol/zbojnicy_lesni" subclass="banita" tileid="pol_zbojnicy_lesni.png:5"/>
+		<type class="human" subclass="banita" tileid="pol_zbojnicy_lesni.png:5"/>
 		<description/>
 		<attributes>
 			<atk value="161"/>
@@ -233,7 +233,7 @@
 	</creature>
 
 	<creature name="banita gajowy">
-		<type class="pol/zbojnicy_lesni" subclass="banita_gajowy" tileid="pol_zbojnicy_lesni.png:6"/>
+		<type class="human" subclass="banita_gajowy" tileid="pol_zbojnicy_lesni.png:6"/>
 		<description/>
 		<attributes>
 			<atk value="131"/>
@@ -270,7 +270,7 @@
 	</creature>
 
 	<creature name="banitka">
-		<type class="pol/zbojnicy_lesni" subclass="banitka" tileid="pol_zbojnicy_lesni.png:7"/>
+		<type class="human" subclass="banitka" tileid="pol_zbojnicy_lesni.png:7"/>
 		<description/>
 		<attributes>
 			<atk value="121"/>
@@ -312,7 +312,7 @@
 	<!-- START: zbojnicy gorscy -->
 
 	<creature name="zbójnik górski">
-		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski" tileid="pol_zbojnicy_gorscy.png:0"/>
+		<type class="human" subclass="zbojnik_gorski" tileid="pol_zbojnicy_gorscy.png:0"/>
 		<description>Oto zbójnik górski, który kryje się w jaskiniach.</description>
 		<attributes>
 			<atk value="250"/>
@@ -341,7 +341,7 @@
 	</creature>
 
 	<creature name="zbójnik górski goniec">
-		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_goniec" tileid="pol_zbojnicy_gorscy.png:1"/>
+		<type class="human" subclass="zbojnik_gorski_goniec" tileid="pol_zbojnicy_gorscy.png:1"/>
 		<description>Oto zbójnik górski goniec, który donosi o wszystkim hersztowi.</description>
 		<attributes>
 			<atk value="290"/>
@@ -369,7 +369,7 @@
 	</creature>
 
 	<creature name="zbójnik górski złośliwy">
-		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zlosliwy" tileid="pol_zbojnicy_gorscy.png:2"/>
+		<type class="human" subclass="zbojnik_gorski_zlosliwy" tileid="pol_zbojnicy_gorscy.png:2"/>
 		<description>Oto zbójnik górski złośliwy, który chociaż gruby atakuje zwinnie.</description>
 		<attributes>
 			<atk value="390"/>
@@ -398,7 +398,7 @@
 	</creature>
 
 	<creature name="zbójnik górski zwiadowca">
-		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_zwiadowca" tileid="pol_zbojnicy_gorscy.png:3"/>
+		<type class="human" subclass="zbojnik_gorski_zwiadowca" tileid="pol_zbojnicy_gorscy.png:3"/>
 		<description>Oto zbójnik górski zwiadowca, który atakuje cicho i nagle.</description>
 		<attributes>
 			<atk value="330"/>
@@ -429,7 +429,7 @@
 	</creature>
 
 	<creature name="zbójnik górski starszy">
-		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_starszy" tileid="pol_zbojnicy_gorscy.png:4"/>
+		<type class="human" subclass="zbojnik_gorski_starszy" tileid="pol_zbojnicy_gorscy.png:4"/>
 		<description>Oto zbójnik górski starszy, który chociaż brodę ma siwą zręcznie włada maczugą.</description>
 		<attributes>
 			<atk value="410"/>
@@ -459,7 +459,7 @@
 	</creature>
 
 	<creature name="zbójnik górski herszt">
-		<type class="pol/zbojnicy_gorscy" subclass="zbojnik_gorski_herszt" tileid="pol_zbojnicy_gorscy.png:5"/>
+		<type class="human" subclass="zbojnik_gorski_herszt" tileid="pol_zbojnicy_gorscy.png:5"/>
 		<description>Oto herszt zbójników górskich, którego zła sława dotarła daleko poza granice tej krainy.</description>
 		<attributes>
 			<atk value="440"/>
