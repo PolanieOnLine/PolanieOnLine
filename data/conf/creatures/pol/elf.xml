@@ -4,7 +4,7 @@
 
 	<!-- START: elf gorski -->
 	<creature name="elf górski maskotka">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_maskotka" tileid="pol_elfy_gorskie.png:0"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_maskotka" tileid="pol_elfy_gorskie.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="180"/>
@@ -35,7 +35,7 @@
 	</creature>
 
 	<creature name="elf górski służka">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_sluzka" tileid="pol_elfy_gorskie.png:1"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_sluzka" tileid="pol_elfy_gorskie.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="191"/>
@@ -66,7 +66,7 @@
 	</creature>
 
 	<creature name="elf górski dama">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_dama" tileid="pol_elfy_gorskie.png:7"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_dama" tileid="pol_elfy_gorskie.png:7"/>
 		<description/>
 		<attributes>
 			<atk value="193"/>
@@ -96,7 +96,7 @@
 	</creature>
 
 	<creature name="elf górski strażniczka">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_strazniczka" tileid="pol_elfy_gorskie.png:9"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_strazniczka" tileid="pol_elfy_gorskie.png:9"/>
 		<description/>
 		<attributes>
 			<atk value="197"/>
@@ -127,7 +127,7 @@
 	</creature>
 
 	<creature name="elf górski lider">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_lider" tileid="pol_elfy_gorskie.png:6"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_lider" tileid="pol_elfy_gorskie.png:6"/>
 		<description/>
 		<attributes>
 			<atk value="205"/>
@@ -159,7 +159,7 @@
 	</creature>
 
 	<creature name="elf górski wojownik">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_wojownik" tileid="pol_elfy_gorskie.png:5"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_wojownik" tileid="pol_elfy_gorskie.png:5"/>
 		<description/>
 		<attributes>
 			<atk value="201"/>
@@ -191,7 +191,7 @@
 	</creature>
 
 	<creature name="elf górski czarownica">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_czarwonica" tileid="pol_elfy_gorskie.png:11"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_czarwonica" tileid="pol_elfy_gorskie.png:11"/>
 		<description/>
 		<attributes>
 			<atk value="207"/>
@@ -223,7 +223,7 @@
 	</creature>
 
 	<creature name="elf górski kapłan">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_kaplan" tileid="pol_elfy_gorskie.png:3"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_kaplan" tileid="pol_elfy_gorskie.png:3"/>
 		<description/>
 		<attributes>
 			<atk value="200"/>
@@ -255,7 +255,7 @@
 	</creature>
 
 	<creature name="elf górski czarnoksiężnik">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_czarnoksieznik" tileid="pol_elfy_gorskie.png:2"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_czarnoksieznik" tileid="pol_elfy_gorskie.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="201"/>
@@ -287,7 +287,7 @@
 	</creature>
 
 	<creature name="elf górski królowa">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_krolowa" tileid="pol_elfy_gorskie.png:4"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_krolowa" tileid="pol_elfy_gorskie.png:4"/>
 		<description/>
 		<attributes>
 			<atk value="210"/>
@@ -318,7 +318,7 @@
 	</creature>
 
 	<creature name="elf górski król">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_krol" tileid="pol_elfy_gorskie.png:8"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_krol" tileid="pol_elfy_gorskie.png:8"/>
 		<description/>
 		<attributes>
 			<atk value="220"/>
@@ -348,7 +348,7 @@
 	</creature>
 
 	<creature name="elf górski lord">
-		<type class="pol/elfy_gorskie" subclass="ae_elf_gorski_lord" tileid="pol_elfy_gorskie.png:10"/>
+		<type class="mountain_elf" subclass="ae_elf_gorski_lord" tileid="pol_elfy_gorskie.png:10"/>
 		<description/>
 		<attributes>
 			<atk value="250"/>
