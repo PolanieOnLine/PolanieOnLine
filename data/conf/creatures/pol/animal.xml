@@ -982,7 +982,7 @@
 
 	<!-- START: ptaki wielkie -->
 	<creature name="orzeł gigant">
-		<type class="pol/ptaki_wielkie" subclass="orzel_gigant" tileid="pol_ptaki_wielkie.png:0"/>
+		<type class="giant_animal" subclass="orzel_gigant" tileid="pol_ptaki_wielkie.png:0"/>
 		<description></description>
 		<attributes>
 			<atk value="4300"/>
