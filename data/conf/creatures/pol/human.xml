@@ -455,7 +455,7 @@
 
 	<!-- START: wiesniacy -->
 	<creature name="wieśniak">
-		<type class="pol/wiesniacy" subclass="wiesniak" tileid="pol_wiesniacy.png:0"/>
+		<type class="human" subclass="wiesniak" tileid="pol_wiesniacy.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="66"/>
@@ -493,7 +493,7 @@
 	</creature>
 
 	<creature name="starzec">
-		<type class="pol/wiesniacy" subclass="starzec" tileid="pol_wiesniacy.png:1"/>
+		<type class="human" subclass="starzec" tileid="pol_wiesniacy.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="33"/>
@@ -529,7 +529,7 @@
 	</creature>
 
 	<creature name="gajowy">
-		<type class="pol/wiesniacy" subclass="gajowy" tileid="pol_wiesniacy.png:2"/>
+		<type class="human" subclass="gajowy" tileid="pol_wiesniacy.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="111"/>
