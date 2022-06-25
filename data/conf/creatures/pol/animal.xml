@@ -511,7 +511,7 @@
 
 	<!-- START: gryzonie -->
 	<creature name="szara mysz">
-		<type class="pol/gryzonie" subclass="mysz_szara" tileid="pol_zwierzeta_male.png:0"/>
+		<type class="rodent" subclass="mysz_szara" tileid="pol_zwierzeta_male.png:0"/>
 		<description>Oto szara mysz co na zapiecku przed chłodem się chowa.</description>
 		<attributes>
 			<atk value="5"/>
@@ -541,7 +541,7 @@
 	</creature>
 
 	<creature name="biała mysz">
-		<type class="pol/gryzonie" subclass="mysz_biala" tileid="pol_zwierzeta_male.png:1"/>
+		<type class="rodent" subclass="mysz_biala" tileid="pol_zwierzeta_male.png:1"/>
 		<description>Zbyt dużo miodów pitnych i piwa wypiłeś, skoro białe myszy widzisz!</description>
 		<attributes>
 			<atk value="11"/>
@@ -573,7 +573,7 @@
 	</creature>
 
 	<creature name="wiewiórka">
-		<type class="pol/gryzonie" subclass="wiewiorka" tileid="pol_zwierzeta_male.png:2"/>
+		<type class="rodent" subclass="wiewiorka" tileid="pol_zwierzeta_male.png:2"/>
 		<description></description>
 		<attributes>
 			<atk value="44"/>
