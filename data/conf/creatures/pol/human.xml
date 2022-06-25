@@ -4,7 +4,7 @@
 
 	<!-- START: magowie -->
 	<creature name="Baba Dżaga">
-		<type class="pol/magowie" subclass="baba_jaga1" tileid="pol_magowie.png:0"/>
+		<type class="human" subclass="baba_jaga1" tileid="pol_magowie.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="307"/>
@@ -37,7 +37,7 @@
 	</creature>
 
 	<creature name="Baba Jaga">
-		<type class="pol/magowie" subclass="baba_jaga2" tileid="pol_magowie.png:1"/>
+		<type class="human" subclass="baba_jaga2" tileid="pol_magowie.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="307"/>
@@ -70,7 +70,7 @@
 	</creature>
 
 	<creature name="Baba Laga">
-		<type class="pol/magowie" subclass="baba_jaga3" tileid="pol_magowie.png:2"/>
+		<type class="human" subclass="baba_jaga3" tileid="pol_magowie.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="307"/>
@@ -103,7 +103,7 @@
 	</creature>
 
 	<creature name="pustelnik">
-		<type class="pol/magowie" subclass="mag_pustelnik" tileid="pol_magowie.png:3"/>
+		<type class="human" subclass="mag_pustelnik" tileid="pol_magowie.png:3"/>
 		<description>Oto pustelnik. Nie zakłócaj jego medytacji.</description>
 		<attributes>
 			<atk value="221"/>
@@ -147,7 +147,7 @@
 	</creature>
 
 	<creature name="uczeń czarnoksiężnika">
-		<type class="pol/magowie" subclass="mag_uczen" tileid="pol_magowie.png:4"/>
+		<type class="human" subclass="mag_uczen" tileid="pol_magowie.png:4"/>
 		<description>Oto uczeń czarnoksiężnika. Swemu mistrzowi podkrada magię ciemności.</description>
 		<attributes>
 			<atk value="157"/>
@@ -190,7 +190,7 @@
 	</creature>
 
 	<creature name="czarnoksiężnik">
-		<type class="pol/magowie" subclass="mag_mistrz" tileid="pol_magowie.png:5"/>
+		<type class="human" subclass="mag_mistrz" tileid="pol_magowie.png:5"/>
 		<description>Oto czarnoksiężnik. Niech nie zwiedzie cię jego wiek, bo jest potężny.</description>
 		<attributes>
 			<atk value="211"/>
@@ -235,7 +235,7 @@
 	</creature>
 
 	<creature name="uczeń czarnoksiężnika lodu">
-		<type class="pol/magowie" subclass="mag_lodowy_uczen" tileid="pol_magowie.png:9"/>
+		<type class="human" subclass="mag_lodowy_uczen" tileid="pol_magowie.png:9"/>
 		<description></description>
 		<attributes>
 			<atk value="191"/>
@@ -278,7 +278,7 @@
 	</creature>
 
 	<creature name="uczeń czarnoksiężnika mroku">
-		<type class="pol/magowie" subclass="mag_czarny_uczen" tileid="pol_magowie.png:6"/>
+		<type class="human" subclass="mag_czarny_uczen" tileid="pol_magowie.png:6"/>
 		<description>Oto uczeń czarnoksiężnika mroku. Wiele już posiadł wiedzy i umie ją wykorzystać.</description>
 		<attributes>
 			<atk value="211"/>
@@ -321,7 +321,7 @@
 	</creature>
 
 	<creature name="czarnoksiężnik lodu">
-		<type class="pol/magowie" subclass="mag_lodowy_mistrz" tileid="pol_magowie.png:10"/>
+		<type class="human" subclass="mag_lodowy_mistrz" tileid="pol_magowie.png:10"/>
 		<description></description>
 		<attributes>
 			<atk value="377"/>
@@ -364,7 +364,7 @@
 	</creature>
 
 	<creature name="czarnoksiężnik mroku">
-		<type class="pol/magowie" subclass="mag_czarny_mistrz" tileid="pol_magowie.png:7"/>
+		<type class="human" subclass="mag_czarny_mistrz" tileid="pol_magowie.png:7"/>
 		<description>Oto czarnoksiężnik mroku. Wielu już wrogów powalił, nawet nie ruszając się z miejsca.</description>
 		<attributes>
 			<atk value="422"/>
@@ -408,7 +408,7 @@
 	</creature>
 
 	<creature name="czarownica z Aenye">
-		<type class="pol/magowie" subclass="mag_czarownica_aenye" tileid="pol_magowie.png:8"/>
+		<type class="human" subclass="mag_czarownica_aenye" tileid="pol_magowie.png:8"/>
 		<description>Oto czarownica z Aenye - zabójcza ślicznotka.</description>
 		<attributes>
 			<atk value="3700"/>
