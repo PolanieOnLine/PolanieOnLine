@@ -4,7 +4,7 @@
 
 	<!-- START: krzewy -->
 	<creature name="pokrzywy">
-		<type class="pol/krzewy" subclass="pokrzywy" tileid="pol_krzewy.png:0"/>
+		<type class="flora" subclass="pokrzywy" tileid="pol_krzewy.png:0"/>
 		<description>Lepiej omijaj parzące pokrzywy!</description>
 		<attributes>
 			<atk value="50"/>
@@ -35,7 +35,7 @@
 	</creature>
 
 	<creature name="ostrokrzew">
-		<type class="pol/krzewy" subclass="ostrokrzew" tileid="pol_krzewy.png:1"/>
+		<type class="flora" subclass="ostrokrzew" tileid="pol_krzewy.png:1"/>
 		<description>Lepiej omijaj kłujący ostrokrzew!</description>
 		<attributes>
 			<atk value="90"/>
@@ -64,7 +64,7 @@
 	</creature>
 
 	<creature name="krzew wędrujący">
-		<type class="pol/krzewy" subclass="krzew_wedrujacy" tileid="pol_krzewy.png:2"/>
+		<type class="flora" subclass="krzew_wedrujacy" tileid="pol_krzewy.png:2"/>
 		<description>Uciekaj! Ten krzak cię goni!</description>
 		<attributes>
 			<atk value="80"/>
@@ -95,7 +95,7 @@
 
 	<!-- START: chochol -->
 	<creature name="chochoł">
-		<type class="pol/chocholy" subclass="chochol" tileid="pol_chocholy.png:0"/>
+		<type class="flora" subclass="chochol" tileid="pol_chocholy.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="66"/>
@@ -125,7 +125,7 @@
 	</creature>
 
 	<creature name="chochoł suchy">
-		<type class="pol/chocholy" subclass="chochol_suchy" tileid="pol_chocholy.png:1"/>
+		<type class="flora" subclass="chochol_suchy" tileid="pol_chocholy.png:1"/>
 		<description/>
 		<attributes>
 			<atk value="77"/>
@@ -156,7 +156,7 @@
 	</creature>
 
 	<creature name="chochoł wielki">
-		<type class="pol/chocholy" subclass="chochol_wielki" tileid="pol_chocholy.png:2"/>
+		<type class="flora" subclass="chochol_wielki" tileid="pol_chocholy.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="99"/>
