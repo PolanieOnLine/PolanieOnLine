@@ -1412,6 +1412,13 @@ public abstract class RPEntity extends CombatEntity {
 			logger.debug("Damaged " + damage + " points by " + attacker.getID());
 		}
 
+		if (this instanceof Creature) {
+			Creature creature = (Creature) this;
+			if (creature.isImmortal()) {
+				return;
+			}
+		}
+
 		bleedOnGround();
 		if (attacker instanceof RPEntity) {
 			final int currentTurn = SingletonRepository.getRuleProcessor()

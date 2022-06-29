@@ -257,6 +257,12 @@ public class Creature extends NPC {
 			put("flying", "");
 		}
 
+		if (this.aiProfiles.containsKey("immortal")) {
+			put("unnamed", "");
+			put("no_hpbar", "");
+			put("no_shadow", "");
+		}
+
 		for (RPSlot slot : copy.slots()) {
 			this.addSlot((RPSlot) slot.clone());
 		}
@@ -1229,5 +1235,4 @@ public class Creature extends NPC {
 		}
 		return getZone() == player.getZone();
 	}
-
 }

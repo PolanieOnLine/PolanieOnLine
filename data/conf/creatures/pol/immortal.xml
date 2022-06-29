@@ -7,7 +7,7 @@
 		<type class="immortal" subclass="mgla" tileid="pol_niesmiertelne.png:0"/>
 		<attributes>
 			<atk value="99"/>
-			<def value="22000"/>
+			<def value="1"/>
 			<hp value="22000"/>
 			<speed value="0.1"/>
 			<size value="1,1"/>
