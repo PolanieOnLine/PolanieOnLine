@@ -4,7 +4,7 @@
 
 	<!-- START: niesmiertelne -->
 	<creature name="mgła">
-		<type class="pol/niesmiertelne" subclass="mgla" tileid="pol_niesmiertelne.png:0"/>
+		<type class="immortal" subclass="mgla" tileid="pol_niesmiertelne.png:0"/>
 		<attributes>
 			<atk value="99"/>
 			<def value="22000"/>
@@ -34,7 +34,7 @@
 	</creature>
 
 	<creature name="trujące opary">
-		<type class="pol/niesmiertelne" subclass="trujace_opary" tileid="pol_niesmiertelne.png:1"/>
+		<type class="immortal" subclass="trujace_opary" tileid="pol_niesmiertelne.png:1"/>
 		<attributes>
 			<atk value="199"/>
 			<def value="22000"/>
@@ -65,7 +65,7 @@
 	</creature>
 
 	<creature name="trąba powietrzna">
-		<type class="pol/niesmiertelne" subclass="tornado" tileid="pol_niesmiertelne.png:2"/>
+		<type class="immortal" subclass="tornado" tileid="pol_niesmiertelne.png:2"/>
 		<attributes>
 			<atk value="20000"/>
 			<def value="22000"/>
@@ -99,7 +99,7 @@
 	</creature>
 
 	<creature name="trąba wodna">
-		<type class="pol/niesmiertelne" subclass="tornado_wodne" tileid="pol_niesmiertelne.png:3"/>
+		<type class="immortal" subclass="tornado_wodne" tileid="pol_niesmiertelne.png:3"/>
 		<attributes>
 			<atk value="20000"/>
 			<def value="22000"/>
