@@ -719,7 +719,7 @@
 
 	<!-- START: owady -->
 	<creature name="chmara much">
-		<type class="pol/owady" subclass="chmara_much" tileid="pol_owady.png:0"/>
+		<type class="insect" subclass="chmara_much" tileid="pol_owady.png:0"/>
 		<description>Oto muchy plujki. Przyciąga je smród padliny.</description>
 		<attributes>
 			<atk value="1"/>
@@ -750,7 +750,7 @@
 	</creature>
 
 	<creature name="rój os">
-		<type class="pol/owady" subclass="roj_os" tileid="pol_owady.png:1"/>
+		<type class="insect" subclass="roj_os" tileid="pol_owady.png:1"/>
 		<description>Osy żądlą boleśnie. Jeśli masz przy sobie odtrutkę to przeżyjesz.</description>
 		<attributes>
 			<atk value="15"/>
@@ -782,7 +782,7 @@
 	</creature>
 
 	<creature name="rój szerszeni">
-		<type class="pol/owady" subclass="roj_szerszeni" tileid="pol_owady.png:2"/>
+		<type class="insect" subclass="roj_szerszeni" tileid="pol_owady.png:2"/>
 		<description>Jad szerszeni jest zabójczy. Mało kto przeżył ich atak.</description>
 		<attributes>
 			<atk value="45"/>
@@ -815,7 +815,7 @@
 	</creature>
 
 	<creature name="motylek">
-		<type class="pol/owady" subclass="motylek" tileid="pol_owady.png:3"/>
+		<type class="insect" subclass="motylek" tileid="pol_owady.png:3"/>
 		<description>O! Popatrz! Leci motylek! Nie dosięgniesz go...</description>
 		<attributes>
 			<atk value="1"/>
