@@ -4,7 +4,7 @@
 
 	<!-- START: skrzaty -->
 	<creature name="skrzat leśny">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny" tileid="pol_skrzaty_lesne.png:0"/>
+		<type class="gnome_forest" subclass="skrzat_lesny" tileid="pol_skrzaty_lesne.png:0"/>
 		<description>Oto skrzat leśny. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="50"/>
@@ -31,7 +31,7 @@
 	</creature>
 
 	<creature name="skrzat leśny wojownik">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_wojownik" tileid="pol_skrzaty_lesne.png:1"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_wojownik" tileid="pol_skrzaty_lesne.png:1"/>
 		<description>Oto skrzat leśny wojownik. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="54"/>
@@ -61,7 +61,7 @@
 	</creature>
 
 	<creature name="skrzat leśny bohater">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_bohater" tileid="pol_skrzaty_lesne.png:2"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_bohater" tileid="pol_skrzaty_lesne.png:2"/>
 		<description>Oto skrzat leśny bohater. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="63"/>
@@ -88,7 +88,7 @@
 	</creature>
 
 	<creature name="skrzat leśny komandor">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_komandor" tileid="pol_skrzaty_lesne.png:3"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_komandor" tileid="pol_skrzaty_lesne.png:3"/>
 		<description>Oto skrzat leśny komandor. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="70"/>
@@ -117,7 +117,7 @@
 	</creature>
 
 	<creature name="skrzat leśny lider">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_lider" tileid="pol_skrzaty_lesne.png:4"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_lider" tileid="pol_skrzaty_lesne.png:4"/>
 		<description>Oto skrzat leśny lider. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="77"/>
@@ -144,7 +144,7 @@
 	</creature>
 
 	<creature name="skrzat leśny starszy">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy" tileid="pol_skrzaty_lesne.png:5"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_starszy" tileid="pol_skrzaty_lesne.png:5"/>
 		<description>Oto skrzat leśny starszy. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="83"/>
@@ -173,7 +173,7 @@
 	</creature>
 
 	<creature name="skrzat leśny starszy komandor">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_komandor" tileid="pol_skrzaty_lesne.png:6"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_starszy_komandor" tileid="pol_skrzaty_lesne.png:6"/>
 		<description>Oto skrzat leśny starszy komandor. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="90"/>
@@ -203,7 +203,7 @@
 	</creature>
 
 	<creature name="skrzat leśny starszy wojownik">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_starszy_wojownik" tileid="pol_skrzaty_lesne.png:7"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_starszy_wojownik" tileid="pol_skrzaty_lesne.png:7"/>
 		<description>Oto skrzat leśny starszy wojownik. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="95"/>
@@ -235,7 +235,7 @@
 	</creature>
 
 	<creature name="skrzat leśny starszy strzelec">
-		<type class="pol/skrzaty_lesne" subclass="skrzat_lesny_strzelec" tileid="pol_skrzaty_lesne.png:8"/>
+		<type class="gnome_forest" subclass="skrzat_lesny_strzelec" tileid="pol_skrzaty_lesne.png:8"/>
 		<description>Oto skrzat leśny starszy strzelec. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="87"/>
