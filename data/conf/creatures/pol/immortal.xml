@@ -8,7 +8,7 @@
 		<attributes>
 			<atk value="99"/>
 			<def value="1"/>
-			<hp value="22000"/>
+			<hp value="1"/>
 			<speed value="0.1"/>
 			<size value="1,1"/>
 			<resistance value="25"/>
@@ -37,8 +37,8 @@
 		<type class="immortal" subclass="trujace_opary" tileid="pol_niesmiertelne.png:1"/>
 		<attributes>
 			<atk value="199"/>
-			<def value="22000"/>
-			<hp value="22000"/>
+			<def value="1"/>
+			<hp value="1"/>
 			<speed value="0.1"/>
 			<size value="1,1"/>
 			<resistance value="25"/>
@@ -68,8 +68,8 @@
 		<type class="immortal" subclass="tornado" tileid="pol_niesmiertelne.png:2"/>
 		<attributes>
 			<atk value="20000"/>
-			<def value="22000"/>
-			<hp value="22000"/>
+			<def value="1"/>
+			<hp value="1"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 			<resistance value="50"/>
@@ -102,8 +102,8 @@
 		<type class="immortal" subclass="tornado_wodne" tileid="pol_niesmiertelne.png:3"/>
 		<attributes>
 			<atk value="20000"/>
-			<def value="22000"/>
-			<hp value="22000"/>
+			<def value="1"/>
+			<hp value="1"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 			<resistance value="50"/>
