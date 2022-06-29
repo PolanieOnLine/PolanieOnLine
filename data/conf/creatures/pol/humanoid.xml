@@ -272,7 +272,7 @@
 
 	<!-- START: wilkolaki -->
 	<creature name="wilkołak żołdak">
-		<type class="pol/wilkolaki" subclass="wilkolak_zoldak" tileid="pol_wilkolaki.png:0"/>
+		<type class="werewolf" subclass="wilkolak_zoldak" tileid="pol_wilkolaki.png:0"/>
 		<description>Oto wilkołak żołdak. Strzeż się go w księżycową noc.</description>
 		<attributes>
 			<atk value="1250"/>
@@ -304,7 +304,7 @@
 	</creature>
 
 	<creature name="wilkołak wojak">
-		<type class="pol/wilkolaki" subclass="wilkolak_wojak" tileid="pol_wilkolaki.png:1"/>
+		<type class="werewolf" subclass="wilkolak_wojak" tileid="pol_wilkolaki.png:1"/>
 		<description>Oto wilkołak wojak. Strzeż się go w księżycową noc.</description>
 		<attributes>
 			<atk value="1450"/>
@@ -337,7 +337,7 @@
 	</creature>
 
 	<creature name="wilkołak obrońca">
-		<type class="pol/wilkolaki" subclass="wilkolak_lider" tileid="pol_wilkolaki.png:3"/>
+		<type class="werewolf" subclass="wilkolak_lider" tileid="pol_wilkolaki.png:3"/>
 		<description>Oto wilkołak obrońca. Strzeż się go w księżycową noc.</description>
 		<attributes>
 			<atk value="1150"/>
@@ -369,7 +369,7 @@
 	</creature>
 
 	<creature name="wilkołak zwiadowca">
-		<type class="pol/wilkolaki" subclass="wilkolak_zwiadowca" tileid="pol_wilkolaki.png:4"/>
+		<type class="werewolf" subclass="wilkolak_zwiadowca" tileid="pol_wilkolaki.png:4"/>
 		<description>Oto wilkołak zwiadowca. Strzeż się go w księżycową noc.</description>
 		<attributes>
 			<atk value="1750"/>
@@ -401,7 +401,7 @@
 	</creature>
 
 	<creature name="wilkołak szaman">
-		<type class="pol/wilkolaki" subclass="wilkolak_szaman" tileid="pol_wilkolaki.png:5"/>
+		<type class="werewolf" subclass="wilkolak_szaman" tileid="pol_wilkolaki.png:5"/>
 		<description>Oto wilkołak szaman. Strzeż się go w księżycową noc.</description>
 		<attributes>
 			<atk value="1750"/>
@@ -439,7 +439,7 @@
 	</creature>
 
 	<creature name="księżniczka wilkołaków">
-		<type class="pol/wilkolaki" subclass="wilkolak_ksiezniczka" tileid="pol_wilkolaki.png:6"/>
+		<type class="werewolf" subclass="wilkolak_ksiezniczka" tileid="pol_wilkolaki.png:6"/>
 		<description>Oto księżniczka wilkołaków. Strzeż się jej w księżycową noc.</description>
 		<attributes>
 			<atk value="2150"/>
@@ -475,7 +475,7 @@
 	</creature>
 
 	<creature name="książę wilkołaków">
-		<type class="pol/wilkolaki" subclass="wilkolak_ksiaze" tileid="pol_wilkolaki.png:7"/>
+		<type class="werewolf" subclass="wilkolak_ksiaze" tileid="pol_wilkolaki.png:7"/>
 		<description>Oto książę wilkołaków. Strzeż się go w księżycową noc.</description>
 		<attributes>
 			<atk value="2350"/>
@@ -510,7 +510,7 @@
 	</creature>
 
 	<creature name="wilkołak łucznik">
-		<type class="pol/wilkolaki" subclass="wilkolak_lucznik" tileid="pol_wilkolaki.png:2"/>
+		<type class="werewolf" subclass="wilkolak_lucznik" tileid="pol_wilkolaki.png:2"/>
 		<description>Oto wilkołak łucznik. Strzeż się go w księżycową noc, gdy chowa się pośród drzew.</description>
 		<attributes>
 			<atk value="1950"/>
