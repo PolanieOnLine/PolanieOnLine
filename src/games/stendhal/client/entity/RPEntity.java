@@ -266,6 +266,8 @@ public abstract class RPEntity extends AudibleEntity {
 	/** entity casts shadow by default */
 	private boolean castShadow = true;
 	private String shadowStyle;
+	
+	private boolean isImmortal = false;
 
 	private static final boolean testclient = System.getProperty("stendhal.testclient") != null;
 
@@ -1159,6 +1161,10 @@ public abstract class RPEntity extends AudibleEntity {
 		showTitle = !object.has("unnamed");
 		showHP = !object.has("no_hpbar");
 
+		if (object.has("immortal")) {
+			isImmortal = true;
+		}
+
 		/*
 		 * Determine if entity should not cast a shadow
 		 */
@@ -1700,6 +1706,10 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public boolean showHPBar() {
 		return showHP;
+	}
+
+	public boolean isImmortal() {
+		return isImmortal;
 	}
 
 	/**

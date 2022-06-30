@@ -15,6 +15,7 @@ package games.stendhal.client.gui.map;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import games.stendhal.client.entity.Creature;
 import games.stendhal.client.entity.DomesticAnimal;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.NPC;
@@ -32,7 +33,7 @@ class RPEntityMapObject extends MovingMapObject {
 			drawColor = COLOR_NPC;
 		} else if (entity instanceof DomesticAnimal) {
 			drawColor = COLOR_DOMESTIC_ANIMAL;
-		} else {
+		} else if (entity instanceof Creature) {
 			drawColor = COLOR_CREATURE;
 		}
 	}

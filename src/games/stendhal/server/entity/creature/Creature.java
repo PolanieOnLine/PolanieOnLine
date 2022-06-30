@@ -261,6 +261,7 @@ public class Creature extends NPC {
 			put("unnamed", "");
 			put("no_hpbar", "");
 			put("no_shadow", "");
+			put("immortal", "");
 		}
 
 		for (RPSlot slot : copy.slots()) {

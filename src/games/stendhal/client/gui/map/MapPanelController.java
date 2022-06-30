@@ -107,7 +107,7 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 
 		if (entity instanceof Player) {
 			object = new PlayerMapObject(entity);
-		} else if (entity instanceof RPEntity) {
+		} else if (entity instanceof RPEntity && !((RPEntity) entity).isImmortal()) {
 			object = new RPEntityMapObject(entity);
 		} else if (entity instanceof Portal) {
 			final Portal portal = (Portal) entity;

@@ -59,7 +59,11 @@ public class RPEntityRPClass {
 		entity.addAttribute("flying", Type.FLAG, Definition.VOLATILE);
 		// animation should cycle even if entity is idle
 		entity.addAttribute("active_idle", Type.FLAG, Definition.VOLATILE);
+		
+		/* Immortal creatures */
+		entity.addAttribute("immortal", Type.FLAG, Definition.VOLATILE);
 
+		/* Equipment */
 		entity.addRPSlot("head", 1, Definition.PRIVATE);
 		entity.addRPSlot("neck", 1, Definition.PRIVATE);
 		entity.addRPSlot("rhand", 1, Definition.PRIVATE);
