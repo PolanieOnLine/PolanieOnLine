@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.32
+*klient*
+- Niezniszczalne obiekty typu: mgła / trujące opary itp. nie będą widoczne na mini-mapie
+- Wyłączono pasek zdrowia / nazwę dla mgły i innych niezniszczalnych obiektów
+- Przeniesiono ścieżki plików graficznych stworzeń do głównego folderu w kliencie
+
+*świat*
+- Mgły i inne niezniszczalne obiekty nie będą blokować obrażeń
+
+*naprawiono błędy*
+- Naprawiono brak wyświetlanej grafiki złotego orka
+
+
 1.31
 *klient*
 - Zwiększono przestrzeń głównego ekranu gry
