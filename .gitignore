@@ -50,7 +50,8 @@ build_server_xmlconf
 /map.map
 /hs_err_*.log
 /node_modules/
-/buildtools/launch4j/polanieonline-starter.exe
+
+/buildtools/launch4j/launch4jc.exe.lnk
 /src/games/stendhal/client/update/*.csr
 *.cmd
 updatesigner.bat
