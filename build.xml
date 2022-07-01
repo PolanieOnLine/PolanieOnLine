@@ -353,7 +353,7 @@
 		</maprenderer>
 	</target> <!-- rendermaps -->
 
-	<target name="renderatlas" description="Generates the files for the Stendhal Atlas" depends="compile_polanieonlinetools">
+	<target name="renderatlas" description="Generates the files for the PolanieOnLine Atlas" depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
@@ -449,7 +449,7 @@
 
 	<target name="compile" depends="server_build, client_build, server_build" description="Generates JAR files for both client and server"/>
 
-	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a Stendhal release"/>
+	<target name="dist" depends="clean, dist_binary, dist_source, signupdates" description="Creates all the packages needed for a PolanieOnLine release"/>
 
 	<target name="dist_binary" depends="clean, dist_server_binary, dist_client_binary, dist_client_starter, dist_webclient_binary, dist_client_android"/>
 
@@ -490,6 +490,7 @@
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="LICENSE.txt"/>
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="runserver.bat"/>
 		<copy todir="${buildroot}/polanieonline-${version}-src" file="runserver.sh"/>
+		<copy todir="${buildroot}/polanieonline-${version}-src" file="icon.ico"/>
 		<copy todir="${buildroot}/polanieonline-${version}-src/lib">
 			<fileset dir="libs">
 				<include name="*.txt"/>
@@ -515,7 +516,7 @@
 
 	<!-- START: server -->
 
-	<target name="server_build" depends="init,checkxml" description="Build JAR file for Stendhal server">
+	<target name="server_build" depends="init,checkxml" description="Build JAR file for PolanieOnLine server">
 		<mkdir dir="${build_server}"/>
 
 		<copy todir="${build_server}/data/conf" file="data/conf/stendhalcreateaccount.properties"/>
@@ -946,6 +947,7 @@
 		</copy>
 		<touch file="${buildroot}/polanieonline-${version}/log/polanieonline.txt"/>
 		<!-- <copy todir="${buildroot}/polanieonline-${version}" file="README.md"/> -->
+		<copy todir="${buildroot}/polanieonline-${version}" file="icon.ico"/>
 		<zip destfile="${buildroot}/polanieonline-${version}.zip">
 			<zipfileset dir="${buildroot}/polanieonline-${version}" excludes="polanieonline-starter.jar"/>
 			<zipfileset dir="${buildroot}/polanieonline-${version}" includes="polanieonline-starter.jar" filemode="755"/>
