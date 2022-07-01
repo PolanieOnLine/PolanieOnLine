@@ -972,7 +972,7 @@
 			</fileset>
 			<fileset file="LICENSE.txt"/>
 		</copy>
-		<!-- <copy todir="${buildroot}/polanieonline-${version}" file="README.md"/> -->
+		<copy todir="${buildroot}/polanieonline-${version}" file="README.md"/>
 		<zip destfile="${buildroot}/polanieonline-starter-${version}.zip">
 			<zipfileset dir="${buildroot}/polanieonline-${version}" excludes="${client_starter_jarname}"/>
 			<zipfileset dir="${buildroot}/polanieonline-${version}" includes="${client_starter_jarname}" filemode="755"/>
