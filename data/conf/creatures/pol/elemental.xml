@@ -248,6 +248,8 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="attack weakest"/>
+			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
@@ -291,6 +293,8 @@
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="attack weakest"/>
+			<profile name="active_idle"/>
+			<profile name="flying"/>
 		</ai>
 	</creature>
 
