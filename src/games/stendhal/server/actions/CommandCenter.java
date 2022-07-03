@@ -97,7 +97,6 @@ public class CommandCenter {
 		AttackAction.register();
 		AwayAction.register();
 		BanAction.register();
-		BestiaryAction.register();
 		BuddyAction.register();
 		CastSpellAction.register();
 		ChallengePlayerAction.register();
@@ -110,7 +109,6 @@ public class CommandCenter {
 		FaceAction.register();
 		ForsakeAction.register();
 		GroupManagementAction.register();
-		ItemLogAction.register();
 		KnockAction.register();
 		LanguageAction.register();
 		ListProducersAction.register();

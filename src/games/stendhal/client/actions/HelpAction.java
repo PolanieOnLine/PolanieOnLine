@@ -77,7 +77,6 @@ class HelpAction implements SlashAction {
 				"* RÓŻNE:",
 				"- /info \t\tPokazuje aktualny czas z serwera",
 				"- /clear \tWyczyść chat.",
-				"- /bestiary \tPokazuje okno bestiariusza.",
 				"- /help \tWyświetla podstawowe komendy.",
 				"- /" + REMOVEDETAIL + " \tUsuń warstwę szczegółów (np. balon, parasol itp.) z postaci."
 		};
