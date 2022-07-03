@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2021 - Arianne                          *
+ *                     Copyright © 2020 - Arianne                          *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -97,13 +97,13 @@ public class CollectEnemyData extends AbstractQuest {
 			"-7_deniran_atlantis_mtn_n_e2", "0_orril_mountain_n_w2"
 	};
 
-	private static final int bestiaryPrice = 500000;
+	private static final int bestiaryPrice = 100000;
 
 	private static final Map<String, Pair<String, String>> questionOptions = new HashMap<String, Pair<String, String>>() {{
-		put("poziom", new Pair<String, String>("Jaki poziom on wynosi", null));
-		put("zdrowia", new Pair<String, String>("Ile zdrowia posiada", null));
-		put("obr", new Pair<String, String>("Jaki jest poziom obrony", null));
-		put("atk", new Pair<String, String>("Jaki jest poziom ataku", null));
+		put("poziom", new Pair<String, String>("Jaki jego poziom wynosi", null));
+		put("zdrowie", new Pair<String, String>("Ile zdrowia posiada", null));
+		put("obr", new Pair<String, String>("Ile obrony posiada", null));
+		put("atk", new Pair<String, String>("Jaki poziom ataku posiada", null));
 	}};
 
 	// FIXME: QuestActiveCondition doesn't work for this quest because of the overridden isCompleted method
@@ -128,14 +128,13 @@ public class CollectEnemyData extends AbstractQuest {
 
 	private void initNPC() {
 		npc = new SpeakerNPC("Rengard");
-		npc.setOutfit("body=0,head=0,eyes=16,hair=9,dress=76,mask=5,hat=22");
-		npc.setOutfitColor("skin", SkinColor.DARK);
-		npc.setOutfitColor("hat", 0xff0000);
+		npc.setEntityClass("adventurernpc");
 		npc.setDescription("Oto Rengard. Doświadczony poszukiwacz przygód z uśmiechem na twarzy oraz błyskiem w oku.");
+		npc.setGender("M");
 
 		npc.addGreeting("Witaj kolego poszukiwaczu przygód.");
 		npc.addGoodbye("Obyś miał szczęście w swoich przyszłych przygodach.");
-		npc.addJob("Praca? Hah! Jestem wolnym duchem. Podróżuję po świecie, starając się poszerzyć swoją wiedzę i doświadczenie.");
+		npc.addJob("Praca? Ha! Jestem wolny duchowo. Podróżuję po świecie, starając się poszerzyć swoją wiedzę i doświadczenie.");
 
 		final List<String> helpTriggers = new ArrayList<>();
 		helpTriggers.addAll(ConversationPhrases.HELP_MESSAGES);
@@ -146,7 +145,7 @@ public class CollectEnemyData extends AbstractQuest {
 				//new NotCondition(new QuestCompletedCondition(QUEST_SLOT)),
 				new NotCondition(new QuestStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Jeśli chcesz poszerzyć swoją wiedzę tak jak ja, no to będzię miał jakieś #zadanie, gdzie mógłbym skorzystać.",
+				"Jeśli chcesz poszerzyć swoją wiedzę tak jak ja, to znajdzie się dla ciebie jakieś #zadanie, co mógłbym skorzystać.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -239,12 +238,12 @@ public class CollectEnemyData extends AbstractQuest {
 					setQuestSlot(player, 0, selected, killCount);
 					player.addKarma(35.0);
 
-					npc.say("Świetnie! Zebrałem wiele informacji na temat stworzeń, które spotkałem. Ale wciąż brakuje mi trzech. Po pierwsze potrzebuję trochę informacji na temat "
+					npc.say("Świetnie! Zebrałem już wiele informacji na temat wielu gatunków stworzeń, które napotkałem. Ale wciąż brakuje mi trzech. Po pierwsze potrzebuję trochę informacji na temat "
 							+ Grammar.singular(selected) + ".");
 				} else {
 					setQuestSlot(player, getCurrentStep(player), selected, killCount);
 
-					npc.say("Dziękuję Ci! Spiszę to. Teraz potrzebuję informacji na temat " + Grammar.singular(selected) + ".");
+					npc.say("Dziękuję Ci! Zanotuję to. Teraz potrzebuję informacji na temat " + Grammar.singular(selected) + ".");
 				}
 			}
 		};
@@ -263,7 +262,7 @@ public class CollectEnemyData extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
-				"Czy chciałbyś mi pomóc w gromadzeniu informacji na temat stworzeń znalezionych w świecie Faimouni oraz Prasłowiańskim?",
+				"Czy chciałbyś mi pomóc w gromadzeniu informacji na temat różnych gatunków stworzeń hasających po świecie?",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -273,7 +272,7 @@ public class CollectEnemyData extends AbstractQuest {
 						//new NotCondition(new QuestCompletedCondition(QUEST_SLOT)),
 						new NotCondition(questCompletedCondition)),
 				ConversationStates.ATTENDING,
-				"Zgodziłeś się już pomóc mi w zbieraniu informacji o stworzeniach.",
+				"Zgodziłeś się już mi pomóc w zbieraniu informacji o stworach.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -281,7 +280,7 @@ public class CollectEnemyData extends AbstractQuest {
 				//new QuestCompletedCondition(QUEST_SLOT),
 				questCompletedCondition,
 				ConversationStates.ATTENDING,
-				"Dziękuje za pomoc w gromadzeniu informacji o stworzeniach.",
+				"Dziękuje za pomoc w gromadzeniu informacji o stworach.",
 				null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -331,7 +330,7 @@ public class CollectEnemyData extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						final String question = getQuestionForStep(player, getCurrentStep(player));
 						if (question == null) {
-							onError("Nie można pobrać pytania dla gracza: " + player.getName());
+							onError("Could not retrieve question for player: " + player.getName());
 							return;
 						}
 
@@ -343,7 +342,7 @@ public class CollectEnemyData extends AbstractQuest {
 				"",
 				new NotCondition(answeredCorrectlyCondition),
 				ConversationStates.IDLE,
-				"Hmmm, to nie wydaje się być dokładne. Może mógłbyś dwukrotnie sprawdzić?",
+				"Hmmm, to nie wydaje się być dokładne. Może mógłbyś to sprawdzić jeszcze raz?",
 				null);
 
 		npc.add(ConversationStates.QUESTION_2,
@@ -369,7 +368,7 @@ public class CollectEnemyData extends AbstractQuest {
 						new ChatAction() {
 							@Override
 							public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-								npc.say("Dziękuję bardzo za pomoc. Teraz mam wszystkie informacje potrzebne do ukończenia mojego #bestiariusza."
+								npc.say("Bardzo Ci dziękuję za pomoc. Teraz mam wszystkie informacje potrzebne do ukończenia mojego #bestiariusza."
 										+ " Jeśli chcesz swój własny, mogę ci go sprzedać.");
 								player.addKarma(200.0);
 							}}));
@@ -407,7 +406,9 @@ public class CollectEnemyData extends AbstractQuest {
 			@Override
 			public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
 				if (super.transactAgreedDeal(res, seller, player)) {
-					seller.say("Zapisałem w nim twoje imię, na wypadek gdybyś zgubił.");
+					seller.say("Zapisałem w nim twoje imię, na wypadek gdybyś zgubił. Pamiętaj, że stworzenia, które śledzisz w tym"
+							+ " bestiariuszu, są tylko dla Ciebie. Więc nikt inny tych informacji nie przeczyta. Każdy, kto chce śledzić"
+							+ " pokonane stwory, powinien kupić własny.");
 
 					return true;
 				}
@@ -443,7 +444,7 @@ public class CollectEnemyData extends AbstractQuest {
 				//new QuestCompletedCondition(QUEST_SLOT),
 				questCompletedCondition,
 				ConversationStates.ATTENDING,
-				"Mogę sprzedać ci #bestiariusz.",
+				"Mogę sprzedać Ci #bestiariusz.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -764,7 +765,7 @@ public class CollectEnemyData extends AbstractQuest {
 		// FIXME: is there a way to call these methods automatically?
 		final String questionKey = getQuestionKeyForStep(player, step);
 
-		if (questionKey.equals("zdrowia")) {
+		if (questionKey.equals("zdrowie")) {
 			answer = Integer.toString(creature.getBaseHP());
 		} else if (questionKey.equals("poziom")) {
 			answer = Integer.toString(creature.getLevel());
@@ -772,7 +773,7 @@ public class CollectEnemyData extends AbstractQuest {
 			answer = Integer.toString(creature.getDef());
 		} else if (questionKey.equals("atk")) {
 			answer = Integer.toString(creature.getAtk());
-		} else if (questionKey.equals("ratk")) {
+		} else if (questionKey.equals("str")) {
 			answer = Integer.toString(creature.getRatk());
 		}
 
@@ -798,7 +799,7 @@ public class CollectEnemyData extends AbstractQuest {
 			final String enemy = getEnemyForStep(player, step);
 			if (enemy != null) {
 				if (!isStepDone(player, step)) {
-					res.add("Poprosił mnie o informacje " + enemy + ".");
+					res.add("Poprosił mnie o zdobycie informacji na temat " + enemy + ".");
 				} else {
 					String key = getQuestionKeyForStep(player, step);
 					if (!key.equals("poziom")) {
@@ -810,7 +811,7 @@ public class CollectEnemyData extends AbstractQuest {
 		}
 
 		if (isCompleted(player)) {
-			res.add("Zebrałem wszystkie informacje, które " + npc.getName() + " poprosił mnie o niektórych stworzeniach znalezionych w Faiumoni oraz w świecie Prasłowan. Teraz mogę kupić od niego bestiariusz.");
+			res.add("Zebrałem wszystkie informacje, których żądał " + npc.getName() + " na niektórych napotkanych wrogach w świecie. Teraz mogę kupić od niego bestiariusz.");
 		}
 
 		return res;
@@ -829,7 +830,7 @@ public class CollectEnemyData extends AbstractQuest {
 
 		fillQuestInfo(
 				QUEST_NAME,
-				npc.getName() + " chce pomocy w gromadzeniu informacji o stworzeniach znalezionych w okolicach Faimouni oraz Prasłowan.",
+				npc.getName() + " chce pomocy w gromadzeniu informacji o stworzeniach napotkanych w świecie.",
 				false);
 	}
 	@Override
