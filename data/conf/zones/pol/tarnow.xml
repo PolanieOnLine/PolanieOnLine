@@ -85,8 +85,8 @@
 	</zone>
 
 	<zone name="0_tarnow_city" level="0" x="514080" y="18048" file="Level 0/tarnow/city.tmx">
-		<configurator class-name="games.pol.server.maps.tarnow.city.MageNPC"/>
-		<configurator class-name="games.pol.server.maps.tarnow.city.MythNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tarnow.city.MageNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tarnow.city.MythNPC"/>
 
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -260,7 +260,7 @@
 			<parameter name="weather">varying</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.tarnow.plains.BarbarianShopKeeperNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tarnow.plains.BarbarianShopKeeperNPC"/>
 
 		<entity x="83" y="71">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -383,7 +383,7 @@
 	</zone>
 
 	<zone name="int_tarnow_kitchen" file="interiors/tarnow/kitchen.tmx">
-		<configurator class-name="games.pol.server.maps.tarnow.kitchen.ChefNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tarnow.kitchen.ChefNPC"/>
 		<portal x="10" y="14" ref="kitchen_exit">
 			<destination zone="0_tarnow_city" ref="kitchen_entrance"/>
 			<attribute name="move.continuous" />

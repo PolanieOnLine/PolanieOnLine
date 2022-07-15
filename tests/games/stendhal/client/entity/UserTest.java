@@ -87,6 +87,7 @@ public class UserTest {
 		rpObject.put("level", 42);
 		rpObject.put("x", 0);
 		rpObject.put("y", 0);
+		rpObject.put("gender", "F");
 		user.initialize(rpObject);
 	}
 
@@ -97,13 +98,13 @@ public class UserTest {
 		RPObject changes = new RPObject();
 		changes.put("offline", CARMEN);
 		user.onChangedAdded(user.getRPObject(), changes);
-		assertEquals("Carmen has left Stendhal.", eventLine.getText());
+		assertEquals("Carmen opuścił PolanieOnLine.", eventLine.getText());
 
 		changes.remove("offline");
 		changes.put("online", CARMEN);
 		user.onChangedAdded(user.getRPObject(), changes);
 
-		assertEquals("Carmen has joined Stendhal.", eventLine.getText());
+		assertEquals("Carmen zawitał do PolanieOnLine.", eventLine.getText());
 	}
 
 	@Test
@@ -155,7 +156,7 @@ public class UserTest {
 		user.getRPObject().put("adminlevel", 0);
 		assertFalse(User.isAdmin());
 		user.getRPObject().put("adminlevel", 599);
-		assertFalse(User.isAdmin());
+		assertTrue(User.isAdmin());
 		user.getRPObject().put("adminlevel", 600);
 		assertTrue(User.isAdmin());
 		user.getRPObject().put("adminlevel", 1000);
@@ -188,16 +189,16 @@ public class UserTest {
 	public void testOnAway() {
 		setupUser();
 		user.onAway("away message");
-		assertEquals("You have been marked as being away.", eventLine.getText());
+		assertEquals("Zostałaś oznaczona jako oddalona.", eventLine.getText());
 		user.onAway(null);
-		assertEquals("You are no longer marked as being away.", eventLine.getText());
+		assertEquals("Nie jesteś już oznaczona jako oddalona.", eventLine.getText());
 	}
 
 	@Test
 	public void testOnHealed() {
 		setupUser();
 		user.onHealed(5);
-		assertEquals("test user heals 5 health points.", eventLine.getText());
+		assertEquals("test user odzyskał 5 punkty życia.", eventLine.getText());
 	}
 
 	@Test

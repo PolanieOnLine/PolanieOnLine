@@ -243,12 +243,12 @@ public class StendhalPlayerDatabase {
 
 		// pol1.10.1: add belts column
 		if (!transaction.doesColumnExist("character_stats", "pas")) {
-			transaction.execute("ALTER TABLE character_stats ADD COLUMN pas VARCHAR(32) AFTER legs;", null);
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (pas VARCHAR(32)) AFTER legs;", null);
 		}
 
 		// pol1.17: add mining column
 		if (!transaction.doesColumnExist("character_stats", "mining")) {
-			transaction.execute("ALTER TABLE character_stats ADD COLUMN mining INT(11) AFTER ratk;", null);
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (mining INT(11)) AFTER ratk;", null);
 			transaction.execute("UPDATE character_stats SET mining = '10' WHERE mining IS NULL;", null);
 		}
 

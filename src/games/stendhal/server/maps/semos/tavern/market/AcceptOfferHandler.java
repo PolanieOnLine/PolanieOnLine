@@ -17,6 +17,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.SoundID;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.dbcommand.StoreMessageCommand;
@@ -28,6 +30,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
+import games.stendhal.server.events.SoundEvent;
 import marauroa.server.db.command.DBCommandQueue;
 
 public class AcceptOfferHandler extends OfferHandler {
@@ -98,7 +101,9 @@ public class AcceptOfferHandler extends OfferHandler {
 				logger.debug("wysłanie zawiadomienia do '" + offer.getOfferer() + "': " + earningToFetchMessage.toString());
 				DBCommandQueue.get().enqueue(new StoreMessageCommand("Harold", offer.getOfferer(), earningToFetchMessage.toString(), "N"));
 
+				npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 				npc.say("Dziękuję.");
+
 				// Obsolete the offers, since the list has changed
 				((MarketManagerNPC) npc.getEntity()).getOfferMap().clear();
 				} else {

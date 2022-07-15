@@ -81,7 +81,7 @@ public class DropActionTest {
 
 		// issue "/drop money"
 		assertTrue(action.execute(new String[]{"money"}, ""));
-		assertEquals("You don't have any money", clientUI.getEventBuffer());
+		assertEquals("Nie posiadasz money", clientUI.getEventBuffer());
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class DropActionTest {
 
 		// issue "/drop 85x money"
 		assertTrue(action.execute(new String[]{"85x"}, "money"));
-		assertEquals("Invalid quantity: 85x", clientUI.getEventBuffer());
+		assertEquals("Nieprawidłowa ilość: 85x", clientUI.getEventBuffer());
 	}
 
 	/**

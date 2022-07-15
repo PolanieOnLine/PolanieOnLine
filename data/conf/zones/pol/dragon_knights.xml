@@ -211,7 +211,7 @@
 	<!-- Dragon Knights armory -->
 	<zone name="int_dragon_knights_armory" file="interiors/dragon_knights/armory.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.dragon_knights.MarianekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.dragon_knights.MarianekNPC"/>
 		<portal x="15" y="3" ref="armory_exit">
 			<destination zone="int_dragon_knights_courtyard" ref="armory_entrance"/>
 		</portal>
@@ -220,7 +220,7 @@
 	<!-- Dragon Knights courtyard -->
 	<zone name="int_dragon_knights_courtyard" file="interiors/dragon_knights/courtyard.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.dragon_knights.GiowaniNPC"/>
+		<configurator class-name="games.stendhal.server.maps.dragon_knights.GiowaniNPC"/>
 
 		<portal x="16" y="2" ref="guard_room_1_entrance">
 			<destination zone="int_dragon_knights_guard_room" ref="guard_room_1_exit"/>
@@ -249,7 +249,7 @@
 	<!-- Dragon Knights warehouse -->
 	<zone name="int_dragon_knights_warehouse" file="interiors/dragon_knights/warehouse.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.dragon_knights.ZdzichuNPC"/>
+		<configurator class-name="games.stendhal.server.maps.dragon_knights.ZdzichuNPC"/>
 		<portal x="1" y="5" ref="warehouse_exit">
 			<destination zone="int_dragon_knights_courtyard" ref="warehouse_entrance"/>
 		</portal>

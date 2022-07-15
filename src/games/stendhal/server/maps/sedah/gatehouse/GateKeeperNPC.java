@@ -14,6 +14,7 @@ package games.stendhal.server.maps.sedah.gatehouse;
 import java.util.Arrays;
 import java.util.Map;
 
+import games.stendhal.common.Direction;
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
@@ -135,6 +136,7 @@ public class GateKeeperNPC implements ZoneConfigurator {
 		npc.setEntityClass("recruiter2npc");
 		npc.setGender("M");
 		npc.setPosition(120, 67);
+		npc.setIdleDirection(Direction.DOWN);
 		zone.add(npc);
 	}
 }

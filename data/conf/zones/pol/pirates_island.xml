@@ -86,7 +86,7 @@
 
 	<!-- Island E -->
 	<zone name="0_pirates_island_e" level="0" x="513312" y="1024" file="Level 0/pirates/island_e.tmx">
-		<configurator class-name="games.pol.server.maps.pirate_island.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.FerryConveyerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -232,8 +232,8 @@
 
 	<!-- Ship -->
 	<zone name="int_pirate_ship" file="interiors/pirates/ship.tmx">
-		<configurator class-name="games.pol.server.maps.pirate_island.ship.CoastConveyerNPC"/>
-		<configurator class-name="games.pol.server.maps.pirate_island.ship.CaptainNPC"/>
+		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.CoastConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.pirate_island.ship.CaptainNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>

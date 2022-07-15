@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,17 +47,40 @@ public class PortalMatchTest {
 			final DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 			final File directory = new File("data/conf/zones/");
-			final File[] files = directory.listFiles(new FileFilter() {
-
+			final File poldirectory = new File("data/conf/zones/pol/");
+			final File stdirectory = new File("data/conf/zones/stendhal/");
+			final File[] misc = directory.listFiles(new FileFilter() {
+				@Override
+				public boolean accept(final File file) {
+					return file.getName().endsWith("xml");
+				}
+			});
+			final File[] polZones = poldirectory.listFiles(new FileFilter() {
+				@Override
+				public boolean accept(final File file) {
+					return file.getName().endsWith("xml");
+				}
+			});
+			final File[] stZones = stdirectory.listFiles(new FileFilter() {
 				@Override
 				public boolean accept(final File file) {
 					return file.getName().endsWith("xml");
 				}
 			});
 
-			assertThat(files, notNullValue());
-			assertThat("files should not be empty", files.length, not((is(0))));
-			for (final File f : files) {
+			assertThat(misc, notNullValue());
+			assertThat(polZones, notNullValue());
+			assertThat(stZones, notNullValue());
+			assertThat("files should not be empty", Arrays.asList(misc.length, polZones.length, stZones.length), not((is(0))));
+			for (final File f : misc) {
+				final Document doc = docBuilder.parse(f);
+				portals.addAll(proceedDocument(doc));
+			}
+			for (final File f : polZones) {
+				final Document doc = docBuilder.parse(f);
+				portals.addAll(proceedDocument(doc));
+			}
+			for (final File f : stZones) {
 				final Document doc = docBuilder.parse(f);
 				portals.addAll(proceedDocument(doc));
 			}

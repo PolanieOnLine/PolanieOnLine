@@ -13,6 +13,8 @@ package games.stendhal.server.maps.semos.tavern.market;
 
 import java.util.Arrays;
 
+import games.stendhal.common.constants.SoundID;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
@@ -31,6 +33,7 @@ import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
 import games.stendhal.server.entity.trade.Offer;
+import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.util.AsynchronousProgramExecutor;
 import marauroa.server.db.command.DBCommandQueue;
 
@@ -212,6 +215,7 @@ public class PrepareOfferHandler {
 					TradingUtility.substractTradingFee(player, price);
 					new AsynchronousProgramExecutor("trade", buildTweetMessage(item, quantity, price)).start();
 					DBCommandQueue.get().enqueue(new LogTradeEventCommand(player, item, quantity, price));
+					npc.addEvent(new SoundEvent(SoundID.COMMERCE2, SoundLayer.CREATURE_NOISE));
 					npc.say("Dodałem twoją ofertę do sprzedaży i pobrałem prowizję w wysokości "+ fee +" money.");
 					npc.setCurrentState(ConversationStates.ATTENDING);
 				} else {

@@ -464,7 +464,6 @@ public class CollectEnemyData extends AbstractQuest {
 				null);
 	}
 
-
 	/**
 	 * Fills in information in the quest slot for a step.
 	 *

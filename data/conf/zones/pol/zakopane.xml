@@ -46,7 +46,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.zakopane.littlevillage.GapcioNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.littlevillage.GapcioNPC"/>
 
 		<entity x="98" y="122">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -98,9 +98,9 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.zakopane.gorasmoka.AddWhiteBalloonListener"/>
-		<configurator class-name="games.pol.server.maps.zakopane.gorasmoka.OzoNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.plains.RatownikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.gorasmoka.AddWhiteBalloonListener"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.gorasmoka.OzoNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.plains.RatownikNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -311,10 +311,10 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.zakopane.city.GazdaJedrzejNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.BuklakNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.ButelkaNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.ButeleczkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.GazdaJedrzejNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.BuklakNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.ButelkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.ButeleczkaNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -422,7 +422,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.zakopane.city.TadekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.TadekNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -511,15 +511,15 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 		</attributes>
 
-		<configurator class-name="games.pol.server.maps.zakopane.city.HalloweenSellerNPC" condition="stendhal.minetown"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.HalloweenSellerNPC" condition="stendhal.minetown"/>
 
-		<configurator class-name="games.pol.server.maps.zakopane.city.BacaZbyszekNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.FryderykNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.GawedziarzNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.HeroldNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.city.DorianNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.BacaZbyszekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.FryderykNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.GawedziarzNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.HeroldNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.DorianNPC"/>
 
-		<configurator class-name="games.pol.server.maps.zakopane.city.CommonChest"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.CommonChest"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -921,7 +921,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- zakopane_s_e2 -->
 	<zone name="0_zakopane_s_e2" level="0" x="513568" y="18688" file="Level 0/zakopane/s_e2.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.plains.DobromirNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.plains.DobromirNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
@@ -958,7 +958,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Maisonette 0 -->
 	<zone name="int_zakopane_maisonette_0" file="interiors/zakopane/maisonette_0.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.house.BoleslawNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.house.BoleslawNPC"/>
 		<entity x="7" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">pol-ognisko</parameter>
@@ -979,7 +979,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Maisonette 1 -->
 	<zone name="int_zakopane_maisonette_1" file="interiors/zakopane/maisonette_1.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.house.CelinaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.house.CelinaNPC"/>
 		<entity x="3" y="9">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
@@ -998,8 +998,8 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bakery -->
 	<zone name="int_zakopane_bakery" file="interiors/zakopane/bakery.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.bakery.ChefNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.bakery.ShopAssistantNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.bakery.ChefNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.bakery.ShopAssistantNPC"/>
 
 		<portal x="26" y="14" ref="entrance_bakery">
 			<destination zone="0_zakopane_se" ref="bakery_entrance"/>
@@ -1009,7 +1009,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bank 0 -->
 	<zone name="int_zakopane_bank_0" file="interiors/zakopane/bank_0.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.bank.market.TraderNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.bank.market.TraderNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<attributes>
@@ -1361,7 +1361,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<!-- -1 bank -->
 	<zone name="int_zakopane_bank_-1"  file="interiors/zakopane/bank_-1.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.zakopane.bank.ItemsOnTable"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.bank.ItemsOnTable"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -1542,7 +1542,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bat Tower 3 -->
 	<zone name="int_zakopane_bat_tower_3"  file="interiors/zakopane/bat_tower_3.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.tower.WizardNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.tower.WizardNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
@@ -1556,9 +1556,9 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Blacksmith -->
 	<zone name="int_zakopane_blacksmith" file="interiors/zakopane/blacksmith.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.blacksmith.KowalAndrzejNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.blacksmith.KrasnoludNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.blacksmith.DwojakiElwirkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.blacksmith.KowalAndrzejNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.blacksmith.KrasnoludNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.blacksmith.DwojakiElwirkaNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -1591,8 +1591,8 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Hospital -->
 	<zone name="int_zakopane_hospital" file="interiors/zakopane/hospital.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.hospital.BogusNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.hospital.GazdzinaJadzkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.hospital.BogusNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.hospital.GazdzinaJadzkaNPC"/>
 
 		<entity x="7" y="5">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -1637,7 +1637,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Hostel -->
 	<zone name="int_zakopane_hostel" file="interiors/zakopane/hostel.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.hostel.BronekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.hostel.BronekNPC"/>
 
 		<entity x="16" y="15">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -1661,7 +1661,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Mine hut -->
 	<zone name="int_zakopane_mines_hut" file="interiors/zakopane/hut.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.cave.hut.ItemsOnTable"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.cave.hut.ItemsOnTable"/>
 
 		<portal x="5" y="10" ref="hut_exit">
 			<destination zone="-3_zakopane_mines" ref="hut_entrance"/>
@@ -1671,7 +1671,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Houses -->
 	<zone name="int_zakopane_seller_house" file="interiors/zakopane/house_200.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.house.AlicjaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.house.AlicjaNPC"/>
 
 		<!-- Piano -->
 		<entity x="15" y="13">
@@ -1919,9 +1919,9 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Home 0 -->
 	<zone name="int_zakopane_home" file="interiors/zakopane/home.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.home.AdasNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.home.PietrekNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.home.JanislawNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.home.AdasNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.home.PietrekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.home.JanislawNPC"/>
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/home_xmas.tmx</parameter>
 		</attributes>
@@ -2122,7 +2122,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Playroom -->
 	<zone name="int_zakopane_playroom" file="interiors/zakopane/playroom.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.playroom.Playroomset"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.playroom.Playroomset"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -2159,7 +2159,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Shop -->
 	<zone name="int_zakopane_shop" file="interiors/zakopane/shop.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.shop.StasekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.shop.StasekNPC"/>
 		<portal x="5" y="19" ref="shop_exit">
 			<destination zone="0_zakopane_c" ref="shop_entrance"/>
 			<attribute name="move.continuous" />
@@ -2178,8 +2178,8 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Stable -->
 	<zone name="int_zakopane_stable" file="interiors/zakopane/stable.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.stable.StableNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.stable.VetNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.stable.StableNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.stable.VetNPC"/>
 
 		<entity x="15" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -2203,7 +2203,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 0 -->
 	<zone name="int_zakopane_sewing_house_0" file="interiors/zakopane/sewing_house_0.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.sewinghouse.GlovesBuyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.GlovesBuyerNPC"/>
 		<entity x="12" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">buygloves</parameter>
@@ -2228,8 +2228,8 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 1 -->
 	<zone name="int_zakopane_sewing_house_1" file="interiors/zakopane/sewing_house_1.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.sewinghouse.SewingNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.sewinghouse.CollectorNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.SewingNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.CollectorNPC"/>
 
 		<portal x="16" y="10" ref="sewing_down">
 			<destination zone="int_zakopane_sewing_house_0" ref="sewing_up"/>
@@ -2242,7 +2242,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 		<attributes>
 			<parameter name="file" condition="pol.birthday">interiors/zakopane/tavern_tort.tmx</parameter>
 		</attributes>
-		<configurator class-name="games.pol.server.maps.zakopane.tavern.JagnaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.tavern.JagnaNPC"/>
 		<entity x="28" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">urodziny</parameter>
@@ -2328,7 +2328,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Church -->
 	<zone name="int_zakopane_church" file="interiors/zakopane/church.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.church.WikaryNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.church.WikaryNPC"/>
 		<entity x="12" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-bell</parameter>
@@ -2367,8 +2367,8 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Townhall -->
 	<zone name="int_zakopane_townhall" file="interiors/zakopane/townhall.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.townhall.GazdaWojtekNPC"/>
-		<configurator class-name="games.pol.server.maps.zakopane.townhall.GosciradNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.townhall.GazdaWojtekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.townhall.GosciradNPC"/>
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/townhall_xmas.tmx</parameter>
 		</attributes>
@@ -2452,7 +2452,7 @@ Aktualne ceny u Gazdy Wojtka:
 	<!-- Level -1 -->
 
 	<zone name="-1_zakopane_mountain_cave" level="-1" x="513056" y="18176" file="Level -1/zakopane/mountain_cave.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.mountain.ResetLVLNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.mountain.ResetLVLNPC"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -2522,7 +2522,7 @@ Aktualne ceny u Gazdy Wojtka:
 
 	<!-- zakopane_cave -->
 	<zone name="-2_zakopane_cave" level="-2" x="513440" y="18560" file="Level -2/zakopane/cave.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.cave.BartlomiejNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.cave.BartlomiejNPC"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -2567,7 +2567,7 @@ Aktualne ceny u Gazdy Wojtka:
 
 	<!-- zakopane_e -->
 	<zone name="-3_zakopane_mines" level="-2" x="513440" y="18560" file="Level -3/zakopane/mines.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.cave.GornikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.cave.GornikNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<attributes>
@@ -2621,7 +2621,7 @@ Aktualne ceny u Gazdy Wojtka:
 	<!-- Level 1 -->
 
 	<zone name="1_football_playground" level="1" x="513312" y="18688" file="Level 1/zakopane/football_playground.tmx">
-		<configurator class-name="games.pol.server.maps.zakopane.stadium.KibicNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.stadium.KibicNPC"/>
 
 		<entity x="0" y="23">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -2821,7 +2821,7 @@ Aktualne ceny u Gazdy Wojtka:
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
-		<configurator class-name="games.pol.server.maps.zakopane.clouds.SmokNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.clouds.SmokNPC"/>
 
 		<entity x="13" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">

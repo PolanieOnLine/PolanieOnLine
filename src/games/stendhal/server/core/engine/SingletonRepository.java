@@ -11,9 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine;
 
-import games.pol.server.maps.gdansk.ship.GdanskFerry;
-import games.pol.server.maps.krakow.ship.KrakowFerry;
-import games.pol.server.maps.pirate_island.ship.PirateFerry;
 import games.stendhal.server.core.events.LoginNotifier;
 import games.stendhal.server.core.events.LogoutNotifier;
 import games.stendhal.server.core.events.TurnNotifier;
@@ -23,16 +20,19 @@ import games.stendhal.server.core.rp.group.GroupManager;
 import games.stendhal.server.core.rp.pvp.PlayerVsPlayerChallengeManager;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.core.rule.defaultruleset.DefaultEntityManager;
+import games.stendhal.server.entity.npc.CloneManager;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 import games.stendhal.server.entity.npc.behaviour.journal.ServicersRegister;
-import games.stendhal.server.entity.npc.CloneManager;
 import games.stendhal.server.entity.player.GagManager;
 import games.stendhal.server.entity.player.Jail;
 import games.stendhal.server.entity.slot.BankAccessorManager;
 import games.stendhal.server.maps.athor.ship.AthorFerry;
+import games.stendhal.server.maps.gdansk.ship.GdanskFerry;
+import games.stendhal.server.maps.krakow.ship.KrakowFerry;
+import games.stendhal.server.maps.pirate_island.ship.PirateFerry;
 import marauroa.server.db.TransactionPool;
 
 /**

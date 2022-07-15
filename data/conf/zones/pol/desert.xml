@@ -187,7 +187,7 @@
 	<!-- Blacksmith -->
 	<zone name="int_desert_blacksmith" file="interiors/desert/blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.desert.blackriver.JozekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.desert.blackriver.JozekNPC"/>
 		<entity x="3" y="3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>

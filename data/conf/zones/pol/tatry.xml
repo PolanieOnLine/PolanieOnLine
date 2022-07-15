@@ -22,7 +22,7 @@
 	<!-- Y: 18816 -->
 	<!-- dolina_koscieliska_n -->
 	<zone name="0_tatry_dolina_koscieliska_n" level="0" x="513056" y="18816" file="Level 0/tatry/dolina_koscieliska_n.tmx">
-		<configurator class-name="games.pol.server.maps.tatry.mountain.GoralskiKolekcjonerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.mountain.GoralskiKolekcjonerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
@@ -280,7 +280,7 @@
 
 	<!-- dolina_koscieliska_n - house -->
 	<zone name="int_tatry_dolina_koscieliska_house" file="interiors/tatry/house.tmx">
-		<configurator class-name="games.pol.server.maps.tatry.mountain.house.ZonaGoralaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.mountain.house.ZonaGoralaNPC"/>
 
 		<portal x="13" y="18" ref="exit">
 			<destination zone="0_tatry_dolina_koscieliska_n" ref="entrance"/>
@@ -290,8 +290,8 @@
 	<!-- kuznice  -->
 	<!-- townhall  -->
 	<zone name="int_tatry_kuznice_townhall" file="interiors/tatry/townhall.tmx">
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.townhall.FinarfinNPC"/>
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.townhall.SoltysNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.townhall.FinarfinNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.townhall.SoltysNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
@@ -352,9 +352,9 @@
 
 	<!-- tavern  -->
 	<zone name="int_tatry_kuznice_tavern" file="interiors/tatry/tavern.tmx">
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.tavern.JagienkaNPC"/>
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.tavern.ImprezowiczNPC"/>
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.tavern.TajemniczaOsobaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.tavern.JagienkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.tavern.ImprezowiczNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.tavern.TajemniczaOsobaNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
@@ -438,8 +438,8 @@
 
 	<!-- hostel  -->
 	<zone name="int_tatry_kuznice_hostel" file="interiors/tatry/hostel.tmx">
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.hostel.DzieciakiNPCs" />
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.hostel.PiorkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.hostel.DzieciakiNPCs" />
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.hostel.PiorkaNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
@@ -491,8 +491,8 @@
 
 	<!-- trainstation  -->
 	<zone name="int_tatry_kuznice_blacksmith" file="interiors/tatry/blacksmith.tmx">
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.blacksmith.BlacksmithNPC"/>
-		<configurator class-name="games.pol.server.maps.tatry.kuznice.blacksmith.ZygfrydNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.blacksmith.BlacksmithNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tatry.kuznice.blacksmith.ZygfrydNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -535,7 +535,7 @@
 
 	<!-- chapel  -->
 	<zone name="int_tatry_kuznice_chapel" file="interiors/tatry/chapel.tmx">
-	<configurator class-name="games.pol.server.maps.tatry.kuznice.chapel.RadomilNPC"/>
+	<configurator class-name="games.stendhal.server.maps.tatry.kuznice.chapel.RadomilNPC"/>
 		<entity x="10" y="10">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">creaky-door-1, creaky-door-2, window-close-1</parameter>

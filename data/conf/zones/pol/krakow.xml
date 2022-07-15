@@ -34,8 +34,8 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_nw -->
 	<zone name="0_krakow_nw" level="0" x="513312" y="17664" file="Level 0/krakow/nw.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.planty.EdragonNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.planty.KajetanNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.EdragonNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.KajetanNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -51,7 +51,7 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_n -->
 	<zone name="0_krakow_n" level="0" x="513440" y="17664" file="Level 0/krakow/n.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.barbakan.BarbakanGuardianNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.barbakan.BarbakanGuardianNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -93,8 +93,8 @@ Południowy-Wschód: Kraków
 	<!-- krakow_w -->
 	<zone name="0_krakow_w" level="0" x="513312" y="17792" file="Level 0/krakow/w.tmx">
 		<!-- NPCs -->
-		<configurator class-name="games.pol.server.maps.krakow.planty.KidsNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.planty.AmandaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.KidsNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.AmandaNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -126,11 +126,11 @@ Południowy-Wschód: Kraków
 	<!-- krakow_rynek -->
 	<zone name="0_krakow_rynek" level="0" x="513440" y="17792" file="Level 0/krakow/rynek.tmx">
 		<!-- PET -->
-		<configurator class-name="games.pol.server.maps.krakow.planty.PuppyNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.PuppyNPC"/>
 		<!-- NPCs -->
-		<configurator class-name="games.pol.server.maps.krakow.marketplace.LajkonikNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.blacksmith.BlacksmithNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.vineyard.WinicjuszNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.marketplace.LajkonikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.blacksmith.BlacksmithNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.vineyard.WinicjuszNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -337,10 +337,10 @@ Południowy-Wschód: Kraków
 	<!-- krakow_se -->
 	<zone name="0_krakow_se" level="0" x="513568" y="17920" file="Level 0/krakow/se.tmx">
 		<!-- PET -->
-		<configurator class-name="games.pol.server.maps.krakow.planty.RabbitNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.RabbitNPC"/>
 		<!-- NPCs -->
-		<configurator class-name="games.pol.server.maps.krakow.planty.FarmerNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.planty.AishaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.FarmerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.AishaNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -356,7 +356,7 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_wisla_nw -->
 	<zone name="0_krakow_wisla_nw" level="0" x="513312" y="18048" file="Level 0/krakow/wisla_nw.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.planty.MysliwyNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.MysliwyNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -375,7 +375,7 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_wawel_w -->
 	<zone name="0_krakow_wawel_w" level="0" x="513440" y="18048" file="Level 0/krakow/wawel_w.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.wawel.StraznikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.wawel.StraznikNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -455,8 +455,8 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_wawel_e -->
 	<zone name="0_krakow_wawel_e" level="0" x="513568" y="18048" file="Level 0/krakow/wawel_e.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.wawel.KingKrakNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.planty.TargonNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.wawel.KingKrakNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.TargonNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -487,7 +487,7 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_wisla_w -->
 	<zone name="0_krakow_wisla_w" level="0" x="513312" y="18176" file="Level 0/krakow/wisla_w.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.planty.ThomasNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.ThomasNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -584,9 +584,9 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_wisla_e -->
 	<zone name="0_krakow_wisla_e" level="0" x="513568" y="18176" file="Level 0/krakow/wisla_e.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.planty.KacperNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.planty.RybakNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.KacperNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.planty.RybakNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.ship.FerryConveyerNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -647,7 +647,7 @@ Południe: tereny Tatrzańskie
 
 	<!-- krakow_wisla_sw -->
 	<zone name="0_krakow_wisla_sw" level="0" x="513312" y="18304" file="Level 0/krakow/wisla_sw.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.forest.TolimirNPC" condition="testing.combat"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.forest.TolimirNPC" condition="testing.combat"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -713,7 +713,7 @@ Południe: Zakopane
 
 	<!-- krakow_wisla_s -->
 	<zone name="0_krakow_wisla_s" level="0" x="513440" y="18304" file="Level 0/krakow/wisla_s.tmx">
-		<configurator class-name="games.pol.server.maps.krakow.forest.WagabundusNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.forest.WagabundusNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -1326,8 +1326,8 @@ Południe: Zakopane
 	<!-- Bakery -->
 	<zone name="int_krakow_bakery" file="interiors/krakow/bakery.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.bakery.EdnaNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.bakery.LanoszNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.bakery.EdnaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.bakery.LanoszNPC"/>
 
 		<entity x="16" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -1346,7 +1346,7 @@ Południe: Zakopane
 	<!-- Blacksmith -->
 	<zone name="int_krakow_blacksmith" file="interiors/krakow/blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.blacksmith.BlacksmithAssistNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.blacksmith.BlacksmithAssistNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -1385,7 +1385,7 @@ Południe: Zakopane
 	<!-- Dwarf blacksmith -->
 	<zone name="int_krakow_dwarf_blacksmith" file="interiors/krakow/dwarf_blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.blacksmith.HadrinNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.blacksmith.HadrinNPC"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">hammer-1, smith-1</parameter>
@@ -1421,9 +1421,9 @@ Południe: Zakopane
 	<!-- Church -->
 	<zone name="int_krakow_church" file="interiors/krakow/church.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.church.HonoratNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.church.StJacekNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.church.StKingaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.church.HonoratNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.church.StJacekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.church.StKingaNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -1482,10 +1482,10 @@ Południe: Zakopane
 	<!-- Tavern -->
 	<zone name="int_krakow_tavern" file="interiors/krakow/tavern.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.tavern.BarmankaNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.tavern.KarczmarkaNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.tavern.KuglarzNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.tavern.MerchandNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.BarmankaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.KarczmarkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.KuglarzNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.MerchandNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -1544,7 +1544,7 @@ Południe: Zakopane
 	<!-- Vineyard house 0 -->
 	<zone name="int_krakow_vineyard_house_0" file="interiors/krakow/vineyard_house_0.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.vineyard.ZbyszkoNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.vineyard.ZbyszkoNPC"/>
 
 		<portal x="22" y="2" ref="vyh_-1_entrance">
 			<destination zone="int_krakow_vineyard_house_-1" ref="vyh_-1_exit"/>
@@ -1568,7 +1568,7 @@ Południe: Zakopane
 	<!-- Archeologist house -->
 	<zone name="int_krakow_archeologist_house" file="interiors/krakow/archeologist_house.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.archeologist.ArcheologistNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.archeologist.ArcheologistNPC"/>
 
 		<entity x="14" y="9">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />
@@ -1610,9 +1610,9 @@ Południe: Zakopane
 	<!-- Saddler house -->
 	<zone name="int_krakow_saddler_house" file="interiors/krakow/saddler_house.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.saddler.KrawiecNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.saddler.KrawiecNPC"/>
 		<entity x="7" y="7">
-			<implementation class-name="games.pol.server.maps.krakow.saddler.SaddlerNPC">
+			<implementation class-name="games.stendhal.server.maps.krakow.saddler.SaddlerNPC">
 				<parameter name="name">Rymarz</parameter>
 			</implementation>
 			<attribute name="class">man_002_npc</attribute>
@@ -1630,8 +1630,8 @@ Południe: Zakopane
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
-		<configurator class-name="games.pol.server.maps.krakow.ship.CaptainNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.ship.CoastConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.ship.CaptainNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.ship.CoastConveyerNPC"/>
 		<entity x="23" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
@@ -1661,13 +1661,13 @@ Południe: Zakopane
 	<!-- Sukiennice -->
 	<zone name="int_krakow_sukiennice" file="interiors/krakow/sukiennice.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.PrzekupkaNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.ChengNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.IrekNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.WaldekNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.RybakMiloradNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.RzeznikNPC"/>
-		<configurator class-name="games.pol.server.maps.krakow.sukiennice.ZielarkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.PrzekupkaNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.ChengNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.IrekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.WaldekNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.RybakMiloradNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.RzeznikNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.sukiennice.ZielarkaNPC"/>
 
 		<!-- książki z ofertami -->
 		<entity x="24" y="4">
@@ -1852,7 +1852,7 @@ Południe: Zakopane
 	<!-- Woodcutter hut -->
 	<zone name="int_krakow_woodcutter_hut" file="interiors/krakow/woodcutter_hut.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.pol.server.maps.krakow.woodcutter.WoodcutterNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.woodcutter.WoodcutterNPC"/>
 		<portal x="7" y="14" ref="woodcutter_exit">
 			<destination zone="0_krakow_wisla" ref="woodcutter_entrance"/>
 			<attribute name="move.continuous" />

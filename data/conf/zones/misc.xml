@@ -549,7 +549,7 @@ Wyjście do #Zakopca!
 	</zone>
 
 	<zone name="-1_ice_vault" file="interiors/abstract/ice_vault.tmx">
-		<configurator class-name="games.pol.server.maps.dragon.wizardtower.vault.IceVaultCreature" />
+		<configurator class-name="games.stendhal.server.maps.dragon.wizardtower.vault.IceVaultCreature" />
 		<attributes>
 			<parameter name="color_method">softlight</parameter>
 			<parameter name="color">#0099da</parameter>

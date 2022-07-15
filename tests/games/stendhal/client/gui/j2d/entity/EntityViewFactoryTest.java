@@ -76,7 +76,7 @@ public class EntityViewFactoryTest {
 		assertEquals(EntityViewFactory.getViewClass("item", "ring", "emerald-ring"), BreakableRing2DView.class);
 
 		assertEquals(EntityViewFactory.getViewClass("sheep", null, null),  Sheep2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("food", null, null), SheepFood2DView.class);
+		assertEquals(EntityViewFactory.getViewClass("food", null, null), GoatFood2DView.class);
 
 		assertEquals(EntityViewFactory.getViewClass("sign", null, null),  Sign2DView.class);
 		assertEquals(EntityViewFactory.getViewClass("blackboard", null, null),  Sign2DView.class);

@@ -87,8 +87,8 @@
 
 	<!-- warszawa_c (ne - old) -->
 	<zone name="0_warszawa_c" level="0" x="513440" y="17408" file="Level 0/warszawa/c.tmx">
-		<configurator class-name="games.pol.server.maps.warszawa.ship.FerryConveyerNPC"/>
-		<configurator class-name="games.pol.server.maps.warszawa.ship.FerryConveyerGdanskNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.ship.FerryConveyerGdanskNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -134,9 +134,9 @@
 
 	<!-- warszawa_e -->
 	<zone name="0_warszawa_e" level="0" x="513568" y="17408" file="Level 0/warszawa/e.tmx">
-		<configurator class-name="games.pol.server.maps.warszawa.castle.KnightNPC"/>
-		<configurator class-name="games.pol.server.maps.warszawa.castle.PrinceNPC"/>
-		<configurator class-name="games.pol.server.maps.warszawa.castle.WarsawArmy"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.castle.KnightNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.castle.PrinceNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.castle.WarsawArmy"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -258,7 +258,7 @@
 
 	<!-- Eltefia House -->
 	<zone name="int_warszawa_eltefia_house" file="interiors/warszawa/collector_house.tmx">
-		<configurator class-name="games.pol.server.maps.warszawa.house.CollectorNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.house.CollectorNPC"/>
 
 		<portal x="8" y="18" ref="exit">
 			<destination zone="0_warszawa_w" ref="entrance"/>
@@ -268,7 +268,7 @@
 	
 	<!-- Blacksmith -->
 	<zone name="int_warszawa_blacksmith" file="interiors/warszawa/blacksmith.tmx">
-		<configurator class-name="games.pol.server.maps.warszawa.blacksmith.BlacksmithNPC"/>
+		<configurator class-name="games.stendhal.server.maps.warszawa.blacksmith.BlacksmithNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">

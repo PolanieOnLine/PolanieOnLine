@@ -43,7 +43,7 @@ public class StatusIconPanelTest {
 
 		iconPanel.setAway("excuse to be away");
 		assertTrue(iconPanel.away.isVisible());
-		assertEquals("<html>You are away with the message:<br><b>excuse to be away", iconPanel.away.getToolTipText());
+		assertEquals("<html>Jesteś oddalony z wiadomością:<br><b>excuse to be away", iconPanel.away.getToolTipText());
 		iconPanel.setAway(null);
 		assertFalse(iconPanel.away.isVisible());
 	}
@@ -57,7 +57,7 @@ public class StatusIconPanelTest {
 
 		iconPanel.setGrumpy("reason to be grumpy");
 		assertTrue(iconPanel.grumpy.isVisible());
-		assertEquals("<html>You are grumpy with the message:<br><b>reason to be grumpy", iconPanel.grumpy.getToolTipText());
+		assertEquals("<html>Jesteś niedostępny z wiadomością:<br><b>reason to be grumpy", iconPanel.grumpy.getToolTipText());
 		iconPanel.setGrumpy(null);
 		assertFalse(iconPanel.grumpy.isVisible());
 	}

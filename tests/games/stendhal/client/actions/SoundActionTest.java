@@ -42,7 +42,7 @@ public class SoundActionTest {
 		final MockClientUI ui = new MockClientUI();
 		final SoundAction action = new SoundAction();
 		assertTrue(action.execute(null, "remainder"));
-		assertEquals("This command is outdated. Please use \"/volume\" for changing the volume and \"/mute\" for muting all audio", ui.getEventBuffer());
+		assertEquals("Ta komenda jest już nieużywana. Użyj \"/volume\", aby zmieniać poziom głośności i \"/mute\", aby wyciszyć wszystkie odgłosy", ui.getEventBuffer());
 
 	}
 
