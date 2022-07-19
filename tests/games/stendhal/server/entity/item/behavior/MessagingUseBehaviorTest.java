@@ -164,7 +164,7 @@ public class MessagingUseBehaviorTest {
 		entity.setPosition(10, 10);
 		UseBehavior b = new MessagingUseBehavior(params);
 		b.use(entity, item);
-		assertEquals(WRONG_PRIVATE, "That name1 is too far away.", getPrivate(entity));
+		assertEquals(WRONG_PRIVATE, "Ten name1 jest jest zbyt daleko.", getPrivate(entity));
 		assertEquals(WRONG_PUBLIC, null, entity.get(TEXT_ATTR));
 	}
 

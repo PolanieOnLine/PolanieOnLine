@@ -47,7 +47,7 @@ public class GagManagerTest {
 		final Player policeman = PlayerTestHelper.createPlayer("player");
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		SingletonRepository.getGagManager().gag("bob", policeman, 1, "test");
-		assertEquals("Player bob not found", policeman.events().get(0).get("text"));
+		assertEquals("Wojownik bob nie został znaleziony", policeman.events().get(0).get("text"));
 		assertFalse(GagManager.isGagged(bob));
 	}
 
@@ -59,7 +59,7 @@ public class GagManagerTest {
 		final Player policeman = PlayerTestHelper.createPlayer("player");
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		SingletonRepository.getGagManager().gag(bob, policeman, 1, "test", bob.getName());
-		assertEquals("You have gagged bob for 1 minutes. Reason: test.",
+		assertEquals("Uciszyłeś bob na 1 minutę. Powód: test.",
 				policeman.events().get(0).get("text"));
 		assertTrue(GagManager.isGagged(bob));
 		SingletonRepository.getGagManager().release(bob);
@@ -75,7 +75,7 @@ public class GagManagerTest {
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		assertTrue(policeman.events().isEmpty());
 		SingletonRepository.getGagManager().gag(bob, policeman, -1, "test", bob.getName());
-		assertEquals("Infinity (negative numbers) is not supported.", policeman
+		assertEquals("Nieskończoność (nieprawidłowy numer) nie jest akceptowana.", policeman
 				.events().get(0).get("text"));
 		assertFalse(GagManager.isGagged(bob));
 	}
@@ -89,7 +89,7 @@ public class GagManagerTest {
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 
 		SingletonRepository.getGagManager().gag(bob, policeman, 1, "test", bob.getName());
-		assertEquals("You have gagged bob for 1 minutes. Reason: test.",
+		assertEquals("Uciszyłeś bob na 1 minutę. Powód: test.",
 				policeman.events().get(0).get("text"));
 		assertTrue(GagManager.isGagged(bob));
 		SingletonRepository.getGagManager().onLoggedIn(bob);

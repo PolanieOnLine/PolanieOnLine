@@ -36,7 +36,7 @@ public class BloodTest {
 	@Test
 	public final void testDescribe() {
 		final Blood bl = new Blood();
-		assertEquals("You see a pool of blood.", bl.describe());
+		assertEquals("Karmazynowa plama krwi zbrukała to miejsce.", bl.describe());
 	}
 
 	/**

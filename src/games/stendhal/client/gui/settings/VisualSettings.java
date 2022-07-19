@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui.settings;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.BUBBLES_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
 
 import java.awt.Component;
@@ -231,6 +232,19 @@ class VisualSettings {
 			}
 		});
 		page.add(showHPBarToggle);
+
+		final JCheckBox chatBubblesToggle = SettingsComponentFactory.createSettingsToggle(BUBBLES_PROPERTY, false,
+				"Ruchome dymki chatu", "Dymki chatu podążają za graczem i innymi obiektami.");
+		chatBubblesToggle.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+				String tmp = enabled ? "włączone" : "wyłączone";
+				String msg = "Ruchome dymki chatu zostały " + tmp + ".";
+				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+			}
+		});
+		page.add(chatBubblesToggle);
 
 		page.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
 

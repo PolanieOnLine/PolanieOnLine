@@ -122,7 +122,7 @@ public class ItemTest {
 	public void testDescribe() {
 		final Item item = new Item("name1", "class", "subclass",
 				new HashMap<String, String>());
-		assertThat(item.describe(), equalTo("You see a §'name1'."));
+		assertThat(item.describe(), equalTo("Oto §'name1'."));
 
 		item.setDescription("Description.");
 		item.setBoundTo("hero");
@@ -134,10 +134,10 @@ public class ItemTest {
 		item.put("range", 6);
 		item.put("lifesteal", 7);
 
-		assertThat(item.describe(), equalTo("Description. It is a special reward for hero, and cannot be used by others. Stats are (ATK: 2 DEF: 3 RATE: 4 HP: 5 RANGE: 6 LIFESTEAL: 7 MIN-LEVEL: 1)."));
+		assertThat(item.describe(), equalTo("Description. Oto specjalna nagroda dla hero, która nie może być wykorzystana przez innych. Parametry (ATK: 2 OBR: 3 WAGA: 4 PZ: 5 ZASIĘG: 6 LIFESTEAL: 7 MIN-POZIOM: 1)."));
 
 		item.setDamageType(Nature.FIRE);
-		assertThat(item.describe(), equalTo("Description. It is a special reward for hero, and cannot be used by others. Stats are (ATK: 2 [FIRE] DEF: 3 RATE: 4 HP: 5 RANGE: 6 LIFESTEAL: 7 MIN-LEVEL: 1)."));
+		assertThat(item.describe(), equalTo("Description. Oto specjalna nagroda dla hero, która nie może być wykorzystana przez innych. Parametry (ATK: 2 [FIRE] OBR: 3 WAGA: 4 PZ: 5 ZASIĘG: 6 LIFESTEAL: 7 MIN-POZIOM: 1)."));
 	}
 
 

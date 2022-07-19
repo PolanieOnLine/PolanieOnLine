@@ -77,7 +77,7 @@ public class AlterActionTest {
 		assertTrue(player.events().isEmpty());
 		action.perform(player, rpAction);
 		assertFalse(player.events().isEmpty());
-		assertEquals("Entity not found", player.events().get(0).get("text"));
+		assertEquals("Jednostka nie została znaleziona", player.events().get(0).get("text"));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class AlterActionTest {
 		assertTrue(player.events().isEmpty());
 		action.perform(player, rpAction);
 		assertFalse(player.events().isEmpty());
-		assertEquals("Attribute you are altering is not defined in RPClass(player)", player.events().get(0).get("text"));
+		assertEquals("Atrybut, który zmieniasz nie jest zdefiniowany w RPClass(player)", player.events().get(0).get("text"));
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class AlterActionTest {
 		assertTrue(player.events().isEmpty());
 		action.perform(player, rpAction);
 		assertFalse(player.events().isEmpty());
-		assertEquals("Sorry, name cannot be changed.", player.events().get(0).get("text"));
+		assertEquals("Nazwa nie może zostać zmieniona.", player.events().get(0).get("text"));
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class AlterActionTest {
 		assertTrue(player.events().isEmpty());
 		action.perform(player, rpAction);
 		assertFalse(player.events().isEmpty());
-		assertEquals("Use #/adminlevel #<playername> #[<newlevel>] to display or change adminlevel.", player.events().get(0).get("text"));
+		assertEquals("Użyj #/adminlevel #<imie wojownika> #[<nowy poziom>], aby wyświetlić lub zmienić poziom administratora.", player.events().get(0).get("text"));
 	}
 	/**
 	 * Tests for titleAttribute.
@@ -156,7 +156,7 @@ public class AlterActionTest {
 		assertTrue(player.events().isEmpty());
 		action.perform(player, rpAction);
 		assertFalse(player.events().isEmpty());
-		assertEquals("The title attribute may not be changed directly.", player.events().get(0).get("text"));
+		assertEquals("Nazwa atrybutu może nie być zmieniona od razu.", player.events().get(0).get("text"));
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class AlterActionTest {
 		assertTrue(player.events().isEmpty());
 		action.perform(player, rpAction);
 		assertFalse(player.events().isEmpty());
-		assertEquals("Please issue a numeric value instead of ''", player.events().get(0).get("text"));
+		assertEquals("Użyj wartości numerycznej zamiast ''", player.events().get(0).get("text"));
 	}
 
 	/**

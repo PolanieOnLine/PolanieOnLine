@@ -56,7 +56,7 @@ public class KillBlordroughsAchievementTest extends ZonePlayerAndNPCTestImpl {
 	private static final String QUEST_SLOT = questInstance.getSlotName();
 	private static final StendhalQuestSystem questSystem = StendhalQuestSystem.get();
 
-	private final String enemy = "uzbrojony lider";
+	private final String enemy = "blordrough corporal";
 
 
 	@BeforeClass

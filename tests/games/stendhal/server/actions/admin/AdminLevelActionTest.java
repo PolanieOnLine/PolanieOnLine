@@ -58,8 +58,8 @@ public class AdminLevelActionTest {
 		action.put("target", "bob");
 		action.put("newlevel", "0");
 		CommandCenter.execute(pl, action);
-		assertEquals("Changed adminlevel of bob from 0 to 0.", pl.events().get(0).get("text"));
-		assertEquals("player changed your adminlevel from 0 to 0.", bob.events().get(0).get("text"));
+		assertEquals("Zmieniono poziom administratora bob z 0 na 0.", pl.events().get(0).get("text"));
+		assertEquals("player zmienił Twój poziom administratora z 0 na 0.", bob.events().get(0).get("text"));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class AdminLevelActionTest {
 		action.put("newlevel", "0");
 		CommandCenter.execute(pl, action);
 		assertEquals(
-				"Sorry, but you need an adminlevel of 5000 to change adminlevel.",
+				"Potrzebujesz 5000 poziomu administratora, aby móc go zmieniać.",
 				pl.events().get(0).get("text"));
 	}
 
@@ -100,11 +100,11 @@ public class AdminLevelActionTest {
 		action.put("target", "bob");
 		action.put("newlevel", "5001");
 		CommandCenter.execute(pl, action);
-		assertEquals("Changed adminlevel of bob from 0 to 5000.", pl
+		assertEquals("Zmieniono poziom administratora bob z 0 na 5000.", pl
 				.events().get(0).get("text"));
 		assertEquals(5000, pl.getAdminLevel());
 		assertEquals(5000, bob.getAdminLevel());
-		assertEquals("player changed your adminlevel from 0 to 5000.", bob
+		assertEquals("player zmienił Twój poziom administratora z 0 na 5000.", bob
 				.events().get(0).get("text"));
 	}
 
@@ -122,7 +122,7 @@ public class AdminLevelActionTest {
 		action.put("type", "adminlevel");
 		action.put("target", "bob");
 		CommandCenter.execute(pl, action);
-		assertEquals("bob has adminlevel 5000", pl.events().get(0).get("text"));
+		assertEquals("bob posiada 5000 poziom administratora", pl.events().get(0).get("text"));
 	}
 	/**
 	 * Tests for adminLevelActionPlayerGhosted.
@@ -143,10 +143,10 @@ public class AdminLevelActionTest {
 
 		CommandCenter.execute(admin, action);
 		assertTrue(AdministrationAction.isPlayerAllowedToExecuteAdminCommand(admin, "ghostmode", false));
-		assertEquals("bob has adminlevel 5000", admin.events().get(0).get("text"));
+		assertEquals("bob posiada 5000 poziom administratora", admin.events().get(0).get("text"));
 
 		CommandCenter.execute(nonAdmin, action);
-		assertEquals("Player \"bob\" not found", nonAdmin.events().get(0).get("text"));
+		assertEquals("Wojownik \"bob\" nie został znaleziony", nonAdmin.events().get(0).get("text"));
 
 	}
 
@@ -165,7 +165,7 @@ public class AdminLevelActionTest {
 		action.put("target", "bob");
 		action.put("newlevel", "1.3");
 		CommandCenter.execute(pl, action);
-		assertEquals("The new adminlevel needs to be an Integer", pl
+		assertEquals("Poziom administratora musi być liczbą całkowitą", pl
 				.events().get(0).get("text"));
 	}
 
@@ -181,7 +181,7 @@ public class AdminLevelActionTest {
 		action.put("target", "bob");
 		CommandCenter.execute(pl, action);
 
-		assertEquals("Player \"bob\" not found", pl.events().get(0).get("text"));
+		assertEquals("Wojownik \"bob\" nie został znaleziony", pl.events().get(0).get("text"));
 	}
 
 }

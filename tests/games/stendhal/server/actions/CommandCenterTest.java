@@ -112,21 +112,21 @@ public class CommandCenterTest {
 		action.put("type", "");
 		final Player caster = PlayerTestHelper.createPlayer("bob");
 		CommandCenter.execute(caster, action);
-		assertEquals("Unknown command /. Please type #/help to get a list.", caster.events().get(0).get("text"));
+		assertEquals("Nieznana komenda /. Wpisz #'/help', aby otrzymać listę.", caster.events().get(0).get("text"));
 		caster.clearEvents();
 
 		action.put("type", "taat");
 		CommandCenter.execute(caster, action);
-		assertEquals("Unknown command /taat. Did you mean #/that? Or type #/help to get a list.", caster.events().get(0).get("text"));
+		assertEquals("Nieznana komenda /taat. Chodziło o #/that? Wpisz #'/help', aby otrzymać listę.", caster.events().get(0).get("text"));
 		caster.clearEvents();
 
 		action.put("type", "thos");
 		CommandCenter.execute(caster, action);
-		assertEquals("Unknown command /thos. Did you mean #/this or #/thus? Or type #/help to get a list.", caster.events().get(0).get("text"));
+		assertEquals("Nieznana komenda /thos. Chodziło o #/this lub #/thus? Wpisz #'/help', aby otrzymać listę.", caster.events().get(0).get("text"));
 		caster.clearEvents();
 
 		action.put("type", "thas");
 		CommandCenter.execute(caster, action);
-		assertEquals("Unknown command /thas. Did you mean #/that, #/this or #/thus? Or type #/help to get a list.", caster.events().get(0).get("text"));
+		assertEquals("Nieznana komenda /thas. Chodziło o #/that, #/this lub #/thus? Wpisz #'/help', aby otrzymać listę.", caster.events().get(0).get("text"));
 	}
 }

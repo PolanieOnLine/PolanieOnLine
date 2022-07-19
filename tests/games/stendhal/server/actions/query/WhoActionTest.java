@@ -50,29 +50,29 @@ public class WhoActionTest {
 		action.put(Actions.TYPE, "who");
 		final Player player = PlayerTestHelper.createPlayer("player");
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("0 Players online: "));
+		assertThat(player.events().get(0).get("text"), equalTo("0 w tejże chwili: "));
 		player.clearEvents();
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("1 Players online: player(0) "));
+		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: player(0) "));
 		player.clearEvents();
 
 		player.setAdminLevel(AdministrationAction.getLevelForCommand("ghostmode") - 1);
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("0 Players online: "));
+		assertThat(player.events().get(0).get("text"), equalTo("0 w tejże chwili: "));
 		player.clearEvents();
 
 		player.setAdminLevel(AdministrationAction.getLevelForCommand("ghostmode"));
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("1 Players online: player(!0) "));
+		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: player(!0) "));
 		player.clearEvents();
 
 		player.setAdminLevel(AdministrationAction.getLevelForCommand("ghostmode") + 1);
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("1 Players online: player(!0) "));
+		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: player(!0) "));
 	}
 
 }

@@ -27,4 +27,6 @@ public class SettingsProperties {
 	public static final String MSG_BLINK = "ui.msg_blink";
 
 	public static final String MSG_SOUND = "ui.msg_sound";
+
+	public static final String BUBBLES_PROPERTY =  "ui.chat_bubbles";
 }

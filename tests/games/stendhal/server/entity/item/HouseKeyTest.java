@@ -41,7 +41,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testCreation() {
-		final Item key = SingletonRepository.getEntityManager().getItem("klucz od drzwi");
+		final Item key = SingletonRepository.getEntityManager().getItem("klucz do drzwi");
 		assertNotNull("Generated item is not null", key);
 		assertTrue("The key is not a HouseKey", key instanceof HouseKey);
 		assertTrue("The key is not persistent", key.isPersistent());
@@ -52,7 +52,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testCopy() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz do drzwi");
 		final HouseKey key2 = new HouseKey(key);
 
 		assertEquals(key, key2);
@@ -64,11 +64,11 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testDescription() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz do drzwi");
 		key.setup("henhouse", 42, null);
-		assertEquals(key.describe(), "You see a key to henhouse.");
+		assertEquals(key.describe(), "Oto klucz do henhouse.");
 		key.setup("outhouse", 13, "Mr. Taxman");
-		assertEquals(key.describe(), "You see a key to Mr. Taxman's property, outhouse.");
+		assertEquals(key.describe(), "Oto klucz do Mr. Taxman's property, outhouse.");
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testMatches() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz do drzwi");
 
 		// only match when both the id and lock number match
 		key.setup("henhouse", 42, null);
@@ -98,7 +98,7 @@ public class HouseKeyTest {
 	 */
 	@Test
 	public void testImage() {
-		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz od drzwi");
+		final HouseKey key = (HouseKey) SingletonRepository.getEntityManager().getItem("klucz do drzwi");
 
 		// The subclass is up to the implementation to decide, but
 		// it should be same for all keys with the same id and lock number

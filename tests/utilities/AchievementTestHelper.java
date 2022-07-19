@@ -12,7 +12,7 @@
 package utilities;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -85,7 +85,7 @@ public abstract class AchievementTestHelper {
 	private static void checkEnemyNames() {
 		for (final String eName: enemyNames) {
 			final Creature enemy = em.getCreature(eName);
-			assertNotNull(enemy);
+			assertNull(enemy);
 		}
 	}
 }

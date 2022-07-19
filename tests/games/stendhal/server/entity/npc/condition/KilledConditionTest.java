@@ -52,13 +52,13 @@ public class KilledConditionTest {
 		kc = new KilledCondition("szczur");
 		assertFalse(kc.fire(bob, null, null));
 		bob.setSoloKill("szczur");
-		assertTrue("bob killed a rat ", kc.fire(bob, null, null));
+		assertTrue("bob killed a szczur ", kc.fire(bob, null, null));
 
 		bob = PlayerTestHelper.createPlayer("player");
 		new KilledCondition(Arrays.asList("szczur"));
 		assertFalse(kc.fire(bob, null, null));
 		bob.setSoloKill("szczur");
-		assertTrue("bob killed a rat ", kc.fire(bob, null, null));
+		assertTrue("bob killed a szczur ", kc.fire(bob, null, null));
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class KilledConditionTest {
 	@Test
 	public final void testToString() {
 		final KilledCondition kc = new KilledCondition("szczur");
-		assertEquals("KilledCondition <[rat]>", kc.toString());
+		assertEquals("KilledCondition <[szczur]>", kc.toString());
 	}
 
 	/**

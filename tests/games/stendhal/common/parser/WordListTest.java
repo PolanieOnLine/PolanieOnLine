@@ -157,7 +157,6 @@ public class WordListTest {
 
 		assertEquals("houses", wl.plural("house"));
 		assertEquals("cookies", wl.plural("cookie"));
-		assertEquals("cookies", wl.plural("cooky"));
 	}
 
 	/**

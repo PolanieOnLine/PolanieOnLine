@@ -37,11 +37,11 @@ public class RingOfLifeTest {
 	public void testDescribe() {
 		final RingOfLife ring = new RingOfLife();
 		assertThat(ring.isBroken(), is(false));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. Wear it, and you risk less from death."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Noś go, a uchroni Cię przed konsekwencjami związanymi ze śmiercią."));
 
 		ring.damage();
 		assertThat(ring.isBroken(), is(true));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. The gleam is lost from the stone and it has no powers."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Kamień stracił blask i nie posiada mocy."));
 	}
 
 	/**
@@ -51,11 +51,11 @@ public class RingOfLifeTest {
 	public void testOnUsed() {
 		final RingOfLife ring = new RingOfLife();
 		assertThat(ring.isBroken(), is(false));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. Wear it, and you risk less from death."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Noś go, a uchroni Cię przed konsekwencjami związanymi ze śmiercią."));
 
 		ring.onUsed(null);
 		assertThat(ring.isBroken(), is(false));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. Wear it, and you risk less from death."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Noś go, a uchroni Cię przed konsekwencjami związanymi ze śmiercią."));
 	}
 
 
@@ -67,15 +67,15 @@ public class RingOfLifeTest {
 	public void testRepair() {
 		final RingOfLife ring = new RingOfLife();
 		assertThat(ring.isBroken(), is(false));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. Wear it, and you risk less from death."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Noś go, a uchroni Cię przed konsekwencjami związanymi ze śmiercią."));
 
 		ring.damage();
 		assertThat(ring.isBroken(), is(true));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. The gleam is lost from the stone and it has no powers."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Kamień stracił blask i nie posiada mocy."));
 
 		ring.repair();
 		assertThat(ring.isBroken(), is(false));
-		assertThat(ring.describe(), is("You see an §'emerald ring', known as the ring of life. Wear it, and you risk less from death."));
+		assertThat(ring.describe(), is("Oto §'pierścień szmaragdowy'. Noś go, a uchroni Cię przed konsekwencjami związanymi ze śmiercią."));
 	}
 
 }

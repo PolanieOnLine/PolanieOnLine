@@ -94,8 +94,8 @@ public class OutfitTest {
 		ou = new Outfit("501020304");
 		assertEquals(Integer.valueOf(5), ou.getLayer("detail"));
 		assertEquals(Integer.valueOf(1), ou.getLayer("hair"));
-		assertEquals(Integer.valueOf(1), ou.getLayer("head"));
-		assertEquals(Integer.valueOf(5), ou.getLayer("dress")); // old dress 3 is now mapped to 5
+		assertEquals(Integer.valueOf(2), ou.getLayer("head"));
+		assertEquals(Integer.valueOf(3), ou.getLayer("dress")); // old dress 3 is now mapped to 5
 		assertEquals(Integer.valueOf(0), ou.getLayer("body"));
 
 		// extended layers
@@ -318,7 +318,7 @@ public class OutfitTest {
 	public void testRemoveOutfit() {
 		Outfit orig = new Outfit("12345678");
 		Outfit result = orig.removeOutfit(null, null, null, null, null, null, null, null, 12);
-		assertEquals(Integer.valueOf(978), result.getLayer("body")); // old special body sprite indexes started at 78 & have been incremented by 900, so 78 + 900
+		assertEquals(Integer.valueOf(78), result.getLayer("body")); // old special body sprite indexes started at 78 & have been incremented by 900, so 78 + 900
 		assertEquals(Integer.valueOf(56), result.getLayer("dress"));
 		assertEquals(Integer.valueOf(34), result.getLayer("head"));
 		assertEquals(Integer.valueOf(0), result.getLayer("mouth"));
@@ -344,10 +344,10 @@ public class OutfitTest {
 	public void testMapOldOutfit() {
 		// male body
 		Outfit ou = new Outfit("14");
-		assertEquals(Integer.valueOf(0), ou.getLayer("body"));
+		assertEquals(Integer.valueOf(14), ou.getLayer("body"));
 		// female body 1
 		ou = new Outfit("11");
-		assertEquals(Integer.valueOf(1), ou.getLayer("body"));
+		assertEquals(Integer.valueOf(11), ou.getLayer("body"));
 		// female body 2
 		ou = new Outfit("13");
 		assertEquals(Integer.valueOf(2), ou.getLayer("body"));

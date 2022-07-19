@@ -180,7 +180,7 @@ public class SheepTest {
 	@Test
 	public void testDescribe() {
 		final Sheep meh = new Sheep();
-		assertEquals("You see a sheep; it looks like it weighs about 0.", meh.describe());
+		assertEquals("Oto sheep. Wygląda na to, że waży około 0.", meh.describe());
 		meh.setDescription("mehmeh");
 		assertEquals("mehmeh", meh.describe());
 	}

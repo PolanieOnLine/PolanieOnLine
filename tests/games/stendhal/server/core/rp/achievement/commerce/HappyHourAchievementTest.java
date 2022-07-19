@@ -81,13 +81,13 @@ public class HappyHourAchievementTest extends ZonePlayerAndNPCTestImpl {
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
-		en.step(player, "buy 100 beer");
+		en.step(player, "buy 100 sok z chmielu");
 		en.step(player, "yes");
-		assertTrue(player.isEquipped("beer", 100));
+		assertTrue(player.isEquipped("sok z chmielu", 100));
 		assertFalse(achievementReached());
-		en.step(player, "buy 100 wine");
+		en.step(player, "buy 100 napój z winogron");
 		en.step(player, "yes");
-		assertTrue(player.isEquipped("wine", 100));
+		assertTrue(player.isEquipped("napój z winogron", 100));
 
 		for (final String item: ITEMS_HAPPY_HOUR) {
 			assertEquals(100, player.getQuantityOfBoughtItems(item));

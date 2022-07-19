@@ -45,7 +45,7 @@ public class ViewChangeEntityTest {
 	public void testDescribe() {
 		ViewChangeEntity entity = new ViewChangeEntity(42, 99);
 
-		assertEquals("Description", "You see a scrying orb. A note on it says \"Using costs 5 money. Stay still and concentrate while viewing\".",
+		assertEquals("Description", "Oto wróżąca kula. Zapisane jest \"Użycie kosztuje 5 money. Stój w spokoju i skoncentruj się podczas oglądania\".",
 				entity.describe());
 	}
 
@@ -65,7 +65,7 @@ public class ViewChangeEntityTest {
 		assertEquals(player.events().size(), 1);
 		RPEvent event = player.events().get(0);
 		assertEquals("Correct event type", Events.PRIVATE_TEXT, event.getName());
-		assertEquals("You cannot reach that from here.", event.get("text"));
+		assertEquals("Nie możesz stąd dosięgnąć.", event.get("text"));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class ViewChangeEntityTest {
 		assertEquals(player.events().size(), 1);
 		RPEvent event = player.events().get(0);
 		assertEquals("Correct event type", Events.PRIVATE_TEXT, event.getName());
-		assertEquals("You don't know how to use the strange device.", event.get("text"));
+		assertEquals("Nie wiesz jak obsłużyć to dziwne urządzenie.", event.get("text"));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class ViewChangeEntityTest {
 		assertEquals(player.events().size(), 1);
 		RPEvent event = player.events().get(0);
 		assertEquals("Correct event type", Events.PRIVATE_TEXT, event.getName());
-		assertEquals("You do not have enough money.", event.get("text"));
+		assertEquals("Nie posiadasz wystarczająco dużo money.", event.get("text"));
 	}
 
 	/**

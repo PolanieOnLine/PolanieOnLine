@@ -73,7 +73,7 @@ public class SellerBehaviourTest {
 	public void testBottlesGlasses() {
 		final Map<String, Integer> pricelist = new HashMap<String, Integer>();
 		pricelist.put("dingo", 3);
-		pricelist.put("dagger", 200);
+		pricelist.put("sztylecik", 200);
 
 		final SellerBehaviour sb = new SellerBehaviour(pricelist);
 		final SpeakerNPC npc = new SpeakerNPC("npc");
@@ -82,38 +82,32 @@ public class SellerBehaviourTest {
 	    final Player player = PlayerTestHelper.createPlayer("bob");
 
 	    npc.getEngine().step(player, "hi");
-	    npc.getEngine().step(player, "buy 1 potion");
-		assertEquals("Sorry, I don't sell bottles of potion.", getReply(npc));
+	    npc.getEngine().step(player, "buy 1 eliksir");
+		assertEquals("Nie sprzedaję eliksiry.", getReply(npc));
 
-	    npc.getEngine().step(player, "buy wine");
-		assertEquals("Sorry, I don't sell glasses of wine.", getReply(npc));
+	    npc.getEngine().step(player, "buy napój z winogron");
+		assertEquals("Nie sprzedaję napóje z winogron.", getReply(npc));
 
-	    npc.getEngine().step(player, "buy 1 glass of wine");
-		assertEquals("Sorry, I don't sell glasses of wine.", getReply(npc));
-
-	    npc.getEngine().step(player, "buy 1 bottle of wine");
-		assertEquals("Sorry, I don't sell glasses of wine.", getReply(npc));
-
-	    npc.getEngine().step(player, "buy dagger");
-		assertEquals("A dagger will cost 200. Do you want to buy it?", getReply(npc));
+	    npc.getEngine().step(player, "buy sztylecik");
+		assertEquals("sztylecik kosztuje 200. Chcesz kupić to?", getReply(npc));
 	    npc.getEngine().step(player, "yes");
-		assertEquals("Sorry, you don't have enough money!", getReply(npc));
+		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
 
 		PlayerTestHelper.equipWithMoney(player, 200);
-	    npc.getEngine().step(player, "buy dagger");
-		assertEquals("A dagger will cost 200. Do you want to buy it?", getReply(npc));
+	    npc.getEngine().step(player, "buy sztylecik");
+		assertEquals("sztylecik kosztuje 200. Chcesz kupić to?", getReply(npc));
 	    npc.getEngine().step(player, "yes");
-		assertEquals("Congratulations! Here is your dagger!", getReply(npc));
-		assertTrue(player.isEquipped("dagger", 1));
+		assertEquals("Gratulacje! Oto twój sztylecik!", getReply(npc));
+		assertTrue(player.isEquipped("sztylecik", 1));
 		assertEquals(0, player.getTotalNumberOf("money"));
 
 		PlayerTestHelper.equipWithMoney(player, 600);
-	    npc.getEngine().step(player, "buy three daggers");
-		assertEquals("You can only buy one dagger at a time. A dagger will cost 200. Do you want to buy it?", getReply(npc));
+	    npc.getEngine().step(player, "buy trzy sztylecik");
+		assertEquals("Możesz kupić tylko pojedyńczo sztylecik. sztylecik kosztuje 200. Chcesz kupić to?", getReply(npc));
 	    npc.getEngine().step(player, "yes");
-		assertEquals("Congratulations! Here is your dagger!", getReply(npc));
+		assertEquals("Gratulacje! Oto twój sztylecik!", getReply(npc));
 		assertNull(PlayerTestHelper.getPrivateReply(player));
-		assertEquals(2, player.getTotalNumberOf("dagger"));
+		assertEquals(2, player.getTotalNumberOf("sztylecik"));
 		assertEquals(400, player.getTotalNumberOf("money"));
 	}
 
@@ -123,8 +117,8 @@ public class SellerBehaviourTest {
 	@Test
 	public void testScrolls() {
 		final Map<String, Integer> pricelist = new HashMap<String, Integer>();
-		pricelist.put("fado city scroll", 1000);
-		pricelist.put("empty scroll", 3000);
+		pricelist.put("zwój fado", 1000);
+		pricelist.put("niezapisany zwój", 3000);
 		final SellerBehaviour sb = new SellerBehaviour(pricelist);
 		final SpeakerNPC npc = new SpeakerNPC("npc");
 		npc.addGreeting("Hello!");
@@ -134,20 +128,20 @@ public class SellerBehaviourTest {
 	    npc.getEngine().step(player, "hi");
 		assertEquals("Hello!", getReply(npc));
 
-	    npc.getEngine().step(player, "buy fado city scroll");
-		assertEquals("A fado city scroll will cost 1000. Do you want to buy it?", getReply(npc));
+	    npc.getEngine().step(player, "buy zwój fado");
+		assertEquals("zwój fado kosztuje 1000. Chcesz kupić to?", getReply(npc));
 	    npc.getEngine().step(player, "no");
 
-	    npc.getEngine().step(player, "buy two empty scrolls");
-		assertEquals("2 empty scrolls will cost 6000. Do you want to buy them?", getReply(npc));
+	    npc.getEngine().step(player, "buy dwa niezapisany zwój");
+		assertEquals("2 niezapisany zwój kosztuje 6000. Chcesz kupić je?", getReply(npc));
 	    npc.getEngine().step(player, "no");
-		assertEquals("Ok, how else may I help you?", getReply(npc));
+		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
-	    npc.getEngine().step(player, "buy scroll");
-		assertEquals("There is more than one scroll. Please specify which sort of scroll you want to buy.", getReply(npc));
+	    npc.getEngine().step(player, "buy zwój");
+		assertEquals("Jest więcej niż jeden zwój. Powiedz mi jaki rodzaj zwój chcesz użyć.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy anything-else");
-		assertEquals("Sorry, I don't sell anything-elses.", getReply(npc));
+		assertEquals("Nie sprzedaję anything-elsa.", getReply(npc));
 	}
 
 }

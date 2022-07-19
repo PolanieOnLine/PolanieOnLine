@@ -70,9 +70,9 @@ public class FlowerGrowerTest {
 		final FlowerGrower fl = new FlowerGrower();
 		fl.setRipeness(0);
 		assertThat(fl.describe(),
-				is("You see something which has just been planted."));
+				is("Widzisz nasiona, które przed chwilą zostały zasadzone."));
 		fl.setRipeness(1);
-		assertThat(fl.describe(), is("Something is sprouting from the ground."));
+		assertThat(fl.describe(), is("Coś zaczyna kiełkować spod ziemi."));
 		fl.setRipeness(2);
 		assertThat(fl.describe(),
 				is("A plant is growing here, and you can already see foliage."));
@@ -96,9 +96,9 @@ public class FlowerGrowerTest {
 		final FlowerGrower fl = new FlowerGrower("someotherItem");
 		fl.setRipeness(0);
 		assertThat(fl.describe(),
-				is("You see something which has just been planted."));
+				is("Widzisz nasiona, które przed chwilą zostały zasadzone."));
 		fl.setRipeness(1);
-		assertThat(fl.describe(), is("Something is sprouting from the ground."));
+		assertThat(fl.describe(), is("Coś zaczyna kiełkować spod ziemi."));
 		fl.setRipeness(2);
 		assertThat(fl.describe(),
 				is("A plant is growing here, and you can already see foliage."));

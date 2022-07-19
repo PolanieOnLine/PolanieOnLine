@@ -348,7 +348,7 @@
 	<!-- START: wood -->
 
 	<creature name="drzewiec">
-		<type class="ent" subclass="treant" shadow="ent" tileid="ent.png:2"/>
+		<type class="ent" subclass="ent" shadow="ent" tileid="ent.png:2"/>
 		<description>Oto drzewiec. Najpierw pomyślałeś, że to drzewo, ale po chwili okazało się, że się porusza!</description>
 		<attributes>
 			<atk value="588"/>

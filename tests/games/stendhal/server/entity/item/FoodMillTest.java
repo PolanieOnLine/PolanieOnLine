@@ -46,11 +46,11 @@ public class FoodMillTest {
 		FoodMill fm = new FoodMill(name, clazz, subclass, attributes);
 		Player user  =  PlayerTestHelper.createPlayer("fmbob");
 		fm.onUsed(user);
-		assertEquals("You should be carrying the sugar mill in order to use it.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Powinieneś mieć sugar mill, aby móc go użyć.", PlayerTestHelper.getPrivateReply(user));
 
 		user.equip("bag", fm);
 		fm.onUsed(user);
-		assertEquals("You should hold the sugar mill in either hand in order to use it.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Powinieneś trzymać sugar mill w drugiej ręce, aby móc go użyć", PlayerTestHelper.getPrivateReply(user));
 		user.equip("lhand", fm);
 		fm.onUsed(user);
 
@@ -61,13 +61,13 @@ public class FoodMillTest {
 
 		user.drop("ser");
 
-		PlayerTestHelper.equipWithItemToSlot(user, "sugar cane", "rhand");
+		PlayerTestHelper.equipWithItemToSlot(user, "trzcina cukrowa", "rhand");
 
 		fm.onUsed(user);
 		assertEquals("You don't have an empty sack with you", PlayerTestHelper.getPrivateReply(user));
-		PlayerTestHelper.equipWithItem(user, "empty sack");
+		PlayerTestHelper.equipWithItem(user, "pusty worek");
 		fm.onUsed(user);
-		assertTrue(user.isEquipped("sugar"));
+		assertTrue(user.isEquipped("cukier"));
 	}
 	@Test
 	public void testOnUsedScrollEraser() throws Exception {
@@ -78,30 +78,30 @@ public class FoodMillTest {
 		FoodMill fm = new FoodMill(name, clazz, subclass, attributes);
 		Player user  =  PlayerTestHelper.createPlayer("fmbob");
 		fm.onUsed(user);
-		assertEquals("You should be carrying the scroll eraser in order to use it.", PlayerTestHelper.getPrivateReply(user));
-		assertFalse(user.isEquipped("empty scroll"));
+		assertEquals("Powinieneś mieć scroll eraser, aby móc go użyć.", PlayerTestHelper.getPrivateReply(user));
+		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		user.equip("bag", fm);
 		fm.onUsed(user);
-		assertEquals("You should hold the scroll eraser in either hand in order to use it.", PlayerTestHelper.getPrivateReply(user));
-		assertFalse(user.isEquipped("empty scroll"));
+		assertEquals("Powinieneś trzymać scroll eraser w drugiej ręce, aby móc go użyć.", PlayerTestHelper.getPrivateReply(user));
+		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		user.equip("lhand", fm);
 		fm.onUsed(user);
 		assertEquals("Your other hand looks empty.", PlayerTestHelper.getPrivateReply(user));
-		assertFalse(user.isEquipped("empty scroll"));
+		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		PlayerTestHelper.equipWithItemToSlot(user, "ser", "rhand");
 		PlayerTestHelper.equipWithItemToSlot(user, "zwój zapisany","bag");
 		fm.onUsed(user);
 		assertEquals("You need to have at least a marked scroll in your other hand", PlayerTestHelper.getPrivateReply(user));
-		assertFalse(user.isEquipped("empty scroll"));
+		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		user.drop("ser");
 		user.drop("zwój zapisany");
 		PlayerTestHelper.equipWithItemToSlot(user, "zwój zapisany","rhand");
 		fm.onUsed(user);
-		assertTrue(user.isEquipped("empty scroll"));
+		assertTrue(user.isEquipped("niezapisany zwój"));
 		assertFalse(user.isEquipped("zwój zapisany"));
 	}
 

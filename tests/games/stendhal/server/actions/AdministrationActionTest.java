@@ -62,7 +62,7 @@ public class AdministrationActionTest {
 		ArrestWarrentTestHelper.generateRPClasses();
 		CreatureTestHelper.generateRPClasses();
 		CorpseTestHelper.generateRPClasses();
-		// load item classes including "dagger" from XML
+		// load item classes including "sztylecik" from XML
 		//DefaultEntityManager.getInstance();
 		AdministrationAction.registerActions();
 		MockStendlRPWorld.get();
@@ -97,36 +97,36 @@ public class AdministrationActionTest {
 				.intValue());
 		assertEquals(-1, AdministrationAction.getLevelForCommand("support")
 				.intValue());
-		assertEquals(50, AdministrationAction.getLevelForCommand(
+		assertEquals(1, AdministrationAction.getLevelForCommand(
 				"supportanswer").intValue());
-		assertEquals(200, AdministrationAction.getLevelForCommand("tellall")
+		assertEquals(3, AdministrationAction.getLevelForCommand("tellall")
 				.intValue());
-		assertEquals(300, AdministrationAction.getLevelForCommand("teleportto")
+		assertEquals(4, AdministrationAction.getLevelForCommand("gag")
 				.intValue());
-		assertEquals(400, AdministrationAction.getLevelForCommand("teleport")
+		assertEquals(6, AdministrationAction.getLevelForCommand("inspect")
 				.intValue());
-		assertEquals(400, AdministrationAction.getLevelForCommand("jail")
+		assertEquals(7, AdministrationAction.getLevelForCommand("jail")
 				.intValue());
-		assertEquals(200, AdministrationAction.getLevelForCommand("gag")
+		assertEquals(8, AdministrationAction.getLevelForCommand("teleportto")
 				.intValue());
-		assertEquals(500, AdministrationAction.getLevelForCommand("invisible")
+		assertEquals(8, AdministrationAction.getLevelForCommand("teleport")
 				.intValue());
-		assertEquals(500, AdministrationAction.getLevelForCommand("ghostmode")
+		assertEquals(9, AdministrationAction.getLevelForCommand("destroy")
 				.intValue());
-		assertEquals(500, AdministrationAction.getLevelForCommand(
+		assertEquals(10, AdministrationAction.getLevelForCommand("ghostmode")
+				.intValue());
+		assertEquals(11, AdministrationAction.getLevelForCommand("invisible")
+				.intValue());
+		assertEquals(12, AdministrationAction.getLevelForCommand(
 				"teleclickmode").intValue());
-		assertEquals(600, AdministrationAction.getLevelForCommand("inspect")
+		assertEquals(30, AdministrationAction.getLevelForCommand("alter")
 				.intValue());
-		assertEquals(700, AdministrationAction.getLevelForCommand("destroy")
-				.intValue());
-		assertEquals(800, AdministrationAction.getLevelForCommand("summon")
-				.intValue());
-		assertEquals(800, AdministrationAction.getLevelForCommand("summonat")
-				.intValue());
-		assertEquals(900, AdministrationAction.getLevelForCommand("alter")
-				.intValue());
-		assertEquals(900, AdministrationAction.getLevelForCommand(
+		assertEquals(30, AdministrationAction.getLevelForCommand(
 				"altercreature").intValue());
+		assertEquals(35, AdministrationAction.getLevelForCommand("summon")
+				.intValue());
+		assertEquals(36, AdministrationAction.getLevelForCommand("summonat")
+				.intValue());
 		assertEquals(5000, AdministrationAction.getLevelForCommand("super")
 				.intValue());
 	}
@@ -159,7 +159,7 @@ public class AdministrationActionTest {
 		MockStendhalRPRuleProcessor.get().addPlayer(pl);
 
 		CommandCenter.execute(pl, new RPAction());
-		assertEquals("Unknown command /null. Please type #/help to get a list.", pl.events().get(0).get("text"));
+		assertEquals("Nieznana komenda /null. Wpisz #'/help', aby otrzymać listę.", pl.events().get(0).get("text"));
 
 		pl.clearEvents();
 		pl.setAdminLevel(5000);
@@ -167,7 +167,7 @@ public class AdministrationActionTest {
 		action.put("type", "tellall");
 		action.put("text", "huhu");
 		CommandCenter.execute(pl, action);
-		assertEquals("Administrator SHOUTS: huhu", pl.events().get(0).get("text"));
+		assertEquals("Administrator #dummy OGŁASZA: huhu", pl.events().get(0).get("text"));
 
 	}
 
@@ -190,7 +190,7 @@ public class AdministrationActionTest {
 		action.put("text", "huhu");
 		action.put("target", "bob");
 		CommandCenter.execute(pl, action);
-		assertThat(bob.events().get(0).get("text"), endsWith("tells you: huhu \nIf you wish to reply, use /support."));
+		assertThat(bob.events().get(0).get("text"), endsWith("Administrator admin1 powiedział Tobie: huhu Jeżeli chcesz odpowiedzieć to użyj /support."));
 		assertThat(bob.events().get(0).get("text"), startsWith("Support"));
 		assertEquals("player answers bob's support question: huhu", anptherAdmin.events().get(0).get("text"));
 
@@ -289,7 +289,7 @@ public class AdministrationActionTest {
 		action.put("type", "teleportto");
 		action.put("target", "blah");
 		CommandCenter.execute(pl, action);
-		assertEquals("Player \"blah\" not found", pl.events().get(0).get("text"));
+		assertEquals("Wojownik \"blah\" nie został znaleziony", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class AdministrationActionTest {
 		action.put("type", "teleportto");
 		action.put("target", "blah");
 		CommandCenter.execute(pl, action);
-		assertEquals("Position [0,0] is occupied", pl.events().get(0).get("text"));
+		assertEquals("Pozycja [0,0] jest zajęta", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -331,7 +331,7 @@ public class AdministrationActionTest {
 
 		CommandCenter.execute(pl, action);
 		assertEquals(
-				"Attribute you are altering is not defined in RPClass(player)",
+				"Atrybut, który zmieniasz nie jest zdefiniowany w RPClass(player)",
 				pl.events().get(0).get("text"));
 	}
 
@@ -354,7 +354,7 @@ public class AdministrationActionTest {
 		action.put("value", 0);
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Sorry, name cannot be changed.", pl.events().get(0).get("text"));
+		assertEquals("Nazwa nie może zostać zmieniona.", pl.events().get(0).get("text"));
 		action.put("stat", "adminlevel");
 		pl.clearEvents();
 		CommandCenter.execute(pl, action);
@@ -381,7 +381,7 @@ public class AdministrationActionTest {
 		action.put("value", 0);
 
 		CommandCenter.execute(pl, action);
-		assertEquals("The title attribute may not be changed directly.", pl
+		assertEquals("Nazwa atrybutu może nie być zmieniona od razu.", pl
 				.events().get(0).get("text"));
 	}
 
@@ -489,7 +489,7 @@ public class AdministrationActionTest {
 		action.put("text", "blabla");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Entity not found", pl.events().get(0).get("text"));
+		assertEquals("Jednostka nie została znaleziona", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -598,7 +598,7 @@ public class AdministrationActionTest {
 		action.put("type", "jail");
 
 		CommandCenter.execute(player, action);
-		assertEquals("Usage: /jail <name> <minutes> <reason>", player.events().get(0).get("text"));
+		assertEquals("Użyj: /jail <wojownik> <minuty> <powód>", player.events().get(0).get("text"));
 
 		if (!DAORegister.get().get(CharacterDAO.class).hasCharacter("offlineplayer")) {
 			RPObject rpobject = new RPObject();
@@ -641,7 +641,7 @@ public class AdministrationActionTest {
 		action.put("minutes", "noNumber");
 
 		CommandCenter.execute(player, action);
-		assertEquals("Usage: /jail <name> <minutes> <reason>", player.events().get(0).get("text"));
+		assertEquals("Użyj: /jail <wojownik> <minuty> <powód>", player.events().get(0).get("text"));
 		player.clearEvents();
 
 
@@ -667,7 +667,7 @@ public class AdministrationActionTest {
 
 		CommandCenter.execute(pl, action);
 
-		assertEquals("Usage: /gag name minutes reason", pl.events().get(0).get("text"));
+		assertEquals("Użyj: /gag wojownik minuty powód", pl.events().get(0).get("text"));
 		pl.clearEvents();
 		action = new RPAction();
 		action.put("type", "gag");
@@ -688,7 +688,7 @@ public class AdministrationActionTest {
 		action.put("minutes", "noNumber");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Usage: /gag name minutes reason", pl.events().get(0).get("text"));
+		assertEquals("Użyj: /gag wojownik minuty powód", pl.events().get(0).get("text"));
 		pl.clearEvents();
 
 		action = new RPAction();
@@ -713,7 +713,7 @@ public class AdministrationActionTest {
 		action.put("type", "destroy");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Entity not found", pl.events().get(0).get("text"));
+		assertEquals("Jednostka nie została znaleziona", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -731,7 +731,7 @@ public class AdministrationActionTest {
 		action.put("target", "hugo");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("You can't remove players", pl.events().get(0).get("text"));
+		assertEquals("Nie możesz usuwać wojowników", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -756,7 +756,7 @@ public class AdministrationActionTest {
 		action.put("target", "#1");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("You can't remove PassiveNPCs", pl.events().get(0).get("text"));
+		assertEquals("Nie możesz usuwać PassiveNPCów", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -857,7 +857,7 @@ public class AdministrationActionTest {
 		action.put("item", "hugo");
 
 		CommandCenter.execute(player, action);
-		assertEquals("Player \"hugo\" does not have an RPSlot named \"hugo\".",
+		assertEquals("Wojownik \"hugo\" nie posiada RPSlota zwanego \"hugo\".",
 				player.events().get(0).get("text"));
 		player.clearEvents();
 
@@ -875,19 +875,19 @@ public class AdministrationActionTest {
 		action.put("type", "summonat");
 		action.put("target", "hugo");
 		action.put("slot", "bag");
-		action.put("item", "dagger");
-		assertFalse(player.isEquipped("dagger"));
+		action.put("item", "sztylecik");
+		assertFalse(player.isEquipped("sztylecik"));
 		CommandCenter.execute(player, action);
 		// If the following fails, chances are quite good, the "items.xml" configuration file could not be loaded.
 		assertTrue(player.events().isEmpty());
-		assertTrue(player.isEquipped("dagger"));
+		assertTrue(player.isEquipped("sztylecik"));
 		player.clearEvents();
 
 		action = new RPAction();
 		action.put("type", "summonat");
 		action.put("target", "noone");
 		action.put("slot", "bag");
-		action.put("item", "dagger");
+		action.put("item", "sztylecik");
 
 		CommandCenter.execute(player, action);
 		assertEquals("Player \"noone\" not found.", player.events().get(0).get("text"));

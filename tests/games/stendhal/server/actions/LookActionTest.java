@@ -89,7 +89,7 @@ public class LookActionTest {
 		boolean executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
 		assertEquals(
-				"You see player1.\nplayer1 is level 0 and has been playing 0 hours and 0 minutes.",
+				"Oto parobek player1.\nplayer1 posiada poziom 0. Wiek 0 godzinę i 0 minutę.",
 				player1.events().get(0).get("text"));
 		player1.clearEvents();
 
@@ -101,7 +101,7 @@ public class LookActionTest {
 		executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
 		assertEquals(
-				"You see player2.\nplayer2 is level 0 and has been playing 0 hours and 0 minutes.",
+				"Oto parobek player2.\nplayer2 posiada poziom 0. Wiek 0 godzinę i 0 minutę.",
 				player1.events().get(0).get("text"));
 		player1.clearEvents();
 
@@ -110,7 +110,7 @@ public class LookActionTest {
 		action.put("target", "npc");
 		executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
-		assertEquals("You see npc.", player1.events().get(0).get("text"));
+		assertEquals("Oto npc.", player1.events().get(0).get("text"));
 		player1.clearEvents();
 	}
 
@@ -134,7 +134,7 @@ public class LookActionTest {
 		action.put("target", "player1");
 		boolean executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
-		assertTrue(player1.events().get(0).get("text").startsWith("You see player1."));
+		assertTrue(player1.events().get(0).get("text").startsWith("Oto parobek player1."));
 		player1.clearEvents();
 
 		player1.setPosition(20, 20);
@@ -167,7 +167,7 @@ public class LookActionTest {
 		action.put("target", "player2");
 		executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
-		assertTrue(player1.events().get(0).get("text").startsWith("You see player2."));
+		assertTrue(player1.events().get(0).get("text").startsWith("Oto parobek player2."));
 		player1.clearEvents();
 	}
 
@@ -190,7 +190,7 @@ public class LookActionTest {
 		action.put("target", "player2");
 		boolean executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
-		assertTrue(player1.events().get(0).get("text").startsWith("You see player2."));
+		assertTrue(player1.events().get(0).get("text").startsWith("Oto parobek player2."));
 		player1.clearEvents();
 
 		player1.setAdminLevel(0);
@@ -210,7 +210,7 @@ public class LookActionTest {
 		action.put("target", "player2");
 		executeSucceeded = CommandCenter.execute(player1, action);
 		assertTrue(executeSucceeded);
-		assertTrue(player1.events().get(0).get("text").startsWith("You see player2."));
+		assertTrue(player1.events().get(0).get("text").startsWith("Oto parobek player2."));
 		player1.clearEvents();
 	}
 

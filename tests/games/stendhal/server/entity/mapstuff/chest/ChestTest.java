@@ -51,11 +51,11 @@ public class ChestTest {
 	public final void testSize() {
 		final Chest ch = new Chest();
 		assertEquals(0, ch.size());
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 40; i++) {
 			ch.add(new PassiveEntity() {
 			});
 		}
-		assertEquals(30, ch.size());
+		assertEquals(40, ch.size());
 		ch.add(new PassiveEntity() {
 		});
 	}

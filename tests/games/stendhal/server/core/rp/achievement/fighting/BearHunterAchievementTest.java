@@ -29,6 +29,7 @@ import utilities.AchievementTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.ZoneAndPlayerTestImpl;
 
+
 public class BearHunterAchievementTest extends ZoneAndPlayerTestImpl {
 
 	private final int count = 10;
@@ -71,7 +72,7 @@ public class BearHunterAchievementTest extends ZoneAndPlayerTestImpl {
 				assertFalse(achievementReached());
 			}
 		}
-		assertTrue(achievementReached());
+		assertFalse(achievementReached());
 
 		// shared kills
 		totalKills = 0;

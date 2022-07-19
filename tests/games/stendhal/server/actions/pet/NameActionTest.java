@@ -57,7 +57,7 @@ public class NameActionTest {
 		final NameAction nameAction = new NameAction();
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("Please issue the old and the new name."));
+		assertThat(bob.events().get(0).get("text"), is("Wpisz stare, a później nowe imie."));
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class NameActionTest {
 		action.put("args", "newname");
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You don't own any oldname"));
+		assertThat(bob.events().get(0).get("text"), is("Nie masz oldname"));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You don't own a pet called 'noname'"));
+		assertThat(bob.events().get(0).get("text"), is("Twoje zwierzątko nie nazywa się 'noname'"));
 		assertThat(pet.getTitle(), is("sheep"));
 	}
 
@@ -120,7 +120,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'sheep' to 'newname'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'sheep' na 'newname'"));
 		assertThat(pet.getTitle(), is("newname"));
 	}
 
@@ -145,7 +145,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'sheep' to 'newname'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'sheep' na 'newname'"));
 		assertThat(pet.getTitle(), is("newname"));
 	}
 
@@ -170,7 +170,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You own already a pet named 'sheep'"));
+		assertThat(bob.events().get(0).get("text"), is("Masz już zwierzątko zwane 'sheep'"));
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'oldname' to 'newname'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'oldname' na 'newname'"));
 		assertThat(pet.getTitle(), is("newname"));
 	}
 
@@ -219,7 +219,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'oldname' to 'sheep'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'oldname' na 'sheep'"));
 		assertThat(pet.getTitle(), is("sheep"));
 	}
 
@@ -244,7 +244,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'oldname' to 'newname'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'oldname' na 'newname'"));
 		assertThat(pet.getTitle(), is("newname"));
 	}
 
@@ -269,7 +269,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'oldname' to 'sheep'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'oldname' na 'sheep'"));
 		assertThat(pet.getTitle(), is("sheep"));
 	}
 
@@ -294,7 +294,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("You changed the name of 'oldname' to '01234567890123456789'"));
+		assertThat(bob.events().get(0).get("text"), is("Zmieniłeś imię z 'oldname' na '01234567890123456789'"));
 		assertThat(pet.getTitle(), is("01234567890123456789"));
 	}
 
@@ -320,7 +320,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("The new name of your pet must not be longer than 20 characters."));
+		assertThat(bob.events().get(0).get("text"), is("Nowe imie Twojego zwierzątka nie może być dłuższe niż 20 znaków."));
 		assertThat(pet.getTitle(), is("oldname"));
 	}
 
@@ -344,7 +344,7 @@ public class NameActionTest {
 
 		bob.setSheep(pet);
 		nameAction.onAction(bob, action);
-		assertThat(bob.events().get(0).get("text"), is("Please don't use empty names."));
+		assertThat(bob.events().get(0).get("text"), is("Nie podałeś imienia."));
 		assertThat(pet.getTitle(), is("sheep"));
 	}
 }

@@ -58,10 +58,10 @@ public class ProducerRegisterTest {
 		assertTrue(producerRegister.getProducers().isEmpty());
 
 		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("flour", 1);
-		requiredResources.put("cod", 2);
-		requiredResources.put("mackerel", 1);
-		requiredResources.put("leek", 1);
+		requiredResources.put("mąka", 1);
+		requiredResources.put("dorsz", 2);
+		requiredResources.put("makrela", 1);
+		requiredResources.put("por", 1);
 		final ProducerBehaviour behaviour = new ProducerBehaviour("linzo_make_fish_pie", Arrays.asList("make", "zrób"), "fish pie",
 		        requiredResources, 5 * 60);
 
@@ -111,10 +111,10 @@ public class ProducerRegisterTest {
 		assertFalse(producerRegister.getProducers().isEmpty());
 
 		// no orders yet because the player didn't start any
-		assertEquals(producerRegister.listWorkingProducers(player),"You have no ongoing or uncollected orders.");
+		assertEquals(producerRegister.listWorkingProducers(player),"Nie masz trwających lub nieodebranych zleceń.");
 
-		player.setQuest("arlindo_make_pie", "1;pie;1");
-		player.setQuest("blacksheepbob_make_sausage", "210;sausage;"+System.currentTimeMillis());
+		player.setQuest("arlindo_make_pie", "1;tarta;1");
+		player.setQuest("blacksheepbob_make_sausage", "210;paróweczka;"+System.currentTimeMillis());
 
 		assertEquals(producerRegister.listWorkingProducers(player),"\r\nOrders: " +
 				"\nArlindo has finished making your pie."
@@ -125,7 +125,7 @@ public class ProducerRegisterTest {
 		player.setQuest("blacksheepbob_make_sausage", "done");
 
 		// no orders now because they are all collected
-		assertEquals(producerRegister.listWorkingProducers(player),"You have no ongoing or uncollected orders.");
+		assertEquals(producerRegister.listWorkingProducers(player),"Nie masz trwających lub nieodebranych zleceń.");
 
 	}
 
@@ -148,8 +148,8 @@ public class ProducerRegisterTest {
 
 		assertFalse(producerRegister.getProducers().isEmpty());
 
-		assertEquals(producerRegister.getProducedItemNames("food"), Arrays.asList("pie", "sausage"));
-		assertEquals(producerRegister.getProducedItemNames("food").toString(), "[pie, sausage]");
+		assertEquals(producerRegister.getProducedItemNames("food"), Arrays.asList("tarta", "paróweczka"));
+		assertEquals(producerRegister.getProducedItemNames("food").toString(), "[tarta, paróweczka]");
 
 
 	}

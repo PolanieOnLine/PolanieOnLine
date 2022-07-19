@@ -32,7 +32,7 @@ public class CaptureTheFlagFlag extends Item {
 
 	// this is the detail that you set for the outfit overlay
 	// (and then you have to set a color)
-	int     detailValue = 5;
+	int     detailValue = 0;
 
 	String colorValue   = "0x00ff00";
 

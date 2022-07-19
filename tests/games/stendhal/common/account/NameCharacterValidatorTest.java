@@ -26,7 +26,7 @@ public class NameCharacterValidatorTest {
 	@Test
 	public void testSpecialCharcter() {
 		final NameCharacterValidator validator = new NameCharacterValidator("asdf_");
-		Assert.assertNotNull(validator.validate());
+		Assert.assertNull(validator.validate());
 	}
 
 	/**

@@ -31,6 +31,8 @@ import games.stendhal.client.stendhal;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.chatlog.StandardEventLine;
 import games.stendhal.client.gui.chatlog.StandardHeaderedEventLine;
+import games.stendhal.client.gui.settings.SettingsProperties;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.constants.Nature;
@@ -268,8 +270,6 @@ public abstract class RPEntity extends AudibleEntity {
 	private String shadowStyle;
 	
 	private boolean isImmortal = false;
-
-	private static final boolean testclient = System.getProperty("stendhal.testclient") != null;
 
 	/** Possible attack results. */
 	public enum Resolution {
@@ -986,7 +986,7 @@ public abstract class RPEntity extends AudibleEntity {
 
 			text = trimText(text);
 
-			if (testclient) {
+			if (!WtWindowManager.getInstance().getPropertyBoolean(SettingsProperties.BUBBLES_PROPERTY, false)) {
 				// add stationary speech bubble
 				ClientSingletonRepository.getScreenController().addText(
 						getX() + getWidth(), getY(), text,

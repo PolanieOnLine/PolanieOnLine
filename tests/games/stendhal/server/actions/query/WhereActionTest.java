@@ -76,7 +76,7 @@ public class WhereActionTest {
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("No player or pet named \"NotThere\" is currently logged in."));
+		assertThat(player.events().get(0).get("text"), equalTo("Nie ma wojownika lub zwierzątka zwanego \"NotThere\" lub nie jest teraz zalogowany."));
 	}
 
 	/**
@@ -94,13 +94,13 @@ public class WhereActionTest {
 		zone.add(player);
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("You are in zone at (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Jesteś w zone na (0,0)"));
 		player.clearEvents();
 
 		// test that you can still /where yourself as a ghost
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("You are in zone at (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Jesteś w zone na (0,0)"));
 		player.clearEvents();
 
 		// test the player before he becomes ghostmode
@@ -109,14 +109,14 @@ public class WhereActionTest {
 		MockStendhalRPRuleProcessor.get().addPlayer(ghosted);
 		action.put(Actions.TARGET, ghosted.getName());
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("ghosted is in zone at (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("ghosted jest w zone na (0,0)"));
 		player.clearEvents();
 
 		// test the player after he becomes ghostmode
 		ghosted.setGhost(true);
 		pq.onAction(player, action);
 
-		assertThat(player.events().get(0).get("text"), equalTo("No player or pet named \"ghosted\" is currently logged in."));
+		assertThat(player.events().get(0).get("text"), equalTo("Nie znaleziono wojownika lub zwierzątka zwanego \"ghosted\" lub nie jest teraz zalogowany."));
 
 	}
 
@@ -134,7 +134,7 @@ public class WhereActionTest {
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("No player or pet named \"sheep\" is currently logged in."));
+		assertThat(player.events().get(0).get("text"), equalTo("Nie ma wojownika lub zwierzątka zwanego \"sheep\" lub nie jest teraz zalogowany."));
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class WhereActionTest {
 		Player player = PlayerTestHelper.createPlayer("player");
 
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("No player or pet named \"pet\" is currently logged in."));
+		assertThat(player.events().get(0).get("text"), equalTo("Nie ma wojownika lub zwierzątka zwanego \"pet\" lub nie jest teraz zalogowany."));
 
 
 		final Pet testPet = new Cat();
@@ -171,7 +171,7 @@ public class WhereActionTest {
 		player.setPet(testPet);
 
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("Your cat is at (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Twój cat jest na (0,0)"));
 		player.clearEvents();
 
 		player.setSheep(testSheep);
@@ -179,7 +179,7 @@ public class WhereActionTest {
 		action.put(Actions.TARGET, "sheep");
 
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("Your sheep is at (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Twój sheep jest na (0,0)"));
 	}
 
 }
