@@ -2467,7 +2467,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *         left hand.
 	 */
 	public Item getWeapon() {
-		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand", "magia" };
+		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand" };
 
 		for (final String weaponClass : weaponsClasses) {
 			final String[] slots = { "lhand", "rhand" };
@@ -2857,6 +2857,7 @@ public abstract class RPEntity extends CombatEntity {
 		int ring = 0;
 		int ringb = 0;
 		int belt = 0;
+		int magicspells = 0;
 
 		Item item;
 
@@ -2920,12 +2921,19 @@ public abstract class RPEntity extends CombatEntity {
 			weapon += weaponItem.getDefense() / getItemLevelModifier(weaponItem);
 		}
 
+		if (getWandWeapon() != null) {
+			Item amm = getAmmunition("magia");
+			if (amm != null) {
+				magicspells = amm.getDefense();
+			}
+		}
+
 		return SHIELD_DEF_MULTIPLIER * shield + ARMOR_DEF_MULTIPLIER * armor
 				+ CLOAK_DEF_MULTIPLIER * cloak + GLOVE_DEF_MULTIPLIER * glove
 				+ HELMET_DEF_MULTIPLIER * helmet + NECKLACE_DEF_MULTIPLIER * necklace
 				+ LEG_DEF_MULTIPLIER * legs + BOOTS_DEF_MULTIPLIER * boots
 				+ RING_DEF_MULTIPLIER * ring + RING_DEF_MULTIPLIER * ringb
-				+ BELT_DEF_MULTIPLIER * belt + WEAPON_DEF_MULTIPLIER * weapon;
+				+ BELT_DEF_MULTIPLIER * belt + WEAPON_DEF_MULTIPLIER * weapon + magicspells;
 	}
 
 	/**
