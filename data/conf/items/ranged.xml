@@ -9,7 +9,7 @@
 			<atk value="4" condition="!testing.combat"/>
 			<ratk value="4" condition="testing.combat"/>
 			<range value="4"/>
-			<min_level condition="stendhal.testserver" value="5"/>
+			<min_level value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="130"/>

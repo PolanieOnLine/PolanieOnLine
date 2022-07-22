@@ -31,7 +31,7 @@
 			<atk value="6"/>
 			<rate value="4"/>
 			<undroppableondeath value="1"/>
-			<min_level condition="stendhal.testserver" value="0"/>
+			<min_level value="0"/>
 			<max_improves value="2"/>
 		</attributes>
 		<weight value="2.0"/>
@@ -54,7 +54,7 @@
 			<atk value="48"/>
 			<rate value="7"/>
 			<lifesteal value="-0.1"/>
-			<min_level condition="stendhal.testserver" value="50"/>
+			<min_level value="50"/>
 			<max_improves value="2"/>
 		</attributes>
 		<weight value="8.0"/>
@@ -76,7 +76,7 @@
 		<attributes>
 			<atk value="20"/>
 			<rate value="7"/>
-			<min_level condition="stendhal.testserver" value="3"/>
+			<min_level value="3"/>
 			<max_improves value="3"/>
 		</attributes>
 		<weight value="8.0"/>
@@ -98,7 +98,7 @@
 		<attributes>
 			<atk value="19"/>
 			<rate value="6"/>
-			<min_level condition="stendhal.testserver" value="3"/>
+			<min_level value="3"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="48992"/>
@@ -140,7 +140,7 @@
 		<attributes>
 			<atk value="26"/>
 			<rate value="5"/>
-			<min_level condition="stendhal.testserver" value="5"/>
+			<min_level value="5"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="66550"/>
@@ -206,7 +206,7 @@
 		<attributes>
 			<atk value="16"/>
 			<rate value="6"/>
-			<min_level condition="stendhal.testserver" value="5"/>
+			<min_level value="5"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="34133"/>
@@ -250,7 +250,7 @@
 			<atk value="8"/>
 			<rate value="4"/>
 			<menu value="Użyj|Użyj"/>
-			<min_level condition="stendhal.testserver" value="500"/>
+			<min_level value="500"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="8533"/>
@@ -272,7 +272,7 @@
 			<atk value="100"/>
 			<def value="100"/>
 			<rate value="2"/>
-			<min_level condition="stendhal.testserver" value="0"/>
+			<min_level value="0"/>
 		</attributes>
 		<weight value="0.01"/>
 		<value value="10000000"/>
@@ -319,7 +319,7 @@
 			<atk value="2"/>
 			<def value="1"/>
 			<rate value="2"/>
-			<min_level condition="stendhal.testserver" value="0"/>
+			<min_level value="0"/>
 		</attributes>
 		<weight value="4.0"/>
 		<value value="7290"/>
