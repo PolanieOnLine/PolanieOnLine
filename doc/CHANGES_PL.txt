@@ -2,15 +2,35 @@ Changelog
 ---------
 1.32
 *klient*
+- Poprawiono grafiki NPC & potworów
+- Przeniesiono ścieżki plików graficznych stworzeń do głównego folderu w kliencie
 - Niezniszczalne obiekty typu: mgła / trujące opary itp. nie będą widoczne na mini-mapie
 - Wyłączono pasek zdrowia / nazwę dla mgły i innych niezniszczalnych obiektów
-- Przeniesiono ścieżki plików graficznych stworzeń do głównego folderu w kliencie
+- Dodano nową opcję w ustawieniach wizualnych klienta (ruchome lub statyczne dymki chatu)
+- Usunięto komendy /bestiary & /itemlog z klienta
+- Zapakowany klient zawiera teraz polanieonline-starter.exe, aby był wygodniejszy dla użytkownika MS Windows
+	Poprosi użytkownika o zainstalowanie Javy, jeśli jej brakuje.
 
 *świat*
+- Dodano nowe przedmioty: (2)
+	- bestiariusz
+	- spis
+- Dodano nowego NPC: (1)
+	- Rengard, podróżnik i zbieracz cennych informacji
+- Dodano nowe zadanie: (1)
+	- Zbierz Informacje o Wrogu
+- Dodano możliwość zakupu bestiariusza u Rengarda oraz spisu u Pietrka
 - Mgły i inne niezniszczalne obiekty nie będą blokować obrażeń
+- Większość przedmiotów otrzymała swój minimalny poziom do pełnego wykorzystania tego wyposażenia
+- Zapowiedzi deathmatch nie będą się powtarzać przed upływem 15 minut
 
 *naprawiono błędy*
+- Poprawiono dialogi u niektórych NPC i w zadaniach
+- Naprawiono animacje strzał
 - Naprawiono brak wyświetlanej grafiki złotego orka
+- Naprawiono błąd graficzny z drzewcami
+- Naprawiono błąd z oznaczeniem abnormal stworzenia: "motylek"
+- Naprawiono zaklęcia, które dodawały atak i obronę bez noszenia różdżki w drugiej ręce
 
 
 1.31
