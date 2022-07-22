@@ -91,7 +91,7 @@ public class BalloonForBobbyTest {
 		player.setOutfit(outfitNoBalloon);
 
 		en.step(player, "hi");
-		assertEquals("Hm?", getReply(npc));
+		assertEquals("Cześć czy ten balonik jest dla mnie?", getReply(npc));
 		en.step(player, "help");
 		assertEquals("I wonder if a #balloon could fly high enough to touch the clouds...", getReply(npc));
 		en.step(player, "job");

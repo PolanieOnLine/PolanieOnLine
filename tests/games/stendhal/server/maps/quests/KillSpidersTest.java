@@ -43,7 +43,7 @@ import utilities.QuestHelper;
 public class KillSpidersTest extends SpidersCreatures {
 
 	private static final String NPC_HELLO = "Hello my friend. Nice day for walking isn't it?";
-	private static final String NPC_BYE = "Bye.";
+	private static final String NPC_BYE = "Do widzenia.";
 	private static final String NPC_OFFER_QUEST = "Have you ever been to the basement of the school? The room is full of spiders and some could be dangerous, since the students do experiments! Would you like to help me with this 'little' problem?";
 	private static final String NPC_ACKNOWLEDGE_QUEST_ACCEPTED = "Fine. Go down to the basement and kill all the creatures there!";
 	private static final String NPC_QUEST_ALREADY_OFFERED = "I already asked you to kill all creatures in the basement!";
@@ -119,7 +119,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		questHistory.add("I do not agree to help Morgrin.");
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		questHistory.clear();
 		oldkarma = player.getKarma();
@@ -132,12 +132,12 @@ public class KillSpidersTest extends SpidersCreatures {
 		questHistory.add("I do agree to help Morgrin.");
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("Go down and kill the creatures, no time left.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		killSpider("spider");
 		assertEquals("spider", player.getQuest(questSlot, 1));
@@ -166,14 +166,14 @@ public class KillSpidersTest extends SpidersCreatures {
 		questHistory.add("I have killed all spiders in the magic school basement and got a mythical egg.");
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("Hello my friend. Nice day for walking isn't it?", getReply(npc));
 		en.step(player, "task");
 		assertEquals("Sorry there is nothing to do for you yet. But maybe you could come back later. I have to clean the school once a week.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		final double newKarma = player.getKarma();
 
@@ -188,7 +188,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		assertEquals("Ok, I have to find someone else to do this 'little' job!", getReply(npc));
 		assertThat(player.getQuest(questSlot), is("rejected"));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("Hello my friend. Nice day for walking isn't it?", getReply(npc));
@@ -197,7 +197,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		en.step(player, "yes");
 		assertEquals("Fine. Go down to the basement and kill all the creatures there!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	@Test
@@ -213,7 +213,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		en.step(player, "hi");
 		assertEquals("Go down and kill the creatures, no time left.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		player.setSharedKill("spider");
 		questHistory.add("I have killed a spider in the basement.");
@@ -221,7 +221,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		en.step(player, "hi");
 		assertEquals("Go down and kill the creatures, no time left.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		player.setSharedKill("poisonous spider");
 		questHistory.add("I have killed a poisonous spider in the basement.");
@@ -229,7 +229,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		en.step(player, "hi");
 		assertEquals("Go down and kill the creatures, no time left.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		player.setSharedKill("giant spider");
 		questHistory.add("I have killed a giant spider in the basement.");
@@ -245,7 +245,7 @@ public class KillSpidersTest extends SpidersCreatures {
 		questHistory.add("I have killed all spiders in the magic school basement and got a mythical egg.");
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**

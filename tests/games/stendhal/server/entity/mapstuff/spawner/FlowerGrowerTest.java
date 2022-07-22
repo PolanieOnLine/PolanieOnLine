@@ -75,17 +75,17 @@ public class FlowerGrowerTest {
 		assertThat(fl.describe(), is("Coś zaczyna kiełkować spod ziemi."));
 		fl.setRipeness(2);
 		assertThat(fl.describe(),
-				is("A plant is growing here, and you can already see foliage."));
+				is("Tutaj rośnie roślina i jak widzisz ma już liście."));
 		fl.setRipeness(3);
 		assertThat(
 				fl.describe(),
-				is("You see a plant growing a lilia, it is nearly at full maturity."));
+				is("Tutaj rośnie lilia i jest już prawie dojrzała."));
 		fl.setRipeness(4);
 		assertThat(
 				fl.describe(),
-				is("You see a fully grown lilia, ready to pull from the ground."));
+				is("Widzisz wyrośniętą lilia gotowa, aby wyciągnąć ją z ziemi."));
 		fl.setRipeness(5);
-		assertThat(fl.describe(), is("You see an unripe lilia."));
+		assertThat(fl.describe(), is("Oto niezebrane lilia."));
 	}
 
 	/**
@@ -101,17 +101,17 @@ public class FlowerGrowerTest {
 		assertThat(fl.describe(), is("Coś zaczyna kiełkować spod ziemi."));
 		fl.setRipeness(2);
 		assertThat(fl.describe(),
-				is("A plant is growing here, and you can already see foliage."));
+				is("Tutaj rośnie roślina i jak widzisz ma już liście."));
 		fl.setRipeness(3);
 		assertThat(
 				fl.describe(),
-				is("You see a plant growing a someotheritem, it is nearly at full maturity."));
+				is("Tutaj rośnie someotheritem i jest już prawie dojrzała."));
 		fl.setRipeness(4);
 		assertThat(
 				fl.describe(),
-				is("You see a fully grown someotheritem, ready to pull from the ground."));
+				is("Widzisz wyrośniętą someotheritem gotowa, aby wyciągnąć ją z ziemi."));
 		fl.setRipeness(5);
-		assertThat(fl.describe(), is("You see an unripe someotheritem."));
+		assertThat(fl.describe(), is("Oto niezebrane someotherItem."));
 	}
 
 	/**

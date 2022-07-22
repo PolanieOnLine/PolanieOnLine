@@ -54,10 +54,10 @@ public class FlowerSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi Fleur"));
-		assertEquals("Hi! Are you here to #trade?", getReply(npc));
+		assertEquals("Cześć! Przyszedłeś tutaj #pohandlować?", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Come back soon!", getReply(npc));
+		assertEquals("Do widzenia i zapraszam ponownie!", getReply(npc));
 	}
 
 	/**
@@ -69,71 +69,71 @@ public class FlowerSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Hi! Are you here to #trade?", getReply(npc));
+		assertEquals("Cześć! Przyszedłeś tutaj #pohandlować?", getReply(npc));
 
 		assertTrue(en.step(player, "job"));
-		assertEquals("I sell roses in this here market.", getReply(npc));
+		assertEquals("Sprzedaję tutaj róże.", getReply(npc));
 
 		assertTrue(en.step(player, "trade"));
-		assertEquals("I sell rose.", getReply(npc));
+		assertEquals("Sprzedaję róża.", getReply(npc));
 
 		// There is currently no quest response defined for Fleur.
 		assertFalse(en.step(player, "quest"));
 
 		assertTrue(en.step(player, "buy"));
-		assertEquals("A rose will cost 50. Do you want to buy it?", getReply(npc));
+		assertEquals("róża kosztuje 50. Chcesz kupić to?", getReply(npc));
 		assertTrue(en.step(player, "no"));
-		assertEquals("Ok, how else may I help you?", getReply(npc));
+		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy dog"));
-		assertEquals("Sorry, I don't sell dogs.", getReply(npc));
+		assertEquals("Nie sprzedaję dogi.", getReply(npc));
 
 		assertTrue(en.step(player, "buy candle"));
-		assertEquals("Sorry, I don't sell candles.", getReply(npc));
+		assertEquals("Nie sprzedaję candla.", getReply(npc));
 
 		assertTrue(en.step(player, "buy a glass of wine"));
-		assertEquals("Sorry, I don't sell glasses of wine.", getReply(npc));
+		assertEquals("Nie sprzedaję wina.", getReply(npc));
 
-		assertTrue(en.step(player, "buy rose"));
-		assertEquals("A rose will cost 50. Do you want to buy it?", getReply(npc));
+		assertTrue(en.step(player, "buy róża"));
+		assertEquals("róża kosztuje 50. Chcesz kupić to?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
-		assertEquals("Ok, how else may I help you?", getReply(npc));
+		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
-		assertTrue(en.step(player, "buy rose"));
-		assertEquals("A rose will cost 50. Do you want to buy it?", getReply(npc));
-
-		assertTrue(en.step(player, "yes"));
-		assertEquals("Sorry, you don't have enough money!", getReply(npc));
-
-		assertTrue(en.step(player, "buy two roses"));
-		assertEquals("2 roses will cost 100. Do you want to buy them?", getReply(npc));
+		assertTrue(en.step(player, "buy róża"));
+		assertEquals("róża kosztuje 50. Chcesz kupić to?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
-		assertEquals("Sorry, you don't have enough money!", getReply(npc));
+		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
+
+		assertTrue(en.step(player, "buy dwa róża"));
+		assertEquals("2 róże kosztuje 100. Chcesz kupić je?", getReply(npc));
+
+		assertTrue(en.step(player, "yes"));
+		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
 
 		// equip with enough money to buy one rose
 		assertTrue(equipWithMoney(player, 50));
-		assertTrue(en.step(player, "buy rose"));
-		assertEquals("A rose will cost 50. Do you want to buy it?", getReply(npc));
+		assertTrue(en.step(player, "buy róża"));
+		assertEquals("róża kosztuje 50. Chcesz kupić to?", getReply(npc));
 
-		assertFalse(player.isEquipped("rose"));
+		assertFalse(player.isEquipped("róża"));
 
 		assertTrue(en.step(player, "yes"));
-		assertEquals("Congratulations! Here is your rose!", getReply(npc));
+		assertEquals("Gratulacje! Oto twój róża!", getReply(npc));
 
-		assertTrue(player.isEquipped("rose"));
+		assertTrue(player.isEquipped("róża"));
 
 		// equip with enough money to buy five roses
 		assertTrue(equipWithMoney(player, 250));
-		assertTrue(en.step(player, "buy 5 roses"));
-		assertEquals("5 roses will cost 250. Do you want to buy them?", getReply(npc));
+		assertTrue(en.step(player, "buy 5 róża"));
+		assertEquals("5 róże kosztuje 250. Chcesz kupić je?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
-		assertEquals("Congratulations! Here are your roses!", getReply(npc));
+		assertEquals("Gratulacje! Oto twój róża!", getReply(npc));
 
-		assertTrue(player.isEquipped("rose", 6));
-		assertFalse(player.isEquipped("rose", 7));
+		assertTrue(player.isEquipped("róża", 6));
+		assertFalse(player.isEquipped("róża", 7));
 	}
 
 }

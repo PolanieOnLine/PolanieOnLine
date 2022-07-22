@@ -78,7 +78,7 @@ public class KillGnomesTest {
 		en.step(player, "yes");
 		assertEquals("Excellent. You'll find the gnomes camped out, north west of Semos. Make sure you kill some of the ringleaders, too, at least one infantryman and one cavalryman.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot, 0), equalTo("start"));
 	}
 
@@ -94,7 +94,7 @@ public class KillGnomesTest {
 		en.step(player, "done");
 		assertEquals("You need to teach those pesky gnomes a lesson, by killing some as an example! Make sure you get the leaders, too, at least one infantryman and one cavalryman.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot), equalTo(QUEST_VALUE_STARTED));
 	}
 
@@ -115,7 +115,7 @@ public class KillGnomesTest {
 		en.step(player, "hi");
 		assertEquals("I see you have killed the gnomes as I asked. I hope they will stay away from the carrots for a while! Please take these potions as a reward.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot, 0), equalTo("done"));
 	}
 
@@ -137,6 +137,6 @@ public class KillGnomesTest {
 		en.step(player, "help");
 		assertEquals("Do you know the bakery in Semos? I'm proud to say they use my flour. But the wolves ate my delivery boy again recently... they're probably running out.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

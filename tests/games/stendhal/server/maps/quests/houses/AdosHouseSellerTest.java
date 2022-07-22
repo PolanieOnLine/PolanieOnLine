@@ -137,7 +137,7 @@ public class AdosHouseSellerTest {
 
 		en.step(george, "hi");
 		assertThat(en.getCurrentState(), is(ATTENDING));
-		assertThat(getReply(seller), is("Hello, george."));
+		assertThat(getReply(seller), is("Witaj george."));
 
 		en.step(george, "job");
 		assertThat(en.getCurrentState(), is(ATTENDING));
@@ -166,7 +166,7 @@ public class AdosHouseSellerTest {
 		Player george = PlayerTestHelper.createPlayer("george");
 
 		en.step(george, "51");
-		assertThat("no zones loaded", getReply(seller), is("Sorry I did not understand you, could you try saying the house number you want again please?"));
+		assertThat("no zones loaded", getReply(seller), is("Przepraszam, ale nie rozumiem Ciebie. Czy mógłbyś powtórzyć numer domu?"));
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class AdosHouseSellerTest {
 		Player george = PlayerTestHelper.createPlayer("george");
 
 		en.step(george, "51");
-		assertThat("no zones loaded", getReply(seller), is("You do not have enough money to buy a house!"));
+		assertThat("no zones loaded", getReply(seller), is("Nie masz wystarczająco dużo pieniędzy, aby kupić dom."));
 		assertThat(en.getCurrentState(), is(ATTENDING));
 
 		en.setCurrentState(QUEST_OFFERED);
@@ -200,12 +200,12 @@ public class AdosHouseSellerTest {
 		StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
 		money.setQuantity(120000);
 		george.equipToInventoryOnly(money);
-		assertFalse(george.isEquipped("house key"));
+		assertFalse(george.isEquipped("klucz do drzwi"));
 		assertTrue(george.isEquipped("money", 120000));
 		en.step(george, "51");
 		assertThat(getReply(seller), containsString("Congratulations"));
 		assertFalse(george.isEquipped("money", 120000));
-		assertTrue(george.isEquipped("george's house key"));
+		assertTrue(george.isEquipped("klucz dla george"));
 
 	}
 

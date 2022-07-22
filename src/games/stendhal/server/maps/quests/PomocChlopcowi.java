@@ -166,7 +166,7 @@ public class PomocChlopcowi extends AbstractQuest {
 		return res;
 		}
 		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc Adasiowi.");
-		if (("start".equals(questState) && player.hasKilled("rat") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
+		if (("start".equals(questState) && player.hasKilled("szczur") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
 			res.add("Piwnica została oczyszczona z gryzoni i węży.");
 		}
 		if ("done".equals(questState)) {

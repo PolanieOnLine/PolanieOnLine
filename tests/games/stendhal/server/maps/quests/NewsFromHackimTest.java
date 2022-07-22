@@ -71,7 +71,7 @@ public class NewsFromHackimTest {
 		enHackim.step(player, "hi");
 		assertEquals("Hi stranger, I'm Hackim Easso, the blacksmith's assistant. Have you come here to buy weapons?", getReply(npcHackim));
 		enHackim.step(player, "bye");
-		assertEquals("Bye.", getReply(npcHackim));
+		assertEquals("Do widzenia.", getReply(npcHackim));
 
 		// -----------------------------------------------
 
@@ -84,7 +84,7 @@ public class NewsFromHackimTest {
 		enHackim.step(player, "yes");
 		assertEquals("Thanks! I'm sure that #Xin will reward you generously. Let me know if you need anything else.", getReply(npcHackim));
 		enHackim.step(player, "bye");
-		assertEquals("Bye.", getReply(npcHackim));
+		assertEquals("Do widzenia.", getReply(npcHackim));
 
 		// -----------------------------------------------
 
@@ -101,6 +101,6 @@ public class NewsFromHackimTest {
 		enHackim.step(player, "task");
 		assertEquals("Thanks, but I don't have any messages to pass on to #Xin. I can't smuggle so often now... I think Xoderos is beginning to suspect something. Anyway, let me know if there's anything else I can do.", getReply(npcHackim));
 		enHackim.step(player, "bye");
-		assertEquals("Bye.", getReply(npcHackim));
+		assertEquals("Do widzenia.", getReply(npcHackim));
 	}
 }

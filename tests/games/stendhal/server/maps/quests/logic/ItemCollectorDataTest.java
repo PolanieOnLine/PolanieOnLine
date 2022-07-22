@@ -17,6 +17,6 @@ public class ItemCollectorDataTest {
 		assertEquals(15, id.getStillNeeded());
 		assertEquals(needed, id.getRequiredAmount());
 		assertEquals(5, id.getAlreadyBrought());
-		assertEquals("prefix 15 names suffix", id.getAnswer());
+		assertEquals("prefix 15 nama suffix", id.getAnswer());
 	}
 }

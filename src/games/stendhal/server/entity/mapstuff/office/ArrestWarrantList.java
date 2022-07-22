@@ -41,13 +41,9 @@ public class ArrestWarrantList extends StorableEntityList<ArrestWarrant> {
 		final StringBuilder who = new StringBuilder();
 		for (final ArrestWarrant aw : getList()) {
 			who.append(aw.getCriminal());
-			who.append(" został aresztowany ");
-			who.append(String.format("%tF", aw.getTimestamp()));
-			who.append(" ");
-			who.append(String.format("%tT", aw.getTimestamp()));
-			who.append(" przez ");
+			who.append(" został aresztowany przez oficera #'");
 			who.append(aw.getPoliceOfficer());
-			who.append(" na ");
+			who.append("' na ");
 			who.append(aw.getMinutes());
 			who.append(" minutę" + " ponieważ: ");
 			who.append(aw.getReason());

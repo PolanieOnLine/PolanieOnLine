@@ -55,7 +55,7 @@ public class ExperiencedWarriorNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
 		assertEquals("Farewell and godspeed!", getReply(npc));
@@ -71,7 +71,7 @@ public class ExperiencedWarriorNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		//test the basic messages
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "job"));
 		assertEquals("My job? I'm a well known warrior, strange that you haven't heard of me!", getReply(npc));

@@ -130,6 +130,6 @@ public class LuaTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(en.step(player, "bye"));
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

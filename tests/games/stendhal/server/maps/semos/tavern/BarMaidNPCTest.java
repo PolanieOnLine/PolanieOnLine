@@ -58,10 +58,10 @@ public class BarMaidNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hello"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class BarMaidNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "job"));
 		assertEquals("I am the bar maid for this fair tavern. You can #buy both imported and local beers, and fine food.", getReply(npc));
@@ -101,13 +101,13 @@ public class BarMaidNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("A piece of ham will cost 80. Do you want to buy it?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
-		assertEquals("Ok, how else may I help you?", getReply(npc));
+		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy ham"));
 		assertEquals("A piece of ham will cost 80. Do you want to buy it?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
-		assertEquals("Sorry, you don't have enough money!", getReply(npc));
+		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
 
 		// equip with enough money
 		assertTrue(equipWithMoney(player, 2000));
@@ -147,7 +147,7 @@ public class BarMaidNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(en.step(player, "buy 1000 ham"));
         assertEquals("1000 pieces of ham will cost 80000. Do you want to buy them?", getReply(npc));
         assertTrue(en.step(player, "no"));
-        assertEquals("Ok, how else may I help you?", getReply(npc));
+        assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy 10000 ham"));
 		assertEquals("Sorry, the maximum number of ham which I can sell at once is 1000.", getReply(npc));
@@ -163,7 +163,7 @@ public class BarMaidNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi Margaret"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		// Currently there are no response to "sell" sentences defined for Margaret.
 		assertFalse(en.step(player, "sell"));

@@ -86,7 +86,7 @@ public class SoupTest {
 		en.step(player, "spinach");
 		assertEquals("Don't take me for a fool, traveller. You don't have a spinach with you.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		// [16:51] Removed contained home scroll item with ID 6 from bag
 		// [16:52] You see spinach. It is enriched with vitamins. Stats are (HP: 30).
 		// summon all except salad and onion in player's bag
@@ -102,7 +102,7 @@ public class SoupTest {
 		en.step(player, "everything");
 		assertEquals("You didn't have all the ingredients I need. I still need 2 ingredients: #salad and #onion. You'll get bad karma if you keep making mistakes like that!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
 		assertEquals("Welcome back! I hope you collected some #ingredients for the soup, or #everything.", getReply(npc));
 		en.step(player, "ingredients");

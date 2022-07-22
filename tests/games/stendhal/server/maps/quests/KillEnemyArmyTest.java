@@ -114,7 +114,7 @@ public class KillEnemyArmyTest {
 				" soldiers and I will reward you.", getReply(npc));
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("I hope you have disturbed me for a good reason?", getReply(npc));
@@ -123,7 +123,7 @@ public class KillEnemyArmyTest {
 		en.step(player, "enemy");
 		assertEquals(expectingAnswer, getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class KillEnemyArmyTest {
 				" of any "+monstersType+
 				" soldiers and I will reward you.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
         // kill 1 creature.
         killed=1;
@@ -171,7 +171,7 @@ public class KillEnemyArmyTest {
 				Grammar.plnoun(killsnumb-killed, monstersType)+" left to kill.");
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// kill creatures to have full number of killed ones.
 		KillRandomMonsters(player, killsnumb-killed);
@@ -205,7 +205,7 @@ public class KillEnemyArmyTest {
 		assertEquals(questHistory, quest.getHistory(player));
 
         en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class KillEnemyArmyTest {
 		assertEquals(questHistory, quest.getHistory(player));
 
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// will kill 2x monsters for get 15 karma in total
 		killed=killsnumb*2;
@@ -269,7 +269,7 @@ public class KillEnemyArmyTest {
 		assertEquals(questHistory, quest.getHistory(player));
 
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	@Test
@@ -284,6 +284,6 @@ public class KillEnemyArmyTest {
 		assertTrue(reply.equals("You have to check again in 7 days.") ||
 				   reply.equals("You have to check again in 1 week."));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

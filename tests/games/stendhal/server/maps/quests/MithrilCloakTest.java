@@ -298,7 +298,7 @@ public class MithrilCloakTest {
 		assertEquals("*reads* ... *reads* ... Well, I must say, that is a weight off my mind. Thank you ever so much. Please convey my warmest regards to Whiggins. All is forgiven.", getReply(npc));
 		player.setQuest(questSlot, "took_letter");
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 
 		npc = SingletonRepository.getNPCList().get("Whiggins");
@@ -359,7 +359,7 @@ public class MithrilCloakTest {
 		player.setQuest(questSlot, "need_scissors");
 
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "scissors");
 		// Hogart asks for random number of eggshells (2-4? 1-3?) so only test starts with
 		assertTrue(getReply(npc).startsWith("Ah yes, Ida sent me a message about some magical scissors. I need one each of an iron bar and a mithril bar, and also "));
@@ -395,7 +395,7 @@ public class MithrilCloakTest {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "scissors");
 		assertEquals("So, did you bring the items I need for the magical scissors?", getReply(npc));
 		en.step(player, "yes");
@@ -406,7 +406,7 @@ public class MithrilCloakTest {
 		// [22:19] Changed the state of quest 'mithril_cloak' from 'makingscissors;1217974651141' to 'makingscissors;10000'
 		player.setQuest(questSlot, "makingscissors;1");
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "scissors");
 		assertEquals("Ah, thanks for reminding me. Here, Ida's scissors are ready. You better take them to her next as I don't know what she wanted them for.", getReply(npc));
 		player.setQuest(questSlot, "got_scissors");
@@ -530,7 +530,7 @@ public class MithrilCloakTest {
 		en.step(player, "1");
 		assertEquals("Ok, here's your 1 pieces of twilight moss. Don't take too much at once.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		npc = SingletonRepository.getNPCList().get("twilight_ida"); // this is the version of Ida that is in the twilight zone
 		en = npc.getEngine();
@@ -632,7 +632,7 @@ public class MithrilCloakTest {
 		en.step(player, "no");
 		assertEquals("Well, if you should like me to cast any mithril bars just say.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("Greetings. I sense you may be interested in mithril. If you desire me to #cast you a #'mithril bar', just say the word.", getReply(npc));
@@ -641,7 +641,7 @@ public class MithrilCloakTest {
 		en.step(player, "yes");
 		assertEquals("You can't fool an old wizard, and I'd know mithril when I see it. Come back when you have at least one bar.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		Item item = ItemTestHelper.createItem("mithril bar", 1);
@@ -653,7 +653,7 @@ public class MithrilCloakTest {
 		en.step(player, "yes");
 		assertEquals("What a lovely piece of mithril that is, even if I do say so myself ... Good, please come back in 60 minutes and hopefully your clasp will be ready!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		player.setQuest(questSlot, "forgingclasp;0");
 		en.step(player, "hi");
@@ -662,7 +662,7 @@ public class MithrilCloakTest {
 		assertEquals("Here, your clasp is ready!", getReply(npc));
 		// [22:27] jammyjam earns 100 experience points.
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		npc = SingletonRepository.getNPCList().get("Ida");
 		en = npc.getEngine();

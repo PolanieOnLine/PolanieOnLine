@@ -90,7 +90,7 @@ public class Campfire extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("polano", REQUIRED_WOOD)),
 			ConversationStates.QUEST_ITEM_BROUGHT,
-			"Witaj znowu! Masz te 10 polan, o które wcześniej Cię pytałam?",
+			"Witaj znów! Masz te 10 polan, o które wcześniej Cię pytałam?",
 			null);
 
 		//player returns without promised wood
@@ -108,7 +108,7 @@ public class Campfire extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotStartedCondition(QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Cześć! Potrzebuję małej #'przysługi'... ",
+			ConversationStates.ATTENDING, "Cześć! Potrzebuję małej #'przysługi'...",
 			null);
 
 		// player who is rejected or 'done' but waiting to start again, returns

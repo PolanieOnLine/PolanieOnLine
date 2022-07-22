@@ -78,7 +78,7 @@ public class BeerForHayunnTest {
 		assertTrue(player.isQuestCompleted("meet_hayunn"));
 		assertTrue(hayunn.isTalking());
 		assertEquals(
-				"Hi. I bet you've been sent here to learn about adventuring from me. First, lets see what you're made of. Go and kill a rat outside, you should be able to find one easily. Do you want to learn how to attack it, before you go?",
+				"Witaj! Założę się, że przysłano Cię tutaj byś dowiedział się nieco o przygodach jakie Cię tu spotkają. Najpierw zobaczmy z jakiej gliny jesteś ulepiony. Idź i zabij szczura wałęsającego się gdzieś na zewnątrz. Czy chcesz się nauczyć jak atakować?",
 				getReply(hayunn));
 		en.step(player, "quest");
 		assertEquals(
@@ -89,11 +89,11 @@ public class BeerForHayunnTest {
 		en.step(player, "bye");
 		assertFalse(hayunn.isTalking());
 		assertEquals("start", player.getQuest("beer_hayunn"));
-		final StackableItem beer = new StackableItem("beer", "", "", null);
+		final StackableItem beer = new StackableItem("sok z chmielu", "", "", null);
 		beer.setQuantity(1);
 		beer.setID(new ID(2, "testzone"));
 		player.getSlot("bag").add(beer);
-		assertEquals(1, player.getNumberOfEquipped("beer"));
+		assertEquals(1, player.getNumberOfEquipped("sok z chmielu"));
 		en.step(player, "hi");
 		en.step(player, "yes");
 		assertEquals("done", player.getQuest("beer_hayunn"));
@@ -127,7 +127,7 @@ public class BeerForHayunnTest {
 		assertTrue(bfh.getHistory(player).isEmpty());
 		player.setQuest("beer_hayunn", "");
 		final List<String> history = new LinkedList<String>();
-		history.add("I have talked to Hayunn.");
+		history.add("Rozmawiałem z Hayunn.");
 		assertEquals(history, bfh.getHistory(player));
 
 		player.setQuest("beer_hayunn", "rejected");
@@ -139,7 +139,7 @@ public class BeerForHayunnTest {
 		history.add("I promised to buy him a beer from Margaret in Semos Tavern.");
 		assertEquals(history, bfh.getHistory(player));
 
-		player.equipToInventoryOnly(SingletonRepository.getEntityManager().getItem("beer"));
+		player.equipToInventoryOnly(SingletonRepository.getEntityManager().getItem("sok z chmielu"));
 		history.add("I have a bottle of beer.");
 		assertEquals(history, bfh.getHistory(player));
 		player.setQuest("beer_hayunn", "done");

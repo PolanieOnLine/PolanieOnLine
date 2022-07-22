@@ -173,7 +173,7 @@ public class LostEngagementRingTest extends LuaTestHelper {
 			getReply(sawyer));
 		en.step(player, "bye");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Bye.", getReply(sawyer));
+		assertEquals("Do widzenia.", getReply(sawyer));
 	}
 
 	private void testWithQuestLoaded() {
@@ -222,7 +222,7 @@ public class LostEngagementRingTest extends LuaTestHelper {
 			getReply(ari));
 		en.step(player, "bye");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Bye.", getReply(ari));
+		assertEquals("Do widzenia.", getReply(ari));
 
 		gotoAthor();
 		gotoFado();

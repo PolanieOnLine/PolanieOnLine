@@ -255,7 +255,7 @@ public class ElvishArmorTest {
                     npcEngine.step(player, playerSays);
 
                     assertThat(playerSays, npcEngine.getCurrentState(), is(IDLE));
-                    assertThat(playerSays, getReply(npc), is("Bye."));
+                    assertThat(playerSays, getReply(npc), is("Do widzenia."));
             }
     }
 

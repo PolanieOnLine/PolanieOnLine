@@ -84,7 +84,7 @@ public class RainbowBeansTest {
 		en.step(player, "yes");
 		assertEquals("That stuff's too strong for you. No chance mate!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// player was too low level last time. make them at leastlevel 50
 		player.addXP(248800);
@@ -106,7 +106,7 @@ public class RainbowBeansTest {
 		en.step(player, "offer");
 		assertEquals("Ha! The sign on the door's a cover! This is no inn. If you want a drink, you better go back into town.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertFalse(player.isEquipped("rainbow beans"));
 		assertFalse(player.isEquipped("money"));
@@ -119,7 +119,7 @@ public class RainbowBeansTest {
 		en.step(player, "yes");
 		assertEquals("Scammer! You don't have the cash.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		PlayerTestHelper.equipWithMoney(player, 2000);
 
@@ -130,7 +130,7 @@ public class RainbowBeansTest {
 		en.step(player, "yes");
 		assertEquals("Alright, here's the beans. Once you take them, you come down in about 30 minutes. And if you get nervous up there, hit one of the green panic squares to take you back here.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertTrue(player.isEquipped("rainbow beans"));
 		assertFalse(player.isEquipped("money"));
 
@@ -140,7 +140,7 @@ public class RainbowBeansTest {
 		en.step(player, "hi");
 		assertEquals("Alright? I hope you don't want more beans. You can't take more of that stuff for at least another 6 hours.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		player.setQuest(questSlot,"bought;0;taken;0");
 
@@ -150,7 +150,7 @@ public class RainbowBeansTest {
 		en.step(player, "no");
 		assertEquals("Aight, ain't for everyone. Anythin else you want, you say so.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// repeat quest
 		PlayerTestHelper.equipWithMoney(player, 2000);
@@ -159,7 +159,7 @@ public class RainbowBeansTest {
 		en.step(player, "yes");
 		assertEquals("Alright, here's the beans. Once you take them, you come down in about 30 minutes. And if you get nervous up there, hit one of the green panic squares to take you back here.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**

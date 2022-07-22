@@ -72,7 +72,7 @@ public class CloaksForBarioTest {
 		assertEquals("I need some blue elven cloaks if I'm to survive the winter. Bring me ten of them, and I will give you a reward.", getReply(npc));
 		en.step(player, "ok");
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 		equipCloaks(4);
@@ -90,7 +90,7 @@ public class CloaksForBarioTest {
 		en.step(player, "no");
 		assertEquals("Too bad.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
 		assertEquals("Hi again! I still need 6 blue elven cloaks. Do you have any for me?", getReply(npc));
 		en.step(player, "yes");
@@ -98,7 +98,7 @@ public class CloaksForBarioTest {
 		assertEquals("Really? I don't see any...", getReply(npc));
 		en.step(player, "no");
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 		equipCloaks(6);
@@ -121,7 +121,7 @@ public class CloaksForBarioTest {
 		en.step(player, "task");
 		assertEquals("I don't have anything for you to do, really.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
@@ -130,7 +130,7 @@ public class CloaksForBarioTest {
 		en.step(player, "task");
 		assertEquals("I don't have anything for you to do, really.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	private void equipCloaks(final int quantity) {

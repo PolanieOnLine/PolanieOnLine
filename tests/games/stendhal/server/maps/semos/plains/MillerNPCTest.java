@@ -61,7 +61,7 @@ public class MillerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Greetings! I am Jenny, the local miller. If you bring me some #grain, I can #mill it into flour for you.", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class MillerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertFalse(player.isEquipped("flour"));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// wait one minute
 		setPastTime(player, QUEST_SLOT, 2, 1*60);
@@ -118,7 +118,7 @@ public class MillerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertFalse(player.isEquipped("flour"));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// wait four minutes
 		setPastTime(player, QUEST_SLOT, 2, 4*60);
@@ -129,7 +129,7 @@ public class MillerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(player.isEquipped("flour", 2));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**

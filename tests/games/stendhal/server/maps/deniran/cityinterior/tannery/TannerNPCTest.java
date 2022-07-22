@@ -35,7 +35,7 @@ import utilities.ZonePlayerAndNPCTestImpl;
 public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 	private static final String ZONE_NAME = "testzone";
-	private static final String npcName = "Skinner Rawhide";
+	private static final String npcName = "Garbarz Rawhide";
 
 	private static TannerNPC configurator;
 	private static SpeakerNPC tanner;
@@ -117,7 +117,7 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 		DaylightPhase.setTestingPhase(DaylightPhase.NIGHT);
 		assertEquals(DaylightPhase.NIGHT, DaylightPhase.current());
 
-		final String nightReply = "It's late. I need to get to bed. Please come back in the morning.";
+		final String nightReply = "Jest późno. Muszę iść do łóżka. Proszę wróć rano.";
 
 		// XXX: is there an assert method for less/greater than comparison?
 		assertTrue(player.getNumberOfLootsForItem("money") < requiredMoneyLoot);
@@ -178,18 +178,18 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		assertNull(player.getQuest(QUEST_SLOT));
 		assertTrue(player.getNumberOfLootsForItem("money") < serviceFee);
-		assertFalse(player.isEquipped("pelt"));
+		assertFalse(player.isEquipped("futro"));
 		assertFalse(player.isEquipped("money", serviceFee));
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Welcome to Deniran's tannery.", getReply(tanner));
+		assertEquals("Witamy w garbarni Deniran.", getReply(tanner));
 
 		setLootCount(requiredMoneyLoot - 1);
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Welcome to Deniran's tannery.", getReply(tanner));
+		assertEquals("Witamy w garbarni Deniran.", getReply(tanner));
 
 		setLootCount(requiredMoneyLoot);
 		assertEquals(requiredMoneyLoot, getLootCount());
@@ -197,8 +197,8 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "hi");
 		assertEquals(ConversationStates.QUESTION_1, en.getCurrentState());
 		assertEquals(
-				"I see you are experienced at looting money. I can make a pouch for you to carry your money in."
-				+ " But I will need some items. Are you interested?",
+				"Widzę, że masz doświadczenie w zbieraniu pieniędzy. Mogę zrobić dla ciebie sakiewkę, w której będziesz mógł nosić pieniądze."
+				+ " Ale będę potrzebować kilku przedmiotów. Czy jesteś zainteresowany?",
 				getReply(tanner));
 
 		en.step(player, "bye");
@@ -207,13 +207,13 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "hi");
 		assertEquals(ConversationStates.QUESTION_1, en.getCurrentState());
 		assertEquals(
-				"I see you are experienced at looting money. I can make a pouch for you to carry your money in."
-				+ " But I will need some items. Are you interested?",
+				"Widzę, że masz doświadczenie w zbieraniu pieniędzy. Mogę zrobić dla ciebie sakiewkę, w której będziesz mógł nosić pieniądze."
+						+ " Ale będę potrzebować kilku przedmiotów. Czy jesteś zainteresowany?",
 				getReply(tanner));
 
 		en.step(player, "no");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Oh? I think it would be encouraged.", getReply(tanner));
+		assertEquals("Oh? Myślę, że byłoby to zachęcane.", getReply(tanner));
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.QUESTION_1, en.getCurrentState());
@@ -221,26 +221,26 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "yes");
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
 		assertEquals(
-				configurator.sayRequiredItems("Okay. I will need [items]. Also, my fee is " + Integer.toString(configurator.getServiceFee())
-				+ " money. Please come back when you have that.", false),
+				configurator.sayRequiredItems("Dobra. Będę potrzebował [items]. Ponadto moja opłata wynosi " + Integer.toString(configurator.getServiceFee())
+				+ " money. Proszę, wróć, kiedy to będziesz miał.", false),
 				getReply(tanner));
 		assertEquals("start", player.getQuest(QUEST_SLOT));
 
 		// test keyword responses
-		en.step(player, "leather needle");
-		assertEquals("I'm sure I had one around here somewhere.", getReply(tanner));
-		en.step(player, "leather thread");
-		assertEquals("Leather thread can be made by cutting up a #pelt. You will need a #'rotary cutter'.", getReply(tanner));
-		en.step(player, "pelt");
-		assertEquals("Sometimes you can get pelts off of animals that drop them.", getReply(tanner));
-		en.step(player, "rotary cutter");
+		en.step(player, "igła do skór");
+		assertEquals("Jestem pewien, że gdzieś tu miałem.", getReply(tanner));
+		en.step(player, "skórzana nić");
+		assertEquals("Skórzana nić może być wykonana przez pocięcie #skóry. Będziesz potrzebował #'obrotowy nożyk'.", getReply(tanner));
+		en.step(player, "futro");
+		assertEquals("Czasami możesz zdobyć futro ze zwierząt, które je upuszczają.", getReply(tanner));
+		en.step(player, "obrotowy nożyk");
 		assertEquals(
-				"I seem to have misplaced mine. Perhaps you could borrow one from somebody else. They are even used for slicing pizza"
-				+ ", so ask around in places that make pizza if you can't find one anywhere else.",
+				"Wygląda na to, że zgubiłem mój. Może mógłbyś pożyczyć od kogoś innego. Są nawet używane do krojenia pizzy"
+				+ ", więc zapytaj w miejscach, w których robi się pizzę, jeśli nie możesz jej znaleźć nigdzie indziej.",
 				getReply(tanner));
 		en.step(player, "bye");
 
-		final String noItemsReply = configurator.sayRequiredItems("Bring me [items] and I will make a pouch to carry your money in.", true);
+		final String noItemsReply = configurator.sayRequiredItems("Przynieś mi [items], a wykonam sakiewkę do noszenia twych pieniędzy.", true);
 
 		// player has none of the required items
 		en.step(player, "hi");
@@ -295,11 +295,11 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.QUESTION_1, en.getCurrentState());
-		assertEquals("Ah, you found the items to make the pouch. Would you like me to begin?", getReply(tanner));
+		assertEquals("Ach, znalazłeś przedmioty do wykonania sakiewki. Chcesz, żebym rozpoczął pracę?", getReply(tanner));
 
 		en.step(player, "no");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("Really? Okay then. See me again if you change your mind.", getReply(tanner));
+		assertEquals("Naprawdę? W porządku. Przyjdź do mnie ponownie, jeśli zmienisz zdanie.", getReply(tanner));
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.QUESTION_1, en.getCurrentState());
@@ -308,8 +308,8 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		String readyReply = getReply(tanner);
 		assertTrue(
-				readyReply.equals("Okay, I will begin making your money pouch. Please come back in 24 hours.") ||
-				readyReply.equals("Okay, I will begin making your money pouch. Please come back in 1 day."));
+				readyReply.equals("Dobra, zacznę szyć sakiewkę na pieniądze. Proszę, wróć do mnie za 24 godziny.") ||
+				readyReply.equals("Dobra, zacznę szyć sakiewkę na pieniądze. Proszę, wróć do mnie za 1 dzień."));
 
 		assertFalse(player.getQuest(QUEST_SLOT).equals("start"));
 		assertFalse(player.isEquipped("pouch"));
@@ -318,14 +318,14 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 		// player returns before pouch is ready
 		en.step(player, "hi");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertTrue(getReply(tanner).startsWith("I'm sorry, your money pouch is not ready yet. Please come back in "));
+		assertTrue(getReply(tanner).startsWith("Przepraszam, twoja sakiewka nie jest jeszcze gotowa. Proszę, wróć do mnie za "));
 
 		// player returns after pouch is ready
 		player.setQuest(QUEST_SLOT, "0");
 		en.step(player, "hi");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
 		assertEquals(
-				"You came back just in time. Your money pouch is ready. Try it out. I know you will like it.",
+				"Wróciłeś w samą porę. Twoja sakiewka na pieniądze jest gotowa. Wypróbuj to. Wiem, że ci się spodoba.",
 				getReply(tanner));
 		assertEquals("done", player.getQuest(QUEST_SLOT));
 		assertNotNull(player.getFeature(FEATURE_SLOT));
@@ -333,7 +333,7 @@ public class TannerNPCTest extends ZonePlayerAndNPCTestImpl {
 		// player talks to tanner after receiving pouch
 		en.step(player, "hi");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("I knew you would enjoy the pouch.", getReply(tanner));
+		assertEquals("Wiedziałem, że spodoba ci się sakiewka.", getReply(tanner));
 
 		PlayerTestHelper.resetNPC(tanner);
 	}

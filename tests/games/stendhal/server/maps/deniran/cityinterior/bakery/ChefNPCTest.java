@@ -47,13 +47,13 @@ public class ChefNPCTest extends ZonePlayerAndNPCTestImpl {
         final Engine en = npc.getEngine();
         en.step(player, "hi");
         assertTrue(npc.isTalking());
-        assertEquals("Hello and welcome to Deniran Bakery.", getReply(npc));
+        assertEquals("Witamy w Denirańskiej piekarni.", getReply(npc));
 
         en.step(player, "job");
         assertTrue(npc.isTalking());
-        assertEquals("I run Deniran Bakery. ", getReply(npc));
+        assertEquals("Otworzyłem piekarnie w Deniran.", getReply(npc));
 
-        en.step(player, "bye");
+        en.step(player, "Do widzenia.");
         assertFalse(npc.isTalking());
 
     }

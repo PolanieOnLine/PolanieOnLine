@@ -57,7 +57,7 @@ public class BarMaidNPCTest {
 		assertFalse(zone.getNPCList().isEmpty());
 		final NPC barMaid = zone.getNPCList().get(0);
 		assertThat(barMaid.getName(), is("Siandra"));
-		assertThat(barMaid.getDescription(), is("You see a pretty young bar maid."));
+		assertThat(barMaid.getDescription(), is("Oto piękna młoda barmanka, Siandra."));
 	}
 
 	/**
@@ -77,12 +77,12 @@ public class BarMaidNPCTest {
 		Sentence sentence = new SentenceImplementation(new Expression("hi", ExpressionType.VERB));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.ATTENDING));
-		assertThat(getReply(barMaid), is("Hi!"));
+		assertThat(getReply(barMaid), is("Witam!"));
 
 		sentence = new SentenceImplementation(new Expression("bye", ExpressionType.VERB));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.IDLE));
-		assertThat(getReply(barMaid), is("Bye bye!"));
+		assertThat(getReply(barMaid), is("Do widzenia, do widzenia!"));
 	}
 
 	/**
@@ -103,18 +103,18 @@ public class BarMaidNPCTest {
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.ATTENDING));
 		assertThat("job text", getReply(barMaid),
-				is("I'm a bar maid. But we've run out of food to feed our customers, can you #offer any?"));
+				is("Jestem kelnerką. Ze względu na ciężkie czasy nie mamy wystarczająco dużo jedzenia aby nakarmić naszych klientów. Czy możesz nam coś #zaoferować? Cokolwiek?"));
 
 		sentence = new SentenceImplementation(new Expression("help", ExpressionType.VERB));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.ATTENDING));
 		assertThat("help text", getReply(barMaid),
-				is("If you could #offer any meat, ham or cheese to restock our larders I'd be grateful."));
+				is("Byłabym wdzięczna gdybyś mógł coś #zaoferować aby uzupełnić nasze zapasy: mięso, szynka lub ser."));
 
 		sentence = new SentenceImplementation(new Expression("quest", ExpressionType.VERB));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.ATTENDING));
-		assertThat("quest text", getReply(barMaid), is("Just #offers of food is enough, thank you."));
+		assertThat("quest text", getReply(barMaid), is("#Zaoferowano nam już dość jedzenia, dziękuję za pomoc."));
 	}
 
 	/**
@@ -135,57 +135,57 @@ public class BarMaidNPCTest {
 		Sentence sentence = new SentenceImplementation(new Expression("offer", ExpressionType.VERB));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.ATTENDING));
-		assertThat("offer text", getReply(barMaid), equalTo("I buy pieces of cheese, pieces of meat, spinaches, pieces of ham, sacks of flour, and porcini."));
+		assertThat("offer text", getReply(barMaid), equalTo("Skupuję ser, mięso, szpinak, szynka, mąka, oraz borowik."));
 
 		final Expression sell = new Expression("sell", ExpressionType.VERB);
 
 		sentence = new SentenceImplementation(sell);
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.ATTENDING));
-		assertThat("offer text", getReply(barMaid), is("Please tell me what you want to sell."));
+		assertThat("offer text", getReply(barMaid), is("Powiedz mi co chcesz zrobić."));
 
 		sentence = new SentenceImplementation(sell, new Expression("ser", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("A piece of cheese is worth 5. Do you want to sell it?"));
+		assertThat("offer text", getReply(barMaid), is("ser jest warty jest 5. Czy chcesz sprzedać je?"));
 		engine.setCurrentState(ConversationStates.ATTENDING);
 
-		sentence = new SentenceImplementation(sell, new Expression("meat", ExpressionType.OBJECT));
+		sentence = new SentenceImplementation(sell, new Expression("mięso", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("A piece of meat is worth 10. Do you want to sell it?"));
+		assertThat("offer text", getReply(barMaid), is("mięso jest warty jest 10. Czy chcesz sprzedać to?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
-		sentence = new SentenceImplementation(sell, new Expression("spinach", ExpressionType.OBJECT));
+		sentence = new SentenceImplementation(sell, new Expression("szpinak", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("A spinach is worth 15. Do you want to sell it?"));
+		assertThat("offer text", getReply(barMaid), is("szpinak jest warty jest 15. Czy chcesz sprzedać to?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
 		sentence = new SentenceImplementation(sell, new Expression("szynka", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("A piece of ham is worth 20. Do you want to sell it?"));
+		assertThat("offer text", getReply(barMaid), is("szynka jest warty jest 20. Czy chcesz sprzedać to?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
-		sentence = new SentenceImplementation(sell, new Expression("flour", ExpressionType.OBJECT));
+		sentence = new SentenceImplementation(sell, new Expression("mąka", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("A sack of flour is worth 25. Do you want to sell it?"));
+		assertThat("offer text", getReply(barMaid), is("mąka jest warty jest 25. Czy chcesz sprzedać to?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
-		sentence = new SentenceImplementation(sell, new Expression("porcini", ExpressionType.OBJECT));
+		sentence = new SentenceImplementation(sell, new Expression("borowik", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("A porcino is worth 30. Do you want to sell it?"));
+		assertThat("offer text", getReply(barMaid), is("borowik jest warty jest 30. Czy chcesz sprzedać to?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
-		final Expression porcini = new Expression("porcini", ExpressionType.OBJECT);
-		porcini.setAmount(2);
-		sentence = new SentenceImplementation(sell, porcini);
+		final Expression pieczarka = new Expression("borowik", ExpressionType.OBJECT);
+		pieczarka.setAmount(2);
+		sentence = new SentenceImplementation(sell, pieczarka);
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("2 porcini are worth 60. Do you want to sell them?"));
+		assertThat("offer text", getReply(barMaid), is("2 borowicy są warty jest 60. Czy chcesz sprzedać je?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
 		final Expression flour = new Expression("flour", ExpressionType.OBJECT);
@@ -193,7 +193,7 @@ public class BarMaidNPCTest {
 		sentence = new SentenceImplementation(sell, flour);
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("2 sacks of flour are worth 50. Do you want to sell them?"));
+		assertThat("offer text", getReply(barMaid), is("2 mąki są warty jest 50. Czy chcesz sprzedać je?"));
 	}
 
 }

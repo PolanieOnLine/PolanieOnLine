@@ -141,7 +141,7 @@ public class DiceDealerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertFalse(player.isEquipped("money", 1)); // We should have wasted all our money.
 
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	private boolean rollDice() {

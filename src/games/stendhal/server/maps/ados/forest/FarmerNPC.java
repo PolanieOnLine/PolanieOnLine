@@ -74,7 +74,7 @@ public class FarmerNPC implements ZoneConfigurator {
 						"to po pewnym czasie dojdziesz do dużego miasta Ados. Na wschodzie jest duuuuża skała. Balduin " +
 						"wciąż tam mieszka? Chcesz wyruszyć na południowy-wschód? Cóż.. możesz tamtędy dojść do Ados, ale " +
 						"droga jest trochę trudniejsza.");
-				addQuest("Nie mam teraz czasu na takie rzeczy. Pracuję.. pracuję.. pracuję..");
+				addQuest("Nie mam teraz czasu na takie rzeczy. Praca.. praca.. praca..");
 				addReply(Arrays.asList("empty sack", "puste worki"),"Och, mam tego mnóstwo na sprzedaż. Czy chcesz kupić #'pusty worek'?");
                 final Map<String, Integer> offerings = new HashMap<String, Integer>();
                 offerings.put("pusty worek", 10);

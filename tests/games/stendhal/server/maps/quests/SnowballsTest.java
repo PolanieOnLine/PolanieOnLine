@@ -66,7 +66,7 @@ public class SnowballsTest {
 		en.step(player, "no");
 		assertEquals("So what are you doing here? Go away!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertEquals(player.getQuest(questSlot), "rejected");
 
@@ -77,7 +77,7 @@ public class SnowballsTest {
 		en.step(player, "yes");
 		assertEquals("Fine. You can loot the snowballs from the ice golem in this cavern, but be careful there is something huge nearby! Come back when you get twenty five snowballs.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertEquals(player.getQuest(questSlot), "start");
 
@@ -86,7 +86,7 @@ public class SnowballsTest {
 		en.step(player, "quest");
 		assertEquals("You already promised me to bring some snowballs! Twenty five pieces, remember ...", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		PlayerTestHelper.equipWithStackableItem(player, "snowball", 25);
 		assertTrue(player.isEquipped("snowball", 25));
@@ -98,7 +98,7 @@ public class SnowballsTest {
 		en.step(player, "quest");
 		assertEquals("You already promised me to bring some snowballs! Twenty five pieces, remember ...", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("Greetings stranger! I see you have the snow I asked for. Are these snowballs for me?", getReply(npc));
@@ -109,7 +109,7 @@ public class SnowballsTest {
 		en.step(player, "yes");
 		assertEquals("Hey! Where did you put the snowballs?", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		PlayerTestHelper.equipWithStackableItem(player, "snowball", 25);
 
@@ -121,7 +121,7 @@ public class SnowballsTest {
 		assertThat(getReply(npc), is(oneOf("Thank you! Here, take some perch! I do not like to eat them.", "Thank you! Here, take some cod! I do not like to eat them.")));
 		// [09:49] kymara earns 50 experience points.
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertThat(player.getXP(), greaterThan(xp));
 		assertFalse(player.isEquipped("snowballs", 25));
@@ -135,7 +135,7 @@ public class SnowballsTest {
 		en.step(player, "task");
 		assertEquals("I have enough snow to finish my sculpture, but thanks for asking.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// [09:49] Admin kymara changed your state of the quest 'snowballs' from '1288518569387' to '0'
 		// [09:49] Changed the state of quest 'snowballs' from '1288518569387' to '0'
@@ -149,6 +149,6 @@ public class SnowballsTest {
 		en.step(player, "yes");
 		assertEquals("Fine. You can loot the snowballs from the ice golem in this cavern, but be careful there is something huge nearby! Come back when you get twenty five snowballs.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

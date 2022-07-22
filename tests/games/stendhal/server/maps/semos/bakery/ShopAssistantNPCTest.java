@@ -74,7 +74,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class ShopAssistantNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 
@@ -560,7 +560,7 @@ I didn't go further and pay the 3000, hope to get that item back from Ortiv to s
 				"No problem. Take as long as you need, but you can't borrow other tools till you return the last, or pay for it.",
 				getReply(npc));
 		engine.step(brokePlayer, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		engine.step(brokePlayer, "hi");
 		assertEquals(

@@ -25,7 +25,6 @@ public class JailReportAction extends AdministrationAction {
 
 	public static void register() {
 		CommandCenter.register(JAILREPORT, new JailReportAction(), 2);
-
 	}
 
 	@Override
@@ -37,10 +36,8 @@ public class JailReportAction extends AdministrationAction {
 			final ArrestWarrant warrant = jail.getWarrant(playerName);
 
 			if (warrant != null) {
-					player.sendPrivateText( warrant.getCriminal() + " został aresztowany "
-							+ String.format("%tF", warrant.getTimestamp()) + " "
-							+ String.format("%tT", warrant.getTimestamp()) + " przez "
-							+ warrant.getPoliceOfficer() + " na "
+					player.sendPrivateText(warrant.getCriminal() + " został aresztowany przez oficera #'"
+							+ warrant.getPoliceOfficer() + "' na "
 							+ warrant.getMinutes() + " minutę." + " Powód: "
 							+ warrant.getReason());
 			} else {
@@ -52,5 +49,4 @@ public class JailReportAction extends AdministrationAction {
 
 		player.notifyWorldAboutChanges();
 	}
-
 }

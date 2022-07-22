@@ -73,7 +73,7 @@ public class BailActionTest {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		en.setCurrentState(ConversationStates.ATTENDING);
 		en.step(player, "bail");
-		assertEquals("Coward, you haven't even #started!", getReply(th));
+		assertEquals("Tchórz! Nawet nie #zaczęliśmy!", getReply(th));
 		th.put("text", "");
 	}
 
@@ -92,7 +92,7 @@ public class BailActionTest {
 		en.setCurrentState(ConversationStates.ATTENDING);
 		player.setQuest("deathmatch", "done");
 		en.step(player, "bail");
-		assertEquals("Coward, we haven't even #started!", getReply(th));
+		assertEquals("Tchórz! Nawet nie #zacząłeś!", getReply(th));
 		th.put("text", "");
 
 	}
@@ -112,7 +112,7 @@ public class BailActionTest {
 		en.setCurrentState(ConversationStates.ATTENDING);
 		player.setQuest("deathmatch", "start");
 		en.step(player, "bail");
-		assertEquals("Coward! You're not as experienced as you used to be.", getReply(th));
+		assertEquals("Tchórz! Nie jesteś tak doświadczony jak powinieneś.", getReply(th));
 		th.put("text", "");
 	}
 
@@ -129,14 +129,14 @@ public class BailActionTest {
 		final Engine en = th.getEngine();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		en.setCurrentState(ConversationStates.ATTENDING);
-		final Item helmet = SingletonRepository.getEntityManager().getItem("trophy helmet");
+		final Item helmet = SingletonRepository.getEntityManager().getItem("zdobyczny hełm");
 		player.equipToInventoryOnly(helmet);
-		assertTrue(player.isEquipped("trophy helmet"));
+		assertTrue(player.isEquipped("zdobyczny hełm"));
 		helmet.put("def", 2);
 		assertThat(helmet.getInt("def"), greaterThan(1));
 		player.setQuest("deathmatch", "start");
 		en.step(player, "bail");
-		assertEquals("Coward! I'm sorry to inform you, for this your helmet has been magically weakened.",
+		assertEquals("Tchórz! Z przykrością informuje, że twój hełm został magicznie osłabiony.",
 				getReply(th));
 
 	}

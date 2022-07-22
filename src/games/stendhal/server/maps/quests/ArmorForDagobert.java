@@ -102,7 +102,7 @@ public class ArmorForDagobert extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.ATTENDING,
-			"Cóż będę musiał się ukryć..",
+			"Cóż, myślę, że po prostu się ukryję.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		// player wants to know what a leather cuirass is
@@ -186,7 +186,7 @@ public class ArmorForDagobert extends AbstractQuest {
 		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Dagobert. Jest konsultantem w banku w Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego proźbę.");
+			res.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego prośbę.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
 			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " , że znajdę dla niego skórzany kirys ponieważ został okradziony.");

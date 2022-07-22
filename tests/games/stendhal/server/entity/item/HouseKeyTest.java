@@ -68,7 +68,7 @@ public class HouseKeyTest {
 		key.setup("henhouse", 42, null);
 		assertEquals(key.describe(), "Oto klucz do henhouse.");
 		key.setup("outhouse", 13, "Mr. Taxman");
-		assertEquals(key.describe(), "Oto klucz do Mr. Taxman's property, outhouse.");
+		assertEquals(key.describe(), "Oto klucz dla Mr. Taxman do zakupionego w outhouse.");
 	}
 
 	/**

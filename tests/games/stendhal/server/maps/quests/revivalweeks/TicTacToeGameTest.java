@@ -43,7 +43,7 @@ public class TicTacToeGameTest {
 		Engine engine = paul.getEngine();
 		Player player=PlayerTestHelper.createPlayer("ticPlayer");
 		engine.step(player, "hi");
-		assertEquals("Hi, welcome to our small game of Tic Tac Toe. Your task is to fill a row (vertical, horizontal, diagonal) with the same type of tokens. You need an opponent to #play against.", getReply(paul));
+		assertEquals("Cześć! Witam w naszej małej grze Tic Tac Toe. Zadaniem jest wypełnieniem rzędu (pionowo, poziomu lub po przekątnej) tymi samymi krążkami. Potrzebujesz rywala, aby #zagrać.", getReply(paul));
 		assertEquals(ConversationStates.IDLE, engine.getCurrentState());
 		assertEquals(Direction.DOWN, paul.getDirection());
 
@@ -51,7 +51,7 @@ public class TicTacToeGameTest {
 		assertEquals(Direction.UP, paul.getDirection());
 
 		engine.step(player, "bye");
-		assertEquals("It was nice to meet you.", getReply(paul));
+		assertEquals("Miło było Cię poznać.", getReply(paul));
 		assertEquals(ConversationStates.IDLE, engine.getCurrentState());
 		assertEquals(Direction.DOWN, paul.getDirection());
 

@@ -234,7 +234,7 @@ public class UseActionTest {
 		final UseAction ua = new UseAction();
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		Item cheese = SingletonRepository.getEntityManager().getItem("cheese");
-		Corpse corpse = new Corpse("rat", 0, 0);
+		Corpse corpse = new Corpse("szczur", 0, 0);
 
 		final StendhalRPZone zone = new StendhalRPZone("zone");
 		corpse.add(cheese);

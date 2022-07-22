@@ -141,7 +141,7 @@ public class PushActionTest extends ZoneAndPlayerTestImpl {
 		// nothing interesting should happen
 		assertEquals(1, pushed.getX());
 		assertEquals(2, pushed.getY());
-		assertEquals(1, pusher.events().size());
+		assertEquals(0, pusher.events().size());
 	}
 
 	/**
@@ -198,6 +198,6 @@ public class PushActionTest extends ZoneAndPlayerTestImpl {
 		// nothing interesting should happen
 		assertEquals(1, pushed.getX());
 		assertEquals(1, pushed.getY());
-		assertEquals(1, pusher.events().size());
+		assertEquals(0, pusher.events().size());
 	}
 }

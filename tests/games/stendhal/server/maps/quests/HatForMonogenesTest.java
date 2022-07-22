@@ -110,7 +110,7 @@ public class HatForMonogenesTest {
 				"You surely have more importants things to do, and little time to do them in. I'll just stay here and freeze to death, I guess... *sniff*",
 				getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
@@ -127,20 +127,20 @@ public class HatForMonogenesTest {
 		en.step(player, "yes");
 		assertEquals("Thanks, my good friend. I'll be waiting here for your return!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
 		final Item item = ItemTestHelper.createItem("money", 25);
 		player.getSlot("bag").add(item);
 		enXin.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npcXin));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npcXin));
 		enXin.step(player, "buy leather helmet");
 		assertEquals("A leather helmet will cost 25. Do you want to buy it?", getReply(npcXin));
 		enXin.step(player, "yes");
 		assertEquals("Congratulations! Here is your leather helmet!", getReply(npcXin));
 		enXin.step(player, "bye");
-		assertEquals("Bye.", getReply(npcXin));
+		assertEquals("Do widzenia.", getReply(npcXin));
 
 		// -----------------------------------------------
 
@@ -149,7 +149,7 @@ public class HatForMonogenesTest {
 		en.step(player, "no");
 		assertEquals("I guess someone more fortunate will get his hat today... *sneeze*", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
 		assertEquals("Hey! Is that leather hat for me?", getReply(npc));
 		npc.remove("text");
@@ -159,7 +159,7 @@ public class HatForMonogenesTest {
 		assertEquals(oldXP, player.getXP());
 		assertEquals(null, getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
@@ -168,7 +168,7 @@ public class HatForMonogenesTest {
 				"Hey, my good friend, remember that leather hat I asked you about before? It's still pretty chilly here...",
 				getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
@@ -181,7 +181,7 @@ public class HatForMonogenesTest {
 
 		assertEquals("Bless you, my good friend! Now my head will stay nice and warm.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		// (sorry i meant to put it on ground to test if he noticed it went
 		// missing, i did, but i forgot i had one on my head too, he took that.)
 	}

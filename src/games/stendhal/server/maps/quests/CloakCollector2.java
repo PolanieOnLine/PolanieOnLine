@@ -170,7 +170,7 @@ public class CloakCollector2 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
-						entity.say("Och ... nie jesteś zbyt przyjazny. Powiedziałeś tak?");
+						entity.say("Och... nie jesteś zbyt przyjazny. Usłyszałam tak?");
 						player.addKarma(-5.0);
 					}
 
@@ -202,7 +202,7 @@ public class CloakCollector2 extends AbstractQuest {
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("Nie widziałeś przedtem? Cóż to jest ");
+							stringBuilder.append("Nie widziałeś przedtem? Tak więc, to jest ");
 
 							if (item == null) {
 								stringBuilder.append(itemName);
@@ -242,11 +242,11 @@ public class CloakCollector2 extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.QUESTION_2,
-				"Witaj z powrotem! Przyniosłeś ze sobą jakieś #płaszcze?", null);
+				"Witaj z powrotem! Nie masz może przy sobie jakiś #płaszczy?", null);
 
 		// Player asks what exactly is missing
 		npc.add(ConversationStates.QUESTION_2,
-				Arrays.asList("cloaks", "płaszcze"),
+				Arrays.asList("cloaks", "płaszcze", "płaszczy"),
 				null,
 				ConversationStates.QUESTION_2,
 				null,
@@ -258,7 +258,7 @@ public class CloakCollector2 extends AbstractQuest {
 								+ Grammar.quantityplnoun(needed2.size(), "płaszcz")
 								+ ". To jest "
 								+ Grammar.enumerateCollection(needed2)
-								+ ". Przyniosłeś jakiś?");
+								+ ". Masz jakiś?");
 					}
 
 					@Override
@@ -297,7 +297,7 @@ public class CloakCollector2 extends AbstractQuest {
 
 								if (missing.isEmpty()) {
 									rewardPlayer(player);
-									entity.say("O jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą Karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!");
+									entity.say("O jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item boots = SingletonRepository.getEntityManager().getItem("buty zabójcy");
 									boots.setBoundTo(player.getName());

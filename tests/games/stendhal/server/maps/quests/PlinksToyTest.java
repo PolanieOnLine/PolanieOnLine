@@ -111,6 +111,6 @@ public class PlinksToyTest {
 		en.step(player, "job");
 		assertEquals("I play all day.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

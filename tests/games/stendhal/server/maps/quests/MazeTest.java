@@ -71,7 +71,7 @@ public class MazeTest extends ZonePlayerAndNPCTestImpl {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "task");
 		assertEquals("I can send you to a #maze you need to find your way out. I keep the a list of the fast and frequent maze solvers in that blue book on the table.", getReply(npc));
 		en.step(player, "maze");
@@ -92,13 +92,13 @@ public class MazeTest extends ZonePlayerAndNPCTestImpl {
 
 		// didn't solve the maze
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "task");
 		assertEquals("I can send you to a #maze you need to find your way out. I keep the a list of the fast and frequent maze solvers in that blue book on the table.", getReply(npc));
 		en.step(player, "maze");
 		assertTrue(getReply(npc).matches("I can send you to the maze only once in a day. You can go there again in .*\\."));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// jump back to the quest start state
 		player.setQuest(questSlot, questStarted);

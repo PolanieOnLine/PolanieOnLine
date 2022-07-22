@@ -91,7 +91,7 @@ public class HungryJoshuaTest {
 		en.step(player, "joshua");
 		assertEquals("My brother, the goldsmith in Ados.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
@@ -102,7 +102,7 @@ public class HungryJoshuaTest {
 		en.step(player, "sandwiches");
 		assertEquals("#Joshua will be getting hungry! Please hurry!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
@@ -129,7 +129,7 @@ public class HungryJoshuaTest {
 		assertThat(player.getXP(), greaterThan(xp));
 		assertThat(player.getQuest(questSlot), is("joshua"));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 		npc = SingletonRepository.getNPCList().get("Xoderos");
@@ -148,6 +148,6 @@ public class HungryJoshuaTest {
 		assertThat(player.getXP(), greaterThan(xp2));
 		assertTrue(player.isQuestCompleted(questSlot));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

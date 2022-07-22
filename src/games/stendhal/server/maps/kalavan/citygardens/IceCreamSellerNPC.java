@@ -62,7 +62,7 @@ public class IceCreamSellerNPC implements ZoneConfigurator {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player,final Sentence sentence, final EventRaiser npc) {
-							((SpeakerNPC) npc.getEntity()).getEngine().step(player, "buy ice cream");
+							((SpeakerNPC) npc.getEntity()).getEngine().step(player, "buy lody");
 							}
 						} );
 

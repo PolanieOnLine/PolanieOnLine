@@ -60,7 +60,7 @@ public class LearnAboutKarmaTest {
 	@Test
 	public void testQuest() {
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "help");
 		assertEquals("You can take one of my prepared medicines with you on your travels; just ask for an #offer.", getReply(npc));
 		en.step(player, "offer");
@@ -74,12 +74,12 @@ public class LearnAboutKarmaTest {
 		en.step(player, "yes");
 		assertEquals("Your karma of -10 is not very good. Now you can always see your karma, if you had good karma it would show as blue.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "task");
 		assertEquals("If you want to get good #karma all you have to do is be helpful to others. I know a hunter girl called Sally who needs wood, and I know another girl called Annie who loves icecream, well, I know many people who needs tasks doing for them regularly and I'm sure if you help them you will be rewarded, that's how karma works after all.", getReply(npc));
 		en.step(player, "karma");
@@ -87,14 +87,14 @@ public class LearnAboutKarmaTest {
 		en.step(player, "yes");
 		assertEquals("Your karma of -10 is not very good. Now you can always see your karma, if you had good karma it would show as blue.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 		// start quest again (clean)
 		player.setQuest("learn_karma", null);
 
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "job");
 		assertEquals("I make potions and antidotes, to #offer to warriors.", getReply(npc));
 		en.step(player, "task");
@@ -118,6 +118,6 @@ public class LearnAboutKarmaTest {
 		en.step(player, "yes");
 		assertEquals("Your karma of 15 is good. Now you can always see your karma, and you should try to keep yours out of the 'red'.",  getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

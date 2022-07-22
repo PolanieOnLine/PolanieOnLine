@@ -70,7 +70,7 @@ public class ChefNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class ChefNPCTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		en.step(player, "bye");
 		assertFalse(npc.isTalking());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**

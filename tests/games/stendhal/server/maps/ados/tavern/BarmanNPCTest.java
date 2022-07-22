@@ -51,37 +51,37 @@ public class BarmanNPCTest {
 		Player player = PlayerTestHelper.createPlayer("monsterdhal");
 
 		engine.step(player,"hi");
-		assertThat(getReply(dale),is("Hey, good looking ..."));
+		assertThat(getReply(dale),is("Cześć, wyglądasz świetnie..."));
 
-		engine.step(player,"buy 500 chocolate bar");
-		assertThat(getReply(dale),is("500 chocolate bars will cost 50000. Do you want to buy them?"));
+		engine.step(player,"buy 500 tabliczka czekolady");
+		assertThat(getReply(dale),is("500 tabliczka czekolady kosztuje 50000. Chcesz kupić je?"));
 		final Item item = ItemTestHelper.createItem("money", 50000);
 		player.getSlot("bag").add(item);
 
 		engine.step(player,"yes");
-		assertThat(getReply(dale),is("Congratulations! Here are your chocolate bars!"));
+		assertThat(getReply(dale),is("Gratulacje! Oto twój tabliczka czekolady!"));
 
 		engine.step(player,"bye");
-		assertThat(getReply(dale),is("See you around, sweetcheeks."));
+		assertThat(getReply(dale),is("Na zobaczenia kociaczki."));
 
 
 
 		engine.step(player,"hi");
-		assertThat(getReply(dale),is("Hey, good looking ..."));
+		assertThat(getReply(dale),is("Cześć, wyglądasz świetnie..."));
 
 		engine.step(player,"offer");
-		assertThat(getReply(dale), anyOf(equalTo("I sell wine, pina colada, and chocolate bar."),
-				equalTo("I sell wine, chocolate bar, and pina colada."),
-				equalTo("I sell chocolate bar, wine, and pina colada."),
-				equalTo("I sell chocolate bar, pina colada, and wine."),
-				equalTo("I sell pina colada, chocolate bar, and wine."),
-				equalTo("I sell pina colada, wine, and chocolate bar.")));
+		assertThat(getReply(dale), anyOf(equalTo("Sprzedaję napój z winogron, napój z oliwką, oraz tabliczka czekolady."),
+				equalTo("Sprzedaję napój z winogron, tabliczka czekolady, and napój z oliwką."),
+				equalTo("Sprzedaję tabliczka czekolady, napój z winogron, and napój z oliwką."),
+				equalTo("Sprzedaję tabliczka czekolady, napój z oliwką, and napój z winogron."),
+				equalTo("Sprzedaję napój z oliwką, tabliczka czekolady, and napój z winogron."),
+				equalTo("Sprzedaję napój z oliwką, napój z winogron, and tabliczka czekolady.")));
 
-		engine.step(player,"buy 100 chocolate");
-		assertThat(getReply(dale),is("Please specify which sort of chocolate you want to buy."));
+		engine.step(player,"buy 100 czekolady");
+		assertThat(getReply(dale),is("Powiedz mi jaki rodzaj czekolady chcesz użyć."));
 
-		engine.step(player,"buy 100 chocolates");
-		assertThat(getReply(dale),is("Please specify which sort of chocolate you want to buy."));
+		engine.step(player,"buy 100 czekolady");
+		assertThat(getReply(dale),is("Powiedz mi jaki rodzaj czekolady chcesz użyć."));
 	}
 
 }

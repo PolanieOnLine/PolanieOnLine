@@ -56,10 +56,10 @@ public class SheepSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hello"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class SheepSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "job"));
 		assertEquals("I work as a sheep seller.", getReply(npc));
@@ -82,7 +82,7 @@ public class SheepSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(en.step(player, "buy"));
 		assertEquals("A sheep will cost 30. Do you want to buy it?", getReply(npc));
 		assertTrue(en.step(player, "no"));
-		assertEquals("Ok, how else may I help you?", getReply(npc));
+		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy dog"));
 		assertEquals("Sorry, I don't sell dogs.", getReply(npc));
@@ -97,7 +97,7 @@ public class SheepSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("A sheep will cost 30. Do you want to buy it?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
-		assertEquals("Ok, how else may I help you?", getReply(npc));
+		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy sheep"));
 		assertEquals("A sheep will cost 30. Do you want to buy it?", getReply(npc));
@@ -134,7 +134,7 @@ public class SheepSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi Nishiya"));
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "sell"));
 		assertEquals("Once you've gotten your sheep up to a weight of 100, you can take her to Sato in Semos; he will buy her from you.", getReply(npc));

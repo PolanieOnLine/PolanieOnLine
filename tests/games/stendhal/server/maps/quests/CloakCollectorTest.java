@@ -84,13 +84,13 @@ public class CloakCollectorTest {
 		en.stepTest(monica, cc.getAdditionalTriggerPhraseForQuest().get(0));
 		assertEquals(cc.respondToQuest(), getReply(npc));
 
-		en.stepTest(monica, "elf cloak");
+		en.stepTest(monica, "peleryna elficka");
 		assertEquals(
 				"You haven't seen one before? Well, it's a elf cloak. So, will you find them all?",
 				getReply(npc));
 
 		en.stepTest(monica, "pink cloak");
-		assertEquals("I don't know pink cloak. Can you name me another cloak please?", getReply(npc));
+		assertEquals("Nie kojarzę pink cloak. Mogę cię poprosić o podanie nazwy innego płaszcza?", getReply(npc));
 
 		en.stepTest(monica, ConversationPhrases.YES_MESSAGES.get(0));
 		assertEquals(cc.respondToQuestAcception(), getReply(npc));
@@ -107,18 +107,18 @@ public class CloakCollectorTest {
 		en.stepTest(monica, ConversationPhrases.YES_MESSAGES.get(0));
 		assertEquals(cc.askForItemsAfterPlayerSaidHeHasItems(), getReply(npc));
 
-		en.stepTest(monica, "elf cloak");
-		assertEquals(cc.respondToOfferOfNotExistingItem("elf cloak"),
+		en.stepTest(monica, "peleryna elficka");
+		assertEquals(cc.respondToOfferOfNotExistingItem("peleryna elficka"),
 				getReply(npc));
 
-		Item cloak = new Item("elf cloak", "", "", null);
+		Item cloak = new Item("peleryna elficka", "", "", null);
 		monica.getSlot("bag").add(cloak);
-		en.stepTest(monica, "elf cloak");
+		en.stepTest(monica, "peleryna elficka");
 		assertEquals(cc.respondToItemBrought(), getReply(npc));
-		en.stepTest(monica, "elf cloak");
+		en.stepTest(monica, "peleryna elficka");
 		assertEquals(cc.respondToOfferOfNotMissingItem(), getReply(npc));
 
-		cloak = new Item("stone cloak", "", "", null);
+		cloak = new Item("płaszcz kamienny", "", "", null);
 		monica.getSlot("bag").add(cloak);
 
 		for (final String cloakName : cc.getNeededItems()) {
@@ -159,7 +159,7 @@ public class CloakCollectorTest {
 		final Player player = PlayerTestHelper.createPlayer("player");
 		final double oldKarma = player.getKarma();
 		cc.rewardPlayer(player);
-		assertTrue(player.isEquipped("black cloak"));
+		assertTrue(player.isEquipped("czarny płaszcz"));
 		assertEquals(oldKarma + 5.0, player.getKarma(), 0.01);
 		assertEquals(10000, player.getXP());
 	}

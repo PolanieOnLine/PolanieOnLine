@@ -41,13 +41,13 @@ public class ChocolateForElisabethTest extends ZonePlayerAndNPCTestImpl {
 	private static final String CHOCOLATE = "tabliczka czekolady";
 	private static final String[] FLOWERS = { "stokrotki", "bielikrasa", "bratek" };
 
-	private static final String LIZ_TALK_GREETING_DEFAULT = "Hello.";
-	private static final String LIZ_TALK_GREETING_FIRST_TIME = "I can't remember when I smelt the good taste of #chocolate the last time...";
-	private static final String LIZ_TALK_GREETING_WITHOUT_CHOCOLATE = "I hope that someone will bring me some chocolate soon...:(";
-	private static final String LIZ_TALK_GREETING_WITH_CHOCOLATE_ALLOWED = "Awesome! Is that chocolate for me?";
-	private static final String LIZ_TALK_GREETING_WITH_CHOCOLATE_NOT_ALLOWED = "My mum wants to know who I was asking for chocolate from now :(";
+	private static final String LIZ_TALK_GREETING_DEFAULT = "Cześć.";
+	private static final String LIZ_TALK_GREETING_FIRST_TIME = "Nie pamiętam kiedy ostatnio czułam zapach dobrej tabliczki #czekolady...";
+	private static final String LIZ_TALK_GREETING_WITHOUT_CHOCOLATE = "Mam nadzieje, że ktoś mi przyniesie tabliczkę czekolady...:(";
+	private static final String LIZ_TALK_GREETING_WITH_CHOCOLATE_ALLOWED = "Wspaniale! Ta tabliczka czekolady jest dla mnie?";
+	private static final String LIZ_TALK_GREETING_WITH_CHOCOLATE_NOT_ALLOWED = "Moja mama chce wiedzieć kogo pytałam o tabliczkę czekolady :(";
 
-	private static final String LIZ_TALK_QUEST_OFFER = "I would really love to have some chocolate. I'd like one bar, please. A dark brown one or a sweet white one or some with flakes. Will you get me one?";
+	private static final String LIZ_TALK_QUEST_OFFER = "Chciałabym dostać tabliczkę czekolady. Chociaż jedną. Ciemno brązową lub słodką białą lub z posypką. Zdobędziesz jedną dla mnie?";
 	private static final String LIZ_TALK_QUEST_OFFER_AGAIN = "I hope another chocolate bar wouldn't be greedy. Can you get me another one?";
 	private static final String LIZ_TALK_QUEST_NOT_NOW = "I've had too much chocolate. I feel sick.";
 	private static final String LIZ_TALK_QUEST_ALREADY_OFFERED = "Waaaaaaaa! Where is my chocolate ...";
@@ -56,13 +56,13 @@ public class ChocolateForElisabethTest extends ZonePlayerAndNPCTestImpl {
 	private static final String LIZ_TALK_REWARD = "Thank you EVER so much! You are very kind. Here, take a fresh flower as a present.";
 	private static final String LIZ_TALK_PISSED = "Waaaaaa! You're a big fat meanie.";
 
-	private static final String MUM_TALK_GREET = "Hello, nice to meet you.";
-	private static final String MUM_TALK_GREET_AND_APPROVE = "Oh you met my daughter Elisabeth already. You seem like a nice person so it would be really kind, if you can bring her a chocolate bar because I'm not #strong enough for that.";
+	private static final String MUM_TALK_GREET = "Cześć miło cię poznać";
+	private static final String MUM_TALK_GREET_AND_APPROVE = "Oh już spotkałeś moją córkę Elisabeth. Wyglądasz na miłą osobę i byłabym wdzięczna gdybyś mógł przynieść jej tabliczkę czekolady ponieważ nie jestem zbyt #silna na to.";
 
-	private static final String HISTORY_DEFAULT = "Elisabeth is a sweet little girl who lives in Kirdneh together with her family.";
+	private static final String HISTORY_DEFAULT = "Elisabeth jest miłą małą dziweczynką żyjącą w Kirdneh razem ze swoją rodziną.";
 	private static final String HISTORY_REJECTED = "I don't like sweet little girls.";
-	private static final String HISTORY_START = "Little Elisabeth wants a chocolate bar.";
-	private static final String HISTORY_GOT_CHOCOLATE = "I found a tasty chocolate bar for Elisabeth.";
+	private static final String HISTORY_START = "Mała Elisabeth potrzebuje tabliczkę czekolady.";
+	private static final String HISTORY_GOT_CHOCOLATE = "Znalazłem pyszną tabliczkę czekolady dla Elisabeth.";
 	private static final String HISTORY_MUM_APPROVES = "I spoke to Carey, Elisabeth's mom and she agreed I could give a chocolate bar to her daughter.";
 	private static final String HISTORY_DONE = "Elisabeth is eating the chocolate bar I gave her, and she gave me some flowers in return.";
 	private static final String HISTORY_REPEATABLE = "I took some chocolate to Elisabeth, she gave me some flowers in return. Perhaps she'd like more chocolate now.";

@@ -134,7 +134,7 @@ public class PizzaDeliveryTest {
 		assertTrue(player.isEquipped("pizza"));
 		assertEquals("Eliza works for the Athor Island ferry service. You'll find her at the docks south of the Ados swamps.", getReply(leander));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(leander));
+		assertEquals("Do widzenia.", getReply(leander));
 		assertTrue(player.hasQuest(questSlot));
 
 		// we choose to make it so that he had asked us to take a pizza to a specific npc so we have to remove the
@@ -181,8 +181,8 @@ public class PizzaDeliveryTest {
 		assertEquals("Too bad. I hope my daughter #Sally will soon come back from her camp to help me with the deliveries.", getReply(npc1));
 		en.step(player, "sally");
 		assertEquals("My daughter Sally might be able to help you get ham. She's a scout, you see; I think she's currently camped out south of Or'ril Castle.", getReply(npc1));
-		en.step(player, "bye.");
-		assertEquals("Bye.", getReply(npc1));
+		en.step(player, "Do widzenia.");
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		en.step(player, "hi");
 		assertEquals("Hallo! Glad to see you in my kitchen where I make #pizza and #sandwiches.", getReply(npc1));
@@ -195,7 +195,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "jenny");
 		assertEquals("Jenny owns a mill in the plains north and a little east of Semos.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 		assertTrue(player.hasQuest(questSlot));
 
 		npc1 = SingletonRepository.getNPCList().get("Jenny");
@@ -219,7 +219,7 @@ public class PizzaDeliveryTest {
 		// [16:58] kymara earns 5 experience points.
 		assertEquals("It's a shame. Your pizza service can't deliver a hot pizza although the bakery is just around the corner.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		// test trying to get a pizza order with a slime outfit
 		npc1 = SingletonRepository.getNPCList().get("Leander");
@@ -235,7 +235,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "task");
 		assertEquals("Sorry, you can't wear our pizza delivery uniform looking like that. If you get changed, you can ask about the #task again.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 
 		// ok, we've already tested getting pizza orders but now we're trying different npcs
@@ -254,7 +254,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "yes");
 		assertTrue(getReply(npc1).startsWith("You must bring this Pizza "));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		npc1 = SingletonRepository.getNPCList().get("Katinka");
 		en = npc1.getEngine();
@@ -302,7 +302,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "fidorea");
 		assertEquals("Fidorea lives in Ados city. She is a makeup artist. You'll need to walk east from here.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 		player.drop("pizza");
 		item = ItemTestHelper.createItem("pizza");
 		item.setInfoString("Pizza Napoli");
@@ -352,7 +352,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "jenny");
 		assertEquals("Jenny owns a mill in the plains north and a little east of Semos.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		// we choose to make it so that he had asked us to take a pizza to a specific npc so we have to remove the
 		// old pizza and add the correct new flavour of pizza
@@ -371,7 +371,7 @@ public class PizzaDeliveryTest {
 		// [17:00] kymara earns 10 experience points.
 		assertEquals("Ah, you brought my Pizza Margherita! Very nice of you! Here, take 20 coins as a tip!", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		npc1 = SingletonRepository.getNPCList().get("Leander");
 		en = npc1.getEngine();
@@ -387,7 +387,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "katinka");
 		assertEquals("Katinka takes care of the animals at the Ados Wildlife Refuge. That's north east of here, on the way to Ados city.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		npc1 = SingletonRepository.getNPCList().get("Katinka");
 		en = npc1.getEngine();
@@ -421,7 +421,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "cyk");
 		assertEquals("Cyk is currently on holiday on Athor Island. You'll easily recognize him by his blue hair. Go South East to find Athor ferry.", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 		player.setQuest(questSlot, "Cyk;" + System.currentTimeMillis());
 		player.drop("pizza");
 		item = ItemTestHelper.createItem("pizza");
@@ -435,7 +435,7 @@ public class PizzaDeliveryTest {
 		en.step(player, "task");
 		assertEquals("You still have to deliver a pizza to Cyk, and hurry!", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		npc1 = SingletonRepository.getNPCList().get("Cyk");
 		en = npc1.getEngine();
@@ -468,12 +468,12 @@ public class PizzaDeliveryTest {
 		player.setQuest(questSlot, "Haizen;" + System.currentTimeMillis());
 		// on time
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc1));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc1));
 		en.step(player, "pizza");
 		// [17:11] kymara earns 15 experience points.
 		assertEquals("Ah, my Pizza Diavolo! And it's fresh out of the oven! Take these 80 coins as a tip!", getReply(npc1));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc1));
+		assertEquals("Do widzenia.", getReply(npc1));
 
 		// Check coming back to leander after a failure
 		// Add a test pizza, one that leander should not steal
@@ -498,6 +498,6 @@ public class PizzaDeliveryTest {
 		// after this we should be like any other player wanting to deliver a pizza, phew
 		assertEquals(ConversationStates.QUEST_OFFERED, en.getCurrentState());
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(leander));
+		assertEquals("Do widzenia.", getReply(leander));
 	}
 }

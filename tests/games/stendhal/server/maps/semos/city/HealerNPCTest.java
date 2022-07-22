@@ -102,12 +102,12 @@ public class HealerNPCTest {
 		    builder.append(". Do you want to buy it?");
 	        assertEquals(builder.toString(), getReply(npc));
 	        assertTrue(en.step(player, "no"));
-	        assertEquals("Ok, how else may I help you?", getReply(npc));
+	        assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
         }
 
         assertTrue(en.step(player, "!me hugs Carmen"));
 		assertEquals("!me hugs bob", getReply(npc));
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

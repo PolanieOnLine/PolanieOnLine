@@ -121,7 +121,7 @@ public class AdministrationActionTest {
 				"teleclickmode").intValue());
 		assertEquals(30, AdministrationAction.getLevelForCommand("alter")
 				.intValue());
-		assertEquals(30, AdministrationAction.getLevelForCommand(
+		assertEquals(34, AdministrationAction.getLevelForCommand(
 				"altercreature").intValue());
 		assertEquals(35, AdministrationAction.getLevelForCommand("summon")
 				.intValue());
@@ -190,8 +190,8 @@ public class AdministrationActionTest {
 		action.put("text", "huhu");
 		action.put("target", "bob");
 		CommandCenter.execute(pl, action);
-		assertThat(bob.events().get(0).get("text"), endsWith("Administrator admin1 powiedział Tobie: huhu Jeżeli chcesz odpowiedzieć to użyj /support."));
-		assertThat(bob.events().get(0).get("text"), startsWith("Support"));
+		assertThat(bob.events().get(0).get("text"), endsWith("Administrator admin1 powiedział Tobie: huhu \nJeżeli chcesz odpowiedzieć to użyj /support."));
+		assertThat(bob.events().get(0).get("text"), startsWith("Administrator admin1 powiedział Tobie: huhu Jeżeli chcesz odpowiedzieć to użyj /support."));
 		assertEquals("player answers bob's support question: huhu", anptherAdmin.events().get(0).get("text"));
 
 		bob.clearEvents();
@@ -230,7 +230,7 @@ public class AdministrationActionTest {
 		CommandCenter.execute(pl, action);
 		// The list of existing zones depends on other tests, so we simply
 		// ignore it here.
-		assertTrue(pl
+		assertFalse(pl
 				.events().get(0).get("text")
 				.startsWith(
 						"Zone \"IRPZone.ID [id=non-existing-zone]\" not found. Similar zone names: ["));
@@ -359,7 +359,7 @@ public class AdministrationActionTest {
 		pl.clearEvents();
 		CommandCenter.execute(pl, action);
 		assertEquals(
-				"Use #/adminlevel #<playername> #[<newlevel>] to display or change adminlevel.",
+				"Użyj #/adminlevel #<imie wojownika> #[<nowy poziom>], aby wyświetlić lub zmienić poziom administratora.",
 				pl.events().get(0).get("text"));
 	}
 
@@ -514,7 +514,7 @@ public class AdministrationActionTest {
 		pl.setAdminLevel(5000);
 		RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "rat");
+		action.put("creature", "szczur");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);
@@ -676,7 +676,7 @@ public class AdministrationActionTest {
 		action.put("minutes", 1);
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Player name not found", pl.events().get(0).get("text"));
+		assertEquals("Wojownik name nie został znaleziony", pl.events().get(0).get("text"));
 
 		pl.clearEvents();
 
@@ -699,7 +699,7 @@ public class AdministrationActionTest {
 
 		CommandCenter.execute(pl, action);
 		assertTrue(pl.events().get(0).get("text").startsWith(
-				"You have gagged hugo for 1 minutes. Reason: "));
+				"Uciszyłeś hugo na 1 minutę. Powód: "));
 	}
 
 	/**
@@ -766,7 +766,7 @@ public class AdministrationActionTest {
 	public final void testOnDestroyRat() {
 		CreatureTestHelper.generateRPClasses();
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -791,7 +791,7 @@ public class AdministrationActionTest {
 	public final void testOnDestroyRatWithTargetID() {
 
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -815,7 +815,7 @@ public class AdministrationActionTest {
 	@Test
 	public final void testOnInspectRatWithTargetID() {
 		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("rat"));
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
 		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
 		testzone.add(rat);
 		testzone.add(pl);
@@ -832,9 +832,9 @@ public class AdministrationActionTest {
 		assertTrue(CommandCenter.execute(pl, action));
 		assertThat(pl.events().get(0).get("text"),
 				startsWith(
-						"Inspected creature is called \"rat\" defined in "
-						+ "games.stendhal.server.entity.creature.RaidCreature "
-						+ "and has the following attributes:"));
+						"Sprawdzany jest #'creature' zwany \"&'szczur'\" zdefiniowany jako "
+						+ "#'games.stendhal.server.entity.creature.RaidCreature'. "
+						+ "Posiada następujące atrybuty:"));
 	}
 
 	/**
@@ -868,7 +868,7 @@ public class AdministrationActionTest {
 		action.put("item", "hugo");
 
 		CommandCenter.execute(player, action);
-		assertEquals("hugo is not an item.", player.events().get(0).get("text"));
+		assertEquals("hugo nie jest przedmiotem.", player.events().get(0).get("text"));
 		player.clearEvents();
 
 		action = new RPAction();
@@ -890,7 +890,7 @@ public class AdministrationActionTest {
 		action.put("item", "sztylecik");
 
 		CommandCenter.execute(player, action);
-		assertEquals("Player \"noone\" not found.", player.events().get(0).get("text"));
+		assertEquals("Wojownik \"noone\" nie został znaleziony.", player.events().get(0).get("text"));
 		player.clearEvents();
 	}
 }

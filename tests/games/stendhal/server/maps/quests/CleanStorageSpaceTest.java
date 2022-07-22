@@ -64,7 +64,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Hi there, young hero.", getReply(npc));
+		assertEquals("Witaj młody bohaterze.", getReply(npc));
 		assertTrue(en.step(player, "job"));
 		assertTrue(npc.isTalking());
 		assertEquals("I'm just a regular housewife.", getReply(npc));
@@ -74,7 +74,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		assertTrue(en.step(player, "bye"));
 		assertFalse(npc.isTalking());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Hi there, young hero.", getReply(npc));
+		assertEquals("Witaj młody bohaterze.", getReply(npc));
 		assertTrue(en.step(player, "task"));
 		assertTrue(npc.isTalking());
 		assertEquals(
@@ -102,7 +102,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 				getReply(npc));
 		assertTrue(en.step(player, "bye"));
 		assertFalse(npc.isTalking());
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		player.setSoloKill("szczur");
 		assertTrue(player.hasKilled("szczur"));
 		player.setSharedKill("caverat");

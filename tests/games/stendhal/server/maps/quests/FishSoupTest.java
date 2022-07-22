@@ -88,7 +88,7 @@ public class FishSoupTest {
 		en.step(player, "onion");
 		assertEquals("Oh come on, I don't have time for jokes! You don't have an onion with you.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		PlayerTestHelper.equipWithItem(player, "leek");
 		PlayerTestHelper.equipWithItem(player, "surgeonfish");
 		PlayerTestHelper.equipWithItem(player, "cod");
@@ -103,7 +103,7 @@ public class FishSoupTest {
 		en.step(player, "everything");
 		assertEquals("You didn't have all the ingredients I need. I still need 2 ingredients: #roach and #onion. You'll get bad karma if you keep making mistakes like that!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
 		assertEquals("Welcome back! I hope you collected some #ingredients for the fish soup, or #everything.", getReply(npc));
 		en.step(player, "ingredients");
@@ -135,7 +135,7 @@ public class FishSoupTest {
 		en.step(player, "onion");
 		assertEquals("Oh come on, I don't have time for jokes! You don't have an onion with you.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		PlayerTestHelper.equipWithItem(player, "leek");
 		PlayerTestHelper.equipWithItem(player, "surgeonfish");
 		PlayerTestHelper.equipWithItem(player, "cod");

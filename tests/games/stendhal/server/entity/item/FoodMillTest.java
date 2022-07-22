@@ -50,21 +50,21 @@ public class FoodMillTest {
 
 		user.equip("bag", fm);
 		fm.onUsed(user);
-		assertEquals("Powinieneś trzymać sugar mill w drugiej ręce, aby móc go użyć", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Powinieneś trzymać sugar mill w drugiej ręce, aby móc go użyć.", PlayerTestHelper.getPrivateReply(user));
 		user.equip("lhand", fm);
 		fm.onUsed(user);
 
-		assertEquals("Your other hand looks empty.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Twoja druga ręka wygląda na pustą.", PlayerTestHelper.getPrivateReply(user));
 		PlayerTestHelper.equipWithItemToSlot(user, "ser", "rhand");
 		fm.onUsed(user);
-		assertEquals("You need to have at least a sugar cane in your other hand", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
 
 		user.drop("ser");
 
 		PlayerTestHelper.equipWithItemToSlot(user, "trzcina cukrowa", "rhand");
 
 		fm.onUsed(user);
-		assertEquals("You don't have an empty sack with you", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni", PlayerTestHelper.getPrivateReply(user));
 		PlayerTestHelper.equipWithItem(user, "pusty worek");
 		fm.onUsed(user);
 		assertTrue(user.isEquipped("cukier"));
@@ -88,13 +88,13 @@ public class FoodMillTest {
 
 		user.equip("lhand", fm);
 		fm.onUsed(user);
-		assertEquals("Your other hand looks empty.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Twoja druga ręka wygląda na pustą.", PlayerTestHelper.getPrivateReply(user));
 		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		PlayerTestHelper.equipWithItemToSlot(user, "ser", "rhand");
 		PlayerTestHelper.equipWithItemToSlot(user, "zwój zapisany","bag");
 		fm.onUsed(user);
-		assertEquals("You need to have at least a marked scroll in your other hand", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
 		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		user.drop("ser");

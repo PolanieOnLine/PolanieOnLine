@@ -60,10 +60,10 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hello"));
-		assertEquals("Hello, dear.", getReply(npc));
+		assertEquals("Cześć.", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -75,75 +75,69 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Hello, dear.", getReply(npc));
+		assertEquals("Cześć.", getReply(npc));
 
 		assertTrue(en.step(player, "job"));
-		assertEquals("I'm the housekeeper here. I can #brew you a nice cup of #tea, if you like.", getReply(npc));
+		assertEquals("Jestem gospodynią domową. Mogę zaparzyć filiżankę świeżej #herbaty o ile chcesz. Powiedz tylko #zaparz.", getReply(npc));
 
 		assertTrue(en.step(player, "offer"));
-		assertEquals("I will #brew you a hot cup of #tea, if you like.", getReply(npc));
+		assertEquals("Zaparzę Tobie filiżankę #herbaty o ile chcesz. Powiedz tylko #zaparz.", getReply(npc));
 
 		assertTrue(en.step(player, "quest"));
-		assertEquals("I have such a headache and little Annie shrieking every time she goes down the slide doesn't help. Maybe you could give her something to keep her occupied? ... like a gag ...", getReply(npc));
+		assertEquals("Mam ból głowy i małą Annie, która za każdym razem jak schodzi to hałasuje. Może mógłbyś dać jej jakieś zajęcie? ... tak, aby się uciszyła ...", getReply(npc));
 
-		assertTrue(en.step(player, "tea"));
-		assertEquals("It's the very best drink of all. I sweeten mine with #honey. Just ask if you'd like a #brew.", getReply(npc));
-
-		assertTrue(en.step(player, "brew"));
-		assertEquals("I can only brew a cup of tea if you bring me a #'bottle of milk' and a #'jar of honey'.", getReply(npc));
-
-		assertTrue(en.step(player, "milk"));
-		assertEquals("Well my dear, I expect you can get milk from a farm.", getReply(npc));
-
-		assertTrue(en.step(player, "bottle of milk"));
-		assertEquals("Well my dear, I expect you can get milk from a farm.", getReply(npc));
-
-		assertTrue(en.step(player, "honey"));
-		assertEquals("Don't you know the beekeeper of Fado Forest?", getReply(npc));
-
-		assertTrue(en.step(player, "jar of honey"));
-		assertEquals("Don't you know the beekeeper of Fado Forest?", getReply(npc));
-
-		assertFalse(player.isEquipped("tea"));
-
-		PlayerTestHelper.equipWithItem(player, "milk");
-		PlayerTestHelper.equipWithItem(player, "honey");
+		assertTrue(en.step(player, "herbaty"));
+		assertEquals("To najlepszy napój. Słodzę ją miodem. Powiedz #'zaparz filiżanka herbaty' o ile będziesz chciał.", getReply(npc));
 
 		assertTrue(en.step(player, "brew"));
-		assertEquals("I need you to fetch me a #'bottle of milk' and a #'jar of honey' for this job, which will take 3 minutes. Do you have what I need?", getReply(npc));
+		assertEquals("Mogę zrobić filiżanka herbaty jeżeli przyniesiesz mi 1 #miód oraz 1 #mleko.", getReply(npc));
+
+		assertTrue(en.step(player, "mleko"));
+		assertEquals("Cóż spodziewam się, że zdobędziesz mleko z farmy.", getReply(npc));
+
+		assertTrue(en.step(player, "miód"));
+		assertEquals("Nie znasz pszczelarza z lasu Fado?", getReply(npc));
+
+		assertFalse(player.isEquipped("filiżanka herbaty"));
+
+		PlayerTestHelper.equipWithItem(player, "mleko");
+		PlayerTestHelper.equipWithItem(player, "miód");
+
+		assertTrue(en.step(player, "brew"));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 miód oraz 1 mleko do tej pracy, która zajmie mi 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
-		assertEquals("OK, no problem.", getReply(npc));
+		assertEquals("Dobrze, nie ma problemu.", getReply(npc));
 
 		assertTrue(en.step(player, "brew"));
-		assertEquals("I need you to fetch me a #'bottle of milk' and a #'jar of honey' for this job, which will take 3 minutes. Do you have what I need?", getReply(npc));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 miód oraz 1 mleko do tej pracy, która zajmie mi 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
-		assertEquals("OK, I will brew a cup of tea for you, but that will take some time. Please come back in 3 minutes.", getReply(npc));
-		assertFalse(player.isEquipped("tea"));
+		assertEquals("Dobrze zrobię dla Ciebie filiżanka herbaty, ale zajmie mi to trochę czasu. Wróć za 3 minuty.", getReply(npc));
+		assertFalse(player.isEquipped("filiżanka herbaty"));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// wait one minute
 		setPastTime(player, QUEST_SLOT, 2, 1*60);
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Welcome back! I'm still busy with your order to brew a cup of tea for you. Come back in 2 minutes to get it.", getReply(npc));
+		assertEquals("Witaj z powrotem! Wciąż zajmuje się twoim zleceniem filiżanka herbaty. Wróć za 2 minuty, aby odebrać.", getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// wait three minutes
 		setPastTime(player, QUEST_SLOT, 2, 3*60);
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Welcome back! I'm done with your order. Here you have the cup of tea.", getReply(npc));
+		assertEquals("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto filiżanka herbaty.", getReply(npc));
 
-		assertTrue(player.isEquipped("tea", 1));
+		assertTrue(player.isEquipped("filiżanka herbaty", 1));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -154,14 +148,14 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
-		assertTrue(en.step(player, "hi Granny Graham"));
-		assertEquals("Hello, dear.", getReply(npc));
+		assertTrue(en.step(player, "hi babcia Graham"));
+		assertEquals("Cześć.", getReply(npc));
 
 		// Currently there are no response to buy sentences for Granny Graham.
 		assertFalse(en.step(player, "buy"));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	/**
@@ -172,14 +166,14 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
-		assertTrue(en.step(player, "hi Granny Graham"));
-		assertEquals("Hello, dear.", getReply(npc));
+		assertTrue(en.step(player, "hi babcia Graham"));
+		assertEquals("Cześć.", getReply(npc));
 
 		// Currently there are no response to sell sentences for Granny Graham.
 		assertFalse(en.step(player, "sell"));
 
 		assertTrue(en.step(player, "bye"));
-		assertEquals("Bye now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 }

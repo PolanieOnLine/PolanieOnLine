@@ -81,7 +81,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "ingredients");
 		assertEquals("So many people are asking me to heal them. That uses many ingredients and now my inventories are near empty. Can you help me to fill them up?", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// ------------------------------------------------------------------
 		// return, say you know her, and reject quest
@@ -96,7 +96,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "no");
 		assertEquals("Hargh, thats not good! But ok, its your choice. But remember, I will tell the others that I can't heal them much longer, because YOU didn't want to help me.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot), is("rejected"));
 
 		// ------------------------------------------------------------------------
@@ -108,7 +108,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "no");
 		assertEquals("Hargh, thats not good! But ok, its your choice. But remember, I will tell the others that I can't heal them much longer, because YOU didn't want to help me.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// ------------------------------------------------------------------------
 		// agree to help and check about each ingredient
@@ -129,7 +129,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "pieces of wood");
 		assertEquals("Wood is great resource with many different purposes. Of course you can find logs in a forest.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// --------------------------------------------------------------
 		// Return and check what is needed, say you don't have anything
@@ -140,7 +140,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "no");
 		assertEquals("Ok, well just let me know if I can #help you with anything else.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 		// lie about having apple
@@ -153,7 +153,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "apple");
 		assertEquals("You don't have an apple with you!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// ---------------------------------------------------
 		// don't take ingredients
@@ -162,7 +162,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "no");
 		assertEquals("Ok, well just let me know if I can #help you with anything else.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		Item apple= ItemTestHelper.createItem("apple", 1);
 		player.getSlot("bag").add(apple);
@@ -195,7 +195,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "no");
 		assertEquals("Ok, well just let me know if I can #help you with anything else.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		final int xp = player.getXP();
 		Item apples2= ItemTestHelper.createItem("apple", 2);
@@ -224,7 +224,7 @@ public class HerbsForCarmenTest {
 		assertEquals("Great! Now I can heal many people for free. Thanks a lot. Take this for your work.", getReply(npc));
 		assertThat(player.getXP(), greaterThan(xp));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertTrue(player.isQuestCompleted(questSlot));
 
 		en.step(player, "hi");
@@ -232,7 +232,7 @@ public class HerbsForCarmenTest {
 		en.step(player, "quest");
 		assertEquals("There's nothing I need right now, thank you.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertTrue(player.isEquipped("minor potion", 5));
 	}

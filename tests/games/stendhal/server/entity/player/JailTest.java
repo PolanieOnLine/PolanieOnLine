@@ -37,7 +37,7 @@ public class JailTest {
 		StendhalRPZone jailZone = new StendhalRPZone("test_jail", 100, 100);
 		MockStendlRPWorld.get().addRPZone(jailZone);
 		new Jail().configureZone(jailZone, null);
-		MockStendlRPWorld.get().addRPZone(new StendhalRPZone("-3_semos_jail", 100, 100));
+		MockStendlRPWorld.get().addRPZone(new StendhalRPZone("int_koscielisko_jail", 100, 100));
 	}
 
 	@After
@@ -60,7 +60,7 @@ public class JailTest {
 		SingletonRepository.getJail().imprison("bob", policeman, 1, "test");
 		assertEquals("Aresztowałeś bob na 1 minutę. Powód: test.", policeman.events().get(0).get("text"));
 
-		assertEquals("Player bob is not online, but the arrest warrant has been recorded anyway.", policeman.events().get(1).get("text"));
+		assertEquals("Nie ma wojownika zwanego bob, ale został wydany za nim list gończy.", policeman.events().get(1).get("text"));
 
 	}
 
@@ -72,7 +72,7 @@ public class JailTest {
 		final Player policeman = PlayerTestHelper.createPlayer("police officer");
 		final Player bob = PlayerTestHelper.createPlayer("bob");
 		MockStendhalRPRuleProcessor.get().addPlayer(bob);
-		PlayerTestHelper.registerPlayer(bob, "-3_semos_jail");
+		PlayerTestHelper.registerPlayer(bob, "int_koscielisko_jail");
 
 		SingletonRepository.getJail().imprison(bob.getName(), policeman, 1, "test");
 		assertTrue(Jail.isInJail(bob));
@@ -98,9 +98,9 @@ public class JailTest {
 		SingletonRepository.getJail().imprison("bob", bob, 1, "test");
 			assertTrue(Jail.isInJail(bob));
 
-		assertEquals("bob został aresztowany 2022-07-17 10:43:50 przez bob na 1 minutę ponieważ: test\n", SingletonRepository.getJail().listJailed());
+		assertEquals("bob został aresztowany przez oficera #'bob' na 1 minutę ponieważ: test\n", SingletonRepository.getJail().listJailed());
 		SingletonRepository.getJail().imprison("bob", bob, 1, "test2");
-		assertEquals("bob został aresztowany 2022-07-17 10:43:50 przez bob na 1 minutę ponieważ: test2\n", SingletonRepository.getJail().listJailed());
+		assertEquals("bob został aresztowany przez oficera #'bob' na 1 minutę ponieważ: test2\n", SingletonRepository.getJail().listJailed());
 
 	}
 	/**

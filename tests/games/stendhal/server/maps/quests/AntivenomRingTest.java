@@ -183,7 +183,7 @@ public class AntivenomRingTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "apothecary");
 		assertEquals(
 			"I used to know an old apothecary, but don't know where he has settled down. Perhaps someone in Ados would know."
-			+ " There are guards that patrol the city. They see many happenings around the area. Ask around about an"
+			+ " There are guards that patrol the city. They see a lot of things that others do not. As around about an"
 			+ " #apothecary.",
 			getReply(npc));
 		player.setQuest(questTrapsKlaas, null);

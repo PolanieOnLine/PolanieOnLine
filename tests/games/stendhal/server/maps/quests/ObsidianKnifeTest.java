@@ -84,7 +84,7 @@ public class ObsidianKnifeTest {
 		en.step(player, "yes");
 		assertTrue(getReply(npc).startsWith("Thank you! I hope it doesn't take too long to collect. Don't forget to say "));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// alrak might have asked for meat, ham or cheese. we choose a definite one for testing.
 		player.setQuest(questSlot, "meat");
@@ -120,19 +120,19 @@ public class ObsidianKnifeTest {
 		assertEquals("Thanks. Try asking at a library for a 'gem book'.", getReply(npc));
 		assertThat(player.getQuest(questSlot), is("seeking_book"));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 
 		en.step(player, "hi");
 		assertEquals("Hello again. I hope you haven't forgotten about the gem book I wanted.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		npc = SingletonRepository.getNPCList().get("Ceryl");
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "gem book");
 		assertEquals("You're in luck! Ognir brought it back just last week. Now, who is it for?", getReply(npc));
 		en.step(player, "me");
@@ -142,7 +142,7 @@ public class ObsidianKnifeTest {
 		assertTrue(player.isEquipped("blue book"));
 		assertThat(player.getQuest(questSlot), is("got_book"));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		npc = SingletonRepository.getNPCList().get("Alrak");
 
@@ -168,7 +168,7 @@ public class ObsidianKnifeTest {
 		en.step(player, "knife");
 		assertEquals("Well, I don't think you're quite ready for such a dangerous weapon yet. How about you come back when you're above level 50?", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// player was too low level last time. make them above level 50
 		player.addXP(1263600);
@@ -180,12 +180,12 @@ public class ObsidianKnifeTest {
 		assertEquals("I'll make an obsidian knife if you can slay a black dragon and get the gem which makes the blade. Bring a cod so that I can make the bone handle, too.", getReply(npc));
 		assertThat(player.getQuest(questSlot), is("knife_offered"));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("Hello again. Don't forget I offered to make that obsidian knife, if you bring me a cod and a piece of obsidian from a black dragon you killed. In the meantime if I can #help you, just say the word.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 		item = ItemTestHelper.createItem("obsidian");
@@ -194,7 +194,7 @@ public class ObsidianKnifeTest {
 		en.step(player, "hi");
 		assertEquals("Hello again. Don't forget I offered to make that obsidian knife, if you bring me a cod and a piece of obsidian from a black dragon you killed. In the meantime if I can #help you, just say the word.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		// add the next item
 		item = ItemTestHelper.createItem("cod");
 		player.getSlot("bag").add(item);
@@ -203,7 +203,7 @@ public class ObsidianKnifeTest {
 		en.step(player, "hi");
 		assertEquals("Didn't you hear me properly? I told you to go slay a black dragon for the obsidian, not buy it! How do I know this isn't a fake gem? *grumble* I'm not making a special knife for someone who is scared to face a dragon.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		player.setSharedKill("black dragon");
 		en.step(player, "hi");

@@ -108,7 +108,7 @@ public class BuyHouseChatActionTest {
 		Player player = PlayerTestHelper.createPlayer("george");
 		Sentence sentence = ConversationParser.parse("51");
 		action.fire(player , sentence , raiser);
-		assertThat(getReply(engine), is("You do not have enough money to buy a house!"));
+		assertThat(getReply(engine), is("Nie masz wystarczająco dużo pieniędzy, aby kupić dom."));
 		housePortal.setOwner("jim");
 
 		action.fire(player , sentence , raiser);

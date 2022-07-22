@@ -234,7 +234,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 		startTalkingToNpc("Ketteh Wehoh");
 
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	@Test

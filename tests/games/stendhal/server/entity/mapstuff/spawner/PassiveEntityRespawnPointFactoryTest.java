@@ -132,31 +132,31 @@ public class PassiveEntityRespawnPointFactoryTest {
 		PassiveEntityRespawnPoint value_1 = PassiveEntityRespawnPointFactory
 				.create(clazz, 1, null, 0, 0);
 		assertNotNull(value_1);
-		assertEquals("You see a small vein of iron ore.",
+		assertEquals("Oto mała grudka rudy żelaza.",
 				value_1.getDescription());
 
 		PassiveEntityRespawnPoint value_2 = PassiveEntityRespawnPointFactory
 				.create(clazz, 2, null, 0, 0);
 		assertNotNull(value_2);
-		assertEquals("You see a trace of a gold shimmer.",
+		assertEquals("Oto ślad błyszczącego złota.",
 				value_2.getDescription());
 
 		PassiveEntityRespawnPoint value_3 = PassiveEntityRespawnPointFactory
 				.create(clazz, 3, null, 0, 0);
 		assertNotNull(value_3);
-		assertEquals("You see a trace of a silvery shimmer.",
+		assertEquals("Oto ślad błyszczącego mithrilu.",
 				value_3.getDescription());
 
 		PassiveEntityRespawnPoint value_4 = PassiveEntityRespawnPointFactory
 				.create(clazz, 4, null, 0, 0);
 		assertNotNull(value_4);
-		assertEquals("You see tiny gold shards.",
+		assertEquals("Oto mały, błyszczący kawałek złota.",
 				value_4.getDescription());
 
 		PassiveEntityRespawnPoint value_5 = PassiveEntityRespawnPointFactory
 				.create(clazz, 5, null, 0, 0);
 		assertNotNull(value_5);
-		assertEquals("You see tiny pieces of mithril ore.",
+		assertEquals("Oto mały kawałek bryłki mithrilu.",
 				value_5.getDescription());
 
 		PassiveEntityRespawnPoint value_6 = PassiveEntityRespawnPointFactory
@@ -239,7 +239,7 @@ public class PassiveEntityRespawnPointFactoryTest {
 				.create(clazz, 8, null, 0, 0);
 		assertNotNull(value_8);
 		assertTrue(value_8 instanceof VegetableGrower);
-		assertEquals("courgette", ((VegetableGrower) value_8)
+		assertEquals("cukinia", ((VegetableGrower) value_8)
 				.getVegetableName());
 
 		PassiveEntityRespawnPoint value_9 = PassiveEntityRespawnPointFactory
@@ -289,13 +289,13 @@ public class PassiveEntityRespawnPointFactoryTest {
 				.create(clazz, 1, null, 0, 0);
 		assertNotNull(value_1);
 		assertEquals(
-				"You see evidence of a sapphire stone being here recently.",
+				"Oto dowód, że są tutaj szafiry.",
 				value_1.getDescription());
 
 		PassiveEntityRespawnPoint value_2 = PassiveEntityRespawnPointFactory
 				.create(clazz, 2, null, 0, 0);
 		assertNotNull(value_2);
-		assertEquals("You see trace elements of the precious gem emerald.",
+		assertEquals("Oto ślad, że występuje tutaj cenny szmaragdy.",
 				value_2.getDescription());
 
 		PassiveEntityRespawnPoint value_3 = PassiveEntityRespawnPointFactory
@@ -326,13 +326,13 @@ public class PassiveEntityRespawnPointFactoryTest {
 		PassiveEntityRespawnPoint value_2 = PassiveEntityRespawnPointFactory
 				.create(clazz, 2, null, 0, 0);
 		assertNotNull(value_2);
-		assertEquals("It looks like there's a pineapple sprout growing here.",
+		assertEquals("Wygląda na to, że rośnie tutaj ananas.",
 				value_2.getDescription());
 
 		PassiveEntityRespawnPoint value_9 = PassiveEntityRespawnPointFactory
 				.create(clazz, 9, null, 0, 0);
 		assertNotNull(value_9);
-		assertEquals("You see a place where a cherry looks likely to fall.",
+		assertEquals("Wygląda na miejsce gdzie spada wisienka.",
 				value_9.getDescription());
 
 		PassiveEntityRespawnPoint value_10 = PassiveEntityRespawnPointFactory
@@ -358,26 +358,26 @@ public class PassiveEntityRespawnPointFactoryTest {
 				.create(clazz, 1, null, 0, 0);
 		assertNotNull(value_1);
 		assertEquals(
-				"You see some leftovers of animal food. Looks like ham.",
+				"Oto resztki po zwierzęciu. Wyglądają jak szynka.",
 				value_1.getDescription());
 
 		PassiveEntityRespawnPoint value_2 = PassiveEntityRespawnPointFactory
 				.create(clazz, 2, null, 0, 0);
 		assertNotNull(value_2);
 		assertEquals(
-				"You see some leftovers of animal food. Maybe chicken?",
+				"Oto resztki po zwierzęciu. Może to udko?",
 				value_2.getDescription());
 
 		PassiveEntityRespawnPoint value_3 = PassiveEntityRespawnPointFactory
 				.create(clazz, 3, null, 0, 0);
 		assertNotNull(value_3);
-		assertEquals("You see some shimmering fish scales like from a roach.",
+		assertEquals("Oto jakieś połyskujące łuski ryby jakby to była płotka.",
 				value_3.getDescription());
 
 		PassiveEntityRespawnPoint value_4 = PassiveEntityRespawnPointFactory
 				.create(clazz, 4, null, 0, 0);
 		assertNotNull(value_4);
-		assertEquals("You see some red fish scales like from a char.",
+		assertEquals("Oto jakieś połyskujące łuski ryby jakby to była palia alpejska.",
 				value_4.getDescription());
 
 		PassiveEntityRespawnPoint value_5 = PassiveEntityRespawnPointFactory

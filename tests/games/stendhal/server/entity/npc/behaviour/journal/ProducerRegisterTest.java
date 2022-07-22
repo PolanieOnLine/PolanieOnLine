@@ -116,9 +116,9 @@ public class ProducerRegisterTest {
 		player.setQuest("arlindo_make_pie", "1;tarta;1");
 		player.setQuest("blacksheepbob_make_sausage", "210;paróweczka;"+System.currentTimeMillis());
 
-		assertEquals(producerRegister.listWorkingProducers(player),"\r\nOrders: " +
-				"\nArlindo has finished making your pie."
-				+"\nBlacksheep Bob is making 210 sausages and will be ready in 7 hours.");
+		assertEquals(producerRegister.listWorkingProducers(player),"\r\nZlecenia: " +
+				"\nArlindo ukończył twój tarta."
+				+"\nBlacksheep Bob pracuje nad 210 paróweczki. Będzie gotowy za 7 godziny.");
 
 		//collect orders
 		player.setQuest("arlindo_make_pie", "done");

@@ -104,11 +104,11 @@ public class BowsForOuchit extends AbstractQuest {
 
 		// Player asks about wood.
 		npc.add(ConversationStates.QUEST_OFFERED,
-				"polano",
+				Arrays.asList("wood", "polano", "drewna", "drewno"),
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
-				"Drzewo jest potrzebne do różnych rzeczy, znajdziesz go...  " +
-				"najlepiej spytaj Drwala koło Zakopanego. Przyniesiesz mi 10 sztuk?",
+				"Drzewo jest potrzebne do różnych rzeczy, znajdziesz go... " +
+				"Najlepiej spytaj Drwala koło Zakopanego. Przyniesiesz mi 10 sztuk?",
 				null);
 
 		// Player refused to help - end the conversation.
@@ -126,25 +126,25 @@ public class BowsForOuchit extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT,"wood"),
 				ConversationStates.ATTENDING,
-				"Czekam na ciebie, aż mi przyniesiesz 10 sztuk drzewa.",
+				"Czekam na ciebie, aż mi przyniesiesz 10 sztuk #drewna.",
 				null);
 		
 		/*
 		 * Player asks about wood, but hasn't collected any - remind them.
 		 */
 		npc.add(ConversationStates.ATTENDING,
-				"polano",
+				Arrays.asList("wood", "polano", "drewna", "drewno"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"wood"),
 								 new NotCondition (new PlayerHasItemWithHimCondition("polano",10))),
 				ConversationStates.ATTENDING,
 				"Drzewo jest surowcem potrzebnym do wielu rzeczy. Jestem pewien, " +
-				"że znajdziesz w lesie. Lepiej porozmawiaj z drwalem koło Zakopanego." +
+				"że znajdziesz w lesie. Lepiej porozmawiaj z drwalem koło Zakopanego. " +
 				"I nie zapomnij powiedzieć #'polano', gdy wrócisz z nim.",
 				null);
 
 		//  Player asks about wood, and has collected some - take it and ask for horse hair.
 		npc.add(ConversationStates.ATTENDING,
-				"polano",
+				Arrays.asList("wood", "polano", "drewna", "drewno"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"wood"),
 								new PlayerHasItemWithHimCondition("polano",10)),
 				ConversationStates.ATTENDING,
@@ -177,12 +177,12 @@ public class BowsForOuchit extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT,"hair"),
 				ConversationStates.ATTENDING,
-				"Czekam tu na ciebie, abyś przyniósł mi #'włosie końskie'.",
+				"Czekam tu na ciebie, abyś przyniósł mi #'końskie włosie'.",
 				null);
 
 		// Player asks about horse hair, but hasn't collected any - remind them.
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("hair", "horse", "włosie końskie", "włosie", "końskie", "koński włos"),
+				Arrays.asList("hair", "horse", "końskie włosie", "włosie", "końskie", "koński włos"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"hair"),
 								new NotCondition (new PlayerHasItemWithHimCondition("koński włos"))),
 				ConversationStates.ATTENDING,
@@ -212,7 +212,7 @@ public class BowsForOuchit extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Dziękuję za twoją pomoc. Jeżeli mogę zaoferować coś po prostu zapytaj o ofertę.",
+				"Dziękuję za twoją pomoc. Jeżeli mogę zaoferować coś po prostu zapytaj o #ofertę.",
 				null);
 	}
 

@@ -206,7 +206,7 @@ public class BringListOfItemsQuestLogicTest {
 
 		en.step(player, quest.getTriggerPhraseToEnumerateMissingItems().get(0));
 		assertEquals("i have not brought anything yet it should be all needed items",
-				"#one, #two, and #three", getReply(npc));
+				"#one, #two, oraz #three", getReply(npc));
 
 		StackableItem item = new StackableItem("one", "", "", null);
 		item.setQuantity(10);

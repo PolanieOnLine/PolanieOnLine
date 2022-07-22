@@ -66,7 +66,7 @@ public class MeetHackimTest {
 		en.step(player, "no");
 		assertEquals("Remember, all the weapons are counted; best to leave them alone.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 

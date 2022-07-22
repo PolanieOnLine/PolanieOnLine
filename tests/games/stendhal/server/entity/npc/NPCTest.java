@@ -75,7 +75,7 @@ public class NPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "job"));
-		assertEquals("I sell cats. Well, really they are just little kittens when I sell them to you but if you #care for them well they grow into cats.", getReply(npc));
+		assertEquals("Sprzedaję koty. Kiedy je sprzedaję są małymi kociętami, ale kiedy się takim kotkiem #zaopiekujesz to wyrasta na dużego kota.", getReply(npc));
 
 		assertNotNull(npc.getAttending());
 		npc.preLogic();

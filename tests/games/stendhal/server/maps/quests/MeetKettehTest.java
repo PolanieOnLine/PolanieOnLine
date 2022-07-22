@@ -80,14 +80,14 @@ public class MeetKettehTest {
 		en.step(player, "hi");
 		assertEquals("Ugh, you STILL haven't put any clothes on. To jail for you!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// Put on some clothes, and go greet her
 		player.setOutfit(Outfit.getRandomOutfit());
 		en.step(player, "hi");
 		assertEquals("Hi again, Jeeves. I'm so glad you have some clothes on now. Now we can continue with the lesson in #manners. Did you know that if someone says something in #blue it is polite to repeat it back to them? So, repeat after me: #manners.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// Check coming back with different conditions after an initial shock
 		player.setQuest(quest.getSlotName(), "seen_naked");
@@ -95,7 +95,7 @@ public class MeetKettehTest {
 		en.step(player, "hi");
 		assertEquals("Hi again, Jeeves. I'm so glad you have some clothes on now. Now we can continue with the lesson in #manners. Did you know that if someone says something in #blue it is polite to repeat it back to them? So, repeat after me: #manners.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// Try clothed player with a fresh quest state
 		player.removeQuest(quest.getSlotName());
@@ -107,6 +107,6 @@ public class MeetKettehTest {
 		assertEquals("If you happen to talk to any of the other citizens, you should always begin the conversation saying \"hi\". People here are quite predictable and will always enjoy talking about their \"job\", they will respond if you ask for \"help\" and if you want to do a \"task\" for them, just say it. If they look like the trading type, you can ask for their \"offers\". To end the conversation, just say \"bye\".", getReply(npc));
 		assertEquals("learnt_manners", player.getQuest(quest.getSlotName()));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

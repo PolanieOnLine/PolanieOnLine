@@ -78,7 +78,7 @@ public class WaterForXhiphinTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Thank you! Natural spring water is best, the river that runs from Fado to Nal'wor might provide a source.", getReply(npc));
 		assertEquals("start", player.getQuest(QUEST_SLOT));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	// 2.MAKE WATER CLEAN
@@ -132,7 +132,7 @@ public class WaterForXhiphinTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "job");
 		assertEquals("I greet all of the new-comers to Fado. I can #offer you a scroll if you'd like to come back here again.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 
@@ -153,7 +153,7 @@ public class WaterForXhiphinTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "stefan");
 		assertEquals("Stefan is a chef over in the restaurant at Fado Hotel. I'd trust him to check if anything is safe to eat or drink, he's a professional.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 		// 5.TRY WITH CLEAN WATER
@@ -175,6 +175,6 @@ public class WaterForXhiphinTest extends ZonePlayerAndNPCTestImpl {
 		en.step(player, "water");
 		assertEquals("Thank you, I don't need anything right now.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

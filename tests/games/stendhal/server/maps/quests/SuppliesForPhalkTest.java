@@ -143,7 +143,7 @@ public class SuppliesForPhalkTest {
 		en.step(player, "clothes");
 		assertEquals("Hm, I want the special golden #armor from Mrotho and the dwarf #cloak from Wrvil. Tell them my name and they will give you what they made me.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
 		assertEquals("There is something huge there! Everyone is very nervous. Be careful! For entering the dark parts of the mines, push the #stones away which are laying infront of the entrance...", getReply(npc));
@@ -154,7 +154,7 @@ public class SuppliesForPhalkTest {
 		en.step(player, "task");
 		assertEquals("I am waiting for you to bring me new #clothes from Wrvil and Mrotho.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// try just getting any old golden armor and dwarf cloak, will it do?
 		PlayerTestHelper.equipWithItem(player, "golden armor");
@@ -167,7 +167,7 @@ public class SuppliesForPhalkTest {
 		en.step(player, "clothes");
 		assertEquals("Hm, I want the special golden #armor from Mrotho and the dwarf #cloak from Wrvil. Tell them my name and they will give you what they made me.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 	}
 
@@ -329,7 +329,7 @@ public class SuppliesForPhalkTest {
 		en.step(player, "sandwich");
 		assertEquals("Come on, ask in a bakery!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// the armor and cloak must be the special ones, we tested ones without infostring already.
 		Item armor = ItemTestHelper.createItem("golden armor", 1);
@@ -357,7 +357,7 @@ public class SuppliesForPhalkTest {
 		assertTrue(player.isEquipped("dwarvish armor"));
 
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// test reply to quest message when task is completed.
 		en.step(player, "hi");
@@ -365,7 +365,7 @@ public class SuppliesForPhalkTest {
 		en.step(player, "task");
 		assertEquals("Thanks for getting me the food and clothes. I think I can stand here warning people for some months longer now.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 	}
 }

@@ -77,7 +77,7 @@ public class SummonActionTest {
 		pl.put("adminlevel", 5000);
 		final RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "rat");
+		action.put("creature", "szczur");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);
@@ -102,7 +102,7 @@ public class SummonActionTest {
 		pl.put("adminlevel", 5000);
 		final RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "dagger");
+		action.put("creature", "sztylecik");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);
@@ -144,7 +144,7 @@ public class SummonActionTest {
 		pl.put("adminlevel", 5000);
 		final RPAction action = new RPAction();
 		action.put("type", "summon");
-		action.put("creature", "fishing rod");
+		action.put("creature", "wędka");
 		action.put("x", 0);
 		action.put("y", 0);
 		CommandCenter.execute(pl, action);

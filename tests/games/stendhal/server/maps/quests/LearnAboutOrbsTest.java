@@ -58,7 +58,7 @@ public class LearnAboutOrbsTest {
 		npc = SingletonRepository.getNPCList().get("Ilisa");
 		en = npc.getEngine();
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "quest");
 		assertEquals("Some orbs have special properties. I can teach you how to #use an orb, like the one on this table.", getReply(npc));
 		en.step(player, "no");
@@ -69,9 +69,9 @@ public class LearnAboutOrbsTest {
 		en.step(player, "no");
 		assertEquals("Well, you would need to stand next to it. Move closer, do you get a message now?", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "quest");
 		assertEquals("Some orbs have special properties. I can teach you how to #use an orb, like the one on this table.", getReply(npc));
 		en.step(player, "use");
@@ -79,15 +79,15 @@ public class LearnAboutOrbsTest {
 		en.step(player, "yes");
 		assertEquals("You're a natural! Now that you have learned to use that orb, it will teleport you to a place of magical significance. So don't use it unless you will be able to find your way back!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "task");
 		assertEquals("I can remind you how to #use orbs.", getReply(npc));
 		en.step(player, "use");
 		assertEquals("Just right click on part of the orb, and select Use.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 		assertEquals(player.getQuest(new LearnAboutOrbs().getSlotName()),"done");
 		int xpAfterQuest = before + 50;
 		assertEquals(player.getXP(), xpAfterQuest);
@@ -99,13 +99,13 @@ public class LearnAboutOrbsTest {
 		npc = SingletonRepository.getNPCList().get("Ilisa");
 		en = npc.getEngine();
 		en.step(player, "hi");
-		assertEquals("Greetings! How may I help you?", getReply(npc));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "quest");
 		assertEquals("Some orbs have special properties. I can teach you how to #use an orb, like the one on this table.", getReply(npc));
 		en.step(player, "no");
 		en.step(player, "use");
 		assertEquals("Oh oh, I just noticed you are still new here. Perhaps you better come back when you have more experience. Until then if you need any #help just ask!", getReply(npc));
         en.step(player, "bye");
-        assertEquals("Bye.", getReply(npc));
+        assertEquals("Do widzenia.", getReply(npc));
 	}
 }

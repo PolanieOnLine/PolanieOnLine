@@ -66,7 +66,7 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 	private void startConversation() {
 		aliceEngine.step(player, ConversationPhrases.GREETING_MESSAGES.get(0));
 		assertTrue(aliceNpc.isTalking());
-		assertEquals("Hello.", getReply(aliceNpc));
+		assertEquals("Cześć.", getReply(aliceNpc));
 	}
 
 	private void askForFoodList() {
@@ -81,7 +81,7 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 	private void endConversation() {
 		aliceEngine.step(player, ConversationPhrases.GOODBYE_MESSAGES.get(0));
 		assertFalse(aliceNpc.isTalking());
-		assertEquals("Bye bye.", getReply(aliceNpc));
+		assertEquals("Do widzenia.", getReply(aliceNpc));
 	}
 
 	private void checkReply(String question, String expectedReply) {

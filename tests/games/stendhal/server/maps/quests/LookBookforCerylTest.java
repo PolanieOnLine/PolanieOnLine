@@ -80,7 +80,7 @@ public class LookBookforCerylTest {
 		final Engine jynathEngine = jynath.getEngine();
 		jynathEngine.step(pl, "Hi");
 		assertTrue(jynath.isTalking());
-		assertEquals("Greetings! How may I help you?", getReply(jynath));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(jynath));
 
 		jynathEngine.step(pl, "book");
 		assertTrue(jynath.isTalking());
@@ -121,7 +121,7 @@ public class LookBookforCerylTest {
 		final Engine cerylEngine = ceryl.getEngine();
 		cerylEngine.step(pl, "Hi");
 		assertTrue(ceryl.isTalking());
-		assertEquals("Greetings! How may I help you?", getReply(ceryl));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(ceryl));
 		cerylEngine.step(pl, ConversationPhrases.QUEST_MESSAGES.get(0));
 		assertTrue(ceryl.isTalking());
 		assertEquals("I am looking for a very special #book.",
@@ -170,7 +170,7 @@ public class LookBookforCerylTest {
 
 		cerylEngine.step(pl, "Hi");
 		assertTrue(ceryl.isTalking());
-		assertEquals("Greetings! How may I help you?", getReply(ceryl));
+		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(ceryl));
 		cerylEngine.step(pl, "quest");
 		assertTrue(ceryl.isTalking());
 		assertEquals("I have nothing for you now.", getReply(ceryl));

@@ -72,26 +72,26 @@ public class AdosDeathmatchTest {
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
 		en.step(dmPlayer, "hi");
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
-		assertEquals("Hey there. You look like a reasonable fighter.", getReply(recruiter));
+		assertEquals("Witam. Wyglądasz na niezłego wojownika.", getReply(recruiter));
 
 		en.step(dmPlayer, "job");
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
-		assertEquals("I'm recruiter for the Ados #deathmatch.", getReply(recruiter));
+		assertEquals("Zajmuje się rekrutacją do #deathmatchu w Ados.", getReply(recruiter));
 
 		en.step(dmPlayer, "deathmatch");
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
-		assertEquals("Many dangerous creatures will attack you in the deathmatch arena. It is only for strong #heroes.", getReply(recruiter));
+		assertEquals("Wiele groźnych potworów będzie Cię atakować na arenie deathmatcha. Jest tylko dla prawdziwych #bohaterów.", getReply(recruiter));
 
 
  		dmPlayer.setLevel(19);
  		en.step(dmPlayer, "challenge");
  		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
- 		assertEquals("Sorry, you are too weak for the #deathmatch now, come back when you have at least level 20.", getReply(recruiter));
+ 		assertEquals("Przepraszam, ale jesteś zbyt słaby na #Deathmatch, wróć co najmniej na poziomie 20.", getReply(recruiter));
  		recruiter.remove("text");
 
 		en.step(dmPlayer, "bye");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
-		assertEquals("I hope you will enjoy the Ados Deathmatch!", getReply(recruiter));
+		assertEquals("Mam nadzieje, że spodoba się Tobie #Deathmatch w Ados!", getReply(recruiter));
 
 
 
@@ -99,7 +99,7 @@ public class AdosDeathmatchTest {
 		//assertNotNull(dmPlayer.getZone());
 		en.step(dmPlayer, "hi");
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
-		assertEquals("Hey there. You look like a reasonable fighter.", getReply(recruiter));
+		assertEquals("Witam. Wyglądasz na niezłego wojownika.", getReply(recruiter));
 		recruiter.remove("text");
 		en.step(dmPlayer, "challenge");
 
@@ -122,7 +122,7 @@ public class AdosDeathmatchTest {
 		joiner.setLevel(20);
 
 		en.step(joiner, "challenge");
-		assertEquals("There are heroes battling right now in the deathmatch, so it may be dangerous there. Do you want to join dmPlayer?", getReply(recruiter));
+		assertEquals("Teraz trwają walki na arenie deathmatcha. Jeżeli chciałbyś pójść i dołączyć do dmPlayer?", getReply(recruiter));
 		en.step(joiner, "yes");
 		assertEquals(ados_wall_n, joiner.getZone());
 

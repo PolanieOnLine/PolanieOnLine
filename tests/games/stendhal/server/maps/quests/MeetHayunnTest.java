@@ -63,7 +63,7 @@ public class MeetHayunnTest {
 		en.step(player, "yes");
 		assertEquals("Well, back when I was a young adventurer, I clicked on my enemies to attack them. I'm sure that will work for you, too. Good luck, and come back once you are done.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 
 		en.step(player, "hi");
@@ -71,7 +71,7 @@ public class MeetHayunnTest {
 		en.step(player, "yes");
 		assertEquals("Well, back when I was a young adventurer, I clicked on my enemies to attack them. I'm sure that will work for you, too. Good luck, and come back once you are done.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// [15:13] rat has been killed by omerob
 		player.setSoloKill("szczur");
