@@ -47,7 +47,7 @@
 		<respawn value="900"/>
 		<corpse name="small_animal" harmless="tail_rodent"/>
 		<drops>
-			<item value="ser" quantity="[1,1]" probability="50.0"/>
+			<item value="ser" quantity="[1,2]" probability="90.0"/>
 			<item value="money" quantity="[1,3]" probability="70.0"/>
 			<item value="maczuga" quantity="[1,1]" probability="5.0"/>
 		</drops>
@@ -83,7 +83,8 @@
 		<corpse name="small_animal" harmless="tail_rodent" />
 		<drops>
 			<item value="money" quantity="[1,6]" probability="90.0"/>
-			<item value="duży ser" quantity="[1,2]" probability="40.0"/>
+			<item value="ser" quantity="[2,3]" probability="75.0"/>
+			<item value="duży ser" quantity="[1,2]" probability="20.0"/>
 		</drops>
 		<equips>
 		</equips>
