@@ -214,10 +214,10 @@
 		<description>Oto woda. Jest świeża i smaczna.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
-			<amount value="15"/>
-			<frequency value="6"/>
+			<amount value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
-			<regen value="2"/>
+			<regen value="5"/>
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
@@ -257,13 +257,13 @@
 
 	<item name="filiżanka herbaty">
 		<type class="drink" subclass="tea" tileid="-1"/>
-		<description>Oto filiżanka herbaty.</description>
+		<description>Oto cudowna filiżanka herbaty.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
-			<amount value="30"/>
+			<amount value="50"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
-			<regen value="3"/>
+			<regen value="10"/>
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
@@ -283,10 +283,10 @@
 		<description>Oto butelka świeżego mleka. Pij mleko - będziesz wielki!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
-			<amount value="10"/>
+			<amount value="30"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
-			<regen value="1"/>
+			<regen value="5"/>
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>

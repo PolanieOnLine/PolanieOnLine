@@ -31,7 +31,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food" />
 		<attributes>
 			<amount value="20" />
-			<frequency value="12" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="3" />
 			<menu value="Zjedz|Użyj"/>
@@ -54,7 +54,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20" />
-			<frequency value="12" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="3" />
 			<menu value="Zjedz|Użyj"/>
@@ -77,7 +77,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food" />
 		<attributes>
 			<amount value="20" />
-			<frequency value="12" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="3" />
 			<menu value="Zjedz|Użyj"/>
@@ -100,7 +100,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20" />
-			<frequency value="12" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="3" />
 			<menu value="Zjedz|Użyj"/>
@@ -194,7 +194,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="10" />
-			<frequency value="10" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="2" />
 			<menu value="Zjedz|Użyj"/>
@@ -217,7 +217,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="10" />
-			<frequency value="10" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="2" />
 			<menu value="Zjedz|Użyj"/>
@@ -263,7 +263,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="15"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -286,7 +286,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="15"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -305,11 +305,11 @@
 
 	<item name="oliwka">
 		<type class="food" subclass="olive" tileid="-1" />
-		<description>Oto oliwka.  Można ją zjeść lub wykorzystać do zrobienia oliwy z oliwek.</description>
+		<description>Oto oliwka. Można ją zjeść lub wykorzystać do zrobienia oliwy z oliwek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food" />
 		<attributes>
 			<amount value="5" />
-			<frequency value="1" />
+			<frequency value="5" />
 			<quantity value="1" />
 			<regen value="3" />
 			<menu value="Zjedz|Użyj"/>
@@ -332,7 +332,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="10"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -355,7 +355,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="7"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -378,7 +378,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="15"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -401,7 +401,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="15"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -424,7 +424,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -447,7 +447,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -470,7 +470,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -493,7 +493,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -516,7 +516,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -539,7 +539,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -562,7 +562,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -585,7 +585,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -608,7 +608,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -631,7 +631,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -654,7 +654,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -677,7 +677,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -700,7 +700,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="1"/>
 			<menu value="Zjedz|Użyj"/>
@@ -723,7 +723,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20"/>
-			<frequency value="15"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -746,7 +746,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1024,7 +1024,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="30"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="4"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1070,7 +1070,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="230"/>
-			<frequency value="15"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="15"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1093,7 +1093,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="230"/>
-			<frequency value="15"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="15"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1116,7 +1116,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="150"/>
-			<frequency value="25"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="12"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1139,7 +1139,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="160"/>
-			<frequency value="18"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1162,7 +1162,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="180"/>
-			<frequency value="12"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="9"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1185,7 +1185,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="120"/>
-			<frequency value="20"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1300,7 +1300,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="40"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="4"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1324,7 +1324,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="25"/>
-			<frequency value="12"/>
+			<frequency value="6"/>
 			<quantity value="1"/>
 			<regen value="1"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1347,7 +1347,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20"/>
-			<frequency value="40"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="4"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1370,7 +1370,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1416,7 +1416,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="160"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="16"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1462,7 +1462,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="90"/>
-			<frequency value="20"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1485,7 +1485,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="80"/>
-			<frequency value="20"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1508,7 +1508,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="130"/>
-			<frequency value="20"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="13"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1531,7 +1531,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="100"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="20"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1554,7 +1554,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="100"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="20"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1578,7 +1578,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="20"/>
-			<frequency value="15"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="1"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1601,7 +1601,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="8"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1624,7 +1624,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="50"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1833,7 +1833,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="50"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1856,7 +1856,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="80"/>
-			<frequency value="20"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="6"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1879,7 +1879,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="60"/>
-			<frequency value="20"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1972,7 +1972,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="250"/>
-			<frequency value="12"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="50"/>
 			<menu value="Zjedz|Użyj"/>
@@ -1996,7 +1996,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="90"/>
-			<frequency value="15"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="18"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2019,7 +2019,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="80"/>
-			<frequency value="15"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2042,7 +2042,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="28"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="7"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2065,7 +2065,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="25"/>
-			<frequency value="15"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2087,7 +2087,7 @@
 		<description>Oto rzodkiewka. Bardzo lubisz jej ostry smak.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
-			<amount value="5"/>
+			<amount value="20"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="4"/>
@@ -2111,9 +2111,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="15"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
-			<regen value="6"/>
+			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
@@ -2130,11 +2130,11 @@
 
 	<item name="ziemniaki">
 		<type class="food" subclass="potato" tileid="-1"/>
-		<description>Oto ziemniaki. Nie jedz na surowo! Mogą ci zaszkodzić.</description>
+		<description>Oto surowe ziemniaki. Nie jedz ich na surowo! Mogą ci tylko zaszkodzić.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="-30"/>
-			<frequency value="15"/>
+			<frequency value="6"/>
 			<quantity value="1"/>
 			<regen value="-2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2156,7 +2156,7 @@
 		<description>Oto gotowane ziemniaki. Smak, którego nigdy nie zapomnisz! Tylko uważaj, są jeszcze gorące!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
-			<amount value="30"/>
+			<amount value="40"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="4"/>
@@ -2180,7 +2180,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="333"/>
-			<frequency value="15"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="33"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2202,8 +2202,8 @@
 		<description>Oto dynia. Nadaje się na zupę lub do ciast. Dzieci uwielbiają jej suszone pestki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
-			<amount value="50"/>
-			<frequency value="18"/>
+			<amount value="40"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2225,8 +2225,8 @@
 		<description>Oto dynia. Dzieci wydłubały jej środek, więc niewiele zostało do zjedzenia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
-			<amount value="5"/>
-			<frequency value="18"/>
+			<amount value="40"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2249,9 +2249,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="50"/>
-			<frequency value="10"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
-			<regen value="9"/>
+			<regen value="5"/>
 			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
@@ -2272,7 +2272,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="18"/>
-			<frequency value="14"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="3"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2295,7 +2295,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="40"/>
-			<frequency value="7"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="6"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2341,9 +2341,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="60"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
-			<regen value="12"/>
+			<regen value="4"/>
 			<menu value="Zjedz|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
@@ -2364,7 +2364,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="15"/>
-			<frequency value="15"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2387,7 +2387,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="30"/>
-			<frequency value="20"/>
+			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="2"/>
 			<menu value="Zjedz|Użyj"/>
@@ -2525,7 +2525,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
 		<attributes>
 			<amount value="80"/>
-			<frequency value="15"/>
+			<frequency value="10"/>
 			<quantity value="1"/>
 			<regen value="8"/>
 			<menu value="Zjedz|Użyj"/>
