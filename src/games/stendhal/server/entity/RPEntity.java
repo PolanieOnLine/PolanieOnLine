@@ -2857,7 +2857,6 @@ public abstract class RPEntity extends CombatEntity {
 		int ring = 0;
 		int ringb = 0;
 		int belt = 0;
-		int magicspells = 0;
 
 		Item item;
 
@@ -2924,7 +2923,7 @@ public abstract class RPEntity extends CombatEntity {
 		if (getWandWeapon() != null) {
 			Item amm = getAmmunition("magia");
 			if (amm != null) {
-				magicspells = amm.getDefense();
+				weapon += amm.getDefense();
 			}
 		}
 
@@ -2933,7 +2932,7 @@ public abstract class RPEntity extends CombatEntity {
 				+ HELMET_DEF_MULTIPLIER * helmet + NECKLACE_DEF_MULTIPLIER * necklace
 				+ LEG_DEF_MULTIPLIER * legs + BOOTS_DEF_MULTIPLIER * boots
 				+ RING_DEF_MULTIPLIER * ring + RING_DEF_MULTIPLIER * ringb
-				+ BELT_DEF_MULTIPLIER * belt + WEAPON_DEF_MULTIPLIER * (weapon + magicspells);
+				+ BELT_DEF_MULTIPLIER * belt + WEAPON_DEF_MULTIPLIER * weapon;
 	}
 
 	/**

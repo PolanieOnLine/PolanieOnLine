@@ -34,7 +34,7 @@
 		<attributes>
 			<atk value="7" condition="!testing.combat"/>
       		<ratk value="7" condition="testing.combat"/>
-			<def value="7"/>
+			<def value="2"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -61,7 +61,7 @@
 		<attributes>
 			<atk value="9" condition="!testing.combat"/>
       		<ratk value="9" condition="testing.combat"/>
-			<def value="9"/>
+			<def value="3"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -88,7 +88,7 @@
 		<attributes>
 			<atk value="12" condition="!testing.combat"/>
       		<ratk value="12" condition="testing.combat"/>
-			<def value="12"/>
+			<def value="4"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -115,7 +115,7 @@
 		<attributes>
 			<atk value="15" condition="!testing.combat"/>
       		<ratk value="15" condition="testing.combat"/>
-			<def value="15"/>
+			<def value="5"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -142,7 +142,7 @@
 		<attributes>
 			<atk value="18" condition="!testing.combat"/>
       		<ratk value="18" condition="testing.combat"/>
-			<def value="18"/>
+			<def value="6"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -169,7 +169,7 @@
 		<attributes>
 			<atk value="21" condition="!testing.combat"/>
       		<ratk value="21" condition="testing.combat"/>
-			<def value="21"/>
+			<def value="7"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
