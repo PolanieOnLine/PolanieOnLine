@@ -102,10 +102,14 @@ public class OutfitStore {
 
 		// Body layer
 		final int bodyIndex = layer_map.get("body");
+		boolean slim = false;
 		if (bodyIndex < 0) {
 			layer = store.getEmptySprite(48 * 3, 64 * 4);
 		} else {
 			layer = getLayerSprite("body", layer_map.get("body"), color);
+			if (bodyIndex >= 0 && bodyIndex <= 2) {
+				slim = true;
+			}
 		}
 
 		if (layer == null) {
@@ -136,9 +140,9 @@ public class OutfitStore {
 			}
 
 			if (RECOLORABLE_OUTFIT_PARTS.contains(lname)) {
-				layer = getLayerSprite(lname, layer_map.get(lname), color);
+				layer = getLayerSprite(lname, layer_map.get(lname), color, slim);
 			} else {
-				layer = getLayerSprite(lname, layer_map.get(lname));
+				layer = getLayerSprite(lname, layer_map.get(lname), slim);
 			}
 			layer.draw(g, 0, 0);
 		}
@@ -194,15 +198,18 @@ public class OutfitStore {
 	 * Get the layer sprite tileset.
 	 *
 	 * @param layer
-	 * 		Name of the layer.
+	 *     Name of the layer.
 	 * @param index
-	 * 		The resource index.
+	 *     The resource index.
 	 * @param color
-	 * 		Layer coloring.
-	 *
-	 * @return The Sprite or <code>null</code>.
+	 *     Layer coloring.
+	 * @param slim
+	 *     Body type is "slim".
+	 * @return
+	 *     The Sprite or <code>null</code>.
 	 */
-	public Sprite getLayerSprite(final String layer, final int index, final OutfitColor color) {
+	public Sprite getLayerSprite(final String layer, final int index, final OutfitColor color,
+			final boolean slim) {
 		if (emptyForZeroIndex.contains(layer)) {
 			if (index <= 0) {
 				return getEmptySprite();
@@ -218,6 +225,12 @@ public class OutfitStore {
 			final URL nonudeURL = DataLoader.getResource(ref + "-nonude.png");
 			if (nonudeURL != null) {
 				ref = ref + "-nonude";
+			}
+		} else if (layer.equals("dress") && slim) {
+			// check if "slim" dress exists
+			final URL bustyURL = DataLoader.getResource(ref + "s.png");
+			if (bustyURL != null) {
+				ref = ref + "s";
 			}
 		}
 		ref = ref + ".png";
@@ -241,14 +254,46 @@ public class OutfitStore {
 	 * Get the layer sprite tileset.
 	 *
 	 * @param layer
-	 * 		Name of the layer.
+	 *     Name of the layer.
 	 * @param index
-	 * 		The resource index.
+	 *     The resource index.
+	 * @param color
+	 *     Layer coloring.
+	 * @return
+	 *     The Sprite or <code>null</code>.
+	 */
+	public Sprite getLayerSprite(final String layer, final int index, final OutfitColor color) {
+		return getLayerSprite(layer, index, color, false);
+	}
+
+	/**
+	 * Get the layer sprite tileset.
 	 *
-	 * @return The Sprite or <code>null</code>.
+	 * @param layer
+	 *     Name of the layer.
+	 * @param index
+	 *     The resource index.
+	 * @param slim
+	 *     Body type is "slim".
+	 * @return
+	 *     The Sprite or <code>null</code>.
+	 */
+	public Sprite getLayerSprite(final String layer, final int index, final boolean slim) {
+		return getLayerSprite(layer, index, null, slim);
+	}
+
+	/**
+	 * Get the layer sprite tileset.
+	 *
+	 * @param layer
+	 *     Name of the layer.
+	 * @param index
+	 *     The resource index.
+	 * @return
+	 *     The Sprite or <code>null</code>.
 	 */
 	public Sprite getLayerSprite(final String layer, final int index) {
-		return getLayerSprite(layer, index, null);
+		return getLayerSprite(layer, index, null, false);
 	}
 
 	/**
