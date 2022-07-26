@@ -388,6 +388,8 @@ public class Grammar {
 		if (enoun.indexOf(of) > -1) {
 			return plural(enoun.substring(0, enoun.indexOf(of))) + enoun.substring(enoun.indexOf(of)) + postfix;
 
+		} else if (enoun.equals("mnich")) {
+			return enoun + "a";
 		} else if (enoun.equals("money") || enoun.equals("kierpce") || enoun.equals("korale") || enoun.endsWith("ów")) {
 			return enoun;
 		} else if (enoun.startsWith("rękawice") || enoun.equals("spodnie")) {
@@ -406,12 +408,15 @@ public class Grammar {
 			return enoun + "e" + postfix;
 
 		} else if (enoun.equals("dzień")) {
-			return enoun.substring(0, enoun.length() - 1) + "ni" + postfix;
+			return enoun.substring(0, enoun.length() - 4) + "ni" + postfix;
 		} else if (enoun.equals("tydzień")) {
-			return enoun.substring(0, enoun.length() - 5) + "godnie" + postfix;
+			return enoun.substring(0, enoun.length() - 5) + "godni" + postfix;
 
 		} else if (enoun.endsWith("dę") || enoun.endsWith("tę") || enoun.endsWith("nę")) {
 			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
+
+		} else if (enoun.endsWith("owy") || enoun.endsWith("ki")) {
+			return enoun + "ch" + postfix;
 
 		} else if (enoun.endsWith("wy")) {
 			return enoun.substring(0, enoun.length() - 2) + "owe" + postfix;
@@ -532,6 +537,27 @@ public class Grammar {
 		if (enoun.indexOf(of) > -1) {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
+
+		} else if (enoun.equals("płaszcz")) {
+			if (quantity <= 4) {
+				return enoun + "e" + postfix;
+			} else {
+				return enoun + "y" + postfix;
+			}
+
+		} else if (enoun.equals("lody")) {
+			if (quantity > 4 || quantity == 0) {
+				return enoun.substring(0, enoun.length() - 1) + "ów" + postfix;
+			} else {
+				return enoun + postfix;
+			}
+
+		} else if (enoun.equals("mnich")) {
+			if (quantity > 1 || quantity == 0) {
+				return enoun + "ów" + postfix;
+			} else {
+				return plural(enoun);
+			}
 
 		} else if (enoun.endsWith("tę")) {
 			if (quantity >= 5) {
