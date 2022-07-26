@@ -81,7 +81,7 @@ public class Seed extends StackableItem {
 			return "Oto " + flowerName + " " + this.getName()
                 + ". Może być zasadzone wszędzie, ale kwitnąć może tylko na żyznej glebie.";
 		} else {
-			return "Oto nasionko. Może być zasadzone wszędzie, ale kwitnąć może tylko na żyznej glebie.";
+			return "Oto nasionka. Może być zasadzone wszędzie, ale kwitnąć może tylko na żyznej glebie.";
 		}
 	}
 }
