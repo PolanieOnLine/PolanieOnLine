@@ -58,9 +58,9 @@ public class ZoologistNPC implements ZoneConfigurator {
 					ConversationStates.IDLE,
 					null,
 					new MultipleActions(
-						new NPCEmoteAction("yawns", false),
+						new NPCEmoteAction("ziewa", false),
 						new PlaySoundAction("yawn-female-1"),
-						new SendPrivateMessageAction(NotificationType.NORMAL, "Jest w tej chwili zbyt zajęta, żeby się tym przejmować."),
+						new SendPrivateMessageAction(NotificationType.NORMAL, "Jest w tej chwili zbyt zajęta, żeby się tobą przejmować."),
 						new NPCSetDirection(Direction.UP)));
 
 				addGoodbye();

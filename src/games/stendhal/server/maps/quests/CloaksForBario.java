@@ -139,12 +139,15 @@ public class CloaksForBario extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Witaj znowu! Wciąż potrzebuję "
+						raiser.say("Witaj znów! Wciąż potrzebuję "
 							+ player.getQuest(QUEST_SLOT)
-							+ " lazurowy płaszcz elficki "
-							+ Grammar.plnoun(
-									MathHelper.parseInt(player.getQuest(QUEST_SLOT)),
-									"cloak") + ". Masz jakiś dla mnie?");
+							+ " "
+							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "lazurowy")
+							+ " "
+							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "płaszcz")
+							+ " "
+							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "elficki")
+							+ ". Masz jakiś dla mnie?");
 					}
 				});
 

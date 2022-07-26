@@ -94,7 +94,7 @@ public class ElfPrincess extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestInStateCondition(QUEST_SLOT, 0, "rejected")),
 			ConversationStates.QUEST_OFFERED,
-			"Znajdziesz wędrowną sprzedawczynię kwiatów Różę Kwiaciarkę i weźmiesz od niej orchideę mój ulubiony kwiatek?",
+			"Znajdziesz wędrowną sprzedawczynię kwiatów Różę Kwiaciarkę i odbierzesz dla mnie orchideę, mój ulubiony kwiatek?",
 			null);
 
         // shouldn't happen: is a repeatable quest
@@ -115,7 +115,7 @@ public class ElfPrincess extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new OrCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"), new QuestInStateCondition(QUEST_SLOT, 0, "got_flower")),
 			ConversationStates.ATTENDING,
-			"Kochane są te kwiatki od Róży Kwiaciarki ...",
+			"Słodkie są te kwiatki od Róży Kwiaciarki...",
 			null);
 
 		// Player agrees to collect flower
@@ -145,7 +145,7 @@ public class ElfPrincess extends AbstractQuest {
 							 new PlayerCanEquipItemCondition("orchidea"),
                              new TimePassedCondition(QUEST_SLOT, 1, DELAY)),
 			ConversationStates.IDLE,
-			"Witaj. Mój daleki wzrok powiedział mi, że potrzebujesz kwiatek dla pięknej dziewczyny. Oto on i do zobaczenia.",
+			"Witaj skarbie. Mój daleki wzrok powiedział mi, że potrzebujesz kwiatek dla pięknej dziewczyny. Oto on i do zobaczenia.",
 			new MultipleActions(new EquipItemAction("orchidea", 1, true),
                                 new SetQuestAction(QUEST_SLOT, 0, "got_flower"),
                                 new SetQuestToTimeStampAction(QUEST_SLOT, 1)));

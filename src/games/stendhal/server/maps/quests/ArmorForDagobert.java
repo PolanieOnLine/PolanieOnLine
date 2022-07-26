@@ -189,7 +189,7 @@ public class ArmorForDagobert extends AbstractQuest {
 			res.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego prośbę.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " , że znajdę dla niego skórzany kirys ponieważ został okradziony.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + ", że znajdę dla niego skórzany kirys ponieważ został okradziony.");
 		}
 		if ("start".equals(questState) && (player.isEquipped("skórzany kirys") || player.isEquipped("skórzany kirys z naramiennikami")) || "done".equals(questState)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " skórzany kirys i zabiorę go do Dagoberta.");

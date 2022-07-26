@@ -172,7 +172,7 @@ public class HatForMonogenes extends AbstractQuest {
 			res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " kapelusz.");
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " kapelusz Monogenesowi i nagrodził mnie 10 pd.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " kapelusz Monogenesowi i nagrodził mnie swym doświadczeniem.");
 		}
 		return res;
 	}

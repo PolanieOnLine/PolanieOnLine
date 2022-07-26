@@ -115,7 +115,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "start"),
 						new NotCondition(new PlayerHasItemWithHimCondition("lody"))),
 				ConversationStates.ATTENDING,
-				"Cześć. Jestem głodna.",
+				"Cześć! Jestem głodna...",
 				null);
 
 		// player got ice cream and spoke to mummy
@@ -125,7 +125,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "mummy"),
 						new PlayerHasItemWithHimCondition("lody")),
 				ConversationStates.QUESTION_1,
-				"Pychota! Czy ta porcja lodów jest dla mnie?",
+				"Pychotka! Czy ta porcja lodów jest dla mnie?",
 				null);
 
 		// player spoke to mummy and hasn't got ice cream
@@ -135,7 +135,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "mummy"),
 						new NotCondition(new PlayerHasItemWithHimCondition("lody"))),
 				ConversationStates.ATTENDING,
-				"Cześć. Jestem głodna.",
+				"Cześć! Jestem głodna...",
 				null);
 
 		// player is in another state like eating
@@ -195,7 +195,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT), new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "eating;"))),
 				ConversationStates.ATTENDING,
-				"Łeeeeeeeee! Gdzie jest moja porcja lodów....?",
+				"Łeeeeeeeee! Gdzie jest moja porcja lodów...",
 				null);
 
 		// Player agrees to get the ice cream
@@ -244,7 +244,7 @@ public class IcecreamForAnnie extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Łeeeee! Jesteś wielkim, grubym łajdakiem.",
+				"Łeeeee! Jesteś wielkim łajdakiem.",
 				new DecreaseKarmaAction(5.0));
 	}
 

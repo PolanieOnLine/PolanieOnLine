@@ -145,9 +145,9 @@ public class SellerAdder {
 
 							currentBehavRes = res;
 							npc.setCurrentState(ConversationStates.BUY_PRICE_OFFERED); // success
-    						} else {
-							raiser.say("Ile " + Grammar.plural(chosenItemName) + " chcesz kupić?!");
-    						}
+    					} else {
+							raiser.say("Ile " + Grammar.plnoun(res.getAmount(), chosenItemName) + " chcesz kupić?!");
+    					}
 					}
 				});
 

@@ -99,7 +99,7 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 	@Override
 	public String welcomeBeforeStartingQuest() {
 		return "Witaj wędrowcze, widzę że przyszedłeś z bardzo daleka. "
-			+ "Interesuję się każdym kto widział naszych pobratymców, zielonych elfów z Nalwor. Pilnują swoich #sekretów";
+			+ "Interesuję się każdym kto widział naszych pobratymców, zielonych elfów z Nalwor. Pilnują swoich #sekretów.";
 	}
 
 	@Override
@@ -163,12 +163,12 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 	}
 	@Override
 	public String respondToOfferOfNotMissingItem() {
-		return "Już mi przyniosłeś ten elfisz rynsztunek.";
+		return "Już mi przyniosłeś ten elficki rynsztunek.";
 	}
 
 	@Override
 	public String respondToOfferOfNotNeededItem() {
-		return	"Nie sądzę, aby to był fragment elfisz zbroi...";
+		return	"Nie sądzę, aby to był fragment elfickiego wyposażenia...";
 	}
 
 	@Override
@@ -178,8 +178,8 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 
 	@Override
 	public String respondToQuestAfterItHasAlreadyBeenCompleted() {
-		return "Jestem teraz zajęty badaniem właściwości elfickich części zbroi, które mi przyniosłeś. To intrygujące. Dopóki nie będę ich produkował to będę je skupywał od Ciebie."
-         + "Liczę na twoje zangażowanie.";
+		return "Jestem teraz zajęty badaniem właściwości elfickich części zbroi, które mi przyniosłeś. To intrygujące. Dopóki nie będę ich produkował to będę je skupywał od Ciebie. "
+         + "Liczę na twoje zaangażowanie.";
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 
 	@Override
 	public String welcomeAfterQuestIsCompleted() {
-		return "Pozdrawiam stary przyjacielu.";
+		return "Pozdrawiam cię stary przyjacielu.";
 	}
 
 	// the bring list of items quest doesn't include this logic:
@@ -216,7 +216,7 @@ public class ElvishArmor extends AbstractQuest implements BringListOfItemsQuest 
 				ConversationPhrases.OFFER_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Nie sądzę, abym mógł Tobie zaufać ... ", null);
+				"Nie sądzę, abym mógł Tobie zaufać...", null);
 	}
 
 	@Override

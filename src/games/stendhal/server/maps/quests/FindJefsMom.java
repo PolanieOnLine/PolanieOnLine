@@ -109,7 +109,7 @@ public class FindJefsMom extends AbstractQuest {
 				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1,REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Nie chcę przeszkadzać mojej mamie, nim nie wróci z powrotem, więc nie musisz jej nic przekazać. Może zapytaj mnie raz jeszcze puźniej..."));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Nie chcę przeszkadzać mojej mamie, nim nie wróci z powrotem, więc nie musisz jej nic przekazać. Może zapytaj mnie raz jeszcze później..."));
 
 
 		// Player agrees to find mum

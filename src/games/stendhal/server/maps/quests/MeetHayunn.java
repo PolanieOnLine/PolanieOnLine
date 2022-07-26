@@ -113,7 +113,7 @@ public class MeetHayunn extends AbstractQuest {
 		reward.add(new EquipItemAction("money", 150));
 		reward.add(new IncreaseXPAction(100));
 		reward.add(new SetQuestAction(QUEST_SLOT, "taught"));
-		reward.add(new ExamineChatAction("monogenes.png", "Monogenes", "North part of Semos city."));
+		reward.add(new ExamineChatAction("monogenes.png", "Monogenes", "Północna część miasteczka Semos."));
 
 		npc.add(
 			ConversationStates.INFORMATION_1,
@@ -130,7 +130,7 @@ public class MeetHayunn extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "killed")),
 				ConversationStates.INFORMATION_1,
-		      "Szybko się uwinąłeś od momentu, gdy przyszedłeś mi oznajmić, że zabiłeś szczura! Chciałbym Ci przekazać kilka wskazówek i podpowiedzi. Czy chcesz je usłyszeć?",
+				"Szybko się uwinąłeś od momentu, gdy przyszedłeś mi oznajmić, że zabiłeś szczura! Chciałbym Ci przekazać kilka wskazówek i podpowiedzi. Czy chcesz je usłyszeć?",
 				null);
 		
 		// Player has returned to say hi again.
@@ -175,7 +175,7 @@ public class MeetHayunn extends AbstractQuest {
 		npc.add(ConversationStates.INFORMATION_4,
 				ConversationPhrases.YES_MESSAGES, new QuestNotCompletedCondition(QUEST_SLOT),
 				ConversationStates.IDLE, 
-			epilog + "Cóż powodzenia w podziemiach! Ta tarcza powinna Ci pomóc. Tutaj znajdziesz sławę i chwałę. Uważaj na potwory!",
+				epilog + "Cóż powodzenia w podziemiach! Ta tarcza powinna Ci pomóc. Tutaj znajdziesz sławę i chwałę. Uważaj na potwory!",
 				new MultipleActions(reward2));
 
 		npc.add(new ConversationStates[] { ConversationStates.ATTENDING,

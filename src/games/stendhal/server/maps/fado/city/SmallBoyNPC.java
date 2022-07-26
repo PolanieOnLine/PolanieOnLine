@@ -42,7 +42,7 @@ public class SmallBoyNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Hm?");
-				addHelp("Zastanawiam się czy dzięki #balonik będę mógł się wznieść wystarczająco wysoko, aby dotknąć chmur...");
+				addHelp("Zastanawiam się czy dzięki #balonikowi będę mógł się wznieść wystarczająco wysoko, aby dotknąć chmur...");
 				addJob("Praca? Czy to coś takiego co mogę zjeść?");
 				addReply("balonik", "Pewnego dnia będę miał tyle baloników, że będę mógł odlecieć daleko!");
 				addReply(Arrays.asList("xkcd", "tables", "sql", "student", "drop", "table"), 

@@ -198,7 +198,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT), new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "eating;"))),
 				ConversationStates.ATTENDING,
-				"Łaaaaaaaa! Gdzie jest moja czekolada ...",
+				"Łaaaaaaaa! Gdzie jest moja czekolada...",
 				null);
 
 		// Player agrees to get the chocolate
@@ -214,7 +214,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Dobrze poczekam aż moja mama znajdzie pomocną dłoń...",
+				"Dobrze, poczekam aż moja mama znajdzie pomocną dłoń...",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		// Player has got chocolate bar and spoken to mummy
@@ -259,7 +259,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.IDLE,
-				"Łaaaaaa! Jesteś wielkim tłuściochem.",
+				"Łaaaaaa! Jesteś wielkim tłuścioszkiem.",
 				new DecreaseKarmaAction(5.0));
 	}
 
@@ -271,7 +271,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 					ConversationPhrases.GREETING_MESSAGES,
 					new AndCondition(new GreetingMatchesNameCondition(mummyNPC.getName()),
 							new QuestNotStartedCondition(QUEST_SLOT)),
-					ConversationStates.ATTENDING, "Cześć miło cię poznać.",
+					ConversationStates.ATTENDING, "Cześć, miło cię poznać.",
 					null);
 
 		// player is supposed to begetting chocolate
@@ -280,7 +280,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 					new AndCondition(new GreetingMatchesNameCondition(mummyNPC.getName()),
 							new QuestInStateCondition(QUEST_SLOT, "start")),
 					ConversationStates.ATTENDING,
-					"Oh już spotkałeś moją córkę Elisabeth. Wyglądasz na miłą osobę i byłabym wdzięczna gdybyś mógł przynieść jej tabliczkę czekolady ponieważ nie jestem zbyt #silna na to.",
+					"Och, już spotkałeś moją córeczkę Elisabeth. Wyglądasz na miłą osobę i byłabym wdzięczna gdybyś mógł przynieść jej tabliczkę czekolady ponieważ nie jestem zbyt #silna na to.",
 					new SetQuestAction(QUEST_SLOT, "mummy"));
 
 		mummyNPC.addReply(Arrays.asList("strong", "silna"), "Próbowałam zdobyć trochę czekolady dla Elisabeth parę razy, ale nie mogłam się przedostać przez morderców i bandytów kręcących się #tam.");
@@ -311,7 +311,7 @@ public class ChocolateForElisabeth extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Elisabeth jest miłą małą dziweczynką żyjącą w Kirdneh razem ze swoją rodziną.");
+		res.add("Elisabeth jest miłą małą dziewczynką żyjącą w Kirdneh razem ze swoją rodziną.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie lubię miłych małych dziewczynek.");

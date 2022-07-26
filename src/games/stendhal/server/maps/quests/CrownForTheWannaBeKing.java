@@ -193,7 +193,7 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 					ConversationStates.QUESTION_1, null,
 					new CollectRequestedItemsAction(
 							item.getKey(), QUEST_SLOT,
-							"Dobra, masz coś jeszcze? ","Już to przynisłeś!",
+							"Dobra, masz coś jeszcze?","Już to przynisłeś!",
 							completeAction, ConversationStates.ATTENDING));
 		}
 

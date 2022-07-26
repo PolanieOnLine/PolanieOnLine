@@ -131,9 +131,8 @@ public class AntivenomRing extends AbstractQuest {
 				query_phrases,
 				new QuestCompletedCondition("traps_for_klaas"),
 				ConversationStates.ATTENDING,
-				"I used to know an old apothecary, but don't know where he has settled down. Perhaps someone in Ados would know."
-				+ " There are guards that patrol the city. They see a lot of things that others do not. As around about an"
-				+ " #apothecary.",
+				"Kiedyś znałem starego aptekarza, ale nie wiem, gdzie się osiedlił. Może ktoś w mieście Ados by o tym wiedział."
+				+ " Strażnicy patrolują miasto. Widzą wiele rzeczy, których inni nie widzą. Jak przykładowo o #aptekarzu.",
 				null);
 
 		/* Julius */
@@ -225,7 +224,7 @@ public class AntivenomRing extends AbstractQuest {
 				Arrays.asList(hintNPC5.getName(), "Ortiv"),
 				null,
 				ConversationStates.ATTENDING,
-				hintNPC5.getName() + " jest byłym instruktorem alchemii, przeszedł na emeryturę i mieszka w Kirdneh City.",
+				hintNPC5.getName() + " jest byłym instruktorem alchemii, przeszedł na emeryturę i mieszka we wiosce Kirdneh.",
 				null);
 
 		/* Ortiv Milquetoast */
@@ -258,8 +257,8 @@ public class AntivenomRing extends AbstractQuest {
 			Arrays.asList("pear", "pears", "gruszka", "gruszki"),
 			null,
 			ConversationStates.ATTENDING,
-			"Moi przyjaciele mówią mi, że gruszki można znaleźć w górach Semos. Jeśli będziesz tam podróżował"
-			+ ", to proszę, przynieś mi ich trochę.",
+			"Moi przyjaciele mówią mi, że gruszki można znaleźć w górach Semos. Jeśli będziesz tam podróżował,"
+			+ " to proszę, przynieś mi ich trochę.",
 			null);
 	}
 

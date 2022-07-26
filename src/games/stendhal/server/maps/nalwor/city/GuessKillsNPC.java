@@ -85,7 +85,7 @@ public class GuessKillsNPC implements ZoneConfigurator {
 
             @Override
             protected void createDialog() {
-                addGreeting("Pozdrawiam");
+                addGreeting("Pozdrawiam.");
                 addJob("Jestem tylko starą kobietą obserwującą wszystkich podczas spaceru.");
                 addHelp("Nie wiem jak tobie pomóc. Od paru dni lubię #grać w #gry.");
                 addOffer("Obawiam się, że nie mam nic do zaoferowania.");

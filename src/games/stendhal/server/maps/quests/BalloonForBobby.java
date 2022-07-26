@@ -87,8 +87,8 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
-				"Czy mógłbyś zdobyć dla mnie #'balonik'? Nim zaczną się dni miasta "
-						+ ", bo wtedy sam będę mógł zdobyć :)",
+				"Czy mógłbyś zdobyć dla mnie #'balonik'? Nim zaczną się dni miasta, "
+						+ "bo wtedy sam będę mógł zdobyć :)",
 				null);
 
 		// Player asks for quest after quest is started.
@@ -96,8 +96,8 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Mam nadzieję, że wkrótce zdobędziesz dla mnie #'balonik'. Chyba, że już jest święto zwane Mine Town Weeks"
-						+ ", bo wtedy sam będę mógł zdobyć :)",
+				"Mam nadzieję, że wkrótce zdobędziesz dla mnie #'balonik'. Chyba, że już jest święto zwane Mine Town Weeks, "
+						+ "bo wtedy sam będę mógł zdobyć :)",
 				null);
 
 		// Player agrees to get a balloon.
@@ -105,7 +105,7 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Yay!",
+				"Jej!",
 				new SetQuestAction(QUEST_SLOT, 0, "start"));
 
 		// Player refuses to get a balloon.
@@ -113,7 +113,7 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Aww. :'(",
+				"Ouu. :'(",
 				new SetQuestAction(QUEST_SLOT, 0, "rejected"));
 
 		// Player asks about "balloon".
@@ -121,7 +121,7 @@ public class BalloonForBobby extends AbstractQuest {
 				Arrays.asList("balloon", "balonik"),
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Pewnego dnia będę miał wystarczająco dużo baloników, żeby odlecieć!",
+				"Pewnego dnia będę miał wystarczająco dużo baloników, aby odlecieć!",
 				null);
 	}
 
@@ -142,7 +142,7 @@ public class BalloonForBobby extends AbstractQuest {
 								new PlayerIsWearingOutfitCondition(balloonList[2]),
 								new PlayerIsWearingOutfitCondition(balloonList[3]))),
 				ConversationStates.QUEST_ITEM_QUESTION,
-				"Cześć czy ten balonik jest dla mnie?",
+				"Cześć! Czy ten balonik jest dla mnie?",
 				null);
 	}
 
@@ -188,9 +188,7 @@ public class BalloonForBobby extends AbstractQuest {
 				Arrays.asList("balloon", "balonik"),
 				new SystemPropertyCondition("stendhal.minetown"),
 				ConversationStates.ATTENDING,
-				"Chmury powiedziały mi, że dni miasta wciąż trwają -"
-				+ " Mogę sam zdobyć balonik."
-				+ " Wróć, gdy skończą się dni miasta :)",
+				"Chmury podpowiedziały mi, że dni mine town wciąż trwają - Mogę sam zdobyć balonik. Wróć, gdy skończy się święto :)",
 				null);
 	}
 
@@ -205,7 +203,7 @@ public class BalloonForBobby extends AbstractQuest {
 				null,
 				new MultipleActions(
 						new PlaySoundAction("pout-1"),
-						new NPCEmoteAction("dąsy.", false))
+						new NPCEmoteAction("dąsa się.", false))
 				);
 
 		// Rewards to give to the player if he gives Bobby the balloon

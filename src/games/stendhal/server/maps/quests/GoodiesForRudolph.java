@@ -217,7 +217,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 			res.add("Zapytał mnie o znalezienie przysmaków dla niego, ale odrzuciłem jego prośbę.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " , że znajdę dla niego przysmaki ponieważ jest miłym reniferem.");
+			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + ", że znajdę dla niego przysmaki ponieważ jest miłym reniferem.");
 		}
 		if ("start".equals(questState) && player.isEquipped("mech renifera", 5)  && player.isEquipped("marchew", 10) && player.isEquipped("jabłko", 10) || "done".equals(questState)) {
 			res.add("Mam wszystkie przysmaki, które zabiorę do Rudolpha.");

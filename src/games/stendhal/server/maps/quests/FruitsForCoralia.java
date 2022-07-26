@@ -111,7 +111,7 @@ public class FruitsForCoralia extends AbstractQuest {
 			ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, Arrays.asList("hat", "kapelusz")),
 			new QuestInStateCondition(QUEST_SLOT, "rejected"),
 			ConversationStates.QUEST_OFFERED,
-			"Czy chcesz teraz poszukać świeżych owoców do mojego kapelusza?",
+			"Czy chcesz znaleźć dla mnie trochę świeżych owoców do mojego kapelusza?",
 			null);
 
 		// repeat quest
@@ -121,7 +121,7 @@ public class FruitsForCoralia extends AbstractQuest {
 				new QuestCompletedCondition(QUEST_SLOT),
 				new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
 			ConversationStates.QUEST_OFFERED,
-			"Przykro mi, ale owoce, które mi przyniosłeś do mojego kapelusza  nie są zbyt świeże. " +
+			"Przykro mi, ale owoce, które mi przyniosłeś do mojego kapelusza nie są zbyt świeże. " +
 			"Czy byłbyś tak miły i znalazł ich trochę więcej?",
 			null);
 
@@ -231,7 +231,7 @@ public class FruitsForCoralia extends AbstractQuest {
 			new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_2,
 			null,
-			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Wciąż chciałabym [items]. Przyniosłeś któryś?"));
+			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Wciąż potrzebowałabym [items]. Przyniosłeś coś?"));
 
 		// player says he didn't bring any items
 		npc.add(ConversationStates.QUESTION_2,
@@ -239,7 +239,7 @@ public class FruitsForCoralia extends AbstractQuest {
 			new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_1,
 			null,
-			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Oh co za szkoda, powiedz mi, gdy znajdziesz kilka. Wciąż potrzebuję [items]."));
+			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Och co za szkoda, powiedz mi, gdy znajdziesz kilka. Wciąż potrzebuję [items]."));
 
 		// player says he has a required item with him
 		npc.add(ConversationStates.QUESTION_2,

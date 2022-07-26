@@ -88,7 +88,7 @@ public class ClubOfThorns extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
-			"Saman zemścił się! Dobrze!",
+			"Szaman zemścił się! Dobrze!",
 			null);
 
 		final List<ChatAction> start = new LinkedList<ChatAction>();

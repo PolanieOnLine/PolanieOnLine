@@ -57,7 +57,7 @@ public class PrincessNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Cześć człeku, człowieku.");
+				addGreeting("Witaj, człowieku!");
 				addJob("Jestem księżniczką. Co mogę zrobić?");
 				addHelp("Stanowcza osoba mogłaby zrobić dla mnie #zadanie.");
 				addOffer("Nie handluję. Moi rodzice mogliby to uważać za poniżające.");

@@ -118,7 +118,7 @@ public class HungryJoshua extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Pozwolisz, aby głodował! Mam nadzieję, że ktoś będzie bardziej wspaniałomyślny.",
+			"Pozwolisz, aby głodował?! Mam nadzieję, że ktoś będzie bardziej wspaniałomyślny.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.add(
@@ -193,14 +193,14 @@ public class HungryJoshua extends AbstractQuest {
 			ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, "joshua"),
 			ConversationStates.ATTENDING,
-			"Mam nadzieję, że #Joshua ma się dobrze ....",
+			"Mam nadzieję, że #Joshua ma się dobrze...",
 			null);
 
 		/* Remind player about the quest */
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("food", "kanapka", "sandwiches", "jedzenie", "kanapki"), 
 			new QuestInStateCondition(QUEST_SLOT, "joshua"),
 			ConversationStates.ATTENDING,
-			"Chciałbym, abyś mi przekazał, że #Joshua ma się dobrze ...", null);
+			"Chciałbym, abyś mi przekazał, że #Joshua ma się dobrze...", null);
 
 		// ideally, make it so that this slot being done means
 		// you get a keyring object instead what we currently

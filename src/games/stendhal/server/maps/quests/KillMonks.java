@@ -165,7 +165,7 @@ public class KillMonks extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 						new KilledForQuestCondition(QUEST_SLOT, 1)),
 				ConversationStates.ATTENDING, 
-				"Bardzo dziękuję! Teraz mogę spać trochęspokojniej. Proszęprzyjmij tą zupę.",
+				"Bardzo dziękuję! Teraz mogę spać trochęspokojniej. Proszę, przyjmij tę zupę.",
 				new MultipleActions(actions));
 
 		npc.add(ConversationStates.ATTENDING,
@@ -182,7 +182,7 @@ public class KillMonks extends AbstractQuest {
 		KillsForQuestCounter killsCounter = new KillsForQuestCounter(questState);
 		int killedMonks = 25 - killsCounter.remainingKills(player, "mnich");
 		int killedDarkMonks = 25 - killsCounter.remainingKills(player, "mnich ciemności");
-		return "Wciąż muszę zabić " + Grammar.quantityplnoun(killedMonks, "mnich") + " i " + Grammar.quantityplnoun(killedDarkMonks, "mnich ciemności") + ".";
+		return "Wciąż muszę zabić " + Grammar.quantityplnoun(killedMonks, "mnich") + " i " + Grammar.quantityplnoun(killedDarkMonks, "mnich") + " ciemności.";
 	}
 
 	private List<String> howManyWereKilledFormatted(final Player player, final String questState) {
@@ -240,7 +240,7 @@ public class KillMonks extends AbstractQuest {
 			}
 			if (isCompleted(player)) {
 				if(isRepeatable(player)){
-					res.add("Teraz po dwóch tygodniach powinienem odwiedzić Andiego. Może potrzebuje mojej pomocy!");
+					res.add("Po dwóch tygodniach powinienem może odwiedzić Andiego. Być może potrzebuje ponownie mojej pomocy!");
 				} else {
 					res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " paru mnichów, a Andi może teraz spać trochę spokojnie!");
 				}

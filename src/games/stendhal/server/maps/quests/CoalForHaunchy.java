@@ -90,7 +90,7 @@ public class CoalForHaunchy extends AbstractQuest {
 
 		npc.add(
 				ConversationStates.QUEST_OFFERED,
-				Arrays.asList("węgiel","węgla"),
+				Arrays.asList("coal", "węgiel", "węgla"),
 				null,
 				ConversationStates.QUEST_OFFERED,
 				"Węgiel nie jest łatwo znaleźć. Normalnie możesz go znaleźć pod ziemią, ale może będziesz miał szczęście i znajdziesz w tunelach starej kopalni Semos...",
@@ -130,7 +130,7 @@ public class CoalForHaunchy extends AbstractQuest {
 		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Oh nie ważne. Myślałem, że kochasz grillowane steki jak ja. Żegnaj.",
+				"Och, nie ważne. Sądziłem, że uwielbiasz grillowane steki tak jak ja. Żegnaj.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 
@@ -173,15 +173,15 @@ public class CoalForHaunchy extends AbstractQuest {
 				ConversationStates.ATTENDING, triggers,
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new NotCondition(new PlayerHasItemWithHimCondition("węgiel",25))),
 				ConversationStates.ATTENDING,
-				"Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź kilka kawałków.",
+				"Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź dla mnie kilka kawałków węgla kamiennego.",
 				null);
 
 		npc.add(
 				ConversationStates.ATTENDING,
-				Arrays.asList("węgiel","stone coal"),
+				Arrays.asList("coal", "węgiel", "stone coal"),
 				new QuestNotInStateCondition(QUEST_SLOT,"start"),
 				ConversationStates.ATTENDING,
-				"Czasami mógłbyś mi wyświadczyć #przysługę ...", null);
+				"Czasami mógłbyś mi wyświadczyć #'przysługę'...", null);
 	}
 
 	@Override

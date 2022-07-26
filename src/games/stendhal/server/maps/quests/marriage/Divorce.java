@@ -213,7 +213,7 @@ class Divorce {
 							wife.removeQuest(marriage.getQuestSlot());
 							wife.removeQuest(marriage.getSpouseQuestSlot());
 							wife.sendPrivateText(husband.getName() + " rozwiódł się z tobą.");
-							npc.say("Co za szkoda...co za szkoda.... byliście tak szczęśliwi...");
+							npc.say("Co za szkoda... Co za szkoda..., a byliście tak szczęśliwi...");
 						} else {
 							DBCommandQueue.get().enqueue(new StoreMessageCommand("Wilfred", partnerName, husband.getName() + " rozwiódł się z Tobą!" , "N"));
 						}
@@ -226,7 +226,7 @@ class Divorce {
 						husband.drop("obrączka ślubna");
 						husband.removeQuest(marriage.getQuestSlot());
 						husband.removeQuest(marriage.getSpouseQuestSlot());
-						npc.say("Co za szkoda...co za szkoda..., a byliście tak szczęśliwi...");
+						npc.say("Co za szkoda... Co za szkoda..., a byliście tak szczęśliwi...");
 					}
 				});
 	}

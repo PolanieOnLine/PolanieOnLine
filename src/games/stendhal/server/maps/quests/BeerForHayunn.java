@@ -187,17 +187,17 @@ public class BeerForHayunn extends AbstractQuest {
 		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Hayunn.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie chcę dać soku z chmielu dla Hayunn.");
+			res.add("Nie chcę kupować soku z chmielu dla Hayunn.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add("Dam Hayunn sok z chmielu.");
+			res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + ", że kupię mu sok z chmielu od Margaret w tawernie Semos.");
 		}
 		if ("start".equals(questState) && player.isEquipped("sok z chmielu")
 				|| "done".equals(questState)) {
-			res.add("Mam sok z chmielu.");
+			res.add("Mam już sok z chmielu.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " sok z chmielu Hayunn. Zapłacił mi 20 złotych monet i 500 pd.");
+			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " sok z chmielu Hayunn. Otrzymałem 20 złotych monet i kilka lekcji z jego doświadczenia.");
 		}
 		return res;
 	}

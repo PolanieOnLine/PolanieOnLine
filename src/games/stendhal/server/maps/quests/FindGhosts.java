@@ -119,7 +119,7 @@ public class FindGhosts extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
-			"Dziękuję! Czuję się teraz lepiej znając imiona innych duchów na Faiumoni.",
+			"Dziękuję! Czuję się teraz lepiej znając imiona innych duchów w Faiumoni.",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -204,7 +204,7 @@ public class FindGhosts extends AbstractQuest {
 							reply = "Nie wierzę, że rozmawiałeś z duchem o tym imieniu.";
 						} else if (!isMissing && said.contains(name)) {
 							// we have said the name so we are stupid!
-							reply = "Mówiłeś mi już o tym duchu.";
+							reply = "Już mi wyjawiłeś imię tego ducha, dziękuję.";
 						} else {
 							assert false;
 						}
@@ -250,7 +250,7 @@ public class FindGhosts extends AbstractQuest {
 			Arrays.asList("spirits", "spirit", "duch", "duchy", "duchach"),
 			null,
 			ConversationStates.QUESTION_1,
-			"Szukam czegoś więcej o innych duchach, które są martwe i utknęły na ziemi właśnie jako duchy. Proszę wyjaw mi ich imiona.",
+			"Chcę dowiedzieć się więcej o innych duchach, które wędrują po ziemskim świecie jako duchy tak jak ja. Proszę, wyjaw mi ich imiona.",
 			null);
 
 		// the player goes to Carena and says hi, and has no quest or is completed.

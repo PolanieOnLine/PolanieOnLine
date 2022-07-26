@@ -82,7 +82,7 @@ public class KillGnomes implements QuestManuscript {
 
 		quest.task()
 			.requestKill(1, "gnom")
-			.requestKill(1, "gnom zawiadowca")
+			.requestKill(1, "gnom zwiadowca")
 			.requestKill(1, "gnom kawalerzysta");
 
 		quest.complete()

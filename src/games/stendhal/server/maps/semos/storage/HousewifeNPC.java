@@ -55,7 +55,7 @@ public class HousewifeNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj młody bohaterze.");
 				addJob("Jestem gospodynią domową.");
-				addHelp("Uwielbiam pomagać dla Landera. Jego kanapki są wspaniałe! Czy wiesz, że szuka pomocnika?");
+				addHelp("Uwielbiam pomagać Landerowi. Jego kanapki są wspaniałe! Czy wiesz, że szuka pomocnika?");
 				addGoodbye();
 			}
 		};

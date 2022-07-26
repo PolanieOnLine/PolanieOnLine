@@ -126,7 +126,7 @@ public class FindRatChildren extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Dlaczego są tak długo na dworze. Poszukaj je, sprawdź czy wszystko z nimi w porządku.",
+				"Dlaczego moje dzieci są tak długo poza domem? Poszukaj je i sprawdź czy wszystko z nimi w porządku.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -156,7 +156,7 @@ public class FindRatChildren extends AbstractQuest {
 				Arrays.asList("children", "dzieci"),
 				null,
 				ConversationStates.QUEST_OFFERED,
-				"Moje dzieci poszły bawić się gdzieś w kanałach. Minęło już sporo czasu od tego momentu. Znajdziesz ich i sprawdzisz czy u nich jest wszystko w porządku?",
+				"Moje dzieci poszły bawić się gdzieś w kanałach. Minęło już sporo czasu od tego momentu. Znajdziesz je i sprawdzisz czy u nich jest wszystko w porządku?",
 				null);
 	}
 
@@ -221,12 +221,12 @@ public class FindRatChildren extends AbstractQuest {
 					missing = missingNames(player);
 
 					if (!missing.isEmpty()) {
-						reply += " Jeżeli widziałeś inne z moich dzieci powiedz mi które.";
+						reply += " Jeżeli widziałeś inne z moich dzieci to proszę powiedz mi które.";
 						npc.say(reply);
 					} else {
 						player.addXP(5000);
 						player.addKarma(15);
-						reply += " Uff.... teraz mogę odsapnąć wiedząc, że z dziećmi jest wszystko w porządku.";
+						reply += " Uff... teraz mogę odsapnąć wiedząc, że z dziećmi jest wszystko w porządku.";
 						npc.say(reply);
 						player.setQuest(QUEST_SLOT, "done;" + System.currentTimeMillis());
 						player.notifyWorldAboutChanges();

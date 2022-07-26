@@ -65,7 +65,7 @@ public class GoldsmithNPC implements ZoneConfigurator {
 				addGreeting("Cześć!");
 				addJob("Jestem złotnikiem w tym mieście.");
 				addHelp("Mój brat Xoderos jest kowalem w Semos. Teraz sprzedaje narzędzia. Może zrobić dla Ciebie #'misę do pukania złota'.");
-				addGoodbye("Żegnaj");
+				addGoodbye();
 
 				// Joshua makes gold if you bring him gold nugget and wood
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
@@ -76,7 +76,7 @@ public class GoldsmithNPC implements ZoneConfigurator {
 						 Arrays.asList("cast", "odlej"), "sztabka złota", requiredResources, 15 * 60);
 
 				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej");
+				        "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.");
 				addReply(Arrays.asList("wood", "polano"),
 						"Potrzebuję trochę polan, aby podtrzymywać ogień. Możesz je znaleźć w lesie.");
 				addReply(Arrays.asList("ore", "gold ore", "gold nugget", "bryłka złota"),

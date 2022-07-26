@@ -135,7 +135,7 @@ public class FishSoup extends AbstractQuest {
 					new QuestCompletedCondition(QUEST_SLOT),
 					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
 			ConversationStates.QUEST_OFFERED,
-			"Witaj ponownie. Wróciłeś po mój specjał zupę rybną?",
+			"Witaj ponownie. Wróciłeś po mój specjał, zupę rybną?",
 			null);
 
 		// player returns after finishing the quest (it is repeatable) before
@@ -177,8 +177,7 @@ public class FishSoup extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final List<String> needed = missingFood(player, true);
 					npc.say("Potrzebuję "
-							+ Grammar.quantityplnoun(needed.size(),
-									"składników")
+							+ Grammar.quantityplnoun(needed.size(), "składników")
 							+ " nim ugotuję zupę: "
 							+ Grammar.enumerateCollection(needed)
 							+ ". Zbierzesz je?");
@@ -194,9 +193,9 @@ public class FishSoup extends AbstractQuest {
 
 		// player is not willing to help
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"Mam nadzieję, że kiedyś zmienisz zdanie. Tracisz to co najlepsze!", null);
+			ConversationPhrases.NO_MESSAGES, null,
+			ConversationStates.ATTENDING,
+			"Mam nadzieję, że kiedyś zmienisz zdanie. Tracisz to co najlepsze!", null);
 
 		// players asks about the ingredients individually
 		npc.add(
@@ -223,7 +222,7 @@ public class FishSoup extends AbstractQuest {
 			Arrays.asList("pomidor", "czosnek"),
 			null,
 			ConversationStates.QUEST_OFFERED,
-			"Są z ogrodów w Kalavan City, a dostaniesz je od miłej ogrodniczki Sue, która sprzedaje te warzywa. "
+			"Znajdziesz w ogrodach zaraz przy wiosce Kalavan. Dostaniesz je od miłej ogrodniczki Sue, która sprzedaje te warzywa. "
 			+ "Przyniesiesz mi te składniki?", null);
 	}
 
@@ -288,8 +287,7 @@ public class FishSoup extends AbstractQuest {
 									player.addXP(50);
 									placeSoupFor(player);
 									player.getStatusList().removeAll(PoisonStatus.class);
-									npc.say("Zupa dla Ciebie jest na stole na rynku. Uleczy Ciebie. "
-											+ "Mój magiczny sposób gotowania zupy daje też trochę karmy.");
+									npc.say("Zupa dla Ciebie jest na stole na rynku. Uzdrowi Ciebie. Mój magiczny sposób gotowania zupy daje też trochę karmy.");
 									player.setQuest(QUEST_SLOT, "done;"
 											+ System.currentTimeMillis());
 									player.notifyWorldAboutChanges();
@@ -333,7 +331,7 @@ public class FishSoup extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.NO_MESSAGES,
 			new AndCondition(new QuestStartedCondition(QUEST_SLOT), new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "done"))),
 			ConversationStates.ATTENDING,
-			"Nie jestem pewien czego ode mnie oczekujesz.", null);
+			"Nie jestem pewna czego ode mnie oczekujesz.", null);
 
 		// player says he didn't bring any Food to different question
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES,
@@ -368,7 +366,7 @@ public class FishSoup extends AbstractQuest {
 			player.addXP(30);
 			placeSoupFor(player);
 			player.getStatusList().removeAll(PoisonStatus.class);
-			npc.say("Zupa dla Ciebie jest na stole na rynku. Uleczy cię. Powiedz mi jeżeli mógłbym jeszcze w czymś pomóc.");
+			npc.say("Zupa dla Ciebie jest na stole na rynku. Uzdrowi cię. Powiedz mi jeżeli mógłbym jeszcze w czymś pomóc.");
 			player.setQuest(QUEST_SLOT, "done;"
 					+ System.currentTimeMillis());
 			player.notifyWorldAboutChanges();

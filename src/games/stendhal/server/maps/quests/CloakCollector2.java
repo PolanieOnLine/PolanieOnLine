@@ -207,7 +207,7 @@ public class CloakCollector2 extends AbstractQuest {
 							if (item == null) {
 								stringBuilder.append(itemName);
 							} else {
-								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getItemSubclass()));
+								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getName()));
 							}
 
 							stringBuilder.append(". Przepraszam, ale to mi nie pomaga! Znajdziesz je wszystkie?");

@@ -70,7 +70,7 @@ public class RingSmithNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Cześć. W czym mogę pomóc?");
+				addGreeting("Cześć. W czym mogę #pomóc?");
 				addJob("Pracuję ze #złotem oraz naprawiam i wytwarzam biżuterię.");
 				addOffer("Sprzedaję pierścionki zaręczynowe z diamentem, które wyrabiam własnoręcznie. Skupuję także kamyki i złoto. Zobacz czerwony katalog na stole.");
 				addReply(

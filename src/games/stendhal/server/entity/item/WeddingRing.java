@@ -127,7 +127,7 @@ public class WeddingRing extends Item {
 	private boolean teleportToSpouse(final Player player) {
 		// don't allow use if on the ground
 		if (!isContained()) {
-			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść swoją obrączkę ślubną, by go użyć...");
+			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść swoją obrączkę ślubną, by go użyć.");
 			return false;
 		}
 
@@ -159,13 +159,13 @@ public class WeddingRing extends Item {
 
 			if (weddingRing.getInfoString() == null) {
 				// divorced with ring and engaged again
-				player.sendPrivateText("Przepraszam, ale " + spouseName
+				player.sendPrivateText("Przepraszam, ale " + spouseName + " "
 						+ Grammar.genderVerb(spouse.getGender(), "rozwiódł")
 						+ " się z tobą i jest teraz zaręczony z kimś innym.");
 				return false;
 			} else if (!(weddingRing.getInfoString().equals(player.getName()))) {
 				// divorced and remarried
-				player.sendPrivateText("Przepraszam, ale " + spouseName
+				player.sendPrivateText("Przepraszam, ale " + spouseName + " "
 						+ Grammar.genderVerb(spouse.getGender(), "rozwiódł")
 						+ " się z tobą i jest teraz zaręczony z kimś innym.");
 

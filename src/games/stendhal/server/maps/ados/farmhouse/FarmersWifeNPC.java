@@ -59,7 +59,7 @@ public class FarmersWifeNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Dzień dobry!");
 				addJob("Mój mąż prowadzi to gospodarstwo, a ja głównie opiekuję się jego młodszą siostrą i jej chłopakiem, są na górze. Jeżeli możesz powiedzieć coś pomocnego na ich temat, to mów. Słyszałam wcześniej jej płacz...");
-				addQuest("Gdybyś potrafił rozwiązywać Junit testy, moja córka potrzebowałaby Cię. Zapytaj Diogenesa, jak możesz pomóc jej w projekcie..");
+				addQuest("Gdybyś potrafił rozwiązywać Junit testy, moja córka potrzebowałaby Cię. Zapytaj Diogenesa, jak możesz pomóc jej w projekcie.");
 				addHelp("Mogę sprzedać Ci butelkę mleka albo trochę masła, prosto od naszych kochanych krów! Jeśli chcesz, oczywiście.");
 				final Map<String, Integer> offerings = new HashMap<String, Integer>();
 				offerings.put("mleko", 30);

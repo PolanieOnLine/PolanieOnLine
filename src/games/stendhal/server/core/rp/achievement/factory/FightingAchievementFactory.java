@@ -202,19 +202,19 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				new PlayerHasKilledNumberOfCreaturesCondition("jeleń", 25)));
 
 		fightingAchievements.add(createAchievement(
-				ID_BOARS, "Łowca Dzików", "Zabił 50 dzików",
+				ID_BOARS, "Łowca Dzików", "Zabił 20 dzików",
 				Achievement.EASY_BASE_SCORE, true,
-				new PlayerHasKilledNumberOfCreaturesCondition("dzik", 50)));
+				new PlayerHasKilledNumberOfCreaturesCondition("dzik", 20)));
 
 		fightingAchievements.add(createAchievement(
-				ID_TURTLE, "Łowca Żółwich Skorupek", "Zabił 50 żółwi",
+				ID_TURTLE, "Łowca Żółwich Skorupek", "Zabił 20 żółwi",
 				Achievement.EASY_BASE_SCORE, true,
-				new PlayerHasKilledNumberOfCreaturesCondition("żółwik", 50)));
+				new PlayerHasKilledNumberOfCreaturesCondition("żółwik", 20)));
 
 		fightingAchievements.add(createAchievement(
-				ID_BEARS, "Łowca Niedźwiedzi", "Zabił po 25 niedźwiedzi grizli, niedźwiedzi i misi",
+				ID_BEARS, "Łowca Niedźwiedzi", "Zabił po 10 niedźwiedzi grizli, niedźwiedzi i misi",
 				Achievement.EASY_BASE_SCORE, true,
-				new PlayerHasKilledNumberOfCreaturesCondition(25, ENEMIES_BEARS)));
+				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_BEARS)));
 
 		fightingAchievements.add(createAchievement(
 				ID_FOXES, "Łowca Lisic", "Zabił 20 lisic",

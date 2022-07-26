@@ -65,7 +65,8 @@ public class HelpTomi extends AbstractQuest {
 	private static final String QUEST_SLOT = "help_tomi";
 	private final SpeakerNPC npc = npcs.get("tomi");
 
-	private static final String extraTrigger = "miecz lodowy";
+	private static final String extraTrigger = "lód";
+	private List<String> questTrigger;
 
 	/**
 	 * Number of repetitions after which the XP growth becomes linear, instead
@@ -73,22 +74,20 @@ public class HelpTomi extends AbstractQuest {
 	 */
 	private static final int N_0 = 10;
 
-	private List<String> questTrigger;
-
 	private void step1() {
 		// says quest or ice and doesn't have an ice sword and hasn't brought one before
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
 			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT), new NotCondition(new PlayerHasItemWithHimCondition("miecz lodowy"))),
 			ConversationStates.ATTENDING,
-			"mój miecz lodowy? proszę o miecz lodowy", null);
+			"Mój miecz lodowy? proszę o miecz lodowy", null);
 
 		// says quest or ice and doesn't have an ice sword and has brought one in the past
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
 			new AndCondition(new QuestCompletedCondition(QUEST_SLOT), new NotCondition(new PlayerHasItemWithHimCondition("miecz lodowy"))),
 			ConversationStates.ATTENDING,
-			"gdzie jest mój miecz lodowy?", null);
+			"Gdzie jest mój miecz lodowy?", null);
 
 		// says quest or ice and has ice sword with him (first time)
 		// player gets a karma bonus and some xp
@@ -96,7 +95,7 @@ public class HelpTomi extends AbstractQuest {
 			questTrigger,
 			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT), new PlayerHasItemWithHimCondition("miecz lodowy")),
 			ConversationStates.ATTENDING,
-			"mój miecz lodowy :)",
+			"Mój miecz lodowy :)",
 			new MultipleActions(new DropItemAction("miecz lodowy"), new IncreaseXPAction(1000), new IncreaseKarmaAction(30.0), new SetQuestAction(QUEST_SLOT, "done;1")));
 
 		// says quest or ice and has ice sword with him (second+ time)
@@ -130,7 +129,7 @@ public class HelpTomi extends AbstractQuest {
 						// make the number of smilies correspond to how many
 						// times you helped him
 						StringBuilder saybuf = new StringBuilder();
-						saybuf.append("o mój icek ");
+						saybuf.append("O, mój icek ");
 						for (int i = 0; i < N; i++) {
 							saybuf.append(":) ");
 						}

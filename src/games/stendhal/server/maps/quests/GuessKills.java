@@ -231,9 +231,9 @@ public class GuessKills extends AbstractQuest {
 				CREATURE = player.getQuest(QUEST_SLOT, 2);
 
 				int guesses = 4 - MathHelper.parseIntDefault(player.getQuest(QUEST_SLOT, 0), 1);
-				npc.say("Zobaczmy... zostało tobie " + Grammar.quantityplnounCreature(guesses, "prób") + 
-						"... i jeśli dobrze pamiętam to zapytałem się ciebie..." +
-						" ile " + Grammar.pluralCreature(CREATURE) + " zabiłeś?");
+				npc.say("Zobaczmy... zostało Tobie " + Grammar.quantityplnounCreature(guesses, "prób") + 
+						"... i jeśli dobrze pamiętam to zapytałam się ciebie..." +
+						" ile " + Grammar.pluralCreature(CREATURE) + " myślisz, że zabiłeś?");
 			}
 		};
 
@@ -274,7 +274,7 @@ public class GuessKills extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Cóż przegrałeś. Co mogę dla ciebie zrobić?",
+				"Cóż, no to przegrałeś. W czym jeszcze mogłabym Ci pomóc?",
 				null);
 
 		//if player has not killed enough creatures don't give quest
@@ -282,7 +282,7 @@ public class GuessKills extends AbstractQuest {
 				Arrays.asList(triggers),
 				new NotCondition(requirement),
 				ConversationStates.ATTENDING,
-				"Lubię się rozerwać, ale nie wwyglądasz na takiego co jest gotowy."
+				"Lubię się rozerwać, ale nie wyglądasz na takiego co jest gotowy."
 				+ " Wróć, gdy zdobędziesz trochę doświadczenia w walce z potworami.",
 				null);
 
@@ -300,7 +300,7 @@ public class GuessKills extends AbstractQuest {
 				new AndCondition(requirement, new NotCondition(enoughTimePassed), new NotCondition(questNotDone)),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, INTERVAL_BETWEEN_TRIES, "Nie żle się bawiłem. Dziękuję. Wróć za powiedzmy"));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, INTERVAL_BETWEEN_TRIES, "Nieźle się bawiłam. Dziękuję! Wróć powiedzmy za"));
 
 		//ask quest question if quest accepted, also gets the creature type to ask about
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -318,8 +318,8 @@ public class GuessKills extends AbstractQuest {
 
 	                        // This can't be in a SetQuestAction because CREATURE is dynamic
 	                        player.setQuest(QUEST_SLOT, 2, CREATURE);
-	                        npc.say("Liczyłem ile potworów zabiłeś, a teraz powidz mi ile " +
-	                                Grammar.pluralCreature(CREATURE) + " zabiłeś? Masz trzy próby, a ja zaakceptuję " +
+	                        npc.say("Liczyłam ile potworów zabiłeś, a teraz powiedz mi ile " +
+	                                Grammar.pluralCreature(CREATURE) + " myślisz, że zabiłeś? Masz trzy próby, a ja zaakceptuję " +
 	                                "próbę, która jest blisko poprawnej odpowiedzi.");
 
 	                    }
@@ -331,7 +331,7 @@ public class GuessKills extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Eh nie ma z tobą zabawy.",
+				"Ech... nie ma z Tobą zabawy.",
 				null);
 
 		//if invalid answer
@@ -339,7 +339,7 @@ public class GuessKills extends AbstractQuest {
 				"",
 				wrongAndNotBye,
 				ConversationStates.QUESTION_1,
-				"Jak to możliwe, że to może być odpowiedź? Powiedz mi liczbę.",
+				"Jak to możliwe, że to może być odpowiedź? Podaj mi liczbę.",
 				null);
 
 		npc.add(ConversationStates.QUESTION_2,
@@ -411,7 +411,7 @@ public class GuessKills extends AbstractQuest {
 						@Override
 						public void fire(Player player, Sentence sentence, EventRaiser npc) {
 							int exactNumber = player.getSoloKill(CREATURE) + player.getSharedKill(CREATURE);
-							npc.say("Niestety jest to nieprawidłowa. Poprawna odpowiedź jest w tym regionie "
+							npc.say("Niestety jest to nieprawidłowa liczba. Poprawna odpowiedź jest w tym regionie "
 								+ (int) Math.max(Math.floor(exactNumber - Math.max(exactNumber * 0.2, 10) + exactNumber * 0.1 * Rand.rand()), 0)
 		                        + " i " + Math.round(exactNumber + Math.max(exactNumber * 0.2, 10) - exactNumber * 0.1 * Rand.rand())
 		                        + ". Wysiliłeś się.");

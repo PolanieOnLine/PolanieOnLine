@@ -94,7 +94,7 @@ public class RingOfTeleportation extends Item {
 	private boolean teleportToSavedPosition(final Player player) {
 		// don't allow use if on the ground
 		if (!isContained()) {
-			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść pierścień powrotu, by go użyć...");
+			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść swój pierścień powrotu, by go użyć.");
 			return false;
 		}
 

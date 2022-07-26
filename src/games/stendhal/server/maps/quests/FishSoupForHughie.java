@@ -104,7 +104,7 @@ public class FishSoupForHughie extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestNotStartedCondition(QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Witam, naprawdę może mi pomóc, proszę.",
+			ConversationStates.ATTENDING, "Cześć, naprawdę przydałaby mi się #przysługa, proszę.",
 			null);
 
 		// player who is rejected or 'done' but waiting to start again, returns
@@ -122,7 +122,7 @@ public class FishSoupForHughie extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
-			"Obiecałeś mi już, że przyniesiesz mi zupę rybną dla Hughiego! Pospiesz się, proszę!",
+			"Obiecałeś mi już, że przyniesiesz zupę rybną dla Hughiego! Pospiesz się, proszę!",
 			null);
 
 		// first time player asks/ player had rejected
@@ -146,7 +146,7 @@ public class FishSoupForHughie extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "start"), new QuestStartedCondition(QUEST_SLOT), new NotCondition(new TimePassedCondition(QUEST_SLOT,REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING,
-				"Teraz Hugie śpi - ma gorączkę. Mam nadzieję, że wyzdrowieje. Jestem Ci dozgonnie wdzięczna!.",
+				"Teraz Hugie śpi - ma gorączkę. Mam nadzieję, że wyzdrowieje. Jestem Ci dozgonnie wdzięczna!",
 				null);
 
 		// player is willing to help
@@ -154,7 +154,7 @@ public class FishSoupForHughie extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados. ",
+			"Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		// player is not willing to help
@@ -199,7 +199,7 @@ public class FishSoupForHughie extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("zupa rybna")),
 			ConversationStates.ATTENDING,
-			"Oh! Gdzie masz zupę rybną?",
+			"Och! Gdzie masz zupę rybną?",
 			null);
 
 		// player had fish soup but said it is not for Hughie
@@ -208,7 +208,7 @@ public class FishSoupForHughie extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Oh...ale mój biedny chłopczyk...",
+			"Och... ale mój biedny chłopczyk...",
 			null);
 	}
 

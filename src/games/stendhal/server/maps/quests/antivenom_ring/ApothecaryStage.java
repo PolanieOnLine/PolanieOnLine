@@ -91,7 +91,7 @@ public class ApothecaryStage extends AVRStage {
 						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING)),
 						new QuestNotStartedCondition(questName)),
 				ConversationStates.ATTENDING,
-				"Przykro mi, ale jestem teraz zbyt zajęty. Może mógłbyś porozmaiwać z #Klaasem.",
+				"Przykro mi, ale jestem teraz zbyt zajęty. Może mógłbyś porozmawiać z #Klaasem.",
 				null);
 
 		// Player speaks to apothecary while carrying note.
@@ -102,7 +102,7 @@ public class ApothecaryStage extends AVRStage {
 						new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING),
 						new QuestNotStartedCondition(questName)),
 				ConversationStates.QUEST_OFFERED,
-				"Oh, wiadomość od Klaasa. Jest dla mnie?",
+				"Och, wiadomość od Klaasa. Jest dla mnie?",
 				null);
 
 		// Player explicitly requests "quest" while carrying note (in case note is dropped before speaking to apothecary).
@@ -113,7 +113,7 @@ public class ApothecaryStage extends AVRStage {
 						new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING),
 						new QuestNotStartedCondition(questName)),
 				ConversationStates.QUEST_OFFERED,
-				"Oh, wiadomość od Klaasa. Jest dla mnie?",
+				"Och, wiadomość od Klaasa. Jest dla mnie?",
 				null);
 
 		// Player accepts quest
@@ -247,7 +247,7 @@ public class ApothecaryStage extends AVRStage {
 					gatheringStateCondition,
 					new NotCondition(new TriggerInListCondition(MIX_NAMES))),
 			ConversationStates.QUESTION_2,
-			"Nie wieżę, że prosiłem o to.", null);
+			"Nie wierzę, że prosiłem o to.", null);
 
 		ChatAction mixAction = new MultipleActions (
 		new SetQuestAction(questName, QUEST_STATE_NAME + ";" + Long.toString(System.currentTimeMillis())),
@@ -343,7 +343,7 @@ public class ApothecaryStage extends AVRStage {
 			ConversationPhrases.YES_MESSAGES,
 			missingAntivenom,
 			ConversationStates.ATTENDING,
-			"Okay, I need you to bring me ",
+			"Dobra, potrzebuję, żebyś przyniósł mi ",
 			new MultipleActions(
 				new SetQuestAction(questName, MIX_ITEMS),
 				new SayRequiredItemsFromCollectionAction(questName,
