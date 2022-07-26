@@ -349,7 +349,7 @@
 		</equipable>
 	</item>
 
-	<!-- <item name="mana" condition="stendhal.testserver">
+	<item name="mana">
 		<type class="drink" subclass="mana" tileid="-1"/>
 		<description>Oto mana do stopniowego zwiększania twojej many.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
@@ -370,7 +370,7 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item> -->
+	</item>
 
 	<item name="trucizna">
 		<type class="drink" subclass="poison" tileid="-1"/>

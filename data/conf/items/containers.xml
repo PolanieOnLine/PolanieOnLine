@@ -20,9 +20,9 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item>
+	</item> -->
 
-	<item name="rzemyk" condition="stendhal.testserver">
+	<item name="rzemyk">
 		<type class="container" subclass="keyring" tileid="-1"/>
 		<description>Oto rzemyk.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Container"/>
@@ -32,13 +32,13 @@
 		<weight value="1.0"/>
 		<value value="1"/>
 		<equipable>
+			<!-- <slot name="content"/> -->
+			<!-- <slot name="bag"/> -->
+			<!-- <slot name="trade"/> -->
 			<slot name="ground"/>
-			<slot name="content"/>
 			<slot name="belt"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
 		</equipable>
-	</item> -->
+	</item>
 
 	<item name="pusty worek">
 		<type class="container" subclass="empty_sack" tileid="-1"/>
