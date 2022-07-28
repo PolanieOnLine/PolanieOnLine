@@ -22,9 +22,9 @@ import utilities.ZonePlayerAndNPCTestImpl;
 public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 
 	private static final String ZONE_NAME = "testzone";
-	private static final String TASTED_EVERYTHING_REPLY = "I think I've tasted everything";
-	private static final String BREAD_DESCRIPTION = "Erna bakes loaves of bread, which need 2 sacks of flour each.";
-	private static final String SANDWICH_DESCRIPTION = "Leander makes sandwiches, which need 1 loaf of bread, 1 piece of ham, and 2 pieces of cheese each.";
+	private static final String TASTED_EVERYTHING_REPLY = "Sądzę, że spróbowałam już wszystkiego";
+	private static final String BREAD_DESCRIPTION = "Erna pracuje nad chleby, który potrzebuje 2 mąki.";
+	private static final String SANDWICH_DESCRIPTION = "Leander pracuje nad kanapki, który potrzebuje 2 sery, chleb, oraz szynka.";
 
 	private Player player;
 	private SpeakerNPC aliceNpc;
@@ -56,9 +56,9 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 		startConversation();
 
 		askForFoodList();
-		checkReply("bread", BREAD_DESCRIPTION);
-		checkReply("sandwich", SANDWICH_DESCRIPTION);
-		checkReply("sandwich.", SANDWICH_DESCRIPTION);
+		checkReply("chleb", BREAD_DESCRIPTION);
+		checkReply("kanapka", SANDWICH_DESCRIPTION);
+		checkReply("kanapka.", SANDWICH_DESCRIPTION);
 
 		endConversation();
 	}
@@ -74,8 +74,8 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(aliceNpc.isTalking());
 		String listOfFoodReply = getReply(aliceNpc);
 		assertTrue(listOfFoodReply.startsWith(TASTED_EVERYTHING_REPLY));
-		assertTrue(listOfFoodReply.contains("#bread"));
-		assertTrue(listOfFoodReply.contains("#sandwich"));
+		assertTrue(listOfFoodReply.contains("#chleb"));
+		assertTrue(listOfFoodReply.contains("#kanapka"));
 	}
 
 	private void endConversation() {

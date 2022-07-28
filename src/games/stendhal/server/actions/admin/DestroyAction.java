@@ -46,7 +46,7 @@ class DestroyAction extends AdministrationAction {
 		final Entity inspected = getTarget(player, action);
 
 		if (inspected == null) {
-			final String text = "Jednostka nie została znaleziona";
+			final String text = "Jednostka nie została znaleziona.";
 
 			player.sendPrivateText(text);
 			return;
@@ -98,13 +98,13 @@ class DestroyAction extends AdministrationAction {
 			}
 		} else {
 			if (inspected instanceof Player) {
-				final String text = "Nie możesz usuwać wojowników";
+				final String text = "Nie możesz usuwać wojowników.";
 				player.sendPrivateText(text);
 				return;
 			}
 
 			if (inspected instanceof PassiveNPC) {
-				final String text = "Nie możesz usuwać PassiveNPCów";
+				final String text = "Nie możesz usuwać PassiveNPCów.";
 				player.sendPrivateText(text);
 				return;
 			}
@@ -134,7 +134,7 @@ class DestroyAction extends AdministrationAction {
 				}
 				zone.remove(inspected);
 			} else {
-				player.sendPrivateText("Nie możesz usuwać tego typu jednostek");
+				player.sendPrivateText("Nie możesz usuwać tego typu jednostek.");
 				return;
 			}
 
@@ -143,9 +143,9 @@ class DestroyAction extends AdministrationAction {
 				TurnNotifier.get().dontNotify(listener);
 			}
 
-			new GameEvent(player.getName(), "removed",  name + " " + clazz, zone.getName(), Integer.toString(inspected.getX()), Integer.toString(inspected.getY())).raise();
+			new GameEvent(player.getName(), "removed", name + " " + clazz, zone.getName(), Integer.toString(inspected.getX()), Integer.toString(inspected.getY())).raise();
 
-			player.sendPrivateText("Usunięto #'" + name + "' o ID " + action.get(TARGET) + ".");
+			player.sendPrivateText("Usunięto #'" + name + "' o ID #" + action.get(TARGET) + ".");
 		}
 	}
 }

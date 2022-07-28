@@ -147,7 +147,7 @@ public class BarMaidNPCTest {
 		sentence = new SentenceImplementation(sell, new Expression("ser", ExpressionType.OBJECT));
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);
 		assertThat(engine.getCurrentState(), is(ConversationStates.SELL_PRICE_OFFERED));
-		assertThat("offer text", getReply(barMaid), is("ser jest warty jest 5. Czy chcesz sprzedać je?"));
+		assertThat("offer text", getReply(barMaid), is("ser jest warty jest 5. Czy chcesz sprzedać to?"));
 		engine.setCurrentState(ConversationStates.ATTENDING);
 
 		sentence = new SentenceImplementation(sell, new Expression("mięso", ExpressionType.OBJECT));
@@ -188,7 +188,7 @@ public class BarMaidNPCTest {
 		assertThat("offer text", getReply(barMaid), is("2 borowicy są warty jest 60. Czy chcesz sprzedać je?"));
 
 		engine.setCurrentState(ConversationStates.ATTENDING);
-		final Expression flour = new Expression("flour", ExpressionType.OBJECT);
+		final Expression flour = new Expression("mąka", ExpressionType.OBJECT);
 		flour.setAmount(2);
 		sentence = new SentenceImplementation(sell, flour);
 		engine.step(PlayerTestHelper.createPlayer("bob"), sentence);

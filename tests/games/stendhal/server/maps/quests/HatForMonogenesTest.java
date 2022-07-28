@@ -86,28 +86,28 @@ public class HatForMonogenesTest {
 		final Player player = PlayerTestHelper.createPlayer("player");
 		en.step(player, "hi");
 		assertEquals(
-				"Hello there, stranger! Don't be too intimidated if people are quiet and reserved... the fear of Blordrough and his forces has spread all over the country, and we're all a bit concerned. I can offer a few tips on socializing though, would you like to hear them?",
+				"Witaj nieznajomy! Nie bądź zbyt onieśmielony, gdy ludzie siedzą cicho lub są zajęci... strach przed Blordroughtem i jego wojskami padł na cały kraj. Jesteśmy trochę zaniepokojeni. Mogę dać Tobie trochę rad odnośnie zawierania przyjaźni. Chciałbyś je usłyszeć?",
 				getReply(npc));
 		en.step(player, "no");
 		assertEquals(
-				"And how are you supposed to know what's happening? By reading the Semos Tribune? Hah! Bye, then.",
+				"I jak chcesz wiedzieć co się dzieje? Czytając Semos Tribune? Hah! Do widzenia.",
 				getReply(npc));
 
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Hi again, player. How can I #help you this time?", getReply(npc));
+		assertEquals("Witaj ponownie player. W czym mogę #pomóc tym razem?", getReply(npc));
 		en.step(player, "task");
 		assertEquals(
-				"Could you bring me a #hat to cover my bald head? Brrrrr! The days here in Semos are really getting colder...",
+				"Czy mógłbyś przynieść mi #kapelusz do zakrycia mojej łysinki? Brrrrr! Dni w Semos robią się coraz chłodniejsze...",
 				getReply(npc));
 		en.step(player, "hat");
 		assertEquals(
-				"You don't know what a hat is?! Anything light that can cover my head; like leather, for instance. Now, will you do it?",
+				"Nie wiesz co to jest kapelusz?! Wszystko co może zakryć moją świecącą głowę jak na przykład skóra. Zrobisz to dla mnie?",
 				getReply(npc));
 		en.step(player, "no");
 		assertEquals(
-				"You surely have more importants things to do, and little time to do them in. I'll just stay here and freeze to death, I guess... *sniff*",
+				"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj i zamarzał na śmierć... *sniff*",
 				getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
@@ -115,17 +115,17 @@ public class HatForMonogenesTest {
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Hi again, player. How can I #help you this time?", getReply(npc));
+		assertEquals("Witaj ponownie player. W czym mogę #pomóc tym razem?", getReply(npc));
 		en.step(player, "task");
 		assertEquals(
-				"Could you bring me a #hat to cover my bald head? Brrrrr! The days here in Semos are really getting colder...",
+				"Czy mógłbyś przynieść mi #kapelusz do zakrycia mojej łysinki? Brrrrr! Dni w Semos robią się coraz chłodniejsze...",
 				getReply(npc));
 		en.step(player, "hat");
 		assertEquals(
-				"You don't know what a hat is?! Anything light that can cover my head; like leather, for instance. Now, will you do it?",
+				"Nie wiesz co to jest kapelusz?! Wszystko co może zakryć moją świecącą głowę jak na przykład skóra. Zrobisz to dla mnie?",
 				getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thanks, my good friend. I'll be waiting here for your return!", getReply(npc));
+		assertEquals("Dziękuję przyjacielu. Będę tutaj czekał na twój powrót!", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -135,25 +135,25 @@ public class HatForMonogenesTest {
 		player.getSlot("bag").add(item);
 		enXin.step(player, "hi");
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npcXin));
-		enXin.step(player, "buy leather helmet");
-		assertEquals("A leather helmet will cost 25. Do you want to buy it?", getReply(npcXin));
+		enXin.step(player, "buy skórzany hełm");
+		assertEquals("skórzany hełm kosztuje 25. Chcesz kupić to?", getReply(npcXin));
 		enXin.step(player, "yes");
-		assertEquals("Congratulations! Here is your leather helmet!", getReply(npcXin));
+		assertEquals("Gratulacje! Oto twój skórzany hełm!", getReply(npcXin));
 		enXin.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npcXin));
 
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Hey! Is that leather hat for me?", getReply(npc));
+		assertEquals("Hej! Czy ten skórzany hełm jest dla mnie?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("I guess someone more fortunate will get his hat today... *sneeze*", getReply(npc));
+		assertEquals("Ktoś miał dzisiaj dużo szczęścia... *Apsik*.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
-		assertEquals("Hey! Is that leather hat for me?", getReply(npc));
+		assertEquals("Hej! Czy ten skórzany hełm jest dla mnie?", getReply(npc));
 		npc.remove("text");
-		player.drop("leather helmet");
+		player.drop("skórzany hełm");
 		int oldXP = player.getXP();
 		en.step(player, "yes");
 		assertEquals(oldXP, player.getXP());
@@ -165,21 +165,21 @@ public class HatForMonogenesTest {
 
 		en.step(player, "hi");
 		assertEquals(
-				"Hey, my good friend, remember that leather hat I asked you about before? It's still pretty chilly here...",
+				"Hej, mój dobry przyjacielu, pamiętasz ten skórzany kapelusz, o który cię wcześniej pytałem? Nadal jest tu dość chłodno...",
 				getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
-		player.equip("bag", SingletonRepository.getEntityManager().getItem("leather helmet"));
+		player.equip("bag", SingletonRepository.getEntityManager().getItem("skórzany hełm"));
 		en.step(player, "hi");
-		assertEquals("Hey! Is that leather hat for me?", getReply(npc));
+		assertEquals("Hej! Czy ten skórzany hełm jest dla mnie?", getReply(npc));
 		oldXP = player.getXP();
 		en.step(player, "yes");
-		assertEquals(oldXP + 50, player.getXP());
+		assertEquals(oldXP + 300, player.getXP());
 
-		assertEquals("Bless you, my good friend! Now my head will stay nice and warm.", getReply(npc));
+		assertEquals("Niech Cię pobłogosławię mój dobry przyjacielu! Teraz mojej głowie będzie wygodnie i ciepło.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		// (sorry i meant to put it on ground to test if he noticed it went
@@ -196,22 +196,18 @@ public class HatForMonogenesTest {
 		assertEquals(history, quest.getHistory(player));
 
 		player.setQuest("hat_monogenes", "");
-		history.add("I have met Monogenes at the spring in Semos village");
-		history.add("I have to find a hat, something leather to keep his head warm.");
+		history.add("Spotkałem Monogenes na wiosnę w wiosce Semos");
+		history.add("Muszę znaleźć jakiś skórzany kapelusz, który trzymałby ciepło.");
 		assertEquals(history, quest.getHistory(player));
 
 		player.setQuest("hat_monogenes", "start");
-		player.equip("bag", ItemTestHelper.createItem("leather helmet"));
-		history.add("I have found a hat.");
+		player.equip("bag", ItemTestHelper.createItem("skórzany hełm"));
+		history.add("Zdobyłem kapelusz.");
 
 		assertEquals(history, quest.getHistory(player));
 		player.setQuest("hat_monogenes", "done");
-		history.add("I gave the hat to Monogenes to keep his bald head warm.");
+		history.add("Dałem kapelusz Monogenesowi i nagrodził mnie swym doświadczeniem.");
 
 		assertEquals(history, quest.getHistory(player));
-
 	}
-
-
-
 }

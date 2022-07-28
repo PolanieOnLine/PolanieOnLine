@@ -43,8 +43,8 @@ public class ItemCollectionTest {
 
         assertTrue(coll.removeItem("ser", 1));
         assertEquals("ser=6;szynka=3", coll.toStringForQuestState());
-        assertEquals(Arrays.asList("6 pieces of cheese", "3 pieces of ham"), coll.toStringList());
-        assertEquals(Arrays.asList("6 #'pieces of cheese'", "3 #'pieces of ham'"), coll.toStringListWithHash());
+        assertEquals(Arrays.asList("6 sery", "3 szynki"), coll.toStringList());
+        assertEquals(Arrays.asList("6 #sery", "3 #szynki"), coll.toStringListWithHash());
 
         assertFalse(coll.removeItem("szynka", 5));
         assertEquals("ser=6;szynka=3", coll.toStringForQuestState());
@@ -65,8 +65,8 @@ public class ItemCollectionTest {
 	public void testAddFromQuestStateString() {
 		final ItemCollection coll = new ItemCollection();
 		assertEquals("", coll.toStringForQuestState());
-		coll.addFromQuestStateString("ser=6;szynka=3;spodnie cieni=1");
-		assertEquals("ser=6;szynka=3;spodnie cieni=1", coll.toStringForQuestState());
+		coll.addFromQuestStateString("ser=6;spodnie cieni=1;szynka=3");
+		assertEquals("ser=6;spodnie cieni=1;szynka=3", coll.toStringForQuestState());
 		assertTrue(coll.removeItem("spodnie cieni",1));
 		assertEquals("ser=6;szynka=3", coll.toStringForQuestState());
 	}

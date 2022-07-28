@@ -191,8 +191,8 @@ public class AdministrationActionTest {
 		action.put("target", "bob");
 		CommandCenter.execute(pl, action);
 		assertThat(bob.events().get(0).get("text"), endsWith("Administrator admin1 powiedział Tobie: huhu \nJeżeli chcesz odpowiedzieć to użyj /support."));
-		assertThat(bob.events().get(0).get("text"), startsWith("Administrator admin1 powiedział Tobie: huhu Jeżeli chcesz odpowiedzieć to użyj /support."));
-		assertEquals("player answers bob's support question: huhu", anptherAdmin.events().get(0).get("text"));
+		assertThat(bob.events().get(0).get("text"), startsWith("Administrator admin1 powiedział Tobie: huhu \nJeżeli chcesz odpowiedzieć to użyj /support."));
+		assertEquals("Administrator player odpowiedział bob na pytanie: huhu", anptherAdmin.events().get(0).get("text"));
 
 		bob.clearEvents();
 		pl.clearEvents();
@@ -200,7 +200,7 @@ public class AdministrationActionTest {
 		assertEquals("0", pl.get("adminlevel"));
 		CommandCenter.execute(pl, action);
 		assertEquals(
-				"Sorry, you need to be an admin to run \"supportanswer\".", pl
+				"Przepraszam, ale musisz być administratorem, aby wykonać \"supportanswer\".", pl
 						.events().get(0).get("text"));
 	}
 
@@ -615,9 +615,9 @@ public class AdministrationActionTest {
 		action.put("minutes", 1);
 
 		CommandCenter.execute(player, action);
-		assertEquals("You have jailed offlineplayer for 1 minute. Reason: whynot.", player.events().get(0).get("text"));
-		assertEquals("JailKeeper asks for support to ADMIN: hugo jailed offlineplayer for 1 minute. Reason: whynot.", player.events().get(1).get("text"));
-		assertEquals("Player offlineplayer is not online, but the arrest warrant has been recorded anyway.", player.events().get(2).get("text"));
+		assertEquals("Aresztowałeś offlineplayer na 1 minutę. Powód: whynot.", player.events().get(0).get("text"));
+		assertEquals("JailKeeper zapytał ADMINISTRATORÓW: hugo aresztował offlineplayer na 1 minutę. Powód: whynot.", player.events().get(1).get("text"));
+		assertEquals("Nie ma wojownika zwanego offlineplayer, ale został wydany za nim list gończy.", player.events().get(2).get("text"));
 		player.clearEvents();
 
 
@@ -629,7 +629,7 @@ public class AdministrationActionTest {
 		action.put("minutes", 1);
 
 		CommandCenter.execute(player, action);
-		assertEquals("No character with that name: notexistingplayerxckjvhyxkjcvhyxkjvchk", player.events().get(0).get("text"));
+		assertEquals("Brak wojownika o podanej nazwie: notexistingplayerxckjvhyxkjcvhyxkjvchk", player.events().get(0).get("text"));
 		player.clearEvents();
 
 
@@ -652,7 +652,7 @@ public class AdministrationActionTest {
 		action.put("minutes", 1);
 
 		assertTrue(CommandCenter.execute(player, action));
-		assertThat(player.events().get(0).get("text"), startsWith("You have been jailed for 1 minute. Reason: whynot."));
+		assertThat(player.events().get(0).get("text"), startsWith("Zostałeś aresztowany przez hugo na 1 minutę. Powód: whynot."));
 	}
 
 	/**
@@ -713,7 +713,7 @@ public class AdministrationActionTest {
 		action.put("type", "destroy");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Jednostka nie została znaleziona", pl.events().get(0).get("text"));
+		assertEquals("Jednostka nie została znaleziona.", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -731,7 +731,7 @@ public class AdministrationActionTest {
 		action.put("target", "hugo");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Nie możesz usuwać wojowników", pl.events().get(0).get("text"));
+		assertEquals("Nie możesz usuwać wojowników.", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -756,7 +756,7 @@ public class AdministrationActionTest {
 		action.put("target", "#1");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Nie możesz usuwać PassiveNPCów", pl.events().get(0).get("text"));
+		assertEquals("Nie możesz usuwać PassiveNPCów.", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -781,7 +781,7 @@ public class AdministrationActionTest {
 		action.put("target", "#1");
 
 		CommandCenter.execute(pl, action);
-		assertEquals("Removed rat creature with ID #1", pl.events().get(0).get("text"));
+		assertEquals("Usunięto #'szczur' o ID ##1.", pl.events().get(0).get("text"));
 	}
 
 	/**
@@ -805,8 +805,8 @@ public class AdministrationActionTest {
 		action.put("type", "destroy");
 		action.put("target", "#1");
 
-		assertTrue(CommandCenter.execute(pl, action));
-		assertEquals("Removed rat creature with ID #1", pl.events().get(0).get("text"));
+		assertFalse(CommandCenter.execute(pl, action));
+		assertEquals("Usunięto #'szczur' o ID ##1.", pl.events().get(0).get("text"));
 	}
 
 	/**

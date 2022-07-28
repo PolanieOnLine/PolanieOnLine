@@ -90,7 +90,7 @@ public class CampfireTest {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'... ", getReply(npc));
+		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
 		assertTrue(en.step(player, "bye"));
 
 		player.setQuest(CampfireTest.CAMPFIRE, "start");
@@ -124,7 +124,7 @@ public class CampfireTest {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'... ", getReply(npc));
+		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
 		assertTrue(en.step(player, "bye"));
 		assertFalse(npc.isTalking());
 		assertEquals("Do widzenia.", getReply(npc));
@@ -140,7 +140,7 @@ public class CampfireTest {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'... ", getReply(npc));
+		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
 		assertTrue(en.step(player, "favor"));
 
 		assertEquals(
@@ -215,7 +215,7 @@ public class CampfireTest {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'... ", getReply(npc));
+		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
 		assertTrue(en.step(player, "job"));
 		assertEquals("Praca? Jestem tylko małą dziewczynką! Skautem.",
 				getReply(npc));

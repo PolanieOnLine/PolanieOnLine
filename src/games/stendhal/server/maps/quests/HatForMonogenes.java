@@ -118,7 +118,7 @@ public class HatForMonogenes extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("skórzany hełm"))),
 			ConversationStates.ATTENDING,
-			"Hej mój przyjacielu. Pamiętasz ten skórzany hełm, który mi obiecałeś. Pytałem się o niego wcześniej? Tutaj wciąż jest zimno...",
+			"Hej, mój dobry przyjacielu, pamiętasz ten skórzany kapelusz, o który cię wcześniej pytałem? Nadal jest tu dość chłodno...",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();

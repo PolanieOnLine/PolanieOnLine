@@ -36,24 +36,24 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 
 	private static final String CITY_ZONE_NAME = "0_ados_city_s";
 
-	private static final String NPC_TALK_QUEST_OFFER = "My lovely wife was killed when she went to Wo'fol to order some freshmade pizza by Kroip. Some monks stepped into her way and she had no chance. Now I want revenge! May you help me?";
-	private static final String NPC_TALK_QUEST_REJECT = "That is a pity... Maybe you'll change your mind soon and help a sad man then.";
-	private static final String NPC_TALK_QUEST_ACCEPT = "Thank you! Please kill 25 monks and 25 darkmonks in the name of my beloved wife.";
-	private static final String NPC_TALK_QUEST_REMIND = "Please help me with reaching my goal of taking revenge!";
-	private static final String NPC_TALK_QUEST_OFFER_AGAIN = "Those monks are cruel and I still didn't get my revenge. May you help me again please?";
-	private static final String NPC_TALK_QUEST_TOO_SOON = "These monks learned their lesson for now but I could need your help again in";
+	private static final String NPC_TALK_QUEST_OFFER = "Moja kochana żona została zamordowana, gdy szła do Wo'fol, aby zamówić pizzę u Kroipa. Jacyś mnichowie ją napadli i nie miała szansy. Teraz chcę się zemścić! Może mi pomożesz?";
+	private static final String NPC_TALK_QUEST_REJECT = "Co za szkoda... Może kiedyś zmienisz zdanie i pomożesz smutnemu człowiekowi.";
+	private static final String NPC_TALK_QUEST_ACCEPT = "Dziękuję! Zabij 25 mnichów i 25 mnichów ciemności w imię mojej ukochanej żony.";
+	private static final String NPC_TALK_QUEST_REMIND = "Proszę pomóż mi w dokonaniu zemsty!";
+	private static final String NPC_TALK_QUEST_OFFER_AGAIN = "Ci mnichowie są okrutni, a ja wciąż nie mogę dokonać mojej zemsty. Może znów mi pomożesz?";
+	private static final String NPC_TALK_QUEST_TOO_SOON = "Ci mnichowie dostali lekcje, ale możliwe, że znów będę potrzebował twojej pomocy za";
 
-	private static final String NPC_TALK_BYE = "Goodbye, thank you for talking with me.";
+	private static final String NPC_TALK_BYE = "Do widzenia i dziękuję za rozmowę.";
 
-	private static final String HISTORY_DEFAULT = "I met Andy in Ados city. He asked me to get revenge for his wife.";
-	private static final String HISTORY_REJECTED = "I rejected his request.";
-	private static final String HISTORY_START = "I promised to kill 25 monks and 25 darkmonks to get revenge for Andy's wife.";
-	private static final String HISTORY_STATUS = "I have killed ";
-	private static final String HISTORY_COMPLETED_REPEATABLE = "Now, after more than two weeks, I should check on Andy again. Maybe he needs my help!";
-	private static final String HISTORY_COMPLETED_NOT_REPEATABLE = "I've killed some monks and Andy finally can sleep a bit better!";
-	private static final String HISTORY_COMPLETED_ONCE = "I have taken revenge for Andy 1 time now.";
+	private static final String HISTORY_DEFAULT = "Spotkałem Andiego w mieście Ados. Poprosił mnie o pomszczenie jego żony.";
+	private static final String HISTORY_REJECTED = "Odrzuciłem prośbę.";
+	private static final String HISTORY_START = "Obiecałem zabić 25 mnichów i 25 mnichów ciemności, aby dokonać zemsty za żone Andiego.";
+	private static final String HISTORY_STATUS = "Wciąż muszę zabić ";
+	private static final String HISTORY_COMPLETED_REPEATABLE = "Po dwóch tygodniach powinienem może odwiedzić Andiego. Być może potrzebuje ponownie mojej pomocy!";
+	private static final String HISTORY_COMPLETED_NOT_REPEATABLE = "Zabiłem paru mnichów, a Andi może teraz spać trochę spokojnie!";
+	private static final String HISTORY_COMPLETED_ONCE = "Zemściłem się dla Andiego razy.";
 
-	private static final String QUEST_STATE_JUST_STARTED = "start;darkmonk,0,25,0,0,monk,0,25,0,0";
+	private static final String QUEST_STATE_JUST_STARTED = "start;mnich ciemności,0,25,0,0,mnich,0,25,0,0";
 
 	private SpeakerNPC npc;
 	private Engine en;
@@ -111,7 +111,7 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 
 		assertEquals("start", player.getQuest(questSlot, 0));
 		assertGainKarma(5);
-		assertHistory(HISTORY_DEFAULT, HISTORY_START, HISTORY_STATUS + "0 monks and 0 darkmonks.");
+		assertHistory(HISTORY_DEFAULT, HISTORY_START, HISTORY_STATUS + "0 mnichów i 0 mnichów ciemności.");
 	}
 
 	@Test
@@ -119,15 +119,15 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 		int initialXp = player.getXP();
 
 		player.setQuest(questSlot, QUEST_STATE_JUST_STARTED);
-		killCreatureShared("monk", 25);
-		killCreatureShared("darkmonk", 25);
+		killCreatureShared("mnich", 25);
+		killCreatureShared("mnich ciemności", 25);
 
 		startTalkingToNpc("Andy");
 
 		en.step(player, "task");
-		assertThat(getReply(npc), startsWith("Thank you"));
+		assertThat(getReply(npc), startsWith("Bardzo dziękuję!"));
 
-		assertTrue(player.isEquipped("soup"));
+		assertTrue(player.isEquipped("zupa"));
 		assertGainKarma(0);
 		assertEquals(15000, player.getXP() - initialXp);
 		assertEquals("killed", player.getQuest(questSlot, 0));
@@ -140,8 +140,8 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToNpcTooSoon() {
 		player.setQuest(questSlot, QUEST_STATE_JUST_STARTED);
-		killCreatureShared("monk", 1);
-		killCreatureShared("darkmonk", 2);
+		killCreatureShared("mnich", 1);
+		killCreatureShared("mnich ciemności", 2);
 
 		startTalkingToNpc("Andy");
 
@@ -149,7 +149,7 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(NPC_TALK_QUEST_REMIND, getReply(npc));
 
 		assertEquals(QUEST_STATE_JUST_STARTED, player.getQuest(questSlot));
-		assertHistory(HISTORY_DEFAULT, HISTORY_START, HISTORY_STATUS + "1 monk and 2 darkmonks.");
+		assertHistory(HISTORY_DEFAULT, HISTORY_START, HISTORY_STATUS + "mnicha i 2 mnichów ciemności.");
 	}
 
 	@Test

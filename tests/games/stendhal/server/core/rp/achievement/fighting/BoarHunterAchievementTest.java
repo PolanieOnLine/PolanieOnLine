@@ -31,7 +31,7 @@ import utilities.ZoneAndPlayerTestImpl;
 
 public class BoarHunterAchievementTest extends ZoneAndPlayerTestImpl {
 
-	private final String enemy = "boar";
+	private final String enemy = "dzik";
 	private final int requiredCount = 20;
 
 

@@ -63,7 +63,7 @@ public class LittleBoyNPC implements ZoneConfigurator {
 				// NOTE: These texts are only available after finishing the quest.
 				addGreeting();
 				addJob("Bawię się cały dzień.");
-				addHelp("Bądź ostrożny idąc na wschód. Tam są wilki!!");
+				addHelp("Bądź ostrożny idąc na wschód. Tam są wilki!");
 				addOffer("Hej nie oddam tobie mojego misia! Jest mój! *ściska*");
 				addGoodbye();
 			}

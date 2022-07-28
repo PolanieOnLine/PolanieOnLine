@@ -54,7 +54,7 @@ public class DestroyActionTest {
 		RPAction rpAction = new RPAction();
 		rpAction.put("target", "#" + corpse.getID().getObjectID());
 		destroyAction.perform(player , rpAction);
-		assertEquals("Usunięto #'' o ID #1.", player.events().get(0).get("text"));
+		assertEquals("Usunięto #'' o ID ##1.", player.events().get(0).get("text"));
 	}
 
 }

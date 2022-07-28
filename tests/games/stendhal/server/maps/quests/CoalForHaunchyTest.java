@@ -74,88 +74,88 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		// start with Haunchy
 
 		haunchyEng.step(player, "hi");
-		assertEquals("Hey! Nice day for a BBQ!", getReply(haunchy));
+		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("I cannot use wood for this huge BBQ. To keep the heat I need some really old stone coal but there isn't much left. The problem is, that I can't fetch it myself because my steaks would burn then so I have to stay here. Can you bring me 25 pieces of #coal for my BBQ please?", getReply(haunchy));
+		assertEquals("Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?", getReply(haunchy));
 		haunchyEng.step(player, "coal");
-		assertEquals("Coal isn't easy to find. You normally can find it somewhere in the ground but perhaps you are lucky and find some in the old Semos Mine tunnels...", getReply(haunchy));
+		assertEquals("Węgiel nie jest łatwo znaleźć. Normalnie możesz go znaleźć pod ziemią, ale może będziesz miał szczęście i znajdziesz w tunelach starej kopalni Semos...", getReply(haunchy));
 		haunchyEng.step(player, "yes");
-		assertEquals("Thank you! If you have found 25 pieces, say #coal to me so I know you have it. I'll be sure to give you a nice and tasty reward.", getReply(haunchy));
+		assertEquals("Dziękuję! Jeżeli znalazłeś 25 kawałków to powiedz mi #węgiel to będę widział, że masz. Będę wtedy pewien, że będę mógł ci dać pyszną nagrodę.", getReply(haunchy));
 		haunchyEng.step(player, "coal");
-		assertEquals("You don't have the coal amount which I need yet. Go and pick some more pieces up, please.", getReply(haunchy));
+		assertEquals("Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź dla mnie kilka kawałków węgla kamiennego.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
-		assertEquals("A nice day to you! Always keep your fire burning!", getReply(haunchy));
+		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
 		// -----------------------------------------------
 		// now talk to Barbarus
 
 		barbarusEng.step(player, "hi");
-		assertEquals("Good luck!", getReply(barbarus));
-		barbarusEng.step(player, "buy pick");
-		assertEquals("A pick will cost 400. Do you want to buy it?", getReply(barbarus));
+		assertEquals("Witaj!", getReply(barbarus));
+		barbarusEng.step(player, "buy kilof");
+		assertEquals("kilof kosztuje 400. Chcesz kupić to?", getReply(barbarus));
 		barbarusEng.step(player, "yes");
 		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(barbarus));
 		barbarusEng.step(player, "bye");
-		assertEquals("Nice to meet you. Good luck!", getReply(barbarus));
+		assertEquals("Miło było cię zobaczyć. Powodzenia!", getReply(barbarus));
 
 		barbarusEng.step(player, "hi");
-		assertEquals("Good luck!", getReply(barbarus));
-		barbarusEng.step(player, "buy pick");
-		assertEquals("A pick will cost 400. Do you want to buy it?", getReply(barbarus));
+		assertEquals("Witaj!", getReply(barbarus));
+		barbarusEng.step(player, "buy kilof");
+		assertEquals("kilof kosztuje 400. Chcesz kupić to?", getReply(barbarus));
 		PlayerTestHelper.equipWithMoney(player, 400);
 		barbarusEng.step(player, "yes");
-		assertEquals("Congratulations! Here is your pick!", getReply(barbarus));
+		assertEquals("Gratulacje! Oto twój kilof!", getReply(barbarus));
 		// You see a pick. It is a tool which helps you to get some coal.
-		assertTrue(player.isEquipped("pick"));
+		assertTrue(player.isEquipped("kilof"));
 		barbarusEng.step(player, "bye");
-		assertEquals("Nice to meet you. Good luck!", getReply(barbarus));
+		assertEquals("Miło było cię zobaczyć. Powodzenia!", getReply(barbarus));
 
 		// get 10 coals
-		PlayerTestHelper.equipWithStackableItem(player, "coal", 10);
+		PlayerTestHelper.equipWithStackableItem(player, "węgiel", 10);
 		haunchyEng.step(player, "hi");
-		assertEquals("Hey! Nice day for a BBQ!", getReply(haunchy));
+		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("You don't have the coal amount which I need yet. Go and pick some more pieces up, please.", getReply(haunchy));
+		assertEquals("Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź dla mnie kilka kawałków węgla kamiennego.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
-		assertEquals("A nice day to you! Always keep your fire burning!", getReply(haunchy));
+		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
 		// get another 15 coals
-		PlayerTestHelper.equipWithStackableItem(player, "coal", 25);
+		PlayerTestHelper.equipWithStackableItem(player, "węgiel", 25);
 		haunchyEng.step(player, "hi");
-		assertEquals("Hey! Nice day for a BBQ!", getReply(haunchy));
+		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
 		// We get one or more grilled steaks a reward:
 		// You see a fresh grilled steak. It smells awesome and is really juicy. It is a special quest reward for player, and cannot be used by others. Stats are (HP: 200).
-		assertTrue(getReply(haunchy).matches("Thank you!! Take .* grilled steaks? from my grill!"));
-		assertTrue(player.isEquipped("grilled steak"));
+		assertTrue(getReply(haunchy).matches("Dziękuję!! Przyjmij te .* grillowany stek z mojego grilla!"));
+		assertTrue(player.isEquipped("grillowany stek"));
 		assertEquals("waiting", player.getQuest(questSlot, 0));
 		haunchyEng.step(player, "bye");
-		assertEquals("A nice day to you! Always keep your fire burning!", getReply(haunchy));
+		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
 		// -----------------------------------------------
 
 		haunchyEng.step(player, "hi");
-		assertEquals("Hey! Nice day for a BBQ!", getReply(haunchy));
+		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("The coal amount behind my counter is still high enough. I will not need more for 2 days.", getReply(haunchy));
+		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu 2 dni.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
-		assertEquals("A nice day to you! Always keep your fire burning!", getReply(haunchy));
+		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
 		// -----------------------------------------------
 
 		haunchyEng.step(player, "hi");
-		assertEquals("Hey! Nice day for a BBQ!", getReply(haunchy));
+		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "coal");
-		assertEquals("Sometime you could do me a #favour ...", getReply(haunchy));
+		assertEquals("Czasami mógłbyś mi wyświadczyć #'przysługę'...", getReply(haunchy));
 		haunchyEng.step(player, "favour");
-		assertEquals("The coal amount behind my counter is still high enough. I will not need more for 2 days.", getReply(haunchy));
+		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu 2 dni.", getReply(haunchy));
 		haunchyEng.step(player, "offer");
-		assertEquals("I hope that my steaks will be ready soon. Please be a bit patient or have some other snacks first.", getReply(haunchy));
+		assertEquals("Mam nadzieje, że moje steki będą wkrótce gotowe. Bądź cierpliwy lub spróbuj przedtem innych przysmaków.", getReply(haunchy));
 		haunchyEng.step(player, "help");
-		assertEquals("Unfortunately the steaks aren't ready yet... If you are hungry and can't wait, you could check some offers in the near out like the Blacksheep offers near the fisherhuts in Ados or you can take a ferry to Athor for getting some nice snacks...", getReply(haunchy));
+		assertEquals("Niestety steki nie są jeszcze gotowe... Jeżeli jesteś głodny i nie możesz czekać to może przejrzysz oferty przy wyjściu jak na przykład oferty Blacksheep koło chatek rybackich w Ados lub możesz popłynąć promem do Athor, aby zdobyć trochę przekąsek...", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("The coal amount behind my counter is still high enough. I will not need more for 2 days.", getReply(haunchy));
+		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu 2 dni.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
-		assertEquals("A nice day to you! Always keep your fire burning!", getReply(haunchy));
+		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 	}
 }

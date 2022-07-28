@@ -39,9 +39,9 @@ public class SafariAchievementTest extends ZoneAndPlayerTestImpl {
 	private final int reqElephant = 50;
 
 	private final Map<String, Integer> enemies = new HashMap<String, Integer>() {{
-		put("tiger", reqTiger);
-		put("lion", reqLion);
-		put("elephant", reqElephant);
+		put("tygrys", reqTiger);
+		put("lew", reqLion);
+		put("słoń", reqElephant);
 	}};
 
 

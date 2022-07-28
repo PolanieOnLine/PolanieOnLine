@@ -62,13 +62,13 @@ public class PrincessNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Jak się masz?");
+				addGreeting("He, co tutaj robisz?!");
 				addReply(Arrays.asList("dobrze", "wspaniale", "good", "fine"), "Dobrze! W czym mogę pomóc?");
 				addReply(Arrays.asList("źle", "bad"), "O rany ... W czym mogę pomóc?");
 				addReply(Arrays.asList("wspaniale", "well"), "Cudownie! W czym mogę pomóc?");
 				addJob("Jestem księżniczką tego królestwa. Aby zostać obywatelem tego królestwa porozmawiaj w mieście z Barrett Holmesem. Może sprzeda Ci dom. Zanim pójdziesz mógłbyś mi wyświadczyć przysługę ( #favour )...");
 				addHelp("Uważaj na szalonych naukowców. Mój ojciec uwolnił ich, aby wykonali pewną pracę w podziemiach i obawiam się, że pewne rzeczy, wymknęły się im spod kontroli...");
-				addOffer("Przepraszam, ale nie mam Ci nic do zaoferowania. Mógłbyś mi wyświadczyć pewną przysługę ( #favour ), chociaż...");
+				addOffer("Przepraszam, ale nie mam Ci nic do zaoferowania. Mógłbyś mi wyświadczyć pewną #przysługę, chociaż...");
 				addGoodbye("Do widzenia i powodzenia.");
 			}
 		};

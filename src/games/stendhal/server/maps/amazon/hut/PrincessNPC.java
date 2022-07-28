@@ -58,7 +58,7 @@ public class PrincessNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Huh, Co ty tutaj robisz?");
+				addGreeting("Huh, co ty tutaj robisz?!");
 				addReply(Arrays.asList("sorry", "przepraszam"), "Nie powinieneś się do mnie wślizgiwać od tak!");
 				addReply(Arrays.asList("look", "zobacz", "zobaczyć", "przeszukaj"), "Nie powinieneś tu szperać, tutaj wszystko jest moje!");
 				addReply(Arrays.asList("nothing", "nic"), "Odejdź i idź robić to gdzie indziej, a nie w moim domku!");

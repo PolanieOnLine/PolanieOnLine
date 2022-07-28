@@ -60,7 +60,7 @@ public class HotelChefNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("stressed", "zestresowany"), "To szczyt sezonu! Mamy wiele rezerwacji, co oznacza więcej #gości, czyli jeszcze więcej pracy.");
 				addReply(Arrays.asList("guests", "gości"), "Wielu z nich odwiedza Fado, by #'pobrać się'. Rozumiem ich wybór. Fado to piękne miasto.");
 				addReply(Arrays.asList("getting married", "pobrać się"), "Nie wiesz, że Fado słynie z największej ilości ślubów w całej Faiumoni? Musisz odwiedzić kościół, jest prześliczny!");
-				addQuest("Jestem teraz tak zajęty myśleniem o tym, by ktoś pomógł mi #tutaj... ");
+				addQuest("Jestem teraz tak zajęty myśleniem o tym, by ktoś pomógł mi #tutaj...");
 				addReply(Arrays.asList("somewhere", "tutaj"), "Tak, tutaj... Wątpię, że problem może być rozwiązany, kuchnia... Jest zbyt mała!");
 				addJob("Kilka tygodni temu, dostałem propozycję pracy tutaj, w hotelowej kuchni. Wtedy tego nie wiedziałem, ale... jestem tutaj jedynym #'kucharzem'!");
 				addReply(Arrays.asList("cook", "kucharzem"), "Bycie kucharzem jest wspaniałe! Kocham wszystkie rodzaje jedzenia i przypraw i uwielbiam eksperymentować z różnymi potrawami! Sprawia mi to wielką przyjemność.");

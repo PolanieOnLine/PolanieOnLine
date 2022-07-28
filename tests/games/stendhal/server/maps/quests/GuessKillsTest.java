@@ -57,7 +57,7 @@ public class GuessKillsTest extends ZonePlayerAndNPCTestImpl {
 		new GuessKillsNPC().configureZone(zone, null);
 
 		// Add creature
-		SingletonRepository.getEntityManager().getCreature("deer");
+		SingletonRepository.getEntityManager().getCreature("jeleń");
 		quest = new GuessKills();
 		quest.addToWorld();
 
@@ -74,70 +74,70 @@ public class GuessKillsTest extends ZonePlayerAndNPCTestImpl {
 
 		//Test default responses and if player does not meet requirement
 		en.step(player, "hi");
-		assertEquals("Greetings", getReply(npc));
+		assertEquals("Pozdrawiam.", getReply(npc));
 		en.step(player, "play");
-		assertEquals("I'd like some entertainment but you don't look like you're up to it just yet. Come back when you've gained a bit more experience fighting creatures.", getReply(npc));
+		assertEquals("Lubię się rozerwać, ale nie wyglądasz na takiego co jest gotowy. Wróć, gdy zdobędziesz trochę doświadczenia w walce z potworami.", getReply(npc));
 		en.step(player, "job");
-		assertEquals("I am just an old woman, I walk around and observe all around me.", getReply(npc));
+		assertEquals("Jestem tylko starą kobietą obserwującą wszystkich podczas spaceru.", getReply(npc));
 		en.step(player, "help");
-		assertEquals("I'm not sure how I can help you. On some days I like to #play #games.", getReply(npc));
+		assertEquals("Nie wiem jak tobie pomóc. Od paru dni lubię #grać w #gry.", getReply(npc));
 		en.step(player, "play gamEs");
-		assertEquals("I'd like some entertainment but you don't look like you're up to it just yet. Come back when you've gained a bit more experience fighting creatures.", getReply(npc));
+		assertEquals("Lubię się rozerwać, ale nie wyglądasz na takiego co jest gotowy. Wróć, gdy zdobędziesz trochę doświadczenia w walce z potworami.", getReply(npc));
 		en.step(player, "Play");
-		assertEquals("I'd like some entertainment but you don't look like you're up to it just yet. Come back when you've gained a bit more experience fighting creatures.", getReply(npc));
+		assertEquals("Lubię się rozerwać, ale nie wyglądasz na takiego co jest gotowy. Wróć, gdy zdobędziesz trochę doświadczenia w walce z potworami.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye deary.", getReply(npc));
+		assertEquals("Do widzenia słonko.", getReply(npc));
 
 		// Give player enough kills
-		player.setKeyedSlot("!kills", "solo.deer", "1001");
+		player.setKeyedSlot("!kills", "solo.jeleń", "1001");
 
 		// Test quest offer if meets requirements
 		en.step(player, "hi");
-		assertEquals("Greetings", getReply(npc));
+		assertEquals("Pozdrawiam.", getReply(npc));
 		en.step(player, "play");
-		assertEquals("I'm a little bored at the moment. Would you like to play a game?", getReply(npc));
+		assertEquals("Teraz trochę się nudzę. Czy chciałbyś zagrać ze mną?", getReply(npc));
 		en.step(player, "yes");
 		// Deer was added in setup(), so we know that's what we get
-		assertEquals("I've been counting how many creatures you have killed, now tell me, how many deer do you think you've killed? You have three guesses and I'll accept guesses that are close to the correct answer.", getReply(npc));
+		assertEquals("Liczyłam ile potworów zabiłeś, a teraz powiedz mi ile jelenie myślisz, że zabiłeś? Masz trzy próby, a ja zaakceptuję próbę, która jest blisko poprawnej odpowiedzi.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye, come back when you want to continue.", getReply(npc));
+		assertEquals("Do widzenia. Wróć, gdy będziesz chciał kontynuować.", getReply(npc));
 
 		// Add other creature to test if NPC remembers old creature
 		SingletonRepository.getEntityManager().getCreature("szczur");
-		player.setKeyedSlot("!kills", "solo.rat", "10");
+		player.setKeyedSlot("!kills", "solo.szczur", "10");
 
 		// Leave quest early and come back, get guess close
 		en.step(player, "hi");
-		assertEquals("Greetings", getReply(npc));
+		assertEquals("Pozdrawiam.", getReply(npc));
 		en.step(player, "play");
-		assertEquals("We did not finish our game last time would you like to continue?", getReply(npc));
+		assertEquals("Nie skończyliśmy ostatniej gry czy chcesz ją kontynuować?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Oh well. Your loss, now what can I do for you?", getReply(npc));
+		assertEquals("Cóż, no to przegrałeś. W czym jeszcze mogłabym Ci pomóc?", getReply(npc));
 		en.step(player, "play");
-		assertEquals("We did not finish our game last time would you like to continue?", getReply(npc));
+		assertEquals("Nie skończyliśmy ostatniej gry czy chcesz ją kontynuować?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Let me see... you have 3 guesses left... and if I recall correctly I asked you... how many deer do think you have killed?", getReply(npc));
+		assertEquals("Zobaczmy... zostało Tobie 3 próby... i jeśli dobrze pamiętam to zapytałam się ciebie... ile jelenie myślisz, że zabiłeś?", getReply(npc));
 		en.step(player, "8");
-		assertEquals("Nope, that is not right. Try again.", getReply(npc));
+		assertEquals("Nie to nie jest prawidłowa odpowiedź. Spróbuj ponownie.", getReply(npc));
 		en.step(player, "5");
-		assertEquals("Wrong again. You have one more try.", getReply(npc));
+		assertEquals("Znów źle. Masz jeszcze jedną próbę.", getReply(npc));
 		en.step(player, "981");
-		assertEquals("Wow, that was pretty close. Well done!", getReply(npc));
+		assertEquals("Łał było blikso. Dobra robota!", getReply(npc));
 
 		// Reset quest because of timestamp
 		player.setQuest(questSlot, "done;0;");
 
 		// Test bogus answers and exact answer
 		en.step(player, "play");
-		assertEquals("I'm a little bored at the moment. Would you like to play a game?", getReply(npc));
+		assertEquals("Teraz trochę się nudzę. Czy chciałbyś zagrać ze mną?", getReply(npc));
 		en.step(player, "yes");
 
 		String reply = getReply(npc);
-		assertEquals(reply.startsWith("I've been counting how many creatures you have killed, now tell me, how many "), true);
-		assertEquals(reply.endsWith(" do you think you've killed? You have three guesses and I'll accept guesses that are close to the correct answer."), true);
+		assertEquals(reply.startsWith("Liczyłam ile potworów zabiłeś, a teraz powiedz mi ile "), true);
+		assertEquals(reply.endsWith(" myślisz, że zabiłeś? Masz trzy próby, a ja zaakceptuję próbę, która jest blisko poprawnej odpowiedzi."), true);
 
 		en.step(player, "sdf");
-		assertEquals("How could that possibly be an answer? Give me a proper number.", getReply(npc));
+		assertEquals("Jak to możliwe, że to może być odpowiedź? Podaj mi liczbę.", getReply(npc));
 
 		if (reply.contains("szczur")) {
 			en.step(player, "10");
@@ -145,33 +145,33 @@ public class GuessKillsTest extends ZonePlayerAndNPCTestImpl {
 			en.step(player, "1001");
 		}
 
-		assertEquals("Stupendous! That is the exact number! Either you're very lucky or you really pay attention.", getReply(npc));
+		assertEquals("Zdumiewające! To dokładna liczba! Jesteś szczęściarzem lub naprawdę zwracasz na to uwagę.", getReply(npc));
 
 		// Reset quest because of timestamp
 		player.setQuest(questSlot, "done;0;");
 
 		// Test other bogus answers
 		en.step(player, "play");
-		assertEquals("I'm a little bored at the moment. Would you like to play a game?", getReply(npc));
+		assertEquals("Teraz trochę się nudzę. Czy chciałbyś zagrać ze mną?", getReply(npc));
 		en.step(player, "yes");
 
 		reply = getReply(npc);
-		assertEquals(reply.startsWith("I've been counting how many creatures you have killed, now tell me, how many "), true);
-		assertEquals(reply.endsWith(" do you think you've killed? You have three guesses and I'll accept guesses that are close to the correct answer."), true);
+		assertEquals(reply.startsWith("Liczyłam ile potworów zabiłeś, a teraz powiedz mi ile "), true);
+		assertEquals(reply.endsWith(" myślisz, że zabiłeś? Masz trzy próby, a ja zaakceptuję próbę, która jest blisko poprawnej odpowiedzi."), true);
 
 		en.step(player, "98");
-		assertEquals("Nope, that is not right. Try again.", getReply(npc));
+		assertEquals("Nie to nie jest prawidłowa odpowiedź. Spróbuj ponownie.", getReply(npc));
 		en.step(player, "o");
-		assertEquals("Is that even possible? Give me a valid answer.", getReply(npc));
+		assertEquals("Czy to możliwe? Podaj prawidłową odpowiedź.", getReply(npc));
 		en.step(player, "023");
-		assertEquals("Wrong again. You have one more try.", getReply(npc));
+		assertEquals("Znów źle. Masz jeszcze jedną próbę.", getReply(npc));
 		en.step(player, "88");
 
 		reply = getReply(npc);
-		assertEquals(reply.startsWith("Unfortunately that is incorrect. The correct answer is in the region of "), true);
-		assertEquals(reply.endsWith("Good effort though."), true);
+		assertEquals(reply.startsWith("Niestety jest to nieprawidłowa liczba. Poprawna odpowiedź jest w tym regionie "), true);
+		assertEquals(reply.endsWith("Wysiliłeś się."), true);
 
 		en.step(player, "play");
-		assertEquals(getReply(npc).startsWith("I've had plenty of fun for now, thanks. Come back in, lets say "), true);
+		assertEquals(getReply(npc).startsWith("Nieźle się bawiłam. Dziękuję! Wróć powiedzmy za "), true);
 	}
 }

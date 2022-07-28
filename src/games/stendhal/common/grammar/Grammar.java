@@ -388,8 +388,6 @@ public class Grammar {
 		if (enoun.indexOf(of) > -1) {
 			return plural(enoun.substring(0, enoun.indexOf(of))) + enoun.substring(enoun.indexOf(of)) + postfix;
 
-		} else if (enoun.equals("mnich")) {
-			return enoun + "a";
 		} else if (enoun.equals("money") || enoun.equals("kierpce") || enoun.equals("korale") || enoun.endsWith("ów")) {
 			return enoun;
 		} else if (enoun.startsWith("rękawice") || enoun.equals("spodnie")) {
@@ -511,6 +509,12 @@ public class Grammar {
 			return enoun + postfix;
 
 		// now all the special cases
+		} else if (enoun.equals("mnich")) {
+			return enoun + "a";
+
+		} else if (enoun.endsWith("iki")) {
+			return enoun.substring(0, enoun.length() - 1) + postfix;
+
 		} else if (enoun.startsWith("rękawice") || enoun.endsWith("czy")) {
 			return enoun.substring(0, enoun.length() - 1) + postfix;
 		} else if (enoun.endsWith("ów")) {
@@ -545,7 +549,7 @@ public class Grammar {
 				return enoun + "y" + postfix;
 			}
 
-		} else if (enoun.equals("lody")) {
+		} else if (enoun.equals("lody") || enoun.equals("składniki")) {
 			if (quantity > 4 || quantity == 0) {
 				return enoun.substring(0, enoun.length() - 1) + "ów" + postfix;
 			} else {

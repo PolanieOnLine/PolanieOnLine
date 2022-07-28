@@ -223,18 +223,18 @@ public class KanmararnSoldiers extends AbstractQuest {
 		henry.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
-							 new QuestNotInStateCondition(QUEST_SLOT,"map")),
+					new QuestNotInStateCondition(QUEST_SLOT,"map")),
 			ConversationStates.QUEST_OFFERED,
 			"Znajdź moją #drużynę Peter, Tom i Charles. Udowodnij, że ich znalazłeś a ja Cię wynagrodzę. Zrobisz to?",
 			null);
 
 		henry.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new OrCondition(new QuestCompletedCondition(QUEST_SLOT),
-								 new QuestInStateCondition(QUEST_SLOT,"map")),
-				ConversationStates.ATTENDING,
-				"Jestem smutny, że większość moich przyjaciół nie żyje.",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new OrCondition(new QuestCompletedCondition(QUEST_SLOT),
+					new QuestInStateCondition(QUEST_SLOT,"map")),
+			ConversationStates.ATTENDING,
+			"Jestem smutny, że większość moich przyjaciół nie żyje.",
+			null);
 
 		henry.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
@@ -246,7 +246,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 		henry.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(new QuestActiveCondition(QUEST_SLOT),
-				new QuestNotInStateCondition(QUEST_SLOT, "map")),
+					new QuestNotInStateCondition(QUEST_SLOT, "map")),
 			ConversationStates.ATTENDING,
 			"Już Cię poprosiłem, abyś odnalazł moich przyjaciół Peter, Tom i Charles.",
 			null);
@@ -260,18 +260,18 @@ public class KanmararnSoldiers extends AbstractQuest {
 			null);
 
         henry.add(
-				ConversationStates.QUEST_OFFERED,
-				Arrays.asList("treasure", "skarb"),
-				null,
-				ConversationStates.QUEST_OFFERED,
-				"Duży skarb jest #gdzieś w tych podziemiach. Pomożesz mi znaleźć moją drużynę?",
-				null);
+			ConversationStates.QUEST_OFFERED,
+			Arrays.asList("treasure", "skarb"),
+			null,
+			ConversationStates.QUEST_OFFERED,
+			"Duży skarb jest #gdzieś w tych podziemiach. Pomożesz mi znaleźć moją drużynę?",
+			null);
 
 		henry.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"Dobrze. Rozumiem. Też się boje #krasnali.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
+			ConversationPhrases.NO_MESSAGES, null,
+			ConversationStates.ATTENDING,
+			"Dobrze. Rozumiem. Też się boje #krasnali.",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new IncreaseXPAction(2500));
@@ -324,7 +324,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 		henry.add(ConversationStates.ATTENDING, Arrays.asList("map", "mapa"),
 				new HenryQuestNotCompletedCondition(),
 				ConversationStates.ATTENDING,
-				"Jeżeli znajdziesz moich przyjaciół to dam Ci mapę", null);
+				"Jeżeli znajdziesz moich przyjaciół to dam Ci mapę.", null);
 	}
 
 	/**
@@ -439,10 +439,10 @@ public class KanmararnSoldiers extends AbstractQuest {
 				"Dziękuję za przyniesienie mapy!", null);
 
 		james.add(ConversationStates.ATTENDING, Arrays.asList("map", "henry",
-			 "group", "one", "mapa", "drużyna"),
-			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
-			"Dziękuję za przyniesienie mapy!", null);
+				"group", "one", "mapa", "drużyna"),
+				new QuestCompletedCondition(QUEST_SLOT),
+				ConversationStates.ATTENDING,
+				"Dziękuję za przyniesienie mapy!", null);
 	}
 
 	@Override

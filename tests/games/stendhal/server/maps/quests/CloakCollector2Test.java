@@ -214,7 +214,7 @@ public class CloakCollector2Test {
 		assertEquals("Answer to last brought cloak", "O jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!", getReply(npc));
 
 		// check the rewards
-		assertEquals(karma + 100.0, player.getKarma(), 0.01);
+		assertEquals(karma + 105.0, player.getKarma(), 0.01);
 		assertEquals(100000, player.getXP());
 		assertEquals("done;rewarded", player.getQuest(QUEST_NAME));
 		assertEquals(true, player.isEquipped("buty zabójcy"));

@@ -44,7 +44,7 @@ public class MillerNPC implements ZoneConfigurator {
 				        "Niedaleko jest farma. Zazwyczaj pozwalają ludziom tam zbierać kłosy zboża. Oczywiście potrzebujesz #kosy do ich ścięcia.");
 				addReply("kosy",
 					    "Kuźnia jest miejscem gdzie możesz ją dostać");
-				addHelp("Znasz piekarnię w Semos? Jestem dumna, że używają mojej mąki, ale wilki znowu zjadły mojego dostawcę... albo może uciekł... hm.");
+				addHelp("Czy znasz piekarnię w Semos? Z dumą mogę powiedzieć, że używają mojej mąki. Ale ostatnio wilki znowu zjadły mojego dostawcę... albo może uciekł... hmm.");
 				addGoodbye();
 				addOffer("Możesz #zasadzić moje nasiona, aby wyrosły z nich piękne kwiatki.");
 				addReply(Arrays.asList("plant", "zasadzić"),"Twoje nasiona powinny zostać zasiane na żyznym gruncie. Szukaj brązowej ziemi nie daleko ścieżki koło której rośnie arandula na równinach semos. Nasiona będą tam kwitnąć. Możesz codziennie doglądać jak rośnie twój kwiatek. Gdy urośnie to będziesz mógł go zerwać. Obszar jest dostępny dla każdego i istniej prawdopodobieństwo, że ktoś inny zerwie twój kwiatek, ale na szczęście nasiona są tanie!");

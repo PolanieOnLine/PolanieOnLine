@@ -30,7 +30,7 @@ import utilities.QuestHelper;
 
 public class LearnAboutKarmaTest {
 
-	private static final String KARMA_ANSWER = "When you do a good thing like a #task for someone else, you get good karma. Good karma means you're likely to do well in battle and when fishing or searching for something like gold. Do you want to know what your karma is now?";
+	private static final String KARMA_ANSWER = "Gdy robisz dobre rzeczy dla innych takie jak #zadania dostajesz dobrą karmę. Dobra karma oznacza, że będzie ci się powodzić w bitwach, w łowieniu ryb, poszukiwaniu złota i drogocennych kamieni. Chcesz wiedzieć jaką masz teraz karmę?";
 	private Player player = null;
 	private SpeakerNPC npc = null;
 	private Engine en = null;
@@ -62,17 +62,17 @@ public class LearnAboutKarmaTest {
 		en.step(player, "hi");
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "help");
-		assertEquals("You can take one of my prepared medicines with you on your travels; just ask for an #offer.", getReply(npc));
+		assertEquals("Możesz wziąć przygotowane przeze mnie lekarstwo na podróż. Zapytaj mnie o #ofertę.", getReply(npc));
 		en.step(player, "offer");
-		assertEquals("I sell antidote, greater antidote, potion, greater potion, and mega potion.", getReply(npc));
+		assertEquals("Sprzedaję antidotum, mocne antidotum, eliksir, duży eliksir, oraz wielki eliksir.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Are you someone who likes to help others?", getReply(npc));
+		assertEquals("Czy jesteś tym, który lubi pomagać innym?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("I knew it ... you probably have bad #karma.", getReply(npc));
+		assertEquals("Wiedziałam... pewnie otacza cię zła #karma.", getReply(npc));
 		en.step(player, "karma");
 		assertEquals(KARMA_ANSWER, getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Your karma of -10 is not very good. Now you can always see your karma, if you had good karma it would show as blue.", getReply(npc));
+		assertEquals("Twoja karma to -10, nie jest zbyt dobra. Teraz zobaczymy jakiego koloru jest twoja karma. Postaraj się, aby była na granicy niebiesko.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -81,11 +81,11 @@ public class LearnAboutKarmaTest {
 		en.step(player, "hi");
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "task");
-		assertEquals("If you want to get good #karma all you have to do is be helpful to others. I know a hunter girl called Sally who needs wood, and I know another girl called Annie who loves icecream, well, I know many people who needs tasks doing for them regularly and I'm sure if you help them you will be rewarded, that's how karma works after all.", getReply(npc));
+		assertEquals("Jeśli chcesz by towarzyszyła ci dobra #karma jedyne co musisz robić, to pomagać innym. Znam dziewczę o imieniu Sally, która potrzebuje drewna, i znam inne dziewczę co zwie się Annie, która uwielbia lody. Cóż, znam wielu mieszkańców tej krainy, którzy stale potrzebować będą pomocy. Jestem pewna, że jeśli im pomożesz czeka cię sowita zapłata.", getReply(npc));
 		en.step(player, "karma");
 		assertEquals(KARMA_ANSWER, getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Your karma of -10 is not very good. Now you can always see your karma, if you had good karma it would show as blue.", getReply(npc));
+		assertEquals("Twoja karma to -10, nie jest zbyt dobra. Teraz zobaczymy jakiego koloru jest twoja karma. Postaraj się, aby była na granicy niebiesko.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -96,27 +96,27 @@ public class LearnAboutKarmaTest {
 		en.step(player, "hi");
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
 		en.step(player, "job");
-		assertEquals("I make potions and antidotes, to #offer to warriors.", getReply(npc));
+		assertEquals("Wytwarzam mikstury i antidota, aby #zaoferować je wojownikom.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Are you someone who likes to help others?", getReply(npc));
+		assertEquals("Czy jesteś tym, który lubi pomagać innym?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Wonderful! You must have good #karma.", getReply(npc));
+		assertEquals("Wyśmienicie! Musi cię otaczać dobra #karma.", getReply(npc));
 		en.step(player, "karma");
 		assertEquals(KARMA_ANSWER, getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Your karma of -10 is not very good. Now you can always see your karma, if you had good karma it would show as blue.", getReply(npc));
+		assertEquals("Twoja karma to -10, nie jest zbyt dobra. Teraz zobaczymy jakiego koloru jest twoja karma. Postaraj się, aby była na granicy niebiesko.", getReply(npc));
 		// add a bit of karma to test different values
 		player.addKarma(15.0);
 		en.step(player, "karma");
 		assertEquals(KARMA_ANSWER, getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Your karma is 5. Now you can always see your karma, and yours is roughly in the middle of the scale.", getReply(npc));
+		assertEquals("Twoja karma wynosi 5. Teraz zobaczymy jakiego koloru jest twoja karma. Znajduje się w połowie skali.", getReply(npc));
 		// add a bit more karma to test more values
 		player.addKarma(10.0);
 		en.step(player, "karma");
 		assertEquals(KARMA_ANSWER, getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Your karma of 15 is good. Now you can always see your karma, and you should try to keep yours out of the 'red'.",  getReply(npc));
+		assertEquals("Twoja karma jest dobra i wynosi 15. Teraz zobaczymy jakiego koloru jest twoja karma. Musisz uważać, zbliża się do granicy czerwonego.",  getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 	}

@@ -78,25 +78,25 @@ public class IcecreamForAnnieTest {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Hello, my name is Annie. I am five years old.", getReply(npc));
+		assertEquals("Cześć, nazywam się Annie i mam pięć lat.", getReply(npc));
 		en.step(player, "help");
-		assertEquals("Ask my mummy.", getReply(npc));
+		assertEquals("Zapytaj mamusi.", getReply(npc));
 		en.step(player, "job");
-		assertEquals("I help my mummy.", getReply(npc));
+		assertEquals("Pomagam mojej mamusi.", getReply(npc));
 		en.step(player, "offer");
-		assertEquals("I'm a little girl, I haven't anything to offer.", getReply(npc));
+		assertEquals("Jestem małą dziewczynką. Nie mam nic do zaoferowania.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I'm hungry! I'd like an ice cream, please. Vanilla, with a chocolate flake. Will you get me one?", getReply(npc));
+		assertEquals("Jestem głodna! Chciałabym porcję lodów, proszę. Waniliowe z polewą czekoladową. Zdobędziesz takie dla mnie?", getReply(npc));
 		en.step(player, "ok");
-		assertEquals("Thank you!", getReply(npc));
+		assertEquals("Dziękuję!", getReply(npc));
 		assertThat(player.getQuest(questSlot), is("start"));
 		en.step(player, "bye");
 		assertEquals("Ta ta.", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("Hello. I'm hungry.", getReply(npc));
+		assertEquals("Cześć! Jestem głodna...", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Waaaaaaaa! Where is my ice cream ....", getReply(npc));
+		assertEquals("Łeeeeeeeee! Gdzie jest moja porcja lodów...", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Ta ta.", getReply(npc));
 
@@ -107,39 +107,39 @@ public class IcecreamForAnnieTest {
 		player.getSlot("bag").add(item);
 
 		en.step(player, "hi");
-		assertEquals("Hi. Can I #offer you an ice cream?", getReply(npc));
+		assertEquals("Cześć. Czy mogę #zaoferować Tobie porcję lodów?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("An ice cream will cost 30. Do you want to buy it?", getReply(npc));
+		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
 		en.step(player, "no");
 
 		en.step(player, "offer");
-		assertEquals("I sell ice cream.", getReply(npc));
-		assertTrue(en.step(player, "buy 0 icecreams"));
-		assertEquals("Sorry, how many ice creams do you want to buy?!", getReply(npc));
-		en.step(player, "buy ice cream");
-		assertEquals("An ice cream will cost 30. Do you want to buy it?", getReply(npc));
+		assertEquals("Sprzedaję lody.", getReply(npc));
+		assertTrue(en.step(player, "buy 0 lody"));
+		assertEquals("Ile lodów chcesz kupić?!", getReply(npc));
+		en.step(player, "buy lody");
+		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Congratulations! Here is your ice cream!", getReply(npc));
+		assertEquals("Gratulacje! Oto twój lody!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye, enjoy your day!", getReply(npc));
-		assertTrue(player.isEquipped("icecream"));
+		assertEquals("Do widzenia. Ciesz się dniem!", getReply(npc));
+		assertTrue(player.isEquipped("lody"));
 
 		npc = SingletonRepository.getNPCList().get("Annie Jones");
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Mummy says I mustn't talk to you any more. You're a stranger.", getReply(npc));
+		assertEquals("Mamusia powiedziała, że nie powinnam z tobą rozmawiać. Jesteś nieznajomym.", getReply(npc));
 
 		npc = SingletonRepository.getNPCList().get("Mrs. Jones");
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Hello, I see you've met my daughter Annie. I hope she wasn't too demanding. You seem like a nice person.", getReply(npc));
+		assertEquals("Cześć, widzę, że spotkałeś moją córkę Annie. Mam nadzieję, że nie była zbyt wymagająca. Wyglądasz na miłą osobę.", getReply(npc));
 		assertThat(player.getQuest(questSlot), is("mummy"));
 		en.step(player, "task");
-		assertEquals("Nothing, thank you.", getReply(npc));
+		assertEquals("Nic, dziękuję.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Bye for now.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		npc = SingletonRepository.getNPCList().get("Annie Jones");
 		en = npc.getEngine();
@@ -147,22 +147,22 @@ public class IcecreamForAnnieTest {
 		final int xp = player.getXP();
 		final double karma = player.getKarma();
 		en.step(player, "hi");
-		assertEquals("Yummy! Is that ice cream for me?", getReply(npc));
+		assertEquals("Pychotka! Czy ta porcja lodów jest dla mnie?", getReply(npc));
 		en.step(player, "yes");
 		// [15:06] kymara earns 500 experience points.
-		assertFalse(player.isEquipped("icecream"));
-		assertTrue(player.isEquipped("present"));
+		assertFalse(player.isEquipped("lody"));
+		assertTrue(player.isEquipped("prezent"));
 		assertThat(player.getXP(), greaterThan(xp));
 		assertThat(player.getKarma(), greaterThan(karma));
 		assertTrue(player.getQuest(questSlot).startsWith("eating"));
-		assertEquals("Thank you EVER so much! You are very kind. Here, take this present.", getReply(npc));
+		assertEquals("Dziękuję bardzo! Jesteś bardzo miły. Weź ten prezent.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Ta ta.", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("Hello.", getReply(npc));
+		assertEquals("Cześć.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I've had too much ice cream. I feel sick.", getReply(npc));
+		assertEquals("Zjadłam za dużo lodów. Niedobrze mi.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Ta ta.", getReply(npc));
 
@@ -174,18 +174,18 @@ public class IcecreamForAnnieTest {
 		// [15:07] Changed the state of quest 'icecream_for_annie' from 'eating;1219676807283' to 'eating;0'
 		player.setQuest(questSlot, "eating;0");
 		en.step(player, "hi");
-		assertEquals("Hello.", getReply(npc));
+		assertEquals("Cześć.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I hope another ice cream wouldn't be greedy. Can you get me one?", getReply(npc));
+		assertEquals("Mam nadzieję, że następna porcja lodów nie będzie obżarstwem. Czy możesz zdobyć je dla mnie?", getReply(npc));
 		en.step(player, "no");
 		assertThat(player.getQuest(questSlot), is("rejected"));
 		assertThat(player.getKarma(), lessThan(newKarma));
-		assertEquals("Ok, I'll ask my mummy instead.", getReply(npc));
+		assertEquals("Dobrze. Zapytam moją mamusię.", getReply(npc));
 
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Hello.", getReply(npc));
+		assertEquals("Cześć.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Ta ta.", getReply(npc));
 	}

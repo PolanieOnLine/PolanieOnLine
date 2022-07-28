@@ -57,7 +57,7 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 				ConversationStates.ATTENDING,
 				"Cena za nowy dom w Ados to "
 				+ getCost()
-				+ " money. Ale obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
+				+ " money. Obawiam się, że nie mogę ci jeszcze zaufać, wróć kiedy spędzisz przynajmniej " 
 				+ Integer.toString((HouseSellerNPCBase.REQUIRED_AGE / 60)) + " godzin w Faiumoni.",
 				null);
 
@@ -110,7 +110,7 @@ final class AdosHouseSeller extends HouseSellerNPCBase {
 				null,
 				new BuyHouseChatAction(getCost(), QUEST_SLOT));
 		
-		addJob("Jestem agentem nieruchomości, po prostu sprzedaje domy w Ados. Zapytaj o #cenę jeżeli jesteś zainteresowany. Nasz katalog domów znajduje się na  #https://polanieonline.eu/");
+		addJob("Jestem agentem nieruchomości, po prostu sprzedaje domy w Ados. Zapytaj o #cenę jeżeli jesteś zainteresowany. Nasz katalog domów znajduje się na #'https://polanieonline.eu/wiki/PolanieOnLine_Domki'.");
 		addReply(Arrays.asList("citizen", "obywatelstwo"), "Przeprowadzam nieformalną ankietę wśród mieszkańców. A mówię o moim przyjacielu Joshua, burmistrzu Ados, małej dziewczynce Anna, rybaku Pequod, pięknej Zara, a nawet o duchu Carena. Wspólnie wydadzą wiarygodną opinie.");
 
 		setDescription("Wygląda na inteligentnego.");

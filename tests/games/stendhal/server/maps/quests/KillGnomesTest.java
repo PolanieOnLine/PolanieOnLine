@@ -36,7 +36,7 @@ import utilities.QuestHelper;
  * @author IschBing, hendrik
  */
 public class KillGnomesTest {
-	private static final String QUEST_VALUE_STARTED = "start;gnom kawalerzysta,0,1,0,0,gnom,0,1,0,0,gnom zwiadowca,0,1,0,0";
+	private static final String QUEST_VALUE_STARTED = "start;gnom,0,1,0,0,gnom zwiadowca,0,1,0,0,gnom kawalerzysta,0,1,0,0";
 
 	private Player player = null;
 	private SpeakerNPC npc = null;
@@ -70,13 +70,13 @@ public class KillGnomesTest {
 
 		// Ask for the quest
 		en.step(player, "hi");
-		assertEquals("Greetings! I am Jenny, the local miller. If you bring me some #grain, I can #mill it into flour for you.", getReply(npc));
+		assertEquals("Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Some gnomes have been stealing carrots from the farms North of Semos. They need to be taught a lesson, will you help?", getReply(npc));
+		assertEquals("Gnomy kradną marchewki z naszej farmy na północ od Semos. Potrzebują chyba dobrej lekcji. Pomożesz?", getReply(npc));
 
 		// Accept quest
 		en.step(player, "yes");
-		assertEquals("Excellent. You'll find the gnomes camped out, north west of Semos. Make sure you kill some of the ringleaders, too, at least one infantryman and one cavalryman.", getReply(npc));
+		assertEquals("Doskonale. Obozowisko gnomów znajdziesz na północny-zachód od Semos. Upewnij się, że ubiłeś kilku liderów, conajmniej jednego zwiadowcę i jednego kawalerzystę.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot, 0), equalTo("start"));
@@ -90,9 +90,9 @@ public class KillGnomesTest {
 	public void returnWithoutCompleting() {
 		player.setQuest(questSlot, QUEST_VALUE_STARTED);
 		en.step(player, "hi");
-		assertEquals("Greetings! I am Jenny, the local miller. If you bring me some #grain, I can #mill it into flour for you.", getReply(npc));
+		assertEquals("Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.", getReply(npc));
 		en.step(player, "done");
-		assertEquals("You need to teach those pesky gnomes a lesson, by killing some as an example! Make sure you get the leaders, too, at least one infantryman and one cavalryman.", getReply(npc));
+		assertEquals("Musisz nauczyć te zuchwałe gnomy lekcji zabijając kilku dla przykładu! Upewnij się, że dostałeś kilku liderów, co najmniej jednego zwiadowcę i jednego kawalerzystę.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot), equalTo(QUEST_VALUE_STARTED));
@@ -113,7 +113,7 @@ public class KillGnomesTest {
 
 		// complete quest
 		en.step(player, "hi");
-		assertEquals("I see you have killed the gnomes as I asked. I hope they will stay away from the carrots for a while! Please take these potions as a reward.", getReply(npc));
+		assertEquals("Widzę, że ubiłeś gnomy, które okradały farmę. Mam nadzieje, że przez jakiś czas nie będą się zbliżać do marchewek! Proszę weź te mikstury w dowód uznania.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot, 0), equalTo("done"));
@@ -129,13 +129,13 @@ public class KillGnomesTest {
 
 		// ask for quest again
 		en.step(player, "hi");
-		assertEquals("Greetings! I am Jenny, the local miller. If you bring me some #grain, I can #mill it into flour for you.", getReply(npc));
+		assertEquals("Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("The gnomes haven't made any trouble since you last taught them a lesson.", getReply(npc));
+		assertEquals("Gnomy nie sprawiają problemu od momentu, gdy pokazałeś im czym jest pokora.", getReply(npc));
 
 		// help should still work
 		en.step(player, "help");
-		assertEquals("Do you know the bakery in Semos? I'm proud to say they use my flour. But the wolves ate my delivery boy again recently... they're probably running out.", getReply(npc));
+		assertEquals("Czy znasz piekarnię w Semos? Z dumą mogę powiedzieć, że używają mojej mąki. Ale ostatnio wilki znowu zjadły mojego dostawcę... albo może uciekł... hmm.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 	}

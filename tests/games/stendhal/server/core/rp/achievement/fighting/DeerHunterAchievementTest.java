@@ -31,7 +31,7 @@ import utilities.ZoneAndPlayerTestImpl;
 
 public class DeerHunterAchievementTest extends ZoneAndPlayerTestImpl {
 
-	private final String enemy = "deer";
+	private final String enemy = "jeleń";
 	private final int reqCount = 25;
 
 

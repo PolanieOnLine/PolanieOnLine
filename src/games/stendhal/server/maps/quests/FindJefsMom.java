@@ -122,7 +122,7 @@ public class FindJefsMom extends AbstractQuest {
 		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-			"Oh. Dobrze. Nie potrafię Cię zrozumieć... Wyglądasz na przepracowanego bohatera, więc nie będę Cię prosić o pomoc.",
+			"Och. Dobrze. Nie potrafię Cię zrozumieć... Wyglądasz na przepracowanego bohatera, więc nie będę Cię prosić o pomoc.",
 			new MultipleActions(new SetQuestAction(QUEST_SLOT, 0, "rejected"),
 					new DecreaseKarmaAction(10.0)));
 

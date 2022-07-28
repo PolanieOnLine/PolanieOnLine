@@ -350,11 +350,10 @@ public class Jail implements ZoneConfigurator, LoginListener {
 
 				final long timestamp = arrestWarrant.getTimestamp();
 				player.sendPrivateText(NotificationType.SUPPORT,
-						"Zostałeś aresztowany "
+						"Zostałeś aresztowany"
 					+ " przez " + arrestWarrant.getPoliceOfficer()
 					+ " na " + arrestWarrant.getMinutes()
-					+ " minutę" + " o " + String.format("%tF", timestamp)
-					+ ". Powód: " + arrestWarrant.getReason() + ".");
+					+ " minutę. Powód: " + arrestWarrant.getReason() + ".");
 				LOGGER.info(player.getName() + " logged in who has been jailed "
 					+ " by " + arrestWarrant.getPoliceOfficer()
 					+ " for " + arrestWarrant.getMinutes()

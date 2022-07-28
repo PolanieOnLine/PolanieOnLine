@@ -71,9 +71,9 @@ public class MeetMarieHenriTest extends ZonePlayerAndNPCTestImpl {
 	public void testQuest() {
 		en.step(player, "hi");
 		en.step(player, "task");
-		assertEquals("I am currently testing the general knowledge of the adventurers around here. "
-				+ "If you are able to tell me the #pseudonym I am using for my novels, I'll reward you. "
-				+ "Do you feel smart enough for that?", getReply(npc));
+		assertEquals("Testuję w tej chwili wiedzę poszukiwaczy przygód w okolicy. "
+				+ "Jeżeli wymyślisz #pseudonim dla mnie, którego będę mógł użyć podczas pisania powiećci, nagrodzę ciebie. "
+				+ "Czy czujesz się na siłach?", getReply(npc));
 		//TODO: test the rest of the Marie-Henri quest
 	}
 

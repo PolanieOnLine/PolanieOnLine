@@ -98,7 +98,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 		localzone.add(player);
 
 		// first put some nasionas on the floor
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasiona");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasionka");
 		item.setQuantity(5);
 		localzone.add(item);
 		StackableItem[] items = localzone.getItemsOnGround().toArray(new StackableItem[0]);
@@ -165,7 +165,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 		localzone.add(player);
 
 		// first put some nasionas on the floor
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasiona");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasionka");
 		item.setQuantity(5);
 		localzone.add(item);
 		assertEquals(1, localzone.getItemsOnGround().size());
@@ -182,7 +182,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 
 		new DisplaceAction().onAction(player, displace);
 		assertEquals(1, player.events().size());
-		assertEquals("You cannot throw that far.", player.events().get(0).get("text"));
+		assertEquals("Nie możesz rzucić tak daleko.", player.events().get(0).get("text"));
 		assertEquals(1, localzone.getItemsOnGround().size());
 	}
 
@@ -197,7 +197,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 		localzone.add(player);
 
 		// first put some nasionas on the floor
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasiona");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasionka");
 		item.setQuantity(5);
 		localzone.add(item);
 		assertEquals(1, localzone.getItemsOnGround().size());
@@ -220,7 +220,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 
 		new DisplaceAction().onAction(player, displace);
 		assertEquals(1, player.events().size());
-		assertEquals("There is no space there.", player.events().get(0).get("text"));
+		assertEquals("Nie ma tam miejsca.", player.events().get(0).get("text"));
 		assertEquals(1, localzone.getItemsOnGround().size());
 	}
 

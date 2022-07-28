@@ -39,8 +39,8 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	private static final String TEMPLE_ZONE_NAME = "int_semos_temple";
 	private static final String TOWNHALL_ZONE_NAME = "int_semos_townhall";
 
-	private static final String TAD_TALK_SSSHH_COME_HERE = "Ssshh! Come here, player! I have a #task for you.";
-	private static final String TAD_TALK_REMIND_TASK = "*sniff* *sniff* I still feel ill, please hurry with that #favour for me.";
+	private static final String TAD_TALK_SSSHH_COME_HERE = "Ciii! Podejdź tutaj player! Miałbym #zadanie dla Ciebie.";
+	private static final String TAD_TALK_REMIND_TASK = "*siąknięcie* *siąknięcie* Wciąż czuje się chory. Pospiesz się z #przysługą dla mnie.";
 
 	private SpeakerNPC npc;
 	private Engine en;
@@ -153,7 +153,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToTadWithFlask() {
 		player.setQuest(questSlot, MedicineForTad.STATE_START);
-		PlayerTestHelper.equipWithItem(player, "flask");
+		PlayerTestHelper.equipWithItem(player, "flasza");
 
 		String firstReply = startTalkingToNpc("Tad");
 
@@ -167,7 +167,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testGoToIlisaWithFlask() {
 		player.setQuest(questSlot, MedicineForTad.STATE_ILISA);
-		PlayerTestHelper.equipWithItem(player, "flask");
+		PlayerTestHelper.equipWithItem(player, "flasza");
 
 		String firstReply = startTalkingToNpc("Ilisa");
 
@@ -187,7 +187,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToTadWithoutPotion() {
 		player.setQuest(questSlot, MedicineForTad.STATE_HERB);
-		PlayerTestHelper.equipWithItem(player, "flask");
+		PlayerTestHelper.equipWithItem(player, "flasza");
 
 		String firstReply = startTalkingToNpc("Tad");
 
@@ -197,7 +197,7 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToIlisaWithoutHerb() {
 		player.setQuest(questSlot, MedicineForTad.STATE_HERB);
-		PlayerTestHelper.equipWithItem(player, "flask");
+		PlayerTestHelper.equipWithItem(player, "flasza");
 
 		String firstReply = startTalkingToNpc("Ilisa");
 
@@ -207,14 +207,14 @@ public class MedicineForTadTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToIlisaWithHerb() {
 		player.setQuest(questSlot, MedicineForTad.STATE_HERB);
-		PlayerTestHelper.equipWithItem(player, "flask");
+		PlayerTestHelper.equipWithItem(player, "flasza");
 		PlayerTestHelper.equipWithItem(player, "arandula");
 
 		String firstReply = startTalkingToNpc("Ilisa");
 
 		assertEquals(MedicineForTad.ILISA_TALK_PREPARE_MEDICINE, firstReply);
 
-		assertEquals("potion", player.getQuest(questSlot));
+		assertEquals("eliksir", player.getQuest(questSlot));
 	}
 
 	@Test

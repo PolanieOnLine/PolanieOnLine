@@ -86,11 +86,8 @@ public class CloakCollectorTest {
 
 		en.stepTest(monica, "peleryna elficka");
 		assertEquals(
-				"You haven't seen one before? Well, it's a elf cloak. So, will you find them all?",
+				"Nie widziałeś jeszcze żadnego? Cóż to jest elf cloak. znajdziesz to?",
 				getReply(npc));
-
-		en.stepTest(monica, "pink cloak");
-		assertEquals("Nie kojarzę pink cloak. Mogę cię poprosić o podanie nazwy innego płaszcza?", getReply(npc));
 
 		en.stepTest(monica, ConversationPhrases.YES_MESSAGES.get(0));
 		assertEquals(cc.respondToQuestAcception(), getReply(npc));
@@ -160,8 +157,8 @@ public class CloakCollectorTest {
 		final double oldKarma = player.getKarma();
 		cc.rewardPlayer(player);
 		assertTrue(player.isEquipped("czarny płaszcz"));
-		assertEquals(oldKarma + 5.0, player.getKarma(), 0.01);
-		assertEquals(10000, player.getXP());
+		assertEquals(oldKarma + 25.0, player.getKarma(), 0.01);
+		assertEquals(50000, player.getXP());
 	}
 
 }

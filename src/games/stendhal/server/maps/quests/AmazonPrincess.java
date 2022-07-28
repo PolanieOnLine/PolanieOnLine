@@ -122,7 +122,7 @@ public class AmazonPrincess extends AbstractQuest {
 		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Oh nie ważne. Do widzenia.",
+				"Och, nieważne. Do widzenia.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 

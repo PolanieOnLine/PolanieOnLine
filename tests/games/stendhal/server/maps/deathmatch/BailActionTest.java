@@ -73,7 +73,7 @@ public class BailActionTest {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		en.setCurrentState(ConversationStates.ATTENDING);
 		en.step(player, "bail");
-		assertEquals("Tchórz! Nawet nie #zaczęliśmy!", getReply(th));
+		assertEquals("Tchórz! Nawet nie #zacząłeś!", getReply(th));
 		th.put("text", "");
 	}
 
@@ -92,7 +92,7 @@ public class BailActionTest {
 		en.setCurrentState(ConversationStates.ATTENDING);
 		player.setQuest("deathmatch", "done");
 		en.step(player, "bail");
-		assertEquals("Tchórz! Nawet nie #zacząłeś!", getReply(th));
+		assertEquals("Tchórz! Nawet nie #zaczęliśmy!", getReply(th));
 		th.put("text", "");
 
 	}

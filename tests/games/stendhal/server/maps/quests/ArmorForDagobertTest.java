@@ -97,7 +97,7 @@ public class ArmorForDagobertTest {
 		en.step(player, "yes");
 		questHistory = new LinkedList<String>();
 		questHistory.add("Spotkałem Dagobert. Jest konsultantem w banku w Semos.");
-		questHistory.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego prośbę.");
+		questHistory.add("Przyrzekłem, że znajdę dla niego skórzany kirys ponieważ został okradziony.");
 		assertEquals(questHistory, quest.getHistory(player));
 		assertEquals(
 				"Raz miałem #'skórzany kirys', ale został zniszczony podczas ostatniej kradzieży. Jeżeli znajdziesz nowy to dam Tobie nagrodę.",
@@ -161,8 +161,8 @@ public class ArmorForDagobertTest {
 		en.step(player, "yes");
 		questHistory.add("Wziąłem skórzany kirys do Dagoberta. Podziękował i dał mi nagrodę.");
 		assertEquals(questHistory, quest.getHistory(player));
-		assertEquals("Oh, jestem Ci tak wdzięczny, proszę weź to złoto, które znalazłem...ehm..gdzieś. Teraz gdy udowodniłeś, że jesteś zaufanym klientem, możesz mieć dostęp do prywatnej skrzyni bankowej kiedy tylko zechcesz.", getReply(npc));
-		assertEquals(xpBeforeReward + 50, player.getXP());
+		assertEquals("Oh, jestem Ci tak wdzięczny, proszę weź to złoto, które znalazłem...ehm..gdzieś.", getReply(npc));
+		assertEquals(xpBeforeReward + 500, player.getXP());
 		en.step(player, "task");
 		assertEquals(questHistory, quest.getHistory(player));
 		assertEquals("Dziękuję za zbroję, ale nie mam więcej zadań dla Ciebie.", getReply(npc));

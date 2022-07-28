@@ -73,36 +73,36 @@ public class ElfPrincessTest {
 	@Test
 	public void testQuest() {
 		en.step(player, "hi");
-		assertEquals("Hail to thee, human.", getReply(npc));
+		assertEquals("Witaj, człowieku!", getReply(npc));
 		en.step(player, "help");
-		assertEquals("A persistent person could do a #task for me.", getReply(npc));
+		assertEquals("Stanowcza osoba mogłaby zrobić dla mnie #zadanie.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Will you find the wandering flower seller, Rose Leigh, and get from her my favourite flower, the Rhosyd?", getReply(npc));
+		assertEquals("Znajdziesz wędrowną sprzedawczynię kwiatów Różę Kwiaciarkę i odbierzesz dla mnie orchideę, mój ulubiony kwiatek?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Oh, never mind. Bye then.", getReply(npc));
+		assertEquals("Och nieważne. Żegnaj.", getReply(npc));
 
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Hail to thee, human.", getReply(npc));
+		assertEquals("Witaj, człowieku!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Will you find the wandering flower seller, Rose Leigh, and get from her my favourite flower, the Rhosyd?", getReply(npc));
+		assertEquals("Znajdziesz wędrowną sprzedawczynię kwiatów Różę Kwiaciarkę i odbierzesz dla mnie orchideę, mój ulubiony kwiatek?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you! Once you find it, say #flower to me so I know you have it. I'll be sure to give you a nice reward.", getReply(npc));
+		assertEquals("Dziękuję! Gdy będziesz miał to powiedz #kwiatek, a wtedy będę wiedziała, że go masz. W zamian dam Ci nagrodę.", getReply(npc));
 		en.step(player, "flower");
-		assertEquals("You don't seem to have a rhosyd bloom with you. But Rose Leigh wanders all over the island, I'm sure you'll find her one day!", getReply(npc));
+		assertEquals("Widzę, że nie masz przy sobie orchidei. Róża Kwiaciarka przemierza całą wyspę i jestem pewna, że pewnego dnia ją spotkasz!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I do so love those pretty flowers from Rose Leigh ...", getReply(npc));
+		assertEquals("Słodkie są te kwiatki od Róży Kwiaciarki...", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye, strange one.", getReply(npc));
+		assertEquals("Do widzenia nieznajomy.", getReply(npc));
 
 		// -----------------------------------------------
 		// Find Rose Leigh and get the flower from her
 
 		String roseSays = getReply(npcRose);
-		assertTrue("Flowers! Get your fresh flowers here!".equals(roseSays) || (roseSays == null));
+		assertTrue("Kwiatki! Świeże kwiatki!".equals(roseSays) || (roseSays == null));
 		enRose.step(player, "hi");
-		assertEquals("Hello dearie. My far sight tells me you need a pretty flower for some fair maiden. Here ye arr, bye now.", getReply(npcRose));
+		assertEquals("Witaj skarbie. Mój daleki wzrok powiedział mi, że potrzebujesz kwiatek dla pięknej dziewczyny. Oto on i do zobaczenia.", getReply(npcRose));
 		assertEquals(ConversationStates.IDLE, enRose.getCurrentState());
 
 
@@ -110,41 +110,41 @@ public class ElfPrincessTest {
 		// return to Tywysoga
 
 		en.step(player, "hi");
-		assertEquals("Hail to thee, human.", getReply(npc));
+		assertEquals("Witaj, człowieku!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I do so love those pretty flowers from Rose Leigh ...", getReply(npc));
+		assertEquals("Słodkie są te kwiatki od Róży Kwiaciarki...", getReply(npc));
 		en.step(player, "flower");
-		assertTrue(getReply(npc).startsWith("Thank you! Take these "));
+		assertTrue(getReply(npc).startsWith("Dziękuję! Weź te "));
 		assertTrue(player.isEquipped("sztabka złota"));
 		// [00:09] superkym earns 5000 experience points.
 		en.step(player, "bye");
-		assertEquals("Goodbye, strange one.", getReply(npc));
+		assertEquals("Do widzenia nieznajomy.", getReply(npc));
 
 		// -----------------------------------------------
 		// talk to Rose Leigh without having an active task to fetch flowser
 
 		enRose.step(player, "hi");
-		assertEquals("I've got nothing for you today, sorry dearie. I'll be on my way now, bye.", getReply(npcRose));
+		assertEquals("Dziś nie mam nic dla Ciebie, przykro mi. Wyruszam teraz w dalszą drogę. Do widzenia.", getReply(npcRose));
 
 		// -----------------------------------------------
 		// do the quest again
 
 		en.step(player, "hi");
-		assertEquals("Hail to thee, human.", getReply(npc));
+		assertEquals("Witaj, człowieku!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("The last Rhosyd you brought me was so lovely. Will you find me another from Rose Leigh?", getReply(npc));
+		assertEquals("Ostatnią orchideę, którą mi przyniosłeś była taka piękna. Przyniesiesz mi następną od Róży Kwiaciarki?", getReply(npc));
 
 		en.step(player, "yes");
-		assertEquals("Thank you! Once you find it, say #flower to me so I know you have it. I'll be sure to give you a nice reward.", getReply(npc));
+		assertEquals("Dziękuję! Gdy będziesz miał to powiedz #kwiatek, a wtedy będę wiedziała, że go masz. W zamian dam Ci nagrodę.", getReply(npc));
 		en.step(player, "flower");
-		assertEquals("You don't seem to have a rhosyd bloom with you. But Rose Leigh wanders all over the island, I'm sure you'll find her one day!", getReply(npc));
+		assertEquals("Widzę, że nie masz przy sobie orchidei. Róża Kwiaciarka przemierza całą wyspę i jestem pewna, że pewnego dnia ją spotkasz!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye, strange one.", getReply(npc));
+		assertEquals("Do widzenia nieznajomy.", getReply(npc));
 
 		// -----------------------------------------------
 
 		enRose.step(player, "hi");
-		assertEquals("I gave you a flower not five minutes past! Her Royal Highness can enjoy that one for a while.", getReply(npcRose));
+		assertEquals("Dałam tobie kwiat pięć minut temu! Jej Królewska Wysokość może się nimi cieszyć przez jakiś czas.", getReply(npcRose));
 		assertEquals(ConversationStates.IDLE, enRose.getCurrentState());
 
 		// -----------------------------------------------
@@ -153,15 +153,15 @@ public class ElfPrincessTest {
 		player.setQuest("elf_princess", 1, Long.toString(System.currentTimeMillis() - 5 * 60 * 1000 - 10));
 
 		enRose.step(player, "hi");
-		assertEquals("Hello dearie. My far sight tells me you need a pretty flower for some fair maiden. Here ye arr, bye now.", getReply(npcRose));
+		assertEquals("Witaj skarbie. Mój daleki wzrok powiedział mi, że potrzebujesz kwiatek dla pięknej dziewczyny. Oto on i do zobaczenia.", getReply(npcRose));
 		assertEquals(ConversationStates.IDLE, enRose.getCurrentState());
 
 		en.step(player, "hi");
-		assertEquals("Hail to thee, human.", getReply(npc));
+		assertEquals("Witaj, człowieku!", getReply(npc));
 		en.step(player, "flower");
-		assertTrue(getReply(npc).startsWith("Thank you! Take these "));
+		assertTrue(getReply(npc).startsWith("Dziękuję! Weź te "));
 		// [00:10] superkym earns 5000 experience points.
 		en.step(player, "bye");
-		assertEquals("Goodbye, strange one.", getReply(npc));
+		assertEquals("Do widzenia nieznajomy.", getReply(npc));
 	}
 }

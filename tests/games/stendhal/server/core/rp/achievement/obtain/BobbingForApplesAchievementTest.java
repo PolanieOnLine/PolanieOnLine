@@ -33,7 +33,7 @@ public class BobbingForApplesAchievementTest {
 
 	private Player player;
 
-	private final String item = "apple";
+	private final String item = "jabłko";
 	private final int reqCount = 1000;
 
 

@@ -52,12 +52,12 @@ public class DropActionTest extends ZoneAndPlayerTestImpl {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		localzone.add(player);
 
-		Item item = SingletonRepository.getEntityManager().getItem("dice");
+		Item item = SingletonRepository.getEntityManager().getItem("kości do gry");
 		player.equipToInventoryOnly(item);
 
 		assertEquals(0, localzone.getItemsOnGround().size());
 
-		item = player.getFirstEquipped("dice");
+		item = player.getFirstEquipped("kości do gry");
 		RPObject parent = item.getContainer();
 		RPAction action = new RPAction();
 		action.put("type", "drop");

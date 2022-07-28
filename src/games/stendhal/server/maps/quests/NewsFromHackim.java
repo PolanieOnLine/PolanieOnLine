@@ -116,9 +116,9 @@ public class NewsFromHackim extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					String answer;
 					if (player.isEquipped("skórzane spodnie")) {
-						answer = "Weź te nowe skórzane spodnie! Daj mi znać jeżeli będziesz czegoś potrzebował.";
+						answer = "Weź te nowe... aha już masz skórzane spodnie. Cóż, możesz je sprzedać lub wymienić.";
 					} else {
-						answer = "Weź te nowe... aha już masz skórzane spodnie. Cóż możesz je sprzedać lub wymienić.";
+						answer = "Weź te nowe skórzane spodnie! Daj mi znać jeżeli będziesz czegoś potrzebował.";
 					}
 					// player.say("Well, to make a long story short; I know
 					// your business with Hackim and I'm here to tell you

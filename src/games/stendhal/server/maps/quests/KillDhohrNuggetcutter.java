@@ -90,7 +90,7 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 							final long delay = 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
 							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
-								raiser.say("Dziękuję za pomoc. Może przyjdziesz później. Krasnale mogą wrócić. Wróć za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
+								raiser.say("Dziękuję za pomoc. Może przyjdziesz później. Krasnale mogą wrócić. Wróć do " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 								return;
 							}
@@ -106,7 +106,7 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 		toKill.put("Dhohr Nuggetcutter", new Pair<Integer, Integer>(0,1));
 		toKill.put("górski krasnal", new Pair<Integer, Integer>(0,2));
 		toKill.put("górski starszy krasnal", new Pair<Integer, Integer>(0,2));
-		toKill.put("górski krasnal bohater", 	new Pair<Integer, Integer>(0,2));
+		toKill.put("górski krasnal bohater", new Pair<Integer, Integer>(0,2));
 		toKill.put("górski krasnal lider", new Pair<Integer, Integer>(0,2));
 
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
@@ -119,14 +119,14 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Wspaniale! Proszę znajdź je gdzieś na tym poziomie i niech zapłacą za przekroczenie granicy!",
+				"Wspaniale! Proszę, znajdź ich gdzieś na tym poziomie i niech zapłacą za przekroczenie granicy!",
 				new MultipleActions(actions));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Dobrze poczekam na kogoś odpowiedniego do tego zadania.",
+				"Dobrze, poczekam na kogoś odpowiedniego do tego zadania.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 	}
 
@@ -144,7 +144,7 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Idź zabić Dhohr Nuggetcuttera i jego sługusów; górskiego krasnala lidera, bohatera i starszego krasnala oraz tego pospolitego krasnala.");
+						raiser.say("Po prostu idź zabić Dhohra Nuggetcuttera i jego sługusów: górskiego krasnala lidera, bohatera oraz starszego krasnala. Nawet proste krasnale górskie są dla nas zagrożeniem, ich też zabij.");
 				}
 		});
 
@@ -157,7 +157,7 @@ public class KillDhohrNuggetcutter extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Dziękuję bardzo. Jesteś prawdziwym wojownikiem! Weź jedno. Znaleźliśmy je rozrzucone wokoło. Nie wiemy czym są.");
+						raiser.say("Bardzo dziękuję. Rzeczywiście jesteś wojownikiem! Masz jeden z nich. Znaleźliśmy je porozrzucane wokoło. Nie mamy pojęcia, czym one są.");
 							final Item mithrilnug = SingletonRepository.getEntityManager()
 									.getItem("bryłka mithrilu");
 							player.equipOrPutOnGround(mithrilnug);

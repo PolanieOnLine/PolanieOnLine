@@ -61,14 +61,14 @@ public class BoyNPC implements ZoneConfigurator {
 								}),
 				        ConversationStates.ATTENDING,
 				        null,
-				        new SayTextAction("Ciii! Podejdź [name]! Mam #zadanie dla Ciebie."));
+				        new SayTextAction("Ciii! Podejdź tutaj [name]! Miałbym #zadanie dla Ciebie."));
 
 				// this is the condition for any other case while the quest is active, not covered by the quest.
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new GreetingMatchesNameCondition(getName()), true,
 				        ConversationStates.ATTENDING,
-				        "*pociągniecie nosem* *pociągniecie nosem* Wciąż czuje się chory. Pospiesz się z #przysługą dla mnie.",
+				        "*siąknięcie* *siąknięcie* Wciąż czuje się chory. Pospiesz się z #przysługą dla mnie.",
 				        null);
 
 				add(ConversationStates.IDLE,

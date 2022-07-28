@@ -97,7 +97,7 @@ public class HandleTransitions extends ScriptImpl {
         		return;
         	}
         	npc.add(ConversationStates.ANY, trigger, null, ConversationStates.ANY, text, null, label);
-        	admin.sendPrivateText("dodano zmainę.");
+        	admin.sendPrivateText("dodano zmianę.");
         	return;
 
         } else if(command.equals("del")) {

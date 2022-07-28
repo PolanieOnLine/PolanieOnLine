@@ -112,14 +112,14 @@ public class BuyHouseChatActionTest {
 		housePortal.setOwner("jim");
 
 		action.fire(player , sentence , raiser);
-		assertThat(getReply(engine), containsString("Sorry, house 51 is sold"));
+		assertThat(getReply(engine), containsString("Przepraszam dom 51 został już sprzedany"));
 
 		PlayerTestHelper.equipWithMoney(player, 1);
 
 		housePortal.setOwner("");
 
 		action.fire(player , sentence , raiser);
-		assertThat(getReply(engine), containsString("Congratulation"));
+		assertThat(getReply(engine), containsString("Gratulacje"));
 		assertFalse(player.isEquipped("money"));
 	}
 

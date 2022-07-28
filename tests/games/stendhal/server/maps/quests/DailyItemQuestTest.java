@@ -75,61 +75,61 @@ public class DailyItemQuestTest {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
+		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "task");
-		assertTrue(getReply(npc).startsWith("Ados is in need of supplies. Go fetch "));
+		assertTrue(getReply(npc).startsWith("Ados potrzebuje zapasów. Zdobądź "));
 		en.step(player, "complete");
-		assertTrue(getReply(npc).startsWith("You didn't fetch "));
+		assertTrue(getReply(npc).startsWith("Jeszcze nie przyniosłeś "));
 		en.step(player, "bye");
-		assertEquals("Good day to you.", getReply(npc));
+		assertEquals("Życzę miłego dnia.", getReply(npc));
 
-		player.setQuest(questSlot, "pina colada;100");
-		Item item = ItemTestHelper.createItem("pina colada");
+		player.setQuest(questSlot, "napój z oliwką;100");
+		Item item = ItemTestHelper.createItem("napój z oliwką");
 		player.getSlot("bag").add(item);
 		final int xp = player.getXP();
 
 		en.step(player, "hi");
-		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
+		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "complete");
-		assertFalse(player.isEquipped("pina colada"));
+		assertFalse(player.isEquipped("napój z oliwką"));
 		assertThat(player.getXP(), greaterThan(xp));
 		assertTrue(player.isQuestCompleted(questSlot));
 		// [10:50] kymara earns 455960 experience points.
-		assertEquals("Good work! Let me thank you on behalf of the people of Ados!", getReply(npc));
+		assertEquals("Dobra robota! Pozwól sobie podziękować w imieniu obywateli Ados!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Good day to you.", getReply(npc));
+		assertEquals("Życzę miłego dnia.", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
+		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "task");
 		assertThat(getReply(npc),
-				is(oneOf("I can only give you a new quest once a day. Please check back in 24 hours.",
-						"I can only give you a new quest once a day. Please check back in 1 day.")));
+				is(oneOf("Możesz dostać tylko jedno zadanie dziennie. Proszę wróć za 24 godziny.",
+						"Możesz dostać tylko jedno zadanie dziennie. Proszę wróć za 1 dzień.")));
 		en.step(player, "bye");
-		assertEquals("Good day to you.", getReply(npc));
+		assertEquals("Życzę miłego dnia.", getReply(npc));
 
 		// -----------------------------------------------
 		player.setQuest(questSlot, "done;0");
 		// [10:51] Changed the state of quest 'daily_item' from 'done;1219834233092;1' to 'done;0'
 		en.step(player, "hi");
-		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
+		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "task");
-		assertTrue(getReply(npc).startsWith("Ados is in need of supplies. Go fetch "));
+		assertTrue(getReply(npc).startsWith("Ados potrzebuje zapasów. Zdobądź "));
 		en.step(player, "bye");
-		assertEquals("Good day to you.", getReply(npc));
+		assertEquals("Życzę miłego dnia.", getReply(npc));
 
 		// -----------------------------------------------
 
 		// [10:53] Changed the state of quest 'daily_item' from 'dwarf cloak;1219834342834;0' to 'dwarf cloak;0'
-		player.setQuest(questSlot, "dwarf cloak;0");
+		player.setQuest(questSlot, "płaszcz krasnoludzki;0");
 		en.step(player, "hi");
-		assertEquals("On behalf of the citizens of Ados, welcome.", getReply(npc));
+		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("You're already on a quest to fetch a dwarf cloak. Say #complete if you brought it! Perhaps there are no supplies of that left at all! You could fetch #another item if you like, or return with what I first asked you.", getReply(npc));
+		assertEquals("Jesteś na etapie poszukiwania płaszcz krasnoludzki, powiedz #załatwione, jak przyniesiesz. Być może nie ma tych przedmiotów! Możesz przynieść #inny przedmiot jeżeli chcesz lub wróć z tym, o który cię na początku prosiłem.", getReply(npc));
 		en.step(player, "another");
-		assertTrue(getReply(npc).startsWith("Ados is in need of supplies. Go fetch "));
+		assertTrue(getReply(npc).startsWith("Ados potrzebuje zapasów. Zdobądź "));
 		en.step(player, "bye");
-		assertEquals("Good day to you.", getReply(npc));
+		assertEquals("Życzę miłego dnia.", getReply(npc));
 
 	}
 }

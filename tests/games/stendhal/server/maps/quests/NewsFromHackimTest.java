@@ -69,37 +69,37 @@ public class NewsFromHackimTest {
 	@Test
 	public void testQuest() {
 		enHackim.step(player, "hi");
-		assertEquals("Hi stranger, I'm Hackim Easso, the blacksmith's assistant. Have you come here to buy weapons?", getReply(npcHackim));
+		assertEquals("Witaj nieznajomy. Zwą mnie Hackim Easso i jestem czeladnikiem kowala. Czy przybyłeś tu by kupić broń?", getReply(npcHackim));
 		enHackim.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npcHackim));
 
 		// -----------------------------------------------
 
 		enHackim.step(player, "hi");
-		assertEquals("Hi again, player. How can I #help you this time?", getReply(npcHackim));
+		assertEquals("Witaj ponownie player. W czym mogę #pomóc?", getReply(npcHackim));
 		enHackim.step(player, "task");
-		assertEquals("Pssst! C'mere... do me a favour and tell #Xin #Blanca that the new supply of weapons is ready, will you?", getReply(npcHackim));
+		assertEquals("Pssst! Podejdź tutaj... zrób mi przysługę i powiedz #Xin #Blanca że nowa dostawa broni jest gotowa. Powiesz mu?", getReply(npcHackim));
 		enHackim.step(player, "Xin");
-		assertEquals("You don't know who Xin is? Everybody at the tavern knows Xin. He's the guy who owes beer money to most of the people in Semos! So, will you do it?", getReply(npcHackim));
+		assertEquals("Nie wiesz kto to jest Xin? Każdy w oberży zna Xina. Jest to facet, który większości ludzi w Semos jest winny pieniądze za piwo! Zrobisz to?", getReply(npcHackim));
 		enHackim.step(player, "yes");
-		assertEquals("Thanks! I'm sure that #Xin will reward you generously. Let me know if you need anything else.", getReply(npcHackim));
+		assertEquals("Dziękuję! Jestem pewien, że #Xin dobrze Cię wynagrodzi. Daj znać jeżeli czegoś byś potrzebował.", getReply(npcHackim));
 		enHackim.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npcHackim));
 
 		// -----------------------------------------------
 
 		enXin.step(player, "hi");
-		assertEquals("Ah, it's ready at last! That is very good news indeed! Here, let me give you a little something for your help... Take this set of brand new leather leg armor! Let me know if you want anything else.", getReply(npcXin));
+		assertEquals("W końcu gotowe! To dobra wiadomość! Pozwól mi się odwdzięczyć za twoją pomoc... Weź te nowe skórzane spodnie! Daj mi znać jeżeli będziesz czegoś potrzebował.", getReply(npcXin));
 		// [22:38] rosie earns 10 experience points.
 		enXin.step(player, "task");
-		assertEquals("Talk to Hackim Easso in the smithy, he might want you.", getReply(npcXin));
+		assertEquals("Porozmawiaj z Hackim Easso w kuźni. Może on będzie Cię potrzebował.", getReply(npcXin));
 
 		// -----------------------------------------------
 
 		enHackim.step(player, "hi");
-		assertEquals("Hi again, player. How can I #help you this time?", getReply(npcHackim));
+		assertEquals("Witaj ponownie player. W czym mogę #pomóc?", getReply(npcHackim));
 		enHackim.step(player, "task");
-		assertEquals("Thanks, but I don't have any messages to pass on to #Xin. I can't smuggle so often now... I think Xoderos is beginning to suspect something. Anyway, let me know if there's anything else I can do.", getReply(npcHackim));
+		assertEquals("Dziękuję, ale nie mam wiadomości dla #Xin. Nie mogę zbyt często przemycać... sądzę, że Xoderos zaczyna coś podejrzewać. W każdym razie daj mi znać czy coś mógłbym zrobić dla Ciebie.", getReply(npcHackim));
 		enHackim.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npcHackim));
 	}

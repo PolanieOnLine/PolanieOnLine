@@ -39,24 +39,24 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 	private static final String CITY_ZONE_NAME = "0_kirdneh_city";
 	private static final String FOREST_ZONE_NAME = "0_fado_forest_s";
 
-	private static final String AMBER_TALK_GIVE_FLOWER = "Oh I see :) My son Jef asked you to take a look after me. He is such a nice and gentle boy! Please give him this zantedeschia here. I love these flowers! Please give it to him and tell him that I'm #fine.";
-	private static final String AMBER_TALK_LOST_FLOWER = "Oh you lost the flower? I'm afraid I don't have anymore. Speak with Jenny, by the windmill. She may be able to help you.";
-	private static final String AMBER_TALK_SEND_TO_JEF = "Please give that flower to my son and let him know that I am #fine.";
-	private static final String AMBER_TALK_REJECT = "I don't trust you. Your voice shivered while you told me my sons name. I bet he is fine and happy and safe.";
+	private static final String AMBER_TALK_GIVE_FLOWER = "O, rozumiem. :) Mój syn Jef poprosił Cię, żebyś mnie poszukał. Co za kochany i troskliwy chłopiec! Proszę, daj mu tę bielikrasę. Kocham te kwiaty! Bedzie wiedział, że ze mną wszystko #w #porządku, jeśli mu ją dasz!";
+	private static final String AMBER_TALK_LOST_FLOWER = "Oh zgubiłeś kwiatek? Obawiam się, że już ich nie mam. Porozmaiwaj z Jenny przy młynie. Może będzie mogła ci pomóc.";
+	private static final String AMBER_TALK_SEND_TO_JEF = "Proszę daj ten kwiatek mojemu synowi i daj mu znać, że u mnie wszystko #dobrze.";
+	private static final String AMBER_TALK_REJECT = "Nie ufam Ci. Twój głos drżał, gdy wymieniałeś imię mojego syna. Założę się, że ma się świetnie i jest bezpieczny.";
 
-	private static final String JEF_TALK_QUEST_OFFER = "I miss my mother! She wanted to go to the market but didn't return so far. Can you watch out for her please?";
-	private static final String JEF_TALK_QUEST_REJECT = "Oh. Ok. I can understand you... You look like a busy hero so I'll not try to convince you of helping me out.";
-	private static final String JEF_TALK_QUEST_ACCEPT = "Thank you so much! I hope that my #mum is ok and will return soon! Please tell her my name, #Jef, to prove that I sent you to her. If you have found her, return to me please and I'll give you something for your efforts.";
-	private static final String JEF_TALK_QUEST_REMIND = "I hope that you will find my mum soon and tell me, if she is #fine after.";
-	private static final String JEF_TALK_QUEST_OFFER_AGAIN = "It is a long time ago that you watched out for my mum. May I ask you to take a look at her again and tell me if she is still fine, please?";
-	private static final String JEF_TALK_QUEST_TOO_SOON = "I don't want to disturb my mum at the moment, it seems like she needs some time on herself, so you don't have to look out for her currently. You can ask me again in";
+	private static final String JEF_TALK_QUEST_OFFER = "Tęsknię za moją mamusią! Chciała pójść na rynek i do tej pory nie wróciła. Mógłbyś jej poszukać?";
+	private static final String JEF_TALK_QUEST_REJECT = "Och. Dobrze. Nie potrafię Cię zrozumieć... Wyglądasz na przepracowanego bohatera, więc nie będę Cię prosić o pomoc.";
+	private static final String JEF_TALK_QUEST_ACCEPT = "Dziękuję Ci bardzo! Mam nadzieję, że #mama trzyma się świetnie i prędko wróci! Proszę, powiedz jej moje imię, #Jef, żeby udownodnić, że to ja Cię do niej wysłałem. Jeśli znajdziesz ją i wrócisz do mnie, dam Ci coś w zamian, żeby pokazać Ci, jak wdzięczny jestem.";
+	private static final String JEF_TALK_QUEST_REMIND = "Mam nadzieję, że znajdziesz mamę szybko i powiesz mi, czy jest #cała i #zdrowa.";
+	private static final String JEF_TALK_QUEST_OFFER_AGAIN = "Minęło już trochę czasu, odkąd rozglądałeś się za moją mamą. Czy mogę Cię prosić, abyś poszukał jej raz jeszcze i powiedział mi, czy miewa się dobrze, ok?";
+	private static final String JEF_TALK_QUEST_TOO_SOON = "Nie chcę przeszkadzać mojej mamie, nim nie wróci z powrotem, więc nie musisz jej nic przekazać. Może zapytaj mnie raz jeszcze później... 2 dni.";
 
-	private static final String HISTORY_DEFAULT = "I found Jef in Kirdneh city. He waits there for his mum.";
-	private static final String HISTORY_REJECTED = "Finding his mum somewhere costs me too much time at the moment, that is why I rejected his request to find her.";
-	private static final String HISTORY_START = "Jef asked me to take a look at his mother Amber who didn't return from the market yet. I hope she will listen to me after I told her the name of her son, Jef.";
-	private static final String HISTORY_FOUND_MOM = "I found Amber, Jef's mother, while she walked around somewhere in Fado forest. She gave me a flower for her son and told me, that I have to tell him that she is fine.";
-	private static final String HISTORY_COMPLETED_REPEATABLE = "Its been a while since I checked on Jef's mother and should ask Jef, if he wants me to take a look after her again.";
-	private static final String HISTORY_COMPLETED_NOT_REPEATABLE = "I told Jef that his mother is fine. He wants to leave his mother alone for some time now.";
+	private static final String HISTORY_DEFAULT = "Znalazłem Jefa w Kirdneh. Czeka tam na swoją mamę.";
+	private static final String HISTORY_REJECTED = "Znalezienie jego mamy kosztuje mnie teraz zbyt wiele czasu, dlatego musiałem odrzucić jego prośbę o pomoc w znalezieniu jej.";
+	private static final String HISTORY_START = "Jef poprosił mnie, żebym rozejrzał się za jego matką, Amber, która nie wróciła z zakupów na rynku. Mam nadzieję, że wysłucha mnie, gdy powiem imię jej syna - Jefa.";
+	private static final String HISTORY_FOUND_MOM = "Znalazłem Amber, mamę Jefa, kiedy spacerowała gdzieś w lesie Fado. Dała mi kwiaty dla swojego syna i powiedziała mi, że te kwiaty powiedzą mu, że z nią wszystko w porządku.";
+	private static final String HISTORY_COMPLETED_REPEATABLE = "Przyniosłem Jefowi bielikrasę, a on bardzo się ucieszył, gdy dowiedził się, że jego mama, Amber, trzyma się dobrze. Chociaż Jef nie chce, żebym pilnował jej znowu, tzeba zapytać go, czy nie zmienił zdania.";
+	private static final String HISTORY_COMPLETED_NOT_REPEATABLE = "Przyniosłem Jefowi bielikrasę, a on bardzo się ucieszył, gdy dowiedział się, że jego mama, Amber, trzyma się dobrze. Chce zostawić mamę samą na jakiś czas.";
 
 	private SpeakerNPC npc;
 	private Engine en;
@@ -128,7 +128,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(AMBER_TALK_GIVE_FLOWER, getReply(npc));
 
 		assertEquals("found_mom", player.getQuest(questSlot));
-		assertTrue(player.isEquipped("zantedeschia"));
+		assertTrue(player.isEquipped("bielikrasa"));
 		assertFalse(npc.isTalking());
 		assertHistory(HISTORY_DEFAULT, HISTORY_FOUND_MOM);
 	}
@@ -136,7 +136,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testTalkToAmberAgain() {
 		player.setQuest(questSlot, "found_mom");
-		PlayerTestHelper.equipWithItem(player, "zantedeschia");
+		PlayerTestHelper.equipWithItem(player, "bielikrasa");
 
 		startTalkingToNpc("Amber");
 
@@ -172,7 +172,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals(AMBER_TALK_REJECT, getReply(npc));
 
 		assertNull(player.getQuest(questSlot));
-		assertFalse(player.isEquipped("zantedeschia"));
+		assertFalse(player.isEquipped("bielikrasa"));
 		assertFalse(npc.isTalking());
 		assertNoHistory();
 	}
@@ -180,22 +180,22 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testBackToJef() {
 		int initialXp = player.getXP();
-		PlayerTestHelper.equipWithItem(player, "zantedeschia");
+		PlayerTestHelper.equipWithItem(player, "bielikrasa");
 		player.setQuest(questSlot, "found_mom");
 
 		startTalkingToNpc("Jef");
 
 		en.step(player, "fine");
-		assertThat(getReply(npc), startsWith("Thank you"));
+		assertThat(getReply(npc), startsWith("Dziękuję"));
 
-		assertFalse(player.isEquipped("zantedeschia"));
-		assertTrue(player.isEquipped("red lionfish"));
+		assertFalse(player.isEquipped("bielikrasa"));
+		assertTrue(player.isEquipped("skrzydlica"));
 		assertGainKarma(15);
 		assertEquals(800, player.getXP() - initialXp);
 		assertEquals("done", player.getQuest(questSlot, 0));
 
 		en.step(player, "bye");
-		assertEquals("See you around.", getReply(npc));
+		assertEquals("Żegnaj.", getReply(npc));
 		assertHistory(HISTORY_DEFAULT, HISTORY_COMPLETED_NOT_REPEATABLE);
 	}
 

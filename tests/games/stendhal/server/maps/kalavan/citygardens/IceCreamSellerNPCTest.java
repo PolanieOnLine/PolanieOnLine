@@ -102,7 +102,7 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Nie sprzedaję bunchy of socks.", getReply(npc));
 
 		assertTrue(en.step(player, "buy 0 lody"));
-		assertEquals("Ile lodyy chcesz kupić?!", getReply(npc));
+		assertEquals("Ile lodów chcesz kupić?!", getReply(npc));
 
 		assertTrue(en.step(player, "buy lody"));
 		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
@@ -120,7 +120,7 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(equipWithMoney(player, 60));
 
 		assertTrue(en.step(player, "buy trzy lody"));
-		assertEquals("3 lodyy kosztuje 90. Chcesz kupić je?", getReply(npc));
+		assertEquals("3 lody kosztuje 90. Chcesz kupić je?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
@@ -132,17 +132,17 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Gratulacje! Oto twój lody!", getReply(npc));
-		assertTrue(player.isEquipped("icecream", 1));
+		assertTrue(player.isEquipped("lody", 1));
 
-		assertTrue(en.step(player, "buy icecream"));
+		assertTrue(en.step(player, "buy lody"));
 		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Gratulacje! Oto twój lody!", getReply(npc));
-		assertTrue(player.isEquipped("icecream", 2));
+		assertTrue(player.isEquipped("lody", 2));
 
-		assertTrue(en.step(player, "buy 0 lodys"));
-		assertEquals("Ile lodyy chcesz kupić?!", getReply(npc));
+		assertTrue(en.step(player, "buy 0 lody"));
+		assertEquals("Ile lodów chcesz kupić?!", getReply(npc));
 
 		// buying one lody by answering "yes" to npc's greeting
 		assertTrue(equipWithMoney(player, 30));
@@ -154,7 +154,7 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Gratulacje! Oto twój lody!", getReply(npc));
-		assertTrue(player.isEquipped("icecream", 3));
+		assertTrue(player.isEquipped("lody", 3));
 	}
 
 	/**

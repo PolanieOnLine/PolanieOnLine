@@ -37,6 +37,7 @@ import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.quests.MeetBunny;
+import games.stendhal.server.maps.quests.MeetGuslarz;
 import games.stendhal.server.maps.quests.MeetSanta;
 import marauroa.server.game.db.DatabaseFactory;
 import utilities.AchievementTestHelper;
@@ -69,7 +70,7 @@ public class StillBelievingAchievementTest extends ZonePlayerAndNPCTestImpl {
 		// zone required by quests
 		world.addRPZone("none", new StendhalRPZone("int_admin_playground"));
 
-		setNpcNames("Easter Bunny", "Santa");
+		setNpcNames("Zajączek Wielkanocny", "Święty Mikołaj", "Guślarz");
 		zone = setupZone(zoneName);
 		setZoneForPlayer(zoneName);
 
@@ -78,8 +79,10 @@ public class StillBelievingAchievementTest extends ZonePlayerAndNPCTestImpl {
 		// load quests
 		System.setProperty("stendhal.easterbunny", "");
 		System.setProperty("stendhal.santa", "");
+		System.setProperty("stendhal.guslarz", "");
 		questSystem.loadQuest(new MeetBunny());
 		questSystem.loadQuest(new MeetSanta());
+		questSystem.loadQuest(new MeetGuslarz());
 	}
 
 	@AfterClass
@@ -94,6 +97,8 @@ public class StillBelievingAchievementTest extends ZonePlayerAndNPCTestImpl {
 		doQuestBunny();
 		assertFalse(achievementReached());
 		doQuestSanta();
+		assertFalse(achievementReached());
+		doQuestGuslarz();
 
 		assertTrue(achievementReached());
 	}
@@ -117,7 +122,7 @@ public class StillBelievingAchievementTest extends ZonePlayerAndNPCTestImpl {
 		final String questSlot = "meet_bunny_" + year;
 		assertNull(player.getQuest(questSlot));
 
-		final SpeakerNPC bunny = npcs.get("Easter Bunny");
+		final SpeakerNPC bunny = npcs.get("Zajączek Wielkanocny");
 		assertNotNull(bunny);
 
 		final Engine en = bunny.getEngine();
@@ -129,11 +134,20 @@ public class StillBelievingAchievementTest extends ZonePlayerAndNPCTestImpl {
 	}
 
 	private void doQuestSanta() {
-
-		final SpeakerNPC santa = npcs.get("Santa");
+		final SpeakerNPC santa = npcs.get("Święty Mikołaj");
 		assertNotNull(santa);
 
 		final Engine en = santa.getEngine();
+
+		en.step(player, "hi");
+		assertEquals(ConversationStates.IDLE, en.getCurrentState());
+	}
+
+	private void doQuestGuslarz() {
+		final SpeakerNPC guslarz = npcs.get("Guślarz");
+		assertNotNull(guslarz);
+
+		final Engine en = guslarz.getEngine();
 
 		en.step(player, "hi");
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());

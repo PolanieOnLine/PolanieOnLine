@@ -89,7 +89,7 @@ public class LearnAboutKarma extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.ATTENDING,
-			"Wiedziałam ... pewnie otacza cię zła #karma.",
+			"Wiedziałam... pewnie otacza cię zła #karma.",
 			new MultipleActions(
 					new DecreaseKarmaAction(10.0),
 					new SetQuestAction(QUEST_SLOT, "done"),
@@ -101,8 +101,8 @@ public class LearnAboutKarma extends AbstractQuest {
 			"karma",
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_1,
-			"Gdy robisz dobre rzeczy dla innych takie jak #zadania dostajesz dobrą karmę. Dobra karma oznacza, że "
-			+ " będzie ci się powodzić w bitwach, w łowieniu ryb, poszukiwaniu złota i drogocennych kamieni. "
+			"Gdy robisz dobre rzeczy dla innych takie jak #zadania dostajesz dobrą karmę. Dobra karma oznacza, że"
+			+ " będzie ci się powodzić w bitwach, w łowieniu ryb, poszukiwaniu złota i drogocennych kamieni."
 			+ " Chcesz wiedzieć jaką masz teraz karmę?",
 			null);
 
@@ -123,18 +123,18 @@ public class LearnAboutKarma extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final long roundedkarma = Math.round(player.getKarma());
 					final String Yk = "Twoja karma ";
-					final String canseekarma = "Teraz zobaczymy jakiego koloru jest twoja karma. ";
+					final String canseekarma = "Teraz zobaczymy jakiego koloru jest twoja karma.";
 					final String rk = Long.toString(roundedkarma);
                     if (roundedkarma > 499 ) {
                         npc.say(Yk+"jest niesamowicie wysoka, "+rk+"! Musiałeś zrobić bardzo dużo dobrych uczynków. " + canseekarma + " Jest na niebiesko.");
                     } else if (roundedkarma > 99) {
                         npc.say(Yk+"jest wysoka, "+rk+". " + canseekarma + " Jest jeszcze na niebiesko.");
                     } else if (roundedkarma > 5) {
-                    	npc.say(Yk+"wynosi "+rk+" jest dobra. " + canseekarma + " Musisz uważać, zbliża się do koloru czerwonego.");
+                    	npc.say(Yk+"jest dobra i wynosi "+rk+". " + canseekarma + " Musisz uważać, zbliża się do granicy czerwonego.");
                     } else if (roundedkarma > -5) {
                         npc.say(Yk+"wynosi "+rk+". " + canseekarma + " Znajduje się w połowie skali.");
                     } else if (roundedkarma > -99) {
-                        npc.say(Yk+"to "+rk+" jest zła. " + canseekarma + " Postaraj się, aby była na niebiesko.");
+                        npc.say(Yk+"to "+rk+", nie jest zbyt dobra. " + canseekarma + " Postaraj się, aby była na granicy niebiesko.");
                     } else if (roundedkarma > -499) {
                         npc.say(Yk+"jest straszna, "+rk+"! " + canseekarma + " Jest na czerwono.");
                     } else {

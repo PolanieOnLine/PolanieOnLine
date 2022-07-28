@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.city;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,11 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.ListProducedItemDetailAction;
+import games.stendhal.server.entity.npc.action.ListProducedItemsOfClassAction;
+import games.stendhal.server.entity.npc.condition.TriggerIsProducedItemOfClassCondition;
 
 /**
  * Creates a woman NPC to help populate Ados
@@ -58,8 +63,18 @@ public class HolidayingWomanNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Cześć.");
 				addHelp("Kiedy spacerowałam po mieście, zobaczyłam tawernę. Wyglądała świetnie! Zaglądałeś do środka? Pachnie tam fantastycznie!");
-				addOffer("Jestem #ekspertką od spraw żywności, po tych wszystkich podróżach wakacyjnych!");
-				addQuest("Niestety, nie mam żadnego zadania dla Ciebie.");
+				addOffer("Jestem ekspertką od spraw #żywności, po tych wszystkich podróżach wakacyjnych!");
+				addQuest("Możesz spróbować każdego #jedzenia dostępnego u kucharzy i szefów kuchni w całej krainie. Mogę również ci opowiedzieć, czego próbowałam podczas moich podróży.");
+				addReply(Arrays.asList("food", "jedzenie", "żywność", "żywności"), null,
+						new ListProducedItemsOfClassAction("food", "Sądzę, że spróbowałam już wszystkiego, [#items]. Mogę opowiedzieć więcej o każdej żywności, jeśli chcesz."));
+				add(
+						ConversationStates.ATTENDING,
+						"",
+						new TriggerIsProducedItemOfClassCondition("food"),
+						ConversationStates.ATTENDING,
+						null,
+						new ListProducedItemDetailAction()
+					);
 				addJob("Hahaha! Jestem tutaj na urlopie i po prostu wyszłam na spacer.");
 				addGoodbye("Do widzenia.");
 			}

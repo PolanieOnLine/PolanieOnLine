@@ -74,19 +74,19 @@ public class KillSpiders extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (!player.hasQuest(QUEST_SLOT) || player.getQuest(QUEST_SLOT).equals("rejected")) {
-							raiser.say("Byłeś kiedyś w szkolnej piwnicy? Odkąd studenci eksperymentowali to pokój jest pełen pająków i niektóre mogą być niebezpieczne! Czy mógłbyś mi pomóc z tym 'małym' problemem?");
+							raiser.say(Grammar.genderVerb(player.getGender(), "Byłeś") + " kiedyś w szkolnej piwnicy? Odkąd studenci eksperymentowali to pokój jest pełen pająków i niektóre mogą być niebezpieczne! Czy " + Grammar.genderVerb(player.getGender(), "mógłbyś") + " mi pomóc z tym 'małym' problemem?");
 							raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 						}  else if (player.isQuestCompleted(QUEST_SLOT)) {
-							raiser.say("Już Cię wysłałem, abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " wszystkie potwory w piwnicy!");
+							raiser.say("Już Cię wysłałem, abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " wszystkie kreatury w piwnicy!");
 						}  else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 							final long delay = MathHelper.MILLISECONDS_IN_ONE_WEEK;
 							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
-								raiser.say("Przepraszam, ale nic dla Ciebie nie mam. Może mógłbyś wrócić później. Muszę posprzątać szkołę raz w tygodniu.");
+								raiser.say("Przepraszam, ale nic dla Ciebie nie mam. Może " + Grammar.genderVerb(player.getGender(), "mógłbyś") + " wrócić później. Muszę posprzątać szkołę raz w tygodniu.");
 								return;
 							}
-							raiser.say("Czy mógłbyś mi znowu pomóc?");
+							raiser.say("Czy " + Grammar.genderVerb(player.getGender(), "mógłbyś") + " mi znów pomóc?");
 							raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 						} else {
 							raiser.say("Dziękuję za pomoc. Teraz mogę spać spokojnie.");
@@ -191,11 +191,11 @@ public class KillSpiders extends AbstractQuest {
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 
 		if ("rejected".equals(questState)) {
-			history.add("Nie zgadzam się, aby pomóc Morgrin.");
+			history.add("Nie zgadzam się pomagać Morgrinowi.");
 			return history;
 		}
 		if ("killed".equals(questState)) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie pająki w piwnicy w szkole magów i " + Grammar.genderVerb(player.getGender(), "dostałem") + " mythical egg.");
+			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie pająki w piwnicy w szkole magów i " + Grammar.genderVerb(player.getGender(), "dostałem") + " mityczne jajo.");
 			return history;
 		}
 

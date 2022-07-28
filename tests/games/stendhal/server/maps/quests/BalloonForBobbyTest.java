@@ -79,38 +79,9 @@ public class BalloonForBobbyTest {
 
 		npc = SingletonRepository.getNPCList().get("Bobby");
 		en = npc.getEngine();
-		Outfit outfitNoBalloon = new Outfit(8, 7, 6, 5, 4, 3, 2, 1, 0);
-		Outfit outfitWithBalloon = new Outfit(9, 8, 7, 6, 5, 4, 3, 2, 1);
+		Outfit outfitWithBalloon = new Outfit(0, 8, 1, 6, 5, 4, 3, 2, 1);
 
 		// -----------------------------------------------
-
-		//Not really necessary
-		//assertEquals(player.getOutfit().getCode(), outfitNoBalloon.getCode());
-
-		// Player has NO BALLOON; NO Mine Town Weeks
-		player.setOutfit(outfitNoBalloon);
-
-		en.step(player, "hi");
-		assertEquals("Cześć czy ten balonik jest dla mnie?", getReply(npc));
-		en.step(player, "help");
-		assertEquals("I wonder if a #balloon could fly high enough to touch the clouds...", getReply(npc));
-		en.step(player, "job");
-		assertEquals("A Job? Is that something you can eat?", getReply(npc));
-		en.step(player, "balloon");
-		if (player.getQuest(questSlot) == null || player.getQuest(questSlot, 0).equals("rejected")) {
-			assertEquals("One day, i will have enough balloons to fly away!", getReply(npc));
-		} else {
-			assertEquals("You don't even have a balloon for me :(", getReply(npc));
-		}
-		en.step(player, "quest");
-		if (player.getQuest(questSlot) == null || player.getQuest(questSlot, 0).equals("rejected")) {
-			assertEquals("Would you get me a #balloon? Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
-		} else {
-			assertEquals("I hope you can get me a #balloon soon. Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
-		}
-		en.step(player, "bye");
-		assertEquals("Good bye.", getReply(npc));
-
 
 		// Player HAS balloon; NO Mine Town Weeks
 		// Player says "Yes" straight out
@@ -118,19 +89,19 @@ public class BalloonForBobbyTest {
 
 
 		en.step(player, "hi");
-		assertEquals("Hello, is that balloon for me?", getReply(npc));
+		assertEquals("Cześć! Czy ten balonik jest dla mnie?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Yippie! Fly balloon! Fly!", getReply(npc));
+		assertEquals("Hurra! Leć baloniku! Leć!", getReply(npc));
 		en.step(player, "balloon");
-		assertEquals("You don't even have a balloon for me :(", getReply(npc));
+		assertEquals("Nie masz dla mnie balonika :(", getReply(npc));
 		en.step(player, "help");
-		assertEquals("I wonder if a #balloon could fly high enough to touch the clouds...", getReply(npc));
+		assertEquals("Zastanawiam się czy dzięki #balonikowi będę mógł się wznieść wystarczająco wysoko, aby dotknąć chmur...", getReply(npc));
 		en.step(player, "job");
-		assertEquals("A Job? Is that something you can eat?", getReply(npc));
+		assertEquals("Praca? Czy to coś takiego co mogę zjeść?", getReply(npc));
 		en.step(player, "quest");
-		assertEquals("I hope you can get me a #balloon soon. Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
+		assertEquals("Mam nadzieję, że wkrótce zdobędziesz dla mnie #'balonik'. Chyba, że już jest święto zwane Mine Town Weeks, bo wtedy sam będę mógł zdobyć :)", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Good bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 
 		// Player HAS balloon; NO Mine Town Weeks
@@ -138,27 +109,27 @@ public class BalloonForBobbyTest {
 		player.setOutfit(outfitWithBalloon);
 
 		en.step(player, "hi");
-		assertEquals("Hello, is that balloon for me?", getReply(npc));
+		assertEquals("Cześć! Czy ten balonik jest dla mnie?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("!me pouts.", getReply(npc));
+		assertEquals("!me dąsa się.", getReply(npc));
 		en.step(player, "help");
-		assertEquals("I wonder if a #balloon could fly high enough to touch the clouds...", getReply(npc));
+		assertEquals("Zastanawiam się czy dzięki #balonikowi będę mógł się wznieść wystarczająco wysoko, aby dotknąć chmur...", getReply(npc));
 		en.step(player, "job");
-		assertEquals("A Job? Is that something you can eat?", getReply(npc));
+		assertEquals("Praca? Czy to coś takiego co mogę zjeść?", getReply(npc));
 		en.step(player, "quest");
-		assertEquals("I hope you can get me a #balloon soon. Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
+		assertEquals("Mam nadzieję, że wkrótce zdobędziesz dla mnie #'balonik'. Chyba, że już jest święto zwane Mine Town Weeks, bo wtedy sam będę mógł zdobyć :)", getReply(npc));
 		en.step(player, "balloon");
-		assertEquals("Is that balloon for me?", getReply(npc));
+		assertEquals("Czy ten balonik jest dla mnie?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("!me pouts.", getReply(npc));
+		assertEquals("!me dąsa się.", getReply(npc));
 		en.step(player, "balloon");
-		assertEquals("Is that balloon for me?", getReply(npc));
+		assertEquals("Czy ten balonik jest dla mnie?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Yippie! Fly balloon! Fly!", getReply(npc));
+		assertEquals("Hurra! Leć baloniku! Leć!", getReply(npc));
 		en.step(player, "balloon");
-		assertEquals("You don't even have a balloon for me :(", getReply(npc));
+		assertEquals("Nie masz dla mnie balonika :(", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Good bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertTrue(player.isQuestCompleted(questSlot));
 	}
@@ -167,8 +138,8 @@ public class BalloonForBobbyTest {
 
 		npc = SingletonRepository.getNPCList().get("Bobby");
 		en = npc.getEngine();
-		Outfit outfitNoBalloon = new Outfit(4, 3, 2, null, 0, null, 1, null, 0);
-		Outfit outfitWithBalloon = new Outfit(5, 4, 3, null, 0, null, 2, null, 1);
+		Outfit outfitNoBalloon = new Outfit(3, 3, 3, null, 4, null, 7, 1, 0);
+		Outfit outfitWithBalloon = new Outfit(3, 3, 3, null, 4, null, 7, 1, 1);
 
 		// Mine Town weeks are on: it should not matter if player has a balloon or not
 		System.setProperty("stendhal.minetown", "true");
@@ -179,21 +150,21 @@ public class BalloonForBobbyTest {
 		en.step(player, "hi");
 		assertEquals("Hm?", getReply(npc));
 		en.step(player, "help");
-		assertEquals("I wonder if a #balloon could fly high enough to touch the clouds...", getReply(npc));
+		assertEquals("Zastanawiam się czy dzięki #balonikowi będę mógł się wznieść wystarczająco wysoko, aby dotknąć chmur...", getReply(npc));
 		en.step(player, "quest");
 		if (player.getQuest(questSlot) == null || player.getQuest(questSlot, 0).equals("rejected")) {
-			assertEquals("Would you get me a #balloon? Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
+			assertEquals("Czy mógłbyś zdobyć dla mnie #'balonik'? Nim zaczną się dni miasta, bo wtedy sam będę mógł zdobyć :)", getReply(npc));
 		} else {
-			assertEquals("I hope you can get me a #balloon soon. Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
+			assertEquals("Mam nadzieję, że wkrótce zdobędziesz dla mnie #'balonik'. Chyba, że już jest święto zwane Mine Town Weeks, bo wtedy sam będę mógł zdobyć :)", getReply(npc));
 		}
 		en.step(player, "balloon");
 		if (player.getQuest(questSlot) == null || player.getQuest(questSlot, 0).equals("rejected")) {
-			assertEquals("One day, i will have enough balloons to fly away!", getReply(npc));
+			assertEquals("Pewnego dnia będę miał wystarczająco dużo baloników, aby odlecieć!", getReply(npc));
 		} else {
-			assertEquals("The clouds told me that the mine town weeks are still going - I can get my own balloons. Come back when mine town weeks are over :)", getReply(npc));
+			assertEquals("Chmury podpowiedziały mi, że dni mine town wciąż trwają - Mogę sam zdobyć balonik. Wróć, gdy skończy się święto :)", getReply(npc));
 		}
 		en.step(player, "bye");
-		assertEquals("Good bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		System.getProperties().remove("stendhal.minetown");
 
@@ -205,21 +176,21 @@ public class BalloonForBobbyTest {
 		en.step(player, "hi");
 		assertEquals("Hm?", getReply(npc));
 		en.step(player, "help");
-		assertEquals("I wonder if a #balloon could fly high enough to touch the clouds...", getReply(npc));
+		assertEquals("Zastanawiam się czy dzięki #balonikowi będę mógł się wznieść wystarczająco wysoko, aby dotknąć chmur...", getReply(npc));
 		en.step(player, "quest");
 		if (player.getQuest(questSlot) == null || player.getQuest(questSlot, 0).equals("rejected")) {
-			assertEquals("Would you get me a #balloon? Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
+			assertEquals("Czy mógłbyś zdobyć dla mnie #'balonik'? Nim zaczną się dni miasta, bo wtedy sam będę mógł zdobyć :)", getReply(npc));
 		} else {
-			assertEquals("I hope you can get me a #balloon soon. Unless the mine town weeks are currently on, then I can get my own :)", getReply(npc));
+			assertEquals("Mam nadzieję, że wkrótce zdobędziesz dla mnie #'balonik'. Chyba, że już jest święto zwane Mine Town Weeks, bo wtedy sam będę mógł zdobyć :)", getReply(npc));
 		}
 		en.step(player, "balloon");
 		if (player.getQuest(questSlot) == null || player.getQuest(questSlot, 0).equals("rejected")) {
-			assertEquals("One day, i will have enough balloons to fly away!", getReply(npc));
+			assertEquals("Pewnego dnia będę miał wystarczająco dużo baloników, aby odlecieć!", getReply(npc));
 		} else {
-			assertEquals("The clouds told me that the mine town weeks are still going - I can get my own balloons. Come back when mine town weeks are over :)", getReply(npc));
+			assertEquals("Chmury podpowiedziały mi, że dni mine town wciąż trwają - Mogę sam zdobyć balonik. Wróć, gdy skończy się święto :)", getReply(npc));
 		}
 		en.step(player, "bye");
-		assertEquals("Good bye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		System.getProperties().remove("stendhal.minetown");
 	}

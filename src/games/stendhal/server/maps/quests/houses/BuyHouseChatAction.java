@@ -59,7 +59,7 @@ final class BuyHouseChatAction extends HouseChatAction implements ChatAction {
 
 				if (player.equipToInventoryOnly(key)) {
 					raiser.say("Gratulacje, a oto i klucz do " + doorId
-							   + ". Upewnij się, że zmieniłeś zamki o ile zgubiłeś klucze. Czy chcesz kupić zapasowy klucz w cenie  "
+							   + "! Upewnij się, że zmieniłeś zamki o ile zgubiłeś klucze. Czy chcesz kupić zapasowy klucz w cenie "
 							   + HouseChatAction.COST_OF_SPARE_KEY + " money?");
 
 					player.drop("money", cost);

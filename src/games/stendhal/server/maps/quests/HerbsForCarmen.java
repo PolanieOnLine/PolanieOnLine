@@ -137,7 +137,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 		npc.add(
 			ConversationStates.ATTENDING,
-			"jabłko",
+			Arrays.asList("apples", "jabłko"),
 			null,
 			ConversationStates.ATTENDING,
 			"Jabłka mają wiele witamin. Rosną na wschód od Semos, ale ich pełen talerz jest także w Matinternecie.",
@@ -145,7 +145,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 		npc.add(
 			ConversationStates.ATTENDING,
-			"polano",
+			Arrays.asList("wood", "polano"),
 			null,
 			ConversationStates.ATTENDING,
 			"Drzewo to świetny materiał. Można go wykorzystać na wiele sposobów. Znajdź drzewo w lesie i je zetnij.",
@@ -153,7 +153,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 		npc.add(
 			ConversationStates.ATTENDING,
-			Arrays.asList("pieczarka", "borowik"),
+			Arrays.asList("button mushroom", "porcini", "pieczarka", "borowik"),
 			null,
 			ConversationStates.ATTENDING,
 			"Na własne oczy widziałam całe polany grzybów w Zakopanem.",
@@ -173,7 +173,7 @@ public class HerbsForCarmen extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj ponownie. Czy przyniosłeś #zapasy ziół leczniczych?",
+				"Witaj ponownie. Mogę cię #uleczyć, lub jeśli przyniosłeś mi #składniki, z radością je wezmę!",
 				null);
 
 		/* player asks what exactly is missing (says ingredients) */
@@ -185,12 +185,12 @@ public class HerbsForCarmen extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.QUESTION_2,
-				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Posiadasz te przedmioty?"));		
+				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Przyniosłeś coś?"));		
 
 		/* player says he has a required item with him (says yes) */
 		npc.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.QUESTION_2, "Dobrze, a co masz?",
+				ConversationStates.QUESTION_2, "Świetnie! Co przyniosłeś?",
 				null);
 
 		ChatAction completeAction = new  MultipleActions(
@@ -216,14 +216,14 @@ public class HerbsForCarmen extends AbstractQuest {
 			}
 			// also allow to understand the misspelled "porcinis"
 			if (itemName.equals("borowik")) {
-				sl.add("borowik");
+				sl.add("porcinis");
 			}
 
 			npc.add(ConversationStates.QUESTION_2, sl, null,
 					ConversationStates.QUESTION_2, null,
 					new CollectRequestedItemsAction(
 							itemName, QUEST_SLOT,
-							"Dobra, masz coś jeszcze?"," " +
+							"Dobrze, a masz coś jeszcze?"," " +
 							Grammar.quantityplnoun(entry.getValue(), itemName) + " już przyniosłeś dla mnie, ale dziękuję i tak.",
 							completeAction, ConversationStates.ATTENDING));
 		}
@@ -232,7 +232,7 @@ public class HerbsForCarmen extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.NO_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Dobrze i daj mi znać jeśli mogę ci kiedyś #pomóc..", 
+				"Dobrze, po prostu daj mi znać, jeśli będę mogła #pomóc Ci w jakiś sposób.", 
 				null);
 
 		/* player says he didn't bring any items to different question */

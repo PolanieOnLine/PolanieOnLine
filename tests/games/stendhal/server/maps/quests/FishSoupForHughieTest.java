@@ -72,17 +72,17 @@ public class FishSoupForHughieTest {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("Goeden dag!", getReply(npc));
+		assertEquals("Dzień dobry!", getReply(npc));
 		en.step(player, "offer");
-		assertEquals("I sell butter and milk.", getReply(npc));
+		assertEquals("Sprzedaję osełka masła oraz mleko.", getReply(npc));
 		en.step(player, "help");
-		assertEquals("I can sell you a bottle of milk or some butter from our dairy cows if you like.", getReply(npc));
+		assertEquals("Mogę sprzedać Ci butelkę mleka albo trochę masła, prosto od naszych kochanych krów! Jeśli chcesz, oczywiście.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("If you can write Junit tests then my daughter needs you. Just ask Diogenes how to help the project.", getReply(npc));
+		assertEquals("Gdybyś potrafił rozwiązywać Junit testy, moja córka potrzebowałaby Cię. Zapytaj Diogenesa, jak możesz pomóc jej w projekcie.", getReply(npc));
 		en.step(player, "job");
-		assertEquals("My husband runs this farm, and mostly I look after his younger sister and her boy, they are upstairs. If you could check on them that'd be a help, I heard her crying earlier.", getReply(npc));
+		assertEquals("Mój mąż prowadzi to gospodarstwo, a ja głównie opiekuję się jego młodszą siostrą i jej chłopakiem, są na górze. Jeżeli możesz powiedzieć coś pomocnego na ich temat, to mów. Słyszałam wcześniej jej płacz...", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Tot ziens.", getReply(npc));
+		assertEquals("Żegnaj.", getReply(npc));
 
 	}
 
@@ -95,70 +95,70 @@ public class FishSoupForHughieTest {
 		assertNull(player.getQuest(questSlot));
 
 		en.step(player, "hi");
-		assertEquals("Hi, I really could do with a #favor, please.", getReply(npc));
+		assertEquals("Cześć, naprawdę przydałaby mi się #przysługa, proszę.", getReply(npc));
 		en.step(player, "favor");
-		assertEquals("My poor boy is sick and the potions I give him aren't working! Please could you fetch him some fish soup?", getReply(npc));
+		assertEquals("Mój biedny chłopak jest chory, a lekarstwa, które mu podaję, nie działają! Proszę, przyniesiesz dla niego zupę rybną?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Oh no, please, he's so sick.", getReply(npc));
+		assertEquals("Nie, proszę! On jest naprawdę bardzo chory.", getReply(npc));
 
 		assertEquals(player.getQuest(questSlot), "rejected");
 
 		en.step(player, "task");
-		assertEquals("My poor boy is sick and the potions I give him aren't working! Please could you fetch him some fish soup?", getReply(npc));
+		assertEquals("Mój biedny chłopak jest chory, a lekarstwa, które mu podaję, nie działają! Proszę, przyniesiesz dla niego zupę rybną?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you! You can ask Florence Bouillabaisse to make you fish soup. I think she's in Ados market somewhere.", getReply(npc));
+		assertEquals("Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		assertEquals(player.getQuest(questSlot), "start");
 
 		en.step(player, "hi");
-		assertEquals("You're back already? Hughie is getting sicker! Don't forget the fish soup for him, please. I promise to reward you.", getReply(npc));
+		assertEquals("Już wróciłeś? Hugie jest coraz bardziej chory! Nie zapomnij o zupie rybnej dla niego, bardzo Cię proszę! Obiecuję, że sowicie Cię wynagrodzę!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("You already promised me to bring me some fish soup for Hughie! Please hurry!", getReply(npc));
+		assertEquals("Obiecałeś mi już, że przyniesiesz zupę rybną dla Hughiego! Pospiesz się, proszę!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
-		PlayerTestHelper.equipWithItem(player, "fish soup");
+		PlayerTestHelper.equipWithItem(player, "zupa rybna");
 
 		en.step(player, "hi");
-		assertEquals("Hi, you've got fish soup, I see, is that for Hughie?", getReply(npc));
+		assertEquals("Hej, widzę, że masz zupę rybną, czy ona jest dla Hugiego?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Oh...but my poor boy ... ", getReply(npc));
+		assertEquals("Och... ale mój biedny chłopczyk...", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		// get values to test after reward
 		final int xp = player.getXP();
 		final double karma  = player.getKarma();
 
 		en.step(player, "hi");
-		assertEquals("Hi, you've got fish soup, I see, is that for Hughie?", getReply(npc));
+		assertEquals("Hej, widzę, że masz zupę rybną, czy ona jest dla Hugiego?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you! I will always be in your favour. I will feed it to Hughie when he wakes. Please take these potions, they did nothing for him.", getReply(npc));
+		assertEquals("Dziękuję! Jestem Ci niesamowicie wdzięczna za Twoją przysługę. Nakarmię Hughiego, gdy się obudzi. Proszę, weź te mikstury - Hughiemu nie pomagają i tak.", getReply(npc));
 		// [17:37] kymara earns 200 experience points.
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
         // test reward
 		assertEquals(xp + 200, player.getXP());
 		assertThat(player.getKarma(), greaterThan(karma));
-		assertTrue(player.isEquipped("potion", 10));
-		assertFalse(player.isEquipped("fish soup"));
+		assertTrue(player.isEquipped("eliksir", 10));
+		assertFalse(player.isEquipped("zupa rybna"));
 		assertTrue(quest.isCompleted(player));
 
 		en.step(player, "hi");
-		assertEquals("Hello again.", getReply(npc));
+		assertEquals("Witaj ponownie.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Hughie is sleeping off his fever now and I'm hopeful he recovers. Thank you so much.", getReply(npc));
+		assertEquals("Teraz Hugie śpi - ma gorączkę. Mam nadzieję, że wyzdrowieje. Jestem Ci dozgonnie wdzięczna!", getReply(npc));
 		en.step(player, "offer");
 		assertNull(getReply(npc));
 		en.step(player, "job");
-		assertEquals("My brother runs this farm. I just look after my son here.", getReply(npc));
+		assertEquals("Mój brat opiekuje się tą farmą. Ja tylko opiekuję się tutaj synem.", getReply(npc));
 		en.step(player, "help");
-		assertEquals("Philomena can sell you milk and butter.", getReply(npc));
+		assertEquals("Philomena sprzeda Ci mleko i masło.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 	}
 
@@ -174,21 +174,21 @@ public class FishSoupForHughieTest {
 		// [17:37] Changed the state of quest 'fishsoup_for_hughie' from '1294594642173' to '-1'
 
 		en.step(player, "hi");
-		assertEquals("Hello again.", getReply(npc));
+		assertEquals("Witaj ponownie.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("My Hughie is getting sick again! Please could you bring another bowl of fish soup? It helped last time.", getReply(npc));
+		assertEquals("Mój Hughie znowu zaczyna chorować! Możesz przynieść mi jeszcze jedną zupę rybną? Pomóż mi, proszę, ostatni raz!", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Oh no, please, he's so sick.", getReply(npc));
+		assertEquals("Nie, proszę! On jest naprawdę bardzo chory.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("Hi, I really could do with a #favor, please.", getReply(npc));
+		assertEquals("Cześć, naprawdę przydałaby mi się #przysługa, proszę.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("My poor boy is sick and the potions I give him aren't working! Please could you fetch him some fish soup?", getReply(npc));
+		assertEquals("Mój biedny chłopak jest chory, a lekarstwa, które mu podaję, nie działają! Proszę, przyniesiesz dla niego zupę rybną?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you! You can ask Florence Bouillabaisse to make you fish soup. I think she's in Ados market somewhere.", getReply(npc));
+		assertEquals("Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Goodbye.", getReply(npc));
+		assertEquals("Do widzenia.", getReply(npc));
 	}
 }

@@ -39,7 +39,7 @@ public class HealerNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Carmen") {
 			@Override
 			public void createDialog() {
-				addGreeting("Halo jak mogę ci #pomóc");
+				addGreeting("Halo, jak mogę ci #pomóc?");
 				addJob("Moja niezwykła moc pomaga mi uleczyć rany. Sprzedaję także lecznicze mikstury i antidotum.");
 				addHelp("Mogę Cię za darmo uleczyć. Powiedz tylko #ulecz lub możesz wziąć przygotowane przeze mnie lekarstwo ze sobą na podróż. Jeśli jesteś ciekawy jaka jest całą moja #oferta, zapytaj mnie.");
 				addEmotionReply("hugs", "hugs");

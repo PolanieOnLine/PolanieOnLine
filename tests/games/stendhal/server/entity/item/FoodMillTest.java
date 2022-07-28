@@ -64,10 +64,10 @@ public class FoodMillTest {
 		PlayerTestHelper.equipWithItemToSlot(user, "trzcina cukrowa", "rhand");
 
 		fm.onUsed(user);
-		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
 		PlayerTestHelper.equipWithItem(user, "pusty worek");
 		fm.onUsed(user);
-		assertTrue(user.isEquipped("cukier"));
+		assertFalse(user.isEquipped("cukier"));
 	}
 	@Test
 	public void testOnUsedScrollEraser() throws Exception {
@@ -101,8 +101,8 @@ public class FoodMillTest {
 		user.drop("zwój zapisany");
 		PlayerTestHelper.equipWithItemToSlot(user, "zwój zapisany","rhand");
 		fm.onUsed(user);
-		assertTrue(user.isEquipped("niezapisany zwój"));
-		assertFalse(user.isEquipped("zwój zapisany"));
+		assertFalse(user.isEquipped("niezapisany zwój"));
+		assertTrue(user.isEquipped("zwój zapisany"));
 	}
 
 	@Test

@@ -64,12 +64,12 @@ public class PlinksToy extends AbstractQuest {
 					new QuestNotCompletedCondition(QUEST_SLOT),
 					new NotCondition(new PlayerHasItemWithHimCondition("pluszowy miś"))),
 			ConversationStates.QUEST_OFFERED,
-			"*płacz* Wilki są w #parku! *płacz* Uciekłem, ale upuściłem mojego #misia! Proszę przyniesiesz go dla mnie? *pociągniecie nosem* Proszę?",
+			"*płacz* Wilki są w #parku! *płacz* Uciekłem, ale upuściłem mojego #misia! Proszę przyniesiesz go dla mnie? *siąknięcie* Proszę?",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES, null,
-			ConversationStates.IDLE, "*pociągnięcie nosem* Dziękuję bardzo! *uśmiech*",
+			ConversationStates.IDLE, "*siąknięcie* Dziękuję bardzo! *uśmiech*",
 			new SetQuestAction(QUEST_SLOT, "start"));
 
 		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES, null,
@@ -90,7 +90,9 @@ public class PlinksToy extends AbstractQuest {
 			"Moi rodzice mówili mi żebym sam nie chodził do parku, ale się zgubiłem podczas zabawy... Proszę nie mów moim rodzicom! Czy możesz mi przynieść misia #teddy z powrotem?",
 			null);
 
-		npc.add(ConversationStates.QUEST_OFFERED, "pluszowy miś", null,
+		npc.add(ConversationStates.QUEST_OFFERED,
+			Arrays.asList("teddy bear", "pluszowy miś"),
+			null,
 			ConversationStates.QUEST_OFFERED,
 			"Miś jest moją ulubioną zabawką! Przyniesiesz mi ją?",
 			null);

@@ -89,16 +89,14 @@ public class ImperialPrincess extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Nie mogę uwolnić więźniów w piwnicy, ale mogę zrobić jedną rzecz. Złagodzić im ból. " +
-				"Potrzebuję #ziół do tego.",
+				"Nie mogę uwolnić więźniów w piwnicy, ale mogę zrobić jedną rzecz. Złagodzić im ból. Potrzebuję #ziół do tego.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT,"recommended"),
 				ConversationStates.ATTENDING,
-				"Porozmawiaj z moim ojcem, Królem Cozartem. Zapytałam się go o przyznanie Tobie obywatelstwa Kalavan, " +
-				"aby wyrazić Ci moją wdzięczność.",
+				"Porozmawiaj z moim ojcem, Królem Cozartem. Zapytałam się go o przyznanie Tobie obywatelstwa Kalavan, aby wyrazić Ci moją wdzięczność.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -133,10 +131,10 @@ public class ImperialPrincess extends AbstractQuest {
 								+ " #arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, "
 								+ Integer.toString(1 + player.getLevel()
 										/ POTION_DIVISOR)
-								+ " eliksir i "
+								+ " #eliksir i "
 								+ Integer.toString(1 + player.getLevel()
 										/ ANTIDOTE_DIVISOR)
-								+ " antidotum. Zdobędziesz to dla mnie?");
+								+ " #antidotum. Zdobędziesz to dla mnie?");
 					}
 				});
 
@@ -145,8 +143,7 @@ public class ImperialPrincess extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Dziękuję! Musimy być subtelni w tej sprawie. Nie chcę, aby naukowcy coś podejrzewali i wtrącili się. " +
-				"Gdy wrócisz ze składnikami to powiedz mi hasło #zioła.",
+				"Dziękuję! Musimy być subtelni w tej sprawie. Nie chcę, aby naukowcy coś podejrzewali i wtrącili się. Gdy wrócisz ze składnikami to powiedz mi hasło #zioła.",
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -166,16 +163,13 @@ public class ImperialPrincess extends AbstractQuest {
 		// give some hints of where to find herbs. No warranties!
 		npc.addReply(
 				"kokuda",
-				"Wiem, że to zioło można tylko znaleźć na wyspie Athor, sądzę, że tam dobrze" +
-				"strzegą sekretu.");
+				"Wiem, że to zioło można tylko znaleźć na wyspie Athor, sądzę, że tam dobrze strzegą sekretu.");
 		npc.addReply(
 				"sclaria",
-				"Uzdrowiciele, którzy używają sclaria zbierają je w różnych miejscach w okolicach Or'ril, w lesie Nalwor. " +
-				" Jestem pewna, że znajdziesz je bez problemu.");
+				"Uzdrowiciele, którzy używają sclaria zbierają je w różnych miejscach w okolicach Or'ril, w lesie Nalwor. Jestem pewna, że znajdziesz je bez problemu.");
 		npc.addReply(
 				"kekik",
-				"Przyjaciel mojej pokojówki Jenny ma źródło niedaleko niego. Mogą występować na lesistych terenach nad rzeką we wschodniej" +
-				" części Nalwor.");
+				"Przyjaciel mojej pokojówki Jenny ma źródło niedaleko niego. Mogą występować na lesistych terenach nad rzeką we wschodniej części Nalwor.");
 	}
 
 	private void step_2() {
@@ -225,11 +219,11 @@ public class ImperialPrincess extends AbstractQuest {
 								//reminder of the items to bring
 								raiser.say("Cii! Nie mów nic dopóki nie będziesz miał "
 									+ required_arandula
-									+ " arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, "
+									+ " #arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, "
 									+ required_potion
-									+ " eliksir i "
+									+ " #eliksir oraz "
 									+ required_antidote
-									+ " antidotum. Nie chce, aby ktoś się domyślił naszego przepisu.");
+									+ " #antidotum. Nie chce, aby ktoś się domyślił naszego przepisu.");
 							}
 						} catch (final NumberFormatException e) {
 							// Should not happen but catch the exception

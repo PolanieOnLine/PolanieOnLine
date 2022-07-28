@@ -82,7 +82,7 @@ public class BeerForHayunnTest {
 				getReply(hayunn));
 		en.step(player, "quest");
 		assertEquals(
-				"My mouth is dry, but I can't be seen to abandon this teaching room! Could you bring me some #beer from the #tavern?",
+				"Zaschło mi w gardle, ale nie mogę opuścić mojego posterunku! Czy mógłbyś mi przynieść #sok z chmielu z #oberży?",
 				getReply(hayunn));
 		en.step(player, "yes");
 		assertTrue(player.hasQuest("beer_hayunn"));
@@ -106,11 +106,11 @@ public class BeerForHayunnTest {
 		assertTrue(player2.isQuestCompleted("meet_hayunn"));
 		assertTrue(hayunn.isTalking());
 		assertEquals(
-			"Hi. I bet you've been sent here to learn about adventuring from me. First, lets see what you're made of. Go and kill a rat outside, you should be able to find one easily. Do you want to learn how to attack it, before you go?",
+				"Witaj! Założę się, że przysłano Cię tutaj byś dowiedział się nieco o przygodach jakie Cię tu spotkają. Najpierw zobaczmy z jakiej gliny jesteś ulepiony. Idź i zabij szczura wałęsającego się gdzieś na zewnątrz. Czy chcesz się nauczyć jak atakować?",
 				getReply(hayunn));
 		en.step(player2, "quest");
 		assertEquals(
-				"My mouth is dry, but I can't be seen to abandon this teaching room! Could you bring me some #beer from the #tavern?",
+				"Zaschło mi w gardle, ale nie mogę opuścić mojego posterunku! Czy mógłbyś mi przynieść #sok z chmielu z #oberży?",
 				getReply(hayunn));
 		en.step(player2, "no");
 		assertTrue(player2.hasQuest("beer_hayunn"));
@@ -131,23 +131,20 @@ public class BeerForHayunnTest {
 		assertEquals(history, bfh.getHistory(player));
 
 		player.setQuest("beer_hayunn", "rejected");
-		history.add("I do not want to make Hayunn drunk.");
+		history.add("Nie chcę kupować soku z chmielu dla Hayunn.");
 		assertEquals(history, bfh.getHistory(player));
 
 		player.setQuest("beer_hayunn", "start");
-		history.remove("I do not want to make Hayunn drunk.");
-		history.add("I promised to buy him a beer from Margaret in Semos Tavern.");
+		history.remove("Nie chcę kupować soku z chmielu dla Hayunn.");
+		history.add("Obiecałem, że kupię mu sok z chmielu od Margaret w tawernie Semos.");
 		assertEquals(history, bfh.getHistory(player));
 
 		player.equipToInventoryOnly(SingletonRepository.getEntityManager().getItem("sok z chmielu"));
-		history.add("I have a bottle of beer.");
+		history.add("Mam już sok z chmielu.");
 		assertEquals(history, bfh.getHistory(player));
 		player.setQuest("beer_hayunn", "done");
-		history.add("I gave the beer to Hayunn. He paid me 20 gold coins and I got some experience.");
+		history.add("Dałem sok z chmielu Hayunn. Otrzymałem 20 złotych monet i kilka lekcji z jego doświadczenia.");
 		assertEquals(history, bfh.getHistory(player));
 
 	}
-
-
-
 }

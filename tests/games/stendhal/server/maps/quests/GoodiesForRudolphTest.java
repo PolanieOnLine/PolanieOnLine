@@ -45,22 +45,22 @@ public class GoodiesForRudolphTest extends ZonePlayerAndNPCTestImpl {
 	private static final String ITEM_REINDEER_MOSS = "mech renifera";
 	private static final String ITEM_SNOWGLOBE = "zima zaklęta w kuli";
 
-	private static final String RUDOLPH_TALK_GREETING_DEFAULT = "Hi, my jolly friend. What a wonderful time of year this is!";
-	private static final String RUDOLPH_TALK_GREETING_WITHOUT_GOODIES = "Oh my. I am so in anticipation of those goodies which I have asked you for. Hopefully it will not be much longer before you can bring them to me.";
-	private static final String RUDOLPH_TALK_GREETING_WITH_GOODIES = "Excuse me, please! I see you have delicious goodies. Are they for me?";
-	private static final String RUDOLPH_TALK_QUEST_OFFER = "I want some delicious goodies only you can help me get. Do you think you can help me?";
-	private static final String RUDOLPH_TALK_QUEST_REJECT = "Well, then I guess I'll just ask someone else for them. Woe is me.";
-	private static final String RUDOLPH_TALK_QUEST_ACCEPT = "I heard about the wonderful #goodies you have here in Semos. If you get 5 reindeer moss, 10 apples and 10 carrots, I'll give you a reward.";
-	private static final String RUDOLPH_TALK_QUEST_GOODIES_REFUSED = "Well then, I certainly hope you find those goodies before I pass out from hunger.";
-	private static final String RUDOLPH_TALK_QUEST_GOODIES_OFFERED = "Oh, I am so excited! I have wanted to eat these things for so long. Thanks so much. And to borrow a phrase, Ho Ho Ho, Merry Christmas.";
-	private static final String RUDOLPH_TALK_QUEST_TOO_SOON = "Thank you very much for the goodies, but I don't have any other task for you this year. Have a wonderful holiday season.";
+	private static final String RUDOLPH_TALK_GREETING_DEFAULT = "Cześć jestem wesołym przyjacielem. Co za wspaniała pora roku!";
+	private static final String RUDOLPH_TALK_GREETING_WITHOUT_GOODIES = "Oh nie mogę się doczekać tych przysmaków, o które cię prosiłem. Mam nadzieję, że nie będę czekał długo nim mi je przyniesiesz.";
+	private static final String RUDOLPH_TALK_GREETING_WITH_GOODIES = "Przepraszam! Widzę, że masz pyszne smakołyki. Są one dla mnie?";
+	private static final String RUDOLPH_TALK_QUEST_OFFER = "Chcę pyszne przysmaki tylko ty możesz mi pomóc je zdobyć. Czy możesz mi pomóc?";
+	private static final String RUDOLPH_TALK_QUEST_REJECT = "W takim razie zapytam kogoś innego. Biada mi.";
+	private static final String RUDOLPH_TALK_QUEST_ACCEPT = "Słyszałem o wspaniałych #przysmakach, które masz tutaj w Semos. Jeśli zdobędziesz 5 mchów renifera, 10 jabłek i 10 marchew to dam ci nagrodę.";
+	private static final String RUDOLPH_TALK_QUEST_GOODIES_REFUSED = "Cóż mam nazieję, że znajdziesz jakieś przysmaki nim padnę z głodu.";
+	private static final String RUDOLPH_TALK_QUEST_GOODIES_OFFERED = "Jestem tak podekscytowany! Tak chciałem je zjeść od dłuższego czasu. Dziękuję bardzo. Przytoczę powiedzenie Ho Ho Ho, Wesołych Świąt.";
+	private static final String RUDOLPH_TALK_QUEST_TOO_SOON = "Dziękuję bardzo za przysmaki, ale nie mam dla ciebie w tym roku żadnych zadań. Korzystaj ze wspaniałego sezonu wakacyjnego.";
 
-	private static final String HISTORY_DEFAULT = "I have met Rudolph. He is the Red-Nosed Reindeer running around in Semos.";
-	private static final String HISTORY_REJECTED = "He asked me to find goodies for him but I rejected his request.";
-	private static final String HISTORY_START = "I promised to find goodies for him because he is a nice reindeer.";
-	private static final String HISTORY_GOT_GOODIES = "I got all the goodies and will take them to Rudolph.";
-	private static final String HISTORY_COMPLETED_REPEATABLE = "It's been a year since I helped Rudolph. I should ask him if he needs help again.";
-	private static final String HISTORY_COMPLETED_NOT_REPEATABLE = "I took the goodies to Rudolph. As a little thank you, he gave ME some goodies. :)";
+	private static final String HISTORY_DEFAULT = "Spotkałem Rudolpha. Jest on Czerwononosym Reniferem biegającym w pobliżu Semos.";
+	private static final String HISTORY_REJECTED = "Zapytał mnie o znalezienie przysmaków dla niego, ale odrzuciłem jego prośbę.";
+	private static final String HISTORY_START = "Przyrzekłem, że znajdę dla niego przysmaki ponieważ jest miłym reniferem.";
+	private static final String HISTORY_GOT_GOODIES = "Mam wszystkie przysmaki, które zabiorę do Rudolpha.";
+	private static final String HISTORY_COMPLETED_REPEATABLE = "Minął rok kiedy ostatnio pomogłem Rudolphowi. Powinienem go zapytać czy znów nie potrzebuje mojej pomocy.";
+	private static final String HISTORY_COMPLETED_NOT_REPEATABLE = "Wziąłem przysmaki do Rudolpha. Jako podziękowanie otrzymałem trochę przysmaków. :)";
 
 	private SpeakerNPC npc;
 	private Engine en;

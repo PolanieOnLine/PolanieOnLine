@@ -57,7 +57,7 @@ public class ToysCollectorTest {
 	 */
 	@Test
 	public final void testGetNeededItems() {
-		assertEquals(Arrays.asList(new String[] { "teddy", "dice", "dress" }),
+		assertEquals(Arrays.asList(new String[] { "pluszowy miś", "kości do gry", "koszula" }),
 				quest.getNeededItems());
 	}
 
@@ -83,7 +83,7 @@ public class ToysCollectorTest {
 	 */
 	@Test
 	public final void testGetAdditionalTriggerPhraseForQuest() {
-		assertEquals(Arrays.asList(new String[] { "toys" }),
+		assertEquals(Arrays.asList(new String[] { "toys", "zabawki" }),
 				quest.getAdditionalTriggerPhraseForQuest());
 	}
 

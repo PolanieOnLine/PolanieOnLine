@@ -74,22 +74,22 @@ public class DragonLairTest {
 
 		// see if level 0 player can enter (they could)
 		en.step(player, "hi");
-		assertEquals("Greetings, my fellow traveler. What may I do for you?", getReply(npc));
+		assertEquals("Pozdrawiam podróżniku. Co mogę dla Ciebie zrobić?", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Would you like to visit our dragon lair?", getReply(npc));
+		assertEquals("Czy chciałbyś odwiedzić legowisko smoków?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Ok, but our dragons will be sorry you didn't stop in for a visit.", getReply(npc));
+		assertEquals("Dobrze, ale nasze smoki będą zawiedzione jeżeli nie wpadniesz do nich.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Farewell. May your days be many and your heart be free.", getReply(npc));
+		assertEquals("Na razie. Niech twoje serce zawsze będzie wolne, a życie długie.", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("Greetings, my fellow traveler. What may I do for you?", getReply(npc));
+		assertEquals("Pozdrawiam podróżniku. Co mogę dla Ciebie zrobić?", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Would you like to visit our dragon lair?", getReply(npc));
+		assertEquals("Czy chciałbyś odwiedzić legowisko smoków?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Great! Enjoy your visit. I know THEY will. Oh, watch out, we have a couple chaos dragonriders exercising our dragons. Don't get in their way!", getReply(npc));
+		assertEquals("Wspaniale! Ciesz się wizytą. Wiem, że oni będą. Aha uważaj. Mamy parę jeźdźców smoków chaosu dowodzących naszymi smokami. Nie wchodź im w drogę!", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Farewell. May your days be many and your heart be free.", getReply(npc));
+		assertEquals("Na razie. Niech twoje serce zawsze będzie wolne, a życie długie.", getReply(npc));
 		// [21:59] green dragon has been killed by kymara
 		// [21:59] kymara earns 1750 experience points.
 		// [21:59] red dragon has been killed by kymara
@@ -102,38 +102,38 @@ public class DragonLairTest {
 		player.setQuest(questSlot, "done;" + Long.toString(System.currentTimeMillis()));
 
 		en.step(player, "hi");
-		assertEquals("Greetings, my fellow traveler. What may I do for you?", getReply(npc));
+		assertEquals("Pozdrawiam podróżniku. Co mogę dla Ciebie zrobić?", getReply(npc));
 		en.step(player, "task");
-		assertThat(getReply(npc), is(oneOf("I think they've had enough excitement for a while. Come back in 7 days.",
-										  "I think they've had enough excitement for a while. Come back in 1 week.")));
+		assertThat(getReply(npc), is(oneOf("Sądzę, że mają już dosyć wrażeń na jakiś czas. Wróć za 7 dni.",
+										  "Sądzę, że mają już dosyć wrażeń na jakiś czas. Wróć za 1 tydzień.")));
 		en.step(player, "bye");
-		assertEquals("Farewell. May your days be many and your heart be free.", getReply(npc));
+		assertEquals("Na razie. Niech twoje serce zawsze będzie wolne, a życie długie.", getReply(npc));
 
 		// [22:00] Admin kymara changed your state of the quest 'dragon_lair' from 'done;1219874335035' to 'done;0'
 		// [22:00] Changed the state of quest 'dragon_lair' from 'done;1219874335035' to 'done;0'
 
 		player.setQuest(questSlot, "done;0");
 		en.step(player, "hi");
-		assertEquals("Greetings, my fellow traveler. What may I do for you?", getReply(npc));
+		assertEquals("Pozdrawiam podróżniku. Co mogę dla Ciebie zrobić?", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Be warned, the dragons have started breathing fire! Anyway, would you like to visit our dragons again?", getReply(npc));
+		assertEquals("Uważaj smoki zaczęły ziać ogniem! Czy chciałbyś ponownie odwiedzić nasze smoki?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Ok, but our dragons will be sorry you didn't stop in for a visit.", getReply(npc));
+		assertEquals("Dobrze, ale nasze smoki będą zawiedzione jeżeli nie wpadniesz do nich.", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Farewell. May your days be many and your heart be free.", getReply(npc));
+		assertEquals("Na razie. Niech twoje serce zawsze będzie wolne, a życie długie.", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("Greetings, my fellow traveler. What may I do for you?", getReply(npc));
+		assertEquals("Pozdrawiam podróżniku. Co mogę dla Ciebie zrobić?", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Would you like to visit our dragon lair?", getReply(npc));
+		assertEquals("Czy chciałbyś odwiedzić legowisko smoków?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Great! Enjoy your visit. I know THEY will. Oh, watch out, we have a couple chaos dragonriders exercising our dragons. Don't get in their way!", getReply(npc));
+		assertEquals("Wspaniale! Ciesz się wizytą. Wiem, że oni będą. Aha uważaj. Mamy parę jeźdźców smoków chaosu dowodzących naszymi smokami. Nie wchodź im w drogę!", getReply(npc));
 		en.step(player, "bye");
 		// [22:01] chaos green dragonrider has been killed by kymara
 		// [22:01] kymara earns 31900 experience points.
 		// [22:01] bone dragon has been killed by kymara
 		// [22:01] kymara earns 2210 experience points.
-		assertEquals("Farewell. May your days be many and your heart be free.", getReply(npc));
+		assertEquals("Na razie. Niech twoje serce zawsze będzie wolne, a życie długie.", getReply(npc));
 
 	}
 }

@@ -117,7 +117,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT), new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),
 				ConversationStates.ATTENDING, 
-				"Dzięukję. Nic teraz nie potrzebuję.",
+				"Dziękuję. Nic teraz nie potrzebuję.",
 				null);	
 
 		// if the quest is active we deal with the response to quest/water in a following step
@@ -136,7 +136,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationPhrases.NO_MESSAGES, 
 				null, 
 				ConversationStates.IDLE,
-				"Coż nie jest to zbyt uczynne.",
+				"Cóż, nie jest to zbyt uczynne.",
 				new MultipleActions(
 						new SetQuestAction(QUEST_SLOT, 0, "rejected"),
 						new DecreaseKarmaAction(5.0)));
@@ -167,7 +167,7 @@ public class WaterForXhiphin extends AbstractQuest {
 					Arrays.asList("water", "clean", "check", "woda", "czysta", "czystość", "sprawdzał"),
 					new PlayerHasItemWithHimCondition("woda"),
 					ConversationStates.ATTENDING, 
-					"To woda jak dla mnie to wygląda na czystą! Musi być z dobrego źródła.",
+					"Ta woda jak dla mnie, to wygląda na czystą! Musi być z dobrego źródła.",
 					// take the item and give them a new one with an infostring or mark all?
 					new MultipleActions(actions));
 
@@ -199,7 +199,7 @@ public class WaterForXhiphin extends AbstractQuest {
 						new QuestActiveCondition(QUEST_SLOT),
 						new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING)),
 				ConversationStates.ATTENDING, 
-				"Bardzo dziękuję! To jest to co chciałem! Przyjmij te mikstury, które dała mi Sarzina.",
+				"Bardzo dziękuję! To jest to czego aktualnie potrzebowałem! Przyjmij te mikstury, które dała mi Sarzina.",
 				new MultipleActions(reward));
 
         // player returns with no water at all. 

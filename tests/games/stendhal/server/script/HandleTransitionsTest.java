@@ -99,7 +99,7 @@ public class HandleTransitionsTest {
 		arguments.add("tr1");
 		arguments.add("i am just npc as you can see.");
 		script.execute(player, arguments);
-		assertThat(player.events().get(0).toString(), containsString("added"));
+		assertThat(player.events().get(0).toString(), containsString("dodano"));
 		en.step(player, "bye");
 		en.step(player, "hi");
 		getReply(npc);
@@ -134,7 +134,7 @@ public class HandleTransitionsTest {
 		arguments.add("added as tr2");
 		script.execute(player, arguments);
 		//logger.info(player.events().toString());
-		assertThat(player.events().get(0).toString(), containsString("deleted"));
+		assertThat(player.events().get(0).toString(), containsString("usunięta"));
 
 		en.step(player, "bye");
 		en.step(player, "hi");

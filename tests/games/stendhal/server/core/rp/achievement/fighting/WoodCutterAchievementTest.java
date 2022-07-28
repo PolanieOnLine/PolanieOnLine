@@ -31,7 +31,7 @@ import utilities.ZoneAndPlayerTestImpl;
 
 public class WoodCutterAchievementTest extends ZoneAndPlayerTestImpl {
 
-	private final String[] enemies = {"ent", "entwife", "old ent"};
+	private final String[] enemies = {"drzewiec", "drzewcowa", "uschły drzewiec"};
 
 
 	@BeforeClass

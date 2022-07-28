@@ -75,80 +75,80 @@ public class HelpTomiTest {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("help!", getReply(npc));
+		assertEquals("Pomocy!", getReply(npc));
 		en.step(player, "help");
-		assertEquals("where is my ice?", getReply(npc));
-		en.step(player, "ice");
-		assertEquals("my ice? ice plz", getReply(npc));
+		assertEquals("Gdzie jest mój miecz lodowy?", getReply(npc));
+		en.step(player, "lód");
+		assertEquals("Mój miecz lodowy? proszę o miecz lodowy", getReply(npc));
 		en.step(player, "task");
-		assertEquals("my ice? ice plz", getReply(npc));
+		assertEquals("Mój miecz lodowy? proszę o miecz lodowy", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("bye", getReply(npc));
+		assertEquals("Potrze..buję miecz lodowy!", getReply(npc));
 
-		Item item = ItemTestHelper.createItem("ice sword");
+		Item item = ItemTestHelper.createItem("miecz lodowy");
 		player.getSlot("bag").add(item);
 		final int xp = player.getXP();
 		en.step(player, "hi");
-		assertEquals("help!", getReply(npc));
+		assertEquals("Pomocy!", getReply(npc));
 		en.step(player, "help");
-		assertEquals("where is my ice?", getReply(npc));
-		en.step(player, "ice");
-		assertEquals("my ice :)", getReply(npc));
-		assertFalse(player.isEquipped("ice sword"));
+		assertEquals("Gdzie jest mój miecz lodowy?", getReply(npc));
+		en.step(player, "lód");
+		assertEquals("Mój miecz lodowy :)", getReply(npc));
+		assertFalse(player.isEquipped("miecz lodowy"));
 		assertThat(player.getXP(), greaterThan(xp));
 		assertTrue(player.isQuestCompleted(questSlot));
 		// [22:07] kymara earns 1000 experience points.
 		en.step(player, "bye");
-		assertEquals("bye", getReply(npc));
+		assertEquals("Potrze..buję miecz lodowy!", getReply(npc));
 
 		en.step(player, "hi");
-		assertEquals("help!", getReply(npc));
-		en.step(player, "ice");
-		assertEquals("where is my ice?", getReply(npc));
+		assertEquals("Pomocy!", getReply(npc));
+		en.step(player, "lód");
+		assertEquals("Gdzie jest mój miecz lodowy?", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("bye", getReply(npc));
+		assertEquals("Potrze..buję miecz lodowy!", getReply(npc));
 
-		item = ItemTestHelper.createItem("ice sword");
+		item = ItemTestHelper.createItem("miecz lodowy");
 		player.getSlot("bag").add(item);
 		final int xp2 = player.getXP();
 		en.step(player, "hi");
-		assertEquals("help!", getReply(npc));
-		en.step(player, "ice");
-		assertEquals("my ice :) :) ", getReply(npc));
-		assertFalse(player.isEquipped("ice sword"));
+		assertEquals("Pomocy!", getReply(npc));
+		en.step(player, "lód");
+		assertEquals("O, mój icek :) :) ", getReply(npc));
+		assertFalse(player.isEquipped("miecz lodowy"));
 		assertThat(player.getXP(), greaterThan(xp2));
 		assertTrue(player.isQuestCompleted(questSlot));
 		// [22:07] kymara earns 4000 experience points.
 		en.step(player, "bye");
-		assertEquals("bye", getReply(npc));
+		assertEquals("Potrze..buję miecz lodowy!", getReply(npc));
 
-		item = ItemTestHelper.createItem("ice sword");
+		item = ItemTestHelper.createItem("miecz lodowy");
 		player.getSlot("bag").add(item);
 		final int xp3 = player.getXP();
 		en.step(player, "hi");
-		assertEquals("help!", getReply(npc));
-		en.step(player, "ice");
-		assertEquals("my ice :) :) :) ", getReply(npc));
-		assertFalse(player.isEquipped("ice sword"));
+		assertEquals("Pomocy!", getReply(npc));
+		en.step(player, "lód");
+		assertEquals("O, mój icek :) :) :) ", getReply(npc));
+		assertFalse(player.isEquipped("miecz lodowy"));
 		assertThat(player.getXP() - xp3, is(9000));
 		assertTrue(player.isQuestCompleted(questSlot));
 		// [22:07] kymara earns 9000 experience points.
 		en.step(player, "bye");
-		assertEquals("bye", getReply(npc));
+		assertEquals("Potrze..buję miecz lodowy!", getReply(npc));
 
 		// check the XP rate change point
 		player.setQuest(questSlot, 1, "11");
-		item = ItemTestHelper.createItem("ice sword");
+		item = ItemTestHelper.createItem("miecz lodowy");
 		player.getSlot("bag").add(item);
 		final int xp4 = player.getXP();
 		en.step(player, "hi");
-		assertEquals("help!", getReply(npc));
-		en.step(player, "ice");
-		assertEquals("my ice :) :) :) :) :) :) :) :) :) :) :) :) ", getReply(npc));
-		assertFalse(player.isEquipped("ice sword"));
+		assertEquals("Pomocy!", getReply(npc));
+		en.step(player, "lód");
+		assertEquals("O, mój icek :) :) :) :) :) :) :) :) :) :) :) :) ", getReply(npc));
+		assertFalse(player.isEquipped("miecz lodowy"));
 		assertThat(player.getXP() - xp4, is(10 * 12 * 1000));
 		assertTrue(player.isQuestCompleted(questSlot));
 		en.step(player, "bye");
-		assertEquals("bye", getReply(npc));
+		assertEquals("Potrze..buję miecz lodowy!", getReply(npc));
 	}
 }

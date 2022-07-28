@@ -61,15 +61,15 @@ public class CloaksForBarioTest {
 	@Test
 	public void testQuest() {
 		en.step(player, "hi");
-		assertEquals("Hey! How did you get down here? You did what? Huh. Well, I'm Bario. I don't suppose you could do a #task for me.", getReply(npc));
+		assertEquals("Hej! Jak się tutaj dostałeś? Co zrobiłeś? Ha. Cóż jestem Bario. Przypuszczam, że nie zrobiłbyś dla mnie drobnego #'zadania'.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I don't dare go upstairs anymore because I stole a beer barrel from the dwarves. But it is so cold down here... Can you help me?", getReply(npc));
+		assertEquals("Nigdy nie zamierzam wyjść na górę, ponieważ ukradłem beczkę piwa należącą do krasnali. Tutaj jest strasznie zimno... Pomożesz mi?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Oh dear... I'm going to be in trouble...", getReply(npc));
+		assertEquals("Och nie... Będę miał kłopoty...", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I don't dare go upstairs anymore because I stole a beer barrel from the dwarves. But it is so cold down here... Can you help me?", getReply(npc));
+		assertEquals("Nigdy nie zamierzam wyjść na górę, ponieważ ukradłem beczkę piwa należącą do krasnali. Tutaj jest strasznie zimno... Pomożesz mi?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("I need some blue elven cloaks if I'm to survive the winter. Bring me ten of them, and I will give you a reward.", getReply(npc));
+		assertEquals("Potrzebuję lazurowych płaszczy elfickich jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.", getReply(npc));
 		en.step(player, "ok");
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
@@ -78,24 +78,24 @@ public class CloaksForBarioTest {
 		equipCloaks(4);
 
 		en.step(player, "hi");
-		assertEquals("Hi again! I still need 10 blue elven cloaks. Do you have any for me?", getReply(npc));
+		assertEquals("Witaj znów! Wciąż potrzebuję 10 lazurowych płaszczy elfickich. Masz jakiś dla mnie?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 9 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 9 płaszczy.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 8 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 8 płaszczy.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 7 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 7 płaszczy.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 6 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 6 płaszczy.", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Too bad.", getReply(npc));
+		assertEquals("Niedobrze.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
-		assertEquals("Hi again! I still need 6 blue elven cloaks. Do you have any for me?", getReply(npc));
+		assertEquals("Witaj znów! Wciąż potrzebuję 6 lazurowych płaszczy elfickich. Masz jakiś dla mnie?", getReply(npc));
 		en.step(player, "yes");
 		// was lying
-		assertEquals("Really? I don't see any...", getReply(npc));
+		assertEquals("Naprawdę? Nie widzę żadnego...", getReply(npc));
 		en.step(player, "no");
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
@@ -104,38 +104,38 @@ public class CloaksForBarioTest {
 		equipCloaks(6);
 
 		en.step(player, "hi");
-		assertEquals("Hi again! I still need 6 blue elven cloaks. Do you have any for me?", getReply(npc));
+		assertEquals("Witaj znów! Wciąż potrzebuję 6 lazurowych płaszczy elfickich. Masz jakiś dla mnie?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 5 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 5 płaszczy.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 4 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 4 płaszcze.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 3 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 3 płaszcze.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need 2 cloaks.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 2 płaszcze.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Do you have another one? I still need one cloak.", getReply(npc));
+		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję płaszcz.", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Thank you very much! Now I have enough cloaks to survive the winter. Here, take this golden shield as a reward.", getReply(npc));
+		assertEquals("Dziękuję bardzo! Mam teraz odpowiednio dużo płaszczy, aby przetrwać zimę. Weź tę złotą tarcze jako nagrodę.", getReply(npc));
 		// [23:48] superkym earns 1500 experience points.
 		en.step(player, "task");
-		assertEquals("I don't have anything for you to do, really.", getReply(npc));
+		assertEquals("Nie mam żadnego zadania dla Ciebie.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Welcome! Thanks again for those cloaks.", getReply(npc));
+		assertEquals("Witaj! Jeszcze raz dziękuję za te płaszcze.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("I don't have anything for you to do, really.", getReply(npc));
+		assertEquals("Nie mam żadnego zadania dla Ciebie.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 	}
 
 	private void equipCloaks(final int quantity) {
 		for (int i = 0; i < quantity; i++) {
-			final Item item = ItemTestHelper.createItem("blue elf cloak");
+			final Item item = ItemTestHelper.createItem("lazurowy płaszcz elficki");
 			player.getSlot("bag").add(item);
 		}
 	}

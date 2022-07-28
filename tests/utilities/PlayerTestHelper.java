@@ -65,6 +65,9 @@ public abstract class PlayerTestHelper {
 		}
 
 		pl.setName(name);
+		pl.setGender("M");
+		pl.setLevel(0);
+		pl.setXP(0);
 
 		//addEmptySlots(pl);
 

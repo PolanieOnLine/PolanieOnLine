@@ -86,7 +86,7 @@ public class LearnAboutOrbs extends AbstractQuest {
 			Arrays.asList("use", "używać"),
 			new NotCondition(new LevelGreaterThanCondition(10)),
 			ConversationStates.ATTENDING,
-			"Aha, Dostałam wiadomość, że wciąż jesteś tutaj nowy. Może wróć później, gdy będziesz miał więcej doświadczenia. Na razie jeżeli potrzebujesz #pomocy to pytaj!",
+			"Aha... Dostałam wiadomość, że wciąż jesteś tutaj nowy. Może wróć później, gdy będziesz miał więcej doświadczenia. Na razie jeżeli potrzebujesz #pomocy to pytaj!",
 			null);
 
 		// player wants reminder on Use
@@ -108,7 +108,7 @@ public class LearnAboutOrbs extends AbstractQuest {
 		// player didn't get message, try again
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES,
 			null, ConversationStates.QUESTION_1,
-			"Cóż musisz stanąć obok. Podejdź blisko. Dostałeś wiadomość?", null);
+			"Cóż, musisz stanąć obok tej kuli. Zbliż się, czy dostałeś teraz wiadomość?", null);
 	}
 
 	@Override

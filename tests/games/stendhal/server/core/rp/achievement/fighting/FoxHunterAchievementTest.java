@@ -31,7 +31,7 @@ import utilities.ZoneAndPlayerTestImpl;
 
 public class FoxHunterAchievementTest extends ZoneAndPlayerTestImpl {
 
-	private final String enemy = "fox";
+	private final String enemy = "lisica";
 	private final int requiredCount = 20;
 
 

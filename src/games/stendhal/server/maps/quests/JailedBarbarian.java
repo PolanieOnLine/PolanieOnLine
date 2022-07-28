@@ -92,7 +92,6 @@ public class JailedBarbarian extends AbstractQuest {
 				"Dziękuję za pomoc! Teraz mogę uciec!",
 				null);
 
-
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING,
@@ -102,7 +101,7 @@ public class JailedBarbarian extends AbstractQuest {
 		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Odejdź ktoś inny mi pomoże!",
+				"Odejdź! Kto inny mi pomoże!",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 
@@ -113,7 +112,7 @@ public class JailedBarbarian extends AbstractQuest {
 		reward.add(new SetQuestAction(QUEST_SLOT, "capture"));
 		reward.add(new IncreaseKarmaAction(10));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("kosa","kosy"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("scythe", "kosa", "kosy"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 				new PlayerHasItemWithHimCondition("kosa")),
 				ConversationStates.ATTENDING,
@@ -121,11 +120,11 @@ public class JailedBarbarian extends AbstractQuest {
 				new MultipleActions(reward));
 
 		npc.add(
-			ConversationStates.ATTENDING, Arrays.asList("kosa","kosy"),
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new NotCondition(new PlayerHasItemWithHimCondition("kosa"))),
-			ConversationStates.ATTENDING,
-			"Nie masz jeszcze kosy! Idź i zdobądź jakąś dla mnie. Pospiesz się!",
-			null);
+				ConversationStates.ATTENDING, Arrays.asList("scythe", "kosa", "kosy"),
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new NotCondition(new PlayerHasItemWithHimCondition("kosa"))),
+				ConversationStates.ATTENDING,
+				"Nie masz jeszcze kosy! Idź i zdobądź jakąś dla mnie. Pospiesz się!",
+				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -146,7 +145,8 @@ public class JailedBarbarian extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("tunnel", "tunel"),
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
-				ConversationStates.ATTENDING, "Jestem teraz wściekła i nie chce już o tym rozmawiać! Jeżeli chcesz się dowiedzieć więcej to musisz go zapytać o #tunel!",
+				ConversationStates.ATTENDING,
+				"Jestem teraz wściekła i nie chce już o tym rozmawiać! Jeżeli chcesz się dowiedzieć więcej to musisz go zapytać o #tunel!",
 				null);
 	}
 
@@ -161,14 +161,14 @@ public class JailedBarbarian extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "capture"),
 				ConversationStates.ATTENDING,
-				"Proszę zapytaj Księżniczki Esclarii dlaczego tutaj jestem! Sądzę, że wypowiadając moje imię sprowokujesz ją do wyjawienia powodu",
+				"Proszę zapytaj Księżniczki Esclarii dlaczego tutaj jestem! Sądzę, że wypowiadając moje imię sprowokujesz ją do wyjawienia powodu.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "princess"),
 				ConversationStates.ATTENDING,
-				"Założę się, że Księżniczka Esclara powiedziała, że zostałem uwięziony za #tunel ... ",
+				"Założę się, że Księżniczka Esclara powiedziała, że zostałem uwięziony za #tunel...",
 				null);
 	}
 
@@ -179,19 +179,22 @@ public class JailedBarbarian extends AbstractQuest {
 		reward.add(new SetQuestAction(QUEST_SLOT, "jailed"));
 		reward.add(new IncreaseKarmaAction(10));
 
-		npc.add(ConversationStates.ATTENDING, "jajo",
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "jajo"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("egg", "jajo"),
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT, "jajo"),
 						new PlayerHasItemWithHimCondition("jajo")),
-						ConversationStates.ATTENDING,
-						"Dziękuję przyjacielu. Teraz musisz powiedzieć Księżniczce Ylflii w Zamku Kalavan, że jestem tutaj #uwięziony. Pospiesz się!",
-						new MultipleActions(reward));
+				ConversationStates.ATTENDING,
+				"Dziękuję przyjacielu. Teraz musisz powiedzieć Księżniczce Ylflii w Zamku Kalavan, że jestem tutaj #uwięziony. Pospiesz się!",
+				new MultipleActions(reward));
 
 		npc.add(
-			ConversationStates.ATTENDING, "jajo",
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "jajo"), new NotCondition(new PlayerHasItemWithHimCondition("jajo"))),
-			ConversationStates.ATTENDING,
-			"Nie widzę jaja!!",
-			null);
+				ConversationStates.ATTENDING, Arrays.asList("egg", "jajo"),
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT, "jajo"),
+						new NotCondition(new PlayerHasItemWithHimCondition("jajo"))),
+				ConversationStates.ATTENDING,
+				"Nie widzę jaja!!",
+				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -202,7 +205,8 @@ public class JailedBarbarian extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("jailed", "uwięziony"),
 				new QuestInStateCondition(QUEST_SLOT, "jailed"),
-				ConversationStates.ATTENDING, "Wiem to, *Jestem* uwięziony! Potrzebuję Ciebie, abyś powiedział Księżniczce Ylflii, że jestem tutaj!",
+				ConversationStates.ATTENDING,
+				"Wiem to, że *jestem* uwięziony! Potrzebuję Ciebie, abyś powiedział Księżniczce Ylflii, że jestem tutaj!",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -224,16 +228,16 @@ public class JailedBarbarian extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("greetings", "pozdrowienia"),
 				new QuestInStateCondition(QUEST_SLOT, "spoken"),
-				ConversationStates.ATTENDING, "Idź i przekaż Lorenz moje #pozdrowienia.",
+				ConversationStates.ATTENDING,
+				"Idź i przekaż Lorenz moje #pozdrowienia.",
 				null);
-
 	}
 
 	private void step7() {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("greetings", "pozdrowienia"),
 				new QuestInStateCondition(QUEST_SLOT, "spoken"),
 				ConversationStates.ATTENDING,
-				"Dziękuję przyjacielu. Teraz ostatnie zadanie! Przynieś mi barbarian armor. Bez tego nie ucieknę stąd! Idź! Idź! I daj znać, gdy zdobędziesz #zbroję!",
+				"Dziękuję przyjacielu. Teraz ostatnie zadanie! Przynieś mi zbroję barbarzyńcy. Bez tego nie ucieknę stąd! Idź! Idź! I daj znać, gdy zdobędziesz #zbroję!",
 				new SetQuestAction(QUEST_SLOT, "armor"));
 
 		npc.add(ConversationStates.ATTENDING,
@@ -253,24 +257,27 @@ public class JailedBarbarian extends AbstractQuest {
 		reward.add(new IncreaseKarmaAction(15));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("armor", "zbroja", "zbroję"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"),
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT, "armor"),
 						new PlayerHasItemWithHimCondition("zbroja barbarzyńcy")),
-						ConversationStates.ATTENDING,
-						"To wszystko! Teraz jestem gotowy do mojej ucieczki! Oto coś dla Ciebie. Ukradłem Księżniczce Esclari! Żeby tylko się nie dowiedziała. Teraz zostaw mnie!",
-						new MultipleActions(reward));
+				ConversationStates.ATTENDING,
+				"To wszystko! Teraz jestem gotowy do mojej ucieczki! Oto coś dla Ciebie. Ukradłem Księżniczce Esclari! Żeby tylko się nie dowiedziała. Teraz zostaw mnie!",
+				new MultipleActions(reward));
 
 		npc.add(
-			ConversationStates.ATTENDING, "armor",
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "armor"), new NotCondition(new PlayerHasItemWithHimCondition("zbroja barbarzyńcy"))),
-			ConversationStates.ATTENDING,
-			"Nie posiadasz zbroi barbarzyńcy przy sobie! Idź i zdobądź!",
-			null);
+				ConversationStates.ATTENDING, Arrays.asList("armor", "zbroja", "zbroję"),
+				new AndCondition(
+						new QuestInStateCondition(QUEST_SLOT, "armor"),
+						new NotCondition(new PlayerHasItemWithHimCondition("zbroja barbarzyńcy"))),
+				ConversationStates.ATTENDING,
+				"Nie posiadasz zbroi barbarzyńcy przy sobie! Idź i zdobądź!",
+				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "armor"),
 				ConversationStates.ATTENDING,
-				"Czekam na  #zbroję barbarzyńcy od Ciebie. Teraz jestem dość silny, aby uciec.",
+				"Czekam na #zbroję barbarzyńcy od Ciebie. Teraz jestem dość silny, aby uciec.",
 				null);
 	}
 

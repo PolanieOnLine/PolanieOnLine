@@ -355,13 +355,13 @@
 			<def value="37"/>
 			<hp value="2000"/>
 			<speed value="0.1"/>
-			<size value="5,3"/>
+			<size value="2,1"/>
 		</attributes>
 		<level value="80"/>
 		<experience value="5920"/>
 		<respawn value="2820"/>
-		<blood name="leafy" />
-		<corpse name="leafy_5x3" harmless="leafy_5x3" width="5" height="3" />
+		<blood name="leafy"/>
+		<corpse name="leafy_2x2" harmless="leafy_2x2"/>
 		<drops>
 			<item value="duży eliksir" quantity="[1,2]" probability="20.0"/>
 			<item value="polano" quantity="[1,4]" probability="60.0"/>
@@ -393,7 +393,7 @@
 			<def value="128"/>
 			<hp value="400"/>
 			<speed value="0.2"/>
-			<size value="2,2"/>
+			<size value="2,1"/>
 		</attributes>
 		<level value="83"/>
 		<experience value="6540"/>
@@ -431,13 +431,13 @@
 			<def value="93"/>
 			<hp value="1250"/>
 			<speed value="0.4"/>
-			<size value="5,3"/>
+			<size value="2,1"/>
 		</attributes>
 		<level value="113"/>
 		<experience value="15000"/>
 		<respawn value="3200"/>
 		<blood name="leafy" />
-		<corpse name="leafy_5x3" harmless="leafy_5x3" width="5" height="3"/>
+		<corpse name="leafy_2x2" harmless="leafy_2x2"/>
 		<drops>
 			<item value="pieczarka" quantity="[1,6]" probability="50.0"/>
 			<item value="duży eliksir" quantity="[2,3]" probability="10.0"/>

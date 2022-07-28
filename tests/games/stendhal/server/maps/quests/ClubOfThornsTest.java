@@ -33,9 +33,9 @@ import utilities.QuestHelper;
 
 public class ClubOfThornsTest {
 	private static final String NPC = "Szaman Orków";
-	private static final String KEY_NAME = "kotoch prison key";
+	private static final String KEY_NAME = "klucz do więzienia Kotoch";
 	private static final String QUEST_NAME = "club_thorns";
-	private static final String VICTIM = "mountain orc chief";
+	private static final String VICTIM = "szef górskich orków";
 
 	@BeforeClass
 	public static void setupBeforeClass() throws Exception {
@@ -61,10 +61,10 @@ public class ClubOfThornsTest {
 		en.setCurrentState(ConversationStates.ATTENDING);
 
 		en.stepTest(player, ConversationPhrases.QUEST_MESSAGES.get(0));
-		assertEquals("Make revenge! Kill de Mountain Orc Chief! unnerstand? ok?", getReply(npc));
+		assertEquals("Zemścij się! Zabij szefa górskich orków i jego towarzyszy! Zrozumiałeś?", getReply(npc));
 
 		en.stepTest(player, "no");
-		assertEquals("Answer to refusal", "Ugg! i want hooman make #task, kill!", getReply(npc));
+		assertEquals("Answer to refusal", "Ugg! Chcę człowieka, który wykona wyrok na szefie górskich orków a nie mazgaja.", getReply(npc));
 		assertEquals("Karma penalty", karma - 6.0, player.getKarma(), 0.01);
 	}
 
@@ -78,55 +78,55 @@ public class ClubOfThornsTest {
 		final Player player = PlayerTestHelper.createPlayer("player");
 		double karma = player.getKarma();
 
-		// Kill a mountain orc chief to to allow checking the slot gets cleaned
+		// Kill a szef górskich orków to to allow checking the slot gets cleaned
 		player.setSoloKill(VICTIM);
 		// Greetings missing. Jump straight to attending
 		en.setCurrentState(ConversationStates.ATTENDING);
 
 		en.stepTest(player, ConversationPhrases.QUEST_MESSAGES.get(0));
-		assertEquals("Make revenge! Kill de Mountain Orc Chief! unnerstand? ok?", getReply(npc));
+		assertEquals("Zemścij się! Zabij szefa górskich orków i jego towarzyszy! Zrozumiałeś?", getReply(npc));
 
 		// test the stuff that should be done at the quest start
 		en.stepTest(player, ConversationPhrases.YES_MESSAGES.get(0));
-		assertEquals("Take dat key. he in jail. Kill! Denn, say me #kill! Say me #kill!", getReply(npc));
+		assertEquals("Weź ten klucz. On jest w więzieniu. Zabij go! Potem, wróć ze słowami: #zabity!", getReply(npc));
 		assertTrue(player.isEquipped(KEY_NAME));
 		assertEquals("player", player.getFirstEquipped(KEY_NAME).getBoundTo());
 		assertEquals("Karma bonus for accepting the quest",
-			karma + 6.0, player.getKarma(), 0.01);
+			karma + 10.0, player.getKarma(), 0.01);
 		assertEquals("start", player.getQuest(QUEST_NAME, 0));
 		//assertFalse("Cleaning kill slot", player.hasKilled(VICTIM));
 		final String[] questTokens = player.getQuest(QUEST_NAME, 1).split(",");
-		assertEquals(questTokens[0],"mountain orc chief");
+		assertEquals(questTokens[0],"szef górskich orków");
 		assertEquals(questTokens[1],"0");
 		assertEquals(questTokens[2],"1");
 		assertEquals(Arrays.asList(questTokens).size(), 5);
 
 		en.stepTest(player, ConversationPhrases.QUEST_MESSAGES.get(0));
-		assertEquals("Make revenge! #Kill Mountain Orc Chief!", getReply(npc));
+		assertEquals("Zemścij się! #Zabij szefa górskich orków!", getReply(npc));
 
 		en.stepTest(player, "kill");
-		assertEquals("kill Mountain Orc Chief! Kotoch orcs nid revenge!", getReply(npc));
+		assertEquals("Zabij Szefa górskich orków! Orki z Kotoch chcą zemsty!", getReply(npc));
 
-		// Kill a mountain orc chief
-		player.setSoloKill("mountain orc chief");
+		// Kill a szef górskich orków
+		player.setSoloKill("szef górskich orków");
 		// Try restarting the task in the middle
 		en.stepTest(player, ConversationPhrases.QUEST_MESSAGES.get(0));
-		assertEquals("Make revenge! #Kill Mountain Orc Chief!", getReply(npc));
+		assertEquals("Zemścij się! #Zabij szefa górskich orków!", getReply(npc));
 		assertTrue("Keeping the kill slot, while the quest is active", player.hasKilled(VICTIM));
 
 		// completion and rewards
 		karma = player.getKarma();
 		en.stepTest(player, "kill");
-		assertEquals("Revenge! Good! Take club of hooman blud.", getReply(npc));
-		assertTrue(player.isEquipped("club of thorns"));
-		assertEquals("The club is bound", "player", player.getFirstEquipped("club of thorns").getBoundTo());
-		assertEquals("Final karma bonus", karma + 10.0, player.getKarma(), 0.01);
-		assertEquals("XP", 1000, player.getXP());
+		assertEquals("Zemsta dokonana! Dobrze! Weź tą potężną maczugę cierniową w nagrodę.", getReply(npc));
+		assertTrue(player.isEquipped("maczuga cierniowa"));
+		assertEquals("The club is bound", "player", player.getFirstEquipped("maczuga cierniowa").getBoundTo());
+		assertEquals("Final karma bonus", karma + 20.0, player.getKarma(), 0.01);
+		assertEquals("XP", 10000, player.getXP());
 		assertEquals("done", player.getQuest(QUEST_NAME));
 
 		// don't allow restarting
 		en.stepTest(player, ConversationPhrases.QUEST_MESSAGES.get(0));
-		assertEquals("Saman has revenged! dis Good!", getReply(npc));
+		assertEquals("Szaman zemścił się! Dobrze!", getReply(npc));
 		assertEquals("done", player.getQuest(QUEST_NAME));
 	}
 }

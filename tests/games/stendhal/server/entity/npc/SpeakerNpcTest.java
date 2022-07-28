@@ -24,7 +24,7 @@ import utilities.PlayerTestHelper;
 @RunWith(Parameterized.class)
 public class SpeakerNpcTest {
 
-	private static final String ZONES_PATH = "/data/conf/zones";
+	private static final String ZONES_PATH = "/data/conf/zones/stendhal";
 
 	private static final String ZONE_PATH_ADOS = ZONES_PATH + "/ados.xml";
 	private static final String ZONE_PATH_AMAZON = ZONES_PATH + "/amazon.xml";
@@ -46,7 +46,7 @@ public class SpeakerNpcTest {
 	private static final String FIRST_PLAYER_NAME = "FirstPlayer";
 	private static final String SECOND_PLAYER_NAME = "SecondPlayer";
 	private static final String PLEASE_WAIT_MESSAGE = String.format(
-			"Please wait, %s! I am still attending to %s.", SECOND_PLAYER_NAME,
+			"Proszę zaczekaj %s! Wciąż rozmawiam z %s.", SECOND_PLAYER_NAME,
 			FIRST_PLAYER_NAME);
 
 	private static StendhalRPZone zone;

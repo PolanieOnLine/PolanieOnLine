@@ -134,11 +134,13 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testDescribe() {
+		player.setGender("M");
+
 		final int hours = player.getAge() / 60;
 		final int minutes = player.getAge() % 60;
-		final String time = hours + " hours and " + minutes + " minutes";
-		assertThat(player.describe(), is("You see " + player.getTitle() + ".\n" + player.getTitle() + " is level "
-				+ player.getLevel() + " and has been playing " + time + "."));
+		final String time = "Wiek " + hours + " godzinę i " + minutes + " minutę";
+		assertThat(player.describe(), is("Oto parobek " + player.getTitle() + ".\n" + player.getTitle() + " posiada poziom "
+				+ player.getLevel() + ". " + time + "."));
 	}
 
 	/**
@@ -146,15 +148,17 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testDescribeOfPlayerWithAwayMessage() {
+		player.setGender("M");
+
 		final int hours = player.getAge() / 60;
 		final int minutes = player.getAge() % 60;
-		final String time = hours + " hours and " + minutes + " minutes";
+		final String time = "Wiek " + hours + " godzinę i " + minutes + " minutę";
 		player.setAwayMessage("I am away.");
 		String description = player.describe();
-		String expectedDescription = "You see " + player.getTitle() + ".\n"
-				+ player.getTitle() + " is level " + player.getLevel()
-				+ " and has been playing " + time + "."
-				+ "\nplayer is away and has left a message: "
+		String expectedDescription = "Oto parobek " + player.getTitle() + ".\n"
+				+ player.getTitle() + " posiada poziom " + player.getLevel()
+				+ ". " + time + ".\n"
+				+ player.getTitle() + " nie ma go teraz, ale zostawił wiadomość: "
 				+ player.getAwayMessage();
 		assertThat(description, is(expectedDescription));
 	}
@@ -164,15 +168,17 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testDescribeOfPlayerWithGrumpyMessage() {
+		player.setGender("M");
+
 		final int hours = player.getAge() / 60;
 		final int minutes = player.getAge() % 60;
-		final String time = hours + " hours and " + minutes + " minutes";
+		final String time = "Wiek " + hours + " godzinę i " + minutes + " minutę";
 		player.setGrumpyMessage("I am grumpy.");
 		String description = player.describe();
-		String expectedDescription = "You see " + player.getTitle() + ".\n"
-				+ player.getTitle() + " is level " + player.getLevel()
-				+ " and has been playing " + time + "."
-				+ "\nplayer is grumpy and has left a message: "
+		String expectedDescription = "Oto parobek " + player.getTitle() + ".\n"
+				+ player.getTitle() + " posiada poziom " + player.getLevel()
+				+ ". " + time + ".\n"
+				+ player.getTitle() + " ukrywa się i zostawił wiadomość: "
 				+ player.getGrumpyMessage();
 		assertThat(description, is(expectedDescription));
 	}
@@ -182,18 +188,20 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testDescribeOfPlayerWithAwayAndGrumpyMessage() {
+		player.setGender("M");
+
 		final int hours = player.getAge() / 60;
 		final int minutes = player.getAge() % 60;
-		final String time = hours + " hours and " + minutes + " minutes";
+		final String time = "Wiek " + hours + " godzinę i " + minutes + " minutę";
 		player.setAwayMessage("I am away.");
 		player.setGrumpyMessage("I am grumpy.");
 		String description = player.describe();
-		String expectedDescription = "You see " + player.getTitle() + ".\n"
-				+ player.getTitle() + " is level " + player.getLevel()
-				+ " and has been playing " + time + "."
-				+ "\nplayer is away and has left a message: "
-				+ player.getAwayMessage()
-				+ "\nplayer is grumpy and has left a message: "
+		String expectedDescription = "Oto parobek " + player.getTitle() + ".\n"
+				+ player.getTitle() + " posiada poziom " + player.getLevel()
+				+ ". " + time + ".\n"
+				+ player.getTitle() + " nie ma go teraz, ale zostawił wiadomość: "
+				+ player.getAwayMessage() + "\n"
+				+ player.getTitle() + " ukrywa się i zostawił wiadomość: "
 				+ player.getGrumpyMessage();
 		assertThat(description, is(expectedDescription));
 	}

@@ -101,7 +101,7 @@ public class BowsForOuchitTest {
 		assertEquals("Do widzenia.", getReply(npc));
 
 		// test with wood
-		PlayerTestHelper.equipWithStackableItem(player, "wood", 10);
+		PlayerTestHelper.equipWithStackableItem(player, "polano", 10);
 
 		en.step(player, "hi");
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npc));
@@ -114,7 +114,7 @@ public class BowsForOuchitTest {
 		en.step(player, "horse hairs");
 		assertEquals("Włos koński stosowany może być do cięciwy, a dostaniesz go od #Karl.", getReply(npc));
 		en.step(player, "Karl");
-		assertEquals("Karl is a farmer, east of Semos. He has many pets on his farm.", getReply(npc));
+		assertEquals("Karl jest rolnikiem mieszkającym na wschód od Semos. Posiada sporo zwierząt na swojej farmie.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -203,7 +203,7 @@ public class BowsForOuchitTest {
 		en.step(player, "task");
 		assertEquals("Dziękuję za twoją pomoc. Jeżeli mogę zaoferować coś po prostu zapytaj o #ofertę.", getReply(npc));
 		en.step(player, "offer");
-		assertEquals("I sell wooden bow and wooden arrow.", getReply(npc));
+		assertEquals("Sprzedaję drewniany łuk oraz strzała.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 	}

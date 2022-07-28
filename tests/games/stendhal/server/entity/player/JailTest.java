@@ -118,7 +118,7 @@ public class JailTest {
 		jail.add(bob);
 
 		assertFalse(Jail.isInJail(bob));
-		bob.setPosition(1, 1);
+		bob.setPosition(8, 2);
 
 		assertTrue(Jail.isInJail(bob));
 	}
