@@ -277,7 +277,7 @@
 			<item value="lodowy amulet" quantity="[1,1]" probability="0.5"/>
 			<item value="lodowe buty" quantity="[1,1]" probability="0.5"/>
 			<item value="magia deszczu" quantity="[10,40]" probability="15.0"/>
-			<item value="magia lodu" quantity="[30,100]" probability="40.0"/>
+			<item value="magia mrozu" quantity="[30,100]" probability="40.0"/>
 		</drops>
 		<equips/>
 		<abilities>

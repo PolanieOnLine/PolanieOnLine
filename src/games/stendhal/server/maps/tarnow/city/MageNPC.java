@@ -82,7 +82,7 @@ public class MageNPC implements ZoneConfigurator {
 					"Dobrze! Proszę... oto twoje zaklęcia lodu, połowa wartości zaklęć ziemi!",
                 	new MultipleActions(
                 		new DropItemAction("magia ziemi", currentFee),
-                		new EquipItemAction("magia lodu", exchangeValue),
+                		new EquipItemAction("magia mrozu", exchangeValue),
                 		new PlaySoundAction("coins-01")
                 	)
 			 	);
@@ -108,7 +108,7 @@ public class MageNPC implements ZoneConfigurator {
 
 		final Sign sign = new Sign();
 		sign.setPosition(114, 68);
-		sign.setText(" -- WYMIANIA -- \n 1000 magia ziemi —— 500 magia lodu\n\nCzęstogoj napisał na koniec:\nPolecam! To jest bardzo dobra oferta!!");
+		sign.setText(" -- WYMIANIA -- \n 1000 magia ziemi —— 500 magia mrozu\n\nCzęstogoj napisał na koniec:\nPolecam! To jest bardzo dobra oferta!!");
 		sign.setEntityClass("default");
 
 		zone.add(sign);

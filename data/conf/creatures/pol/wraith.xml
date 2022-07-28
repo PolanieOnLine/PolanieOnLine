@@ -90,7 +90,7 @@
 			<item value="lodowy łuk" quantity="[1,1]" probability="0.2"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="2.0"/>
 			<item value="magia deszczu" quantity="[4,19]" probability="17.0"/>
-			<item value="magia lodu" quantity="[8,27]" probability="20.0"/>
+			<item value="magia mrozu" quantity="[8,27]" probability="20.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -125,7 +125,7 @@
 			<item value="lodowe buty" quantity="[1,1]" probability="1.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="7.5"/>
 			<item value="magia deszczu" quantity="[8,24]" probability="10.0"/>
-			<item value="magia lodu" quantity="[9,37]" probability="25.0"/>
+			<item value="magia mrozu" quantity="[9,37]" probability="25.0"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -194,7 +194,7 @@
 			<item value="lodowe rękawice" quantity="[1,1]" probability="2.0"/>
 			<item value="lodowe buty" quantity="[1,1]" probability="1.5"/>
 			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
-			<item value="magia lodu" quantity="[11,47]" probability="25.0"/>
+			<item value="magia mrozu" quantity="[11,47]" probability="25.0"/>
 		</drops>
 		<equips/>
 		<ai>

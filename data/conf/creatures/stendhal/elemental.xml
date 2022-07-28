@@ -200,7 +200,7 @@
 			<item value="lodowy płaszcz" quantity="[1,1]" probability="1.0"/>
 			<item value="lodowy pas" quantity="[1,1]" probability="3.0"/>
 			<item value="lodowy łuk" quantity="[1,1]" probability="1.0"/>
-			<item value="magia lodu" quantity="[1,170]" probability="60.0"/>
+			<item value="magia mrozu" quantity="[1,170]" probability="60.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -241,7 +241,7 @@
 			<item value="lodowa zbroja" quantity="[1,1]" probability="0.01"/>
 			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.035"/>
 			<item value="lodowy pas" quantity="[1,1]" probability="0.1"/>
-			<item value="magia lodu" quantity="[10,70]" probability="60.0"/>
+			<item value="magia mrozu" quantity="[10,70]" probability="60.0"/>
 		</drops>
 		<equips>
 		</equips>

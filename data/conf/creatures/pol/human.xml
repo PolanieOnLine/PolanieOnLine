@@ -209,7 +209,7 @@
 			<item value="lazurowy płaszcz elficki" quantity="[1,1]" probability="1.5"/>
 			<item value="trójząb Trzygłowa" quantity="[1,1]" probability="0.5"/>
 			<item value="magia ziemi" quantity="[1,9]" probability="100.0"/>
-			<item value="magia lodu" quantity="[1,6]" probability="90.0"/>
+			<item value="magia mrozu" quantity="[1,6]" probability="90.0"/>
 			<item value="zaklęcie pustelnika" quantity="[2,7]" probability="80.0"/>
 		</drops>
 		<equips>
@@ -253,7 +253,7 @@
 			<item value="money" quantity="[1,20]" probability="100.0"/>
 			<item value="lodowy płaszcz" quantity="[1,1]" probability="0.05"/>
 			<item value="różdżka Strzyboga" quantity="[1,1]" probability="0.5"/>
-			<item value="magia lodu" quantity="[1,14]" probability="100.0"/>
+			<item value="magia mrozu" quantity="[1,14]" probability="100.0"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="strzała" quantity="10000"/>
@@ -338,11 +338,11 @@
 		<drops>
 			<item value="money" quantity="[10,30]" probability="100.0"/>
 			<item value="różdżka Swaroga" quantity="[1,1]" probability="0.5"/>
-			<item value="magia lodu" quantity="[1,22]" probability="75.0"/>
+			<item value="magia mrozu" quantity="[1,22]" probability="75.0"/>
 			<item value="zaklęcie pustelnika" quantity="[1,9]" probability="80.0"/>
 		</drops>
 		<equips>
-			<slot name="lhand" item="magia lodu" quantity="10000"/>
+			<slot name="lhand" item="magia mrozu" quantity="10000"/>
 			<slot name="rhand" item="różdżka Swaroga" quantity="1"/>
 		</equips>
 		<abilities>

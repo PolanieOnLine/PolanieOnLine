@@ -321,7 +321,7 @@ Changelog
 - Dodano nową mapę: (1)
 	- int_tarnow_weaponshop
 - Dodano nowe przedmioty: (4)
-	- magia lodu
+	- magia mrozu
 	- hełm wampirzy
 	- pierścień zdrowia
 	- wzmocniony pierścień zdrowia

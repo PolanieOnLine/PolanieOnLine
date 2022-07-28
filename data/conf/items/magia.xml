@@ -108,9 +108,9 @@
 		</equipable>
 	</item>
 
-	<item name="magia lodu">
+	<item name="magia mrozu">
 		<type class="magia" subclass="mana_ice" tileid="-1"/>
-		<description>Oto magia lodu. Czar rzucony za jej pomocą sprowadzi wieczną zamieć!</description>
+		<description>Oto magia mrozu. Czar rzucony za jej pomocą sprowadzi wieczną zamieć!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<atk value="15" condition="!testing.combat"/>
