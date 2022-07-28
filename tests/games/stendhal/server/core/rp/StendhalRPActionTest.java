@@ -250,7 +250,7 @@ public class StendhalRPActionTest {
 		StendhalRPAction.startAttack(hyde, sheep);
 		assertNull("Attacking someone else's sheep", hyde.getAttackTarget());
 		assertEquals("message at attacking someone else's sheep",
-				"Za bardzo żal ci PolanieOnLine sheep, by go zabić.",
+				"Za bardzo żal ci jekyll sheep, by go zabić.",
 				hyde.events().get(0).get("text"));
 		hyde.stopAttack();
 		hyde.clearEvents();
