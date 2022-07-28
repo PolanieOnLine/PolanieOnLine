@@ -137,7 +137,7 @@ public class StendhalRPActionTest {
 			StendhalRPAction.startAttack(hyde, jekyll);
 			assertNull("Attacking player at protected area", hyde.getAttackTarget());
 			assertEquals("message at attacking at protected area",
-					"The powerful protective aura in this place prevents you from attacking jekyll.", getPrivateReply(hyde));
+					"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania jekyll.", getPrivateReply(hyde));
 			hyde.clearEvents();
 		}
 	}
@@ -165,7 +165,7 @@ public class StendhalRPActionTest {
 			StendhalRPAction.startAttack(hyde, jekyll);
 			assertNull("Attacking player at protected area", hyde.getAttackTarget());
 			assertEquals("message at attacking at protected area",
-					"The powerful protective aura in this place prevents you from attacking jekyll.", getPrivateReply(hyde));
+					"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania jekyll.", getPrivateReply(hyde));
 			hyde.clearEvents();
 		}
 	}
@@ -194,7 +194,7 @@ public class StendhalRPActionTest {
 							hyde.getAttackTarget());
 
 					assertEquals("message at attacking at protected area",
-							"Your conscience would trouble you if you carried out this attack.", getPrivateReply(hyde));
+							"Twoje sumienie może mieć problem jeżeli stoisz za tym atakiem.", getPrivateReply(hyde));
 					hyde.clearEvents();
 
 					// check that self defense works
@@ -250,7 +250,7 @@ public class StendhalRPActionTest {
 		StendhalRPAction.startAttack(hyde, sheep);
 		assertNull("Attacking someone else's sheep", hyde.getAttackTarget());
 		assertEquals("message at attacking someone else's sheep",
-				"You pity jekyll's sheep too much to kill it.",
+				"Za bardzo żal ci PolanieOnLine sheep, by go zabić.",
 				hyde.events().get(0).get("text"));
 		hyde.stopAttack();
 		hyde.clearEvents();
@@ -261,7 +261,7 @@ public class StendhalRPActionTest {
 		StendhalRPAction.startAttack(hyde, sheep);
 		assertNull("Attacking a sheep in protected area ", hyde.getAttackTarget());
 		assertEquals("message at attacking a sheep in protected area",
-				"The powerful protective aura in this place prevents you from attacking that sheep.",
+				"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania sheep.",
 				getPrivateReply(hyde));
 		hyde.stopAttack();
 		hyde.clearEvents();
@@ -271,7 +271,7 @@ public class StendhalRPActionTest {
 		StendhalRPAction.startAttack(hyde, sheep);
 		assertNull("Attacking a sheep in protected area ", hyde.getAttackTarget());
 		assertEquals("message at attacking a sheep in protected area",
-				"The powerful protective aura in this place prevents you from attacking hyde's sheep.",
+				"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania hyde sheep.",
 				getPrivateReply(hyde));
 		hyde.clearEvents();
 
@@ -280,7 +280,7 @@ public class StendhalRPActionTest {
 		StendhalRPAction.startAttack(hyde, sheep);
 		assertNull("Attacking a sheep in protected area ", hyde.getAttackTarget());
 		assertEquals("message at attacking a sheep in protected area",
-				"The powerful protective aura in this place prevents you from attacking jekyll's sheep.",
+				"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania jekyll sheep.",
 				getPrivateReply(hyde));
 	}
 }

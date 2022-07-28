@@ -35,7 +35,7 @@ public class SilverBulletAchievementTest {
 	private static final AchievementNotifier notifier = SingletonRepository.getAchievementNotifier();
 	private Player player;
 
-	private final String enemy = "werewolf";
+	private final String enemy = "wilkołak";
 	private final int reqCount = 500;
 
 

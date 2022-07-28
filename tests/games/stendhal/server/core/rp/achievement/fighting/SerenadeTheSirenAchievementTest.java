@@ -36,7 +36,7 @@ public class SerenadeTheSirenAchievementTest {
 
 	private static final AchievementNotifier notifier = SingletonRepository.getAchievementNotifier();
 	private Player player;
-	private final int reqCount = 10000;
+	private final int reqCount = 5000;
 
 
 	@BeforeClass

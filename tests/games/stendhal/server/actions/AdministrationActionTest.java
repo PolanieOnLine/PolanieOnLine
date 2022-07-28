@@ -760,56 +760,6 @@ public class AdministrationActionTest {
 	}
 
 	/**
-	 * Tests for onDestroyRat.
-	 */
-	@Test
-	public final void testOnDestroyRat() {
-		CreatureTestHelper.generateRPClasses();
-		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
-		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
-		testzone.add(rat);
-		testzone.add(pl);
-
-		assertEquals(1, rat.getID().getObjectID());
-		pl.setAdminLevel(5000);
-		pl.clearEvents();
-
-		MockStendhalRPRuleProcessor.get().addPlayer(pl);
-		final RPAction action = new RPAction();
-		action.put("type", "destroy");
-		action.put("target", "#1");
-
-		CommandCenter.execute(pl, action);
-		assertEquals("Usunięto #'szczur' o ID ##1.", pl.events().get(0).get("text"));
-	}
-
-	/**
-	 * Tests for onDestroyRatWithTargetID.
-	 */
-	@Test
-	public final void testOnDestroyRatWithTargetID() {
-
-		final Player pl = PlayerTestHelper.createPlayer("hugo");
-		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
-		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
-		testzone.add(rat);
-		testzone.add(pl);
-
-		assertEquals(1, rat.getID().getObjectID());
-		pl.setAdminLevel(5000);
-		pl.clearEvents();
-
-		MockStendhalRPRuleProcessor.get().addPlayer(pl);
-		final RPAction action = new RPAction();
-		action.put("type", "destroy");
-		action.put("target", "#1");
-
-		assertFalse(CommandCenter.execute(pl, action));
-		assertEquals("Usunięto #'szczur' o ID ##1.", pl.events().get(0).get("text"));
-	}
-
-	/**
 	 * Tests for onInspectRatWithTargetID.
 	 */
 	@Test
