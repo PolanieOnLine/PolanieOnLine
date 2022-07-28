@@ -4505,7 +4505,8 @@ Południowy-wschód: Doki
 		</attributes>
 
 		<!-- NPCs -->
-		<configurator class-name="games.stendhal.server.maps.ados.rock.WeaponsCollectorNPC" />
+		<configurator class-name="games.stendhal.server.maps.ados.rock.WeaponsCollectorNPC"/>
+		<configurator class-name="games.stendhal.server.maps.ados.rock.TadpolesNPC"/>
 
 		<!-- Music ambiance -->
 		<entity x="3" y="35">
@@ -4526,7 +4527,7 @@ Południowy-wschód: Doki
 
 		<!-- Portals -->
 		<portal x="118" y="103" ref="caves_exit">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 
 	</zone>
