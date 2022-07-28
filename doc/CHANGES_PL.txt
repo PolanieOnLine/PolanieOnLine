@@ -27,7 +27,7 @@ Changelog
 *naprawiono błędy*
 - Poprawiono dialogi u niektórych NPC i w zadaniach
 - Naprawiono animacje strzał
-- Naprawiono brak wyświetlanej grafiki złotego orka
+- Naprawiono brak wyświetlanych grafik potworów
 - Naprawiono błąd graficzny z drzewcami
 - Naprawiono błąd z oznaczeniem abnormal stworzenia: "motylek"
 - Naprawiono zaklęcia, które dodawały atak i obronę bez noszenia różdżki w drugiej ręce
