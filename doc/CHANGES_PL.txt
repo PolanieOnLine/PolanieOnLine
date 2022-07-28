@@ -23,6 +23,7 @@ Changelog
 - Mgły i inne niezniszczalne obiekty nie będą blokować obrażeń
 - Większość przedmiotów otrzymała swój minimalny poziom do pełnego wykorzystania tego wyposażenia
 - Zapowiedzi deathmatch nie będą się powtarzać przed upływem 15 minut
+- Zmieniono nazwę przedmiotu z "magia lodu" na "magia mrozu"
 
 *naprawiono błędy*
 - Poprawiono dialogi u niektórych NPC i w zadaniach
