@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
-import games.stendhal.common.constants.SkinColor;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
@@ -85,7 +84,7 @@ import marauroa.common.Pair;
 public class CollectEnemyData extends AbstractQuest {
 	private static final Logger logger = Logger.getLogger(CollectEnemyData.class);
 
-	private static final String QUEST_NAME = "Zbierz Informacje Wroga";
+	private static final String QUEST_NAME = "Zbierz Informacje o Wrogu";
 	private static final String QUEST_SLOT = "collect_enemy_data";
 
 	private SpeakerNPC npc;
@@ -99,6 +98,7 @@ public class CollectEnemyData extends AbstractQuest {
 
 	private static final int bestiaryPrice = 100000;
 
+	@SuppressWarnings("serial")
 	private static final Map<String, Pair<String, String>> questionOptions = new HashMap<String, Pair<String, String>>() {{
 		put("poziom", new Pair<String, String>("Jaki jego poziom wynosi", null));
 		put("zdrowie", new Pair<String, String>("Ile zdrowia posiada", null));
@@ -374,6 +374,7 @@ public class CollectEnemyData extends AbstractQuest {
 							}}));
 	}
 
+	@SuppressWarnings("serial")
 	private void initShop() {
 		final Map<String, Integer> prices = new LinkedHashMap<String, Integer>() {{
 			put("bestiariusz", bestiaryPrice);
