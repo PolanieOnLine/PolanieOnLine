@@ -36,6 +36,7 @@ public class QuestCompleteBuilder {
 	private String greet = "Dziękuję";
 	private String respondToReject = null;
 	private String respondToAccept = null;
+	private boolean repeatable = true;
 	private List<ChatAction> rewardWith = new LinkedList<>();
 
 	public QuestCompleteBuilder greet(String greet) {
@@ -50,6 +51,11 @@ public class QuestCompleteBuilder {
 
 	public QuestCompleteBuilder respondToAccept(String respondToAccept) {
 		this.respondToAccept = respondToAccept;
+		return this;
+	}
+
+	public QuestCompleteBuilder repeatable(boolean repeatable) {
+		this.repeatable = repeatable;
 		return this;
 	}
 
@@ -90,9 +96,13 @@ public class QuestCompleteBuilder {
 		if (questCompleteAction != null) {
 			actions.add(questCompleteAction);
 		}
-		actions.add(new SetQuestAction(questSlot, 0, "done"));
-		actions.add(new SetQuestToTimeStampAction(questSlot, 1));
-		actions.add(new IncrementQuestAction(questSlot, 2, 1));
+		if (!repeatable) {
+			actions.add(new SetQuestAction(questSlot, "done"));
+		} else {
+			actions.add(new SetQuestAction(questSlot, 0, "done"));
+			actions.add(new SetQuestToTimeStampAction(questSlot, 1));
+			actions.add(new IncrementQuestAction(questSlot, 2, 1));
+		}
 		actions.addAll(rewardWith);
 
 		if (respondToAccept != null) {
@@ -103,7 +113,6 @@ public class QuestCompleteBuilder {
 	}
 
 	void buildWithConfirmation(SpeakerNPC npc, ChatCondition mayCompleteCondition, List<ChatAction> actions) {
-
 		// player returns while quest is still active
 		npc.add(
 			ConversationStates.IDLE,
@@ -130,16 +139,13 @@ public class QuestCompleteBuilder {
 			ConversationStates.ATTENDING,
 			respondToReject,
 			null);
-
 	}
 
 	void buildWithoutConfirmation(SpeakerNPC npc, ChatCondition mayCompleteCondition, List<ChatAction> actions) {
-
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				mayCompleteCondition,
-				ConversationStates.ATTENDING,
-				greet,
-				new MultipleActions(actions));
+			mayCompleteCondition,
+			ConversationStates.ATTENDING,
+			greet,
+			new MultipleActions(actions));
 	}
-
 }
