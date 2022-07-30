@@ -23,6 +23,7 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.maps.ados.market.BBQGrillmasterNPC;
 import games.stendhal.server.maps.semos.mines.MinerNPC;
 import utilities.PlayerTestHelper;
@@ -56,7 +57,7 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		new BBQGrillmasterNPC().configureZone(zone, null);
 		new MinerNPC().configureZone(zone, null);
 
-		quest = new CoalForHaunchy();
+		quest = new BuiltQuest(new CoalForHaunchy().story());
 		quest.addToWorld();
 
 		questSlot = quest.getSlotName();
@@ -78,11 +79,11 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		haunchyEng.step(player, "task");
 		assertEquals("Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?", getReply(haunchy));
 		haunchyEng.step(player, "coal");
-		assertEquals("Węgiel nie jest łatwo znaleźć. Normalnie możesz go znaleźć pod ziemią, ale może będziesz miał szczęście i znajdziesz w tunelach starej kopalni Semos...", getReply(haunchy));
+		assertEquals("Węgiel nie jest łatwy do znalezienia. Zwykle możesz go znaleźć gdzieś w ziemi, ale być może będziesz mieć szczęście i znajdziesz go w starych tunelach Semos... Pomożesz mi?", getReply(haunchy));
 		haunchyEng.step(player, "yes");
-		assertEquals("Dziękuję! Jeżeli znalazłeś 25 kawałków to powiedz mi #węgiel to będę widział, że masz. Będę wtedy pewien, że będę mógł ci dać pyszną nagrodę.", getReply(haunchy));
+		assertEquals("Dziękuję Ci! Na pewno dam ci miłą i smaczną nagrodę.", getReply(haunchy));
 		haunchyEng.step(player, "coal");
-		assertEquals("Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź dla mnie kilka kawałków węgla kamiennego.", getReply(haunchy));
+		assertEquals("Czasami mógłbyś mi wyświadczyć #'przysługę'...", getReply(haunchy));
 		haunchyEng.step(player, "bye");
 		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
@@ -115,20 +116,16 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		haunchyEng.step(player, "hi");
 		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź dla mnie kilka kawałków węgla kamiennego.", getReply(haunchy));
+		assertEquals("Na szczęście mój grill wciąż pali. Ale proszę pospiesz się i przynieś mi 25 węgla, tak jak obiecałeś.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
 		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
 		// get another 15 coals
 		PlayerTestHelper.equipWithStackableItem(player, "węgiel", 25);
 		haunchyEng.step(player, "hi");
-		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
-		haunchyEng.step(player, "task");
-		// We get one or more grilled steaks a reward:
-		// You see a fresh grilled steak. It smells awesome and is really juicy. It is a special quest reward for player, and cannot be used by others. Stats are (HP: 200).
-		assertTrue(getReply(haunchy).matches("Dziękuję!! Przyjmij te .* grillowany stek z mojego grilla!"));
+		assertTrue(getReply(haunchy).matches("Dziękuję! Przyjmij oto .* grillowany stek z mojego grilla!"));
 		assertTrue(player.isEquipped("grillowany stek"));
-		assertEquals("waiting", player.getQuest(questSlot, 0));
+		assertEquals("done", player.getQuest(questSlot, 0));
 		haunchyEng.step(player, "bye");
 		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
@@ -137,7 +134,7 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		haunchyEng.step(player, "hi");
 		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu 2 dni.", getReply(haunchy));
+		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go przez jakiś czas.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
 		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 
@@ -148,13 +145,13 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		haunchyEng.step(player, "coal");
 		assertEquals("Czasami mógłbyś mi wyświadczyć #'przysługę'...", getReply(haunchy));
 		haunchyEng.step(player, "favour");
-		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu 2 dni.", getReply(haunchy));
+		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go przez jakiś czas.", getReply(haunchy));
 		haunchyEng.step(player, "offer");
 		assertEquals("Mam nadzieje, że moje steki będą wkrótce gotowe. Bądź cierpliwy lub spróbuj przedtem innych przysmaków.", getReply(haunchy));
 		haunchyEng.step(player, "help");
 		assertEquals("Niestety steki nie są jeszcze gotowe... Jeżeli jesteś głodny i nie możesz czekać to może przejrzysz oferty przy wyjściu jak na przykład oferty Blacksheep koło chatek rybackich w Ados lub możesz popłynąć promem do Athor, aby zdobyć trochę przekąsek...", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu 2 dni.", getReply(haunchy));
+		assertEquals("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go przez jakiś czas.", getReply(haunchy));
 		haunchyEng.step(player, "bye");
 		assertEquals("Życzę miłego dnia! Zawsze podtrzymuj ogień!", getReply(haunchy));
 	}
