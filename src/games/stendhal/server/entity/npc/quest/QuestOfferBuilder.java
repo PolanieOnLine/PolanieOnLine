@@ -22,6 +22,7 @@ import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
@@ -44,6 +45,7 @@ public class QuestOfferBuilder {
 	private String respondToAccept = "Dziękuję!";
 	private String respondToReject = "Och. To niezbyt dobrze.";
 	private String remind = "Proszę, dotrzymaj swojej obietnicy.";
+	private double acceptationKarmaReward = 2.0;
 	private double rejectionKarmaPenalty = 2.0;
 	private List<String> lastRespondTo = null;
 	private Map<List<String>, String> additionalReplies = new HashMap<>();
@@ -89,6 +91,11 @@ public class QuestOfferBuilder {
 
 	public QuestOfferBuilder remind(String remind) {
 		this.remind = remind;
+		return this;
+	}
+
+	public QuestOfferBuilder acceptationKarmaReward(double acceptationKarmaReward) {
+		this.acceptationKarmaReward = acceptationKarmaReward;
 		return this;
 	}
 
@@ -192,6 +199,7 @@ public class QuestOfferBuilder {
 
 		final List<ChatAction> start = new LinkedList<ChatAction>();
 		start.add(new SetQuestAction(questSlot, 0, "start"));
+		start.add(new IncreaseKarmaAction(acceptationKarmaReward));
 		if (startQuestAction != null) {
 			start.add(startQuestAction);
 		}
