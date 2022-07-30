@@ -267,6 +267,7 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("drewniany łuk",1);
 
 		// resource
+		items.put("węgiel drzewny",5);
 		items.put("węgiel",10);
 		items.put("mąka",5);
 		items.put("zboże",20);

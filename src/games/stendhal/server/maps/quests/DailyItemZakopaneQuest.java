@@ -164,6 +164,7 @@ public class DailyItemZakopaneQuest extends AbstractQuest {
 		items.put("sztabka srebra",1);
 		items.put("sól",10);
 		items.put("siarka",10);
+		items.put("węgiel drzewny",5);
 		items.put("węgiel",10);
 		items.put("kryształ ametystu",10);
 		items.put("kryształ szmaragdu",10);
