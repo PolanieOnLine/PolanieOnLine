@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,34 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
-import marauroa.common.Pair;
 
 /**
  * QUEST: CleanStorageSpace
@@ -57,148 +36,45 @@ import marauroa.common.Pair;
  * REPETITIONS:
  * <li> None.
  */
-public class CleanStorageSpace extends AbstractQuest {
-	private static final String QUEST_SLOT = "clean_storage";
-	private final SpeakerNPC npc = npcs.get("Eonna");
+public class CleanStorageSpace implements QuestManuscript {
+	public QuestBuilder<?> story() {
+		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
 
-	private void step_1() {
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
-				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED,
-				"Moja #piwnica jest pełna szczurów. Pomożesz mi?",
-				null);
+		quest.info()
+			.name("Porządki w Piwnicy")
+			.description("W piwnicy Eonny zagnieździły się szczury i węże. Potrzebuje mnie, prawdziwego bohatera, abym pomógł jej.")
+			.internalName("clean_storage")
+			.minLevel(0)
+			.region(Region.SEMOS_CITY)
+			.questGiverNpc("Eonna");
 
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
-				"Dziękuję jeszcze raz! Sądzę, że na dole jest nadal czysto.", null);
+		quest.history()
+			.whenNpcWasMet("Eonna napotkana została w jej domku, blisko piekarni.")
+			.whenQuestWasRejected("Nie zajmuję się sprzątaniem piwnic, mam lepsze zajęcia do roboty.")
+			.whenQuestWasAccepted("Nie mogę odmówić Eonnie pomocy w pozbyciu się szczurów i węży z jej piwnicy.")
+			.whenTaskWasCompleted("Piwnica Eonny stała się wolna od groźnych szkodników.")
+			.whenQuestWasCompleted("Eonna podziękowała mi i nazwała mnie swoim bohaterem.");
 
-		final HashMap<String, Pair<Integer, Integer>> toKill = 
-			new HashMap<String, Pair<Integer, Integer>>();
-		// first number is required solo kills, second is required shared kills
-		toKill.put("szczur", new Pair<Integer, Integer>(0,1));
-		toKill.put("szczur jaskiniowy", new Pair<Integer, Integer>(0,1));
-		toKill.put("wąż", new Pair<Integer, Integer>(0,1));
+		quest.offer()
+			.respondToRequest("Moja #piwnica jest pełna szkodników. Pomożesz mi nieznajomy?")
+			.respondToUnrepeatableRequest("Dziękuję jeszcze raz! Sądzę, że na dole jest nadal czysto.")
+			.respondToAccept("Och, dziękuję! Poczekam tutaj, a jeżeli spróbują uciec to uderzę je moją miotłą!")
+			.respondToReject("*chlip* Cóż, może ktoś inny będzie moim bohaterem...")
+			.respondTo("basement", "storage space", "piwnica", "piwnicy").saying("Tak, idź na dół po schodach. Tam jest cała gromada obrzydliwych szczurów. Chyba widziałam tam też węża. Powinieneś uważać... Wciąż chcesz mi pomóc?")
+			.remind("Nie pamiętasz, że obiecałeś mi pomóc w oczyszczeniu mojej piwnicy ze szczurów?");
 
-		final List<ChatAction> start = new LinkedList<ChatAction>();
-		start.add(new IncreaseKarmaAction(2.0));
-		start.add(new SetQuestAction(QUEST_SLOT, 0, "start"));
-		start.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
-		
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Och, dziękuję! Poczekam tutaj, a jeżeli spróbują uciec to uderzę je moją miotłą!",
-				new MultipleActions(start));
+		quest.task()
+			.requestKill(1, "szczur")
+			.requestKill(1, "szczur jaskiniowy")
+			.requestKill(1, "wąż");
 
-		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"*chlip* Cóż, może ktoś inny będzie moim bohaterem...",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -2.0));
+		quest.complete()
+			.greet("Nareszcze! Mój bohater się odnalazł, dziękuję!")
+			.repeatable(false)
+			.rewardWith(new IncreaseXPAction(500))
+			.rewardWith(new IncreaseKarmaAction(10.0))
+			.rewardWith(new EquipItemAction("buteleczka wody", 10));
 
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
-				Arrays.asList("piwnica", "piwnicy", "basement", "storage space"),
-				null,
-				ConversationStates.QUEST_OFFERED,
-				"Tak, idź na dół po schodach. Tam jest cała gromada obrzydliwych szczurów. Chyba widziałam tam też węża. Powinieneś uważać... wciąż chcesz mi pomóc?",
-				null);
-	}
-
-	private void step_2() {
-		// Go kill at least a rat, a cave rat and a snake.
-	}
-
-	private void step_3() {
-		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new EquipItemAction("buteleczka wody", 10, true));
-		reward.add(new IncreaseKarmaAction(10.0));
-		reward.add(new IncreaseXPAction(500));
-		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-
-		// the player returns to Eonna after having started the quest.
-		// Eonna checks if the player has killed one of each animal race.
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"), new KilledForQuestCondition(QUEST_SLOT,1)),
-				ConversationStates.ATTENDING, "Nareszcie bohater! Dziękuję!",
-				new MultipleActions(reward));
-
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"), new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.QUEST_STARTED,
-				"Nie pamiętasz, że obiecałeś mi pomóc w oczyszczeniu mojej #piwnicy ze szczurów?",
-				null);
-
-		npc.add(
-				ConversationStates.QUEST_STARTED,
-				Arrays.asList("basement", "piwnicy", "piwnica"),
-				null,
-				ConversationStates.ATTENDING,
-				"Tak jak powiedziałam w dół schodami. Proszę wyczyść ze wszystkich szczurów i zobacz czy nie ma tam węża!",
-				null);
-	}
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Porządki w Piwnicy",
-				"Eonna posiada piwnicę, w której zagnieździły się szczury i węże. Potrzebuje mnie, prawdziwego bohatera, abym pomógł jej.",
-				false);
-		step_1();
-		step_2();
-		step_3();
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Eonne w jej domu, blisko piekarni.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add("Nie mam zamiaru pozbywać się potworów z jej piwnicy.");
-		return res;	
-		}
-		res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + " Eonnie zabić szczury i węże w piwnicy.");
-		if ("start".equals(questState) && player.hasKilled("szczur") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż") || "done".equals(questState)) {
-		res.add("Wyczyściłem piwnicę Eonny z gryzoni i węży.");
-		}
-		if ("done".equals(questState)) {
-			res.add("Eonna podziękowała mi i nazwała mnie swoim bohaterem.");
-		}
-		return res;
-	}
-
-	@Override
-	public String getName() {
-		return "Porządki w Piwnicy";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 0;
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.SEMOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
+		return quest;
 	}
 }

@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.maps.semos.storage.HousewifeNPC;
 import utilities.QuestHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
@@ -48,8 +49,8 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		final CleanStorageSpace cf = new CleanStorageSpace();
-		cf.addToWorld();
+		quest = new BuiltQuest(new CleanStorageSpace().story());
+		quest.addToWorld();
 	}
 
 	/**
@@ -89,12 +90,12 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(en.step(player, "task"));
 		assertTrue(npc.isTalking());
 		assertEquals(
-				"Moja #piwnica jest pełna szczurów. Pomożesz mi?",
+				"Moja #piwnica jest pełna szkodników. Pomożesz mi nieznajomy?",
 				getReply(npc));
 		assertTrue(en.step(player, "basement"));
 		assertTrue(npc.isTalking());
 		assertEquals(
-				"Tak, idź na dół po schodach. Tam jest cała gromada obrzydliwych szczurów. Chyba widziałam tam też węża. Powinieneś uważać... wciąż chcesz mi pomóc?",
+				"Tak, idź na dół po schodach. Tam jest cała gromada obrzydliwych szczurów. Chyba widziałam tam też węża. Powinieneś uważać... Wciąż chcesz mi pomóc?",
 				getReply(npc));
 		assertTrue(en.step(player, "yes"));
 		assertEquals(
@@ -109,7 +110,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 		player.setSharedKill("wąż");
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Nareszcie bohater! Dziękuję!", getReply(npc));
+		assertEquals("Nareszcze! Mój bohater się odnalazł, dziękuję!", getReply(npc));
 
 		assertEquals("done", player.getQuest("clean_storage"));
 	}
