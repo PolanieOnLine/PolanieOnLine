@@ -77,7 +77,7 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		haunchyEng.step(player, "hi");
 		assertEquals("Hej! Wspaniały dzień na grilla?", getReply(haunchy));
 		haunchyEng.step(player, "task");
-		assertEquals("Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?", getReply(haunchy));
+		assertEquals("Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłyby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?", getReply(haunchy));
 		haunchyEng.step(player, "coal");
 		assertEquals("Węgiel nie jest łatwy do znalezienia. Zwykle możesz go znaleźć gdzieś w ziemi, ale być może będziesz mieć szczęście i znajdziesz go w starych tunelach Semos... Pomożesz mi?", getReply(haunchy));
 		haunchyEng.step(player, "yes");
