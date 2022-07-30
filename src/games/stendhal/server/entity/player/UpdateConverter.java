@@ -554,6 +554,8 @@ public abstract class UpdateConverter {
 		// We avoid to lose potion in case there is an entry with the old and the new name at the same
 		// time by combining them by calculating the minimum of the two times and the sum of the two amounts.
 		migrateSumTimedQuestSlot(player, "Valo_concoct_potion", "valo_concoct_potion");
+		renameQuestSlot(player, "gazda_jedrzej_basehp", "kill_herszt_basehp");
+		renameQuestSlot(player, "gazda_jedrzej_nagroda", null);
 
 		// From 0.66 to 0.67
 		// update quest slot content,
@@ -861,6 +863,18 @@ public abstract class UpdateConverter {
 			}
 
 			player.setQuest(newName, questState);
+			player.removeQuest(oldName);
+		}
+	}
+	
+	private static void renameQuestSlot(final Player player, final String oldName, final String newName) {
+		final String oldState = player.getQuest(oldName);
+		if (oldState != null) {
+			String questState = oldState;
+
+			if (newName != null) {
+				player.setQuest(newName, questState);
+			}
 			player.removeQuest(oldName);
 		}
 	}
