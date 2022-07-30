@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,35 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropItemAction;
-import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.NPCList;
+import games.stendhal.server.entity.npc.action.EquipRandomAmountOfItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
-import games.stendhal.server.entity.npc.condition.TimePassedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.BringItemTask;
+import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 /**
@@ -72,183 +52,52 @@ import games.stendhal.server.maps.Region;
  * 
  * @author Vanessa Julius and storyteller
  */
-public class CoalForHaunchy extends AbstractQuest {
-	private static final String QUEST_SLOT = "coal_for_haunchy";
-	private final SpeakerNPC npc = npcs.get("Haunchy Meatoch");
+public class CoalForHaunchy implements QuestManuscript {
+	public QuestBuilder<?> story() {
+		QuestBuilder<BringItemTask> quest = new QuestBuilder<>(new BringItemTask());
 
-	// The delay between repeating quests is 48 hours or 2880 minutes
-	private static final int REQUIRED_MINUTES = 2880;
+		quest.info()
+			.name("Węgiel do Grilla")
+			.description("Haunchy Meatoch ma wątpliwości co do swojego ognia w grillu, jego zapas węgla może nie wystarczyć do usmażenia przepysznych steków. Czy Haunchy będzie potrzebował więcej?")
+			.internalName("coal_for_haunchy")
+			.repeatableAfterMinutes(2 * 24 * 60)
+			.minLevel(0)
+			.region(Region.ADOS_CITY)
+			.questGiverNpc("Haunchy Meatoch");
 
-	private void offerQuestStep() {
-		// player says quest when he has not ever done the quest before (rejected or just new)
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
-				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED, 
-				"Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?",
-				null);
+		quest.history()
+			.whenNpcWasMet("Haunchy Meatoch powitał mnie na rynku w Ados.")
+			.whenQuestWasRejected("Poprosił mnie o dostarzenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.")
+			.whenQuestWasAccepted("Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem Haunchy'emu, że pomogę mu zdobyć węgiel do grilla.")
+			.whenTaskWasCompleted("Mam już 25 kawałków węgla dla Haunchy'ego. Sądzę, że się ucieszy.")
+			.whenQuestWasCompleted("Haunchy Meatoch był zadowolony, gdy otrzymał ode mnie węgiel. Ma go teraz wystarczająco dużo. W zamian dał mi kilka przepszynych steków ze swojego grilla!")
+			.whenQuestCanBeRepeated("Założę się, że ta ilość jest znowu niska i potrzebuje więcej. Może dostanę więcej smacznych grillowanych steków.");
 
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
-				Arrays.asList("coal", "węgiel", "węgla"),
-				null,
-				ConversationStates.QUEST_OFFERED,
-				"Węgiel nie jest łatwo znaleźć. Normalnie możesz go znaleźć pod ziemią, ale może będziesz miał szczęście i znajdziesz w tunelach starej kopalni Semos...",
-				null);
 
-        // player has completed the quest (doesn't happen here)
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestCompletedCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Mogę teraz grilować moje pyszne steki! Dziękuję!",
-				null);
+		quest.offer()
+			.respondToRequest("Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłyby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?")
+			.respondToUnrepeatableRequest("Zapas węgla jest wystarczająco spory. Nie będę potrzebował go przez jakiś czas.")
+			.respondToRepeatedRequest("Ostatni węgiel, który mi przyniosłeś, w większości został wykorzystany. Przyniesiesz mi więcej?")
+			.respondToAccept("Dziękuję Ci! Na pewno dam ci miłą i smaczną nagrodę.")
+			.respondTo("coal", "stone coal", "węgla", "węgiel").saying("Węgiel nie jest łatwy do znalezienia. Zwykle możesz go znaleźć gdzieś w ziemi, ale być może będziesz mieć szczęście i znajdziesz go w starych tunelach Semos... Pomożesz mi?")
+			.respondToReject("Och nieważne. Myślałem, że lubisz grillowanie tak jak ja. A więc do zobaczenia.")
+			.rejectionKarmaPenalty(10.0)
+			.remind("Na szczęście mój grill wciąż pali. Ale proszę pospiesz się i przynieś mi 25 węgla, tak jak obiecałeś.");
 
-		// player asks about quest which he has done already and he is allowed to repeat it
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES), new QuestStateStartsWithCondition(QUEST_SLOT, "waiting;")),
-				ConversationStates.QUEST_OFFERED,
-				"Ostatnio węgiel, który mi przyniosłeś już wykorzystałem. Przyniesiesz mi go więcej?",
-				null);
-		
-		// player asks about quest which he has done already but it is not time to repeat it
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)), new QuestStateStartsWithCondition(QUEST_SLOT, "waiting;")),
-				ConversationStates.ATTENDING,
-				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Zapas węgla jest wystarczająco spory. Nie będę potrzebował go w ciągu "));
+		NPCList.get().get("Haunchy Meatoch").addReply(Arrays.asList("coal", "stone coal", "węgla", "węgiel"), "Czasami mógłbyś mi wyświadczyć #'przysługę'...");
 
-		// Player agrees to get the coal, increase 5 karma
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"Dziękuję! Jeżeli znalazłeś 25 kawałków to powiedz mi #węgiel to będę widział, że masz. Będę wtedy pewien, że będę mógł ci dać pyszną nagrodę.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5));
+		quest.task()
+			.requestItem(25, "węgiel");
 
-		// Player says no, they've lost karma.
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Och, nie ważne. Sądziłem, że uwielbiasz grillowane steki tak jak ja. Żegnaj.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
-	}
+		quest.complete()
+			.greet("Ach, widzę, że masz wystarczająco dużo węgla, żeby utrzymać grilla! Czy to dla mnie?")
+			.respondToReject("No cóż, mam nadzieję, że ktoś inny mi pomoże, zanim mój grill zgaśnie.")
+			.respondToAccept(null)
+			.rewardWith(new IncreaseXPAction(200))
+			.rewardWith(new IncreaseKarmaAction(20))
+			.rewardWith(new EquipRandomAmountOfItemAction("grillowany stek", 1, 4, 1,
+					"Dziękuję! Przyjmij oto [this_these] [number_item] z mojego grilla!"));
 
-	/**
-	 * Get Coal Step:
-	 * Players will get some coal in Semos Mine and with buying some from other players.
-	 */
-	private void bringCoalStep() {
-		final List<String> triggers = new ArrayList<String>();
-		triggers.add("węgiel");
-		triggers.add("stone coal");
-		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);
-
-		// player asks about quest or says coal when they are supposed to bring some coal and they have it
-		npc.add(
-				ConversationStates.ATTENDING, triggers,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new PlayerHasItemWithHimCondition("węgiel",25)),
-				ConversationStates.ATTENDING, 
-				null,
-				new MultipleActions(
-						new DropItemAction("węgiel",25), 
-						new IncreaseXPAction(1000),
-						new IncreaseKarmaAction(20),
-						new ChatAction() {
-							@Override
-							public void fire(final Player player,
-									final Sentence sentence,
-									final EventRaiser npc) {
-								int grilledsteakAmount = Rand.rand(4) + 1;
-								new EquipItemAction("grillowany stek", grilledsteakAmount, true).fire(player, sentence, npc);
-								npc.say("Dziękuję!! Przyjmij te " + Grammar.thisthese(grilledsteakAmount) + " " +
-										Grammar.quantityNumberStrNoun(grilledsteakAmount, "grillowany stek") + " z mojego grilla!");
-								new SetQuestAndModifyKarmaAction(getSlotName(), "waiting;" 
-										+ System.currentTimeMillis(), 10.0).fire(player, sentence, npc);
-							}
-						}));
-
-		// player asks about quest or says coal when they are supposed to bring some coal and they don't have it
-		npc.add(
-				ConversationStates.ATTENDING, triggers,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new NotCondition(new PlayerHasItemWithHimCondition("węgiel",25))),
-				ConversationStates.ATTENDING,
-				"Nie masz wystaczającej ilości węgla. Proszę idź i wydobądź dla mnie kilka kawałków węgla kamiennego.",
-				null);
-
-		npc.add(
-				ConversationStates.ATTENDING,
-				Arrays.asList("coal", "węgiel", "stone coal"),
-				new QuestNotInStateCondition(QUEST_SLOT,"start"),
-				ConversationStates.ATTENDING,
-				"Czasami mógłbyś mi wyświadczyć #'przysługę'...", null);
-	}
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Węgiel do Grilla",
-				"Haunchy Meatoch ma wątpliwości co do swojego ognia w grillu, jego zapas węgla może nie wystarczyć do usmażenia przepysznych steków.",
-				true);
-		offerQuestStep();
-		bringCoalStep();
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add(npc.getName() + " powitał mnie na rynku w Ados.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Poprosił mnie o dostarzenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
-			res.add("Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem " + npc.getName() + ", że pomogę mu zdobyć węgiel do grilla.");
-		}
-		if ("start".equals(questState) && player.isEquipped("węgiel",25) || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " 25 kawałków węgla dla " + npc.getName() + ". Sądzę, że się ucieszy.");
-		}
-		if (isCompleted(player)) {
-			if (isRepeatable(player)) {
-				res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " 25 kawałków węgla do " + npc.getName() + ", ale założe się to mało i będze potrzebował więcej. Może wezmę więcej pszynych steków z grilla.");
-			} else {
-				res.add(npc.getName() + " był zadowolony, gdy dałem mu węgiel. Ma go teraz wystarczająco dużo. W zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " od niego kilka pysznych steków jakich w życiu nie jadłem!");
-			}			
-		}
-		return res;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "Węgiel do Grilla";
-	}
-	
-	@Override
-	public String getRegion() {
-		return Region.ADOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"waiting;"),
-				new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		return new QuestStateStartsWithCondition(QUEST_SLOT,"waiting;").fire(player, null, null);
+		return quest;
 	}
 }
