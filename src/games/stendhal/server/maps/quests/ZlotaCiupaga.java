@@ -78,7 +78,7 @@ public class ZlotaCiupaga extends AbstractQuest {
 	private static final String QUEST_SLOT = "andrzej_make_zlota_ciupaga";
 	private final SpeakerNPC npc = npcs.get("Kowal Andrzej");
 
-	private static final String GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT = "gazda_jedrzej_nagroda";
+	private static final String GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT = "kill_herszt_basehp";
 
 	private static final int REQUIRED_WAIT_DAYS = 1;
 	private static final int REQUIRED_HOURS = 6;

@@ -866,7 +866,7 @@ public abstract class UpdateConverter {
 	}
 
 	private static void fixQuestDoneState(Player player) {
-		List<String> quests = Arrays.asList("kill_gnomes", "clean_athors_underground", "coal_for_haunchy");
+		List<String> quests = Arrays.asList("kill_gnomes", "clean_athors_underground", "coal_for_haunchy", "kill_herszt");
 		for (String quest : quests) {
 			String value = player.getQuest(quest, 0);
 			if (value != null && (value.equals("killed") || value.equals("waiting"))) {

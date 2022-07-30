@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                 (C) Copyright 2003-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,34 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseBaseHPOnlyOnceAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
-import games.stendhal.server.entity.npc.condition.TimePassedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
-import games.stendhal.server.util.TimeUtil;
-import marauroa.common.Pair;
 
 /**
  * QUEST: Kill Herszt
@@ -69,179 +50,54 @@ import marauroa.common.Pair;
  * <li> after 14 days.
  * </ul>
  */
-public class KillHerszt extends AbstractQuest {
-	private static final String QUEST_SLOT = "kill_herszt";
-	private final SpeakerNPC npc = npcs.get("Gazda Jędrzej");
+public class KillHerszt implements QuestManuscript {
+	final static String QUEST_SLOT = "kill_herszt";
+	public QuestBuilder<?> story() {
+		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
 
-	private static final String GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT = "gazda_jedrzej_basehp";
-	private static final String GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT = "gazda_jedrzej_nagroda";
+		quest.info()
+			.name("Pozbycie się Rozbójników")
+			.description("Pogłoski krażą po zimowej krainie iż Jędrzej ma kłopoty z rozbójnikami, którzy zasiedlili się w jaskini nie daleko miasta.")
+			.internalName(QUEST_SLOT)
+			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_WEEK * 2)
+			.minLevel(30)
+			.region(Region.ZAKOPANE_CITY)
+			.questGiverNpc("Gazda Jędrzej");
 
-	private void step_1() {
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				null,
-				ConversationStates.QUEST_OFFERED,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (!player.hasQuest(QUEST_SLOT) || player.getQuest(QUEST_SLOT).equals("rejected")) {
-							raiser.say("Nie możemy uwolnić się od zbójników grasujących na tym terenie, a w szczególności od Herszta górskich zbójników. Czy mógłbyś udać się do pobliskiej jaskini i pozbyć się ich?");
-						} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
-							raiser.say("Już się Ciebie pytałem o zabicie zbójników!");
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						} else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
-							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-							final long delay = 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
-							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
-							if (timeRemaining > 0) {
-								raiser.say("Bardzo dziękuję za pomoc. Może przyjdziesz później. Zbójnicy mogą powrócić. Wróć za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
-								raiser.setCurrentState(ConversationStates.ATTENDING);
-								return;
-							}
-							raiser.say("Znowu potrzebujemy Twojej pomocy. Czy mógłbyś znowu nam pomóc?");
-						} else {
-							raiser.say("Dziękuję za pomoc w potrzebie. Teraz czujemy się bezpieczniej i pewniej.");
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
+		quest.history()
+			.whenNpcWasMet("Gazda Jędrzej spotkany na górze niedaleko miasta i wejścia do jaskini.")
+			.whenQuestWasRejected("Zgraja zbójów wydaje się być bardzo groźna dla mojego cennego życia.")
+			.whenQuestWasAccepted("Banda zbójników wydaje się groźna dla reszty mieszkańców tego miasta, muszę się ich jak najszybciej pozbyć.")
+			.whenTaskWasCompleted("Moja wyprawa na rozbójników w jaskini nieco uspokoiła nerwy gazdy Jędrzeja.")
+			.whenQuestWasCompleted("Jędrzej podziękował za moją ciężką pracę i podarował niewielki prezent.")
+			.whenQuestCanBeRepeated("Minęło trochę czasu od ostatniego spotkania z gazdą Jędrzejem, być może znów potrzebuje pomocy ze zbójnikami.");
 
-		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
-		toKill.put("zbójnik górski herszt", new Pair<Integer, Integer>(0,1));
-		toKill.put("zbójnik górski", new Pair<Integer, Integer>(0,2));
-		toKill.put("zbójnik górski goniec", new Pair<Integer, Integer>(0,2));
-		toKill.put("zbójnik górski złośliwy", new Pair<Integer, Integer>(0,3));
-		toKill.put("zbójnik górski zwiadowca", new Pair<Integer, Integer>(0,2));
-		toKill.put("zbójnik górski starszy", new Pair<Integer, Integer>(0,1));
+		quest.offer()
+			.respondToRequest("Nie możemy uwolnić się od zbójników grasujących na tym terenie, a w szczególności od Herszta górskich zbójników. Czy mógłbyś udać się do pobliskiej #jaskini i pozbyć się ich?")
+			.respondToUnrepeatableRequest("Bardzo dziękuję za pomoc w imieniu reszty. Dobrze, że pytasz ponieważ zbójnicy mogą powrócić w każdej chwili...")
+			.respondToRepeatedRequest("Znowu potrzebujemy Twojej pomocy w sprawie rozbójników. Czy możesz znowu się nimi zająć, prosimy?")
+			.respondToAccept("Wspaniale! Proszę znajdź ich. Kręcą się gdzieś tutaj. Na pewną są w tej jaskini. Niech zapłacą za swoje winy!")
+			.acceptationKarmaReward(5.0)
+			.respondToReject("Rozumiem. Każdy się ich boi. Poczekam na kogoś odpowiedniego do tego zadania.")
+			.rejectionKarmaPenalty(5.0)
+			.respondTo("cave", "mine", "jaskini", "jaskinia", "kopalnia").saying("Najbliższe wejście do jaskini znajduje się tuż za tym wzniesieniem. Wypatruj ich!")
+			.remind("Już się Ciebie pytałem o pozbyciu się zbójników z naszych terenów!");
 
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-		actions.add(new IncreaseKarmaAction(5.0));
-		actions.add(new SetQuestAction(QUEST_SLOT, 0, "start"));
-		actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
+		quest.task()
+			.requestKill(1, "zbójnik górski herszt")
+			.requestKill(2, "zbójnik górski")
+			.requestKill(2, "zbójnik górski goniec")
+			.requestKill(3, "zbójnik górski złośliwy")
+			.requestKill(2, "zbójnik górski zwiadowca")
+			.requestKill(1, "zbójnik górski starszy");
 
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Wspaniale! Proszę znajdź ich. Kręcą się gdzieś tutaj. Na pewną są w jaskini. Niech zapłacą za swoje winy!",
-				new MultipleActions(actions));
+		quest.complete()
+			.greet("Wieść o twych czynach dotarła tu przed tobą! Godzien jesteś czci rycerskiej, lecz pamiętaj, że droga nie będzie łatwa, bo na każdym kroku musisz udowodnić swoje męstwo i odwagę!")
+			.rewardWith(new IncreaseXPAction(5000))
+			.rewardWith(new IncreaseKarmaAction(15.0))
+			.rewardWith(new IncreaseBaseHPOnlyOnceAction(QUEST_SLOT, 20))
+			.rewardWith(new EquipItemAction("bryłka mithrilu"));
 
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Rozumiem. Każdy się ich boi. Poczekam na kogoś odpowiedniego do tego zadania.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
-	}
-
-	private void step_2() {
-		/* Player has to kill the zbojnik*/
-	}
-
-	private void step_3() {
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.ATTENDING,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Idź zabić herszta górskich zbójników i jego kolegów.");
-				}
-		});
-
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-						new KilledForQuestCondition(QUEST_SLOT, 1)),
-				ConversationStates.ATTENDING,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Wieść o twych czynach dotarła tu przed tobą! Godzien jesteś czci rycerskiej, lecz pamiętaj, że droga nie będzie łatwa, bo na każdym kroku musisz udowodnić swoje męstwo i odwagę!");
-							player.setQuest(GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT, "start");
-							player.drop("pióro herszta hordy zbójeckiej");
-							player.addKarma(20.0);
-							player.addXP(5000);
-							final List<ChatAction> actions = new LinkedList<ChatAction>();
-							if (!player.hasQuest(GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT) || player.getQuest(GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT).equals("rejected") || !player.getQuest(GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT).equals("done")) {
-								actions.add(new SetQuestAction(GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT, "start"));
-							}
-							if (!"done".equals(player.getQuest(GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT))) {
-								player.setBaseHP(20 + player.getBaseHP());
-								player.heal(20, true);
-								player.setQuest(GAZDA_JEDRZEJ_BASEHP_QUEST_SLOT, "done");
-							}
-							player.setQuest(QUEST_SLOT, "killed;" + System.currentTimeMillis());
-							player.setQuest(GAZDA_JEDRZEJ_NAGRODA_QUEST_SLOT, "done");
-		 			}
-				});
-	}
-
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Pozbycie się Rozbójników",
-				"Gazda Jędrzej chce abym zajął się rozbójnikami, którzy swoją siedzibę mają w jaskini nie daleko miasta.",
-				false);
-		step_1();
-		step_2();
-		step_3();
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		if (!isCompleted(player)) {
-			res.add("Muszę zabić herszta i wszystkich jego kumpli na prośbę Gazdy Jęrzeja.");
-		} else if(isRepeatable(player)){
-			res.add("Gazda Jędrzej potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
-		} else {
-			res.add("Moja wyprawa na zbójników uspokoiła na jakiś czas nerwy Gazdy Jędrzeja.");
-		}
-		return res;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "Pozbycie się Rozbójników";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 30;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
-				new TimePassedCondition(QUEST_SLOT, 1, 2*MathHelper.MINUTES_IN_ONE_WEEK)).fire(player,null, null);
-	}
-
-	@Override
-	public boolean isCompleted(final Player player) {
-		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
+		return quest;
 	}
 }
