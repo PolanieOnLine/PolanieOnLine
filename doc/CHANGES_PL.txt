@@ -20,6 +20,7 @@ Changelog
 - Dodano nowe zadanie: (1)
 	- Zbierz Informacje o Wrogu
 - Dodano możliwość zakupu bestiariusza u Rengarda oraz spisu u Pietrka
+- Dodano węgiel drzewny do listy możliwych przedmiotów do przyniesienia dla burmistrzów w Zakopane i Ados
 - Mgły i inne niezniszczalne obiekty nie będą blokować obrażeń
 - Większość przedmiotów otrzymała swój minimalny poziom do pełnego wykorzystania tego wyposażenia
 - Zapowiedzi deathmatch nie będą się powtarzać przed upływem 15 minut
