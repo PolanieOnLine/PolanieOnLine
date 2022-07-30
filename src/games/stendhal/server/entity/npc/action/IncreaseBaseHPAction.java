@@ -23,7 +23,6 @@ import games.stendhal.server.entity.player.Player;
  */
 @Dev(category=Category.STATS, label="BaseHP+")
 public class IncreaseBaseHPAction implements ChatAction {
-
 	private final int baseHpDiff;
 
 	/**
@@ -38,7 +37,9 @@ public class IncreaseBaseHPAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		player.setBaseHP(baseHpDiff + player.getBaseHP());
+		player.setBaseHP(player.getBaseHP() + baseHpDiff);
+		player.heal(baseHpDiff);
+
 		player.notifyWorldAboutChanges();
 	}
 
