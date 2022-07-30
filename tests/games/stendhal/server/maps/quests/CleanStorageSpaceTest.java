@@ -110,7 +110,7 @@ public class CleanStorageSpaceTest extends ZonePlayerAndNPCTestImpl {
 		player.setSharedKill("wąż");
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Nareszcze! Mój bohater się odnalazł, dziękuję!", getReply(npc));
+		assertEquals("Nareszcie! Mój bohater się odnalazł, dziękuję!", getReply(npc));
 
 		assertEquals("done", player.getQuest("clean_storage"));
 	}

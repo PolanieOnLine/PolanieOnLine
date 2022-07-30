@@ -69,7 +69,7 @@ public class CleanStorageSpace implements QuestManuscript {
 			.requestKill(1, "wąż");
 
 		quest.complete()
-			.greet("Nareszcze! Mój bohater się odnalazł, dziękuję!")
+			.greet("Nareszcie! Mój bohater się odnalazł, dziękuję!")
 			.repeatable(false)
 			.rewardWith(new IncreaseXPAction(500))
 			.rewardWith(new IncreaseKarmaAction(10.0))
