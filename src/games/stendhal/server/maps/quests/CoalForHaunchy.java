@@ -67,7 +67,7 @@ public class CoalForHaunchy implements QuestManuscript {
 
 		quest.history()
 			.whenNpcWasMet("Haunchy Meatoch powitał mnie na rynku w Ados.")
-			.whenQuestWasRejected("Poprosił mnie o dostarzenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.")
+			.whenQuestWasRejected("Poprosił mnie o dostarczenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.")
 			.whenQuestWasAccepted("Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem Haunchy'emu, że pomogę mu zdobyć węgiel do grilla.")
 			.whenTaskWasCompleted("Mam już 25 kawałków węgla dla Haunchy'ego. Sądzę, że się ucieszy.")
 			.whenQuestWasCompleted("Haunchy Meatoch był zadowolony, gdy otrzymał ode mnie węgiel. Ma go teraz wystarczająco dużo. W zamian dał mi kilka przepszynych steków ze swojego grilla!")
