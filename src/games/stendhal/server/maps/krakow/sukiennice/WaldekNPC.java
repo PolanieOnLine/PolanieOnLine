@@ -44,7 +44,7 @@ public class WaldekNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Dzień dobry");
+				addJob("Skupuję różne owoce. Na stole leży książka, w niej jest moja oferta.");
 				addHelp("Skupuję różne owoce. Na stole leży książka, w niej jest moja oferta.");
 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyowoce")), false);
 				addOffer("Skupuję owoce, oferta moja jest w książce.");
@@ -53,7 +53,7 @@ public class WaldekNPC implements ZoneConfigurator {
 		};
 
 		npc.setDescription("Oto Waldek. Może coś opylisz u niego.");
-		npc.setEntityClass("man_007_npc");
+		npc.setEntityClass("man_008_npc");
 		npc.setGender("M");
 		npc.setPosition(26, 17);
 		npc.setDirection(Direction.LEFT);
