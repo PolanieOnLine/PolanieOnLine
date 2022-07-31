@@ -31,11 +31,8 @@ import marauroa.common.game.IRPZone;
 import marauroa.common.game.RPAction;
 
 public class TeleportAction extends AdministrationAction {
-
-
 	public static void register() {
 		CommandCenter.register(TELEPORT, new TeleportAction(), 8);
-
 	}
 
 	@Override
@@ -46,7 +43,7 @@ public class TeleportAction extends AdministrationAction {
 			final Player teleported = SingletonRepository.getRuleProcessor().getPlayer(name);
 
 			if (teleported == null) {
-				final String text = "Wojownik \"" + name + "\" nie został znaleziony";
+				final String text = "Wojownik \"" + name + "\" nie został znaleziony.";
 				player.sendPrivateText(text);
 				logger.debug(text);
 				return;
@@ -80,7 +77,7 @@ public class TeleportAction extends AdministrationAction {
 						}
 					}
 				}
-				player.sendPrivateText(text + " Similar zone names: " + zoneNames);
+				player.sendPrivateText(text + " Podobne nazwy stref: " + zoneNames);
 				return;
 			}
 

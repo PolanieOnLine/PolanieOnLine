@@ -171,7 +171,7 @@ class SlashActionParser extends CommandlineParser {
 				 * Incomplete parameters?
 				 */
 				if (i < minimum) {
-					command.setError("Missing command parameter for '" + command.getName() + "'");
+					command.setError("Zabrakło parametru dla komendy '" + command.getName() + "'.");
 					return false;
 				}
 
