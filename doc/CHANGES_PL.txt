@@ -26,6 +26,9 @@ Changelog
 - Zapowiedzi deathmatch nie będą się powtarzać przed upływem 15 minut
 - Zmieniono nazwę przedmiotu z "magia lodu" na "magia mrozu"
 
+*kod*
+- Dodano nową komendę "/teleportme" dla administratorów
+
 *naprawiono błędy*
 - Poprawiono dialogi u niektórych NPC i w zadaniach
 - Naprawiono animacje strzał
