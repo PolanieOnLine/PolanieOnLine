@@ -109,6 +109,8 @@ public class AdministrationActionTest {
 				.intValue());
 		assertEquals(8, AdministrationAction.getLevelForCommand("teleportto")
 				.intValue());
+		assertEquals(8, AdministrationAction.getLevelForCommand("teleportme")
+				.intValue());
 		assertEquals(8, AdministrationAction.getLevelForCommand("teleport")
 				.intValue());
 		assertEquals(9, AdministrationAction.getLevelForCommand("destroy")
@@ -289,7 +291,7 @@ public class AdministrationActionTest {
 		action.put("type", "teleportto");
 		action.put("target", "blah");
 		CommandCenter.execute(pl, action);
-		assertEquals("Wojownik \"blah\" nie został znaleziony", pl.events().get(0).get("text"));
+		assertEquals("Wojownik \"blah\" nie został znaleziony.", pl.events().get(0).get("text"));
 	}
 
 	/**
