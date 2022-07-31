@@ -20,21 +20,18 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
-
 /**
  * Checks kill counts of a player for a specified creature.
  */
 public class InspectKillAction extends AdministrationAction {
-
 	public static void register() {
 		CommandCenter.register(INSPECTKILL, new InspectKillAction(), 16);
 	}
 
 	@Override
 	protected void perform(final Player admin, final RPAction action) {
-
 		if (!action.has("target")) {
-			admin.sendPrivateText("parametr \"target\" jest wymagany: " + action);
+			admin.sendPrivateText("Parametr \"target\" jest wymagany: " + action);
 			return;
 		}
 
@@ -50,7 +47,7 @@ public class InspectKillAction extends AdministrationAction {
 		}
 
 		if (!action.has("creature")) {
-			admin.sendPrivateText("parametr \"creature\" jest wymagany: " + action);
+			admin.sendPrivateText("Parametr \"creature\" jest wymagany: " + action);
 			return;
 		}
 

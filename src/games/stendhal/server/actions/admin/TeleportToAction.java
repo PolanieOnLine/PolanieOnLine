@@ -23,9 +23,6 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
 public class TeleportToAction extends AdministrationAction {
-
-
-
 	public static void register() {
 		CommandCenter.register(TELEPORTTO, new TeleportToAction(), 8);
 	}
@@ -40,7 +37,7 @@ public class TeleportToAction extends AdministrationAction {
 				teleported = SingletonRepository.getNPCList().get(name);
 				if (teleported == null) {
 
-					final String text = "Wojownik \"" + name + "\" nie został znaleziony";
+					final String text = "Wojownik \"" + name + "\" nie został znaleziony.";
 					player.sendPrivateText(text);
 					logger.debug(text);
 					return;

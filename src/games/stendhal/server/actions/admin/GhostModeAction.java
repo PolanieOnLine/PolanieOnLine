@@ -27,15 +27,12 @@ import marauroa.server.db.command.DBCommandQueue;
  * changes the ghostmode flag of admins
  */
 public class GhostModeAction extends AdministrationAction {
-
 	public static void register() {
 		CommandCenter.register(GHOSTMODE, new GhostModeAction(), 10);
-
 	}
 
 	@Override
 	public void perform(final Player player, final RPAction action) {
-
 		if (alreadyInRequestedMode(player, action)) {
 			return;
 		}
