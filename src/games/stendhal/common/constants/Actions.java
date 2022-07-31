@@ -83,6 +83,8 @@ public final class Actions {
 	//teleport
 	public static final String ZONE = "zone";
 	public static final String TELEPORT = "teleport";
+	//teleportme
+	public static final String TELEPORTME = "teleportme";
 
 	//teleportto
 	public static final String TELEPORTTO = "teleportto";

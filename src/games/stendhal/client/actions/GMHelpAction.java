@@ -64,6 +64,7 @@ class GMHelpAction implements SlashAction {
 				"- /tellall <wiadomość>",
 				"\t\tWysyła prywatną wiadomośść do wszystkich zalogowanych wojowników.",
 				"* KONTROLA GRACZA:",
+				"- /teleportme <strefa> <x> <y>",
 				"- /teleportto <wojownik>",
 				"\t\tTeleportujesz siebie w pobliże określonego wojownika lub NPC'ta.",
 				"- /teleclickmode",

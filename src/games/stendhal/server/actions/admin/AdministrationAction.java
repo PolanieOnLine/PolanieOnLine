@@ -58,6 +58,7 @@ public abstract class AdministrationAction implements ActionListener {
 		SupportAnswerAction.register();
 		TeleClickModeAction.register();
 		TeleportAction.register();
+		TeleportMeAction.register();
 		TeleportToAction.register();
 		TellAllAction.register();
 		WrapAction.register();
