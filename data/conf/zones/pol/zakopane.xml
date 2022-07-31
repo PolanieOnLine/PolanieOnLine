@@ -1009,12 +1009,13 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bank 0 -->
 	<zone name="int_zakopane_bank_0" file="interiors/zakopane/bank_0.tmx">
-		<configurator class-name="games.stendhal.server.maps.zakopane.bank.market.TraderNPC"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/bank_0_xmas.tmx</parameter>
 		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.zakopane.bank.market.TraderNPC"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
 		<entity x="11" y="7">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>
@@ -1164,6 +1165,35 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
 				<parameter name="slot">bank_zakopane</parameter>
 			</implementation>
+		</entity>
+
+		<entity x="7" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto czysty i elegancki stolik na którym możesz położyć przedmiot.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+		<entity x="13" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto czysty i elegancki stolik na którym możesz położyć przedmiot.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+		<entity x="19" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto czysty i elegancki stolik na którym możesz położyć przedmiot.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
+		</entity>
+		<entity x="25" y="2">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
+			<attribute name="description">Oto czysty i elegancki stolik na którym możesz położyć przedmiot.</attribute>
+			<attribute name="width">2</attribute>
+			<attribute name="height">1</attribute>
 		</entity>
 
 		<portal x="34" y="15" ref="enterbank1">
