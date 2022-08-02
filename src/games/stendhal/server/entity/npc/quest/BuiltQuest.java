@@ -79,8 +79,9 @@ public class BuiltQuest extends AbstractQuest {
 		ChatAction questCompleteAction = questBuilder.task().buildQuestCompleteAction(questSlot);
 
 		final SpeakerNPC npc = npcs.get(questBuilder.info().getQuestGiverNpc());
-		questBuilder.offer().build(npc, questSlot, startQuestAction, questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes());
-		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction);
+		questBuilder.offer().build(npc, questSlot, startQuestAction, questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes(), questBuilder.info().getForgingDelay());
+		questBuilder.forging().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay());
+		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay());
 	}
 
 	@Override

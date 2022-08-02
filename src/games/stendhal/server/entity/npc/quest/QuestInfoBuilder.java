@@ -21,6 +21,7 @@ public class QuestInfoBuilder {
 	private String description = "";
 	private String internalName = null;
 	private int repeatableAfterMinutes = 0;
+	private int forgingDelay = 0;
 	private int minLevel = 0;
 	private String region = "somewhere";
 	private String questGiverNpc = null;
@@ -47,6 +48,11 @@ public class QuestInfoBuilder {
 
 	public QuestInfoBuilder notRepeatable() {
 		this.repeatableAfterMinutes = 0;
+		return this;
+	}
+
+	public QuestInfoBuilder forgingDelay(int forgingDelay) {
+		this.forgingDelay = forgingDelay;
 		return this;
 	}
 
@@ -91,6 +97,10 @@ public class QuestInfoBuilder {
 
 	int getRepeatableAfterMinutes() {
 		return repeatableAfterMinutes;
+	}
+
+	int getForgingDelay() {
+		return forgingDelay;
 	}
 
 	int getMinLevel() {

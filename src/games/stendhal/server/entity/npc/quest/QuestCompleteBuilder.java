@@ -21,11 +21,15 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
+import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
+import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
+import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 
 /**
  * defines how the NPC react after the player completes the quest
@@ -85,15 +89,20 @@ public class QuestCompleteBuilder {
 		simulator.info("");
 	}
 
-	void build(SpeakerNPC npc, String questSlot, ChatCondition questCompletedCondition, ChatAction questCompleteAction) {
-		ChatCondition mayCompleteCondition = new AndCondition(
-				new GreetingMatchesNameCondition(npc.getName()),
-				new QuestActiveCondition(questSlot),
-				questCompletedCondition);
-		npc.registerPrioritizedGreetingTransition(mayCompleteCondition, this);
+	void build(SpeakerNPC npc, String questSlot, ChatCondition questCompletedCondition, ChatAction questCompleteAction, int forgingDelay) {
+		List<ChatCondition> mayCompleteCondition = new LinkedList<ChatCondition>();
+		mayCompleteCondition.add(new GreetingMatchesNameCondition(npc.getName()));
+		if (forgingDelay > 0) {
+			mayCompleteCondition.add(new QuestStateStartsWithCondition(questSlot, "forging;"));
+			mayCompleteCondition.add(new TimePassedCondition(questSlot, 1, forgingDelay));
+		} else {
+			mayCompleteCondition.add(new QuestActiveCondition(questSlot));
+			mayCompleteCondition.add(questCompletedCondition);
+		}
+		npc.registerPrioritizedGreetingTransition(new AndCondition(mayCompleteCondition), this);
 
 		List<ChatAction> actions = new LinkedList<ChatAction>();
-		if (questCompleteAction != null) {
+		if (forgingDelay == 0 && questCompleteAction != null) {
 			actions.add(questCompleteAction);
 		}
 		if (!repeatable) {
@@ -106,9 +115,9 @@ public class QuestCompleteBuilder {
 		actions.addAll(rewardWith);
 
 		if (respondToAccept != null) {
-			buildWithConfirmation(npc, mayCompleteCondition, actions);
+			buildWithConfirmation(npc, new AndCondition(mayCompleteCondition), actions);
 		} else {
-			buildWithoutConfirmation(npc, mayCompleteCondition, actions);
+			buildWithoutConfirmation(npc, questSlot, new AndCondition(mayCompleteCondition), actions, forgingDelay);
 		}
 	}
 
@@ -141,11 +150,34 @@ public class QuestCompleteBuilder {
 			null);
 	}
 
-	void buildWithoutConfirmation(SpeakerNPC npc, ChatCondition mayCompleteCondition, List<ChatAction> actions) {
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			mayCompleteCondition,
-			ConversationStates.ATTENDING,
-			greet,
-			new MultipleActions(actions));
+	void buildWithoutConfirmation(SpeakerNPC npc, String questSlot, ChatCondition mayCompleteCondition, List<ChatAction> actions, int forgingDelay) {
+		if (forgingDelay > 0) {
+			ChatCondition timeNotCompleteCondition = new AndCondition(
+					new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(questSlot, "forging;"),
+					new NotCondition(new TimePassedCondition(questSlot, 1, forgingDelay)));
+			npc.registerPrioritizedGreetingTransition(timeNotCompleteCondition, this);
+
+			npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				timeNotCompleteCondition,
+				ConversationStates.ATTENDING,
+				null,
+				new SayTimeRemainingAction(questSlot, 1, forgingDelay, "Wciąż pracuję nad Twoim zleceniem. Wróć za "));
+
+			npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				mayCompleteCondition,
+				ConversationStates.ATTENDING,
+				greet,
+				new MultipleActions(actions));
+		} else {
+			npc.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				mayCompleteCondition,
+				ConversationStates.ATTENDING,
+				greet,
+				new MultipleActions(actions));
+		}
 	}
 }

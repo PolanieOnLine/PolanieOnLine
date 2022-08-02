@@ -23,6 +23,7 @@ public class QuestBuilder<T extends QuestTaskBuilder> {
 	private QuestHistoryBuilder history = new QuestHistoryBuilder();
 	private QuestOfferBuilder offer = new QuestOfferBuilder();
 	private T task = null;
+	private QuestForgingBuilder forging = new QuestForgingBuilder();
 	private QuestCompleteBuilder complete = new QuestCompleteBuilder();
 
 	/**
@@ -68,6 +69,10 @@ public class QuestBuilder<T extends QuestTaskBuilder> {
 	 */
 	public T task() {
 		return task;
+	}
+
+	public QuestForgingBuilder forging() {
+		return forging;
 	}
 
 	/**
