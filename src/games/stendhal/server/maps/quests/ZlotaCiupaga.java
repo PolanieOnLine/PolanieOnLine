@@ -33,7 +33,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.questGiverNpc("Kowal Andrzej");
 
 		quest.history()
-			.whenNpcWasMet("Spotkany kowal Andrzej w swej kuźni, niedaleko poczty.")
+			.whenNpcWasMet("Zastaliśmy pewnego miejscowego kowala Andrzeja w swej kuźni, niedaleko poczty.")
 			.whenQuestWasRejected("Miejscowy kowal zaproponował wykonanie dla mnie złotej ciupagi, lecz nie czuję potrzeby posiadania jej.")
 			.whenQuestWasAccepted("Wraz z kowalem postanowiliśmy wykonać wspólnymi siłami dla mnie nową złotą ciupagę jak na prawdziwego górala przystało! Potrzebuję: 1 ciupagi, 5 sztuk drewna, 25 sztabek złota oraz 50 000 monet.")
 			.whenTaskWasCompleted("Mam już wszystkie potrzebne przedmioty do wykonania złotej ciupagi.")
