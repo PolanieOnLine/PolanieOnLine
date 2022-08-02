@@ -42,7 +42,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 
 		quest.offer()
 			.needQuestsCompleted("kill_herszt_basehp").needLevelCondition("greater", 99).needKarmaCondition("greater", 99)
-			.respondToUnstartable("Wybacz mi proszę, ale musisz zasłużyć na uznanie gazdy Jędrzeja oraz zdobyć trochę większe doświadczenie i mieć dobrą karmę!")
+			.respondToUnstartable("Wybacz mi proszę, ale musisz zasłużyć na uznanie gazdy Jędrzeja oraz zdobyć nieco większe doświadczenie i mieć dobrą karmę!")
 			.respondToRequest("Jakiś czas temu wykonywałem nietypowe zlecenie w naszej kuźni, a chodzi dokładnie o wykonanie ciupagi ze szczerego złota. Może dzielny wojak chce również taką?")
 			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
 			.respondToRepeatedRequest("Potrzebujesz kolejnej złotej ciupagi?")
