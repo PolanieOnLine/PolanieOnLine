@@ -27,7 +27,6 @@ public class PomocChlopcowi implements QuestManuscript {
 			.name("Pomoc Adasiowi")
 			.description("W domku bohaterów w piwnicy zakorzeniły się potwory. Młody chłopiec Adaś, potrzebuje mojej pomocy w pozbyciu się ich.")
 			.internalName("pomoc_adasiowi")
-			.minLevel(0)
 			.region(Region.ZAKOPANE_CITY)
 			.questGiverNpc("Adaś");
 
