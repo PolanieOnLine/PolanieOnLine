@@ -35,7 +35,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 		quest.history()
 			.whenNpcWasMet("Spotkany kowal Andrzej w swej kuźni, niedaleko poczty.")
 			.whenQuestWasRejected("Miejscowy kowal zaproponował wykonanie dla mnie złotej ciupagi, lecz nie czuję potrzeby posiadania jej.")
-			.whenQuestWasAccepted("Wraz z kowal postanowiliśmy wykonać wspólnymi siłami dla mnie nową i ulepszoną złotą ciupagę jak na prawdziwego górala przystało! Potrzebuję: 1 ciupagi, 5 sztuk drewna, 25 sztabek złota oraz 50 000 monet.")
+			.whenQuestWasAccepted("Wraz z kowalem postanowiliśmy wykonać wspólnymi siłami dla mnie nową złotą ciupagę jak na prawdziwego górala przystało! Potrzebuję: 1 ciupagi, 5 sztuk drewna, 25 sztabek złota oraz 50 000 monet.")
 			.whenTaskWasCompleted("Mam już wszystkie potrzebne przedmioty do wykonania złotej ciupagi.")
 			.whenQuestWasCompleted("Kowal Andrzej był zadowolony po wykonanej ciężkiej pracy nad tworzeniem złotej ciupagi dla mnie.")
 			.whenQuestCanBeRepeated("Kowal chyba mógłby wykonać dla mnie kolejną taką ciupagę ze szczerego złota!");
@@ -63,7 +63,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.respondToReject("Jak się zastanowisz to wróć.");
 
 		quest.complete()
-			.greet("Skończyłem swą pracę nad ciupagą! Warto chyba było trochę poczekać. Proszę, a oto i ona!")
+			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
 			.rewardWith(new IncreaseXPAction(15000))
 			.rewardWith(new IncreaseKarmaAction(25))
 			.rewardWith(new EquipItemAction("złota ciupaga", 1, true));
