@@ -36,7 +36,9 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasKilledNumberOfCreaturesCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import marauroa.common.Pair;
 
@@ -250,7 +252,16 @@ public class QuestOfferBuilder {
 			npc.add(ConversationStates.ATTENDING,
 				triggers,
 				new AndCondition(
-					new QuestActiveCondition(questSlot),
+					new QuestInStateCondition(questSlot, "start"),
+					new NotCondition(questCompletedCondition)),
+				ConversationStates.ATTENDING,
+				remind,
+				null);
+
+			npc.add(ConversationStates.ATTENDING,
+				triggers,
+				new AndCondition(
+					new QuestStateStartsWithCondition(questSlot, "forging;"),
 					new NotCondition(questCompletedCondition)),
 				ConversationStates.ATTENDING,
 				null,
@@ -267,7 +278,6 @@ public class QuestOfferBuilder {
 		}
 
 		if (repeatableAfterMinutes > 0) {
-
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(
@@ -285,9 +295,7 @@ public class QuestOfferBuilder {
 					ConversationStates.ATTENDING,
 					respondToUnrepeatableRequest,
 					null);
-
 		} else {
-
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
 					new QuestCompletedCondition(questSlot),
@@ -303,8 +311,7 @@ public class QuestOfferBuilder {
 			start.add(startQuestAction);
 		}
 
-		npc.add(
-				ConversationStates.QUEST_OFFERED,
+		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
@@ -318,8 +325,7 @@ public class QuestOfferBuilder {
 				new SetQuestAndModifyKarmaAction(questSlot, "rejected", -1 * rejectionKarmaPenalty));
 
 		for (Map.Entry<List<String>, String> entry : additionalReplies.entrySet()) {
-			npc.add(
-					ConversationStates.QUEST_OFFERED,
+			npc.add(ConversationStates.QUEST_OFFERED,
 					entry.getKey(),
 					null,
 					ConversationStates.QUEST_OFFERED,
