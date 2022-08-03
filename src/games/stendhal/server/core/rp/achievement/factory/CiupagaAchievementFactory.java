@@ -39,7 +39,7 @@ public class CiupagaAchievementFactory extends AbstractAchievementFactory {
 				"Złota Ciupaga", "Wykonał złotą ciupagę u Kowala Andrzeja",
 				Achievement.EASY_BASE_SCORE, true,
 				new OrCondition(
-					new QuestCompletedCondition("andrzej_make_zlota_ciupaga"),
+					new QuestCompletedCondition("zlota_ciupaga"),
 					new QuestCompletedCondition("zlota_ciupaga_was"),
 					new QuestCompletedCondition("ciupaga_dwa_wasy"),
 					new QuestCompletedCondition("ciupaga_trzy_wasy"))));
