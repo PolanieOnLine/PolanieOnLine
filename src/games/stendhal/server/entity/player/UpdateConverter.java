@@ -557,6 +557,9 @@ public abstract class UpdateConverter {
 		renameQuestSlot(player, "gazda_jedrzej_basehp", "kill_herszt_basehp");
 		renameQuestSlot(player, "gazda_jedrzej_nagroda", null);
 		renameQuestSlot(player, "andrzej_make_zlota_ciupaga", "zlota_ciupaga");
+		renameQuestSlot(player, "prozba_wielkoluda", "help_wielkolud");
+		renameQuestSlot(player, "nagroda_wielkoluda", "help_wielkolud_basehp");
+		renameQuestSlot(player, "pomoc_dla_wielkoluda", null);
 
 		// From 0.66 to 0.67
 		// update quest slot content,
@@ -881,7 +884,7 @@ public abstract class UpdateConverter {
 	}
 
 	private static void fixQuestDoneState(Player player) {
-		List<String> quests = Arrays.asList("kill_gnomes", "clean_athors_underground", "coal_for_haunchy", "kill_herszt");
+		List<String> quests = Arrays.asList("kill_gnomes", "clean_athors_underground", "coal_for_haunchy", "kill_herszt", "help_wielkolud");
 		for (String quest : quests) {
 			String value = player.getQuest(quest, 0);
 			if (value != null && (value.equals("killed") || value.equals("waiting"))) {

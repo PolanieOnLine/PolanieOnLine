@@ -80,7 +80,7 @@ public class ZlotaCiupagaJedenWas extends AbstractQuest {
 	private static final String QUEST_SLOT = "zlota_ciupaga_was";
 	private final SpeakerNPC npc = npcs.get("Józek");
 
-	private static final String NAGRODA_WIELKOLUDA_QUEST_SLOT = "nagroda_wielkoluda";
+	private static final String NAGRODA_WIELKOLUDA_QUEST_SLOT = "help_wielkolud_basehp";
 
 	private static final int REQUIRED_WAIT_DAYS = 5;
 	private static final int REQUIRED_HOURS = 8;

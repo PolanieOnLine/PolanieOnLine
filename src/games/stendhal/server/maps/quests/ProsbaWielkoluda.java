@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2007-2021 - Stendhal                    *
+ *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,241 +11,70 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.NPCList;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseBaseHPOnlyOnceAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
-import games.stendhal.server.entity.npc.condition.TimePassedCondition;
-import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.util.TimeUtil;
-import marauroa.common.Pair;
+import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
+import games.stendhal.server.maps.Region;
 
-/**
- * QUEST: Kill pokutniki
- * <p>
- * PARTICIPANTS:
- * <ul>
- * <li> Wielkolud
- * </ul>
- * 
- * STEPS:
- * <ul>
- * <li> Wielkolud asks you to kill remainging pokutniki from area
- * <li> You go kill lawina kamienna and you get the reward from wielkolud
- * </ul>
- * <p>
- * REWARD:
- * <ul>
- * <li> mithril nugget
- * <li> 50000 XP
- * <li>25 karma in total
- * </ul>
- * 
- * REPETITIONS:
- * <ul>
- * <li> after 14 days.
- * </ul>
- */
-public class ProsbaWielkoluda extends AbstractQuest {
-	private static final String QUEST_SLOT = "prozba_wielkoluda";
-	private final SpeakerNPC npc = npcs.get("Wielkolud");
-
-	private static final String POMOC_DLA_WIELKOLUDA_QUEST_SLOT = "pomoc_dla_wielkoluda";
-	private static final String NAGRODA_WIELKOLUDA_QUEST_SLOT = "nagroda_wielkoluda";
-
-	private void step_1() {
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
-				null,
-				ConversationStates.QUEST_OFFERED, 
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						if (!player.hasQuest(QUEST_SLOT) || player.getQuest(QUEST_SLOT).equals("rejected")) {
-							raiser.say("Za dużo tu stworów biega, ciągle mi przeszkadzają w interesach. Czy mógłbyś mi pomóc i pozbyć się ich?");
-						}  else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
-							raiser.say("Już ciebie prosiłem o zabicie pokutników i lawiny kamiennej!");
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}  else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
-							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-							final long delay = 2 * MathHelper.MILLISECONDS_IN_ONE_WEEK;
-							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
-							if (timeRemaining > 0) {
-								raiser.say("Bardzo dziękuję za pomoc. Może przyjdziesz innym razem. Na razie schodzą mi z drogi. Ale to może zmienić się, wróć za  " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
-								raiser.setCurrentState(ConversationStates.ATTENDING);
-								return;
-							}
-							raiser.say("Czy mógłbyś znowu mi pomóc?");
-						} else {
-							raiser.say("Dziękuję za pomoc w potrzebie. Teraz klienci dotrą do mnie bez przeszkód.");
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					}
-				});
-
-		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
-		toKill.put("lawina kamienna", new Pair<Integer, Integer>(0,1));
-		toKill.put("pokutnik z bagien", new Pair<Integer, Integer>(1,0));
-		toKill.put("pokutnik z wrzosowisk", new Pair<Integer, Integer>(1,0)); 
-		toKill.put("pokutnik nocny", new Pair<Integer, Integer>(1,0));
-		toKill.put("pokutnik wieczorny", new Pair<Integer, Integer>(1,0));
-		toKill.put("pokutnik z łąk", new Pair<Integer, Integer>(1,0));
-
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-		actions.add(new IncreaseKarmaAction(5.0));
-		actions.add(new SetQuestAction(QUEST_SLOT, 0, "start"));
-		actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
-
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Wspaniale! Proszę pozbądź się tych #pokutników. Kręcą się w okół Kościeliska i przeszkadzają. Zwłaszcza #'/lawina kamienna/' jest dokuczliwa!",
-				new MultipleActions(actions));
-
-		npc.add(ConversationStates.QUEST_OFFERED, 
-				ConversationPhrases.NO_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Rozumiem. Każdy się ich boi. Poczekam na kogoś odpowiedniego do tego zadania.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
-	}
-
-	private void step_2() {
-		/* Player has to kill the pokutniki*/
-	}
-
-	private void step_3() {
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-						new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.ATTENDING, 
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Miałeś zabić samodzielnie lawinę kamienną i tych okropnych pokutników. Ruszaj się na co czekasz. Pamiętaj samodzielnie!!!");
-				}
-		});
-
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-						new KilledForQuestCondition(QUEST_SLOT, 1)),
-				ConversationStates.ATTENDING, 
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Spisałeś się wyśmienicie! twoje męstwo i odwagę będą potomni wspominać!");
-						final Item pokutniki = SingletonRepository.getEntityManager()
-								.getItem("czterolistna koniczyna");
-						player.equipOrPutOnGround(pokutniki);
-						player.addKarma(25.0);
-						player.addXP(50000);
-						final List<ChatAction> actions = new LinkedList<ChatAction>();
-						if (!player.hasQuest(POMOC_DLA_WIELKOLUDA_QUEST_SLOT) || player.getQuest(POMOC_DLA_WIELKOLUDA_QUEST_SLOT).equals("rejected") || !player.getQuest(POMOC_DLA_WIELKOLUDA_QUEST_SLOT).equals("done")) {
-							actions.add(new SetQuestAction(POMOC_DLA_WIELKOLUDA_QUEST_SLOT, "start"));
-						}
-						if (!"done".equals(player.getQuest(NAGRODA_WIELKOLUDA_QUEST_SLOT))) {
-							player.setBaseHP(10 + player.getBaseHP());
-							player.heal(10, true);
-							player.setQuest(NAGRODA_WIELKOLUDA_QUEST_SLOT, "done");
-						}
-						if (!"done".equals(player.getQuest(POMOC_DLA_WIELKOLUDA_QUEST_SLOT))) {
-							player.setQuest(POMOC_DLA_WIELKOLUDA_QUEST_SLOT, "done");
-						}
-						player.setQuest(QUEST_SLOT, "killed;" + System.currentTimeMillis());
-		 			}
-				});
-
-		npc.add(ConversationStates.ANY,
-			"pokutników",
-			null,
-			ConversationStates.ATTENDING,
-			"Musisz zabić samodzielnie: pokutnika z bagien, wrzosowisk, nocnego, wieczornego i łąk.",
-			null);
-	}
-
+public class ProsbaWielkoluda implements QuestManuscript {
+	final static String QUEST_SLOT = "help_wielkolud";
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-			"Prośba Wielkoluda",
-			"Wielkolud chcę abyś zabił: lawina kamienna, pokutnik z bagien, pokutnik z wrzosowisk, pokutnik nocny, pokutnik wieczorny, pokutnik z łąk. Własnoręcznie bez niczyjej pomocy.",
-			false);
-		step_1();
-		step_2();
-		step_3();
-	}
+	public QuestBuilder<?> story() {
+		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		if (!isCompleted(player)) {
-			res.add("Muszę zabić lawine kamienną  i wszystkich pokutników na prośbę Wielkoluda.");
-		} else if(isRepeatable(player)){
-			res.add("Wielkolud potrzebuje jeszcze raz pomocy i nagrodzi mnie, czy mam mu pomóc?");
-		} else {
-			res.add("Moja wyprawa na pokutniki i lawine uspokoiła na jakiś czas nerwy Wielkoluda.");
-		}
-		return res;	
-	}
+		quest.info()
+			.name("Wsparcie dla Wielkoluda")
+			.description("Wielkolud poszukuje wojaka, który pozbędzie się grasujących pokutników i lawiny kamiennej z przejścia, co utrudniają życie innym.")
+			.internalName(QUEST_SLOT)
+			.repeatableAfterMinutes(2 * MathHelper.MINUTES_IN_ONE_WEEK) // Powtarzalne co 2 tygodnie
+			.minLevel(100)
+			.region(Region.KOSCIELISKO)
+			.questGiverNpc("Wielkolud");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+		quest.history()
+			.whenNpcWasMet("Napotkany został Wielkolud na niewielkim wzgórzu Kościeliska.")
+			.whenQuestWasRejected("Nie czuję zagrożenia ze strony pokutników.")
+			.whenQuestWasAccepted("Pokonam wredne upiory oraz utoruję scieżkę dla innych!")
+			.whenTaskWasCompleted("Pokutniky od teraz unikają tego regionu! Hura!")
+			.whenQuestWasCompleted("Wielkolud nagrodził mnie swymi radami życiowymi oraz podzielił się swoim doświadczeniem.")
+			.whenQuestCanBeRepeated("Ścieżka dla turystów znów się zawaliła oraz ponownie pojawiły się upiory. Muszę porozmawiać z Wielkoludem na ten temat.");
 
-	@Override
-	public String getName() {
-		return "Prośba Wielkoluda";
-	}
+		quest.offer()
+			.respondToRequest("Ostatnio nawiedzają te rejony straszliwe upiory, które ciągle przeszkadzają w moich interesach. Czy możesz mi pomóc w pozbyciu się ich?")
+			.respondToUnrepeatableRequest("Chwilowo nie zauważyłem jeszcze problemów. \"Turyści\"... trafiają do mnie bez przeszkód. Odwiedź mnie nieco później, mam takie przeczucie iż niedługo mogą powrócić...")
+			.respondToRepeatedRequest("Ścieżka znów została zablokowana... Pomożesz?")
+			.respondToAccept("Wspaniale! Proszę, pozbądź się tych #pokutników. Kręcą się w okolicy Kościeliska i przeszkadzają innym w dotarciu do mnie. Zwłaszcza #'lawina kamienna' jest dokuczliwa ponieważ zablokowała główną ścieżkę!")
+			.rejectionKarmaPenalty(5)
+			.respondToReject("Rozumiem. Brzmi straszliwie, w końcu to upiory. Poczekam na kogoś odpowiedniego do tego zadania.")
+			.rejectionKarmaPenalty(5)
+			.remind("Już poprosiłem Ciebie o pozbycie się #pokutników i lawiny kamiennej!");
 
-	// The kill requirements and surviving in the zone requires at least this level
-	@Override
-	public int getMinLevel() {
-		return 100;
-	}
+		NPCList.get().get("Wielkolud").addReply(Arrays.asList("pokutnik", "pokutników", "pokutnicy", "upiory"),
+				"Głównie w moich interesach przeszkadzają te upiory: #'pokutnik z bagien', #'pokutnik z wrzosowisk', #'pokutnik z łąk', #'pokutnik wieczorny' oraz #'pokutnik nocny'.");
 
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "killed"),
-				new TimePassedCondition(QUEST_SLOT, 1, 2*MathHelper.MINUTES_IN_ONE_WEEK)).fire(player,null, null);
-	}
+		quest.task()
+			.requestKill(1, "lawina kamienna")
+			.requestKill(1, "pokutnik z bagien")
+			.requestKill(1, "pokutnik z wrzosowisk")
+			.requestKill(1, "pokutnik z łąk")
+			.requestKill(1, "pokutnik wieczorny")
+			.requestKill(1, "pokutnik nocny");
 
-	@Override
-	public boolean isCompleted(final Player player) {
-		return new QuestStateStartsWithCondition(QUEST_SLOT,"killed").fire(player, null, null);
-	}
+		quest.complete()
+			.greet("Spisałeś się wyśmienicie! Twe męstwo i odwagę będą potomni wspominać!")
+			.rewardWith(new IncreaseXPAction(50000))
+			.rewardWith(new IncreaseKarmaAction(25))
+			.rewardWith(new IncreaseBaseHPOnlyOnceAction(QUEST_SLOT, 10))
+			.rewardWith(new EquipItemAction("bryłka mithrilu", 1));
 
-	@Override
-	public String getNPCName() {
-		return npc.getName();
+		return quest;
 	}
 }
