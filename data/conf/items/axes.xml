@@ -467,7 +467,7 @@
 
 	<item name="złota ciupaga">
 		<type class="axe" subclass="zlota_ciupaga" tileid="-1"/>
-		<description>Oto prawdziwa złota góralska ciupaga!</description>
+		<description>Oto prawdziwa góralska złota ciupaga!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="20"/>
@@ -489,7 +489,7 @@
 
 	<item name="złota ciupaga z wąsem">
 		<type class="axe" subclass="zlota_ciupaga1" tileid="-1"/>
-		<description>Oto prawdziwa złota góralska ciupaga z wąsem!</description>
+		<description>Oto prawdziwa góralska złota ciupaga z wąsem!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="22"/>
@@ -512,7 +512,7 @@
 
 	<item name="złota ciupaga z dwoma wąsami">
 		<type class="axe" subclass="zlota_ciupaga2" tileid="-1"/>
-		<description>Oto prawdziwa złota góralska ciupaga z dwoma wąsami! Wąsy posiadają jakieś magiczne właściwości, im więcej wąsów na ciupadze tym szybsza ona jest!</description>
+		<description>Oto prawdziwa góralska złota ciupaga z dwoma wąsami! Wąsy posiadają jakieś magiczne właściwości, im więcej wąsów na ciupadze tym szybsza ona jest!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="24"/>
@@ -535,7 +535,7 @@
 
 	<item name="złota ciupaga z trzema wąsami">
 		<type class="axe" subclass="zlota_ciupaga3" tileid="-1"/>
-		<description>Oto prawdziwa złota góralska ciupaga z trzema wąsami! Trzy wąsy na jednej złotej ciupadze to rzadkość! Tą broń otacza jakaś magiczna aura.</description>
+		<description>Oto prawdziwa góralska złota ciupaga z trzema wąsami! Trzy wąsy na jednej złotej ciupadze to rzadkość! Tą broń otacza jakaś magiczna aura.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="24"/>
