@@ -21,6 +21,8 @@ public class QuestHistoryBuilder {
 	private String whenQuestWasRejected;
 	private String whenQuestWasAccepted;
 	private String whenTaskWasCompleted;
+	private String whenTimeWasPassed;
+	private String whenTimeWasNotEnded;
 	private String whenQuestWasCompleted;
 	private String whenQuestCanBeRepeated;
 
@@ -41,6 +43,16 @@ public class QuestHistoryBuilder {
 
 	public QuestHistoryBuilder whenTaskWasCompleted(String whenTaskWasCompleted) {
 		this.whenTaskWasCompleted = whenTaskWasCompleted;
+		return this;
+	}
+
+	public QuestHistoryBuilder whenTimeWasPassed(String whenTimeWasPassed) {
+		this.whenTimeWasPassed = whenTimeWasPassed;
+		return this;
+	}
+
+	public QuestHistoryBuilder whenTimeWasNotEnded(String whenTimeWasNotEnded) {
+		this.whenTimeWasNotEnded = whenTimeWasNotEnded;
 		return this;
 	}
 
@@ -68,6 +80,14 @@ public class QuestHistoryBuilder {
 
 	String getWhenTaskWasCompleted() {
 		return whenTaskWasCompleted;
+	}
+
+	String whenTimeWasPassed() {
+		return whenTimeWasPassed;
+	}
+
+	String whenTimeWasNotEnded() {
+		return whenTimeWasNotEnded;
 	}
 
 	String getWhenQuestWasCompleted() {

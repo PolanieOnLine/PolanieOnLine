@@ -37,6 +37,8 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.whenQuestWasRejected("Miejscowy kowal zaproponował wykonanie dla mnie złotej ciupagi, lecz nie czuję potrzeby posiadania jej.")
 			.whenQuestWasAccepted("Wraz z kowalem postanowiliśmy wykonać wspólnymi siłami dla mnie nową złotą ciupagę jak na prawdziwego górala przystało! Potrzebuję: 1 ciupagi, 5 sztuk drewna, 25 sztabek złota oraz 50 000 monet.")
 			.whenTaskWasCompleted("Mam już wszystkie potrzebne przedmioty do wykonania złotej ciupagi.")
+			.whenTimeWasNotEnded("Muszę odczekać 6 godzin. Tyle zajmie czasu Andrzejowi na wykonanie mojej ciupagi.")
+			.whenTimeWasPassed("Mam przeczucie iż miejscowy kowal skończył prace nad moją nową ciupagą!")
 			.whenQuestWasCompleted("Kowal Andrzej był zadowolony po wykonanej ciężkiej pracy nad tworzeniem złotej ciupagi dla mnie.")
 			.whenQuestCanBeRepeated("Kowal chyba mógłby wykonać dla mnie kolejną taką ciupagę ze szczerego złota!");
 

@@ -58,6 +58,13 @@ public class BuiltQuest extends AbstractQuest {
 		if ("done".equals(questState) || ("start".equals(questState) && questBuilder.task().isCompleted(player, questSlot))) {
 			res.add(history.getWhenTaskWasCompleted());
 		}
+		if (questState.startsWith("forging")) {
+			if (new TimePassedCondition(questSlot, 1, questBuilder.info().getForgingDelay()).fire(player, null, null)) {
+				res.add(history.whenTimeWasPassed());
+			} else {
+				res.add(history.whenTimeWasNotEnded());
+			}
+		}
 		if ("done".equals(questState)) {
 			res.add(history.getWhenQuestWasCompleted());
 		}
