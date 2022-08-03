@@ -556,6 +556,7 @@ public abstract class UpdateConverter {
 		migrateSumTimedQuestSlot(player, "Valo_concoct_potion", "valo_concoct_potion");
 		renameQuestSlot(player, "gazda_jedrzej_basehp", "kill_herszt_basehp");
 		renameQuestSlot(player, "gazda_jedrzej_nagroda", null);
+		renameQuestSlot(player, "andrzej_make_zlota_ciupaga", "zlota_ciupaga");
 
 		// From 0.66 to 0.67
 		// update quest slot content,
