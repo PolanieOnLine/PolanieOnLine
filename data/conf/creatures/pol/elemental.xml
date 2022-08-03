@@ -187,7 +187,7 @@
 		<level value="213"/>
 		<experience value="20000"/>
 		<respawn value="6200"/>
-		<corpse name="flora_ent" width="2" height="1"/>
+		<corpse name="leafy_2x2" harmless="leafy_2x2"/>
 		<drops>
 			<item value="polano" quantity="[1,29]" probability="30.0"/>
 		</drops>
