@@ -52,7 +52,7 @@ public class ProsbaWielkoluda implements QuestManuscript {
 			.respondToUnrepeatableRequest("Chwilowo nie zauważyłem jeszcze problemów. \"Turyści\"... trafiają do mnie bez przeszkód. Odwiedź mnie nieco później, mam takie przeczucie iż niedługo mogą powrócić...")
 			.respondToRepeatedRequest("Ścieżka znów została zablokowana... Pomożesz?")
 			.respondToAccept("Wspaniale! Proszę, pozbądź się tych #pokutników. Kręcą się w okolicy Kościeliska i przeszkadzają innym w dotarciu do mnie. Zwłaszcza #'lawina kamienna' jest dokuczliwa ponieważ zablokowała główną ścieżkę!")
-			.rejectionKarmaPenalty(5)
+			.acceptationKarmaReward(5)
 			.respondToReject("Rozumiem. Brzmi straszliwie, w końcu to upiory. Poczekam na kogoś odpowiedniego do tego zadania.")
 			.rejectionKarmaPenalty(5)
 			.remind("Już poprosiłem Ciebie o pozbycie się #pokutników i lawiny kamiennej!");
