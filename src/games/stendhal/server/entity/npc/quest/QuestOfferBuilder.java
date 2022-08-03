@@ -187,7 +187,6 @@ public class QuestOfferBuilder {
 			for (String questName : needQuestsCompleted) {
 				conditions.add(new QuestCompletedCondition(questName));
 			}
-			return new AndCondition(conditions);
 		}
 		if (needLevelCondition != null) {
 			if (needLevelCondition.first() == "greater") {
@@ -195,7 +194,6 @@ public class QuestOfferBuilder {
 			} else {
 				conditions.add(new LevelLessThanCondition(needLevelCondition.second()));
 			}
-			return new AndCondition(conditions);
 		}
 		if (needKarmaCondition != null) {
 			if (needKarmaCondition.first() == "greater") {
@@ -203,22 +201,20 @@ public class QuestOfferBuilder {
 			} else {
 				conditions.add(new KarmaLessThanCondition(needKarmaCondition.second()));
 			}
-			return new AndCondition(conditions);
 		}
 		if (needKilledCondition != null) {
 			for (String monster : needKilledCondition) {
 				conditions.add(new PlayerHasKilledNumberOfCreaturesCondition(1, monster));
 			}
-			return new AndCondition(conditions);
 		}
-		return null;
+		return new AndCondition(conditions);
 	}
 
 	void build(SpeakerNPC npc, String questSlot,
 				ChatAction startQuestAction, ChatCondition questCompletedCondition,
 				int repeatableAfterMinutes, int forgingDelay) {
 
-		if (needQuestsCompleted != null || needLevelCondition != null || needKarmaCondition != null || needKilledCondition != null) {
+		if (someNeedsToStartCondition() != null) {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(

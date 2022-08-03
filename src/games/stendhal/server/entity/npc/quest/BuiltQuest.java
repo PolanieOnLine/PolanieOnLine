@@ -86,7 +86,7 @@ public class BuiltQuest extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return questBuilder.info().getInternalName();
+		return questBuilder.info().getName();
 	}
 
 	@Override
